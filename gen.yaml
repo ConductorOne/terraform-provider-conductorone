@@ -1,0 +1,8 @@
+configVersion: 1.0.0
+generation:
+  sdkClassName: SDK
+  singleTagPerOp: false
+terraform:
+  version: 0.0.1
+  author: speakeasy
+  packageName: terraform
