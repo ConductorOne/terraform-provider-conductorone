@@ -1,0 +1,3318 @@
+components:
+    schemas:
+        c1.api.app.v1.App:
+            description: The App message.
+            properties:
+                appAccountId:
+                    description: The appAccountId field.
+                    type: string
+                appAccountName:
+                    description: The appAccountName field.
+                    type: string
+                certifyPolicyId:
+                    description: The certifyPolicyId field.
+                    type: string
+                createdAt:
+                    format: date-time
+                    type: string
+                deletedAt:
+                    format: date-time
+                    type: string
+                description:
+                    description: The description field.
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    type: string
+                fieldMask:
+                    nullable: true
+                    type: string
+                grantPolicyId:
+                    description: The grantPolicyId field.
+                    type: string
+                iconUrl:
+                    description: The iconUrl field.
+                    type: string
+                id:
+                    description: The id field.
+                    type: string
+                logoUri:
+                    description: The logoUri field.
+                    type: string
+                monthlyCostUsd:
+                    description: The monthlyCostUsd field.
+                    format: int32
+                    type: number
+                parentAppId:
+                    description: The parentAppId field.
+                    type: string
+                revokePolicyId:
+                    description: The revokePolicyId field.
+                    type: string
+                updatedAt:
+                    format: date-time
+                    type: string
+                userCount:
+                    description: The userCount field.
+                    format: int64
+                    type: string
+            type: object
+            x-speakeasy-name-override: App
+        c1.api.app.v1.AppActionsServiceGenerateReportRequestInput:
+            description: The AppActionsServiceGenerateReportRequest message.
+            type: object
+            x-speakeasy-name-override: AppActionsServiceGenerateReportRequest
+        c1.api.app.v1.AppActionsServiceGenerateReportResponse:
+            description: The AppActionsServiceGenerateReportResponse message.
+            type: object
+            x-speakeasy-name-override: AppActionsServiceGenerateReportResponse
+        c1.api.app.v1.AppEntitlement:
+            description: |
+                The AppEntitlement message.
+
+                This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
+                  - durationUnset
+                  - durationGrant
+            properties:
+                alias:
+                    description: The alias field.
+                    type: string
+                appId:
+                    description: The appId field.
+                    type: string
+                appResourceId:
+                    description: The appResourceId field.
+                    type: string
+                appResourceTypeId:
+                    description: The appResourceTypeId field.
+                    type: string
+                certifyPolicyId:
+                    description: The certifyPolicyId field.
+                    type: string
+                complianceFrameworkValueIds:
+                    description: The complianceFrameworkValueIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                createdAt:
+                    format: date-time
+                    type: string
+                deletedAt:
+                    format: date-time
+                    type: string
+                description:
+                    description: The description field.
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    type: string
+                durationGrant:
+                    format: duration
+                    type: string
+                durationUnset:
+                    nullable: true
+                    type: object
+                grantCount:
+                    description: The grantCount field.
+                    format: int64
+                    type: string
+                grantPolicyId:
+                    description: The grantPolicyId field.
+                    type: string
+                id:
+                    description: The id field.
+                    type: string
+                provisionerPolicy:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ProvisionPolicy'
+                revokePolicyId:
+                    description: The revokePolicyId field.
+                    type: string
+                riskLevelValueId:
+                    description: The riskLevelValueId field.
+                    type: string
+                slug:
+                    description: The slug field.
+                    type: string
+                systemBuiltin:
+                    description: The systemBuiltin field.
+                    type: boolean
+                updatedAt:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: AppEntitlement
+        c1.api.app.v1.AppEntitlementExpandMask:
+            description: The AppEntitlementExpandMask message.
+            properties:
+                paths:
+                    description: The paths field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: AppEntitlementExpandMask
+        c1.api.app.v1.AppEntitlementUserBinding:
+            description: The AppEntitlementUserBinding message.
+            properties:
+                appEntitlementId:
+                    description: The appEntitlementId field.
+                    type: string
+                appId:
+                    description: The appId field.
+                    type: string
+                appUserId:
+                    description: The appUserId field.
+                    type: string
+                createdAt:
+                    format: date-time
+                    type: string
+                deletedAt:
+                    format: date-time
+                    type: string
+                deprovisionAt:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: AppEntitlementUserBinding
+        c1.api.app.v1.AppEntitlementView:
+            description: The AppEntitlementView message.
+            properties:
+                appEntitlement:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlement'
+                appPath:
+                    description: The appPath field.
+                    type: string
+                appResourcePath:
+                    description: The appResourcePath field.
+                    type: string
+                appResourceTypePath:
+                    description: The appResourceTypePath field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: AppEntitlementView
+        c1.api.app.v1.AppEntitlementWithUserBindings:
+            description: The AppEntitlementWithUserBindings message.
+            properties:
+                appEntitlementUserBindings:
+                    description: The appEntitlementUserBindings field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementUserBinding'
+                    nullable: true
+                    type: array
+                entitlement:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementView'
+            type: object
+            x-speakeasy-name-override: AppEntitlementWithUserBindings
+        c1.api.app.v1.AppPopulationReport:
+            description: The AppPopulationReport message.
+            properties:
+                appId:
+                    description: The appId field.
+                    type: string
+                createdAt:
+                    format: date-time
+                    type: string
+                downloadUrl:
+                    description: The downloadUrl field.
+                    type: string
+                hashes:
+                    additionalProperties:
+                        type: string
+                    description: The hashes field.
+                    type: object
+                id:
+                    description: The id field.
+                    type: string
+                state:
+                    description: The state field.
+                    enum:
+                        - REPORT_STATE_UNSPECIFIED
+                        - REPORT_STATE_PENDING
+                        - REPORT_STATE_OK
+                        - REPORT_STATE_ERROR
+                    type: string
+            type: object
+            x-speakeasy-name-override: AppPopulationReport
+        c1.api.app.v1.AppReportServiceListResponse:
+            description: The AppReportServiceListResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppPopulationReport'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: AppReportServiceListResponse
+        c1.api.app.v1.AppResource:
+            description: The AppResource message.
+            properties:
+                appId:
+                    description: The appId field.
+                    type: string
+                appResourceTypeId:
+                    description: The appResourceTypeId field.
+                    type: string
+                createdAt:
+                    format: date-time
+                    type: string
+                customDescription:
+                    description: The customDescription field.
+                    type: string
+                deletedAt:
+                    format: date-time
+                    type: string
+                description:
+                    description: The description field.
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    type: string
+                grantCount:
+                    description: The grantCount field.
+                    format: int64
+                    type: string
+                id:
+                    description: The id field.
+                    type: string
+                updatedAt:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: AppResource
+        c1.api.app.v1.AppResourceServiceGetResponse:
+            description: The AppResourceServiceGetResponse message.
+            properties:
+                appResourceView:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppResourceView'
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: AppResourceServiceGetResponse
+        c1.api.app.v1.AppResourceServiceListResponse:
+            description: The AppResourceServiceListResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppResourceView'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: AppResourceServiceListResponse
+        c1.api.app.v1.AppResourceType:
+            description: The AppResourceType message.
+            properties:
+                appId:
+                    description: The appId field.
+                    type: string
+                createdAt:
+                    format: date-time
+                    type: string
+                deletedAt:
+                    format: date-time
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    type: string
+                id:
+                    description: The id field.
+                    type: string
+                updatedAt:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: AppResourceType
+        c1.api.app.v1.AppResourceTypeServiceGetResponse:
+            description: The AppResourceTypeServiceGetResponse message.
+            properties:
+                appResourceTypeView:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppResourceTypeView'
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: AppResourceTypeServiceGetResponse
+        c1.api.app.v1.AppResourceTypeView:
+            description: The AppResourceTypeView message.
+            properties:
+                appPath:
+                    description: The appPath field.
+                    type: string
+                appResourceType:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppResourceType'
+            type: object
+            x-speakeasy-name-override: AppResourceTypeView
+        c1.api.app.v1.AppResourceView:
+            description: The AppResourceView message.
+            properties:
+                appPath:
+                    description: The appPath field.
+                    type: string
+                appResource:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppResource'
+                resourceTypePath:
+                    description: The resourceTypePath field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: AppResourceView
+        c1.api.app.v1.AppUsageControls:
+            description: The AppUsageControls message.
+            properties:
+                appId:
+                    description: The appId field.
+                    type: string
+                notify:
+                    description: The notify field.
+                    type: boolean
+                notifyAfterDays:
+                    description: The notifyAfterDays field.
+                    format: uint32
+                    type: number
+                revoke:
+                    description: The revoke field.
+                    type: boolean
+                revokeAfterDays:
+                    description: The revokeAfterDays field.
+                    format: uint32
+                    type: number
+            type: object
+            x-speakeasy-name-override: AppUsageControls
+        c1.api.app.v1.GetAppEntitlementResponse:
+            description: The GetAppEntitlementResponse message.
+            properties:
+                appEntitlementView:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementView'
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: GetAppEntitlementResponse
+        c1.api.app.v1.GetAppResponse:
+            description: The GetAppResponse message.
+            properties:
+                app:
+                    $ref: '#/components/schemas/c1.api.app.v1.App'
+            type: object
+            x-speakeasy-name-override: GetAppResponse
+        c1.api.app.v1.GetAppUsageControlsResponse:
+            description: The GetAppUsageControlsResponse message.
+            properties:
+                appUsageControls:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppUsageControls'
+                hasUsageData:
+                    description: The hasUsageData field.
+                    type: boolean
+            type: object
+            x-speakeasy-name-override: GetAppUsageControlsResponse
+        c1.api.app.v1.ListAppUsersForIdentityWithGrantResponse:
+            description: The ListAppUsersForIdentityWithGrantResponse message.
+            properties:
+                bindings:
+                    description: The bindings field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementUserBinding'
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: ListAppUsersForIdentityWithGrantResponse
+        c1.api.app.v1.ListAppsResponse:
+            description: The ListAppsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.App'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+                notificationToken:
+                    description: The notificationToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: ListAppsResponse
+        c1.api.app.v1.SearchAppResourceTypesRequest:
+            description: The SearchAppResourceTypesRequest message.
+            properties:
+                appIds:
+                    description: The appIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                excludeResourceTypeIds:
+                    description: The excludeResourceTypeIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                excludeResourceTypeTraitIds:
+                    description: The excludeResourceTypeTraitIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    type: number
+                pageToken:
+                    description: The pageToken field.
+                    type: string
+                query:
+                    description: The query field.
+                    type: string
+                resourceTypeIds:
+                    description: The resourceTypeIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                resourceTypeTraitIds:
+                    description: The resourceTypeTraitIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: SearchAppResourceTypesRequest
+        c1.api.app.v1.SearchAppResourceTypesResponse:
+            description: The SearchAppResourceTypesResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppResourceType'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+                notificationToken:
+                    description: The notificationToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: SearchAppResourceTypesResponse
+        c1.api.app.v1.SearchAppsRequest:
+            description: The SearchAppsRequest message.
+            properties:
+                appIds:
+                    description: The appIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                excludeAppIds:
+                    description: The excludeAppIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    type: number
+                pageToken:
+                    description: The pageToken field.
+                    type: string
+                query:
+                    description: The query field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: SearchAppsRequest
+        c1.api.app.v1.SearchAppsResponse:
+            description: The SearchAppsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.App'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+                notificationToken:
+                    description: The notificationToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: SearchAppsResponse
+        c1.api.auth.v1.IntrospectResponse:
+            description: The IntrospectResponse message.
+            properties:
+                features:
+                    description: The features field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                permissions:
+                    description: The permissions field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                principleId:
+                    description: The principleId field.
+                    type: string
+                roles:
+                    description: The roles field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                userId:
+                    description: The userId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: IntrospectResponse
+        c1.api.directory.v1.Directory:
+            description: The Directory message.
+            properties:
+                appId:
+                    description: The appId field.
+                    type: string
+                createdAt:
+                    format: date-time
+                    type: string
+                deletedAt:
+                    format: date-time
+                    type: string
+                updatedAt:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: Directory
+        c1.api.directory.v1.DirectoryExpandMask:
+            description: The DirectoryExpandMask message.
+            properties:
+                paths:
+                    description: The paths field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: DirectoryExpandMask
+        c1.api.directory.v1.DirectoryServiceCreateRequest:
+            description: The DirectoryServiceCreateRequest message.
+            properties:
+                appId:
+                    description: The appId field.
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.directory.v1.DirectoryExpandMask'
+            type: object
+            x-speakeasy-name-override: DirectoryServiceCreateRequest
+        c1.api.directory.v1.DirectoryServiceCreateResponse:
+            description: The DirectoryServiceCreateResponse message.
+            properties:
+                directoryView:
+                    $ref: '#/components/schemas/c1.api.directory.v1.DirectoryView'
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: DirectoryServiceCreateResponse
+        c1.api.directory.v1.DirectoryServiceDeleteRequestInput:
+            description: The DirectoryServiceDeleteRequest message.
+            type: object
+            x-speakeasy-name-override: DirectoryServiceDeleteRequest
+        c1.api.directory.v1.DirectoryServiceDeleteResponse:
+            description: The DirectoryServiceDeleteResponse message.
+            type: object
+            x-speakeasy-name-override: DirectoryServiceDeleteResponse
+        c1.api.directory.v1.DirectoryServiceGetResponse:
+            description: The DirectoryServiceGetResponse message.
+            properties:
+                directoryView:
+                    $ref: '#/components/schemas/c1.api.directory.v1.DirectoryView'
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: DirectoryServiceGetResponse
+        c1.api.directory.v1.DirectoryServiceListResponse:
+            description: The DirectoryServiceListResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.directory.v1.DirectoryView'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: DirectoryServiceListResponse
+        c1.api.directory.v1.DirectoryView:
+            description: The DirectoryView message.
+            properties:
+                appPath:
+                    description: The appPath field.
+                    type: string
+                directory:
+                    $ref: '#/components/schemas/c1.api.directory.v1.Directory'
+            type: object
+            x-speakeasy-name-override: DirectoryView
+        c1.api.iam.v1.ListRolesResponse:
+            description: The ListRolesResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.iam.v1.Role'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+                notificationToken:
+                    description: The notificationToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: ListRolesResponse
+        c1.api.iam.v1.Role:
+            description: The Role message.
+            properties:
+                createdAt:
+                    format: date-time
+                    type: string
+                deletedAt:
+                    format: date-time
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    type: string
+                id:
+                    description: The id field.
+                    type: string
+                name:
+                    description: The name field.
+                    type: string
+                permissions:
+                    description: The permissions field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                serviceRoles:
+                    description: The serviceRoles field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                systemBuiltin:
+                    description: The systemBuiltin field.
+                    type: boolean
+                updatedAt:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: Role
+        c1.api.policy.v1.AppEntitlementReference:
+            description: The AppEntitlementReference message.
+            properties:
+                appEntitlementId:
+                    description: The appEntitlementId field.
+                    type: string
+                appId:
+                    description: The appId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: AppEntitlementReference
+        c1.api.policy.v1.AppGroupApproval:
+            description: The AppGroupApproval message.
+            nullable: true
+            properties:
+                allowSelfApproval:
+                    description: The allowSelfApproval field.
+                    type: boolean
+                appGroupId:
+                    description: The appGroupId field.
+                    type: string
+                appId:
+                    description: The appId field.
+                    type: string
+                fallback:
+                    description: The fallback field.
+                    type: boolean
+                fallbackUserIds:
+                    description: The fallbackUserIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: AppGroupApproval
+        c1.api.policy.v1.AppOwnerApproval:
+            description: The AppOwnerApproval message.
+            nullable: true
+            properties:
+                allowSelfApproval:
+                    description: |4
+                         App owner is based on the app id and doesn't need to have self-contained data
+                    type: boolean
+            type: object
+            x-speakeasy-name-override: AppOwnerApproval
+        c1.api.policy.v1.Approval:
+            description: |
+                The Approval message.
+
+                This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+                  - users
+                  - manager
+                  - appOwners
+                  - group
+                  - self
+                  - entitlementOwners
+            nullable: true
+            properties:
+                allowReassignment:
+                    description: The allowReassignment field.
+                    type: boolean
+                typ:
+                    type: object
+                    description: |
+                        Specify only one of the following properties:
+                        - users
+                        - manager
+                        - app_owners
+                        - group
+                        - self
+                        - entitlement_owners
+                    properties:
+                        users:
+                            $ref: '#/components/schemas/c1.api.policy.v1.UserApproval'
+                        manager:
+                            $ref: '#/components/schemas/c1.api.policy.v1.ManagerApproval'
+                        appOwners:
+                            $ref: '#/components/schemas/c1.api.policy.v1.AppOwnerApproval'
+                        group:
+                            $ref: '#/components/schemas/c1.api.policy.v1.AppGroupApproval'
+                        self:
+                            $ref: '#/components/schemas/c1.api.policy.v1.SelfApproval'
+                        entitlementOwners:
+                            $ref: '#/components/schemas/c1.api.policy.v1.EntitlementOwnerApproval'
+                assigned:
+                    description: The assigned field.
+                    type: boolean
+                requireApprovalReason:
+                    description: The requireApprovalReason field.
+                    type: boolean
+                requireReassignmentReason:
+                    description: The requireReassignmentReason field.
+                    type: boolean
+            type: object
+            x-speakeasy-name-override: Approval
+        c1.api.policy.v1.ApprovalInstance:
+            description: |
+                The ApprovalInstance message.
+
+                This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
+                  - approved
+                  - denied
+                  - reassigned
+                  - restarted
+                  - reassignedByError
+            nullable: true
+            properties:
+                approval:
+                    $ref: '#/components/schemas/c1.api.policy.v1.Approval'
+                approved:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ApprovedAction'
+                denied:
+                    $ref: '#/components/schemas/c1.api.policy.v1.DeniedAction'
+                reassigned:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ReassignedAction'
+                reassignedByError:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ReassignedByErrorAction'
+                restarted:
+                    $ref: '#/components/schemas/c1.api.policy.v1.RestartAction'
+                state:
+                    description: The state field.
+                    enum:
+                        - APPROVAL_INSTANCE_STATE_UNSPECIFIED
+                        - APPROVAL_INSTANCE_STATE_INIT
+                        - APPROVAL_INSTANCE_STATE_SENDING_NOTIFICATIONS
+                        - APPROVAL_INSTANCE_STATE_WAITING
+                        - APPROVAL_INSTANCE_STATE_DONE
+                    type: string
+            type: object
+            x-speakeasy-name-override: ApprovalInstance
+        c1.api.policy.v1.ApprovedAction:
+            description: The ApprovedAction message.
+            nullable: true
+            properties:
+                approvedAt:
+                    format: date-time
+                    type: string
+                entitlements:
+                    description: The entitlements field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.policy.v1.AppEntitlementReference'
+                    nullable: true
+                    type: array
+                userId:
+                    description: The userId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: ApprovedAction
+        c1.api.policy.v1.CancelledAction:
+            description: The CancelledAction message.
+            nullable: true
+            properties:
+                cancelledAt:
+                    format: date-time
+                    type: string
+                cancelledByUserId:
+                    description: The cancelledByUserId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: CancelledAction
+        c1.api.policy.v1.CompletedAction:
+            description: The CompletedAction message.
+            nullable: true
+            properties:
+                completedAt:
+                    format: date-time
+                    type: string
+                entitlements:
+                    description: The entitlements field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.policy.v1.AppEntitlementReference'
+                    nullable: true
+                    type: array
+                userId:
+                    description: The userId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: CompletedAction
+        c1.api.policy.v1.ConnectorProvision:
+            description: The ConnectorProvision message.
+            nullable: true
+            type: object
+            x-speakeasy-name-override: ConnectorProvision
+        c1.api.policy.v1.CreatePolicyRequest:
+            description: The CreatePolicyRequest message.
+            properties:
+                description:
+                    description: The description field.
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    type: string
+                policyType:
+                    description: The policyType field.
+                    enum:
+                        - POLICY_TYPE_UNSPECIFIED
+                        - POLICY_TYPE_GRANT
+                        - POLICY_TYPE_REVOKE
+                        - POLICY_TYPE_CERTIFY
+                        - POLICY_TYPE_ACCESS_REQUEST
+                        - POLICY_TYPE_PROVISION
+                    type: string
+            type: object
+            x-speakeasy-entity: Policy
+            x-speakeasy-name-override: CreatePolicyRequest
+        c1.api.policy.v1.DelegatedProvision:
+            description: The DelegatedProvision message.
+            nullable: true
+            properties:
+                appId:
+                    description: The appId field.
+                    type: string
+                entitlementId:
+                    description: The entitlementId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: DelegatedProvision
+        c1.api.policy.v1.DeletePolicyRequestInput:
+            description: The DeletePolicyRequest message.
+            type: object
+            x-speakeasy-name-override: DeletePolicyRequest
+        c1.api.policy.v1.DeletePolicyResponse:
+            description: The DeletePolicyResponse message.
+            type: object
+            x-speakeasy-name-override: DeletePolicyResponse
+        c1.api.policy.v1.DeniedAction:
+            description: The DeniedAction message.
+            nullable: true
+            properties:
+                deniedAt:
+                    format: date-time
+                    type: string
+                userId:
+                    description: The userId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: DeniedAction
+        c1.api.policy.v1.EntitlementOwnerApproval:
+            description: The EntitlementOwnerApproval message.
+            nullable: true
+            properties:
+                allowSelfApproval:
+                    description: |4
+                         Entitlement owner is based on the current entitlement's id and doesn't need to have self-contained data
+                    type: boolean
+                fallback:
+                    description: The fallback field.
+                    type: boolean
+                fallbackUserIds:
+                    description: The fallbackUserIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: EntitlementOwnerApproval
+        c1.api.policy.v1.ErroredAction:
+            description: The ErroredAction message.
+            nullable: true
+            properties:
+                description:
+                    description: The description field.
+                    type: string
+                errorCode:
+                    description: The errorCode field.
+                    type: string
+                erroredAt:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: ErroredAction
+        c1.api.policy.v1.ListPolicyResponse:
+            description: The ListPolicyResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.policy.v1.Policy'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+                notificationToken:
+                    description: The notificationToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: ListPolicyResponse
+        c1.api.policy.v1.ManagerApproval:
+            description: The ManagerApproval message.
+            nullable: true
+            properties:
+                allowSelfApproval:
+                    description: The allowSelfApproval field.
+                    type: boolean
+                assignedUserIds:
+                    description: The assignedUserIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                fallback:
+                    description: The fallback field.
+                    type: boolean
+                fallbackUserIds:
+                    description: The fallbackUserIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: ManagerApproval
+        c1.api.policy.v1.ManualProvision:
+            description: The ManualProvision message.
+            nullable: true
+            properties:
+                instructions:
+                    description: The instructions field.
+                    type: string
+                userIds:
+                    description: The userIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: ManualProvision
+        c1.api.policy.v1.Policy:
+            description: The Policy message.
+            properties:
+                createdAt:
+                    format: date-time
+                    type: string
+                deletedAt:
+                    format: date-time
+                    type: string
+                description:
+                    description: The description field.
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    type: string
+                id:
+                    description: |4
+                         Properties
+                    type: string
+                policySteps:
+                    additionalProperties:
+                        $ref: '#/components/schemas/c1.api.policy.v1.PolicySteps'
+                    description: The policySteps field.
+                    type: object
+                policyType:
+                    description: The policyType field.
+                    enum:
+                        - POLICY_TYPE_UNSPECIFIED
+                        - POLICY_TYPE_GRANT
+                        - POLICY_TYPE_REVOKE
+                        - POLICY_TYPE_CERTIFY
+                        - POLICY_TYPE_ACCESS_REQUEST
+                        - POLICY_TYPE_PROVISION
+                    type: string
+                postActions:
+                    description: The postActions field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.policy.v1.PolicyPostActions'
+                    nullable: true
+                    type: array
+                reassignTasksToDelegates:
+                    description: The reassignTasksToDelegates field.
+                    type: boolean
+                systemBuiltin:
+                    description: The systemBuiltin field.
+                    type: boolean
+                updatedAt:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: Policy
+        c1.api.policy.v1.PolicyInstance:
+            description: The PolicyInstance message.
+            properties:
+                current:
+                    $ref: '#/components/schemas/c1.api.policy.v1.PolicyStepInstance'
+                history:
+                    description: The history field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.policy.v1.PolicyStepInstance'
+                    nullable: true
+                    type: array
+                next:
+                    description: The next field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.policy.v1.PolicyStep'
+                    nullable: true
+                    type: array
+                policy:
+                    $ref: '#/components/schemas/c1.api.policy.v1.Policy'
+            type: object
+            x-speakeasy-name-override: PolicyInstance
+        c1.api.policy.v1.PolicyPostActions:
+            description: |
+                The PolicyPostActions message.
+
+                This message contains a oneof named action. Only a single field of the following list may be set at a time:
+                  - certifyRemediateImmediately
+            properties:
+                certifyRemediateImmediately:
+                    description: |4-
+                         ONLY valid when used in a CERTIFY Ticket Type:
+                         Causes any deprovision or change in a grant to be applied when Certify Ticket is closed.
+
+                        This field is part of the `action` oneof.
+                        See the documentation for `c1.api.policy.v1.PolicyPostActions` for more details.
+                    nullable: true
+                    type: boolean
+            type: object
+            x-speakeasy-name-override: PolicyPostActions
+        c1.api.policy.v1.PolicyStep:
+            description: |
+                The PolicyStep message.
+
+                This message contains a oneof named step. Only a single field of the following list may be set at a time:
+                  - approval
+                  - provision
+            properties:
+                approval:
+                    $ref: '#/components/schemas/c1.api.policy.v1.Approval'
+                provision:
+                    $ref: '#/components/schemas/c1.api.policy.v1.Provision'
+            type: object
+            x-speakeasy-name-override: PolicyStep
+        c1.api.policy.v1.PolicyStepInstance:
+            description: |
+                The PolicyStepInstance message.
+
+                This message contains a oneof named instance. Only a single field of the following list may be set at a time:
+                  - approval
+                  - provision
+            properties:
+                approval:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ApprovalInstance'
+                id:
+                    description: The id field.
+                    type: string
+                provision:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ProvisionInstance'
+                state:
+                    description: The state field.
+                    enum:
+                        - POLICY_STEP_STATE_UNSPECIFIED
+                        - POLICY_STEP_STATE_ACTIVE
+                        - POLICY_STEP_STATE_DONE
+                    type: string
+            type: object
+            x-speakeasy-name-override: PolicyStepInstance
+        c1.api.policy.v1.PolicySteps:
+            description: The PolicySteps message.
+            properties:
+                steps:
+                    description: The steps field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.policy.v1.PolicyStep'
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: PolicySteps
+        c1.api.policy.v1.Provision:
+            description: The Provision message.
+            nullable: true
+            properties:
+                assigned:
+                    description: The assigned field.
+                    type: boolean
+                provisionPolicy:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ProvisionPolicy'
+            type: object
+            x-speakeasy-name-override: Provision
+        c1.api.policy.v1.ProvisionInstance:
+            description: |
+                The ProvisionInstance message.
+
+                This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
+                  - completed
+                  - cancelled
+                  - errored
+                  - reassignedByError
+            nullable: true
+            properties:
+                cancelled:
+                    $ref: '#/components/schemas/c1.api.policy.v1.CancelledAction'
+                completed:
+                    $ref: '#/components/schemas/c1.api.policy.v1.CompletedAction'
+                errored:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ErroredAction'
+                notificationId:
+                    description: The notificationId field.
+                    type: string
+                provision:
+                    $ref: '#/components/schemas/c1.api.policy.v1.Provision'
+                reassignedByError:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ReassignedByErrorAction'
+                state:
+                    description: The state field.
+                    enum:
+                        - PROVISION_INSTANCE_STATE_UNSPECIFIED
+                        - PROVISION_INSTANCE_STATE_INIT
+                        - PROVISION_INSTANCE_STATE_CREATE_CONNECTOR_ACTIONS_FOR_TARGET
+                        - PROVISION_INSTANCE_STATE_SENDING_NOTIFICATIONS
+                        - PROVISION_INSTANCE_STATE_WAITING
+                        - PROVISION_INSTANCE_STATE_DONE
+                    type: string
+            type: object
+            x-speakeasy-name-override: ProvisionInstance
+        c1.api.policy.v1.ProvisionPolicy:
+            description: |
+                The ProvisionPolicy message.
+
+                This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+                  - connector
+                  - manual
+                  - delegated
+            properties:
+                connector:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ConnectorProvision'
+                delegated:
+                    $ref: '#/components/schemas/c1.api.policy.v1.DelegatedProvision'
+                manual:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ManualProvision'
+            type: object
+            x-speakeasy-name-override: ProvisionPolicy
+        c1.api.policy.v1.ReassignedAction:
+            description: The ReassignedAction message.
+            nullable: true
+            properties:
+                newPolicyStepId:
+                    description: The newPolicyStepId field.
+                    type: string
+                reassignedAt:
+                    format: date-time
+                    type: string
+                userId:
+                    description: The userId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: ReassignedAction
+        c1.api.policy.v1.ReassignedByErrorAction:
+            description: The ReassignedByErrorAction message.
+            nullable: true
+            properties:
+                description:
+                    description: The description field.
+                    type: string
+                errorCode:
+                    description: The errorCode field.
+                    type: string
+                errorUserId:
+                    description: The errorUserId field.
+                    type: string
+                erroredAt:
+                    format: date-time
+                    type: string
+                newPolicyStepId:
+                    description: The newPolicyStepId field.
+                    type: string
+                reassignedAt:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: ReassignedByErrorAction
+        c1.api.policy.v1.RestartAction:
+            description: The RestartAction message.
+            nullable: true
+            properties:
+                oldPolicyStepId:
+                    description: The oldPolicyStepId field.
+                    type: string
+                restartedAt:
+                    format: date-time
+                    type: string
+                userId:
+                    description: The userId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: RestartAction
+        c1.api.policy.v1.SelfApproval:
+            description: The SelfApproval message.
+            nullable: true
+            properties:
+                assignedUserIds:
+                    description: The assignedUserIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                fallback:
+                    description: The fallback field.
+                    type: boolean
+                fallbackUserIds:
+                    description: |4
+                         Self approval is the target of the ticket
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: SelfApproval
+        c1.api.policy.v1.UpdatePolicyRequestInput:
+            description: The UpdatePolicyRequest message.
+            properties:
+                policy:
+                    $ref: '#/components/schemas/c1.api.policy.v1.Policy'
+                updateMask:
+                    nullable: true
+                    type: string
+            type: object
+            x-speakeasy-name-override: UpdatePolicyRequest
+        c1.api.policy.v1.UserApproval:
+            description: The UserApproval message.
+            nullable: true
+            properties:
+                allowSelfApproval:
+                    description: The allowSelfApproval field.
+                    type: boolean
+                userIds:
+                    description: The userIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: UserApproval
+        c1.api.requestcatalog.v1.RequestCatalogSearchServiceSearchEntitlementsRequest:
+            description: The RequestCatalogSearchServiceSearchEntitlementsRequest message.
+            properties:
+                entitlementAlias:
+                    description: The entitlementAlias field.
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementExpandMask'
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    type: number
+                pageToken:
+                    description: The pageToken field.
+                    type: string
+                query:
+                    description: The query field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: RequestCatalogSearchServiceSearchEntitlementsRequest
+        c1.api.requestcatalog.v1.RequestCatalogSearchServiceSearchEntitlementsResponse:
+            description: The RequestCatalogSearchServiceSearchEntitlementsResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementWithUserBindings'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: RequestCatalogSearchServiceSearchEntitlementsResponse
+        c1.api.task.v1.ExternalRef:
+            description: The ExternalRef message.
+            properties:
+                externalRefSource:
+                    description: The externalRefSource field.
+                    enum:
+                        - UNSPECIFIED
+                        - JIRA
+                    type: string
+                name:
+                    description: The name field.
+                    type: string
+                url:
+                    description: The url field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: ExternalRef
+        c1.api.task.v1.Task:
+            description: The Task message.
+            properties:
+                actions:
+                    description: The actions field.
+                    items:
+                        enum:
+                            - TASK_ACTION_TYPE_UNSPECIFIED
+                            - TASK_ACTION_TYPE_CLOSE
+                            - TASK_ACTION_TYPE_APPROVE
+                            - TASK_ACTION_TYPE_DENY
+                            - TASK_ACTION_TYPE_COMMENT
+                            - TASK_ACTION_TYPE_DELETE
+                            - TASK_ACTION_TYPE_REASSIGN
+                            - TASK_ACTION_TYPE_RESTART
+                            - TASK_ACTION_TYPE_SEND_REMINDER
+                            - TASK_ACTION_TYPE_PROVISION_COMPLETE
+                            - TASK_ACTION_TYPE_PROVISION_CANCELLED
+                            - TASK_ACTION_TYPE_PROVISION_ERRORED
+                            - TASK_ACTION_TYPE_PROVISION_APP_USER_TARGET_CREATED
+                            - TASK_ACTION_TYPE_ROLLBACK_SKIPPED
+                            - TASK_ACTION_TYPE_HARD_RESET
+                        type: string
+                    nullable: true
+                    type: array
+                analysisId:
+                    description: The analysisId field.
+                    type: string
+                annotations:
+                    description: The annotations field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                commentCount:
+                    description: The commentCount field.
+                    format: int32
+                    type: number
+                createdAt:
+                    format: date-time
+                    type: string
+                createdByUserId:
+                    description: The createdByUserId field.
+                    type: string
+                deletedAt:
+                    format: date-time
+                    type: string
+                description:
+                    description: The description field.
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    type: string
+                externalRefs:
+                    description: The externalRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.task.v1.ExternalRef'
+                    nullable: true
+                    type: array
+                id:
+                    description: |4
+                         General Metadata
+                    type: string
+                numericId:
+                    description: The numericId field.
+                    format: int64
+                    type: string
+                policy:
+                    $ref: '#/components/schemas/c1.api.policy.v1.PolicyInstance'
+                processing:
+                    description: The processing field.
+                    enum:
+                        - TASK_PROCESSING_TYPE_UNSPECIFIED
+                        - TASK_PROCESSING_TYPE_PROCESSING
+                        - TASK_PROCESSING_TYPE_WAITING
+                        - TASK_PROCESSING_TYPE_DONE
+                    type: string
+                state:
+                    description: |4
+                         State
+                    enum:
+                        - TASK_STATE_UNSPECIFIED
+                        - TASK_STATE_OPEN
+                        - TASK_STATE_CLOSED
+                    type: string
+                stepApproverIds:
+                    description: The stepApproverIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                type:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskType'
+                updatedAt:
+                    format: date-time
+                    type: string
+                userId:
+                    description: |4
+                         External IDS
+                    type: string
+            type: object
+            x-speakeasy-name-override: Task
+        c1.api.task.v1.TaskActionsServiceApproveRequestInput:
+            description: The TaskActionsServiceApproveRequest message.
+            properties:
+                comment:
+                    description: The comment field.
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskExpandMask'
+                policyStepId:
+                    description: The policyStepId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceApproveRequest
+        c1.api.task.v1.TaskActionsServiceApproveResponse:
+            description: The TaskActionsServiceApproveResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                taskView:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskView'
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceApproveResponse
+        c1.api.task.v1.TaskActionsServiceCommentRequestInput:
+            description: The TaskActionsServiceCommentRequest message.
+            properties:
+                comment:
+                    description: The comment field.
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskExpandMask'
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceCommentRequest
+        c1.api.task.v1.TaskActionsServiceCommentResponse:
+            description: The TaskActionsServiceCommentResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                taskView:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskView'
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceCommentResponse
+        c1.api.task.v1.TaskActionsServiceDenyRequestInput:
+            description: The TaskActionsServiceDenyRequest message.
+            properties:
+                comment:
+                    description: The comment field.
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskExpandMask'
+                policyStepId:
+                    description: The policyStepId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceDenyRequest
+        c1.api.task.v1.TaskActionsServiceDenyResponse:
+            description: The TaskActionsServiceDenyResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                taskView:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskView'
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceDenyResponse
+        c1.api.task.v1.TaskExpandMask:
+            description: |4
+                 Make sure to update the TicketExpandMask
+            properties:
+                paths:
+                    description: The paths field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: TaskExpandMask
+        c1.api.task.v1.TaskRef:
+            description: The TaskRef message.
+            properties:
+                id:
+                    description: The id field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskRef
+        c1.api.task.v1.TaskRevokeSource:
+            description: |
+                The TaskRevokeSource message.
+
+                This message contains a oneof named origin. Only a single field of the following list may be set at a time:
+                  - review
+                  - request
+                  - expired
+                  - nonUsage
+            properties:
+                expired:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskRevokeSourceExpired'
+                nonUsage:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskRevokeSourceNonUsage'
+                request:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskRevokeSourceRequest'
+                review:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskRevokeSourceReview'
+            type: object
+            x-speakeasy-name-override: TaskRevokeSource
+        c1.api.task.v1.TaskRevokeSourceExpired:
+            description: The TaskRevokeSourceExpired message.
+            nullable: true
+            properties:
+                expiredAt:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskRevokeSourceExpired
+        c1.api.task.v1.TaskRevokeSourceNonUsage:
+            description: The TaskRevokeSourceNonUsage message.
+            nullable: true
+            properties:
+                expiresAt:
+                    format: date-time
+                    type: string
+                lastLogin:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskRevokeSourceNonUsage
+        c1.api.task.v1.TaskRevokeSourceRequest:
+            description: The TaskRevokeSourceRequest message.
+            nullable: true
+            properties:
+                requestUserId:
+                    description: The requestUserId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskRevokeSourceRequest
+        c1.api.task.v1.TaskRevokeSourceReview:
+            description: The TaskRevokeSourceReview message.
+            nullable: true
+            properties:
+                accessReviewId:
+                    description: The accessReviewId field.
+                    type: string
+                certTicketId:
+                    description: The certTicketId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskRevokeSourceReview
+        c1.api.task.v1.TaskSearchRequest:
+            description: The TaskSearchRequest message.
+            properties:
+                accessReviewIds:
+                    description: The accessReviewIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                accountOwnerIds:
+                    description: The accountOwnerIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                actorId:
+                    description: The actorId field.
+                    type: string
+                appEntitlementIds:
+                    description: The appEntitlementIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                appResourceIds:
+                    description: The appResourceIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                appResourceTypeIds:
+                    description: The appResourceTypeIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                appUserSubjectIds:
+                    description: |4
+                         Find Tasks which are referncing a Set of AppUserIDs
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                applicationIds:
+                    description: The applicationIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                assigneesInIds:
+                    description: |4
+                         Search tasks by  List of UserIDs which are currently assigned these Tasks
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                createdAfter:
+                    format: date-time
+                    type: string
+                createdBefore:
+                    format: date-time
+                    type: string
+                currentStep:
+                    description: The currentStep field.
+                    enum:
+                        - TASK_SEARCH_CURRENT_STEP_UNSPECIFIED
+                        - TASK_SEARCH_CURRENT_STEP_APPROVAL
+                        - TASK_SEARCH_CURRENT_STEP_PROVISION
+                    type: string
+                excludeAppEntitlementIds:
+                    description: The excludeAppEntitlementIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                excludeIds:
+                    description: |4
+                         Exclude Specific TaskIDs from this serach result.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskExpandMask'
+                includeDeleted:
+                    description: The includeDeleted field.
+                    type: boolean
+                myWorkUserIds:
+                    description: |4
+                         Search tasks by a List of UserIDs which are currently assigned to OR have previously acted upon this Task
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                openerIds:
+                    description: |4
+                         Find a Task which was opened by UserIDs
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    type: number
+                pageToken:
+                    description: The pageToken field.
+                    type: string
+                previouslyActedOnIds:
+                    description: |4
+                         Search tasks by a  List of UserIDs which have previously approved or otherwise acted upon this Task
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                query:
+                    description: The query field.
+                    type: string
+                refs:
+                    description: The refs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.task.v1.TaskRef'
+                    nullable: true
+                    type: array
+                sortBy:
+                    description: The sortBy field.
+                    enum:
+                        - TASK_SEARCH_SORT_BY_UNSPECIFIED
+                        - TASK_SEARCH_SORT_BY_ACCOUNT
+                        - TASK_SEARCH_SORT_BY_RESOURCE
+                        - TASK_SEARCH_SORT_BY_ACCOUNT_OWNER
+                    type: string
+                subjectIds:
+                    description: |4
+                         Find Tasks which are referncing this C1 UserID
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                taskStates:
+                    description: The taskStates field.
+                    items:
+                        enum:
+                            - TASK_STATE_UNSPECIFIED
+                            - TASK_STATE_OPEN
+                            - TASK_STATE_CLOSED
+                        type: string
+                    nullable: true
+                    type: array
+                taskTypes:
+                    description: |4
+                         TODO(pquerna): why is this a MESSAGE that only CONTAINS AN ENUM?
+                    items:
+                        $ref: '#/components/schemas/c1.api.task.v1.TaskType'
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: TaskSearchRequest
+        c1.api.task.v1.TaskSearchResponse:
+            description: The TaskSearchResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.task.v1.TaskView'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskSearchResponse
+        c1.api.task.v1.TaskServiceCreateGrantRequest:
+            description: The TaskServiceCreateGrantRequest message.
+            properties:
+                appEntitlementId:
+                    description: The appEntitlementId field.
+                    type: string
+                appId:
+                    description: The appId field.
+                    type: string
+                appUserId:
+                    description: The appUserId field.
+                    type: string
+                description:
+                    description: The description field.
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskExpandMask'
+                grantDuration:
+                    format: duration
+                    type: string
+                identityUserId:
+                    description: The identityUserId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskServiceCreateGrantRequest
+        c1.api.task.v1.TaskServiceCreateGrantResponse:
+            description: The TaskServiceCreateGrantResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                taskView:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskView'
+            type: object
+            x-speakeasy-name-override: TaskServiceCreateGrantResponse
+        c1.api.task.v1.TaskServiceCreateRevokeRequest:
+            description: The TaskServiceCreateRevokeRequest message.
+            properties:
+                appEntitlementId:
+                    description: The appEntitlementId field.
+                    type: string
+                appId:
+                    description: The appId field.
+                    type: string
+                appUserId:
+                    description: The appUserId field.
+                    type: string
+                description:
+                    description: The description field.
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskExpandMask'
+                identityUserId:
+                    description: The identityUserId field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskServiceCreateRevokeRequest
+        c1.api.task.v1.TaskServiceCreateRevokeResponse:
+            description: The TaskServiceCreateRevokeResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                taskView:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskView'
+            type: object
+            x-speakeasy-name-override: TaskServiceCreateRevokeResponse
+        c1.api.task.v1.TaskServiceGetResponse:
+            description: The TaskServiceGetResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                taskView:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskView'
+            type: object
+            x-speakeasy-name-override: TaskServiceGetResponse
+        c1.api.task.v1.TaskType:
+            description: |
+                The TaskType message.
+
+                This message contains a oneof named task_type. Only a single field of the following list may be set at a time:
+                  - grant
+                  - revoke
+                  - certify
+            properties:
+                certify:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskTypeCertify'
+                grant:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskTypeGrant'
+                revoke:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskTypeRevoke'
+            type: object
+            x-speakeasy-name-override: TaskType
+        c1.api.task.v1.TaskTypeCertify:
+            description: The TaskTypeCertify message.
+            nullable: true
+            properties:
+                accessReviewId:
+                    description: The accessReviewId field.
+                    type: string
+                accessReviewSelection:
+                    description: The accessReviewSelection field.
+                    type: string
+                appEntitlementId:
+                    description: The appEntitlementId field.
+                    type: string
+                appId:
+                    description: The appId field.
+                    type: string
+                appUserId:
+                    description: The appUserId field.
+                    type: string
+                identityUserId:
+                    description: The identityUserId field.
+                    type: string
+                outcome:
+                    description: The outcome field.
+                    enum:
+                        - CERTIFY_OUTCOME_UNSPECIFIED
+                        - CERTIFY_OUTCOME_CERTIFIED
+                        - CERTIFY_OUTCOME_DECERTIFIED
+                        - CERTIFY_OUTCOME_ERROR
+                        - CERTIFY_OUTCOME_CANCELLED
+                    type: string
+                outcomeTime:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskTypeCertify
+        c1.api.task.v1.TaskTypeGrant:
+            description: The TaskTypeGrant message.
+            nullable: true
+            properties:
+                appEntitlementId:
+                    description: The appEntitlementId field.
+                    type: string
+                appId:
+                    description: The appId field.
+                    type: string
+                appUserId:
+                    description: The appUserId field.
+                    type: string
+                grantDuration:
+                    format: duration
+                    type: string
+                identityUserId:
+                    description: The identityUserId field.
+                    type: string
+                outcome:
+                    description: The outcome field.
+                    enum:
+                        - GRANT_OUTCOME_UNSPECIFIED
+                        - GRANT_OUTCOME_GRANTED
+                        - GRANT_OUTCOME_DENIED
+                        - GRANT_OUTCOME_ERROR
+                        - GRANT_OUTCOME_CANCELLED
+                    type: string
+                outcomeTime:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskTypeGrant
+        c1.api.task.v1.TaskTypeRevoke:
+            description: The TaskTypeRevoke message.
+            nullable: true
+            properties:
+                appEntitlementId:
+                    description: The appEntitlementId field.
+                    type: string
+                appId:
+                    description: The appId field.
+                    type: string
+                appUserId:
+                    description: The appUserId field.
+                    type: string
+                identityUserId:
+                    description: The identityUserId field.
+                    type: string
+                outcome:
+                    description: The outcome field.
+                    enum:
+                        - REVOKE_OUTCOME_UNSPECIFIED
+                        - REVOKE_OUTCOME_REVOKED
+                        - REVOKE_OUTCOME_DENIED
+                        - REVOKE_OUTCOME_ERROR
+                        - REVOKE_OUTCOME_CANCELLED
+                    type: string
+                outcomeTime:
+                    format: date-time
+                    type: string
+                source:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskRevokeSource'
+            type: object
+            x-speakeasy-name-override: TaskTypeRevoke
+        c1.api.task.v1.TaskView:
+            description: The TaskView message.
+            properties:
+                accessReviewPath:
+                    description: The accessReviewPath field.
+                    type: string
+                appPath:
+                    description: The appPath field.
+                    type: string
+                appUserPath:
+                    description: The appUserPath field.
+                    type: string
+                createdByUserPath:
+                    description: The createdByUserPath field.
+                    type: string
+                entitlementsPath:
+                    description: The entitlementsPath field.
+                    type: string
+                identityUserPath:
+                    description: The identityUserPath field.
+                    type: string
+                stepApproversPath:
+                    description: The stepApproversPath field.
+                    type: string
+                task:
+                    $ref: '#/components/schemas/c1.api.task.v1.Task'
+                userPath:
+                    description: The userPath field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: TaskView
+        c1.api.user.v1.SearchUsersRequest:
+            description: The SearchUsersRequest message.
+            properties:
+                excludeIds:
+                    description: The excludeIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserExpandMask'
+                ids:
+                    description: The ids field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    type: number
+                pageToken:
+                    description: The pageToken field.
+                    type: string
+                query:
+                    description: The query field.
+                    type: string
+                refs:
+                    description: The refs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+                    nullable: true
+                    type: array
+                roleIds:
+                    description: The roleIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                userStatuses:
+                    description: The userStatuses field.
+                    items:
+                        enum:
+                            - UNKNOWN
+                            - ENABLED
+                            - DISABLED
+                            - DELETED
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: SearchUsersRequest
+        c1.api.user.v1.SearchUsersResponse:
+            description: The SearchUsersResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserView'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+                notificationToken:
+                    description: The notificationToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: SearchUsersResponse
+        c1.api.user.v1.User:
+            description: The User message.
+            properties:
+                createdAt:
+                    format: date-time
+                    type: string
+                delegatedUserId:
+                    description: The delegatedUserId field.
+                    type: string
+                deletedAt:
+                    format: date-time
+                    type: string
+                department:
+                    description: The department field.
+                    type: string
+                departmentSources:
+                    description: The departmentSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                directoryIds:
+                    description: The directoryIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                directoryStatus:
+                    description: The directoryStatus field.
+                    enum:
+                        - UNKNOWN
+                        - ENABLED
+                        - DISABLED
+                        - DELETED
+                    type: string
+                directoryStatusSources:
+                    description: The directoryStatusSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                displayName:
+                    description: The displayName field.
+                    type: string
+                email:
+                    description: The email field.
+                    type: string
+                employmentStatus:
+                    description: The employmentStatus field.
+                    type: string
+                employmentStatusSources:
+                    description: The employmentStatusSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                employmentType:
+                    description: The employmentType field.
+                    type: string
+                employmentTypeSources:
+                    description: The employmentTypeSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                id:
+                    description: The id field.
+                    type: string
+                jobTitle:
+                    description: The jobTitle field.
+                    type: string
+                jobTitleSources:
+                    description: The jobTitleSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                managerIds:
+                    description: The managerIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                managerSources:
+                    description: The managerSources field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserAttributeMappingSource'
+                    nullable: true
+                    type: array
+                roleIds:
+                    description: The roleIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+                status:
+                    description: The status field.
+                    enum:
+                        - UNKNOWN
+                        - ENABLED
+                        - DISABLED
+                        - DELETED
+                    type: string
+                updatedAt:
+                    format: date-time
+                    type: string
+            type: object
+            x-speakeasy-name-override: User
+        c1.api.user.v1.UserAttributeMappingSource:
+            description: The UserAttributeMappingSource message.
+            properties:
+                appId:
+                    description: The appId field.
+                    type: string
+                appUserId:
+                    description: The appUserId field.
+                    type: string
+                appUserProfileAttributeKey:
+                    description: The appUserProfileAttributeKey field.
+                    type: string
+                userAttributeMappingId:
+                    description: The userAttributeMappingId field.
+                    type: string
+                value:
+                    description: The value field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: UserAttributeMappingSource
+        c1.api.user.v1.UserExpandMask:
+            description: The UserExpandMask message.
+            properties:
+                paths:
+                    description: The paths field.
+                    items:
+                        type: string
+                    nullable: true
+                    type: array
+            type: object
+            x-speakeasy-name-override: UserExpandMask
+        c1.api.user.v1.UserRef:
+            description: The UserRef message.
+            properties:
+                id:
+                    description: The id field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: UserRef
+        c1.api.user.v1.UserServiceGetResponse:
+            description: The UserServiceGetResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                userView:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserView'
+            type: object
+            x-speakeasy-name-override: UserServiceGetResponse
+        c1.api.user.v1.UserServiceListResponse:
+            description: The UserServiceListResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties:
+                            oneOf: []
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    nullable: true
+                    type: array
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserView'
+                    nullable: true
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+                notificationToken:
+                    description: The notificationToken field.
+                    type: string
+            type: object
+            x-speakeasy-name-override: UserServiceListResponse
+        c1.api.user.v1.UserView:
+            description: The UserView message.
+            properties:
+                delegatedUserPath:
+                    description: The delegatedUserPath field.
+                    type: string
+                directoriesPath:
+                    description: The directoriesPath field.
+                    type: string
+                managersPath:
+                    description: The managersPath field.
+                    type: string
+                rolesPath:
+                    description: The rolesPath field.
+                    type: string
+                user:
+                    $ref: '#/components/schemas/c1.api.user.v1.User'
+            type: object
+            x-speakeasy-name-override: UserView
+info:
+    description: |
+        This is an auto-generated API for c1.api.accessbundle.v1.AccessBundleSearchService.
+    title: API For c1.api.accessbundle.v1.AccessBundleSearchService
+    version: 0.0.1
+openapi: 3.1.0
+paths:
+    /api/v1/apps:
+        get:
+            description: Invokes the c1.api.app.v1.Apps.List method.
+            operationId: c1.api.app.v1.Apps.List
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.ListAppsResponse'
+                    description: Successful response
+            tags:
+                - Apps
+            x-speakeasy-group: Apps
+            x-speakeasy-name-override: List
+    /api/v1/apps/{app_id}/entitlements/{app_entitlement_id}/users/{identity_user_id}/grants:
+        get:
+            description: Invokes the c1.api.app.v1.AppEntitlementUserBindingService.ListAppUsersForIdentityWithGrant method.
+            operationId: c1.api.app.v1.AppEntitlementUserBindingService.ListAppUsersForIdentityWithGrant
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+                - in: path
+                  name: app_entitlement_id
+                  required: true
+                  schema:
+                    description: The appEntitlementId field.
+                    type: string
+                - in: path
+                  name: identity_user_id
+                  required: true
+                  schema:
+                    description: The identityUserId field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.ListAppUsersForIdentityWithGrantResponse'
+                    description: Successful response
+            tags:
+                - AppEntitlementUserBinding
+            x-speakeasy-group: AppEntitlementUserBinding
+            x-speakeasy-name-override: ListAppUsersForIdentityWithGrant
+    /api/v1/apps/{app_id}/entitlements/{id}:
+        get:
+            description: Invokes the c1.api.app.v1.AppEntitlements.Get method.
+            operationId: c1.api.app.v1.AppEntitlements.Get
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.GetAppEntitlementResponse'
+                    description: Successful response
+            tags:
+                - AppEntitlements
+            x-speakeasy-group: AppEntitlements
+            x-speakeasy-name-override: Get
+    /api/v1/apps/{app_id}/report:
+        get:
+            description: Invokes the c1.api.app.v1.AppReportService.List method.
+            operationId: c1.api.app.v1.AppReportService.List
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.AppReportServiceListResponse'
+                    description: Successful response
+            tags:
+                - AppReport
+            x-speakeasy-group: AppReport
+            x-speakeasy-name-override: List
+        post:
+            description: Invokes the c1.api.app.v1.AppReportActionService.GenerateReport method.
+            operationId: c1.api.app.v1.AppReportActionService.GenerateReport
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.AppActionsServiceGenerateReportRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.AppActionsServiceGenerateReportResponse'
+                    description: Successful response
+            tags:
+                - AppReportAction
+            x-speakeasy-group: AppReportAction
+            x-speakeasy-name-override: GenerateReport
+    /api/v1/apps/{app_id}/resource_types/{app_resource_type_id}/resources:
+        get:
+            description: Invokes the c1.api.app.v1.AppResourceService.List method.
+            operationId: c1.api.app.v1.AppResourceService.List
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+                - in: path
+                  name: app_resource_type_id
+                  required: true
+                  schema:
+                    description: The appResourceTypeId field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.AppResourceServiceListResponse'
+                    description: Successful response
+            tags:
+                - AppResource
+            x-speakeasy-group: AppResource
+            x-speakeasy-name-override: List
+    /api/v1/apps/{app_id}/resource_types/{app_resource_type_id}/resources/{id}:
+        get:
+            description: Invokes the c1.api.app.v1.AppResourceService.Get method.
+            operationId: c1.api.app.v1.AppResourceService.Get
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+                - in: path
+                  name: app_resource_type_id
+                  required: true
+                  schema:
+                    description: The appResourceTypeId field.
+                    type: string
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.AppResourceServiceGetResponse'
+                    description: Successful response
+            tags:
+                - AppResource
+            x-speakeasy-group: AppResource
+            x-speakeasy-name-override: Get
+    /api/v1/apps/{app_id}/resource_types/{id}:
+        get:
+            description: Invokes the c1.api.app.v1.AppResourceTypeService.Get method.
+            operationId: c1.api.app.v1.AppResourceTypeService.Get
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.AppResourceTypeServiceGetResponse'
+                    description: Successful response
+            tags:
+                - AppResourceType
+            x-speakeasy-group: AppResourceType
+            x-speakeasy-name-override: Get
+    /api/v1/apps/{app_id}/usage_controls:
+        get:
+            description: Invokes the c1.api.app.v1.AppUsageControlsService.Get method.
+            operationId: c1.api.app.v1.AppUsageControlsService.Get
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.GetAppUsageControlsResponse'
+                    description: Successful response
+            tags:
+                - AppUsageControls
+            x-speakeasy-group: AppUsageControls
+            x-speakeasy-name-override: Get
+    /api/v1/apps/{id}:
+        get:
+            description: Invokes the c1.api.app.v1.Apps.Get method.
+            operationId: c1.api.app.v1.Apps.Get
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.GetAppResponse'
+                    description: Successful response
+            tags:
+                - Apps
+            x-speakeasy-group: Apps
+            x-speakeasy-name-override: Get
+    /api/v1/auth/introspect:
+        get:
+            description: Invokes the c1.api.auth.v1.Auth.Introspect method.
+            operationId: c1.api.auth.v1.Auth.Introspect
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.auth.v1.IntrospectResponse'
+                    description: Successful response
+            tags:
+                - Auth
+            x-speakeasy-group: Auth
+            x-speakeasy-name-override: Introspect
+    /api/v1/directories:
+        get:
+            description: Invokes the c1.api.directory.v1.DirectoryService.List method.
+            operationId: c1.api.directory.v1.DirectoryService.List
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.directory.v1.DirectoryServiceListResponse'
+                    description: Successful response
+            tags:
+                - Directory
+            x-speakeasy-group: Directory
+            x-speakeasy-name-override: List
+        post:
+            description: Invokes the c1.api.directory.v1.DirectoryService.Create method.
+            operationId: c1.api.directory.v1.DirectoryService.Create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.directory.v1.DirectoryServiceCreateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.directory.v1.DirectoryServiceCreateResponse'
+                    description: Successful response
+            tags:
+                - Directory
+            x-speakeasy-group: Directory
+            x-speakeasy-name-override: Create
+    /api/v1/directories/{app_id}:
+        delete:
+            description: Invokes the c1.api.directory.v1.DirectoryService.Delete method.
+            operationId: c1.api.directory.v1.DirectoryService.Delete
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.directory.v1.DirectoryServiceDeleteRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.directory.v1.DirectoryServiceDeleteResponse'
+                    description: Successful response
+            tags:
+                - Directory
+            x-speakeasy-group: Directory
+            x-speakeasy-name-override: Delete
+        get:
+            description: Invokes the c1.api.directory.v1.DirectoryService.Get method.
+            operationId: c1.api.directory.v1.DirectoryService.Get
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.directory.v1.DirectoryServiceGetResponse'
+                    description: Successful response
+            tags:
+                - Directory
+            x-speakeasy-group: Directory
+            x-speakeasy-name-override: Get
+    /api/v1/iam/roles:
+        get:
+            description: Invokes the c1.api.iam.v1.Roles.List method.
+            operationId: c1.api.iam.v1.Roles.List
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.iam.v1.ListRolesResponse'
+                    description: Successful response
+            tags:
+                - Roles
+            x-speakeasy-group: Roles
+            x-speakeasy-name-override: List
+    /api/v1/iam/roles/{role_id}:
+        get:
+            description: Invokes the c1.api.iam.v1.Roles.Get method.
+            operationId: c1.api.iam.v1.Roles.Get
+            parameters:
+                - in: path
+                  name: role_id
+                  required: true
+                  schema:
+                    description: The roleId field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.iam.v1.Role'
+                    description: Successful response
+            tags:
+                - Roles
+            x-speakeasy-group: Roles
+            x-speakeasy-name-override: Get
+    /api/v1/policies:
+        get:
+            description: Invokes the c1.api.policy.v1.Policies.List method.
+            operationId: c1.api.policy.v1.Policies.List
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.policy.v1.ListPolicyResponse'
+                    description: Successful response
+            tags:
+                - Policies
+            x-speakeasy-group: Policies
+            x-speakeasy-name-override: List
+        post:
+            description: Invokes the c1.api.policy.v1.Policies.Create method.
+            operationId: c1.api.policy.v1.Policies.Create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.policy.v1.CreatePolicyRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.policy.v1.Policy'
+                    description: Successful response
+            tags:
+                - Policies
+            x-speakeasy-entity-operation: Policy#create
+            x-speakeasy-group: Policies
+            x-speakeasy-name-override: Create
+    /api/v1/policies/{id}:
+        delete:
+            description: Invokes the c1.api.policy.v1.Policies.Delete method.
+            operationId: c1.api.policy.v1.Policies.Delete
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.policy.v1.DeletePolicyRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.policy.v1.DeletePolicyResponse'
+                    description: Successful response
+            tags:
+                - Policies
+            x-speakeasy-entity-operation: Policy#delete
+            x-speakeasy-group: Policies
+            x-speakeasy-name-override: Delete
+        get:
+            description: Invokes the c1.api.policy.v1.Policies.Get method.
+            operationId: c1.api.policy.v1.Policies.Get
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.policy.v1.Policy'
+                    description: Successful response
+            tags:
+                - Policies
+            x-speakeasy-group: Policies
+            x-speakeasy-entity-operation: Policy#get
+            x-speakeasy-name-override: Get
+    # /api/v1/policies/{policy.id}:
+    #     post:
+    #         description: Invokes the c1.api.policy.v1.Policies.Update method.
+    #         operationId: c1.api.policy.v1.Policies.Update
+    #         parameters:
+    #             - in: path
+    #               name: policy.id
+    #               required: true
+    #               schema:
+    #                 description: |4
+    #                      Properties
+    #                 type: string
+    #         requestBody:
+    #             content:
+    #                 application/json:
+    #                     schema:
+    #                         $ref: '#/components/schemas/c1.api.policy.v1.UpdatePolicyRequestInput'
+    #         responses:
+    #             "200":
+    #                 content:
+    #                     application/json:
+    #                         schema:
+    #                             $ref: '#/components/schemas/c1.api.policy.v1.Policy'
+    #                 description: Successful response
+    #         tags:
+    #             - Policies
+    #         x-speakeasy-entity-operation: Policy#update
+    #         x-speakeasy-group: Policies
+    #         x-speakeasy-name-override: Update
+    /api/v1/search/app_resource_types:
+        post:
+            description: Invokes the c1.api.app.v1.AppResourceSearch.SearchAppResourceTypes method.
+            operationId: c1.api.app.v1.AppResourceSearch.SearchAppResourceTypes
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.SearchAppResourceTypesRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.SearchAppResourceTypesResponse'
+                    description: Successful response
+            tags:
+                - AppResourceSearch
+            x-speakeasy-group: AppResourceSearch
+            x-speakeasy-name-override: SearchAppResourceTypes
+    /api/v1/search/apps:
+        post:
+            description: Invokes the c1.api.app.v1.AppSearch.Search method.
+            operationId: c1.api.app.v1.AppSearch.Search
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.SearchAppsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.SearchAppsResponse'
+                    description: Successful response
+            tags:
+                - AppSearch
+            x-speakeasy-group: AppSearch
+            x-speakeasy-name-override: Search
+    /api/v1/search/request_catalog/entitlements:
+        post:
+            description: Invokes the c1.api.requestcatalog.v1.RequestCatalogSearchService.SearchEntitlements method.
+            operationId: c1.api.requestcatalog.v1.RequestCatalogSearchService.SearchEntitlements
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogSearchServiceSearchEntitlementsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogSearchServiceSearchEntitlementsResponse'
+                    description: Successful response
+            tags:
+                - RequestCatalogSearch
+            x-speakeasy-group: RequestCatalogSearch
+            x-speakeasy-name-override: SearchEntitlements
+    /api/v1/search/tasks:
+        post:
+            description: Invokes the c1.api.task.v1.TaskSearchService.Search method.
+            operationId: c1.api.task.v1.TaskSearchService.Search
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.task.v1.TaskSearchRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.task.v1.TaskSearchResponse'
+                    description: Successful response
+            tags:
+                - TaskSearch
+            x-speakeasy-group: TaskSearch
+            x-speakeasy-name-override: Search
+    /api/v1/search/users:
+        post:
+            description: Invokes the c1.api.user.v1.UserSearch.Search method.
+            operationId: c1.api.user.v1.UserSearch.Search
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.user.v1.SearchUsersRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.user.v1.SearchUsersResponse'
+                    description: Successful response
+            tags:
+                - UserSearch
+            x-speakeasy-group: UserSearch
+            x-speakeasy-name-override: Search
+    /api/v1/task/grant:
+        post:
+            description: Invokes the c1.api.task.v1.TaskService.CreateGrantTask method.
+            operationId: c1.api.task.v1.TaskService.CreateGrantTask
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.task.v1.TaskServiceCreateGrantRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.task.v1.TaskServiceCreateGrantResponse'
+                    description: Successful response
+            tags:
+                - Task
+            x-speakeasy-group: Task
+            x-speakeasy-name-override: CreateGrantTask
+    /api/v1/task/revoke:
+        post:
+            description: Invokes the c1.api.task.v1.TaskService.CreateRevokeTask method.
+            operationId: c1.api.task.v1.TaskService.CreateRevokeTask
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.task.v1.TaskServiceCreateRevokeRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.task.v1.TaskServiceCreateRevokeResponse'
+                    description: Successful response
+            tags:
+                - Task
+            x-speakeasy-group: Task
+            x-speakeasy-name-override: CreateRevokeTask
+    /api/v1/tasks/{id}:
+        get:
+            description: Invokes the c1.api.task.v1.TaskService.Get method.
+            operationId: c1.api.task.v1.TaskService.Get
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.task.v1.TaskServiceGetResponse'
+                    description: Successful response
+            tags:
+                - Task
+            x-speakeasy-group: Task
+            x-speakeasy-name-override: Get
+    /api/v1/tasks/{task_id}/action/approve:
+        post:
+            description: Invokes the c1.api.task.v1.TaskActionsService.Approve method.
+            operationId: c1.api.task.v1.TaskActionsService.Approve
+            parameters:
+                - in: path
+                  name: task_id
+                  required: true
+                  schema:
+                    description: The taskId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceApproveRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceApproveResponse'
+                    description: Successful response
+            tags:
+                - TaskActions
+            x-speakeasy-group: TaskActions
+            x-speakeasy-name-override: Approve
+    /api/v1/tasks/{task_id}/action/comment:
+        post:
+            description: Invokes the c1.api.task.v1.TaskActionsService.Comment method.
+            operationId: c1.api.task.v1.TaskActionsService.Comment
+            parameters:
+                - in: path
+                  name: task_id
+                  required: true
+                  schema:
+                    description: The taskId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceCommentRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceCommentResponse'
+                    description: Successful response
+            tags:
+                - TaskActions
+            x-speakeasy-group: TaskActions
+            x-speakeasy-name-override: Comment
+    /api/v1/tasks/{task_id}/action/deny:
+        post:
+            description: Invokes the c1.api.task.v1.TaskActionsService.Deny method.
+            operationId: c1.api.task.v1.TaskActionsService.Deny
+            parameters:
+                - in: path
+                  name: task_id
+                  required: true
+                  schema:
+                    description: The taskId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceDenyRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceDenyResponse'
+                    description: Successful response
+            tags:
+                - TaskActions
+            x-speakeasy-group: TaskActions
+            x-speakeasy-name-override: Deny
+    /api/v1/users:
+        get:
+            description: Invokes the c1.api.user.v1.UserService.List method.
+            operationId: c1.api.user.v1.UserService.List
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.user.v1.UserServiceListResponse'
+                    description: Successful response
+            tags:
+                - User
+            x-speakeasy-group: User
+            x-speakeasy-name-override: List
+    /api/v1/users/{id}:
+        get:
+            description: Invokes the c1.api.user.v1.UserService.Get method.
+            operationId: c1.api.user.v1.UserService.Get
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.user.v1.UserServiceGetResponse'
+                    description: Successful response
+            tags:
+                - User
+            x-speakeasy-group: User
+            x-speakeasy-name-override: Get
+servers:
+    - description: The server for c1.api.accessbundle.v1.AccessBundleSearchService.
+      url: /
