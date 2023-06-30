@@ -5,8 +5,9 @@ package provider
 import (
 	"context"
 	"fmt"
-	"terraform/internal/sdk"
+	"os"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
@@ -16,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"terraform/internal/sdk"
 	"terraform/internal/sdk/pkg/models/operations"
 	"terraform/internal/validators"
 
@@ -35,7 +37,7 @@ func NewPolicyResource() resource.Resource {
 
 // PolicyResource defines the resource implementation.
 type PolicyResource struct {
-	client *sdk.SDK
+	client *sdk.ConductoroneAPI
 }
 
 // PolicyResourceModel describes the resource data model.
@@ -54,7 +56,10 @@ type PolicyResourceModel struct {
 }
 
 func (r *PolicyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+
 	resp.TypeName = req.ProviderTypeName + "_policy"
+	spew.Dump("Metadata", resp.TypeName)
+	spew.Fdump(os.Stderr, "Metadata", resp.TypeName)
 }
 
 func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -459,12 +464,12 @@ func (r *PolicyResource) Configure(ctx context.Context, req resource.ConfigureRe
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.SDK)
+	client, ok := req.ProviderData.(*sdk.ConductoroneAPI)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.ConductoroneAPI, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
