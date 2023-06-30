@@ -5,9 +5,14 @@ package provider
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Approval struct {
-	AllowReassignment         types.Bool   `tfsdk:"allow_reassignment"`
-	Assigned                  types.Bool   `tfsdk:"assigned"`
-	RequireApprovalReason     types.Bool   `tfsdk:"require_approval_reason"`
-	RequireReassignmentReason types.Bool   `tfsdk:"require_reassignment_reason"`
-	Typ                       *ApprovalTyp `tfsdk:"typ"`
+	AllowReassignment         types.Bool                `tfsdk:"allow_reassignment"`
+	AppOwners                 *AppOwnerApproval         `tfsdk:"app_owners"`
+	Assigned                  types.Bool                `tfsdk:"assigned"`
+	EntitlementOwners         *EntitlementOwnerApproval `tfsdk:"entitlement_owners"`
+	Group                     *AppGroupApproval         `tfsdk:"group"`
+	Manager                   *ManagerApproval          `tfsdk:"manager"`
+	RequireApprovalReason     types.Bool                `tfsdk:"require_approval_reason"`
+	RequireReassignmentReason types.Bool                `tfsdk:"require_reassignment_reason"`
+	Self                      *SelfApproval             `tfsdk:"self"`
+	Users                     *UserApproval             `tfsdk:"users"`
 }

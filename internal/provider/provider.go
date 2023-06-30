@@ -36,7 +36,7 @@ func (p *TerraformProvider) Schema(ctx context.Context, req provider.SchemaReque
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"server_url": schema.StringAttribute{
-				MarkdownDescription: "Server URL (defaults to /)",
+				MarkdownDescription: "Server URL (defaults to https://{tenantDomain}.logan.dev.ductone.com:2443)",
 				Optional:            true,
 				Required:            false,
 			},
@@ -56,7 +56,7 @@ func (p *TerraformProvider) Configure(ctx context.Context, req provider.Configur
 	ServerURL := data.ServerURL.ValueString()
 
 	if ServerURL == "" {
-		ServerURL = "/"
+		ServerURL = "https://{tenantDomain}.logan.dev.ductone.com:2443"
 	}
 
 	opts := []sdk.SDKOption{

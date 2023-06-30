@@ -35,6 +35,10 @@ type AppEntitlement struct {
 	DisplayName   *string                      `json:"displayName,omitempty"`
 	DurationGrant *string                      `json:"durationGrant,omitempty"`
 	DurationUnset *AppEntitlementDurationUnset `json:"durationUnset,omitempty"`
+	// The emergencyGrantEnabled field.
+	EmergencyGrantEnabled *bool `json:"emergencyGrantEnabled,omitempty"`
+	// The emergencyGrantPolicyId field.
+	EmergencyGrantPolicyID *string `json:"emergencyGrantPolicyId,omitempty"`
 	// The grantCount field.
 	GrantCount *string `json:"grantCount,omitempty"`
 	// The grantPolicyId field.

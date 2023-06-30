@@ -53,6 +53,12 @@ type CreatePolicyRequest struct {
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The policySteps field.
+	PolicySteps map[string]PolicySteps `json:"policySteps,omitempty"`
 	// The policyType field.
 	PolicyType *CreatePolicyRequestPolicyType `json:"policyType,omitempty"`
+	// The postActions field.
+	PostActions []PolicyPostActions `json:"postActions,omitempty"`
+	// The reassignTasksToDelegates field.
+	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
 }

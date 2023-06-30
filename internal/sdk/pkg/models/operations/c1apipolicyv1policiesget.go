@@ -14,7 +14,7 @@ type C1APIPolicyV1PoliciesGetRequest struct {
 type C1APIPolicyV1PoliciesGetResponse struct {
 	ContentType string
 	// Successful response
-	Policy      *shared.Policy
-	StatusCode  int
-	RawResponse *http.Response
+	GetPolicyResponse *shared.GetPolicyResponse
+	StatusCode        int
+	RawResponse       *http.Response
 }

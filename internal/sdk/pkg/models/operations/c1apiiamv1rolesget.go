@@ -14,7 +14,7 @@ type C1APIIamV1RolesGetRequest struct {
 type C1APIIamV1RolesGetResponse struct {
 	ContentType string
 	// Successful response
-	Role        *shared.Role
-	StatusCode  int
-	RawResponse *http.Response
+	GetRolesResponse *shared.GetRolesResponse
+	StatusCode       int
+	RawResponse      *http.Response
 }

@@ -12,6 +12,8 @@ type TaskServiceCreateGrantRequest struct {
 	AppUserID *string `json:"appUserId,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
+	// The emergencyAccess field.
+	EmergencyAccess *bool `json:"emergencyAccess,omitempty"`
 	//  Make sure to update the TicketExpandMask
 	//
 	ExpandMask    *TaskExpandMask `json:"expandMask,omitempty"`

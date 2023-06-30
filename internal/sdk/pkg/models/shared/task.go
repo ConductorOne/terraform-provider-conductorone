@@ -209,6 +209,8 @@ type Task struct {
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The emergencyAccess field.
+	EmergencyAccess *bool `json:"emergencyAccess,omitempty"`
 	// The externalRefs field.
 	ExternalRefs []ExternalRef `json:"externalRefs,omitempty"`
 	//  General Metadata

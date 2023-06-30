@@ -9,9 +9,14 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"terraform/internal/sdk/pkg/models/operations"
-	"terraform/internal/sdk/pkg/models/shared"
 	"terraform/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -70,148 +75,232 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"description": schema.StringAttribute{
-				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 				Optional: true,
 			},
 			"display_name": schema.StringAttribute{
-				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 				Optional: true,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
 			"policy_steps": schema.MapNestedAttribute{
-				Computed: true,
+				PlanModifiers: []planmodifier.Map{
+					mapplanmodifier.RequiresReplace(),
+				},
+				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"steps": schema.ListNestedAttribute{
-							Computed: true,
+							PlanModifiers: []planmodifier.List{
+								listplanmodifier.RequiresReplace(),
+							},
+							Optional: true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"approval": schema.SingleNestedAttribute{
-										Computed: true,
+										PlanModifiers: []planmodifier.Object{
+											objectplanmodifier.RequiresReplace(),
+										},
+										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
-												Computed: true,
+												PlanModifiers: []planmodifier.Bool{
+													boolplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
 											},
-											"assigned": schema.BoolAttribute{
-												Computed: true,
-											},
-											"require_approval_reason": schema.BoolAttribute{
-												Computed: true,
-											},
-											"require_reassignment_reason": schema.BoolAttribute{
-												Computed: true,
-											},
-											"typ": schema.SingleNestedAttribute{
-												Computed: true,
+											"app_owners": schema.SingleNestedAttribute{
+												PlanModifiers: []planmodifier.Object{
+													objectplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
 												Attributes: map[string]schema.Attribute{
-													"app_owners": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"allow_self_approval": schema.BoolAttribute{
-																Computed: true,
-															},
+													"allow_self_approval": schema.BoolAttribute{
+														PlanModifiers: []planmodifier.Bool{
+															boolplanmodifier.RequiresReplace(),
 														},
-														Description: `The AppOwnerApproval message.`,
-													},
-													"entitlement_owners": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"allow_self_approval": schema.BoolAttribute{
-																Computed: true,
-															},
-															"fallback": schema.BoolAttribute{
-																Computed: true,
-															},
-															"fallback_user_ids": schema.ListAttribute{
-																Computed:    true,
-																ElementType: types.StringType,
-															},
-														},
-														Description: `The EntitlementOwnerApproval message.`,
-													},
-													"group": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"allow_self_approval": schema.BoolAttribute{
-																Computed: true,
-															},
-															"app_group_id": schema.StringAttribute{
-																Computed: true,
-															},
-															"app_id": schema.StringAttribute{
-																Computed: true,
-															},
-															"fallback": schema.BoolAttribute{
-																Computed: true,
-															},
-															"fallback_user_ids": schema.ListAttribute{
-																Computed:    true,
-																ElementType: types.StringType,
-															},
-														},
-														Description: `The AppGroupApproval message.`,
-													},
-													"manager": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"allow_self_approval": schema.BoolAttribute{
-																Computed: true,
-															},
-															"assigned_user_ids": schema.ListAttribute{
-																Computed:    true,
-																ElementType: types.StringType,
-															},
-															"fallback": schema.BoolAttribute{
-																Computed: true,
-															},
-															"fallback_user_ids": schema.ListAttribute{
-																Computed:    true,
-																ElementType: types.StringType,
-															},
-														},
-														Description: `The ManagerApproval message.`,
-													},
-													"self": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"assigned_user_ids": schema.ListAttribute{
-																Computed:    true,
-																ElementType: types.StringType,
-															},
-															"fallback": schema.BoolAttribute{
-																Computed: true,
-															},
-															"fallback_user_ids": schema.ListAttribute{
-																Computed:    true,
-																ElementType: types.StringType,
-															},
-														},
-														Description: `The SelfApproval message.`,
-													},
-													"users": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"allow_self_approval": schema.BoolAttribute{
-																Computed: true,
-															},
-															"user_ids": schema.ListAttribute{
-																Computed:    true,
-																ElementType: types.StringType,
-															},
-														},
-														Description: `The UserApproval message.`,
+														Optional: true,
 													},
 												},
-												MarkdownDescription: `Specify only one of the following properties:` + "\n" +
-													`- users` + "\n" +
-													`- manager` + "\n" +
-													`- app_owners` + "\n" +
-													`- group` + "\n" +
-													`- self` + "\n" +
-													`- entitlement_owners` + "\n" +
-													``,
+												Description: `The AppOwnerApproval message.`,
+											},
+											"assigned": schema.BoolAttribute{
+												PlanModifiers: []planmodifier.Bool{
+													boolplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
+											},
+											"entitlement_owners": schema.SingleNestedAttribute{
+												PlanModifiers: []planmodifier.Object{
+													objectplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"allow_self_approval": schema.BoolAttribute{
+														PlanModifiers: []planmodifier.Bool{
+															boolplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
+													},
+													"fallback": schema.BoolAttribute{
+														PlanModifiers: []planmodifier.Bool{
+															boolplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
+													},
+													"fallback_user_ids": schema.ListAttribute{
+														PlanModifiers: []planmodifier.List{
+															listplanmodifier.RequiresReplace(),
+														},
+														Optional:    true,
+														ElementType: types.StringType,
+													},
+												},
+												Description: `The EntitlementOwnerApproval message.`,
+											},
+											"group": schema.SingleNestedAttribute{
+												PlanModifiers: []planmodifier.Object{
+													objectplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"allow_self_approval": schema.BoolAttribute{
+														PlanModifiers: []planmodifier.Bool{
+															boolplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
+													},
+													"app_group_id": schema.StringAttribute{
+														PlanModifiers: []planmodifier.String{
+															stringplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
+													},
+													"app_id": schema.StringAttribute{
+														PlanModifiers: []planmodifier.String{
+															stringplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
+													},
+													"fallback": schema.BoolAttribute{
+														PlanModifiers: []planmodifier.Bool{
+															boolplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
+													},
+													"fallback_user_ids": schema.ListAttribute{
+														PlanModifiers: []planmodifier.List{
+															listplanmodifier.RequiresReplace(),
+														},
+														Optional:    true,
+														ElementType: types.StringType,
+													},
+												},
+												Description: `The AppGroupApproval message.`,
+											},
+											"manager": schema.SingleNestedAttribute{
+												PlanModifiers: []planmodifier.Object{
+													objectplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"allow_self_approval": schema.BoolAttribute{
+														PlanModifiers: []planmodifier.Bool{
+															boolplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
+													},
+													"assigned_user_ids": schema.ListAttribute{
+														PlanModifiers: []planmodifier.List{
+															listplanmodifier.RequiresReplace(),
+														},
+														Optional:    true,
+														ElementType: types.StringType,
+													},
+													"fallback": schema.BoolAttribute{
+														PlanModifiers: []planmodifier.Bool{
+															boolplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
+													},
+													"fallback_user_ids": schema.ListAttribute{
+														PlanModifiers: []planmodifier.List{
+															listplanmodifier.RequiresReplace(),
+														},
+														Optional:    true,
+														ElementType: types.StringType,
+													},
+												},
+												Description: `The ManagerApproval message.`,
+											},
+											"require_approval_reason": schema.BoolAttribute{
+												PlanModifiers: []planmodifier.Bool{
+													boolplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
+											},
+											"require_reassignment_reason": schema.BoolAttribute{
+												PlanModifiers: []planmodifier.Bool{
+													boolplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
+											},
+											"self": schema.SingleNestedAttribute{
+												PlanModifiers: []planmodifier.Object{
+													objectplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"assigned_user_ids": schema.ListAttribute{
+														PlanModifiers: []planmodifier.List{
+															listplanmodifier.RequiresReplace(),
+														},
+														Optional:    true,
+														ElementType: types.StringType,
+													},
+													"fallback": schema.BoolAttribute{
+														PlanModifiers: []planmodifier.Bool{
+															boolplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
+													},
+													"fallback_user_ids": schema.ListAttribute{
+														PlanModifiers: []planmodifier.List{
+															listplanmodifier.RequiresReplace(),
+														},
+														Optional:    true,
+														ElementType: types.StringType,
+													},
+												},
+												Description: `The SelfApproval message.`,
+											},
+											"users": schema.SingleNestedAttribute{
+												PlanModifiers: []planmodifier.Object{
+													objectplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"allow_self_approval": schema.BoolAttribute{
+														PlanModifiers: []planmodifier.Bool{
+															boolplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
+													},
+													"user_ids": schema.ListAttribute{
+														PlanModifiers: []planmodifier.List{
+															listplanmodifier.RequiresReplace(),
+														},
+														Optional:    true,
+														ElementType: types.StringType,
+													},
+												},
+												Description: `The UserApproval message.`,
 											},
 										},
 										MarkdownDescription: `The Approval message.` + "\n" +
@@ -226,39 +315,69 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											``,
 									},
 									"provision": schema.SingleNestedAttribute{
-										Computed: true,
+										PlanModifiers: []planmodifier.Object{
+											objectplanmodifier.RequiresReplace(),
+										},
+										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"assigned": schema.BoolAttribute{
-												Computed: true,
+												PlanModifiers: []planmodifier.Bool{
+													boolplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
 											},
 											"provision_policy": schema.SingleNestedAttribute{
-												Computed: true,
+												PlanModifiers: []planmodifier.Object{
+													objectplanmodifier.RequiresReplace(),
+												},
+												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"connector": schema.SingleNestedAttribute{
-														Computed:    true,
+														PlanModifiers: []planmodifier.Object{
+															objectplanmodifier.RequiresReplace(),
+														},
+														Optional:    true,
 														Attributes:  map[string]schema.Attribute{},
 														Description: `The ConnectorProvision message.`,
 													},
 													"delegated": schema.SingleNestedAttribute{
-														Computed: true,
+														PlanModifiers: []planmodifier.Object{
+															objectplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"app_id": schema.StringAttribute{
-																Computed: true,
+																PlanModifiers: []planmodifier.String{
+																	stringplanmodifier.RequiresReplace(),
+																},
+																Optional: true,
 															},
 															"entitlement_id": schema.StringAttribute{
-																Computed: true,
+																PlanModifiers: []planmodifier.String{
+																	stringplanmodifier.RequiresReplace(),
+																},
+																Optional: true,
 															},
 														},
 														Description: `The DelegatedProvision message.`,
 													},
 													"manual": schema.SingleNestedAttribute{
-														Computed: true,
+														PlanModifiers: []planmodifier.Object{
+															objectplanmodifier.RequiresReplace(),
+														},
+														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"instructions": schema.StringAttribute{
-																Computed: true,
+																PlanModifiers: []planmodifier.String{
+																	stringplanmodifier.RequiresReplace(),
+																},
+																Optional: true,
 															},
 															"user_ids": schema.ListAttribute{
-																Computed:    true,
+																PlanModifiers: []planmodifier.List{
+																	listplanmodifier.RequiresReplace(),
+																},
+																Optional:    true,
 																ElementType: types.StringType,
 															},
 														},
@@ -283,7 +402,9 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"policy_type": schema.StringAttribute{
-				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 				Optional: true,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
@@ -298,17 +419,26 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Description: `The policyType field.`,
 			},
 			"post_actions": schema.ListNestedAttribute{
-				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplace(),
+				},
+				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"certify_remediate_immediately": schema.BoolAttribute{
-							Computed: true,
+							PlanModifiers: []planmodifier.Bool{
+								boolplanmodifier.RequiresReplace(),
+							},
+							Optional: true,
 						},
 					},
 				},
 			},
 			"reassign_tasks_to_delegates": schema.BoolAttribute{
-				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.RequiresReplace(),
+				},
+				Optional: true,
 			},
 			"system_builtin": schema.BoolAttribute{
 				Computed: true,
@@ -375,11 +505,11 @@ func (r *PolicyResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Policy == nil {
+	if res.CreatePolicyResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromCreateResponse(res.Policy)
+	data.RefreshFromCreateResponse(res.CreatePolicyResponse)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -420,11 +550,11 @@ func (r *PolicyResource) Read(ctx context.Context, req resource.ReadRequest, res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.Policy == nil {
+	if res.GetPolicyResponse.Policy == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.Policy)
+	data.RefreshFromGetResponse(res.GetPolicyResponse.Policy)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -437,7 +567,30 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	updatePolicyRequest := data.ToUpdateSDKType()
+	id := data.ID.ValueString()
+	request := operations.C1APIPolicyV1PoliciesUpdateRequest{
+		UpdatePolicyRequest: updatePolicyRequest,
+		ID:                  id,
+	}
+	res, err := r.client.Policies.Update(ctx, request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if res.UpdatePolicyResponse.Policy == nil {
+		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+		return
+	}
+	data.RefreshFromUpdateResponse(res.UpdatePolicyResponse.Policy)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -461,8 +614,7 @@ func (r *PolicyResource) Delete(ctx context.Context, req resource.DeleteRequest,
 		return
 	}
 
-	var deletePolicyRequest *shared.DeletePolicyRequest
-	deletePolicyRequest = &shared.DeletePolicyRequest{}
+	deletePolicyRequest := data.ToDeleteSDKType()
 	id := data.ID.ValueString()
 	request := operations.C1APIPolicyV1PoliciesDeleteRequest{
 		DeletePolicyRequest: deletePolicyRequest,

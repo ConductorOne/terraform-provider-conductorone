@@ -67,12 +67,12 @@ func (s *roles) Get(ctx context.Context, request operations.C1APIIamV1RolesGetRe
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
-			var out *shared.Role
+			var out *shared.GetRolesResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
 				return nil, err
 			}
 
-			res.Role = out
+			res.GetRolesResponse = out
 		}
 	}
 

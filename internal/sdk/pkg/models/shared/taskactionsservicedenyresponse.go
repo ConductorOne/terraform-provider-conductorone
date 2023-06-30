@@ -64,4 +64,6 @@ type TaskActionsServiceDenyResponse struct {
 	Expanded []TaskActionsServiceDenyResponseExpanded `json:"expanded,omitempty"`
 	// The TaskView message.
 	TaskView *TaskView `json:"taskView,omitempty"`
+	// The ticketActionId field.
+	TicketActionID *string `json:"ticketActionId,omitempty"`
 }
