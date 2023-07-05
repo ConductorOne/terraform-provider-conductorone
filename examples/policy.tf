@@ -8,9 +8,9 @@ terraform {
 }
 
 provider "c1" {
-  server_url = "https://c1dev.logan.dev.ductone.com:2443"
-  client_id = "gifted-goblin-51243@logan.conductor.one/pcc"
-  client_secret = "secret-token:conductorone.com:v1:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6IkZGeWdVRkNBYU43VU04bkgwRG1ZcklPejFxYjFuRjMwMmRzYmVLWUNiRUEiLCJkIjoibkt1alhPMkQybExFT0NFVnlPc01FeHk4Y0tvLUdEVG9CMXIzUEtIVGpaZyJ9"
+  server_url = ""
+  client_id = ""
+  client_secret = ""
 }
 
 resource "c1_terraform_policy" "plcy" {
