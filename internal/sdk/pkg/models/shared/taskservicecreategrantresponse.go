@@ -2,66 +2,10 @@
 
 package shared
 
-import (
-	"encoding/json"
-)
-
-// TaskServiceCreateGrantResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type TaskServiceCreateGrantResponseExpanded struct {
-	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
-}
-type _TaskServiceCreateGrantResponseExpanded TaskServiceCreateGrantResponseExpanded
-
-func (c *TaskServiceCreateGrantResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _TaskServiceCreateGrantResponseExpanded{}
-
-	if err := json.Unmarshal(bs, &data); err != nil {
-		return err
-	}
-	*c = TaskServiceCreateGrantResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
-	return nil
-}
-
-func (c TaskServiceCreateGrantResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_TaskServiceCreateGrantResponseExpanded(c))
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
-}
-
 // TaskServiceCreateGrantResponse - The TaskServiceCreateGrantResponse message.
 type TaskServiceCreateGrantResponse struct {
 	// The expanded field.
-	Expanded []TaskServiceCreateGrantResponseExpanded `json:"expanded,omitempty"`
+	Expanded []map[string]interface{} `json:"expanded,omitempty"`
 	// The TaskView message.
 	TaskView *TaskView `json:"taskView,omitempty"`
 }

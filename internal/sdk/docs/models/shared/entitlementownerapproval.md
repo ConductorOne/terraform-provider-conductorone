@@ -1,0 +1,12 @@
+# EntitlementOwnerApproval
+
+The EntitlementOwnerApproval message.
+
+
+## Fields
+
+| Field                                                                                                     | Type                                                                                                      | Required                                                                                                  | Description                                                                                               |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `AllowSelfApproval`                                                                                       | **bool*                                                                                                   | :heavy_minus_sign:                                                                                        |  Entitlement owner is based on the current entitlement's id and doesn't need to have self-contained data<br/> |
+| `Fallback`                                                                                                | **bool*                                                                                                   | :heavy_minus_sign:                                                                                        | The fallback field.                                                                                       |
+| `FallbackUserIds`                                                                                         | []*string*                                                                                                | :heavy_minus_sign:                                                                                        | The fallbackUserIds field.                                                                                |

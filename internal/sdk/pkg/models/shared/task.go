@@ -74,58 +74,6 @@ func (e *TaskActions) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// TaskAnnotations - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type TaskAnnotations struct {
-	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
-}
-type _TaskAnnotations TaskAnnotations
-
-func (c *TaskAnnotations) UnmarshalJSON(bs []byte) error {
-	data := _TaskAnnotations{}
-
-	if err := json.Unmarshal(bs, &data); err != nil {
-		return err
-	}
-	*c = TaskAnnotations(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
-	return nil
-}
-
-func (c TaskAnnotations) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_TaskAnnotations(c))
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
-}
-
 // TaskProcessing - The processing field.
 type TaskProcessing string
 
@@ -198,7 +146,7 @@ type Task struct {
 	// The analysisId field.
 	AnalysisID *string `json:"analysisId,omitempty"`
 	// The annotations field.
-	Annotations []TaskAnnotations `json:"annotations,omitempty"`
+	Annotations []map[string]interface{} `json:"annotations,omitempty"`
 	// The commentCount field.
 	CommentCount *float64   `json:"commentCount,omitempty"`
 	CreatedAt    *time.Time `json:"createdAt,omitempty"`

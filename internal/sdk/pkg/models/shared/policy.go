@@ -56,7 +56,8 @@ type Policy struct {
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The id field.
+	//  Properties
+	//
 	ID *string `json:"id,omitempty"`
 	// The policySteps field.
 	PolicySteps map[string]PolicySteps `json:"policySteps,omitempty"`
