@@ -1,8 +1,13 @@
 configVersion: 1.0.0
 generation:
-  sdkClassName: SDK
+  comments:
+    disableComments: false
+    omitDescriptionIfSummaryPresent: false
+  baseServerURL: ""
+  sdkClassName: conductorone-sdk-terraform
   singleTagPerOp: false
+  tagNamespacingDisabled: false
 terraform:
   version: 0.0.1
-  author: speakeasy
-  packageName: terraform
+  author: ConductorOne
+  packageName: conductorone
