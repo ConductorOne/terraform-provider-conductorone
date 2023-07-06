@@ -1,4 +1,4 @@
-module terraform
+module conductorone
 
 go 1.18
 

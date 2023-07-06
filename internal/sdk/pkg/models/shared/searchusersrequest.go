@@ -42,10 +42,10 @@ func (e *SearchUsersRequestUserStatuses) UnmarshalJSON(data []byte) error {
 
 // SearchUsersRequest - The SearchUsersRequest message.
 type SearchUsersRequest struct {
+	// The UserExpandMask message.
+	UserExpandMask *UserExpandMask `json:"expandMask,omitempty"`
 	// The excludeIds field.
 	ExcludeIds []string `json:"excludeIds,omitempty"`
-	// The UserExpandMask message.
-	ExpandMask *UserExpandMask `json:"expandMask,omitempty"`
 	// The ids field.
 	Ids []string `json:"ids,omitempty"`
 	// The pageSize field.

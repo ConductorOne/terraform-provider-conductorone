@@ -3,16 +3,16 @@
 package sdk
 
 import (
+	"conductorone/internal/sdk/pkg/utils"
 	"fmt"
 	"net/http"
-	"terraform/internal/sdk/pkg/utils"
 	"time"
 )
 
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
 	// The ConductorOne API server for the current tenant.
-	"https://{tenantDomain}.logan.dev.ductone.com:2443",
+	"https://{tenantDomain}.conductor.one",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
@@ -59,8 +59,8 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 	return ServerList[c.ServerIndex], c.ServerDefaults[c.ServerIndex]
 }
 
-// SDK - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
-type SDK struct {
+// ConductoroneSDKTerraform - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
+type ConductoroneSDKTerraform struct {
 	AppEntitlementUserBinding *appEntitlementUserBinding
 	AppEntitlements           *appEntitlements
 	AppOwners                 *appOwners
@@ -88,18 +88,18 @@ type SDK struct {
 	sdkConfiguration sdkConfiguration
 }
 
-type SDKOption func(*SDK)
+type SDKOption func(*ConductoroneSDKTerraform)
 
 // WithServerURL allows the overriding of the default server URL
 func WithServerURL(serverURL string) SDKOption {
-	return func(sdk *SDK) {
+	return func(sdk *ConductoroneSDKTerraform) {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 }
 
 // WithTemplatedServerURL allows the overriding of the default server URL with a templated URL populated with the provided parameters
 func WithTemplatedServerURL(serverURL string, params map[string]string) SDKOption {
-	return func(sdk *SDK) {
+	return func(sdk *ConductoroneSDKTerraform) {
 		if params != nil {
 			serverURL = utils.ReplaceParameters(serverURL, params)
 		}
@@ -110,7 +110,7 @@ func WithTemplatedServerURL(serverURL string, params map[string]string) SDKOptio
 
 // WithServerIndex allows the overriding of the default server by index
 func WithServerIndex(serverIndex int) SDKOption {
-	return func(sdk *SDK) {
+	return func(sdk *ConductoroneSDKTerraform) {
 		if serverIndex < 0 || serverIndex >= len(ServerList) {
 			panic(fmt.Errorf("server index %d out of range", serverIndex))
 		}
@@ -121,7 +121,7 @@ func WithServerIndex(serverIndex int) SDKOption {
 
 // WithTenantDomain allows setting the $name variable for url substitution
 func WithTenantDomain(tenantDomain string) SDKOption {
-	return func(sdk *SDK) {
+	return func(sdk *ConductoroneSDKTerraform) {
 		for idx := range sdk.sdkConfiguration.ServerDefaults {
 			if _, ok := sdk.sdkConfiguration.ServerDefaults[idx]["tenantDomain"]; !ok {
 				continue
@@ -134,19 +134,19 @@ func WithTenantDomain(tenantDomain string) SDKOption {
 
 // WithClient allows the overriding of the default HTTP client used by the SDK
 func WithClient(client HTTPClient) SDKOption {
-	return func(sdk *SDK) {
+	return func(sdk *ConductoroneSDKTerraform) {
 		sdk.sdkConfiguration.DefaultClient = client
 	}
 }
 
 // New creates a new instance of the SDK with the provided options
-func New(opts ...SDKOption) *SDK {
-	sdk := &SDK{
+func New(opts ...SDKOption) *ConductoroneSDKTerraform {
+	sdk := &ConductoroneSDKTerraform{
 		sdkConfiguration: sdkConfiguration{
 			Language:          "terraform",
 			OpenAPIDocVersion: "0.1.0-alpha",
-			SDKVersion:        "0.0.1",
-			GenVersion:        "2.52.2",
+			SDKVersion:        "1.0.0",
+			GenVersion:        "2.58.0",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "invalid-example",

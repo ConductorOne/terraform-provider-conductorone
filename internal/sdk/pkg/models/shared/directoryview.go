@@ -4,8 +4,8 @@ package shared
 
 // DirectoryView - The DirectoryView message.
 type DirectoryView struct {
-	// The appPath field.
-	AppPath *string `json:"appPath,omitempty"`
 	// The Directory message.
 	Directory *Directory `json:"directory,omitempty"`
+	// The appPath field.
+	AppPath *string `json:"appPath,omitempty"`
 }

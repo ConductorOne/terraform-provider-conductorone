@@ -4,8 +4,8 @@ package shared
 
 // AppResourceTypeView - The AppResourceTypeView message.
 type AppResourceTypeView struct {
-	// The appPath field.
-	AppPath *string `json:"appPath,omitempty"`
 	// The AppResourceType message.
 	AppResourceType *AppResourceType `json:"appResourceType,omitempty"`
+	// The appPath field.
+	AppPath *string `json:"appPath,omitempty"`
 }

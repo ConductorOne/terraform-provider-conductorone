@@ -60,10 +60,10 @@ func (c TaskActionsServiceDenyResponseExpanded) MarshalJSON() ([]byte, error) {
 
 // TaskActionsServiceDenyResponse - The TaskActionsServiceDenyResponse message.
 type TaskActionsServiceDenyResponse struct {
-	// The expanded field.
-	Expanded []TaskActionsServiceDenyResponseExpanded `json:"expanded,omitempty"`
 	// The TaskView message.
 	TaskView *TaskView `json:"taskView,omitempty"`
+	// The expanded field.
+	Expanded []TaskActionsServiceDenyResponseExpanded `json:"expanded,omitempty"`
 	// The ticketActionId field.
 	TicketActionID *string `json:"ticketActionId,omitempty"`
 }

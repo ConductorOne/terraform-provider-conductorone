@@ -60,8 +60,8 @@ func (c TaskServiceCreateGrantResponseExpanded) MarshalJSON() ([]byte, error) {
 
 // TaskServiceCreateGrantResponse - The TaskServiceCreateGrantResponse message.
 type TaskServiceCreateGrantResponse struct {
-	// The expanded field.
-	Expanded []TaskServiceCreateGrantResponseExpanded `json:"expanded,omitempty"`
 	// The TaskView message.
 	TaskView *TaskView `json:"taskView,omitempty"`
+	// The expanded field.
+	Expanded []TaskServiceCreateGrantResponseExpanded `json:"expanded,omitempty"`
 }

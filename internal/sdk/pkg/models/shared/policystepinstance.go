@@ -53,9 +53,7 @@ type PolicyStepInstance struct {
 	//   - restarted
 	//   - reassignedByError
 	//
-	Approval *ApprovalInstance `json:"approval,omitempty"`
-	// The id field.
-	ID *string `json:"id,omitempty"`
+	ApprovalInstance *ApprovalInstance `json:"approval,omitempty"`
 	// The ProvisionInstance message.
 	//
 	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
@@ -64,7 +62,9 @@ type PolicyStepInstance struct {
 	//   - errored
 	//   - reassignedByError
 	//
-	Provision *ProvisionInstance `json:"provision,omitempty"`
+	ProvisionInstance *ProvisionInstance `json:"provision,omitempty"`
+	// The id field.
+	ID *string `json:"id,omitempty"`
 	// The state field.
 	State *PolicyStepInstanceState `json:"state,omitempty"`
 }

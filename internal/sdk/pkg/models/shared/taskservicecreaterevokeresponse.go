@@ -60,8 +60,8 @@ func (c TaskServiceCreateRevokeResponseExpanded) MarshalJSON() ([]byte, error) {
 
 // TaskServiceCreateRevokeResponse - The TaskServiceCreateRevokeResponse message.
 type TaskServiceCreateRevokeResponse struct {
-	// The expanded field.
-	Expanded []TaskServiceCreateRevokeResponseExpanded `json:"expanded,omitempty"`
 	// The TaskView message.
 	TaskView *TaskView `json:"taskView,omitempty"`
+	// The expanded field.
+	Expanded []TaskServiceCreateRevokeResponseExpanded `json:"expanded,omitempty"`
 }

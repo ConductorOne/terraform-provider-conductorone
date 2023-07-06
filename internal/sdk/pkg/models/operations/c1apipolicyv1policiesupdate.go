@@ -3,8 +3,8 @@
 package operations
 
 import (
+	"conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
-	"terraform/internal/sdk/pkg/models/shared"
 )
 
 type C1APIPolicyV1PoliciesUpdateRequest struct {

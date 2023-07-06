@@ -4,6 +4,9 @@ package shared
 
 // TaskServiceCreateGrantRequest - The TaskServiceCreateGrantRequest message.
 type TaskServiceCreateGrantRequest struct {
+	//  Make sure to update the TicketExpandMask
+	//
+	TaskExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// The appEntitlementId field.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
 	// The appId field.
@@ -13,11 +16,8 @@ type TaskServiceCreateGrantRequest struct {
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The emergencyAccess field.
-	EmergencyAccess *bool `json:"emergencyAccess,omitempty"`
-	//  Make sure to update the TicketExpandMask
-	//
-	ExpandMask    *TaskExpandMask `json:"expandMask,omitempty"`
-	GrantDuration *string         `json:"grantDuration,omitempty"`
+	EmergencyAccess *bool   `json:"emergencyAccess,omitempty"`
+	GrantDuration   *string `json:"grantDuration,omitempty"`
 	// The identityUserId field.
 	IdentityUserID *string `json:"identityUserId,omitempty"`
 }

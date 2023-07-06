@@ -60,8 +60,8 @@ func (c UserServiceGetResponseExpanded) MarshalJSON() ([]byte, error) {
 
 // UserServiceGetResponse - The UserServiceGetResponse message.
 type UserServiceGetResponse struct {
-	// The expanded field.
-	Expanded []UserServiceGetResponseExpanded `json:"expanded,omitempty"`
 	// The UserView message.
 	UserView *UserView `json:"userView,omitempty"`
+	// The expanded field.
+	Expanded []UserServiceGetResponseExpanded `json:"expanded,omitempty"`
 }

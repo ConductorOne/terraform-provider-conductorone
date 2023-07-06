@@ -4,8 +4,8 @@ package shared
 
 // DirectoryServiceCreateRequest - The DirectoryServiceCreateRequest message.
 type DirectoryServiceCreateRequest struct {
+	// The DirectoryExpandMask message.
+	DirectoryExpandMask *DirectoryExpandMask `json:"expandMask,omitempty"`
 	// The appId field.
 	AppID *string `json:"appId,omitempty"`
-	// The DirectoryExpandMask message.
-	ExpandMask *DirectoryExpandMask `json:"expandMask,omitempty"`
 }

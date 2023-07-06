@@ -4,6 +4,9 @@ package shared
 
 // TaskServiceCreateRevokeRequest - The TaskServiceCreateRevokeRequest message.
 type TaskServiceCreateRevokeRequest struct {
+	//  Make sure to update the TicketExpandMask
+	//
+	TaskExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// The appEntitlementId field.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
 	// The appId field.
@@ -12,9 +15,6 @@ type TaskServiceCreateRevokeRequest struct {
 	AppUserID *string `json:"appUserId,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
-	//  Make sure to update the TicketExpandMask
-	//
-	ExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// The identityUserId field.
 	IdentityUserID *string `json:"identityUserId,omitempty"`
 }

@@ -10,9 +10,9 @@ package shared
 //   - certify
 type TaskType struct {
 	// The TaskTypeCertify message.
-	Certify *TaskTypeCertify `json:"certify,omitempty"`
+	TaskTypeCertify *TaskTypeCertify `json:"certify,omitempty"`
 	// The TaskTypeGrant message.
-	Grant *TaskTypeGrant `json:"grant,omitempty"`
+	TaskTypeGrant *TaskTypeGrant `json:"grant,omitempty"`
 	// The TaskTypeRevoke message.
-	Revoke *TaskTypeRevoke `json:"revoke,omitempty"`
+	TaskTypeRevoke *TaskTypeRevoke `json:"revoke,omitempty"`
 }

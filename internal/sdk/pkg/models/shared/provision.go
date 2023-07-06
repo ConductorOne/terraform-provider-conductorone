@@ -4,8 +4,6 @@ package shared
 
 // Provision - The Provision message.
 type Provision struct {
-	// The assigned field.
-	Assigned *bool `json:"assigned,omitempty"`
 	// The ProvisionPolicy message.
 	//
 	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -14,4 +12,6 @@ type Provision struct {
 	//   - delegated
 	//
 	ProvisionPolicy *ProvisionPolicy `json:"provisionPolicy,omitempty"`
+	// The assigned field.
+	Assigned *bool `json:"assigned,omitempty"`
 }

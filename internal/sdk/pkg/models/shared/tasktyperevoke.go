@@ -47,6 +47,15 @@ func (e *TaskTypeRevokeOutcome) UnmarshalJSON(data []byte) error {
 
 // TaskTypeRevoke - The TaskTypeRevoke message.
 type TaskTypeRevoke struct {
+	// The TaskRevokeSource message.
+	//
+	// This message contains a oneof named origin. Only a single field of the following list may be set at a time:
+	//   - review
+	//   - request
+	//   - expired
+	//   - nonUsage
+	//
+	TaskRevokeSource *TaskRevokeSource `json:"source,omitempty"`
 	// The appEntitlementId field.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
 	// The appId field.
@@ -58,13 +67,4 @@ type TaskTypeRevoke struct {
 	// The outcome field.
 	Outcome     *TaskTypeRevokeOutcome `json:"outcome,omitempty"`
 	OutcomeTime *time.Time             `json:"outcomeTime,omitempty"`
-	// The TaskRevokeSource message.
-	//
-	// This message contains a oneof named origin. Only a single field of the following list may be set at a time:
-	//   - review
-	//   - request
-	//   - expired
-	//   - nonUsage
-	//
-	Source *TaskRevokeSource `json:"source,omitempty"`
 }

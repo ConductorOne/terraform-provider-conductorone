@@ -105,6 +105,9 @@ func (e *TaskSearchRequestTaskStates) UnmarshalJSON(data []byte) error {
 
 // TaskSearchRequest - The TaskSearchRequest message.
 type TaskSearchRequest struct {
+	//  Make sure to update the TicketExpandMask
+	//
+	TaskExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// The accessReviewIds field.
 	AccessReviewIds []string `json:"accessReviewIds,omitempty"`
 	// The accountOwnerIds field.
@@ -134,9 +137,6 @@ type TaskSearchRequest struct {
 	//  Exclude Specific TaskIDs from this serach result.
 	//
 	ExcludeIds []string `json:"excludeIds,omitempty"`
-	//  Make sure to update the TicketExpandMask
-	//
-	ExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// The includeDeleted field.
 	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
 	//  Search tasks by a List of UserIDs which are currently assigned to OR have previously acted upon this Task

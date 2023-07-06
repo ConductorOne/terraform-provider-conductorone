@@ -193,6 +193,16 @@ func (e *TaskState) UnmarshalJSON(data []byte) error {
 
 // Task - The Task message.
 type Task struct {
+	// The PolicyInstance message.
+	PolicyInstance *PolicyInstance `json:"policy,omitempty"`
+	// The TaskType message.
+	//
+	// This message contains a oneof named task_type. Only a single field of the following list may be set at a time:
+	//   - grant
+	//   - revoke
+	//   - certify
+	//
+	TaskType *TaskType `json:"type,omitempty"`
 	// The actions field.
 	Actions []TaskActions `json:"actions,omitempty"`
 	// The analysisId field.
@@ -218,24 +228,14 @@ type Task struct {
 	ID *string `json:"id,omitempty"`
 	// The numericId field.
 	NumericID *string `json:"numericId,omitempty"`
-	// The PolicyInstance message.
-	Policy *PolicyInstance `json:"policy,omitempty"`
 	// The processing field.
 	Processing *TaskProcessing `json:"processing,omitempty"`
 	//  State
 	//
 	State *TaskState `json:"state,omitempty"`
 	// The stepApproverIds field.
-	StepApproverIds []string `json:"stepApproverIds,omitempty"`
-	// The TaskType message.
-	//
-	// This message contains a oneof named task_type. Only a single field of the following list may be set at a time:
-	//   - grant
-	//   - revoke
-	//   - certify
-	//
-	Type      *TaskType  `json:"type,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	StepApproverIds []string   `json:"stepApproverIds,omitempty"`
+	UpdatedAt       *time.Time `json:"updatedAt,omitempty"`
 	//  External IDS
 	//
 	UserID *string `json:"userId,omitempty"`

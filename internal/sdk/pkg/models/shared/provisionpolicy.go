@@ -10,9 +10,9 @@ package shared
 //   - delegated
 type ProvisionPolicy struct {
 	// The ConnectorProvision message.
-	Connector *ConnectorProvision `json:"connector,omitempty"`
+	ConnectorProvision *ConnectorProvision `json:"connector,omitempty"`
 	// The DelegatedProvision message.
-	Delegated *DelegatedProvision `json:"delegated,omitempty"`
+	DelegatedProvision *DelegatedProvision `json:"delegated,omitempty"`
 	// The ManualProvision message.
-	Manual *ManualProvision `json:"manual,omitempty"`
+	ManualProvision *ManualProvision `json:"manual,omitempty"`
 }

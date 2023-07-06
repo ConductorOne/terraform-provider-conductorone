@@ -4,6 +4,8 @@ package shared
 
 // TaskView - The TaskView message.
 type TaskView struct {
+	// The Task message.
+	Task *Task `json:"task,omitempty"`
 	// The accessReviewPath field.
 	AccessReviewPath *string `json:"accessReviewPath,omitempty"`
 	// The appPath field.
@@ -18,8 +20,6 @@ type TaskView struct {
 	IdentityUserPath *string `json:"identityUserPath,omitempty"`
 	// The stepApproversPath field.
 	StepApproversPath *string `json:"stepApproversPath,omitempty"`
-	// The Task message.
-	Task *Task `json:"task,omitempty"`
 	// The userPath field.
 	UserPath *string `json:"userPath,omitempty"`
 }

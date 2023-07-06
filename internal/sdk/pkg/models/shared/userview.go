@@ -4,6 +4,8 @@ package shared
 
 // UserView - The UserView message.
 type UserView struct {
+	// The User message.
+	User *User `json:"user,omitempty"`
 	// The delegatedUserPath field.
 	DelegatedUserPath *string `json:"delegatedUserPath,omitempty"`
 	// The directoriesPath field.
@@ -12,6 +14,4 @@ type UserView struct {
 	ManagersPath *string `json:"managersPath,omitempty"`
 	// The rolesPath field.
 	RolesPath *string `json:"rolesPath,omitempty"`
-	// The User message.
-	User *User `json:"user,omitempty"`
 }

@@ -56,17 +56,17 @@ func (e *ProvisionInstanceState) UnmarshalJSON(data []byte) error {
 //   - reassignedByError
 type ProvisionInstance struct {
 	// The CancelledAction message.
-	Cancelled *CancelledAction `json:"cancelled,omitempty"`
+	CancelledAction *CancelledAction `json:"cancelled,omitempty"`
 	// The CompletedAction message.
-	Completed *CompletedAction `json:"completed,omitempty"`
+	CompletedAction *CompletedAction `json:"completed,omitempty"`
 	// The ErroredAction message.
-	Errored *ErroredAction `json:"errored,omitempty"`
-	// The notificationId field.
-	NotificationID *string `json:"notificationId,omitempty"`
+	ErroredAction *ErroredAction `json:"errored,omitempty"`
 	// The Provision message.
 	Provision *Provision `json:"provision,omitempty"`
 	// The ReassignedByErrorAction message.
-	ReassignedByError *ReassignedByErrorAction `json:"reassignedByError,omitempty"`
+	ReassignedByErrorAction *ReassignedByErrorAction `json:"reassignedByError,omitempty"`
+	// The notificationId field.
+	NotificationID *string `json:"notificationId,omitempty"`
 	// The state field.
 	State *ProvisionInstanceState `json:"state,omitempty"`
 }

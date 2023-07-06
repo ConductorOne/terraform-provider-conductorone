@@ -4,11 +4,11 @@ package shared
 
 // TaskActionsServiceApproveRequest - The TaskActionsServiceApproveRequest message.
 type TaskActionsServiceApproveRequest struct {
-	// The comment field.
-	Comment *string `json:"comment,omitempty"`
 	//  Make sure to update the TicketExpandMask
 	//
-	ExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
+	TaskExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
+	// The comment field.
+	Comment *string `json:"comment,omitempty"`
 	// The policyStepId field.
 	PolicyStepID *string `json:"policyStepId,omitempty"`
 }

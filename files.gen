@@ -22,9 +22,9 @@ internal/sdk/tasksearch.go
 internal/sdk/user.go
 internal/sdk/usersearch.go
 internal/sdk/sdk.go
+internal/provider/type_app_group_approval.go
 internal/provider/type_app_owner_approval.go
 internal/provider/type_entitlement_owner_approval.go
-internal/provider/type_app_group_approval.go
 internal/provider/type_manager_approval.go
 internal/provider/type_self_approval.go
 internal/provider/type_user_approval.go
@@ -99,6 +99,7 @@ internal/sdk/pkg/models/operations/c1apiappv1appresourcetypeserviceget.go
 internal/sdk/pkg/models/operations/c1apiappv1appresourcetypeservicelist.go
 internal/sdk/pkg/models/operations/c1apiappv1appsearchsearch.go
 internal/sdk/pkg/models/operations/c1apiappv1appusagecontrolsserviceget.go
+internal/sdk/pkg/models/operations/c1apiappv1appusagecontrolsserviceupdate.go
 internal/sdk/pkg/models/operations/c1apiappv1appsget.go
 internal/sdk/pkg/models/operations/c1apiappv1appslist.go
 internal/sdk/pkg/models/operations/c1apiauthv1authintrospect.go
@@ -115,6 +116,7 @@ internal/sdk/pkg/models/operations/c1apipolicyv1policiesupdate.go
 internal/sdk/pkg/models/operations/c1apirequestcatalogv1requestcatalogsearchservicesearchentitlements.go
 internal/sdk/pkg/models/operations/c1apiiamv1rolesget.go
 internal/sdk/pkg/models/operations/c1apiiamv1roleslist.go
+internal/sdk/pkg/models/operations/c1apiiamv1rolesupdate.go
 internal/sdk/pkg/models/operations/c1apitaskv1taskservicecreategranttask.go
 internal/sdk/pkg/models/operations/c1apitaskv1taskservicecreaterevoketask.go
 internal/sdk/pkg/models/operations/c1apitaskv1taskserviceget.go
@@ -161,6 +163,8 @@ internal/sdk/pkg/models/shared/app.go
 internal/sdk/pkg/models/shared/searchappsrequest.go
 internal/sdk/pkg/models/shared/getappusagecontrolsresponse.go
 internal/sdk/pkg/models/shared/appusagecontrols.go
+internal/sdk/pkg/models/shared/updateappusagecontrolsresponse.go
+internal/sdk/pkg/models/shared/updateappusagecontrolsrequest.go
 internal/sdk/pkg/models/shared/getappresponse.go
 internal/sdk/pkg/models/shared/listappsresponse.go
 internal/sdk/pkg/models/shared/introspectresponse.go
@@ -186,9 +190,9 @@ internal/sdk/pkg/models/shared/approval.go
 internal/sdk/pkg/models/shared/userapproval.go
 internal/sdk/pkg/models/shared/selfapproval.go
 internal/sdk/pkg/models/shared/managerapproval.go
-internal/sdk/pkg/models/shared/appgroupapproval.go
 internal/sdk/pkg/models/shared/entitlementownerapproval.go
 internal/sdk/pkg/models/shared/appownerapproval.go
+internal/sdk/pkg/models/shared/appgroupapproval.go
 internal/sdk/pkg/models/shared/createpolicyrequest.go
 internal/sdk/pkg/models/shared/deletepolicyresponse.go
 internal/sdk/pkg/models/shared/deletepolicyrequest.go
@@ -203,9 +207,12 @@ internal/sdk/pkg/models/shared/appentitlementexpandmask.go
 internal/sdk/pkg/models/shared/getrolesresponse.go
 internal/sdk/pkg/models/shared/role.go
 internal/sdk/pkg/models/shared/listrolesresponse.go
+internal/sdk/pkg/models/shared/updaterolesresponse.go
+internal/sdk/pkg/models/shared/updaterolerequest.go
 internal/sdk/pkg/models/shared/taskservicecreategrantresponse.go
 internal/sdk/pkg/models/shared/taskview.go
 internal/sdk/pkg/models/shared/task.go
+internal/sdk/pkg/models/shared/externalref.go
 internal/sdk/pkg/models/shared/tasktype.go
 internal/sdk/pkg/models/shared/tasktyperevoke.go
 internal/sdk/pkg/models/shared/taskrevokesource.go
@@ -228,7 +235,6 @@ internal/sdk/pkg/models/shared/restartaction.go
 internal/sdk/pkg/models/shared/reassignedaction.go
 internal/sdk/pkg/models/shared/deniedaction.go
 internal/sdk/pkg/models/shared/approvedaction.go
-internal/sdk/pkg/models/shared/externalref.go
 internal/sdk/pkg/models/shared/taskservicecreategrantrequest.go
 internal/sdk/pkg/models/shared/taskexpandmask.go
 internal/sdk/pkg/models/shared/taskservicecreaterevokeresponse.go

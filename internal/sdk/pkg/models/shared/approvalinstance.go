@@ -65,15 +65,15 @@ type ApprovalInstance struct {
 	//
 	Approval *Approval `json:"approval,omitempty"`
 	// The ApprovedAction message.
-	Approved *ApprovedAction `json:"approved,omitempty"`
+	ApprovedAction *ApprovedAction `json:"approved,omitempty"`
 	// The DeniedAction message.
-	Denied *DeniedAction `json:"denied,omitempty"`
+	DeniedAction *DeniedAction `json:"denied,omitempty"`
 	// The ReassignedAction message.
-	Reassigned *ReassignedAction `json:"reassigned,omitempty"`
+	ReassignedAction *ReassignedAction `json:"reassigned,omitempty"`
 	// The ReassignedByErrorAction message.
-	ReassignedByError *ReassignedByErrorAction `json:"reassignedByError,omitempty"`
+	ReassignedByErrorAction *ReassignedByErrorAction `json:"reassignedByError,omitempty"`
 	// The RestartAction message.
-	Restarted *RestartAction `json:"restarted,omitempty"`
+	RestartAction *RestartAction `json:"restarted,omitempty"`
 	// The state field.
 	State *ApprovalInstanceState `json:"state,omitempty"`
 }

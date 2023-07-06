@@ -4,9 +4,9 @@ package shared
 
 // TaskActionsServiceCommentRequest - The TaskActionsServiceCommentRequest message.
 type TaskActionsServiceCommentRequest struct {
-	// The comment field.
-	Comment *string `json:"comment,omitempty"`
 	//  Make sure to update the TicketExpandMask
 	//
-	ExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
+	TaskExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
+	// The comment field.
+	Comment *string `json:"comment,omitempty"`
 }

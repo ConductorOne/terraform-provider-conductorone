@@ -3,8 +3,8 @@
 package provider
 
 import (
+	"conductorone/internal/sdk/pkg/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"terraform/internal/sdk/pkg/models/shared"
 	"time"
 )
 
@@ -118,17 +118,49 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					} else {
 						steps1.Approval.AllowReassignment = types.BoolNull()
 					}
-					if steps1.Approval.AppOwners == nil {
-						steps1.Approval.AppOwners = &AppOwnerApproval{}
+					if steps1.Approval.AppGroupApproval == nil {
+						steps1.Approval.AppGroupApproval = &AppGroupApproval{}
 					}
-					if stepsItem.Approval.AppOwners == nil {
-						steps1.Approval.AppOwners = nil
+					if stepsItem.Approval.AppGroupApproval == nil {
+						steps1.Approval.AppGroupApproval = nil
 					} else {
-						steps1.Approval.AppOwners = &AppOwnerApproval{}
-						if stepsItem.Approval.AppOwners.AllowSelfApproval != nil {
-							steps1.Approval.AppOwners.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.AppOwners.AllowSelfApproval)
+						steps1.Approval.AppGroupApproval = &AppGroupApproval{}
+						if stepsItem.Approval.AppGroupApproval.AllowSelfApproval != nil {
+							steps1.Approval.AppGroupApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.AppGroupApproval.AllowSelfApproval)
 						} else {
-							steps1.Approval.AppOwners.AllowSelfApproval = types.BoolNull()
+							steps1.Approval.AppGroupApproval.AllowSelfApproval = types.BoolNull()
+						}
+						if stepsItem.Approval.AppGroupApproval.AppGroupID != nil {
+							steps1.Approval.AppGroupApproval.AppGroupID = types.StringValue(*stepsItem.Approval.AppGroupApproval.AppGroupID)
+						} else {
+							steps1.Approval.AppGroupApproval.AppGroupID = types.StringNull()
+						}
+						if stepsItem.Approval.AppGroupApproval.AppID != nil {
+							steps1.Approval.AppGroupApproval.AppID = types.StringValue(*stepsItem.Approval.AppGroupApproval.AppID)
+						} else {
+							steps1.Approval.AppGroupApproval.AppID = types.StringNull()
+						}
+						if stepsItem.Approval.AppGroupApproval.Fallback != nil {
+							steps1.Approval.AppGroupApproval.Fallback = types.BoolValue(*stepsItem.Approval.AppGroupApproval.Fallback)
+						} else {
+							steps1.Approval.AppGroupApproval.Fallback = types.BoolNull()
+						}
+						steps1.Approval.AppGroupApproval.FallbackUserIds = nil
+						for _, v := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
+							steps1.Approval.AppGroupApproval.FallbackUserIds = append(steps1.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
+						}
+					}
+					if steps1.Approval.AppOwnerApproval == nil {
+						steps1.Approval.AppOwnerApproval = &AppOwnerApproval{}
+					}
+					if stepsItem.Approval.AppOwnerApproval == nil {
+						steps1.Approval.AppOwnerApproval = nil
+					} else {
+						steps1.Approval.AppOwnerApproval = &AppOwnerApproval{}
+						if stepsItem.Approval.AppOwnerApproval.AllowSelfApproval != nil {
+							steps1.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.AppOwnerApproval.AllowSelfApproval)
+						} else {
+							steps1.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolNull()
 						}
 					}
 					if stepsItem.Approval.Assigned != nil {
@@ -136,84 +168,52 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					} else {
 						steps1.Approval.Assigned = types.BoolNull()
 					}
-					if steps1.Approval.EntitlementOwners == nil {
-						steps1.Approval.EntitlementOwners = &EntitlementOwnerApproval{}
+					if steps1.Approval.EntitlementOwnerApproval == nil {
+						steps1.Approval.EntitlementOwnerApproval = &EntitlementOwnerApproval{}
 					}
-					if stepsItem.Approval.EntitlementOwners == nil {
-						steps1.Approval.EntitlementOwners = nil
+					if stepsItem.Approval.EntitlementOwnerApproval == nil {
+						steps1.Approval.EntitlementOwnerApproval = nil
 					} else {
-						steps1.Approval.EntitlementOwners = &EntitlementOwnerApproval{}
-						if stepsItem.Approval.EntitlementOwners.AllowSelfApproval != nil {
-							steps1.Approval.EntitlementOwners.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.EntitlementOwners.AllowSelfApproval)
+						steps1.Approval.EntitlementOwnerApproval = &EntitlementOwnerApproval{}
+						if stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval != nil {
+							steps1.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
 						} else {
-							steps1.Approval.EntitlementOwners.AllowSelfApproval = types.BoolNull()
+							steps1.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolNull()
 						}
-						if stepsItem.Approval.EntitlementOwners.Fallback != nil {
-							steps1.Approval.EntitlementOwners.Fallback = types.BoolValue(*stepsItem.Approval.EntitlementOwners.Fallback)
+						if stepsItem.Approval.EntitlementOwnerApproval.Fallback != nil {
+							steps1.Approval.EntitlementOwnerApproval.Fallback = types.BoolValue(*stepsItem.Approval.EntitlementOwnerApproval.Fallback)
 						} else {
-							steps1.Approval.EntitlementOwners.Fallback = types.BoolNull()
+							steps1.Approval.EntitlementOwnerApproval.Fallback = types.BoolNull()
 						}
-						steps1.Approval.EntitlementOwners.FallbackUserIds = nil
-						for _, v := range stepsItem.Approval.EntitlementOwners.FallbackUserIds {
-							steps1.Approval.EntitlementOwners.FallbackUserIds = append(steps1.Approval.EntitlementOwners.FallbackUserIds, types.StringValue(v))
+						steps1.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
+						for _, v := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
+							steps1.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps1.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 						}
 					}
-					if steps1.Approval.Group == nil {
-						steps1.Approval.Group = &AppGroupApproval{}
+					if steps1.Approval.ManagerApproval == nil {
+						steps1.Approval.ManagerApproval = &ManagerApproval{}
 					}
-					if stepsItem.Approval.Group == nil {
-						steps1.Approval.Group = nil
+					if stepsItem.Approval.ManagerApproval == nil {
+						steps1.Approval.ManagerApproval = nil
 					} else {
-						steps1.Approval.Group = &AppGroupApproval{}
-						if stepsItem.Approval.Group.AllowSelfApproval != nil {
-							steps1.Approval.Group.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.Group.AllowSelfApproval)
+						steps1.Approval.ManagerApproval = &ManagerApproval{}
+						if stepsItem.Approval.ManagerApproval.AllowSelfApproval != nil {
+							steps1.Approval.ManagerApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.ManagerApproval.AllowSelfApproval)
 						} else {
-							steps1.Approval.Group.AllowSelfApproval = types.BoolNull()
+							steps1.Approval.ManagerApproval.AllowSelfApproval = types.BoolNull()
 						}
-						if stepsItem.Approval.Group.AppGroupID != nil {
-							steps1.Approval.Group.AppGroupID = types.StringValue(*stepsItem.Approval.Group.AppGroupID)
+						steps1.Approval.ManagerApproval.AssignedUserIds = nil
+						for _, v := range stepsItem.Approval.ManagerApproval.AssignedUserIds {
+							steps1.Approval.ManagerApproval.AssignedUserIds = append(steps1.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
+						}
+						if stepsItem.Approval.ManagerApproval.Fallback != nil {
+							steps1.Approval.ManagerApproval.Fallback = types.BoolValue(*stepsItem.Approval.ManagerApproval.Fallback)
 						} else {
-							steps1.Approval.Group.AppGroupID = types.StringNull()
+							steps1.Approval.ManagerApproval.Fallback = types.BoolNull()
 						}
-						if stepsItem.Approval.Group.AppID != nil {
-							steps1.Approval.Group.AppID = types.StringValue(*stepsItem.Approval.Group.AppID)
-						} else {
-							steps1.Approval.Group.AppID = types.StringNull()
-						}
-						if stepsItem.Approval.Group.Fallback != nil {
-							steps1.Approval.Group.Fallback = types.BoolValue(*stepsItem.Approval.Group.Fallback)
-						} else {
-							steps1.Approval.Group.Fallback = types.BoolNull()
-						}
-						steps1.Approval.Group.FallbackUserIds = nil
-						for _, v := range stepsItem.Approval.Group.FallbackUserIds {
-							steps1.Approval.Group.FallbackUserIds = append(steps1.Approval.Group.FallbackUserIds, types.StringValue(v))
-						}
-					}
-					if steps1.Approval.Manager == nil {
-						steps1.Approval.Manager = &ManagerApproval{}
-					}
-					if stepsItem.Approval.Manager == nil {
-						steps1.Approval.Manager = nil
-					} else {
-						steps1.Approval.Manager = &ManagerApproval{}
-						if stepsItem.Approval.Manager.AllowSelfApproval != nil {
-							steps1.Approval.Manager.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.Manager.AllowSelfApproval)
-						} else {
-							steps1.Approval.Manager.AllowSelfApproval = types.BoolNull()
-						}
-						steps1.Approval.Manager.AssignedUserIds = nil
-						for _, v := range stepsItem.Approval.Manager.AssignedUserIds {
-							steps1.Approval.Manager.AssignedUserIds = append(steps1.Approval.Manager.AssignedUserIds, types.StringValue(v))
-						}
-						if stepsItem.Approval.Manager.Fallback != nil {
-							steps1.Approval.Manager.Fallback = types.BoolValue(*stepsItem.Approval.Manager.Fallback)
-						} else {
-							steps1.Approval.Manager.Fallback = types.BoolNull()
-						}
-						steps1.Approval.Manager.FallbackUserIds = nil
-						for _, v := range stepsItem.Approval.Manager.FallbackUserIds {
-							steps1.Approval.Manager.FallbackUserIds = append(steps1.Approval.Manager.FallbackUserIds, types.StringValue(v))
+						steps1.Approval.ManagerApproval.FallbackUserIds = nil
+						for _, v := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
+							steps1.Approval.ManagerApproval.FallbackUserIds = append(steps1.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 						}
 					}
 					if stepsItem.Approval.RequireApprovalReason != nil {
@@ -226,42 +226,42 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					} else {
 						steps1.Approval.RequireReassignmentReason = types.BoolNull()
 					}
-					if steps1.Approval.Self == nil {
-						steps1.Approval.Self = &SelfApproval{}
+					if steps1.Approval.SelfApproval == nil {
+						steps1.Approval.SelfApproval = &SelfApproval{}
 					}
-					if stepsItem.Approval.Self == nil {
-						steps1.Approval.Self = nil
+					if stepsItem.Approval.SelfApproval == nil {
+						steps1.Approval.SelfApproval = nil
 					} else {
-						steps1.Approval.Self = &SelfApproval{}
-						steps1.Approval.Self.AssignedUserIds = nil
-						for _, v := range stepsItem.Approval.Self.AssignedUserIds {
-							steps1.Approval.Self.AssignedUserIds = append(steps1.Approval.Self.AssignedUserIds, types.StringValue(v))
+						steps1.Approval.SelfApproval = &SelfApproval{}
+						steps1.Approval.SelfApproval.AssignedUserIds = nil
+						for _, v := range stepsItem.Approval.SelfApproval.AssignedUserIds {
+							steps1.Approval.SelfApproval.AssignedUserIds = append(steps1.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
 						}
-						if stepsItem.Approval.Self.Fallback != nil {
-							steps1.Approval.Self.Fallback = types.BoolValue(*stepsItem.Approval.Self.Fallback)
+						if stepsItem.Approval.SelfApproval.Fallback != nil {
+							steps1.Approval.SelfApproval.Fallback = types.BoolValue(*stepsItem.Approval.SelfApproval.Fallback)
 						} else {
-							steps1.Approval.Self.Fallback = types.BoolNull()
+							steps1.Approval.SelfApproval.Fallback = types.BoolNull()
 						}
-						steps1.Approval.Self.FallbackUserIds = nil
-						for _, v := range stepsItem.Approval.Self.FallbackUserIds {
-							steps1.Approval.Self.FallbackUserIds = append(steps1.Approval.Self.FallbackUserIds, types.StringValue(v))
+						steps1.Approval.SelfApproval.FallbackUserIds = nil
+						for _, v := range stepsItem.Approval.SelfApproval.FallbackUserIds {
+							steps1.Approval.SelfApproval.FallbackUserIds = append(steps1.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 						}
 					}
-					if steps1.Approval.Users == nil {
-						steps1.Approval.Users = &UserApproval{}
+					if steps1.Approval.UserApproval == nil {
+						steps1.Approval.UserApproval = &UserApproval{}
 					}
-					if stepsItem.Approval.Users == nil {
-						steps1.Approval.Users = nil
+					if stepsItem.Approval.UserApproval == nil {
+						steps1.Approval.UserApproval = nil
 					} else {
-						steps1.Approval.Users = &UserApproval{}
-						if stepsItem.Approval.Users.AllowSelfApproval != nil {
-							steps1.Approval.Users.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.Users.AllowSelfApproval)
+						steps1.Approval.UserApproval = &UserApproval{}
+						if stepsItem.Approval.UserApproval.AllowSelfApproval != nil {
+							steps1.Approval.UserApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.UserApproval.AllowSelfApproval)
 						} else {
-							steps1.Approval.Users.AllowSelfApproval = types.BoolNull()
+							steps1.Approval.UserApproval.AllowSelfApproval = types.BoolNull()
 						}
-						steps1.Approval.Users.UserIds = nil
-						for _, v := range stepsItem.Approval.Users.UserIds {
-							steps1.Approval.Users.UserIds = append(steps1.Approval.Users.UserIds, types.StringValue(v))
+						steps1.Approval.UserApproval.UserIds = nil
+						for _, v := range stepsItem.Approval.UserApproval.UserIds {
+							steps1.Approval.UserApproval.UserIds = append(steps1.Approval.UserApproval.UserIds, types.StringValue(v))
 						}
 					}
 				}
@@ -284,47 +284,47 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 						steps1.Provision.ProvisionPolicy = nil
 					} else {
 						steps1.Provision.ProvisionPolicy = &ProvisionPolicy{}
-						if steps1.Provision.ProvisionPolicy.Connector == nil {
-							steps1.Provision.ProvisionPolicy.Connector = &ConnectorProvision{}
+						if steps1.Provision.ProvisionPolicy.ConnectorProvision == nil {
+							steps1.Provision.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
 						}
-						if stepsItem.Provision.ProvisionPolicy.Connector == nil {
-							steps1.Provision.ProvisionPolicy.Connector = nil
+						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision == nil {
+							steps1.Provision.ProvisionPolicy.ConnectorProvision = nil
 						} else {
-							steps1.Provision.ProvisionPolicy.Connector = &ConnectorProvision{}
+							steps1.Provision.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
 						}
-						if steps1.Provision.ProvisionPolicy.Delegated == nil {
-							steps1.Provision.ProvisionPolicy.Delegated = &DelegatedProvision{}
+						if steps1.Provision.ProvisionPolicy.DelegatedProvision == nil {
+							steps1.Provision.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
 						}
-						if stepsItem.Provision.ProvisionPolicy.Delegated == nil {
-							steps1.Provision.ProvisionPolicy.Delegated = nil
+						if stepsItem.Provision.ProvisionPolicy.DelegatedProvision == nil {
+							steps1.Provision.ProvisionPolicy.DelegatedProvision = nil
 						} else {
-							steps1.Provision.ProvisionPolicy.Delegated = &DelegatedProvision{}
-							if stepsItem.Provision.ProvisionPolicy.Delegated.AppID != nil {
-								steps1.Provision.ProvisionPolicy.Delegated.AppID = types.StringValue(*stepsItem.Provision.ProvisionPolicy.Delegated.AppID)
+							steps1.Provision.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
+							if stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID != nil {
+								steps1.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringValue(*stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
 							} else {
-								steps1.Provision.ProvisionPolicy.Delegated.AppID = types.StringNull()
+								steps1.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringNull()
 							}
-							if stepsItem.Provision.ProvisionPolicy.Delegated.EntitlementID != nil {
-								steps1.Provision.ProvisionPolicy.Delegated.EntitlementID = types.StringValue(*stepsItem.Provision.ProvisionPolicy.Delegated.EntitlementID)
+							if stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID != nil {
+								steps1.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringValue(*stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
 							} else {
-								steps1.Provision.ProvisionPolicy.Delegated.EntitlementID = types.StringNull()
+								steps1.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringNull()
 							}
 						}
-						if steps1.Provision.ProvisionPolicy.Manual == nil {
-							steps1.Provision.ProvisionPolicy.Manual = &ManualProvision{}
+						if steps1.Provision.ProvisionPolicy.ManualProvision == nil {
+							steps1.Provision.ProvisionPolicy.ManualProvision = &ManualProvision{}
 						}
-						if stepsItem.Provision.ProvisionPolicy.Manual == nil {
-							steps1.Provision.ProvisionPolicy.Manual = nil
+						if stepsItem.Provision.ProvisionPolicy.ManualProvision == nil {
+							steps1.Provision.ProvisionPolicy.ManualProvision = nil
 						} else {
-							steps1.Provision.ProvisionPolicy.Manual = &ManualProvision{}
-							if stepsItem.Provision.ProvisionPolicy.Manual.Instructions != nil {
-								steps1.Provision.ProvisionPolicy.Manual.Instructions = types.StringValue(*stepsItem.Provision.ProvisionPolicy.Manual.Instructions)
+							steps1.Provision.ProvisionPolicy.ManualProvision = &ManualProvision{}
+							if stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions != nil {
+								steps1.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringValue(*stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions)
 							} else {
-								steps1.Provision.ProvisionPolicy.Manual.Instructions = types.StringNull()
+								steps1.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringNull()
 							}
-							steps1.Provision.ProvisionPolicy.Manual.UserIds = nil
-							for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.UserIds {
-								steps1.Provision.ProvisionPolicy.Manual.UserIds = append(steps1.Provision.ProvisionPolicy.Manual.UserIds, types.StringValue(v))
+							steps1.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
+							for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
+								steps1.Provision.ProvisionPolicy.ManualProvision.UserIds = append(steps1.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 							}
 						}
 					}
@@ -366,8 +366,8 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 	}
 }
 
-func (r *PolicyResourceModel) RefreshFromCreateResponse(resp *shared.CreatePolicyResponse) {
-
+func (r *PolicyResourceModel) RefreshFromCreateResponse(resp *shared.Policy) {
+	r.RefreshFromGetResponse(resp)
 }
 
 func (r *PolicyResourceModel) RefreshFromUpdateResponse(resp *shared.Policy) {

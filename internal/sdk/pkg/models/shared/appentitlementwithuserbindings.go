@@ -4,8 +4,8 @@ package shared
 
 // AppEntitlementWithUserBindings - The AppEntitlementWithUserBindings message.
 type AppEntitlementWithUserBindings struct {
+	// The AppEntitlementView message.
+	AppEntitlementView *AppEntitlementView `json:"entitlement,omitempty"`
 	// The appEntitlementUserBindings field.
 	AppEntitlementUserBindings []AppEntitlementUserBinding `json:"appEntitlementUserBindings,omitempty"`
-	// The AppEntitlementView message.
-	Entitlement *AppEntitlementView `json:"entitlement,omitempty"`
 }

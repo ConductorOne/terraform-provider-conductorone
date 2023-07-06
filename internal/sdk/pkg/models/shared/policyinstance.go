@@ -4,17 +4,17 @@ package shared
 
 // PolicyInstance - The PolicyInstance message.
 type PolicyInstance struct {
+	// The Policy message.
+	Policy *Policy `json:"policy,omitempty"`
 	// The PolicyStepInstance message.
 	//
 	// This message contains a oneof named instance. Only a single field of the following list may be set at a time:
 	//   - approval
 	//   - provision
 	//
-	Current *PolicyStepInstance `json:"current,omitempty"`
+	PolicyStepInstance *PolicyStepInstance `json:"current,omitempty"`
 	// The history field.
 	History []PolicyStepInstance `json:"history,omitempty"`
 	// The next field.
 	Next []PolicyStep `json:"next,omitempty"`
-	// The Policy message.
-	Policy *Policy `json:"policy,omitempty"`
 }

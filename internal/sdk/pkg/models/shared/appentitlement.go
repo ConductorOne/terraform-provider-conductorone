@@ -15,6 +15,14 @@ type AppEntitlementDurationUnset struct {
 //   - durationUnset
 //   - durationGrant
 type AppEntitlement struct {
+	// The ProvisionPolicy message.
+	//
+	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+	//   - connector
+	//   - manual
+	//   - delegated
+	//
+	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The alias field.
 	Alias *string `json:"alias,omitempty"`
 	// The appId field.
@@ -45,14 +53,6 @@ type AppEntitlement struct {
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
-	// The ProvisionPolicy message.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - connector
-	//   - manual
-	//   - delegated
-	//
-	ProvisionerPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The revokePolicyId field.
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
 	// The riskLevelValueId field.

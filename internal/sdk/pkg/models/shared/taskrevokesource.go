@@ -11,11 +11,11 @@ package shared
 //   - nonUsage
 type TaskRevokeSource struct {
 	// The TaskRevokeSourceExpired message.
-	Expired *TaskRevokeSourceExpired `json:"expired,omitempty"`
+	TaskRevokeSourceExpired *TaskRevokeSourceExpired `json:"expired,omitempty"`
 	// The TaskRevokeSourceNonUsage message.
-	NonUsage *TaskRevokeSourceNonUsage `json:"nonUsage,omitempty"`
+	TaskRevokeSourceNonUsage *TaskRevokeSourceNonUsage `json:"nonUsage,omitempty"`
 	// The TaskRevokeSourceRequest message.
-	Request *TaskRevokeSourceRequest `json:"request,omitempty"`
+	TaskRevokeSourceRequest *TaskRevokeSourceRequest `json:"request,omitempty"`
 	// The TaskRevokeSourceReview message.
-	Review *TaskRevokeSourceReview `json:"review,omitempty"`
+	TaskRevokeSourceReview *TaskRevokeSourceReview `json:"review,omitempty"`
 }

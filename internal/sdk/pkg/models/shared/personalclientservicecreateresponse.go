@@ -5,7 +5,7 @@ package shared
 // PersonalClientServiceCreateResponse - The PersonalClientServiceCreateResponse message.
 type PersonalClientServiceCreateResponse struct {
 	// The PersonalClient message.
-	Client *PersonalClient `json:"client,omitempty"`
+	PersonalClient *PersonalClient `json:"client,omitempty"`
 	// The clientSecret field.
 	ClientSecret *string `json:"clientSecret,omitempty"`
 }
