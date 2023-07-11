@@ -22,7 +22,7 @@ import (
 	"gopkg.in/square/go-jose.v2/json"
 	"gopkg.in/square/go-jose.v2/jwt"
 
-	"terraform/internal/sdk/uhttp"
+	"conductorone/internal/sdk/uhttp"
 )
 
 const (

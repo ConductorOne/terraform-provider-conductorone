@@ -9,7 +9,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"terraform/internal/sdk/uhttp"
+	"conductorone/internal/sdk/uhttp"
 )
 
 const ClientIdGolangSDK = "2RCzHlak5q7CY14SdBc8HoZEJRf"

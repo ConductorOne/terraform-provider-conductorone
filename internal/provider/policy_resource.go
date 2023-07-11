@@ -14,9 +14,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"terraform/internal/sdk/pkg/models/operations"
-	"terraform/internal/sdk/pkg/models/shared"
-	"terraform/internal/validators"
+	"conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
