@@ -12,12 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"terraform/internal/sdk"
-	"terraform/internal/sdk/pkg/models/operations"
-	"terraform/internal/validators"
-
-	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"conductorone/internal/sdk/pkg/models/operations"
@@ -54,10 +48,7 @@ type PolicyResourceModel struct {
 }
 
 func (r *PolicyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-
 	resp.TypeName = req.ProviderTypeName + "_policy"
-	spew.Dump("Metadata", resp.TypeName)
-	spew.Fdump(os.Stderr, "Metadata", resp.TypeName)
 }
 
 func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -417,7 +408,7 @@ func (r *PolicyResource) Configure(ctx context.Context, req resource.ConfigureRe
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneAPI, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return

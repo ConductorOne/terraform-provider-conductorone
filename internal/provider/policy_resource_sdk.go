@@ -8,6 +8,10 @@ import (
 	"time"
 )
 
+func BoolPointer(b bool) *bool {
+    return &b
+}
+
 func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {

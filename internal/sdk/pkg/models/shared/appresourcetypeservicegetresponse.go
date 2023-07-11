@@ -2,10 +2,66 @@
 
 package shared
 
+import (
+	"encoding/json"
+)
+
+// AppResourceTypeServiceGetResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+type AppResourceTypeServiceGetResponseExpanded struct {
+	// The type of the serialized message.
+	AtType *string `json:"@type,omitempty"`
+
+	AdditionalProperties interface{} `json:"-"`
+}
+type _AppResourceTypeServiceGetResponseExpanded AppResourceTypeServiceGetResponseExpanded
+
+func (c *AppResourceTypeServiceGetResponseExpanded) UnmarshalJSON(bs []byte) error {
+	data := _AppResourceTypeServiceGetResponseExpanded{}
+
+	if err := json.Unmarshal(bs, &data); err != nil {
+		return err
+	}
+	*c = AppResourceTypeServiceGetResponseExpanded(data)
+
+	additionalFields := make(map[string]interface{})
+
+	if err := json.Unmarshal(bs, &additionalFields); err != nil {
+		return err
+	}
+	delete(additionalFields, "@type")
+
+	c.AdditionalProperties = additionalFields
+
+	return nil
+}
+
+func (c AppResourceTypeServiceGetResponseExpanded) MarshalJSON() ([]byte, error) {
+	out := map[string]interface{}{}
+	bs, err := json.Marshal(_AppResourceTypeServiceGetResponseExpanded(c))
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal([]byte(bs), &out); err != nil {
+		return nil, err
+	}
+
+	bs, err = json.Marshal(c.AdditionalProperties)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal([]byte(bs), &out); err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(out)
+}
+
 // AppResourceTypeServiceGetResponse - The AppResourceTypeServiceGetResponse message.
 type AppResourceTypeServiceGetResponse struct {
 	// The AppResourceTypeView message.
 	AppResourceTypeView *AppResourceTypeView `json:"appResourceTypeView,omitempty"`
 	// The expanded field.
-	Expanded []map[string]interface{} `json:"expanded,omitempty"`
+	Expanded []AppResourceTypeServiceGetResponseExpanded `json:"expanded,omitempty"`
 }
