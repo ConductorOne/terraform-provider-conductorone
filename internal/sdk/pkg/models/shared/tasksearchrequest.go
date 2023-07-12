@@ -39,6 +39,40 @@ func (e *TaskSearchRequestCurrentStep) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// TaskSearchRequestEmergencyStatus - The emergencyStatus field.
+type TaskSearchRequestEmergencyStatus string
+
+const (
+	TaskSearchRequestEmergencyStatusUnspecified  TaskSearchRequestEmergencyStatus = "UNSPECIFIED"
+	TaskSearchRequestEmergencyStatusAll          TaskSearchRequestEmergencyStatus = "ALL"
+	TaskSearchRequestEmergencyStatusNonEmergency TaskSearchRequestEmergencyStatus = "NON_EMERGENCY"
+	TaskSearchRequestEmergencyStatusEmergency    TaskSearchRequestEmergencyStatus = "EMERGENCY"
+)
+
+func (e TaskSearchRequestEmergencyStatus) ToPointer() *TaskSearchRequestEmergencyStatus {
+	return &e
+}
+
+func (e *TaskSearchRequestEmergencyStatus) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "UNSPECIFIED":
+		fallthrough
+	case "ALL":
+		fallthrough
+	case "NON_EMERGENCY":
+		fallthrough
+	case "EMERGENCY":
+		*e = TaskSearchRequestEmergencyStatus(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for TaskSearchRequestEmergencyStatus: %v", v)
+	}
+}
+
 // TaskSearchRequestSortBy - The sortBy field.
 type TaskSearchRequestSortBy string
 
@@ -132,6 +166,8 @@ type TaskSearchRequest struct {
 	CreatedBefore  *time.Time `json:"createdBefore,omitempty"`
 	// The currentStep field.
 	CurrentStep *TaskSearchRequestCurrentStep `json:"currentStep,omitempty"`
+	// The emergencyStatus field.
+	EmergencyStatus *TaskSearchRequestEmergencyStatus `json:"emergencyStatus,omitempty"`
 	// The excludeAppEntitlementIds field.
 	ExcludeAppEntitlementIds []string `json:"excludeAppEntitlementIds,omitempty"`
 	//  Exclude Specific TaskIDs from this serach result.

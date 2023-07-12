@@ -17,7 +17,7 @@ import(
 	"context"
 	"log"
 	"terraform/internal/sdk"
-	"terraform/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk/pkg/models/shared"
 	"terraform/internal/sdk/pkg/types"
 )
 

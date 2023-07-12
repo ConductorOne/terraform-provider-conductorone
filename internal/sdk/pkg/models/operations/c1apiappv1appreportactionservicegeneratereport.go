@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"conductorone/internal/sdk/pkg/models/shared"
 )
 
 type C1APIAppV1AppReportActionServiceGenerateReportRequest struct {

@@ -17,7 +17,7 @@ import(
 	"context"
 	"log"
 	"terraform/internal/sdk"
-	"terraform/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk/pkg/models/shared"
 )
 
 func main() {
