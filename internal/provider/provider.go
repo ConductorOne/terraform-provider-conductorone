@@ -88,7 +88,6 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 	}, opts...)
 	if err != nil {
 		panic(err)
-		return
 	}
 
 	resp.DataSourceData = client

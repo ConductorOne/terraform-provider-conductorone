@@ -29,11 +29,11 @@ resource "conductorone_policy" "new_policy" {
             require_approval_reason = "false"
             app_group_approval = {
               allow_self_approval = "true"
-              app_group_id = "2P4X9MMlOTlQ80l1umHhpuukkWW"
-              app_id = "2P4WqESCtljFQ46vSDX9Cred22S"
+              app_group_id = "..."
+              app_id = "..."
               fallback = "true"
               fallback_user_ids = [
-                "2P4VnGXgZv5PDKQ9zEJnjEXNBxY"
+                "..."
               ]
             }
           }

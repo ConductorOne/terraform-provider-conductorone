@@ -4,4 +4,4 @@ run:
 
 .PHONY: gen
 gen:
-	speakeasy generate sdk -s openapi.yaml -o . -l conductorone-sdk-terraform -d
+	speakeasy generate sdk -s openapi.yaml -o . -l conductorone -d

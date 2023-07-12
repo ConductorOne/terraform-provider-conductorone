@@ -8,10 +8,6 @@ import (
 	"time"
 )
 
-func BoolPointer(b bool) *bool {
-    return &b
-}
-
 func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
@@ -35,20 +31,20 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 						AllowReassignment: step.Approval.AllowReassignment.ValueBoolPointer(),
 						Assigned: step.Approval.Assigned.ValueBoolPointer(),
 						RequireApprovalReason:       step.Approval.RequireApprovalReason.ValueBoolPointer(),
-						RequireReassignmentReason:   BoolPointer(step.Approval.RequireReassignmentReason.ValueBool()),
+						RequireReassignmentReason:   step.Approval.RequireReassignmentReason.ValueBoolPointer(),
 					},
 				}
 				if step.Approval.AppOwnerApproval != nil {
 					newPolicyStep.Approval.AppOwnerApproval = &shared.AppOwnerApproval{
-						AllowSelfApproval: BoolPointer(step.Approval.AppOwnerApproval.AllowSelfApproval.ValueBool()),
+						AllowSelfApproval: step.Approval.AppOwnerApproval.AllowSelfApproval.ValueBoolPointer(),
 					}
 				}
 				if step.Approval.AppGroupApproval != nil {
 					newPolicyStep.Approval.AppGroupApproval = &shared.AppGroupApproval{
-						AllowSelfApproval: BoolPointer(step.Approval.AppGroupApproval.AllowSelfApproval.ValueBool()),
+						AllowSelfApproval: step.Approval.AppGroupApproval.AllowSelfApproval.ValueBoolPointer(),
 						AppGroupID:        step.Approval.AppGroupApproval.AppGroupID.ValueStringPointer(),
 						AppID:             step.Approval.AppGroupApproval.AppID.ValueStringPointer(),
-						Fallback:          BoolPointer(step.Approval.AppGroupApproval.Fallback.ValueBool()),
+						Fallback:          step.Approval.AppGroupApproval.Fallback.ValueBoolPointer(),
 					}
 					for _, v := range step.Approval.AppGroupApproval.FallbackUserIds {
 						newPolicyStep.Approval.AppGroupApproval.FallbackUserIds = append(newPolicyStep.Approval.AppGroupApproval.FallbackUserIds, v.ValueString())
@@ -56,8 +52,8 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 				}
 				if step.Approval.EntitlementOwnerApproval != nil {
 					newPolicyStep.Approval.EntitlementOwnerApproval = &shared.EntitlementOwnerApproval{
-						AllowSelfApproval: BoolPointer(step.Approval.EntitlementOwnerApproval.AllowSelfApproval.ValueBool()),
-						Fallback:          BoolPointer(step.Approval.EntitlementOwnerApproval.Fallback.ValueBool()),
+						AllowSelfApproval: step.Approval.EntitlementOwnerApproval.AllowSelfApproval.ValueBoolPointer(),
+						Fallback:          step.Approval.EntitlementOwnerApproval.Fallback.ValueBoolPointer(),
 					}
 					for _, v := range step.Approval.EntitlementOwnerApproval.FallbackUserIds {
 						newPolicyStep.Approval.EntitlementOwnerApproval.FallbackUserIds = append(newPolicyStep.Approval.EntitlementOwnerApproval.FallbackUserIds, v.ValueString())
@@ -65,8 +61,8 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 				}
 				if step.Approval.ManagerApproval != nil {
 					newPolicyStep.Approval.ManagerApproval = &shared.ManagerApproval{
-						AllowSelfApproval: BoolPointer(step.Approval.ManagerApproval.AllowSelfApproval.ValueBool()),
-						Fallback:          BoolPointer(step.Approval.ManagerApproval.Fallback.ValueBool()),
+						AllowSelfApproval: step.Approval.ManagerApproval.AllowSelfApproval.ValueBoolPointer(),
+						Fallback:          step.Approval.ManagerApproval.Fallback.ValueBoolPointer(),
 					}
 					for _, v := range step.Approval.ManagerApproval.FallbackUserIds {
 						newPolicyStep.Approval.ManagerApproval.FallbackUserIds = append(newPolicyStep.Approval.ManagerApproval.FallbackUserIds, v.ValueString())
@@ -77,7 +73,7 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 				}
 				if step.Approval.SelfApproval != nil {
 					newPolicyStep.Approval.SelfApproval = &shared.SelfApproval{
-						Fallback: BoolPointer(step.Approval.SelfApproval.Fallback.ValueBool()),
+						Fallback: step.Approval.SelfApproval.Fallback.ValueBoolPointer(),
 					}
 					for _, v := range step.Approval.SelfApproval.FallbackUserIds {
 						newPolicyStep.Approval.SelfApproval.FallbackUserIds = append(newPolicyStep.Approval.SelfApproval.FallbackUserIds, v.ValueString())
@@ -88,7 +84,7 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 				}
 				if step.Approval.UserApproval != nil {
 					newPolicyStep.Approval.UserApproval = &shared.UserApproval{
-						AllowSelfApproval: BoolPointer(step.Approval.UserApproval.AllowSelfApproval.ValueBool()),
+						AllowSelfApproval: step.Approval.UserApproval.AllowSelfApproval.ValueBoolPointer(),
 					}
 					for _, v := range step.Approval.UserApproval.UserIds {
 						newPolicyStep.Approval.UserApproval.UserIds = append(newPolicyStep.Approval.UserApproval.UserIds, v.ValueString())

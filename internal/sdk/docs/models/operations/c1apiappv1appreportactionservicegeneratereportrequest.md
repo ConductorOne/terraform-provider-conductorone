@@ -1,9 +1,0 @@
-# C1APIAppV1AppReportActionServiceGenerateReportRequest
-
-
-## Fields
-
-| Field                                                                                                           | Type                                                                                                            | Required                                                                                                        | Description                                                                                                     |
-| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `AppActionsServiceGenerateReportRequest`                                                                        | [*shared.AppActionsServiceGenerateReportRequest](../../models/shared/appactionsservicegeneratereportrequest.md) | :heavy_minus_sign:                                                                                              | N/A                                                                                                             |
-| `AppID`                                                                                                         | *string*                                                                                                        | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
