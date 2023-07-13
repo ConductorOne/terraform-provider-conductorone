@@ -1,9 +1,0 @@
-# C1APIDirectoryV1DirectoryServiceDeleteRequest
-
-
-## Fields
-
-| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
-| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `DirectoryServiceDeleteRequest`                                                               | [*shared.DirectoryServiceDeleteRequest](../../models/shared/directoryservicedeleterequest.md) | :heavy_minus_sign:                                                                            | N/A                                                                                           |
-| `AppID`                                                                                       | *string*                                                                                      | :heavy_check_mark:                                                                            | N/A                                                                                           |
