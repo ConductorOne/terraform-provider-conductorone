@@ -96,6 +96,9 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 
 func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
+		NewCatalogResource,
+		NewCatalogRequestableEntriesResource,
+		NewCatalogVisibilityBindingsResource,
 		NewPolicyResource,
 	}
 }
