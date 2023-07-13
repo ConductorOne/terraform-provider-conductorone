@@ -22,11 +22,9 @@ type ConductoroneProvider struct {
 	version string
 }
 
-// TerraformProviderModel describes the provider data model.
+// ConductoroneProviderModel describes the provider data model.
 type ConductoroneProviderModel struct {
 	ServerURL types.String `tfsdk:"server_url"`
-	ClientID     types.String `tfsdk:"client_id"`
-	ClientSecret types.String `tfsdk:"client_secret"`
 }
 
 func (p *ConductoroneProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -43,16 +41,6 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 				Optional:            true,
 				Required:            false,
 			},
-			"client_id": schema.StringAttribute{
-				MarkdownDescription: "ClientId for Auth",
-				Optional:            false,
-				Required:            true,
-			},
-			"client_secret": schema.StringAttribute{
-				MarkdownDescription: "ClientSecret for Auth",
-				Optional:            false,
-				Required:            true,
-			},
 		},
 	}
 }
@@ -67,28 +55,15 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 	}
 
 	ServerURL := data.ServerURL.ValueString()
-	ClientID := data.ClientID.ValueString()
-	ClientSecret := data.ClientSecret.ValueString()
 
 	if ServerURL == "" {
 		ServerURL = "https://{tenantDomain}.conductor.one"
 	}
 
-	opt, err := sdk.WithTenantCustom(ServerURL)
-	if err != nil {
-		return
+	opts := []sdk.SDKOption{
+		sdk.WithServerURL(ServerURL),
 	}
-
-	opts := []sdk.CustomSDKOption{
-		opt,
-	}
-	client, err := sdk.NewWithCredentials(ctx, &sdk.ClientCredentials{
-		ClientID:     ClientID,
-		ClientSecret: ClientSecret,
-	}, opts...)
-	if err != nil {
-		panic(err)
-	}
+	client := sdk.New(opts...)
 
 	resp.DataSourceData = client
 	resp.ResourceData = client

@@ -258,5 +258,7 @@ internal/sdk/pkg/models/shared/userref.go
 internal/sdk/pkg/models/shared/userexpandmask.go
 USAGE.md
 internal/provider/provider.go
+examples/provider/provider.tf
 internal/provider/policy_resource.go
 internal/provider/policy_resource_sdk.go
+examples/resources/conductorone_policy/resource.tf
