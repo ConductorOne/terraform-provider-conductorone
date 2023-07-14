@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"net/http"
 	"conductorone/internal/sdk/pkg/models/shared"
+	"net/http"
 )
 
 type C1APIDirectoryV1DirectoryServiceDeleteRequest struct {
