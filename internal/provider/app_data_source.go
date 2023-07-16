@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -87,7 +87,7 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Description: `The description field.`,
 			},
 			"display_name": schema.StringAttribute{
-				Computed:    true,
+				Required:    true,
 				Description: `The displayName field.`,
 			},
 			"field_mask": schema.StringAttribute{
@@ -102,7 +102,7 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Description: `The iconUrl field.`,
 			},
 			"id": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
 				Description: `The id field.`,
 			},
 			"logo_uri": schema.StringAttribute{
@@ -178,11 +178,11 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		return
 	}
 
-	id := data.ID.ValueString()
-	request := operations.C1APIAppV1AppsGetRequest{
-		ID: id,
+	displayName := data.DisplayName.ValueStringPointer()
+	request := shared.SearchAppsRequest{
+		DisplayName: displayName,
 	}
-	res, err := r.client.Apps.Get(ctx, request)
+	res, err := r.client.AppSearch.Search(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		return
@@ -195,16 +195,18 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.GetAppResponse.App == nil {
+	if res.SearchAppsResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.GetAppResponse.App)
+
+	if len(res.SearchAppsResponse.List) != 1 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Expected 1 app, got %d", len(res.SearchAppsResponse.List)), debugResponse(res.RawResponse))
+		return
+	}
+
+	data.RefreshFromGetResponse(&res.SearchAppsResponse.List[0])
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
-
-// func (r *AppDataSource) ImportState(ctx context.Context, req datasource.ImportStateRequest, resp *datasource.) {
-// 	datasource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-// }
