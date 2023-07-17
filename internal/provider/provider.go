@@ -106,6 +106,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewAppDataSource,
+		NewPolicyDataSource,
 	}
 }
 

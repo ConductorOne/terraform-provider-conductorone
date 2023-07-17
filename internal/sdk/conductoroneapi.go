@@ -77,6 +77,7 @@ type ConductoroneAPI struct {
 	Directory                 *directory
 	PersonalClient            *personalClient
 	Policies                  *policies
+	PolicySearch			  *policySearch
 	RequestCatalogManagement  *requestCatalogManagement
 	RequestCatalogSearch      *requestCatalogSearch
 	Roles                     *roles
@@ -198,6 +199,8 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.PersonalClient = newPersonalClient(sdk.sdkConfiguration)
 
 	sdk.Policies = newPolicies(sdk.sdkConfiguration)
+
+	sdk.PolicySearch = newPolicySearch(sdk.sdkConfiguration)
 
 	sdk.RequestCatalogSearch = newRequestCatalogSearch(sdk.sdkConfiguration)
 
