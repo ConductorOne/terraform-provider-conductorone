@@ -6,6 +6,8 @@ package shared
 type SearchAppsRequest struct {
 	// The appIds field.
 	AppIds []string `json:"appIds,omitempty"`
+	// The displayName field.
+	DisplayName *string `json:"displayName,omitempty"`
 	// The excludeAppIds field.
 	ExcludeAppIds []string `json:"excludeAppIds,omitempty"`
 	// The pageSize field.

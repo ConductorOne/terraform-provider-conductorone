@@ -236,12 +236,7 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 		} else {
 			systemBuiltin = nil
 		}
-		updatedAt := new(time.Time)
-		if !accessEntitlementsItem.UpdatedAt.IsUnknown() && !accessEntitlementsItem.UpdatedAt.IsNull() {
-			*updatedAt, _ = time.Parse(time.RFC3339Nano, accessEntitlementsItem.UpdatedAt.ValueString())
-		} else {
-			updatedAt = nil
-		}
+
 		accessEntitlements = append(accessEntitlements, shared.AppEntitlement{
 			ProvisionPolicy:             provisionPolicy,
 			Alias:                       alias,
@@ -265,7 +260,6 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 			RiskLevelValueID:            riskLevelValueID,
 			Slug:                        slug,
 			SystemBuiltin:               systemBuiltin,
-			UpdatedAt:                   updatedAt,
 		})
 	}
 	appIds := make([]string, 0)

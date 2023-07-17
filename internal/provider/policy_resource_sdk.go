@@ -202,6 +202,109 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.Policy {
 		id = nil
 	}
 	policySteps := make(map[string]shared.PolicySteps)
+	for policyStepsKey, policyStepsValue := range r.PolicySteps {
+		steps := policySteps[policyStepsKey].Steps
+		for _, step := range policyStepsValue.Steps {
+			if step.Approval != nil {
+				newPolicyStep := shared.PolicyStep{
+					Approval: &shared.Approval{
+						AllowReassignment: step.Approval.AllowReassignment.ValueBoolPointer(),
+						Assigned: step.Approval.Assigned.ValueBoolPointer(),
+						RequireApprovalReason:       step.Approval.RequireApprovalReason.ValueBoolPointer(),
+						RequireReassignmentReason:   step.Approval.RequireReassignmentReason.ValueBoolPointer(),
+					},
+				}
+				if step.Approval.AppOwnerApproval != nil {
+					newPolicyStep.Approval.AppOwnerApproval = &shared.AppOwnerApproval{
+						AllowSelfApproval: step.Approval.AppOwnerApproval.AllowSelfApproval.ValueBoolPointer(),
+					}
+				}
+				if step.Approval.AppGroupApproval != nil {
+					newPolicyStep.Approval.AppGroupApproval = &shared.AppGroupApproval{
+						AllowSelfApproval: step.Approval.AppGroupApproval.AllowSelfApproval.ValueBoolPointer(),
+						AppGroupID:        step.Approval.AppGroupApproval.AppGroupID.ValueStringPointer(),
+						AppID:             step.Approval.AppGroupApproval.AppID.ValueStringPointer(),
+						Fallback:          step.Approval.AppGroupApproval.Fallback.ValueBoolPointer(),
+					}
+					for _, v := range step.Approval.AppGroupApproval.FallbackUserIds {
+						newPolicyStep.Approval.AppGroupApproval.FallbackUserIds = append(newPolicyStep.Approval.AppGroupApproval.FallbackUserIds, v.ValueString())
+					}
+				}
+				if step.Approval.EntitlementOwnerApproval != nil {
+					newPolicyStep.Approval.EntitlementOwnerApproval = &shared.EntitlementOwnerApproval{
+						AllowSelfApproval: step.Approval.EntitlementOwnerApproval.AllowSelfApproval.ValueBoolPointer(),
+						Fallback:          step.Approval.EntitlementOwnerApproval.Fallback.ValueBoolPointer(),
+					}
+					for _, v := range step.Approval.EntitlementOwnerApproval.FallbackUserIds {
+						newPolicyStep.Approval.EntitlementOwnerApproval.FallbackUserIds = append(newPolicyStep.Approval.EntitlementOwnerApproval.FallbackUserIds, v.ValueString())
+					}
+				}
+				if step.Approval.ManagerApproval != nil {
+					newPolicyStep.Approval.ManagerApproval = &shared.ManagerApproval{
+						AllowSelfApproval: step.Approval.ManagerApproval.AllowSelfApproval.ValueBoolPointer(),
+						Fallback:          step.Approval.ManagerApproval.Fallback.ValueBoolPointer(),
+					}
+					for _, v := range step.Approval.ManagerApproval.FallbackUserIds {
+						newPolicyStep.Approval.ManagerApproval.FallbackUserIds = append(newPolicyStep.Approval.ManagerApproval.FallbackUserIds, v.ValueString())
+					}
+					for _, v := range step.Approval.ManagerApproval.AssignedUserIds {
+						newPolicyStep.Approval.ManagerApproval.AssignedUserIds = append(newPolicyStep.Approval.ManagerApproval.AssignedUserIds, v.ValueString())
+					}
+				}
+				if step.Approval.SelfApproval != nil {
+					newPolicyStep.Approval.SelfApproval = &shared.SelfApproval{
+						Fallback: step.Approval.SelfApproval.Fallback.ValueBoolPointer(),
+					}
+					for _, v := range step.Approval.SelfApproval.FallbackUserIds {
+						newPolicyStep.Approval.SelfApproval.FallbackUserIds = append(newPolicyStep.Approval.SelfApproval.FallbackUserIds, v.ValueString())
+					}
+					for _, v := range step.Approval.SelfApproval.AssignedUserIds {
+						newPolicyStep.Approval.SelfApproval.AssignedUserIds = append(newPolicyStep.Approval.SelfApproval.AssignedUserIds, v.ValueString())
+					}
+				}
+				if step.Approval.UserApproval != nil {
+					newPolicyStep.Approval.UserApproval = &shared.UserApproval{
+						AllowSelfApproval: step.Approval.UserApproval.AllowSelfApproval.ValueBoolPointer(),
+					}
+					for _, v := range step.Approval.UserApproval.UserIds {
+						newPolicyStep.Approval.UserApproval.UserIds = append(newPolicyStep.Approval.UserApproval.UserIds, v.ValueString())
+					}
+				}
+				steps = append(steps, newPolicyStep) 
+			}
+			if step.Provision != nil {
+				newPolicyStep := shared.PolicyStep{
+					Provision: &shared.Provision{
+						Assigned: step.Provision.Assigned.ValueBoolPointer(),
+					},
+				}
+				if step.Provision.ProvisionPolicy != nil {
+					if step.Provision.ProvisionPolicy.ConnectorProvision != nil {
+						newPolicyStep.Provision.ProvisionPolicy = &shared.ProvisionPolicy{
+							ConnectorProvision: &shared.ConnectorProvision{},
+						}
+					}
+					if step.Provision.ProvisionPolicy.DelegatedProvision != nil {
+						newPolicyStep.Provision.ProvisionPolicy = &shared.ProvisionPolicy{
+							DelegatedProvision: &shared.DelegatedProvision{
+								AppID: step.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueStringPointer(),
+								EntitlementID: step.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueStringPointer(),
+							},
+						}
+					}
+					if step.Provision.ProvisionPolicy.ManualProvision != nil {
+						newPolicyStep.Provision.ProvisionPolicy = &shared.ProvisionPolicy{
+							ManualProvision: &shared.ManualProvision{},
+						}
+					}
+				}
+				steps = append(steps, newPolicyStep)
+			}
+		}
+		policySteps[policyStepsKey] = shared.PolicySteps{
+			Steps: steps,
+		}
+	}
 	// Warning. This is a map, but the source tf var is not a map. This might indicate a bug.
 	policyType := new(shared.PolicyPolicyType)
 	if !r.PolicyType.IsUnknown() && !r.PolicyType.IsNull() {
@@ -233,12 +336,7 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.Policy {
 	} else {
 		systemBuiltin = nil
 	}
-	updatedAt := new(time.Time)
-	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
-		*updatedAt, _ = time.Parse(time.RFC3339Nano, r.UpdatedAt.ValueString())
-	} else {
-		updatedAt = nil
-	}
+
 	out := shared.Policy{
 		CreatedAt:                createdAt,
 		DeletedAt:                deletedAt,
@@ -250,7 +348,6 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.Policy {
 		PostActions:              postActions,
 		ReassignTasksToDelegates: reassignTasksToDelegates,
 		SystemBuiltin:            systemBuiltin,
-		UpdatedAt:                updatedAt,
 	}
 	return &out
 }
