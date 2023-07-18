@@ -75,6 +75,7 @@ type ConductoroneAPI struct {
 	AppUsageControls          *appUsageControls
 	Apps                      *apps
 	Auth                      *auth
+	Connector                 *connector
 	Directory                 *directory
 	PersonalClient            *personalClient
 	Policies                  *policies
@@ -196,6 +197,8 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.Apps = newApps(sdk.sdkConfiguration)
 
 	sdk.Auth = newAuth(sdk.sdkConfiguration)
+
+	sdk.Connector = newConnector(sdk.sdkConfiguration)
 
 	sdk.Directory = newDirectory(sdk.sdkConfiguration)
 
