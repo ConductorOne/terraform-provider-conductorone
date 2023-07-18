@@ -16,20 +16,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-// Ensure provider defined types fully satisfy framework interfaces.
-// var _ datasource.Resource = &CatalogResource{}
-// var _ datasource.ResourceWithImportState = &CatalogResource{}
-
 func NewPolicyDataSource() datasource.DataSource {
 	return &PolicyDataSource{}
 }
 
-// CatalogResource defines the resource implementation.
+// PolicyDataSource defines the data source implementation.
 type PolicyDataSource struct {
 	client *sdk.ConductoroneAPI
 }
 
-// CatalogResourceModel describes the resource data model.
+// PolicyDataSourceModel describes the data source data model.
 type PolicyDataSourceModel struct {
 	CreatedAt                types.String           `tfsdk:"created_at"`
 	DeletedAt                types.String           `tfsdk:"deleted_at"`

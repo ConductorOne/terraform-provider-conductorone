@@ -15,20 +15,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-// Ensure provider defined types fully satisfy framework interfaces.
-// var _ datasource.Resource = &CatalogResource{}
-// var _ datasource.ResourceWithImportState = &CatalogResource{}
-
 func NewAppDataSource() datasource.DataSource {
 	return &AppDataSource{}
 }
 
-// CatalogResource defines the resource implementation.
+// AppDataSource defines the data source implementation.
 type AppDataSource struct {
 	client *sdk.ConductoroneAPI
 }
 
-// CatalogResourceModel describes the resource data model.
+// AppDataSourceModel describes the data source data model.
 type AppDataSourceModel struct {
 	AppAccountID    types.String   `tfsdk:"app_account_id"`
 	AppAccountName  types.String   `tfsdk:"app_account_name"`
