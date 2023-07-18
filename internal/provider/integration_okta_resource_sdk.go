@@ -2,21 +2,22 @@
 package provider
 
 import (
+	"fmt"
 	"time"
 
 	"conductorone/internal/sdk/pkg/models/shared"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const batonCatalogID = "2HErg7BRmNdHgX8sTCWVq4E1fyh"
+const (
+	oktaCatalogID = "23w9L3qudsiSZQJ8jUP1KYyQqVW"
+	envConfigType = "type.googleapis.com/c1.api.app.v1.EnvConfig"
+)
 
-func strptr(s string) *string {
-	return &s
-}
-
-func (r *IntegrationBatonResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := strptr(batonCatalogID)
+func (r *IntegrationOktaResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+	catalogID := strptr(oktaCatalogID)
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -42,17 +43,73 @@ func (r *IntegrationBatonResourceModel) ToCreateSDKType() *shared.ConnectorServi
 	return &out
 }
 
-func (r *IntegrationBatonResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationOktaResourceModel) ToUpdateSDKType() *shared.Connector {
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
+	userIds := make([]string, 0)
+	for _, userIdsItem := range r.UserIds {
+		userIds = append(userIds, userIdsItem.ValueString())
+	}
+	oktaDomain := new(string)
+	if !r.OktaDomain.IsUnknown() && !r.OktaDomain.IsNull() {
+		*oktaDomain = r.OktaDomain.ValueString()
+	} else {
+		oktaDomain = nil
+	}
+	oktaApiKey := new(string)
+	if !r.OktaApiKey.IsUnknown() && !r.OktaApiKey.IsNull() {
+		*oktaApiKey = r.OktaApiKey.ValueString()
+	} else {
+		oktaApiKey = nil
+	}
+
+	config := &shared.ConnectorConfig{
+		AtType: strptr(envConfigType),
+		AdditionalProperties: map[string]interface{}{
+			"configuration": map[string]interface{}{
+				"okta_domain":                  oktaDomain,
+				"okta_api_key":                 oktaApiKey,
+				"okta_dont_sync_inactive_apps": "false",
+				"okta_extract_aws_saml_roles":  "true",
+			},
+		},
+	}
+
+	out := shared.Connector{
+		AppID:       strptr(r.AppID.ValueString()),
+		CatalogID:   strptr(oktaCatalogID),
+		ID:          strptr(r.ID.ValueString()),
+		Description: description,
+		DisplayName: displayName,
+		UserIds:     userIds,
+		Config:      config,
+	}
+	return &out
+}
+
+func (r *IntegrationOktaResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateSDKType()
 	return out
 }
 
-func (r *IntegrationBatonResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationOktaResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateSDKType()
 	return out
 }
 
-func (r *IntegrationBatonResourceModel) RefreshFromGetResponse(resp *shared.ConnectorServiceGetResponse) {
+func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.ConnectorServiceGetResponse) {
+	fmt.Println("RefreshFromGetResponse")
+	spew.Dump(resp)
 	if resp.ConnectorView == nil {
 		return
 	}
@@ -64,28 +121,7 @@ func (r *IntegrationBatonResourceModel) RefreshFromGetResponse(resp *shared.Conn
 	} else {
 		r.AppID = types.StringNull()
 	}
-	// TODO(jirwin): Need to figure out how to read the config. Some config values are write only.
-	// if r.ConnectorView.Connector.Config == nil {
-	// 	r.ConnectorView.Connector.Config = &ConnectorConfig1{}
-	// }
-	// if resp.ConnectorView.Connector.Config == nil {
-	// 	r.ConnectorView.Connector.Config = nil
-	// } else {
-	// 	r.ConnectorView.Connector.Config = &ConnectorConfig1{}
-	// 	if resp.ConnectorView.Connector.Config.AtType != nil {
-	// 		r.ConnectorView.Connector.Config.AtType = types.StringValue(*resp.ConnectorView.Connector.Config.AtType)
-	// 	} else {
-	// 		r.ConnectorView.Connector.Config.AtType = types.StringNull()
-	// 	}
-	// 	if r.ConnectorView.Connector.Config.AdditionalProperties.IsUnknown() {
-	// 		if resp.ConnectorView.Connector.Config.AdditionalProperties == nil {
-	// 			r.ConnectorView.Connector.Config.AdditionalProperties = types.StringNull()
-	// 		} else {
-	// 			additionalPropertiesResult, _ := json.Marshal(resp.ConnectorView.Connector.Config.AdditionalProperties)
-	// 			r.ConnectorView.Connector.Config.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
-	// 		}
-	// 	}
-	// }
+
 	if resp.ConnectorView.Connector.CreatedAt != nil {
 		r.CreatedAt = types.StringValue(resp.ConnectorView.Connector.CreatedAt.Format(time.RFC3339))
 	} else {
@@ -120,9 +156,20 @@ func (r *IntegrationBatonResourceModel) RefreshFromGetResponse(resp *shared.Conn
 	for _, v := range resp.ConnectorView.Connector.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
+	if resp.ConnectorView.Connector.Config != nil && *resp.ConnectorView.Connector.Config.AtType == envConfigType {
+		if config, ok := resp.ConnectorView.Connector.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if v, ok := config["okta_domain"]; ok {
+				r.OktaDomain = types.StringValue(v.(string))
+			}
+			if v, ok := config["okta_api_key"]; ok {
+				r.OktaApiKey = types.StringValue(v.(string))
+			}
+		}
+
+	}
 }
 
-func (r *IntegrationBatonResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
+func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
 	if resp.AppID != nil {
 		r.AppID = types.StringValue(*resp.AppID)
 	} else {

@@ -101,6 +101,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewCatalogVisibilityBindingsResource,
 		NewConnectorCredentialResource,
 		NewIntegrationBatonResource,
+		NewIntegrationOktaResource,
 		NewPolicyResource,
 		NewAppResource,
 	}

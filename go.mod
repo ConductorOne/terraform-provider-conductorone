@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.0
+	github.com/davecgh/go-spew v1.1.1
 	github.com/go-jose/go-jose/v3 v3.0.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/hashicorp/terraform-plugin-framework v1.3.0

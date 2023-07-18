@@ -2,10 +2,11 @@
 
 package shared
 
-// ConnectorServiceUpdateDelegatedRequest - The ConnectorServiceUpdateDelegatedRequest message.
-type ConnectorServiceUpdateDelegatedRequest struct {
+// ConnectorServiceUpdateRequest - The ConnectorServiceUpdateRequest message.
+type ConnectorServiceUpdateRequest struct {
 	// The Connector message.
 	Connector *Connector `json:"connector,omitempty"`
+	UpdateMask string `json:"update_mask,omitempty"`
 	// The ConnectorExpandMask message.
 	ConnectorExpandMask *ConnectorExpandMask `json:"expandMask,omitempty"`
 }

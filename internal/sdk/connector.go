@@ -436,15 +436,15 @@ func (s *connector) RotateCredential(ctx context.Context, request operations.C1A
 	return res, nil
 }
 
-// UpdateDelegated - Invokes the c1.api.app.v1.ConnectorService.UpdateDelegated method.
-func (s *connector) UpdateDelegated(ctx context.Context, request operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest) (*operations.C1APIAppV1ConnectorServiceUpdateDelegatedResponse, error) {
+// Update - Invokes the c1.api.app.v1.ConnectorService.Update method.
+func (s *connector) Update(ctx context.Context, request operations.C1APIAppV1ConnectorServiceUpdateRequest) (*operations.C1APIAppV1ConnectorServiceUpdateResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "ConnectorServiceUpdateDelegatedRequest", "json")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "ConnectorServiceUpdateRequest", "json")
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
@@ -477,7 +477,7 @@ func (s *connector) UpdateDelegated(ctx context.Context, request operations.C1AP
 
 	contentType := httpRes.Header.Get("Content-Type")
 
-	res := &operations.C1APIAppV1ConnectorServiceUpdateDelegatedResponse{
+	res := &operations.C1APIAppV1ConnectorServiceUpdateResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: contentType,
 		RawResponse: httpRes,
