@@ -100,6 +100,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewCatalogRequestableEntriesResource,
 		NewCatalogVisibilityBindingsResource,
 		NewPolicyResource,
+		NewAppResource,
 	}
 }
 
@@ -108,6 +109,7 @@ func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasou
 		NewAppDataSource,
 		NewPolicyDataSource,
 		NewUserDataSource,
+		NewAppEntitlementDataSource,
 	}
 }
 
