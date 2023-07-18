@@ -4,6 +4,7 @@ package provider
 import (
 	"time"
 
+	"conductorone/internal/sdk"
 	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -11,33 +12,15 @@ import (
 
 const batonCatalogID = "2HErg7BRmNdHgX8sTCWVq4E1fyh"
 
-func strptr(s string) *string {
-	return &s
-}
-
 func (r *IntegrationBatonResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := strptr(batonCatalogID)
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
+	catalogID := sdk.String(batonCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID:   catalogID,
-		Description: description,
-		DisplayName: displayName,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -64,28 +47,6 @@ func (r *IntegrationBatonResourceModel) RefreshFromGetResponse(resp *shared.Conn
 	} else {
 		r.AppID = types.StringNull()
 	}
-	// TODO(jirwin): Need to figure out how to read the config. Some config values are write only.
-	// if r.ConnectorView.Connector.Config == nil {
-	// 	r.ConnectorView.Connector.Config = &ConnectorConfig1{}
-	// }
-	// if resp.ConnectorView.Connector.Config == nil {
-	// 	r.ConnectorView.Connector.Config = nil
-	// } else {
-	// 	r.ConnectorView.Connector.Config = &ConnectorConfig1{}
-	// 	if resp.ConnectorView.Connector.Config.AtType != nil {
-	// 		r.ConnectorView.Connector.Config.AtType = types.StringValue(*resp.ConnectorView.Connector.Config.AtType)
-	// 	} else {
-	// 		r.ConnectorView.Connector.Config.AtType = types.StringNull()
-	// 	}
-	// 	if r.ConnectorView.Connector.Config.AdditionalProperties.IsUnknown() {
-	// 		if resp.ConnectorView.Connector.Config.AdditionalProperties == nil {
-	// 			r.ConnectorView.Connector.Config.AdditionalProperties = types.StringNull()
-	// 		} else {
-	// 			additionalPropertiesResult, _ := json.Marshal(resp.ConnectorView.Connector.Config.AdditionalProperties)
-	// 			r.ConnectorView.Connector.Config.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
-	// 		}
-	// 	}
-	// }
 	if resp.ConnectorView.Connector.CreatedAt != nil {
 		r.CreatedAt = types.StringValue(resp.ConnectorView.Connector.CreatedAt.Format(time.RFC3339))
 	} else {
@@ -95,16 +56,6 @@ func (r *IntegrationBatonResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.DeletedAt = types.StringValue(resp.ConnectorView.Connector.DeletedAt.Format(time.RFC3339))
 	} else {
 		r.DeletedAt = types.StringNull()
-	}
-	if resp.ConnectorView.Connector.Description != nil {
-		r.Description = types.StringValue(*resp.ConnectorView.Connector.Description)
-	} else {
-		r.Description = types.StringNull()
-	}
-	if resp.ConnectorView.Connector.DisplayName != nil {
-		r.DisplayName = types.StringValue(*resp.ConnectorView.Connector.DisplayName)
-	} else {
-		r.DisplayName = types.StringNull()
 	}
 	if resp.ConnectorView.Connector.ID != nil {
 		r.ID = types.StringValue(*resp.ConnectorView.Connector.ID)
@@ -137,16 +88,6 @@ func (r *IntegrationBatonResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339))
 	} else {
 		r.DeletedAt = types.StringNull()
-	}
-	if resp.Description != nil {
-		r.Description = types.StringValue(*resp.Description)
-	} else {
-		r.Description = types.StringNull()
-	}
-	if resp.DisplayName != nil {
-		r.DisplayName = types.StringValue(*resp.DisplayName)
-	} else {
-		r.DisplayName = types.StringNull()
 	}
 	if resp.ID != nil {
 		r.ID = types.StringValue(*resp.ID)

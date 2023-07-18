@@ -14,7 +14,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -37,16 +37,16 @@ type IntegrationOktaResource struct {
 
 // IntegrationOktaResourceModel describes the resource data model.
 type IntegrationOktaResourceModel struct {
-	AppID       types.String   `tfsdk:"app_id"`
-	CreatedAt   types.String   `tfsdk:"created_at"`
-	DeletedAt   types.String   `tfsdk:"deleted_at"`
-	Description types.String   `tfsdk:"description"`
-	DisplayName types.String   `tfsdk:"display_name"`
-	ID          types.String   `tfsdk:"id"`
-	UpdatedAt   types.String   `tfsdk:"updated_at"`
-	UserIds     []types.String `tfsdk:"user_ids"`
-	OktaDomain  types.String   `tfsdk:"okta_domain"`
-	OktaApiKey  types.String   `tfsdk:"okta_api_key"`
+	AppID                    types.String   `tfsdk:"app_id"`
+	CreatedAt                types.String   `tfsdk:"created_at"`
+	DeletedAt                types.String   `tfsdk:"deleted_at"`
+	ID                       types.String   `tfsdk:"id"`
+	UpdatedAt                types.String   `tfsdk:"updated_at"`
+	UserIds                  []types.String `tfsdk:"user_ids"`
+	OktaDomain               types.String   `tfsdk:"okta_domain"`
+	OktaApiKey               types.String   `tfsdk:"okta_api_key"`
+	OktaDontSyncInactiveApps types.Bool     `tfsdk:"okta_dont_sync_inactive_apps"`
+	OktaExtractAwsSamlRoles  types.Bool     `tfsdk:"okta_extract_aws_saml_roles"`
 }
 
 func (r *IntegrationOktaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -77,22 +77,6 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 					validators.IsRFC3339(),
 				},
 			},
-			"description": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-				Optional:    true,
-				Computed:    true,
-				Description: `The description field.`,
-			},
-			"display_name": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-				Optional:    true,
-				Computed:    true,
-				Description: `The displayName field.`,
-			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The id field.`,
@@ -104,10 +88,7 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"user_ids": schema.ListAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplace(),
-				},
+				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The userIds field.`,
@@ -120,6 +101,18 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 				Required:    true,
 				Sensitive:   true,
 				Description: `The okta api key field.`,
+			},
+			"okta_dont_sync_inactive_apps": schema.BoolAttribute{
+				Optional:    true,
+				Description: `Don't include inactive apps in the sync. Defaults to false. If set to true, the integration will only sync active apps.`,
+				Computed:    true,
+				Default:     booldefault.StaticBool(false),
+			},
+			"okta_extract_aws_saml_roles": schema.BoolAttribute{
+				Optional:    true,
+				Description: `Extract AWS SAML roles from Okta SAML responses. Defaults to false. If set to true, the integration will extract AWS SAML roles from Okta SAML responses.`,
+				Computed:    true,
+				Default:     booldefault.StaticBool(false),
 			},
 		},
 	}
@@ -210,13 +203,7 @@ func (r *IntegrationOktaResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", configRes.StatusCode), debugResponse(configRes.RawResponse))
 		return
 	}
-
-	fetchRes, err := r.get(ctx, data.AppID.ValueString(), data.ID.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		return
-	}
-	data.RefreshFromGetResponse(fetchRes)
+	data.RefreshFromUpdateResponse(configRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -245,7 +232,7 @@ func (r *IntegrationOktaResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		return
 	}
-	data.RefreshFromGetResponse(res)
+	data.RefreshFromGetResponse(res.ConnectorView.Connector)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -279,7 +266,31 @@ func (r *IntegrationOktaResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	appID := data.AppID.ValueString()
+
+	updateCon := data.ToUpdateSDKType()
+	configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
+		ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
+			Connector:  updateCon,
+			UpdateMask: "config",
+		},
+		AppID: appID,
+		ID:    data.ID.ValueString(),
+	}
+	updateRes, err := r.client.Connector.Update(ctx, configReq)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		return
+	}
+	if updateRes == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+		return
+	}
+	if updateRes.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+		return
+	}
+	data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

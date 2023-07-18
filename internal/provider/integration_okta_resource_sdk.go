@@ -2,60 +2,31 @@
 package provider
 
 import (
-	"fmt"
+	"strconv"
 	"time"
 
+	"conductorone/internal/sdk"
 	"conductorone/internal/sdk/pkg/models/shared"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const (
-	oktaCatalogID = "23w9L3qudsiSZQJ8jUP1KYyQqVW"
-	envConfigType = "type.googleapis.com/c1.api.app.v1.EnvConfig"
-)
+const oktaCatalogID = "23w9L3qudsiSZQJ8jUP1KYyQqVW"
 
 func (r *IntegrationOktaResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := strptr(oktaCatalogID)
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
+	catalogID := sdk.String(oktaCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID:   catalogID,
-		Description: description,
-		DisplayName: displayName,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
 
 func (r *IntegrationOktaResourceModel) ToUpdateSDKType() *shared.Connector {
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -72,27 +43,32 @@ func (r *IntegrationOktaResourceModel) ToUpdateSDKType() *shared.Connector {
 	} else {
 		oktaApiKey = nil
 	}
-
-	config := &shared.ConnectorConfig{
-		AtType: strptr(envConfigType),
-		AdditionalProperties: map[string]interface{}{
-			"configuration": map[string]interface{}{
-				"okta_domain":                  oktaDomain,
-				"okta_api_key":                 oktaApiKey,
-				"okta_dont_sync_inactive_apps": "false",
-				"okta_extract_aws_saml_roles":  "true",
-			},
-		},
+	oktaDontSyncInactiveApps := new(string)
+	if !r.OktaDontSyncInactiveApps.IsUnknown() && !r.OktaDontSyncInactiveApps.IsNull() {
+		*oktaDontSyncInactiveApps = strconv.FormatBool(r.OktaDontSyncInactiveApps.ValueBool())
+	} else {
+		oktaDontSyncInactiveApps = nil
+	}
+	oktaExtractAwsSamlRoles := new(string)
+	if !r.OktaExtractAwsSamlRoles.IsUnknown() && !r.OktaExtractAwsSamlRoles.IsNull() {
+		*oktaExtractAwsSamlRoles = strconv.FormatBool(r.OktaExtractAwsSamlRoles.ValueBool())
+	} else {
+		oktaExtractAwsSamlRoles = nil
 	}
 
+	config := makeConnectorConfig(map[string]interface{}{
+		"okta_domain":                  oktaDomain,
+		"okta_api_key":                 oktaApiKey,
+		"okta_dont_sync_inactive_apps": oktaDontSyncInactiveApps,
+		"okta_extract_aws_saml_roles":  oktaExtractAwsSamlRoles,
+	})
+
 	out := shared.Connector{
-		AppID:       strptr(r.AppID.ValueString()),
-		CatalogID:   strptr(oktaCatalogID),
-		ID:          strptr(r.ID.ValueString()),
-		Description: description,
-		DisplayName: displayName,
-		UserIds:     userIds,
-		Config:      config,
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(oktaCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config:    config,
 	}
 	return &out
 }
@@ -107,66 +83,69 @@ func (r *IntegrationOktaResourceModel) ToDeleteSDKType() *shared.ConnectorServic
 	return out
 }
 
-func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.ConnectorServiceGetResponse) {
-	fmt.Println("RefreshFromGetResponse")
-	spew.Dump(resp)
-	if resp.ConnectorView == nil {
+func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
+	if resp == nil {
 		return
 	}
-	if resp.ConnectorView.Connector == nil {
-		return
-	}
-	if resp.ConnectorView.Connector.AppID != nil {
-		r.AppID = types.StringValue(*resp.ConnectorView.Connector.AppID)
+	if resp.AppID != nil {
+		r.AppID = types.StringValue(*resp.AppID)
 	} else {
 		r.AppID = types.StringNull()
 	}
 
-	if resp.ConnectorView.Connector.CreatedAt != nil {
-		r.CreatedAt = types.StringValue(resp.ConnectorView.Connector.CreatedAt.Format(time.RFC3339))
+	if resp.CreatedAt != nil {
+		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339))
 	} else {
 		r.CreatedAt = types.StringNull()
 	}
-	if resp.ConnectorView.Connector.DeletedAt != nil {
-		r.DeletedAt = types.StringValue(resp.ConnectorView.Connector.DeletedAt.Format(time.RFC3339))
+	if resp.DeletedAt != nil {
+		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339))
 	} else {
 		r.DeletedAt = types.StringNull()
 	}
-	if resp.ConnectorView.Connector.Description != nil {
-		r.Description = types.StringValue(*resp.ConnectorView.Connector.Description)
-	} else {
-		r.Description = types.StringNull()
-	}
-	if resp.ConnectorView.Connector.DisplayName != nil {
-		r.DisplayName = types.StringValue(*resp.ConnectorView.Connector.DisplayName)
-	} else {
-		r.DisplayName = types.StringNull()
-	}
-	if resp.ConnectorView.Connector.ID != nil {
-		r.ID = types.StringValue(*resp.ConnectorView.Connector.ID)
+	if resp.ID != nil {
+		r.ID = types.StringValue(*resp.ID)
 	} else {
 		r.ID = types.StringNull()
 	}
-	if resp.ConnectorView.Connector.UpdatedAt != nil {
-		r.UpdatedAt = types.StringValue(resp.ConnectorView.Connector.UpdatedAt.Format(time.RFC3339))
+	if resp.UpdatedAt != nil {
+		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339))
 	} else {
 		r.UpdatedAt = types.StringNull()
 	}
 	r.UserIds = nil
-	for _, v := range resp.ConnectorView.Connector.UserIds {
+	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
-	if resp.ConnectorView.Connector.Config != nil && *resp.ConnectorView.Connector.Config.AtType == envConfigType {
-		if config, ok := resp.ConnectorView.Connector.Config.AdditionalProperties.(map[string]interface{}); ok {
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if v, ok := config["okta_domain"]; ok {
 				r.OktaDomain = types.StringValue(v.(string))
 			}
 			if v, ok := config["okta_api_key"]; ok {
 				r.OktaApiKey = types.StringValue(v.(string))
 			}
+			if v, ok := config["okta_dont_sync_inactive_apps"]; ok {
+				bv, err := strconv.ParseBool(v.(string))
+				if err != nil {
+					r.OktaDontSyncInactiveApps = types.BoolValue(false)
+				}
+				r.OktaDontSyncInactiveApps = types.BoolValue(bv)
+			}
+			if v, ok := config["okta_okta_extract_aws_saml_roles"]; ok {
+				bv, err := strconv.ParseBool(v.(string))
+				if err != nil {
+					r.OktaExtractAwsSamlRoles = types.BoolValue(false)
+				}
+				r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
+			}
 		}
-
 	}
+}
+
+func (r *IntegrationOktaResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
+	r.RefreshFromGetResponse(resp)
 }
 
 func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
@@ -184,16 +163,6 @@ func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339))
 	} else {
 		r.DeletedAt = types.StringNull()
-	}
-	if resp.Description != nil {
-		r.Description = types.StringValue(*resp.Description)
-	} else {
-		r.Description = types.StringNull()
-	}
-	if resp.DisplayName != nil {
-		r.DisplayName = types.StringValue(*resp.DisplayName)
-	} else {
-		r.DisplayName = types.StringNull()
 	}
 	if resp.ID != nil {
 		r.ID = types.StringValue(*resp.ID)

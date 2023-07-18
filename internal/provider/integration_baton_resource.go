@@ -37,14 +37,12 @@ type IntegrationBatonResource struct {
 
 // IntegrationBatonResourceModel describes the resource data model.
 type IntegrationBatonResourceModel struct {
-	AppID       types.String   `tfsdk:"app_id"`
-	CreatedAt   types.String   `tfsdk:"created_at"`
-	DeletedAt   types.String   `tfsdk:"deleted_at"`
-	Description types.String   `tfsdk:"description"`
-	DisplayName types.String   `tfsdk:"display_name"`
-	ID          types.String   `tfsdk:"id"`
-	UpdatedAt   types.String   `tfsdk:"updated_at"`
-	UserIds     []types.String `tfsdk:"user_ids"`
+	AppID     types.String   `tfsdk:"app_id"`
+	CreatedAt types.String   `tfsdk:"created_at"`
+	DeletedAt types.String   `tfsdk:"deleted_at"`
+	ID        types.String   `tfsdk:"id"`
+	UpdatedAt types.String   `tfsdk:"updated_at"`
+	UserIds   []types.String `tfsdk:"user_ids"`
 }
 
 func (r *IntegrationBatonResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -74,22 +72,6 @@ func (r *IntegrationBatonResource) Schema(ctx context.Context, req resource.Sche
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
-			},
-			"description": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-				Optional:    true,
-				Computed:    true,
-				Description: `The description field.`,
-			},
-			"display_name": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-				Optional:    true,
-				Computed:    true,
-				Description: `The displayName field.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
