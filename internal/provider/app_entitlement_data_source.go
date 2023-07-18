@@ -277,9 +277,15 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 		return
 	}
 
-	// If the AppID and EntitlementID are set, use the Get API
 	appId := data.AppID.ValueString()
 	entitlementId := data.ID.ValueString()
+	alias := data.Alias.ValueStringPointer()
+	if (appId == "" || entitlementId == "") && (alias == nil || *alias == "") {
+		resp.Diagnostics.AddError("either app_id and id, or alias must be set", "")
+		return
+	}
+
+	// If the AppID and EntitlementID are set, use the Get API
 	if appId != "" && entitlementId != "" {
 		res, err := r.client.AppEntitlements.Get(ctx, operations.C1APIAppV1AppEntitlementsGetRequest{AppID: appId, ID: entitlementId})
 		if err != nil {
@@ -310,7 +316,6 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 	}
 
 	// If the Alias is set, use the Search API
-	alias := data.Alias.ValueStringPointer()
 	request := shared.AppEntitlementSearchServiceSearchRequest{}
 	if alias != nil && *alias != "" {
 		request.Alias = alias
