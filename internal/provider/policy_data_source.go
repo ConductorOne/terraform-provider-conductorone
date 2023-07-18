@@ -373,8 +373,14 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		return
 	}
 
-	// If we have an ID, we can use the Get API to fetch the latest data
 	id := data.ID.ValueString()
+	displayName := data.DisplayName.ValueStringPointer()
+	if id == "" && (displayName == nil || *displayName == "") {
+		resp.Diagnostics.AddError("either id or display_name must be set", "")
+		return
+	}
+
+	// If we have an ID, we can use the Get API to fetch the latest data
 	if id != "" {
 		req := operations.C1APIPolicyV1PoliciesGetRequest{
 			ID: id,
@@ -403,7 +409,6 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	}
 
 	// If we don't have an ID but we do have a displayName we can use the Search API to fetch the latest data.
-	displayName := data.DisplayName.ValueStringPointer()
 	request := shared.SearchPoliciesRequest{
 		DisplayName: displayName,
 	}

@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 
+	"conductorone/internal/sdk/pkg/models/operations"
 	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -83,7 +84,8 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Description: `The description field.`,
 			},
 			"display_name": schema.StringAttribute{
-				Required:    true,
+				Optional:    true,
+				Computed:    true,
 				Description: `The displayName field.`,
 			},
 			"field_mask": schema.StringAttribute{
@@ -99,6 +101,7 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The id field.`,
 			},
 			"logo_uri": schema.StringAttribute{
@@ -174,7 +177,48 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		return
 	}
 
+	id := data.ID.ValueString()
 	displayName := data.DisplayName.ValueStringPointer()
+
+	if id == "" && (displayName == nil || *displayName == "") {
+		resp.Diagnostics.AddError("either id or display_name must be set", "")
+		return
+	}
+
+	// If the ID is set, we can use the Get API to retrieve the resource.
+	if id != "" {
+		request := operations.C1APIAppV1AppsGetRequest{
+			ID: id,
+		}
+		res, err := r.client.Apps.Get(ctx, request)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if res == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+			return
+		}
+		if res.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+			return
+		}
+		if res.GetAppResponse == nil {
+			resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+			return
+		}
+		if res.GetAppResponse.App == nil {
+			resp.Diagnostics.AddError("unexpected response from API. Returned App is nil", debugResponse(res.RawResponse))
+			return
+		}
+		data.RefreshFromGetResponse(res.GetAppResponse.App)
+
+		// Save updated data into Terraform state
+		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+		return
+	}
+
+	// If the ID is not set, we can use the Search API to try to retrieve the resource.
 	request := shared.SearchAppsRequest{
 		DisplayName: displayName,
 	}
