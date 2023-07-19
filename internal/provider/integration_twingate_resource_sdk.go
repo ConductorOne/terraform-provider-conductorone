@@ -19,13 +19,14 @@ func (r *IntegrationTwingateResourceModel) ToCreateSDKType() *shared.ConnectorSe
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		DisplayName: sdk.String("Twingate"),
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -45,19 +46,34 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() *shared.Connector {
 		twingateDomain = nil
 	}
 
-	config := makeConnectorConfig(map[string]interface{}{
+	configValues := map[string]*string{
 		"twingate_apikey": twingateApikey,
 		"twingate_domain": twingateDomain,
-	})
+	}
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
 
 	out := shared.Connector{
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(twingateCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config:    config,
+		DisplayName: sdk.String("Twingate"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(twingateCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
-	return &out
+
+	return &out, configSet
 }
 
 func (r *IntegrationTwingateResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

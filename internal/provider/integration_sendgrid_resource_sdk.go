@@ -19,13 +19,14 @@ func (r *IntegrationSendgridResourceModel) ToCreateSDKType() *shared.ConnectorSe
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		DisplayName: sdk.String("Sendgrid"),
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationSendgridResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationSendgridResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -38,18 +39,33 @@ func (r *IntegrationSendgridResourceModel) ToUpdateSDKType() *shared.Connector {
 		sendgridApiKey = nil
 	}
 
-	config := makeConnectorConfig(map[string]interface{}{
+	configValues := map[string]*string{
 		"sendgrid_api_key": sendgridApiKey,
-	})
+	}
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
 
 	out := shared.Connector{
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(sendgridCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config:    config,
+		DisplayName: sdk.String("Sendgrid"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(sendgridCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
-	return &out
+
+	return &out, configSet
 }
 
 func (r *IntegrationSendgridResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

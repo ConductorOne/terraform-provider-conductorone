@@ -13,7 +13,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -177,7 +176,12 @@ func (r *IntegrationUkgResource) Create(ctx context.Context, req resource.Create
 	}
 	data.RefreshFromCreateResponse(res.ConnectorServiceCreateResponse.ConnectorView.Connector)
 
-	updateCon := data.ToUpdateSDKType()
+	updateCon, configSet := data.ToUpdateSDKType()
+	if !configSet {
+		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+		return
+	}
+
 	configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
 		ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
 			Connector:  updateCon,
@@ -264,36 +268,60 @@ func (r *IntegrationUkgResource) Update(ctx context.Context, req resource.Update
 
 	appID := data.AppID.ValueString()
 
-	updateCon := data.ToUpdateSDKType()
-	configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
-		ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
-			Connector:  updateCon,
-			UpdateMask: "config",
-		},
-		AppID: appID,
-		ID:    data.ID.ValueString(),
+	updateCon, configSet := data.ToUpdateSDKType()
+	if configSet {
+		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
+			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
+				Connector:  updateCon,
+				UpdateMask: "config",
+			},
+			AppID: appID,
+			ID:    data.ID.ValueString(),
+		}
+		updateRes, err := r.client.Connector.Update(ctx, configReq)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if updateRes == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+			return
+		}
+		if updateRes.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+			return
+		}
+		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+	} else {
+		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
+			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
+				Connector:  updateCon,
+				UpdateMask: "displayName,userIds",
+			},
+			ConnectorAppID: appID,
+			ConnectorID:    data.ID.ValueString(),
+		}
+		updateRes, err := r.client.Connector.UpdateDelegated(ctx, configReq)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if updateRes == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+			return
+		}
+		if updateRes.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+			return
+		}
+		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
 	}
-	updateRes, err := r.client.Connector.Update(ctx, configReq)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		return
-	}
-	if updateRes == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
-		return
-	}
-	if updateRes.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
-		return
-	}
-	data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
-
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *IntegrationUkgResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationUkgResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)

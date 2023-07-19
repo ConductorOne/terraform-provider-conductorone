@@ -19,13 +19,14 @@ func (r *IntegrationDocusignResourceModel) ToCreateSDKType() *shared.ConnectorSe
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		DisplayName: sdk.String("DocuSign"),
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -38,18 +39,33 @@ func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() *shared.Connector {
 		accountId = nil
 	}
 
-	config := makeConnectorConfig(map[string]interface{}{
+	configValues := map[string]*string{
 		"account_id": accountId,
-	})
+	}
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
 
 	out := shared.Connector{
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(docusignCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config:    config,
+		DisplayName: sdk.String("DocuSign"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(docusignCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
-	return &out
+
+	return &out, configSet
 }
 
 func (r *IntegrationDocusignResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

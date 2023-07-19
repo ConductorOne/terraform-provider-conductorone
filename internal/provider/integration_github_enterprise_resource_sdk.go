@@ -19,13 +19,14 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToCreateSDKType() *shared.Con
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		DisplayName: sdk.String("GitHub Enterprise"),
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -45,19 +46,34 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() *shared.Con
 		githubAccessToken = nil
 	}
 
-	config := makeConnectorConfig(map[string]interface{}{
+	configValues := map[string]*string{
 		"github_instance_url": githubInstanceUrl,
 		"github_access_token": githubAccessToken,
-	})
+	}
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
 
 	out := shared.Connector{
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(githubEnterpriseCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config:    config,
+		DisplayName: sdk.String("GitHub Enterprise"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(githubEnterpriseCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
-	return &out
+
+	return &out, configSet
 }
 
 func (r *IntegrationGithubEnterpriseResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

@@ -19,13 +19,14 @@ func (r *IntegrationNetsuiteResourceModel) ToCreateSDKType() *shared.ConnectorSe
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		DisplayName: sdk.String("NetSuite"),
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -66,22 +67,37 @@ func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() *shared.Connector {
 		netsuiteTokenSecret = nil
 	}
 
-	config := makeConnectorConfig(map[string]interface{}{
+	configValues := map[string]*string{
 		"netsuite_account_id":      netsuiteAccountId,
 		"netsuite_consumer_key":    netsuiteConsumerKey,
 		"netsuite_consumer_secret": netsuiteConsumerSecret,
 		"netsuite_token_key":       netsuiteTokenKey,
 		"netsuite_token_secret":    netsuiteTokenSecret,
-	})
+	}
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
 
 	out := shared.Connector{
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(netsuiteCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config:    config,
+		DisplayName: sdk.String("NetSuite"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(netsuiteCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
-	return &out
+
+	return &out, configSet
 }
 
 func (r *IntegrationNetsuiteResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

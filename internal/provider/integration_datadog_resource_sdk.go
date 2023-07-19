@@ -19,13 +19,14 @@ func (r *IntegrationDatadogResourceModel) ToCreateSDKType() *shared.ConnectorSer
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		DisplayName: sdk.String("Datadog"),
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationDatadogResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationDatadogResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -52,20 +53,35 @@ func (r *IntegrationDatadogResourceModel) ToUpdateSDKType() *shared.Connector {
 		datadogApplicationKey = nil
 	}
 
-	config := makeConnectorConfig(map[string]interface{}{
+	configValues := map[string]*string{
 		"datadog_site":            datadogSite,
 		"datadog_api_key":         datadogApiKey,
 		"datadog_application_key": datadogApplicationKey,
-	})
+	}
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
 
 	out := shared.Connector{
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(datadogCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config:    config,
+		DisplayName: sdk.String("Datadog"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(datadogCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
-	return &out
+
+	return &out, configSet
 }
 
 func (r *IntegrationDatadogResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

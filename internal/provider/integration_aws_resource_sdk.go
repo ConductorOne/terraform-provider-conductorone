@@ -20,13 +20,14 @@ func (r *IntegrationAwsResourceModel) ToCreateSDKType() *shared.ConnectorService
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		DisplayName: sdk.String("AWS"),
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationAwsResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationAwsResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -88,7 +89,7 @@ func (r *IntegrationAwsResourceModel) ToUpdateSDKType() *shared.Connector {
 		awsSsoScimAccessToken = nil
 	}
 
-	config := makeConnectorConfig(map[string]interface{}{
+	configValues := map[string]*string{
 		"aws_external_id":           awsExternalId,
 		"aws_role_arn":              awsRoleArn,
 		"aws_orgs_enable":           awsOrgsEnable,
@@ -97,16 +98,31 @@ func (r *IntegrationAwsResourceModel) ToUpdateSDKType() *shared.Connector {
 		"aws_sso_scim_enable":       awsSsoScimEnable,
 		"aws_sso_scim_endpoint":     awsSsoScimEndpoint,
 		"aws_sso_scim_access_token": awsSsoScimAccessToken,
-	})
+	}
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
 
 	out := shared.Connector{
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(awsCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config:    config,
+		DisplayName: sdk.String("AWS"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(awsCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
-	return &out
+
+	return &out, configSet
 }
 
 func (r *IntegrationAwsResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

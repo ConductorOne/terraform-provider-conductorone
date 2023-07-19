@@ -19,13 +19,14 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToCreateSDKType() *shared.
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		DisplayName: sdk.String("Google Cloud Platform"),
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -38,18 +39,33 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() *shared.
 		credentialsJson = nil
 	}
 
-	config := makeConnectorConfig(map[string]interface{}{
+	configValues := map[string]*string{
 		"credentials_json": credentialsJson,
-	})
+	}
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
 
 	out := shared.Connector{
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(googleCloudPlatformCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config:    config,
+		DisplayName: sdk.String("Google Cloud Platform"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(googleCloudPlatformCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
-	return &out
+
+	return &out, configSet
 }
 
 func (r *IntegrationGoogleCloudPlatformResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

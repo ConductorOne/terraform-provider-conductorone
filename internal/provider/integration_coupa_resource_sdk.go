@@ -19,13 +19,14 @@ func (r *IntegrationCoupaResourceModel) ToCreateSDKType() *shared.ConnectorServi
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		DisplayName: sdk.String("Coupa"),
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -52,20 +53,35 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() *shared.Connector {
 		oauth2ClientCredGrantClientSecret = nil
 	}
 
-	config := makeConnectorConfig(map[string]interface{}{
+	configValues := map[string]*string{
 		"coupa-domain":                           coupaDomain,
 		"oauth2_client_cred_grant_client_id":     oauth2ClientCredGrantClientId,
 		"oauth2_client_cred_grant_client_secret": oauth2ClientCredGrantClientSecret,
-	})
+	}
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
 
 	out := shared.Connector{
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(coupaCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config:    config,
+		DisplayName: sdk.String("Coupa"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(coupaCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
-	return &out
+
+	return &out, configSet
 }
 
 func (r *IntegrationCoupaResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

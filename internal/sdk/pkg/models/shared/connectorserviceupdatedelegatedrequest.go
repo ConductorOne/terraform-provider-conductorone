@@ -2,8 +2,8 @@
 
 package shared
 
-// ConnectorServiceUpdateRequest - The ConnectorServiceUpdateRequest message.
-type ConnectorServiceUpdateRequest struct {
+// ConnectorServiceUpdateDelegatedRequest - The ConnectorServiceUpdateDelegatedRequest message.
+type ConnectorServiceUpdateDelegatedRequest struct {
 	// The Connector message.
 	Connector *Connector `json:"connector,omitempty"`
 	// FIXME(jirwin): Manually added!

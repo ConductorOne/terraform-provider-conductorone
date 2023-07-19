@@ -20,13 +20,14 @@ func (r *IntegrationOktaResourceModel) ToCreateSDKType() *shared.ConnectorServic
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		DisplayName: sdk.String("Okta"),
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationOktaResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationOktaResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -60,21 +61,36 @@ func (r *IntegrationOktaResourceModel) ToUpdateSDKType() *shared.Connector {
 		oktaExtractAwsSamlRoles = nil
 	}
 
-	config := makeConnectorConfig(map[string]interface{}{
+	configValues := map[string]*string{
 		"okta_domain":                  oktaDomain,
 		"okta_api_key":                 oktaApiKey,
 		"okta_dont_sync_inactive_apps": oktaDontSyncInactiveApps,
 		"okta_extract_aws_saml_roles":  oktaExtractAwsSamlRoles,
-	})
+	}
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
 
 	out := shared.Connector{
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(oktaCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config:    config,
+		DisplayName: sdk.String("Okta"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(oktaCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
-	return &out
+
+	return &out, configSet
 }
 
 func (r *IntegrationOktaResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

@@ -19,13 +19,14 @@ func (r *IntegrationZendeskResourceModel) ToCreateSDKType() *shared.ConnectorSer
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		DisplayName: sdk.String("Zendesk"),
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -52,20 +53,35 @@ func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() *shared.Connector {
 		apiToken = nil
 	}
 
-	config := makeConnectorConfig(map[string]interface{}{
+	configValues := map[string]*string{
 		"email":     email,
 		"subdomain": subdomain,
 		"api_token": apiToken,
-	})
+	}
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
 
 	out := shared.Connector{
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(zendeskCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config:    config,
+		DisplayName: sdk.String("Zendesk"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(zendeskCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
-	return &out
+
+	return &out, configSet
 }
 
 func (r *IntegrationZendeskResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
