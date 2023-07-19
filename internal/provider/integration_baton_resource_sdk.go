@@ -25,6 +25,23 @@ func (r *IntegrationBatonResourceModel) ToCreateSDKType() *shared.ConnectorServi
 	return &out
 }
 
+func (r *IntegrationBatonResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+	userIds := make([]string, 0)
+	for _, userIdsItem := range r.UserIds {
+		userIds = append(userIds, userIdsItem.ValueString())
+	}
+
+	out := shared.Connector{
+		DisplayName: sdk.String("Asana"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(asanaCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+	}
+
+	return &out, false
+}
+
 func (r *IntegrationBatonResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateSDKType()
 	return out
@@ -103,4 +120,8 @@ func (r *IntegrationBatonResourceModel) RefreshFromCreateResponse(resp *shared.C
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
+}
+
+func (r *IntegrationBatonResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
+	r.RefreshFromCreateResponse(resp)
 }
