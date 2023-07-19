@@ -103,6 +103,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewIntegrationBatonResource,
 		NewPolicyResource,
 		NewAppResource,
+		NewAppEntitlementResource,
 	}
 
 	resources = append(resources, getIntegrationResources()...)
