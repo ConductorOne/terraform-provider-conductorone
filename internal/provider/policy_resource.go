@@ -93,7 +93,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"approval": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
@@ -102,7 +101,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Description: `The allowReassignment field.`,
 											},
 											"app_group_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -135,7 +133,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Description: `The AppGroupApproval message.`,
 											},
 											"app_owner_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -153,7 +150,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Description: `The assigned field.`,
 											},
 											"entitlement_owner_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -177,7 +173,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Description: `The EntitlementOwnerApproval message.`,
 											},
 											"manager_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -216,7 +211,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Description: `The requireReassignmentReason field.`,
 											},
 											"self_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"assigned_user_ids": schema.ListAttribute{
@@ -241,7 +235,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Description: `The SelfApproval message.`,
 											},
 											"user_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -271,7 +264,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											``,
 									},
 									"provision": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"assigned": schema.BoolAttribute{
@@ -284,13 +276,11 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"connector_provision": schema.SingleNestedAttribute{
-														Computed:    true,
 														Optional:    true,
 														Attributes:  map[string]schema.Attribute{},
 														Description: `The ConnectorProvision message.`,
 													},
 													"delegated_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"app_id": schema.StringAttribute{
@@ -307,7 +297,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Description: `The DelegatedProvision message.`,
 													},
 													"manual_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"instructions": schema.StringAttribute{
