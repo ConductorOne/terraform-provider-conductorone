@@ -131,18 +131,20 @@ func (r *IntegrationOneloginResourceModel) RefreshFromGetResponse(resp *shared.C
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["onelogin_domain"]; ok {
-				r.OneloginDomain = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["onelogin_domain"]; ok {
+					r.OneloginDomain = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["oauth_client_cred_grant_client_id"]; ok {
-				r.OauthClientCredGrantClientId = types.StringValue(v.(string))
-			}
+				if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
+					r.OauthClientCredGrantClientId = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["oauth_client_cred_grant_client_secret"]; ok {
-				r.OauthClientCredGrantClientSecret = types.StringValue(v.(string))
-			}
+				if v, ok := values["oauth_client_cred_grant_client_secret"]; ok {
+					r.OauthClientCredGrantClientSecret = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -180,5 +182,24 @@ func (r *IntegrationOneloginResourceModel) RefreshFromCreateResponse(resp *share
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["onelogin_domain"]; ok {
+					r.OneloginDomain = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
+					r.OauthClientCredGrantClientId = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["oauth_client_cred_grant_client_secret"]; ok {
+					r.OauthClientCredGrantClientSecret = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

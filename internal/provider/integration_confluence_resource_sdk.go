@@ -131,18 +131,20 @@ func (r *IntegrationConfluenceResourceModel) RefreshFromGetResponse(resp *shared
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["confluence_domain"]; ok {
-				r.ConfluenceDomain = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["confluence_domain"]; ok {
+					r.ConfluenceDomain = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["confluence_username"]; ok {
-				r.ConfluenceUsername = types.StringValue(v.(string))
-			}
+				if v, ok := values["confluence_username"]; ok {
+					r.ConfluenceUsername = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["confluence_apikey"]; ok {
-				r.ConfluenceApikey = types.StringValue(v.(string))
-			}
+				if v, ok := values["confluence_apikey"]; ok {
+					r.ConfluenceApikey = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -180,5 +182,24 @@ func (r *IntegrationConfluenceResourceModel) RefreshFromCreateResponse(resp *sha
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["confluence_domain"]; ok {
+					r.ConfluenceDomain = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["confluence_username"]; ok {
+					r.ConfluenceUsername = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["confluence_apikey"]; ok {
+					r.ConfluenceApikey = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

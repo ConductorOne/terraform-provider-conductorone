@@ -140,4 +140,5 @@ func (r *IntegrationRampResourceModel) RefreshFromCreateResponse(resp *shared.Co
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
+
 }

@@ -131,18 +131,20 @@ func (r *IntegrationDatadogResourceModel) RefreshFromGetResponse(resp *shared.Co
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["datadog_site"]; ok {
-				r.DatadogSite = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["datadog_site"]; ok {
+					r.DatadogSite = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["datadog_api_key"]; ok {
-				r.DatadogApiKey = types.StringValue(v.(string))
-			}
+				if v, ok := values["datadog_api_key"]; ok {
+					r.DatadogApiKey = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["datadog_application_key"]; ok {
-				r.DatadogApplicationKey = types.StringValue(v.(string))
-			}
+				if v, ok := values["datadog_application_key"]; ok {
+					r.DatadogApplicationKey = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -180,5 +182,24 @@ func (r *IntegrationDatadogResourceModel) RefreshFromCreateResponse(resp *shared
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["datadog_site"]; ok {
+					r.DatadogSite = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["datadog_api_key"]; ok {
+					r.DatadogApiKey = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["datadog_application_key"]; ok {
+					r.DatadogApplicationKey = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

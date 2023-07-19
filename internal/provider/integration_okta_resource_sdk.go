@@ -140,32 +140,34 @@ func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Conne
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["okta_domain"]; ok {
-				r.OktaDomain = types.StringValue(v.(string))
-			}
-
-			if v, ok := config["okta_api_key"]; ok {
-				r.OktaApiKey = types.StringValue(v.(string))
-			}
-
-			if v, ok := config["okta_dont_sync_inactive_apps"]; ok {
-				bv, err := strconv.ParseBool(v.(string))
-				if err != nil {
-					r.OktaDontSyncInactiveApps = types.BoolValue(false)
-				} else {
-					r.OktaDontSyncInactiveApps = types.BoolValue(bv)
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["okta_domain"]; ok {
+					r.OktaDomain = types.StringValue(v.(string))
 				}
-			}
 
-			if v, ok := config["okta_extract_aws_saml_roles"]; ok {
-				bv, err := strconv.ParseBool(v.(string))
-				if err != nil {
-					r.OktaExtractAwsSamlRoles = types.BoolValue(false)
-				} else {
-					r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
+				if v, ok := values["okta_api_key"]; ok {
+					r.OktaApiKey = types.StringValue(v.(string))
 				}
-			}
 
+				if v, ok := values["okta_dont_sync_inactive_apps"]; ok {
+					bv, err := strconv.ParseBool(v.(string))
+					if err != nil {
+						r.OktaDontSyncInactiveApps = types.BoolValue(false)
+					} else {
+						r.OktaDontSyncInactiveApps = types.BoolValue(bv)
+					}
+				}
+
+				if v, ok := values["okta_extract_aws_saml_roles"]; ok {
+					bv, err := strconv.ParseBool(v.(string))
+					if err != nil {
+						r.OktaExtractAwsSamlRoles = types.BoolValue(false)
+					} else {
+						r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
+					}
+				}
+
+			}
 		}
 	}
 }
@@ -203,5 +205,38 @@ func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Co
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["okta_domain"]; ok {
+					r.OktaDomain = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["okta_api_key"]; ok {
+					r.OktaApiKey = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["okta_dont_sync_inactive_apps"]; ok {
+					bv, err := strconv.ParseBool(v.(string))
+					if err != nil {
+						r.OktaDontSyncInactiveApps = types.BoolValue(false)
+					} else {
+						r.OktaDontSyncInactiveApps = types.BoolValue(bv)
+					}
+				}
+
+				if v, ok := values["okta_extract_aws_saml_roles"]; ok {
+					bv, err := strconv.ParseBool(v.(string))
+					if err != nil {
+						r.OktaExtractAwsSamlRoles = types.BoolValue(false)
+					} else {
+						r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
+					}
+				}
+
+			}
+		}
 	}
 }

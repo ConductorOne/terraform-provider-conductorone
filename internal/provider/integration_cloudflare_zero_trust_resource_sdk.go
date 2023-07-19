@@ -123,14 +123,16 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) RefreshFromGetResponse(res
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["account_id"]; ok {
-				r.AccountId = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["account_id"]; ok {
+					r.AccountId = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["api_key"]; ok {
-				r.ApiKey = types.StringValue(v.(string))
-			}
+				if v, ok := values["api_key"]; ok {
+					r.ApiKey = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -168,5 +170,20 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) RefreshFromCreateResponse(
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["account_id"]; ok {
+					r.AccountId = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["api_key"]; ok {
+					r.ApiKey = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

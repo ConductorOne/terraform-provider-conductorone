@@ -115,10 +115,12 @@ func (r *IntegrationSendgridResourceModel) RefreshFromGetResponse(resp *shared.C
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["sendgrid_api_key"]; ok {
-				r.SendgridApiKey = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["sendgrid_api_key"]; ok {
+					r.SendgridApiKey = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -156,5 +158,16 @@ func (r *IntegrationSendgridResourceModel) RefreshFromCreateResponse(resp *share
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["sendgrid_api_key"]; ok {
+					r.SendgridApiKey = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

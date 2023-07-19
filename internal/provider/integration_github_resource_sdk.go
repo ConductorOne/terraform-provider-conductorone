@@ -123,14 +123,16 @@ func (r *IntegrationGithubResourceModel) RefreshFromGetResponse(resp *shared.Con
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["github_org"]; ok {
-				r.GithubOrg = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["github_org"]; ok {
+					r.GithubOrg = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["github_access_token"]; ok {
-				r.GithubAccessToken = types.StringValue(v.(string))
-			}
+				if v, ok := values["github_access_token"]; ok {
+					r.GithubAccessToken = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -168,5 +170,20 @@ func (r *IntegrationGithubResourceModel) RefreshFromCreateResponse(resp *shared.
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["github_org"]; ok {
+					r.GithubOrg = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["github_access_token"]; ok {
+					r.GithubAccessToken = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

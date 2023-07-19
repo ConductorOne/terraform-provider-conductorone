@@ -131,18 +131,20 @@ func (r *IntegrationZendeskResourceModel) RefreshFromGetResponse(resp *shared.Co
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["email"]; ok {
-				r.Email = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["email"]; ok {
+					r.Email = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["subdomain"]; ok {
-				r.Subdomain = types.StringValue(v.(string))
-			}
+				if v, ok := values["subdomain"]; ok {
+					r.Subdomain = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["api_token"]; ok {
-				r.ApiToken = types.StringValue(v.(string))
-			}
+				if v, ok := values["api_token"]; ok {
+					r.ApiToken = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -180,5 +182,24 @@ func (r *IntegrationZendeskResourceModel) RefreshFromCreateResponse(resp *shared
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["email"]; ok {
+					r.Email = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["subdomain"]; ok {
+					r.Subdomain = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["api_token"]; ok {
+					r.ApiToken = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

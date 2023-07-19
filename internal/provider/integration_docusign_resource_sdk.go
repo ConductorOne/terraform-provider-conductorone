@@ -115,10 +115,12 @@ func (r *IntegrationDocusignResourceModel) RefreshFromGetResponse(resp *shared.C
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["account_id"]; ok {
-				r.AccountId = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["account_id"]; ok {
+					r.AccountId = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -156,5 +158,16 @@ func (r *IntegrationDocusignResourceModel) RefreshFromCreateResponse(resp *share
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["account_id"]; ok {
+					r.AccountId = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

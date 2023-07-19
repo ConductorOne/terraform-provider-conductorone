@@ -123,14 +123,16 @@ func (r *IntegrationBambooHrResourceModel) RefreshFromGetResponse(resp *shared.C
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["company_domain"]; ok {
-				r.CompanyDomain = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["company_domain"]; ok {
+					r.CompanyDomain = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["api_key"]; ok {
-				r.ApiKey = types.StringValue(v.(string))
-			}
+				if v, ok := values["api_key"]; ok {
+					r.ApiKey = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -168,5 +170,20 @@ func (r *IntegrationBambooHrResourceModel) RefreshFromCreateResponse(resp *share
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["company_domain"]; ok {
+					r.CompanyDomain = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["api_key"]; ok {
+					r.ApiKey = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

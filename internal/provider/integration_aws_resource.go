@@ -125,7 +125,6 @@ func (r *IntegrationAwsResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"aws_sso_scim_access_token": &schema.StringAttribute{
 				Optional:    true,
-				Computed:    true,
 				Sensitive:   true,
 				Description: `SCIM access token for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
 			},

@@ -115,10 +115,12 @@ func (r *IntegrationSlackResourceModel) RefreshFromGetResponse(resp *shared.Conn
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["slack_api_key"]; ok {
-				r.SlackApiKey = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["slack_api_key"]; ok {
+					r.SlackApiKey = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -156,5 +158,16 @@ func (r *IntegrationSlackResourceModel) RefreshFromCreateResponse(resp *shared.C
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["slack_api_key"]; ok {
+					r.SlackApiKey = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

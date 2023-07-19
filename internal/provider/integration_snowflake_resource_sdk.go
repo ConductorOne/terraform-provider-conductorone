@@ -139,22 +139,24 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromGetResponse(resp *shared.
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["snowflake_account"]; ok {
-				r.SnowflakeAccount = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["snowflake_account"]; ok {
+					r.SnowflakeAccount = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["snowflake_username"]; ok {
-				r.SnowflakeUsername = types.StringValue(v.(string))
-			}
+				if v, ok := values["snowflake_username"]; ok {
+					r.SnowflakeUsername = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["snowflake_password"]; ok {
-				r.SnowflakePassword = types.StringValue(v.(string))
-			}
+				if v, ok := values["snowflake_password"]; ok {
+					r.SnowflakePassword = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["snowflake_user_role"]; ok {
-				r.SnowflakeUserRole = types.StringValue(v.(string))
-			}
+				if v, ok := values["snowflake_user_role"]; ok {
+					r.SnowflakeUserRole = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -192,5 +194,28 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromCreateResponse(resp *shar
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["snowflake_account"]; ok {
+					r.SnowflakeAccount = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["snowflake_username"]; ok {
+					r.SnowflakeUsername = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["snowflake_password"]; ok {
+					r.SnowflakePassword = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["snowflake_user_role"]; ok {
+					r.SnowflakeUserRole = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

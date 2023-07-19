@@ -140,4 +140,5 @@ func (r *IntegrationAzureAdResourceModel) RefreshFromCreateResponse(resp *shared
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
+
 }

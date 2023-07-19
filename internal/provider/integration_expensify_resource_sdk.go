@@ -123,14 +123,16 @@ func (r *IntegrationExpensifyResourceModel) RefreshFromGetResponse(resp *shared.
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["expensify_user_id"]; ok {
-				r.ExpensifyUserId = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["expensify_user_id"]; ok {
+					r.ExpensifyUserId = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["expensify_user_secret"]; ok {
-				r.ExpensifyUserSecret = types.StringValue(v.(string))
-			}
+				if v, ok := values["expensify_user_secret"]; ok {
+					r.ExpensifyUserSecret = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -168,5 +170,20 @@ func (r *IntegrationExpensifyResourceModel) RefreshFromCreateResponse(resp *shar
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["expensify_user_id"]; ok {
+					r.ExpensifyUserId = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["expensify_user_secret"]; ok {
+					r.ExpensifyUserSecret = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

@@ -131,18 +131,20 @@ func (r *IntegrationDuoResourceModel) RefreshFromGetResponse(resp *shared.Connec
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["duo_integration_key"]; ok {
-				r.DuoIntegrationKey = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["duo_integration_key"]; ok {
+					r.DuoIntegrationKey = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["duo_secret_key"]; ok {
-				r.DuoSecretKey = types.StringValue(v.(string))
-			}
+				if v, ok := values["duo_secret_key"]; ok {
+					r.DuoSecretKey = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["duo_api_hostname"]; ok {
-				r.DuoApiHostname = types.StringValue(v.(string))
-			}
+				if v, ok := values["duo_api_hostname"]; ok {
+					r.DuoApiHostname = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -180,5 +182,24 @@ func (r *IntegrationDuoResourceModel) RefreshFromCreateResponse(resp *shared.Con
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["duo_integration_key"]; ok {
+					r.DuoIntegrationKey = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["duo_secret_key"]; ok {
+					r.DuoSecretKey = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["duo_api_hostname"]; ok {
+					r.DuoApiHostname = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }

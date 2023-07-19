@@ -147,26 +147,28 @@ func (r *IntegrationNetsuiteResourceModel) RefreshFromGetResponse(resp *shared.C
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["netsuite_account_id"]; ok {
-				r.NetsuiteAccountId = types.StringValue(v.(string))
-			}
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["netsuite_account_id"]; ok {
+					r.NetsuiteAccountId = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["netsuite_consumer_key"]; ok {
-				r.NetsuiteConsumerKey = types.StringValue(v.(string))
-			}
+				if v, ok := values["netsuite_consumer_key"]; ok {
+					r.NetsuiteConsumerKey = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["netsuite_consumer_secret"]; ok {
-				r.NetsuiteConsumerSecret = types.StringValue(v.(string))
-			}
+				if v, ok := values["netsuite_consumer_secret"]; ok {
+					r.NetsuiteConsumerSecret = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["netsuite_token_key"]; ok {
-				r.NetsuiteTokenKey = types.StringValue(v.(string))
-			}
+				if v, ok := values["netsuite_token_key"]; ok {
+					r.NetsuiteTokenKey = types.StringValue(v.(string))
+				}
 
-			if v, ok := config["netsuite_token_secret"]; ok {
-				r.NetsuiteTokenSecret = types.StringValue(v.(string))
-			}
+				if v, ok := values["netsuite_token_secret"]; ok {
+					r.NetsuiteTokenSecret = types.StringValue(v.(string))
+				}
 
+			}
 		}
 	}
 }
@@ -204,5 +206,32 @@ func (r *IntegrationNetsuiteResourceModel) RefreshFromCreateResponse(resp *share
 	r.UserIds = nil
 	for _, v := range resp.UserIds {
 		r.UserIds = append(r.UserIds, types.StringValue(v))
+	}
+
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["netsuite_account_id"]; ok {
+					r.NetsuiteAccountId = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["netsuite_consumer_key"]; ok {
+					r.NetsuiteConsumerKey = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["netsuite_consumer_secret"]; ok {
+					r.NetsuiteConsumerSecret = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["netsuite_token_key"]; ok {
+					r.NetsuiteTokenKey = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["netsuite_token_secret"]; ok {
+					r.NetsuiteTokenSecret = types.StringValue(v.(string))
+				}
+
+			}
+		}
 	}
 }
