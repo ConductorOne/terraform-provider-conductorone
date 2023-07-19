@@ -1,4 +1,8 @@
-# terraform
+# ConductorOne Terraform Provider
+
+## Usage
+
+[See the docs for usage information](./docs)
 
 <!-- Start SDK Installation -->
 ## SDK Installation
@@ -10,13 +14,15 @@ terraform {
   required_providers {
     conductorone = {
       source  = "ConductorOne/conductorone"
-      version = "1.0.0"
+      version = ">=0.0.1"
     }
   }
 }
 
 provider "conductorone" {
-  # Configuration options
+  server_url    = "<server_url>"
+  client_id     = "<client_id>"
+  client_secret = "<client_secret>"
 }
 ```
 <!-- End SDK Installation -->
