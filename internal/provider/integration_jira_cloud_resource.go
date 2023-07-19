@@ -13,7 +13,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -22,39 +22,38 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &IntegrationOktaResource{}
-var _ resource.ResourceWithImportState = &IntegrationOktaResource{}
+var _ resource.Resource = &IntegrationJiraCloudResource{}
+var _ resource.ResourceWithImportState = &IntegrationJiraCloudResource{}
 
-func NewIntegrationOktaResource() resource.Resource {
-	return &IntegrationOktaResource{}
+func NewIntegrationJiraCloudResource() resource.Resource {
+	return &IntegrationJiraCloudResource{}
 }
 
-// IntegrationOktaResource defines the resource implementation.
-type IntegrationOktaResource struct {
+// IntegrationJiraCloudResource defines the resource implementation.
+type IntegrationJiraCloudResource struct {
 	client *sdk.ConductoroneAPI
 }
 
-// IntegrationOktaResourceModel describes the resource data model.
-type IntegrationOktaResourceModel struct {
-	AppID                    types.String   `tfsdk:"app_id"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	DeletedAt                types.String   `tfsdk:"deleted_at"`
-	ID                       types.String   `tfsdk:"id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	UserIds                  []types.String `tfsdk:"user_ids"`
-	OktaDomain               types.String   `tfsdk:"okta_domain"`
-	OktaApiKey               types.String   `tfsdk:"okta_api_key"`
-	OktaDontSyncInactiveApps types.Bool     `tfsdk:"okta_dont_sync_inactive_apps"`
-	OktaExtractAwsSamlRoles  types.Bool     `tfsdk:"okta_extract_aws_saml_roles"`
+// IntegrationJiraCloudResourceModel describes the resource data model.
+type IntegrationJiraCloudResourceModel struct {
+	AppID             types.String   `tfsdk:"app_id"`
+	CreatedAt         types.String   `tfsdk:"created_at"`
+	DeletedAt         types.String   `tfsdk:"deleted_at"`
+	ID                types.String   `tfsdk:"id"`
+	UpdatedAt         types.String   `tfsdk:"updated_at"`
+	UserIds           []types.String `tfsdk:"user_ids"`
+	JiracloudDomain   types.String   `tfsdk:"jiracloud_domain"`
+	JiracloudUsername types.String   `tfsdk:"jiracloud_username"`
+	JiracloudApikey   types.String   `tfsdk:"jiracloud_apikey"`
 }
 
-func (r *IntegrationOktaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_integration_okta"
+func (r *IntegrationJiraCloudResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_integration_jira_cloud"
 }
 
-func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *IntegrationJiraCloudResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Okta Integration Resource",
+		MarkdownDescription: "Jira_cloud Integration Resource",
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
@@ -92,32 +91,24 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 				ElementType: types.StringType,
 				Description: `The userIds field.`,
 			},
-			"okta_domain": &schema.StringAttribute{
+			"jiracloud_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `The okta domain field.`,
+				Description: `Jira Site Domain`,
 			},
-			"okta_api_key": &schema.StringAttribute{
+			"jiracloud_username": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Jira Username`,
+			},
+			"jiracloud_apikey": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `The okta api key field.`,
-			},
-			"okta_dont_sync_inactive_apps": &schema.BoolAttribute{
-				Optional:    true,
-				Computed:    true,
-				Description: `Don't include inactive apps in the sync. Defaults to false. If set to true, the integration will only sync active apps.`,
-				Default:     booldefault.StaticBool(false),
-			},
-			"okta_extract_aws_saml_roles": &schema.BoolAttribute{
-				Optional:    true,
-				Computed:    true,
-				Description: `Extract AWS SAML roles from Okta SAML responses. Defaults to false. If set to true, the integration will extract AWS SAML roles from Okta SAML responses.`,
-				Default:     booldefault.StaticBool(false),
+				Description: `Jira API Key`,
 			},
 		},
 	}
 }
 
-func (r *IntegrationOktaResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *IntegrationJiraCloudResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -137,7 +128,7 @@ func (r *IntegrationOktaResource) Configure(ctx context.Context, req resource.Co
 	r.client = client
 }
 
-func (r *IntegrationOktaResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *IntegrationJiraCloudResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *IntegrationOktaResourceModel
 	var item types.Object
 
@@ -208,7 +199,7 @@ func (r *IntegrationOktaResource) Create(ctx context.Context, req resource.Creat
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationOktaResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *IntegrationJiraCloudResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var data *IntegrationOktaResourceModel
 	var item types.Object
 
@@ -237,7 +228,7 @@ func (r *IntegrationOktaResource) Read(ctx context.Context, req resource.ReadReq
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationOktaResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
+func (r *IntegrationJiraCloudResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
 	request := operations.C1APIAppV1ConnectorServiceGetRequest{
 		AppID: appID,
 		ID:    id,
@@ -258,7 +249,7 @@ func (r *IntegrationOktaResource) get(ctx context.Context, appID string, id stri
 	return res.ConnectorServiceGetResponse, nil
 }
 
-func (r *IntegrationOktaResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *IntegrationJiraCloudResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *IntegrationOktaResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
@@ -295,7 +286,7 @@ func (r *IntegrationOktaResource) Update(ctx context.Context, req resource.Updat
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationOktaResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *IntegrationJiraCloudResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data *IntegrationOktaResourceModel
 	var item types.Object
 
@@ -338,6 +329,6 @@ func (r *IntegrationOktaResource) Delete(ctx context.Context, req resource.Delet
 
 }
 
-func (r *IntegrationOktaResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *IntegrationJiraCloudResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource connector.")
 }

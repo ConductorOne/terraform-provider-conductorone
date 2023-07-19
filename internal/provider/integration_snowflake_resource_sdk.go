@@ -2,7 +2,6 @@
 package provider
 
 import (
-	"strconv"
 	"time"
 
 	"conductorone/internal/sdk"
@@ -11,10 +10,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const oktaCatalogID = "23w9L3qudsiSZQJ8jUP1KYyQqVW"
+const snowflakeCatalogID = "24cjzH6sY7x4huNU1JbaxkvzVm9"
 
-func (r *IntegrationOktaResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := sdk.String(oktaCatalogID)
+func (r *IntegrationSnowflakeResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+	catalogID := sdk.String(snowflakeCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -26,45 +25,45 @@ func (r *IntegrationOktaResourceModel) ToCreateSDKType() *shared.ConnectorServic
 	return &out
 }
 
-func (r *IntegrationOktaResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() *shared.Connector {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	oktaDomain := new(string)
-	if !r.OktaDomain.IsUnknown() && !r.OktaDomain.IsNull() {
-		*oktaDomain = r.OktaDomain.ValueString()
+	snowflakeAccount := new(string)
+	if !r.SnowflakeAccount.IsUnknown() && !r.SnowflakeAccount.IsNull() {
+		*snowflakeAccount = r.SnowflakeAccount.ValueString()
 	} else {
-		oktaDomain = nil
+		snowflakeAccount = nil
 	}
 
-	oktaApiKey := new(string)
-	if !r.OktaApiKey.IsUnknown() && !r.OktaApiKey.IsNull() {
-		*oktaApiKey = r.OktaApiKey.ValueString()
+	snowflakeUsername := new(string)
+	if !r.SnowflakeUsername.IsUnknown() && !r.SnowflakeUsername.IsNull() {
+		*snowflakeUsername = r.SnowflakeUsername.ValueString()
 	} else {
-		oktaApiKey = nil
+		snowflakeUsername = nil
 	}
 
-	oktaDontSyncInactiveApps := new(string)
-	if !r.OktaDontSyncInactiveApps.IsUnknown() && !r.OktaDontSyncInactiveApps.IsNull() {
-		*oktaDontSyncInactiveApps = strconv.FormatBool(r.OktaDontSyncInactiveApps.ValueBool())
+	snowflakePassword := new(string)
+	if !r.SnowflakePassword.IsUnknown() && !r.SnowflakePassword.IsNull() {
+		*snowflakePassword = r.SnowflakePassword.ValueString()
 	} else {
-		oktaDontSyncInactiveApps = nil
+		snowflakePassword = nil
 	}
 
-	oktaExtractAwsSamlRoles := new(string)
-	if !r.OktaExtractAwsSamlRoles.IsUnknown() && !r.OktaExtractAwsSamlRoles.IsNull() {
-		*oktaExtractAwsSamlRoles = strconv.FormatBool(r.OktaExtractAwsSamlRoles.ValueBool())
+	snowflakeUserRole := new(string)
+	if !r.SnowflakeUserRole.IsUnknown() && !r.SnowflakeUserRole.IsNull() {
+		*snowflakeUserRole = r.SnowflakeUserRole.ValueString()
 	} else {
-		oktaExtractAwsSamlRoles = nil
+		snowflakeUserRole = nil
 	}
 
 	config := makeConnectorConfig(map[string]interface{}{
-		"okta_domain":                  oktaDomain,
-		"okta_api_key":                 oktaApiKey,
-		"okta_dont_sync_inactive_apps": oktaDontSyncInactiveApps,
-		"okta_extract_aws_saml_roles":  oktaExtractAwsSamlRoles,
+		"snowflake_account":   snowflakeAccount,
+		"snowflake_username":  snowflakeUsername,
+		"snowflake_password":  snowflakePassword,
+		"snowflake_user_role": snowflakeUserRole,
 	})
 
 	out := shared.Connector{
@@ -77,17 +76,17 @@ func (r *IntegrationOktaResourceModel) ToUpdateSDKType() *shared.Connector {
 	return &out
 }
 
-func (r *IntegrationOktaResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationSnowflakeResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateSDKType()
 	return out
 }
 
-func (r *IntegrationOktaResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationSnowflakeResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateSDKType()
 	return out
 }
 
-func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
+func (r *IntegrationSnowflakeResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
 	if resp == nil {
 		return
 	}
@@ -124,41 +123,31 @@ func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Conne
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["okta_domain"]; ok {
-				r.OktaDomain = types.StringValue(v.(string))
+			if v, ok := config["snowflake_account"]; ok {
+				r.SnowflakeAccount = types.StringValue(v.(string))
 			}
 
-			if v, ok := config["okta_api_key"]; ok {
-				r.OktaApiKey = types.StringValue(v.(string))
+			if v, ok := config["snowflake_username"]; ok {
+				r.SnowflakeUsername = types.StringValue(v.(string))
 			}
 
-			if v, ok := config["okta_dont_sync_inactive_apps"]; ok {
-				bv, err := strconv.ParseBool(v.(string))
-				if err != nil {
-					r.OktaDontSyncInactiveApps = types.BoolValue(false)
-				} else {
-					r.OktaDontSyncInactiveApps = types.BoolValue(bv)
-				}
+			if v, ok := config["snowflake_password"]; ok {
+				r.SnowflakePassword = types.StringValue(v.(string))
 			}
 
-			if v, ok := config["okta_extract_aws_saml_roles"]; ok {
-				bv, err := strconv.ParseBool(v.(string))
-				if err != nil {
-					r.OktaExtractAwsSamlRoles = types.BoolValue(false)
-				} else {
-					r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
-				}
+			if v, ok := config["snowflake_user_role"]; ok {
+				r.SnowflakeUserRole = types.StringValue(v.(string))
 			}
 
 		}
 	}
 }
 
-func (r *IntegrationOktaResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
+func (r *IntegrationSnowflakeResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
 	r.RefreshFromGetResponse(resp)
 }
 
-func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
+func (r *IntegrationSnowflakeResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
 	if resp.AppID != nil {
 		r.AppID = types.StringValue(*resp.AppID)
 	} else {

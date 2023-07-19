@@ -22,39 +22,37 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &IntegrationOktaResource{}
-var _ resource.ResourceWithImportState = &IntegrationOktaResource{}
+var _ resource.Resource = &IntegrationSalesforceResource{}
+var _ resource.ResourceWithImportState = &IntegrationSalesforceResource{}
 
-func NewIntegrationOktaResource() resource.Resource {
-	return &IntegrationOktaResource{}
+func NewIntegrationSalesforceResource() resource.Resource {
+	return &IntegrationSalesforceResource{}
 }
 
-// IntegrationOktaResource defines the resource implementation.
-type IntegrationOktaResource struct {
+// IntegrationSalesforceResource defines the resource implementation.
+type IntegrationSalesforceResource struct {
 	client *sdk.ConductoroneAPI
 }
 
-// IntegrationOktaResourceModel describes the resource data model.
-type IntegrationOktaResourceModel struct {
-	AppID                    types.String   `tfsdk:"app_id"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	DeletedAt                types.String   `tfsdk:"deleted_at"`
-	ID                       types.String   `tfsdk:"id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	UserIds                  []types.String `tfsdk:"user_ids"`
-	OktaDomain               types.String   `tfsdk:"okta_domain"`
-	OktaApiKey               types.String   `tfsdk:"okta_api_key"`
-	OktaDontSyncInactiveApps types.Bool     `tfsdk:"okta_dont_sync_inactive_apps"`
-	OktaExtractAwsSamlRoles  types.Bool     `tfsdk:"okta_extract_aws_saml_roles"`
+// IntegrationSalesforceResourceModel describes the resource data model.
+type IntegrationSalesforceResourceModel struct {
+	AppID                      types.String   `tfsdk:"app_id"`
+	CreatedAt                  types.String   `tfsdk:"created_at"`
+	DeletedAt                  types.String   `tfsdk:"deleted_at"`
+	ID                         types.String   `tfsdk:"id"`
+	UpdatedAt                  types.String   `tfsdk:"updated_at"`
+	UserIds                    []types.String `tfsdk:"user_ids"`
+	SalesforceInstanceUrl      types.String   `tfsdk:"salesforce_instance_url"`
+	SalesforceUsernameForEmail types.Bool     `tfsdk:"salesforce_username_for_email"`
 }
 
-func (r *IntegrationOktaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_integration_okta"
+func (r *IntegrationSalesforceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_integration_salesforce"
 }
 
-func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *IntegrationSalesforceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Okta Integration Resource",
+		MarkdownDescription: "Salesforce Integration Resource",
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
@@ -92,32 +90,22 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 				ElementType: types.StringType,
 				Description: `The userIds field.`,
 			},
-			"okta_domain": &schema.StringAttribute{
-				Optional:    true,
-				Description: `The okta domain field.`,
-			},
-			"okta_api_key": &schema.StringAttribute{
+			"salesforce_instance_url": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `The okta api key field.`,
+				Description: `Salesforce Domain`,
 			},
-			"okta_dont_sync_inactive_apps": &schema.BoolAttribute{
+			"salesforce_username_for_email": &schema.BoolAttribute{
 				Optional:    true,
 				Computed:    true,
-				Description: `Don't include inactive apps in the sync. Defaults to false. If set to true, the integration will only sync active apps.`,
-				Default:     booldefault.StaticBool(false),
-			},
-			"okta_extract_aws_saml_roles": &schema.BoolAttribute{
-				Optional:    true,
-				Computed:    true,
-				Description: `Extract AWS SAML roles from Okta SAML responses. Defaults to false. If set to true, the integration will extract AWS SAML roles from Okta SAML responses.`,
+				Description: `Use Salesforce usernames for email`,
 				Default:     booldefault.StaticBool(false),
 			},
 		},
 	}
 }
 
-func (r *IntegrationOktaResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *IntegrationSalesforceResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -137,7 +125,7 @@ func (r *IntegrationOktaResource) Configure(ctx context.Context, req resource.Co
 	r.client = client
 }
 
-func (r *IntegrationOktaResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *IntegrationSalesforceResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *IntegrationOktaResourceModel
 	var item types.Object
 
@@ -208,7 +196,7 @@ func (r *IntegrationOktaResource) Create(ctx context.Context, req resource.Creat
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationOktaResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *IntegrationSalesforceResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var data *IntegrationOktaResourceModel
 	var item types.Object
 
@@ -237,7 +225,7 @@ func (r *IntegrationOktaResource) Read(ctx context.Context, req resource.ReadReq
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationOktaResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
+func (r *IntegrationSalesforceResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
 	request := operations.C1APIAppV1ConnectorServiceGetRequest{
 		AppID: appID,
 		ID:    id,
@@ -258,7 +246,7 @@ func (r *IntegrationOktaResource) get(ctx context.Context, appID string, id stri
 	return res.ConnectorServiceGetResponse, nil
 }
 
-func (r *IntegrationOktaResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *IntegrationSalesforceResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *IntegrationOktaResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
@@ -295,7 +283,7 @@ func (r *IntegrationOktaResource) Update(ctx context.Context, req resource.Updat
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationOktaResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *IntegrationSalesforceResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data *IntegrationOktaResourceModel
 	var item types.Object
 
@@ -338,6 +326,6 @@ func (r *IntegrationOktaResource) Delete(ctx context.Context, req resource.Delet
 
 }
 
-func (r *IntegrationOktaResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *IntegrationSalesforceResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource connector.")
 }

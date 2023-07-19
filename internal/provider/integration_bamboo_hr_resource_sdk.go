@@ -2,7 +2,6 @@
 package provider
 
 import (
-	"strconv"
 	"time"
 
 	"conductorone/internal/sdk"
@@ -11,10 +10,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const oktaCatalogID = "23w9L3qudsiSZQJ8jUP1KYyQqVW"
+const bambooHrCatalogID = "2CrErEM4PZ0cFwdLKjHVnGqrBVF"
 
-func (r *IntegrationOktaResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := sdk.String(oktaCatalogID)
+func (r *IntegrationBambooHrResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+	catalogID := sdk.String(bambooHrCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -26,45 +25,29 @@ func (r *IntegrationOktaResourceModel) ToCreateSDKType() *shared.ConnectorServic
 	return &out
 }
 
-func (r *IntegrationOktaResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationBambooHrResourceModel) ToUpdateSDKType() *shared.Connector {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	oktaDomain := new(string)
-	if !r.OktaDomain.IsUnknown() && !r.OktaDomain.IsNull() {
-		*oktaDomain = r.OktaDomain.ValueString()
+	companyDomain := new(string)
+	if !r.CompanyDomain.IsUnknown() && !r.CompanyDomain.IsNull() {
+		*companyDomain = r.CompanyDomain.ValueString()
 	} else {
-		oktaDomain = nil
+		companyDomain = nil
 	}
 
-	oktaApiKey := new(string)
-	if !r.OktaApiKey.IsUnknown() && !r.OktaApiKey.IsNull() {
-		*oktaApiKey = r.OktaApiKey.ValueString()
+	apiKey := new(string)
+	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
+		*apiKey = r.ApiKey.ValueString()
 	} else {
-		oktaApiKey = nil
-	}
-
-	oktaDontSyncInactiveApps := new(string)
-	if !r.OktaDontSyncInactiveApps.IsUnknown() && !r.OktaDontSyncInactiveApps.IsNull() {
-		*oktaDontSyncInactiveApps = strconv.FormatBool(r.OktaDontSyncInactiveApps.ValueBool())
-	} else {
-		oktaDontSyncInactiveApps = nil
-	}
-
-	oktaExtractAwsSamlRoles := new(string)
-	if !r.OktaExtractAwsSamlRoles.IsUnknown() && !r.OktaExtractAwsSamlRoles.IsNull() {
-		*oktaExtractAwsSamlRoles = strconv.FormatBool(r.OktaExtractAwsSamlRoles.ValueBool())
-	} else {
-		oktaExtractAwsSamlRoles = nil
+		apiKey = nil
 	}
 
 	config := makeConnectorConfig(map[string]interface{}{
-		"okta_domain":                  oktaDomain,
-		"okta_api_key":                 oktaApiKey,
-		"okta_dont_sync_inactive_apps": oktaDontSyncInactiveApps,
-		"okta_extract_aws_saml_roles":  oktaExtractAwsSamlRoles,
+		"company_domain": companyDomain,
+		"api_key":        apiKey,
 	})
 
 	out := shared.Connector{
@@ -77,17 +60,17 @@ func (r *IntegrationOktaResourceModel) ToUpdateSDKType() *shared.Connector {
 	return &out
 }
 
-func (r *IntegrationOktaResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationBambooHrResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateSDKType()
 	return out
 }
 
-func (r *IntegrationOktaResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationBambooHrResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateSDKType()
 	return out
 }
 
-func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
+func (r *IntegrationBambooHrResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
 	if resp == nil {
 		return
 	}
@@ -124,41 +107,23 @@ func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Conne
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["okta_domain"]; ok {
-				r.OktaDomain = types.StringValue(v.(string))
+			if v, ok := config["company_domain"]; ok {
+				r.CompanyDomain = types.StringValue(v.(string))
 			}
 
-			if v, ok := config["okta_api_key"]; ok {
-				r.OktaApiKey = types.StringValue(v.(string))
-			}
-
-			if v, ok := config["okta_dont_sync_inactive_apps"]; ok {
-				bv, err := strconv.ParseBool(v.(string))
-				if err != nil {
-					r.OktaDontSyncInactiveApps = types.BoolValue(false)
-				} else {
-					r.OktaDontSyncInactiveApps = types.BoolValue(bv)
-				}
-			}
-
-			if v, ok := config["okta_extract_aws_saml_roles"]; ok {
-				bv, err := strconv.ParseBool(v.(string))
-				if err != nil {
-					r.OktaExtractAwsSamlRoles = types.BoolValue(false)
-				} else {
-					r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
-				}
+			if v, ok := config["api_key"]; ok {
+				r.ApiKey = types.StringValue(v.(string))
 			}
 
 		}
 	}
 }
 
-func (r *IntegrationOktaResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
+func (r *IntegrationBambooHrResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
 	r.RefreshFromGetResponse(resp)
 }
 
-func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
+func (r *IntegrationBambooHrResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
 	if resp.AppID != nil {
 		r.AppID = types.StringValue(*resp.AppID)
 	} else {

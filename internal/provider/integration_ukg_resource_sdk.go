@@ -2,7 +2,6 @@
 package provider
 
 import (
-	"strconv"
 	"time"
 
 	"conductorone/internal/sdk"
@@ -11,10 +10,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const oktaCatalogID = "23w9L3qudsiSZQJ8jUP1KYyQqVW"
+const ukgCatalogID = "2QFfoa6GzhmBbncvQYjFlCIfzVn"
 
-func (r *IntegrationOktaResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := sdk.String(oktaCatalogID)
+func (r *IntegrationUkgResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+	catalogID := sdk.String(ukgCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -26,45 +25,45 @@ func (r *IntegrationOktaResourceModel) ToCreateSDKType() *shared.ConnectorServic
 	return &out
 }
 
-func (r *IntegrationOktaResourceModel) ToUpdateSDKType() *shared.Connector {
+func (r *IntegrationUkgResourceModel) ToUpdateSDKType() *shared.Connector {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	oktaDomain := new(string)
-	if !r.OktaDomain.IsUnknown() && !r.OktaDomain.IsNull() {
-		*oktaDomain = r.OktaDomain.ValueString()
+	ukgCustomerApiKey := new(string)
+	if !r.UkgCustomerApiKey.IsUnknown() && !r.UkgCustomerApiKey.IsNull() {
+		*ukgCustomerApiKey = r.UkgCustomerApiKey.ValueString()
 	} else {
-		oktaDomain = nil
+		ukgCustomerApiKey = nil
 	}
 
-	oktaApiKey := new(string)
-	if !r.OktaApiKey.IsUnknown() && !r.OktaApiKey.IsNull() {
-		*oktaApiKey = r.OktaApiKey.ValueString()
+	ukgUsername := new(string)
+	if !r.UkgUsername.IsUnknown() && !r.UkgUsername.IsNull() {
+		*ukgUsername = r.UkgUsername.ValueString()
 	} else {
-		oktaApiKey = nil
+		ukgUsername = nil
 	}
 
-	oktaDontSyncInactiveApps := new(string)
-	if !r.OktaDontSyncInactiveApps.IsUnknown() && !r.OktaDontSyncInactiveApps.IsNull() {
-		*oktaDontSyncInactiveApps = strconv.FormatBool(r.OktaDontSyncInactiveApps.ValueBool())
+	ukgPassword := new(string)
+	if !r.UkgPassword.IsUnknown() && !r.UkgPassword.IsNull() {
+		*ukgPassword = r.UkgPassword.ValueString()
 	} else {
-		oktaDontSyncInactiveApps = nil
+		ukgPassword = nil
 	}
 
-	oktaExtractAwsSamlRoles := new(string)
-	if !r.OktaExtractAwsSamlRoles.IsUnknown() && !r.OktaExtractAwsSamlRoles.IsNull() {
-		*oktaExtractAwsSamlRoles = strconv.FormatBool(r.OktaExtractAwsSamlRoles.ValueBool())
+	ukgServiceEndpoint := new(string)
+	if !r.UkgServiceEndpoint.IsUnknown() && !r.UkgServiceEndpoint.IsNull() {
+		*ukgServiceEndpoint = r.UkgServiceEndpoint.ValueString()
 	} else {
-		oktaExtractAwsSamlRoles = nil
+		ukgServiceEndpoint = nil
 	}
 
 	config := makeConnectorConfig(map[string]interface{}{
-		"okta_domain":                  oktaDomain,
-		"okta_api_key":                 oktaApiKey,
-		"okta_dont_sync_inactive_apps": oktaDontSyncInactiveApps,
-		"okta_extract_aws_saml_roles":  oktaExtractAwsSamlRoles,
+		"ukg_customer_api_key": ukgCustomerApiKey,
+		"ukg_username":         ukgUsername,
+		"ukg_password":         ukgPassword,
+		"ukg_service_endpoint": ukgServiceEndpoint,
 	})
 
 	out := shared.Connector{
@@ -77,17 +76,17 @@ func (r *IntegrationOktaResourceModel) ToUpdateSDKType() *shared.Connector {
 	return &out
 }
 
-func (r *IntegrationOktaResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationUkgResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateSDKType()
 	return out
 }
 
-func (r *IntegrationOktaResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationUkgResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateSDKType()
 	return out
 }
 
-func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
+func (r *IntegrationUkgResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
 	if resp == nil {
 		return
 	}
@@ -124,41 +123,31 @@ func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Conne
 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if v, ok := config["okta_domain"]; ok {
-				r.OktaDomain = types.StringValue(v.(string))
+			if v, ok := config["ukg_customer_api_key"]; ok {
+				r.UkgCustomerApiKey = types.StringValue(v.(string))
 			}
 
-			if v, ok := config["okta_api_key"]; ok {
-				r.OktaApiKey = types.StringValue(v.(string))
+			if v, ok := config["ukg_username"]; ok {
+				r.UkgUsername = types.StringValue(v.(string))
 			}
 
-			if v, ok := config["okta_dont_sync_inactive_apps"]; ok {
-				bv, err := strconv.ParseBool(v.(string))
-				if err != nil {
-					r.OktaDontSyncInactiveApps = types.BoolValue(false)
-				} else {
-					r.OktaDontSyncInactiveApps = types.BoolValue(bv)
-				}
+			if v, ok := config["ukg_password"]; ok {
+				r.UkgPassword = types.StringValue(v.(string))
 			}
 
-			if v, ok := config["okta_extract_aws_saml_roles"]; ok {
-				bv, err := strconv.ParseBool(v.(string))
-				if err != nil {
-					r.OktaExtractAwsSamlRoles = types.BoolValue(false)
-				} else {
-					r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
-				}
+			if v, ok := config["ukg_service_endpoint"]; ok {
+				r.UkgServiceEndpoint = types.StringValue(v.(string))
 			}
 
 		}
 	}
 }
 
-func (r *IntegrationOktaResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
+func (r *IntegrationUkgResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
 	r.RefreshFromGetResponse(resp)
 }
 
-func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
+func (r *IntegrationUkgResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
 	if resp.AppID != nil {
 		r.AppID = types.StringValue(*resp.AppID)
 	} else {

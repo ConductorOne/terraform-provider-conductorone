@@ -22,39 +22,43 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &IntegrationOktaResource{}
-var _ resource.ResourceWithImportState = &IntegrationOktaResource{}
+var _ resource.Resource = &IntegrationAwsResource{}
+var _ resource.ResourceWithImportState = &IntegrationAwsResource{}
 
-func NewIntegrationOktaResource() resource.Resource {
-	return &IntegrationOktaResource{}
+func NewIntegrationAwsResource() resource.Resource {
+	return &IntegrationAwsResource{}
 }
 
-// IntegrationOktaResource defines the resource implementation.
-type IntegrationOktaResource struct {
+// IntegrationAwsResource defines the resource implementation.
+type IntegrationAwsResource struct {
 	client *sdk.ConductoroneAPI
 }
 
-// IntegrationOktaResourceModel describes the resource data model.
-type IntegrationOktaResourceModel struct {
-	AppID                    types.String   `tfsdk:"app_id"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	DeletedAt                types.String   `tfsdk:"deleted_at"`
-	ID                       types.String   `tfsdk:"id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	UserIds                  []types.String `tfsdk:"user_ids"`
-	OktaDomain               types.String   `tfsdk:"okta_domain"`
-	OktaApiKey               types.String   `tfsdk:"okta_api_key"`
-	OktaDontSyncInactiveApps types.Bool     `tfsdk:"okta_dont_sync_inactive_apps"`
-	OktaExtractAwsSamlRoles  types.Bool     `tfsdk:"okta_extract_aws_saml_roles"`
+// IntegrationAwsResourceModel describes the resource data model.
+type IntegrationAwsResourceModel struct {
+	AppID                 types.String   `tfsdk:"app_id"`
+	CreatedAt             types.String   `tfsdk:"created_at"`
+	DeletedAt             types.String   `tfsdk:"deleted_at"`
+	ID                    types.String   `tfsdk:"id"`
+	UpdatedAt             types.String   `tfsdk:"updated_at"`
+	UserIds               []types.String `tfsdk:"user_ids"`
+	AwsExternalId         types.String   `tfsdk:"aws_external_id"`
+	AwsRoleArn            types.String   `tfsdk:"aws_role_arn"`
+	AwsOrgsEnable         types.Bool     `tfsdk:"aws_orgs_enable"`
+	AwsSsoEnable          types.Bool     `tfsdk:"aws_sso_enable"`
+	AwsSsoRegion          types.String   `tfsdk:"aws_sso_region"`
+	AwsSsoScimEnable      types.Bool     `tfsdk:"aws_sso_scim_enable"`
+	AwsSsoScimEndpoint    types.String   `tfsdk:"aws_sso_scim_endpoint"`
+	AwsSsoScimAccessToken types.String   `tfsdk:"aws_sso_scim_access_token"`
 }
 
-func (r *IntegrationOktaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_integration_okta"
+func (r *IntegrationAwsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_integration_aws"
 }
 
-func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *IntegrationAwsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Okta Integration Resource",
+		MarkdownDescription: "Aws Integration Resource",
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
@@ -92,32 +96,51 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 				ElementType: types.StringType,
 				Description: `The userIds field.`,
 			},
-			"okta_domain": &schema.StringAttribute{
-				Optional:    true,
-				Description: `The okta domain field.`,
+			"aws_external_id": &schema.StringAttribute{
+				Computed:    true,
+				Description: `External ID`,
 			},
-			"okta_api_key": &schema.StringAttribute{
+			"aws_role_arn": &schema.StringAttribute{
 				Optional:    true,
+				Description: `Role ARN`,
+			},
+			"aws_orgs_enable": &schema.BoolAttribute{
+				Optional:    true,
+				Computed:    true,
+				Description: `Enable support for AWS Organizations`,
+				Default:     booldefault.StaticBool(false),
+			},
+			"aws_sso_enable": &schema.BoolAttribute{
+				Optional:    true,
+				Computed:    true,
+				Description: `Enable support for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
+				Default:     booldefault.StaticBool(false),
+			},
+			"aws_sso_region": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Region for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
+			},
+			"aws_sso_scim_enable": &schema.BoolAttribute{
+				Optional:    true,
+				Computed:    true,
+				Description: `Enable usage of the AWS IAM Identity Center SCIM API (successor to AWS Single Sign-On)`,
+				Default:     booldefault.StaticBool(false),
+			},
+			"aws_sso_scim_endpoint": &schema.StringAttribute{
+				Optional:    true,
+				Description: `SCIM endpoint for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
+			},
+			"aws_sso_scim_access_token": &schema.StringAttribute{
+				Optional:    true,
+				Computed:    true,
 				Sensitive:   true,
-				Description: `The okta api key field.`,
-			},
-			"okta_dont_sync_inactive_apps": &schema.BoolAttribute{
-				Optional:    true,
-				Computed:    true,
-				Description: `Don't include inactive apps in the sync. Defaults to false. If set to true, the integration will only sync active apps.`,
-				Default:     booldefault.StaticBool(false),
-			},
-			"okta_extract_aws_saml_roles": &schema.BoolAttribute{
-				Optional:    true,
-				Computed:    true,
-				Description: `Extract AWS SAML roles from Okta SAML responses. Defaults to false. If set to true, the integration will extract AWS SAML roles from Okta SAML responses.`,
-				Default:     booldefault.StaticBool(false),
+				Description: `SCIM access token for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
 			},
 		},
 	}
 }
 
-func (r *IntegrationOktaResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *IntegrationAwsResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -137,7 +160,7 @@ func (r *IntegrationOktaResource) Configure(ctx context.Context, req resource.Co
 	r.client = client
 }
 
-func (r *IntegrationOktaResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *IntegrationAwsResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *IntegrationOktaResourceModel
 	var item types.Object
 
@@ -208,7 +231,7 @@ func (r *IntegrationOktaResource) Create(ctx context.Context, req resource.Creat
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationOktaResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *IntegrationAwsResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var data *IntegrationOktaResourceModel
 	var item types.Object
 
@@ -237,7 +260,7 @@ func (r *IntegrationOktaResource) Read(ctx context.Context, req resource.ReadReq
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationOktaResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
+func (r *IntegrationAwsResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
 	request := operations.C1APIAppV1ConnectorServiceGetRequest{
 		AppID: appID,
 		ID:    id,
@@ -258,7 +281,7 @@ func (r *IntegrationOktaResource) get(ctx context.Context, appID string, id stri
 	return res.ConnectorServiceGetResponse, nil
 }
 
-func (r *IntegrationOktaResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *IntegrationAwsResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *IntegrationOktaResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
@@ -295,7 +318,7 @@ func (r *IntegrationOktaResource) Update(ctx context.Context, req resource.Updat
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationOktaResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *IntegrationAwsResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data *IntegrationOktaResourceModel
 	var item types.Object
 
@@ -338,6 +361,6 @@ func (r *IntegrationOktaResource) Delete(ctx context.Context, req resource.Delet
 
 }
 
-func (r *IntegrationOktaResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *IntegrationAwsResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource connector.")
 }
