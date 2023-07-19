@@ -135,7 +135,7 @@ func (r *IntegrationUkgResource) Configure(ctx context.Context, req resource.Con
 }
 
 func (r *IntegrationUkgResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationUkgResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -206,7 +206,7 @@ func (r *IntegrationUkgResource) Create(ctx context.Context, req resource.Create
 }
 
 func (r *IntegrationUkgResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationUkgResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -256,7 +256,7 @@ func (r *IntegrationUkgResource) get(ctx context.Context, appID string, id strin
 }
 
 func (r *IntegrationUkgResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationUkgResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

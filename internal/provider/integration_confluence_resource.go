@@ -129,7 +129,7 @@ func (r *IntegrationConfluenceResource) Configure(ctx context.Context, req resou
 }
 
 func (r *IntegrationConfluenceResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationConfluenceResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -200,7 +200,7 @@ func (r *IntegrationConfluenceResource) Create(ctx context.Context, req resource
 }
 
 func (r *IntegrationConfluenceResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationConfluenceResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -250,7 +250,7 @@ func (r *IntegrationConfluenceResource) get(ctx context.Context, appID string, i
 }
 
 func (r *IntegrationConfluenceResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationConfluenceResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

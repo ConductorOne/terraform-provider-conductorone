@@ -52,7 +52,7 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() *shared.Con
 
 	out := shared.Connector{
 		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(oktaCatalogID),
+		CatalogID: sdk.String(githubEnterpriseCatalogID),
 		ID:        sdk.String(r.ID.ValueString()),
 		UserIds:   userIds,
 		Config:    config,

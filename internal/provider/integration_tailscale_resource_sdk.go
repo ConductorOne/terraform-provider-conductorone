@@ -52,7 +52,7 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() *shared.Connector 
 
 	out := shared.Connector{
 		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(oktaCatalogID),
+		CatalogID: sdk.String(tailscaleCatalogID),
 		ID:        sdk.String(r.ID.ValueString()),
 		UserIds:   userIds,
 		Config:    config,

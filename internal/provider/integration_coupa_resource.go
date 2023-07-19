@@ -42,7 +42,7 @@ type IntegrationCoupaResourceModel struct {
 	ID                                types.String   `tfsdk:"id"`
 	UpdatedAt                         types.String   `tfsdk:"updated_at"`
 	UserIds                           []types.String `tfsdk:"user_ids"`
-	CoupaDomain                       types.String   `tfsdk:"coupa-domain"`
+	CoupaDomain                       types.String   `tfsdk:"coupa_domain"`
 	Oauth2ClientCredGrantClientId     types.String   `tfsdk:"oauth2_client_cred_grant_client_id"`
 	Oauth2ClientCredGrantClientSecret types.String   `tfsdk:"oauth2_client_cred_grant_client_secret"`
 }
@@ -91,7 +91,7 @@ func (r *IntegrationCoupaResource) Schema(ctx context.Context, req resource.Sche
 				ElementType: types.StringType,
 				Description: `The userIds field.`,
 			},
-			"coupa-domain": &schema.StringAttribute{
+			"coupa_domain": &schema.StringAttribute{
 				Optional:    true,
 				Description: `Coupa Domain`,
 			},
@@ -129,7 +129,7 @@ func (r *IntegrationCoupaResource) Configure(ctx context.Context, req resource.C
 }
 
 func (r *IntegrationCoupaResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationCoupaResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -200,7 +200,7 @@ func (r *IntegrationCoupaResource) Create(ctx context.Context, req resource.Crea
 }
 
 func (r *IntegrationCoupaResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationCoupaResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -250,7 +250,7 @@ func (r *IntegrationCoupaResource) get(ctx context.Context, appID string, id str
 }
 
 func (r *IntegrationCoupaResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationCoupaResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

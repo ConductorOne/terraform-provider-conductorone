@@ -134,7 +134,7 @@ func (r *IntegrationSnowflakeResource) Configure(ctx context.Context, req resour
 }
 
 func (r *IntegrationSnowflakeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSnowflakeResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -205,7 +205,7 @@ func (r *IntegrationSnowflakeResource) Create(ctx context.Context, req resource.
 }
 
 func (r *IntegrationSnowflakeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSnowflakeResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -255,7 +255,7 @@ func (r *IntegrationSnowflakeResource) get(ctx context.Context, appID string, id
 }
 
 func (r *IntegrationSnowflakeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSnowflakeResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

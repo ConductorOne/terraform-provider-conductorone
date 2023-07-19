@@ -52,7 +52,7 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) ToUpdateSDKType() *shared.
 
 	out := shared.Connector{
 		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(oktaCatalogID),
+		CatalogID: sdk.String(cloudflareZeroTrustCatalogID),
 		ID:        sdk.String(r.ID.ValueString()),
 		UserIds:   userIds,
 		Config:    config,

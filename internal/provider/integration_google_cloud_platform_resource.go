@@ -119,7 +119,7 @@ func (r *IntegrationGoogleCloudPlatformResource) Configure(ctx context.Context, 
 }
 
 func (r *IntegrationGoogleCloudPlatformResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGoogleCloudPlatformResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -190,7 +190,7 @@ func (r *IntegrationGoogleCloudPlatformResource) Create(ctx context.Context, req
 }
 
 func (r *IntegrationGoogleCloudPlatformResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGoogleCloudPlatformResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -240,7 +240,7 @@ func (r *IntegrationGoogleCloudPlatformResource) get(ctx context.Context, appID 
 }
 
 func (r *IntegrationGoogleCloudPlatformResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGoogleCloudPlatformResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

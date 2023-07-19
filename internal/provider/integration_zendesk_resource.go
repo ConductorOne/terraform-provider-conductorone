@@ -130,7 +130,7 @@ func (r *IntegrationZendeskResource) Configure(ctx context.Context, req resource
 }
 
 func (r *IntegrationZendeskResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationZendeskResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -201,7 +201,7 @@ func (r *IntegrationZendeskResource) Create(ctx context.Context, req resource.Cr
 }
 
 func (r *IntegrationZendeskResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationZendeskResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -251,7 +251,7 @@ func (r *IntegrationZendeskResource) get(ctx context.Context, appID string, id s
 }
 
 func (r *IntegrationZendeskResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationZendeskResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

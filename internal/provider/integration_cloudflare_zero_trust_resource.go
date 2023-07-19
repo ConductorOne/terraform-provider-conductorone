@@ -124,7 +124,7 @@ func (r *IntegrationCloudflareZeroTrustResource) Configure(ctx context.Context, 
 }
 
 func (r *IntegrationCloudflareZeroTrustResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationCloudflareZeroTrustResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -195,7 +195,7 @@ func (r *IntegrationCloudflareZeroTrustResource) Create(ctx context.Context, req
 }
 
 func (r *IntegrationCloudflareZeroTrustResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationCloudflareZeroTrustResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -245,7 +245,7 @@ func (r *IntegrationCloudflareZeroTrustResource) get(ctx context.Context, appID 
 }
 
 func (r *IntegrationCloudflareZeroTrustResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationCloudflareZeroTrustResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

@@ -126,7 +126,7 @@ func (r *IntegrationSalesforceResource) Configure(ctx context.Context, req resou
 }
 
 func (r *IntegrationSalesforceResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSalesforceResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -197,7 +197,7 @@ func (r *IntegrationSalesforceResource) Create(ctx context.Context, req resource
 }
 
 func (r *IntegrationSalesforceResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSalesforceResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -247,7 +247,7 @@ func (r *IntegrationSalesforceResource) get(ctx context.Context, appID string, i
 }
 
 func (r *IntegrationSalesforceResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSalesforceResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

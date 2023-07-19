@@ -129,7 +129,7 @@ func (r *IntegrationGoogleIdentityPlatformResource) Configure(ctx context.Contex
 }
 
 func (r *IntegrationGoogleIdentityPlatformResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGoogleIdentityPlatformResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -200,7 +200,7 @@ func (r *IntegrationGoogleIdentityPlatformResource) Create(ctx context.Context, 
 }
 
 func (r *IntegrationGoogleIdentityPlatformResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGoogleIdentityPlatformResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -250,7 +250,7 @@ func (r *IntegrationGoogleIdentityPlatformResource) get(ctx context.Context, app
 }
 
 func (r *IntegrationGoogleIdentityPlatformResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGoogleIdentityPlatformResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

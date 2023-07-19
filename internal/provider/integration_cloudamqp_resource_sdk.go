@@ -44,7 +44,7 @@ func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() *shared.Connector 
 
 	out := shared.Connector{
 		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(oktaCatalogID),
+		CatalogID: sdk.String(cloudamqpCatalogID),
 		ID:        sdk.String(r.ID.ValueString()),
 		UserIds:   userIds,
 		Config:    config,

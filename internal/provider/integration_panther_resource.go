@@ -125,7 +125,7 @@ func (r *IntegrationPantherResource) Configure(ctx context.Context, req resource
 }
 
 func (r *IntegrationPantherResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationPantherResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -196,7 +196,7 @@ func (r *IntegrationPantherResource) Create(ctx context.Context, req resource.Cr
 }
 
 func (r *IntegrationPantherResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationPantherResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -246,7 +246,7 @@ func (r *IntegrationPantherResource) get(ctx context.Context, appID string, id s
 }
 
 func (r *IntegrationPantherResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationPantherResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

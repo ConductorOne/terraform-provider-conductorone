@@ -60,7 +60,7 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) ToUpdateSDKType() *shar
 
 	out := shared.Connector{
 		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(oktaCatalogID),
+		CatalogID: sdk.String(googleIdentityPlatformCatalogID),
 		ID:        sdk.String(r.ID.ValueString()),
 		UserIds:   userIds,
 		Config:    config,

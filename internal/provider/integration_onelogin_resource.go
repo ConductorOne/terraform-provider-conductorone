@@ -129,7 +129,7 @@ func (r *IntegrationOneloginResource) Configure(ctx context.Context, req resourc
 }
 
 func (r *IntegrationOneloginResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationOneloginResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -200,7 +200,7 @@ func (r *IntegrationOneloginResource) Create(ctx context.Context, req resource.C
 }
 
 func (r *IntegrationOneloginResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationOneloginResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -250,7 +250,7 @@ func (r *IntegrationOneloginResource) get(ctx context.Context, appID string, id 
 }
 
 func (r *IntegrationOneloginResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationOneloginResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

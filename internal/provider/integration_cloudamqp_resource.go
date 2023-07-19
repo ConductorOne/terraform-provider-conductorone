@@ -119,7 +119,7 @@ func (r *IntegrationCloudamqpResource) Configure(ctx context.Context, req resour
 }
 
 func (r *IntegrationCloudamqpResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationCloudamqpResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -190,7 +190,7 @@ func (r *IntegrationCloudamqpResource) Create(ctx context.Context, req resource.
 }
 
 func (r *IntegrationCloudamqpResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationCloudamqpResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -240,7 +240,7 @@ func (r *IntegrationCloudamqpResource) get(ctx context.Context, appID string, id
 }
 
 func (r *IntegrationCloudamqpResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationCloudamqpResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

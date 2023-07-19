@@ -124,7 +124,7 @@ func (r *IntegrationGithubEnterpriseResource) Configure(ctx context.Context, req
 }
 
 func (r *IntegrationGithubEnterpriseResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGithubEnterpriseResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -195,7 +195,7 @@ func (r *IntegrationGithubEnterpriseResource) Create(ctx context.Context, req re
 }
 
 func (r *IntegrationGithubEnterpriseResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGithubEnterpriseResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -245,7 +245,7 @@ func (r *IntegrationGithubEnterpriseResource) get(ctx context.Context, appID str
 }
 
 func (r *IntegrationGithubEnterpriseResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGithubEnterpriseResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

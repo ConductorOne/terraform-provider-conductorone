@@ -124,7 +124,7 @@ func (r *IntegrationGitlabResource) Configure(ctx context.Context, req resource.
 }
 
 func (r *IntegrationGitlabResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGitlabResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -195,7 +195,7 @@ func (r *IntegrationGitlabResource) Create(ctx context.Context, req resource.Cre
 }
 
 func (r *IntegrationGitlabResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGitlabResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -245,7 +245,7 @@ func (r *IntegrationGitlabResource) get(ctx context.Context, appID string, id st
 }
 
 func (r *IntegrationGitlabResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGitlabResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

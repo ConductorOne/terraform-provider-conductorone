@@ -119,7 +119,7 @@ func (r *IntegrationSlackResource) Configure(ctx context.Context, req resource.C
 }
 
 func (r *IntegrationSlackResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSlackResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -190,7 +190,7 @@ func (r *IntegrationSlackResource) Create(ctx context.Context, req resource.Crea
 }
 
 func (r *IntegrationSlackResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSlackResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -240,7 +240,7 @@ func (r *IntegrationSlackResource) get(ctx context.Context, appID string, id str
 }
 
 func (r *IntegrationSlackResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSlackResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

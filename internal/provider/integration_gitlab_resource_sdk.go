@@ -52,7 +52,7 @@ func (r *IntegrationGitlabResourceModel) ToUpdateSDKType() *shared.Connector {
 
 	out := shared.Connector{
 		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(oktaCatalogID),
+		CatalogID: sdk.String(gitlabCatalogID),
 		ID:        sdk.String(r.ID.ValueString()),
 		UserIds:   userIds,
 		Config:    config,

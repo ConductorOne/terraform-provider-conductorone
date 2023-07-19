@@ -113,7 +113,7 @@ func (r *IntegrationAzureAdResource) Configure(ctx context.Context, req resource
 }
 
 func (r *IntegrationAzureAdResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationAzureAdResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -184,7 +184,7 @@ func (r *IntegrationAzureAdResource) Create(ctx context.Context, req resource.Cr
 }
 
 func (r *IntegrationAzureAdResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationAzureAdResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -234,7 +234,7 @@ func (r *IntegrationAzureAdResource) get(ctx context.Context, appID string, id s
 }
 
 func (r *IntegrationAzureAdResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationAzureAdResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

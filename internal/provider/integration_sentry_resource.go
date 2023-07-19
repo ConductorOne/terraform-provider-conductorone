@@ -125,7 +125,7 @@ func (r *IntegrationSentryResource) Configure(ctx context.Context, req resource.
 }
 
 func (r *IntegrationSentryResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSentryResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -196,7 +196,7 @@ func (r *IntegrationSentryResource) Create(ctx context.Context, req resource.Cre
 }
 
 func (r *IntegrationSentryResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSentryResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -246,7 +246,7 @@ func (r *IntegrationSentryResource) get(ctx context.Context, appID string, id st
 }
 
 func (r *IntegrationSentryResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationSentryResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

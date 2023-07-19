@@ -118,7 +118,7 @@ func (r *IntegrationGustoResource) Configure(ctx context.Context, req resource.C
 }
 
 func (r *IntegrationGustoResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGustoResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -189,7 +189,7 @@ func (r *IntegrationGustoResource) Create(ctx context.Context, req resource.Crea
 }
 
 func (r *IntegrationGustoResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGustoResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -239,7 +239,7 @@ func (r *IntegrationGustoResource) get(ctx context.Context, appID string, id str
 }
 
 func (r *IntegrationGustoResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationOktaResourceModel
+	var data *IntegrationGustoResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
