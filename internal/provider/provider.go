@@ -95,13 +95,19 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 }
 
 func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.Resource {
-	return []func() resource.Resource{
+	resources := []func() resource.Resource{
 		NewCatalogResource,
 		NewCatalogRequestableEntriesResource,
 		NewCatalogVisibilityBindingsResource,
+		NewConnectorCredentialResource,
+		NewIntegrationBatonResource,
 		NewPolicyResource,
 		NewAppResource,
 	}
+
+	resources = append(resources, getIntegrationResources()...)
+
+	return resources
 }
 
 func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
