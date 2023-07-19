@@ -32,7 +32,7 @@ func (r *IntegrationBatonResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("Asana"),
+		DisplayName: sdk.String("Baton"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(asanaCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
