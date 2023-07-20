@@ -74,7 +74,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Description: `The description field.`,
 			},
 			"display_name": schema.StringAttribute{
-				Required: true,
+				Required:    true,
 				Description: `The displayName field.`,
 			},
 			"id": schema.StringAttribute{

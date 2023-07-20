@@ -18,7 +18,6 @@ App Resource
 ### Required
 
 - `display_name` (String) The displayName field.
-- `owners` (List of String) The owners field.
 
 ### Optional
 
@@ -26,6 +25,7 @@ App Resource
 - `description` (String) The description field.
 - `grant_policy_id` (String) The grantPolicyId field.
 - `monthly_cost_usd` (Number) The monthlyCostUsd field.
+- `owners` (List of String) The owners field.
 - `revoke_policy_id` (String) The revokePolicyId field.
 
 ### Read-Only

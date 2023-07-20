@@ -17,16 +17,13 @@ CatalogRequestableEntries Resource
 
 ### Required
 
-- `catalog_id` (String)
-
-### Optional
-
 - `app_entitlements` (Attributes List) The appEntitlements field. (see [below for nested schema](#nestedatt--app_entitlements))
+- `catalog_id` (String)
 
 <a id="nestedatt--app_entitlements"></a>
 ### Nested Schema for `app_entitlements`
 
-Optional:
+Required:
 
 - `app_id` (String) The appId field.
 - `id` (String) The id field.

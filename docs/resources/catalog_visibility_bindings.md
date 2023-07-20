@@ -17,16 +17,13 @@ CatalogVisibilityBindings Resource
 
 ### Required
 
-- `catalog_id` (String)
-
-### Optional
-
 - `access_entitlements` (Attributes List) The accessEntitlements field. (see [below for nested schema](#nestedatt--access_entitlements))
+- `catalog_id` (String)
 
 <a id="nestedatt--access_entitlements"></a>
 ### Nested Schema for `access_entitlements`
 
-Optional:
+Required:
 
 - `app_id` (String) The appId field.
 - `id` (String) The id field.

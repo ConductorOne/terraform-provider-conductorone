@@ -58,14 +58,14 @@ func (r *CatalogVisibilityBindingsResource) Schema(ctx context.Context, req reso
 							PlanModifiers: []planmodifier.String{
 								stringplanmodifier.RequiresReplace(),
 							},
-							Required: true,
+							Required:    true,
 							Description: `The appId field.`,
 						},
 						"id": schema.StringAttribute{
 							PlanModifiers: []planmodifier.String{
 								stringplanmodifier.RequiresReplace(),
 							},
-							Required: true,
+							Required:    true,
 							Description: `The id field.`,
 						},
 					},
