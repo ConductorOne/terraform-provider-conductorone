@@ -1,9 +1,6 @@
 resource "conductorone_catalog" "test_catalog" {
-  display_name = "terraform created catalog"
-  description  = "terraform test"
-  owner_ids = [
-    data.conductorone_user.my_user.id
-  ]
+  display_name        = "terraform created catalog"
+  description         = "terraform test"
   visible_to_everyone = "false"
   published           = "true"
 }

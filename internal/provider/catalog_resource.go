@@ -44,7 +44,6 @@ type CatalogResourceModel struct {
 	DisplayName              types.String                                         `tfsdk:"display_name"`
 	Expanded                 []RequestCatalogManagementServiceGetResponseExpanded `tfsdk:"expanded"`
 	ID                       types.String                                         `tfsdk:"id"`
-	OwnerIds                 []types.String                                       `tfsdk:"owner_ids"`
 	Published                types.Bool                                           `tfsdk:"published"`
 	RequestCatalogExpandMask *RequestCatalogExpandMask                            `tfsdk:"request_catalog_expand_mask"`
 	UpdatedAt                types.String                                         `tfsdk:"updated_at"`
@@ -260,11 +259,6 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The id field.`,
-			},
-			"owner_ids": schema.ListAttribute{
-				Optional:    true,
-				ElementType: types.StringType,
-				Description: `The ownerIds field.`,
 			},
 			"published": schema.BoolAttribute{
 				Computed:    true,

@@ -31,10 +31,6 @@ func (r *CatalogResourceModel) ToCreateSDKType() *shared.RequestCatalogManagemen
 	} else {
 		displayName = nil
 	}
-	ownerIds := make([]string, 0)
-	for _, ownerIdsItem := range r.OwnerIds {
-		ownerIds = append(ownerIds, ownerIdsItem.ValueString())
-	}
 	published := new(bool)
 	if !r.Published.IsUnknown() && !r.Published.IsNull() {
 		*published = r.Published.ValueBool()
@@ -51,7 +47,6 @@ func (r *CatalogResourceModel) ToCreateSDKType() *shared.RequestCatalogManagemen
 		RequestCatalogExpandMask: requestCatalogExpandMask,
 		Description:              description,
 		DisplayName:              displayName,
-		OwnerIds:                 ownerIds,
 		Published:                published,
 		VisibleToEveryone:        visibleToEveryone,
 	}

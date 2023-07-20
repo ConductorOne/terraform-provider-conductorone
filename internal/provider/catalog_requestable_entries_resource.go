@@ -3,16 +3,18 @@
 package provider
 
 import (
-	"context"
-	"fmt"
 	"conductorone/internal/sdk"
 	"conductorone/internal/sdk/pkg/models/operations"
+	"context"
+	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -49,26 +51,29 @@ func (r *CatalogRequestableEntriesResource) Schema(ctx context.Context, req reso
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplace(),
 				},
-				Optional: true,
+				Required: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"app_id": schema.StringAttribute{
 							PlanModifiers: []planmodifier.String{
 								stringplanmodifier.RequiresReplace(),
 							},
-							Optional:    true,
+							Required: true,
 							Description: `The appId field.`,
 						},
 						"id": schema.StringAttribute{
 							PlanModifiers: []planmodifier.String{
 								stringplanmodifier.RequiresReplace(),
 							},
-							Optional:    true,
+							Required: true,
 							Description: `The id field.`,
 						},
 					},
 				},
 				Description: `The appEntitlements field.`,
+				Validators: []validator.List{
+					listvalidator.SizeAtLeast(1),
+				},
 			},
 			"catalog_id": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
