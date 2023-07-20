@@ -32,24 +32,7 @@ func (r *IntegrationExpensifyResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	expensifyUserId := new(string)
-	if !r.ExpensifyUserId.IsUnknown() && !r.ExpensifyUserId.IsNull() {
-		*expensifyUserId = r.ExpensifyUserId.ValueString()
-	} else {
-		expensifyUserId = nil
-	}
-
-	expensifyUserSecret := new(string)
-	if !r.ExpensifyUserSecret.IsUnknown() && !r.ExpensifyUserSecret.IsNull() {
-		*expensifyUserSecret = r.ExpensifyUserSecret.ValueString()
-	} else {
-		expensifyUserSecret = nil
-	}
-
-	configValues := map[string]*string{
-		"expensify_user_id":     expensifyUserId,
-		"expensify_user_secret": expensifyUserSecret,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -74,6 +57,29 @@ func (r *IntegrationExpensifyResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationExpensifyResourceModel) populateConfig() map[string]*string {
+	expensifyUserId := new(string)
+	if !r.ExpensifyUserId.IsUnknown() && !r.ExpensifyUserId.IsNull() {
+		*expensifyUserId = r.ExpensifyUserId.ValueString()
+	} else {
+		expensifyUserId = nil
+	}
+
+	expensifyUserSecret := new(string)
+	if !r.ExpensifyUserSecret.IsUnknown() && !r.ExpensifyUserSecret.IsNull() {
+		*expensifyUserSecret = r.ExpensifyUserSecret.ValueString()
+	} else {
+		expensifyUserSecret = nil
+	}
+
+	configValues := map[string]*string{
+		"expensify_user_id":     expensifyUserId,
+		"expensify_user_secret": expensifyUserSecret,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationExpensifyResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -121,20 +127,6 @@ func (r *IntegrationExpensifyResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["expensify_user_id"]; ok {
-					r.ExpensifyUserId = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["expensify_user_secret"]; ok {
-					r.ExpensifyUserSecret = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationExpensifyResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -172,18 +164,4 @@ func (r *IntegrationExpensifyResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["expensify_user_id"]; ok {
-					r.ExpensifyUserId = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["expensify_user_secret"]; ok {
-					r.ExpensifyUserSecret = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

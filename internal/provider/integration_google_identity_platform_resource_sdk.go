@@ -32,6 +32,34 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) ToUpdateSDKType() (*sha
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
+	configValues := r.populateConfig()
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+
+	out := shared.Connector{
+		DisplayName: sdk.String("Google Identity Platform"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(googleIdentityPlatformCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
+	}
+
+	return &out, configSet
+}
+
+func (r *IntegrationGoogleIdentityPlatformResourceModel) populateConfig() map[string]*string {
 	projectId := new(string)
 	if !r.ProjectId.IsUnknown() && !r.ProjectId.IsNull() {
 		*projectId = r.ProjectId.ValueString()
@@ -59,29 +87,7 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) ToUpdateSDKType() (*sha
 		"credentials_json": credentialsJson,
 	}
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
-		configOut[key] = ""
-		if configValue != nil {
-			configOut[key] = *configValue
-			configSet = true
-		}
-	}
-	if !configSet {
-		configOut = nil
-	}
-
-	out := shared.Connector{
-		DisplayName: sdk.String("Google Identity Platform"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(googleIdentityPlatformCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
-	}
-
-	return &out, configSet
+	return configValues
 }
 
 func (r *IntegrationGoogleIdentityPlatformResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -140,10 +146,6 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) RefreshFromGetResponse(
 					r.TenantId = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["credentials_json"]; ok {
-					r.CredentialsJson = types.StringValue(v.(string))
-				}
-
 			}
 		}
 	}
@@ -193,10 +195,6 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) RefreshFromCreateRespon
 
 				if v, ok := values["tenant_id"]; ok {
 					r.TenantId = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["credentials_json"]; ok {
-					r.CredentialsJson = types.StringValue(v.(string))
 				}
 
 			}

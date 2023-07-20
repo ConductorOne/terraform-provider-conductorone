@@ -32,6 +32,34 @@ func (r *IntegrationDuoResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
+	configValues := r.populateConfig()
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+
+	out := shared.Connector{
+		DisplayName: sdk.String("Duo"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(duoCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
+	}
+
+	return &out, configSet
+}
+
+func (r *IntegrationDuoResourceModel) populateConfig() map[string]*string {
 	duoIntegrationKey := new(string)
 	if !r.DuoIntegrationKey.IsUnknown() && !r.DuoIntegrationKey.IsNull() {
 		*duoIntegrationKey = r.DuoIntegrationKey.ValueString()
@@ -59,29 +87,7 @@ func (r *IntegrationDuoResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 		"duo_api_hostname":    duoApiHostname,
 	}
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
-		configOut[key] = ""
-		if configValue != nil {
-			configOut[key] = *configValue
-			configSet = true
-		}
-	}
-	if !configSet {
-		configOut = nil
-	}
-
-	out := shared.Connector{
-		DisplayName: sdk.String("Duo"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(duoCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
-	}
-
-	return &out, configSet
+	return configValues
 }
 
 func (r *IntegrationDuoResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -129,24 +135,6 @@ func (r *IntegrationDuoResourceModel) RefreshFromGetResponse(resp *shared.Connec
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["duo_integration_key"]; ok {
-					r.DuoIntegrationKey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["duo_secret_key"]; ok {
-					r.DuoSecretKey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["duo_api_hostname"]; ok {
-					r.DuoApiHostname = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationDuoResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -184,22 +172,4 @@ func (r *IntegrationDuoResourceModel) RefreshFromCreateResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["duo_integration_key"]; ok {
-					r.DuoIntegrationKey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["duo_secret_key"]; ok {
-					r.DuoSecretKey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["duo_api_hostname"]; ok {
-					r.DuoApiHostname = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

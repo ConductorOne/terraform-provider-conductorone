@@ -32,6 +32,34 @@ func (r *IntegrationUkgResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
+	configValues := r.populateConfig()
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+
+	out := shared.Connector{
+		DisplayName: sdk.String("UKG"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(ukgCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
+	}
+
+	return &out, configSet
+}
+
+func (r *IntegrationUkgResourceModel) populateConfig() map[string]*string {
 	ukgCustomerApiKey := new(string)
 	if !r.UkgCustomerApiKey.IsUnknown() && !r.UkgCustomerApiKey.IsNull() {
 		*ukgCustomerApiKey = r.UkgCustomerApiKey.ValueString()
@@ -67,29 +95,7 @@ func (r *IntegrationUkgResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 		"ukg_service_endpoint": ukgServiceEndpoint,
 	}
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
-		configOut[key] = ""
-		if configValue != nil {
-			configOut[key] = *configValue
-			configSet = true
-		}
-	}
-	if !configSet {
-		configOut = nil
-	}
-
-	out := shared.Connector{
-		DisplayName: sdk.String("UKG"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(ukgCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
-	}
-
-	return &out, configSet
+	return configValues
 }
 
 func (r *IntegrationUkgResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -140,16 +146,9 @@ func (r *IntegrationUkgResourceModel) RefreshFromGetResponse(resp *shared.Connec
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["ukg_customer_api_key"]; ok {
-					r.UkgCustomerApiKey = types.StringValue(v.(string))
-				}
 
 				if v, ok := values["ukg_username"]; ok {
 					r.UkgUsername = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["ukg_password"]; ok {
-					r.UkgPassword = types.StringValue(v.(string))
 				}
 
 				if v, ok := values["ukg_service_endpoint"]; ok {
@@ -199,16 +198,9 @@ func (r *IntegrationUkgResourceModel) RefreshFromCreateResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["ukg_customer_api_key"]; ok {
-					r.UkgCustomerApiKey = types.StringValue(v.(string))
-				}
 
 				if v, ok := values["ukg_username"]; ok {
 					r.UkgUsername = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["ukg_password"]; ok {
-					r.UkgPassword = types.StringValue(v.(string))
 				}
 
 				if v, ok := values["ukg_service_endpoint"]; ok {

@@ -32,16 +32,7 @@ func (r *IntegrationSlackResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	slackApiKey := new(string)
-	if !r.SlackApiKey.IsUnknown() && !r.SlackApiKey.IsNull() {
-		*slackApiKey = r.SlackApiKey.ValueString()
-	} else {
-		slackApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"slack_api_key": slackApiKey,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -66,6 +57,21 @@ func (r *IntegrationSlackResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationSlackResourceModel) populateConfig() map[string]*string {
+	slackApiKey := new(string)
+	if !r.SlackApiKey.IsUnknown() && !r.SlackApiKey.IsNull() {
+		*slackApiKey = r.SlackApiKey.ValueString()
+	} else {
+		slackApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"slack_api_key": slackApiKey,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationSlackResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -113,16 +119,6 @@ func (r *IntegrationSlackResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["slack_api_key"]; ok {
-					r.SlackApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationSlackResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -160,14 +156,4 @@ func (r *IntegrationSlackResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["slack_api_key"]; ok {
-					r.SlackApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

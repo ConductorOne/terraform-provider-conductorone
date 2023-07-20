@@ -32,16 +32,7 @@ func (r *IntegrationLinearResourceModel) ToUpdateSDKType() (*shared.Connector, b
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	linearApiKey := new(string)
-	if !r.LinearApiKey.IsUnknown() && !r.LinearApiKey.IsNull() {
-		*linearApiKey = r.LinearApiKey.ValueString()
-	} else {
-		linearApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"linear_api_key": linearApiKey,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -66,6 +57,21 @@ func (r *IntegrationLinearResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationLinearResourceModel) populateConfig() map[string]*string {
+	linearApiKey := new(string)
+	if !r.LinearApiKey.IsUnknown() && !r.LinearApiKey.IsNull() {
+		*linearApiKey = r.LinearApiKey.ValueString()
+	} else {
+		linearApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"linear_api_key": linearApiKey,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationLinearResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -113,16 +119,6 @@ func (r *IntegrationLinearResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["linear_api_key"]; ok {
-					r.LinearApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationLinearResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -160,14 +156,4 @@ func (r *IntegrationLinearResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["linear_api_key"]; ok {
-					r.LinearApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

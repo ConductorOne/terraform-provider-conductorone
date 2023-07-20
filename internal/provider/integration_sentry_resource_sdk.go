@@ -32,24 +32,7 @@ func (r *IntegrationSentryResourceModel) ToUpdateSDKType() (*shared.Connector, b
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	sentryOrgSlug := new(string)
-	if !r.SentryOrgSlug.IsUnknown() && !r.SentryOrgSlug.IsNull() {
-		*sentryOrgSlug = r.SentryOrgSlug.ValueString()
-	} else {
-		sentryOrgSlug = nil
-	}
-
-	sentryToken := new(string)
-	if !r.SentryToken.IsUnknown() && !r.SentryToken.IsNull() {
-		*sentryToken = r.SentryToken.ValueString()
-	} else {
-		sentryToken = nil
-	}
-
-	configValues := map[string]*string{
-		"sentry_org_slug": sentryOrgSlug,
-		"sentry_token":    sentryToken,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -74,6 +57,29 @@ func (r *IntegrationSentryResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationSentryResourceModel) populateConfig() map[string]*string {
+	sentryOrgSlug := new(string)
+	if !r.SentryOrgSlug.IsUnknown() && !r.SentryOrgSlug.IsNull() {
+		*sentryOrgSlug = r.SentryOrgSlug.ValueString()
+	} else {
+		sentryOrgSlug = nil
+	}
+
+	sentryToken := new(string)
+	if !r.SentryToken.IsUnknown() && !r.SentryToken.IsNull() {
+		*sentryToken = r.SentryToken.ValueString()
+	} else {
+		sentryToken = nil
+	}
+
+	configValues := map[string]*string{
+		"sentry_org_slug": sentryOrgSlug,
+		"sentry_token":    sentryToken,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationSentryResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -121,20 +127,6 @@ func (r *IntegrationSentryResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["sentry_org_slug"]; ok {
-					r.SentryOrgSlug = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["sentry_token"]; ok {
-					r.SentryToken = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationSentryResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -172,18 +164,4 @@ func (r *IntegrationSentryResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["sentry_org_slug"]; ok {
-					r.SentryOrgSlug = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["sentry_token"]; ok {
-					r.SentryToken = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

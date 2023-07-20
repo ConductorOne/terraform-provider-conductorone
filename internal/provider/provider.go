@@ -24,7 +24,7 @@ type ConductoroneProvider struct {
 
 // TerraformProviderModel describes the provider data model.
 type ConductoroneProviderModel struct {
-	ServerURL types.String `tfsdk:"server_url"`
+	ServerURL    types.String `tfsdk:"server_url"`
 	ClientID     types.String `tfsdk:"client_id"`
 	ClientSecret types.String `tfsdk:"client_secret"`
 }

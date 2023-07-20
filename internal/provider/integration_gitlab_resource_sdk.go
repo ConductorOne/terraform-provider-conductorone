@@ -32,24 +32,7 @@ func (r *IntegrationGitlabResourceModel) ToUpdateSDKType() (*shared.Connector, b
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	gitlabGroup := new(string)
-	if !r.GitlabGroup.IsUnknown() && !r.GitlabGroup.IsNull() {
-		*gitlabGroup = r.GitlabGroup.ValueString()
-	} else {
-		gitlabGroup = nil
-	}
-
-	gitlabAccessToken := new(string)
-	if !r.GitlabAccessToken.IsUnknown() && !r.GitlabAccessToken.IsNull() {
-		*gitlabAccessToken = r.GitlabAccessToken.ValueString()
-	} else {
-		gitlabAccessToken = nil
-	}
-
-	configValues := map[string]*string{
-		"gitlab_group":        gitlabGroup,
-		"gitlab_access_token": gitlabAccessToken,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -74,6 +57,29 @@ func (r *IntegrationGitlabResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationGitlabResourceModel) populateConfig() map[string]*string {
+	gitlabGroup := new(string)
+	if !r.GitlabGroup.IsUnknown() && !r.GitlabGroup.IsNull() {
+		*gitlabGroup = r.GitlabGroup.ValueString()
+	} else {
+		gitlabGroup = nil
+	}
+
+	gitlabAccessToken := new(string)
+	if !r.GitlabAccessToken.IsUnknown() && !r.GitlabAccessToken.IsNull() {
+		*gitlabAccessToken = r.GitlabAccessToken.ValueString()
+	} else {
+		gitlabAccessToken = nil
+	}
+
+	configValues := map[string]*string{
+		"gitlab_group":        gitlabGroup,
+		"gitlab_access_token": gitlabAccessToken,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationGitlabResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -128,10 +134,6 @@ func (r *IntegrationGitlabResourceModel) RefreshFromGetResponse(resp *shared.Con
 					r.GitlabGroup = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["gitlab_access_token"]; ok {
-					r.GitlabAccessToken = types.StringValue(v.(string))
-				}
-
 			}
 		}
 	}
@@ -177,10 +179,6 @@ func (r *IntegrationGitlabResourceModel) RefreshFromCreateResponse(resp *shared.
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["gitlab_group"]; ok {
 					r.GitlabGroup = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["gitlab_access_token"]; ok {
-					r.GitlabAccessToken = types.StringValue(v.(string))
 				}
 
 			}

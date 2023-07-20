@@ -32,6 +32,34 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
+	configValues := r.populateConfig()
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+
+	out := shared.Connector{
+		DisplayName: sdk.String("Coupa"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(coupaCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
+	}
+
+	return &out, configSet
+}
+
+func (r *IntegrationCoupaResourceModel) populateConfig() map[string]*string {
 	coupaDomain := new(string)
 	if !r.CoupaDomain.IsUnknown() && !r.CoupaDomain.IsNull() {
 		*coupaDomain = r.CoupaDomain.ValueString()
@@ -59,29 +87,7 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 		"oauth2_client_cred_grant_client_secret": oauth2ClientCredGrantClientSecret,
 	}
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
-		configOut[key] = ""
-		if configValue != nil {
-			configOut[key] = *configValue
-			configSet = true
-		}
-	}
-	if !configSet {
-		configOut = nil
-	}
-
-	out := shared.Connector{
-		DisplayName: sdk.String("Coupa"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(coupaCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
-	}
-
-	return &out, configSet
+	return configValues
 }
 
 func (r *IntegrationCoupaResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -140,10 +146,6 @@ func (r *IntegrationCoupaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 					r.Oauth2ClientCredGrantClientId = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["oauth2_client_cred_grant_client_secret"]; ok {
-					r.Oauth2ClientCredGrantClientSecret = types.StringValue(v.(string))
-				}
-
 			}
 		}
 	}
@@ -193,10 +195,6 @@ func (r *IntegrationCoupaResourceModel) RefreshFromCreateResponse(resp *shared.C
 
 				if v, ok := values["oauth2_client_cred_grant_client_id"]; ok {
 					r.Oauth2ClientCredGrantClientId = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["oauth2_client_cred_grant_client_secret"]; ok {
-					r.Oauth2ClientCredGrantClientSecret = types.StringValue(v.(string))
 				}
 
 			}

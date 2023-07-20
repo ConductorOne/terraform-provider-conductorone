@@ -32,16 +32,7 @@ func (r *IntegrationOpsgenieResourceModel) ToUpdateSDKType() (*shared.Connector,
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	opsgenieApikey := new(string)
-	if !r.OpsgenieApikey.IsUnknown() && !r.OpsgenieApikey.IsNull() {
-		*opsgenieApikey = r.OpsgenieApikey.ValueString()
-	} else {
-		opsgenieApikey = nil
-	}
-
-	configValues := map[string]*string{
-		"opsgenie_apikey": opsgenieApikey,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -66,6 +57,21 @@ func (r *IntegrationOpsgenieResourceModel) ToUpdateSDKType() (*shared.Connector,
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationOpsgenieResourceModel) populateConfig() map[string]*string {
+	opsgenieApikey := new(string)
+	if !r.OpsgenieApikey.IsUnknown() && !r.OpsgenieApikey.IsNull() {
+		*opsgenieApikey = r.OpsgenieApikey.ValueString()
+	} else {
+		opsgenieApikey = nil
+	}
+
+	configValues := map[string]*string{
+		"opsgenie_apikey": opsgenieApikey,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationOpsgenieResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -113,16 +119,6 @@ func (r *IntegrationOpsgenieResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["opsgenie_apikey"]; ok {
-					r.OpsgenieApikey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationOpsgenieResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -160,14 +156,4 @@ func (r *IntegrationOpsgenieResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["opsgenie_apikey"]; ok {
-					r.OpsgenieApikey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

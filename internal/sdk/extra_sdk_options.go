@@ -3,7 +3,6 @@ package sdk
 import (
 	"context"
 	"crypto/tls"
-	"net/http"
 	"net/url"
 	"strings"
 
@@ -118,9 +117,8 @@ type CustomOptions struct {
 	ServerURL string
 	Tenant    string
 
-	withClient *http.Client
-	logger     *zap.Logger
-	tlsConfig  *tls.Config
+	logger    *zap.Logger
+	tlsConfig *tls.Config
 
 	userAgent string
 }

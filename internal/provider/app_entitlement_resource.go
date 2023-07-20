@@ -3,18 +3,18 @@
 package provider
 
 import (
+	"conductorone/internal/sdk"
 	"context"
 	"fmt"
-	"conductorone/internal/sdk"
 
+	"conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -72,11 +72,11 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 		Attributes: map[string]schema.Attribute{
 			"alias": schema.StringAttribute{
 				Computed:    true,
-				Optional: true,
+				Optional:    true,
 				Description: `The alias field.`,
 			},
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
 				Description: `The appId field.`,
 			},
 			"app_path": schema.StringAttribute{
@@ -101,7 +101,7 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
-				Optional: true,
+				Optional:    true,
 				Description: `The certifyPolicyId field.`,
 			},
 			"compliance_framework_value_ids": schema.ListAttribute{
@@ -141,7 +141,7 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"emergency_grant_enabled": schema.BoolAttribute{
 				Computed:    true,
-				Optional: true,
+				Optional:    true,
 				Description: `The emergencyGrantEnabled field.`,
 			},
 			"emergency_grant_policy_id": schema.StringAttribute{
@@ -167,11 +167,11 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"grant_policy_id": schema.StringAttribute{
 				Computed:    true,
-				Optional: true,
+				Optional:    true,
 				Description: `The grantPolicyId field.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
 				Description: `The id field.`,
 			},
 			// TODO: this is a oneof
@@ -179,7 +179,7 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"connector_provision": schema.SingleNestedAttribute{
-						Optional: true,
+						Optional:    true,
 						Attributes:  map[string]schema.Attribute{},
 						Description: `The ConnectorProvision message.`,
 					},
@@ -187,11 +187,11 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
 								Description: `The appId field.`,
 							},
 							"entitlement_id": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
 								Description: `The entitlementId field.`,
 							},
 						},
@@ -201,11 +201,11 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"instructions": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
 								Description: `The instructions field.`,
 							},
 							"user_ids": schema.ListAttribute{
-								Optional: true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The userIds field.`,
 							},
@@ -402,7 +402,7 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 	var updateAppEntitlementRequest *shared.UpdateAppEntitlementRequest
 	appEntitlement := data.ToUpdateSDKType()
 	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
-		AppEntitlement:           appEntitlement,
+		AppEntitlement: appEntitlement,
 	}
 	appID := data.AppID.ValueString()
 	id := data.ID.ValueString()

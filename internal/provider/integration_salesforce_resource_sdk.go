@@ -33,24 +33,7 @@ func (r *IntegrationSalesforceResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	salesforceInstanceUrl := new(string)
-	if !r.SalesforceInstanceUrl.IsUnknown() && !r.SalesforceInstanceUrl.IsNull() {
-		*salesforceInstanceUrl = r.SalesforceInstanceUrl.ValueString()
-	} else {
-		salesforceInstanceUrl = nil
-	}
-
-	salesforceUsernameForEmail := new(string)
-	if !r.SalesforceUsernameForEmail.IsUnknown() && !r.SalesforceUsernameForEmail.IsNull() {
-		*salesforceUsernameForEmail = strconv.FormatBool(r.SalesforceUsernameForEmail.ValueBool())
-	} else {
-		salesforceUsernameForEmail = nil
-	}
-
-	configValues := map[string]*string{
-		"salesforce_instance_url":       salesforceInstanceUrl,
-		"salesforce_username_for_email": salesforceUsernameForEmail,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -75,6 +58,29 @@ func (r *IntegrationSalesforceResourceModel) ToUpdateSDKType() (*shared.Connecto
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationSalesforceResourceModel) populateConfig() map[string]*string {
+	salesforceInstanceUrl := new(string)
+	if !r.SalesforceInstanceUrl.IsUnknown() && !r.SalesforceInstanceUrl.IsNull() {
+		*salesforceInstanceUrl = r.SalesforceInstanceUrl.ValueString()
+	} else {
+		salesforceInstanceUrl = nil
+	}
+
+	salesforceUsernameForEmail := new(string)
+	if !r.SalesforceUsernameForEmail.IsUnknown() && !r.SalesforceUsernameForEmail.IsNull() {
+		*salesforceUsernameForEmail = strconv.FormatBool(r.SalesforceUsernameForEmail.ValueBool())
+	} else {
+		salesforceUsernameForEmail = nil
+	}
+
+	configValues := map[string]*string{
+		"salesforce_instance_url":       salesforceInstanceUrl,
+		"salesforce_username_for_email": salesforceUsernameForEmail,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationSalesforceResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -122,19 +128,19 @@ func (r *IntegrationSalesforceResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["salesforce_instance_url"]; ok {
-					r.SalesforceInstanceUrl = types.StringValue(v.(string))
-				}
 
-				if v, ok := values["salesforce_username_for_email"]; ok {
-					bv, err := strconv.ParseBool(v.(string))
-					if err != nil {
-						r.SalesforceUsernameForEmail = types.BoolValue(false)
-					} else {
-						r.SalesforceUsernameForEmail = types.BoolValue(bv)
+				if localV, ok := configValues["salesforce_username_for_email"]; ok {
+					if v, ok := values["salesforce_username_for_email"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SalesforceUsernameForEmail = types.BoolValue(bv)
+							}
+						}
 					}
 				}
 
@@ -178,19 +184,19 @@ func (r *IntegrationSalesforceResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["salesforce_instance_url"]; ok {
-					r.SalesforceInstanceUrl = types.StringValue(v.(string))
-				}
 
-				if v, ok := values["salesforce_username_for_email"]; ok {
-					bv, err := strconv.ParseBool(v.(string))
-					if err != nil {
-						r.SalesforceUsernameForEmail = types.BoolValue(false)
-					} else {
-						r.SalesforceUsernameForEmail = types.BoolValue(bv)
+				if localV, ok := configValues["salesforce_username_for_email"]; ok {
+					if v, ok := values["salesforce_username_for_email"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SalesforceUsernameForEmail = types.BoolValue(bv)
+							}
+						}
 					}
 				}
 

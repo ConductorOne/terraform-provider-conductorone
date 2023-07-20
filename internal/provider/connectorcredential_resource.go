@@ -3,11 +3,12 @@
 package provider
 
 import (
-	"context"
-	"fmt"
 	"conductorone/internal/sdk"
 	"conductorone/internal/sdk/pkg/models/operations"
+	"context"
+	"fmt"
 
+	"conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
@@ -16,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"conductorone/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.

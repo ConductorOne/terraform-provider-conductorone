@@ -32,6 +32,34 @@ func (r *IntegrationConfluenceResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
+	configValues := r.populateConfig()
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+
+	out := shared.Connector{
+		DisplayName: sdk.String("Confluence"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(confluenceCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
+	}
+
+	return &out, configSet
+}
+
+func (r *IntegrationConfluenceResourceModel) populateConfig() map[string]*string {
 	confluenceDomain := new(string)
 	if !r.ConfluenceDomain.IsUnknown() && !r.ConfluenceDomain.IsNull() {
 		*confluenceDomain = r.ConfluenceDomain.ValueString()
@@ -59,29 +87,7 @@ func (r *IntegrationConfluenceResourceModel) ToUpdateSDKType() (*shared.Connecto
 		"confluence_apikey":   confluenceApikey,
 	}
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
-		configOut[key] = ""
-		if configValue != nil {
-			configOut[key] = *configValue
-			configSet = true
-		}
-	}
-	if !configSet {
-		configOut = nil
-	}
-
-	out := shared.Connector{
-		DisplayName: sdk.String("Confluence"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(confluenceCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
-	}
-
-	return &out, configSet
+	return configValues
 }
 
 func (r *IntegrationConfluenceResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -140,10 +146,6 @@ func (r *IntegrationConfluenceResourceModel) RefreshFromGetResponse(resp *shared
 					r.ConfluenceUsername = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["confluence_apikey"]; ok {
-					r.ConfluenceApikey = types.StringValue(v.(string))
-				}
-
 			}
 		}
 	}
@@ -193,10 +195,6 @@ func (r *IntegrationConfluenceResourceModel) RefreshFromCreateResponse(resp *sha
 
 				if v, ok := values["confluence_username"]; ok {
 					r.ConfluenceUsername = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["confluence_apikey"]; ok {
-					r.ConfluenceApikey = types.StringValue(v.(string))
 				}
 
 			}
