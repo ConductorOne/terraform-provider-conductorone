@@ -1,0 +1,19 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This resource allows you to create and configure a policy in ConductorOne.
+When creating a policy you must provide a display name. Optionally you can define the steps of the policy, as well as configuring other options on the policy.
+
+## Example Usage
+
+{{ tffile "examples/resources/conductorone_policy/policy.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

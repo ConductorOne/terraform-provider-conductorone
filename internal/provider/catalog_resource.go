@@ -240,8 +240,7 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Description: `The description field.`,
 			},
 			"display_name": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: `The displayName field.`,
 			},
 			"expanded": schema.ListNestedAttribute{
@@ -266,10 +265,10 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Description: `The published field.`,
 			},
 			"request_catalog_expand_mask": schema.SingleNestedAttribute{
-				Optional: true,
+				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"paths": schema.ListAttribute{
-						Optional:    true,
+						Computed:    true,
 						ElementType: types.StringType,
 						Description: `The paths field.`,
 					},

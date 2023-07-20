@@ -1,0 +1,18 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+The App Entitlement datasource allows you to retrieve an App Entitlement by `alias` or by `id` and `app_id` pair in ConductorOne.
+
+## Example Usage
+
+{{ tffile "examples/data_sources/conductorone_user/user.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}
