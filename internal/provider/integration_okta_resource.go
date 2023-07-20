@@ -337,8 +337,7 @@ func (r *IntegrationOktaResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	var connectorServiceDeleteRequest *shared.ConnectorServiceDeleteRequest
-	connectorServiceDeleteRequest = &shared.ConnectorServiceDeleteRequest{}
+	connectorServiceDeleteRequest := &shared.ConnectorServiceDeleteRequest{}
 	appID := data.AppID.ValueString()
 	id := data.ID.ValueString()
 	request := operations.C1APIAppV1ConnectorServiceDeleteRequest{
