@@ -32,6 +32,34 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
+	configValues := r.populateConfig()
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+
+	out := shared.Connector{
+		DisplayName: sdk.String("Jira Cloud"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(jiraCloudCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
+	}
+
+	return &out, configSet
+}
+
+func (r *IntegrationJiraCloudResourceModel) populateConfig() map[string]*string {
 	jiracloudDomain := new(string)
 	if !r.JiracloudDomain.IsUnknown() && !r.JiracloudDomain.IsNull() {
 		*jiracloudDomain = r.JiracloudDomain.ValueString()
@@ -59,29 +87,7 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 		"jiracloud_apikey":   jiracloudApikey,
 	}
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
-		configOut[key] = ""
-		if configValue != nil {
-			configOut[key] = *configValue
-			configSet = true
-		}
-	}
-	if !configSet {
-		configOut = nil
-	}
-
-	out := shared.Connector{
-		DisplayName: sdk.String("Jira Cloud"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(jiraCloudCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
-	}
-
-	return &out, configSet
+	return configValues
 }
 
 func (r *IntegrationJiraCloudResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -140,10 +146,6 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromGetResponse(resp *shared.
 					r.JiracloudUsername = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["jiracloud_apikey"]; ok {
-					r.JiracloudApikey = types.StringValue(v.(string))
-				}
-
 			}
 		}
 	}
@@ -193,10 +195,6 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromCreateResponse(resp *shar
 
 				if v, ok := values["jiracloud_username"]; ok {
 					r.JiracloudUsername = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["jiracloud_apikey"]; ok {
-					r.JiracloudApikey = types.StringValue(v.(string))
 				}
 
 			}

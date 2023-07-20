@@ -32,24 +32,7 @@ func (r *IntegrationBambooHrResourceModel) ToUpdateSDKType() (*shared.Connector,
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	companyDomain := new(string)
-	if !r.CompanyDomain.IsUnknown() && !r.CompanyDomain.IsNull() {
-		*companyDomain = r.CompanyDomain.ValueString()
-	} else {
-		companyDomain = nil
-	}
-
-	apiKey := new(string)
-	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
-		*apiKey = r.ApiKey.ValueString()
-	} else {
-		apiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"company_domain": companyDomain,
-		"api_key":        apiKey,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -74,6 +57,29 @@ func (r *IntegrationBambooHrResourceModel) ToUpdateSDKType() (*shared.Connector,
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationBambooHrResourceModel) populateConfig() map[string]*string {
+	companyDomain := new(string)
+	if !r.CompanyDomain.IsUnknown() && !r.CompanyDomain.IsNull() {
+		*companyDomain = r.CompanyDomain.ValueString()
+	} else {
+		companyDomain = nil
+	}
+
+	apiKey := new(string)
+	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
+		*apiKey = r.ApiKey.ValueString()
+	} else {
+		apiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"company_domain": companyDomain,
+		"api_key":        apiKey,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationBambooHrResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -128,10 +134,6 @@ func (r *IntegrationBambooHrResourceModel) RefreshFromGetResponse(resp *shared.C
 					r.CompanyDomain = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["api_key"]; ok {
-					r.ApiKey = types.StringValue(v.(string))
-				}
-
 			}
 		}
 	}
@@ -177,10 +179,6 @@ func (r *IntegrationBambooHrResourceModel) RefreshFromCreateResponse(resp *share
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["company_domain"]; ok {
 					r.CompanyDomain = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["api_key"]; ok {
-					r.ApiKey = types.StringValue(v.(string))
 				}
 
 			}

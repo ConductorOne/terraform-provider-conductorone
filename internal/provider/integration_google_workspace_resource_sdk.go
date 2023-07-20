@@ -32,6 +32,34 @@ func (r *IntegrationGoogleWorkspaceResourceModel) ToUpdateSDKType() (*shared.Con
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
+	configValues := r.populateConfig()
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+
+	out := shared.Connector{
+		DisplayName: sdk.String("Google Workspace"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(googleWorkspaceCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
+	}
+
+	return &out, configSet
+}
+
+func (r *IntegrationGoogleWorkspaceResourceModel) populateConfig() map[string]*string {
 	customerId := new(string)
 	if !r.CustomerId.IsUnknown() && !r.CustomerId.IsNull() {
 		*customerId = r.CustomerId.ValueString()
@@ -67,29 +95,7 @@ func (r *IntegrationGoogleWorkspaceResourceModel) ToUpdateSDKType() (*shared.Con
 		"credentials_json":    credentialsJson,
 	}
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
-		configOut[key] = ""
-		if configValue != nil {
-			configOut[key] = *configValue
-			configSet = true
-		}
-	}
-	if !configSet {
-		configOut = nil
-	}
-
-	out := shared.Connector{
-		DisplayName: sdk.String("Google Workspace"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(googleWorkspaceCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
-	}
-
-	return &out, configSet
+	return configValues
 }
 
 func (r *IntegrationGoogleWorkspaceResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -152,10 +158,6 @@ func (r *IntegrationGoogleWorkspaceResourceModel) RefreshFromGetResponse(resp *s
 					r.AdministratorEmail = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["credentials_json"]; ok {
-					r.CredentialsJson = types.StringValue(v.(string))
-				}
-
 			}
 		}
 	}
@@ -209,10 +211,6 @@ func (r *IntegrationGoogleWorkspaceResourceModel) RefreshFromCreateResponse(resp
 
 				if v, ok := values["administrator_email"]; ok {
 					r.AdministratorEmail = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["credentials_json"]; ok {
-					r.CredentialsJson = types.StringValue(v.(string))
 				}
 
 			}

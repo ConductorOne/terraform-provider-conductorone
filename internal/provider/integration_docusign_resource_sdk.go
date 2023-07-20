@@ -32,16 +32,7 @@ func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() (*shared.Connector,
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	accountId := new(string)
-	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
-		*accountId = r.AccountId.ValueString()
-	} else {
-		accountId = nil
-	}
-
-	configValues := map[string]*string{
-		"account_id": accountId,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -66,6 +57,21 @@ func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() (*shared.Connector,
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationDocusignResourceModel) populateConfig() map[string]*string {
+	accountId := new(string)
+	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
+		*accountId = r.AccountId.ValueString()
+	} else {
+		accountId = nil
+	}
+
+	configValues := map[string]*string{
+		"account_id": accountId,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationDocusignResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

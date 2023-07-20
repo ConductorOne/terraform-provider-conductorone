@@ -32,6 +32,34 @@ func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
+	configValues := r.populateConfig()
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+
+	out := shared.Connector{
+		DisplayName: sdk.String("Snowflake"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(snowflakeCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
+	}
+
+	return &out, configSet
+}
+
+func (r *IntegrationSnowflakeResourceModel) populateConfig() map[string]*string {
 	snowflakeAccount := new(string)
 	if !r.SnowflakeAccount.IsUnknown() && !r.SnowflakeAccount.IsNull() {
 		*snowflakeAccount = r.SnowflakeAccount.ValueString()
@@ -67,29 +95,7 @@ func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector
 		"snowflake_user_role": snowflakeUserRole,
 	}
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
-		configOut[key] = ""
-		if configValue != nil {
-			configOut[key] = *configValue
-			configSet = true
-		}
-	}
-	if !configSet {
-		configOut = nil
-	}
-
-	out := shared.Connector{
-		DisplayName: sdk.String("Snowflake"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(snowflakeCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
-	}
-
-	return &out, configSet
+	return configValues
 }
 
 func (r *IntegrationSnowflakeResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -148,10 +154,6 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromGetResponse(resp *shared.
 					r.SnowflakeUsername = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["snowflake_password"]; ok {
-					r.SnowflakePassword = types.StringValue(v.(string))
-				}
-
 				if v, ok := values["snowflake_user_role"]; ok {
 					r.SnowflakeUserRole = types.StringValue(v.(string))
 				}
@@ -205,10 +207,6 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromCreateResponse(resp *shar
 
 				if v, ok := values["snowflake_username"]; ok {
 					r.SnowflakeUsername = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["snowflake_password"]; ok {
-					r.SnowflakePassword = types.StringValue(v.(string))
 				}
 
 				if v, ok := values["snowflake_user_role"]; ok {

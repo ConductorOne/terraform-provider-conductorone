@@ -32,24 +32,7 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	tailscaleApiKey := new(string)
-	if !r.TailscaleApiKey.IsUnknown() && !r.TailscaleApiKey.IsNull() {
-		*tailscaleApiKey = r.TailscaleApiKey.ValueString()
-	} else {
-		tailscaleApiKey = nil
-	}
-
-	tailnet := new(string)
-	if !r.Tailnet.IsUnknown() && !r.Tailnet.IsNull() {
-		*tailnet = r.Tailnet.ValueString()
-	} else {
-		tailnet = nil
-	}
-
-	configValues := map[string]*string{
-		"tailscale_api_key": tailscaleApiKey,
-		"tailnet":           tailnet,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -74,6 +57,29 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]*string {
+	tailscaleApiKey := new(string)
+	if !r.TailscaleApiKey.IsUnknown() && !r.TailscaleApiKey.IsNull() {
+		*tailscaleApiKey = r.TailscaleApiKey.ValueString()
+	} else {
+		tailscaleApiKey = nil
+	}
+
+	tailnet := new(string)
+	if !r.Tailnet.IsUnknown() && !r.Tailnet.IsNull() {
+		*tailnet = r.Tailnet.ValueString()
+	} else {
+		tailnet = nil
+	}
+
+	configValues := map[string]*string{
+		"tailscale_api_key": tailscaleApiKey,
+		"tailnet":           tailnet,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationTailscaleResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -121,20 +127,6 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["tailscale_api_key"]; ok {
-					r.TailscaleApiKey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["tailnet"]; ok {
-					r.Tailnet = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationTailscaleResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -172,18 +164,4 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["tailscale_api_key"]; ok {
-					r.TailscaleApiKey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["tailnet"]; ok {
-					r.Tailnet = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

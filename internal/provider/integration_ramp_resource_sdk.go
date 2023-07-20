@@ -32,7 +32,7 @@ func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := map[string]*string{}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -57,6 +57,13 @@ func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationRampResourceModel) populateConfig() map[string]*string {
+
+	configValues := map[string]*string{}
+
+	return configValues
 }
 
 func (r *IntegrationRampResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

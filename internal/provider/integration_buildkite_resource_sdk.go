@@ -32,24 +32,7 @@ func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	apiToken := new(string)
-	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
-		*apiToken = r.ApiToken.ValueString()
-	} else {
-		apiToken = nil
-	}
-
-	organization := new(string)
-	if !r.Organization.IsUnknown() && !r.Organization.IsNull() {
-		*organization = r.Organization.ValueString()
-	} else {
-		organization = nil
-	}
-
-	configValues := map[string]*string{
-		"api_token":    apiToken,
-		"organization": organization,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -74,6 +57,29 @@ func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationBuildkiteResourceModel) populateConfig() map[string]*string {
+	apiToken := new(string)
+	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
+		*apiToken = r.ApiToken.ValueString()
+	} else {
+		apiToken = nil
+	}
+
+	organization := new(string)
+	if !r.Organization.IsUnknown() && !r.Organization.IsNull() {
+		*organization = r.Organization.ValueString()
+	} else {
+		organization = nil
+	}
+
+	configValues := map[string]*string{
+		"api_token":    apiToken,
+		"organization": organization,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationBuildkiteResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -124,9 +130,6 @@ func (r *IntegrationBuildkiteResourceModel) RefreshFromGetResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["api_token"]; ok {
-					r.ApiToken = types.StringValue(v.(string))
-				}
 
 				if v, ok := values["organization"]; ok {
 					r.Organization = types.StringValue(v.(string))
@@ -175,9 +178,6 @@ func (r *IntegrationBuildkiteResourceModel) RefreshFromCreateResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["api_token"]; ok {
-					r.ApiToken = types.StringValue(v.(string))
-				}
 
 				if v, ok := values["organization"]; ok {
 					r.Organization = types.StringValue(v.(string))

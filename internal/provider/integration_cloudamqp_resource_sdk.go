@@ -32,16 +32,7 @@ func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	cloudamqpApiKey := new(string)
-	if !r.CloudamqpApiKey.IsUnknown() && !r.CloudamqpApiKey.IsNull() {
-		*cloudamqpApiKey = r.CloudamqpApiKey.ValueString()
-	} else {
-		cloudamqpApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"cloudamqp_api_key": cloudamqpApiKey,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -66,6 +57,21 @@ func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationCloudamqpResourceModel) populateConfig() map[string]*string {
+	cloudamqpApiKey := new(string)
+	if !r.CloudamqpApiKey.IsUnknown() && !r.CloudamqpApiKey.IsNull() {
+		*cloudamqpApiKey = r.CloudamqpApiKey.ValueString()
+	} else {
+		cloudamqpApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"cloudamqp_api_key": cloudamqpApiKey,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationCloudamqpResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -113,16 +119,6 @@ func (r *IntegrationCloudamqpResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["cloudamqp_api_key"]; ok {
-					r.CloudamqpApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationCloudamqpResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -160,14 +156,4 @@ func (r *IntegrationCloudamqpResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["cloudamqp_api_key"]; ok {
-					r.CloudamqpApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

@@ -32,7 +32,7 @@ func (r *IntegrationAzureAdResourceModel) ToUpdateSDKType() (*shared.Connector, 
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := map[string]*string{}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -57,6 +57,13 @@ func (r *IntegrationAzureAdResourceModel) ToUpdateSDKType() (*shared.Connector, 
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationAzureAdResourceModel) populateConfig() map[string]*string {
+
+	configValues := map[string]*string{}
+
+	return configValues
 }
 
 func (r *IntegrationAzureAdResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

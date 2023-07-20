@@ -32,24 +32,7 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Co
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	githubInstanceUrl := new(string)
-	if !r.GithubInstanceUrl.IsUnknown() && !r.GithubInstanceUrl.IsNull() {
-		*githubInstanceUrl = r.GithubInstanceUrl.ValueString()
-	} else {
-		githubInstanceUrl = nil
-	}
-
-	githubAccessToken := new(string)
-	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
-		*githubAccessToken = r.GithubAccessToken.ValueString()
-	} else {
-		githubAccessToken = nil
-	}
-
-	configValues := map[string]*string{
-		"github_instance_url": githubInstanceUrl,
-		"github_access_token": githubAccessToken,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -74,6 +57,29 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Co
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationGithubEnterpriseResourceModel) populateConfig() map[string]*string {
+	githubInstanceUrl := new(string)
+	if !r.GithubInstanceUrl.IsUnknown() && !r.GithubInstanceUrl.IsNull() {
+		*githubInstanceUrl = r.GithubInstanceUrl.ValueString()
+	} else {
+		githubInstanceUrl = nil
+	}
+
+	githubAccessToken := new(string)
+	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
+		*githubAccessToken = r.GithubAccessToken.ValueString()
+	} else {
+		githubAccessToken = nil
+	}
+
+	configValues := map[string]*string{
+		"github_instance_url": githubInstanceUrl,
+		"github_access_token": githubAccessToken,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationGithubEnterpriseResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -128,10 +134,6 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromGetResponse(resp *
 					r.GithubInstanceUrl = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["github_access_token"]; ok {
-					r.GithubAccessToken = types.StringValue(v.(string))
-				}
-
 			}
 		}
 	}
@@ -177,10 +179,6 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromCreateResponse(res
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["github_instance_url"]; ok {
 					r.GithubInstanceUrl = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["github_access_token"]; ok {
-					r.GithubAccessToken = types.StringValue(v.(string))
 				}
 
 			}

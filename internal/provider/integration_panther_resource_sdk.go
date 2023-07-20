@@ -32,24 +32,7 @@ func (r *IntegrationPantherResourceModel) ToUpdateSDKType() (*shared.Connector, 
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	pantherApiKey := new(string)
-	if !r.PantherApiKey.IsUnknown() && !r.PantherApiKey.IsNull() {
-		*pantherApiKey = r.PantherApiKey.ValueString()
-	} else {
-		pantherApiKey = nil
-	}
-
-	pantherUrl := new(string)
-	if !r.PantherUrl.IsUnknown() && !r.PantherUrl.IsNull() {
-		*pantherUrl = r.PantherUrl.ValueString()
-	} else {
-		pantherUrl = nil
-	}
-
-	configValues := map[string]*string{
-		"panther_api_key": pantherApiKey,
-		"panther_url":     pantherUrl,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -74,6 +57,29 @@ func (r *IntegrationPantherResourceModel) ToUpdateSDKType() (*shared.Connector, 
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationPantherResourceModel) populateConfig() map[string]*string {
+	pantherApiKey := new(string)
+	if !r.PantherApiKey.IsUnknown() && !r.PantherApiKey.IsNull() {
+		*pantherApiKey = r.PantherApiKey.ValueString()
+	} else {
+		pantherApiKey = nil
+	}
+
+	pantherUrl := new(string)
+	if !r.PantherUrl.IsUnknown() && !r.PantherUrl.IsNull() {
+		*pantherUrl = r.PantherUrl.ValueString()
+	} else {
+		pantherUrl = nil
+	}
+
+	configValues := map[string]*string{
+		"panther_api_key": pantherApiKey,
+		"panther_url":     pantherUrl,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationPantherResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -121,20 +127,6 @@ func (r *IntegrationPantherResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["panther_api_key"]; ok {
-					r.PantherApiKey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["panther_url"]; ok {
-					r.PantherUrl = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationPantherResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -172,18 +164,4 @@ func (r *IntegrationPantherResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["panther_api_key"]; ok {
-					r.PantherApiKey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["panther_url"]; ok {
-					r.PantherUrl = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

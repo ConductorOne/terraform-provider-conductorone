@@ -32,24 +32,7 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector,
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	twingateApikey := new(string)
-	if !r.TwingateApikey.IsUnknown() && !r.TwingateApikey.IsNull() {
-		*twingateApikey = r.TwingateApikey.ValueString()
-	} else {
-		twingateApikey = nil
-	}
-
-	twingateDomain := new(string)
-	if !r.TwingateDomain.IsUnknown() && !r.TwingateDomain.IsNull() {
-		*twingateDomain = r.TwingateDomain.ValueString()
-	} else {
-		twingateDomain = nil
-	}
-
-	configValues := map[string]*string{
-		"twingate_apikey": twingateApikey,
-		"twingate_domain": twingateDomain,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -74,6 +57,29 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector,
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationTwingateResourceModel) populateConfig() map[string]*string {
+	twingateApikey := new(string)
+	if !r.TwingateApikey.IsUnknown() && !r.TwingateApikey.IsNull() {
+		*twingateApikey = r.TwingateApikey.ValueString()
+	} else {
+		twingateApikey = nil
+	}
+
+	twingateDomain := new(string)
+	if !r.TwingateDomain.IsUnknown() && !r.TwingateDomain.IsNull() {
+		*twingateDomain = r.TwingateDomain.ValueString()
+	} else {
+		twingateDomain = nil
+	}
+
+	configValues := map[string]*string{
+		"twingate_apikey": twingateApikey,
+		"twingate_domain": twingateDomain,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationTwingateResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -121,20 +127,6 @@ func (r *IntegrationTwingateResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["twingate_apikey"]; ok {
-					r.TwingateApikey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["twingate_domain"]; ok {
-					r.TwingateDomain = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationTwingateResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -172,18 +164,4 @@ func (r *IntegrationTwingateResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["twingate_apikey"]; ok {
-					r.TwingateApikey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["twingate_domain"]; ok {
-					r.TwingateDomain = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

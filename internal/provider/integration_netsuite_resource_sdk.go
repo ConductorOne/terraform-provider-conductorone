@@ -32,6 +32,34 @@ func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.Connector,
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
+	configValues := r.populateConfig()
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+
+	out := shared.Connector{
+		DisplayName: sdk.String("NetSuite"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(netsuiteCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
+	}
+
+	return &out, configSet
+}
+
+func (r *IntegrationNetsuiteResourceModel) populateConfig() map[string]*string {
 	netsuiteAccountId := new(string)
 	if !r.NetsuiteAccountId.IsUnknown() && !r.NetsuiteAccountId.IsNull() {
 		*netsuiteAccountId = r.NetsuiteAccountId.ValueString()
@@ -75,29 +103,7 @@ func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.Connector,
 		"netsuite_token_secret":    netsuiteTokenSecret,
 	}
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
-		configOut[key] = ""
-		if configValue != nil {
-			configOut[key] = *configValue
-			configSet = true
-		}
-	}
-	if !configSet {
-		configOut = nil
-	}
-
-	out := shared.Connector{
-		DisplayName: sdk.String("NetSuite"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(netsuiteCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
-	}
-
-	return &out, configSet
+	return configValues
 }
 
 func (r *IntegrationNetsuiteResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -156,16 +162,8 @@ func (r *IntegrationNetsuiteResourceModel) RefreshFromGetResponse(resp *shared.C
 					r.NetsuiteConsumerKey = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["netsuite_consumer_secret"]; ok {
-					r.NetsuiteConsumerSecret = types.StringValue(v.(string))
-				}
-
 				if v, ok := values["netsuite_token_key"]; ok {
 					r.NetsuiteTokenKey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["netsuite_token_secret"]; ok {
-					r.NetsuiteTokenSecret = types.StringValue(v.(string))
 				}
 
 			}
@@ -219,16 +217,8 @@ func (r *IntegrationNetsuiteResourceModel) RefreshFromCreateResponse(resp *share
 					r.NetsuiteConsumerKey = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["netsuite_consumer_secret"]; ok {
-					r.NetsuiteConsumerSecret = types.StringValue(v.(string))
-				}
-
 				if v, ok := values["netsuite_token_key"]; ok {
 					r.NetsuiteTokenKey = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["netsuite_token_secret"]; ok {
-					r.NetsuiteTokenSecret = types.StringValue(v.(string))
 				}
 
 			}
