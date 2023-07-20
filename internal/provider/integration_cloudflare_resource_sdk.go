@@ -32,24 +32,7 @@ func (r *IntegrationCloudflareResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	accountId := new(string)
-	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
-		*accountId = r.AccountId.ValueString()
-	} else {
-		accountId = nil
-	}
-
-	apiKey := new(string)
-	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
-		*apiKey = r.ApiKey.ValueString()
-	} else {
-		apiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"account_id": accountId,
-		"api_key":    apiKey,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -74,6 +57,29 @@ func (r *IntegrationCloudflareResourceModel) ToUpdateSDKType() (*shared.Connecto
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationCloudflareResourceModel) populateConfig() map[string]*string {
+	accountId := new(string)
+	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
+		*accountId = r.AccountId.ValueString()
+	} else {
+		accountId = nil
+	}
+
+	apiKey := new(string)
+	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
+		*apiKey = r.ApiKey.ValueString()
+	} else {
+		apiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"account_id": accountId,
+		"api_key":    apiKey,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationCloudflareResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -128,10 +134,6 @@ func (r *IntegrationCloudflareResourceModel) RefreshFromGetResponse(resp *shared
 					r.AccountId = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["api_key"]; ok {
-					r.ApiKey = types.StringValue(v.(string))
-				}
-
 			}
 		}
 	}
@@ -177,10 +179,6 @@ func (r *IntegrationCloudflareResourceModel) RefreshFromCreateResponse(resp *sha
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["account_id"]; ok {
 					r.AccountId = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["api_key"]; ok {
-					r.ApiKey = types.StringValue(v.(string))
 				}
 
 			}

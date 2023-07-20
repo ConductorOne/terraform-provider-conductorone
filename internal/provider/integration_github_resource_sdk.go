@@ -32,24 +32,7 @@ func (r *IntegrationGithubResourceModel) ToUpdateSDKType() (*shared.Connector, b
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	githubOrg := new(string)
-	if !r.GithubOrg.IsUnknown() && !r.GithubOrg.IsNull() {
-		*githubOrg = r.GithubOrg.ValueString()
-	} else {
-		githubOrg = nil
-	}
-
-	githubAccessToken := new(string)
-	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
-		*githubAccessToken = r.GithubAccessToken.ValueString()
-	} else {
-		githubAccessToken = nil
-	}
-
-	configValues := map[string]*string{
-		"github_org":          githubOrg,
-		"github_access_token": githubAccessToken,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -74,6 +57,29 @@ func (r *IntegrationGithubResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationGithubResourceModel) populateConfig() map[string]*string {
+	githubOrg := new(string)
+	if !r.GithubOrg.IsUnknown() && !r.GithubOrg.IsNull() {
+		*githubOrg = r.GithubOrg.ValueString()
+	} else {
+		githubOrg = nil
+	}
+
+	githubAccessToken := new(string)
+	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
+		*githubAccessToken = r.GithubAccessToken.ValueString()
+	} else {
+		githubAccessToken = nil
+	}
+
+	configValues := map[string]*string{
+		"github_org":          githubOrg,
+		"github_access_token": githubAccessToken,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationGithubResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -128,10 +134,6 @@ func (r *IntegrationGithubResourceModel) RefreshFromGetResponse(resp *shared.Con
 					r.GithubOrg = types.StringValue(v.(string))
 				}
 
-				if v, ok := values["github_access_token"]; ok {
-					r.GithubAccessToken = types.StringValue(v.(string))
-				}
-
 			}
 		}
 	}
@@ -177,10 +179,6 @@ func (r *IntegrationGithubResourceModel) RefreshFromCreateResponse(resp *shared.
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["github_org"]; ok {
 					r.GithubOrg = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["github_access_token"]; ok {
-					r.GithubAccessToken = types.StringValue(v.(string))
 				}
 
 			}

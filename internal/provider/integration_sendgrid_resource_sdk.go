@@ -32,16 +32,7 @@ func (r *IntegrationSendgridResourceModel) ToUpdateSDKType() (*shared.Connector,
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	sendgridApiKey := new(string)
-	if !r.SendgridApiKey.IsUnknown() && !r.SendgridApiKey.IsNull() {
-		*sendgridApiKey = r.SendgridApiKey.ValueString()
-	} else {
-		sendgridApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"sendgrid_api_key": sendgridApiKey,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -66,6 +57,21 @@ func (r *IntegrationSendgridResourceModel) ToUpdateSDKType() (*shared.Connector,
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationSendgridResourceModel) populateConfig() map[string]*string {
+	sendgridApiKey := new(string)
+	if !r.SendgridApiKey.IsUnknown() && !r.SendgridApiKey.IsNull() {
+		*sendgridApiKey = r.SendgridApiKey.ValueString()
+	} else {
+		sendgridApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"sendgrid_api_key": sendgridApiKey,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationSendgridResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -113,16 +119,6 @@ func (r *IntegrationSendgridResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["sendgrid_api_key"]; ok {
-					r.SendgridApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationSendgridResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -160,14 +156,4 @@ func (r *IntegrationSendgridResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["sendgrid_api_key"]; ok {
-					r.SendgridApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

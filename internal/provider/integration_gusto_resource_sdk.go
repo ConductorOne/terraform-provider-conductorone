@@ -32,16 +32,7 @@ func (r *IntegrationGustoResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	company := new(string)
-	if !r.Company.IsUnknown() && !r.Company.IsNull() {
-		*company = r.Company.ValueString()
-	} else {
-		company = nil
-	}
-
-	configValues := map[string]*string{
-		"company": company,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -66,6 +57,21 @@ func (r *IntegrationGustoResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationGustoResourceModel) populateConfig() map[string]*string {
+	company := new(string)
+	if !r.Company.IsUnknown() && !r.Company.IsNull() {
+		*company = r.Company.ValueString()
+	} else {
+		company = nil
+	}
+
+	configValues := map[string]*string{
+		"company": company,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationGustoResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {

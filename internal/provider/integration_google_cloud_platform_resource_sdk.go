@@ -32,16 +32,7 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	credentialsJson := new(string)
-	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
-		*credentialsJson = r.CredentialsJson.ValueString()
-	} else {
-		credentialsJson = nil
-	}
-
-	configValues := map[string]*string{
-		"credentials_json": credentialsJson,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -66,6 +57,21 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationGoogleCloudPlatformResourceModel) populateConfig() map[string]*string {
+	credentialsJson := new(string)
+	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
+		*credentialsJson = r.CredentialsJson.ValueString()
+	} else {
+		credentialsJson = nil
+	}
+
+	configValues := map[string]*string{
+		"credentials_json": credentialsJson,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationGoogleCloudPlatformResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -113,16 +119,6 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) RefreshFromGetResponse(res
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["credentials_json"]; ok {
-					r.CredentialsJson = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationGoogleCloudPlatformResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -160,14 +156,4 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) RefreshFromCreateResponse(
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["credentials_json"]; ok {
-					r.CredentialsJson = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

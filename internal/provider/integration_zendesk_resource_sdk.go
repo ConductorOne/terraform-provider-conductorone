@@ -32,6 +32,34 @@ func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() (*shared.Connector, 
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
+	configValues := r.populateConfig()
+
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+
+	out := shared.Connector{
+		DisplayName: sdk.String("Zendesk"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(zendeskCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
+	}
+
+	return &out, configSet
+}
+
+func (r *IntegrationZendeskResourceModel) populateConfig() map[string]*string {
 	email := new(string)
 	if !r.Email.IsUnknown() && !r.Email.IsNull() {
 		*email = r.Email.ValueString()
@@ -59,29 +87,7 @@ func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() (*shared.Connector, 
 		"api_token": apiToken,
 	}
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
-		configOut[key] = ""
-		if configValue != nil {
-			configOut[key] = *configValue
-			configSet = true
-		}
-	}
-	if !configSet {
-		configOut = nil
-	}
-
-	out := shared.Connector{
-		DisplayName: sdk.String("Zendesk"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(zendeskCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
-	}
-
-	return &out, configSet
+	return configValues
 }
 
 func (r *IntegrationZendeskResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -132,16 +138,9 @@ func (r *IntegrationZendeskResourceModel) RefreshFromGetResponse(resp *shared.Co
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["email"]; ok {
-					r.Email = types.StringValue(v.(string))
-				}
 
 				if v, ok := values["subdomain"]; ok {
 					r.Subdomain = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["api_token"]; ok {
-					r.ApiToken = types.StringValue(v.(string))
 				}
 
 			}
@@ -187,16 +186,9 @@ func (r *IntegrationZendeskResourceModel) RefreshFromCreateResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["email"]; ok {
-					r.Email = types.StringValue(v.(string))
-				}
 
 				if v, ok := values["subdomain"]; ok {
 					r.Subdomain = types.StringValue(v.(string))
-				}
-
-				if v, ok := values["api_token"]; ok {
-					r.ApiToken = types.StringValue(v.(string))
 				}
 
 			}

@@ -32,16 +32,7 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	asanaApiKey := new(string)
-	if !r.AsanaApiKey.IsUnknown() && !r.AsanaApiKey.IsNull() {
-		*asanaApiKey = r.AsanaApiKey.ValueString()
-	} else {
-		asanaApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"asana_api_key": asanaApiKey,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -66,6 +57,21 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationAsanaResourceModel) populateConfig() map[string]*string {
+	asanaApiKey := new(string)
+	if !r.AsanaApiKey.IsUnknown() && !r.AsanaApiKey.IsNull() {
+		*asanaApiKey = r.AsanaApiKey.ValueString()
+	} else {
+		asanaApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"asana_api_key": asanaApiKey,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationAsanaResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -113,16 +119,6 @@ func (r *IntegrationAsanaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["asana_api_key"]; ok {
-					r.AsanaApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationAsanaResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -160,14 +156,4 @@ func (r *IntegrationAsanaResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["asana_api_key"]; ok {
-					r.AsanaApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }

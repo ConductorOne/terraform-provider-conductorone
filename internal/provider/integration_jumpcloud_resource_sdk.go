@@ -32,16 +32,7 @@ func (r *IntegrationJumpcloudResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	jumpcloudApiKey := new(string)
-	if !r.JumpcloudApiKey.IsUnknown() && !r.JumpcloudApiKey.IsNull() {
-		*jumpcloudApiKey = r.JumpcloudApiKey.ValueString()
-	} else {
-		jumpcloudApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"jumpcloud_api_key": jumpcloudApiKey,
-	}
+	configValues := r.populateConfig()
 
 	configOut := make(map[string]string)
 	configSet := false
@@ -66,6 +57,21 @@ func (r *IntegrationJumpcloudResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	return &out, configSet
+}
+
+func (r *IntegrationJumpcloudResourceModel) populateConfig() map[string]*string {
+	jumpcloudApiKey := new(string)
+	if !r.JumpcloudApiKey.IsUnknown() && !r.JumpcloudApiKey.IsNull() {
+		*jumpcloudApiKey = r.JumpcloudApiKey.ValueString()
+	} else {
+		jumpcloudApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"jumpcloud_api_key": jumpcloudApiKey,
+	}
+
+	return configValues
 }
 
 func (r *IntegrationJumpcloudResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
@@ -113,16 +119,6 @@ func (r *IntegrationJumpcloudResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["jumpcloud_api_key"]; ok {
-					r.JumpcloudApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationJumpcloudResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -160,14 +156,4 @@ func (r *IntegrationJumpcloudResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["jumpcloud_api_key"]; ok {
-					r.JumpcloudApiKey = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
 }
