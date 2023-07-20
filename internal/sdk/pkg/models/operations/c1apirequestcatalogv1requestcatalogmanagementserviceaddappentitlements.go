@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"net/http"
 	"conductorone/internal/sdk/pkg/models/shared"
+	"net/http"
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest struct {

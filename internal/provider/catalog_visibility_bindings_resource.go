@@ -3,10 +3,10 @@
 package provider
 
 import (
-	"context"
-	"fmt"
 	"conductorone/internal/sdk"
 	"conductorone/internal/sdk/pkg/models/operations"
+	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"

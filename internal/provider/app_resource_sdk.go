@@ -3,9 +3,9 @@
 package provider
 
 import (
+	"conductorone/internal/sdk/pkg/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"math/big"
-	"conductorone/internal/sdk/pkg/models/shared"
 	"time"
 )
 

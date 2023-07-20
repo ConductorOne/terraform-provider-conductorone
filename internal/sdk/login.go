@@ -173,7 +173,7 @@ func doTokenRequest(ctx context.Context, client *ConductoroneAPI, clientID strin
 			if errResp.ErrorType == "slow_down" {
 				// Interval should be increased by 5 seconds when slow_down is received
 				// https://datatracker.ietf.org/doc/html/rfc8628#section-3.5
-				intervalSeconds += 5
+				intervalSeconds += 5 //nolint:ineffassign // reassigning to same variable
 			}
 
 			return nil, errors.New(errResp.ErrorDescription)

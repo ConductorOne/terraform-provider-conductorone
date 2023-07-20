@@ -3,19 +3,19 @@
 package provider
 
 import (
+	"conductorone/internal/sdk"
 	"context"
 	"fmt"
-	"conductorone/internal/sdk"
 
+	"conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -267,7 +267,7 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	app := data.ToUpdateSDKType()
 	updateMask := "displayName,monthlyCostUsd"
 	updateAppRequest = &shared.UpdateAppRequest{
-		App: app,
+		App:        app,
 		UpdateMask: &updateMask,
 	}
 	id := data.ID.ValueString()
