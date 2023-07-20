@@ -1,5 +1,8 @@
 resource "conductorone_integration_aws" "aws" {
-  app_id                    = conductorone_app.aws.id
+  app_id = conductorone_app.aws.id
+  user_ids = [
+    conductorone_user.admin.id
+  ]
   aws_external_id           = "..."
   aws_role_arn              = "..."
   aws_orgs_enable           = false

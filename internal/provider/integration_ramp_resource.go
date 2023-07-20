@@ -57,35 +57,38 @@ func (r *IntegrationRampResource) Schema(ctx context.Context, req resource.Schem
 					stringplanmodifier.RequiresReplace(),
 				},
 				Required:    true,
-				Description: `The appId field.`,
+				Description: `The ID for the Application that this integration should connected to.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
+				Description: `The time this integration was created.`,
 			},
 			"deleted_at": schema.StringAttribute{
 				Computed: true,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
+				Description: `The time this integration was deleted.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The id field.`,
+				Description: `The ID of this integration.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
+				Description: `The time this integration was last updated.`,
 			},
 			"user_ids": schema.ListAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The userIds field.`,
+				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 		},
 	}
