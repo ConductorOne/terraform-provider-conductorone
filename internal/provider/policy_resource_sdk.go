@@ -9,7 +9,7 @@ import (
 )
 
 func BoolPointer(b bool) *bool {
-    return &b
+	return &b
 }
 
 func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
@@ -32,10 +32,10 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 			if step.Approval != nil {
 				newPolicyStep := shared.PolicyStep{
 					Approval: &shared.Approval{
-						AllowReassignment: step.Approval.AllowReassignment.ValueBoolPointer(),
-						Assigned: step.Approval.Assigned.ValueBoolPointer(),
-						RequireApprovalReason:       step.Approval.RequireApprovalReason.ValueBoolPointer(),
-						RequireReassignmentReason:   step.Approval.RequireReassignmentReason.ValueBoolPointer(),
+						AllowReassignment:         step.Approval.AllowReassignment.ValueBoolPointer(),
+						Assigned:                  step.Approval.Assigned.ValueBoolPointer(),
+						RequireApprovalReason:     step.Approval.RequireApprovalReason.ValueBoolPointer(),
+						RequireReassignmentReason: step.Approval.RequireReassignmentReason.ValueBoolPointer(),
 					},
 				}
 				if step.Approval.AppOwnerApproval != nil {
@@ -94,7 +94,7 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 						newPolicyStep.Approval.UserApproval.UserIds = append(newPolicyStep.Approval.UserApproval.UserIds, v.ValueString())
 					}
 				}
-				steps = append(steps, newPolicyStep) 
+				steps = append(steps, newPolicyStep)
 			}
 			if step.Provision != nil {
 				newPolicyStep := shared.PolicyStep{
@@ -111,7 +111,7 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 					if step.Provision.ProvisionPolicy.DelegatedProvision != nil {
 						newPolicyStep.Provision.ProvisionPolicy = &shared.ProvisionPolicy{
 							DelegatedProvision: &shared.DelegatedProvision{
-								AppID: step.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueStringPointer(),
+								AppID:         step.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueStringPointer(),
 								EntitlementID: step.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueStringPointer(),
 							},
 						}
@@ -208,10 +208,10 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.Policy {
 			if step.Approval != nil {
 				newPolicyStep := shared.PolicyStep{
 					Approval: &shared.Approval{
-						AllowReassignment: step.Approval.AllowReassignment.ValueBoolPointer(),
-						Assigned: step.Approval.Assigned.ValueBoolPointer(),
-						RequireApprovalReason:       step.Approval.RequireApprovalReason.ValueBoolPointer(),
-						RequireReassignmentReason:   step.Approval.RequireReassignmentReason.ValueBoolPointer(),
+						AllowReassignment:         step.Approval.AllowReassignment.ValueBoolPointer(),
+						Assigned:                  step.Approval.Assigned.ValueBoolPointer(),
+						RequireApprovalReason:     step.Approval.RequireApprovalReason.ValueBoolPointer(),
+						RequireReassignmentReason: step.Approval.RequireReassignmentReason.ValueBoolPointer(),
 					},
 				}
 				if step.Approval.AppOwnerApproval != nil {
@@ -270,7 +270,7 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.Policy {
 						newPolicyStep.Approval.UserApproval.UserIds = append(newPolicyStep.Approval.UserApproval.UserIds, v.ValueString())
 					}
 				}
-				steps = append(steps, newPolicyStep) 
+				steps = append(steps, newPolicyStep)
 			}
 			if step.Provision != nil {
 				newPolicyStep := shared.PolicyStep{
@@ -287,7 +287,7 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.Policy {
 					if step.Provision.ProvisionPolicy.DelegatedProvision != nil {
 						newPolicyStep.Provision.ProvisionPolicy = &shared.ProvisionPolicy{
 							DelegatedProvision: &shared.DelegatedProvision{
-								AppID: step.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueStringPointer(),
+								AppID:         step.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueStringPointer(),
 								EntitlementID: step.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueStringPointer(),
 							},
 						}

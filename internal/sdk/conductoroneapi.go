@@ -71,7 +71,7 @@ type ConductoroneAPI struct {
 	AppResourceSearch         *appResourceSearch
 	AppResourceType           *appResourceType
 	AppSearch                 *appSearch
-	AppEntitlementSearch	  *appEntitlementSearch
+	AppEntitlementSearch      *appEntitlementSearch
 	AppUsageControls          *appUsageControls
 	Apps                      *apps
 	Auth                      *auth
@@ -79,7 +79,7 @@ type ConductoroneAPI struct {
 	Directory                 *directory
 	PersonalClient            *personalClient
 	Policies                  *policies
-	PolicySearch			  *policySearch
+	PolicySearch              *policySearch
 	RequestCatalogManagement  *requestCatalogManagement
 	RequestCatalogSearch      *requestCatalogSearch
 	Roles                     *roles

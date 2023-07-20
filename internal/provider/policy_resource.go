@@ -7,6 +7,9 @@ import (
 	"context"
 	"fmt"
 
+	"conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -14,9 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.

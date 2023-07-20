@@ -3,19 +3,19 @@
 package provider
 
 import (
+	"conductorone/internal/sdk"
 	"context"
 	"fmt"
-	"conductorone/internal/sdk"
 
+	"conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -437,9 +437,9 @@ func (r *CatalogResource) Update(ctx context.Context, req resource.UpdateRequest
 
 	var requestCatalogManagementServiceUpdateRequest *shared.RequestCatalogManagementServiceUpdateRequest
 	requestCatalog := data.ToUpdateSDKType()
-	
+
 	requestCatalogManagementServiceUpdateRequest = &shared.RequestCatalogManagementServiceUpdateRequest{
-		RequestCatalog:           requestCatalog,
+		RequestCatalog: requestCatalog,
 	}
 	id := data.ID.ValueString()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest{

@@ -5,6 +5,6 @@ package shared
 // UpdateAppRequest - The UpdateAppRequest message.
 type UpdateAppRequest struct {
 	// The App message.
-	App *App `json:"app,omitempty"`
+	App        *App    `json:"app,omitempty"`
 	UpdateMask *string `json:"updateMask,omitempty"`
 }
