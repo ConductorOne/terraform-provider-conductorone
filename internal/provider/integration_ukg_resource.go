@@ -359,7 +359,6 @@ func (r *IntegrationUkgResource) Delete(ctx context.Context, req resource.Delete
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-
 }
 
 func (r *IntegrationUkgResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

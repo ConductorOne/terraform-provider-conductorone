@@ -348,7 +348,6 @@ func (r *IntegrationBambooHrResource) Delete(ctx context.Context, req resource.D
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-
 }
 
 func (r *IntegrationBambooHrResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

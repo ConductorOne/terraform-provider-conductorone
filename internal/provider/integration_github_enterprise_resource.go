@@ -348,7 +348,6 @@ func (r *IntegrationGithubEnterpriseResource) Delete(ctx context.Context, req re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-
 }
 
 func (r *IntegrationGithubEnterpriseResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

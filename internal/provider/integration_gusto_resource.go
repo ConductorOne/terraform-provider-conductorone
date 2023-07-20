@@ -342,7 +342,6 @@ func (r *IntegrationGustoResource) Delete(ctx context.Context, req resource.Dele
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-
 }
 
 func (r *IntegrationGustoResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
