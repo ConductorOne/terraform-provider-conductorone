@@ -122,7 +122,8 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Description: `The monthlyCostUsd field.`,
 			},
 			"owners": schema.ListAttribute{
-				Required:    true,
+				Computed:    true,
+				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The owners field.`,
 			},
