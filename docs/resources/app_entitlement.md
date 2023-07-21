@@ -24,7 +24,9 @@ resource "conductorone_app_entitlement" "okta_test_admin" {
   provision_policy = {
     manual_provision = {
       instructions = "Please contact the IT department to request this entitlement."
-      user_ids     = data.conductorone_user.my_user.id
+      user_ids = [
+        data.conductorone_user.my_user.id
+      ]
     }
   }
 }
