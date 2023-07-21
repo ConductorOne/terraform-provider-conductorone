@@ -14,8 +14,17 @@ The App Entitlement datasource allows you to retrieve an App Entitlement by `ali
 ## Example Usage
 
 ```terraform
-data "conductorone_user" "my_user" {
-  email = "<user_email>"
+data "conductorone_app_entitlement" "okta_everyone" {
+  alias = "okta_everyone"
+}
+
+data "conductorone_app_entitlement" "okta_test_admin" {
+  app_id = "<app_id>"
+  id     = "<entitlement_id>"
+}
+
+data "conductorone_app_entitlement" "okta_administrators" {
+  alias = "okta_test_admin"
 }
 ```
 
