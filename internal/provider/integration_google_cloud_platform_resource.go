@@ -219,6 +219,12 @@ func (r *IntegrationGoogleCloudPlatformResource) Read(ctx context.Context, req r
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		return
 	}
+
+	if res.ConnectorView.Connector.DeletedAt != nil {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
 	data.RefreshFromGetResponse(res.ConnectorView.Connector)
 
 	// Save updated data into Terraform state
