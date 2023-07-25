@@ -373,6 +373,11 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 	} else {
 		r.SystemBuiltin = types.BoolNull()
 	}
+	if resp.UpdatedAt != nil {
+		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339))
+	} else {
+		r.UpdatedAt = types.StringNull()
+	}
 }
 
 func (r *AppEntitlementResourceModel) RefreshFromCreateResponse(resp *shared.AppEntitlement) {
