@@ -47,6 +47,7 @@ resource "conductorone_catalog" "test_catalog" {
 - `created_at` (String)
 - `created_by_user_id` (String) The createdByUserId field.
 - `created_by_user_path` (String) The createdByUserPath field.
+- `deleted_at` (String)
 - `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
 - `id` (String) The id field.
 - `request_catalog_expand_mask` (Attributes) The RequestCatalogExpandMask message. (see [below for nested schema](#nestedatt--request_catalog_expand_mask))
