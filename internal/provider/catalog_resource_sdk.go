@@ -542,6 +542,11 @@ func (r *CatalogResourceModel) RefreshFromGetResponse(resp *shared.RequestCatalo
 	} else {
 		r.VisibleToEveryone = types.BoolNull()
 	}
+	if resp.DeletedAt != nil {
+		r.DeletedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339))
+	} else {
+		r.DeletedAt = types.StringNull()
+	}
 }
 
 func (r *CatalogResourceModel) RefreshFromCreateResponse(resp *shared.RequestCatalog) {
