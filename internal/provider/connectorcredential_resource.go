@@ -245,6 +245,12 @@ func (r *ConnectorCredentialResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
+
+	if res.ConnectorServiceGetCredentialsResponse.ConnectorCredential.DeletedAt == nil {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
 	data.RefreshFromGetResponse(res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)
 
 	// Save updated data into Terraform state

@@ -367,11 +367,25 @@ func (r *AppEntitlementResource) Read(ctx context.Context, req resource.ReadRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
+
 	if res.GetAppEntitlementResponse.AppEntitlementView == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
+
+	if res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement == nil {
+		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+		return
+
+	}
+
+	if res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement.DeletedAt != nil {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
 	data.RefreshFromGetResponse(res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)
+
 	if res.GetAppEntitlementResponse.AppEntitlementView.AppPath != nil {
 		data.AppPath = types.StringValue(*res.GetAppEntitlementResponse.AppEntitlementView.AppPath)
 	} else {

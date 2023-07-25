@@ -235,6 +235,12 @@ func (r *IntegrationUkgResource) Read(ctx context.Context, req resource.ReadRequ
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		return
 	}
+
+	if res.ConnectorView.Connector.DeletedAt != nil {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
 	data.RefreshFromGetResponse(res.ConnectorView.Connector)
 
 	// Save updated data into Terraform state

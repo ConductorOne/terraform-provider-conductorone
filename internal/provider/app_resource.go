@@ -251,6 +251,12 @@ func (r *AppResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
+
+	if res.GetAppResponse.App.DeletedAt != nil {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
 	data.RefreshFromGetResponse(res.GetAppResponse.App)
 
 	// Save updated data into Terraform state

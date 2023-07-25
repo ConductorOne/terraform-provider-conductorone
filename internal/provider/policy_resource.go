@@ -486,6 +486,12 @@ func (r *PolicyResource) Read(ctx context.Context, req resource.ReadRequest, res
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
+
+	if res.GetPolicyResponse.Policy.DeletedAt != nil {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
 	data.RefreshFromGetResponse(res.GetPolicyResponse.Policy)
 
 	// Save updated data into Terraform state

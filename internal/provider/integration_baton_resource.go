@@ -195,6 +195,12 @@ func (r *IntegrationBatonResource) Read(ctx context.Context, req resource.ReadRe
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
+
+	if res.ConnectorServiceGetResponse.ConnectorView.Connector.DeletedAt != nil {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
 	data.RefreshFromGetResponse(res.ConnectorServiceGetResponse)
 
 	// Save updated data into Terraform state
