@@ -40,6 +40,7 @@ type CatalogResourceModel struct {
 	CreatedAt                types.String                                         `tfsdk:"created_at"`
 	CreatedByUserID          types.String                                         `tfsdk:"created_by_user_id"`
 	CreatedByUserPath        types.String                                         `tfsdk:"created_by_user_path"`
+	DeletedAt                types.String                                         `tfsdk:"deleted_at"`
 	Description              types.String                                         `tfsdk:"description"`
 	DisplayName              types.String                                         `tfsdk:"display_name"`
 	Expanded                 []RequestCatalogManagementServiceGetResponseExpanded `tfsdk:"expanded"`
@@ -226,6 +227,12 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 					validators.IsRFC3339(),
 				},
 			},
+			"deleted_at": schema.StringAttribute{
+				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
+			},
 			"created_by_user_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The createdByUserId field.`,
@@ -406,6 +413,10 @@ func (r *CatalogResource) Read(ctx context.Context, req resource.ReadRequest, re
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
+	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog == nil {
+		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+		return
+	}
 	data.RefreshFromGetResponse(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
 	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AccessEntitlementsPath != nil {
 		data.AccessEntitlementsPath = types.StringValue(*res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AccessEntitlementsPath)
@@ -421,6 +432,11 @@ func (r *CatalogResource) Read(ctx context.Context, req resource.ReadRequest, re
 		data.CreatedByUserPath = types.StringValue(*res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.CreatedByUserPath)
 	} else {
 		data.CreatedByUserPath = types.StringNull()
+	}
+
+	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog.DeletedAt != nil {
+		resp.State.RemoveResource(ctx)
+		return
 	}
 
 	// Save updated data into Terraform state

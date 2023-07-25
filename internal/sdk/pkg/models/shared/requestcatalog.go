@@ -14,7 +14,8 @@ type RequestCatalog struct {
 	AppIds    []string   `json:"appIds,omitempty"`
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// The createdByUserId field.
-	CreatedByUserID *string `json:"createdByUserId,omitempty"`
+	CreatedByUserID *string    `json:"createdByUserId,omitempty"`
+	DeletedAt       *time.Time `json:"deletedAt,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.

@@ -297,12 +297,6 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 	} else {
 		published = nil
 	}
-	updatedAt1 := new(time.Time)
-	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
-		*updatedAt1, _ = time.Parse(time.RFC3339Nano, r.UpdatedAt.ValueString())
-	} else {
-		updatedAt1 = nil
-	}
 	visibleToEveryone := new(bool)
 	if !r.VisibleToEveryone.IsUnknown() && !r.VisibleToEveryone.IsNull() {
 		*visibleToEveryone = r.VisibleToEveryone.ValueBool()
@@ -318,7 +312,6 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 		DisplayName:        displayName1,
 		ID:                 id1,
 		Published:          published,
-		UpdatedAt:          updatedAt1,
 		VisibleToEveryone:  visibleToEveryone,
 	}
 	return &out
@@ -541,6 +534,11 @@ func (r *CatalogResourceModel) RefreshFromGetResponse(resp *shared.RequestCatalo
 		r.VisibleToEveryone = types.BoolValue(*resp.VisibleToEveryone)
 	} else {
 		r.VisibleToEveryone = types.BoolNull()
+	}
+	if resp.DeletedAt != nil {
+		r.DeletedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339))
+	} else {
+		r.DeletedAt = types.StringNull()
 	}
 }
 
