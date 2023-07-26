@@ -2,6 +2,8 @@
 package provider
 
 import (
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -12,7 +14,7 @@ import (
 
 const googleWorkspaceCatalogID = "24eqHE201g0mICwdTQoZF3skJyD"
 
-func (r *IntegrationGoogleWorkspaceResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationGoogleWorkspaceResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(googleWorkspaceCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
@@ -24,6 +26,31 @@ func (r *IntegrationGoogleWorkspaceResourceModel) ToCreateSDKType() *shared.Conn
 		UserIds:     userIds,
 	}
 	return &out
+}
+
+func (r *IntegrationGoogleWorkspaceResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
+	catalogID := sdk.String(googleWorkspaceCatalogID)
+	userIds := make([]string, 0)
+	for _, userIdsItem := range r.UserIds {
+		userIds = append(userIds, userIdsItem.ValueString())
+	}
+
+	configOut, configSet := r.getConfig()
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
+
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
+	return &out, nil
 }
 
 func (r *IntegrationGoogleWorkspaceResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
@@ -98,13 +125,30 @@ func (r *IntegrationGoogleWorkspaceResourceModel) populateConfig() map[string]*s
 	return configValues
 }
 
+func (r *IntegrationGoogleWorkspaceResourceModel) getConfig() (map[string]string, bool) {
+	configValues := r.populateConfig()
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+	return configOut, configSet
+}
+
 func (r *IntegrationGoogleWorkspaceResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	out := r.ToCreateSDKType()
+	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
 func (r *IntegrationGoogleWorkspaceResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	out := r.ToCreateSDKType()
+	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 

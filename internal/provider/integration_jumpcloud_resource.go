@@ -138,59 +138,66 @@ func (r *IntegrationJumpcloudResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	connectorServiceCreateDelegatedRequest := data.ToCreateSDKType()
-	appID := data.AppID.ValueString()
-	request := operations.C1APIAppV1ConnectorServiceCreateDelegatedRequest{
-		ConnectorServiceCreateDelegatedRequest: connectorServiceCreateDelegatedRequest,
-		AppID:                                  appID,
-	}
-	res, err := r.client.Connector.CreateDelegated(ctx, request)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		return
-	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
-		return
-	}
-	if res.ConnectorServiceCreateResponse.ConnectorView == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
-		return
-	}
-	data.RefreshFromCreateResponse(res.ConnectorServiceCreateResponse.ConnectorView.Connector)
+	_, configSet := data.getConfig()
 
-	updateCon, configSet := data.ToUpdateSDKType()
-	if !configSet {
-		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-		return
-	}
+	var configResp *shared.Connector
 
-	configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
-		ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
-			Connector:  updateCon,
-			UpdateMask: "config",
-		},
-		AppID: appID,
-		ID:    data.ID.ValueString(),
+	if configSet {
+		connectorServiceCreateRequest, err := data.ToCreateSDKType()
+		if err != nil {
+			resp.Diagnostics.AddError("failure to make create request", err.Error())
+			return
+		}
+		appID := data.AppID.ValueString()
+		request := operations.C1APIAppV1ConnectorServiceCreateRequest{
+			ConnectorServiceCreateRequest: connectorServiceCreateRequest,
+			AppID:                         appID,
+		}
+		res, err := r.client.Connector.Create(ctx, request)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if res == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+			return
+		}
+		if res.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+			return
+		}
+		if res.ConnectorServiceCreateResponse.ConnectorView == nil {
+			resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+			return
+		}
+		configResp = res.ConnectorServiceCreateResponse.ConnectorView.Connector
+	} else {
+		connectorServiceCreateDelegatedRequest := data.ToCreateDelegatedSDKType()
+		appID := data.AppID.ValueString()
+		request := operations.C1APIAppV1ConnectorServiceCreateDelegatedRequest{
+			ConnectorServiceCreateDelegatedRequest: connectorServiceCreateDelegatedRequest,
+			AppID:                                  appID,
+		}
+		res, err := r.client.Connector.CreateDelegated(ctx, request)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if res == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+			return
+		}
+		if res.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+			return
+		}
+		if res.ConnectorServiceCreateResponse.ConnectorView == nil {
+			resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
+			return
+		}
+		configResp = res.ConnectorServiceCreateResponse.ConnectorView.Connector
 	}
-	configRes, err := r.client.Connector.Update(ctx, configReq)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		return
-	}
-	if configRes == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if configRes.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", configRes.StatusCode), debugResponse(configRes.RawResponse))
-		return
-	}
-	data.RefreshFromUpdateResponse(configRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+	data.RefreshFromCreateResponse(configResp)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

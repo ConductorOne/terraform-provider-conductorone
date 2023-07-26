@@ -2,6 +2,8 @@
 package provider
 
 import (
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -12,7 +14,7 @@ import (
 
 const snowflakeCatalogID = "24cjzH6sY7x4huNU1JbaxkvzVm9"
 
-func (r *IntegrationSnowflakeResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationSnowflakeResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(snowflakeCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
@@ -24,6 +26,31 @@ func (r *IntegrationSnowflakeResourceModel) ToCreateSDKType() *shared.ConnectorS
 		UserIds:     userIds,
 	}
 	return &out
+}
+
+func (r *IntegrationSnowflakeResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
+	catalogID := sdk.String(snowflakeCatalogID)
+	userIds := make([]string, 0)
+	for _, userIdsItem := range r.UserIds {
+		userIds = append(userIds, userIdsItem.ValueString())
+	}
+
+	configOut, configSet := r.getConfig()
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
+
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
+	return &out, nil
 }
 
 func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
@@ -98,13 +125,30 @@ func (r *IntegrationSnowflakeResourceModel) populateConfig() map[string]*string 
 	return configValues
 }
 
+func (r *IntegrationSnowflakeResourceModel) getConfig() (map[string]string, bool) {
+	configValues := r.populateConfig()
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+	return configOut, configSet
+}
+
 func (r *IntegrationSnowflakeResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	out := r.ToCreateSDKType()
+	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
 func (r *IntegrationSnowflakeResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	out := r.ToCreateSDKType()
+	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 

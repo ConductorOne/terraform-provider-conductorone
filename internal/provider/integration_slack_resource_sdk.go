@@ -2,6 +2,8 @@
 package provider
 
 import (
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -12,7 +14,7 @@ import (
 
 const slackCatalogID = "2O43lWTqeK6kY25TBMLDyIRU00o"
 
-func (r *IntegrationSlackResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationSlackResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(slackCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
@@ -24,6 +26,31 @@ func (r *IntegrationSlackResourceModel) ToCreateSDKType() *shared.ConnectorServi
 		UserIds:     userIds,
 	}
 	return &out
+}
+
+func (r *IntegrationSlackResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
+	catalogID := sdk.String(slackCatalogID)
+	userIds := make([]string, 0)
+	for _, userIdsItem := range r.UserIds {
+		userIds = append(userIds, userIdsItem.ValueString())
+	}
+
+	configOut, configSet := r.getConfig()
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
+
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
+	return &out, nil
 }
 
 func (r *IntegrationSlackResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
@@ -74,13 +101,30 @@ func (r *IntegrationSlackResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
+func (r *IntegrationSlackResourceModel) getConfig() (map[string]string, bool) {
+	configValues := r.populateConfig()
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+	return configOut, configSet
+}
+
 func (r *IntegrationSlackResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	out := r.ToCreateSDKType()
+	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
 func (r *IntegrationSlackResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	out := r.ToCreateSDKType()
+	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
