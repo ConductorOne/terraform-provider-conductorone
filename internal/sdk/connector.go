@@ -24,10 +24,11 @@ func newConnector(sdkConfig sdkConfiguration) *connector {
 }
 
 // Create - Create
-// Invokes the c1.api.app.v1.ConnectorService.Create method.
+//
+//	Create a configured connector.
 func (s *connector) Create(ctx context.Context, request operations.C1APIAppV1ConnectorServiceCreateRequest) (*operations.C1APIAppV1ConnectorServiceCreateResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/create", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -87,10 +88,11 @@ func (s *connector) Create(ctx context.Context, request operations.C1APIAppV1Con
 }
 
 // CreateDelegated - Create Delegated
-// Invokes the c1.api.app.v1.ConnectorService.CreateDelegated method.
+//
+//	Create a connector that is pending a connector config.
 func (s *connector) CreateDelegated(ctx context.Context, request operations.C1APIAppV1ConnectorServiceCreateDelegatedRequest) (*operations.C1APIAppV1ConnectorServiceCreateDelegatedResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/delegated", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -150,7 +152,8 @@ func (s *connector) CreateDelegated(ctx context.Context, request operations.C1AP
 }
 
 // Delete - Delete
-// Invokes the c1.api.app.v1.ConnectorService.Delete method.
+//
+//	Delete a connector.
 func (s *connector) Delete(ctx context.Context, request operations.C1APIAppV1ConnectorServiceDeleteRequest) (*operations.C1APIAppV1ConnectorServiceDeleteResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{id}", request, nil)
@@ -213,7 +216,8 @@ func (s *connector) Delete(ctx context.Context, request operations.C1APIAppV1Con
 }
 
 // Get - Get
-// Invokes the c1.api.app.v1.ConnectorService.Get method.
+//
+//	Get a connector.
 func (s *connector) Get(ctx context.Context, request operations.C1APIAppV1ConnectorServiceGetRequest) (*operations.C1APIAppV1ConnectorServiceGetResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{id}", request, nil)
@@ -269,7 +273,8 @@ func (s *connector) Get(ctx context.Context, request operations.C1APIAppV1Connec
 }
 
 // GetCredentials - Get Credentials
-// Invokes the c1.api.app.v1.ConnectorService.GetCredentials method.
+//
+//	Get credentials for a connector.
 func (s *connector) GetCredentials(ctx context.Context, request operations.C1APIAppV1ConnectorServiceGetCredentialsRequest) (*operations.C1APIAppV1ConnectorServiceGetCredentialsResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{connector_id}/credentials/{id}", request, nil)
@@ -325,7 +330,8 @@ func (s *connector) GetCredentials(ctx context.Context, request operations.C1API
 }
 
 // List - List
-// Invokes the c1.api.app.v1.ConnectorService.List method.
+//
+//	List connectors for an app.
 func (s *connector) List(ctx context.Context, request operations.C1APIAppV1ConnectorServiceListRequest) (*operations.C1APIAppV1ConnectorServiceListResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors", request, nil)
@@ -339,6 +345,10 @@ func (s *connector) List(ctx context.Context, request operations.C1APIAppV1Conne
 	}
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+
+	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+		return nil, fmt.Errorf("error populating query params: %w", err)
+	}
 
 	client := s.sdkConfiguration.SecurityClient
 
@@ -381,7 +391,8 @@ func (s *connector) List(ctx context.Context, request operations.C1APIAppV1Conne
 }
 
 // RevokeCredential - Revoke Credential
-// Invokes the c1.api.app.v1.ConnectorService.RevokeCredential method.
+//
+//	Revoke credentials for a connector.
 func (s *connector) RevokeCredential(ctx context.Context, request operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest) (*operations.C1APIAppV1ConnectorServiceRevokeCredentialResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{connector_id}/credentials/{id}", request, nil)
@@ -444,7 +455,8 @@ func (s *connector) RevokeCredential(ctx context.Context, request operations.C1A
 }
 
 // RotateCredential - Rotate Credential
-// Invokes the c1.api.app.v1.ConnectorService.RotateCredential method.
+//
+//	Rotate credentials for a connector.
 func (s *connector) RotateCredential(ctx context.Context, request operations.C1APIAppV1ConnectorServiceRotateCredentialRequest) (*operations.C1APIAppV1ConnectorServiceRotateCredentialResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{connector_id}/credentials", request, nil)
@@ -507,7 +519,8 @@ func (s *connector) RotateCredential(ctx context.Context, request operations.C1A
 }
 
 // Update - Update
-// Invokes the c1.api.app.v1.ConnectorService.Update method.
+//
+//	Update a connector.
 func (s *connector) Update(ctx context.Context, request operations.C1APIAppV1ConnectorServiceUpdateRequest) (*operations.C1APIAppV1ConnectorServiceUpdateResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{id}", request, nil)
@@ -570,7 +583,8 @@ func (s *connector) Update(ctx context.Context, request operations.C1APIAppV1Con
 }
 
 // UpdateDelegated - Update Delegated
-// Invokes the c1.api.app.v1.ConnectorService.UpdateDelegated method.
+//
+//	Update a delegated connector.
 func (s *connector) UpdateDelegated(ctx context.Context, request operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest) (*operations.C1APIAppV1ConnectorServiceUpdateDelegatedResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{connector_app_id}/connectors/{connector_id}/delegated", request, nil)
