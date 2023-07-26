@@ -80,11 +80,6 @@ func (r *AppEntitlementDataSourceModel) RefreshFromGetResponse(resp *shared.AppE
 	} else {
 		r.EmergencyGrantPolicyID = types.StringNull()
 	}
-	if resp.GrantCount != nil {
-		r.GrantCount = types.StringValue(*resp.GrantCount)
-	} else {
-		r.GrantCount = types.StringNull()
-	}
 	if resp.GrantPolicyID != nil {
 		r.GrantPolicyID = types.StringValue(*resp.GrantPolicyID)
 	} else {
@@ -160,11 +155,6 @@ func (r *AppEntitlementDataSourceModel) RefreshFromGetResponse(resp *shared.AppE
 		r.Slug = types.StringValue(*resp.Slug)
 	} else {
 		r.Slug = types.StringNull()
-	}
-	if resp.SystemBuiltin != nil {
-		r.SystemBuiltin = types.BoolValue(*resp.SystemBuiltin)
-	} else {
-		r.SystemBuiltin = types.BoolNull()
 	}
 	if resp.UpdatedAt != nil {
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339))

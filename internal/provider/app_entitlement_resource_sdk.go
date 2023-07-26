@@ -5,6 +5,7 @@ package provider
 import (
 	"conductorone/internal/sdk/pkg/models/shared"
 	"time"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -138,12 +139,6 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlement {
 	} else {
 		emergencyGrantPolicyID = nil
 	}
-	grantCount := new(string)
-	if !r.GrantCount.IsUnknown() && !r.GrantCount.IsNull() {
-		*grantCount = r.GrantCount.ValueString()
-	} else {
-		grantCount = nil
-	}
 	grantPolicyID := new(string)
 	if !r.GrantPolicyID.IsUnknown() && !r.GrantPolicyID.IsNull() {
 		*grantPolicyID = r.GrantPolicyID.ValueString()
@@ -174,18 +169,7 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlement {
 	} else {
 		slug = nil
 	}
-	systemBuiltin := new(bool)
-	if !r.SystemBuiltin.IsUnknown() && !r.SystemBuiltin.IsNull() {
-		*systemBuiltin = r.SystemBuiltin.ValueBool()
-	} else {
-		systemBuiltin = nil
-	}
-	updatedAt := new(time.Time)
-	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
-		*updatedAt, _ = time.Parse(time.RFC3339Nano, r.UpdatedAt.ValueString())
-	} else {
-		updatedAt = nil
-	}
+
 	out := shared.AppEntitlement{
 		ProvisionPolicy:             provisionPolicy,
 		Alias:                       alias,
@@ -202,14 +186,11 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlement {
 		DurationUnset:               durationUnset,
 		EmergencyGrantEnabled:       emergencyGrantEnabled,
 		EmergencyGrantPolicyID:      emergencyGrantPolicyID,
-		GrantCount:                  grantCount,
 		GrantPolicyID:               grantPolicyID,
 		ID:                          id,
 		RevokePolicyID:              revokePolicyID,
 		RiskLevelValueID:            riskLevelValueID,
 		Slug:                        slug,
-		SystemBuiltin:               systemBuiltin,
-		UpdatedAt:                   updatedAt,
 	}
 	return &out
 }
@@ -287,11 +268,6 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 	} else {
 		r.EmergencyGrantPolicyID = types.StringNull()
 	}
-	if resp.GrantCount != nil {
-		r.GrantCount = types.StringValue(*resp.GrantCount)
-	} else {
-		r.GrantCount = types.StringNull()
-	}
 	if resp.GrantPolicyID != nil {
 		r.GrantPolicyID = types.StringValue(*resp.GrantPolicyID)
 	} else {
@@ -368,16 +344,12 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 	} else {
 		r.Slug = types.StringNull()
 	}
-	if resp.SystemBuiltin != nil {
-		r.SystemBuiltin = types.BoolValue(*resp.SystemBuiltin)
-	} else {
-		r.SystemBuiltin = types.BoolNull()
-	}
 	if resp.UpdatedAt != nil {
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339))
 	} else {
 		r.UpdatedAt = types.StringNull()
 	}
+	fmt.Printf("*** appEntitlement.ProvisionPolicy: %+v\n", resp.ProvisionPolicy)
 }
 
 func (r *AppEntitlementResourceModel) RefreshFromCreateResponse(resp *shared.AppEntitlement) {

@@ -34,11 +34,8 @@ type AppEntitlementResource struct {
 type AppEntitlementResourceModel struct {
 	Alias                       types.String                           `tfsdk:"alias"`
 	AppID                       types.String                           `tfsdk:"app_id"`
-	AppPath                     types.String                           `tfsdk:"app_path"`
 	AppResourceID               types.String                           `tfsdk:"app_resource_id"`
-	AppResourcePath             types.String                           `tfsdk:"app_resource_path"`
 	AppResourceTypeID           types.String                           `tfsdk:"app_resource_type_id"`
-	AppResourceTypePath         types.String                           `tfsdk:"app_resource_type_path"`
 	CertifyPolicyID             types.String                           `tfsdk:"certify_policy_id"`
 	ComplianceFrameworkValueIds []types.String                         `tfsdk:"compliance_framework_value_ids"`
 	CreatedAt                   types.String                           `tfsdk:"created_at"`
@@ -49,15 +46,12 @@ type AppEntitlementResourceModel struct {
 	DurationUnset               *AppEntitlementDurationUnset           `tfsdk:"duration_unset"`
 	EmergencyGrantEnabled       types.Bool                             `tfsdk:"emergency_grant_enabled"`
 	EmergencyGrantPolicyID      types.String                           `tfsdk:"emergency_grant_policy_id"`
-	Expanded                    []CreateAppEntitlementResponseExpanded `tfsdk:"expanded"`
-	GrantCount                  types.String                           `tfsdk:"grant_count"`
 	GrantPolicyID               types.String                           `tfsdk:"grant_policy_id"`
 	ID                          types.String                           `tfsdk:"id"`
 	ProvisionPolicy             *ProvisionPolicy                       `tfsdk:"provision_policy"`
 	RevokePolicyID              types.String                           `tfsdk:"revoke_policy_id"`
 	RiskLevelValueID            types.String                           `tfsdk:"risk_level_value_id"`
 	Slug                        types.String                           `tfsdk:"slug"`
-	SystemBuiltin               types.Bool                             `tfsdk:"system_builtin"`
 	UpdatedAt                   types.String                           `tfsdk:"updated_at"`
 }
 
@@ -79,25 +73,13 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Required:    true,
 				Description: `The appId field.`,
 			},
-			"app_path": schema.StringAttribute{
-				Computed:    true,
-				Description: `The appPath field.`,
-			},
 			"app_resource_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The appResourceId field.`,
 			},
-			"app_resource_path": schema.StringAttribute{
-				Computed:    true,
-				Description: `The appResourcePath field.`,
-			},
 			"app_resource_type_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The appResourceTypeId field.`,
-			},
-			"app_resource_type_path": schema.StringAttribute{
-				Computed:    true,
-				Description: `The appResourceTypePath field.`,
 			},
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
@@ -134,9 +116,11 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			// TODO: these two duration fields are oneofs
 			"duration_grant": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"duration_unset": schema.SingleNestedAttribute{
 				Computed:   true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{},
 			},
 			"emergency_grant_enabled": schema.BoolAttribute{
@@ -148,22 +132,6 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Computed:    true,
 				Optional:    true,
 				Description: `The emergencyGrantPolicyId field.`,
-			},
-			"expanded": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"at_type": schema.StringAttribute{
-							Computed:    true,
-							Description: `The type of the serialized message.`,
-						},
-					},
-				},
-				Description: `The expanded field.`,
-			},
-			"grant_count": schema.StringAttribute{
-				Computed:    true,
-				Description: `The grantCount field.`,
 			},
 			"grant_policy_id": schema.StringAttribute{
 				Computed:    true,
@@ -234,10 +202,6 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Computed:    true,
 				Description: `The slug field.`,
 			},
-			"system_builtin": schema.BoolAttribute{
-				Computed:    true,
-				Description: `The systemBuiltin field.`,
-			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				Validators: []validator.String{
@@ -272,6 +236,7 @@ func (r *AppEntitlementResource) Create(ctx context.Context, req resource.Create
 	var data *AppEntitlementResourceModel
 	var item types.Object
 
+	var updateAppEntitlementRequest *shared.UpdateAppEntitlementRequest
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -282,17 +247,19 @@ func (r *AppEntitlementResource) Create(ctx context.Context, req resource.Create
 		UnhandledUnknownAsEmpty: true,
 	})...)
 
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	appEntitlement := data.ToUpdateSDKType()
 
+	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
+		AppEntitlement: appEntitlement,
+	}
 	appID := data.AppID.ValueString()
 	id := data.ID.ValueString()
-	request := operations.C1APIAppV1AppEntitlementsGetRequest{
-		AppID: appID,
-		ID:    id,
+	request := operations.C1APIAppV1AppEntitlementsUpdateRequest{
+		UpdateAppEntitlementRequest: updateAppEntitlementRequest,
+		AppID:                       appID,
+		ID:                          id,
 	}
-	res, err := r.client.AppEntitlements.Get(ctx, request)
+	res, err := r.client.AppEntitlements.Update(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		return
@@ -305,26 +272,11 @@ func (r *AppEntitlementResource) Create(ctx context.Context, req resource.Create
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.GetAppEntitlementResponse.AppEntitlementView == nil {
+	if res.UpdateAppEntitlementResponse.AppEntitlementView == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)
-	if res.GetAppEntitlementResponse.AppEntitlementView.AppPath != nil {
-		data.AppPath = types.StringValue(*res.GetAppEntitlementResponse.AppEntitlementView.AppPath)
-	} else {
-		data.AppPath = types.StringNull()
-	}
-	if res.GetAppEntitlementResponse.AppEntitlementView.AppResourcePath != nil {
-		data.AppResourcePath = types.StringValue(*res.GetAppEntitlementResponse.AppEntitlementView.AppResourcePath)
-	} else {
-		data.AppResourcePath = types.StringNull()
-	}
-	if res.GetAppEntitlementResponse.AppEntitlementView.AppResourceTypePath != nil {
-		data.AppResourceTypePath = types.StringValue(*res.GetAppEntitlementResponse.AppEntitlementView.AppResourceTypePath)
-	} else {
-		data.AppResourceTypePath = types.StringNull()
-	}
+	data.RefreshFromUpdateResponse(res.UpdateAppEntitlementResponse.AppEntitlementView.AppEntitlement)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -386,22 +338,6 @@ func (r *AppEntitlementResource) Read(ctx context.Context, req resource.ReadRequ
 
 	data.RefreshFromGetResponse(res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)
 
-	if res.GetAppEntitlementResponse.AppEntitlementView.AppPath != nil {
-		data.AppPath = types.StringValue(*res.GetAppEntitlementResponse.AppEntitlementView.AppPath)
-	} else {
-		data.AppPath = types.StringNull()
-	}
-	if res.GetAppEntitlementResponse.AppEntitlementView.AppResourcePath != nil {
-		data.AppResourcePath = types.StringValue(*res.GetAppEntitlementResponse.AppEntitlementView.AppResourcePath)
-	} else {
-		data.AppResourcePath = types.StringNull()
-	}
-	if res.GetAppEntitlementResponse.AppEntitlementView.AppResourceTypePath != nil {
-		data.AppResourceTypePath = types.StringValue(*res.GetAppEntitlementResponse.AppEntitlementView.AppResourceTypePath)
-	} else {
-		data.AppResourceTypePath = types.StringNull()
-	}
-
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -415,11 +351,27 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 
 	var updateAppEntitlementRequest *shared.UpdateAppEntitlementRequest
 	appEntitlement := data.ToUpdateSDKType()
+
+	appID := data.AppID.ValueString()
+	id := data.ID.ValueString()
+
+	currentAppEntitlement, err := r.readAppEntitlementAndValidate(ctx, appID, id)
+	if err != nil {
+		resp.Diagnostics.AddError("failure reading app entitlement", err.Error())
+		return
+	}
+
+	// If no value was specified for the ProvisionPolicy, use the current value.
+	fmt.Printf("*** currentAppEntitlement.ProvisionPolicy: %+v\n", currentAppEntitlement.ProvisionPolicy)
+	fmt.Printf("*** appEntitlement.ProvisionPolicy: %+v\n", appEntitlement.ProvisionPolicy)
+	if appEntitlement.ProvisionPolicy == nil {
+		appEntitlement.ProvisionPolicy = currentAppEntitlement.ProvisionPolicy
+	}
+
 	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
 		AppEntitlement: appEntitlement,
 	}
-	appID := data.AppID.ValueString()
-	id := data.ID.ValueString()
+
 	request := operations.C1APIAppV1AppEntitlementsUpdateRequest{
 		UpdateAppEntitlementRequest: updateAppEntitlementRequest,
 		AppID:                       appID,
@@ -443,21 +395,6 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 	data.RefreshFromUpdateResponse(res.UpdateAppEntitlementResponse.AppEntitlementView.AppEntitlement)
-	if res.UpdateAppEntitlementResponse.AppEntitlementView.AppPath != nil {
-		data.AppPath = types.StringValue(*res.UpdateAppEntitlementResponse.AppEntitlementView.AppPath)
-	} else {
-		data.AppPath = types.StringNull()
-	}
-	if res.UpdateAppEntitlementResponse.AppEntitlementView.AppResourcePath != nil {
-		data.AppResourcePath = types.StringValue(*res.UpdateAppEntitlementResponse.AppEntitlementView.AppResourcePath)
-	} else {
-		data.AppResourcePath = types.StringNull()
-	}
-	if res.UpdateAppEntitlementResponse.AppEntitlementView.AppResourceTypePath != nil {
-		data.AppResourceTypePath = types.StringValue(*res.UpdateAppEntitlementResponse.AppEntitlementView.AppResourceTypePath)
-	} else {
-		data.AppResourceTypePath = types.StringNull()
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -486,4 +423,30 @@ func (r *AppEntitlementResource) Delete(ctx context.Context, req resource.Delete
 
 func (r *AppEntitlementResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource app_entitlement.")
+}
+
+func (r *AppEntitlementResource) readAppEntitlementAndValidate(ctx context.Context, appID string, id string) (*shared.AppEntitlement, error) {
+	request := operations.C1APIAppV1AppEntitlementsGetRequest{
+		AppID: appID,
+		ID:    id,
+	}
+	res, err := r.client.AppEntitlements.Get(ctx, request)
+	if err != nil {
+		return nil, fmt.Errorf("failure to invoke API")
+	}
+	if res == nil {
+		return nil, fmt.Errorf("unexpected response from API")
+	}
+	if res.StatusCode != 200 {
+		return nil, fmt.Errorf("unexpected response from API. Got an unexpected response code %v", res.StatusCode)
+	}
+
+	if res.GetAppEntitlementResponse.AppEntitlementView == nil {
+		return nil, fmt.Errorf("unexpected response from API. No response body")
+	}
+
+	if res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement == nil {
+		return nil, fmt.Errorf("unexpected response from API. No response body")
+	}
+	return res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement, nil
 }

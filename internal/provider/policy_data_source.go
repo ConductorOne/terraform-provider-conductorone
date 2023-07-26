@@ -430,8 +430,13 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		return
 	}
 
-	if len(res.ListPolicyResponse.List) != 1 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Expected 1 policy, got %d", len(res.ListPolicyResponse.List)), debugResponse(res.RawResponse))
+	if len(res.ListPolicyResponse.List) == 0 {
+		resp.Diagnostics.AddError("unexpected response from API. Policy was not found", debugResponse(res.RawResponse))
+		return
+	}
+
+	if len(res.ListPolicyResponse.List) > 2 {
+		resp.Diagnostics.AddError("unexpected response from API. More than 1 policy was found", debugResponse(res.RawResponse))
 		return
 	}
 

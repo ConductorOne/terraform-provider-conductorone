@@ -240,8 +240,13 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		return
 	}
 
-	if len(res.SearchAppsResponse.List) != 1 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Expected 1 app, got %d", len(res.SearchAppsResponse.List)), debugResponse(res.RawResponse))
+	if len(res.SearchAppsResponse.List) == 0 {
+		resp.Diagnostics.AddError("unexpected response from API. App was not found", debugResponse(res.RawResponse))
+		return
+	}
+
+	if len(res.SearchAppsResponse.List) > 2 {
+		resp.Diagnostics.AddError("unexpected response from API. More than 1 app was found", debugResponse(res.RawResponse))
 		return
 	}
 

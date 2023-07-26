@@ -32,13 +32,9 @@ type AppEntitlementDataSource struct {
 // CatalogResourceModel describes the resource data model.
 type AppEntitlementDataSourceModel struct {
 	Alias                       types.String                 `tfsdk:"alias"`
-	AppEntitlementExpandMask    *AppEntitlementExpandMask    `tfsdk:"app_entitlement_expand_mask"`
 	AppID                       types.String                 `tfsdk:"app_id"`
-	AppPath                     types.String                 `tfsdk:"app_path"`
 	AppResourceID               types.String                 `tfsdk:"app_resource_id"`
-	AppResourcePath             types.String                 `tfsdk:"app_resource_path"`
 	AppResourceTypeID           types.String                 `tfsdk:"app_resource_type_id"`
-	AppResourceTypePath         types.String                 `tfsdk:"app_resource_type_path"`
 	CertifyPolicyID             types.String                 `tfsdk:"certify_policy_id"`
 	ComplianceFrameworkValueIds []types.String               `tfsdk:"compliance_framework_value_ids"`
 	CreatedAt                   types.String                 `tfsdk:"created_at"`
@@ -49,14 +45,12 @@ type AppEntitlementDataSourceModel struct {
 	DurationUnset               *AppEntitlementDurationUnset `tfsdk:"duration_unset"`
 	EmergencyGrantEnabled       types.Bool                   `tfsdk:"emergency_grant_enabled"`
 	EmergencyGrantPolicyID      types.String                 `tfsdk:"emergency_grant_policy_id"`
-	GrantCount                  types.String                 `tfsdk:"grant_count"`
 	GrantPolicyID               types.String                 `tfsdk:"grant_policy_id"`
 	ID                          types.String                 `tfsdk:"id"`
 	ProvisionPolicy             *ProvisionPolicy             `tfsdk:"provision_policy"`
 	RevokePolicyID              types.String                 `tfsdk:"revoke_policy_id"`
 	RiskLevelValueID            types.String                 `tfsdk:"risk_level_value_id"`
 	Slug                        types.String                 `tfsdk:"slug"`
-	SystemBuiltin               types.Bool                   `tfsdk:"system_builtin"`
 	UpdatedAt                   types.String                 `tfsdk:"updated_at"`
 }
 
@@ -74,41 +68,18 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				Computed:    true,
 				Description: `The alias field.`,
 			},
-			"app_entitlement_expand_mask": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"paths": schema.ListAttribute{
-						ElementType: types.StringType,
-						Computed:    true,
-						Description: `The paths field.`,
-					},
-				},
-				Description: `The AppEntitlementExpandMask message.`,
-			},
 			"app_id": schema.StringAttribute{
 				Optional:    true,
 				Computed:    true,
 				Description: `The appId field.`,
 			},
-			"app_path": schema.StringAttribute{
-				Computed:    true,
-				Description: `The appPath field.`,
-			},
 			"app_resource_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The appResourceId field.`,
 			},
-			"app_resource_path": schema.StringAttribute{
-				Computed:    true,
-				Description: `The appResourcePath field.`,
-			},
 			"app_resource_type_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The appResourceTypeId field.`,
-			},
-			"app_resource_type_path": schema.StringAttribute{
-				Computed:    true,
-				Description: `The appResourceTypePath field.`,
 			},
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
@@ -153,10 +124,6 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"emergency_grant_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The emergencyGrantPolicyId field.`,
-			},
-			"grant_count": schema.StringAttribute{
-				Computed:    true,
-				Description: `The grantCount field.`,
 			},
 			"grant_policy_id": schema.StringAttribute{
 				Computed:    true,
@@ -224,10 +191,6 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"slug": schema.StringAttribute{
 				Computed:    true,
 				Description: `The slug field.`,
-			},
-			"system_builtin": schema.BoolAttribute{
-				Computed:    true,
-				Description: `The systemBuiltin field.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -338,8 +301,13 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 		return
 	}
 
-	if len(res.AppEntitlementSearchServiceSearchResponse.List) != 1 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Expected 1 app entitlement, got %d", len(res.AppEntitlementSearchServiceSearchResponse.List)), debugResponse(res.RawResponse))
+	if len(res.AppEntitlementSearchServiceSearchResponse.List) == 0 {
+		resp.Diagnostics.AddError("unexpected response from API. App entitlement was not found", debugResponse(res.RawResponse))
+		return
+	}
+
+	if len(res.AppEntitlementSearchServiceSearchResponse.List) > 2 {
+		resp.Diagnostics.AddError("unexpected response from API. More than 1 app entitlement was found", debugResponse(res.RawResponse))
 		return
 	}
 
