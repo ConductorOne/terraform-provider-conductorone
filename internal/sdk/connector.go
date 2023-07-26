@@ -4,13 +4,13 @@ package sdk
 
 import (
 	"bytes"
+	"conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk/pkg/utils"
 	"context"
 	"fmt"
 	"io"
 	"net/http"
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/sdk/pkg/utils"
 )
 
 type connector struct {
