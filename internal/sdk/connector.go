@@ -23,7 +23,73 @@ func newConnector(sdkConfig sdkConfiguration) *connector {
 	}
 }
 
-// CreateDelegated - Invokes the c1.api.app.v1.ConnectorService.CreateDelegated method.
+// Create - Create
+//
+//	Create a configured connector.
+func (s *connector) Create(ctx context.Context, request operations.C1APIAppV1ConnectorServiceCreateRequest) (*operations.C1APIAppV1ConnectorServiceCreateResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/create", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "ConnectorServiceCreateRequest", "json")
+	if err != nil {
+		return nil, fmt.Errorf("error serializing request body: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+
+	req.Header.Set("Content-Type", reqContentType)
+
+	client := s.sdkConfiguration.SecurityClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.C1APIAppV1ConnectorServiceCreateResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.ConnectorServiceCreateResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.ConnectorServiceCreateResponse = out
+		}
+	}
+
+	return res, nil
+}
+
+// CreateDelegated - Create Delegated
+//
+//	Create a connector that is pending a connector config.
 func (s *connector) CreateDelegated(ctx context.Context, request operations.C1APIAppV1ConnectorServiceCreateDelegatedRequest) (*operations.C1APIAppV1ConnectorServiceCreateDelegatedResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors", request, nil)
@@ -45,7 +111,7 @@ func (s *connector) CreateDelegated(ctx context.Context, request operations.C1AP
 
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := s.sdkConfiguration.DefaultClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -85,7 +151,9 @@ func (s *connector) CreateDelegated(ctx context.Context, request operations.C1AP
 	return res, nil
 }
 
-// Delete - Invokes the c1.api.app.v1.ConnectorService.Delete method.
+// Delete - Delete
+//
+//	Delete a connector.
 func (s *connector) Delete(ctx context.Context, request operations.C1APIAppV1ConnectorServiceDeleteRequest) (*operations.C1APIAppV1ConnectorServiceDeleteResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{id}", request, nil)
@@ -107,7 +175,7 @@ func (s *connector) Delete(ctx context.Context, request operations.C1APIAppV1Con
 
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := s.sdkConfiguration.DefaultClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -147,7 +215,9 @@ func (s *connector) Delete(ctx context.Context, request operations.C1APIAppV1Con
 	return res, nil
 }
 
-// Get - Invokes the c1.api.app.v1.ConnectorService.Get method.
+// Get - Get
+//
+//	Get a connector.
 func (s *connector) Get(ctx context.Context, request operations.C1APIAppV1ConnectorServiceGetRequest) (*operations.C1APIAppV1ConnectorServiceGetResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{id}", request, nil)
@@ -162,7 +232,7 @@ func (s *connector) Get(ctx context.Context, request operations.C1APIAppV1Connec
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
 
-	client := s.sdkConfiguration.DefaultClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -202,7 +272,9 @@ func (s *connector) Get(ctx context.Context, request operations.C1APIAppV1Connec
 	return res, nil
 }
 
-// GetCredentials - Invokes the c1.api.app.v1.ConnectorService.GetCredentials method.
+// GetCredentials - Get Credentials
+//
+//	Get credentials for a connector.
 func (s *connector) GetCredentials(ctx context.Context, request operations.C1APIAppV1ConnectorServiceGetCredentialsRequest) (*operations.C1APIAppV1ConnectorServiceGetCredentialsResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{connector_id}/credentials/{id}", request, nil)
@@ -217,7 +289,7 @@ func (s *connector) GetCredentials(ctx context.Context, request operations.C1API
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
 
-	client := s.sdkConfiguration.DefaultClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -257,7 +329,9 @@ func (s *connector) GetCredentials(ctx context.Context, request operations.C1API
 	return res, nil
 }
 
-// List - Invokes the c1.api.app.v1.ConnectorService.List method.
+// List - List
+//
+//	List connectors for an app.
 func (s *connector) List(ctx context.Context, request operations.C1APIAppV1ConnectorServiceListRequest) (*operations.C1APIAppV1ConnectorServiceListResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors", request, nil)
@@ -272,7 +346,11 @@ func (s *connector) List(ctx context.Context, request operations.C1APIAppV1Conne
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
 
-	client := s.sdkConfiguration.DefaultClient
+	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+		return nil, fmt.Errorf("error populating query params: %w", err)
+	}
+
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -312,7 +390,9 @@ func (s *connector) List(ctx context.Context, request operations.C1APIAppV1Conne
 	return res, nil
 }
 
-// RevokeCredential - Invokes the c1.api.app.v1.ConnectorService.RevokeCredential method.
+// RevokeCredential - Revoke Credential
+//
+//	Revoke credentials for a connector.
 func (s *connector) RevokeCredential(ctx context.Context, request operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest) (*operations.C1APIAppV1ConnectorServiceRevokeCredentialResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{connector_id}/credentials/{id}", request, nil)
@@ -334,7 +414,7 @@ func (s *connector) RevokeCredential(ctx context.Context, request operations.C1A
 
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := s.sdkConfiguration.DefaultClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -374,7 +454,9 @@ func (s *connector) RevokeCredential(ctx context.Context, request operations.C1A
 	return res, nil
 }
 
-// RotateCredential - Invokes the c1.api.app.v1.ConnectorService.RotateCredential method.
+// RotateCredential - Rotate Credential
+//
+//	Rotate credentials for a connector.
 func (s *connector) RotateCredential(ctx context.Context, request operations.C1APIAppV1ConnectorServiceRotateCredentialRequest) (*operations.C1APIAppV1ConnectorServiceRotateCredentialResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{connector_id}/credentials", request, nil)
@@ -396,7 +478,7 @@ func (s *connector) RotateCredential(ctx context.Context, request operations.C1A
 
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := s.sdkConfiguration.DefaultClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -436,7 +518,9 @@ func (s *connector) RotateCredential(ctx context.Context, request operations.C1A
 	return res, nil
 }
 
-// Update - Invokes the c1.api.app.v1.ConnectorService.Update method.
+// Update - Update
+//
+//	Update a connector.
 func (s *connector) Update(ctx context.Context, request operations.C1APIAppV1ConnectorServiceUpdateRequest) (*operations.C1APIAppV1ConnectorServiceUpdateResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/connectors/{id}", request, nil)
@@ -444,7 +528,7 @@ func (s *connector) Update(ctx context.Context, request operations.C1APIAppV1Con
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "ConnectorServiceUpdateRequest", "json")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "ConnectorServiceUpdateRequestInput", "json")
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
@@ -458,7 +542,7 @@ func (s *connector) Update(ctx context.Context, request operations.C1APIAppV1Con
 
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := s.sdkConfiguration.DefaultClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -498,7 +582,9 @@ func (s *connector) Update(ctx context.Context, request operations.C1APIAppV1Con
 	return res, nil
 }
 
-// UpdateDelegated - Invokes the c1.api.app.v1.ConnectorService.UpdateDelegated method.
+// UpdateDelegated - Update Delegated
+//
+//	Update a delegated connector.
 func (s *connector) UpdateDelegated(ctx context.Context, request operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest) (*operations.C1APIAppV1ConnectorServiceUpdateDelegatedResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{connector_app_id}/connectors/{connector_id}/delegated", request, nil)
@@ -506,7 +592,7 @@ func (s *connector) UpdateDelegated(ctx context.Context, request operations.C1AP
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "ConnectorServiceUpdateDelegatedRequest", "json")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "ConnectorServiceUpdateDelegatedRequestInput", "json")
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
@@ -520,7 +606,7 @@ func (s *connector) UpdateDelegated(ctx context.Context, request operations.C1AP
 
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := s.sdkConfiguration.DefaultClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {

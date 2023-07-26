@@ -7,12 +7,12 @@ import (
 	"net/http"
 )
 
-type C1APIAppV1ConnectorServiceCreateDelegatedRequest struct {
-	ConnectorServiceCreateDelegatedRequest *shared.ConnectorServiceCreateDelegatedRequest `request:"mediaType=application/json"`
-	AppID                                  string                                         `pathParam:"style=simple,explode=false,name=app_id"`
+type C1APIAppV1ConnectorServiceCreateRequest struct {
+	ConnectorServiceCreateRequest *shared.ConnectorServiceCreateRequest `request:"mediaType=application/json"`
+	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
 }
 
-type C1APIAppV1ConnectorServiceCreateDelegatedResponse struct {
+type C1APIAppV1ConnectorServiceCreateResponse struct {
 	//  The ConnectorServiceCreateResponse is the response returned from creating a connector.
 	//
 	ConnectorServiceCreateResponse *shared.ConnectorServiceCreateResponse

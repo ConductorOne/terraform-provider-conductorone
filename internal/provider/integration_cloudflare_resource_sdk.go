@@ -2,6 +2,8 @@
 package provider
 
 import (
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -12,7 +14,7 @@ import (
 
 const cloudflareCatalogID = "26X6eTSxpIgy0q1Ph1tJa0Ox3w4"
 
-func (r *IntegrationCloudflareResourceModel) ToCreateSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationCloudflareResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(cloudflareCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
@@ -24,6 +26,31 @@ func (r *IntegrationCloudflareResourceModel) ToCreateSDKType() *shared.Connector
 		UserIds:     userIds,
 	}
 	return &out
+}
+
+func (r *IntegrationCloudflareResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
+	catalogID := sdk.String(cloudflareCatalogID)
+	userIds := make([]string, 0)
+	for _, userIdsItem := range r.UserIds {
+		userIds = append(userIds, userIdsItem.ValueString())
+	}
+
+	configOut, configSet := r.getConfig()
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
+
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
+	return &out, nil
 }
 
 func (r *IntegrationCloudflareResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
@@ -82,13 +109,30 @@ func (r *IntegrationCloudflareResourceModel) populateConfig() map[string]*string
 	return configValues
 }
 
+func (r *IntegrationCloudflareResourceModel) getConfig() (map[string]string, bool) {
+	configValues := r.populateConfig()
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
+		configOut[key] = ""
+		if configValue != nil {
+			configOut[key] = *configValue
+			configSet = true
+		}
+	}
+	if !configSet {
+		configOut = nil
+	}
+	return configOut, configSet
+}
+
 func (r *IntegrationCloudflareResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	out := r.ToCreateSDKType()
+	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
 func (r *IntegrationCloudflareResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	out := r.ToCreateSDKType()
+	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
