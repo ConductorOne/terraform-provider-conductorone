@@ -253,7 +253,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 										},
 										MarkdownDescription: `The Approval message.` + "\n" +
 											`` + "\n" +
-											`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+											`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 											`  - users` + "\n" +
 											`  - manager` + "\n" +
 											`  - appOwners` + "\n" +
@@ -315,7 +315,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												},
 												MarkdownDescription: `The ProvisionPolicy message.` + "\n" +
 													`` + "\n" +
-													`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+													`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 													`  - connector` + "\n" +
 													`  - manual` + "\n" +
 													`  - delegated` + "\n" +

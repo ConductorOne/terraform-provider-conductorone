@@ -174,7 +174,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				},
 				MarkdownDescription: `The ProvisionPolicy message.` + "\n" +
 					`` + "\n" +
-					`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+					`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 					`  - connector` + "\n" +
 					`  - manual` + "\n" +
 					`  - delegated` + "\n" +

@@ -66,7 +66,7 @@ Read-Only:
 
 - `approval` (Attributes) The Approval message.
 
-This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+This message contains a. Only a single field of the following list may be set at a time:
   - users
   - manager
   - appOwners
@@ -160,7 +160,7 @@ Read-Only:
 - `assigned` (Boolean) The assigned field.
 - `provision_policy` (Attributes) The ProvisionPolicy message.
 
-This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+This message contains a oneof. Only a single field of the following list may be set at a time:
   - connector
   - manual
   - delegated (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy))
