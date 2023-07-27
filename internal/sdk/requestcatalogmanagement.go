@@ -150,9 +150,7 @@ func (s *requestCatalogManagement) AddAppEntitlements(ctx context.Context, reque
 
 // Create - Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.Create method.
 func (s *requestCatalogManagement) Create(ctx context.Context, request shared.RequestCatalogManagementServiceCreateRequest) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateResponse, error) {
-	fmt.Println("before panic")
 	s.sdkConfiguration.GetServerDetails()
-	fmt.Println("after panic")
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url := strings.TrimSuffix(baseURL, "/") + "/api/v1/catalogs"
 

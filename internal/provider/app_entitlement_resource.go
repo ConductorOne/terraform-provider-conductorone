@@ -10,6 +10,7 @@ import (
 	"conductorone/internal/sdk/pkg/models/operations"
 	"conductorone/internal/sdk/pkg/models/shared"
 	"conductorone/internal/validators"
+
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -183,7 +184,7 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				},
 				MarkdownDescription: `The ProvisionPolicy message.` + "\n" +
 					`` + "\n" +
-					`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+					`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 					`  - connector` + "\n" +
 					`  - manual` + "\n" +
 					`  - delegated` + "\n" +
@@ -362,8 +363,6 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 	}
 
 	// If no value was specified for the ProvisionPolicy, use the current value.
-	fmt.Printf("*** currentAppEntitlement.ProvisionPolicy: %+v\n", currentAppEntitlement.ProvisionPolicy)
-	fmt.Printf("*** appEntitlement.ProvisionPolicy: %+v\n", appEntitlement.ProvisionPolicy)
 	if appEntitlement.ProvisionPolicy == nil {
 		appEntitlement.ProvisionPolicy = currentAppEntitlement.ProvisionPolicy
 	}
