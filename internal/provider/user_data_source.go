@@ -430,8 +430,13 @@ func (r *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	if res.SearchUsersResponse.List[0].User == nil {
-		resp.Diagnostics.AddError("unexpected response from API. Returned user is nil", debugResponse(res.RawResponse))
+	if len(res.SearchUsersResponse.List) == 0 {
+		resp.Diagnostics.AddError("unexpected response from API. User was not found", debugResponse(res.RawResponse))
+		return
+	}
+
+	if len(res.SearchUsersResponse.List) > 1 {
+		resp.Diagnostics.AddError("unexpected response from API. More than 1 User was found", debugResponse(res.RawResponse))
 		return
 	}
 

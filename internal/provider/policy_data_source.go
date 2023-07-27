@@ -223,7 +223,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 										},
 										MarkdownDescription: `The Approval message.` + "\n" +
 											`` + "\n" +
-											`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+											`This message contains a. Only a single field of the following list may be set at a time:` + "\n" +
 											`  - users` + "\n" +
 											`  - manager` + "\n" +
 											`  - appOwners` + "\n" +
@@ -279,7 +279,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 												},
 												MarkdownDescription: `The ProvisionPolicy message.` + "\n" +
 													`` + "\n" +
-													`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+													`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 													`  - connector` + "\n" +
 													`  - manual` + "\n" +
 													`  - delegated` + "\n" +
@@ -430,8 +430,13 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		return
 	}
 
-	if len(res.ListPolicyResponse.List) != 1 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Expected 1 policy, got %d", len(res.ListPolicyResponse.List)), debugResponse(res.RawResponse))
+	if len(res.ListPolicyResponse.List) == 0 {
+		resp.Diagnostics.AddError("unexpected response from API. Policy was not found", debugResponse(res.RawResponse))
+		return
+	}
+
+	if len(res.ListPolicyResponse.List) > 2 {
+		resp.Diagnostics.AddError("unexpected response from API. More than 1 policy was found", debugResponse(res.RawResponse))
 		return
 	}
 

@@ -4,7 +4,6 @@ package shared
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -56,12 +55,6 @@ func (c ConnectorConfig) MarshalJSON() ([]byte, error) {
 	if err := json.Unmarshal([]byte(bs), &out); err != nil {
 		return nil, err
 	}
-
-	o, err := json.Marshal(out)
-	if err != nil {
-		return nil, err
-	}
-	fmt.Println("********* CONFIG*******", string(o))
 
 	return json.Marshal(out)
 }
