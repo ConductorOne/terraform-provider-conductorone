@@ -9,7 +9,7 @@ description: |-
 
 App DataSource
 
-The User datasource allows you to retrieve a User by `email` or `id` in ConductorOne.
+The User datasource allows you to retrieve a User by `email` (case sensitive), or `id` in ConductorOne.
 
 ## Example Usage
 

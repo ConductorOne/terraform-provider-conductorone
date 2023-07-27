@@ -46,12 +46,14 @@ resource "conductorone_app_entitlement" "okta_test_admin" {
 - `certify_policy_id` (String) The certifyPolicyId field.
 - `description` (String) The description field.
 - `display_name` (String) The displayName field.
+- `duration_grant` (String)
+- `duration_unset` (Attributes) (see [below for nested schema](#nestedatt--duration_unset))
 - `emergency_grant_enabled` (Boolean) The emergencyGrantEnabled field.
 - `emergency_grant_policy_id` (String) The emergencyGrantPolicyId field.
 - `grant_policy_id` (String) The grantPolicyId field.
 - `provision_policy` (Attributes) The ProvisionPolicy message.
 
-This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+This message contains a oneof. Only a single field of the following list may be set at a time:
   - connector
   - manual
   - delegated (see [below for nested schema](#nestedatt--provision_policy))
@@ -59,22 +61,18 @@ This message contains a oneof named typ. Only a single field of the following li
 
 ### Read-Only
 
-- `app_path` (String) The appPath field.
 - `app_resource_id` (String) The appResourceId field.
-- `app_resource_path` (String) The appResourcePath field.
 - `app_resource_type_id` (String) The appResourceTypeId field.
-- `app_resource_type_path` (String) The appResourceTypePath field.
 - `compliance_framework_value_ids` (List of String) The complianceFrameworkValueIds field.
 - `created_at` (String)
 - `deleted_at` (String)
-- `duration_grant` (String)
-- `duration_unset` (Attributes) (see [below for nested schema](#nestedatt--duration_unset))
-- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
-- `grant_count` (String) The grantCount field.
 - `risk_level_value_id` (String) The riskLevelValueId field.
 - `slug` (String) The slug field.
-- `system_builtin` (Boolean) The systemBuiltin field.
 - `updated_at` (String)
+
+<a id="nestedatt--duration_unset"></a>
+### Nested Schema for `duration_unset`
+
 
 <a id="nestedatt--provision_policy"></a>
 ### Nested Schema for `provision_policy`
@@ -105,16 +103,3 @@ Optional:
 
 - `instructions` (String) The instructions field.
 - `user_ids` (List of String) The userIds field.
-
-
-
-<a id="nestedatt--duration_unset"></a>
-### Nested Schema for `duration_unset`
-
-
-<a id="nestedatt--expanded"></a>
-### Nested Schema for `expanded`
-
-Read-Only:
-
-- `at_type` (String) The type of the serialized message.

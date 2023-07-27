@@ -9,7 +9,7 @@ description: |-
 
 AppEntitlement Datasource
 
-The App Entitlement datasource allows you to retrieve an App Entitlement by `alias` or by `id` and `app_id` pair in ConductorOne.
+The App Entitlement datasource allows you to retrieve an App Entitlement by `alias` (case sensitive), or by an `id` and `app_id` pair in ConductorOne.
 
 ## Example Usage
 
@@ -39,12 +39,8 @@ data "conductorone_app_entitlement" "okta_administrators" {
 
 ### Read-Only
 
-- `app_entitlement_expand_mask` (Attributes) The AppEntitlementExpandMask message. (see [below for nested schema](#nestedatt--app_entitlement_expand_mask))
-- `app_path` (String) The appPath field.
 - `app_resource_id` (String) The appResourceId field.
-- `app_resource_path` (String) The appResourcePath field.
 - `app_resource_type_id` (String) The appResourceTypeId field.
-- `app_resource_type_path` (String) The appResourceTypePath field.
 - `certify_policy_id` (String) The certifyPolicyId field.
 - `compliance_framework_value_ids` (List of String) The complianceFrameworkValueIds field.
 - `created_at` (String)
@@ -55,7 +51,6 @@ data "conductorone_app_entitlement" "okta_administrators" {
 - `duration_unset` (Attributes) (see [below for nested schema](#nestedatt--duration_unset))
 - `emergency_grant_enabled` (Boolean) The emergencyGrantEnabled field.
 - `emergency_grant_policy_id` (String) The emergencyGrantPolicyId field.
-- `grant_count` (String) The grantCount field.
 - `grant_policy_id` (String) The grantPolicyId field.
 - `provision_policy` (Attributes) The ProvisionPolicy message.
 
@@ -66,16 +61,7 @@ This message contains a oneof named typ. Only a single field of the following li
 - `revoke_policy_id` (String) The revokePolicyId field.
 - `risk_level_value_id` (String) The riskLevelValueId field.
 - `slug` (String) The slug field.
-- `system_builtin` (Boolean) The systemBuiltin field.
 - `updated_at` (String)
-
-<a id="nestedatt--app_entitlement_expand_mask"></a>
-### Nested Schema for `app_entitlement_expand_mask`
-
-Read-Only:
-
-- `paths` (List of String) The paths field.
-
 
 <a id="nestedatt--duration_unset"></a>
 ### Nested Schema for `duration_unset`
