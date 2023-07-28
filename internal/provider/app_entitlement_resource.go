@@ -197,10 +197,12 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"risk_level_value_id": schema.StringAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The riskLevelValueId field.`,
 			},
 			"slug": schema.StringAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The slug field.`,
 			},
 			"updated_at": schema.StringAttribute{

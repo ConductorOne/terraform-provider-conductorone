@@ -1,0 +1,19 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This resource allows you to create a new risk level attribute.
+When creating a risk level you must provide a value. The value property is the name of the risk level. This is the only setable property.
+
+## Example Usage
+
+{{ tffile "examples/resources/conductorone_risk_level/risk_level.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

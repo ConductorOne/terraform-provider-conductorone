@@ -58,6 +58,8 @@ This message contains a oneof. Only a single field of the following list may be 
   - manual
   - delegated (see [below for nested schema](#nestedatt--provision_policy))
 - `revoke_policy_id` (String) The revokePolicyId field.
+- `risk_level_value_id` (String) The riskLevelValueId field.
+- `slug` (String) The slug field.
 
 ### Read-Only
 
@@ -66,8 +68,6 @@ This message contains a oneof. Only a single field of the following list may be 
 - `compliance_framework_value_ids` (List of String) The complianceFrameworkValueIds field.
 - `created_at` (String)
 - `deleted_at` (String)
-- `risk_level_value_id` (String) The riskLevelValueId field.
-- `slug` (String) The slug field.
 - `updated_at` (String)
 
 <a id="nestedatt--duration_unset"></a>
