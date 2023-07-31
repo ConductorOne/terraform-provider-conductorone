@@ -104,6 +104,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewPolicyResource,
 		NewAppResource,
 		NewAppEntitlementResource,
+		NewRiskLevelResource,
 	}
 
 	resources = append(resources, getIntegrationResources()...)
