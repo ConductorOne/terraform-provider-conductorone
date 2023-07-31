@@ -8,10 +8,10 @@ import (
 	"time"
 )
 
-const riskLevelAttributeTypeID = "26G1Et6zd5AzsSaQLkKuPvLtxOb"
+const ComplianceFrameworkAttributeTypeID = "26G1EScbYv5ua6ex0FtwVqEeDDy"
 
-func (r *RiskLevelModel) ToCreateSDKType() *shared.CreateAttributeValueRequest {
-	attributeTypeId := riskLevelAttributeTypeID
+func (r *ComplianceFrameworkModel) ToCreateSDKType() *shared.CreateAttributeValueRequest {
+	attributeTypeId := ComplianceFrameworkAttributeTypeID
 	value := new(string)
 	if !r.Value.IsUnknown() && !r.Value.IsNull() {
 		*value = r.Value.ValueString()
@@ -25,17 +25,17 @@ func (r *RiskLevelModel) ToCreateSDKType() *shared.CreateAttributeValueRequest {
 	return &out
 }
 
-func (r *RiskLevelModel) ToGetSDKType() *shared.CreateAttributeValueRequest {
+func (r *ComplianceFrameworkModel) ToGetSDKType() *shared.CreateAttributeValueRequest {
 	out := r.ToCreateSDKType()
 	return out
 }
 
-func (r *RiskLevelModel) ToDeleteSDKType() *shared.CreateAttributeValueRequest {
+func (r *ComplianceFrameworkModel) ToDeleteSDKType() *shared.CreateAttributeValueRequest {
 	out := r.ToCreateSDKType()
 	return out
 }
 
-func (r *RiskLevelModel) RefreshFromGetResponse(resp *shared.AttributeValue) {
+func (r *ComplianceFrameworkModel) RefreshFromGetResponse(resp *shared.AttributeValue) {
 	if resp.AttributeTypeID != nil {
 		r.AttributeTypeID = types.StringValue(*resp.AttributeTypeID)
 	} else {
@@ -68,6 +68,6 @@ func (r *RiskLevelModel) RefreshFromGetResponse(resp *shared.AttributeValue) {
 	}
 }
 
-func (r *RiskLevelModel) RefreshFromCreateResponse(resp *shared.AttributeValue) {
+func (r *ComplianceFrameworkModel) RefreshFromCreateResponse(resp *shared.AttributeValue) {
 	r.RefreshFromGetResponse(resp)
 }

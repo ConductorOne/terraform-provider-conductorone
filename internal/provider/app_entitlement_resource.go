@@ -89,6 +89,7 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"compliance_framework_value_ids": schema.ListAttribute{
 				Computed:    true,
+				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The complianceFrameworkValueIds field.`,
 			},
@@ -197,10 +198,12 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"risk_level_value_id": schema.StringAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The riskLevelValueId field.`,
 			},
 			"slug": schema.StringAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The slug field.`,
 			},
 			"updated_at": schema.StringAttribute{
