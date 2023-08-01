@@ -9,7 +9,7 @@ description: |-
 
 Policy DataSource
 
-The Policy datasource allows you to retrieve a Policy instance by `display_name` (case sensitive), or `id` in ConductorOne.
+The Policy datasource allows you to retrieve a Policy instance by `display_name` (case insensitive), or `id` in ConductorOne.
 
 ## Example Usage
 
