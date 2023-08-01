@@ -9,7 +9,7 @@ description: |-
 
 App DataSource
 
-The App datasource allows you to retrieve an App instance by `display_name` (case sensitive), or `id` in ConductorOne.
+The App datasource allows you to retrieve an App instance by `display_name` (case insensitive), or `id` in ConductorOne.
 
 ## Example Usage
 
