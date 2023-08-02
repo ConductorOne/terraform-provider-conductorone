@@ -11,4 +11,7 @@ resource "conductorone_app_entitlement" "okta_test_admin" {
     }
   }
   risk_level_value_id = conductorone_risk_level.test_risk_level.id
+  compliance_framework_value_ids = [
+    data.conductorone_compliance_framework.soc2.id
+  ]
 }
