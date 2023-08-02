@@ -9,8 +9,8 @@ description: |-
 
 Compliance Framework Resource
 
-This resource allows you to create a new framework compliance attribute.
-When creating a franework compliance attribute you must provide a value. The value property is the name of the framework compliance attribute. This is the only property that can be set.
+This resource allows you to create a new Compliance Framework attribute.
+When creating a Compliance Framework attribute you must provide a value. The value property is the name of the framework compliance attribute. This is the only property that can be set.
 
 ## Example Usage
 

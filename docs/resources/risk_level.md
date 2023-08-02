@@ -9,8 +9,8 @@ description: |-
 
 Risk Level Resource
 
-This resource allows you to create a new risk level attribute.
-When creating a risk level attribute you must provide a value. The value property is the name of the risk level attribute. This is the only property that can be set.
+This resource allows you to create a new Risk Level attribute.
+When creating a Risk Level attribute you must provide a value. The value property is the name of the Risk Level attribute. This is the only property that can be set.
 
 ## Example Usage
 
