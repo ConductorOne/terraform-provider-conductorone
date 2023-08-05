@@ -1,4 +1,4 @@
-module conductorone
+module github.com/rk-sec/terraform-provider-conductorone
 
 go 1.20
 
