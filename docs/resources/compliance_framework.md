@@ -25,7 +25,7 @@ resource "conductorone_compliance_framework" "example_compliance_framework" {
 
 ### Optional
 
-- `value` (String) The value field.
+- `value` (String) The value field is the value of the attribute. In this case it is the name of the Compliance Framework (e.g. SOC2, HIPAA, etc.).
 
 ### Read-Only
 

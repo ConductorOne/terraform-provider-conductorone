@@ -25,7 +25,7 @@ resource "conductorone_risk_level" "test_risk_level" {
 
 ### Optional
 
-- `value` (String) The value field.
+- `value` (String) The value field is the value of the attribute. In this case it is the name of the Risk Level (e.g. High, Low, etc.).
 
 ### Read-Only
 

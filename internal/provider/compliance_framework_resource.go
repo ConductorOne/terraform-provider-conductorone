@@ -87,7 +87,7 @@ func (r *ComplianceFramework) Schema(ctx context.Context, req resource.SchemaReq
 					stringplanmodifier.RequiresReplace(),
 				},
 				Optional:    true,
-				Description: `The value field.`,
+				Description: `The value field is the value of the attribute. In this case it is the name of the Compliance Framework (e.g. SOC2, HIPAA, etc.).`,
 			},
 		},
 	}

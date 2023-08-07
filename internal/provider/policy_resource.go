@@ -251,7 +251,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Description: `The UserApproval message.`,
 											},
 										},
-										MarkdownDescription: `The Approval message.` + "\n" +
+										MarkdownDescription: `The Approval field is used to define who should perform the review.` + "\n" +
 											`` + "\n" +
 											`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 											`  - users` + "\n" +

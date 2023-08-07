@@ -87,7 +87,7 @@ func (r *RiskLevel) Schema(ctx context.Context, req resource.SchemaRequest, resp
 					stringplanmodifier.RequiresReplace(),
 				},
 				Optional:    true,
-				Description: `The value field.`,
+				Description: `The value field is the value of the attribute. In this case it is the name of the Risk Level (e.g. High, Low, etc.).`,
 			},
 		},
 	}

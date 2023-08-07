@@ -41,25 +41,26 @@ data "conductorone_app_entitlement" "okta_administrators" {
 
 - `app_resource_id` (String) The appResourceId field.
 - `app_resource_type_id` (String) The appResourceTypeId field.
-- `certify_policy_id` (String) The certifyPolicyId field.
-- `compliance_framework_value_ids` (List of String) The complianceFrameworkValueIds field.
+- `certify_policy_id` (String) The certifyPolicyId is the ID of the policy that will be used for access review certify tasks.
+- `compliance_framework_value_ids` (List of String) ComplianceFrameworkValueIds is a list of ComplianceFramework attributes that are set on the app entitlement.
 - `created_at` (String)
 - `deleted_at` (String)
 - `description` (String) The description field.
 - `display_name` (String) The displayName field.
 - `duration_grant` (String)
 - `duration_unset` (Attributes) (see [below for nested schema](#nestedatt--duration_unset))
-- `emergency_grant_enabled` (Boolean) The emergencyGrantEnabled field.
-- `emergency_grant_policy_id` (String) The emergencyGrantPolicyId field.
-- `grant_policy_id` (String) The grantPolicyId field.
-- `provision_policy` (Attributes) The ProvisionPolicy message.
+- `emergency_grant_enabled` (Boolean) The emergencyGrantEnabled field determines whether or not this entitlement has an emergency grant policy.
+- `emergency_grant_policy_id` (String) The emergencyGrantPolicyId field is the ID of the grant policy that will be used for emergency grant tasks. 
+				To set this field, emergencyGrantEnabled must be set to true.
+- `grant_policy_id` (String) The grantPolicyId field is the policy that will be used for access request grant tasks.
+- `provision_policy` (Attributes) The ProvisionPolicy message is the Provision strategy that will be used for granting access for this entitlement.
 
 This message contains a oneof. Only a single field of the following list may be set at a time:
   - connector
   - manual
   - delegated (see [below for nested schema](#nestedatt--provision_policy))
-- `revoke_policy_id` (String) The revokePolicyId field.
-- `risk_level_value_id` (String) The riskLevelValueId field.
+- `revoke_policy_id` (String) The revokePolicyId field is the ID of the policy that will be used for revoke access tasks.
+- `risk_level_value_id` (String) The riskLevelValueId field is the ID of the risk level attribute value that will be set on the app entitlement.
 - `slug` (String) The slug field.
 - `updated_at` (String)
 
