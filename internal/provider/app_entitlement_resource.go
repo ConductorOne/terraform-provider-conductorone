@@ -386,8 +386,6 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		appEntitlement.ProvisionPolicy = currentAppEntitlement.ProvisionPolicy
 	}
 
-	fmt.Printf("*** appEntitlement *** %+v \n", appEntitlement)
-
 	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
 		AppEntitlement: appEntitlement,
 	}
