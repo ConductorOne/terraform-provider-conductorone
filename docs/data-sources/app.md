@@ -35,17 +35,17 @@ data "conductorone_app" "test_google_workspace" {
 
 - `app_account_id` (String) The appAccountId field.
 - `app_account_name` (String) The appAccountName field.
-- `certify_policy_id` (String) The certifyPolicyId field.
+- `certify_policy_id` (String) The certifyPolicyId is the ID of the policy that will be used for access review certify tasks.
 - `created_at` (String)
 - `deleted_at` (String)
 - `description` (String) The description field.
 - `field_mask` (String)
-- `grant_policy_id` (String) The grantPolicyId field.
+- `grant_policy_id` (String) The grantPolicyId field is the policy that will be used for access request grant tasks.
 - `icon_url` (String) The iconUrl field.
 - `logo_uri` (String) The logoUri field.
-- `monthly_cost_usd` (Number) The monthlyCostUsd field.
-- `owners` (List of String) The owners field.
-- `parent_app_id` (String) The parentAppId field.
-- `revoke_policy_id` (String) The revokePolicyId field.
+- `monthly_cost_usd` (Number) The monthlyCostUsd field is the monthly cost per seat for the given app.
+- `owners` (List of String) The owners field is a list of user IDs indicating the app owners.
+- `parent_app_id` (String) The parentAppId field is the ID of the parent app if one exists.
+- `revoke_policy_id` (String) The revokePolicyId is the ID of the policy that will be used for revoke access tasks.
 - `updated_at` (String)
-- `user_count` (String) The userCount field.
+- `user_count` (String) The userCount field is the number of app users that are associated with the app.

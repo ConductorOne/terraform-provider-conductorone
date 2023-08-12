@@ -35,8 +35,8 @@ resource "conductorone_catalog" "test_catalog" {
 ### Optional
 
 - `description` (String) The description field.
-- `published` (Boolean) The published field.
-- `visible_to_everyone` (Boolean) The visibleToEveryone field.
+- `published` (Boolean) The published field is used to determine if the catalog is active and visible to users.
+- `visible_to_everyone` (Boolean) The visibleToEveryone field is used to determine if this catalog should be visible to all users.
 
 ### Read-Only
 

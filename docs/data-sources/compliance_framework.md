@@ -26,7 +26,7 @@ data "conductorone_compliance_framework" "soc2" {
 ### Optional
 
 - `id` (String) The id field.
-- `value` (String) The value field.
+- `value` (String) The value field is the value of the attribute. In this case it is the name of the Compliance Framework (e.g. SOC2, HIPAA, etc.).
 
 ### Read-Only
 

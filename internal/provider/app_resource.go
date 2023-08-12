@@ -73,7 +73,7 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The certifyPolicyId field.`,
+				Description: `The certifyPolicyId is the ID of the policy that will be used for access review certify tasks.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -102,7 +102,7 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"grant_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The grantPolicyId field.`,
+				Description: `The grantPolicyId field is the policy that will be used for access request grant tasks.`,
 			},
 			"icon_url": schema.StringAttribute{
 				Computed:    true,
@@ -119,22 +119,22 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"monthly_cost_usd": schema.NumberAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The monthlyCostUsd field.`,
+				Description: `The monthlyCostUsd field is the monthly cost per seat for the given app.`,
 			},
 			"owners": schema.ListAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The owners field.`,
+				Description: `The owners field is a list of user IDs indicating the app owners.`,
 			},
 			"parent_app_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The parentAppId field.`,
+				Description: `The parentAppId field is the ID of the parent app if one exists.`,
 			},
 			"revoke_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The revokePolicyId field.`,
+				Description: `The revokePolicyId is the ID of the policy that will be used for revoke access tasks.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -144,7 +144,7 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			},
 			"user_count": schema.StringAttribute{
 				Computed:    true,
-				Description: `The userCount field.`,
+				Description: `The userCount field is the number of app users that are associated with the app.`,
 			},
 		},
 	}

@@ -83,12 +83,12 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The certifyPolicyId field.`,
+				Description: `The certifyPolicyId is the ID of the policy that will be used for access review certify tasks.`,
 			},
 			"compliance_framework_value_ids": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
-				Description: `The complianceFrameworkValueIds field.`,
+				Description: `ComplianceFrameworkValueIds is a list of ComplianceFramework attributes that are set on the app entitlement.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -119,15 +119,16 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"emergency_grant_enabled": schema.BoolAttribute{
 				Computed:    true,
-				Description: `The emergencyGrantEnabled field.`,
+				Description: `The emergencyGrantEnabled field determines whether or not this entitlement has an emergency grant policy.`,
 			},
 			"emergency_grant_policy_id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The emergencyGrantPolicyId field.`,
+				Computed: true,
+				Description: `The emergencyGrantPolicyId field is the ID of the grant policy that will be used for emergency grant tasks. 
+				To set this field, emergencyGrantEnabled must be set to true.`,
 			},
 			"grant_policy_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The grantPolicyId field.`,
+				Description: `The grantPolicyId field is the policy that will be used for access request grant tasks.`,
 			},
 			"id": schema.StringAttribute{
 				Optional:    true,
@@ -172,7 +173,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						Description: `The ManualProvision message.`,
 					},
 				},
-				MarkdownDescription: `The ProvisionPolicy message.` + "\n" +
+				MarkdownDescription: `The ProvisionPolicy message is the Provision strategy that will be used for granting access for this entitlement.` + "\n" +
 					`` + "\n" +
 					`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 					`  - connector` + "\n" +
@@ -182,11 +183,11 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"revoke_policy_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The revokePolicyId field.`,
+				Description: `The revokePolicyId field is the ID of the policy that will be used for revoke access tasks.`,
 			},
 			"risk_level_value_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The riskLevelValueId field.`,
+				Description: `The riskLevelValueId field is the ID of the risk level attribute value that will be set on the app entitlement.`,
 			},
 			"slug": schema.StringAttribute{
 				Computed:    true,

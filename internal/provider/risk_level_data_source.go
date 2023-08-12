@@ -75,7 +75,7 @@ func (r *RiskLevelDataSource) Schema(ctx context.Context, req datasource.SchemaR
 			"value": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The value field.`,
+				Description: `The value field is the value of the attribute. In this case it is the name of the Risk Level (e.g. High, Low, etc.).`,
 			},
 		},
 	}

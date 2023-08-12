@@ -269,7 +269,7 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 			"published": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The published field.`,
+				Description: `The published field is used to determine if the catalog is active and visible to users.`,
 			},
 			"request_catalog_expand_mask": schema.SingleNestedAttribute{
 				Computed: true,
@@ -291,7 +291,7 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 			"visible_to_everyone": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The visibleToEveryone field.`,
+				Description: `The visibleToEveryone field is used to determine if this catalog should be visible to all users.`,
 			},
 		},
 	}

@@ -221,9 +221,9 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 												Description: `The UserApproval message.`,
 											},
 										},
-										MarkdownDescription: `The Approval message.` + "\n" +
+										MarkdownDescription: `The Approval field is used to define who should perform the review.` + "\n" +
 											`` + "\n" +
-											`This message contains a. Only a single field of the following list may be set at a time:` + "\n" +
+											`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 											`  - users` + "\n" +
 											`  - manager` + "\n" +
 											`  - appOwners` + "\n" +

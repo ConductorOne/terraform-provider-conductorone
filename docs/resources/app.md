@@ -37,12 +37,12 @@ resource "conductorone_app" "test_new_app" {
 
 ### Optional
 
-- `certify_policy_id` (String) The certifyPolicyId field.
+- `certify_policy_id` (String) The certifyPolicyId is the ID of the policy that will be used for access review certify tasks.
 - `description` (String) The description field.
-- `grant_policy_id` (String) The grantPolicyId field.
-- `monthly_cost_usd` (Number) The monthlyCostUsd field.
-- `owners` (List of String) The owners field.
-- `revoke_policy_id` (String) The revokePolicyId field.
+- `grant_policy_id` (String) The grantPolicyId field is the policy that will be used for access request grant tasks.
+- `monthly_cost_usd` (Number) The monthlyCostUsd field is the monthly cost per seat for the given app.
+- `owners` (List of String) The owners field is a list of user IDs indicating the app owners.
+- `revoke_policy_id` (String) The revokePolicyId is the ID of the policy that will be used for revoke access tasks.
 
 ### Read-Only
 
@@ -54,6 +54,6 @@ resource "conductorone_app" "test_new_app" {
 - `icon_url` (String) The iconUrl field.
 - `id` (String) The id field.
 - `logo_uri` (String) The logoUri field.
-- `parent_app_id` (String) The parentAppId field.
+- `parent_app_id` (String) The parentAppId field is the ID of the parent app if one exists.
 - `updated_at` (String)
-- `user_count` (String) The userCount field.
+- `user_count` (String) The userCount field is the number of app users that are associated with the app.

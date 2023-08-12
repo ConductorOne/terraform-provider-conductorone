@@ -64,9 +64,9 @@ Read-Only:
 
 Read-Only:
 
-- `approval` (Attributes) The Approval message.
+- `approval` (Attributes) The Approval field is used to define who should perform the review.
 
-This message contains a. Only a single field of the following list may be set at a time:
+This message contains a oneof. Only a single field of the following list may be set at a time:
   - users
   - manager
   - appOwners

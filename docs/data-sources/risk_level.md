@@ -26,7 +26,7 @@ data "conductorone_risk_level" "high" {
 ### Optional
 
 - `id` (String) The id field.
-- `value` (String) The value field.
+- `value` (String) The value field is the value of the attribute. In this case it is the name of the Risk Level (e.g. High, Low, etc.).
 
 ### Read-Only
 
