@@ -134,10 +134,11 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					},
 				},
 				MarkdownDescription: `MaxGrantDuration is a one of.` + "\n" +
-					`` + "\n" +
+					`` +
 					`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 					`  - duration_unset` + "\n" +
 					`  - duration_grant` + "\n" +
+					"\n" +
 					``,
 			},
 			"emergency_grant_enabled": schema.BoolAttribute{
@@ -200,11 +201,12 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					},
 				},
 				MarkdownDescription: `The ProvisionPolicy message is the Provision strategy that will be used for granting access for this entitlement.` + "\n" +
-					`` + "\n" +
+					`` +
 					`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 					`  - connector` + "\n" +
 					`  - manual` + "\n" +
 					`  - delegated` + "\n" +
+					"\n" +
 					``,
 			},
 			"revoke_policy_id": schema.StringAttribute{
