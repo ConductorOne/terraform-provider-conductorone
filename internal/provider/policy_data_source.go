@@ -222,7 +222,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											},
 										},
 										MarkdownDescription: `The Approval field is used to define who should perform the review.` + "\n" +
-											`` + "\n" +
+											`` +
 											`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 											`  - users` + "\n" +
 											`  - manager` + "\n" +
@@ -230,6 +230,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											`  - group` + "\n" +
 											`  - self` + "\n" +
 											`  - entitlementOwners` + "\n" +
+											"\n" +
 											``,
 									},
 									"provision": schema.SingleNestedAttribute{
@@ -278,11 +279,12 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													},
 												},
 												MarkdownDescription: `The ProvisionPolicy message.` + "\n" +
-													`` + "\n" +
+													`` +
 													`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
 													`  - connector` + "\n" +
 													`  - manual` + "\n" +
 													`  - delegated` + "\n" +
+													"\n" +
 													``,
 											},
 										},
@@ -309,8 +311,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							Computed: true,
 							MarkdownDescription: ` ONLY valid when used in a CERTIFY Ticket Type:` + "\n" +
 								` Causes any deprovision or change in a grant to be applied when Certify Ticket is closed.` + "\n" +
-								`` + "\n" +
-								`This field is part of the ` + "`" + `action` + "`" + ` oneof.` + "\n" +
+								`` +
 								`See the documentation for ` + "`" + `c1.api.policy.v1.PolicyPostActions` + "`" + ` for more details.`,
 						},
 					},

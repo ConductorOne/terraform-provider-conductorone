@@ -59,12 +59,10 @@ resource "conductorone_app_entitlement" "okta_test_admin" {
 				To set this field, emergencyGrantEnabled must be set to true.
 - `grant_policy_id` (String) The grantPolicyId field is the policy that will be used for access request grant tasks.
 - `max_grant_duration` (Attributes) MaxGrantDuration is a one of.
-
 This message contains a oneof. Only a single field of the following list may be set at a time:
   - duration_unset
   - duration_grant (see [below for nested schema](#nestedatt--max_grant_duration))
 - `provision_policy` (Attributes) The ProvisionPolicy message is the Provision strategy that will be used for granting access for this entitlement.
-
 This message contains a oneof. Only a single field of the following list may be set at a time:
   - connector
   - manual
