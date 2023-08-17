@@ -76,7 +76,6 @@ Read-Only:
 - `grant_policy_id` (String) The grantPolicyId field.
 - `id` (String) The id field.
 - `provision_policy` (Attributes) The ProvisionPolicy message.
-
 This message contains a oneof. Only a single field of the following list may be set at a time:
   - connector
   - manual
