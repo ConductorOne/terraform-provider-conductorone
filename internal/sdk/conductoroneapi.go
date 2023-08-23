@@ -61,6 +61,7 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 
 // ConductoroneAPI - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
 type ConductoroneAPI struct {
+	AppEntitlementOwners      *appEntitlementOwners
 	AppEntitlementUserBinding *appEntitlementUserBinding
 	AppEntitlements           *appEntitlements
 	AppOwners                 *appOwners
@@ -171,6 +172,8 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	if sdk.sdkConfiguration.SecurityClient == nil {
 		sdk.sdkConfiguration.SecurityClient = sdk.sdkConfiguration.DefaultClient
 	}
+
+	sdk.AppEntitlementOwners = newAppEntitlementOwners(sdk.sdkConfiguration)
 
 	sdk.AppEntitlementUserBinding = newAppEntitlementUserBinding(sdk.sdkConfiguration)
 
