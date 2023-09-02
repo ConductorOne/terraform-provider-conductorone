@@ -10,8 +10,9 @@ description: |-
 AppEntitlementOwner Resource
 
 This resource allows you to add and remove App Entitlement owners.
-In order to add an owner, you must provide the `user_id` of the user you wish to set as an owner.
-You must also provide the `app_id` and the `entitlement_id` of the entitlement you wish to add the owner to.
+In order to add owners, you must provide the list of `user_ids` for the users you wish to set as owners.
+You must also provide the `app_id` and the `entitlement_id` of the entitlement you wish to add the owners to.
+Note: The owners you set here will replace any existing owners for the entitlement.
 
 ## Example Usage
 
@@ -19,7 +20,10 @@ You must also provide the `app_id` and the `entitlement_id` of the entitlement y
 resource "conductorone_app_entitlement_owner" "okta_test_admin_myself" {
   entitlement_id = data.conductorone_app_entitlement.okta_test_admin.id
   app_id         = data.conductorone_app_entitlement.okta_test_admin.app_id
-  user_id        = data.conductorone_user.my_user.id
+  user_ids = [
+    data.conductorone_user.my_user.id,
+    "...",
+  ]
 }
 ```
 
@@ -28,6 +32,9 @@ resource "conductorone_app_entitlement_owner" "okta_test_admin_myself" {
 
 ### Required
 
-- `app_id` (String) The appId of the entitlement.
-- `entitlement_id` (String) The entitlementId of the entitlement.
-- `user_id` (String) The userId of the owner.
+- `app_id` (String)
+- `entitlement_id` (String)
+
+### Optional
+
+- `user_ids` (List of String) The user_ids field for the users to set as an owner of the app entitlement.
