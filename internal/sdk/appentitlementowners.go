@@ -24,7 +24,7 @@ func newAppEntitlementOwners(sdkConfig sdkConfiguration) *appEntitlementOwners {
 }
 
 // C1APIAppV1AppEntitlementOwnersAdd - Add
-// Invokes the c1.api.app.v1.AppEntitlementOwners.Add method.
+// Add an owner to a given app entitlement.
 func (s *appEntitlementOwners) C1APIAppV1AppEntitlementOwnersAdd(ctx context.Context, request operations.C1APIAppV1AppEntitlementOwnersAddRequest) (*operations.C1APIAppV1AppEntitlementOwnersAddResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/entitlements/{entitlement_id}/owners", request, nil)
@@ -91,7 +91,7 @@ func (s *appEntitlementOwners) C1APIAppV1AppEntitlementOwnersAdd(ctx context.Con
 }
 
 // C1APIAppV1AppEntitlementOwnersList - List
-// Invokes the c1.api.app.v1.AppEntitlementOwners.List method.
+// List owners for a given app entitlement.
 func (s *appEntitlementOwners) C1APIAppV1AppEntitlementOwnersList(ctx context.Context, request operations.C1APIAppV1AppEntitlementOwnersListRequest) (*operations.C1APIAppV1AppEntitlementOwnersListResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/entitlements/{entitlement_id}/owners", request, nil)
@@ -151,7 +151,7 @@ func (s *appEntitlementOwners) C1APIAppV1AppEntitlementOwnersList(ctx context.Co
 }
 
 // C1APIAppV1AppEntitlementOwnersRemove - Remove
-// Invokes the c1.api.app.v1.AppEntitlementOwners.Remove method.
+// Remove an owner from a given app entitlement.
 func (s *appEntitlementOwners) C1APIAppV1AppEntitlementOwnersRemove(ctx context.Context, request operations.C1APIAppV1AppEntitlementOwnersRemoveRequest) (*operations.C1APIAppV1AppEntitlementOwnersRemoveResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/entitlements/{entitlement_id}/owners/{user_id}", request, nil)
@@ -211,6 +211,73 @@ func (s *appEntitlementOwners) C1APIAppV1AppEntitlementOwnersRemove(ctx context.
 			}
 
 			res.RemoveAppEntitlementOwnerResponse = out
+		}
+	}
+
+	return res, nil
+}
+
+// C1APIAppV1AppEntitlementOwnersSet - Set
+// Sets the owners for a given app entitlement to the specified list of users.
+func (s *appEntitlementOwners) C1APIAppV1AppEntitlementOwnersSet(ctx context.Context, request operations.C1APIAppV1AppEntitlementOwnersSetRequest) (*operations.C1APIAppV1AppEntitlementOwnersSetResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/entitlements/{entitlement_id}/owners", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "SetAppEntitlementOwnersRequest", "json")
+	if err != nil {
+		return nil, fmt.Errorf("error serializing request body: %w", err)
+	}
+
+	debugBody := bytes.NewBuffer([]byte{})
+	debugReader := io.TeeReader(bodyReader, debugBody)
+
+	req, err := http.NewRequestWithContext(ctx, "PUT", url, debugReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+
+	req.Header.Set("Content-Type", reqContentType)
+
+	client := s.sdkConfiguration.SecurityClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Request.Body = io.NopCloser(debugBody)
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.C1APIAppV1AppEntitlementOwnersSetResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.SetAppEntitlementOwnersResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return res, err
+			}
+
+			res.SetAppEntitlementOwnersResponse = out
 		}
 	}
 
