@@ -3,6 +3,7 @@ package provider
 import (
 	"conductorone/internal/sdk"
 	"conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk/pkg/models/shared"
 	"context"
 	"fmt"
 
@@ -60,8 +61,7 @@ func (r *AppEntitlementOwnerResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplace(),
 				},
-				Optional:    true,
-				Computed:    true,
+				Required:    true,
 				ElementType: types.StringType,
 				Description: `The user_ids field for the users to set as an owner of the app entitlement.`,
 			},
@@ -159,25 +159,36 @@ func (r *AppEntitlementOwnerResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	listResp, err := r.client.AppEntitlementOwners.C1APIAppV1AppEntitlementOwnersList(ctx, operations.C1APIAppV1AppEntitlementOwnersListRequest{
-		AppID:         data.AppID.ValueString(),
-		EntitlementID: data.EntitlementID.ValueString(),
-	})
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke list API", err.Error())
-		return
-	}
-	if listResp == nil {
-		resp.Diagnostics.AddError("unexpected response from list API", fmt.Sprintf("%v", listResp))
-		return
-	}
-	if listResp.ListAppEntitlementOwnersResponse == nil || listResp.ListAppEntitlementOwnersResponse.List == nil {
-		resp.Diagnostics.AddError("unexpected response from list API", fmt.Sprintf("%v", listResp))
-		return
+	var owners []shared.User
+	pageToken := ""
+	for {
+		listResp, err := r.client.AppEntitlementOwners.C1APIAppV1AppEntitlementOwnersList(ctx, operations.C1APIAppV1AppEntitlementOwnersListRequest{
+			AppID:         data.AppID.ValueString(),
+			EntitlementID: data.EntitlementID.ValueString(),
+			PageToken:     &pageToken,
+		})
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke list API", err.Error())
+			return
+		}
+		if listResp == nil {
+			resp.Diagnostics.AddError("unexpected response from list API", fmt.Sprintf("%v", listResp))
+			return
+		}
+		if listResp.ListAppEntitlementOwnersResponse == nil || listResp.ListAppEntitlementOwnersResponse.List == nil {
+			resp.Diagnostics.AddError("unexpected response from list API", fmt.Sprintf("%v", listResp))
+			return
+		}
+
+		owners = append(owners, listResp.ListAppEntitlementOwnersResponse.List...)
+
+		if listResp.ListAppEntitlementOwnersResponse.NextPageToken == nil || *listResp.ListAppEntitlementOwnersResponse.NextPageToken == "" {
+			break
+		}
+		pageToken = *listResp.ListAppEntitlementOwnersResponse.NextPageToken
 	}
 
-	data.RefreshFromReadResponse(listResp.ListAppEntitlementOwnersResponse.List)
-	// Not Implemented
+	data.RefreshFromReadResponse(owners)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -214,20 +225,7 @@ func (r *AppEntitlementOwnerResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	listResp, err := r.client.AppEntitlementOwners.C1APIAppV1AppEntitlementOwnersList(ctx, operations.C1APIAppV1AppEntitlementOwnersListRequest{
-		AppID:         data.AppID.ValueString(),
-		EntitlementID: data.EntitlementID.ValueString(),
-	})
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke list API", err.Error())
-		return
-	}
-	if listResp == nil {
-		resp.Diagnostics.AddError("unexpected response from list API", fmt.Sprintf("%v", listResp))
-		return
-	}
-
-	setAppEntitlementOwnersRequest := data.ToDeleteSDKType(listResp.ListAppEntitlementOwnersResponse.List)
+	setAppEntitlementOwnersRequest := data.ToDeleteSDKType()
 	appID := data.AppID.ValueString()
 	entitlementID := data.EntitlementID.ValueString()
 	request := operations.C1APIAppV1AppEntitlementOwnersSetRequest{

@@ -17,20 +17,9 @@ func (r *AppEntitlementOwnerResourceModel) ToCreateSDKType() *shared.SetAppEntit
 	return &out
 }
 
-func (r *AppEntitlementOwnerResourceModel) ToDeleteSDKType(owners []shared.User) *shared.SetAppEntitlementOwnersRequest {
-	userIdsMap := make(map[string]bool)
-	var remainingOwners []string
-	for _, userId := range r.UserIds {
-		userIdsMap[userId.ValueString()] = true
-	}
-	for _, owner := range owners {
-		ownerID := types.StringPointerValue(owner.ID).ValueString()
-		if !userIdsMap[ownerID] {
-			remainingOwners = append(remainingOwners, ownerID)
-		}
-	}
+func (r *AppEntitlementOwnerResourceModel) ToDeleteSDKType() *shared.SetAppEntitlementOwnersRequest {
 	out := shared.SetAppEntitlementOwnersRequest{
-		UserIds: remainingOwners,
+		UserIds: []string{},
 	}
 	return &out
 }
@@ -39,8 +28,28 @@ func (r *AppEntitlementOwnerResourceModel) RefreshFromCreateResponse(resp *share
 }
 
 func (r *AppEntitlementOwnerResourceModel) RefreshFromReadResponse(owners []shared.User) {
-	r.UserIds = nil
+	userIdsMap := make(map[string]bool)
+	ownerIds := make([]types.String, 0)
+	needsUpdate := false
+
+	// If the number of owners is different than the number of user ids currently set as owners, we need to update the resource.
+	if len(r.UserIds) != len(owners) {
+		needsUpdate = true
+	}
+
+	for _, userId := range r.UserIds {
+		userIdsMap[userId.ValueString()] = true
+	}
 	for _, owner := range owners {
-		r.UserIds = append(r.UserIds, types.StringPointerValue(owner.ID))
+		ownerID := types.StringPointerValue(owner.ID)
+		// If the owner is not in the current state of user ids, we need to update the resource.
+		if !userIdsMap[ownerID.ValueString()] {
+			needsUpdate = true
+		}
+		ownerIds = append(ownerIds, ownerID)
+	}
+
+	if needsUpdate {
+		r.UserIds = ownerIds
 	}
 }
