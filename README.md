@@ -68,15 +68,15 @@ provider_installation {
 
 Your `<PATH>` may vary depending on how your Go environment variables are configured. Execute `go env GOBIN` to set it, then set the `<PATH>` to the value returned. If nothing is returned, set it to the default location, `$HOME/go/bin`.
 
-### Versions with breaking changes
+## Versions with breaking changes
 
-## v0.1.0
+### v0.1.0
 - This version introduces a breaking change to the `app_entitlement_owners` resource. The `app_entitlement_owners` resource now requires a list of strings called `user_ids`, which is used to set the owners
 on the resource. The list of `user_ids` will replace any existing owners on the app entitlement with the new list of owners. 
 
-### Contributions
+## Contributions
 
 While we value open-source contributions to this SDK, this library is generated programmatically.
 Feel free to open a PR or a Github issue as a proof of concept and we'll do our best to include it in a future release !
 
-### SDK Created by [Speakeasy](https://docs.speakeasyapi.dev/docs/using-speakeasy/client-sdks)
+## SDK Created by [Speakeasy](https://docs.speakeasyapi.dev/docs/using-speakeasy/client-sdks)
