@@ -34,7 +34,4 @@ resource "conductorone_app_entitlement_owner" "okta_test_admin_myself" {
 
 - `app_id` (String)
 - `entitlement_id` (String)
-
-### Optional
-
 - `user_ids` (List of String) The user_ids field for the users to set as an owner of the app entitlement.
