@@ -154,9 +154,12 @@ Optional:
 
 Optional:
 
-- `assigned_user_ids` (List of String) The assignedUserIds field.
 - `fallback` (Boolean) The fallback field.
 - `fallback_user_ids` (List of String) Self approval is the target of the ticket
+
+Read-Only:
+
+- `assigned_user_ids` (List of String) The assignedUserIds field.
 
 
 <a id="nestedatt--policy_steps--steps--approval--user_approval"></a>
