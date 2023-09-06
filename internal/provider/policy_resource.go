@@ -213,7 +213,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Attributes: map[string]schema.Attribute{
 													"assigned_user_ids": schema.ListAttribute{
 														Computed:    true,
-														Optional:    true,
 														ElementType: types.StringType,
 														Description: `The assignedUserIds field.`,
 													},
