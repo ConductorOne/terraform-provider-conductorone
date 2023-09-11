@@ -383,7 +383,8 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 	} else {
 		r.ID = types.StringNull()
 	}
-	if r.PolicySteps == nil && len(resp.PolicySteps) > 0 {
+	r.PolicySteps = nil
+	if len(resp.PolicySteps) > 0 {
 		r.PolicySteps = make(map[string]PolicySteps)
 		for policyStepsKey, policyStepsValue := range resp.PolicySteps {
 			var policyStepsResult PolicySteps
