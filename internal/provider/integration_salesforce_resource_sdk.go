@@ -2,7 +2,7 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
 	"time"
 
@@ -22,8 +22,8 @@ func (r *IntegrationSalesforceResourceModel) ToCreateDelegatedSDKType() *shared.
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Salesforce"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationSalesforceResourceModel) ToCreateSDKType() (*shared.Connecto
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationSalesforceResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]string)
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,42 +75,45 @@ func (r *IntegrationSalesforceResourceModel) ToUpdateSDKType() (*shared.Connecto
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("Salesforce"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(salesforceCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Salesforce"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(salesforceCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationSalesforceResourceModel) populateConfig() map[string]*string {
-	salesforceInstanceUrl := new(string)
-	if !r.SalesforceInstanceUrl.IsUnknown() && !r.SalesforceInstanceUrl.IsNull() {
-		*salesforceInstanceUrl = r.SalesforceInstanceUrl.ValueString()
-	} else {
-		salesforceInstanceUrl = nil
-	}
+     salesforceInstanceUrl := new(string)
+if !r.SalesforceInstanceUrl.IsUnknown() && !r.SalesforceInstanceUrl.IsNull() {
+*salesforceInstanceUrl = r.SalesforceInstanceUrl.ValueString()
+} else {
+salesforceInstanceUrl = nil
+}
 
-	salesforceUsernameForEmail := new(string)
-	if !r.SalesforceUsernameForEmail.IsUnknown() && !r.SalesforceUsernameForEmail.IsNull() {
-		*salesforceUsernameForEmail = strconv.FormatBool(r.SalesforceUsernameForEmail.ValueBool())
-	} else {
-		salesforceUsernameForEmail = nil
-	}
+        salesforceUsernameForEmail := new(string)
+if !r.SalesforceUsernameForEmail.IsUnknown() && !r.SalesforceUsernameForEmail.IsNull() {
+*salesforceUsernameForEmail = strconv.FormatBool(r.SalesforceUsernameForEmail.ValueBool())
+} else {
+salesforceUsernameForEmail = nil
+}
 
-	configValues := map[string]*string{
-		"salesforce_instance_url":       salesforceInstanceUrl,
-		"salesforce_username_for_email": salesforceUsernameForEmail,
-	}
+        
 
-	return configValues
+    	configValues := map[string]*string{
+    	"salesforce_instance_url": salesforceInstanceUrl,
+"salesforce_username_for_email": salesforceUsernameForEmail,
+
+    	}
+
+    	return configValues
 }
 
 func (r *IntegrationSalesforceResourceModel) getConfig() (map[string]string, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -171,25 +174,30 @@ func (r *IntegrationSalesforceResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if v, ok := values["salesforce_instance_url"]; ok {
+r.SalesforceInstanceUrl = types.StringValue(v.(string))
+}
 
-				if localV, ok := configValues["salesforce_username_for_email"]; ok {
-					if v, ok := values["salesforce_username_for_email"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SalesforceUsernameForEmail = types.BoolValue(bv)
-							}
-						}
-					}
-				}
+               if localV, ok := configValues["salesforce_username_for_email"]; ok {
+if v, ok := values["salesforce_username_for_email"]; ok {
+bv, err := strconv.ParseBool(v.(string))
+if err == nil {
+if localV != nil || (localV == nil && !bv) {
+r.SalesforceUsernameForEmail = types.BoolValue(bv)
+}
+}
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationSalesforceResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -227,23 +235,28 @@ func (r *IntegrationSalesforceResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if v, ok := values["salesforce_instance_url"]; ok {
+r.SalesforceInstanceUrl = types.StringValue(v.(string))
+}
 
-				if localV, ok := configValues["salesforce_username_for_email"]; ok {
-					if v, ok := values["salesforce_username_for_email"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SalesforceUsernameForEmail = types.BoolValue(bv)
-							}
-						}
-					}
-				}
+                  if localV, ok := configValues["salesforce_username_for_email"]; ok {
+if v, ok := values["salesforce_username_for_email"]; ok {
+bv, err := strconv.ParseBool(v.(string))
+if err == nil {
+if localV != nil || (localV == nil && !bv) {
+r.SalesforceUsernameForEmail = types.BoolValue(bv)
+}
+}
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

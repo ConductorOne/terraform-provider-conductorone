@@ -2,8 +2,8 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationBuildkiteResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Buildkite"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationBuildkiteResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]string)
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,42 +75,45 @@ func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("Buildkite"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(buildkiteCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Buildkite"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(buildkiteCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationBuildkiteResourceModel) populateConfig() map[string]*string {
-	apiToken := new(string)
-	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
-		*apiToken = r.ApiToken.ValueString()
-	} else {
-		apiToken = nil
-	}
+     apiToken := new(string)
+if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
+*apiToken = r.ApiToken.ValueString()
+} else {
+apiToken = nil
+}
 
-	organization := new(string)
-	if !r.Organization.IsUnknown() && !r.Organization.IsNull() {
-		*organization = r.Organization.ValueString()
-	} else {
-		organization = nil
-	}
+        organization := new(string)
+if !r.Organization.IsUnknown() && !r.Organization.IsNull() {
+*organization = r.Organization.ValueString()
+} else {
+organization = nil
+}
 
-	configValues := map[string]*string{
-		"api_token":    apiToken,
-		"organization": organization,
-	}
+        
 
-	return configValues
+    	configValues := map[string]*string{
+    	"api_token": apiToken,
+"organization": organization,
+
+    	}
+
+    	return configValues
 }
 
 func (r *IntegrationBuildkiteResourceModel) getConfig() (map[string]string, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -171,17 +174,20 @@ func (r *IntegrationBuildkiteResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+    
+    
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               
+               if v, ok := values["organization"]; ok {
+r.Organization = types.StringValue(v.(string))
+}
 
-				if v, ok := values["organization"]; ok {
-					r.Organization = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationBuildkiteResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -219,15 +225,18 @@ func (r *IntegrationBuildkiteResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+   
+       
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  
+                  if v, ok := values["organization"]; ok {
+r.Organization = types.StringValue(v.(string))
+}
 
-				if v, ok := values["organization"]; ok {
-					r.Organization = types.StringValue(v.(string))
-				}
-
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

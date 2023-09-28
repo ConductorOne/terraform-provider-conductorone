@@ -2,8 +2,8 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationGithubResourceModel) ToCreateDelegatedSDKType() *shared.Conn
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("GitHub"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationGithubResourceModel) ToCreateSDKType() (*shared.ConnectorSer
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationGithubResourceModel) ToUpdateSDKType() (*shared.Connector, b
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]string)
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,42 +75,45 @@ func (r *IntegrationGithubResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("GitHub"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(githubCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("GitHub"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(githubCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationGithubResourceModel) populateConfig() map[string]*string {
-	githubOrg := new(string)
-	if !r.GithubOrg.IsUnknown() && !r.GithubOrg.IsNull() {
-		*githubOrg = r.GithubOrg.ValueString()
-	} else {
-		githubOrg = nil
-	}
+     githubOrg := new(string)
+if !r.GithubOrg.IsUnknown() && !r.GithubOrg.IsNull() {
+*githubOrg = r.GithubOrg.ValueString()
+} else {
+githubOrg = nil
+}
 
-	githubAccessToken := new(string)
-	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
-		*githubAccessToken = r.GithubAccessToken.ValueString()
-	} else {
-		githubAccessToken = nil
-	}
+        githubAccessToken := new(string)
+if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
+*githubAccessToken = r.GithubAccessToken.ValueString()
+} else {
+githubAccessToken = nil
+}
 
-	configValues := map[string]*string{
-		"github_org":          githubOrg,
-		"github_access_token": githubAccessToken,
-	}
+        
 
-	return configValues
+    	configValues := map[string]*string{
+    	"github_org": githubOrg,
+"github_access_token": githubAccessToken,
+
+    	}
+
+    	return configValues
 }
 
 func (r *IntegrationGithubResourceModel) getConfig() (map[string]string, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -171,16 +174,20 @@ func (r *IntegrationGithubResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["github_org"]; ok {
-					r.GithubOrg = types.StringValue(v.(string))
-				}
+    
+    
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if v, ok := values["github_org"]; ok {
+r.GithubOrg = types.StringValue(v.(string))
+}
 
-			}
-		}
-	}
+               
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationGithubResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -218,14 +225,18 @@ func (r *IntegrationGithubResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["github_org"]; ok {
-					r.GithubOrg = types.StringValue(v.(string))
-				}
+   
+       
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if v, ok := values["github_org"]; ok {
+r.GithubOrg = types.StringValue(v.(string))
+}
 
-			}
-		}
-	}
+                  
+                  
+              }
+          }
+       }
 }

@@ -2,8 +2,8 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationRampResourceModel) ToCreateDelegatedSDKType() *shared.Connec
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Ramp"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationRampResourceModel) ToCreateSDKType() (*shared.ConnectorServi
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]string)
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,26 +75,29 @@ func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("Ramp"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(rampCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Ramp"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(rampCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationRampResourceModel) populateConfig() map[string]*string {
+     
 
-	configValues := map[string]*string{}
+    	configValues := map[string]*string{
+    	
+    	}
 
-	return configValues
+    	return configValues
 }
 
 func (r *IntegrationRampResourceModel) getConfig() (map[string]string, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -155,6 +158,7 @@ func (r *IntegrationRampResourceModel) RefreshFromGetResponse(resp *shared.Conne
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+    
 }
 
 func (r *IntegrationRampResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -192,4 +196,5 @@ func (r *IntegrationRampResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+   
 }

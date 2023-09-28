@@ -2,8 +2,8 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationAsanaResourceModel) ToCreateDelegatedSDKType() *shared.Conne
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Asana"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationAsanaResourceModel) ToCreateSDKType() (*shared.ConnectorServ
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]string)
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,34 +75,37 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("Asana"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(asanaCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Asana"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(asanaCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationAsanaResourceModel) populateConfig() map[string]*string {
-	asanaApiKey := new(string)
-	if !r.AsanaApiKey.IsUnknown() && !r.AsanaApiKey.IsNull() {
-		*asanaApiKey = r.AsanaApiKey.ValueString()
-	} else {
-		asanaApiKey = nil
-	}
+     asanaApiKey := new(string)
+if !r.AsanaApiKey.IsUnknown() && !r.AsanaApiKey.IsNull() {
+*asanaApiKey = r.AsanaApiKey.ValueString()
+} else {
+asanaApiKey = nil
+}
 
-	configValues := map[string]*string{
-		"asana_api_key": asanaApiKey,
-	}
+        
 
-	return configValues
+    	configValues := map[string]*string{
+    	"asana_api_key": asanaApiKey,
+
+    	}
+
+    	return configValues
 }
 
 func (r *IntegrationAsanaResourceModel) getConfig() (map[string]string, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -163,6 +166,7 @@ func (r *IntegrationAsanaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+    
 }
 
 func (r *IntegrationAsanaResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -200,4 +204,5 @@ func (r *IntegrationAsanaResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+   
 }

@@ -2,8 +2,8 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationSnowflakeResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Snowflake"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationSnowflakeResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]string)
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,58 +75,61 @@ func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("Snowflake"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(snowflakeCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Snowflake"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(snowflakeCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationSnowflakeResourceModel) populateConfig() map[string]*string {
-	snowflakeAccount := new(string)
-	if !r.SnowflakeAccount.IsUnknown() && !r.SnowflakeAccount.IsNull() {
-		*snowflakeAccount = r.SnowflakeAccount.ValueString()
-	} else {
-		snowflakeAccount = nil
-	}
+     snowflakeAccount := new(string)
+if !r.SnowflakeAccount.IsUnknown() && !r.SnowflakeAccount.IsNull() {
+*snowflakeAccount = r.SnowflakeAccount.ValueString()
+} else {
+snowflakeAccount = nil
+}
 
-	snowflakeUsername := new(string)
-	if !r.SnowflakeUsername.IsUnknown() && !r.SnowflakeUsername.IsNull() {
-		*snowflakeUsername = r.SnowflakeUsername.ValueString()
-	} else {
-		snowflakeUsername = nil
-	}
+        snowflakeUsername := new(string)
+if !r.SnowflakeUsername.IsUnknown() && !r.SnowflakeUsername.IsNull() {
+*snowflakeUsername = r.SnowflakeUsername.ValueString()
+} else {
+snowflakeUsername = nil
+}
 
-	snowflakePassword := new(string)
-	if !r.SnowflakePassword.IsUnknown() && !r.SnowflakePassword.IsNull() {
-		*snowflakePassword = r.SnowflakePassword.ValueString()
-	} else {
-		snowflakePassword = nil
-	}
+        snowflakePassword := new(string)
+if !r.SnowflakePassword.IsUnknown() && !r.SnowflakePassword.IsNull() {
+*snowflakePassword = r.SnowflakePassword.ValueString()
+} else {
+snowflakePassword = nil
+}
 
-	snowflakeUserRole := new(string)
-	if !r.SnowflakeUserRole.IsUnknown() && !r.SnowflakeUserRole.IsNull() {
-		*snowflakeUserRole = r.SnowflakeUserRole.ValueString()
-	} else {
-		snowflakeUserRole = nil
-	}
+        snowflakeUserRole := new(string)
+if !r.SnowflakeUserRole.IsUnknown() && !r.SnowflakeUserRole.IsNull() {
+*snowflakeUserRole = r.SnowflakeUserRole.ValueString()
+} else {
+snowflakeUserRole = nil
+}
 
-	configValues := map[string]*string{
-		"snowflake_account":   snowflakeAccount,
-		"snowflake_username":  snowflakeUsername,
-		"snowflake_password":  snowflakePassword,
-		"snowflake_user_role": snowflakeUserRole,
-	}
+        
 
-	return configValues
+    	configValues := map[string]*string{
+    	"snowflake_account": snowflakeAccount,
+"snowflake_username": snowflakeUsername,
+"snowflake_password": snowflakePassword,
+"snowflake_user_role": snowflakeUserRole,
+
+    	}
+
+    	return configValues
 }
 
 func (r *IntegrationSnowflakeResourceModel) getConfig() (map[string]string, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -187,24 +190,28 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["snowflake_account"]; ok {
-					r.SnowflakeAccount = types.StringValue(v.(string))
-				}
+    
+    
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if v, ok := values["snowflake_account"]; ok {
+r.SnowflakeAccount = types.StringValue(v.(string))
+}
 
-				if v, ok := values["snowflake_username"]; ok {
-					r.SnowflakeUsername = types.StringValue(v.(string))
-				}
+               if v, ok := values["snowflake_username"]; ok {
+r.SnowflakeUsername = types.StringValue(v.(string))
+}
 
-				if v, ok := values["snowflake_user_role"]; ok {
-					r.SnowflakeUserRole = types.StringValue(v.(string))
-				}
+               
+               if v, ok := values["snowflake_user_role"]; ok {
+r.SnowflakeUserRole = types.StringValue(v.(string))
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationSnowflakeResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -242,22 +249,26 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["snowflake_account"]; ok {
-					r.SnowflakeAccount = types.StringValue(v.(string))
-				}
+   
+       
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if v, ok := values["snowflake_account"]; ok {
+r.SnowflakeAccount = types.StringValue(v.(string))
+}
 
-				if v, ok := values["snowflake_username"]; ok {
-					r.SnowflakeUsername = types.StringValue(v.(string))
-				}
+                  if v, ok := values["snowflake_username"]; ok {
+r.SnowflakeUsername = types.StringValue(v.(string))
+}
 
-				if v, ok := values["snowflake_user_role"]; ok {
-					r.SnowflakeUserRole = types.StringValue(v.(string))
-				}
+                  
+                  if v, ok := values["snowflake_user_role"]; ok {
+r.SnowflakeUserRole = types.StringValue(v.(string))
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

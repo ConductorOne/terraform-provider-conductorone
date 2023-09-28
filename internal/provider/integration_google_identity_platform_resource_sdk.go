@@ -2,8 +2,8 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
 
 	"conductorone/internal/sdk"
@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const googleIdentityPlatformCatalogID = "28fj8AZmzDkDonl2lqsGTikiQKV"
+const googleIdentityPlatformCatalogID = "2MmyvKxWGE3Axgi03HtDIaZzRmW"
 
 func (r *IntegrationGoogleIdentityPlatformResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(googleIdentityPlatformCatalogID)
@@ -22,8 +22,8 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) ToCreateDelegatedSDKTyp
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Google Identity Platform"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) ToCreateSDKType() (*sha
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) ToUpdateSDKType() (*sha
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]string)
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,50 +75,53 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) ToUpdateSDKType() (*sha
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("Google Identity Platform"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(googleIdentityPlatformCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Google Identity Platform"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(googleIdentityPlatformCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationGoogleIdentityPlatformResourceModel) populateConfig() map[string]*string {
-	projectId := new(string)
-	if !r.ProjectId.IsUnknown() && !r.ProjectId.IsNull() {
-		*projectId = r.ProjectId.ValueString()
-	} else {
-		projectId = nil
-	}
+     projectId := new(string)
+if !r.ProjectId.IsUnknown() && !r.ProjectId.IsNull() {
+*projectId = r.ProjectId.ValueString()
+} else {
+projectId = nil
+}
 
-	tenantId := new(string)
-	if !r.TenantId.IsUnknown() && !r.TenantId.IsNull() {
-		*tenantId = r.TenantId.ValueString()
-	} else {
-		tenantId = nil
-	}
+        tenantId := new(string)
+if !r.TenantId.IsUnknown() && !r.TenantId.IsNull() {
+*tenantId = r.TenantId.ValueString()
+} else {
+tenantId = nil
+}
 
-	credentialsJson := new(string)
-	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
-		*credentialsJson = r.CredentialsJson.ValueString()
-	} else {
-		credentialsJson = nil
-	}
+        credentialsJson := new(string)
+if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
+*credentialsJson = r.CredentialsJson.ValueString()
+} else {
+credentialsJson = nil
+}
 
-	configValues := map[string]*string{
-		"project_id":       projectId,
-		"tenant_id":        tenantId,
-		"credentials_json": credentialsJson,
-	}
+        
 
-	return configValues
+    	configValues := map[string]*string{
+    	"project_id": projectId,
+"tenant_id": tenantId,
+"credentials_json": credentialsJson,
+
+    	}
+
+    	return configValues
 }
 
 func (r *IntegrationGoogleIdentityPlatformResourceModel) getConfig() (map[string]string, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -179,20 +182,24 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) RefreshFromGetResponse(
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["project_id"]; ok {
-					r.ProjectId = types.StringValue(v.(string))
-				}
+    
+    
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if v, ok := values["project_id"]; ok {
+r.ProjectId = types.StringValue(v.(string))
+}
 
-				if v, ok := values["tenant_id"]; ok {
-					r.TenantId = types.StringValue(v.(string))
-				}
+               if v, ok := values["tenant_id"]; ok {
+r.TenantId = types.StringValue(v.(string))
+}
 
-			}
-		}
-	}
+               
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationGoogleIdentityPlatformResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -230,18 +237,22 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) RefreshFromCreateRespon
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["project_id"]; ok {
-					r.ProjectId = types.StringValue(v.(string))
-				}
+   
+       
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if v, ok := values["project_id"]; ok {
+r.ProjectId = types.StringValue(v.(string))
+}
 
-				if v, ok := values["tenant_id"]; ok {
-					r.TenantId = types.StringValue(v.(string))
-				}
+                  if v, ok := values["tenant_id"]; ok {
+r.TenantId = types.StringValue(v.(string))
+}
 
-			}
-		}
-	}
+                  
+                  
+              }
+          }
+       }
 }

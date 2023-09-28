@@ -2,8 +2,8 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationJumpcloudResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("JumpCloud"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationJumpcloudResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationJumpcloudResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]string)
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,34 +75,37 @@ func (r *IntegrationJumpcloudResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("JumpCloud"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(jumpcloudCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("JumpCloud"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(jumpcloudCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationJumpcloudResourceModel) populateConfig() map[string]*string {
-	jumpcloudApiKey := new(string)
-	if !r.JumpcloudApiKey.IsUnknown() && !r.JumpcloudApiKey.IsNull() {
-		*jumpcloudApiKey = r.JumpcloudApiKey.ValueString()
-	} else {
-		jumpcloudApiKey = nil
-	}
+     jumpcloudApiKey := new(string)
+if !r.JumpcloudApiKey.IsUnknown() && !r.JumpcloudApiKey.IsNull() {
+*jumpcloudApiKey = r.JumpcloudApiKey.ValueString()
+} else {
+jumpcloudApiKey = nil
+}
 
-	configValues := map[string]*string{
-		"jumpcloud_api_key": jumpcloudApiKey,
-	}
+        
 
-	return configValues
+    	configValues := map[string]*string{
+    	"jumpcloud_api_key": jumpcloudApiKey,
+
+    	}
+
+    	return configValues
 }
 
 func (r *IntegrationJumpcloudResourceModel) getConfig() (map[string]string, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -163,6 +166,7 @@ func (r *IntegrationJumpcloudResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+    
 }
 
 func (r *IntegrationJumpcloudResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -200,4 +204,5 @@ func (r *IntegrationJumpcloudResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+   
 }

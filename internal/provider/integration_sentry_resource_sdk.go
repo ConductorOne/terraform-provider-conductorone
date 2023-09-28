@@ -2,8 +2,8 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationSentryResourceModel) ToCreateDelegatedSDKType() *shared.Conn
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Sentry"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationSentryResourceModel) ToCreateSDKType() (*shared.ConnectorSer
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationSentryResourceModel) ToUpdateSDKType() (*shared.Connector, b
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]string)
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,42 +75,45 @@ func (r *IntegrationSentryResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("Sentry"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(sentryCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Sentry"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(sentryCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationSentryResourceModel) populateConfig() map[string]*string {
-	sentryOrgSlug := new(string)
-	if !r.SentryOrgSlug.IsUnknown() && !r.SentryOrgSlug.IsNull() {
-		*sentryOrgSlug = r.SentryOrgSlug.ValueString()
-	} else {
-		sentryOrgSlug = nil
-	}
+     sentryOrgSlug := new(string)
+if !r.SentryOrgSlug.IsUnknown() && !r.SentryOrgSlug.IsNull() {
+*sentryOrgSlug = r.SentryOrgSlug.ValueString()
+} else {
+sentryOrgSlug = nil
+}
 
-	sentryToken := new(string)
-	if !r.SentryToken.IsUnknown() && !r.SentryToken.IsNull() {
-		*sentryToken = r.SentryToken.ValueString()
-	} else {
-		sentryToken = nil
-	}
+        sentryToken := new(string)
+if !r.SentryToken.IsUnknown() && !r.SentryToken.IsNull() {
+*sentryToken = r.SentryToken.ValueString()
+} else {
+sentryToken = nil
+}
 
-	configValues := map[string]*string{
-		"sentry_org_slug": sentryOrgSlug,
-		"sentry_token":    sentryToken,
-	}
+        
 
-	return configValues
+    	configValues := map[string]*string{
+    	"sentry_org_slug": sentryOrgSlug,
+"sentry_token": sentryToken,
+
+    	}
+
+    	return configValues
 }
 
 func (r *IntegrationSentryResourceModel) getConfig() (map[string]string, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -171,6 +174,20 @@ func (r *IntegrationSentryResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+    
+    
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if v, ok := values["sentry_org_slug"]; ok {
+r.SentryOrgSlug = types.StringValue(v.(string))
+}
+
+               
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationSentryResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -208,4 +225,18 @@ func (r *IntegrationSentryResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+   
+       
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if v, ok := values["sentry_org_slug"]; ok {
+r.SentryOrgSlug = types.StringValue(v.(string))
+}
+
+                  
+                  
+              }
+          }
+       }
 }

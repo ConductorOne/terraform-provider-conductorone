@@ -2,8 +2,8 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationLinearResourceModel) ToCreateDelegatedSDKType() *shared.Conn
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Linear"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationLinearResourceModel) ToCreateSDKType() (*shared.ConnectorSer
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationLinearResourceModel) ToUpdateSDKType() (*shared.Connector, b
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]string)
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,34 +75,37 @@ func (r *IntegrationLinearResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("Linear"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(linearCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Linear"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(linearCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationLinearResourceModel) populateConfig() map[string]*string {
-	linearApiKey := new(string)
-	if !r.LinearApiKey.IsUnknown() && !r.LinearApiKey.IsNull() {
-		*linearApiKey = r.LinearApiKey.ValueString()
-	} else {
-		linearApiKey = nil
-	}
+     linearApiKey := new(string)
+if !r.LinearApiKey.IsUnknown() && !r.LinearApiKey.IsNull() {
+*linearApiKey = r.LinearApiKey.ValueString()
+} else {
+linearApiKey = nil
+}
 
-	configValues := map[string]*string{
-		"linear_api_key": linearApiKey,
-	}
+        
 
-	return configValues
+    	configValues := map[string]*string{
+    	"linear_api_key": linearApiKey,
+
+    	}
+
+    	return configValues
 }
 
 func (r *IntegrationLinearResourceModel) getConfig() (map[string]string, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -163,6 +166,7 @@ func (r *IntegrationLinearResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+    
 }
 
 func (r *IntegrationLinearResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -200,4 +204,5 @@ func (r *IntegrationLinearResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+   
 }

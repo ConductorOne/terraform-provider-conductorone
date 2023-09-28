@@ -41,10 +41,10 @@ type IntegrationOktaResourceModel struct {
 	ID                       types.String   `tfsdk:"id"`
 	UpdatedAt                types.String   `tfsdk:"updated_at"`
 	UserIds                  []types.String `tfsdk:"user_ids"`
-	OktaDomain               types.String   `tfsdk:"okta_domain"`
-	OktaApiKey               types.String   `tfsdk:"okta_api_key"`
-	OktaDontSyncInactiveApps types.Bool     `tfsdk:"okta_dont_sync_inactive_apps"`
-	OktaExtractAwsSamlRoles  types.Bool     `tfsdk:"okta_extract_aws_saml_roles"`
+OktaDomain types.String `tfsdk:"okta_domain"`
+OktaApiKey types.String `tfsdk:"okta_api_key"`
+OktaDontSyncInactiveApps types.Bool `tfsdk:"okta_dont_sync_inactive_apps"`
+OktaExtractAwsSamlRoles types.Bool `tfsdk:"okta_extract_aws_saml_roles"`
 }
 
 func (r *IntegrationOktaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -95,23 +95,23 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"okta_domain": &schema.StringAttribute{
-				Optional:    true,
-				Description: `The okta domain field.`,
-			},
-			"okta_api_key": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
-				Description: `The okta api key field.`,
-			},
-			"okta_dont_sync_inactive_apps": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Don't include inactive apps in the sync. Defaults to false. If set to true, the integration will only sync active apps.`,
-			},
-			"okta_extract_aws_saml_roles": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Extract AWS SAML roles from Okta SAML responses. Defaults to false. If set to true, the integration will extract AWS SAML roles from Okta SAML responses.`,
-			},
-		},
+Optional: true,
+Description: `The okta domain field.`,
+},
+"okta_api_key": &schema.StringAttribute{
+Optional: true,
+Sensitive: true,
+Description: `The okta api key field.`,
+},
+"okta_dont_sync_inactive_apps": &schema.BoolAttribute{
+Optional: true,
+Description: `Don't include inactive apps in the sync. Defaults to false. If set to true, the integration will only sync active apps.`,
+},
+"okta_extract_aws_saml_roles": &schema.BoolAttribute{
+Optional: true,
+Description: `Extract AWS SAML roles from Okta SAML responses. Defaults to false. If set to true, the integration will extract AWS SAML roles from Okta SAML responses.`,
+},
+},
 	}
 }
 
@@ -153,7 +153,7 @@ func (r *IntegrationOktaResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	_, configSet := data.getConfig()
+    _, configSet := data.getConfig()
 
 	var configResp *shared.Connector
 
@@ -243,9 +243,9 @@ func (r *IntegrationOktaResource) Read(ctx context.Context, req resource.ReadReq
 	}
 
 	if res.ConnectorView.Connector.DeletedAt != nil {
-		resp.State.RemoveResource(ctx)
-		return
-	}
+        resp.State.RemoveResource(ctx)
+        return
+    }
 
 	data.RefreshFromGetResponse(res.ConnectorView.Connector)
 
@@ -285,52 +285,52 @@ func (r *IntegrationOktaResource) Update(ctx context.Context, req resource.Updat
 
 	updateCon, configSet := data.ToUpdateSDKType()
 	if configSet {
-		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
-			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
-				Connector:  updateCon,
-				UpdateMask: "config",
-			},
-			AppID: appID,
-			ID:    data.ID.ValueString(),
-		}
-		updateRes, err := r.client.Connector.Update(ctx, configReq)
-		if err != nil {
-			resp.Diagnostics.AddError("failure to invoke API", err.Error())
-			return
-		}
-		if updateRes == nil {
-			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
-			return
-		}
-		if updateRes.StatusCode != 200 {
-			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
-			return
-		}
-		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
-	} else {
-		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
-			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
-				Connector:  updateCon,
-				UpdateMask: "displayName,userIds",
-			},
-			ConnectorAppID: appID,
-			ConnectorID:    data.ID.ValueString(),
-		}
-		updateRes, err := r.client.Connector.UpdateDelegated(ctx, configReq)
-		if err != nil {
-			resp.Diagnostics.AddError("failure to invoke API", err.Error())
-			return
-		}
-		if updateRes == nil {
-			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
-			return
-		}
-		if updateRes.StatusCode != 200 {
-			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
-			return
-		}
-		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
-	}
+        configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
+            ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
+                Connector:  updateCon,
+                UpdateMask: "config",
+            },
+            AppID: appID,
+            ID:    data.ID.ValueString(),
+        }
+        updateRes, err := r.client.Connector.Update(ctx, configReq)
+        if err != nil {
+            resp.Diagnostics.AddError("failure to invoke API", err.Error())
+            return
+        }
+        if updateRes == nil {
+            resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+            return
+        }
+        if updateRes.StatusCode != 200 {
+            resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+            return
+        }
+        data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+    } else {
+        configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
+            ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
+                Connector:  updateCon,
+                UpdateMask: "displayName,userIds",
+            },
+            ConnectorAppID: appID,
+            ConnectorID:    data.ID.ValueString(),
+        }
+        updateRes, err := r.client.Connector.UpdateDelegated(ctx, configReq)
+        if err != nil {
+            resp.Diagnostics.AddError("failure to invoke API", err.Error())
+            return
+        }
+        if updateRes == nil {
+            resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+            return
+        }
+        if updateRes.StatusCode != 200 {
+            resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+            return
+        }
+        data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+    }
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
