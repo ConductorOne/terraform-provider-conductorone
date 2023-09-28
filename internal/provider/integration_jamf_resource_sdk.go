@@ -2,8 +2,8 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationJamfResourceModel) ToCreateDelegatedSDKType() *shared.Connec
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Jamf"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationJamfResourceModel) ToCreateSDKType() (*shared.ConnectorServi
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationJamfResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,53 +75,50 @@ func (r *IntegrationJamfResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("Jamf"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(jamfCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Jamf"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(jamfCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationJamfResourceModel) populateConfig() map[string]*string {
-     jamfInstanceUrl := new(string)
-if !r.JamfInstanceUrl.IsUnknown() && !r.JamfInstanceUrl.IsNull() {
-*jamfInstanceUrl = r.JamfInstanceUrl.ValueString()
-} else {
-jamfInstanceUrl = nil
-}
+	jamfInstanceUrl := new(string)
+	if !r.JamfInstanceUrl.IsUnknown() && !r.JamfInstanceUrl.IsNull() {
+		*jamfInstanceUrl = r.JamfInstanceUrl.ValueString()
+	} else {
+		jamfInstanceUrl = nil
+	}
 
-        jamfUsername := new(string)
-if !r.JamfUsername.IsUnknown() && !r.JamfUsername.IsNull() {
-*jamfUsername = r.JamfUsername.ValueString()
-} else {
-jamfUsername = nil
-}
+	jamfUsername := new(string)
+	if !r.JamfUsername.IsUnknown() && !r.JamfUsername.IsNull() {
+		*jamfUsername = r.JamfUsername.ValueString()
+	} else {
+		jamfUsername = nil
+	}
 
-        jamfPassword := new(string)
-if !r.JamfPassword.IsUnknown() && !r.JamfPassword.IsNull() {
-*jamfPassword = r.JamfPassword.ValueString()
-} else {
-jamfPassword = nil
-}
+	jamfPassword := new(string)
+	if !r.JamfPassword.IsUnknown() && !r.JamfPassword.IsNull() {
+		*jamfPassword = r.JamfPassword.ValueString()
+	} else {
+		jamfPassword = nil
+	}
 
-        
+	configValues := map[string]*string{
+		"jamf_instance_url": jamfInstanceUrl,
+		"jamf_username":     jamfUsername,
+		"jamf_password":     jamfPassword,
+	}
 
-    	configValues := map[string]*string{
-    	"jamf_instance_url": jamfInstanceUrl,
-"jamf_username": jamfUsername,
-"jamf_password": jamfPassword,
-
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationJamfResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -182,24 +179,20 @@ func (r *IntegrationJamfResourceModel) RefreshFromGetResponse(resp *shared.Conne
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if v, ok := values["jamf_instance_url"]; ok {
-r.JamfInstanceUrl = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["jamf_instance_url"]; ok {
+					r.JamfInstanceUrl = types.StringValue(v.(string))
+				}
 
-               if v, ok := values["jamf_username"]; ok {
-r.JamfUsername = types.StringValue(v.(string))
-}
+				if v, ok := values["jamf_username"]; ok {
+					r.JamfUsername = types.StringValue(v.(string))
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationJamfResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -237,22 +230,18 @@ func (r *IntegrationJamfResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if v, ok := values["jamf_instance_url"]; ok {
-r.JamfInstanceUrl = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["jamf_instance_url"]; ok {
+					r.JamfInstanceUrl = types.StringValue(v.(string))
+				}
 
-                  if v, ok := values["jamf_username"]; ok {
-r.JamfUsername = types.StringValue(v.(string))
-}
+				if v, ok := values["jamf_username"]; ok {
+					r.JamfUsername = types.StringValue(v.(string))
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

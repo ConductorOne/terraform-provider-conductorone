@@ -2,8 +2,8 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationCloudamqpResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("CloudAMQP"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationCloudamqpResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,37 +75,34 @@ func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("CloudAMQP"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(cloudamqpCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("CloudAMQP"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(cloudamqpCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationCloudamqpResourceModel) populateConfig() map[string]*string {
-     cloudamqpApiKey := new(string)
-if !r.CloudamqpApiKey.IsUnknown() && !r.CloudamqpApiKey.IsNull() {
-*cloudamqpApiKey = r.CloudamqpApiKey.ValueString()
-} else {
-cloudamqpApiKey = nil
-}
+	cloudamqpApiKey := new(string)
+	if !r.CloudamqpApiKey.IsUnknown() && !r.CloudamqpApiKey.IsNull() {
+		*cloudamqpApiKey = r.CloudamqpApiKey.ValueString()
+	} else {
+		cloudamqpApiKey = nil
+	}
 
-        
+	configValues := map[string]*string{
+		"cloudamqp_api_key": cloudamqpApiKey,
+	}
 
-    	configValues := map[string]*string{
-    	"cloudamqp_api_key": cloudamqpApiKey,
-
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationCloudamqpResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -166,7 +163,6 @@ func (r *IntegrationCloudamqpResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
 }
 
 func (r *IntegrationCloudamqpResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -204,5 +200,4 @@ func (r *IntegrationCloudamqpResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
 }

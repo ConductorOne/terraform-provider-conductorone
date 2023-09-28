@@ -2,8 +2,8 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationZendeskResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Zendesk"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationZendeskResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() (*shared.Connector, 
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,53 +75,50 @@ func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() (*shared.Connector, 
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("Zendesk"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(zendeskCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Zendesk"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(zendeskCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationZendeskResourceModel) populateConfig() map[string]*string {
-     email := new(string)
-if !r.Email.IsUnknown() && !r.Email.IsNull() {
-*email = r.Email.ValueString()
-} else {
-email = nil
-}
+	email := new(string)
+	if !r.Email.IsUnknown() && !r.Email.IsNull() {
+		*email = r.Email.ValueString()
+	} else {
+		email = nil
+	}
 
-        subdomain := new(string)
-if !r.Subdomain.IsUnknown() && !r.Subdomain.IsNull() {
-*subdomain = r.Subdomain.ValueString()
-} else {
-subdomain = nil
-}
+	subdomain := new(string)
+	if !r.Subdomain.IsUnknown() && !r.Subdomain.IsNull() {
+		*subdomain = r.Subdomain.ValueString()
+	} else {
+		subdomain = nil
+	}
 
-        apiToken := new(string)
-if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
-*apiToken = r.ApiToken.ValueString()
-} else {
-apiToken = nil
-}
+	apiToken := new(string)
+	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
+		*apiToken = r.ApiToken.ValueString()
+	} else {
+		apiToken = nil
+	}
 
-        
+	configValues := map[string]*string{
+		"email":     email,
+		"subdomain": subdomain,
+		"api_token": apiToken,
+	}
 
-    	configValues := map[string]*string{
-    	"email": email,
-"subdomain": subdomain,
-"api_token": apiToken,
-
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationZendeskResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -182,24 +179,20 @@ func (r *IntegrationZendeskResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if v, ok := values["email"]; ok {
-r.Email = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["email"]; ok {
+					r.Email = types.StringValue(v.(string))
+				}
 
-               if v, ok := values["subdomain"]; ok {
-r.Subdomain = types.StringValue(v.(string))
-}
+				if v, ok := values["subdomain"]; ok {
+					r.Subdomain = types.StringValue(v.(string))
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationZendeskResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -237,22 +230,18 @@ func (r *IntegrationZendeskResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if v, ok := values["email"]; ok {
-r.Email = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["email"]; ok {
+					r.Email = types.StringValue(v.(string))
+				}
 
-                  if v, ok := values["subdomain"]; ok {
-r.Subdomain = types.StringValue(v.(string))
-}
+				if v, ok := values["subdomain"]; ok {
+					r.Subdomain = types.StringValue(v.(string))
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

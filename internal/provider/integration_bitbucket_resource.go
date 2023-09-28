@@ -35,14 +35,14 @@ type IntegrationBitbucketResource struct {
 
 // IntegrationBitbucketResourceModel describes the resource data model.
 type IntegrationBitbucketResourceModel struct {
-	AppID                    types.String   `tfsdk:"app_id"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	DeletedAt                types.String   `tfsdk:"deleted_at"`
-	ID                       types.String   `tfsdk:"id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	UserIds                  []types.String `tfsdk:"user_ids"`
-BitbucketConsumerKey types.String `tfsdk:"bitbucket_consumer_key"`
-BitbucketConsumerSecret types.String `tfsdk:"bitbucket_consumer_secret"`
+	AppID                   types.String   `tfsdk:"app_id"`
+	CreatedAt               types.String   `tfsdk:"created_at"`
+	DeletedAt               types.String   `tfsdk:"deleted_at"`
+	ID                      types.String   `tfsdk:"id"`
+	UpdatedAt               types.String   `tfsdk:"updated_at"`
+	UserIds                 []types.String `tfsdk:"user_ids"`
+	BitbucketConsumerKey    types.String   `tfsdk:"bitbucket_consumer_key"`
+	BitbucketConsumerSecret types.String   `tfsdk:"bitbucket_consumer_secret"`
 }
 
 func (r *IntegrationBitbucketResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -93,15 +93,15 @@ func (r *IntegrationBitbucketResource) Schema(ctx context.Context, req resource.
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"bitbucket_consumer_key": &schema.StringAttribute{
-Optional: true,
-Description: `Consumer Key`,
-},
-"bitbucket_consumer_secret": &schema.StringAttribute{
-Optional: true,
-Sensitive: true,
-Description: `Consumer Secret`,
-},
-},
+				Optional:    true,
+				Description: `Consumer Key`,
+			},
+			"bitbucket_consumer_secret": &schema.StringAttribute{
+				Optional:    true,
+				Sensitive:   true,
+				Description: `Consumer Secret`,
+			},
+		},
 	}
 }
 
@@ -143,7 +143,7 @@ func (r *IntegrationBitbucketResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-    _, configSet := data.getConfig()
+	_, configSet := data.getConfig()
 
 	var configResp *shared.Connector
 
@@ -233,9 +233,9 @@ func (r *IntegrationBitbucketResource) Read(ctx context.Context, req resource.Re
 	}
 
 	if res.ConnectorView.Connector.DeletedAt != nil {
-        resp.State.RemoveResource(ctx)
-        return
-    }
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	data.RefreshFromGetResponse(res.ConnectorView.Connector)
 
@@ -275,52 +275,52 @@ func (r *IntegrationBitbucketResource) Update(ctx context.Context, req resource.
 
 	updateCon, configSet := data.ToUpdateSDKType()
 	if configSet {
-        configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
-            ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
-                Connector:  updateCon,
-                UpdateMask: "config",
-            },
-            AppID: appID,
-            ID:    data.ID.ValueString(),
-        }
-        updateRes, err := r.client.Connector.Update(ctx, configReq)
-        if err != nil {
-            resp.Diagnostics.AddError("failure to invoke API", err.Error())
-            return
-        }
-        if updateRes == nil {
-            resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
-            return
-        }
-        if updateRes.StatusCode != 200 {
-            resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
-            return
-        }
-        data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
-    } else {
-        configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
-            ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
-                Connector:  updateCon,
-                UpdateMask: "displayName,userIds",
-            },
-            ConnectorAppID: appID,
-            ConnectorID:    data.ID.ValueString(),
-        }
-        updateRes, err := r.client.Connector.UpdateDelegated(ctx, configReq)
-        if err != nil {
-            resp.Diagnostics.AddError("failure to invoke API", err.Error())
-            return
-        }
-        if updateRes == nil {
-            resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
-            return
-        }
-        if updateRes.StatusCode != 200 {
-            resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
-            return
-        }
-        data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
-    }
+		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
+			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
+				Connector:  updateCon,
+				UpdateMask: "config",
+			},
+			AppID: appID,
+			ID:    data.ID.ValueString(),
+		}
+		updateRes, err := r.client.Connector.Update(ctx, configReq)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if updateRes == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+			return
+		}
+		if updateRes.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+			return
+		}
+		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+	} else {
+		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
+			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
+				Connector:  updateCon,
+				UpdateMask: "displayName,userIds",
+			},
+			ConnectorAppID: appID,
+			ConnectorID:    data.ID.ValueString(),
+		}
+		updateRes, err := r.client.Connector.UpdateDelegated(ctx, configReq)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if updateRes == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+			return
+		}
+		if updateRes.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+			return
+		}
+		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+	}
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

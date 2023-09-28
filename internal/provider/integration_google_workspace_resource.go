@@ -35,16 +35,16 @@ type IntegrationGoogleWorkspaceResource struct {
 
 // IntegrationGoogleWorkspaceResourceModel describes the resource data model.
 type IntegrationGoogleWorkspaceResourceModel struct {
-	AppID                    types.String   `tfsdk:"app_id"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	DeletedAt                types.String   `tfsdk:"deleted_at"`
-	ID                       types.String   `tfsdk:"id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	UserIds                  []types.String `tfsdk:"user_ids"`
-CustomerId types.String `tfsdk:"customer_id"`
-Domain types.String `tfsdk:"domain"`
-AdministratorEmail types.String `tfsdk:"administrator_email"`
-CredentialsJson types.String `tfsdk:"credentials_json"`
+	AppID              types.String   `tfsdk:"app_id"`
+	CreatedAt          types.String   `tfsdk:"created_at"`
+	DeletedAt          types.String   `tfsdk:"deleted_at"`
+	ID                 types.String   `tfsdk:"id"`
+	UpdatedAt          types.String   `tfsdk:"updated_at"`
+	UserIds            []types.String `tfsdk:"user_ids"`
+	CustomerId         types.String   `tfsdk:"customer_id"`
+	Domain             types.String   `tfsdk:"domain"`
+	AdministratorEmail types.String   `tfsdk:"administrator_email"`
+	CredentialsJson    types.String   `tfsdk:"credentials_json"`
 }
 
 func (r *IntegrationGoogleWorkspaceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -95,23 +95,23 @@ func (r *IntegrationGoogleWorkspaceResource) Schema(ctx context.Context, req res
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"customer_id": &schema.StringAttribute{
-Optional: true,
-Description: `Customer ID`,
-},
-"domain": &schema.StringAttribute{
-Optional: true,
-Description: `Domain`,
-},
-"administrator_email": &schema.StringAttribute{
-Optional: true,
-Description: `Administrator Email`,
-},
-"credentials_json": &schema.StringAttribute{
-Optional: true,
-Sensitive: true,
-Description: `Credentials JSON`,
-},
-},
+				Optional:    true,
+				Description: `Customer ID`,
+			},
+			"domain": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Domain`,
+			},
+			"administrator_email": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Administrator Email`,
+			},
+			"credentials_json": &schema.StringAttribute{
+				Optional:    true,
+				Sensitive:   true,
+				Description: `Credentials JSON`,
+			},
+		},
 	}
 }
 
@@ -153,7 +153,7 @@ func (r *IntegrationGoogleWorkspaceResource) Create(ctx context.Context, req res
 		return
 	}
 
-    _, configSet := data.getConfig()
+	_, configSet := data.getConfig()
 
 	var configResp *shared.Connector
 
@@ -243,9 +243,9 @@ func (r *IntegrationGoogleWorkspaceResource) Read(ctx context.Context, req resou
 	}
 
 	if res.ConnectorView.Connector.DeletedAt != nil {
-        resp.State.RemoveResource(ctx)
-        return
-    }
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	data.RefreshFromGetResponse(res.ConnectorView.Connector)
 
@@ -285,52 +285,52 @@ func (r *IntegrationGoogleWorkspaceResource) Update(ctx context.Context, req res
 
 	updateCon, configSet := data.ToUpdateSDKType()
 	if configSet {
-        configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
-            ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
-                Connector:  updateCon,
-                UpdateMask: "config",
-            },
-            AppID: appID,
-            ID:    data.ID.ValueString(),
-        }
-        updateRes, err := r.client.Connector.Update(ctx, configReq)
-        if err != nil {
-            resp.Diagnostics.AddError("failure to invoke API", err.Error())
-            return
-        }
-        if updateRes == nil {
-            resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
-            return
-        }
-        if updateRes.StatusCode != 200 {
-            resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
-            return
-        }
-        data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
-    } else {
-        configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
-            ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
-                Connector:  updateCon,
-                UpdateMask: "displayName,userIds",
-            },
-            ConnectorAppID: appID,
-            ConnectorID:    data.ID.ValueString(),
-        }
-        updateRes, err := r.client.Connector.UpdateDelegated(ctx, configReq)
-        if err != nil {
-            resp.Diagnostics.AddError("failure to invoke API", err.Error())
-            return
-        }
-        if updateRes == nil {
-            resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
-            return
-        }
-        if updateRes.StatusCode != 200 {
-            resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
-            return
-        }
-        data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
-    }
+		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
+			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
+				Connector:  updateCon,
+				UpdateMask: "config",
+			},
+			AppID: appID,
+			ID:    data.ID.ValueString(),
+		}
+		updateRes, err := r.client.Connector.Update(ctx, configReq)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if updateRes == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+			return
+		}
+		if updateRes.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+			return
+		}
+		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+	} else {
+		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
+			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
+				Connector:  updateCon,
+				UpdateMask: "displayName,userIds",
+			},
+			ConnectorAppID: appID,
+			ConnectorID:    data.ID.ValueString(),
+		}
+		updateRes, err := r.client.Connector.UpdateDelegated(ctx, configReq)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if updateRes == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+			return
+		}
+		if updateRes.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+			return
+		}
+		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+	}
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

@@ -2,8 +2,8 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationXsoarResourceModel) ToCreateDelegatedSDKType() *shared.Conne
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Xsoar"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationXsoarResourceModel) ToCreateSDKType() (*shared.ConnectorServ
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationXsoarResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,45 +75,42 @@ func (r *IntegrationXsoarResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("Xsoar"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(xsoarCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Xsoar"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(xsoarCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationXsoarResourceModel) populateConfig() map[string]*string {
-     apiUrl := new(string)
-if !r.ApiUrl.IsUnknown() && !r.ApiUrl.IsNull() {
-*apiUrl = r.ApiUrl.ValueString()
-} else {
-apiUrl = nil
-}
+	apiUrl := new(string)
+	if !r.ApiUrl.IsUnknown() && !r.ApiUrl.IsNull() {
+		*apiUrl = r.ApiUrl.ValueString()
+	} else {
+		apiUrl = nil
+	}
 
-        token := new(string)
-if !r.Token.IsUnknown() && !r.Token.IsNull() {
-*token = r.Token.ValueString()
-} else {
-token = nil
-}
+	token := new(string)
+	if !r.Token.IsUnknown() && !r.Token.IsNull() {
+		*token = r.Token.ValueString()
+	} else {
+		token = nil
+	}
 
-        
+	configValues := map[string]*string{
+		"api_url": apiUrl,
+		"token":   token,
+	}
 
-    	configValues := map[string]*string{
-    	"api_url": apiUrl,
-"token": token,
-
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationXsoarResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -174,20 +171,16 @@ func (r *IntegrationXsoarResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if v, ok := values["api_url"]; ok {
-r.ApiUrl = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["api_url"]; ok {
+					r.ApiUrl = types.StringValue(v.(string))
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationXsoarResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -225,18 +218,14 @@ func (r *IntegrationXsoarResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if v, ok := values["api_url"]; ok {
-r.ApiUrl = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["api_url"]; ok {
+					r.ApiUrl = types.StringValue(v.(string))
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

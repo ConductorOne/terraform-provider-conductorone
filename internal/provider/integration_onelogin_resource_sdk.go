@@ -2,8 +2,8 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationOneloginResourceModel) ToCreateDelegatedSDKType() *shared.Co
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("OneLogin"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationOneloginResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationOneloginResourceModel) ToUpdateSDKType() (*shared.Connector,
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,53 +75,50 @@ func (r *IntegrationOneloginResourceModel) ToUpdateSDKType() (*shared.Connector,
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("OneLogin"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(oneloginCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("OneLogin"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(oneloginCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationOneloginResourceModel) populateConfig() map[string]*string {
-     oneloginDomain := new(string)
-if !r.OneloginDomain.IsUnknown() && !r.OneloginDomain.IsNull() {
-*oneloginDomain = r.OneloginDomain.ValueString()
-} else {
-oneloginDomain = nil
-}
+	oneloginDomain := new(string)
+	if !r.OneloginDomain.IsUnknown() && !r.OneloginDomain.IsNull() {
+		*oneloginDomain = r.OneloginDomain.ValueString()
+	} else {
+		oneloginDomain = nil
+	}
 
-        oauthClientCredGrantClientId := new(string)
-if !r.OauthClientCredGrantClientId.IsUnknown() && !r.OauthClientCredGrantClientId.IsNull() {
-*oauthClientCredGrantClientId = r.OauthClientCredGrantClientId.ValueString()
-} else {
-oauthClientCredGrantClientId = nil
-}
+	oauthClientCredGrantClientId := new(string)
+	if !r.OauthClientCredGrantClientId.IsUnknown() && !r.OauthClientCredGrantClientId.IsNull() {
+		*oauthClientCredGrantClientId = r.OauthClientCredGrantClientId.ValueString()
+	} else {
+		oauthClientCredGrantClientId = nil
+	}
 
-        oauthClientCredGrantClientSecret := new(string)
-if !r.OauthClientCredGrantClientSecret.IsUnknown() && !r.OauthClientCredGrantClientSecret.IsNull() {
-*oauthClientCredGrantClientSecret = r.OauthClientCredGrantClientSecret.ValueString()
-} else {
-oauthClientCredGrantClientSecret = nil
-}
+	oauthClientCredGrantClientSecret := new(string)
+	if !r.OauthClientCredGrantClientSecret.IsUnknown() && !r.OauthClientCredGrantClientSecret.IsNull() {
+		*oauthClientCredGrantClientSecret = r.OauthClientCredGrantClientSecret.ValueString()
+	} else {
+		oauthClientCredGrantClientSecret = nil
+	}
 
-        
+	configValues := map[string]*string{
+		"onelogin_domain":                       oneloginDomain,
+		"oauth_client_cred_grant_client_id":     oauthClientCredGrantClientId,
+		"oauth_client_cred_grant_client_secret": oauthClientCredGrantClientSecret,
+	}
 
-    	configValues := map[string]*string{
-    	"onelogin_domain": oneloginDomain,
-"oauth_client_cred_grant_client_id": oauthClientCredGrantClientId,
-"oauth_client_cred_grant_client_secret": oauthClientCredGrantClientSecret,
-
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationOneloginResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -182,24 +179,20 @@ func (r *IntegrationOneloginResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if v, ok := values["onelogin_domain"]; ok {
-r.OneloginDomain = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["onelogin_domain"]; ok {
+					r.OneloginDomain = types.StringValue(v.(string))
+				}
 
-               if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
-r.OauthClientCredGrantClientId = types.StringValue(v.(string))
-}
+				if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
+					r.OauthClientCredGrantClientId = types.StringValue(v.(string))
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationOneloginResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -237,22 +230,18 @@ func (r *IntegrationOneloginResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if v, ok := values["onelogin_domain"]; ok {
-r.OneloginDomain = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["onelogin_domain"]; ok {
+					r.OneloginDomain = types.StringValue(v.(string))
+				}
 
-                  if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
-r.OauthClientCredGrantClientId = types.StringValue(v.(string))
-}
+				if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
+					r.OauthClientCredGrantClientId = types.StringValue(v.(string))
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

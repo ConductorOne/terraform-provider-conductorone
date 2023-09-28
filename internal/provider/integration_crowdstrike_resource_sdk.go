@@ -2,8 +2,8 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationCrowdstrikeResourceModel) ToCreateDelegatedSDKType() *shared
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Crowdstrike"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationCrowdstrikeResourceModel) ToCreateSDKType() (*shared.Connect
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationCrowdstrikeResourceModel) ToUpdateSDKType() (*shared.Connect
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,53 +75,50 @@ func (r *IntegrationCrowdstrikeResourceModel) ToUpdateSDKType() (*shared.Connect
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("Crowdstrike"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(crowdstrikeCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Crowdstrike"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(crowdstrikeCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationCrowdstrikeResourceModel) populateConfig() map[string]*string {
-     crowdstrikeClientId := new(string)
-if !r.CrowdstrikeClientId.IsUnknown() && !r.CrowdstrikeClientId.IsNull() {
-*crowdstrikeClientId = r.CrowdstrikeClientId.ValueString()
-} else {
-crowdstrikeClientId = nil
-}
+	crowdstrikeClientId := new(string)
+	if !r.CrowdstrikeClientId.IsUnknown() && !r.CrowdstrikeClientId.IsNull() {
+		*crowdstrikeClientId = r.CrowdstrikeClientId.ValueString()
+	} else {
+		crowdstrikeClientId = nil
+	}
 
-        crowdstrikeClientSecret := new(string)
-if !r.CrowdstrikeClientSecret.IsUnknown() && !r.CrowdstrikeClientSecret.IsNull() {
-*crowdstrikeClientSecret = r.CrowdstrikeClientSecret.ValueString()
-} else {
-crowdstrikeClientSecret = nil
-}
+	crowdstrikeClientSecret := new(string)
+	if !r.CrowdstrikeClientSecret.IsUnknown() && !r.CrowdstrikeClientSecret.IsNull() {
+		*crowdstrikeClientSecret = r.CrowdstrikeClientSecret.ValueString()
+	} else {
+		crowdstrikeClientSecret = nil
+	}
 
-        region := new(string)
-if !r.Region.IsUnknown() && !r.Region.IsNull() {
-*region = r.Region.ValueString()
-} else {
-region = nil
-}
+	region := new(string)
+	if !r.Region.IsUnknown() && !r.Region.IsNull() {
+		*region = r.Region.ValueString()
+	} else {
+		region = nil
+	}
 
-        
+	configValues := map[string]*string{
+		"crowdstrike_client_id":     crowdstrikeClientId,
+		"crowdstrike_client_secret": crowdstrikeClientSecret,
+		"region":                    region,
+	}
 
-    	configValues := map[string]*string{
-    	"crowdstrike_client_id": crowdstrikeClientId,
-"crowdstrike_client_secret": crowdstrikeClientSecret,
-"region": region,
-
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationCrowdstrikeResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -182,24 +179,20 @@ func (r *IntegrationCrowdstrikeResourceModel) RefreshFromGetResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if v, ok := values["crowdstrike_client_id"]; ok {
-r.CrowdstrikeClientId = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["crowdstrike_client_id"]; ok {
+					r.CrowdstrikeClientId = types.StringValue(v.(string))
+				}
 
-               
-               if v, ok := values["region"]; ok {
-r.Region = types.StringValue(v.(string))
-}
+				if v, ok := values["region"]; ok {
+					r.Region = types.StringValue(v.(string))
+				}
 
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationCrowdstrikeResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -237,22 +230,18 @@ func (r *IntegrationCrowdstrikeResourceModel) RefreshFromCreateResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if v, ok := values["crowdstrike_client_id"]; ok {
-r.CrowdstrikeClientId = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["crowdstrike_client_id"]; ok {
+					r.CrowdstrikeClientId = types.StringValue(v.(string))
+				}
 
-                  
-                  if v, ok := values["region"]; ok {
-r.Region = types.StringValue(v.(string))
-}
+				if v, ok := values["region"]; ok {
+					r.Region = types.StringValue(v.(string))
+				}
 
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

@@ -35,17 +35,17 @@ type IntegrationNetsuiteResource struct {
 
 // IntegrationNetsuiteResourceModel describes the resource data model.
 type IntegrationNetsuiteResourceModel struct {
-	AppID                    types.String   `tfsdk:"app_id"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	DeletedAt                types.String   `tfsdk:"deleted_at"`
-	ID                       types.String   `tfsdk:"id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	UserIds                  []types.String `tfsdk:"user_ids"`
-NetsuiteAccountId types.String `tfsdk:"netsuite_account_id"`
-NetsuiteConsumerKey types.String `tfsdk:"netsuite_consumer_key"`
-NetsuiteConsumerSecret types.String `tfsdk:"netsuite_consumer_secret"`
-NetsuiteTokenKey types.String `tfsdk:"netsuite_token_key"`
-NetsuiteTokenSecret types.String `tfsdk:"netsuite_token_secret"`
+	AppID                  types.String   `tfsdk:"app_id"`
+	CreatedAt              types.String   `tfsdk:"created_at"`
+	DeletedAt              types.String   `tfsdk:"deleted_at"`
+	ID                     types.String   `tfsdk:"id"`
+	UpdatedAt              types.String   `tfsdk:"updated_at"`
+	UserIds                []types.String `tfsdk:"user_ids"`
+	NetsuiteAccountId      types.String   `tfsdk:"netsuite_account_id"`
+	NetsuiteConsumerKey    types.String   `tfsdk:"netsuite_consumer_key"`
+	NetsuiteConsumerSecret types.String   `tfsdk:"netsuite_consumer_secret"`
+	NetsuiteTokenKey       types.String   `tfsdk:"netsuite_token_key"`
+	NetsuiteTokenSecret    types.String   `tfsdk:"netsuite_token_secret"`
 }
 
 func (r *IntegrationNetsuiteResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -96,28 +96,28 @@ func (r *IntegrationNetsuiteResource) Schema(ctx context.Context, req resource.S
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"netsuite_account_id": &schema.StringAttribute{
-Optional: true,
-Description: `Netsuite Account ID`,
-},
-"netsuite_consumer_key": &schema.StringAttribute{
-Optional: true,
-Description: `Netsuite Consumer Key`,
-},
-"netsuite_consumer_secret": &schema.StringAttribute{
-Optional: true,
-Sensitive: true,
-Description: `Netsuite Consumer Secret`,
-},
-"netsuite_token_key": &schema.StringAttribute{
-Optional: true,
-Description: `Netsuite Token Key`,
-},
-"netsuite_token_secret": &schema.StringAttribute{
-Optional: true,
-Sensitive: true,
-Description: `Netsuite Token Secret`,
-},
-},
+				Optional:    true,
+				Description: `Netsuite Account ID`,
+			},
+			"netsuite_consumer_key": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Netsuite Consumer Key`,
+			},
+			"netsuite_consumer_secret": &schema.StringAttribute{
+				Optional:    true,
+				Sensitive:   true,
+				Description: `Netsuite Consumer Secret`,
+			},
+			"netsuite_token_key": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Netsuite Token Key`,
+			},
+			"netsuite_token_secret": &schema.StringAttribute{
+				Optional:    true,
+				Sensitive:   true,
+				Description: `Netsuite Token Secret`,
+			},
+		},
 	}
 }
 
@@ -159,7 +159,7 @@ func (r *IntegrationNetsuiteResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-    _, configSet := data.getConfig()
+	_, configSet := data.getConfig()
 
 	var configResp *shared.Connector
 
@@ -249,9 +249,9 @@ func (r *IntegrationNetsuiteResource) Read(ctx context.Context, req resource.Rea
 	}
 
 	if res.ConnectorView.Connector.DeletedAt != nil {
-        resp.State.RemoveResource(ctx)
-        return
-    }
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	data.RefreshFromGetResponse(res.ConnectorView.Connector)
 
@@ -291,52 +291,52 @@ func (r *IntegrationNetsuiteResource) Update(ctx context.Context, req resource.U
 
 	updateCon, configSet := data.ToUpdateSDKType()
 	if configSet {
-        configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
-            ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
-                Connector:  updateCon,
-                UpdateMask: "config",
-            },
-            AppID: appID,
-            ID:    data.ID.ValueString(),
-        }
-        updateRes, err := r.client.Connector.Update(ctx, configReq)
-        if err != nil {
-            resp.Diagnostics.AddError("failure to invoke API", err.Error())
-            return
-        }
-        if updateRes == nil {
-            resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
-            return
-        }
-        if updateRes.StatusCode != 200 {
-            resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
-            return
-        }
-        data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
-    } else {
-        configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
-            ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
-                Connector:  updateCon,
-                UpdateMask: "displayName,userIds",
-            },
-            ConnectorAppID: appID,
-            ConnectorID:    data.ID.ValueString(),
-        }
-        updateRes, err := r.client.Connector.UpdateDelegated(ctx, configReq)
-        if err != nil {
-            resp.Diagnostics.AddError("failure to invoke API", err.Error())
-            return
-        }
-        if updateRes == nil {
-            resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
-            return
-        }
-        if updateRes.StatusCode != 200 {
-            resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
-            return
-        }
-        data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
-    }
+		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
+			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
+				Connector:  updateCon,
+				UpdateMask: "config",
+			},
+			AppID: appID,
+			ID:    data.ID.ValueString(),
+		}
+		updateRes, err := r.client.Connector.Update(ctx, configReq)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if updateRes == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+			return
+		}
+		if updateRes.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+			return
+		}
+		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+	} else {
+		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
+			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
+				Connector:  updateCon,
+				UpdateMask: "displayName,userIds",
+			},
+			ConnectorAppID: appID,
+			ConnectorID:    data.ID.ValueString(),
+		}
+		updateRes, err := r.client.Connector.UpdateDelegated(ctx, configReq)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if updateRes == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+			return
+		}
+		if updateRes.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+			return
+		}
+		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+	}
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

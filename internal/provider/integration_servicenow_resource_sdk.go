@@ -2,8 +2,8 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationServicenowResourceModel) ToCreateDelegatedSDKType() *shared.
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("ServiceNow"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationServicenowResourceModel) ToCreateSDKType() (*shared.Connecto
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationServicenowResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,53 +75,50 @@ func (r *IntegrationServicenowResourceModel) ToUpdateSDKType() (*shared.Connecto
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("ServiceNow"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(servicenowCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("ServiceNow"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(servicenowCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationServicenowResourceModel) populateConfig() map[string]*string {
-     password := new(string)
-if !r.Password.IsUnknown() && !r.Password.IsNull() {
-*password = r.Password.ValueString()
-} else {
-password = nil
-}
+	password := new(string)
+	if !r.Password.IsUnknown() && !r.Password.IsNull() {
+		*password = r.Password.ValueString()
+	} else {
+		password = nil
+	}
 
-        username := new(string)
-if !r.Username.IsUnknown() && !r.Username.IsNull() {
-*username = r.Username.ValueString()
-} else {
-username = nil
-}
+	username := new(string)
+	if !r.Username.IsUnknown() && !r.Username.IsNull() {
+		*username = r.Username.ValueString()
+	} else {
+		username = nil
+	}
 
-        deployment := new(string)
-if !r.Deployment.IsUnknown() && !r.Deployment.IsNull() {
-*deployment = r.Deployment.ValueString()
-} else {
-deployment = nil
-}
+	deployment := new(string)
+	if !r.Deployment.IsUnknown() && !r.Deployment.IsNull() {
+		*deployment = r.Deployment.ValueString()
+	} else {
+		deployment = nil
+	}
 
-        
+	configValues := map[string]*string{
+		"password":   password,
+		"username":   username,
+		"deployment": deployment,
+	}
 
-    	configValues := map[string]*string{
-    	"password": password,
-"username": username,
-"deployment": deployment,
-
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationServicenowResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -182,24 +179,21 @@ func (r *IntegrationServicenowResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               
-               if v, ok := values["username"]; ok {
-r.Username = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-               if v, ok := values["deployment"]; ok {
-r.Deployment = types.StringValue(v.(string))
-}
+				if v, ok := values["username"]; ok {
+					r.Username = types.StringValue(v.(string))
+				}
 
-               
-           }
-       }
-    }
+				if v, ok := values["deployment"]; ok {
+					r.Deployment = types.StringValue(v.(string))
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationServicenowResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -237,22 +231,19 @@ func (r *IntegrationServicenowResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  
-                  if v, ok := values["username"]; ok {
-r.Username = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-                  if v, ok := values["deployment"]; ok {
-r.Deployment = types.StringValue(v.(string))
-}
+				if v, ok := values["username"]; ok {
+					r.Username = types.StringValue(v.(string))
+				}
 
-                  
-              }
-          }
-       }
+				if v, ok := values["deployment"]; ok {
+					r.Deployment = types.StringValue(v.(string))
+				}
+
+			}
+		}
+	}
 }

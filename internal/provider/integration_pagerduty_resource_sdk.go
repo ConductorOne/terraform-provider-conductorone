@@ -2,8 +2,8 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationPagerdutyResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("PagerDuty"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationPagerdutyResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationPagerdutyResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,37 +75,34 @@ func (r *IntegrationPagerdutyResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("PagerDuty"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(pagerdutyCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("PagerDuty"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(pagerdutyCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationPagerdutyResourceModel) populateConfig() map[string]*string {
-     pagerdutyApiToken := new(string)
-if !r.PagerdutyApiToken.IsUnknown() && !r.PagerdutyApiToken.IsNull() {
-*pagerdutyApiToken = r.PagerdutyApiToken.ValueString()
-} else {
-pagerdutyApiToken = nil
-}
+	pagerdutyApiToken := new(string)
+	if !r.PagerdutyApiToken.IsUnknown() && !r.PagerdutyApiToken.IsNull() {
+		*pagerdutyApiToken = r.PagerdutyApiToken.ValueString()
+	} else {
+		pagerdutyApiToken = nil
+	}
 
-        
+	configValues := map[string]*string{
+		"pagerduty_api_token": pagerdutyApiToken,
+	}
 
-    	configValues := map[string]*string{
-    	"pagerduty_api_token": pagerdutyApiToken,
-
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationPagerdutyResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -166,7 +163,6 @@ func (r *IntegrationPagerdutyResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
 }
 
 func (r *IntegrationPagerdutyResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -204,5 +200,4 @@ func (r *IntegrationPagerdutyResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
 }

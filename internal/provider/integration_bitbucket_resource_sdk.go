@@ -2,8 +2,8 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationBitbucketResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Bitbucket"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationBitbucketResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationBitbucketResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,45 +75,42 @@ func (r *IntegrationBitbucketResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("Bitbucket"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(bitbucketCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Bitbucket"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(bitbucketCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationBitbucketResourceModel) populateConfig() map[string]*string {
-     bitbucketConsumerKey := new(string)
-if !r.BitbucketConsumerKey.IsUnknown() && !r.BitbucketConsumerKey.IsNull() {
-*bitbucketConsumerKey = r.BitbucketConsumerKey.ValueString()
-} else {
-bitbucketConsumerKey = nil
-}
+	bitbucketConsumerKey := new(string)
+	if !r.BitbucketConsumerKey.IsUnknown() && !r.BitbucketConsumerKey.IsNull() {
+		*bitbucketConsumerKey = r.BitbucketConsumerKey.ValueString()
+	} else {
+		bitbucketConsumerKey = nil
+	}
 
-        bitbucketConsumerSecret := new(string)
-if !r.BitbucketConsumerSecret.IsUnknown() && !r.BitbucketConsumerSecret.IsNull() {
-*bitbucketConsumerSecret = r.BitbucketConsumerSecret.ValueString()
-} else {
-bitbucketConsumerSecret = nil
-}
+	bitbucketConsumerSecret := new(string)
+	if !r.BitbucketConsumerSecret.IsUnknown() && !r.BitbucketConsumerSecret.IsNull() {
+		*bitbucketConsumerSecret = r.BitbucketConsumerSecret.ValueString()
+	} else {
+		bitbucketConsumerSecret = nil
+	}
 
-        
+	configValues := map[string]*string{
+		"bitbucket_consumer_key":    bitbucketConsumerKey,
+		"bitbucket_consumer_secret": bitbucketConsumerSecret,
+	}
 
-    	configValues := map[string]*string{
-    	"bitbucket_consumer_key": bitbucketConsumerKey,
-"bitbucket_consumer_secret": bitbucketConsumerSecret,
-
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationBitbucketResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -174,20 +171,16 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if v, ok := values["bitbucket_consumer_key"]; ok {
-r.BitbucketConsumerKey = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["bitbucket_consumer_key"]; ok {
+					r.BitbucketConsumerKey = types.StringValue(v.(string))
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationBitbucketResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -225,18 +218,14 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if v, ok := values["bitbucket_consumer_key"]; ok {
-r.BitbucketConsumerKey = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["bitbucket_consumer_key"]; ok {
+					r.BitbucketConsumerKey = types.StringValue(v.(string))
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

@@ -2,7 +2,7 @@
 package provider
 
 import (
-    "fmt"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -22,8 +22,8 @@ func (r *IntegrationAwsResourceModel) ToCreateDelegatedSDKType() *shared.Connect
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("AWS"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationAwsResourceModel) ToCreateSDKType() (*shared.ConnectorServic
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationAwsResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,86 +75,83 @@ func (r *IntegrationAwsResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("AWS"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(awsCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("AWS"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(awsCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationAwsResourceModel) populateConfig() map[string]*string {
-     
-        awsRoleArn := new(string)
-if !r.AwsRoleArn.IsUnknown() && !r.AwsRoleArn.IsNull() {
-*awsRoleArn = r.AwsRoleArn.ValueString()
-} else {
-awsRoleArn = nil
-}
 
-        awsOrgsEnable := new(string)
-if !r.AwsOrgsEnable.IsUnknown() && !r.AwsOrgsEnable.IsNull() {
-*awsOrgsEnable = strconv.FormatBool(r.AwsOrgsEnable.ValueBool())
-} else {
-awsOrgsEnable = nil
-}
+	awsRoleArn := new(string)
+	if !r.AwsRoleArn.IsUnknown() && !r.AwsRoleArn.IsNull() {
+		*awsRoleArn = r.AwsRoleArn.ValueString()
+	} else {
+		awsRoleArn = nil
+	}
 
-        awsSsoEnable := new(string)
-if !r.AwsSsoEnable.IsUnknown() && !r.AwsSsoEnable.IsNull() {
-*awsSsoEnable = strconv.FormatBool(r.AwsSsoEnable.ValueBool())
-} else {
-awsSsoEnable = nil
-}
+	awsOrgsEnable := new(string)
+	if !r.AwsOrgsEnable.IsUnknown() && !r.AwsOrgsEnable.IsNull() {
+		*awsOrgsEnable = strconv.FormatBool(r.AwsOrgsEnable.ValueBool())
+	} else {
+		awsOrgsEnable = nil
+	}
 
-        awsSsoRegion := new(string)
-if !r.AwsSsoRegion.IsUnknown() && !r.AwsSsoRegion.IsNull() {
-*awsSsoRegion = r.AwsSsoRegion.ValueString()
-} else {
-awsSsoRegion = nil
-}
+	awsSsoEnable := new(string)
+	if !r.AwsSsoEnable.IsUnknown() && !r.AwsSsoEnable.IsNull() {
+		*awsSsoEnable = strconv.FormatBool(r.AwsSsoEnable.ValueBool())
+	} else {
+		awsSsoEnable = nil
+	}
 
-        awsSsoScimEnable := new(string)
-if !r.AwsSsoScimEnable.IsUnknown() && !r.AwsSsoScimEnable.IsNull() {
-*awsSsoScimEnable = strconv.FormatBool(r.AwsSsoScimEnable.ValueBool())
-} else {
-awsSsoScimEnable = nil
-}
+	awsSsoRegion := new(string)
+	if !r.AwsSsoRegion.IsUnknown() && !r.AwsSsoRegion.IsNull() {
+		*awsSsoRegion = r.AwsSsoRegion.ValueString()
+	} else {
+		awsSsoRegion = nil
+	}
 
-        awsSsoScimEndpoint := new(string)
-if !r.AwsSsoScimEndpoint.IsUnknown() && !r.AwsSsoScimEndpoint.IsNull() {
-*awsSsoScimEndpoint = r.AwsSsoScimEndpoint.ValueString()
-} else {
-awsSsoScimEndpoint = nil
-}
+	awsSsoScimEnable := new(string)
+	if !r.AwsSsoScimEnable.IsUnknown() && !r.AwsSsoScimEnable.IsNull() {
+		*awsSsoScimEnable = strconv.FormatBool(r.AwsSsoScimEnable.ValueBool())
+	} else {
+		awsSsoScimEnable = nil
+	}
 
-        awsSsoScimAccessToken := new(string)
-if !r.AwsSsoScimAccessToken.IsUnknown() && !r.AwsSsoScimAccessToken.IsNull() {
-*awsSsoScimAccessToken = r.AwsSsoScimAccessToken.ValueString()
-} else {
-awsSsoScimAccessToken = nil
-}
+	awsSsoScimEndpoint := new(string)
+	if !r.AwsSsoScimEndpoint.IsUnknown() && !r.AwsSsoScimEndpoint.IsNull() {
+		*awsSsoScimEndpoint = r.AwsSsoScimEndpoint.ValueString()
+	} else {
+		awsSsoScimEndpoint = nil
+	}
 
-        
+	awsSsoScimAccessToken := new(string)
+	if !r.AwsSsoScimAccessToken.IsUnknown() && !r.AwsSsoScimAccessToken.IsNull() {
+		*awsSsoScimAccessToken = r.AwsSsoScimAccessToken.ValueString()
+	} else {
+		awsSsoScimAccessToken = nil
+	}
 
-    	configValues := map[string]*string{
-    	"aws_role_arn": awsRoleArn,
-"aws_orgs_enable": awsOrgsEnable,
-"aws_sso_enable": awsSsoEnable,
-"aws_sso_region": awsSsoRegion,
-"aws_sso_scim_enable": awsSsoScimEnable,
-"aws_sso_scim_endpoint": awsSsoScimEndpoint,
-"aws_sso_scim_access_token": awsSsoScimAccessToken,
+	configValues := map[string]*string{
+		"aws_role_arn":              awsRoleArn,
+		"aws_orgs_enable":           awsOrgsEnable,
+		"aws_sso_enable":            awsSsoEnable,
+		"aws_sso_region":            awsSsoRegion,
+		"aws_sso_scim_enable":       awsSsoScimEnable,
+		"aws_sso_scim_endpoint":     awsSsoScimEndpoint,
+		"aws_sso_scim_access_token": awsSsoScimAccessToken,
+	}
 
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationAwsResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -215,65 +212,62 @@ func (r *IntegrationAwsResourceModel) RefreshFromGetResponse(resp *shared.Connec
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if v, ok := values["aws_external_id"]; ok {
-r.AwsExternalId = types.StringValue(v.(string))
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["aws_external_id"]; ok {
+					r.AwsExternalId = types.StringValue(v.(string))
+				}
 
-               if v, ok := values["aws_role_arn"]; ok {
-r.AwsRoleArn = types.StringValue(v.(string))
-}
+				if v, ok := values["aws_role_arn"]; ok {
+					r.AwsRoleArn = types.StringValue(v.(string))
+				}
 
-               if localV, ok := configValues["aws_orgs_enable"]; ok {
-if v, ok := values["aws_orgs_enable"]; ok {
-bv, err := strconv.ParseBool(v.(string))
-if err == nil {
-if localV != nil || (localV == nil && !bv) {
-r.AwsOrgsEnable = types.BoolValue(bv)
-}
-}
-}
-}
+				if localV, ok := configValues["aws_orgs_enable"]; ok {
+					if v, ok := values["aws_orgs_enable"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.AwsOrgsEnable = types.BoolValue(bv)
+							}
+						}
+					}
+				}
 
-               if localV, ok := configValues["aws_sso_enable"]; ok {
-if v, ok := values["aws_sso_enable"]; ok {
-bv, err := strconv.ParseBool(v.(string))
-if err == nil {
-if localV != nil || (localV == nil && !bv) {
-r.AwsSsoEnable = types.BoolValue(bv)
-}
-}
-}
-}
+				if localV, ok := configValues["aws_sso_enable"]; ok {
+					if v, ok := values["aws_sso_enable"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.AwsSsoEnable = types.BoolValue(bv)
+							}
+						}
+					}
+				}
 
-               if v, ok := values["aws_sso_region"]; ok {
-r.AwsSsoRegion = types.StringValue(v.(string))
-}
+				if v, ok := values["aws_sso_region"]; ok {
+					r.AwsSsoRegion = types.StringValue(v.(string))
+				}
 
-               if localV, ok := configValues["aws_sso_scim_enable"]; ok {
-if v, ok := values["aws_sso_scim_enable"]; ok {
-bv, err := strconv.ParseBool(v.(string))
-if err == nil {
-if localV != nil || (localV == nil && !bv) {
-r.AwsSsoScimEnable = types.BoolValue(bv)
-}
-}
-}
-}
+				if localV, ok := configValues["aws_sso_scim_enable"]; ok {
+					if v, ok := values["aws_sso_scim_enable"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.AwsSsoScimEnable = types.BoolValue(bv)
+							}
+						}
+					}
+				}
 
-               if v, ok := values["aws_sso_scim_endpoint"]; ok {
-r.AwsSsoScimEndpoint = types.StringValue(v.(string))
-}
+				if v, ok := values["aws_sso_scim_endpoint"]; ok {
+					r.AwsSsoScimEndpoint = types.StringValue(v.(string))
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationAwsResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -311,63 +305,60 @@ func (r *IntegrationAwsResourceModel) RefreshFromCreateResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if v, ok := values["aws_external_id"]; ok {
-r.AwsExternalId = types.StringValue(v.(string))
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["aws_external_id"]; ok {
+					r.AwsExternalId = types.StringValue(v.(string))
+				}
 
-                  if v, ok := values["aws_role_arn"]; ok {
-r.AwsRoleArn = types.StringValue(v.(string))
-}
+				if v, ok := values["aws_role_arn"]; ok {
+					r.AwsRoleArn = types.StringValue(v.(string))
+				}
 
-                  if localV, ok := configValues["aws_orgs_enable"]; ok {
-if v, ok := values["aws_orgs_enable"]; ok {
-bv, err := strconv.ParseBool(v.(string))
-if err == nil {
-if localV != nil || (localV == nil && !bv) {
-r.AwsOrgsEnable = types.BoolValue(bv)
-}
-}
-}
-}
+				if localV, ok := configValues["aws_orgs_enable"]; ok {
+					if v, ok := values["aws_orgs_enable"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.AwsOrgsEnable = types.BoolValue(bv)
+							}
+						}
+					}
+				}
 
-                  if localV, ok := configValues["aws_sso_enable"]; ok {
-if v, ok := values["aws_sso_enable"]; ok {
-bv, err := strconv.ParseBool(v.(string))
-if err == nil {
-if localV != nil || (localV == nil && !bv) {
-r.AwsSsoEnable = types.BoolValue(bv)
-}
-}
-}
-}
+				if localV, ok := configValues["aws_sso_enable"]; ok {
+					if v, ok := values["aws_sso_enable"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.AwsSsoEnable = types.BoolValue(bv)
+							}
+						}
+					}
+				}
 
-                  if v, ok := values["aws_sso_region"]; ok {
-r.AwsSsoRegion = types.StringValue(v.(string))
-}
+				if v, ok := values["aws_sso_region"]; ok {
+					r.AwsSsoRegion = types.StringValue(v.(string))
+				}
 
-                  if localV, ok := configValues["aws_sso_scim_enable"]; ok {
-if v, ok := values["aws_sso_scim_enable"]; ok {
-bv, err := strconv.ParseBool(v.(string))
-if err == nil {
-if localV != nil || (localV == nil && !bv) {
-r.AwsSsoScimEnable = types.BoolValue(bv)
-}
-}
-}
-}
+				if localV, ok := configValues["aws_sso_scim_enable"]; ok {
+					if v, ok := values["aws_sso_scim_enable"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.AwsSsoScimEnable = types.BoolValue(bv)
+							}
+						}
+					}
+				}
 
-                  if v, ok := values["aws_sso_scim_endpoint"]; ok {
-r.AwsSsoScimEndpoint = types.StringValue(v.(string))
-}
+				if v, ok := values["aws_sso_scim_endpoint"]; ok {
+					r.AwsSsoScimEndpoint = types.StringValue(v.(string))
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

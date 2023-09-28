@@ -2,8 +2,8 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationJiraCloudResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Jira Cloud"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationJiraCloudResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,53 +75,50 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("Jira Cloud"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(jiraCloudCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Jira Cloud"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(jiraCloudCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationJiraCloudResourceModel) populateConfig() map[string]*string {
-     jiracloudDomain := new(string)
-if !r.JiracloudDomain.IsUnknown() && !r.JiracloudDomain.IsNull() {
-*jiracloudDomain = r.JiracloudDomain.ValueString()
-} else {
-jiracloudDomain = nil
-}
+	jiracloudDomain := new(string)
+	if !r.JiracloudDomain.IsUnknown() && !r.JiracloudDomain.IsNull() {
+		*jiracloudDomain = r.JiracloudDomain.ValueString()
+	} else {
+		jiracloudDomain = nil
+	}
 
-        jiracloudUsername := new(string)
-if !r.JiracloudUsername.IsUnknown() && !r.JiracloudUsername.IsNull() {
-*jiracloudUsername = r.JiracloudUsername.ValueString()
-} else {
-jiracloudUsername = nil
-}
+	jiracloudUsername := new(string)
+	if !r.JiracloudUsername.IsUnknown() && !r.JiracloudUsername.IsNull() {
+		*jiracloudUsername = r.JiracloudUsername.ValueString()
+	} else {
+		jiracloudUsername = nil
+	}
 
-        jiracloudApikey := new(string)
-if !r.JiracloudApikey.IsUnknown() && !r.JiracloudApikey.IsNull() {
-*jiracloudApikey = r.JiracloudApikey.ValueString()
-} else {
-jiracloudApikey = nil
-}
+	jiracloudApikey := new(string)
+	if !r.JiracloudApikey.IsUnknown() && !r.JiracloudApikey.IsNull() {
+		*jiracloudApikey = r.JiracloudApikey.ValueString()
+	} else {
+		jiracloudApikey = nil
+	}
 
-        
+	configValues := map[string]*string{
+		"jiracloud_domain":   jiracloudDomain,
+		"jiracloud_username": jiracloudUsername,
+		"jiracloud_apikey":   jiracloudApikey,
+	}
 
-    	configValues := map[string]*string{
-    	"jiracloud_domain": jiracloudDomain,
-"jiracloud_username": jiracloudUsername,
-"jiracloud_apikey": jiracloudApikey,
-
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationJiraCloudResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -182,24 +179,20 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if v, ok := values["jiracloud_domain"]; ok {
-r.JiracloudDomain = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["jiracloud_domain"]; ok {
+					r.JiracloudDomain = types.StringValue(v.(string))
+				}
 
-               if v, ok := values["jiracloud_username"]; ok {
-r.JiracloudUsername = types.StringValue(v.(string))
-}
+				if v, ok := values["jiracloud_username"]; ok {
+					r.JiracloudUsername = types.StringValue(v.(string))
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationJiraCloudResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -237,22 +230,18 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if v, ok := values["jiracloud_domain"]; ok {
-r.JiracloudDomain = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["jiracloud_domain"]; ok {
+					r.JiracloudDomain = types.StringValue(v.(string))
+				}
 
-                  if v, ok := values["jiracloud_username"]; ok {
-r.JiracloudUsername = types.StringValue(v.(string))
-}
+				if v, ok := values["jiracloud_username"]; ok {
+					r.JiracloudUsername = types.StringValue(v.(string))
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

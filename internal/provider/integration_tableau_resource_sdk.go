@@ -2,8 +2,8 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
 
 	"conductorone/internal/sdk"
@@ -22,8 +22,8 @@ func (r *IntegrationTableauResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Tableau"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -36,20 +36,20 @@ func (r *IntegrationTableauResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -59,11 +59,11 @@ func (r *IntegrationTableauResourceModel) ToUpdateSDKType() (*shared.Connector, 
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]string)
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]string)
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			configOut[key] = *configValue
@@ -75,61 +75,58 @@ func (r *IntegrationTableauResourceModel) ToUpdateSDKType() (*shared.Connector, 
 	}
 
 	out := shared.Connector{
-	    DisplayName: sdk.String("Tableau"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(tableauCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Tableau"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(tableauCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
 }
 
 func (r *IntegrationTableauResourceModel) populateConfig() map[string]*string {
-     tableauSiteId := new(string)
-if !r.TableauSiteId.IsUnknown() && !r.TableauSiteId.IsNull() {
-*tableauSiteId = r.TableauSiteId.ValueString()
-} else {
-tableauSiteId = nil
-}
+	tableauSiteId := new(string)
+	if !r.TableauSiteId.IsUnknown() && !r.TableauSiteId.IsNull() {
+		*tableauSiteId = r.TableauSiteId.ValueString()
+	} else {
+		tableauSiteId = nil
+	}
 
-        tableauServerPath := new(string)
-if !r.TableauServerPath.IsUnknown() && !r.TableauServerPath.IsNull() {
-*tableauServerPath = r.TableauServerPath.ValueString()
-} else {
-tableauServerPath = nil
-}
+	tableauServerPath := new(string)
+	if !r.TableauServerPath.IsUnknown() && !r.TableauServerPath.IsNull() {
+		*tableauServerPath = r.TableauServerPath.ValueString()
+	} else {
+		tableauServerPath = nil
+	}
 
-        tableauAccessTokenName := new(string)
-if !r.TableauAccessTokenName.IsUnknown() && !r.TableauAccessTokenName.IsNull() {
-*tableauAccessTokenName = r.TableauAccessTokenName.ValueString()
-} else {
-tableauAccessTokenName = nil
-}
+	tableauAccessTokenName := new(string)
+	if !r.TableauAccessTokenName.IsUnknown() && !r.TableauAccessTokenName.IsNull() {
+		*tableauAccessTokenName = r.TableauAccessTokenName.ValueString()
+	} else {
+		tableauAccessTokenName = nil
+	}
 
-        tableauAccessTokenSecret := new(string)
-if !r.TableauAccessTokenSecret.IsUnknown() && !r.TableauAccessTokenSecret.IsNull() {
-*tableauAccessTokenSecret = r.TableauAccessTokenSecret.ValueString()
-} else {
-tableauAccessTokenSecret = nil
-}
+	tableauAccessTokenSecret := new(string)
+	if !r.TableauAccessTokenSecret.IsUnknown() && !r.TableauAccessTokenSecret.IsNull() {
+		*tableauAccessTokenSecret = r.TableauAccessTokenSecret.ValueString()
+	} else {
+		tableauAccessTokenSecret = nil
+	}
 
-        
+	configValues := map[string]*string{
+		"tableau_site_id":             tableauSiteId,
+		"tableau_server_path":         tableauServerPath,
+		"tableau_access_token_name":   tableauAccessTokenName,
+		"tableau_access_token_secret": tableauAccessTokenSecret,
+	}
 
-    	configValues := map[string]*string{
-    	"tableau_site_id": tableauSiteId,
-"tableau_server_path": tableauServerPath,
-"tableau_access_token_name": tableauAccessTokenName,
-"tableau_access_token_secret": tableauAccessTokenSecret,
-
-    	}
-
-    	return configValues
+	return configValues
 }
 
 func (r *IntegrationTableauResourceModel) getConfig() (map[string]string, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]string)
 	configSet := false
 	for key, configValue := range configValues {
@@ -190,28 +187,24 @@ func (r *IntegrationTableauResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if v, ok := values["tableau_site_id"]; ok {
-r.TableauSiteId = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["tableau_site_id"]; ok {
+					r.TableauSiteId = types.StringValue(v.(string))
+				}
 
-               if v, ok := values["tableau_server_path"]; ok {
-r.TableauServerPath = types.StringValue(v.(string))
-}
+				if v, ok := values["tableau_server_path"]; ok {
+					r.TableauServerPath = types.StringValue(v.(string))
+				}
 
-               if v, ok := values["tableau_access_token_name"]; ok {
-r.TableauAccessTokenName = types.StringValue(v.(string))
-}
+				if v, ok := values["tableau_access_token_name"]; ok {
+					r.TableauAccessTokenName = types.StringValue(v.(string))
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationTableauResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -249,26 +242,22 @@ func (r *IntegrationTableauResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if v, ok := values["tableau_site_id"]; ok {
-r.TableauSiteId = types.StringValue(v.(string))
-}
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["tableau_site_id"]; ok {
+					r.TableauSiteId = types.StringValue(v.(string))
+				}
 
-                  if v, ok := values["tableau_server_path"]; ok {
-r.TableauServerPath = types.StringValue(v.(string))
-}
+				if v, ok := values["tableau_server_path"]; ok {
+					r.TableauServerPath = types.StringValue(v.(string))
+				}
 
-                  if v, ok := values["tableau_access_token_name"]; ok {
-r.TableauAccessTokenName = types.StringValue(v.(string))
-}
+				if v, ok := values["tableau_access_token_name"]; ok {
+					r.TableauAccessTokenName = types.StringValue(v.(string))
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

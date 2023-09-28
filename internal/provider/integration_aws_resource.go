@@ -35,20 +35,20 @@ type IntegrationAwsResource struct {
 
 // IntegrationAwsResourceModel describes the resource data model.
 type IntegrationAwsResourceModel struct {
-	AppID                    types.String   `tfsdk:"app_id"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	DeletedAt                types.String   `tfsdk:"deleted_at"`
-	ID                       types.String   `tfsdk:"id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	UserIds                  []types.String `tfsdk:"user_ids"`
-AwsExternalId types.String `tfsdk:"aws_external_id"`
-AwsRoleArn types.String `tfsdk:"aws_role_arn"`
-AwsOrgsEnable types.Bool `tfsdk:"aws_orgs_enable"`
-AwsSsoEnable types.Bool `tfsdk:"aws_sso_enable"`
-AwsSsoRegion types.String `tfsdk:"aws_sso_region"`
-AwsSsoScimEnable types.Bool `tfsdk:"aws_sso_scim_enable"`
-AwsSsoScimEndpoint types.String `tfsdk:"aws_sso_scim_endpoint"`
-AwsSsoScimAccessToken types.String `tfsdk:"aws_sso_scim_access_token"`
+	AppID                 types.String   `tfsdk:"app_id"`
+	CreatedAt             types.String   `tfsdk:"created_at"`
+	DeletedAt             types.String   `tfsdk:"deleted_at"`
+	ID                    types.String   `tfsdk:"id"`
+	UpdatedAt             types.String   `tfsdk:"updated_at"`
+	UserIds               []types.String `tfsdk:"user_ids"`
+	AwsExternalId         types.String   `tfsdk:"aws_external_id"`
+	AwsRoleArn            types.String   `tfsdk:"aws_role_arn"`
+	AwsOrgsEnable         types.Bool     `tfsdk:"aws_orgs_enable"`
+	AwsSsoEnable          types.Bool     `tfsdk:"aws_sso_enable"`
+	AwsSsoRegion          types.String   `tfsdk:"aws_sso_region"`
+	AwsSsoScimEnable      types.Bool     `tfsdk:"aws_sso_scim_enable"`
+	AwsSsoScimEndpoint    types.String   `tfsdk:"aws_sso_scim_endpoint"`
+	AwsSsoScimAccessToken types.String   `tfsdk:"aws_sso_scim_access_token"`
 }
 
 func (r *IntegrationAwsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -99,39 +99,39 @@ func (r *IntegrationAwsResource) Schema(ctx context.Context, req resource.Schema
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"aws_external_id": &schema.StringAttribute{
-Computed: true,
-Description: `External ID`,
-},
-"aws_role_arn": &schema.StringAttribute{
-Optional: true,
-Description: `Role ARN`,
-},
-"aws_orgs_enable": &schema.BoolAttribute{
-Optional: true,
-Description: `Enable support for AWS Organizations`,
-},
-"aws_sso_enable": &schema.BoolAttribute{
-Optional: true,
-Description: `Enable support for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
-},
-"aws_sso_region": &schema.StringAttribute{
-Optional: true,
-Description: `Region for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
-},
-"aws_sso_scim_enable": &schema.BoolAttribute{
-Optional: true,
-Description: `Enable usage of the AWS IAM Identity Center SCIM API (successor to AWS Single Sign-On)`,
-},
-"aws_sso_scim_endpoint": &schema.StringAttribute{
-Optional: true,
-Description: `SCIM endpoint for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
-},
-"aws_sso_scim_access_token": &schema.StringAttribute{
-Optional: true,
-Sensitive: true,
-Description: `SCIM access token for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
-},
-},
+				Computed:    true,
+				Description: `External ID`,
+			},
+			"aws_role_arn": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Role ARN`,
+			},
+			"aws_orgs_enable": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Enable support for AWS Organizations`,
+			},
+			"aws_sso_enable": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Enable support for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
+			},
+			"aws_sso_region": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Region for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
+			},
+			"aws_sso_scim_enable": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Enable usage of the AWS IAM Identity Center SCIM API (successor to AWS Single Sign-On)`,
+			},
+			"aws_sso_scim_endpoint": &schema.StringAttribute{
+				Optional:    true,
+				Description: `SCIM endpoint for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
+			},
+			"aws_sso_scim_access_token": &schema.StringAttribute{
+				Optional:    true,
+				Sensitive:   true,
+				Description: `SCIM access token for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
+			},
+		},
 	}
 }
 
@@ -173,7 +173,7 @@ func (r *IntegrationAwsResource) Create(ctx context.Context, req resource.Create
 		return
 	}
 
-    _, configSet := data.getConfig()
+	_, configSet := data.getConfig()
 
 	var configResp *shared.Connector
 
@@ -263,9 +263,9 @@ func (r *IntegrationAwsResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 
 	if res.ConnectorView.Connector.DeletedAt != nil {
-        resp.State.RemoveResource(ctx)
-        return
-    }
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	data.RefreshFromGetResponse(res.ConnectorView.Connector)
 
@@ -305,52 +305,52 @@ func (r *IntegrationAwsResource) Update(ctx context.Context, req resource.Update
 
 	updateCon, configSet := data.ToUpdateSDKType()
 	if configSet {
-        configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
-            ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
-                Connector:  updateCon,
-                UpdateMask: "config",
-            },
-            AppID: appID,
-            ID:    data.ID.ValueString(),
-        }
-        updateRes, err := r.client.Connector.Update(ctx, configReq)
-        if err != nil {
-            resp.Diagnostics.AddError("failure to invoke API", err.Error())
-            return
-        }
-        if updateRes == nil {
-            resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
-            return
-        }
-        if updateRes.StatusCode != 200 {
-            resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
-            return
-        }
-        data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
-    } else {
-        configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
-            ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
-                Connector:  updateCon,
-                UpdateMask: "displayName,userIds",
-            },
-            ConnectorAppID: appID,
-            ConnectorID:    data.ID.ValueString(),
-        }
-        updateRes, err := r.client.Connector.UpdateDelegated(ctx, configReq)
-        if err != nil {
-            resp.Diagnostics.AddError("failure to invoke API", err.Error())
-            return
-        }
-        if updateRes == nil {
-            resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
-            return
-        }
-        if updateRes.StatusCode != 200 {
-            resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
-            return
-        }
-        data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
-    }
+		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
+			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
+				Connector:  updateCon,
+				UpdateMask: "config",
+			},
+			AppID: appID,
+			ID:    data.ID.ValueString(),
+		}
+		updateRes, err := r.client.Connector.Update(ctx, configReq)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if updateRes == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+			return
+		}
+		if updateRes.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+			return
+		}
+		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+	} else {
+		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
+			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
+				Connector:  updateCon,
+				UpdateMask: "displayName,userIds",
+			},
+			ConnectorAppID: appID,
+			ConnectorID:    data.ID.ValueString(),
+		}
+		updateRes, err := r.client.Connector.UpdateDelegated(ctx, configReq)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			return
+		}
+		if updateRes == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", updateRes))
+			return
+		}
+		if updateRes.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", updateRes.StatusCode), debugResponse(updateRes.RawResponse))
+			return
+		}
+		data.RefreshFromUpdateResponse(updateRes.ConnectorServiceUpdateResponse.ConnectorView.Connector)
+	}
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
