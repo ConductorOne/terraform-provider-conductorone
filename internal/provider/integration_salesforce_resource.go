@@ -94,7 +94,6 @@ func (r *IntegrationSalesforceResource) Schema(ctx context.Context, req resource
 			},
 			"salesforce_instance_url": &schema.StringAttribute{
 				Optional:    true,
-				Sensitive:   true,
 				Description: `Salesforce Domain`,
 			},
 			"salesforce_username_for_email": &schema.BoolAttribute{

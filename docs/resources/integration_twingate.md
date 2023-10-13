@@ -36,7 +36,7 @@ resource "conductorone_integration_twingate" "twingate" {
 ### Optional
 
 - `twingate_apikey` (String, Sensitive) Twingate API Key
-- `twingate_domain` (String, Sensitive) Twingate Domain
+- `twingate_domain` (String) Twingate Domain
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

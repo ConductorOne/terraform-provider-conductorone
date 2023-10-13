@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const googleCloudPlatformCatalogID = "2MmyvKxWGE3Axgi03HtDIaZzRmW"
+const googleCloudPlatformCatalogID = "28fj8AZmzDkDonl2lqsGTikiQKV"
 
 func (r *IntegrationGoogleCloudPlatformResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(googleCloudPlatformCatalogID)

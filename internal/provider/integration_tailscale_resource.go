@@ -99,7 +99,6 @@ func (r *IntegrationTailscaleResource) Schema(ctx context.Context, req resource.
 			},
 			"tailnet": &schema.StringAttribute{
 				Optional:    true,
-				Sensitive:   true,
 				Description: `Tailscale Tailnet`,
 			},
 		},

@@ -190,6 +190,9 @@ func (r *IntegrationUkgResourceModel) RefreshFromGetResponse(resp *shared.Connec
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["ukg_customer_api_key"]; ok {
+					r.UkgCustomerApiKey = types.StringValue(v.(string))
+				}
 
 				if v, ok := values["ukg_username"]; ok {
 					r.UkgUsername = types.StringValue(v.(string))
@@ -242,6 +245,9 @@ func (r *IntegrationUkgResourceModel) RefreshFromCreateResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["ukg_customer_api_key"]; ok {
+					r.UkgCustomerApiKey = types.StringValue(v.(string))
+				}
 
 				if v, ok := values["ukg_username"]; ok {
 					r.UkgUsername = types.StringValue(v.(string))

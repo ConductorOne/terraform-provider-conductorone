@@ -99,7 +99,6 @@ func (r *IntegrationTwingateResource) Schema(ctx context.Context, req resource.S
 			},
 			"twingate_domain": &schema.StringAttribute{
 				Optional:    true,
-				Sensitive:   true,
 				Description: `Twingate Domain`,
 			},
 		},

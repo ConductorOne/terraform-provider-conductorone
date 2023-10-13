@@ -175,6 +175,9 @@ func (r *IntegrationSalesforceResourceModel) RefreshFromGetResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["salesforce_instance_url"]; ok {
+					r.SalesforceInstanceUrl = types.StringValue(v.(string))
+				}
 
 				if localV, ok := configValues["salesforce_username_for_email"]; ok {
 					if v, ok := values["salesforce_username_for_email"]; ok {
@@ -231,6 +234,9 @@ func (r *IntegrationSalesforceResourceModel) RefreshFromCreateResponse(resp *sha
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["salesforce_instance_url"]; ok {
+					r.SalesforceInstanceUrl = types.StringValue(v.(string))
+				}
 
 				if localV, ok := configValues["salesforce_username_for_email"]; ok {
 					if v, ok := values["salesforce_username_for_email"]; ok {

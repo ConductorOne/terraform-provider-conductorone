@@ -95,7 +95,6 @@ func (r *IntegrationZendeskResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"email": &schema.StringAttribute{
 				Optional:    true,
-				Sensitive:   true,
 				Description: `Zendesk Email`,
 			},
 			"subdomain": &schema.StringAttribute{

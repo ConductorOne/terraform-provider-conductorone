@@ -37,7 +37,7 @@ resource "conductorone_integration_ukg" "ukg" {
 
 ### Optional
 
-- `ukg_customer_api_key` (String, Sensitive) UKG Customer API Key
+- `ukg_customer_api_key` (String) UKG Customer API Key
 - `ukg_password` (String, Sensitive) UKG Password
 - `ukg_service_endpoint` (String) UKG Service Endpoint
 - `ukg_username` (String) UKG Username

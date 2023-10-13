@@ -94,7 +94,6 @@ func (r *IntegrationSentryResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"sentry_org_slug": &schema.StringAttribute{
 				Optional:    true,
-				Sensitive:   true,
 				Description: `Sentry Organization Slug`,
 			},
 			"sentry_token": &schema.StringAttribute{

@@ -171,6 +171,17 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if v, ok := values["tailnet"]; ok {
+					r.Tailnet = types.StringValue(v.(string))
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationTailscaleResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -208,4 +219,15 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if v, ok := values["tailnet"]; ok {
+					r.Tailnet = types.StringValue(v.(string))
+				}
+
+			}
+		}
+	}
 }
