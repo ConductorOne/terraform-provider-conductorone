@@ -1,30 +1,30 @@
 ---
-page_title: "conductorone_integration_ukg Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_tableau Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Ukg Integration Resource
+  Tableau Integration Resource
 ---
 
-# conductorone_integration_ukg (Resource)
+# conductorone_integration_tableau (Resource)
 
-Ukg Integration Resource
+Tableau Integration Resource
 
-This resource allows you to configure an instance of the ukg integration in ConductorOne.
+This resource allows you to configure an instance of the tableau integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_ukg" "ukg" {
-  app_id = conductorone_app.ukg.id
+resource "conductorone_integration_tableau" "tableau" {
+  app_id = conductorone_app.tableau.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  ukg_customer_api_key = "..."
-  ukg_username         = "..."
-  ukg_password         = "..."
-  ukg_service_endpoint = "..."
+  tableau_site_id             = "..."
+  tableau_server_path         = "..."
+  tableau_access_token_name   = "..."
+  tableau_access_token_secret = "..."
 }
 ```
 
@@ -37,10 +37,10 @@ resource "conductorone_integration_ukg" "ukg" {
 
 ### Optional
 
-- `ukg_customer_api_key` (String) UKG Customer API Key
-- `ukg_password` (String, Sensitive) UKG Password
-- `ukg_service_endpoint` (String) UKG Service Endpoint
-- `ukg_username` (String) UKG Username
+- `tableau_access_token_name` (String) Access Token Name
+- `tableau_access_token_secret` (String, Sensitive) Access Token Secret
+- `tableau_server_path` (String) Server Path
+- `tableau_site_id` (String) Site ID
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only
