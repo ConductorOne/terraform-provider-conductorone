@@ -272,7 +272,7 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 
 	var updateAppRequest *shared.UpdateAppRequest
 	app := data.ToUpdateSDKType()
-	updateMask := "displayName,monthlyCostUsd"
+	updateMask := "displayName,monthlyCostUsd,description,grantPolicyId,revokePolicyId,certifyPolicyId"
 	updateAppRequest = &shared.UpdateAppRequest{
 		App:        app,
 		UpdateMask: &updateMask,
