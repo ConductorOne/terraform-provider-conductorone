@@ -44,7 +44,6 @@ data "conductorone_app" "test_google_workspace" {
 - `icon_url` (String) The iconUrl field.
 - `logo_uri` (String) The logoUri field.
 - `monthly_cost_usd` (Number) The monthlyCostUsd field is the monthly cost per seat for the given app.
-- `owners` (List of String) The owners field is a list of user IDs indicating the app owners.
 - `parent_app_id` (String) The parentAppId field is the ID of the parent app if one exists.
 - `revoke_policy_id` (String) The revokePolicyId is the ID of the policy that will be used for revoke access tasks.
 - `updated_at` (String)
