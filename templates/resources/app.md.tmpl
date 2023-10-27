@@ -10,8 +10,9 @@ description: |-
 {{ .Description | trimspace }}
 
 This resource allows you to configure an App instance in ConductorOne.
-When creating an app you must provide a display name. Optionally, you can provide policies, owners, cost per seat, and a description.
-If owners are not specified, the app will be owned by the user who created the resource.
+When creating an app you must provide a display name. Optionally, you can provide policies, cost per seat, and a description.
+
+NOTE: To control appOwners you must use the `conductorone_app_owner` resource.
 
 ## Example Usage
 

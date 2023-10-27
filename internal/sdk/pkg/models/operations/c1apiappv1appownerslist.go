@@ -8,7 +8,9 @@ import (
 )
 
 type C1APIAppV1AppOwnersListRequest struct {
-	AppID string `pathParam:"style=simple,explode=false,name=app_id"`
+	AppID     string   `pathParam:"style=simple,explode=false,name=app_id"`
+	PageSize  *float64 `queryParam:"style=form,explode=true,name=page_size"`
+	PageToken *string  `queryParam:"style=form,explode=true,name=page_token"`
 }
 
 type C1APIAppV1AppOwnersListResponse struct {

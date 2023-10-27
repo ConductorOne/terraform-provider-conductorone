@@ -40,10 +40,6 @@ func (r *AppResourceModel) ToCreateSDKType() *shared.CreateAppRequest {
 	} else {
 		monthlyCostUsd = nil
 	}
-	owners := make([]string, 0)
-	for _, ownersItem := range r.Owners {
-		owners = append(owners, ownersItem.ValueString())
-	}
 	revokePolicyID := new(string)
 	if !r.RevokePolicyID.IsUnknown() && !r.RevokePolicyID.IsNull() {
 		*revokePolicyID = r.RevokePolicyID.ValueString()
@@ -56,7 +52,6 @@ func (r *AppResourceModel) ToCreateSDKType() *shared.CreateAppRequest {
 		DisplayName:     displayName,
 		GrantPolicyID:   grantPolicyID,
 		MonthlyCostUsd:  monthlyCostUsd,
-		Owners:          owners,
 		RevokePolicyID:  revokePolicyID,
 	}
 	return &out
