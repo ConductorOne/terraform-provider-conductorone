@@ -215,7 +215,25 @@ func (r *AppOwnerResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	// Not Implemented; entity does not have a configured DELETE operation
+	setAppOwnersRequest := data.ToDeleteSDKType()
+	appID := data.AppID.ValueString()
+	request := operations.C1APIAppV1AppOwnersSetRequest{
+		SetAppOwnersRequest: setAppOwnersRequest,
+		AppID:               appID,
+	}
+	res, err := r.client.AppOwners.C1APIAppV1AppOwnersSet(ctx, request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
 }
 
 func (r *AppOwnerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

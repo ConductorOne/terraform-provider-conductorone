@@ -46,3 +46,10 @@ func (r *AppOwnerResourceModel) RefreshFromReadResponse(owners []shared.User) {
 		r.UserIds = ownerIds
 	}
 }
+
+func (r *AppOwnerResourceModel) ToDeleteSDKType() *shared.SetAppOwnersRequest {
+	out := shared.SetAppOwnersRequest{
+		UserIds: []string{},
+	}
+	return &out
+}
