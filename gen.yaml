@@ -5,14 +5,28 @@ management:
   speakeasyVersion: 1.53.0
   generationVersion: 2.58.0
 generation:
-  comments:
-    disableComments: false
-    omitDescriptionIfSummaryPresent: false
-  baseServerURL: ""
+  comments: {}
   sdkClassName: conductorone-sdk-terraform
-  singleTagPerOp: false
-  tagNamespacingDisabled: false
+features:
+  terraform:
+    additionalProperties: 0.1.1
+    core: 3.1.0
+    globalSecurity: 2.81.1
+    globalServerURLs: 2.82.0
+    groups: 2.81.2
+    ignores: 2.81.1
+    inputOutputModels: 2.81.1
+    nameOverrides: 2.81.1
+    unions: 2.81.5
 terraform:
   version: 1.0.0
   author: ConductorOne
+  imports:
+    option: openapi
+    paths:
+      callbacks: callbacks
+      errors: sdkerrors
+      operations: operations
+      shared: shared
+      webhooks: webhooks
   packageName: conductorone
