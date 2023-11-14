@@ -71,7 +71,7 @@ Your `<PATH>` may vary depending on how your Go environment variables are config
 ## Versions with breaking changes
 
 ### [v0.2.0](https://github.com/ConductorOne/terraform-provider-conductorone/releases/tag/v0.2.0)
-- This version introduces a breaking change to the `app_entitlement` dataresource. The `app_entitlement` resource now nests the `grant_duration` and `grant_unset` inside the `max_grant_duration` field
+- This version introduces a breaking change to the `app_entitlement` datasource. The `app_entitlement` datasource now nests the `grant_duration` and `grant_unset` inside the `max_grant_duration` field.
 
 ### [v0.1.0](https://github.com/ConductorOne/terraform-provider-conductorone/releases/tag/v0.1.0)
 - This version introduces a breaking change to the `app_entitlement_owners` resource. The `app_entitlement_owners` resource now requires a list of strings called `user_ids`, which is used to set the owners
