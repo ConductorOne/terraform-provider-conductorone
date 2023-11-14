@@ -57,18 +57,12 @@ func (r *AppEntitlementDataSourceModel) RefreshFromGetResponse(resp *shared.AppE
 	} else {
 		r.DisplayName = types.StringNull()
 	}
+	r.MaxGrantDuration = &MaxGrantDuration{}
 	if resp.DurationGrant != nil {
-		r.DurationGrant = types.StringValue(*resp.DurationGrant)
-	} else {
-		r.DurationGrant = types.StringNull()
+		r.MaxGrantDuration.DurationGrant = types.StringValue(*resp.DurationGrant)
 	}
-	if r.DurationUnset == nil {
-		r.DurationUnset = &AppEntitlementDurationUnset{}
-	}
-	if resp.DurationUnset == nil {
-		r.DurationUnset = nil
-	} else {
-		r.DurationUnset = &AppEntitlementDurationUnset{}
+	if resp.DurationUnset != nil {
+		r.MaxGrantDuration.DurationUnset = &AppEntitlementDurationUnset{}
 	}
 	if resp.EmergencyGrantEnabled != nil {
 		r.EmergencyGrantEnabled = types.BoolValue(*resp.EmergencyGrantEnabled)
