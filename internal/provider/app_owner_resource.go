@@ -114,10 +114,7 @@ func (r *AppOwnerResource) Create(ctx context.Context, req resource.CreateReques
 		}
 		return
 	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
+
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -159,10 +156,6 @@ func (r *AppOwnerResource) Read(ctx context.Context, req resource.ReadRequest, r
 		})
 		if err != nil {
 			resp.Diagnostics.AddError("failure to invoke list API", err.Error())
-			return
-		}
-		if listResp == nil {
-			resp.Diagnostics.AddError("unexpected response from list API", fmt.Sprintf("%v", listResp))
 			return
 		}
 		if listResp.ListAppOwnersResponse == nil || listResp.ListAppOwnersResponse.List == nil {
@@ -226,10 +219,7 @@ func (r *AppOwnerResource) Delete(ctx context.Context, req resource.DeleteReques
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		return
 	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
+
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
