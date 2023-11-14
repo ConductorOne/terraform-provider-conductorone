@@ -4,6 +4,7 @@ import (
 	"conductorone/internal/sdk"
 	"context"
 	"fmt"
+	"strings"
 
 	"conductorone/internal/sdk/pkg/models/operations"
 	"conductorone/internal/sdk/pkg/models/shared"
@@ -442,7 +443,18 @@ func (r *AppEntitlementResource) Delete(ctx context.Context, req resource.Delete
 }
 
 func (r *AppEntitlementResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource app_entitlement.")
+	idParts := strings.Split(req.ID, "_")
+
+	if len(idParts) != 2 || idParts[0] == "" || idParts[1] == "" {
+		resp.Diagnostics.AddError(
+			"Unexpected Import Identifier",
+			fmt.Sprintf("Expected import identifier with format: id_appId. Got: %q", req.ID),
+		)
+		return
+	}
+
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), idParts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), idParts[1])...)
 }
 
 func (r *AppEntitlementResource) readAppEntitlementAndValidate(ctx context.Context, appID string, id string) (*shared.AppEntitlement, error) {
