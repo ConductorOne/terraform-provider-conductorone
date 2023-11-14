@@ -31,27 +31,26 @@ type AppEntitlementDataSource struct {
 
 // CatalogResourceModel describes the resource data model.
 type AppEntitlementDataSourceModel struct {
-	Alias                       types.String                 `tfsdk:"alias"`
-	AppID                       types.String                 `tfsdk:"app_id"`
-	AppResourceID               types.String                 `tfsdk:"app_resource_id"`
-	AppResourceTypeID           types.String                 `tfsdk:"app_resource_type_id"`
-	CertifyPolicyID             types.String                 `tfsdk:"certify_policy_id"`
-	ComplianceFrameworkValueIds []types.String               `tfsdk:"compliance_framework_value_ids"`
-	CreatedAt                   types.String                 `tfsdk:"created_at"`
-	DeletedAt                   types.String                 `tfsdk:"deleted_at"`
-	Description                 types.String                 `tfsdk:"description"`
-	DisplayName                 types.String                 `tfsdk:"display_name"`
-	DurationGrant               types.String                 `tfsdk:"duration_grant"`
-	DurationUnset               *AppEntitlementDurationUnset `tfsdk:"duration_unset"`
-	EmergencyGrantEnabled       types.Bool                   `tfsdk:"emergency_grant_enabled"`
-	EmergencyGrantPolicyID      types.String                 `tfsdk:"emergency_grant_policy_id"`
-	GrantPolicyID               types.String                 `tfsdk:"grant_policy_id"`
-	ID                          types.String                 `tfsdk:"id"`
-	ProvisionPolicy             *ProvisionPolicy             `tfsdk:"provision_policy"`
-	RevokePolicyID              types.String                 `tfsdk:"revoke_policy_id"`
-	RiskLevelValueID            types.String                 `tfsdk:"risk_level_value_id"`
-	Slug                        types.String                 `tfsdk:"slug"`
-	UpdatedAt                   types.String                 `tfsdk:"updated_at"`
+	Alias                       types.String      `tfsdk:"alias"`
+	AppID                       types.String      `tfsdk:"app_id"`
+	AppResourceID               types.String      `tfsdk:"app_resource_id"`
+	AppResourceTypeID           types.String      `tfsdk:"app_resource_type_id"`
+	CertifyPolicyID             types.String      `tfsdk:"certify_policy_id"`
+	ComplianceFrameworkValueIds []types.String    `tfsdk:"compliance_framework_value_ids"`
+	CreatedAt                   types.String      `tfsdk:"created_at"`
+	DeletedAt                   types.String      `tfsdk:"deleted_at"`
+	Description                 types.String      `tfsdk:"description"`
+	DisplayName                 types.String      `tfsdk:"display_name"`
+	MaxGrantDuration            *MaxGrantDuration `tfsdk:"max_grant_duration"`
+	EmergencyGrantEnabled       types.Bool        `tfsdk:"emergency_grant_enabled"`
+	EmergencyGrantPolicyID      types.String      `tfsdk:"emergency_grant_policy_id"`
+	GrantPolicyID               types.String      `tfsdk:"grant_policy_id"`
+	ID                          types.String      `tfsdk:"id"`
+	ProvisionPolicy             *ProvisionPolicy  `tfsdk:"provision_policy"`
+	RevokePolicyID              types.String      `tfsdk:"revoke_policy_id"`
+	RiskLevelValueID            types.String      `tfsdk:"risk_level_value_id"`
+	Slug                        types.String      `tfsdk:"slug"`
+	UpdatedAt                   types.String      `tfsdk:"updated_at"`
 }
 
 func (r *AppEntitlementDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -110,12 +109,27 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				Computed:    true,
 				Description: `The displayName field.`,
 			},
-			"duration_grant": schema.StringAttribute{
+			"max_grant_duration": schema.SingleNestedAttribute{
 				Computed: true,
-			},
-			"duration_unset": schema.SingleNestedAttribute{
-				Computed:   true,
-				Attributes: map[string]schema.Attribute{},
+				Attributes: map[string]schema.Attribute{
+					"duration_grant": schema.StringAttribute{
+						Computed: true,
+						Description: `The DurationGrant field is a string attribute that represents the maximum duration a grant to this entitlement can last. 
+						The format of this is <time in seconds>s. i.e. 1h = 3600s.`,
+					},
+					"duration_unset": schema.SingleNestedAttribute{
+						Computed:    true,
+						Attributes:  map[string]schema.Attribute{},
+						Description: `The DurationUnset field is set if there is no maximum duration a grant to this entitlement can last.`,
+					},
+				},
+				MarkdownDescription: `MaxGrantDuration is a one of.` + "\n" +
+					`` +
+					`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - duration_unset` + "\n" +
+					`  - duration_grant` + "\n" +
+					"\n" +
+					``,
 			},
 			"emergency_grant_enabled": schema.BoolAttribute{
 				Computed:    true,
