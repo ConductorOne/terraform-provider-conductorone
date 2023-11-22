@@ -33,24 +33,23 @@ type AppResource struct {
 
 // AppResourceModel describes the resource data model.
 type AppResourceModel struct {
-	AppAccountID    types.String   `tfsdk:"app_account_id"`
-	AppAccountName  types.String   `tfsdk:"app_account_name"`
-	CertifyPolicyID types.String   `tfsdk:"certify_policy_id"`
-	CreatedAt       types.String   `tfsdk:"created_at"`
-	DeletedAt       types.String   `tfsdk:"deleted_at"`
-	Description     types.String   `tfsdk:"description"`
-	DisplayName     types.String   `tfsdk:"display_name"`
-	FieldMask       types.String   `tfsdk:"field_mask"`
-	GrantPolicyID   types.String   `tfsdk:"grant_policy_id"`
-	IconURL         types.String   `tfsdk:"icon_url"`
-	ID              types.String   `tfsdk:"id"`
-	LogoURI         types.String   `tfsdk:"logo_uri"`
-	MonthlyCostUsd  types.Number   `tfsdk:"monthly_cost_usd"`
-	Owners          []types.String `tfsdk:"owners"`
-	ParentAppID     types.String   `tfsdk:"parent_app_id"`
-	RevokePolicyID  types.String   `tfsdk:"revoke_policy_id"`
-	UpdatedAt       types.String   `tfsdk:"updated_at"`
-	UserCount       types.String   `tfsdk:"user_count"`
+	AppAccountID    types.String `tfsdk:"app_account_id"`
+	AppAccountName  types.String `tfsdk:"app_account_name"`
+	CertifyPolicyID types.String `tfsdk:"certify_policy_id"`
+	CreatedAt       types.String `tfsdk:"created_at"`
+	DeletedAt       types.String `tfsdk:"deleted_at"`
+	Description     types.String `tfsdk:"description"`
+	DisplayName     types.String `tfsdk:"display_name"`
+	FieldMask       types.String `tfsdk:"field_mask"`
+	GrantPolicyID   types.String `tfsdk:"grant_policy_id"`
+	IconURL         types.String `tfsdk:"icon_url"`
+	ID              types.String `tfsdk:"id"`
+	LogoURI         types.String `tfsdk:"logo_uri"`
+	MonthlyCostUsd  types.Number `tfsdk:"monthly_cost_usd"`
+	ParentAppID     types.String `tfsdk:"parent_app_id"`
+	RevokePolicyID  types.String `tfsdk:"revoke_policy_id"`
+	UpdatedAt       types.String `tfsdk:"updated_at"`
+	UserCount       types.String `tfsdk:"user_count"`
 }
 
 func (r *AppResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -120,12 +119,6 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Computed:    true,
 				Optional:    true,
 				Description: `The monthlyCostUsd field is the monthly cost per seat for the given app.`,
-			},
-			"owners": schema.ListAttribute{
-				Computed:    true,
-				Optional:    true,
-				ElementType: types.StringType,
-				Description: `The owners field is a list of user IDs indicating the app owners.`,
 			},
 			"parent_app_id": schema.StringAttribute{
 				Computed:    true,

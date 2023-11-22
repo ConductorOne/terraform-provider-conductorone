@@ -10,17 +10,15 @@ description: |-
 App Resource
 
 This resource allows you to configure an App instance in ConductorOne.
-When creating an app you must provide a display name. Optionally, you can provide policies, owners, cost per seat, and a description.
-If owners are not specified, the app will be owned by the user who created the resource.
+When creating an app you must provide a display name. Optionally, you can provide policies, cost per seat, and a description.
+
+NOTE: To control appOwners you must use the `conductorone_app_owner` resource.
 
 ## Example Usage
 
 ```terraform
 resource "conductorone_app" "test_new_app" {
-  display_name = "Terraform Created App"
-  owners = [
-    data.conductorone_user.my_user.id
-  ]
+  display_name      = "Terraform Created App"
   certify_policy_id = data.conductorone_policy.default_review_policy.id
   grant_policy_id   = data.conductorone_policy.default_request_policy.id
   revoke_policy_id  = data.conductorone_policy.default_revoke_policy.id
@@ -41,7 +39,6 @@ resource "conductorone_app" "test_new_app" {
 - `description` (String) The description field.
 - `grant_policy_id` (String) The grantPolicyId field is the policy that will be used for access request grant tasks.
 - `monthly_cost_usd` (Number) The monthlyCostUsd field is the monthly cost per seat for the given app.
-- `owners` (List of String) The owners field is a list of user IDs indicating the app owners.
 - `revoke_policy_id` (String) The revokePolicyId is the ID of the policy that will be used for revoke access tasks.
 
 ### Read-Only
