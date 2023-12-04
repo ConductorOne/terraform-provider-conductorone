@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  update_dependencies:
+  update_openapi:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,7 +15,6 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
-
 
     - name: Download openapi.yaml
       run: curl -o openapi.yaml https://insulator.conductor.one/api/v1/openapi.yaml
