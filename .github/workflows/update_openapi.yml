@@ -17,7 +17,7 @@ jobs:
         python-version: '3.x'
 
     - name: Download openapi.yaml
-      run: curl -o openapi.yaml https://insulator.conductor.one/api/v1/openapi.yaml
+      run: curl -sSL -o openapi.yaml https://insulator.conductor.one/api/v1/openapi.yaml
 
       - name: Run clean_yaml.py script
         run: python .github/workflows/clean_yaml.py
