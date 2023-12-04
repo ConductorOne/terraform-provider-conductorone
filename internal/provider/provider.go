@@ -29,6 +29,7 @@ type ConductoroneProviderModel struct {
 	ServerURL    types.String `tfsdk:"server_url"`
 	ClientID     types.String `tfsdk:"client_id"`
 	ClientSecret types.String `tfsdk:"client_secret"`
+	TenantDomain types.String `tfsdk:"tenant_domain"`
 }
 
 func (p *ConductoroneProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -41,7 +42,7 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 		Description: `ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.`,
 		Attributes: map[string]schema.Attribute{
 			"server_url": schema.StringAttribute{
-				MarkdownDescription: "Server URL (defaults to https://{tenantDomain}.conductor.one, tenantDomain is extracted from client_id)",
+				MarkdownDescription: "Server URL (defaults to https://{tenantDomain}.conductor.one, tenantDomain can be extracted from client_id)",
 				Optional:            true,
 				Required:            false,
 			},
@@ -54,6 +55,11 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 				MarkdownDescription: "ClientSecret for Auth",
 				Optional:            false,
 				Required:            true,
+			},
+			"tenant_domain": schema.StringAttribute{
+				MarkdownDescription: "Tenant Domain, can provide this or it will be extract from client_id",
+				Optional:            true,
+				Required:            false,
 			},
 		},
 	}
@@ -71,12 +77,18 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 	ServerURL := data.ServerURL.ValueString()
 	ClientID := data.ClientID.ValueString()
 	ClientSecret := data.ClientSecret.ValueString()
+	TenantDomain := data.TenantDomain.ValueString()
 
 	if ServerURL == "" {
-		url := strings.Split(ClientID, "@")[1]
-		tenantDomain := strings.Split(url, ".")[0]
-		ServerURL = fmt.Sprintf("https://%s.conductor.one", tenantDomain)
+		if TenantDomain == "" {
+			url := strings.Split(ClientID, "@")[1]
+			HostName := strings.Replace(url, ".com/pcc", "", 1)
+			ServerURL = fmt.Sprintf("https://%s", HostName)
+		} else {
+			ServerURL = fmt.Sprintf("https://%s.conductor.one", TenantDomain)
+		}
 	}
+	
 
 	opt, err := sdk.WithTenantCustom(ServerURL)
 	if err != nil {
