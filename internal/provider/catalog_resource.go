@@ -3,16 +3,19 @@
 package provider
 
 import (
-	"conductorone/internal/sdk"
 	"context"
 	"fmt"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
 
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -28,7 +31,7 @@ func NewCatalogResource() resource.Resource {
 
 // CatalogResource defines the resource implementation.
 type CatalogResource struct {
-	client *sdk.ConductoroneAPI
+	client *sdk.ConductoroneSDKTerraform
 }
 
 // CatalogResourceModel describes the resource data model.
@@ -66,28 +69,28 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 					Attributes: map[string]schema.Attribute{
 						"alias": schema.StringAttribute{
 							Computed:    true,
-							Description: `The alias field.`,
+							Description: `The alias of the app entitlement used by Cone. Also exact-match queryable.`,
 						},
 						"app_id": schema.StringAttribute{
 							Computed:    true,
-							Description: `The appId field.`,
+							Description: `The ID of the app that is associated with the app entitlement.`,
 						},
 						"app_resource_id": schema.StringAttribute{
 							Computed:    true,
-							Description: `The appResourceId field.`,
+							Description: `The ID of the app resource that is associated with the app entitlement`,
 						},
 						"app_resource_type_id": schema.StringAttribute{
 							Computed:    true,
-							Description: `The appResourceTypeId field.`,
+							Description: `The ID of the app resource type that is associated with the app entitlement`,
 						},
 						"certify_policy_id": schema.StringAttribute{
 							Computed:    true,
-							Description: `The certifyPolicyId field.`,
+							Description: `The ID of the policy that will be used for certify tickets related to the app entitlement.`,
 						},
 						"compliance_framework_value_ids": schema.ListAttribute{
 							Computed:    true,
 							ElementType: types.StringType,
-							Description: `The complianceFrameworkValueIds field.`,
+							Description: `The IDs of different compliance frameworks associated with this app entitlement ex (SOX, HIPAA, PCI, etc.)`,
 						},
 						"created_at": schema.StringAttribute{
 							Computed: true,
@@ -103,11 +106,11 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 						},
 						"description": schema.StringAttribute{
 							Computed:    true,
-							Description: `The description field.`,
+							Description: `The description of the app entitlement.`,
 						},
 						"display_name": schema.StringAttribute{
 							Computed:    true,
-							Description: `The displayName field.`,
+							Description: `The display name of the app entitlement.`,
 						},
 						"duration_grant": schema.StringAttribute{
 							Computed: true,
@@ -118,23 +121,23 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 						},
 						"emergency_grant_enabled": schema.BoolAttribute{
 							Computed:    true,
-							Description: `The emergencyGrantEnabled field.`,
+							Description: `This enables tasks to be created in an emergency and use a selected emergency access policy.`,
 						},
 						"emergency_grant_policy_id": schema.StringAttribute{
 							Computed:    true,
-							Description: `The emergencyGrantPolicyId field.`,
+							Description: `The ID of the policy that will be used for emergency access grant tasks.`,
 						},
 						"grant_count": schema.StringAttribute{
 							Computed:    true,
-							Description: `The grantCount field.`,
+							Description: `The amount of grants open for this entitlement`,
 						},
 						"grant_policy_id": schema.StringAttribute{
 							Computed:    true,
-							Description: `The grantPolicyId field.`,
+							Description: `The ID of the policy that will be used for grant tickets related to the app entitlement.`,
 						},
 						"id": schema.StringAttribute{
 							Computed:    true,
-							Description: `The id field.`,
+							Description: `The unique ID for the App Entitlement.`,
 						},
 						"provision_policy": schema.SingleNestedAttribute{
 							Computed: true,
@@ -142,50 +145,53 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 								"connector_provision": schema.SingleNestedAttribute{
 									Computed:    true,
 									Attributes:  map[string]schema.Attribute{},
-									Description: `The ConnectorProvision message.`,
+									Description: `Indicates that a connector should perform the provisioning. This object has no fields.`,
 								},
 								"delegated_provision": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"app_id": schema.StringAttribute{
 											Computed:    true,
-											Description: `The appId field.`,
+											Description: `The AppID of the entitlement to delegate provisioning to.`,
 										},
 										"entitlement_id": schema.StringAttribute{
 											Computed:    true,
-											Description: `The entitlementId field.`,
+											Description: `The ID of the entitlement we are delegating provisioning to.`,
+										},
+										"implicit": schema.BoolAttribute{
+											Computed:    true,
+											Description: `If true, a binding will be automatically created from the entitlement of the parent app.`,
 										},
 									},
-									Description: `The DelegatedProvision message.`,
+									Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 								},
 								"manual_provision": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"instructions": schema.StringAttribute{
 											Computed:    true,
-											Description: `The instructions field.`,
+											Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 										},
 										"user_ids": schema.ListAttribute{
 											Computed:    true,
 											ElementType: types.StringType,
-											Description: `The userIds field.`,
+											Description: `An array of users that are required to provision during this step.`,
 										},
 									},
-									Description: `The ManualProvision message.`,
+									Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
 								},
 							},
-							MarkdownDescription: `The ProvisionPolicy message.` + "\n" +
-								`` +
-								`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
+							MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - connector` + "\n" +
 								`  - manual` + "\n" +
 								`  - delegated` + "\n" +
-								"\n" +
 								``,
 						},
 						"revoke_policy_id": schema.StringAttribute{
 							Computed:    true,
-							Description: `The revokePolicyId field.`,
+							Description: `The ID of the policy that will be used for revoke tickets related to the app entitlement`,
 						},
 						"risk_level_value_id": schema.StringAttribute{
 							Computed:    true,
@@ -193,11 +199,11 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 						},
 						"slug": schema.StringAttribute{
 							Computed:    true,
-							Description: `The slug field.`,
+							Description: `The slug is displayed as an oval next to the name in the frontend of C1, it tells you what permission the entitlement grants. See https://www.conductorone.com/docs/product/manage-access/entitlements/`,
 						},
 						"system_builtin": schema.BoolAttribute{
 							Computed:    true,
-							Description: `The systemBuiltin field.`,
+							Description: `This field indicates if this is a system builtin entitlement.`,
 						},
 						"updated_at": schema.StringAttribute{
 							Computed: true,
@@ -205,22 +211,25 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 								validators.IsRFC3339(),
 							},
 						},
+						"user_edited_mask": schema.StringAttribute{
+							Computed: true,
+						},
 					},
 				},
-				Description: `The accessEntitlements field.`,
+				Description: `An array of app entitlements that, if the user has, can view the contents of this catalog.`,
 			},
 			"access_entitlements_path": schema.StringAttribute{
 				Computed:    true,
-				Description: `The accessEntitlementsPath field.`,
+				Description: `JSONPATH expression indicating the location of the access entitlement objects, that the request catalog allows users to request, in the array.`,
 			},
 			"app_ids": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
-				Description: `The appIds field.`,
+				Description: `The Apps contained in this request catalog.`,
 			},
 			"app_paths": schema.StringAttribute{
 				Computed:    true,
-				Description: `The appPaths field.`,
+				Description: `JSONPATH expression indicating the location of the App object in the array.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -228,28 +237,29 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 					validators.IsRFC3339(),
 				},
 			},
+			"created_by_user_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The id of the user this request catalog was created by.`,
+			},
+			"created_by_user_path": schema.StringAttribute{
+				Computed:    true,
+				Description: `JSONPATH expression indicating the location of the User object, that created the request catalog, in the array.`,
+			},
 			"deleted_at": schema.StringAttribute{
 				Computed: true,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
 			},
-			"created_by_user_id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The createdByUserId field.`,
-			},
-			"created_by_user_path": schema.StringAttribute{
-				Computed:    true,
-				Description: `The createdByUserPath field.`,
-			},
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description field.`,
+				Description: `The description of the new request catalog.`,
 			},
 			"display_name": schema.StringAttribute{
-				Required:    true,
-				Description: `The displayName field.`,
+				Computed:    true,
+				Optional:    true,
+				Description: `The display name of the new request catalog.`,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
@@ -259,29 +269,42 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 							Computed:    true,
 							Description: `The type of the serialized message.`,
 						},
+						"additional_properties": schema.StringAttribute{
+							Computed:    true,
+							Description: `Parsed as JSON.`,
+							Validators: []validator.String{
+								validators.IsValidJSON(),
+							},
+						},
 					},
 				},
-				Description: `The expanded field.`,
+				Description: `List of serialized related objects.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The id field.`,
+				Description: `The id of the request catalog.`,
 			},
 			"published": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The published field is used to determine if the catalog is active and visible to users.`,
+				Description: `Whether or not the new catalog should be created as published.`,
 			},
 			"request_catalog_expand_mask": schema.SingleNestedAttribute{
-				Computed: true,
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplace(),
+				},
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"paths": schema.ListAttribute{
-						Computed:    true,
+						PlanModifiers: []planmodifier.List{
+							listplanmodifier.RequiresReplace(),
+						},
+						Optional:    true,
 						ElementType: types.StringType,
-						Description: `The paths field.`,
+						Description: `An array of paths to be expanded in the response. May be any combination of "*", "created_by_user_id", "app_ids", and "access_entitlements".`,
 					},
 				},
-				Description: `The RequestCatalogExpandMask message.`,
+				Description: `The RequestCatalogExpandMask includes the paths in the catalog view to expand in the return value of this call.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -292,7 +315,7 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 			"visible_to_everyone": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The visibleToEveryone field is used to determine if this catalog should be visible to all users.`,
+				Description: `Whether or not the new catalog is visible to everyone by default.`,
 			},
 		},
 	}
@@ -304,12 +327,12 @@ func (r *CatalogResource) Configure(ctx context.Context, req resource.ConfigureR
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneAPI)
+	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -336,10 +359,13 @@ func (r *CatalogResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	request := *data.ToCreateSDKType()
+	request := data.ToCreateSDKType()
 	res, err := r.client.RequestCatalogManagement.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -350,26 +376,11 @@ func (r *CatalogResource) Create(ctx context.Context, req resource.CreateRequest
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView == nil {
+	if res.RequestCatalogManagementServiceGetResponse == nil || res.RequestCatalogManagementServiceGetResponse.RequestCatalogView == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromCreateResponse(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AccessEntitlementsPath != nil {
-		data.AccessEntitlementsPath = types.StringValue(*res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AccessEntitlementsPath)
-	} else {
-		data.AccessEntitlementsPath = types.StringNull()
-	}
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AppPaths != nil {
-		data.AppPaths = types.StringValue(*res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AppPaths)
-	} else {
-		data.AppPaths = types.StringNull()
-	}
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.CreatedByUserPath != nil {
-		data.CreatedByUserPath = types.StringValue(*res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.CreatedByUserPath)
-	} else {
-		data.CreatedByUserPath = types.StringNull()
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -400,6 +411,9 @@ func (r *CatalogResource) Read(ctx context.Context, req resource.ReadRequest, re
 	res, err := r.client.RequestCatalogManagement.Get(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -410,35 +424,11 @@ func (r *CatalogResource) Read(ctx context.Context, req resource.ReadRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView == nil {
-		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
-		return
-	}
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog == nil {
+	if res.RequestCatalogManagementServiceGetResponse == nil || res.RequestCatalogManagementServiceGetResponse.RequestCatalogView == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromGetResponse(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AccessEntitlementsPath != nil {
-		data.AccessEntitlementsPath = types.StringValue(*res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AccessEntitlementsPath)
-	} else {
-		data.AccessEntitlementsPath = types.StringNull()
-	}
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AppPaths != nil {
-		data.AppPaths = types.StringValue(*res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AppPaths)
-	} else {
-		data.AppPaths = types.StringNull()
-	}
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.CreatedByUserPath != nil {
-		data.CreatedByUserPath = types.StringValue(*res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.CreatedByUserPath)
-	} else {
-		data.CreatedByUserPath = types.StringNull()
-	}
-
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog.DeletedAt != nil {
-		resp.State.RemoveResource(ctx)
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -453,9 +443,19 @@ func (r *CatalogResource) Update(ctx context.Context, req resource.UpdateRequest
 
 	var requestCatalogManagementServiceUpdateRequest *shared.RequestCatalogManagementServiceUpdateRequest
 	requestCatalog := data.ToUpdateSDKType()
-
+	var requestCatalogExpandMask *shared.RequestCatalogExpandMask
+	if data != nil {
+		var paths []string = nil
+		for _, pathsItem := range data.Paths {
+			paths = append(paths, pathsItem.ValueString())
+		}
+		requestCatalogExpandMask = &shared.RequestCatalogExpandMask{
+			Paths: paths,
+		}
+	}
 	requestCatalogManagementServiceUpdateRequest = &shared.RequestCatalogManagementServiceUpdateRequest{
-		RequestCatalog: requestCatalog,
+		RequestCatalog:           requestCatalog,
+		RequestCatalogExpandMask: requestCatalogExpandMask,
 	}
 	id := data.ID.ValueString()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest{
@@ -465,6 +465,9 @@ func (r *CatalogResource) Update(ctx context.Context, req resource.UpdateRequest
 	res, err := r.client.RequestCatalogManagement.Update(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -475,26 +478,11 @@ func (r *CatalogResource) Update(ctx context.Context, req resource.UpdateRequest
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView == nil {
+	if res.RequestCatalogManagementServiceGetResponse == nil || res.RequestCatalogManagementServiceGetResponse.RequestCatalogView == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.RefreshFromUpdateResponse(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AccessEntitlementsPath != nil {
-		data.AccessEntitlementsPath = types.StringValue(*res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AccessEntitlementsPath)
-	} else {
-		data.AccessEntitlementsPath = types.StringNull()
-	}
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AppPaths != nil {
-		data.AppPaths = types.StringValue(*res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.AppPaths)
-	} else {
-		data.AppPaths = types.StringNull()
-	}
-	if res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.CreatedByUserPath != nil {
-		data.CreatedByUserPath = types.StringValue(*res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.CreatedByUserPath)
-	} else {
-		data.CreatedByUserPath = types.StringNull()
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -527,6 +515,9 @@ func (r *CatalogResource) Delete(ctx context.Context, req resource.DeleteRequest
 	res, err := r.client.RequestCatalogManagement.Delete(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -541,5 +532,5 @@ func (r *CatalogResource) Delete(ctx context.Context, req resource.DeleteRequest
 }
 
 func (r *CatalogResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
 }

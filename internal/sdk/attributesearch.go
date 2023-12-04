@@ -4,43 +4,46 @@ package sdk
 
 import (
 	"bytes"
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/sdk/pkg/utils"
 	"context"
 	"fmt"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/sdkerrors"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"io"
 	"net/http"
 	"strings"
 )
 
-type attributeSearch struct {
+type AttributeSearch struct {
 	sdkConfiguration sdkConfiguration
 }
 
-func newAttributeSearch(sdkConfig sdkConfiguration) *attributeSearch {
-	return &attributeSearch{
+func newAttributeSearch(sdkConfig sdkConfiguration) *AttributeSearch {
+	return &AttributeSearch{
 		sdkConfiguration: sdkConfig,
 	}
 }
 
 // SearchAttributeValues - Search Attribute Values
-// Invokes the c1.api.attribute.v1.AttributeSearch.SearchAttributeValues method.
-func (s *attributeSearch) SearchAttributeValues(ctx context.Context, request shared.SearchAttributeValuesRequest) (*operations.C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse, error) {
+// Search attributes based on filters specified in the request body.
+func (s *AttributeSearch) SearchAttributeValues(ctx context.Context, request *shared.SearchAttributeValuesRequest) (*operations.C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url := strings.TrimSuffix(baseURL, "/") + "/api/v1/search/attributes"
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
+	debugBody := bytes.NewBuffer([]byte{})
+	debugReader := io.TeeReader(bodyReader, debugBody)
 
-	req, err := http.NewRequestWithContext(ctx, "POST", url, bodyReader)
+	req, err := http.NewRequestWithContext(ctx, "POST", url, debugReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+	req.Header.Set("user-agent", s.sdkConfiguration.UserAgent)
 
 	req.Header.Set("Content-Type", reqContentType)
 
@@ -58,6 +61,7 @@ func (s *attributeSearch) SearchAttributeValues(ctx context.Context, request sha
 	if err != nil {
 		return nil, fmt.Errorf("error reading response body: %w", err)
 	}
+	httpRes.Request.Body = io.NopCloser(debugBody)
 	httpRes.Body.Close()
 	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
 
@@ -72,12 +76,14 @@ func (s *attributeSearch) SearchAttributeValues(ctx context.Context, request sha
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
-			var out *shared.SearchAttributeValuesResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			var out shared.SearchAttributeValuesResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.SearchAttributeValuesResponse = out
+			res.SearchAttributeValuesResponse = &out
+		default:
+			return nil, sdkerrors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	}
 

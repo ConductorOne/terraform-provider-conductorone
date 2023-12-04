@@ -3,65 +3,59 @@
 package shared
 
 import (
-	"encoding/json"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 )
 
 // TaskActionsServiceCommentResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 type TaskActionsServiceCommentResponseExpanded struct {
 	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
+	AtType               *string     `json:"@type,omitempty"`
+	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
-type _TaskActionsServiceCommentResponseExpanded TaskActionsServiceCommentResponseExpanded
 
-func (c *TaskActionsServiceCommentResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _TaskActionsServiceCommentResponseExpanded{}
+func (t TaskActionsServiceCommentResponseExpanded) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
 
-	if err := json.Unmarshal(bs, &data); err != nil {
+func (t *TaskActionsServiceCommentResponseExpanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
 		return err
 	}
-	*c = TaskActionsServiceCommentResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
 	return nil
 }
 
-func (c TaskActionsServiceCommentResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_TaskActionsServiceCommentResponseExpanded(c))
-	if err != nil {
-		return nil, err
+func (o *TaskActionsServiceCommentResponseExpanded) GetAtType() *string {
+	if o == nil {
+		return nil
 	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
+	return o.AtType
 }
 
-// TaskActionsServiceCommentResponse - The TaskActionsServiceCommentResponse message.
+func (o *TaskActionsServiceCommentResponseExpanded) GetAdditionalProperties() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+// TaskActionsServiceCommentResponse - Task actions service comment response returns the task view inluding the expanded array of items that are indicated by the expand mask on the request.
 type TaskActionsServiceCommentResponse struct {
-	// The TaskView message.
+	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
 	TaskView *TaskView `json:"taskView,omitempty"`
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []TaskActionsServiceCommentResponseExpanded `json:"expanded,omitempty"`
+}
+
+func (o *TaskActionsServiceCommentResponse) GetTaskView() *TaskView {
+	if o == nil {
+		return nil
+	}
+	return o.TaskView
+}
+
+func (o *TaskActionsServiceCommentResponse) GetExpanded() []TaskActionsServiceCommentResponseExpanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
 }

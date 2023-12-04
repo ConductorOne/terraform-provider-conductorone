@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -13,10 +13,62 @@ type C1APIAppV1ConnectorServiceUpdateRequest struct {
 	ID                            string                                `pathParam:"style=simple,explode=false,name=id"`
 }
 
+func (o *C1APIAppV1ConnectorServiceUpdateRequest) GetConnectorServiceUpdateRequest() *shared.ConnectorServiceUpdateRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceUpdateRequest
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateRequest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
 type C1APIAppV1ConnectorServiceUpdateResponse struct {
-	// Successful response
+	// ConnectorServiceUpdateResponse is the response returned by the update method.
 	ConnectorServiceUpdateResponse *shared.ConnectorServiceUpdateResponse
-	ContentType                    string
-	StatusCode                     int
-	RawResponse                    *http.Response
+	// HTTP response content type for this operation
+	ContentType string
+	// HTTP response status code for this operation
+	StatusCode int
+	// Raw HTTP response; suitable for custom response parsing
+	RawResponse *http.Response
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetConnectorServiceUpdateResponse() *shared.ConnectorServiceUpdateResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceUpdateResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

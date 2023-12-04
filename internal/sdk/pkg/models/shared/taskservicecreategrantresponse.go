@@ -3,65 +3,59 @@
 package shared
 
 import (
-	"encoding/json"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 )
 
 // TaskServiceCreateGrantResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 type TaskServiceCreateGrantResponseExpanded struct {
 	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
+	AtType               *string     `json:"@type,omitempty"`
+	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
-type _TaskServiceCreateGrantResponseExpanded TaskServiceCreateGrantResponseExpanded
 
-func (c *TaskServiceCreateGrantResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _TaskServiceCreateGrantResponseExpanded{}
+func (t TaskServiceCreateGrantResponseExpanded) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
 
-	if err := json.Unmarshal(bs, &data); err != nil {
+func (t *TaskServiceCreateGrantResponseExpanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
 		return err
 	}
-	*c = TaskServiceCreateGrantResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
 	return nil
 }
 
-func (c TaskServiceCreateGrantResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_TaskServiceCreateGrantResponseExpanded(c))
-	if err != nil {
-		return nil, err
+func (o *TaskServiceCreateGrantResponseExpanded) GetAtType() *string {
+	if o == nil {
+		return nil
 	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
+	return o.AtType
 }
 
-// TaskServiceCreateGrantResponse - The TaskServiceCreateGrantResponse message.
+func (o *TaskServiceCreateGrantResponseExpanded) GetAdditionalProperties() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+// The TaskServiceCreateGrantResponse returns a task view which has a task including JSONPATHs to the expanded items in the expanded array.
 type TaskServiceCreateGrantResponse struct {
-	// The TaskView message.
+	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
 	TaskView *TaskView `json:"taskView,omitempty"`
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []TaskServiceCreateGrantResponseExpanded `json:"expanded,omitempty"`
+}
+
+func (o *TaskServiceCreateGrantResponse) GetTaskView() *TaskView {
+	if o == nil {
+		return nil
+	}
+	return o.TaskView
+}
+
+func (o *TaskServiceCreateGrantResponse) GetExpanded() []TaskServiceCreateGrantResponseExpanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
 }

@@ -2,8 +2,15 @@
 
 package shared
 
-// ConnectorServiceGetCredentialsResponse - The ConnectorServiceGetCredentialsResponse message.
+// ConnectorServiceGetCredentialsResponse is the response returned by the get method.
 type ConnectorServiceGetCredentialsResponse struct {
-	// The ConnectorCredential message.
+	// ConnectorCredential is used by a connector to authenticate with conductor one.
 	ConnectorCredential *ConnectorCredential `json:"credential,omitempty"`
+}
+
+func (o *ConnectorServiceGetCredentialsResponse) GetConnectorCredential() *ConnectorCredential {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorCredential
 }

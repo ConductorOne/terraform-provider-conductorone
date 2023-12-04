@@ -2,6 +2,6 @@
 
 package shared
 
-// DeleteAttributeValueRequest - The DeleteAttributeValueRequest message.
+// The DeleteAttributeValueRequest message.
 type DeleteAttributeValueRequest struct {
 }

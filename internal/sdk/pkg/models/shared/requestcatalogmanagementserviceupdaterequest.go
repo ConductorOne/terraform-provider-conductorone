@@ -2,11 +2,32 @@
 
 package shared
 
-// RequestCatalogManagementServiceUpdateRequest - The RequestCatalogManagementServiceUpdateRequest message.
+// RequestCatalogManagementServiceUpdateRequest - Update a request catalog object by ID.
 type RequestCatalogManagementServiceUpdateRequest struct {
-	// The RequestCatalog message.
-	RequestCatalog *RequestCatalog `json:"catalog,omitempty"`
-	// The RequestCatalogExpandMask message.
+	// The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
+	RequestCatalog *RequestCatalogInput `json:"catalog,omitempty"`
+	// The RequestCatalogExpandMask includes the paths in the catalog view to expand in the return value of this call.
 	RequestCatalogExpandMask *RequestCatalogExpandMask `json:"expandMask,omitempty"`
 	UpdateMask               *string                   `json:"updateMask,omitempty"`
+}
+
+func (o *RequestCatalogManagementServiceUpdateRequest) GetRequestCatalog() *RequestCatalogInput {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalog
+}
+
+func (o *RequestCatalogManagementServiceUpdateRequest) GetRequestCatalogExpandMask() *RequestCatalogExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogExpandMask
+}
+
+func (o *RequestCatalogManagementServiceUpdateRequest) GetUpdateMask() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateMask
 }

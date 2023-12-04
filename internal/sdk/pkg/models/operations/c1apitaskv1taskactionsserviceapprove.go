@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -12,10 +12,55 @@ type C1APITaskV1TaskActionsServiceApproveRequest struct {
 	TaskID                           string                                   `pathParam:"style=simple,explode=false,name=task_id"`
 }
 
+func (o *C1APITaskV1TaskActionsServiceApproveRequest) GetTaskActionsServiceApproveRequest() *shared.TaskActionsServiceApproveRequest {
+	if o == nil {
+		return nil
+	}
+	return o.TaskActionsServiceApproveRequest
+}
+
+func (o *C1APITaskV1TaskActionsServiceApproveRequest) GetTaskID() string {
+	if o == nil {
+		return ""
+	}
+	return o.TaskID
+}
+
 type C1APITaskV1TaskActionsServiceApproveResponse struct {
+	// HTTP response content type for this operation
 	ContentType string
-	StatusCode  int
+	// HTTP response status code for this operation
+	StatusCode int
+	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The TaskActionsServiceApproveResponse returns a task view with paths indicating the location of expanded items in the array.
 	TaskActionsServiceApproveResponse *shared.TaskActionsServiceApproveResponse
+}
+
+func (o *C1APITaskV1TaskActionsServiceApproveResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APITaskV1TaskActionsServiceApproveResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APITaskV1TaskActionsServiceApproveResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
+}
+
+func (o *C1APITaskV1TaskActionsServiceApproveResponse) GetTaskActionsServiceApproveResponse() *shared.TaskActionsServiceApproveResponse {
+	if o == nil {
+		return nil
+	}
+	return o.TaskActionsServiceApproveResponse
 }

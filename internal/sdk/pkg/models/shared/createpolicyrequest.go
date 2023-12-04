@@ -7,23 +7,23 @@ import (
 	"fmt"
 )
 
-// CreatePolicyRequestPolicyType - The policyType field.
-type CreatePolicyRequestPolicyType string
+// PolicyType - The enum of the policy type.
+type PolicyType string
 
 const (
-	CreatePolicyRequestPolicyTypePolicyTypeUnspecified   CreatePolicyRequestPolicyType = "POLICY_TYPE_UNSPECIFIED"
-	CreatePolicyRequestPolicyTypePolicyTypeGrant         CreatePolicyRequestPolicyType = "POLICY_TYPE_GRANT"
-	CreatePolicyRequestPolicyTypePolicyTypeRevoke        CreatePolicyRequestPolicyType = "POLICY_TYPE_REVOKE"
-	CreatePolicyRequestPolicyTypePolicyTypeCertify       CreatePolicyRequestPolicyType = "POLICY_TYPE_CERTIFY"
-	CreatePolicyRequestPolicyTypePolicyTypeAccessRequest CreatePolicyRequestPolicyType = "POLICY_TYPE_ACCESS_REQUEST"
-	CreatePolicyRequestPolicyTypePolicyTypeProvision     CreatePolicyRequestPolicyType = "POLICY_TYPE_PROVISION"
+	PolicyTypePolicyTypeUnspecified   PolicyType = "POLICY_TYPE_UNSPECIFIED"
+	PolicyTypePolicyTypeGrant         PolicyType = "POLICY_TYPE_GRANT"
+	PolicyTypePolicyTypeRevoke        PolicyType = "POLICY_TYPE_REVOKE"
+	PolicyTypePolicyTypeCertify       PolicyType = "POLICY_TYPE_CERTIFY"
+	PolicyTypePolicyTypeAccessRequest PolicyType = "POLICY_TYPE_ACCESS_REQUEST"
+	PolicyTypePolicyTypeProvision     PolicyType = "POLICY_TYPE_PROVISION"
 )
 
-func (e CreatePolicyRequestPolicyType) ToPointer() *CreatePolicyRequestPolicyType {
+func (e PolicyType) ToPointer() *PolicyType {
 	return &e
 }
 
-func (e *CreatePolicyRequestPolicyType) UnmarshalJSON(data []byte) error {
+func (e *PolicyType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -40,25 +40,67 @@ func (e *CreatePolicyRequestPolicyType) UnmarshalJSON(data []byte) error {
 	case "POLICY_TYPE_ACCESS_REQUEST":
 		fallthrough
 	case "POLICY_TYPE_PROVISION":
-		*e = CreatePolicyRequestPolicyType(v)
+		*e = PolicyType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreatePolicyRequestPolicyType: %v", v)
+		return fmt.Errorf("invalid value for PolicyType: %v", v)
 	}
 }
 
-// CreatePolicyRequest - The CreatePolicyRequest message.
+// The CreatePolicyRequest message is used to create a new policy.
 type CreatePolicyRequest struct {
-	// The description field.
+	// The description of the new policy.
 	Description *string `json:"description,omitempty"`
-	// The displayName field.
+	// The display name of the new policy.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The policySteps field.
-	PolicySteps map[string]PolicySteps `json:"policySteps,omitempty"`
-	// The policyType field.
-	PolicyType *CreatePolicyRequestPolicyType `json:"policyType,omitempty"`
-	// The postActions field.
+	// The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples.
+	PolicySteps map[string]PolicyStepsInput `json:"policySteps,omitempty"`
+	// The enum of the policy type.
+	PolicyType *PolicyType `json:"policyType,omitempty"`
+	// Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately.
 	PostActions []PolicyPostActions `json:"postActions,omitempty"`
-	// The reassignTasksToDelegates field.
+	// Allows reassigning tasks to delegates.
 	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
+}
+
+func (o *CreatePolicyRequest) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *CreatePolicyRequest) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *CreatePolicyRequest) GetPolicySteps() map[string]PolicyStepsInput {
+	if o == nil {
+		return nil
+	}
+	return o.PolicySteps
+}
+
+func (o *CreatePolicyRequest) GetPolicyType() *PolicyType {
+	if o == nil {
+		return nil
+	}
+	return o.PolicyType
+}
+
+func (o *CreatePolicyRequest) GetPostActions() []PolicyPostActions {
+	if o == nil {
+		return nil
+	}
+	return o.PostActions
+}
+
+func (o *CreatePolicyRequest) GetReassignTasksToDelegates() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReassignTasksToDelegates
 }

@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -12,10 +12,55 @@ type C1APIAppV1AppUsageControlsServiceUpdateRequest struct {
 	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
 }
 
+func (o *C1APIAppV1AppUsageControlsServiceUpdateRequest) GetUpdateAppUsageControlsRequest() *shared.UpdateAppUsageControlsRequest {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateAppUsageControlsRequest
+}
+
+func (o *C1APIAppV1AppUsageControlsServiceUpdateRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
 type C1APIAppV1AppUsageControlsServiceUpdateResponse struct {
+	// HTTP response content type for this operation
 	ContentType string
-	StatusCode  int
+	// HTTP response status code for this operation
+	StatusCode int
+	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The UpdateAppUsageControlsResponse message contains the updated AppUsageControls object.
 	UpdateAppUsageControlsResponse *shared.UpdateAppUsageControlsResponse
+}
+
+func (o *C1APIAppV1AppUsageControlsServiceUpdateResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppUsageControlsServiceUpdateResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppUsageControlsServiceUpdateResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppUsageControlsServiceUpdateResponse) GetUpdateAppUsageControlsResponse() *shared.UpdateAppUsageControlsResponse {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateAppUsageControlsResponse
 }

@@ -2,8 +2,15 @@
 
 package shared
 
-// TaskRef - The TaskRef message.
+// TaskRef - This object references a task by ID.
 type TaskRef struct {
-	// The id field.
+	// The ID of the referenced Task
 	ID *string `json:"id,omitempty"`
+}
+
+func (o *TaskRef) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }

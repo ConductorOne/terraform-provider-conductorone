@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -13,10 +13,62 @@ type C1APIAppV1ConnectorServiceDeleteRequest struct {
 	ID                            string                                `pathParam:"style=simple,explode=false,name=id"`
 }
 
+func (o *C1APIAppV1ConnectorServiceDeleteRequest) GetConnectorServiceDeleteRequest() *shared.ConnectorServiceDeleteRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceDeleteRequest
+}
+
+func (o *C1APIAppV1ConnectorServiceDeleteRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1ConnectorServiceDeleteRequest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
 type C1APIAppV1ConnectorServiceDeleteResponse struct {
-	// Successful response
+	// Empty response body. Status code indicates success.
 	ConnectorServiceDeleteResponse *shared.ConnectorServiceDeleteResponse
-	ContentType                    string
-	StatusCode                     int
-	RawResponse                    *http.Response
+	// HTTP response content type for this operation
+	ContentType string
+	// HTTP response status code for this operation
+	StatusCode int
+	// Raw HTTP response; suitable for custom response parsing
+	RawResponse *http.Response
+}
+
+func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetConnectorServiceDeleteResponse() *shared.ConnectorServiceDeleteResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceDeleteResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

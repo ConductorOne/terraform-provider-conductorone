@@ -19,3 +19,52 @@ type SearchAttributeValuesRequest struct {
 	// Search for attributes with a case insensitive match on the attribute value which is the attribute name.
 	Value *string `json:"value,omitempty"`
 }
+
+func (o *SearchAttributeValuesRequest) GetAttributeTypeIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.AttributeTypeIds
+}
+
+func (o *SearchAttributeValuesRequest) GetExcludeIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludeIds
+}
+
+func (o *SearchAttributeValuesRequest) GetIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Ids
+}
+
+func (o *SearchAttributeValuesRequest) GetPageSize() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchAttributeValuesRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
+}
+
+func (o *SearchAttributeValuesRequest) GetQuery() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Query
+}
+
+func (o *SearchAttributeValuesRequest) GetValue() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Value
+}

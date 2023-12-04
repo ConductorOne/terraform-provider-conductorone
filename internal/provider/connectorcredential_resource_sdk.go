@@ -3,7 +3,7 @@
 package provider
 
 import (
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"time"
 )
@@ -40,12 +40,12 @@ func (r *ConnectorCredentialResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.ConnectorID = types.StringNull()
 	}
 	if resp.CreatedAt != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339))
+		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
 	} else {
 		r.CreatedAt = types.StringNull()
 	}
 	if resp.DeletedAt != nil {
-		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339))
+		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
 	} else {
 		r.DeletedAt = types.StringNull()
 	}
@@ -55,7 +55,7 @@ func (r *ConnectorCredentialResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.DisplayName = types.StringNull()
 	}
 	if resp.ExpiresTime != nil {
-		r.ExpiresTime = types.StringValue(resp.ExpiresTime.Format(time.RFC3339))
+		r.ExpiresTime = types.StringValue(resp.ExpiresTime.Format(time.RFC3339Nano))
 	} else {
 		r.ExpiresTime = types.StringNull()
 	}
@@ -65,23 +65,17 @@ func (r *ConnectorCredentialResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.ID = types.StringNull()
 	}
 	if resp.LastUsedAt != nil {
-		r.LastUsedAt = types.StringValue(resp.LastUsedAt.Format(time.RFC3339))
+		r.LastUsedAt = types.StringValue(resp.LastUsedAt.Format(time.RFC3339Nano))
 	} else {
 		r.LastUsedAt = types.StringNull()
 	}
 	if resp.UpdatedAt != nil {
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339))
+		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 	} else {
 		r.UpdatedAt = types.StringNull()
 	}
 }
 
-// FIXME(jirwin): Manual change! Updated the resp type to be the full response
-func (r *ConnectorCredentialResourceModel) RefreshFromCreateResponse(resp *shared.ConnectorServiceRotateCredentialResponse) {
-	if resp.ClientSecret != nil {
-		r.ClientSecret = types.StringValue(*resp.ClientSecret)
-	} else {
-		r.ClientSecret = types.StringNull()
-	}
-	r.RefreshFromGetResponse(resp.ConnectorCredential)
+func (r *ConnectorCredentialResourceModel) RefreshFromCreateResponse(resp *shared.ConnectorCredential) {
+	r.RefreshFromGetResponse(resp)
 }

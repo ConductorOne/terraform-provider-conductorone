@@ -7,20 +7,20 @@ import (
 	"fmt"
 )
 
-type SearchUsersRequestUserStatuses string
+type UserStatuses string
 
 const (
-	SearchUsersRequestUserStatusesUnknown  SearchUsersRequestUserStatuses = "UNKNOWN"
-	SearchUsersRequestUserStatusesEnabled  SearchUsersRequestUserStatuses = "ENABLED"
-	SearchUsersRequestUserStatusesDisabled SearchUsersRequestUserStatuses = "DISABLED"
-	SearchUsersRequestUserStatusesDeleted  SearchUsersRequestUserStatuses = "DELETED"
+	UserStatusesUnknown  UserStatuses = "UNKNOWN"
+	UserStatusesEnabled  UserStatuses = "ENABLED"
+	UserStatusesDisabled UserStatuses = "DISABLED"
+	UserStatusesDeleted  UserStatuses = "DELETED"
 )
 
-func (e SearchUsersRequestUserStatuses) ToPointer() *SearchUsersRequestUserStatuses {
+func (e UserStatuses) ToPointer() *UserStatuses {
 	return &e
 }
 
-func (e *SearchUsersRequestUserStatuses) UnmarshalJSON(data []byte) error {
+func (e *UserStatuses) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -33,33 +33,104 @@ func (e *SearchUsersRequestUserStatuses) UnmarshalJSON(data []byte) error {
 	case "DISABLED":
 		fallthrough
 	case "DELETED":
-		*e = SearchUsersRequestUserStatuses(v)
+		*e = UserStatuses(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for SearchUsersRequestUserStatuses: %v", v)
+		return fmt.Errorf("invalid value for UserStatuses: %v", v)
 	}
 }
 
-// SearchUsersRequest - The SearchUsersRequest message.
+// SearchUsersRequest - Search for users based on some filters.
 type SearchUsersRequest struct {
-	// The UserExpandMask message.
+	// The user expand mask is used to indicate which related objects should be expanded in the response.
+	//  The supported paths are 'role_ids', 'manager_ids', 'delegated_user_id', 'directory_ids', and '*'.
 	UserExpandMask *UserExpandMask `json:"expandMask,omitempty"`
-	// The email field.
+	// Search for users based on their email (exact match).
 	Email *string `json:"email,omitempty"`
-	// The excludeIds field.
+	// An array of users IDs to exclude from the results.
 	ExcludeIds []string `json:"excludeIds,omitempty"`
-	// The ids field.
+	// Deprecated. Use refs array instead.
 	Ids []string `json:"ids,omitempty"`
-	// The pageSize field.
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 	PageSize *float64 `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The query field.
+	// Query the apps with a fuzzy search on display name and emails.
 	Query *string `json:"query,omitempty"`
-	// The refs field.
+	// An array of user refs to restrict the return values to by ID.
 	Refs []UserRef `json:"refs,omitempty"`
-	// The roleIds field.
+	// Search for users that have any of the role IDs on this list.
 	RoleIds []string `json:"roleIds,omitempty"`
-	// The userStatuses field.
-	UserStatuses []SearchUsersRequestUserStatuses `json:"userStatuses,omitempty"`
+	// Search for users that have any of the statuses on this list. This can only be ENABLED, DISABLED, and DELETED
+	UserStatuses []UserStatuses `json:"userStatuses,omitempty"`
+}
+
+func (o *SearchUsersRequest) GetUserExpandMask() *UserExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.UserExpandMask
+}
+
+func (o *SearchUsersRequest) GetEmail() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Email
+}
+
+func (o *SearchUsersRequest) GetExcludeIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludeIds
+}
+
+func (o *SearchUsersRequest) GetIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Ids
+}
+
+func (o *SearchUsersRequest) GetPageSize() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchUsersRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
+}
+
+func (o *SearchUsersRequest) GetQuery() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Query
+}
+
+func (o *SearchUsersRequest) GetRefs() []UserRef {
+	if o == nil {
+		return nil
+	}
+	return o.Refs
+}
+
+func (o *SearchUsersRequest) GetRoleIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.RoleIds
+}
+
+func (o *SearchUsersRequest) GetUserStatuses() []UserStatuses {
+	if o == nil {
+		return nil
+	}
+	return o.UserStatuses
 }

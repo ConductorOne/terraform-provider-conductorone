@@ -2,14 +2,42 @@
 
 package shared
 
-// AppUserView - The AppUserView message.
+// The AppUserView contains an app user as well as paths for apps, identity users, and last usage in expanded arrays.
 type AppUserView struct {
-	// The AppUser message.
+	// Application User that represents an account in the application.
 	AppUser *AppUser `json:"appUser,omitempty"`
-	// The appPath field.
+	// JSONPATH expression indicating where the app is expanded in expanded arrays indicated in the request.
 	AppPath *string `json:"appPath,omitempty"`
-	// The identityUserPath field.
+	// JSONPATH expression indicating where the identity user is expanded in expanded arrays indicated in the request.
 	IdentityUserPath *string `json:"identityUserPath,omitempty"`
-	// The lastUsagePath field.
+	// JSONPATH expression indicating where the last usage information is expanded in expanded arrays indicated in the request.
 	LastUsagePath *string `json:"lastUsagePath,omitempty"`
+}
+
+func (o *AppUserView) GetAppUser() *AppUser {
+	if o == nil {
+		return nil
+	}
+	return o.AppUser
+}
+
+func (o *AppUserView) GetAppPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppPath
+}
+
+func (o *AppUserView) GetIdentityUserPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IdentityUserPath
+}
+
+func (o *AppUserView) GetLastUsagePath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LastUsagePath
 }

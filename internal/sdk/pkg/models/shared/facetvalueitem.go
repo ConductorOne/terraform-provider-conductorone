@@ -2,8 +2,15 @@
 
 package shared
 
-// FacetValueItem - The FacetValueItem message.
+// The FacetValueItem message.
 type FacetValueItem struct {
-	// The values field.
+	// An array of facet values.
 	Values []FacetValue `json:"values,omitempty"`
+}
+
+func (o *FacetValueItem) GetValues() []FacetValue {
+	if o == nil {
+		return nil
+	}
+	return o.Values
 }

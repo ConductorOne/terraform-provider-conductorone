@@ -3,65 +3,59 @@
 package shared
 
 import (
-	"encoding/json"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 )
 
 // ConnectorServiceUpdateResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 type ConnectorServiceUpdateResponseExpanded struct {
 	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
-}
-type _ConnectorServiceUpdateResponseExpanded ConnectorServiceUpdateResponseExpanded
-
-func (c *ConnectorServiceUpdateResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _ConnectorServiceUpdateResponseExpanded{}
-
-	if err := json.Unmarshal(bs, &data); err != nil {
-		return err
-	}
-	*c = ConnectorServiceUpdateResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
-	return nil
+	AtType               *string     `json:"@type,omitempty"`
+	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
 
 func (c ConnectorServiceUpdateResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_ConnectorServiceUpdateResponseExpanded(c))
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
+	return utils.MarshalJSON(c, "", false)
 }
 
-// ConnectorServiceUpdateResponse - The ConnectorServiceUpdateResponse message.
+func (c *ConnectorServiceUpdateResponseExpanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *ConnectorServiceUpdateResponseExpanded) GetAtType() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AtType
+}
+
+func (o *ConnectorServiceUpdateResponseExpanded) GetAdditionalProperties() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+// ConnectorServiceUpdateResponse is the response returned by the update method.
 type ConnectorServiceUpdateResponse struct {
-	// The ConnectorView message.
+	// The ConnectorView object provides a connector response object, as well as JSONPATHs to related objects provided by expanders.
 	ConnectorView *ConnectorView `json:"connectorView,omitempty"`
-	// The expanded field.
+	// The array of expanded items indicated by the request.
 	Expanded []ConnectorServiceUpdateResponseExpanded `json:"expanded,omitempty"`
+}
+
+func (o *ConnectorServiceUpdateResponse) GetConnectorView() *ConnectorView {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorView
+}
+
+func (o *ConnectorServiceUpdateResponse) GetExpanded() []ConnectorServiceUpdateResponseExpanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
 }

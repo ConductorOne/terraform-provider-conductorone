@@ -3,8 +3,8 @@
 package setplanmodifier
 
 import (
-	"conductorone/internal/planmodifiers/utils"
 	"context"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/planmodifiers/utils"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 )

@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -12,11 +12,55 @@ type C1APIAppV1ConnectorServiceCreateDelegatedRequest struct {
 	AppID                                  string                                         `pathParam:"style=simple,explode=false,name=app_id"`
 }
 
+func (o *C1APIAppV1ConnectorServiceCreateDelegatedRequest) GetConnectorServiceCreateDelegatedRequest() *shared.ConnectorServiceCreateDelegatedRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceCreateDelegatedRequest
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateDelegatedRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
 type C1APIAppV1ConnectorServiceCreateDelegatedResponse struct {
-	//  The ConnectorServiceCreateResponse is the response returned from creating a connector.
-	//
+	// The ConnectorServiceCreateResponse is the response returned from creating a connector.
 	ConnectorServiceCreateResponse *shared.ConnectorServiceCreateResponse
-	ContentType                    string
-	StatusCode                     int
-	RawResponse                    *http.Response
+	// HTTP response content type for this operation
+	ContentType string
+	// HTTP response status code for this operation
+	StatusCode int
+	// Raw HTTP response; suitable for custom response parsing
+	RawResponse *http.Response
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetConnectorServiceCreateResponse() *shared.ConnectorServiceCreateResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceCreateResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

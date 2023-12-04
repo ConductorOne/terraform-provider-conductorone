@@ -3,12 +3,12 @@
 package provider
 
 import (
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
 	"context"
 	"fmt"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 
-	"conductorone/internal/validators"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
@@ -29,23 +29,23 @@ func NewConnectorCredentialResource() resource.Resource {
 
 // ConnectorCredentialResource defines the resource implementation.
 type ConnectorCredentialResource struct {
-	client *sdk.ConductoroneAPI
+	client *sdk.ConductoroneSDKTerraform
 }
 
 // ConnectorCredentialResourceModel describes the resource data model.
 type ConnectorCredentialResourceModel struct {
-	AppID                                   types.String                             `tfsdk:"app_id"`
-	ClientID                                types.String                             `tfsdk:"client_id"`
-	ClientSecret                            types.String                             `tfsdk:"client_secret"`
-	ConnectorID                             types.String                             `tfsdk:"connector_id"`
-	ConnectorServiceRotateCredentialRequest *ConnectorServiceRotateCredentialRequest `tfsdk:"connector_service_rotate_credential_request"`
-	CreatedAt                               types.String                             `tfsdk:"created_at"`
-	DeletedAt                               types.String                             `tfsdk:"deleted_at"`
-	DisplayName                             types.String                             `tfsdk:"display_name"`
-	ExpiresTime                             types.String                             `tfsdk:"expires_time"`
-	ID                                      types.String                             `tfsdk:"id"`
-	LastUsedAt                              types.String                             `tfsdk:"last_used_at"`
-	UpdatedAt                               types.String                             `tfsdk:"updated_at"`
+	AppID                                   types.String   `tfsdk:"app_id"`
+	ClientID                                types.String   `tfsdk:"client_id"`
+	ClientSecret                            types.String   `tfsdk:"client_secret"`
+	ConnectorID                             types.String   `tfsdk:"connector_id"`
+	ConnectorServiceRotateCredentialRequest *DurationUnset `tfsdk:"connector_service_rotate_credential_request"`
+	CreatedAt                               types.String   `tfsdk:"created_at"`
+	DeletedAt                               types.String   `tfsdk:"deleted_at"`
+	DisplayName                             types.String   `tfsdk:"display_name"`
+	ExpiresTime                             types.String   `tfsdk:"expires_time"`
+	ID                                      types.String   `tfsdk:"id"`
+	LastUsedAt                              types.String   `tfsdk:"last_used_at"`
+	UpdatedAt                               types.String   `tfsdk:"updated_at"`
 }
 
 func (r *ConnectorCredentialResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -58,29 +58,28 @@ func (r *ConnectorCredentialResource) Schema(ctx context.Context, req resource.S
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
-				Required:    true,
-				Description: `The appId field.`,
+				Optional:    true,
+				Description: `The appId of the app the connector is attached to.`,
 			},
 			"client_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The clientId field.`,
+				Description: `The client id of the ConnectorCredential.`,
 			},
-			// FIXME(jirwin): Manual change! I set optional and sensitive to true here.
 			"client_secret": schema.StringAttribute{
 				Computed:    true,
-				Optional:    true,
-				Sensitive:   true,
-				Description: `The clientSecret field.`,
+				Description: `The new clientSecret returned after rotating the connector credential.`,
 			},
 			"connector_id": schema.StringAttribute{
+				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
-				Required:    true,
-				Description: `The connectorId field.`,
+				Optional:    true,
+				Description: `The connectorId of the connector the credential is associated with.`,
 			},
 			"connector_service_rotate_credential_request": schema.SingleNestedAttribute{
 				PlanModifiers: []planmodifier.Object{
@@ -88,7 +87,7 @@ func (r *ConnectorCredentialResource) Schema(ctx context.Context, req resource.S
 				},
 				Optional:    true,
 				Attributes:  map[string]schema.Attribute{},
-				Description: `The ConnectorServiceRotateCredentialRequest message.`,
+				Description: `ConnectorServiceRotateCredentialRequest is a request for rotating connector credentials. It uses URL values for input.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -104,7 +103,7 @@ func (r *ConnectorCredentialResource) Schema(ctx context.Context, req resource.S
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
-				Description: `The displayName field.`,
+				Description: `The display name of the ConnectorCredential.`,
 			},
 			"expires_time": schema.StringAttribute{
 				Computed: true,
@@ -114,7 +113,7 @@ func (r *ConnectorCredentialResource) Schema(ctx context.Context, req resource.S
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The id field.`,
+				Description: `The id of the ConnectorCredential.`,
 			},
 			"last_used_at": schema.StringAttribute{
 				Computed: true,
@@ -138,12 +137,12 @@ func (r *ConnectorCredentialResource) Configure(ctx context.Context, req resourc
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneAPI)
+	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneAPI, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -181,6 +180,9 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 	res, err := r.client.Connector.RotateCredential(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -191,12 +193,11 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	// FIXME(jirwin): Manual changes! We want to look at the entire response, not just the client credential on create
-	if res.ConnectorServiceRotateCredentialResponse == nil {
+	if res.ConnectorServiceRotateCredentialResponse == nil || res.ConnectorServiceRotateCredentialResponse.ConnectorCredential == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromCreateResponse(res.ConnectorServiceRotateCredentialResponse)
+	data.RefreshFromCreateResponse(res.ConnectorServiceRotateCredentialResponse.ConnectorCredential)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -231,6 +232,9 @@ func (r *ConnectorCredentialResource) Read(ctx context.Context, req resource.Rea
 	res, err := r.client.Connector.GetCredentials(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -241,16 +245,10 @@ func (r *ConnectorCredentialResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.ConnectorServiceGetCredentialsResponse.ConnectorCredential == nil {
+	if res.ConnectorServiceGetCredentialsResponse == nil || res.ConnectorServiceGetCredentialsResponse.ConnectorCredential == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-
-	if res.ConnectorServiceGetCredentialsResponse.ConnectorCredential.DeletedAt == nil {
-		resp.State.RemoveResource(ctx)
-		return
-	}
-
 	data.RefreshFromGetResponse(res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)
 
 	// Save updated data into Terraform state
@@ -301,6 +299,9 @@ func (r *ConnectorCredentialResource) Delete(ctx context.Context, req resource.D
 	res, err := r.client.Connector.RevokeCredential(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -315,5 +316,5 @@ func (r *ConnectorCredentialResource) Delete(ctx context.Context, req resource.D
 }
 
 func (r *ConnectorCredentialResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource connector_credential.")
+	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource connector_credential. Reason: composite imports strings not supported.")
 }

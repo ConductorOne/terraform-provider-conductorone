@@ -3,67 +3,70 @@
 package shared
 
 import (
-	"encoding/json"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 )
 
 // TaskSearchResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 type TaskSearchResponseExpanded struct {
 	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
+	AtType               *string     `json:"@type,omitempty"`
+	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
-type _TaskSearchResponseExpanded TaskSearchResponseExpanded
 
-func (c *TaskSearchResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _TaskSearchResponseExpanded{}
+func (t TaskSearchResponseExpanded) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
 
-	if err := json.Unmarshal(bs, &data); err != nil {
+func (t *TaskSearchResponseExpanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
 		return err
 	}
-	*c = TaskSearchResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
 	return nil
 }
 
-func (c TaskSearchResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_TaskSearchResponseExpanded(c))
-	if err != nil {
-		return nil, err
+func (o *TaskSearchResponseExpanded) GetAtType() *string {
+	if o == nil {
+		return nil
 	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
+	return o.AtType
 }
 
-// TaskSearchResponse - The TaskSearchResponse message.
+func (o *TaskSearchResponseExpanded) GetAdditionalProperties() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+// The TaskSearchResponse message contains a list of results and a nextPageToken if applicable.
 type TaskSearchResponse struct {
-	// The expanded field.
+	// The list of results containing up to X results, where X is the page size defined in the request.
 	Expanded []TaskSearchResponseExpanded `json:"expanded,omitempty"`
-	// The list field.
+	// List of serialized related objects.
 	List []TaskView `json:"list,omitempty"`
-	// The nextPageToken field.
+	// The nextPageToken is shown for the next page if the number of results is larger than the max page size.
+	//  The server returns one page of results and the nextPageToken until all results are retreived.
+	//  To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
+}
+
+func (o *TaskSearchResponse) GetExpanded() []TaskSearchResponseExpanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
+}
+
+func (o *TaskSearchResponse) GetList() []TaskView {
+	if o == nil {
+		return nil
+	}
+	return o.List
+}
+
+func (o *TaskSearchResponse) GetNextPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.NextPageToken
 }

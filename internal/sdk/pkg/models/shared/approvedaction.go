@@ -3,14 +3,47 @@
 package shared
 
 import (
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"time"
 )
 
-// ApprovedAction - The ApprovedAction message.
+// ApprovedAction - The approved action indicates that the approvalinstance had an outcome of approved.
 type ApprovedAction struct {
 	ApprovedAt *time.Time `json:"approvedAt,omitempty"`
-	// The entitlements field.
+	// The entitlements that were approved. This will only ever be a list of one entitlement.
 	Entitlements []AppEntitlementReference `json:"entitlements,omitempty"`
-	// The userId field.
+	// The UserID that approved this step.
 	UserID *string `json:"userId,omitempty"`
+}
+
+func (a ApprovedAction) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *ApprovedAction) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *ApprovedAction) GetApprovedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.ApprovedAt
+}
+
+func (o *ApprovedAction) GetEntitlements() []AppEntitlementReference {
+	if o == nil {
+		return nil
+	}
+	return o.Entitlements
+}
+
+func (o *ApprovedAction) GetUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UserID
 }

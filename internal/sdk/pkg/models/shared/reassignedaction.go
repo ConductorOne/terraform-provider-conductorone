@@ -3,14 +3,47 @@
 package shared
 
 import (
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"time"
 )
 
-// ReassignedAction - The ReassignedAction message.
+// The ReassignedAction object describes the outcome of a policy step that has been reassigned.
 type ReassignedAction struct {
-	// The newPolicyStepId field.
+	// The ID of the policy step that was created as a result of this reassignment.
 	NewPolicyStepID *string    `json:"newPolicyStepId,omitempty"`
 	ReassignedAt    *time.Time `json:"reassignedAt,omitempty"`
-	// The userId field.
+	// The UserID of the person who reassigned this step.
 	UserID *string `json:"userId,omitempty"`
+}
+
+func (r ReassignedAction) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ReassignedAction) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *ReassignedAction) GetNewPolicyStepID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.NewPolicyStepID
+}
+
+func (o *ReassignedAction) GetReassignedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.ReassignedAt
+}
+
+func (o *ReassignedAction) GetUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UserID
 }

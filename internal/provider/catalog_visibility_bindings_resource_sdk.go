@@ -3,11 +3,11 @@
 package provider
 
 import (
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 )
 
 func (r *CatalogVisibilityBindingsResourceModel) ToCreateSDKType() *shared.RequestCatalogManagementServiceAddAccessEntitlementsRequest {
-	accessEntitlements := make([]shared.AppEntitlementRef, 0)
+	var accessEntitlements []shared.AppEntitlementRef = nil
 	for _, accessEntitlementsItem := range r.AccessEntitlements {
 		appID := new(string)
 		if !accessEntitlementsItem.AppID.IsUnknown() && !accessEntitlementsItem.AppID.IsNull() {
@@ -33,7 +33,7 @@ func (r *CatalogVisibilityBindingsResourceModel) ToCreateSDKType() *shared.Reque
 }
 
 func (r *CatalogVisibilityBindingsResourceModel) ToDeleteSDKType() *shared.RequestCatalogManagementServiceRemoveAccessEntitlementsRequest {
-	accessEntitlements := make([]shared.AppEntitlementRef, 0)
+	var accessEntitlements []shared.AppEntitlementRef = nil
 	for _, accessEntitlementsItem := range r.AccessEntitlements {
 		appID := new(string)
 		if !accessEntitlementsItem.AppID.IsUnknown() && !accessEntitlementsItem.AppID.IsNull() {

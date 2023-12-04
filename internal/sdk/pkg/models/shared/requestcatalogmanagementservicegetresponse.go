@@ -3,65 +3,59 @@
 package shared
 
 import (
-	"encoding/json"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 )
 
 // RequestCatalogManagementServiceGetResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 type RequestCatalogManagementServiceGetResponseExpanded struct {
 	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
+	AtType               *string     `json:"@type,omitempty"`
+	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
-type _RequestCatalogManagementServiceGetResponseExpanded RequestCatalogManagementServiceGetResponseExpanded
 
-func (c *RequestCatalogManagementServiceGetResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _RequestCatalogManagementServiceGetResponseExpanded{}
+func (r RequestCatalogManagementServiceGetResponseExpanded) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
 
-	if err := json.Unmarshal(bs, &data); err != nil {
+func (r *RequestCatalogManagementServiceGetResponseExpanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
 		return err
 	}
-	*c = RequestCatalogManagementServiceGetResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
 	return nil
 }
 
-func (c RequestCatalogManagementServiceGetResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_RequestCatalogManagementServiceGetResponseExpanded(c))
-	if err != nil {
-		return nil, err
+func (o *RequestCatalogManagementServiceGetResponseExpanded) GetAtType() *string {
+	if o == nil {
+		return nil
 	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
+	return o.AtType
 }
 
-// RequestCatalogManagementServiceGetResponse - The RequestCatalogManagementServiceGetResponse message.
+func (o *RequestCatalogManagementServiceGetResponseExpanded) GetAdditionalProperties() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+// RequestCatalogManagementServiceGetResponse - The request catalog management service get response returns a request catalog view with the expanded items in the expanded array indicated by the expand mask in the request.
 type RequestCatalogManagementServiceGetResponse struct {
-	// The RequestCatalogView message.
+	// The request catalog view contains the serialized request catalog and paths to objects referenced by the request catalog.
 	RequestCatalogView *RequestCatalogView `json:"requestCatalogView,omitempty"`
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []RequestCatalogManagementServiceGetResponseExpanded `json:"expanded,omitempty"`
+}
+
+func (o *RequestCatalogManagementServiceGetResponse) GetRequestCatalogView() *RequestCatalogView {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogView
+}
+
+func (o *RequestCatalogManagementServiceGetResponse) GetExpanded() []RequestCatalogManagementServiceGetResponseExpanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
 }

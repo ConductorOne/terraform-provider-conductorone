@@ -3,18 +3,72 @@
 package shared
 
 import (
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"time"
 )
 
-// AttributeValue - The AttributeValue message.
+// AttributeValue is the value of an attribute of a defined type.
 type AttributeValue struct {
-	// The attributeTypeId field.
+	// The ID of the AttributeType that this AttributeValue belongs to.
 	AttributeTypeID *string    `json:"attributeTypeId,omitempty"`
 	CreatedAt       *time.Time `json:"createdAt,omitempty"`
 	DeletedAt       *time.Time `json:"deletedAt,omitempty"`
-	// The id field.
+	// The ID of the AttributeValue.
 	ID        *string    `json:"id,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
-	// The value field.
+	// The value of the AttributeValue. This is the string that will be displayed to the user.
 	Value *string `json:"value,omitempty"`
+}
+
+func (a AttributeValue) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AttributeValue) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *AttributeValue) GetAttributeTypeID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AttributeTypeID
+}
+
+func (o *AttributeValue) GetCreatedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
+func (o *AttributeValue) GetDeletedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.DeletedAt
+}
+
+func (o *AttributeValue) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AttributeValue) GetUpdatedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *AttributeValue) GetValue() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Value
 }

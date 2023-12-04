@@ -7,22 +7,22 @@ import (
 	"fmt"
 )
 
-type SearchPoliciesRequestPolicyTypes string
+type PolicyTypes string
 
 const (
-	SearchPoliciesRequestPolicyTypesPolicyTypeUnspecified   SearchPoliciesRequestPolicyTypes = "POLICY_TYPE_UNSPECIFIED"
-	SearchPoliciesRequestPolicyTypesPolicyTypeGrant         SearchPoliciesRequestPolicyTypes = "POLICY_TYPE_GRANT"
-	SearchPoliciesRequestPolicyTypesPolicyTypeRevoke        SearchPoliciesRequestPolicyTypes = "POLICY_TYPE_REVOKE"
-	SearchPoliciesRequestPolicyTypesPolicyTypeCertify       SearchPoliciesRequestPolicyTypes = "POLICY_TYPE_CERTIFY"
-	SearchPoliciesRequestPolicyTypesPolicyTypeAccessRequest SearchPoliciesRequestPolicyTypes = "POLICY_TYPE_ACCESS_REQUEST"
-	SearchPoliciesRequestPolicyTypesPolicyTypeProvision     SearchPoliciesRequestPolicyTypes = "POLICY_TYPE_PROVISION"
+	PolicyTypesPolicyTypeUnspecified   PolicyTypes = "POLICY_TYPE_UNSPECIFIED"
+	PolicyTypesPolicyTypeGrant         PolicyTypes = "POLICY_TYPE_GRANT"
+	PolicyTypesPolicyTypeRevoke        PolicyTypes = "POLICY_TYPE_REVOKE"
+	PolicyTypesPolicyTypeCertify       PolicyTypes = "POLICY_TYPE_CERTIFY"
+	PolicyTypesPolicyTypeAccessRequest PolicyTypes = "POLICY_TYPE_ACCESS_REQUEST"
+	PolicyTypesPolicyTypeProvision     PolicyTypes = "POLICY_TYPE_PROVISION"
 )
 
-func (e SearchPoliciesRequestPolicyTypes) ToPointer() *SearchPoliciesRequestPolicyTypes {
+func (e PolicyTypes) ToPointer() *PolicyTypes {
 	return &e
 }
 
-func (e *SearchPoliciesRequestPolicyTypes) UnmarshalJSON(data []byte) error {
+func (e *PolicyTypes) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -39,23 +39,67 @@ func (e *SearchPoliciesRequestPolicyTypes) UnmarshalJSON(data []byte) error {
 	case "POLICY_TYPE_ACCESS_REQUEST":
 		fallthrough
 	case "POLICY_TYPE_PROVISION":
-		*e = SearchPoliciesRequestPolicyTypes(v)
+		*e = PolicyTypes(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for SearchPoliciesRequestPolicyTypes: %v", v)
+		return fmt.Errorf("invalid value for PolicyTypes: %v", v)
 	}
 }
 
-// SearchPoliciesRequest - The SearchPoliciesRequest message.
+// SearchPoliciesRequest - Search Policies by a few properties.
 type SearchPoliciesRequest struct {
-	// The displayName field.
+	// Search for policies with a case insensitive match on the display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The pageSize field.
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 	PageSize *float64 `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The policyTypes field.
-	PolicyTypes []SearchPoliciesRequestPolicyTypes `json:"policyTypes,omitempty"`
-	// The query field.
+	// The policy type to search on. This can be POLICY_TYPE_GRANT, POLICY_TYPE_REVOKE, POLICY_TYPE_CERTIFY, POLICY_TYPE_ACCESS_REQUEST, or POLICY_TYPE_PROVISION.
+	PolicyTypes []PolicyTypes `json:"policyTypes,omitempty"`
+	// Query the policies with a fuzzy search on display name and description.
 	Query *string `json:"query,omitempty"`
+	// The refs field.
+	Refs []PolicyRef `json:"refs,omitempty"`
+}
+
+func (o *SearchPoliciesRequest) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *SearchPoliciesRequest) GetPageSize() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchPoliciesRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
+}
+
+func (o *SearchPoliciesRequest) GetPolicyTypes() []PolicyTypes {
+	if o == nil {
+		return nil
+	}
+	return o.PolicyTypes
+}
+
+func (o *SearchPoliciesRequest) GetQuery() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Query
+}
+
+func (o *SearchPoliciesRequest) GetRefs() []PolicyRef {
+	if o == nil {
+		return nil
+	}
+	return o.Refs
 }

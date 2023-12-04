@@ -3,67 +3,70 @@
 package shared
 
 import (
-	"encoding/json"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 )
 
 // DirectoryServiceListResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 type DirectoryServiceListResponseExpanded struct {
 	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
+	AtType               *string     `json:"@type,omitempty"`
+	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
-type _DirectoryServiceListResponseExpanded DirectoryServiceListResponseExpanded
 
-func (c *DirectoryServiceListResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _DirectoryServiceListResponseExpanded{}
+func (d DirectoryServiceListResponseExpanded) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
 
-	if err := json.Unmarshal(bs, &data); err != nil {
+func (d *DirectoryServiceListResponseExpanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
 		return err
 	}
-	*c = DirectoryServiceListResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
 	return nil
 }
 
-func (c DirectoryServiceListResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_DirectoryServiceListResponseExpanded(c))
-	if err != nil {
-		return nil, err
+func (o *DirectoryServiceListResponseExpanded) GetAtType() *string {
+	if o == nil {
+		return nil
 	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
+	return o.AtType
 }
 
-// DirectoryServiceListResponse - The DirectoryServiceListResponse message.
+func (o *DirectoryServiceListResponseExpanded) GetAdditionalProperties() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+// The DirectoryServiceListResponse message contains a list of results and a nextPageToken if applicable.
 type DirectoryServiceListResponse struct {
-	// The expanded field.
+	// The nextPageToken is shown for the next page if the number of results is larger than the max page size.
+	//  The server returns one page of results and the nextPageToken until all results are retreived.
+	//  To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
 	Expanded []DirectoryServiceListResponseExpanded `json:"expanded,omitempty"`
-	// The list field.
+	// The list of results containing up to X results, where X is the page size defined in the request.
 	List []DirectoryView `json:"list,omitempty"`
-	// The nextPageToken field.
+	// List of serialized related objects.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
+}
+
+func (o *DirectoryServiceListResponse) GetExpanded() []DirectoryServiceListResponseExpanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
+}
+
+func (o *DirectoryServiceListResponse) GetList() []DirectoryView {
+	if o == nil {
+		return nil
+	}
+	return o.List
+}
+
+func (o *DirectoryServiceListResponse) GetNextPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.NextPageToken
 }

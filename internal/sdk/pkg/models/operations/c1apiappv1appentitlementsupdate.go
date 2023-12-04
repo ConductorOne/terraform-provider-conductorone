@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -13,10 +13,62 @@ type C1APIAppV1AppEntitlementsUpdateRequest struct {
 	ID                          string                              `pathParam:"style=simple,explode=false,name=id"`
 }
 
+func (o *C1APIAppV1AppEntitlementsUpdateRequest) GetUpdateAppEntitlementRequest() *shared.UpdateAppEntitlementRequest {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateAppEntitlementRequest
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateRequest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
 type C1APIAppV1AppEntitlementsUpdateResponse struct {
+	// HTTP response content type for this operation
 	ContentType string
-	StatusCode  int
+	// HTTP response status code for this operation
+	StatusCode int
+	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successful response
 	UpdateAppEntitlementResponse *shared.UpdateAppEntitlementResponse
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateResponse) GetUpdateAppEntitlementResponse() *shared.UpdateAppEntitlementResponse {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateAppEntitlementResponse
 }

@@ -5,5 +5,6 @@ package provider
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type RequestCatalogManagementServiceGetResponseExpanded struct {
-	AtType types.String `tfsdk:"at_type"`
+	AtType               types.String `tfsdk:"at_type"`
+	AdditionalProperties types.String `tfsdk:"additional_properties"`
 }

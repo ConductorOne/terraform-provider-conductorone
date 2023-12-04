@@ -4,27 +4,29 @@ package sdk
 
 import (
 	"bytes"
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/sdk/pkg/utils"
 	"context"
 	"fmt"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/sdkerrors"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"io"
 	"net/http"
 )
 
-type appReport struct {
+type AppReport struct {
 	sdkConfiguration sdkConfiguration
 }
 
-func newAppReport(sdkConfig sdkConfiguration) *appReport {
-	return &appReport{
+func newAppReport(sdkConfig sdkConfiguration) *AppReport {
+	return &AppReport{
 		sdkConfiguration: sdkConfig,
 	}
 }
 
-// List - Invokes the c1.api.app.v1.AppReportService.List method.
-func (s *appReport) List(ctx context.Context, request operations.C1APIAppV1AppReportServiceListRequest) (*operations.C1APIAppV1AppReportServiceListResponse, error) {
+// List
+// Get a list of reports for the given app.
+func (s *AppReport) List(ctx context.Context, request operations.C1APIAppV1AppReportServiceListRequest) (*operations.C1APIAppV1AppReportServiceListResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/report", request, nil)
 	if err != nil {
@@ -36,9 +38,13 @@ func (s *appReport) List(ctx context.Context, request operations.C1APIAppV1AppRe
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+	req.Header.Set("user-agent", s.sdkConfiguration.UserAgent)
 
-	client := s.sdkConfiguration.DefaultClient
+	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+		return nil, fmt.Errorf("error populating query params: %w", err)
+	}
+
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -66,12 +72,14 @@ func (s *appReport) List(ctx context.Context, request operations.C1APIAppV1AppRe
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
-			var out *shared.AppReportServiceListResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			var out shared.AppReportServiceListResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AppReportServiceListResponse = out
+			res.AppReportServiceListResponse = &out
+		default:
+			return nil, sdkerrors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	}
 

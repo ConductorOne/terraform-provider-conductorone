@@ -3,12 +3,38 @@
 package shared
 
 import (
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"time"
 )
 
-// OAuth2AuthorizedAs - The OAuth2AuthorizedAs message.
+// OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
 type OAuth2AuthorizedAs struct {
-	// The authEmail field.
+	// authEmail is the email of the user that authorized the connector using OAuth.
 	AuthEmail    *string    `json:"authEmail,omitempty"`
 	AuthorizedAt *time.Time `json:"authorizedAt,omitempty"`
+}
+
+func (o OAuth2AuthorizedAs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OAuth2AuthorizedAs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OAuth2AuthorizedAs) GetAuthEmail() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AuthEmail
+}
+
+func (o *OAuth2AuthorizedAs) GetAuthorizedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.AuthorizedAt
 }

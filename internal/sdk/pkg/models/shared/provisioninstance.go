@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-// ProvisionInstanceState - The state field.
+// ProvisionInstanceState - This property indicates the current state of this step.
 type ProvisionInstanceState string
 
 const (
@@ -47,7 +47,7 @@ func (e *ProvisionInstanceState) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// ProvisionInstance - The ProvisionInstance message.
+// ProvisionInstance - A provision instance describes the specific configuration of an executing provision policy step including actions taken and notification id.
 //
 // This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
 //   - completed
@@ -55,18 +55,67 @@ func (e *ProvisionInstanceState) UnmarshalJSON(data []byte) error {
 //   - errored
 //   - reassignedByError
 type ProvisionInstance struct {
-	// The CancelledAction message.
+	// The outcome of a provision instance that is cancelled.
 	CancelledAction *CancelledAction `json:"cancelled,omitempty"`
-	// The CompletedAction message.
+	// The outcome of a provision instance that has been completed succesfully.
 	CompletedAction *CompletedAction `json:"completed,omitempty"`
-	// The ErroredAction message.
+	// The outcome of a provision instance that has errored.
 	ErroredAction *ErroredAction `json:"errored,omitempty"`
-	// The Provision message.
+	// The provision step references a provision policy for this step.
 	Provision *Provision `json:"provision,omitempty"`
-	// The ReassignedByErrorAction message.
+	// The ReassignedByErrorAction object describes the outcome of a policy step that has been reassigned because it had an error provisioning.
 	ReassignedByErrorAction *ReassignedByErrorAction `json:"reassignedByError,omitempty"`
-	// The notificationId field.
+	// This indicates the notification id for this step.
 	NotificationID *string `json:"notificationId,omitempty"`
-	// The state field.
+	// This property indicates the current state of this step.
 	State *ProvisionInstanceState `json:"state,omitempty"`
+}
+
+func (o *ProvisionInstance) GetCancelledAction() *CancelledAction {
+	if o == nil {
+		return nil
+	}
+	return o.CancelledAction
+}
+
+func (o *ProvisionInstance) GetCompletedAction() *CompletedAction {
+	if o == nil {
+		return nil
+	}
+	return o.CompletedAction
+}
+
+func (o *ProvisionInstance) GetErroredAction() *ErroredAction {
+	if o == nil {
+		return nil
+	}
+	return o.ErroredAction
+}
+
+func (o *ProvisionInstance) GetProvision() *Provision {
+	if o == nil {
+		return nil
+	}
+	return o.Provision
+}
+
+func (o *ProvisionInstance) GetReassignedByErrorAction() *ReassignedByErrorAction {
+	if o == nil {
+		return nil
+	}
+	return o.ReassignedByErrorAction
+}
+
+func (o *ProvisionInstance) GetNotificationID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.NotificationID
+}
+
+func (o *ProvisionInstance) GetState() *ProvisionInstanceState {
+	if o == nil {
+		return nil
+	}
+	return o.State
 }

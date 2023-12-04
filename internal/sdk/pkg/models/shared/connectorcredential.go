@@ -3,24 +3,106 @@
 package shared
 
 import (
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"time"
 )
 
-// ConnectorCredential - The ConnectorCredential message.
+// ConnectorCredential is used by a connector to authenticate with conductor one.
 type ConnectorCredential struct {
-	// The appId field.
+	// The appId of the app the connector is attached to.
 	AppID *string `json:"appId,omitempty"`
-	// The clientId field.
+	// The client id of the ConnectorCredential.
 	ClientID *string `json:"clientId,omitempty"`
-	// The connectorId field.
+	// The connectorId of the connector the credential is associated with.
 	ConnectorID *string    `json:"connectorId,omitempty"`
 	CreatedAt   *time.Time `json:"createdAt,omitempty"`
 	DeletedAt   *time.Time `json:"deletedAt,omitempty"`
-	// The displayName field.
+	// The display name of the ConnectorCredential.
 	DisplayName *string    `json:"displayName,omitempty"`
 	ExpiresTime *time.Time `json:"expiresTime,omitempty"`
-	// The id field.
+	// The id of the ConnectorCredential.
 	ID         *string    `json:"id,omitempty"`
 	LastUsedAt *time.Time `json:"lastUsedAt,omitempty"`
 	UpdatedAt  *time.Time `json:"updatedAt,omitempty"`
+}
+
+func (c ConnectorCredential) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConnectorCredential) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *ConnectorCredential) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
+}
+
+func (o *ConnectorCredential) GetClientID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientID
+}
+
+func (o *ConnectorCredential) GetConnectorID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorID
+}
+
+func (o *ConnectorCredential) GetCreatedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
+func (o *ConnectorCredential) GetDeletedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.DeletedAt
+}
+
+func (o *ConnectorCredential) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *ConnectorCredential) GetExpiresTime() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.ExpiresTime
+}
+
+func (o *ConnectorCredential) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *ConnectorCredential) GetLastUsedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.LastUsedAt
+}
+
+func (o *ConnectorCredential) GetUpdatedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
 }

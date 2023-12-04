@@ -3,18 +3,16 @@
 package provider
 
 import (
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
 	"context"
 	"fmt"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -29,7 +27,7 @@ func NewCatalogVisibilityBindingsResource() resource.Resource {
 
 // CatalogVisibilityBindingsResource defines the resource implementation.
 type CatalogVisibilityBindingsResource struct {
-	client *sdk.ConductoroneAPI
+	client *sdk.ConductoroneSDKTerraform
 }
 
 // CatalogVisibilityBindingsResourceModel describes the resource data model.
@@ -51,29 +49,26 @@ func (r *CatalogVisibilityBindingsResource) Schema(ctx context.Context, req reso
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplace(),
 				},
-				Required: true,
+				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"app_id": schema.StringAttribute{
 							PlanModifiers: []planmodifier.String{
 								stringplanmodifier.RequiresReplace(),
 							},
-							Required:    true,
+							Optional:    true,
 							Description: `The appId field.`,
 						},
 						"id": schema.StringAttribute{
 							PlanModifiers: []planmodifier.String{
 								stringplanmodifier.RequiresReplace(),
 							},
-							Required:    true,
+							Optional:    true,
 							Description: `The id field.`,
 						},
 					},
 				},
-				Description: `The accessEntitlements field.`,
-				Validators: []validator.List{
-					listvalidator.SizeAtLeast(1),
-				},
+				Description: `List of entitlements to add to the request catalog as access entitlements.`,
 			},
 			"catalog_id": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
@@ -91,12 +86,12 @@ func (r *CatalogVisibilityBindingsResource) Configure(ctx context.Context, req r
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneAPI)
+	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -132,6 +127,9 @@ func (r *CatalogVisibilityBindingsResource) Create(ctx context.Context, req reso
 	res, err := r.client.RequestCatalogManagement.AddAccessEntitlements(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -216,6 +214,9 @@ func (r *CatalogVisibilityBindingsResource) Delete(ctx context.Context, req reso
 	res, err := r.client.RequestCatalogManagement.RemoveAccessEntitlements(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {

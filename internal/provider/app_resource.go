@@ -3,16 +3,18 @@
 package provider
 
 import (
-	"conductorone/internal/sdk"
 	"context"
 	"fmt"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
 
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -28,7 +30,7 @@ func NewAppResource() resource.Resource {
 
 // AppResource defines the resource implementation.
 type AppResource struct {
-	client *sdk.ConductoroneAPI
+	client *sdk.ConductoroneSDKTerraform
 }
 
 // AppResourceModel describes the resource data model.
@@ -44,6 +46,7 @@ type AppResourceModel struct {
 	GrantPolicyID   types.String   `tfsdk:"grant_policy_id"`
 	IconURL         types.String   `tfsdk:"icon_url"`
 	ID              types.String   `tfsdk:"id"`
+	IsDirectory     types.Bool     `tfsdk:"is_directory"`
 	LogoURI         types.String   `tfsdk:"logo_uri"`
 	MonthlyCostUsd  types.Number   `tfsdk:"monthly_cost_usd"`
 	Owners          []types.String `tfsdk:"owners"`
@@ -64,16 +67,16 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 		Attributes: map[string]schema.Attribute{
 			"app_account_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The appAccountId field.`,
+				Description: `The ID of the Account named by AccountName.`,
 			},
 			"app_account_name": schema.StringAttribute{
 				Computed:    true,
-				Description: `The appAccountName field.`,
+				Description: `The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.`,
 			},
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The certifyPolicyId is the ID of the policy that will be used for access review certify tasks.`,
+				Description: `Creates the app with this certify policy.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -90,11 +93,12 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description field.`,
+				Description: `Creates the app with this description.`,
 			},
 			"display_name": schema.StringAttribute{
-				Required:    true,
-				Description: `The displayName field.`,
+				Computed:    true,
+				Optional:    true,
+				Description: `Creates the app with this display name.`,
 			},
 			"field_mask": schema.StringAttribute{
 				Computed: true,
@@ -102,39 +106,45 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"grant_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The grantPolicyId field is the policy that will be used for access request grant tasks.`,
+				Description: `Creates the app with this grant policy.`,
 			},
 			"icon_url": schema.StringAttribute{
 				Computed:    true,
-				Description: `The iconUrl field.`,
+				Description: `The URL of an icon to display for the app.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The id field.`,
+				Description: `The ID of the app.`,
+			},
+			"is_directory": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Specifies if the app is a directory.`,
 			},
 			"logo_uri": schema.StringAttribute{
 				Computed:    true,
-				Description: `The logoUri field.`,
+				Description: `The URL of a logo to display for the app.`,
 			},
 			"monthly_cost_usd": schema.NumberAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The monthlyCostUsd field is the monthly cost per seat for the given app.`,
+				Description: `Creates the app with this monthly cost per seat.`,
 			},
 			"owners": schema.ListAttribute{
-				Computed:    true,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplace(),
+				},
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The owners field is a list of user IDs indicating the app owners.`,
+				Description: `Creates the app with this array of owners.`,
 			},
 			"parent_app_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The parentAppId field is the ID of the parent app if one exists.`,
+				Description: `The ID of the app that created this app, if any.`,
 			},
 			"revoke_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The revokePolicyId is the ID of the policy that will be used for revoke access tasks.`,
+				Description: `Creates the app with this revoke policy.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -144,7 +154,7 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			},
 			"user_count": schema.StringAttribute{
 				Computed:    true,
-				Description: `The userCount field is the number of app users that are associated with the app.`,
+				Description: `The number of users with grants to this app.`,
 			},
 		},
 	}
@@ -156,12 +166,12 @@ func (r *AppResource) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneAPI)
+	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -188,10 +198,13 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	request := *data.ToCreateSDKType()
+	request := data.ToCreateSDKType()
 	res, err := r.client.Apps.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -202,7 +215,7 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.CreateAppResponse.App == nil {
+	if res.CreateAppResponse == nil || res.CreateAppResponse.App == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
@@ -237,6 +250,9 @@ func (r *AppResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 	res, err := r.client.Apps.Get(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -247,16 +263,10 @@ func (r *AppResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.GetAppResponse.App == nil {
+	if res.GetAppResponse == nil || res.GetAppResponse.App == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-
-	if res.GetAppResponse.App.DeletedAt != nil {
-		resp.State.RemoveResource(ctx)
-		return
-	}
-
 	data.RefreshFromGetResponse(res.GetAppResponse.App)
 
 	// Save updated data into Terraform state
@@ -272,10 +282,8 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 
 	var updateAppRequest *shared.UpdateAppRequest
 	app := data.ToUpdateSDKType()
-	updateMask := "displayName,monthlyCostUsd,description,grantPolicyId,revokePolicyId,certifyPolicyId"
 	updateAppRequest = &shared.UpdateAppRequest{
-		App:        app,
-		UpdateMask: &updateMask,
+		App: app,
 	}
 	id := data.ID.ValueString()
 	request := operations.C1APIAppV1AppsUpdateRequest{
@@ -285,6 +293,9 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	res, err := r.client.Apps.Update(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -295,7 +306,7 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.UpdateAppResponse.App == nil {
+	if res.UpdateAppResponse == nil || res.UpdateAppResponse.App == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
@@ -332,6 +343,9 @@ func (r *AppResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 	res, err := r.client.Apps.Delete(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
 		return
 	}
 	if res == nil {
@@ -346,5 +360,5 @@ func (r *AppResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 }
 
 func (r *AppResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
 }

@@ -2,9 +2,9 @@
 
 package shared
 
-// Provision - The Provision message.
+// Provision - The provision step references a provision policy for this step.
 type Provision struct {
-	// The ProvisionPolicy message.
+	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
 	//
 	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
 	//   - connector
@@ -12,6 +12,29 @@ type Provision struct {
 	//   - delegated
 	//
 	ProvisionPolicy *ProvisionPolicy `json:"provisionPolicy,omitempty"`
-	// The assigned field.
+	// ProvisionTarget indicates the specific app, app entitlement, and if known, the app user and grant duration of this provision step
+	ProvisionTarget *ProvisionTarget `json:"provisionTarget,omitempty"`
+	// A field indicating whether this step is assigned.
 	Assigned *bool `json:"assigned,omitempty"`
+}
+
+func (o *Provision) GetProvisionPolicy() *ProvisionPolicy {
+	if o == nil {
+		return nil
+	}
+	return o.ProvisionPolicy
+}
+
+func (o *Provision) GetProvisionTarget() *ProvisionTarget {
+	if o == nil {
+		return nil
+	}
+	return o.ProvisionTarget
+}
+
+func (o *Provision) GetAssigned() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Assigned
 }

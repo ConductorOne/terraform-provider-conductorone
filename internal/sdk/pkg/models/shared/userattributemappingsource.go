@@ -2,7 +2,7 @@
 
 package shared
 
-// UserAttributeMappingSource - The UserAttributeMappingSource message.
+// The UserAttributeMappingSource message.
 type UserAttributeMappingSource struct {
 	// The appId field.
 	AppID *string `json:"appId,omitempty"`
@@ -14,4 +14,39 @@ type UserAttributeMappingSource struct {
 	UserAttributeMappingID *string `json:"userAttributeMappingId,omitempty"`
 	// The value field.
 	Value *string `json:"value,omitempty"`
+}
+
+func (o *UserAttributeMappingSource) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
+}
+
+func (o *UserAttributeMappingSource) GetAppUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserID
+}
+
+func (o *UserAttributeMappingSource) GetAppUserProfileAttributeKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserProfileAttributeKey
+}
+
+func (o *UserAttributeMappingSource) GetUserAttributeMappingID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UserAttributeMappingID
+}
+
+func (o *UserAttributeMappingSource) GetValue() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Value
 }

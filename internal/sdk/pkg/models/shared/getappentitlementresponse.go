@@ -3,65 +3,59 @@
 package shared
 
 import (
-	"encoding/json"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 )
 
 // GetAppEntitlementResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 type GetAppEntitlementResponseExpanded struct {
 	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
+	AtType               *string     `json:"@type,omitempty"`
+	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
-type _GetAppEntitlementResponseExpanded GetAppEntitlementResponseExpanded
 
-func (c *GetAppEntitlementResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _GetAppEntitlementResponseExpanded{}
+func (g GetAppEntitlementResponseExpanded) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
 
-	if err := json.Unmarshal(bs, &data); err != nil {
+func (g *GetAppEntitlementResponseExpanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
 		return err
 	}
-	*c = GetAppEntitlementResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
 	return nil
 }
 
-func (c GetAppEntitlementResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_GetAppEntitlementResponseExpanded(c))
-	if err != nil {
-		return nil, err
+func (o *GetAppEntitlementResponseExpanded) GetAtType() *string {
+	if o == nil {
+		return nil
 	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
+	return o.AtType
 }
 
-// GetAppEntitlementResponse - The GetAppEntitlementResponse message.
+func (o *GetAppEntitlementResponseExpanded) GetAdditionalProperties() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+// GetAppEntitlementResponse - The get app entitlement response returns an entitlement view containing paths in the expanded array for the objects expanded as indicated by the expand mask in the request.
 type GetAppEntitlementResponse struct {
-	// The AppEntitlementView message.
+	// The app entitlement view contains the serialized app entitlement and paths to objects referenced by the app entitlement.
 	AppEntitlementView *AppEntitlementView `json:"appEntitlementView,omitempty"`
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []GetAppEntitlementResponseExpanded `json:"expanded,omitempty"`
+}
+
+func (o *GetAppEntitlementResponse) GetAppEntitlementView() *AppEntitlementView {
+	if o == nil {
+		return nil
+	}
+	return o.AppEntitlementView
+}
+
+func (o *GetAppEntitlementResponse) GetExpanded() []GetAppEntitlementResponseExpanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
 }

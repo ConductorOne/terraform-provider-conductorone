@@ -7,19 +7,19 @@ import (
 	"fmt"
 )
 
-// ExternalRefExternalRefSource - The externalRefSource field.
-type ExternalRefExternalRefSource string
+// ExternalRefSource - The source of the external reference.
+type ExternalRefSource string
 
 const (
-	ExternalRefExternalRefSourceUnspecified ExternalRefExternalRefSource = "UNSPECIFIED"
-	ExternalRefExternalRefSourceJira        ExternalRefExternalRefSource = "JIRA"
+	ExternalRefSourceUnspecified ExternalRefSource = "UNSPECIFIED"
+	ExternalRefSourceJira        ExternalRefSource = "JIRA"
 )
 
-func (e ExternalRefExternalRefSource) ToPointer() *ExternalRefExternalRefSource {
+func (e ExternalRefSource) ToPointer() *ExternalRefSource {
 	return &e
 }
 
-func (e *ExternalRefExternalRefSource) UnmarshalJSON(data []byte) error {
+func (e *ExternalRefSource) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -28,19 +28,40 @@ func (e *ExternalRefExternalRefSource) UnmarshalJSON(data []byte) error {
 	case "UNSPECIFIED":
 		fallthrough
 	case "JIRA":
-		*e = ExternalRefExternalRefSource(v)
+		*e = ExternalRefSource(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ExternalRefExternalRefSource: %v", v)
+		return fmt.Errorf("invalid value for ExternalRefSource: %v", v)
 	}
 }
 
-// ExternalRef - The ExternalRef message.
+// ExternalRef - A reference to an external source. This value is unused currently, but may be brought back.
 type ExternalRef struct {
-	// The externalRefSource field.
-	ExternalRefSource *ExternalRefExternalRefSource `json:"externalRefSource,omitempty"`
-	// The name field.
+	// The source of the external reference.
+	ExternalRefSource *ExternalRefSource `json:"externalRefSource,omitempty"`
+	// The name of the external reference.
 	Name *string `json:"name,omitempty"`
-	// The url field.
+	// The URL to the external reference.
 	URL *string `json:"url,omitempty"`
+}
+
+func (o *ExternalRef) GetExternalRefSource() *ExternalRefSource {
+	if o == nil {
+		return nil
+	}
+	return o.ExternalRefSource
+}
+
+func (o *ExternalRef) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *ExternalRef) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
 }

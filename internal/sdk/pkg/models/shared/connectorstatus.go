@@ -5,10 +5,11 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"time"
 )
 
-// ConnectorStatusStatus - The status field.
+// ConnectorStatusStatus - The status of the connector sync.
 type ConnectorStatusStatus string
 
 const (
@@ -42,13 +43,59 @@ func (e *ConnectorStatusStatus) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// ConnectorStatus - The ConnectorStatus message.
+// ConnectorStatus - The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
 type ConnectorStatus struct {
 	CompletedAt *time.Time `json:"completedAt,omitempty"`
-	// The lastError field.
+	// The last error encountered by the connector.
 	LastError *string    `json:"lastError,omitempty"`
 	StartedAt *time.Time `json:"startedAt,omitempty"`
-	// The status field.
+	// The status of the connector sync.
 	Status    *ConnectorStatusStatus `json:"status,omitempty"`
 	UpdatedAt *time.Time             `json:"updatedAt,omitempty"`
+}
+
+func (c ConnectorStatus) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConnectorStatus) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *ConnectorStatus) GetCompletedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.CompletedAt
+}
+
+func (o *ConnectorStatus) GetLastError() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LastError
+}
+
+func (o *ConnectorStatus) GetStartedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.StartedAt
+}
+
+func (o *ConnectorStatus) GetStatus() *ConnectorStatusStatus {
+	if o == nil {
+		return nil
+	}
+	return o.Status
+}
+
+func (o *ConnectorStatus) GetUpdatedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
 }

@@ -20,7 +20,17 @@ fmt:
 
 .PHONY: gen
 gen:
-	speakeasy generate sdk -s openapi.yaml -o . -l conductorone -d
+	speakeasy generate sdk -s openapi.yaml -o . -l terraform 
+
+.PHONY: yaml
+yaml:
+	curl -sSL -o openapi.yaml https://insulator.conductor.one/api/v1/openapi.yaml
+	python3 .github/workflows/clean_yaml.py openapi.yaml
+
+.PHONY: cleangen
+cleangen:
+	make yaml
+	make gen
 
 .PHONY: test
 test:

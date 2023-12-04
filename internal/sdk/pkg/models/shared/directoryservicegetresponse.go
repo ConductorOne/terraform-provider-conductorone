@@ -3,65 +3,61 @@
 package shared
 
 import (
-	"encoding/json"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 )
 
 // DirectoryServiceGetResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 type DirectoryServiceGetResponseExpanded struct {
 	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
+	AtType               *string     `json:"@type,omitempty"`
+	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
-type _DirectoryServiceGetResponseExpanded DirectoryServiceGetResponseExpanded
 
-func (c *DirectoryServiceGetResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _DirectoryServiceGetResponseExpanded{}
+func (d DirectoryServiceGetResponseExpanded) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
 
-	if err := json.Unmarshal(bs, &data); err != nil {
+func (d *DirectoryServiceGetResponseExpanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
 		return err
 	}
-	*c = DirectoryServiceGetResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
 	return nil
 }
 
-func (c DirectoryServiceGetResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_DirectoryServiceGetResponseExpanded(c))
-	if err != nil {
-		return nil, err
+func (o *DirectoryServiceGetResponseExpanded) GetAtType() *string {
+	if o == nil {
+		return nil
 	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
+	return o.AtType
 }
 
-// DirectoryServiceGetResponse - The DirectoryServiceGetResponse message.
+func (o *DirectoryServiceGetResponseExpanded) GetAdditionalProperties() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+// DirectoryServiceGetResponse - The Directory Service Get Response returns a directory view with a directory and JSONPATHs indicating the
+//
+//	location in the expanded array that items are expanded as indicated by the expand mask in the request.
 type DirectoryServiceGetResponse struct {
-	// The DirectoryView message.
+	// The directory view contains a directory and an app_path which is a JSONPATH set to the location in the expand mask that the expanded app will live if requested by the expander.
 	DirectoryView *DirectoryView `json:"directoryView,omitempty"`
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []DirectoryServiceGetResponseExpanded `json:"expanded,omitempty"`
+}
+
+func (o *DirectoryServiceGetResponse) GetDirectoryView() *DirectoryView {
+	if o == nil {
+		return nil
+	}
+	return o.DirectoryView
+}
+
+func (o *DirectoryServiceGetResponse) GetExpanded() []DirectoryServiceGetResponseExpanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
 }

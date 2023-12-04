@@ -3,14 +3,47 @@
 package shared
 
 import (
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"time"
 )
 
-// RestartAction - The RestartAction message.
+// RestartAction - The restart action describes the outcome of policy steps for when the task was restarted. This can be applied to multiple steps since restart skips all pending next steps.
 type RestartAction struct {
-	// The oldPolicyStepId field.
+	// The step ID that was restarted. Potentially multiple "history" steps will reference this ID to indicate by what step they were restarted.
 	OldPolicyStepID *string    `json:"oldPolicyStepId,omitempty"`
 	RestartedAt     *time.Time `json:"restartedAt,omitempty"`
-	// The userId field.
+	// The user that submitted the restart action.
 	UserID *string `json:"userId,omitempty"`
+}
+
+func (r RestartAction) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RestartAction) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *RestartAction) GetOldPolicyStepID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.OldPolicyStepID
+}
+
+func (o *RestartAction) GetRestartedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.RestartedAt
+}
+
+func (o *RestartAction) GetUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UserID
 }

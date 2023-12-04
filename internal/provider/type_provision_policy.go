@@ -3,7 +3,7 @@
 package provider
 
 type ProvisionPolicy struct {
-	ConnectorProvision *ConnectorProvision `tfsdk:"connector_provision"`
+	ConnectorProvision *DurationUnset      `tfsdk:"connector_provision"`
 	DelegatedProvision *DelegatedProvision `tfsdk:"delegated_provision"`
 	ManualProvision    *ManualProvision    `tfsdk:"manual_provision"`
 }

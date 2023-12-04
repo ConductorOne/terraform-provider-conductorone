@@ -2,6 +2,6 @@
 
 package shared
 
-// ConnectorServiceDeleteResponse - The ConnectorServiceDeleteResponse message.
+// ConnectorServiceDeleteResponse - Empty response body. Status code indicates success.
 type ConnectorServiceDeleteResponse struct {
 }

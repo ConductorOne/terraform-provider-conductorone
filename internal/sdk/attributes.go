@@ -4,43 +4,46 @@ package sdk
 
 import (
 	"bytes"
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/sdk/pkg/utils"
 	"context"
 	"fmt"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/sdkerrors"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"io"
 	"net/http"
 	"strings"
 )
 
-type attributes struct {
+type Attributes struct {
 	sdkConfiguration sdkConfiguration
 }
 
-func newAttributes(sdkConfig sdkConfiguration) *attributes {
-	return &attributes{
+func newAttributes(sdkConfig sdkConfiguration) *Attributes {
+	return &Attributes{
 		sdkConfiguration: sdkConfig,
 	}
 }
 
 // CreateAttributeValue - Create Attribute Value
-// Invokes the c1.api.attribute.v1.Attributes.CreateAttributeValue method.
-func (s *attributes) CreateAttributeValue(ctx context.Context, request shared.CreateAttributeValueRequest) (*operations.C1APIAttributeV1AttributesCreateAttributeValueResponse, error) {
+// Create a new attribute value.
+func (s *Attributes) CreateAttributeValue(ctx context.Context, request *shared.CreateAttributeValueRequest) (*operations.C1APIAttributeV1AttributesCreateAttributeValueResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url := strings.TrimSuffix(baseURL, "/") + "/api/v1/attributes"
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
+	debugBody := bytes.NewBuffer([]byte{})
+	debugReader := io.TeeReader(bodyReader, debugBody)
 
-	req, err := http.NewRequestWithContext(ctx, "POST", url, bodyReader)
+	req, err := http.NewRequestWithContext(ctx, "POST", url, debugReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+	req.Header.Set("user-agent", s.sdkConfiguration.UserAgent)
 
 	req.Header.Set("Content-Type", reqContentType)
 
@@ -58,6 +61,7 @@ func (s *attributes) CreateAttributeValue(ctx context.Context, request shared.Cr
 	if err != nil {
 		return nil, fmt.Errorf("error reading response body: %w", err)
 	}
+	httpRes.Request.Body = io.NopCloser(debugBody)
 	httpRes.Body.Close()
 	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
 
@@ -72,12 +76,14 @@ func (s *attributes) CreateAttributeValue(ctx context.Context, request shared.Cr
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
-			var out *shared.CreateAttributeValueResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			var out shared.CreateAttributeValueResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAttributeValueResponse = out
+			res.CreateAttributeValueResponse = &out
+		default:
+			return nil, sdkerrors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	}
 
@@ -85,25 +91,27 @@ func (s *attributes) CreateAttributeValue(ctx context.Context, request shared.Cr
 }
 
 // DeleteAttributeValue - Delete Attribute Value
-// Invokes the c1.api.attribute.v1.Attributes.DeleteAttributeValue method.
-func (s *attributes) DeleteAttributeValue(ctx context.Context, request operations.C1APIAttributeV1AttributesDeleteAttributeValueRequest) (*operations.C1APIAttributeV1AttributesDeleteAttributeValueResponse, error) {
+// Delete an attribute value by id.
+func (s *Attributes) DeleteAttributeValue(ctx context.Context, request operations.C1APIAttributeV1AttributesDeleteAttributeValueRequest) (*operations.C1APIAttributeV1AttributesDeleteAttributeValueResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/attribute/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "DeleteAttributeValueRequest", "json")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteAttributeValueRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
+	debugBody := bytes.NewBuffer([]byte{})
+	debugReader := io.TeeReader(bodyReader, debugBody)
 
-	req, err := http.NewRequestWithContext(ctx, "DELETE", url, bodyReader)
+	req, err := http.NewRequestWithContext(ctx, "DELETE", url, debugReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+	req.Header.Set("user-agent", s.sdkConfiguration.UserAgent)
 
 	req.Header.Set("Content-Type", reqContentType)
 
@@ -121,6 +129,7 @@ func (s *attributes) DeleteAttributeValue(ctx context.Context, request operation
 	if err != nil {
 		return nil, fmt.Errorf("error reading response body: %w", err)
 	}
+	httpRes.Request.Body = io.NopCloser(debugBody)
 	httpRes.Body.Close()
 	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
 
@@ -135,12 +144,14 @@ func (s *attributes) DeleteAttributeValue(ctx context.Context, request operation
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
-			var out *shared.DeleteAttributeValueResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			var out shared.DeleteAttributeValueResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.DeleteAttributeValueResponse = out
+			res.DeleteAttributeValueResponse = &out
+		default:
+			return nil, sdkerrors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	}
 
@@ -148,8 +159,8 @@ func (s *attributes) DeleteAttributeValue(ctx context.Context, request operation
 }
 
 // GetAttributeValue - Get Attribute Value
-// Invokes the c1.api.attribute.v1.Attributes.GetAttributeValue method.
-func (s *attributes) GetAttributeValue(ctx context.Context, request operations.C1APIAttributeV1AttributesGetAttributeValueRequest) (*operations.C1APIAttributeV1AttributesGetAttributeValueResponse, error) {
+// Get an attribute value by id.
+func (s *Attributes) GetAttributeValue(ctx context.Context, request operations.C1APIAttributeV1AttributesGetAttributeValueRequest) (*operations.C1APIAttributeV1AttributesGetAttributeValueResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/attributes/{id}", request, nil)
 	if err != nil {
@@ -161,7 +172,7 @@ func (s *attributes) GetAttributeValue(ctx context.Context, request operations.C
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+	req.Header.Set("user-agent", s.sdkConfiguration.UserAgent)
 
 	client := s.sdkConfiguration.SecurityClient
 
@@ -191,12 +202,14 @@ func (s *attributes) GetAttributeValue(ctx context.Context, request operations.C
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
-			var out *shared.GetAttributeValueResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			var out shared.GetAttributeValueResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.GetAttributeValueResponse = out
+			res.GetAttributeValueResponse = &out
+		default:
+			return nil, sdkerrors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	}
 
@@ -204,8 +217,8 @@ func (s *attributes) GetAttributeValue(ctx context.Context, request operations.C
 }
 
 // ListAttributeTypes - List Attribute Types
-// Invokes the c1.api.attribute.v1.Attributes.ListAttributeTypes method.
-func (s *attributes) ListAttributeTypes(ctx context.Context, request operations.C1APIAttributeV1AttributesListAttributeTypesRequest) (*operations.C1APIAttributeV1AttributesListAttributeTypesResponse, error) {
+// List all attribute types.
+func (s *Attributes) ListAttributeTypes(ctx context.Context, request operations.C1APIAttributeV1AttributesListAttributeTypesRequest) (*operations.C1APIAttributeV1AttributesListAttributeTypesResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url := strings.TrimSuffix(baseURL, "/") + "/api/v1/attributes/types"
 
@@ -214,7 +227,7 @@ func (s *attributes) ListAttributeTypes(ctx context.Context, request operations.
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+	req.Header.Set("user-agent", s.sdkConfiguration.UserAgent)
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
@@ -248,12 +261,14 @@ func (s *attributes) ListAttributeTypes(ctx context.Context, request operations.
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
-			var out *shared.ListAttributeTypesResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			var out shared.ListAttributeTypesResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ListAttributeTypesResponse = out
+			res.ListAttributeTypesResponse = &out
+		default:
+			return nil, sdkerrors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	}
 
@@ -261,17 +276,20 @@ func (s *attributes) ListAttributeTypes(ctx context.Context, request operations.
 }
 
 // ListAttributeValues - List Attribute Values
-// Invokes the c1.api.attribute.v1.Attributes.ListAttributeValues method.
-func (s *attributes) ListAttributeValues(ctx context.Context, request operations.C1APIAttributeV1AttributesListAttributeValuesRequest) (*operations.C1APIAttributeV1AttributesListAttributeValuesResponse, error) {
+// List all attribute values for a given attribute type.
+func (s *Attributes) ListAttributeValues(ctx context.Context, request operations.C1APIAttributeV1AttributesListAttributeValuesRequest) (*operations.C1APIAttributeV1AttributesListAttributeValuesResponse, error) {
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	url := strings.TrimSuffix(baseURL, "/") + "/api/v1/attributes/values"
+	url, err := utils.GenerateURL(ctx, baseURL, "/api/v1/attributes/types/{attribute_type_id}/values", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+	req.Header.Set("user-agent", s.sdkConfiguration.UserAgent)
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
@@ -305,12 +323,14 @@ func (s *attributes) ListAttributeValues(ctx context.Context, request operations
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
-			var out *shared.ListAttributeValuesResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			var out shared.ListAttributeValuesResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ListAttributeValuesResponse = out
+			res.ListAttributeValuesResponse = &out
+		default:
+			return nil, sdkerrors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	}
 

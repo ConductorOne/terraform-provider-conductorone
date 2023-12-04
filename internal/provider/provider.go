@@ -3,8 +3,9 @@
 package provider
 
 import (
-	"conductorone/internal/sdk"
 	"context"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -22,11 +23,11 @@ type ConductoroneProvider struct {
 	version string
 }
 
-// TerraformProviderModel describes the provider data model.
+// ConductoroneProviderModel describes the provider data model.
 type ConductoroneProviderModel struct {
-	ServerURL    types.String `tfsdk:"server_url"`
-	ClientID     types.String `tfsdk:"client_id"`
-	ClientSecret types.String `tfsdk:"client_secret"`
+	ServerURL  types.String `tfsdk:"server_url"`
+	BearerAuth types.String `tfsdk:"bearer_auth"`
+	Oauth      types.String `tfsdk:"oauth"`
 }
 
 func (p *ConductoroneProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -43,15 +44,13 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 				Optional:            true,
 				Required:            false,
 			},
-			"client_id": schema.StringAttribute{
-				MarkdownDescription: "ClientId for Auth",
-				Optional:            false,
-				Required:            true,
+			"bearer_auth": schema.StringAttribute{
+				Optional:  true,
+				Sensitive: true,
 			},
-			"client_secret": schema.StringAttribute{
-				MarkdownDescription: "ClientSecret for Auth",
-				Optional:            false,
-				Required:            true,
+			"oauth": schema.StringAttribute{
+				Optional:  true,
+				Sensitive: true,
 			},
 		},
 	}
@@ -67,61 +66,47 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 	}
 
 	ServerURL := data.ServerURL.ValueString()
-	ClientID := data.ClientID.ValueString()
-	ClientSecret := data.ClientSecret.ValueString()
 
 	if ServerURL == "" {
 		ServerURL = "https://{tenantDomain}.conductor.one"
 	}
 
-	opt, err := sdk.WithTenantCustom(ServerURL)
-	if err != nil {
-		return
+	bearerAuth := data.BearerAuth.ValueString()
+	oauth := data.Oauth.ValueString()
+	security := shared.Security{
+		BearerAuth: bearerAuth,
+		Oauth:      oauth,
 	}
 
-	opts := []sdk.CustomSDKOption{
-		opt,
+	opts := []sdk.SDKOption{
+		sdk.WithServerURL(ServerURL),
+		sdk.WithSecurity(security),
 	}
-	client, err := sdk.NewWithCredentials(ctx, &sdk.ClientCredentials{
-		ClientID:     ClientID,
-		ClientSecret: ClientSecret,
-	}, opts...)
-	if err != nil {
-		panic(err)
-	}
+	client := sdk.New(opts...)
 
 	resp.DataSourceData = client
 	resp.ResourceData = client
 }
 
 func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.Resource {
-	resources := []func() resource.Resource{
+	return []func() resource.Resource{
+		NewAppResource,
+		NewAppEntitlementOwnerResource,
+		NewAppOwnerResource,
 		NewCatalogResource,
 		NewCatalogRequestableEntriesResource,
 		NewCatalogVisibilityBindingsResource,
 		NewConnectorCredentialResource,
-		NewIntegrationBatonResource,
 		NewPolicyResource,
-		NewAppResource,
-		NewAppEntitlementResource,
-		NewRiskLevelResource,
-		NewComplianceFrameworkResource,
-		NewAppEntitlementOwnerResource,
 	}
-
-	resources = append(resources, getIntegrationResources()...)
-
-	return resources
 }
 
 func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewAppDataSource,
+		NewCatalogDataSource,
+		NewConnectorCredentialDataSource,
 		NewPolicyDataSource,
-		NewUserDataSource,
-		NewAppEntitlementDataSource,
-		NewRiskLevelDataSource,
-		NewComplianceFrameworkDataSource,
 	}
 }
 

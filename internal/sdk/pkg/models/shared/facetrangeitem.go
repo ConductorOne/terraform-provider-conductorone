@@ -2,8 +2,15 @@
 
 package shared
 
-// FacetRangeItem - The FacetRangeItem message.
+// The FacetRangeItem message.
 type FacetRangeItem struct {
-	// The ranges field.
+	// An array of facet ranges.
 	Ranges []FacetRange `json:"ranges,omitempty"`
+}
+
+func (o *FacetRangeItem) GetRanges() []FacetRange {
+	if o == nil {
+		return nil
+	}
+	return o.Ranges
 }

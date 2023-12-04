@@ -2,9 +2,23 @@
 
 package shared
 
-// UpdateRoleRequest - The UpdateRoleRequest message.
+// The UpdateRoleRequest message contains the role to update and the update mask.
 type UpdateRoleRequest struct {
-	// The Role message.
-	Role       *Role   `json:"role,omitempty"`
-	UpdateMask *string `json:"updateMask,omitempty"`
+	// Role is a role that can be assigned to a user in ConductorOne.
+	Role       *RoleInput `json:"role,omitempty"`
+	UpdateMask *string    `json:"updateMask,omitempty"`
+}
+
+func (o *UpdateRoleRequest) GetRole() *RoleInput {
+	if o == nil {
+		return nil
+	}
+	return o.Role
+}
+
+func (o *UpdateRoleRequest) GetUpdateMask() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateMask
 }

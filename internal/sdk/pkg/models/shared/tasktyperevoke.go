@@ -5,10 +5,11 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"time"
 )
 
-// TaskTypeRevokeOutcome - The outcome field.
+// TaskTypeRevokeOutcome - The outcome of the revoke.
 type TaskTypeRevokeOutcome string
 
 const (
@@ -45,9 +46,9 @@ func (e *TaskTypeRevokeOutcome) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// TaskTypeRevoke - The TaskTypeRevoke message.
+// The TaskTypeRevoke message indicates that a task is a revoke task and all related details.
 type TaskTypeRevoke struct {
-	// The TaskRevokeSource message.
+	// The TaskRevokeSource message indicates the source of the revoke task is one of expired, nonUsage, request, or review.
 	//
 	// This message contains a oneof named origin. Only a single field of the following list may be set at a time:
 	//   - review
@@ -56,15 +57,75 @@ type TaskTypeRevoke struct {
 	//   - nonUsage
 	//
 	TaskRevokeSource *TaskRevokeSource `json:"source,omitempty"`
-	// The appEntitlementId field.
+	// The ID of the app entitlement.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
-	// The appId field.
+	// The ID of the app.
 	AppID *string `json:"appId,omitempty"`
-	// The appUserId field.
+	// The ID of the app user.
 	AppUserID *string `json:"appUserId,omitempty"`
-	// The identityUserId field.
+	// The ID of the user.
 	IdentityUserID *string `json:"identityUserId,omitempty"`
-	// The outcome field.
+	// The outcome of the revoke.
 	Outcome     *TaskTypeRevokeOutcome `json:"outcome,omitempty"`
 	OutcomeTime *time.Time             `json:"outcomeTime,omitempty"`
+}
+
+func (t TaskTypeRevoke) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TaskTypeRevoke) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *TaskTypeRevoke) GetTaskRevokeSource() *TaskRevokeSource {
+	if o == nil {
+		return nil
+	}
+	return o.TaskRevokeSource
+}
+
+func (o *TaskTypeRevoke) GetAppEntitlementID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppEntitlementID
+}
+
+func (o *TaskTypeRevoke) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
+}
+
+func (o *TaskTypeRevoke) GetAppUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserID
+}
+
+func (o *TaskTypeRevoke) GetIdentityUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IdentityUserID
+}
+
+func (o *TaskTypeRevoke) GetOutcome() *TaskTypeRevokeOutcome {
+	if o == nil {
+		return nil
+	}
+	return o.Outcome
+}
+
+func (o *TaskTypeRevoke) GetOutcomeTime() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.OutcomeTime
 }

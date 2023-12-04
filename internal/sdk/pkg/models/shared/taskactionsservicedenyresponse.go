@@ -3,67 +3,68 @@
 package shared
 
 import (
-	"encoding/json"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 )
 
 // TaskActionsServiceDenyResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 type TaskActionsServiceDenyResponseExpanded struct {
 	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
+	AtType               *string     `json:"@type,omitempty"`
+	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
-type _TaskActionsServiceDenyResponseExpanded TaskActionsServiceDenyResponseExpanded
 
-func (c *TaskActionsServiceDenyResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _TaskActionsServiceDenyResponseExpanded{}
+func (t TaskActionsServiceDenyResponseExpanded) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
 
-	if err := json.Unmarshal(bs, &data); err != nil {
+func (t *TaskActionsServiceDenyResponseExpanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
 		return err
 	}
-	*c = TaskActionsServiceDenyResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
 	return nil
 }
 
-func (c TaskActionsServiceDenyResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_TaskActionsServiceDenyResponseExpanded(c))
-	if err != nil {
-		return nil, err
+func (o *TaskActionsServiceDenyResponseExpanded) GetAtType() *string {
+	if o == nil {
+		return nil
 	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
+	return o.AtType
 }
 
-// TaskActionsServiceDenyResponse - The TaskActionsServiceDenyResponse message.
+func (o *TaskActionsServiceDenyResponseExpanded) GetAdditionalProperties() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+// The TaskActionsServiceDenyResponse returns a task view with paths indicating the location of expanded items in the array.
 type TaskActionsServiceDenyResponse struct {
-	// The TaskView message.
+	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
 	TaskView *TaskView `json:"taskView,omitempty"`
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []TaskActionsServiceDenyResponseExpanded `json:"expanded,omitempty"`
-	// The ticketActionId field.
+	// The ID of the ticket (task) deny action created by this request.
 	TicketActionID *string `json:"ticketActionId,omitempty"`
+}
+
+func (o *TaskActionsServiceDenyResponse) GetTaskView() *TaskView {
+	if o == nil {
+		return nil
+	}
+	return o.TaskView
+}
+
+func (o *TaskActionsServiceDenyResponse) GetExpanded() []TaskActionsServiceDenyResponseExpanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
+}
+
+func (o *TaskActionsServiceDenyResponse) GetTicketActionID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TicketActionID
 }

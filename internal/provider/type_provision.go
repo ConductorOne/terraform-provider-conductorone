@@ -7,4 +7,5 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type Provision struct {
 	Assigned        types.Bool       `tfsdk:"assigned"`
 	ProvisionPolicy *ProvisionPolicy `tfsdk:"provision_policy"`
+	ProvisionTarget *ProvisionTarget `tfsdk:"provision_target"`
 }

@@ -7,21 +7,21 @@ import (
 	"fmt"
 )
 
-// RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus - The grantedStatus field.
-type RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus string
+// GrantedStatus - Search entitlements with this granted status for your signed in user.
+type GrantedStatus string
 
 const (
-	RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatusUnspecified RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus = "UNSPECIFIED"
-	RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatusAll         RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus = "ALL"
-	RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatusGranted     RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus = "GRANTED"
-	RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatusNotGranted  RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus = "NOT_GRANTED"
+	GrantedStatusUnspecified GrantedStatus = "UNSPECIFIED"
+	GrantedStatusAll         GrantedStatus = "ALL"
+	GrantedStatusGranted     GrantedStatus = "GRANTED"
+	GrantedStatusNotGranted  GrantedStatus = "NOT_GRANTED"
 )
 
-func (e RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus) ToPointer() *RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus {
+func (e GrantedStatus) ToPointer() *GrantedStatus {
 	return &e
 }
 
-func (e *RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus) UnmarshalJSON(data []byte) error {
+func (e *GrantedStatus) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -34,25 +34,85 @@ func (e *RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus) Unma
 	case "GRANTED":
 		fallthrough
 	case "NOT_GRANTED":
-		*e = RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus(v)
+		*e = GrantedStatus(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus: %v", v)
+		return fmt.Errorf("invalid value for GrantedStatus: %v", v)
 	}
 }
 
-// RequestCatalogSearchServiceSearchEntitlementsRequest - The RequestCatalogSearchServiceSearchEntitlementsRequest message.
+// The RequestCatalogSearchServiceSearchEntitlementsRequest searches entitlements, but only ones that are available to you through the open catalogs.
 type RequestCatalogSearchServiceSearchEntitlementsRequest struct {
-	// The AppEntitlementExpandMask message.
+	// The app entitlement expand mask allows the user to get additional information when getting responses containing app entitlement views.
 	AppEntitlementExpandMask *AppEntitlementExpandMask `json:"expandMask,omitempty"`
-	// The entitlementAlias field.
+	// Search entitlements that belong to this app name (exact match).
+	AppDisplayName *string `json:"appDisplayName,omitempty"`
+	// Search for entitlements with this alias (exact match).
 	EntitlementAlias *string `json:"entitlementAlias,omitempty"`
-	// The grantedStatus field.
-	GrantedStatus *RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus `json:"grantedStatus,omitempty"`
-	// The pageSize field.
+	// Search entitlements with this granted status for your signed in user.
+	GrantedStatus *GrantedStatus `json:"grantedStatus,omitempty"`
+	// Include deleted entitlements
+	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 	PageSize *float64 `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The query field.
+	// Fuzzy search the display name of resource types.
 	Query *string `json:"query,omitempty"`
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetAppEntitlementExpandMask() *AppEntitlementExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.AppEntitlementExpandMask
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetAppDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppDisplayName
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetEntitlementAlias() *string {
+	if o == nil {
+		return nil
+	}
+	return o.EntitlementAlias
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetGrantedStatus() *GrantedStatus {
+	if o == nil {
+		return nil
+	}
+	return o.GrantedStatus
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetIncludeDeleted() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IncludeDeleted
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetPageSize() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetQuery() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Query
 }

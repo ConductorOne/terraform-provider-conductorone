@@ -3,7 +3,7 @@
 package provider
 
 import (
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"time"
 )
@@ -11,7 +11,7 @@ import (
 func (r *CatalogResourceModel) ToCreateSDKType() *shared.RequestCatalogManagementServiceCreateRequest {
 	var requestCatalogExpandMask *shared.RequestCatalogExpandMask
 	if r.RequestCatalogExpandMask != nil {
-		paths := make([]string, 0)
+		var paths []string = nil
 		for _, pathsItem := range r.RequestCatalogExpandMask.Paths {
 			paths = append(paths, pathsItem.ValueString())
 		}
@@ -58,8 +58,8 @@ func (r *CatalogResourceModel) ToGetSDKType() *shared.RequestCatalogManagementSe
 	return out
 }
 
-func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
-	accessEntitlements := make([]shared.AppEntitlement, 0)
+func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalogInput {
+	var accessEntitlements []shared.AppEntitlementInput = nil
 	for _, accessEntitlementsItem := range r.AccessEntitlements {
 		var provisionPolicy *shared.ProvisionPolicy
 		if accessEntitlementsItem.ProvisionPolicy != nil {
@@ -81,9 +81,16 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 				} else {
 					entitlementID = nil
 				}
+				implicit := new(bool)
+				if !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit.IsUnknown() && !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit.IsNull() {
+					*implicit = accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit.ValueBool()
+				} else {
+					implicit = nil
+				}
 				delegatedProvision = &shared.DelegatedProvision{
 					AppID:         appID,
 					EntitlementID: entitlementID,
+					Implicit:      implicit,
 				}
 			}
 			var manualProvision *shared.ManualProvision
@@ -94,7 +101,7 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 				} else {
 					instructions = nil
 				}
-				userIds := make([]string, 0)
+				var userIds []string = nil
 				for _, userIdsItem := range accessEntitlementsItem.ProvisionPolicy.ManualProvision.UserIds {
 					userIds = append(userIds, userIdsItem.ValueString())
 				}
@@ -108,12 +115,6 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 				DelegatedProvision: delegatedProvision,
 				ManualProvision:    manualProvision,
 			}
-		}
-		alias := new(string)
-		if !accessEntitlementsItem.Alias.IsUnknown() && !accessEntitlementsItem.Alias.IsNull() {
-			*alias = accessEntitlementsItem.Alias.ValueString()
-		} else {
-			alias = nil
 		}
 		appId1 := new(string)
 		if !accessEntitlementsItem.AppID.IsUnknown() && !accessEntitlementsItem.AppID.IsNull() {
@@ -139,21 +140,9 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 		} else {
 			certifyPolicyID = nil
 		}
-		complianceFrameworkValueIds := make([]string, 0)
+		var complianceFrameworkValueIds []string = nil
 		for _, complianceFrameworkValueIdsItem := range accessEntitlementsItem.ComplianceFrameworkValueIds {
 			complianceFrameworkValueIds = append(complianceFrameworkValueIds, complianceFrameworkValueIdsItem.ValueString())
-		}
-		createdAt := new(time.Time)
-		if !accessEntitlementsItem.CreatedAt.IsUnknown() && !accessEntitlementsItem.CreatedAt.IsNull() {
-			*createdAt, _ = time.Parse(time.RFC3339Nano, accessEntitlementsItem.CreatedAt.ValueString())
-		} else {
-			createdAt = nil
-		}
-		deletedAt := new(time.Time)
-		if !accessEntitlementsItem.DeletedAt.IsUnknown() && !accessEntitlementsItem.DeletedAt.IsNull() {
-			*deletedAt, _ = time.Parse(time.RFC3339Nano, accessEntitlementsItem.DeletedAt.ValueString())
-		} else {
-			deletedAt = nil
 		}
 		description := new(string)
 		if !accessEntitlementsItem.Description.IsUnknown() && !accessEntitlementsItem.Description.IsNull() {
@@ -173,9 +162,9 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 		} else {
 			durationGrant = nil
 		}
-		var durationUnset *shared.AppEntitlementDurationUnset
+		var durationUnset *shared.DurationUnset
 		if accessEntitlementsItem.DurationUnset != nil {
-			durationUnset = &shared.AppEntitlementDurationUnset{}
+			durationUnset = &shared.DurationUnset{}
 		}
 		emergencyGrantEnabled := new(bool)
 		if !accessEntitlementsItem.EmergencyGrantEnabled.IsUnknown() && !accessEntitlementsItem.EmergencyGrantEnabled.IsNull() {
@@ -189,23 +178,11 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 		} else {
 			emergencyGrantPolicyID = nil
 		}
-		grantCount := new(string)
-		if !accessEntitlementsItem.GrantCount.IsUnknown() && !accessEntitlementsItem.GrantCount.IsNull() {
-			*grantCount = accessEntitlementsItem.GrantCount.ValueString()
-		} else {
-			grantCount = nil
-		}
 		grantPolicyID := new(string)
 		if !accessEntitlementsItem.GrantPolicyID.IsUnknown() && !accessEntitlementsItem.GrantPolicyID.IsNull() {
 			*grantPolicyID = accessEntitlementsItem.GrantPolicyID.ValueString()
 		} else {
 			grantPolicyID = nil
-		}
-		id := new(string)
-		if !accessEntitlementsItem.ID.IsUnknown() && !accessEntitlementsItem.ID.IsNull() {
-			*id = accessEntitlementsItem.ID.ValueString()
-		} else {
-			id = nil
 		}
 		revokePolicyID := new(string)
 		if !accessEntitlementsItem.RevokePolicyID.IsUnknown() && !accessEntitlementsItem.RevokePolicyID.IsNull() {
@@ -225,47 +202,35 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 		} else {
 			slug = nil
 		}
-		systemBuiltin := new(bool)
-		if !accessEntitlementsItem.SystemBuiltin.IsUnknown() && !accessEntitlementsItem.SystemBuiltin.IsNull() {
-			*systemBuiltin = accessEntitlementsItem.SystemBuiltin.ValueBool()
+		userEditedMask := new(string)
+		if !accessEntitlementsItem.UserEditedMask.IsUnknown() && !accessEntitlementsItem.UserEditedMask.IsNull() {
+			*userEditedMask = accessEntitlementsItem.UserEditedMask.ValueString()
 		} else {
-			systemBuiltin = nil
+			userEditedMask = nil
 		}
-
-		accessEntitlements = append(accessEntitlements, shared.AppEntitlement{
+		accessEntitlements = append(accessEntitlements, shared.AppEntitlementInput{
 			ProvisionPolicy:             provisionPolicy,
-			Alias:                       alias,
 			AppID:                       appId1,
 			AppResourceID:               appResourceID,
 			AppResourceTypeID:           appResourceTypeID,
 			CertifyPolicyID:             certifyPolicyID,
 			ComplianceFrameworkValueIds: complianceFrameworkValueIds,
-			CreatedAt:                   createdAt,
-			DeletedAt:                   deletedAt,
 			Description:                 description,
 			DisplayName:                 displayName,
 			DurationGrant:               durationGrant,
 			DurationUnset:               durationUnset,
 			EmergencyGrantEnabled:       emergencyGrantEnabled,
 			EmergencyGrantPolicyID:      emergencyGrantPolicyID,
-			GrantCount:                  grantCount,
 			GrantPolicyID:               grantPolicyID,
-			ID:                          id,
 			RevokePolicyID:              revokePolicyID,
 			RiskLevelValueID:            riskLevelValueID,
 			Slug:                        slug,
-			SystemBuiltin:               systemBuiltin,
+			UserEditedMask:              userEditedMask,
 		})
 	}
-	appIds := make([]string, 0)
+	var appIds []string = nil
 	for _, appIdsItem := range r.AppIds {
 		appIds = append(appIds, appIdsItem.ValueString())
-	}
-	createdAt1 := new(time.Time)
-	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
-		*createdAt1, _ = time.Parse(time.RFC3339Nano, r.CreatedAt.ValueString())
-	} else {
-		createdAt1 = nil
 	}
 	createdByUserID := new(string)
 	if !r.CreatedByUserID.IsUnknown() && !r.CreatedByUserID.IsNull() {
@@ -285,11 +250,11 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 	} else {
 		displayName1 = nil
 	}
-	id1 := new(string)
+	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id1 = r.ID.ValueString()
+		*id = r.ID.ValueString()
 	} else {
-		id1 = nil
+		id = nil
 	}
 	published := new(bool)
 	if !r.Published.IsUnknown() && !r.Published.IsNull() {
@@ -303,14 +268,13 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalog {
 	} else {
 		visibleToEveryone = nil
 	}
-	out := shared.RequestCatalog{
+	out := shared.RequestCatalogInput{
 		AccessEntitlements: accessEntitlements,
 		AppIds:             appIds,
-		CreatedAt:          createdAt1,
 		CreatedByUserID:    createdByUserID,
 		Description:        description1,
 		DisplayName:        displayName1,
-		ID:                 id1,
+		ID:                 id,
 		Published:          published,
 		VisibleToEveryone:  visibleToEveryone,
 	}
@@ -323,8 +287,10 @@ func (r *CatalogResourceModel) ToDeleteSDKType() *shared.RequestCatalogManagemen
 }
 
 func (r *CatalogResourceModel) RefreshFromGetResponse(resp *shared.RequestCatalog) {
-	r.AccessEntitlements = nil
-	for _, accessEntitlementsItem := range resp.AccessEntitlements {
+	if len(r.AccessEntitlements) > len(resp.AccessEntitlements) {
+		r.AccessEntitlements = r.AccessEntitlements[:len(resp.AccessEntitlements)]
+	}
+	for accessEntitlementsCount, accessEntitlementsItem := range resp.AccessEntitlements {
 		var accessEntitlements1 AppEntitlement
 		if accessEntitlementsItem.Alias != nil {
 			accessEntitlements1.Alias = types.StringValue(*accessEntitlementsItem.Alias)
@@ -356,12 +322,12 @@ func (r *CatalogResourceModel) RefreshFromGetResponse(resp *shared.RequestCatalo
 			accessEntitlements1.ComplianceFrameworkValueIds = append(accessEntitlements1.ComplianceFrameworkValueIds, types.StringValue(v))
 		}
 		if accessEntitlementsItem.CreatedAt != nil {
-			accessEntitlements1.CreatedAt = types.StringValue(accessEntitlementsItem.CreatedAt.Format(time.RFC3339))
+			accessEntitlements1.CreatedAt = types.StringValue(accessEntitlementsItem.CreatedAt.Format(time.RFC3339Nano))
 		} else {
 			accessEntitlements1.CreatedAt = types.StringNull()
 		}
 		if accessEntitlementsItem.DeletedAt != nil {
-			accessEntitlements1.DeletedAt = types.StringValue(accessEntitlementsItem.DeletedAt.Format(time.RFC3339))
+			accessEntitlements1.DeletedAt = types.StringValue(accessEntitlementsItem.DeletedAt.Format(time.RFC3339Nano))
 		} else {
 			accessEntitlements1.DeletedAt = types.StringNull()
 		}
@@ -380,13 +346,10 @@ func (r *CatalogResourceModel) RefreshFromGetResponse(resp *shared.RequestCatalo
 		} else {
 			accessEntitlements1.DurationGrant = types.StringNull()
 		}
-		if accessEntitlements1.DurationUnset == nil {
-			accessEntitlements1.DurationUnset = &AppEntitlementDurationUnset{}
-		}
 		if accessEntitlementsItem.DurationUnset == nil {
 			accessEntitlements1.DurationUnset = nil
 		} else {
-			accessEntitlements1.DurationUnset = &AppEntitlementDurationUnset{}
+			accessEntitlements1.DurationUnset = &DurationUnset{}
 		}
 		if accessEntitlementsItem.EmergencyGrantEnabled != nil {
 			accessEntitlements1.EmergencyGrantEnabled = types.BoolValue(*accessEntitlementsItem.EmergencyGrantEnabled)
@@ -413,23 +376,14 @@ func (r *CatalogResourceModel) RefreshFromGetResponse(resp *shared.RequestCatalo
 		} else {
 			accessEntitlements1.ID = types.StringNull()
 		}
-		if accessEntitlements1.ProvisionPolicy == nil {
-			accessEntitlements1.ProvisionPolicy = &ProvisionPolicy{}
-		}
 		if accessEntitlementsItem.ProvisionPolicy == nil {
 			accessEntitlements1.ProvisionPolicy = nil
 		} else {
 			accessEntitlements1.ProvisionPolicy = &ProvisionPolicy{}
-			if accessEntitlements1.ProvisionPolicy.ConnectorProvision == nil {
-				accessEntitlements1.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
-			}
 			if accessEntitlementsItem.ProvisionPolicy.ConnectorProvision == nil {
 				accessEntitlements1.ProvisionPolicy.ConnectorProvision = nil
 			} else {
-				accessEntitlements1.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
-			}
-			if accessEntitlements1.ProvisionPolicy.DelegatedProvision == nil {
-				accessEntitlements1.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
+				accessEntitlements1.ProvisionPolicy.ConnectorProvision = &DurationUnset{}
 			}
 			if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision == nil {
 				accessEntitlements1.ProvisionPolicy.DelegatedProvision = nil
@@ -445,9 +399,11 @@ func (r *CatalogResourceModel) RefreshFromGetResponse(resp *shared.RequestCatalo
 				} else {
 					accessEntitlements1.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringNull()
 				}
-			}
-			if accessEntitlements1.ProvisionPolicy.ManualProvision == nil {
-				accessEntitlements1.ProvisionPolicy.ManualProvision = &ManualProvision{}
+				if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit != nil {
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolValue(*accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit)
+				} else {
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolNull()
+				}
 			}
 			if accessEntitlementsItem.ProvisionPolicy.ManualProvision == nil {
 				accessEntitlements1.ProvisionPolicy.ManualProvision = nil
@@ -485,18 +441,50 @@ func (r *CatalogResourceModel) RefreshFromGetResponse(resp *shared.RequestCatalo
 			accessEntitlements1.SystemBuiltin = types.BoolNull()
 		}
 		if accessEntitlementsItem.UpdatedAt != nil {
-			accessEntitlements1.UpdatedAt = types.StringValue(accessEntitlementsItem.UpdatedAt.Format(time.RFC3339))
+			accessEntitlements1.UpdatedAt = types.StringValue(accessEntitlementsItem.UpdatedAt.Format(time.RFC3339Nano))
 		} else {
 			accessEntitlements1.UpdatedAt = types.StringNull()
 		}
-		r.AccessEntitlements = append(r.AccessEntitlements, accessEntitlements1)
+		if accessEntitlementsItem.UserEditedMask != nil {
+			accessEntitlements1.UserEditedMask = types.StringValue(*accessEntitlementsItem.UserEditedMask)
+		} else {
+			accessEntitlements1.UserEditedMask = types.StringNull()
+		}
+		if accessEntitlementsCount+1 > len(r.AccessEntitlements) {
+			r.AccessEntitlements = append(r.AccessEntitlements, accessEntitlements1)
+		} else {
+			r.AccessEntitlements[accessEntitlementsCount].Alias = accessEntitlements1.Alias
+			r.AccessEntitlements[accessEntitlementsCount].AppID = accessEntitlements1.AppID
+			r.AccessEntitlements[accessEntitlementsCount].AppResourceID = accessEntitlements1.AppResourceID
+			r.AccessEntitlements[accessEntitlementsCount].AppResourceTypeID = accessEntitlements1.AppResourceTypeID
+			r.AccessEntitlements[accessEntitlementsCount].CertifyPolicyID = accessEntitlements1.CertifyPolicyID
+			r.AccessEntitlements[accessEntitlementsCount].ComplianceFrameworkValueIds = accessEntitlements1.ComplianceFrameworkValueIds
+			r.AccessEntitlements[accessEntitlementsCount].CreatedAt = accessEntitlements1.CreatedAt
+			r.AccessEntitlements[accessEntitlementsCount].DeletedAt = accessEntitlements1.DeletedAt
+			r.AccessEntitlements[accessEntitlementsCount].Description = accessEntitlements1.Description
+			r.AccessEntitlements[accessEntitlementsCount].DisplayName = accessEntitlements1.DisplayName
+			r.AccessEntitlements[accessEntitlementsCount].DurationGrant = accessEntitlements1.DurationGrant
+			r.AccessEntitlements[accessEntitlementsCount].DurationUnset = accessEntitlements1.DurationUnset
+			r.AccessEntitlements[accessEntitlementsCount].EmergencyGrantEnabled = accessEntitlements1.EmergencyGrantEnabled
+			r.AccessEntitlements[accessEntitlementsCount].EmergencyGrantPolicyID = accessEntitlements1.EmergencyGrantPolicyID
+			r.AccessEntitlements[accessEntitlementsCount].GrantCount = accessEntitlements1.GrantCount
+			r.AccessEntitlements[accessEntitlementsCount].GrantPolicyID = accessEntitlements1.GrantPolicyID
+			r.AccessEntitlements[accessEntitlementsCount].ID = accessEntitlements1.ID
+			r.AccessEntitlements[accessEntitlementsCount].ProvisionPolicy = accessEntitlements1.ProvisionPolicy
+			r.AccessEntitlements[accessEntitlementsCount].RevokePolicyID = accessEntitlements1.RevokePolicyID
+			r.AccessEntitlements[accessEntitlementsCount].RiskLevelValueID = accessEntitlements1.RiskLevelValueID
+			r.AccessEntitlements[accessEntitlementsCount].Slug = accessEntitlements1.Slug
+			r.AccessEntitlements[accessEntitlementsCount].SystemBuiltin = accessEntitlements1.SystemBuiltin
+			r.AccessEntitlements[accessEntitlementsCount].UpdatedAt = accessEntitlements1.UpdatedAt
+			r.AccessEntitlements[accessEntitlementsCount].UserEditedMask = accessEntitlements1.UserEditedMask
+		}
 	}
 	r.AppIds = nil
 	for _, v := range resp.AppIds {
 		r.AppIds = append(r.AppIds, types.StringValue(v))
 	}
 	if resp.CreatedAt != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339))
+		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
 	} else {
 		r.CreatedAt = types.StringNull()
 	}
@@ -504,6 +492,11 @@ func (r *CatalogResourceModel) RefreshFromGetResponse(resp *shared.RequestCatalo
 		r.CreatedByUserID = types.StringValue(*resp.CreatedByUserID)
 	} else {
 		r.CreatedByUserID = types.StringNull()
+	}
+	if resp.DeletedAt != nil {
+		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+	} else {
+		r.DeletedAt = types.StringNull()
 	}
 	if resp.Description != nil {
 		r.Description = types.StringValue(*resp.Description)
@@ -526,7 +519,7 @@ func (r *CatalogResourceModel) RefreshFromGetResponse(resp *shared.RequestCatalo
 		r.Published = types.BoolNull()
 	}
 	if resp.UpdatedAt != nil {
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339))
+		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 	} else {
 		r.UpdatedAt = types.StringNull()
 	}
@@ -534,11 +527,6 @@ func (r *CatalogResourceModel) RefreshFromGetResponse(resp *shared.RequestCatalo
 		r.VisibleToEveryone = types.BoolValue(*resp.VisibleToEveryone)
 	} else {
 		r.VisibleToEveryone = types.BoolNull()
-	}
-	if resp.DeletedAt != nil {
-		r.DeletedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339))
-	} else {
-		r.DeletedAt = types.StringNull()
 	}
 }
 

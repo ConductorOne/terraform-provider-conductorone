@@ -2,12 +2,32 @@
 
 package shared
 
-// ConnectorServiceUpdateRequest - The ConnectorServiceUpdateRequest message.
+// The ConnectorServiceUpdateRequest message contains the fields required to update a connector.
 type ConnectorServiceUpdateRequest struct {
-	// The Connector message.
-	Connector *Connector `json:"connector,omitempty"`
-	// FIXME(jirwin): Manually added!
-	UpdateMask string `json:"update_mask,omitempty"`
-	// The ConnectorExpandMask message.
+	// A Connector is used to sync objects into Apps
+	Connector *ConnectorInput `json:"connector,omitempty"`
+	// The ConnectorExpandMask is used to expand related objects on a connector.
 	ConnectorExpandMask *ConnectorExpandMask `json:"expandMask,omitempty"`
+	UpdateMask          *string              `json:"updateMask,omitempty"`
+}
+
+func (o *ConnectorServiceUpdateRequest) GetConnector() *ConnectorInput {
+	if o == nil {
+		return nil
+	}
+	return o.Connector
+}
+
+func (o *ConnectorServiceUpdateRequest) GetConnectorExpandMask() *ConnectorExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorExpandMask
+}
+
+func (o *ConnectorServiceUpdateRequest) GetUpdateMask() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateMask
 }

@@ -3,14 +3,47 @@
 package shared
 
 import (
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"time"
 )
 
-// CompletedAction - The CompletedAction message.
+// CompletedAction - The outcome of a provision instance that has been completed succesfully.
 type CompletedAction struct {
 	CompletedAt *time.Time `json:"completedAt,omitempty"`
-	// The entitlements field.
+	// The list of entitlements that were provisioned. This is leftover from an older design, and is only ever going to be a single entitlement.
 	Entitlements []AppEntitlementReference `json:"entitlements,omitempty"`
-	// The userId field.
+	// The UserID of who completed provisioning. For connector provisioning this is the system user id, for manual provisioning this is who clicked "provision complete"
 	UserID *string `json:"userId,omitempty"`
+}
+
+func (c CompletedAction) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CompletedAction) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *CompletedAction) GetCompletedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.CompletedAt
+}
+
+func (o *CompletedAction) GetEntitlements() []AppEntitlementReference {
+	if o == nil {
+		return nil
+	}
+	return o.Entitlements
+}
+
+func (o *CompletedAction) GetUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UserID
 }

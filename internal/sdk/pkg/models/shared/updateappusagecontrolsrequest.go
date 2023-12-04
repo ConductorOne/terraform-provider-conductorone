@@ -2,9 +2,23 @@
 
 package shared
 
-// UpdateAppUsageControlsRequest - The UpdateAppUsageControlsRequest message.
+// The UpdateAppUsageControlsRequest message contains the AppUsageControls object to update and the update mask.
 type UpdateAppUsageControlsRequest struct {
-	// The AppUsageControls message.
+	// The AppUsageControls object describes some peripheral configuration for an app.
 	AppUsageControls *AppUsageControls `json:"appUsageControls,omitempty"`
 	UpdateMask       *string           `json:"updateMask,omitempty"`
+}
+
+func (o *UpdateAppUsageControlsRequest) GetAppUsageControls() *AppUsageControls {
+	if o == nil {
+		return nil
+	}
+	return o.AppUsageControls
+}
+
+func (o *UpdateAppUsageControlsRequest) GetUpdateMask() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateMask
 }

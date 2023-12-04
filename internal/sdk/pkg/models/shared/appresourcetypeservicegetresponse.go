@@ -3,65 +3,61 @@
 package shared
 
 import (
-	"encoding/json"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
 )
 
 // AppResourceTypeServiceGetResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 type AppResourceTypeServiceGetResponseExpanded struct {
 	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
+	AtType               *string     `json:"@type,omitempty"`
+	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
-type _AppResourceTypeServiceGetResponseExpanded AppResourceTypeServiceGetResponseExpanded
 
-func (c *AppResourceTypeServiceGetResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _AppResourceTypeServiceGetResponseExpanded{}
+func (a AppResourceTypeServiceGetResponseExpanded) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
 
-	if err := json.Unmarshal(bs, &data); err != nil {
+func (a *AppResourceTypeServiceGetResponseExpanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
 		return err
 	}
-	*c = AppResourceTypeServiceGetResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
 	return nil
 }
 
-func (c AppResourceTypeServiceGetResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_AppResourceTypeServiceGetResponseExpanded(c))
-	if err != nil {
-		return nil, err
+func (o *AppResourceTypeServiceGetResponseExpanded) GetAtType() *string {
+	if o == nil {
+		return nil
 	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
+	return o.AtType
 }
 
-// AppResourceTypeServiceGetResponse - The AppResourceTypeServiceGetResponse message.
+func (o *AppResourceTypeServiceGetResponseExpanded) GetAdditionalProperties() interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.AdditionalProperties
+}
+
+// The AppResourceTypeServiceGetResponse contains an expanded array containing the expanded values indicated by the expand mask
+//
+//	in the request and an app resource type view containing the resource type and JSONPATHs indicating which objects are where in the expand mask.
 type AppResourceTypeServiceGetResponse struct {
 	// The AppResourceTypeView message.
 	AppResourceTypeView *AppResourceTypeView `json:"appResourceTypeView,omitempty"`
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []AppResourceTypeServiceGetResponseExpanded `json:"expanded,omitempty"`
+}
+
+func (o *AppResourceTypeServiceGetResponse) GetAppResourceTypeView() *AppResourceTypeView {
+	if o == nil {
+		return nil
+	}
+	return o.AppResourceTypeView
+}
+
+func (o *AppResourceTypeServiceGetResponse) GetExpanded() []AppResourceTypeServiceGetResponseExpanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
 }

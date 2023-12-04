@@ -2,6 +2,6 @@
 
 package shared
 
-// RequestCatalogManagementServiceDeleteRequest - The RequestCatalogManagementServiceDeleteRequest message.
+// RequestCatalogManagementServiceDeleteRequest - Delete a request catalog by Id. It uses URL value for input.
 type RequestCatalogManagementServiceDeleteRequest struct {
 }

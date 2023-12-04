@@ -3,7 +3,7 @@
 package provider
 
 import (
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"math/big"
 	"time"
@@ -40,7 +40,7 @@ func (r *AppResourceModel) ToCreateSDKType() *shared.CreateAppRequest {
 	} else {
 		monthlyCostUsd = nil
 	}
-	owners := make([]string, 0)
+	var owners []string = nil
 	for _, ownersItem := range r.Owners {
 		owners = append(owners, ownersItem.ValueString())
 	}
@@ -67,36 +67,12 @@ func (r *AppResourceModel) ToGetSDKType() *shared.CreateAppRequest {
 	return out
 }
 
-func (r *AppResourceModel) ToUpdateSDKType() *shared.App {
-	appAccountID := new(string)
-	if !r.AppAccountID.IsUnknown() && !r.AppAccountID.IsNull() {
-		*appAccountID = r.AppAccountID.ValueString()
-	} else {
-		appAccountID = nil
-	}
-	appAccountName := new(string)
-	if !r.AppAccountName.IsUnknown() && !r.AppAccountName.IsNull() {
-		*appAccountName = r.AppAccountName.ValueString()
-	} else {
-		appAccountName = nil
-	}
+func (r *AppResourceModel) ToUpdateSDKType() *shared.AppInput {
 	certifyPolicyID := new(string)
 	if !r.CertifyPolicyID.IsUnknown() && !r.CertifyPolicyID.IsNull() {
 		*certifyPolicyID = r.CertifyPolicyID.ValueString()
 	} else {
 		certifyPolicyID = nil
-	}
-	createdAt := new(time.Time)
-	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
-		*createdAt, _ = time.Parse(time.RFC3339Nano, r.CreatedAt.ValueString())
-	} else {
-		createdAt = nil
-	}
-	deletedAt := new(time.Time)
-	if !r.DeletedAt.IsUnknown() && !r.DeletedAt.IsNull() {
-		*deletedAt, _ = time.Parse(time.RFC3339Nano, r.DeletedAt.ValueString())
-	} else {
-		deletedAt = nil
 	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
@@ -110,12 +86,6 @@ func (r *AppResourceModel) ToUpdateSDKType() *shared.App {
 	} else {
 		displayName = nil
 	}
-	fieldMask := new(string)
-	if !r.FieldMask.IsUnknown() && !r.FieldMask.IsNull() {
-		*fieldMask = r.FieldMask.ValueString()
-	} else {
-		fieldMask = nil
-	}
 	grantPolicyID := new(string)
 	if !r.GrantPolicyID.IsUnknown() && !r.GrantPolicyID.IsNull() {
 		*grantPolicyID = r.GrantPolicyID.ValueString()
@@ -128,29 +98,11 @@ func (r *AppResourceModel) ToUpdateSDKType() *shared.App {
 	} else {
 		iconURL = nil
 	}
-	id := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id = r.ID.ValueString()
-	} else {
-		id = nil
-	}
-	logoURI := new(string)
-	if !r.LogoURI.IsUnknown() && !r.LogoURI.IsNull() {
-		*logoURI = r.LogoURI.ValueString()
-	} else {
-		logoURI = nil
-	}
 	monthlyCostUsd := new(float64)
 	if !r.MonthlyCostUsd.IsUnknown() && !r.MonthlyCostUsd.IsNull() {
 		*monthlyCostUsd, _ = r.MonthlyCostUsd.ValueBigFloat().Float64()
 	} else {
 		monthlyCostUsd = nil
-	}
-	parentAppID := new(string)
-	if !r.ParentAppID.IsUnknown() && !r.ParentAppID.IsNull() {
-		*parentAppID = r.ParentAppID.ValueString()
-	} else {
-		parentAppID = nil
 	}
 	revokePolicyID := new(string)
 	if !r.RevokePolicyID.IsUnknown() && !r.RevokePolicyID.IsNull() {
@@ -158,29 +110,14 @@ func (r *AppResourceModel) ToUpdateSDKType() *shared.App {
 	} else {
 		revokePolicyID = nil
 	}
-	userCount := new(string)
-	if !r.UserCount.IsUnknown() && !r.UserCount.IsNull() {
-		*userCount = r.UserCount.ValueString()
-	} else {
-		userCount = nil
-	}
-	out := shared.App{
-		AppAccountID:    appAccountID,
-		AppAccountName:  appAccountName,
+	out := shared.AppInput{
 		CertifyPolicyID: certifyPolicyID,
-		CreatedAt:       createdAt,
-		DeletedAt:       deletedAt,
 		Description:     description,
 		DisplayName:     displayName,
-		FieldMask:       fieldMask,
 		GrantPolicyID:   grantPolicyID,
 		IconURL:         iconURL,
-		ID:              id,
-		LogoURI:         logoURI,
 		MonthlyCostUsd:  monthlyCostUsd,
-		ParentAppID:     parentAppID,
 		RevokePolicyID:  revokePolicyID,
-		UserCount:       userCount,
 	}
 	return &out
 }
@@ -207,12 +144,12 @@ func (r *AppResourceModel) RefreshFromGetResponse(resp *shared.App) {
 		r.CertifyPolicyID = types.StringNull()
 	}
 	if resp.CreatedAt != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339))
+		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
 	} else {
 		r.CreatedAt = types.StringNull()
 	}
 	if resp.DeletedAt != nil {
-		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339))
+		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
 	} else {
 		r.DeletedAt = types.StringNull()
 	}
@@ -246,13 +183,18 @@ func (r *AppResourceModel) RefreshFromGetResponse(resp *shared.App) {
 	} else {
 		r.ID = types.StringNull()
 	}
+	if resp.IsDirectory != nil {
+		r.IsDirectory = types.BoolValue(*resp.IsDirectory)
+	} else {
+		r.IsDirectory = types.BoolNull()
+	}
 	if resp.LogoURI != nil {
 		r.LogoURI = types.StringValue(*resp.LogoURI)
 	} else {
 		r.LogoURI = types.StringNull()
 	}
 	if resp.MonthlyCostUsd != nil {
-		r.MonthlyCostUsd = types.NumberValue(big.NewFloat(*resp.MonthlyCostUsd))
+		r.MonthlyCostUsd = types.NumberValue(big.NewFloat(float64(*resp.MonthlyCostUsd)))
 	} else {
 		r.MonthlyCostUsd = types.NumberNull()
 	}
@@ -267,7 +209,7 @@ func (r *AppResourceModel) RefreshFromGetResponse(resp *shared.App) {
 		r.RevokePolicyID = types.StringNull()
 	}
 	if resp.UpdatedAt != nil {
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339))
+		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 	} else {
 		r.UpdatedAt = types.StringNull()
 	}
