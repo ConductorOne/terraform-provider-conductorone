@@ -88,7 +88,6 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 			ServerURL = fmt.Sprintf("https://%s.conductor.one", TenantDomain)
 		}
 	}
-	
 
 	opt, err := sdk.WithTenantCustom(ServerURL)
 	if err != nil {
