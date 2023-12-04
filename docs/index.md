@@ -44,6 +44,7 @@ provider "conductorone" {
 ### Optional
 
 - `server_url` (String) Server URL (defaults to https://{tenantDomain}.conductor.one)
+- `tenant_domain` (String) TenantDomain for Server URL
 
 ## Limitations
 

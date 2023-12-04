@@ -8,8 +8,8 @@ import (
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/providervalidator"
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -34,12 +34,12 @@ type ConductoroneProviderModel struct {
 }
 
 func (p *ConductoroneProvider) ConfigValidators(ctx context.Context) []provider.ConfigValidator {
-    return []provider.ConfigValidator{
-        providervalidator.ExactlyOneOf(
-            path.MatchRoot("server_url"),
-            path.MatchRoot("tenant_domain"),
-        ),
-    }
+	return []provider.ConfigValidator{
+		providervalidator.ExactlyOneOf(
+			path.MatchRoot("server_url"),
+			path.MatchRoot("tenant_domain"),
+		),
+	}
 }
 
 func (p *ConductoroneProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
