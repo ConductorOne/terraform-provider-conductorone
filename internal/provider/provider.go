@@ -42,7 +42,7 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 		Description: `ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.`,
 		Attributes: map[string]schema.Attribute{
 			"server_url": schema.StringAttribute{
-				MarkdownDescription: "Server URL (defaults to https://{tenantDomain}.conductor.one, tenantDomain can be extracted from client_id)",
+				MarkdownDescription: "Server URL (defaults to https://{tenantDomain}.conductor.one)",
 				Optional:            true,
 				Required:            false,
 			},
@@ -57,7 +57,7 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 				Required:            true,
 			},
 			"tenant_domain": schema.StringAttribute{
-				MarkdownDescription: "Tenant Domain, can provide this or it will be extract from client_id",
+				MarkdownDescription: "Tenant Domain (derived from client_id if not provided)",
 				Optional:            true,
 				Required:            false,
 			},
@@ -82,11 +82,9 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 	if ServerURL == "" {
 		if TenantDomain == "" {
 			url := strings.Split(ClientID, "@")[1]
-			HostName := strings.Replace(url, ".com/pcc", "", 1)
-			ServerURL = fmt.Sprintf("https://%s", HostName)
-		} else {
-			ServerURL = fmt.Sprintf("https://%s.conductor.one", TenantDomain)
+			TenantDomain = strings.Split(url, ".")[0]
 		}
+		ServerURL = fmt.Sprintf("https://%s.conductor.one", TenantDomain)
 	}
 
 	opt, err := sdk.WithTenantCustom(ServerURL)
