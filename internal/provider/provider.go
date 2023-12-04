@@ -5,7 +5,10 @@ package provider
 import (
 	"conductorone/internal/sdk"
 	"context"
+	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/providervalidator"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
@@ -27,6 +30,16 @@ type ConductoroneProviderModel struct {
 	ServerURL    types.String `tfsdk:"server_url"`
 	ClientID     types.String `tfsdk:"client_id"`
 	ClientSecret types.String `tfsdk:"client_secret"`
+	TenantDomain types.String `tfsdk:"tenant_domain"`
+}
+
+func (p *ConductoroneProvider) ConfigValidators(ctx context.Context) []provider.ConfigValidator {
+    return []provider.ConfigValidator{
+        providervalidator.ExactlyOneOf(
+            path.MatchRoot("server_url"),
+            path.MatchRoot("tenant_domain"),
+        ),
+    }
 }
 
 func (p *ConductoroneProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -53,6 +66,11 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 				Optional:            false,
 				Required:            true,
 			},
+			"tenant_domain": schema.StringAttribute{
+				MarkdownDescription: "TenantDomain for Server URL",
+				Optional:            true,
+				Required:            false,
+			},
 		},
 	}
 }
@@ -69,9 +87,10 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 	ServerURL := data.ServerURL.ValueString()
 	ClientID := data.ClientID.ValueString()
 	ClientSecret := data.ClientSecret.ValueString()
+	TenantDomain := data.TenantDomain.ValueString()
 
 	if ServerURL == "" {
-		ServerURL = "https://{tenantDomain}.conductor.one"
+		ServerURL = fmt.Sprintf("https://%s.conductor.one", TenantDomain)
 	}
 
 	opt, err := sdk.WithTenantCustom(ServerURL)
