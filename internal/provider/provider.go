@@ -82,9 +82,10 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 	if ServerURL == "" {
 		if TenantDomain == "" {
 			url := strings.Split(ClientID, "@")[1]
-			TenantDomain = strings.Split(url, ".")[0]
+			ServerURL = fmt.Sprintf("https://%s", url)
+		} else {
+			ServerURL = fmt.Sprintf("https://%s.conductor.one", TenantDomain)
 		}
-		ServerURL = fmt.Sprintf("https://%s.conductor.one", TenantDomain)
 	}
 
 	opt, err := sdk.WithTenantCustom(ServerURL)
