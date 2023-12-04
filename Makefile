@@ -28,7 +28,7 @@ yaml:
 	python3 .github/workflows/clean_yaml.py openapi.yaml
 
 .PHONY: cleangen
-gen:
+cleangen:
 	make yaml
 	make gen
 
