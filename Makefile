@@ -20,7 +20,7 @@ fmt:
 
 .PHONY: gen
 gen:
-	speakeasy generate sdk -s openapi.yaml -o . -l conductorone -d
+	speakeasy generate sdk -s openapi.yaml -o . -l terraform -d
 
 .PHONY: yaml
 yaml:
