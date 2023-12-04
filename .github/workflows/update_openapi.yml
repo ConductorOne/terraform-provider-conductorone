@@ -1,0 +1,46 @@
+name: Update openapi.yaml
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update_dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+
+    - name: Download openapi.yaml
+      run: curl -o openapi.yaml https://insulator.conductor.one/api/v1/openapi.yaml
+
+      - name: Run clean_yaml.py script
+        run: python .github/workflows/clean_yaml.py
+
+    - name: Check for changes
+      id: git_diff
+      run: |
+        git diff
+        if [[ -n $(git diff) ]]; then
+          echo "::set-output name=has_changes::true"
+          git config user.name 'GitHub Actions Bot'
+          git config user.email 'github-actions@github.com'
+          git add .
+          git commit -m "Update openapi.yaml"
+        fi
+
+    - name: Create Pull Request
+      if: steps.git_diff.outputs.has_changes == 'true'
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "Update openapi.yaml"
+        title: "Update openapi.yaml"
+        body: "This PR updates the openapi.yaml."
+        branch: "update-openapi-yaml"
