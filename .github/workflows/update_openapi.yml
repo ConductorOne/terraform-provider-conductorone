@@ -44,3 +44,4 @@ jobs:
         title: "Update openapi.yaml"
         body: "This PR updates the openapi.yaml."
         branch: "update-openapi-yaml"
+        base: "speakeasy/main"
