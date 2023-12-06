@@ -5,9 +5,9 @@ package provider
 import (
 	"conductorone/internal/sdk"
 	"context"
-	"fmt"
-	"strings"
 
+	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework-validators/providervalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
@@ -30,6 +30,15 @@ type ConductoroneProviderModel struct {
 	ClientID     types.String `tfsdk:"client_id"`
 	ClientSecret types.String `tfsdk:"client_secret"`
 	TenantDomain types.String `tfsdk:"tenant_domain"`
+}
+
+func (p *ConductoroneProvider) ConfigValidators(ctx context.Context) []provider.ConfigValidator {
+	return []provider.ConfigValidator{
+		providervalidator.Conflicting(
+			path.MatchRoot("server_url"),
+			path.MatchRoot("tenant_domain"),
+		),
+	}
 }
 
 func (p *ConductoroneProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -79,23 +88,22 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 	ClientSecret := data.ClientSecret.ValueString()
 	TenantDomain := data.TenantDomain.ValueString()
 
-	if ServerURL == "" {
-		if TenantDomain == "" {
-			url := strings.Split(ClientID, "@")[1]
-			ServerURL = fmt.Sprintf("https://%s", url)
-		} else {
-			ServerURL = fmt.Sprintf("https://%s.conductor.one", TenantDomain)
+	optStr := ""
+	if TenantDomain != "" {
+		optStr = TenantDomain
+	} else if ServerURL != "" {
+		optStr = ServerURL
+	}
+
+	var opts []sdk.CustomSDKOption
+	if optStr != "" {
+		opt, err := sdk.WithTenantCustom(optStr)
+		if err != nil {
+			return
 		}
+		opts = append(opts, opt)
 	}
 
-	opt, err := sdk.WithTenantCustom(ServerURL)
-	if err != nil {
-		return
-	}
-
-	opts := []sdk.CustomSDKOption{
-		opt,
-	}
 	client, err := sdk.NewWithCredentials(ctx, &sdk.ClientCredentials{
 		ClientID:     ClientID,
 		ClientSecret: ClientSecret,
