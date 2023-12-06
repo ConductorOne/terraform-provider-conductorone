@@ -4,17 +4,10 @@ package shared
 
 // ConnectorServiceRotateCredentialResponse is the response returned by the rotate method.
 type ConnectorServiceRotateCredentialResponse struct {
-	// ConnectorCredential is used by a connector to authenticate with conductor one.
-	ConnectorCredential *ConnectorCredential `json:"credential,omitempty"`
 	// The new clientSecret returned after rotating the connector credential.
 	ClientSecret *string `json:"clientSecret,omitempty"`
-}
-
-func (o *ConnectorServiceRotateCredentialResponse) GetConnectorCredential() *ConnectorCredential {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorCredential
+	// ConnectorCredential is used by a connector to authenticate with conductor one.
+	ConnectorCredential *ConnectorCredential `json:"credential,omitempty"`
 }
 
 func (o *ConnectorServiceRotateCredentialResponse) GetClientSecret() *string {
@@ -22,4 +15,11 @@ func (o *ConnectorServiceRotateCredentialResponse) GetClientSecret() *string {
 		return nil
 	}
 	return o.ClientSecret
+}
+
+func (o *ConnectorServiceRotateCredentialResponse) GetConnectorCredential() *ConnectorCredential {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorCredential
 }

@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -21,12 +21,12 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest) GetID()
 type C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The request catalog management service get response returns a request catalog view with the expanded items in the expanded array indicated by the expand mask in the request.
-	RequestCatalogManagementServiceGetResponse *shared.RequestCatalogManagementServiceGetResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The request catalog management service get response returns a request catalog view with the expanded items in the expanded array indicated by the expand mask in the request.
+	RequestCatalogManagementServiceGetResponse *shared.RequestCatalogManagementServiceGetResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetContentType() string {
@@ -34,13 +34,6 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetCon
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetRequestCatalogManagementServiceGetResponse() *shared.RequestCatalogManagementServiceGetResponse {
-	if o == nil {
-		return nil
-	}
-	return o.RequestCatalogManagementServiceGetResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetStatusCode() int {
@@ -55,4 +48,11 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetRaw
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetRequestCatalogManagementServiceGetResponse() *shared.RequestCatalogManagementServiceGetResponse {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceGetResponse
 }

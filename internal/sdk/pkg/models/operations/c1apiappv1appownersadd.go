@@ -3,21 +3,14 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1AppOwnersAddRequest struct {
-	AddAppOwnerRequest *shared.AddAppOwnerRequest `request:"mediaType=application/json"`
 	AppID              string                     `pathParam:"style=simple,explode=false,name=app_id"`
 	UserID             string                     `pathParam:"style=simple,explode=false,name=user_id"`
-}
-
-func (o *C1APIAppV1AppOwnersAddRequest) GetAddAppOwnerRequest() *shared.AddAppOwnerRequest {
-	if o == nil {
-		return nil
-	}
-	return o.AddAppOwnerRequest
+	AddAppOwnerRequest *shared.AddAppOwnerRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1AppOwnersAddRequest) GetAppID() string {
@@ -34,22 +27,22 @@ func (o *C1APIAppV1AppOwnersAddRequest) GetUserID() string {
 	return o.UserID
 }
 
+func (o *C1APIAppV1AppOwnersAddRequest) GetAddAppOwnerRequest() *shared.AddAppOwnerRequest {
+	if o == nil {
+		return nil
+	}
+	return o.AddAppOwnerRequest
+}
+
 type C1APIAppV1AppOwnersAddResponse struct {
-	// Empty response with a status code indicating success
-	AddAppOwnerResponse *shared.AddAppOwnerResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1AppOwnersAddResponse) GetAddAppOwnerResponse() *shared.AddAppOwnerResponse {
-	if o == nil {
-		return nil
-	}
-	return o.AddAppOwnerResponse
+	// Empty response with a status code indicating success
+	AddAppOwnerResponse *shared.AddAppOwnerResponse
 }
 
 func (o *C1APIAppV1AppOwnersAddResponse) GetContentType() string {
@@ -71,4 +64,11 @@ func (o *C1APIAppV1AppOwnersAddResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppOwnersAddResponse) GetAddAppOwnerResponse() *shared.AddAppOwnerResponse {
+	if o == nil {
+		return nil
+	}
+	return o.AddAppOwnerResponse
 }

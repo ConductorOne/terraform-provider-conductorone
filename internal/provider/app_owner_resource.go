@@ -5,8 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -27,7 +27,7 @@ func NewAppOwnerResource() resource.Resource {
 
 // AppOwnerResource defines the resource implementation.
 type AppOwnerResource struct {
-	client *sdk.ConductoroneSDKTerraform
+	client *sdk.SDK
 }
 
 // AppOwnerResourceModel describes the resource data model.
@@ -69,12 +69,12 @@ func (r *AppOwnerResource) Configure(ctx context.Context, req resource.Configure
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
+	client, ok := req.ProviderData.(*sdk.SDK)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -101,11 +101,11 @@ func (r *AppOwnerResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	setAppOwnersRequest := data.ToCreateSDKType()
 	appID := data.AppID.ValueString()
+	setAppOwnersRequest := data.ToCreateSDKType()
 	request := operations.C1APIAppV1AppOwnersSetRequest{
-		SetAppOwnersRequest: setAppOwnersRequest,
 		AppID:               appID,
+		SetAppOwnersRequest: setAppOwnersRequest,
 	}
 	res, err := r.client.AppOwners.Set(ctx, request)
 	if err != nil {

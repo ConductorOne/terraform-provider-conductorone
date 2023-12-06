@@ -4,19 +4,12 @@ package shared
 
 // The TaskActionsServiceEscalateToEmergencyAccessRequest message.
 type TaskActionsServiceEscalateToEmergencyAccessRequest struct {
-	// The task expand mask is an array of strings that specifes the related objects the requester wishes to have returned when making a request where the expand mask is part of the input. Use '*' to view all possible responses.
-	TaskExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// The comment field.
 	Comment *string `json:"comment,omitempty"`
+	// The task expand mask is an array of strings that specifes the related objects the requester wishes to have returned when making a request where the expand mask is part of the input. Use '*' to view all possible responses.
+	TaskExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// The policyStepId field.
 	PolicyStepID *string `json:"policyStepId,omitempty"`
-}
-
-func (o *TaskActionsServiceEscalateToEmergencyAccessRequest) GetTaskExpandMask() *TaskExpandMask {
-	if o == nil {
-		return nil
-	}
-	return o.TaskExpandMask
 }
 
 func (o *TaskActionsServiceEscalateToEmergencyAccessRequest) GetComment() *string {
@@ -24,6 +17,13 @@ func (o *TaskActionsServiceEscalateToEmergencyAccessRequest) GetComment() *strin
 		return nil
 	}
 	return o.Comment
+}
+
+func (o *TaskActionsServiceEscalateToEmergencyAccessRequest) GetTaskExpandMask() *TaskExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.TaskExpandMask
 }
 
 func (o *TaskActionsServiceEscalateToEmergencyAccessRequest) GetPolicyStepID() *string {

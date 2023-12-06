@@ -3,19 +3,19 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceListResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// Successful response
-	RequestCatalogManagementServiceListResponse *shared.RequestCatalogManagementServiceListResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	RequestCatalogManagementServiceListResponse *shared.RequestCatalogManagementServiceListResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListResponse) GetContentType() string {
@@ -23,13 +23,6 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListResponse) GetCo
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListResponse) GetRequestCatalogManagementServiceListResponse() *shared.RequestCatalogManagementServiceListResponse {
-	if o == nil {
-		return nil
-	}
-	return o.RequestCatalogManagementServiceListResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListResponse) GetStatusCode() int {
@@ -44,4 +37,11 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListResponse) GetRa
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListResponse) GetRequestCatalogManagementServiceListResponse() *shared.RequestCatalogManagementServiceListResponse {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceListResponse
 }

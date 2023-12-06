@@ -3,21 +3,14 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1AppOwnersRemoveRequest struct {
-	RemoveAppOwnerRequest *shared.RemoveAppOwnerRequest `request:"mediaType=application/json"`
 	AppID                 string                        `pathParam:"style=simple,explode=false,name=app_id"`
 	UserID                string                        `pathParam:"style=simple,explode=false,name=user_id"`
-}
-
-func (o *C1APIAppV1AppOwnersRemoveRequest) GetRemoveAppOwnerRequest() *shared.RemoveAppOwnerRequest {
-	if o == nil {
-		return nil
-	}
-	return o.RemoveAppOwnerRequest
+	RemoveAppOwnerRequest *shared.RemoveAppOwnerRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1AppOwnersRemoveRequest) GetAppID() string {
@@ -34,15 +27,22 @@ func (o *C1APIAppV1AppOwnersRemoveRequest) GetUserID() string {
 	return o.UserID
 }
 
+func (o *C1APIAppV1AppOwnersRemoveRequest) GetRemoveAppOwnerRequest() *shared.RemoveAppOwnerRequest {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveAppOwnerRequest
+}
+
 type C1APIAppV1AppOwnersRemoveResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// Empty response with a status code indicating success.
-	RemoveAppOwnerResponse *shared.RemoveAppOwnerResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Empty response with a status code indicating success.
+	RemoveAppOwnerResponse *shared.RemoveAppOwnerResponse
 }
 
 func (o *C1APIAppV1AppOwnersRemoveResponse) GetContentType() string {
@@ -50,13 +50,6 @@ func (o *C1APIAppV1AppOwnersRemoveResponse) GetContentType() string {
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAppV1AppOwnersRemoveResponse) GetRemoveAppOwnerResponse() *shared.RemoveAppOwnerResponse {
-	if o == nil {
-		return nil
-	}
-	return o.RemoveAppOwnerResponse
 }
 
 func (o *C1APIAppV1AppOwnersRemoveResponse) GetStatusCode() int {
@@ -71,4 +64,11 @@ func (o *C1APIAppV1AppOwnersRemoveResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppOwnersRemoveResponse) GetRemoveAppOwnerResponse() *shared.RemoveAppOwnerResponse {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveAppOwnerResponse
 }

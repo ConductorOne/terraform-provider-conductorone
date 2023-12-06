@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -21,12 +21,12 @@ func (o *C1APIAppV1AppUsageControlsServiceGetRequest) GetAppID() string {
 type C1APIAppV1AppUsageControlsServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The GetAppUsageControlsResponse message contains the retrieved AppUsageControls object.
-	GetAppUsageControlsResponse *shared.GetAppUsageControlsResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The GetAppUsageControlsResponse message contains the retrieved AppUsageControls object.
+	GetAppUsageControlsResponse *shared.GetAppUsageControlsResponse
 }
 
 func (o *C1APIAppV1AppUsageControlsServiceGetResponse) GetContentType() string {
@@ -34,13 +34,6 @@ func (o *C1APIAppV1AppUsageControlsServiceGetResponse) GetContentType() string {
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAppV1AppUsageControlsServiceGetResponse) GetGetAppUsageControlsResponse() *shared.GetAppUsageControlsResponse {
-	if o == nil {
-		return nil
-	}
-	return o.GetAppUsageControlsResponse
 }
 
 func (o *C1APIAppV1AppUsageControlsServiceGetResponse) GetStatusCode() int {
@@ -55,4 +48,11 @@ func (o *C1APIAppV1AppUsageControlsServiceGetResponse) GetRawResponse() *http.Re
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppUsageControlsServiceGetResponse) GetGetAppUsageControlsResponse() *shared.GetAppUsageControlsResponse {
+	if o == nil {
+		return nil
+	}
+	return o.GetAppUsageControlsResponse
 }

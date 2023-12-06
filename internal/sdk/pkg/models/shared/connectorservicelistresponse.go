@@ -3,35 +3,35 @@
 package shared
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 )
 
-// ConnectorServiceListResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type ConnectorServiceListResponseExpanded struct {
+// Expanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+type Expanded struct {
 	// The type of the serialized message.
 	AtType               *string     `json:"@type,omitempty"`
 	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
 
-func (c ConnectorServiceListResponseExpanded) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (e Expanded) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
 }
 
-func (c *ConnectorServiceListResponseExpanded) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+func (e *Expanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ConnectorServiceListResponseExpanded) GetAtType() *string {
+func (o *Expanded) GetAtType() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AtType
 }
 
-func (o *ConnectorServiceListResponseExpanded) GetAdditionalProperties() interface{} {
+func (o *Expanded) GetAdditionalProperties() interface{} {
 	if o == nil {
 		return nil
 	}
@@ -41,14 +41,14 @@ func (o *ConnectorServiceListResponseExpanded) GetAdditionalProperties() interfa
 // The ConnectorServiceListResponse message contains a list of results and a nextPageToken if applicable
 type ConnectorServiceListResponse struct {
 	// List of serialized related objects
-	Expanded []ConnectorServiceListResponseExpanded `json:"expanded,omitempty"`
+	Expanded []Expanded `json:"expanded,omitempty"`
 	// The list of results containing up to X results, where X is the page size defined in the request
 	List []ConnectorView `json:"list,omitempty"`
 	// The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ConnectorServiceListResponse) GetExpanded() []ConnectorServiceListResponseExpanded {
+func (o *ConnectorServiceListResponse) GetExpanded() []Expanded {
 	if o == nil {
 		return nil
 	}

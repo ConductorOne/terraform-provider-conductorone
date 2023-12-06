@@ -4,21 +4,14 @@ package shared
 
 // RequestCatalogView - The request catalog view contains the serialized request catalog and paths to objects referenced by the request catalog.
 type RequestCatalogView struct {
-	// The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
-	RequestCatalog *RequestCatalog `json:"requestCatalog,omitempty"`
 	// JSONPATH expression indicating the location of the access entitlement objects, that the request catalog allows users to request, in the array.
 	AccessEntitlementsPath *string `json:"accessEntitlementsPath,omitempty"`
 	// JSONPATH expression indicating the location of the App object in the array.
 	AppPaths *string `json:"appPaths,omitempty"`
 	// JSONPATH expression indicating the location of the User object, that created the request catalog, in the array.
 	CreatedByUserPath *string `json:"createdByUserPath,omitempty"`
-}
-
-func (o *RequestCatalogView) GetRequestCatalog() *RequestCatalog {
-	if o == nil {
-		return nil
-	}
-	return o.RequestCatalog
+	// The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
+	RequestCatalog *RequestCatalog `json:"requestCatalog,omitempty"`
 }
 
 func (o *RequestCatalogView) GetAccessEntitlementsPath() *string {
@@ -40,4 +33,11 @@ func (o *RequestCatalogView) GetCreatedByUserPath() *string {
 		return nil
 	}
 	return o.CreatedByUserPath
+}
+
+func (o *RequestCatalogView) GetRequestCatalog() *RequestCatalog {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalog
 }

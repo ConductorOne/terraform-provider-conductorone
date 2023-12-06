@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 )
 
 // TaskActionsServiceRestartResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
@@ -40,19 +40,12 @@ func (o *TaskActionsServiceRestartResponseExpanded) GetAdditionalProperties() in
 
 // The TaskActionsServiceRestartResponse message.
 type TaskActionsServiceRestartResponse struct {
-	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
-	TaskView *TaskView `json:"taskView,omitempty"`
 	// The expanded field.
 	Expanded []TaskActionsServiceRestartResponseExpanded `json:"expanded,omitempty"`
+	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
+	TaskView *TaskView `json:"taskView,omitempty"`
 	// The ticketActionId field.
 	TicketActionID *string `json:"ticketActionId,omitempty"`
-}
-
-func (o *TaskActionsServiceRestartResponse) GetTaskView() *TaskView {
-	if o == nil {
-		return nil
-	}
-	return o.TaskView
 }
 
 func (o *TaskActionsServiceRestartResponse) GetExpanded() []TaskActionsServiceRestartResponseExpanded {
@@ -60,6 +53,13 @@ func (o *TaskActionsServiceRestartResponse) GetExpanded() []TaskActionsServiceRe
 		return nil
 	}
 	return o.Expanded
+}
+
+func (o *TaskActionsServiceRestartResponse) GetTaskView() *TaskView {
+	if o == nil {
+		return nil
+	}
+	return o.TaskView
 }
 
 func (o *TaskActionsServiceRestartResponse) GetTicketActionID() *string {

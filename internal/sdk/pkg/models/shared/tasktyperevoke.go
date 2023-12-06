@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 	"time"
 )
 
@@ -48,15 +48,6 @@ func (e *TaskTypeRevokeOutcome) UnmarshalJSON(data []byte) error {
 
 // The TaskTypeRevoke message indicates that a task is a revoke task and all related details.
 type TaskTypeRevoke struct {
-	// The TaskRevokeSource message indicates the source of the revoke task is one of expired, nonUsage, request, or review.
-	//
-	// This message contains a oneof named origin. Only a single field of the following list may be set at a time:
-	//   - review
-	//   - request
-	//   - expired
-	//   - nonUsage
-	//
-	TaskRevokeSource *TaskRevokeSource `json:"source,omitempty"`
 	// The ID of the app entitlement.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
 	// The ID of the app.
@@ -68,6 +59,15 @@ type TaskTypeRevoke struct {
 	// The outcome of the revoke.
 	Outcome     *TaskTypeRevokeOutcome `json:"outcome,omitempty"`
 	OutcomeTime *time.Time             `json:"outcomeTime,omitempty"`
+	// The TaskRevokeSource message indicates the source of the revoke task is one of expired, nonUsage, request, or review.
+	//
+	// This message contains a oneof named origin. Only a single field of the following list may be set at a time:
+	//   - review
+	//   - request
+	//   - expired
+	//   - nonUsage
+	//
+	TaskRevokeSource *TaskRevokeSource `json:"source,omitempty"`
 }
 
 func (t TaskTypeRevoke) MarshalJSON() ([]byte, error) {
@@ -79,13 +79,6 @@ func (t *TaskTypeRevoke) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *TaskTypeRevoke) GetTaskRevokeSource() *TaskRevokeSource {
-	if o == nil {
-		return nil
-	}
-	return o.TaskRevokeSource
 }
 
 func (o *TaskTypeRevoke) GetAppEntitlementID() *string {
@@ -128,4 +121,11 @@ func (o *TaskTypeRevoke) GetOutcomeTime() *time.Time {
 		return nil
 	}
 	return o.OutcomeTime
+}
+
+func (o *TaskTypeRevoke) GetTaskRevokeSource() *TaskRevokeSource {
+	if o == nil {
+		return nil
+	}
+	return o.TaskRevokeSource
 }

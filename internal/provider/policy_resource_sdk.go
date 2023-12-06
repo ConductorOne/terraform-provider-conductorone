@@ -3,8 +3,8 @@
 package provider
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"time"
 )
 
@@ -31,10 +31,6 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 			}
 			var approval *shared.ApprovalInput
 			if stepsItem.Approval != nil {
-				var appGroupApproval *shared.AppGroupApprovalInput
-				if stepsItem.Approval.AppGroupApproval != nil {
-					appGroupApproval = &shared.AppGroupApprovalInput{}
-				}
 				var appOwnerApproval *shared.AppOwnerApprovalInput
 				if stepsItem.Approval.AppOwnerApproval != nil {
 					appOwnerApproval = &shared.AppOwnerApprovalInput{}
@@ -46,6 +42,10 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 				var expressionApproval *shared.ExpressionApprovalInput
 				if stepsItem.Approval.ExpressionApproval != nil {
 					expressionApproval = &shared.ExpressionApprovalInput{}
+				}
+				var appGroupApproval *shared.AppGroupApprovalInput
+				if stepsItem.Approval.AppGroupApproval != nil {
+					appGroupApproval = &shared.AppGroupApprovalInput{}
 				}
 				var managerApproval *shared.ManagerApprovalInput
 				if stepsItem.Approval.ManagerApproval != nil {
@@ -60,10 +60,10 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 					userApproval = &shared.UserApprovalInput{}
 				}
 				approval = &shared.ApprovalInput{
-					AppGroupApproval:         appGroupApproval,
 					AppOwnerApproval:         appOwnerApproval,
 					EntitlementOwnerApproval: entitlementOwnerApproval,
 					ExpressionApproval:       expressionApproval,
+					AppGroupApproval:         appGroupApproval,
 					ManagerApproval:          managerApproval,
 					SelfApproval:             selfApproval,
 					UserApproval:             userApproval,
@@ -71,6 +71,12 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 			}
 			var provision *shared.Provision
 			if stepsItem.Provision != nil {
+				assigned := new(bool)
+				if !stepsItem.Provision.Assigned.IsUnknown() && !stepsItem.Provision.Assigned.IsNull() {
+					*assigned = stepsItem.Provision.Assigned.ValueBool()
+				} else {
+					assigned = nil
+				}
 				var provisionPolicy *shared.ProvisionPolicy
 				if stepsItem.Provision.ProvisionPolicy != nil {
 					var connectorProvision *shared.ConnectorProvision
@@ -159,16 +165,10 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 						GrantDuration:    grantDuration,
 					}
 				}
-				assigned := new(bool)
-				if !stepsItem.Provision.Assigned.IsUnknown() && !stepsItem.Provision.Assigned.IsNull() {
-					*assigned = stepsItem.Provision.Assigned.ValueBool()
-				} else {
-					assigned = nil
-				}
 				provision = &shared.Provision{
+					Assigned:        assigned,
 					ProvisionPolicy: provisionPolicy,
 					ProvisionTarget: provisionTarget,
-					Assigned:        assigned,
 				}
 			}
 			var reject *shared.Reject
@@ -187,9 +187,9 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 		}
 		policySteps[policyStepsKey] = policyStepsInst
 	}
-	policyType := new(shared.PolicyType)
+	policyType := new(shared.CreatePolicyRequestPolicyType)
 	if !r.PolicyType.IsUnknown() && !r.PolicyType.IsNull() {
-		*policyType = shared.PolicyType(r.PolicyType.ValueString())
+		*policyType = shared.CreatePolicyRequestPolicyType(r.PolicyType.ValueString())
 	} else {
 		policyType = nil
 	}
@@ -250,10 +250,6 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 			}
 			var approval *shared.ApprovalInput
 			if stepsItem.Approval != nil {
-				var appGroupApproval *shared.AppGroupApprovalInput
-				if stepsItem.Approval.AppGroupApproval != nil {
-					appGroupApproval = &shared.AppGroupApprovalInput{}
-				}
 				var appOwnerApproval *shared.AppOwnerApprovalInput
 				if stepsItem.Approval.AppOwnerApproval != nil {
 					appOwnerApproval = &shared.AppOwnerApprovalInput{}
@@ -265,6 +261,10 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 				var expressionApproval *shared.ExpressionApprovalInput
 				if stepsItem.Approval.ExpressionApproval != nil {
 					expressionApproval = &shared.ExpressionApprovalInput{}
+				}
+				var appGroupApproval *shared.AppGroupApprovalInput
+				if stepsItem.Approval.AppGroupApproval != nil {
+					appGroupApproval = &shared.AppGroupApprovalInput{}
 				}
 				var managerApproval *shared.ManagerApprovalInput
 				if stepsItem.Approval.ManagerApproval != nil {
@@ -279,10 +279,10 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 					userApproval = &shared.UserApprovalInput{}
 				}
 				approval = &shared.ApprovalInput{
-					AppGroupApproval:         appGroupApproval,
 					AppOwnerApproval:         appOwnerApproval,
 					EntitlementOwnerApproval: entitlementOwnerApproval,
 					ExpressionApproval:       expressionApproval,
+					AppGroupApproval:         appGroupApproval,
 					ManagerApproval:          managerApproval,
 					SelfApproval:             selfApproval,
 					UserApproval:             userApproval,
@@ -290,6 +290,12 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 			}
 			var provision *shared.Provision
 			if stepsItem.Provision != nil {
+				assigned := new(bool)
+				if !stepsItem.Provision.Assigned.IsUnknown() && !stepsItem.Provision.Assigned.IsNull() {
+					*assigned = stepsItem.Provision.Assigned.ValueBool()
+				} else {
+					assigned = nil
+				}
 				var provisionPolicy *shared.ProvisionPolicy
 				if stepsItem.Provision.ProvisionPolicy != nil {
 					var connectorProvision *shared.ConnectorProvision
@@ -378,16 +384,10 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 						GrantDuration:    grantDuration,
 					}
 				}
-				assigned := new(bool)
-				if !stepsItem.Provision.Assigned.IsUnknown() && !stepsItem.Provision.Assigned.IsNull() {
-					*assigned = stepsItem.Provision.Assigned.ValueBool()
-				} else {
-					assigned = nil
-				}
 				provision = &shared.Provision{
+					Assigned:        assigned,
 					ProvisionPolicy: provisionPolicy,
 					ProvisionTarget: provisionTarget,
-					Assigned:        assigned,
 				}
 			}
 			var reject *shared.Reject
@@ -406,9 +406,9 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 		}
 		policySteps[policyStepsKey] = policyStepsInst
 	}
-	policyType := new(shared.PolicyPolicyType)
+	policyType := new(shared.PolicyType)
 	if !r.PolicyType.IsUnknown() && !r.PolicyType.IsNull() {
-		*policyType = shared.PolicyPolicyType(r.PolicyType.ValueString())
+		*policyType = shared.PolicyType(r.PolicyType.ValueString())
 	} else {
 		policyType = nil
 	}

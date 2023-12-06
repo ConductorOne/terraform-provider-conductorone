@@ -3,20 +3,13 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest struct {
-	RequestCatalogManagementServiceRemoveAppEntitlementsRequest *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest `request:"mediaType=application/json"`
 	CatalogID                                                   string                                                              `pathParam:"style=simple,explode=false,name=catalog_id"`
-}
-
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest) GetRequestCatalogManagementServiceRemoveAppEntitlementsRequest() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest {
-	if o == nil {
-		return nil
-	}
-	return o.RequestCatalogManagementServiceRemoveAppEntitlementsRequest
+	RequestCatalogManagementServiceRemoveAppEntitlementsRequest *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest) GetCatalogID() string {
@@ -26,15 +19,22 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlemen
 	return o.CatalogID
 }
 
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest) GetRequestCatalogManagementServiceRemoveAppEntitlementsRequest() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceRemoveAppEntitlementsRequest
+}
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// Empty response with a status code indicating success
-	RequestCatalogManagementServiceRemoveAppEntitlementsResponse *shared.RequestCatalogManagementServiceRemoveAppEntitlementsResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Empty response with a status code indicating success
+	RequestCatalogManagementServiceRemoveAppEntitlementsResponse *shared.RequestCatalogManagementServiceRemoveAppEntitlementsResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetContentType() string {
@@ -42,13 +42,6 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlemen
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetRequestCatalogManagementServiceRemoveAppEntitlementsResponse() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsResponse {
-	if o == nil {
-		return nil
-	}
-	return o.RequestCatalogManagementServiceRemoveAppEntitlementsResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetStatusCode() int {
@@ -63,4 +56,11 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlemen
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetRequestCatalogManagementServiceRemoveAppEntitlementsResponse() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsResponse {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceRemoveAppEntitlementsResponse
 }

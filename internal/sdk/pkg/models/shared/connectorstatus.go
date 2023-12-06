@@ -5,25 +5,25 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 	"time"
 )
 
-// ConnectorStatusStatus - The status of the connector sync.
-type ConnectorStatusStatus string
+// Status - The status of the connector sync.
+type Status string
 
 const (
-	ConnectorStatusStatusSyncStatusUnspecified ConnectorStatusStatus = "SYNC_STATUS_UNSPECIFIED"
-	ConnectorStatusStatusSyncStatusRunning     ConnectorStatusStatus = "SYNC_STATUS_RUNNING"
-	ConnectorStatusStatusSyncStatusDone        ConnectorStatusStatus = "SYNC_STATUS_DONE"
-	ConnectorStatusStatusSyncStatusError       ConnectorStatusStatus = "SYNC_STATUS_ERROR"
+	StatusSyncStatusUnspecified Status = "SYNC_STATUS_UNSPECIFIED"
+	StatusSyncStatusRunning     Status = "SYNC_STATUS_RUNNING"
+	StatusSyncStatusDone        Status = "SYNC_STATUS_DONE"
+	StatusSyncStatusError       Status = "SYNC_STATUS_ERROR"
 )
 
-func (e ConnectorStatusStatus) ToPointer() *ConnectorStatusStatus {
+func (e Status) ToPointer() *Status {
 	return &e
 }
 
-func (e *ConnectorStatusStatus) UnmarshalJSON(data []byte) error {
+func (e *Status) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -36,10 +36,10 @@ func (e *ConnectorStatusStatus) UnmarshalJSON(data []byte) error {
 	case "SYNC_STATUS_DONE":
 		fallthrough
 	case "SYNC_STATUS_ERROR":
-		*e = ConnectorStatusStatus(v)
+		*e = Status(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ConnectorStatusStatus: %v", v)
+		return fmt.Errorf("invalid value for Status: %v", v)
 	}
 }
 
@@ -50,8 +50,8 @@ type ConnectorStatus struct {
 	LastError *string    `json:"lastError,omitempty"`
 	StartedAt *time.Time `json:"startedAt,omitempty"`
 	// The status of the connector sync.
-	Status    *ConnectorStatusStatus `json:"status,omitempty"`
-	UpdatedAt *time.Time             `json:"updatedAt,omitempty"`
+	Status    *Status    `json:"status,omitempty"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }
 
 func (c ConnectorStatus) MarshalJSON() ([]byte, error) {
@@ -86,7 +86,7 @@ func (o *ConnectorStatus) GetStartedAt() *time.Time {
 	return o.StartedAt
 }
 
-func (o *ConnectorStatus) GetStatus() *ConnectorStatusStatus {
+func (o *ConnectorStatus) GetStatus() *Status {
 	if o == nil {
 		return nil
 	}

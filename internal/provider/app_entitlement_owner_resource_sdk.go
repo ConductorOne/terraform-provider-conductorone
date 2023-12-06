@@ -3,7 +3,7 @@
 package provider
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 )
 
 func (r *AppEntitlementOwnerResourceModel) ToCreateSDKType() *shared.SetAppEntitlementOwnersRequest {

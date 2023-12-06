@@ -7,8 +7,8 @@ import (
 	"flag"
 	"log"
 
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
+	"github.com/speakeasy/terraform-provider-terraform/internal/provider"
 )
 
 // Run "go generate" to generate the docs for the registry/website on each regeneration of the provider.
@@ -30,7 +30,7 @@ func main() {
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
-		Address: "registry.terraform.io/ConductorOne/conductorone",
+		Address: "registry.terraform.io/speakeasy/terraform",
 		Debug:   debug,
 	}
 

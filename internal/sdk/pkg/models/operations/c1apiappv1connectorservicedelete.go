@@ -3,21 +3,14 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1ConnectorServiceDeleteRequest struct {
-	ConnectorServiceDeleteRequest *shared.ConnectorServiceDeleteRequest `request:"mediaType=application/json"`
 	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
 	ID                            string                                `pathParam:"style=simple,explode=false,name=id"`
-}
-
-func (o *C1APIAppV1ConnectorServiceDeleteRequest) GetConnectorServiceDeleteRequest() *shared.ConnectorServiceDeleteRequest {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceDeleteRequest
+	ConnectorServiceDeleteRequest *shared.ConnectorServiceDeleteRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1ConnectorServiceDeleteRequest) GetAppID() string {
@@ -34,22 +27,22 @@ func (o *C1APIAppV1ConnectorServiceDeleteRequest) GetID() string {
 	return o.ID
 }
 
+func (o *C1APIAppV1ConnectorServiceDeleteRequest) GetConnectorServiceDeleteRequest() *shared.ConnectorServiceDeleteRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceDeleteRequest
+}
+
 type C1APIAppV1ConnectorServiceDeleteResponse struct {
-	// Empty response body. Status code indicates success.
-	ConnectorServiceDeleteResponse *shared.ConnectorServiceDeleteResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetConnectorServiceDeleteResponse() *shared.ConnectorServiceDeleteResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceDeleteResponse
+	// Empty response body. Status code indicates success.
+	ConnectorServiceDeleteResponse *shared.ConnectorServiceDeleteResponse
 }
 
 func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetContentType() string {
@@ -71,4 +64,11 @@ func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetRawResponse() *http.Respon
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetConnectorServiceDeleteResponse() *shared.ConnectorServiceDeleteResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceDeleteResponse
 }

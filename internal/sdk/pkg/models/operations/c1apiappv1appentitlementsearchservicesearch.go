@@ -3,26 +3,19 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1AppEntitlementSearchServiceSearchResponse struct {
-	// Successful response
-	AppEntitlementSearchServiceSearchResponse *shared.AppEntitlementSearchServiceSearchResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1AppEntitlementSearchServiceSearchResponse) GetAppEntitlementSearchServiceSearchResponse() *shared.AppEntitlementSearchServiceSearchResponse {
-	if o == nil {
-		return nil
-	}
-	return o.AppEntitlementSearchServiceSearchResponse
+	// Successful response
+	AppEntitlementSearchServiceSearchResponse *shared.AppEntitlementSearchServiceSearchResponse
 }
 
 func (o *C1APIAppV1AppEntitlementSearchServiceSearchResponse) GetContentType() string {
@@ -44,4 +37,11 @@ func (o *C1APIAppV1AppEntitlementSearchServiceSearchResponse) GetRawResponse() *
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppEntitlementSearchServiceSearchResponse) GetAppEntitlementSearchServiceSearchResponse() *shared.AppEntitlementSearchServiceSearchResponse {
+	if o == nil {
+		return nil
+	}
+	return o.AppEntitlementSearchServiceSearchResponse
 }

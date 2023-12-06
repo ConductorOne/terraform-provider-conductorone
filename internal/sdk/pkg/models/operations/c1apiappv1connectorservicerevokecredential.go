@@ -3,22 +3,15 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1ConnectorServiceRevokeCredentialRequest struct {
-	ConnectorServiceRevokeCredentialRequest *shared.ConnectorServiceRevokeCredentialRequest `request:"mediaType=application/json"`
 	AppID                                   string                                          `pathParam:"style=simple,explode=false,name=app_id"`
 	ConnectorID                             string                                          `pathParam:"style=simple,explode=false,name=connector_id"`
 	ID                                      string                                          `pathParam:"style=simple,explode=false,name=id"`
-}
-
-func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetConnectorServiceRevokeCredentialRequest() *shared.ConnectorServiceRevokeCredentialRequest {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceRevokeCredentialRequest
+	ConnectorServiceRevokeCredentialRequest *shared.ConnectorServiceRevokeCredentialRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetAppID() string {
@@ -42,22 +35,22 @@ func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetID() string {
 	return o.ID
 }
 
+func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetConnectorServiceRevokeCredentialRequest() *shared.ConnectorServiceRevokeCredentialRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceRevokeCredentialRequest
+}
+
 type C1APIAppV1ConnectorServiceRevokeCredentialResponse struct {
-	// Empty response body. Status code indicates success.
-	ConnectorServiceRevokeCredentialResponse *shared.ConnectorServiceRevokeCredentialResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetConnectorServiceRevokeCredentialResponse() *shared.ConnectorServiceRevokeCredentialResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceRevokeCredentialResponse
+	// Empty response body. Status code indicates success.
+	ConnectorServiceRevokeCredentialResponse *shared.ConnectorServiceRevokeCredentialResponse
 }
 
 func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetContentType() string {
@@ -79,4 +72,11 @@ func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetRawResponse() *h
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetConnectorServiceRevokeCredentialResponse() *shared.ConnectorServiceRevokeCredentialResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceRevokeCredentialResponse
 }

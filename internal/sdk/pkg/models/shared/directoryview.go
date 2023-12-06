@@ -4,17 +4,10 @@ package shared
 
 // DirectoryView - The directory view contains a directory and an app_path which is a JSONPATH set to the location in the expand mask that the expanded app will live if requested by the expander.
 type DirectoryView struct {
-	// This object indicates that an app is also a directory.
-	Directory *Directory `json:"directory,omitempty"`
 	// JSONPATH expression indicating the location of the App object in the  array.
 	AppPath *string `json:"appPath,omitempty"`
-}
-
-func (o *DirectoryView) GetDirectory() *Directory {
-	if o == nil {
-		return nil
-	}
-	return o.Directory
+	// This object indicates that an app is also a directory.
+	Directory *Directory `json:"directory,omitempty"`
 }
 
 func (o *DirectoryView) GetAppPath() *string {
@@ -22,4 +15,11 @@ func (o *DirectoryView) GetAppPath() *string {
 		return nil
 	}
 	return o.AppPath
+}
+
+func (o *DirectoryView) GetDirectory() *Directory {
+	if o == nil {
+		return nil
+	}
+	return o.Directory
 }

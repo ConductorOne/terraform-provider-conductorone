@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -35,21 +35,14 @@ func (o *C1APIAppV1ConnectorServiceListRequest) GetPageToken() *string {
 }
 
 type C1APIAppV1ConnectorServiceListResponse struct {
-	// The ConnectorServiceListResponse message contains a list of results and a nextPageToken if applicable
-	ConnectorServiceListResponse *shared.ConnectorServiceListResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1ConnectorServiceListResponse) GetConnectorServiceListResponse() *shared.ConnectorServiceListResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceListResponse
+	// The ConnectorServiceListResponse message contains a list of results and a nextPageToken if applicable
+	ConnectorServiceListResponse *shared.ConnectorServiceListResponse
 }
 
 func (o *C1APIAppV1ConnectorServiceListResponse) GetContentType() string {
@@ -71,4 +64,11 @@ func (o *C1APIAppV1ConnectorServiceListResponse) GetRawResponse() *http.Response
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceListResponse) GetConnectorServiceListResponse() *shared.ConnectorServiceListResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceListResponse
 }

@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -29,12 +29,12 @@ func (o *C1APIIamV1RolesListRequest) GetPageToken() *string {
 type C1APIIamV1RolesListResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The ListRolesResponse message contains a list of results and a nextPageToken if applicable.
-	ListRolesResponse *shared.ListRolesResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The ListRolesResponse message contains a list of results and a nextPageToken if applicable.
+	ListRolesResponse *shared.ListRolesResponse
 }
 
 func (o *C1APIIamV1RolesListResponse) GetContentType() string {
@@ -42,13 +42,6 @@ func (o *C1APIIamV1RolesListResponse) GetContentType() string {
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIIamV1RolesListResponse) GetListRolesResponse() *shared.ListRolesResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ListRolesResponse
 }
 
 func (o *C1APIIamV1RolesListResponse) GetStatusCode() int {
@@ -63,4 +56,11 @@ func (o *C1APIIamV1RolesListResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIIamV1RolesListResponse) GetListRolesResponse() *shared.ListRolesResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ListRolesResponse
 }

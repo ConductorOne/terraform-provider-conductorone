@@ -3,20 +3,13 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1ConnectorServiceCreateDelegatedRequest struct {
-	ConnectorServiceCreateDelegatedRequest *shared.ConnectorServiceCreateDelegatedRequest `request:"mediaType=application/json"`
 	AppID                                  string                                         `pathParam:"style=simple,explode=false,name=app_id"`
-}
-
-func (o *C1APIAppV1ConnectorServiceCreateDelegatedRequest) GetConnectorServiceCreateDelegatedRequest() *shared.ConnectorServiceCreateDelegatedRequest {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceCreateDelegatedRequest
+	ConnectorServiceCreateDelegatedRequest *shared.ConnectorServiceCreateDelegatedRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1ConnectorServiceCreateDelegatedRequest) GetAppID() string {
@@ -26,22 +19,22 @@ func (o *C1APIAppV1ConnectorServiceCreateDelegatedRequest) GetAppID() string {
 	return o.AppID
 }
 
+func (o *C1APIAppV1ConnectorServiceCreateDelegatedRequest) GetConnectorServiceCreateDelegatedRequest() *shared.ConnectorServiceCreateDelegatedRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceCreateDelegatedRequest
+}
+
 type C1APIAppV1ConnectorServiceCreateDelegatedResponse struct {
-	// The ConnectorServiceCreateResponse is the response returned from creating a connector.
-	ConnectorServiceCreateResponse *shared.ConnectorServiceCreateResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetConnectorServiceCreateResponse() *shared.ConnectorServiceCreateResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceCreateResponse
+	// The ConnectorServiceCreateResponse is the response returned from creating a connector.
+	ConnectorServiceCreateResponse *shared.ConnectorServiceCreateResponse
 }
 
 func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetContentType() string {
@@ -63,4 +56,11 @@ func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetRawResponse() *ht
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetConnectorServiceCreateResponse() *shared.ConnectorServiceCreateResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceCreateResponse
 }

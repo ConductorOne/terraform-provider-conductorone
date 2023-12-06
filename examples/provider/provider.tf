@@ -1,12 +1,12 @@
 terraform {
   required_providers {
-    conductorone = {
-      source  = "ConductorOne/conductorone"
-      version = "1.0.0"
+    terraform = {
+      source  = "speakeasy/terraform"
+      version = "0.0.1"
     }
   }
 }
 
-provider "conductorone" {
+provider "terraform" {
   # Configuration options
 }

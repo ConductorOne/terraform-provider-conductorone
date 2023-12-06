@@ -3,35 +3,35 @@
 package shared
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 )
 
-// Expanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type Expanded struct {
+// AppEntitlementSearchServiceSearchResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+type AppEntitlementSearchServiceSearchResponseExpanded struct {
 	// The type of the serialized message.
 	AtType               *string     `json:"@type,omitempty"`
 	AdditionalProperties interface{} `additionalProperties:"true" json:"-"`
 }
 
-func (e Expanded) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(e, "", false)
+func (a AppEntitlementSearchServiceSearchResponseExpanded) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (e *Expanded) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+func (a *AppEntitlementSearchServiceSearchResponseExpanded) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Expanded) GetAtType() *string {
+func (o *AppEntitlementSearchServiceSearchResponseExpanded) GetAtType() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AtType
 }
 
-func (o *Expanded) GetAdditionalProperties() interface{} {
+func (o *AppEntitlementSearchServiceSearchResponseExpanded) GetAdditionalProperties() interface{} {
 	if o == nil {
 		return nil
 	}
@@ -40,14 +40,21 @@ func (o *Expanded) GetAdditionalProperties() interface{} {
 
 // The AppEntitlementSearchServiceSearchResponse message.
 type AppEntitlementSearchServiceSearchResponse struct {
+	// List of related objects.
+	Expanded []AppEntitlementSearchServiceSearchResponseExpanded `json:"expanded,omitempty"`
 	// Indicates one value of a facet.
 	Facets *Facets `json:"facets,omitempty"`
-	// List of related objects.
-	Expanded []Expanded `json:"expanded,omitempty"`
 	// List of app entitlement view objects.
 	List []AppEntitlementView `json:"list,omitempty"`
 	// The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
+}
+
+func (o *AppEntitlementSearchServiceSearchResponse) GetExpanded() []AppEntitlementSearchServiceSearchResponseExpanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
 }
 
 func (o *AppEntitlementSearchServiceSearchResponse) GetFacets() *Facets {
@@ -55,13 +62,6 @@ func (o *AppEntitlementSearchServiceSearchResponse) GetFacets() *Facets {
 		return nil
 	}
 	return o.Facets
-}
-
-func (o *AppEntitlementSearchServiceSearchResponse) GetExpanded() []Expanded {
-	if o == nil {
-		return nil
-	}
-	return o.Expanded
 }
 
 func (o *AppEntitlementSearchServiceSearchResponse) GetList() []AppEntitlementView {

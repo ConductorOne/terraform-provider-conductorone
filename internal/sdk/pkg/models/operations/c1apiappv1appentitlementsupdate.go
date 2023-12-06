@@ -3,21 +3,14 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1AppEntitlementsUpdateRequest struct {
-	UpdateAppEntitlementRequest *shared.UpdateAppEntitlementRequest `request:"mediaType=application/json"`
 	AppID                       string                              `pathParam:"style=simple,explode=false,name=app_id"`
 	ID                          string                              `pathParam:"style=simple,explode=false,name=id"`
-}
-
-func (o *C1APIAppV1AppEntitlementsUpdateRequest) GetUpdateAppEntitlementRequest() *shared.UpdateAppEntitlementRequest {
-	if o == nil {
-		return nil
-	}
-	return o.UpdateAppEntitlementRequest
+	UpdateAppEntitlementRequest *shared.UpdateAppEntitlementRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1AppEntitlementsUpdateRequest) GetAppID() string {
@@ -32,6 +25,13 @@ func (o *C1APIAppV1AppEntitlementsUpdateRequest) GetID() string {
 		return ""
 	}
 	return o.ID
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateRequest) GetUpdateAppEntitlementRequest() *shared.UpdateAppEntitlementRequest {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateAppEntitlementRequest
 }
 
 type C1APIAppV1AppEntitlementsUpdateResponse struct {

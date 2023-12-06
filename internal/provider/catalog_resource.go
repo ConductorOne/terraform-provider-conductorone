@@ -5,11 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
 
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -19,6 +16,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -31,7 +31,7 @@ func NewCatalogResource() resource.Resource {
 
 // CatalogResource defines the resource implementation.
 type CatalogResource struct {
-	client *sdk.ConductoroneSDKTerraform
+	client *sdk.SDK
 }
 
 // CatalogResourceModel describes the resource data model.
@@ -327,12 +327,12 @@ func (r *CatalogResource) Configure(ctx context.Context, req resource.ConfigureR
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
+	client, ok := req.ProviderData.(*sdk.SDK)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -441,6 +441,7 @@ func (r *CatalogResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
+	id := data.ID.ValueString()
 	var requestCatalogManagementServiceUpdateRequest *shared.RequestCatalogManagementServiceUpdateRequest
 	requestCatalog := data.ToUpdateSDKType()
 	var requestCatalogExpandMask *shared.RequestCatalogExpandMask
@@ -457,10 +458,9 @@ func (r *CatalogResource) Update(ctx context.Context, req resource.UpdateRequest
 		RequestCatalog:           requestCatalog,
 		RequestCatalogExpandMask: requestCatalogExpandMask,
 	}
-	id := data.ID.ValueString()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest{
-		RequestCatalogManagementServiceUpdateRequest: requestCatalogManagementServiceUpdateRequest,
 		ID: id,
+		RequestCatalogManagementServiceUpdateRequest: requestCatalogManagementServiceUpdateRequest,
 	}
 	res, err := r.client.RequestCatalogManagement.Update(ctx, request)
 	if err != nil {
@@ -506,11 +506,11 @@ func (r *CatalogResource) Delete(ctx context.Context, req resource.DeleteRequest
 		return
 	}
 
-	requestCatalogManagementServiceDeleteRequest := data.ToDeleteSDKType()
 	id := data.ID.ValueString()
+	requestCatalogManagementServiceDeleteRequest := data.ToDeleteSDKType()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest{
-		RequestCatalogManagementServiceDeleteRequest: requestCatalogManagementServiceDeleteRequest,
 		ID: id,
+		RequestCatalogManagementServiceDeleteRequest: requestCatalogManagementServiceDeleteRequest,
 	}
 	res, err := r.client.RequestCatalogManagement.Delete(ctx, request)
 	if err != nil {

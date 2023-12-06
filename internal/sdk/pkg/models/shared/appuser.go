@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 	"time"
 )
 
@@ -178,8 +178,6 @@ func (u Profile) MarshalJSON() ([]byte, error) {
 
 // AppUser - Application User that represents an account in the application.
 type AppUser struct {
-	// The satus of the applicaiton user.
-	AppUserStatus *AppUserStatus `json:"status,omitempty"`
 	// The ID of the application.
 	AppID *string `json:"appId,omitempty"`
 	// The appplication user type. Type can be user, system or service.
@@ -197,7 +195,9 @@ type AppUser struct {
 	// The conductor one user ID of the account owner.
 	IdentityUserID *string            `json:"identityUserId,omitempty"`
 	Profile        map[string]Profile `json:"profile,omitempty"`
-	UpdatedAt      *time.Time         `json:"updatedAt,omitempty"`
+	// The satus of the applicaiton user.
+	AppUserStatus *AppUserStatus `json:"status,omitempty"`
+	UpdatedAt     *time.Time     `json:"updatedAt,omitempty"`
 	// The username field of the application user.
 	Username *string `json:"username,omitempty"`
 	// The usernames field of the application user.
@@ -213,13 +213,6 @@ func (a *AppUser) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *AppUser) GetAppUserStatus() *AppUserStatus {
-	if o == nil {
-		return nil
-	}
-	return o.AppUserStatus
 }
 
 func (o *AppUser) GetAppID() *string {
@@ -292,6 +285,13 @@ func (o *AppUser) GetProfile() map[string]Profile {
 	return o.Profile
 }
 
+func (o *AppUser) GetAppUserStatus() *AppUserStatus {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserStatus
+}
+
 func (o *AppUser) GetUpdatedAt() *time.Time {
 	if o == nil {
 		return nil
@@ -315,17 +315,10 @@ func (o *AppUser) GetUsernames() []string {
 
 // AppUserInput - Application User that represents an account in the application.
 type AppUserInput struct {
-	// The satus of the applicaiton user.
-	AppUserStatus *AppUserStatusInput `json:"status,omitempty"`
 	// The appplication user type. Type can be user, system or service.
 	AppUserType *AppUserType `json:"appUserType,omitempty"`
-}
-
-func (o *AppUserInput) GetAppUserStatus() *AppUserStatusInput {
-	if o == nil {
-		return nil
-	}
-	return o.AppUserStatus
+	// The satus of the applicaiton user.
+	AppUserStatus *AppUserStatusInput `json:"status,omitempty"`
 }
 
 func (o *AppUserInput) GetAppUserType() *AppUserType {
@@ -333,4 +326,11 @@ func (o *AppUserInput) GetAppUserType() *AppUserType {
 		return nil
 	}
 	return o.AppUserType
+}
+
+func (o *AppUserInput) GetAppUserStatus() *AppUserStatusInput {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserStatus
 }

@@ -5,8 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -27,7 +27,7 @@ func NewCatalogRequestableEntriesResource() resource.Resource {
 
 // CatalogRequestableEntriesResource defines the resource implementation.
 type CatalogRequestableEntriesResource struct {
-	client *sdk.ConductoroneSDKTerraform
+	client *sdk.SDK
 }
 
 // CatalogRequestableEntriesResourceModel describes the resource data model.
@@ -86,12 +86,12 @@ func (r *CatalogRequestableEntriesResource) Configure(ctx context.Context, req r
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
+	client, ok := req.ProviderData.(*sdk.SDK)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -118,11 +118,11 @@ func (r *CatalogRequestableEntriesResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	requestCatalogManagementServiceAddAppEntitlementsRequest := data.ToCreateSDKType()
 	catalogID := data.CatalogID.ValueString()
+	requestCatalogManagementServiceAddAppEntitlementsRequest := data.ToCreateSDKType()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest{
-		RequestCatalogManagementServiceAddAppEntitlementsRequest: requestCatalogManagementServiceAddAppEntitlementsRequest,
 		CatalogID: catalogID,
+		RequestCatalogManagementServiceAddAppEntitlementsRequest: requestCatalogManagementServiceAddAppEntitlementsRequest,
 	}
 	res, err := r.client.RequestCatalogManagement.AddAppEntitlements(ctx, request)
 	if err != nil {
@@ -205,11 +205,11 @@ func (r *CatalogRequestableEntriesResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	requestCatalogManagementServiceRemoveAppEntitlementsRequest := data.ToDeleteSDKType()
 	catalogID := data.CatalogID.ValueString()
+	requestCatalogManagementServiceRemoveAppEntitlementsRequest := data.ToDeleteSDKType()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest{
-		RequestCatalogManagementServiceRemoveAppEntitlementsRequest: requestCatalogManagementServiceRemoveAppEntitlementsRequest,
 		CatalogID: catalogID,
+		RequestCatalogManagementServiceRemoveAppEntitlementsRequest: requestCatalogManagementServiceRemoveAppEntitlementsRequest,
 	}
 	res, err := r.client.RequestCatalogManagement.RemoveAppEntitlements(ctx, request)
 	if err != nil {

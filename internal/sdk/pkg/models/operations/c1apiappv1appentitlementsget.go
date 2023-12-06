@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -29,12 +29,12 @@ func (o *C1APIAppV1AppEntitlementsGetRequest) GetID() string {
 type C1APIAppV1AppEntitlementsGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The get app entitlement response returns an entitlement view containing paths in the expanded array for the objects expanded as indicated by the expand mask in the request.
-	GetAppEntitlementResponse *shared.GetAppEntitlementResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The get app entitlement response returns an entitlement view containing paths in the expanded array for the objects expanded as indicated by the expand mask in the request.
+	GetAppEntitlementResponse *shared.GetAppEntitlementResponse
 }
 
 func (o *C1APIAppV1AppEntitlementsGetResponse) GetContentType() string {
@@ -42,13 +42,6 @@ func (o *C1APIAppV1AppEntitlementsGetResponse) GetContentType() string {
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAppV1AppEntitlementsGetResponse) GetGetAppEntitlementResponse() *shared.GetAppEntitlementResponse {
-	if o == nil {
-		return nil
-	}
-	return o.GetAppEntitlementResponse
 }
 
 func (o *C1APIAppV1AppEntitlementsGetResponse) GetStatusCode() int {
@@ -63,4 +56,11 @@ func (o *C1APIAppV1AppEntitlementsGetResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppEntitlementsGetResponse) GetGetAppEntitlementResponse() *shared.GetAppEntitlementResponse {
+	if o == nil {
+		return nil
+	}
+	return o.GetAppEntitlementResponse
 }

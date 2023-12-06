@@ -4,19 +4,12 @@ package shared
 
 // The TaskActionsServiceRestartRequest object lets you restart a task.
 type TaskActionsServiceRestartRequest struct {
-	// The task expand mask is an array of strings that specifes the related objects the requester wishes to have returned when making a request where the expand mask is part of the input. Use '*' to view all possible responses.
-	TaskExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// The comment attached to the request.
 	Comment *string `json:"comment,omitempty"`
+	// The task expand mask is an array of strings that specifes the related objects the requester wishes to have returned when making a request where the expand mask is part of the input. Use '*' to view all possible responses.
+	TaskExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// The ID of the policy step on the given task to restart.
 	PolicyStepID *string `json:"policyStepId,omitempty"`
-}
-
-func (o *TaskActionsServiceRestartRequest) GetTaskExpandMask() *TaskExpandMask {
-	if o == nil {
-		return nil
-	}
-	return o.TaskExpandMask
 }
 
 func (o *TaskActionsServiceRestartRequest) GetComment() *string {
@@ -24,6 +17,13 @@ func (o *TaskActionsServiceRestartRequest) GetComment() *string {
 		return nil
 	}
 	return o.Comment
+}
+
+func (o *TaskActionsServiceRestartRequest) GetTaskExpandMask() *TaskExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.TaskExpandMask
 }
 
 func (o *TaskActionsServiceRestartRequest) GetPolicyStepID() *string {

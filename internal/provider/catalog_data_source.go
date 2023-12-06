@@ -5,8 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -24,7 +24,7 @@ func NewCatalogDataSource() datasource.DataSource {
 
 // CatalogDataSource is the data source implementation.
 type CatalogDataSource struct {
-	client *sdk.ConductoroneSDKTerraform
+	client *sdk.SDK
 }
 
 // CatalogDataSourceModel describes the data model.
@@ -61,56 +61,6 @@ func (r *CatalogDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"provision_policy": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"connector_provision": schema.SingleNestedAttribute{
-									Computed:    true,
-									Attributes:  map[string]schema.Attribute{},
-									Description: `Indicates that a connector should perform the provisioning. This object has no fields.`,
-								},
-								"delegated_provision": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"app_id": schema.StringAttribute{
-											Computed:    true,
-											Description: `The AppID of the entitlement to delegate provisioning to.`,
-										},
-										"entitlement_id": schema.StringAttribute{
-											Computed:    true,
-											Description: `The ID of the entitlement we are delegating provisioning to.`,
-										},
-										"implicit": schema.BoolAttribute{
-											Computed:    true,
-											Description: `If true, a binding will be automatically created from the entitlement of the parent app.`,
-										},
-									},
-									Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
-								},
-								"manual_provision": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"instructions": schema.StringAttribute{
-											Computed:    true,
-											Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
-										},
-										"user_ids": schema.ListAttribute{
-											Computed:    true,
-											ElementType: types.StringType,
-											Description: `An array of users that are required to provision during this step.`,
-										},
-									},
-									Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
-								},
-							},
-							MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - connector` + "\n" +
-								`  - manual` + "\n" +
-								`  - delegated` + "\n" +
-								``,
-						},
 						"alias": schema.StringAttribute{
 							Computed:    true,
 							Description: `The alias of the app entitlement used by Cone. Also exact-match queryable.`,
@@ -176,6 +126,56 @@ func (r *CatalogDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 						"id": schema.StringAttribute{
 							Computed:    true,
 							Description: `The unique ID for the App Entitlement.`,
+						},
+						"provision_policy": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"connector_provision": schema.SingleNestedAttribute{
+									Computed:    true,
+									Attributes:  map[string]schema.Attribute{},
+									Description: `Indicates that a connector should perform the provisioning. This object has no fields.`,
+								},
+								"delegated_provision": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"app_id": schema.StringAttribute{
+											Computed:    true,
+											Description: `The AppID of the entitlement to delegate provisioning to.`,
+										},
+										"entitlement_id": schema.StringAttribute{
+											Computed:    true,
+											Description: `The ID of the entitlement we are delegating provisioning to.`,
+										},
+										"implicit": schema.BoolAttribute{
+											Computed:    true,
+											Description: `If true, a binding will be automatically created from the entitlement of the parent app.`,
+										},
+									},
+									Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
+								},
+								"manual_provision": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"instructions": schema.StringAttribute{
+											Computed:    true,
+											Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+										},
+										"user_ids": schema.ListAttribute{
+											Computed:    true,
+											ElementType: types.StringType,
+											Description: `An array of users that are required to provision during this step.`,
+										},
+									},
+									Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
+								},
+							},
+							MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - connector` + "\n" +
+								`  - manual` + "\n" +
+								`  - delegated` + "\n" +
+								``,
 						},
 						"revoke_policy_id": schema.StringAttribute{
 							Computed:    true,
@@ -278,12 +278,12 @@ func (r *CatalogDataSource) Configure(ctx context.Context, req datasource.Config
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
+	client, ok := req.ProviderData.(*sdk.SDK)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected DataSource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return

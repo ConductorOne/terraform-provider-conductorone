@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -29,12 +29,12 @@ func (o *C1APIAttributeV1AttributesListAttributeTypesRequest) GetPageToken() *st
 type C1APIAttributeV1AttributesListAttributeTypesResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// ListAttributeTypesResponse is the response for listing attribute types.
-	ListAttributeTypesResponse *shared.ListAttributeTypesResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// ListAttributeTypesResponse is the response for listing attribute types.
+	ListAttributeTypesResponse *shared.ListAttributeTypesResponse
 }
 
 func (o *C1APIAttributeV1AttributesListAttributeTypesResponse) GetContentType() string {
@@ -42,13 +42,6 @@ func (o *C1APIAttributeV1AttributesListAttributeTypesResponse) GetContentType() 
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAttributeV1AttributesListAttributeTypesResponse) GetListAttributeTypesResponse() *shared.ListAttributeTypesResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ListAttributeTypesResponse
 }
 
 func (o *C1APIAttributeV1AttributesListAttributeTypesResponse) GetStatusCode() int {
@@ -63,4 +56,11 @@ func (o *C1APIAttributeV1AttributesListAttributeTypesResponse) GetRawResponse() 
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAttributeV1AttributesListAttributeTypesResponse) GetListAttributeTypesResponse() *shared.ListAttributeTypesResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ListAttributeTypesResponse
 }

@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -21,12 +21,12 @@ func (o *C1APIAttributeV1AttributesGetAttributeValueRequest) GetID() string {
 type C1APIAttributeV1AttributesGetAttributeValueResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// GetAttributeValueResponse is the response for getting an attribute value by id.
-	GetAttributeValueResponse *shared.GetAttributeValueResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// GetAttributeValueResponse is the response for getting an attribute value by id.
+	GetAttributeValueResponse *shared.GetAttributeValueResponse
 }
 
 func (o *C1APIAttributeV1AttributesGetAttributeValueResponse) GetContentType() string {
@@ -34,13 +34,6 @@ func (o *C1APIAttributeV1AttributesGetAttributeValueResponse) GetContentType() s
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAttributeV1AttributesGetAttributeValueResponse) GetGetAttributeValueResponse() *shared.GetAttributeValueResponse {
-	if o == nil {
-		return nil
-	}
-	return o.GetAttributeValueResponse
 }
 
 func (o *C1APIAttributeV1AttributesGetAttributeValueResponse) GetStatusCode() int {
@@ -55,4 +48,11 @@ func (o *C1APIAttributeV1AttributesGetAttributeValueResponse) GetRawResponse() *
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAttributeV1AttributesGetAttributeValueResponse) GetGetAttributeValueResponse() *shared.GetAttributeValueResponse {
+	if o == nil {
+		return nil
+	}
+	return o.GetAttributeValueResponse
 }

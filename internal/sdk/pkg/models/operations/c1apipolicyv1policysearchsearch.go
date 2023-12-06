@@ -3,19 +3,19 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIPolicyV1PolicySearchSearchResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// Successful response
-	ListPolicyResponse *shared.ListPolicyResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	ListPolicyResponse *shared.ListPolicyResponse
 }
 
 func (o *C1APIPolicyV1PolicySearchSearchResponse) GetContentType() string {
@@ -23,13 +23,6 @@ func (o *C1APIPolicyV1PolicySearchSearchResponse) GetContentType() string {
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIPolicyV1PolicySearchSearchResponse) GetListPolicyResponse() *shared.ListPolicyResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ListPolicyResponse
 }
 
 func (o *C1APIPolicyV1PolicySearchSearchResponse) GetStatusCode() int {
@@ -44,4 +37,11 @@ func (o *C1APIPolicyV1PolicySearchSearchResponse) GetRawResponse() *http.Respons
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIPolicyV1PolicySearchSearchResponse) GetListPolicyResponse() *shared.ListPolicyResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ListPolicyResponse
 }

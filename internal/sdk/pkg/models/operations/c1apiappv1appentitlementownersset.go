@@ -3,21 +3,14 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1AppEntitlementOwnersSetRequest struct {
-	SetAppEntitlementOwnersRequest *shared.SetAppEntitlementOwnersRequest `request:"mediaType=application/json"`
 	AppID                          string                                 `pathParam:"style=simple,explode=false,name=app_id"`
 	EntitlementID                  string                                 `pathParam:"style=simple,explode=false,name=entitlement_id"`
-}
-
-func (o *C1APIAppV1AppEntitlementOwnersSetRequest) GetSetAppEntitlementOwnersRequest() *shared.SetAppEntitlementOwnersRequest {
-	if o == nil {
-		return nil
-	}
-	return o.SetAppEntitlementOwnersRequest
+	SetAppEntitlementOwnersRequest *shared.SetAppEntitlementOwnersRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1AppEntitlementOwnersSetRequest) GetAppID() string {
@@ -34,15 +27,22 @@ func (o *C1APIAppV1AppEntitlementOwnersSetRequest) GetEntitlementID() string {
 	return o.EntitlementID
 }
 
+func (o *C1APIAppV1AppEntitlementOwnersSetRequest) GetSetAppEntitlementOwnersRequest() *shared.SetAppEntitlementOwnersRequest {
+	if o == nil {
+		return nil
+	}
+	return o.SetAppEntitlementOwnersRequest
+}
+
 type C1APIAppV1AppEntitlementOwnersSetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The empty response message for setting the app entitlement owners.
-	SetAppEntitlementOwnersResponse *shared.SetAppEntitlementOwnersResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The empty response message for setting the app entitlement owners.
+	SetAppEntitlementOwnersResponse *shared.SetAppEntitlementOwnersResponse
 }
 
 func (o *C1APIAppV1AppEntitlementOwnersSetResponse) GetContentType() string {
@@ -50,13 +50,6 @@ func (o *C1APIAppV1AppEntitlementOwnersSetResponse) GetContentType() string {
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAppV1AppEntitlementOwnersSetResponse) GetSetAppEntitlementOwnersResponse() *shared.SetAppEntitlementOwnersResponse {
-	if o == nil {
-		return nil
-	}
-	return o.SetAppEntitlementOwnersResponse
 }
 
 func (o *C1APIAppV1AppEntitlementOwnersSetResponse) GetStatusCode() int {
@@ -71,4 +64,11 @@ func (o *C1APIAppV1AppEntitlementOwnersSetResponse) GetRawResponse() *http.Respo
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppEntitlementOwnersSetResponse) GetSetAppEntitlementOwnersResponse() *shared.SetAppEntitlementOwnersResponse {
+	if o == nil {
+		return nil
+	}
+	return o.SetAppEntitlementOwnersResponse
 }

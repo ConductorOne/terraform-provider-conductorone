@@ -3,20 +3,13 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1AppUsageControlsServiceUpdateRequest struct {
-	UpdateAppUsageControlsRequest *shared.UpdateAppUsageControlsRequest `request:"mediaType=application/json"`
 	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
-}
-
-func (o *C1APIAppV1AppUsageControlsServiceUpdateRequest) GetUpdateAppUsageControlsRequest() *shared.UpdateAppUsageControlsRequest {
-	if o == nil {
-		return nil
-	}
-	return o.UpdateAppUsageControlsRequest
+	UpdateAppUsageControlsRequest *shared.UpdateAppUsageControlsRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1AppUsageControlsServiceUpdateRequest) GetAppID() string {
@@ -24,6 +17,13 @@ func (o *C1APIAppV1AppUsageControlsServiceUpdateRequest) GetAppID() string {
 		return ""
 	}
 	return o.AppID
+}
+
+func (o *C1APIAppV1AppUsageControlsServiceUpdateRequest) GetUpdateAppUsageControlsRequest() *shared.UpdateAppUsageControlsRequest {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateAppUsageControlsRequest
 }
 
 type C1APIAppV1AppUsageControlsServiceUpdateResponse struct {

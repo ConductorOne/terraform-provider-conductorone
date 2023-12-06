@@ -59,6 +59,10 @@ type PolicyStepInstance struct {
 	//   - reassignedByError
 	//
 	ApprovalInstance *ApprovalInstance `json:"approval,omitempty"`
+	// The ID of the PolicyStepInstance. This is required by many action submission endpoints to indicate what step you're approving.
+	ID *string `json:"id,omitempty"`
+	// The policy generation id refers to the version of the policy that this step was created from.
+	PolicyGenerationID *string `json:"policyGenerationId,omitempty"`
 	// A provision instance describes the specific configuration of an executing provision policy step including actions taken and notification id.
 	//
 	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
@@ -71,10 +75,6 @@ type PolicyStepInstance struct {
 	// This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
 	//  The instance is just a marker for it being copied into an active policy.
 	RejectInstance *RejectInstance `json:"reject,omitempty"`
-	// The ID of the PolicyStepInstance. This is required by many action submission endpoints to indicate what step you're approving.
-	ID *string `json:"id,omitempty"`
-	// The policy generation id refers to the version of the policy that this step was created from.
-	PolicyGenerationID *string `json:"policyGenerationId,omitempty"`
 	// The state of the step, which is either active or done.
 	State *PolicyStepInstanceState `json:"state,omitempty"`
 }
@@ -93,20 +93,6 @@ func (o *PolicyStepInstance) GetApprovalInstance() *ApprovalInstance {
 	return o.ApprovalInstance
 }
 
-func (o *PolicyStepInstance) GetProvisionInstance() *ProvisionInstance {
-	if o == nil {
-		return nil
-	}
-	return o.ProvisionInstance
-}
-
-func (o *PolicyStepInstance) GetRejectInstance() *RejectInstance {
-	if o == nil {
-		return nil
-	}
-	return o.RejectInstance
-}
-
 func (o *PolicyStepInstance) GetID() *string {
 	if o == nil {
 		return nil
@@ -119,6 +105,20 @@ func (o *PolicyStepInstance) GetPolicyGenerationID() *string {
 		return nil
 	}
 	return o.PolicyGenerationID
+}
+
+func (o *PolicyStepInstance) GetProvisionInstance() *ProvisionInstance {
+	if o == nil {
+		return nil
+	}
+	return o.ProvisionInstance
+}
+
+func (o *PolicyStepInstance) GetRejectInstance() *RejectInstance {
+	if o == nil {
+		return nil
+	}
+	return o.RejectInstance
 }
 
 func (o *PolicyStepInstance) GetState() *PolicyStepInstanceState {

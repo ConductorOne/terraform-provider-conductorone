@@ -61,12 +61,12 @@ type ProvisionInstance struct {
 	CompletedAction *CompletedAction `json:"completed,omitempty"`
 	// The outcome of a provision instance that has errored.
 	ErroredAction *ErroredAction `json:"errored,omitempty"`
+	// This indicates the notification id for this step.
+	NotificationID *string `json:"notificationId,omitempty"`
 	// The provision step references a provision policy for this step.
 	Provision *Provision `json:"provision,omitempty"`
 	// The ReassignedByErrorAction object describes the outcome of a policy step that has been reassigned because it had an error provisioning.
 	ReassignedByErrorAction *ReassignedByErrorAction `json:"reassignedByError,omitempty"`
-	// This indicates the notification id for this step.
-	NotificationID *string `json:"notificationId,omitempty"`
 	// This property indicates the current state of this step.
 	State *ProvisionInstanceState `json:"state,omitempty"`
 }
@@ -92,6 +92,13 @@ func (o *ProvisionInstance) GetErroredAction() *ErroredAction {
 	return o.ErroredAction
 }
 
+func (o *ProvisionInstance) GetNotificationID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.NotificationID
+}
+
 func (o *ProvisionInstance) GetProvision() *Provision {
 	if o == nil {
 		return nil
@@ -104,13 +111,6 @@ func (o *ProvisionInstance) GetReassignedByErrorAction() *ReassignedByErrorActio
 		return nil
 	}
 	return o.ReassignedByErrorAction
-}
-
-func (o *ProvisionInstance) GetNotificationID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.NotificationID
 }
 
 func (o *ProvisionInstance) GetState() *ProvisionInstanceState {

@@ -5,8 +5,8 @@ package sdk
 import (
 	"context"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 	"net/http"
 	"time"
 )
@@ -63,8 +63,8 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 	return ServerList[c.ServerIndex], c.ServerDefaults[c.ServerIndex]
 }
 
-// ConductoroneSDKTerraform - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
-type ConductoroneSDKTerraform struct {
+// SDK - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
+type SDK struct {
 	Apps                      *Apps
 	Connector                 *Connector
 	AppEntitlements           *AppEntitlements
@@ -101,18 +101,18 @@ type ConductoroneSDKTerraform struct {
 	sdkConfiguration sdkConfiguration
 }
 
-type SDKOption func(*ConductoroneSDKTerraform)
+type SDKOption func(*SDK)
 
 // WithServerURL allows the overriding of the default server URL
 func WithServerURL(serverURL string) SDKOption {
-	return func(sdk *ConductoroneSDKTerraform) {
+	return func(sdk *SDK) {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 }
 
 // WithTemplatedServerURL allows the overriding of the default server URL with a templated URL populated with the provided parameters
 func WithTemplatedServerURL(serverURL string, params map[string]string) SDKOption {
-	return func(sdk *ConductoroneSDKTerraform) {
+	return func(sdk *SDK) {
 		if params != nil {
 			serverURL = utils.ReplaceParameters(serverURL, params)
 		}
@@ -123,7 +123,7 @@ func WithTemplatedServerURL(serverURL string, params map[string]string) SDKOptio
 
 // WithServerIndex allows the overriding of the default server by index
 func WithServerIndex(serverIndex int) SDKOption {
-	return func(sdk *ConductoroneSDKTerraform) {
+	return func(sdk *SDK) {
 		if serverIndex < 0 || serverIndex >= len(ServerList) {
 			panic(fmt.Errorf("server index %d out of range", serverIndex))
 		}
@@ -134,7 +134,7 @@ func WithServerIndex(serverIndex int) SDKOption {
 
 // WithTenantDomain allows setting the tenantDomain variable for url substitution
 func WithTenantDomain(tenantDomain string) SDKOption {
-	return func(sdk *ConductoroneSDKTerraform) {
+	return func(sdk *SDK) {
 		for idx := range sdk.sdkConfiguration.ServerDefaults {
 			if _, ok := sdk.sdkConfiguration.ServerDefaults[idx]["tenantDomain"]; !ok {
 				continue
@@ -147,7 +147,7 @@ func WithTenantDomain(tenantDomain string) SDKOption {
 
 // WithClient allows the overriding of the default HTTP client used by the SDK
 func WithClient(client HTTPClient) SDKOption {
-	return func(sdk *ConductoroneSDKTerraform) {
+	return func(sdk *SDK) {
 		sdk.sdkConfiguration.DefaultClient = client
 	}
 }
@@ -160,14 +160,14 @@ func withSecurity(security interface{}) func(context.Context) (interface{}, erro
 
 // WithSecurity configures the SDK to use the provided security details
 func WithSecurity(security shared.Security) SDKOption {
-	return func(sdk *ConductoroneSDKTerraform) {
+	return func(sdk *SDK) {
 		sdk.sdkConfiguration.Security = withSecurity(security)
 	}
 }
 
 // WithSecuritySource configures the SDK to invoke the Security Source function on each method call to determine authentication
 func WithSecuritySource(security func(context.Context) (shared.Security, error)) SDKOption {
-	return func(sdk *ConductoroneSDKTerraform) {
+	return func(sdk *SDK) {
 		sdk.sdkConfiguration.Security = func(ctx context.Context) (interface{}, error) {
 			return security(ctx)
 		}
@@ -175,20 +175,20 @@ func WithSecuritySource(security func(context.Context) (shared.Security, error))
 }
 
 func WithRetryConfig(retryConfig utils.RetryConfig) SDKOption {
-	return func(sdk *ConductoroneSDKTerraform) {
+	return func(sdk *SDK) {
 		sdk.sdkConfiguration.RetryConfig = &retryConfig
 	}
 }
 
 // New creates a new instance of the SDK with the provided options
-func New(opts ...SDKOption) *ConductoroneSDKTerraform {
-	sdk := &ConductoroneSDKTerraform{
+func New(opts ...SDKOption) *SDK {
+	sdk := &SDK{
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "0.1.0-alpha",
-			SDKVersion:        "1.0.0",
-			GenVersion:        "2.210.3",
-			UserAgent:         "speakeasy-sdk/go 1.0.0 2.210.3 0.1.0-alpha conductorone",
+			SDKVersion:        "0.0.1",
+			GenVersion:        "2.210.6",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.210.6 0.1.0-alpha terraform",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "example",

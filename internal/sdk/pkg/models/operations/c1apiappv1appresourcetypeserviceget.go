@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -27,22 +27,15 @@ func (o *C1APIAppV1AppResourceTypeServiceGetRequest) GetID() string {
 }
 
 type C1APIAppV1AppResourceTypeServiceGetResponse struct {
-	// The AppResourceTypeServiceGetResponse contains an expanded array containing the expanded values indicated by the expand mask
-	//  in the request and an app resource type view containing the resource type and JSONPATHs indicating which objects are where in the expand mask.
-	AppResourceTypeServiceGetResponse *shared.AppResourceTypeServiceGetResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1AppResourceTypeServiceGetResponse) GetAppResourceTypeServiceGetResponse() *shared.AppResourceTypeServiceGetResponse {
-	if o == nil {
-		return nil
-	}
-	return o.AppResourceTypeServiceGetResponse
+	// The AppResourceTypeServiceGetResponse contains an expanded array containing the expanded values indicated by the expand mask
+	//  in the request and an app resource type view containing the resource type and JSONPATHs indicating which objects are where in the expand mask.
+	AppResourceTypeServiceGetResponse *shared.AppResourceTypeServiceGetResponse
 }
 
 func (o *C1APIAppV1AppResourceTypeServiceGetResponse) GetContentType() string {
@@ -64,4 +57,11 @@ func (o *C1APIAppV1AppResourceTypeServiceGetResponse) GetRawResponse() *http.Res
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppResourceTypeServiceGetResponse) GetAppResourceTypeServiceGetResponse() *shared.AppResourceTypeServiceGetResponse {
+	if o == nil {
+		return nil
+	}
+	return o.AppResourceTypeServiceGetResponse
 }

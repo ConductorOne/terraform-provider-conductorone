@@ -3,20 +3,13 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest struct {
-	RequestCatalogManagementServiceUpdateRequest *shared.RequestCatalogManagementServiceUpdateRequest `request:"mediaType=application/json"`
 	ID                                           string                                               `pathParam:"style=simple,explode=false,name=id"`
-}
-
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest) GetRequestCatalogManagementServiceUpdateRequest() *shared.RequestCatalogManagementServiceUpdateRequest {
-	if o == nil {
-		return nil
-	}
-	return o.RequestCatalogManagementServiceUpdateRequest
+	RequestCatalogManagementServiceUpdateRequest *shared.RequestCatalogManagementServiceUpdateRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest) GetID() string {
@@ -26,15 +19,22 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest) GetI
 	return o.ID
 }
 
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest) GetRequestCatalogManagementServiceUpdateRequest() *shared.RequestCatalogManagementServiceUpdateRequest {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceUpdateRequest
+}
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The request catalog management service get response returns a request catalog view with the expanded items in the expanded array indicated by the expand mask in the request.
-	RequestCatalogManagementServiceGetResponse *shared.RequestCatalogManagementServiceGetResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The request catalog management service get response returns a request catalog view with the expanded items in the expanded array indicated by the expand mask in the request.
+	RequestCatalogManagementServiceGetResponse *shared.RequestCatalogManagementServiceGetResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse) GetContentType() string {
@@ -42,13 +42,6 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse) Get
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse) GetRequestCatalogManagementServiceGetResponse() *shared.RequestCatalogManagementServiceGetResponse {
-	if o == nil {
-		return nil
-	}
-	return o.RequestCatalogManagementServiceGetResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse) GetStatusCode() int {
@@ -63,4 +56,11 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse) Get
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse) GetRequestCatalogManagementServiceGetResponse() *shared.RequestCatalogManagementServiceGetResponse {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceGetResponse
 }

@@ -5,8 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -27,7 +27,7 @@ func NewAppEntitlementOwnerResource() resource.Resource {
 
 // AppEntitlementOwnerResource defines the resource implementation.
 type AppEntitlementOwnerResource struct {
-	client *sdk.ConductoroneSDKTerraform
+	client *sdk.SDK
 }
 
 // AppEntitlementOwnerResourceModel describes the resource data model.
@@ -76,12 +76,12 @@ func (r *AppEntitlementOwnerResource) Configure(ctx context.Context, req resourc
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
+	client, ok := req.ProviderData.(*sdk.SDK)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -108,13 +108,13 @@ func (r *AppEntitlementOwnerResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	setAppEntitlementOwnersRequest := data.ToCreateSDKType()
 	appID := data.AppID.ValueString()
 	entitlementID := data.EntitlementID.ValueString()
+	setAppEntitlementOwnersRequest := data.ToCreateSDKType()
 	request := operations.C1APIAppV1AppEntitlementOwnersSetRequest{
-		SetAppEntitlementOwnersRequest: setAppEntitlementOwnersRequest,
 		AppID:                          appID,
 		EntitlementID:                  entitlementID,
+		SetAppEntitlementOwnersRequest: setAppEntitlementOwnersRequest,
 	}
 	res, err := r.client.AppEntitlementOwners.Set(ctx, request)
 	if err != nil {

@@ -3,21 +3,14 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest struct {
-	AppEntitlementID string `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
 	AppID            string `pathParam:"style=simple,explode=false,name=app_id"`
+	AppEntitlementID string `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
 	IdentityUserID   string `pathParam:"style=simple,explode=false,name=identity_user_id"`
-}
-
-func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppEntitlementID() string {
-	if o == nil {
-		return ""
-	}
-	return o.AppEntitlementID
 }
 
 func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppID() string {
@@ -25,6 +18,13 @@ func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGr
 		return ""
 	}
 	return o.AppID
+}
+
+func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppEntitlementID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppEntitlementID
 }
 
 func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetIdentityUserID() string {
@@ -37,12 +37,12 @@ func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGr
 type C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// Successful response
-	ListAppUsersForIdentityWithGrantResponse *shared.ListAppUsersForIdentityWithGrantResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	ListAppUsersForIdentityWithGrantResponse *shared.ListAppUsersForIdentityWithGrantResponse
 }
 
 func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetContentType() string {
@@ -50,13 +50,6 @@ func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGr
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetListAppUsersForIdentityWithGrantResponse() *shared.ListAppUsersForIdentityWithGrantResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ListAppUsersForIdentityWithGrantResponse
 }
 
 func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetStatusCode() int {
@@ -71,4 +64,11 @@ func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGr
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetListAppUsersForIdentityWithGrantResponse() *shared.ListAppUsersForIdentityWithGrantResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ListAppUsersForIdentityWithGrantResponse
 }

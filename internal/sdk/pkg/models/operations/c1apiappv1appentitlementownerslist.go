@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -45,12 +45,12 @@ func (o *C1APIAppV1AppEntitlementOwnersListRequest) GetPageToken() *string {
 type C1APIAppV1AppEntitlementOwnersListResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The response message for listing app entitlement owners.
-	ListAppEntitlementOwnersResponse *shared.ListAppEntitlementOwnersResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The response message for listing app entitlement owners.
+	ListAppEntitlementOwnersResponse *shared.ListAppEntitlementOwnersResponse
 }
 
 func (o *C1APIAppV1AppEntitlementOwnersListResponse) GetContentType() string {
@@ -58,13 +58,6 @@ func (o *C1APIAppV1AppEntitlementOwnersListResponse) GetContentType() string {
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAppV1AppEntitlementOwnersListResponse) GetListAppEntitlementOwnersResponse() *shared.ListAppEntitlementOwnersResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ListAppEntitlementOwnersResponse
 }
 
 func (o *C1APIAppV1AppEntitlementOwnersListResponse) GetStatusCode() int {
@@ -79,4 +72,11 @@ func (o *C1APIAppV1AppEntitlementOwnersListResponse) GetRawResponse() *http.Resp
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppEntitlementOwnersListResponse) GetListAppEntitlementOwnersResponse() *shared.ListAppEntitlementOwnersResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ListAppEntitlementOwnersResponse
 }

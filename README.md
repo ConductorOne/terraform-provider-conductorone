@@ -1,33 +1,31 @@
-# ConductorOne Terraform Provider
+# terraform
 
-## Usage
+<div align="left">
+    <a href="https://speakeasyapi.dev/"><img src="https://custom-icon-badges.demolab.com/badge/-Built%20By%20Speakeasy-212015?style=for-the-badge&logoColor=FBE331&logo=speakeasy&labelColor=545454" /></a>
+</div>
 
-[See the docs for usage information](./docs)
-
-<!-- Start SDK Installation [installation] -->
-## SDK Installation
-
+<no value>
+<!-- Start SDK <no value> -->
 To install this provider, copy and paste this code into your Terraform configuration. Then, run `terraform init`.
 
 ```hcl
 terraform {
   required_providers {
-    conductorone = {
-      source  = "ConductorOne/conductorone"
-      version = "1.0.0"
+    terraform = {
+      source  = "speakeasy/terraform"
+      version = "0.0.1"
     }
   }
 }
 
-provider "conductorone" {
+provider "terraform" {
   # Configuration options
 }
 ```
-<!-- End SDK Installation [installation] -->
+<!-- End SDK <no value> -->
 
-<!-- Start SDK Example Usage [usage] -->
-## SDK Example Usage
-
+<no value>
+<!-- Start SDK <no value> -->
 ### Testing the provider locally
 
 Should you want to validate a change locally, the `--debug` flag allows you to execute the provider against a terraform instance locally.
@@ -44,17 +42,14 @@ cd examples/your-example
 TF_REATTACH_PROVIDERS=... terraform init
 TF_REATTACH_PROVIDERS=... terraform apply
 ```
-<!-- End SDK Example Usage [usage] -->
+<!-- End SDK <no value> -->
 
-<!-- Start Available Resources and Operations [operations] -->
-## Available Resources and Operations
+<no value>
+<!-- Start SDK <no value> -->
 
-
-<!-- End Available Resources and Operations [operations] -->
+<!-- End SDK <no value> -->
 
 <!-- Placeholder for Future Speakeasy SDK Sections -->
-
-
 
 Terraform allows you to use local provider builds by setting a `dev_overrides` block in a configuration file called `.terraformrc`. This block overrides all other configured installation methods.
 
@@ -64,7 +59,7 @@ Terraform searches for the `.terraformrc` file in your home directory and applie
 provider_installation {
 
   dev_overrides {
-      "registry.terraform.io/terraform/scaffolding" = "<PATH>"
+      "registry.terraform.io/speakeasy/terraform" = "<PATH>"
   }
 
   # For all other providers, install them directly from their origin provider
@@ -76,15 +71,11 @@ provider_installation {
 
 Your `<PATH>` may vary depending on how your Go environment variables are configured. Execute `go env GOBIN` to set it, then set the `<PATH>` to the value returned. If nothing is returned, set it to the default location, `$HOME/go/bin`.
 
-## Versions with breaking changes
+Note: To use the dev_overrides, please ensure you run `go build` in this folder. You must have a binary available for terraform to find.
 
-### [v0.1.0](https://github.com/ConductorOne/terraform-provider-conductorone/releases/tag/v0.1.0)
-- This version introduces a breaking change to the `app_entitlement_owners` resource. The `app_entitlement_owners` resource now requires a list of strings called `user_ids`, which is used to set the owners
-on the resource. The list of `user_ids` will replace any existing owners on the app entitlement with the new list of owners. 
-
-## Contributions
+### Contributions
 
 While we value open-source contributions to this SDK, this library is generated programmatically.
-Feel free to open a PR or a Github issue as a proof of concept and we'll do our best to include it in a future release !
+Feel free to open a PR or a Github issue as a proof of concept and we'll do our best to include it in a future release!
 
 ### SDK Created by [Speakeasy](https://docs.speakeasyapi.dev/docs/using-speakeasy/client-sdks)

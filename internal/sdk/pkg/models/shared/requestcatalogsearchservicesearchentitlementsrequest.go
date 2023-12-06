@@ -43,12 +43,12 @@ func (e *GrantedStatus) UnmarshalJSON(data []byte) error {
 
 // The RequestCatalogSearchServiceSearchEntitlementsRequest searches entitlements, but only ones that are available to you through the open catalogs.
 type RequestCatalogSearchServiceSearchEntitlementsRequest struct {
-	// The app entitlement expand mask allows the user to get additional information when getting responses containing app entitlement views.
-	AppEntitlementExpandMask *AppEntitlementExpandMask `json:"expandMask,omitempty"`
 	// Search entitlements that belong to this app name (exact match).
 	AppDisplayName *string `json:"appDisplayName,omitempty"`
 	// Search for entitlements with this alias (exact match).
 	EntitlementAlias *string `json:"entitlementAlias,omitempty"`
+	// The app entitlement expand mask allows the user to get additional information when getting responses containing app entitlement views.
+	AppEntitlementExpandMask *AppEntitlementExpandMask `json:"expandMask,omitempty"`
 	// Search entitlements with this granted status for your signed in user.
 	GrantedStatus *GrantedStatus `json:"grantedStatus,omitempty"`
 	// Include deleted entitlements
@@ -59,13 +59,6 @@ type RequestCatalogSearchServiceSearchEntitlementsRequest struct {
 	PageToken *string `json:"pageToken,omitempty"`
 	// Fuzzy search the display name of resource types.
 	Query *string `json:"query,omitempty"`
-}
-
-func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetAppEntitlementExpandMask() *AppEntitlementExpandMask {
-	if o == nil {
-		return nil
-	}
-	return o.AppEntitlementExpandMask
 }
 
 func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetAppDisplayName() *string {
@@ -80,6 +73,13 @@ func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetEntitlementAli
 		return nil
 	}
 	return o.EntitlementAlias
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetAppEntitlementExpandMask() *AppEntitlementExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.AppEntitlementExpandMask
 }
 
 func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetGrantedStatus() *GrantedStatus {

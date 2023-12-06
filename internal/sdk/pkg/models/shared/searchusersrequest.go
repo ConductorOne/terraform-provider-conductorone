@@ -42,13 +42,13 @@ func (e *UserStatuses) UnmarshalJSON(data []byte) error {
 
 // SearchUsersRequest - Search for users based on some filters.
 type SearchUsersRequest struct {
-	// The user expand mask is used to indicate which related objects should be expanded in the response.
-	//  The supported paths are 'role_ids', 'manager_ids', 'delegated_user_id', 'directory_ids', and '*'.
-	UserExpandMask *UserExpandMask `json:"expandMask,omitempty"`
 	// Search for users based on their email (exact match).
 	Email *string `json:"email,omitempty"`
 	// An array of users IDs to exclude from the results.
 	ExcludeIds []string `json:"excludeIds,omitempty"`
+	// The user expand mask is used to indicate which related objects should be expanded in the response.
+	//  The supported paths are 'role_ids', 'manager_ids', 'delegated_user_id', 'directory_ids', and '*'.
+	UserExpandMask *UserExpandMask `json:"expandMask,omitempty"`
 	// Deprecated. Use refs array instead.
 	Ids []string `json:"ids,omitempty"`
 	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
@@ -65,13 +65,6 @@ type SearchUsersRequest struct {
 	UserStatuses []UserStatuses `json:"userStatuses,omitempty"`
 }
 
-func (o *SearchUsersRequest) GetUserExpandMask() *UserExpandMask {
-	if o == nil {
-		return nil
-	}
-	return o.UserExpandMask
-}
-
 func (o *SearchUsersRequest) GetEmail() *string {
 	if o == nil {
 		return nil
@@ -84,6 +77,13 @@ func (o *SearchUsersRequest) GetExcludeIds() []string {
 		return nil
 	}
 	return o.ExcludeIds
+}
+
+func (o *SearchUsersRequest) GetUserExpandMask() *UserExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.UserExpandMask
 }
 
 func (o *SearchUsersRequest) GetIds() []string {

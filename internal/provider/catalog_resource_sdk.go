@@ -3,22 +3,12 @@
 package provider
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"time"
 )
 
 func (r *CatalogResourceModel) ToCreateSDKType() *shared.RequestCatalogManagementServiceCreateRequest {
-	var requestCatalogExpandMask *shared.RequestCatalogExpandMask
-	if r.RequestCatalogExpandMask != nil {
-		var paths []string = nil
-		for _, pathsItem := range r.RequestCatalogExpandMask.Paths {
-			paths = append(paths, pathsItem.ValueString())
-		}
-		requestCatalogExpandMask = &shared.RequestCatalogExpandMask{
-			Paths: paths,
-		}
-	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -30,6 +20,16 @@ func (r *CatalogResourceModel) ToCreateSDKType() *shared.RequestCatalogManagemen
 		*displayName = r.DisplayName.ValueString()
 	} else {
 		displayName = nil
+	}
+	var requestCatalogExpandMask *shared.RequestCatalogExpandMask
+	if r.RequestCatalogExpandMask != nil {
+		var paths []string = nil
+		for _, pathsItem := range r.RequestCatalogExpandMask.Paths {
+			paths = append(paths, pathsItem.ValueString())
+		}
+		requestCatalogExpandMask = &shared.RequestCatalogExpandMask{
+			Paths: paths,
+		}
 	}
 	published := new(bool)
 	if !r.Published.IsUnknown() && !r.Published.IsNull() {
@@ -44,9 +44,9 @@ func (r *CatalogResourceModel) ToCreateSDKType() *shared.RequestCatalogManagemen
 		visibleToEveryone = nil
 	}
 	out := shared.RequestCatalogManagementServiceCreateRequest{
-		RequestCatalogExpandMask: requestCatalogExpandMask,
 		Description:              description,
 		DisplayName:              displayName,
+		RequestCatalogExpandMask: requestCatalogExpandMask,
 		Published:                published,
 		VisibleToEveryone:        visibleToEveryone,
 	}
@@ -61,66 +61,11 @@ func (r *CatalogResourceModel) ToGetSDKType() *shared.RequestCatalogManagementSe
 func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalogInput {
 	var accessEntitlements []shared.AppEntitlementInput = nil
 	for _, accessEntitlementsItem := range r.AccessEntitlements {
-		var provisionPolicy *shared.ProvisionPolicy
-		if accessEntitlementsItem.ProvisionPolicy != nil {
-			var connectorProvision *shared.ConnectorProvision
-			if accessEntitlementsItem.ProvisionPolicy.ConnectorProvision != nil {
-				connectorProvision = &shared.ConnectorProvision{}
-			}
-			var delegatedProvision *shared.DelegatedProvision
-			if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision != nil {
-				appID := new(string)
-				if !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-					*appID = accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
-				} else {
-					appID = nil
-				}
-				entitlementID := new(string)
-				if !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
-					*entitlementID = accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueString()
-				} else {
-					entitlementID = nil
-				}
-				implicit := new(bool)
-				if !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit.IsUnknown() && !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit.IsNull() {
-					*implicit = accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit.ValueBool()
-				} else {
-					implicit = nil
-				}
-				delegatedProvision = &shared.DelegatedProvision{
-					AppID:         appID,
-					EntitlementID: entitlementID,
-					Implicit:      implicit,
-				}
-			}
-			var manualProvision *shared.ManualProvision
-			if accessEntitlementsItem.ProvisionPolicy.ManualProvision != nil {
-				instructions := new(string)
-				if !accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions.IsUnknown() && !accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions.IsNull() {
-					*instructions = accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions.ValueString()
-				} else {
-					instructions = nil
-				}
-				var userIds []string = nil
-				for _, userIdsItem := range accessEntitlementsItem.ProvisionPolicy.ManualProvision.UserIds {
-					userIds = append(userIds, userIdsItem.ValueString())
-				}
-				manualProvision = &shared.ManualProvision{
-					Instructions: instructions,
-					UserIds:      userIds,
-				}
-			}
-			provisionPolicy = &shared.ProvisionPolicy{
-				ConnectorProvision: connectorProvision,
-				DelegatedProvision: delegatedProvision,
-				ManualProvision:    manualProvision,
-			}
-		}
-		appId1 := new(string)
+		appID := new(string)
 		if !accessEntitlementsItem.AppID.IsUnknown() && !accessEntitlementsItem.AppID.IsNull() {
-			*appId1 = accessEntitlementsItem.AppID.ValueString()
+			*appID = accessEntitlementsItem.AppID.ValueString()
 		} else {
-			appId1 = nil
+			appID = nil
 		}
 		appResourceID := new(string)
 		if !accessEntitlementsItem.AppResourceID.IsUnknown() && !accessEntitlementsItem.AppResourceID.IsNull() {
@@ -184,6 +129,61 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalogInput {
 		} else {
 			grantPolicyID = nil
 		}
+		var provisionPolicy *shared.ProvisionPolicy
+		if accessEntitlementsItem.ProvisionPolicy != nil {
+			var connectorProvision *shared.ConnectorProvision
+			if accessEntitlementsItem.ProvisionPolicy.ConnectorProvision != nil {
+				connectorProvision = &shared.ConnectorProvision{}
+			}
+			var delegatedProvision *shared.DelegatedProvision
+			if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision != nil {
+				appId1 := new(string)
+				if !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
+					*appId1 = accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+				} else {
+					appId1 = nil
+				}
+				entitlementID := new(string)
+				if !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
+					*entitlementID = accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueString()
+				} else {
+					entitlementID = nil
+				}
+				implicit := new(bool)
+				if !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit.IsUnknown() && !accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit.IsNull() {
+					*implicit = accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit.ValueBool()
+				} else {
+					implicit = nil
+				}
+				delegatedProvision = &shared.DelegatedProvision{
+					AppID:         appId1,
+					EntitlementID: entitlementID,
+					Implicit:      implicit,
+				}
+			}
+			var manualProvision *shared.ManualProvision
+			if accessEntitlementsItem.ProvisionPolicy.ManualProvision != nil {
+				instructions := new(string)
+				if !accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions.IsUnknown() && !accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions.IsNull() {
+					*instructions = accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions.ValueString()
+				} else {
+					instructions = nil
+				}
+				var userIds []string = nil
+				for _, userIdsItem := range accessEntitlementsItem.ProvisionPolicy.ManualProvision.UserIds {
+					userIds = append(userIds, userIdsItem.ValueString())
+				}
+				manualProvision = &shared.ManualProvision{
+					Instructions: instructions,
+					UserIds:      userIds,
+				}
+			}
+			provisionPolicy = &shared.ProvisionPolicy{
+				ConnectorProvision: connectorProvision,
+				DelegatedProvision: delegatedProvision,
+				ManualProvision:    manualProvision,
+			}
+		}
 		revokePolicyID := new(string)
 		if !accessEntitlementsItem.RevokePolicyID.IsUnknown() && !accessEntitlementsItem.RevokePolicyID.IsNull() {
 			*revokePolicyID = accessEntitlementsItem.RevokePolicyID.ValueString()
@@ -209,8 +209,7 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalogInput {
 			userEditedMask = nil
 		}
 		accessEntitlements = append(accessEntitlements, shared.AppEntitlementInput{
-			ProvisionPolicy:             provisionPolicy,
-			AppID:                       appId1,
+			AppID:                       appID,
 			AppResourceID:               appResourceID,
 			AppResourceTypeID:           appResourceTypeID,
 			CertifyPolicyID:             certifyPolicyID,
@@ -222,6 +221,7 @@ func (r *CatalogResourceModel) ToUpdateSDKType() *shared.RequestCatalogInput {
 			EmergencyGrantEnabled:       emergencyGrantEnabled,
 			EmergencyGrantPolicyID:      emergencyGrantPolicyID,
 			GrantPolicyID:               grantPolicyID,
+			ProvisionPolicy:             provisionPolicy,
 			RevokePolicyID:              revokePolicyID,
 			RiskLevelValueID:            riskLevelValueID,
 			Slug:                        slug,

@@ -3,8 +3,8 @@
 package provider
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"time"
 )
 
@@ -14,50 +14,6 @@ func (r *CatalogDataSourceModel) RefreshFromGetResponse(resp *shared.RequestCata
 	}
 	for accessEntitlementsCount, accessEntitlementsItem := range resp.AccessEntitlements {
 		var accessEntitlements1 AppEntitlement
-		if accessEntitlementsItem.ProvisionPolicy == nil {
-			accessEntitlements1.ProvisionPolicy = nil
-		} else {
-			accessEntitlements1.ProvisionPolicy = &ProvisionPolicy{}
-			if accessEntitlementsItem.ProvisionPolicy.ConnectorProvision == nil {
-				accessEntitlements1.ProvisionPolicy.ConnectorProvision = nil
-			} else {
-				accessEntitlements1.ProvisionPolicy.ConnectorProvision = &DurationUnset{}
-			}
-			if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision == nil {
-				accessEntitlements1.ProvisionPolicy.DelegatedProvision = nil
-			} else {
-				accessEntitlements1.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
-				if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID != nil {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.AppID = types.StringValue(*accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID)
-				} else {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.AppID = types.StringNull()
-				}
-				if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID != nil {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringValue(*accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID)
-				} else {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringNull()
-				}
-				if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit != nil {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolValue(*accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit)
-				} else {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolNull()
-				}
-			}
-			if accessEntitlementsItem.ProvisionPolicy.ManualProvision == nil {
-				accessEntitlements1.ProvisionPolicy.ManualProvision = nil
-			} else {
-				accessEntitlements1.ProvisionPolicy.ManualProvision = &ManualProvision{}
-				if accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions != nil {
-					accessEntitlements1.ProvisionPolicy.ManualProvision.Instructions = types.StringValue(*accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions)
-				} else {
-					accessEntitlements1.ProvisionPolicy.ManualProvision.Instructions = types.StringNull()
-				}
-				accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds = nil
-				for _, v := range accessEntitlementsItem.ProvisionPolicy.ManualProvision.UserIds {
-					accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds = append(accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
-				}
-			}
-		}
 		if accessEntitlementsItem.Alias != nil {
 			accessEntitlements1.Alias = types.StringValue(*accessEntitlementsItem.Alias)
 		} else {
@@ -142,6 +98,50 @@ func (r *CatalogDataSourceModel) RefreshFromGetResponse(resp *shared.RequestCata
 		} else {
 			accessEntitlements1.ID = types.StringNull()
 		}
+		if accessEntitlementsItem.ProvisionPolicy == nil {
+			accessEntitlements1.ProvisionPolicy = nil
+		} else {
+			accessEntitlements1.ProvisionPolicy = &ProvisionPolicy{}
+			if accessEntitlementsItem.ProvisionPolicy.ConnectorProvision == nil {
+				accessEntitlements1.ProvisionPolicy.ConnectorProvision = nil
+			} else {
+				accessEntitlements1.ProvisionPolicy.ConnectorProvision = &DurationUnset{}
+			}
+			if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision == nil {
+				accessEntitlements1.ProvisionPolicy.DelegatedProvision = nil
+			} else {
+				accessEntitlements1.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
+				if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID != nil {
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision.AppID = types.StringValue(*accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID)
+				} else {
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision.AppID = types.StringNull()
+				}
+				if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID != nil {
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringValue(*accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID)
+				} else {
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringNull()
+				}
+				if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit != nil {
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolValue(*accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit)
+				} else {
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolNull()
+				}
+			}
+			if accessEntitlementsItem.ProvisionPolicy.ManualProvision == nil {
+				accessEntitlements1.ProvisionPolicy.ManualProvision = nil
+			} else {
+				accessEntitlements1.ProvisionPolicy.ManualProvision = &ManualProvision{}
+				if accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions != nil {
+					accessEntitlements1.ProvisionPolicy.ManualProvision.Instructions = types.StringValue(*accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions)
+				} else {
+					accessEntitlements1.ProvisionPolicy.ManualProvision.Instructions = types.StringNull()
+				}
+				accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds = nil
+				for _, v := range accessEntitlementsItem.ProvisionPolicy.ManualProvision.UserIds {
+					accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds = append(accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
+				}
+			}
+		}
 		if accessEntitlementsItem.RevokePolicyID != nil {
 			accessEntitlements1.RevokePolicyID = types.StringValue(*accessEntitlementsItem.RevokePolicyID)
 		} else {
@@ -175,7 +175,6 @@ func (r *CatalogDataSourceModel) RefreshFromGetResponse(resp *shared.RequestCata
 		if accessEntitlementsCount+1 > len(r.AccessEntitlements) {
 			r.AccessEntitlements = append(r.AccessEntitlements, accessEntitlements1)
 		} else {
-			r.AccessEntitlements[accessEntitlementsCount].ProvisionPolicy = accessEntitlements1.ProvisionPolicy
 			r.AccessEntitlements[accessEntitlementsCount].Alias = accessEntitlements1.Alias
 			r.AccessEntitlements[accessEntitlementsCount].AppID = accessEntitlements1.AppID
 			r.AccessEntitlements[accessEntitlementsCount].AppResourceID = accessEntitlements1.AppResourceID
@@ -193,6 +192,7 @@ func (r *CatalogDataSourceModel) RefreshFromGetResponse(resp *shared.RequestCata
 			r.AccessEntitlements[accessEntitlementsCount].GrantCount = accessEntitlements1.GrantCount
 			r.AccessEntitlements[accessEntitlementsCount].GrantPolicyID = accessEntitlements1.GrantPolicyID
 			r.AccessEntitlements[accessEntitlementsCount].ID = accessEntitlements1.ID
+			r.AccessEntitlements[accessEntitlementsCount].ProvisionPolicy = accessEntitlements1.ProvisionPolicy
 			r.AccessEntitlements[accessEntitlementsCount].RevokePolicyID = accessEntitlements1.RevokePolicyID
 			r.AccessEntitlements[accessEntitlementsCount].RiskLevelValueID = accessEntitlements1.RiskLevelValueID
 			r.AccessEntitlements[accessEntitlementsCount].Slug = accessEntitlements1.Slug

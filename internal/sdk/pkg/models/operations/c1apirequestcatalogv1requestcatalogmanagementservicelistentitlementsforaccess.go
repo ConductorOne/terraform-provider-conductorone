@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -37,12 +37,12 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsFor
 type C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsForAccessResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The RequestCatalogManagementServiceListEntitlementsForAccessResponse message contains a list of results and a nextPageToken if applicable.
-	RequestCatalogManagementServiceListEntitlementsForAccessResponse *shared.RequestCatalogManagementServiceListEntitlementsForAccessResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The RequestCatalogManagementServiceListEntitlementsForAccessResponse message contains a list of results and a nextPageToken if applicable.
+	RequestCatalogManagementServiceListEntitlementsForAccessResponse *shared.RequestCatalogManagementServiceListEntitlementsForAccessResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetContentType() string {
@@ -50,13 +50,6 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsFor
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetRequestCatalogManagementServiceListEntitlementsForAccessResponse() *shared.RequestCatalogManagementServiceListEntitlementsForAccessResponse {
-	if o == nil {
-		return nil
-	}
-	return o.RequestCatalogManagementServiceListEntitlementsForAccessResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetStatusCode() int {
@@ -71,4 +64,11 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsFor
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetRequestCatalogManagementServiceListEntitlementsForAccessResponse() *shared.RequestCatalogManagementServiceListEntitlementsForAccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceListEntitlementsForAccessResponse
 }

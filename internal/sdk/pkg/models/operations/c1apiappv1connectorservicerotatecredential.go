@@ -3,21 +3,14 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1ConnectorServiceRotateCredentialRequest struct {
-	ConnectorServiceRotateCredentialRequest *shared.ConnectorServiceRotateCredentialRequest `request:"mediaType=application/json"`
 	AppID                                   string                                          `pathParam:"style=simple,explode=false,name=app_id"`
 	ConnectorID                             string                                          `pathParam:"style=simple,explode=false,name=connector_id"`
-}
-
-func (o *C1APIAppV1ConnectorServiceRotateCredentialRequest) GetConnectorServiceRotateCredentialRequest() *shared.ConnectorServiceRotateCredentialRequest {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceRotateCredentialRequest
+	ConnectorServiceRotateCredentialRequest *shared.ConnectorServiceRotateCredentialRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1ConnectorServiceRotateCredentialRequest) GetAppID() string {
@@ -34,22 +27,22 @@ func (o *C1APIAppV1ConnectorServiceRotateCredentialRequest) GetConnectorID() str
 	return o.ConnectorID
 }
 
+func (o *C1APIAppV1ConnectorServiceRotateCredentialRequest) GetConnectorServiceRotateCredentialRequest() *shared.ConnectorServiceRotateCredentialRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceRotateCredentialRequest
+}
+
 type C1APIAppV1ConnectorServiceRotateCredentialResponse struct {
-	// ConnectorServiceRotateCredentialResponse is the response returned by the rotate method.
-	ConnectorServiceRotateCredentialResponse *shared.ConnectorServiceRotateCredentialResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1ConnectorServiceRotateCredentialResponse) GetConnectorServiceRotateCredentialResponse() *shared.ConnectorServiceRotateCredentialResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceRotateCredentialResponse
+	// ConnectorServiceRotateCredentialResponse is the response returned by the rotate method.
+	ConnectorServiceRotateCredentialResponse *shared.ConnectorServiceRotateCredentialResponse
 }
 
 func (o *C1APIAppV1ConnectorServiceRotateCredentialResponse) GetContentType() string {
@@ -71,4 +64,11 @@ func (o *C1APIAppV1ConnectorServiceRotateCredentialResponse) GetRawResponse() *h
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceRotateCredentialResponse) GetConnectorServiceRotateCredentialResponse() *shared.ConnectorServiceRotateCredentialResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceRotateCredentialResponse
 }

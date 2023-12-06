@@ -4,8 +4,6 @@ package shared
 
 // AppEntitlementSearchServiceSearchRequest - Search app entitlements by a variety of filters.
 type AppEntitlementSearchServiceSearchRequest struct {
-	// The app entitlement expand mask allows the user to get additional information when getting responses containing app entitlement views.
-	AppEntitlementExpandMask *AppEntitlementExpandMask `json:"expandMask,omitempty"`
 	// Search for app entitlements that are being reviewed as part of this access review campaign.
 	AccessReviewID *string `json:"accessReviewId,omitempty"`
 	// Search for app entitlements that have this alias (exact match).
@@ -20,6 +18,8 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	ExcludeAppIds []string `json:"excludeAppIds,omitempty"`
 	// Exclude app entitlements from the results that these app users have granted.
 	ExcludeAppUserIds []string `json:"excludeAppUserIds,omitempty"`
+	// The app entitlement expand mask allows the user to get additional information when getting responses containing app entitlement views.
+	AppEntitlementExpandMask *AppEntitlementExpandMask `json:"expandMask,omitempty"`
 	// Include deleted app entitlements, this includes app entitlements that have a deleted parent object (app, app resource, app resource type)
 	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
 	// Restrict results to only those who have expiring app entitlement user bindings.
@@ -34,13 +34,6 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
 	// Search for app entitlements with these risk levels.
 	RiskLevelIds []string `json:"riskLevelIds,omitempty"`
-}
-
-func (o *AppEntitlementSearchServiceSearchRequest) GetAppEntitlementExpandMask() *AppEntitlementExpandMask {
-	if o == nil {
-		return nil
-	}
-	return o.AppEntitlementExpandMask
 }
 
 func (o *AppEntitlementSearchServiceSearchRequest) GetAccessReviewID() *string {
@@ -90,6 +83,13 @@ func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeAppUserIds() []stri
 		return nil
 	}
 	return o.ExcludeAppUserIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetAppEntitlementExpandMask() *AppEntitlementExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.AppEntitlementExpandMask
 }
 
 func (o *AppEntitlementSearchServiceSearchRequest) GetIncludeDeleted() *bool {

@@ -3,20 +3,13 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APITaskV1TaskActionsServiceDenyRequest struct {
-	TaskActionsServiceDenyRequest *shared.TaskActionsServiceDenyRequest `request:"mediaType=application/json"`
 	TaskID                        string                                `pathParam:"style=simple,explode=false,name=task_id"`
-}
-
-func (o *C1APITaskV1TaskActionsServiceDenyRequest) GetTaskActionsServiceDenyRequest() *shared.TaskActionsServiceDenyRequest {
-	if o == nil {
-		return nil
-	}
-	return o.TaskActionsServiceDenyRequest
+	TaskActionsServiceDenyRequest *shared.TaskActionsServiceDenyRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APITaskV1TaskActionsServiceDenyRequest) GetTaskID() string {
@@ -24,6 +17,13 @@ func (o *C1APITaskV1TaskActionsServiceDenyRequest) GetTaskID() string {
 		return ""
 	}
 	return o.TaskID
+}
+
+func (o *C1APITaskV1TaskActionsServiceDenyRequest) GetTaskActionsServiceDenyRequest() *shared.TaskActionsServiceDenyRequest {
+	if o == nil {
+		return nil
+	}
+	return o.TaskActionsServiceDenyRequest
 }
 
 type C1APITaskV1TaskActionsServiceDenyResponse struct {

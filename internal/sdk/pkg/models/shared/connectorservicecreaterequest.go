@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 )
 
 // ConnectorServiceCreateRequestConfig - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
@@ -40,23 +40,16 @@ func (o *ConnectorServiceCreateRequestConfig) GetAdditionalProperties() interfac
 
 // The ConnectorServiceCreateRequest message.
 type ConnectorServiceCreateRequest struct {
-	// The ConnectorExpandMask is used to expand related objects on a connector.
-	ConnectorExpandMask *ConnectorExpandMask `json:"expandMask,omitempty"`
 	// The catalogId field.
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 	Config *ConnectorServiceCreateRequestConfig `json:"config,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
+	// The ConnectorExpandMask is used to expand related objects on a connector.
+	ConnectorExpandMask *ConnectorExpandMask `json:"expandMask,omitempty"`
 	// The userIds field.
 	UserIds []string `json:"userIds,omitempty"`
-}
-
-func (o *ConnectorServiceCreateRequest) GetConnectorExpandMask() *ConnectorExpandMask {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorExpandMask
 }
 
 func (o *ConnectorServiceCreateRequest) GetCatalogID() *string {
@@ -78,6 +71,13 @@ func (o *ConnectorServiceCreateRequest) GetDescription() *string {
 		return nil
 	}
 	return o.Description
+}
+
+func (o *ConnectorServiceCreateRequest) GetConnectorExpandMask() *ConnectorExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorExpandMask
 }
 
 func (o *ConnectorServiceCreateRequest) GetUserIds() []string {

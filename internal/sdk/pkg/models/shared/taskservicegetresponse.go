@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 )
 
 // TaskServiceGetResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
@@ -40,17 +40,10 @@ func (o *TaskServiceGetResponseExpanded) GetAdditionalProperties() interface{} {
 
 // The TaskServiceGetResponse returns a task view which has a task including JSONPATHs to the expanded items in the expanded array.
 type TaskServiceGetResponse struct {
-	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
-	TaskView *TaskView `json:"taskView,omitempty"`
 	// List of serialized related objects.
 	Expanded []TaskServiceGetResponseExpanded `json:"expanded,omitempty"`
-}
-
-func (o *TaskServiceGetResponse) GetTaskView() *TaskView {
-	if o == nil {
-		return nil
-	}
-	return o.TaskView
+	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
+	TaskView *TaskView `json:"taskView,omitempty"`
 }
 
 func (o *TaskServiceGetResponse) GetExpanded() []TaskServiceGetResponseExpanded {
@@ -58,4 +51,11 @@ func (o *TaskServiceGetResponse) GetExpanded() []TaskServiceGetResponseExpanded 
 		return nil
 	}
 	return o.Expanded
+}
+
+func (o *TaskServiceGetResponse) GetTaskView() *TaskView {
+	if o == nil {
+		return nil
+	}
+	return o.TaskView
 }

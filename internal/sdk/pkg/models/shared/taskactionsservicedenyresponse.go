@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 )
 
 // TaskActionsServiceDenyResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
@@ -40,19 +40,12 @@ func (o *TaskActionsServiceDenyResponseExpanded) GetAdditionalProperties() inter
 
 // The TaskActionsServiceDenyResponse returns a task view with paths indicating the location of expanded items in the array.
 type TaskActionsServiceDenyResponse struct {
-	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
-	TaskView *TaskView `json:"taskView,omitempty"`
 	// List of serialized related objects.
 	Expanded []TaskActionsServiceDenyResponseExpanded `json:"expanded,omitempty"`
+	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
+	TaskView *TaskView `json:"taskView,omitempty"`
 	// The ID of the ticket (task) deny action created by this request.
 	TicketActionID *string `json:"ticketActionId,omitempty"`
-}
-
-func (o *TaskActionsServiceDenyResponse) GetTaskView() *TaskView {
-	if o == nil {
-		return nil
-	}
-	return o.TaskView
 }
 
 func (o *TaskActionsServiceDenyResponse) GetExpanded() []TaskActionsServiceDenyResponseExpanded {
@@ -60,6 +53,13 @@ func (o *TaskActionsServiceDenyResponse) GetExpanded() []TaskActionsServiceDenyR
 		return nil
 	}
 	return o.Expanded
+}
+
+func (o *TaskActionsServiceDenyResponse) GetTaskView() *TaskView {
+	if o == nil {
+		return nil
+	}
+	return o.TaskView
 }
 
 func (o *TaskActionsServiceDenyResponse) GetTicketActionID() *string {

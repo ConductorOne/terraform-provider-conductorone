@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -21,12 +21,12 @@ func (o *C1APIPolicyV1PoliciesGetRequest) GetID() string {
 type C1APIPolicyV1PoliciesGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The GetPolicyResponse message contains the policy object.
-	GetPolicyResponse *shared.GetPolicyResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The GetPolicyResponse message contains the policy object.
+	GetPolicyResponse *shared.GetPolicyResponse
 }
 
 func (o *C1APIPolicyV1PoliciesGetResponse) GetContentType() string {
@@ -34,13 +34,6 @@ func (o *C1APIPolicyV1PoliciesGetResponse) GetContentType() string {
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIPolicyV1PoliciesGetResponse) GetGetPolicyResponse() *shared.GetPolicyResponse {
-	if o == nil {
-		return nil
-	}
-	return o.GetPolicyResponse
 }
 
 func (o *C1APIPolicyV1PoliciesGetResponse) GetStatusCode() int {
@@ -55,4 +48,11 @@ func (o *C1APIPolicyV1PoliciesGetResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIPolicyV1PoliciesGetResponse) GetGetPolicyResponse() *shared.GetPolicyResponse {
+	if o == nil {
+		return nil
+	}
+	return o.GetPolicyResponse
 }

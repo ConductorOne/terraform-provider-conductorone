@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 	"time"
 )
 
@@ -41,10 +41,6 @@ func (o *Config) GetAdditionalProperties() interface{} {
 
 // A Connector is used to sync objects into Apps
 type Connector struct {
-	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
-	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
-	// OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
-	OAuth2AuthorizedAs *OAuth2AuthorizedAs `json:"oauthAuthorizedAs,omitempty"`
 	// The id of the app the connector is associated with.
 	AppID *string `json:"appId,omitempty"`
 	// The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
@@ -60,8 +56,12 @@ type Connector struct {
 	// The downloadUrl for a spreadsheet if the connector was created from uploading a file.
 	DownloadURL *string `json:"downloadUrl,omitempty"`
 	// The id of the connector.
-	ID        *string    `json:"id,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	ID *string `json:"id,omitempty"`
+	// OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
+	OAuth2AuthorizedAs *OAuth2AuthorizedAs `json:"oauthAuthorizedAs,omitempty"`
+	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
+	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
+	UpdatedAt       *time.Time       `json:"updatedAt,omitempty"`
 	// The userIds field is used to define the integration owners of the connector.
 	UserIds []string `json:"userIds,omitempty"`
 }
@@ -75,20 +75,6 @@ func (c *Connector) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *Connector) GetConnectorStatus() *ConnectorStatus {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorStatus
-}
-
-func (o *Connector) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAs {
-	if o == nil {
-		return nil
-	}
-	return o.OAuth2AuthorizedAs
 }
 
 func (o *Connector) GetAppID() *string {
@@ -154,6 +140,20 @@ func (o *Connector) GetID() *string {
 	return o.ID
 }
 
+func (o *Connector) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAs {
+	if o == nil {
+		return nil
+	}
+	return o.OAuth2AuthorizedAs
+}
+
+func (o *Connector) GetConnectorStatus() *ConnectorStatus {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorStatus
+}
+
 func (o *Connector) GetUpdatedAt() *time.Time {
 	if o == nil {
 		return nil
@@ -170,10 +170,6 @@ func (o *Connector) GetUserIds() []string {
 
 // ConnectorInput - A Connector is used to sync objects into Apps
 type ConnectorInput struct {
-	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
-	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
-	// OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
-	OAuth2AuthorizedAs *OAuth2AuthorizedAsInput `json:"oauthAuthorizedAs,omitempty"`
 	// The id of the app the connector is associated with.
 	AppID *string `json:"appId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
@@ -184,22 +180,12 @@ type ConnectorInput struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// The id of the connector.
 	ID *string `json:"id,omitempty"`
+	// OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
+	OAuth2AuthorizedAs *OAuth2AuthorizedAsInput `json:"oauthAuthorizedAs,omitempty"`
+	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
+	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
 	// The userIds field is used to define the integration owners of the connector.
 	UserIds []string `json:"userIds,omitempty"`
-}
-
-func (o *ConnectorInput) GetConnectorStatus() *ConnectorStatus {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorStatus
-}
-
-func (o *ConnectorInput) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAsInput {
-	if o == nil {
-		return nil
-	}
-	return o.OAuth2AuthorizedAs
 }
 
 func (o *ConnectorInput) GetAppID() *string {
@@ -235,6 +221,20 @@ func (o *ConnectorInput) GetID() *string {
 		return nil
 	}
 	return o.ID
+}
+
+func (o *ConnectorInput) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAsInput {
+	if o == nil {
+		return nil
+	}
+	return o.OAuth2AuthorizedAs
+}
+
+func (o *ConnectorInput) GetConnectorStatus() *ConnectorStatus {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorStatus
 }
 
 func (o *ConnectorInput) GetUserIds() []string {

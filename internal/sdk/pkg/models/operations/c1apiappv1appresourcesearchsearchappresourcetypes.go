@@ -3,19 +3,19 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The SearchAppResourceTypesResponse message contains a list of results and a nextPageToken if applicable.
-	SearchAppResourceTypesResponse *shared.SearchAppResourceTypesResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The SearchAppResourceTypesResponse message contains a list of results and a nextPageToken if applicable.
+	SearchAppResourceTypesResponse *shared.SearchAppResourceTypesResponse
 }
 
 func (o *C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse) GetContentType() string {
@@ -23,13 +23,6 @@ func (o *C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse) GetContentTy
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse) GetSearchAppResourceTypesResponse() *shared.SearchAppResourceTypesResponse {
-	if o == nil {
-		return nil
-	}
-	return o.SearchAppResourceTypesResponse
 }
 
 func (o *C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse) GetStatusCode() int {
@@ -44,4 +37,11 @@ func (o *C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse) GetRawRespon
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse) GetSearchAppResourceTypesResponse() *shared.SearchAppResourceTypesResponse {
+	if o == nil {
+		return nil
+	}
+	return o.SearchAppResourceTypesResponse
 }

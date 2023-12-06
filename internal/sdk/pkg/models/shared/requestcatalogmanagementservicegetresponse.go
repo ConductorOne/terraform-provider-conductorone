@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 )
 
 // RequestCatalogManagementServiceGetResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
@@ -40,17 +40,10 @@ func (o *RequestCatalogManagementServiceGetResponseExpanded) GetAdditionalProper
 
 // RequestCatalogManagementServiceGetResponse - The request catalog management service get response returns a request catalog view with the expanded items in the expanded array indicated by the expand mask in the request.
 type RequestCatalogManagementServiceGetResponse struct {
-	// The request catalog view contains the serialized request catalog and paths to objects referenced by the request catalog.
-	RequestCatalogView *RequestCatalogView `json:"requestCatalogView,omitempty"`
 	// List of serialized related objects.
 	Expanded []RequestCatalogManagementServiceGetResponseExpanded `json:"expanded,omitempty"`
-}
-
-func (o *RequestCatalogManagementServiceGetResponse) GetRequestCatalogView() *RequestCatalogView {
-	if o == nil {
-		return nil
-	}
-	return o.RequestCatalogView
+	// The request catalog view contains the serialized request catalog and paths to objects referenced by the request catalog.
+	RequestCatalogView *RequestCatalogView `json:"requestCatalogView,omitempty"`
 }
 
 func (o *RequestCatalogManagementServiceGetResponse) GetExpanded() []RequestCatalogManagementServiceGetResponseExpanded {
@@ -58,4 +51,11 @@ func (o *RequestCatalogManagementServiceGetResponse) GetExpanded() []RequestCata
 		return nil
 	}
 	return o.Expanded
+}
+
+func (o *RequestCatalogManagementServiceGetResponse) GetRequestCatalogView() *RequestCatalogView {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogView
 }

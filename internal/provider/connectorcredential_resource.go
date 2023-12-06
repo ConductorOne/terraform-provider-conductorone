@@ -5,10 +5,9 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
 
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
@@ -17,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/speakeasy/terraform-provider-terraform/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -29,7 +29,7 @@ func NewConnectorCredentialResource() resource.Resource {
 
 // ConnectorCredentialResource defines the resource implementation.
 type ConnectorCredentialResource struct {
-	client *sdk.ConductoroneSDKTerraform
+	client *sdk.SDK
 }
 
 // ConnectorCredentialResourceModel describes the resource data model.
@@ -137,12 +137,12 @@ func (r *ConnectorCredentialResource) Configure(ctx context.Context, req resourc
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
+	client, ok := req.ProviderData.(*sdk.SDK)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -169,13 +169,13 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	connectorServiceRotateCredentialRequest := data.ToCreateSDKType()
 	appID := data.AppID.ValueString()
 	connectorID := data.ConnectorID.ValueString()
+	connectorServiceRotateCredentialRequest := data.ToCreateSDKType()
 	request := operations.C1APIAppV1ConnectorServiceRotateCredentialRequest{
-		ConnectorServiceRotateCredentialRequest: connectorServiceRotateCredentialRequest,
 		AppID:                                   appID,
 		ConnectorID:                             connectorID,
+		ConnectorServiceRotateCredentialRequest: connectorServiceRotateCredentialRequest,
 	}
 	res, err := r.client.Connector.RotateCredential(ctx, request)
 	if err != nil {
@@ -286,15 +286,15 @@ func (r *ConnectorCredentialResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	connectorServiceRevokeCredentialRequest := data.ToDeleteSDKType()
 	appID := data.AppID.ValueString()
 	connectorID := data.ConnectorID.ValueString()
 	id := data.ID.ValueString()
+	connectorServiceRevokeCredentialRequest := data.ToDeleteSDKType()
 	request := operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest{
-		ConnectorServiceRevokeCredentialRequest: connectorServiceRevokeCredentialRequest,
 		AppID:                                   appID,
 		ConnectorID:                             connectorID,
 		ID:                                      id,
+		ConnectorServiceRevokeCredentialRequest: connectorServiceRevokeCredentialRequest,
 	}
 	res, err := r.client.Connector.RevokeCredential(ctx, request)
 	if err != nil {

@@ -3,20 +3,13 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest struct {
-	RequestCatalogManagementServiceDeleteRequest *shared.RequestCatalogManagementServiceDeleteRequest `request:"mediaType=application/json"`
 	ID                                           string                                               `pathParam:"style=simple,explode=false,name=id"`
-}
-
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest) GetRequestCatalogManagementServiceDeleteRequest() *shared.RequestCatalogManagementServiceDeleteRequest {
-	if o == nil {
-		return nil
-	}
-	return o.RequestCatalogManagementServiceDeleteRequest
+	RequestCatalogManagementServiceDeleteRequest *shared.RequestCatalogManagementServiceDeleteRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest) GetID() string {
@@ -26,15 +19,22 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest) GetI
 	return o.ID
 }
 
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest) GetRequestCatalogManagementServiceDeleteRequest() *shared.RequestCatalogManagementServiceDeleteRequest {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceDeleteRequest
+}
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// Empty response with a status code indicating success.
-	RequestCatalogManagementServiceDeleteResponse *shared.RequestCatalogManagementServiceDeleteResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Empty response with a status code indicating success.
+	RequestCatalogManagementServiceDeleteResponse *shared.RequestCatalogManagementServiceDeleteResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteResponse) GetContentType() string {
@@ -42,13 +42,6 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteResponse) Get
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteResponse) GetRequestCatalogManagementServiceDeleteResponse() *shared.RequestCatalogManagementServiceDeleteResponse {
-	if o == nil {
-		return nil
-	}
-	return o.RequestCatalogManagementServiceDeleteResponse
 }
 
 func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteResponse) GetStatusCode() int {
@@ -63,4 +56,11 @@ func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteResponse) Get
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteResponse) GetRequestCatalogManagementServiceDeleteResponse() *shared.RequestCatalogManagementServiceDeleteResponse {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceDeleteResponse
 }

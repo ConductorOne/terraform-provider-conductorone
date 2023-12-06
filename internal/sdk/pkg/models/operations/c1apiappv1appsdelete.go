@@ -3,20 +3,13 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1AppsDeleteRequest struct {
-	DeleteAppRequest *shared.DeleteAppRequest `request:"mediaType=application/json"`
 	ID               string                   `pathParam:"style=simple,explode=false,name=id"`
-}
-
-func (o *C1APIAppV1AppsDeleteRequest) GetDeleteAppRequest() *shared.DeleteAppRequest {
-	if o == nil {
-		return nil
-	}
-	return o.DeleteAppRequest
+	DeleteAppRequest *shared.DeleteAppRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1AppsDeleteRequest) GetID() string {
@@ -26,15 +19,22 @@ func (o *C1APIAppV1AppsDeleteRequest) GetID() string {
 	return o.ID
 }
 
+func (o *C1APIAppV1AppsDeleteRequest) GetDeleteAppRequest() *shared.DeleteAppRequest {
+	if o == nil {
+		return nil
+	}
+	return o.DeleteAppRequest
+}
+
 type C1APIAppV1AppsDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// Empty response body. Status code indicates success.
-	DeleteAppResponse *shared.DeleteAppResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Empty response body. Status code indicates success.
+	DeleteAppResponse *shared.DeleteAppResponse
 }
 
 func (o *C1APIAppV1AppsDeleteResponse) GetContentType() string {
@@ -42,13 +42,6 @@ func (o *C1APIAppV1AppsDeleteResponse) GetContentType() string {
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAppV1AppsDeleteResponse) GetDeleteAppResponse() *shared.DeleteAppResponse {
-	if o == nil {
-		return nil
-	}
-	return o.DeleteAppResponse
 }
 
 func (o *C1APIAppV1AppsDeleteResponse) GetStatusCode() int {
@@ -63,4 +56,11 @@ func (o *C1APIAppV1AppsDeleteResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppsDeleteResponse) GetDeleteAppResponse() *shared.DeleteAppResponse {
+	if o == nil {
+		return nil
+	}
+	return o.DeleteAppResponse
 }

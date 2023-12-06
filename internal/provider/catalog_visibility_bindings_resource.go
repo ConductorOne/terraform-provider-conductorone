@@ -5,8 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -27,7 +27,7 @@ func NewCatalogVisibilityBindingsResource() resource.Resource {
 
 // CatalogVisibilityBindingsResource defines the resource implementation.
 type CatalogVisibilityBindingsResource struct {
-	client *sdk.ConductoroneSDKTerraform
+	client *sdk.SDK
 }
 
 // CatalogVisibilityBindingsResourceModel describes the resource data model.
@@ -86,12 +86,12 @@ func (r *CatalogVisibilityBindingsResource) Configure(ctx context.Context, req r
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
+	client, ok := req.ProviderData.(*sdk.SDK)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -118,11 +118,11 @@ func (r *CatalogVisibilityBindingsResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	requestCatalogManagementServiceAddAccessEntitlementsRequest := data.ToCreateSDKType()
 	catalogID := data.CatalogID.ValueString()
+	requestCatalogManagementServiceAddAccessEntitlementsRequest := data.ToCreateSDKType()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest{
-		RequestCatalogManagementServiceAddAccessEntitlementsRequest: requestCatalogManagementServiceAddAccessEntitlementsRequest,
 		CatalogID: catalogID,
+		RequestCatalogManagementServiceAddAccessEntitlementsRequest: requestCatalogManagementServiceAddAccessEntitlementsRequest,
 	}
 	res, err := r.client.RequestCatalogManagement.AddAccessEntitlements(ctx, request)
 	if err != nil {
@@ -205,11 +205,11 @@ func (r *CatalogVisibilityBindingsResource) Delete(ctx context.Context, req reso
 		return
 	}
 
-	requestCatalogManagementServiceRemoveAccessEntitlementsRequest := data.ToDeleteSDKType()
 	catalogID := data.CatalogID.ValueString()
+	requestCatalogManagementServiceRemoveAccessEntitlementsRequest := data.ToDeleteSDKType()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest{
-		RequestCatalogManagementServiceRemoveAccessEntitlementsRequest: requestCatalogManagementServiceRemoveAccessEntitlementsRequest,
 		CatalogID: catalogID,
+		RequestCatalogManagementServiceRemoveAccessEntitlementsRequest: requestCatalogManagementServiceRemoveAccessEntitlementsRequest,
 	}
 	res, err := r.client.RequestCatalogManagement.RemoveAccessEntitlements(ctx, request)
 	if err != nil {

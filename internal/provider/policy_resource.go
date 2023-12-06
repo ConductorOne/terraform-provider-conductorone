@@ -5,11 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
 
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -17,6 +14,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -29,7 +29,7 @@ func NewPolicyResource() resource.Resource {
 
 // PolicyResource defines the resource implementation.
 type PolicyResource struct {
-	client *sdk.ConductoroneSDKTerraform
+	client *sdk.SDK
 }
 
 // PolicyResourceModel describes the resource data model.
@@ -468,12 +468,12 @@ func (r *PolicyResource) Configure(ctx context.Context, req resource.ConfigureRe
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
+	client, ok := req.ProviderData.(*sdk.SDK)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -582,15 +582,15 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
+	id := data.ID.ValueString()
 	var updatePolicyRequest *shared.UpdatePolicyRequest
 	policy := data.ToUpdateSDKType()
 	updatePolicyRequest = &shared.UpdatePolicyRequest{
 		Policy: policy,
 	}
-	id := data.ID.ValueString()
 	request := operations.C1APIPolicyV1PoliciesUpdateRequest{
-		UpdatePolicyRequest: updatePolicyRequest,
 		ID:                  id,
+		UpdatePolicyRequest: updatePolicyRequest,
 	}
 	res, err := r.client.Policies.Update(ctx, request)
 	if err != nil {
@@ -636,11 +636,11 @@ func (r *PolicyResource) Delete(ctx context.Context, req resource.DeleteRequest,
 		return
 	}
 
-	deletePolicyRequest := data.ToDeleteSDKType()
 	id := data.ID.ValueString()
+	deletePolicyRequest := data.ToDeleteSDKType()
 	request := operations.C1APIPolicyV1PoliciesDeleteRequest{
-		DeletePolicyRequest: deletePolicyRequest,
 		ID:                  id,
+		DeletePolicyRequest: deletePolicyRequest,
 	}
 	res, err := r.client.Policies.Delete(ctx, request)
 	if err != nil {

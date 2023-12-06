@@ -5,11 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
 
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -18,6 +15,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -30,7 +30,7 @@ func NewAppResource() resource.Resource {
 
 // AppResource defines the resource implementation.
 type AppResource struct {
-	client *sdk.ConductoroneSDKTerraform
+	client *sdk.SDK
 }
 
 // AppResourceModel describes the resource data model.
@@ -166,12 +166,12 @@ func (r *AppResource) Configure(ctx context.Context, req resource.ConfigureReque
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
+	client, ok := req.ProviderData.(*sdk.SDK)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -280,15 +280,15 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
+	id := data.ID.ValueString()
 	var updateAppRequest *shared.UpdateAppRequest
 	app := data.ToUpdateSDKType()
 	updateAppRequest = &shared.UpdateAppRequest{
 		App: app,
 	}
-	id := data.ID.ValueString()
 	request := operations.C1APIAppV1AppsUpdateRequest{
-		UpdateAppRequest: updateAppRequest,
 		ID:               id,
+		UpdateAppRequest: updateAppRequest,
 	}
 	res, err := r.client.Apps.Update(ctx, request)
 	if err != nil {
@@ -334,11 +334,11 @@ func (r *AppResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		return
 	}
 
-	deleteAppRequest := data.ToDeleteSDKType()
 	id := data.ID.ValueString()
+	deleteAppRequest := data.ToDeleteSDKType()
 	request := operations.C1APIAppV1AppsDeleteRequest{
-		DeleteAppRequest: deleteAppRequest,
 		ID:               id,
+		DeleteAppRequest: deleteAppRequest,
 	}
 	res, err := r.client.Apps.Delete(ctx, request)
 	if err != nil {

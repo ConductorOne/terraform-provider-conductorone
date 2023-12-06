@@ -3,21 +3,14 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1AppEntitlementOwnersAddRequest struct {
-	AddAppEntitlementOwnerRequest *shared.AddAppEntitlementOwnerRequest `request:"mediaType=application/json"`
 	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
 	EntitlementID                 string                                `pathParam:"style=simple,explode=false,name=entitlement_id"`
-}
-
-func (o *C1APIAppV1AppEntitlementOwnersAddRequest) GetAddAppEntitlementOwnerRequest() *shared.AddAppEntitlementOwnerRequest {
-	if o == nil {
-		return nil
-	}
-	return o.AddAppEntitlementOwnerRequest
+	AddAppEntitlementOwnerRequest *shared.AddAppEntitlementOwnerRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1AppEntitlementOwnersAddRequest) GetAppID() string {
@@ -34,22 +27,22 @@ func (o *C1APIAppV1AppEntitlementOwnersAddRequest) GetEntitlementID() string {
 	return o.EntitlementID
 }
 
+func (o *C1APIAppV1AppEntitlementOwnersAddRequest) GetAddAppEntitlementOwnerRequest() *shared.AddAppEntitlementOwnerRequest {
+	if o == nil {
+		return nil
+	}
+	return o.AddAppEntitlementOwnerRequest
+}
+
 type C1APIAppV1AppEntitlementOwnersAddResponse struct {
-	// The empty response message for adding an app entitlement owner.
-	AddAppEntitlementOwnerResponse *shared.AddAppEntitlementOwnerResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetAddAppEntitlementOwnerResponse() *shared.AddAppEntitlementOwnerResponse {
-	if o == nil {
-		return nil
-	}
-	return o.AddAppEntitlementOwnerResponse
+	// The empty response message for adding an app entitlement owner.
+	AddAppEntitlementOwnerResponse *shared.AddAppEntitlementOwnerResponse
 }
 
 func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetContentType() string {
@@ -71,4 +64,11 @@ func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetRawResponse() *http.Respo
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetAddAppEntitlementOwnerResponse() *shared.AddAppEntitlementOwnerResponse {
+	if o == nil {
+		return nil
+	}
+	return o.AddAppEntitlementOwnerResponse
 }

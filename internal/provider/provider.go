@@ -4,8 +4,8 @@ package provider
 
 import (
 	"context"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -14,28 +14,28 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-var _ provider.Provider = &ConductoroneProvider{}
+var _ provider.Provider = &TerraformProvider{}
 
-type ConductoroneProvider struct {
+type TerraformProvider struct {
 	// version is set to the provider version on release, "dev" when the
 	// provider is built and ran locally, and "test" when running acceptance
 	// testing.
 	version string
 }
 
-// ConductoroneProviderModel describes the provider data model.
-type ConductoroneProviderModel struct {
+// TerraformProviderModel describes the provider data model.
+type TerraformProviderModel struct {
 	ServerURL  types.String `tfsdk:"server_url"`
 	BearerAuth types.String `tfsdk:"bearer_auth"`
 	Oauth      types.String `tfsdk:"oauth"`
 }
 
-func (p *ConductoroneProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
-	resp.TypeName = "conductorone"
+func (p *TerraformProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
+	resp.TypeName = "terraform"
 	resp.Version = p.version
 }
 
-func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
+func (p *TerraformProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Description: `ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.`,
 		Attributes: map[string]schema.Attribute{
@@ -56,8 +56,8 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 	}
 }
 
-func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
-	var data ConductoroneProviderModel
+func (p *TerraformProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+	var data TerraformProviderModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
@@ -88,7 +88,7 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 	resp.ResourceData = client
 }
 
-func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.Resource {
+func (p *TerraformProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewAppResource,
 		NewAppEntitlementOwnerResource,
@@ -101,7 +101,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 	}
 }
 
-func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
+func (p *TerraformProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewAppDataSource,
 		NewCatalogDataSource,
@@ -112,7 +112,7 @@ func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasou
 
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
-		return &ConductoroneProvider{
+		return &TerraformProvider{
 			version: version,
 		}
 	}

@@ -5,8 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -24,7 +24,7 @@ func NewPolicyDataSource() datasource.DataSource {
 
 // PolicyDataSource is the data source implementation.
 type PolicyDataSource struct {
-	client *sdk.ConductoroneSDKTerraform
+	client *sdk.SDK
 }
 
 // PolicyDataSourceModel describes the data model.
@@ -87,32 +87,9 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 									"approval": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
-											"app_group_approval": schema.SingleNestedAttribute{
-												Computed: true,
-												Attributes: map[string]schema.Attribute{
-													"allow_self_approval": schema.BoolAttribute{
-														Computed:    true,
-														Description: `Configuration to allow self approval if the target user is a member of the group during this step.`,
-													},
-													"app_group_id": schema.StringAttribute{
-														Computed:    true,
-														Description: `The ID of the group specified for approval.`,
-													},
-													"app_id": schema.StringAttribute{
-														Computed:    true,
-														Description: `The ID of the app that conatins the group specified for approval.`,
-													},
-													"fallback": schema.BoolAttribute{
-														Computed:    true,
-														Description: `Configuration to allow a fallback if the group is empty.`,
-													},
-													"fallback_user_ids": schema.ListAttribute{
-														Computed:    true,
-														ElementType: types.StringType,
-														Description: `Configuration to specific which users to fallback to if fallback is enabled and the group is empty.`,
-													},
-												},
-												Description: `The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step.`,
+											"allow_reassignment": schema.BoolAttribute{
+												Computed:    true,
+												Description: `Configuration to allow reassignment by reviewers during this step.`,
 											},
 											"app_owner_approval": schema.SingleNestedAttribute{
 												Computed: true,
@@ -123,6 +100,10 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													},
 												},
 												Description: `App owner approval provides the configuration for an approval step when the app owner is the target.`,
+											},
+											"assigned": schema.BoolAttribute{
+												Computed:    true,
+												Description: `A field indicating whether this step is assigned.`,
 											},
 											"entitlement_owner_approval": schema.SingleNestedAttribute{
 												Computed: true,
@@ -172,6 +153,33 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 												},
 												Description: `The ExpressionApproval message.`,
 											},
+											"app_group_approval": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"allow_self_approval": schema.BoolAttribute{
+														Computed:    true,
+														Description: `Configuration to allow self approval if the target user is a member of the group during this step.`,
+													},
+													"app_group_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The ID of the group specified for approval.`,
+													},
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The ID of the app that conatins the group specified for approval.`,
+													},
+													"fallback": schema.BoolAttribute{
+														Computed:    true,
+														Description: `Configuration to allow a fallback if the group is empty.`,
+													},
+													"fallback_user_ids": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `Configuration to specific which users to fallback to if fallback is enabled and the group is empty.`,
+													},
+												},
+												Description: `The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step.`,
+											},
 											"manager_approval": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
@@ -195,6 +203,14 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													},
 												},
 												Description: `The manager approval object provides configuration options for approval when the target of the approval is the manager of the user in the task.`,
+											},
+											"require_approval_reason": schema.BoolAttribute{
+												Computed:    true,
+												Description: `Configuration to require a reason when approving this step.`,
+											},
+											"require_reassignment_reason": schema.BoolAttribute{
+												Computed:    true,
+												Description: `Configuration to require a reason when reassigning this step.`,
 											},
 											"self_approval": schema.SingleNestedAttribute{
 												Computed: true,
@@ -231,22 +247,6 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 												},
 												Description: `The user approval object describes the approval configuration of a policy step that needs to be approved by a specific list of users.`,
 											},
-											"allow_reassignment": schema.BoolAttribute{
-												Computed:    true,
-												Description: `Configuration to allow reassignment by reviewers during this step.`,
-											},
-											"assigned": schema.BoolAttribute{
-												Computed:    true,
-												Description: `A field indicating whether this step is assigned.`,
-											},
-											"require_approval_reason": schema.BoolAttribute{
-												Computed:    true,
-												Description: `Configuration to require a reason when approving this step.`,
-											},
-											"require_reassignment_reason": schema.BoolAttribute{
-												Computed:    true,
-												Description: `Configuration to require a reason when reassigning this step.`,
-											},
 										},
 										MarkdownDescription: `The Approval message.` + "\n" +
 											`` + "\n" +
@@ -263,6 +263,10 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 									"provision": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
+											"assigned": schema.BoolAttribute{
+												Computed:    true,
+												Description: `A field indicating whether this step is assigned.`,
+											},
 											"provision_policy": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
@@ -333,10 +337,6 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													},
 												},
 												Description: `ProvisionTarget indicates the specific app, app entitlement, and if known, the app user and grant duration of this provision step`,
-											},
-											"assigned": schema.BoolAttribute{
-												Computed:    true,
-												Description: `A field indicating whether this step is assigned.`,
 											},
 										},
 										Description: `The provision step references a provision policy for this step.`,
@@ -411,12 +411,12 @@ func (r *PolicyDataSource) Configure(ctx context.Context, req datasource.Configu
 		return
 	}
 
-	client, ok := req.ProviderData.(*sdk.ConductoroneSDKTerraform)
+	client, ok := req.ProviderData.(*sdk.SDK)
 
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected DataSource Configure Type",
-			fmt.Sprintf("Expected *sdk.ConductoroneSDKTerraform, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.SDK, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return

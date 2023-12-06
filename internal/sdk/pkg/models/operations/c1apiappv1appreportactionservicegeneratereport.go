@@ -3,20 +3,13 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1AppReportActionServiceGenerateReportRequest struct {
-	AppActionsServiceGenerateReportRequest *shared.AppActionsServiceGenerateReportRequest `request:"mediaType=application/json"`
 	AppID                                  string                                         `pathParam:"style=simple,explode=false,name=app_id"`
-}
-
-func (o *C1APIAppV1AppReportActionServiceGenerateReportRequest) GetAppActionsServiceGenerateReportRequest() *shared.AppActionsServiceGenerateReportRequest {
-	if o == nil {
-		return nil
-	}
-	return o.AppActionsServiceGenerateReportRequest
+	AppActionsServiceGenerateReportRequest *shared.AppActionsServiceGenerateReportRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1AppReportActionServiceGenerateReportRequest) GetAppID() string {
@@ -26,22 +19,22 @@ func (o *C1APIAppV1AppReportActionServiceGenerateReportRequest) GetAppID() strin
 	return o.AppID
 }
 
+func (o *C1APIAppV1AppReportActionServiceGenerateReportRequest) GetAppActionsServiceGenerateReportRequest() *shared.AppActionsServiceGenerateReportRequest {
+	if o == nil {
+		return nil
+	}
+	return o.AppActionsServiceGenerateReportRequest
+}
+
 type C1APIAppV1AppReportActionServiceGenerateReportResponse struct {
-	// Empty response body. Status code indicates success.
-	AppActionsServiceGenerateReportResponse *shared.AppActionsServiceGenerateReportResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetAppActionsServiceGenerateReportResponse() *shared.AppActionsServiceGenerateReportResponse {
-	if o == nil {
-		return nil
-	}
-	return o.AppActionsServiceGenerateReportResponse
+	// Empty response body. Status code indicates success.
+	AppActionsServiceGenerateReportResponse *shared.AppActionsServiceGenerateReportResponse
 }
 
 func (o *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetContentType() string {
@@ -63,4 +56,11 @@ func (o *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetRawResponse(
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetAppActionsServiceGenerateReportResponse() *shared.AppActionsServiceGenerateReportResponse {
+	if o == nil {
+		return nil
+	}
+	return o.AppActionsServiceGenerateReportResponse
 }

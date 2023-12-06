@@ -1,12 +1,8 @@
 configVersion: 1.0.0
-management:
-  docChecksum: 6c2ecdd15e5497d75245f64b7e75a15c
-  docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.53.0
-  generationVersion: 2.58.0
 generation:
   comments: {}
-  sdkClassName: conductorone-sdk-terraform
+  sdkClassName: SDK
+  maintainOpenAPIOrder: true
   usageSnippets:
     optionalPropertyRendering: withExample
 features:
@@ -20,8 +16,8 @@ features:
     nameOverrides: 2.81.1
     unions: 2.81.5
 terraform:
-  version: 1.0.0
-  author: ConductorOne
+  version: 0.0.1
+  author: speakeasy
   imports:
     option: openapi
     paths:
@@ -32,4 +28,4 @@ terraform:
       webhooks: webhooks
   inputModelSuffix: input
   outputModelSuffix: output
-  packageName: conductorone
+  packageName: terraform

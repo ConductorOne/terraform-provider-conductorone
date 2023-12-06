@@ -3,19 +3,19 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// SearchAttributeValuesResponse is the response for searching AttributeValues.
-	SearchAttributeValuesResponse *shared.SearchAttributeValuesResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// SearchAttributeValuesResponse is the response for searching AttributeValues.
+	SearchAttributeValuesResponse *shared.SearchAttributeValuesResponse
 }
 
 func (o *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetContentType() string {
@@ -23,13 +23,6 @@ func (o *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetConten
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetSearchAttributeValuesResponse() *shared.SearchAttributeValuesResponse {
-	if o == nil {
-		return nil
-	}
-	return o.SearchAttributeValuesResponse
 }
 
 func (o *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetStatusCode() int {
@@ -44,4 +37,11 @@ func (o *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetRawRes
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetSearchAttributeValuesResponse() *shared.SearchAttributeValuesResponse {
+	if o == nil {
+		return nil
+	}
+	return o.SearchAttributeValuesResponse
 }

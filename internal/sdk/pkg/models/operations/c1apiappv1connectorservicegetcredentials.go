@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -35,21 +35,14 @@ func (o *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetID() string {
 }
 
 type C1APIAppV1ConnectorServiceGetCredentialsResponse struct {
-	// ConnectorServiceGetCredentialsResponse is the response returned by the get method.
-	ConnectorServiceGetCredentialsResponse *shared.ConnectorServiceGetCredentialsResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetConnectorServiceGetCredentialsResponse() *shared.ConnectorServiceGetCredentialsResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceGetCredentialsResponse
+	// ConnectorServiceGetCredentialsResponse is the response returned by the get method.
+	ConnectorServiceGetCredentialsResponse *shared.ConnectorServiceGetCredentialsResponse
 }
 
 func (o *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetContentType() string {
@@ -71,4 +64,11 @@ func (o *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetRawResponse() *htt
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetConnectorServiceGetCredentialsResponse() *shared.ConnectorServiceGetCredentialsResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceGetCredentialsResponse
 }

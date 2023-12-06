@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -21,13 +21,13 @@ func (o *C1APIDirectoryV1DirectoryServiceGetRequest) GetAppID() string {
 type C1APIDirectoryV1DirectoryServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The Directory Service Get Response returns a directory view with a directory and JSONPATHs indicating the
-	//  location in the expanded array that items are expanded as indicated by the expand mask in the request.
-	DirectoryServiceGetResponse *shared.DirectoryServiceGetResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The Directory Service Get Response returns a directory view with a directory and JSONPATHs indicating the
+	//  location in the expanded array that items are expanded as indicated by the expand mask in the request.
+	DirectoryServiceGetResponse *shared.DirectoryServiceGetResponse
 }
 
 func (o *C1APIDirectoryV1DirectoryServiceGetResponse) GetContentType() string {
@@ -35,13 +35,6 @@ func (o *C1APIDirectoryV1DirectoryServiceGetResponse) GetContentType() string {
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIDirectoryV1DirectoryServiceGetResponse) GetDirectoryServiceGetResponse() *shared.DirectoryServiceGetResponse {
-	if o == nil {
-		return nil
-	}
-	return o.DirectoryServiceGetResponse
 }
 
 func (o *C1APIDirectoryV1DirectoryServiceGetResponse) GetStatusCode() int {
@@ -56,4 +49,11 @@ func (o *C1APIDirectoryV1DirectoryServiceGetResponse) GetRawResponse() *http.Res
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIDirectoryV1DirectoryServiceGetResponse) GetDirectoryServiceGetResponse() *shared.DirectoryServiceGetResponse {
+	if o == nil {
+		return nil
+	}
+	return o.DirectoryServiceGetResponse
 }

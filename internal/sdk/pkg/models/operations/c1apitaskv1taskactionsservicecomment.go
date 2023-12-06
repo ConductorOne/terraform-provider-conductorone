@@ -3,20 +3,13 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APITaskV1TaskActionsServiceCommentRequest struct {
-	TaskActionsServiceCommentRequest *shared.TaskActionsServiceCommentRequest `request:"mediaType=application/json"`
 	TaskID                           string                                   `pathParam:"style=simple,explode=false,name=task_id"`
-}
-
-func (o *C1APITaskV1TaskActionsServiceCommentRequest) GetTaskActionsServiceCommentRequest() *shared.TaskActionsServiceCommentRequest {
-	if o == nil {
-		return nil
-	}
-	return o.TaskActionsServiceCommentRequest
+	TaskActionsServiceCommentRequest *shared.TaskActionsServiceCommentRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APITaskV1TaskActionsServiceCommentRequest) GetTaskID() string {
@@ -24,6 +17,13 @@ func (o *C1APITaskV1TaskActionsServiceCommentRequest) GetTaskID() string {
 		return ""
 	}
 	return o.TaskID
+}
+
+func (o *C1APITaskV1TaskActionsServiceCommentRequest) GetTaskActionsServiceCommentRequest() *shared.TaskActionsServiceCommentRequest {
+	if o == nil {
+		return nil
+	}
+	return o.TaskActionsServiceCommentRequest
 }
 
 type C1APITaskV1TaskActionsServiceCommentResponse struct {

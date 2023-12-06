@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 	"time"
 )
 
@@ -157,6 +157,7 @@ const (
 	RecommendationInsightRecommendationUnspecified Recommendation = "INSIGHT_RECOMMENDATION_UNSPECIFIED"
 	RecommendationInsightRecommendationApprove     Recommendation = "INSIGHT_RECOMMENDATION_APPROVE"
 	RecommendationInsightRecommendationDeny        Recommendation = "INSIGHT_RECOMMENDATION_DENY"
+	RecommendationInsightRecommendationReview      Recommendation = "INSIGHT_RECOMMENDATION_REVIEW"
 )
 
 func (e Recommendation) ToPointer() *Recommendation {
@@ -174,6 +175,8 @@ func (e *Recommendation) UnmarshalJSON(data []byte) error {
 	case "INSIGHT_RECOMMENDATION_APPROVE":
 		fallthrough
 	case "INSIGHT_RECOMMENDATION_DENY":
+		fallthrough
+	case "INSIGHT_RECOMMENDATION_REVIEW":
 		*e = Recommendation(v)
 		return nil
 	default:
@@ -214,16 +217,6 @@ func (e *TaskState) UnmarshalJSON(data []byte) error {
 
 // Task - A fully-fleged task object. Includes its policy, references to external apps, its type, its processing history, and more.
 type Task struct {
-	// A policy instance is an object that contains a reference to the policy it was created from, the currently executing step, the next steps, and the history of previously completed steps.
-	PolicyInstance *PolicyInstance `json:"policy,omitempty"`
-	// Task Type provides configuration for the type of task: certify, grant, or revoke
-	//
-	// This message contains a oneof named task_type. Only a single field of the following list may be set at a time:
-	//   - grant
-	//   - revoke
-	//   - certify
-	//
-	TaskType *TaskType `json:"type,omitempty"`
 	// The actions that can be performed on the task by the current user.
 	Actions []Actions `json:"actions,omitempty"`
 	// The ID of the analysis object associated with this task created by an analysis workflow if the analysis feature is enabled for your tenant.
@@ -250,6 +243,8 @@ type Task struct {
 	InsightIds []string `json:"insightIds,omitempty"`
 	// A human-usable numeric ID of a task which can be included in place of the fully qualified task id in path parmeters (but not search queries).
 	NumericID *string `json:"numericId,omitempty"`
+	// A policy instance is an object that contains a reference to the policy it was created from, the currently executing step, the next steps, and the history of previously completed steps.
+	PolicyInstance *PolicyInstance `json:"policy,omitempty"`
 	// The policy generation id refers to the current policy's generation ID. This is changed when the policy is changed on a task.
 	PolicyGenerationID *string `json:"policyGenerationId,omitempty"`
 	// The processing state of a task as defined by the `processing_enum`
@@ -259,8 +254,16 @@ type Task struct {
 	// The current state of the task as defined by the `state_enum`
 	State *TaskState `json:"state,omitempty"`
 	// An array of IDs belonging to Identity Users that are allowed to review this step in a task.
-	StepApproverIds []string   `json:"stepApproverIds,omitempty"`
-	UpdatedAt       *time.Time `json:"updatedAt,omitempty"`
+	StepApproverIds []string `json:"stepApproverIds,omitempty"`
+	// Task Type provides configuration for the type of task: certify, grant, or revoke
+	//
+	// This message contains a oneof named task_type. Only a single field of the following list may be set at a time:
+	//   - grant
+	//   - revoke
+	//   - certify
+	//
+	TaskType  *TaskType  `json:"type,omitempty"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 	// The ID of the user that is the target of this task. This may be empty if we're targeting a specific app user that has no known identity user.
 	UserID *string `json:"userId,omitempty"`
 }
@@ -274,20 +277,6 @@ func (t *Task) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *Task) GetPolicyInstance() *PolicyInstance {
-	if o == nil {
-		return nil
-	}
-	return o.PolicyInstance
-}
-
-func (o *Task) GetTaskType() *TaskType {
-	if o == nil {
-		return nil
-	}
-	return o.TaskType
 }
 
 func (o *Task) GetActions() []Actions {
@@ -388,6 +377,13 @@ func (o *Task) GetNumericID() *string {
 	return o.NumericID
 }
 
+func (o *Task) GetPolicyInstance() *PolicyInstance {
+	if o == nil {
+		return nil
+	}
+	return o.PolicyInstance
+}
+
 func (o *Task) GetPolicyGenerationID() *string {
 	if o == nil {
 		return nil
@@ -421,6 +417,13 @@ func (o *Task) GetStepApproverIds() []string {
 		return nil
 	}
 	return o.StepApproverIds
+}
+
+func (o *Task) GetTaskType() *TaskType {
+	if o == nil {
+		return nil
+	}
+	return o.TaskType
 }
 
 func (o *Task) GetUpdatedAt() *time.Time {

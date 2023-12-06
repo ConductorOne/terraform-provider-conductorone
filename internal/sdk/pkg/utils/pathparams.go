@@ -13,7 +13,7 @@ import (
 
 	"github.com/ericlagergren/decimal"
 
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/types"
 )
 
 func GenerateURL(ctx context.Context, serverURL, path string, pathParams interface{}, globals map[string]map[string]map[string]interface{}) (string, error) {

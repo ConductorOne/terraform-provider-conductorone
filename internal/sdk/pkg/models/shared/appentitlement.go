@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 	"time"
 )
 
@@ -16,14 +16,6 @@ type DurationUnset struct {
 //   - durationUnset
 //   - durationGrant
 type AppEntitlement struct {
-	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - connector
-	//   - manual
-	//   - delegated
-	//
-	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The alias of the app entitlement used by Cone. Also exact-match queryable.
 	Alias *string `json:"alias,omitempty"`
 	// The ID of the app that is associated with the app entitlement.
@@ -54,6 +46,14 @@ type AppEntitlement struct {
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// The unique ID for the App Entitlement.
 	ID *string `json:"id,omitempty"`
+	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
+	//
+	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+	//   - connector
+	//   - manual
+	//   - delegated
+	//
+	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The ID of the policy that will be used for revoke tickets related to the app entitlement
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
 	// The riskLevelValueId field.
@@ -75,13 +75,6 @@ func (a *AppEntitlement) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *AppEntitlement) GetProvisionPolicy() *ProvisionPolicy {
-	if o == nil {
-		return nil
-	}
-	return o.ProvisionPolicy
 }
 
 func (o *AppEntitlement) GetAlias() *string {
@@ -203,6 +196,13 @@ func (o *AppEntitlement) GetID() *string {
 	return o.ID
 }
 
+func (o *AppEntitlement) GetProvisionPolicy() *ProvisionPolicy {
+	if o == nil {
+		return nil
+	}
+	return o.ProvisionPolicy
+}
+
 func (o *AppEntitlement) GetRevokePolicyID() *string {
 	if o == nil {
 		return nil
@@ -251,14 +251,6 @@ func (o *AppEntitlement) GetUserEditedMask() *string {
 //   - durationUnset
 //   - durationGrant
 type AppEntitlementInput struct {
-	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - connector
-	//   - manual
-	//   - delegated
-	//
-	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The ID of the app that is associated with the app entitlement.
 	AppID *string `json:"appId,omitempty"`
 	// The ID of the app resource that is associated with the app entitlement
@@ -281,6 +273,14 @@ type AppEntitlementInput struct {
 	EmergencyGrantPolicyID *string `json:"emergencyGrantPolicyId,omitempty"`
 	// The ID of the policy that will be used for grant tickets related to the app entitlement.
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
+	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
+	//
+	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+	//   - connector
+	//   - manual
+	//   - delegated
+	//
+	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The ID of the policy that will be used for revoke tickets related to the app entitlement
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
 	// The riskLevelValueId field.
@@ -288,13 +288,6 @@ type AppEntitlementInput struct {
 	// The slug is displayed as an oval next to the name in the frontend of C1, it tells you what permission the entitlement grants. See https://www.conductorone.com/docs/product/manage-access/entitlements/
 	Slug           *string `json:"slug,omitempty"`
 	UserEditedMask *string `json:"userEditedMask,omitempty"`
-}
-
-func (o *AppEntitlementInput) GetProvisionPolicy() *ProvisionPolicy {
-	if o == nil {
-		return nil
-	}
-	return o.ProvisionPolicy
 }
 
 func (o *AppEntitlementInput) GetAppID() *string {
@@ -379,6 +372,13 @@ func (o *AppEntitlementInput) GetGrantPolicyID() *string {
 		return nil
 	}
 	return o.GrantPolicyID
+}
+
+func (o *AppEntitlementInput) GetProvisionPolicy() *ProvisionPolicy {
+	if o == nil {
+		return nil
+	}
+	return o.ProvisionPolicy
 }
 
 func (o *AppEntitlementInput) GetRevokePolicyID() *string {

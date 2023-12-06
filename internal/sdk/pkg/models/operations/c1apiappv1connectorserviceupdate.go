@@ -3,21 +3,14 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1ConnectorServiceUpdateRequest struct {
-	ConnectorServiceUpdateRequest *shared.ConnectorServiceUpdateRequest `request:"mediaType=application/json"`
 	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
 	ID                            string                                `pathParam:"style=simple,explode=false,name=id"`
-}
-
-func (o *C1APIAppV1ConnectorServiceUpdateRequest) GetConnectorServiceUpdateRequest() *shared.ConnectorServiceUpdateRequest {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceUpdateRequest
+	ConnectorServiceUpdateRequest *shared.ConnectorServiceUpdateRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1ConnectorServiceUpdateRequest) GetAppID() string {
@@ -34,22 +27,22 @@ func (o *C1APIAppV1ConnectorServiceUpdateRequest) GetID() string {
 	return o.ID
 }
 
+func (o *C1APIAppV1ConnectorServiceUpdateRequest) GetConnectorServiceUpdateRequest() *shared.ConnectorServiceUpdateRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceUpdateRequest
+}
+
 type C1APIAppV1ConnectorServiceUpdateResponse struct {
-	// ConnectorServiceUpdateResponse is the response returned by the update method.
-	ConnectorServiceUpdateResponse *shared.ConnectorServiceUpdateResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetConnectorServiceUpdateResponse() *shared.ConnectorServiceUpdateResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceUpdateResponse
+	// ConnectorServiceUpdateResponse is the response returned by the update method.
+	ConnectorServiceUpdateResponse *shared.ConnectorServiceUpdateResponse
 }
 
 func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetContentType() string {
@@ -71,4 +64,11 @@ func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetRawResponse() *http.Respon
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetConnectorServiceUpdateResponse() *shared.ConnectorServiceUpdateResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceUpdateResponse
 }

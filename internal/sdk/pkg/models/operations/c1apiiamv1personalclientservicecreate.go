@@ -3,19 +3,19 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIIamV1PersonalClientServiceCreateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The PersonalClientServiceCreateResponse message contains the created personal client and client secret.
-	PersonalClientServiceCreateResponse *shared.PersonalClientServiceCreateResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The PersonalClientServiceCreateResponse message contains the created personal client and client secret.
+	PersonalClientServiceCreateResponse *shared.PersonalClientServiceCreateResponse
 }
 
 func (o *C1APIIamV1PersonalClientServiceCreateResponse) GetContentType() string {
@@ -23,13 +23,6 @@ func (o *C1APIIamV1PersonalClientServiceCreateResponse) GetContentType() string 
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIIamV1PersonalClientServiceCreateResponse) GetPersonalClientServiceCreateResponse() *shared.PersonalClientServiceCreateResponse {
-	if o == nil {
-		return nil
-	}
-	return o.PersonalClientServiceCreateResponse
 }
 
 func (o *C1APIIamV1PersonalClientServiceCreateResponse) GetStatusCode() int {
@@ -44,4 +37,11 @@ func (o *C1APIIamV1PersonalClientServiceCreateResponse) GetRawResponse() *http.R
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIIamV1PersonalClientServiceCreateResponse) GetPersonalClientServiceCreateResponse() *shared.PersonalClientServiceCreateResponse {
+	if o == nil {
+		return nil
+	}
+	return o.PersonalClientServiceCreateResponse
 }

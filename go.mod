@@ -1,4 +1,4 @@
-module github.com/ConductorOne/terraform-provider-conductorone
+module github.com/speakeasy/terraform-provider-terraform
 
 go 1.18
 

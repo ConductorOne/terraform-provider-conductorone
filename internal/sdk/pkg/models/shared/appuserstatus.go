@@ -7,21 +7,21 @@ import (
 	"fmt"
 )
 
-// Status - The application user status field.
-type Status string
+// AppUserStatusStatus - The application user status field.
+type AppUserStatusStatus string
 
 const (
-	StatusStatusUnspecified Status = "STATUS_UNSPECIFIED"
-	StatusStatusEnabled     Status = "STATUS_ENABLED"
-	StatusStatusDisabled    Status = "STATUS_DISABLED"
-	StatusStatusDeleted     Status = "STATUS_DELETED"
+	AppUserStatusStatusStatusUnspecified AppUserStatusStatus = "STATUS_UNSPECIFIED"
+	AppUserStatusStatusStatusEnabled     AppUserStatusStatus = "STATUS_ENABLED"
+	AppUserStatusStatusStatusDisabled    AppUserStatusStatus = "STATUS_DISABLED"
+	AppUserStatusStatusStatusDeleted     AppUserStatusStatus = "STATUS_DELETED"
 )
 
-func (e Status) ToPointer() *Status {
+func (e AppUserStatusStatus) ToPointer() *AppUserStatusStatus {
 	return &e
 }
 
-func (e *Status) UnmarshalJSON(data []byte) error {
+func (e *AppUserStatusStatus) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -34,10 +34,10 @@ func (e *Status) UnmarshalJSON(data []byte) error {
 	case "STATUS_DISABLED":
 		fallthrough
 	case "STATUS_DELETED":
-		*e = Status(v)
+		*e = AppUserStatusStatus(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Status: %v", v)
+		return fmt.Errorf("invalid value for AppUserStatusStatus: %v", v)
 	}
 }
 
@@ -46,7 +46,7 @@ type AppUserStatus struct {
 	// The details of applicaiton user status.
 	Details *string `json:"details,omitempty"`
 	// The application user status field.
-	Status *Status `json:"status,omitempty"`
+	Status *AppUserStatusStatus `json:"status,omitempty"`
 }
 
 func (o *AppUserStatus) GetDetails() *string {
@@ -56,7 +56,7 @@ func (o *AppUserStatus) GetDetails() *string {
 	return o.Details
 }
 
-func (o *AppUserStatus) GetStatus() *Status {
+func (o *AppUserStatus) GetStatus() *AppUserStatusStatus {
 	if o == nil {
 		return nil
 	}

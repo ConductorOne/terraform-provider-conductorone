@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
@@ -21,12 +21,12 @@ func (o *C1APIAppV1AppsGetRequest) GetID() string {
 type C1APIAppV1AppsGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
-	// The GetAppResponse message contains the details of the requested app in the app field.
-	GetAppResponse *shared.GetAppResponse
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// The GetAppResponse message contains the details of the requested app in the app field.
+	GetAppResponse *shared.GetAppResponse
 }
 
 func (o *C1APIAppV1AppsGetResponse) GetContentType() string {
@@ -34,13 +34,6 @@ func (o *C1APIAppV1AppsGetResponse) GetContentType() string {
 		return ""
 	}
 	return o.ContentType
-}
-
-func (o *C1APIAppV1AppsGetResponse) GetGetAppResponse() *shared.GetAppResponse {
-	if o == nil {
-		return nil
-	}
-	return o.GetAppResponse
 }
 
 func (o *C1APIAppV1AppsGetResponse) GetStatusCode() int {
@@ -55,4 +48,11 @@ func (o *C1APIAppV1AppsGetResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppsGetResponse) GetGetAppResponse() *shared.GetAppResponse {
+	if o == nil {
+		return nil
+	}
+	return o.GetAppResponse
 }

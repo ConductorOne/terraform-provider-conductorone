@@ -20,17 +20,14 @@ fmt:
 
 .PHONY: gen
 gen:
-	speakeasy generate sdk -s openapi.yaml -o . -l terraform 
-
-.PHONY: yaml
-yaml:
-	curl -sSL -o openapi.yaml https://insulator.conductor.one/api/v1/openapi.yaml
-	python3 .github/workflows/clean_yaml.py openapi.yaml
-
-.PHONY: cleangen
-cleangen:
-	make yaml
-	make gen
+	@DATE=$$(date +%Y%m%d%H%M%S); \
+	FILENAME="openapi_$$DATE.yaml"; \
+	FILENAME2="combined_$$DATE.yaml"; \
+	trap 'rm -f $$FILENAME $$FILENAME2' EXIT; \
+	curl -sSL -o $$FILENAME https://insulator.conductor.one/api/v1/openapi.yaml && \
+	speakeasy overlay apply -s $$FILENAME -o overlays.yml >> $$FILENAME2 && \
+	speakeasy generate sdk -s $$FILENAME2 -o . -l terraform -d
+	
 
 .PHONY: test
 test:

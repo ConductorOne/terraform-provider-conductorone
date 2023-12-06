@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 	"time"
 )
 
@@ -143,8 +143,6 @@ func (e *TaskStates) UnmarshalJSON(data []byte) error {
 
 // TaskSearchRequest - Search for tasks based on a plethora filters.
 type TaskSearchRequest struct {
-	// The task expand mask is an array of strings that specifes the related objects the requester wishes to have returned when making a request where the expand mask is part of the input. Use '*' to view all possible responses.
-	TaskExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// Search tasks that belong to any of the access reviews included in this list.
 	AccessReviewIds []string `json:"accessReviewIds,omitempty"`
 	// Search tasks that have any of these account owners.
@@ -173,6 +171,8 @@ type TaskSearchRequest struct {
 	ExcludeAppEntitlementIds []string `json:"excludeAppEntitlementIds,omitempty"`
 	// Exclude Specific TaskIDs from this serach result.
 	ExcludeIds []string `json:"excludeIds,omitempty"`
+	// The task expand mask is an array of strings that specifes the related objects the requester wishes to have returned when making a request where the expand mask is part of the input. Use '*' to view all possible responses.
+	TaskExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// Whether or not to include deleted tasks.
 	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
 	// Search tasks where the user would see this task in the My Work section
@@ -208,13 +208,6 @@ func (t *TaskSearchRequest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *TaskSearchRequest) GetTaskExpandMask() *TaskExpandMask {
-	if o == nil {
-		return nil
-	}
-	return o.TaskExpandMask
 }
 
 func (o *TaskSearchRequest) GetAccessReviewIds() []string {
@@ -320,6 +313,13 @@ func (o *TaskSearchRequest) GetExcludeIds() []string {
 		return nil
 	}
 	return o.ExcludeIds
+}
+
+func (o *TaskSearchRequest) GetTaskExpandMask() *TaskExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.TaskExpandMask
 }
 
 func (o *TaskSearchRequest) GetIncludeDeleted() *bool {

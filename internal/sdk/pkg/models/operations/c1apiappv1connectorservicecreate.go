@@ -3,20 +3,13 @@
 package operations
 
 import (
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
 	"net/http"
 )
 
 type C1APIAppV1ConnectorServiceCreateRequest struct {
-	ConnectorServiceCreateRequest *shared.ConnectorServiceCreateRequest `request:"mediaType=application/json"`
 	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
-}
-
-func (o *C1APIAppV1ConnectorServiceCreateRequest) GetConnectorServiceCreateRequest() *shared.ConnectorServiceCreateRequest {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceCreateRequest
+	ConnectorServiceCreateRequest *shared.ConnectorServiceCreateRequest `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1ConnectorServiceCreateRequest) GetAppID() string {
@@ -26,22 +19,22 @@ func (o *C1APIAppV1ConnectorServiceCreateRequest) GetAppID() string {
 	return o.AppID
 }
 
+func (o *C1APIAppV1ConnectorServiceCreateRequest) GetConnectorServiceCreateRequest() *shared.ConnectorServiceCreateRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceCreateRequest
+}
+
 type C1APIAppV1ConnectorServiceCreateResponse struct {
-	// The ConnectorServiceCreateResponse is the response returned from creating a connector.
-	ConnectorServiceCreateResponse *shared.ConnectorServiceCreateResponse
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-}
-
-func (o *C1APIAppV1ConnectorServiceCreateResponse) GetConnectorServiceCreateResponse() *shared.ConnectorServiceCreateResponse {
-	if o == nil {
-		return nil
-	}
-	return o.ConnectorServiceCreateResponse
+	// The ConnectorServiceCreateResponse is the response returned from creating a connector.
+	ConnectorServiceCreateResponse *shared.ConnectorServiceCreateResponse
 }
 
 func (o *C1APIAppV1ConnectorServiceCreateResponse) GetContentType() string {
@@ -63,4 +56,11 @@ func (o *C1APIAppV1ConnectorServiceCreateResponse) GetRawResponse() *http.Respon
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateResponse) GetConnectorServiceCreateResponse() *shared.ConnectorServiceCreateResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceCreateResponse
 }

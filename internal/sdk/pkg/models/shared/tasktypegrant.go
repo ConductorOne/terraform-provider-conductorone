@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ConductorOne/terraform-provider-conductorone/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
 	"time"
 )
 
@@ -48,8 +48,6 @@ func (e *TaskTypeGrantOutcome) UnmarshalJSON(data []byte) error {
 
 // The TaskTypeGrant message indicates that a task is a grant task and all related details.
 type TaskTypeGrant struct {
-	// The TaskGrantSource message tracks which external URL was the source of the specificed grant ticket.
-	TaskGrantSource *TaskGrantSource `json:"source,omitempty"`
 	// The ID of the app entitlement.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
 	// The ID of the app.
@@ -62,6 +60,8 @@ type TaskTypeGrant struct {
 	// The outcome of the grant.
 	Outcome     *TaskTypeGrantOutcome `json:"outcome,omitempty"`
 	OutcomeTime *time.Time            `json:"outcomeTime,omitempty"`
+	// The TaskGrantSource message tracks which external URL was the source of the specificed grant ticket.
+	TaskGrantSource *TaskGrantSource `json:"source,omitempty"`
 }
 
 func (t TaskTypeGrant) MarshalJSON() ([]byte, error) {
@@ -73,13 +73,6 @@ func (t *TaskTypeGrant) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *TaskTypeGrant) GetTaskGrantSource() *TaskGrantSource {
-	if o == nil {
-		return nil
-	}
-	return o.TaskGrantSource
 }
 
 func (o *TaskTypeGrant) GetAppEntitlementID() *string {
@@ -129,4 +122,11 @@ func (o *TaskTypeGrant) GetOutcomeTime() *time.Time {
 		return nil
 	}
 	return o.OutcomeTime
+}
+
+func (o *TaskTypeGrant) GetTaskGrantSource() *TaskGrantSource {
+	if o == nil {
+		return nil
+	}
+	return o.TaskGrantSource
 }
