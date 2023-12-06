@@ -445,15 +445,15 @@ func (r *CatalogResource) Update(ctx context.Context, req resource.UpdateRequest
 	var requestCatalogManagementServiceUpdateRequest *shared.RequestCatalogManagementServiceUpdateRequest
 	requestCatalog := data.ToUpdateSDKType()
 	var requestCatalogExpandMask *shared.RequestCatalogExpandMask
-	if data != nil {
-		var paths []string = nil
-		for _, pathsItem := range data.Paths {
-			paths = append(paths, pathsItem.ValueString())
-		}
-		requestCatalogExpandMask = &shared.RequestCatalogExpandMask{
-			Paths: paths,
-		}
-	}
+	// if data != nil {
+	// 	var paths []string = nil
+	// 	for _, pathsItem := range data.Paths {
+	// 		paths = append(paths, pathsItem.ValueString())
+	// 	}
+	// 	requestCatalogExpandMask = &shared.RequestCatalogExpandMask{
+	// 		Paths: paths,
+	// 	}
+	// }
 	requestCatalogManagementServiceUpdateRequest = &shared.RequestCatalogManagementServiceUpdateRequest{
 		RequestCatalog:           requestCatalog,
 		RequestCatalogExpandMask: requestCatalogExpandMask,
