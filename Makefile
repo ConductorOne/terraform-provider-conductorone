@@ -26,7 +26,7 @@ gen:
 	trap 'rm -f $$FILENAME $$FILENAME2' EXIT; \
 	curl -sSL -o $$FILENAME https://insulator.conductor.one/api/v1/openapi.yaml && \
 	speakeasy overlay apply -s $$FILENAME -o overlays.yml >> $$FILENAME2 && \
-	speakeasy generate sdk -s $$FILENAME2 -o . -l terraform
+	speakeasy generate sdk -s $$FILENAME2 -o . -l terraform -d
 	
 
 .PHONY: test
