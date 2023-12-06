@@ -42,6 +42,7 @@ type PolicyResourceModel struct {
 	PolicyType               types.String           `tfsdk:"policy_type"`
 	PostActions              []PolicyPostActions    `tfsdk:"post_actions"`
 	ReassignTasksToDelegates types.Bool             `tfsdk:"reassign_tasks_to_delegates"`
+	Rules                    []Rule                 `tfsdk:"rules"`
 	SystemBuiltin            types.Bool             `tfsdk:"system_builtin"`
 	UpdatedAt                types.String           `tfsdk:"updated_at"`
 }
