@@ -6,5 +6,5 @@ type PolicyStep struct {
 	Accept    *DurationUnset `tfsdk:"accept"`
 	Approval  *ApprovalInput `tfsdk:"approval"`
 	Provision *Provision     `tfsdk:"provision"`
-Reject    *DurationUnset `tfsdk:"reject"`
+	Reject    *DurationUnset `tfsdk:"reject"`
 }

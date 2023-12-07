@@ -380,25 +380,19 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 			policyStepsResult.Steps = nil
 			for _, stepsItem := range policyStepsValue.Steps {
 				var steps1 PolicyStep
-				if steps1.Approval == nil {
-					steps1.Approval = &Approval{}
-				}
 				if stepsItem.Approval == nil {
 					steps1.Approval = nil
 				} else {
-					steps1.Approval = &Approval{}
+					steps1.Approval = &ApprovalInput{}
 					if stepsItem.Approval.AllowReassignment != nil {
 						steps1.Approval.AllowReassignment = types.BoolValue(*stepsItem.Approval.AllowReassignment)
 					} else {
 						steps1.Approval.AllowReassignment = types.BoolNull()
 					}
-					if steps1.Approval.AppGroupApproval == nil {
-						steps1.Approval.AppGroupApproval = &AppGroupApproval{}
-					}
 					if stepsItem.Approval.AppGroupApproval == nil {
 						steps1.Approval.AppGroupApproval = nil
 					} else {
-						steps1.Approval.AppGroupApproval = &AppGroupApproval{}
+						steps1.Approval.AppGroupApproval = &AppGroupApprovalInput{}
 						if stepsItem.Approval.AppGroupApproval.AllowSelfApproval != nil {
 							steps1.Approval.AppGroupApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.AppGroupApproval.AllowSelfApproval)
 						} else {
@@ -424,13 +418,10 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 							steps1.Approval.AppGroupApproval.FallbackUserIds = append(steps1.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 						}
 					}
-					if steps1.Approval.AppOwnerApproval == nil {
-						steps1.Approval.AppOwnerApproval = &AppOwnerApproval{}
-					}
 					if stepsItem.Approval.AppOwnerApproval == nil {
 						steps1.Approval.AppOwnerApproval = nil
 					} else {
-						steps1.Approval.AppOwnerApproval = &AppOwnerApproval{}
+						steps1.Approval.AppOwnerApproval = &AppOwnerApprovalInput{}
 						if stepsItem.Approval.AppOwnerApproval.AllowSelfApproval != nil {
 							steps1.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.AppOwnerApproval.AllowSelfApproval)
 						} else {
@@ -442,13 +433,10 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					} else {
 						steps1.Approval.Assigned = types.BoolNull()
 					}
-					if steps1.Approval.EntitlementOwnerApproval == nil {
-						steps1.Approval.EntitlementOwnerApproval = &EntitlementOwnerApproval{}
-					}
 					if stepsItem.Approval.EntitlementOwnerApproval == nil {
 						steps1.Approval.EntitlementOwnerApproval = nil
 					} else {
-						steps1.Approval.EntitlementOwnerApproval = &EntitlementOwnerApproval{}
+						steps1.Approval.EntitlementOwnerApproval = &EntitlementOwnerApprovalInput{}
 						if stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval != nil {
 							steps1.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
 						} else {
@@ -500,13 +488,10 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					} else {
 						steps1.Approval.RequireReassignmentReason = types.BoolNull()
 					}
-					if steps1.Approval.SelfApproval == nil {
-						steps1.Approval.SelfApproval = &SelfApproval{}
-					}
 					if stepsItem.Approval.SelfApproval == nil {
 						steps1.Approval.SelfApproval = nil
 					} else {
-						steps1.Approval.SelfApproval = &SelfApproval{}
+						steps1.Approval.SelfApproval = &SelfApprovalInput{}
 						steps1.Approval.SelfApproval.AssignedUserIds = nil
 						for _, v := range stepsItem.Approval.SelfApproval.AssignedUserIds {
 							steps1.Approval.SelfApproval.AssignedUserIds = append(steps1.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
@@ -521,13 +506,10 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 							steps1.Approval.SelfApproval.FallbackUserIds = append(steps1.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 						}
 					}
-					if steps1.Approval.UserApproval == nil {
-						steps1.Approval.UserApproval = &UserApproval{}
-					}
 					if stepsItem.Approval.UserApproval == nil {
 						steps1.Approval.UserApproval = nil
 					} else {
-						steps1.Approval.UserApproval = &UserApproval{}
+						steps1.Approval.UserApproval = &UserApprovalInput{}
 						if stepsItem.Approval.UserApproval.AllowSelfApproval != nil {
 							steps1.Approval.UserApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.UserApproval.AllowSelfApproval)
 						} else {
@@ -539,9 +521,6 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 						}
 					}
 				}
-				if steps1.Provision == nil {
-					steps1.Provision = &Provision{}
-				}
 				if stepsItem.Provision == nil {
 					steps1.Provision = nil
 				} else {
@@ -550,9 +529,6 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 						steps1.Provision.Assigned = types.BoolValue(*stepsItem.Provision.Assigned)
 					} else {
 						steps1.Provision.Assigned = types.BoolNull()
-					}
-					if steps1.Provision.ProvisionPolicy == nil {
-						steps1.Provision.ProvisionPolicy = &ProvisionPolicy{}
 					}
 					if stepsItem.Provision.ProvisionPolicy == nil {
 						steps1.Provision.ProvisionPolicy = nil
@@ -583,9 +559,6 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 							} else {
 								steps1.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringNull()
 							}
-						}
-						if steps1.Provision.ProvisionPolicy.ManualProvision == nil {
-							steps1.Provision.ProvisionPolicy.ManualProvision = &ManualProvision{}
 						}
 						if stepsItem.Provision.ProvisionPolicy.ManualProvision == nil {
 							steps1.Provision.ProvisionPolicy.ManualProvision = nil
