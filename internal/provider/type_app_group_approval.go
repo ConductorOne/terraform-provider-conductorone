@@ -4,7 +4,7 @@ package provider
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type AppGroupApproval struct {
+type AppGroupApprovalInput struct {
 	AllowSelfApproval types.Bool     `tfsdk:"allow_self_approval"`
 	AppGroupID        types.String   `tfsdk:"app_group_id"`
 	AppID             types.String   `tfsdk:"app_id"`

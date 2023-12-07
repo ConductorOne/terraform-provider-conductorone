@@ -4,8 +4,10 @@ package provider
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type EntitlementOwnerApprovalInput struct {
+type ExpressionApprovalInput struct {
 	AllowSelfApproval types.Bool     `tfsdk:"allow_self_approval"`
+	AssignedUserIds   []types.String `tfsdk:"assigned_user_ids"`
+	Expressions       []types.String `tfsdk:"expressions"`
 	Fallback          types.Bool     `tfsdk:"fallback"`
 	FallbackUserIds   []types.String `tfsdk:"fallback_user_ids"`
 }
