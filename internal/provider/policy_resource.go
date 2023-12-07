@@ -91,6 +91,12 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							Optional: true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
+									"accept": schema.SingleNestedAttribute{
+										Computed:    true,
+										Optional:    true,
+										Attributes:  map[string]schema.Attribute{},
+										Description: `This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.`,
+									},
 									"approval": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
@@ -146,10 +152,38 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
-														Computed: true,
-														Optional: true,
-														MarkdownDescription: ` Entitlement owner is based on the current entitlement's id and doesn't need to have self-contained data` + "\n" +
-															``,
+														Computed:    true,
+														Description: `Configuration to allow self approval if the target user is an entitlement owner during this step.`,
+													},
+													"fallback": schema.BoolAttribute{
+														Computed:    true,
+														Description: `Configuration to allow a fallback if the entitlement owner cannot be identified.`,
+													},
+													"fallback_user_ids": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+													},
+												},
+												Description: `The entitlement owner approval allows configuration of the approval step when the target approvers are the entitlement owners.`,
+											},
+											"expression_approval": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"allow_self_approval": schema.BoolAttribute{
+														Computed:    true,
+														Description: `Configuration to allow self approval of if the user is specified and also the target of the ticket.`,
+													},
+													"assigned_user_ids": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `The assignedUserIds field.`,
+													},
+													"expressions": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `Array of dynamic expressions to determine the approvers.  The first expression to return a non-empty list of users will be used.`,
 													},
 													"fallback": schema.BoolAttribute{
 														Computed:    true,
@@ -312,8 +346,40 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													"\n" +
 													``,
 											},
+											"provision_target": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"app_entitlement_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The app entitlement that should be provisioned.`,
+													},
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The app in which the entitlement should be provisioned`,
+													},
+													"app_user_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The app user that should be provisioned. May be unset if the app user is unknown`,
+													},
+													"grant_duration": schema.StringAttribute{
+														Computed: true,
+														Optional: true,
+													},
+												},
+												Description: `ProvisionTarget indicates the specific app, app entitlement, and if known, the app user and grant duration of this provision step`,
+											},
 										},
-										Description: `The Provision message.`,
+										Description: `The provision step references a provision policy for this step.`,
+									},
+									"reject": schema.SingleNestedAttribute{
+										Computed:    true,
+										Optional:    true,
+										Attributes:  map[string]schema.Attribute{},
+										Description: `This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.`,
 									},
 								},
 							},
@@ -498,7 +564,7 @@ func (r *PolicyResource) Read(ctx context.Context, req resource.ReadRequest, res
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-
+	// (mstanbCO) Manually added
 	if res.GetPolicyResponse.Policy.DeletedAt != nil {
 		resp.State.RemoveResource(ctx)
 		return
