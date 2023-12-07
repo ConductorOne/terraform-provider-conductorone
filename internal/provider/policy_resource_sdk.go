@@ -52,7 +52,6 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 						newPolicyStep.Approval.EntitlementOwnerApproval.FallbackUserIds = append(newPolicyStep.Approval.EntitlementOwnerApproval.FallbackUserIds, v.ValueString())
 					}
 				}
-				if step.Approval.ExpressionApproval
 				if step.Approval.ManagerApproval != nil {
 					newPolicyStep.Approval.ManagerApproval = &shared.ManagerApproval{
 						AllowSelfApproval: step.Approval.ManagerApproval.AllowSelfApproval.ValueBoolPointer(),
