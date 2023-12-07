@@ -644,15 +644,21 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 	} else {
 		r.PolicyType = types.StringNull()
 	}
-	r.PostActions = nil
-	for _, postActionsItem := range resp.PostActions {
+	if len(r.PostActions) > len(resp.PostActions) {
+		r.PostActions = r.PostActions[:len(resp.PostActions)]
+	}
+	for postActionsCount, postActionsItem := range resp.PostActions {
 		var postActions1 PolicyPostActions
 		if postActionsItem.CertifyRemediateImmediately != nil {
 			postActions1.CertifyRemediateImmediately = types.BoolValue(*postActionsItem.CertifyRemediateImmediately)
 		} else {
 			postActions1.CertifyRemediateImmediately = types.BoolNull()
 		}
+	if postActionsCount+1 > len(r.PostActions) {
 		r.PostActions = append(r.PostActions, postActions1)
+	} else {
+			r.PostActions[postActionsCount].CertifyRemediateImmediately = postActions1.CertifyRemediateImmediately
+		}
 	}
 	if resp.ReassignTasksToDelegates != nil {
 		r.ReassignTasksToDelegates = types.BoolValue(*resp.ReassignTasksToDelegates)
