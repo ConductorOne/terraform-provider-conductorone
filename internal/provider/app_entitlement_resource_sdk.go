@@ -114,20 +114,27 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlement {
 	} else {
 		displayName = nil
 	}
-	var durationUnset *shared.AppEntitlementDurationUnset
-	durationGrant := new(string)
+	maxGrantDuration := new(shared.MaxGrantDuration)
 	if r.MaxGrantDuration != nil {
-		if r.MaxGrantDuration.DurationUnset != nil {
-			durationUnset = &shared.AppEntitlementDurationUnset{}
-		}
+		durationGrant := new(string)
 		if !r.MaxGrantDuration.DurationGrant.IsUnknown() && !r.MaxGrantDuration.DurationGrant.IsNull() {
 			*durationGrant = r.MaxGrantDuration.DurationGrant.ValueString()
 		} else {
 			durationGrant = nil
 		}
+
+		durationUnset := new(shared.AppEntitlementDurationUnset)
+		if r.MaxGrantDuration.DurationUnset != nil {
+			durationUnset = &shared.AppEntitlementDurationUnset{}
+		} else {
+			durationUnset = nil
+		}
+		maxGrantDuration = &shared.MaxGrantDuration{
+			DurationGrant: durationGrant,
+			DurationUnset: durationUnset,
+		}
 	} else {
-		durationGrant = nil
-		durationUnset = &shared.AppEntitlementDurationUnset{}
+		maxGrantDuration = nil
 	}
 
 	emergencyGrantEnabled := new(bool)
