@@ -27,8 +27,12 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 	}
 	policySteps := make(map[string]shared.PolicySteps)
 	for policyStepsKey, policyStepsValue := range r.PolicySteps {
-		steps := policySteps[policyStepsKey].Steps
-		for _, step := range policyStepsValue.Steps {
+		var steps []shared.PolicyStepInput = nil
+		for _, stepsItem := range policyStepsValue.Steps {
+			var accept *shared.Accept
+			if stepsItem.Accept != nil {
+				accept = &shared.Accept{}
+			}
 			if step.Approval != nil {
 				newPolicyStep := shared.PolicyStep{
 					Approval: &shared.Approval{
@@ -110,22 +114,29 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 							ManualProvision: &shared.ManualProvision{},
 						}
 					}
-				}
-				steps = append(steps, newPolicyStep)
+			var reject *shared.Reject
+			if stepsItem.Reject != nil {
+				reject = &shared.Reject{}
 			}
+			steps = append(steps, shared.PolicyStep{
+				Accept:    accept,
+				Approval:  approval,
+				Provision: provision,
+				Reject:    reject,
+			})
 		}
-		policySteps[policyStepsKey] = shared.PolicySteps{
+		policyStepsInst := shared.PolicyStepsInput{
 			Steps: steps,
 		}
+		policySteps[policyStepsKey] = policyStepsInst
 	}
-	// Warning. This is a map, but the source tf var is not a map. This might indicate a bug.
 	policyType := new(shared.CreatePolicyRequestPolicyType)
 	if !r.PolicyType.IsUnknown() && !r.PolicyType.IsNull() {
 		*policyType = shared.CreatePolicyRequestPolicyType(r.PolicyType.ValueString())
 	} else {
 		policyType = nil
 	}
-	postActions := make([]shared.PolicyPostActions, 0)
+	var postActions []shared.PolicyPostActions = nil
 	for _, postActionsItem := range r.PostActions {
 		certifyRemediateImmediately := new(bool)
 		if !postActionsItem.CertifyRemediateImmediately.IsUnknown() && !postActionsItem.CertifyRemediateImmediately.IsNull() {
@@ -159,19 +170,7 @@ func (r *PolicyResourceModel) ToGetSDKType() *shared.CreatePolicyRequest {
 	return out
 }
 
-func (r *PolicyResourceModel) ToUpdateSDKType() *shared.Policy {
-	createdAt := new(time.Time)
-	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
-		*createdAt, _ = time.Parse(time.RFC3339Nano, r.CreatedAt.ValueString())
-	} else {
-		createdAt = nil
-	}
-	deletedAt := new(time.Time)
-	if !r.DeletedAt.IsUnknown() && !r.DeletedAt.IsNull() {
-		*deletedAt, _ = time.Parse(time.RFC3339Nano, r.DeletedAt.ValueString())
-	} else {
-		deletedAt = nil
-	}
+func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -184,124 +183,157 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.Policy {
 	} else {
 		displayName = nil
 	}
-	id := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id = r.ID.ValueString()
-	} else {
-		id = nil
-	}
-	policySteps := make(map[string]shared.PolicySteps)
+	policySteps := make(map[string]shared.PolicyStepsInput)
 	for policyStepsKey, policyStepsValue := range r.PolicySteps {
-		steps := policySteps[policyStepsKey].Steps
-		for _, step := range policyStepsValue.Steps {
-			if step.Approval != nil {
-				newPolicyStep := shared.PolicyStep{
-					Approval: &shared.Approval{
-						AllowReassignment:         step.Approval.AllowReassignment.ValueBoolPointer(),
-						Assigned:                  step.Approval.Assigned.ValueBoolPointer(),
-						RequireApprovalReason:     step.Approval.RequireApprovalReason.ValueBoolPointer(),
-						RequireReassignmentReason: step.Approval.RequireReassignmentReason.ValueBoolPointer(),
-					},
-				}
-				if step.Approval.AppOwnerApproval != nil {
-					newPolicyStep.Approval.AppOwnerApproval = &shared.AppOwnerApproval{
-						AllowSelfApproval: step.Approval.AppOwnerApproval.AllowSelfApproval.ValueBoolPointer(),
-					}
-				}
-				if step.Approval.AppGroupApproval != nil {
-					newPolicyStep.Approval.AppGroupApproval = &shared.AppGroupApproval{
-						AllowSelfApproval: step.Approval.AppGroupApproval.AllowSelfApproval.ValueBoolPointer(),
-						AppGroupID:        step.Approval.AppGroupApproval.AppGroupID.ValueStringPointer(),
-						AppID:             step.Approval.AppGroupApproval.AppID.ValueStringPointer(),
-						Fallback:          step.Approval.AppGroupApproval.Fallback.ValueBoolPointer(),
-					}
-					for _, v := range step.Approval.AppGroupApproval.FallbackUserIds {
-						newPolicyStep.Approval.AppGroupApproval.FallbackUserIds = append(newPolicyStep.Approval.AppGroupApproval.FallbackUserIds, v.ValueString())
-					}
-				}
-				if step.Approval.EntitlementOwnerApproval != nil {
-					newPolicyStep.Approval.EntitlementOwnerApproval = &shared.EntitlementOwnerApproval{
-						AllowSelfApproval: step.Approval.EntitlementOwnerApproval.AllowSelfApproval.ValueBoolPointer(),
-						Fallback:          step.Approval.EntitlementOwnerApproval.Fallback.ValueBoolPointer(),
-					}
-					for _, v := range step.Approval.EntitlementOwnerApproval.FallbackUserIds {
-						newPolicyStep.Approval.EntitlementOwnerApproval.FallbackUserIds = append(newPolicyStep.Approval.EntitlementOwnerApproval.FallbackUserIds, v.ValueString())
-					}
-				}
-				if step.Approval.ManagerApproval != nil {
-					newPolicyStep.Approval.ManagerApproval = &shared.ManagerApproval{
-						AllowSelfApproval: step.Approval.ManagerApproval.AllowSelfApproval.ValueBoolPointer(),
-						Fallback:          step.Approval.ManagerApproval.Fallback.ValueBoolPointer(),
-					}
-					for _, v := range step.Approval.ManagerApproval.FallbackUserIds {
-						newPolicyStep.Approval.ManagerApproval.FallbackUserIds = append(newPolicyStep.Approval.ManagerApproval.FallbackUserIds, v.ValueString())
-					}
-					for _, v := range step.Approval.ManagerApproval.AssignedUserIds {
-						newPolicyStep.Approval.ManagerApproval.AssignedUserIds = append(newPolicyStep.Approval.ManagerApproval.AssignedUserIds, v.ValueString())
-					}
-				}
-				if step.Approval.SelfApproval != nil {
-					newPolicyStep.Approval.SelfApproval = &shared.SelfApproval{
-						Fallback: step.Approval.SelfApproval.Fallback.ValueBoolPointer(),
-					}
-					for _, v := range step.Approval.SelfApproval.FallbackUserIds {
-						newPolicyStep.Approval.SelfApproval.FallbackUserIds = append(newPolicyStep.Approval.SelfApproval.FallbackUserIds, v.ValueString())
-					}
-					for _, v := range step.Approval.SelfApproval.AssignedUserIds {
-						newPolicyStep.Approval.SelfApproval.AssignedUserIds = append(newPolicyStep.Approval.SelfApproval.AssignedUserIds, v.ValueString())
-					}
-				}
-				if step.Approval.UserApproval != nil {
-					newPolicyStep.Approval.UserApproval = &shared.UserApproval{
-						AllowSelfApproval: step.Approval.UserApproval.AllowSelfApproval.ValueBoolPointer(),
-					}
-					for _, v := range step.Approval.UserApproval.UserIds {
-						newPolicyStep.Approval.UserApproval.UserIds = append(newPolicyStep.Approval.UserApproval.UserIds, v.ValueString())
-					}
-				}
-				steps = append(steps, newPolicyStep)
+		var steps []shared.PolicyStepInput = nil
+		for _, stepsItem := range policyStepsValue.Steps {
+			var accept *shared.Accept
+			if stepsItem.Accept != nil {
+				accept = &shared.Accept{}
 			}
-			if step.Provision != nil {
-				newPolicyStep := shared.PolicyStep{
-					Provision: &shared.Provision{
-						Assigned: step.Provision.Assigned.ValueBoolPointer(),
-					},
+			// This is all read-only, so we don't need to do anything with it.
+			var approval *shared.ApprovalInput
+			if stepsItem.Approval != nil {
+				var appOwnerApproval *shared.AppOwnerApprovalInput
+				if stepsItem.Approval.AppOwnerApproval != nil {
+					appOwnerApproval = &shared.AppOwnerApprovalInput{}
 				}
-				if step.Provision.ProvisionPolicy != nil {
-					if step.Provision.ProvisionPolicy.ConnectorProvision != nil {
-						newPolicyStep.Provision.ProvisionPolicy = &shared.ProvisionPolicy{
-							ConnectorProvision: &shared.ConnectorProvision{},
-						}
-					}
-					if step.Provision.ProvisionPolicy.DelegatedProvision != nil {
-						newPolicyStep.Provision.ProvisionPolicy = &shared.ProvisionPolicy{
-							DelegatedProvision: &shared.DelegatedProvision{
-								AppID:         step.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueStringPointer(),
-								EntitlementID: step.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueStringPointer(),
-							},
-						}
-					}
-					if step.Provision.ProvisionPolicy.ManualProvision != nil {
-						newPolicyStep.Provision.ProvisionPolicy = &shared.ProvisionPolicy{
-							ManualProvision: &shared.ManualProvision{},
-						}
-					}
+				var entitlementOwnerApproval *shared.EntitlementOwnerApprovalInput
+				if stepsItem.Approval.EntitlementOwnerApproval != nil {
+					entitlementOwnerApproval = &shared.EntitlementOwnerApprovalInput{}
 				}
-				steps = append(steps, newPolicyStep)
+				var expressionApproval *shared.ExpressionApprovalInput
+				if stepsItem.Approval.ExpressionApproval != nil {
+					expressionApproval = &shared.ExpressionApprovalInput{}
+				}
+				var appGroupApproval *shared.AppGroupApprovalInput
+				if stepsItem.Approval.AppGroupApproval != nil {
+					appGroupApproval = &shared.AppGroupApprovalInput{}
+				}
+				var managerApproval *shared.ManagerApprovalInput
+				if stepsItem.Approval.ManagerApproval != nil {
+					managerApproval = &shared.ManagerApprovalInput{}
+				}
+				var selfApproval *shared.SelfApprovalInput
+				if stepsItem.Approval.SelfApproval != nil {
+					selfApproval = &shared.SelfApprovalInput{}
+				}
+				var userApproval *shared.UserApprovalInput
+				if stepsItem.Approval.UserApproval != nil {
+					userApproval = &shared.UserApprovalInput{}
+				}
+				approval = &shared.ApprovalInput{
+					AppOwnerApproval:         appOwnerApproval,
+					EntitlementOwnerApproval: entitlementOwnerApproval,
+					ExpressionApproval:       expressionApproval,
+					AppGroupApproval:         appGroupApproval,
+					ManagerApproval:          managerApproval,
+					SelfApproval:             selfApproval,
+					UserApproval:             userApproval,
+				}
 			}
+			var provision *shared.Provision
+			if stepsItem.Provision != nil {
+				assigned := new(bool)
+				if !stepsItem.Provision.Assigned.IsUnknown() && !stepsItem.Provision.Assigned.IsNull() {
+					*assigned = stepsItem.Provision.Assigned.ValueBool()
+				} else {
+					assigned = nil
+				}
+				var provisionPolicy *shared.ProvisionPolicy
+				if stepsItem.Provision.ProvisionPolicy != nil {
+					var connectorProvision *shared.ConnectorProvision
+					if stepsItem.Provision.ProvisionPolicy.ConnectorProvision != nil {
+						connectorProvision = &shared.ConnectorProvision{}
+					}
+					var delegatedProvision *shared.DelegatedProvision
+					if stepsItem.Provision.ProvisionPolicy.DelegatedProvision != nil {
+						appID := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
+							*appID = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+						} else {
+							appID = nil
+						}
+						entitlementID := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
+							*entitlementID = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueString()
+						} else {
+							entitlementID = nil
+						}
+						implicit := new(bool)
+						if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.Implicit.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.Implicit.IsNull() {
+							*implicit = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.Implicit.ValueBool()
+						} else {
+							implicit = nil
+						}
+						delegatedProvision = &shared.DelegatedProvision{
+							AppID:         appID,
+							EntitlementID: entitlementID,
+							Implicit:      implicit,
+						}
+					}
+					var manualProvision *shared.ManualProvision
+					if stepsItem.Provision.ProvisionPolicy.ManualProvision != nil {
+						instructions := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsNull() {
+							*instructions = stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.ValueString()
+						} else {
+							instructions = nil
+						}
+						var userIds []string = nil
+						for _, userIdsItem := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
+							userIds = append(userIds, userIdsItem.ValueString())
+						}
+						manualProvision = &shared.ManualProvision{
+							Instructions: instructions,
+							UserIds:      userIds,
+						}
+					}
+					provisionPolicy = &shared.ProvisionPolicy{
+						ConnectorProvision: connectorProvision,
+						DelegatedProvision: delegatedProvision,
+						ManualProvision:    manualProvision,
+					}
+				}
+				var provisionTarget *shared.ProvisionTarget
+				if stepsItem.Provision.ProvisionTarget != nil {
+					provisionTarget = &shared.ProvisionTarget{
+						AppEntitlementID: stepsItem.Provision.ProvisionTarget.AppEntitlementID.ValueStringPointer(),
+						AppID:            stepsItem.Provision.ProvisionTarget.AppID.ValueStringPointer(),
+						AppUserID:        stepsItem.Provision.ProvisionTarget.AppUserID.ValueStringPointer(),
+						GrantDuration:    stepsItem.Provision.ProvisionTarget.GrantDuration.ValueStringPointer(),
+					}
+				}
+				provision = &shared.Provision{
+					Assigned:        assigned,
+					ProvisionPolicy: provisionPolicy,
+					ProvisionTarget: provisionTarget,
+				}
+			}
+
+			var reject *shared.Reject
+			if stepsItem.Reject != nil {
+				reject = &shared.Reject{}
+			}
+			steps = append(steps, shared.PolicyStepInput{
+				Accept:    accept,
+				Approval:  approval,
+				Provision: provision,
+				Reject:    reject,
+			})
 		}
-		policySteps[policyStepsKey] = shared.PolicySteps{
+		policyStepsInst := shared.PolicyStepsInput{
 			Steps: steps,
 		}
+		policySteps[policyStepsKey] = policyStepsInst
 	}
-	// Warning. This is a map, but the source tf var is not a map. This might indicate a bug.
-	policyType := new(shared.PolicyPolicyType)
+	policyType := new(shared.PolicyType)
 	if !r.PolicyType.IsUnknown() && !r.PolicyType.IsNull() {
-		*policyType = shared.PolicyPolicyType(r.PolicyType.ValueString())
+		*policyType = shared.PolicyType(r.PolicyType.ValueString())
 	} else {
 		policyType = nil
 	}
-	postActions := make([]shared.PolicyPostActions, 0)
+	var postActions []shared.PolicyPostActions = nil
 	for _, postActionsItem := range r.PostActions {
 		certifyRemediateImmediately := new(bool)
 		if !postActionsItem.CertifyRemediateImmediately.IsUnknown() && !postActionsItem.CertifyRemediateImmediately.IsNull() {
@@ -319,24 +351,33 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.Policy {
 	} else {
 		reassignTasksToDelegates = nil
 	}
-	systemBuiltin := new(bool)
-	if !r.SystemBuiltin.IsUnknown() && !r.SystemBuiltin.IsNull() {
-		*systemBuiltin = r.SystemBuiltin.ValueBool()
-	} else {
-		systemBuiltin = nil
+	var rules []shared.Rule = nil
+	for _, rulesItem := range r.Rules {
+		condition := new(string)
+		if !rulesItem.Condition.IsUnknown() && !rulesItem.Condition.IsNull() {
+			*condition = rulesItem.Condition.ValueString()
+		} else {
+			condition = nil
+		}
+		policyKey := new(string)
+		if !rulesItem.PolicyKey.IsUnknown() && !rulesItem.PolicyKey.IsNull() {
+			*policyKey = rulesItem.PolicyKey.ValueString()
+		} else {
+			policyKey = nil
 	}
-
-	out := shared.Policy{
-		CreatedAt:                createdAt,
-		DeletedAt:                deletedAt,
+	rules = append(rules, shared.Rule{
+			Condition: condition,
+			PolicyKey: policyKey,
+		})
+	}
+	out := shared.PolicyInput{
 		Description:              description,
 		DisplayName:              displayName,
-		ID:                       id,
 		PolicySteps:              policySteps,
 		PolicyType:               policyType,
 		PostActions:              postActions,
 		ReassignTasksToDelegates: reassignTasksToDelegates,
-		SystemBuiltin:            systemBuiltin,
+		Rules:                    rules,
 	}
 	return &out
 }
