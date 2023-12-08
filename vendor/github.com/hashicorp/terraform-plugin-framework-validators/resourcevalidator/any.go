@@ -1,11 +1,14 @@
-package objectvalidator
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
+package resourcevalidator
 
 import (
 	"context"
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
 )
 
 // Any returns a validator which ensures that any configured attribute value
@@ -15,17 +18,17 @@ import (
 // conflicting logic, only warnings from the passing validator are returned.
 // Use AnyWithAllWarnings() to return warnings from non-passing validators
 // as well.
-func Any(validators ...validator.Object) validator.Object {
+func Any(validators ...resource.ConfigValidator) resource.ConfigValidator {
 	return anyValidator{
 		validators: validators,
 	}
 }
 
-var _ validator.Object = anyValidator{}
+var _ resource.ConfigValidator = anyValidator{}
 
 // anyValidator implements the validator.
 type anyValidator struct {
-	validators []validator.Object
+	validators []resource.ConfigValidator
 }
 
 // Description describes the validation in plain text formatting.
@@ -44,12 +47,12 @@ func (v anyValidator) MarkdownDescription(ctx context.Context) string {
 	return v.Description(ctx)
 }
 
-// ValidateObject performs the validation.
-func (v anyValidator) ValidateObject(ctx context.Context, req validator.ObjectRequest, resp *validator.ObjectResponse) {
+// ValidateResource performs the validation.
+func (v anyValidator) ValidateResource(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
 	for _, subValidator := range v.validators {
-		validateResp := &validator.ObjectResponse{}
+		validateResp := &resource.ValidateConfigResponse{}
 
-		subValidator.ValidateObject(ctx, req, validateResp)
+		subValidator.ValidateResource(ctx, req, validateResp)
 
 		if !validateResp.Diagnostics.HasError() {
 			resp.Diagnostics = validateResp.Diagnostics

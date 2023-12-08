@@ -114,29 +114,16 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlement {
 	} else {
 		displayName = nil
 	}
-	maxGrantDuration := new(shared.MaxGrantDuration)
-	if r.MaxGrantDuration != nil {
-		durationGrant := new(string)
-		if !r.MaxGrantDuration.DurationGrant.IsUnknown() && !r.MaxGrantDuration.DurationGrant.IsNull() {
-			*durationGrant = r.MaxGrantDuration.DurationGrant.ValueString()
-		} else {
-			durationGrant = nil
-		}
-
-		durationUnset := new(shared.AppEntitlementDurationUnset)
-		if r.MaxGrantDuration.DurationUnset != nil {
-			durationUnset = &shared.AppEntitlementDurationUnset{}
-		} else {
-			durationUnset = nil
-		}
-		maxGrantDuration = &shared.MaxGrantDuration{
-			DurationGrant: durationGrant,
-			DurationUnset: durationUnset,
-		}
-	} else {
-		maxGrantDuration = nil
+	var durationUnset *shared.AppEntitlementDurationUnset
+	if r.DurationUnset != nil {
+		durationUnset = &shared.AppEntitlementDurationUnset{}
 	}
-
+	durationGrant := new(string)
+	if !r.DurationGrant.IsUnknown() && !r.DurationGrant.IsNull() {
+		*durationGrant = r.DurationGrant.ValueString()
+	} else {
+		durationGrant = nil
+	}
 	emergencyGrantEnabled := new(bool)
 	if !r.EmergencyGrantEnabled.IsUnknown() && !r.EmergencyGrantEnabled.IsNull() {
 		*emergencyGrantEnabled = r.EmergencyGrantEnabled.ValueBool()
@@ -255,23 +242,15 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 	} else {
 		r.DisplayName = types.StringNull()
 	}
-	if resp.DurationGrant != nil || resp.DurationUnset != nil {
-		if r.MaxGrantDuration != nil {
-			r.MaxGrantDuration = &MaxGrantDuration{}
-			if resp.DurationGrant != nil {
-				r.MaxGrantDuration.DurationGrant = types.StringValue(*resp.DurationGrant)
-			} else {
-				r.MaxGrantDuration.DurationGrant = types.StringNull()
-			}
-			if r.MaxGrantDuration.DurationUnset == nil {
-				r.MaxGrantDuration.DurationUnset = &AppEntitlementDurationUnset{}
-			}
-			if resp.DurationUnset == nil {
-				r.MaxGrantDuration.DurationUnset = nil
-			} else {
-				r.MaxGrantDuration.DurationUnset = &AppEntitlementDurationUnset{}
-			}
-		}
+	if resp.DurationGrant != nil {
+		r.DurationGrant = types.StringValue(*resp.DurationGrant)
+	} else {
+		r.DurationGrant = types.StringNull()
+	}
+	if resp.DurationUnset == nil {
+		r.DurationUnset = nil
+	} else {
+		r.DurationUnset = &AppEntitlementDurationUnset{}
 	}
 	if resp.EmergencyGrantEnabled != nil {
 		r.EmergencyGrantEnabled = types.BoolValue(*resp.EmergencyGrantEnabled)
