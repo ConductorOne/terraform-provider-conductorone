@@ -121,7 +121,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													"app_id": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `The ID of the app that conatins the group specified for approval.`,
+														Description: `The ID of the app that contains the group specified for approval.`,
 													},
 													"fallback": schema.BoolAttribute{
 														Computed:    true,
