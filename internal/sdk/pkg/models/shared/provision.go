@@ -4,37 +4,6 @@ package shared
 
 // Provision - The provision step references a provision policy for this step.
 type Provision struct {
-	// A field indicating whether this step is assigned.
-	Assigned *bool `json:"assigned,omitempty"`
-	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - connector
-	//   - manual
-	//   - delegated
-	//
-	ProvisionPolicy *ProvisionPolicy `json:"provisionPolicy,omitempty"`
-	// ProvisionTarget indicates the specific app, app entitlement, and if known, the app user and grant duration of this provision step
-	ProvisionTarget *ProvisionTarget `json:"provisionTarget,omitempty"`
-}
-
-func (o *Provision) GetAssigned() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Assigned
-}
-
-func (o *Provision) GetProvisionPolicy() *ProvisionPolicy {
-	if o == nil {
-		return nil
-	}
-	return o.ProvisionPolicy
-}
-
-func (o *Provision) GetProvisionTarget() *ProvisionTarget {
-	if o == nil {
-		return nil
-	}
-	return o.ProvisionTarget
+	// Provision should be empty on the Policy struct, this field is populated by the app entitlement, it is not empty when getting Policies on Tickets
+	// However, terraform does not support tickets, so this field can just point to an empty struct, type inference for empty structs are the same so we can just use the same struct as Accept
 }

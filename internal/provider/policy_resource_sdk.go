@@ -108,43 +108,7 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 			}
 			if step.Provision != nil {
 				newPolicyStep := shared.PolicyStep{
-					Provision: &shared.Provision{
-						Assigned: step.Provision.Assigned.ValueBoolPointer(),
-					},
-				}
-				if step.Provision.ProvisionPolicy != nil {
-					if step.Provision.ProvisionPolicy.ConnectorProvision != nil {
-						newPolicyStep.Provision.ProvisionPolicy = &shared.ProvisionPolicy{
-							ConnectorProvision: &shared.ConnectorProvision{},
-						}
-					}
-					if step.Provision.ProvisionPolicy.DelegatedProvision != nil {
-						newPolicyStep.Provision.ProvisionPolicy = &shared.ProvisionPolicy{
-							DelegatedProvision: &shared.DelegatedProvision{
-								AppID:         step.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueStringPointer(),
-								EntitlementID: step.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueStringPointer(),
-								Implicit: 	   step.Provision.ProvisionPolicy.DelegatedProvision.Implicit.ValueBoolPointer(),
-							},
-						}
-					}
-					if step.Provision.ProvisionPolicy.ManualProvision != nil {
-						newPolicyStep.Provision.ProvisionPolicy = &shared.ProvisionPolicy{
-							ManualProvision: &shared.ManualProvision{
-								Instructions: step.Provision.ProvisionPolicy.ManualProvision.Instructions.ValueStringPointer(),
-							},
-						}
-						for _, v := range step.Provision.ProvisionPolicy.ManualProvision.UserIds {
-							newPolicyStep.Provision.ProvisionPolicy.ManualProvision.UserIds = append(newPolicyStep.Provision.ProvisionPolicy.ManualProvision.UserIds, v.ValueString())
-						}
-					}
-				}
-				if step.Provision.ProvisionTarget != nil {
-					newPolicyStep.Provision.ProvisionTarget = &shared.ProvisionTarget{
-						AppEntitlementID: step.Provision.ProvisionTarget.AppEntitlementID.ValueStringPointer(),
-						AppID:            step.Provision.ProvisionTarget.AppID.ValueStringPointer(),
-						AppUserID:        step.Provision.ProvisionTarget.AppUserID.ValueStringPointer(),
-						GrantDuration:    step.Provision.ProvisionTarget.GrantDuration.ValueStringPointer(),
-					}
+					Provision: &shared.Provision{},
 				}
 				steps = append(steps, newPolicyStep)
 			}
@@ -217,11 +181,12 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 	for policyStepsKey, policyStepsValue := range r.PolicySteps {
 		var steps []shared.PolicyStep = nil
 		for _, step := range policyStepsValue.Steps {
-			var accept *shared.Accept
 			if step.Accept != nil {
-				accept = &shared.Accept{}
+				newPolicyStep := shared.PolicyStep{
+					Accept: &shared.Accept{},
+				}
+				steps = append(steps, newPolicyStep)
 			}
-			var approval *shared.Approval
 			if step.Approval != nil {
 				newPolicyStep := shared.PolicyStep{
 					Approval: &shared.Approval{
@@ -293,97 +258,20 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 				}
 				steps = append(steps, newPolicyStep)
 			}
-			var provision *shared.Provision
-			if stepsItem.Provision != nil {
-				assigned := new(bool)
-				if !stepsItem.Provision.Assigned.IsUnknown() && !stepsItem.Provision.Assigned.IsNull() {
-					*assigned = stepsItem.Provision.Assigned.ValueBool()
-				} else {
-					assigned = nil
+			if step.Provision != nil {
+				newPolicyStep := shared.PolicyStep{
+					Provision: &shared.Provision{},
 				}
-				var provisionPolicy *shared.ProvisionPolicy
-				if stepsItem.Provision.ProvisionPolicy != nil {
-					var connectorProvision *shared.ConnectorProvision
-					if stepsItem.Provision.ProvisionPolicy.ConnectorProvision != nil {
-						connectorProvision = &shared.ConnectorProvision{}
-					}
-					var delegatedProvision *shared.DelegatedProvision
-					if stepsItem.Provision.ProvisionPolicy.DelegatedProvision != nil {
-						appID := new(string)
-						if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-							*appID = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
-						} else {
-							appID = nil
-						}
-						entitlementID := new(string)
-						if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
-							*entitlementID = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueString()
-						} else {
-							entitlementID = nil
-						}
-						implicit := new(bool)
-						if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.Implicit.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.Implicit.IsNull() {
-							*implicit = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.Implicit.ValueBool()
-						} else {
-							implicit = nil
-						}
-						delegatedProvision = &shared.DelegatedProvision{
-							AppID:         appID,
-							EntitlementID: entitlementID,
-							Implicit:      implicit,
-						}
-					}
-					var manualProvision *shared.ManualProvision
-					if stepsItem.Provision.ProvisionPolicy.ManualProvision != nil {
-						instructions := new(string)
-						if !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsNull() {
-							*instructions = stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.ValueString()
-						} else {
-							instructions = nil
-						}
-						var userIds []string = nil
-						for _, userIdsItem := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
-							userIds = append(userIds, userIdsItem.ValueString())
-						}
-						manualProvision = &shared.ManualProvision{
-							Instructions: instructions,
-							UserIds:      userIds,
-						}
-					}
-					provisionPolicy = &shared.ProvisionPolicy{
-						ConnectorProvision: connectorProvision,
-						DelegatedProvision: delegatedProvision,
-						ManualProvision:    manualProvision,
-					}
-				}
-				var provisionTarget *shared.ProvisionTarget
-				if stepsItem.Provision.ProvisionTarget != nil {
-					provisionTarget = &shared.ProvisionTarget{
-						AppEntitlementID: stepsItem.Provision.ProvisionTarget.AppEntitlementID.ValueStringPointer(),
-						AppID:            stepsItem.Provision.ProvisionTarget.AppID.ValueStringPointer(),
-						AppUserID:        stepsItem.Provision.ProvisionTarget.AppUserID.ValueStringPointer(),
-						GrantDuration:    stepsItem.Provision.ProvisionTarget.GrantDuration.ValueStringPointer(),
-					}
-				}
-				provision = &shared.Provision{
-					Assigned:        assigned,
-					ProvisionPolicy: provisionPolicy,
-					ProvisionTarget: provisionTarget,
-				}
+				steps = append(steps, newPolicyStep)
 			}
-
-			var reject *shared.Reject
-			if stepsItem.Reject != nil {
-				reject = &shared.Reject{}
+			if step.Reject != nil {
+				newPolicyStep := shared.PolicyStep{
+					Reject: &shared.Reject{},
+				}
+				steps = append(steps, newPolicyStep)
 			}
-			steps = append(steps, shared.PolicyStepInput{
-				Accept:    accept,
-				Approval:  approval,
-				Provision: provision,
-				Reject:    reject,
-			})
 		}
-		policyStepsInst := shared.PolicyStepsInput{
+		policyStepsInst := shared.PolicySteps{
 			Steps: steps,
 		}
 		policySteps[policyStepsKey] = policyStepsInst
@@ -655,81 +543,8 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 				if stepsItem.Provision == nil {
 					steps1.Provision = nil
 				} else {
-					steps1.Provision = &Provision{}
-					if stepsItem.Provision.Assigned != nil {
-						steps1.Provision.Assigned = types.BoolValue(*stepsItem.Provision.Assigned)
-					} else {
-						steps1.Provision.Assigned = types.BoolNull()
-					}
-					if stepsItem.Provision.ProvisionPolicy == nil {
-						steps1.Provision.ProvisionPolicy = nil
-					} else {
-						steps1.Provision.ProvisionPolicy = &ProvisionPolicy{}
-						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision == nil {
-							steps1.Provision.ProvisionPolicy.ConnectorProvision = nil
-						} else {
-							steps1.Provision.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
-						}
-						if stepsItem.Provision.ProvisionPolicy.DelegatedProvision == nil {
-							steps1.Provision.ProvisionPolicy.DelegatedProvision = nil
-						} else {
-							steps1.Provision.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
-							if stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID != nil {
-								steps1.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringValue(*stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
-							} else {
-								steps1.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringNull()
-							}
-							if stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID != nil {
-								steps1.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringValue(*stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
-							} else {
-								steps1.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringNull()
-							}
-							if stepsItem.Provision.ProvisionPolicy.DelegatedProvision.Implicit != nil {
-								steps1.Provision.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolValue(*stepsItem.Provision.ProvisionPolicy.DelegatedProvision.Implicit)
-							} else {
-								steps1.Provision.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolNull()
-							}
-						}
-						if stepsItem.Provision.ProvisionPolicy.ManualProvision == nil {
-							steps1.Provision.ProvisionPolicy.ManualProvision = nil
-						} else {
-							steps1.Provision.ProvisionPolicy.ManualProvision = &ManualProvision{}
-							if stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions != nil {
-								steps1.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringValue(*stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions)
-							} else {
-								steps1.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringNull()
-							}
-							steps1.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
-							for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
-								steps1.Provision.ProvisionPolicy.ManualProvision.UserIds = append(steps1.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
-							}
-						}
-					}
-					if stepsItem.Provision.ProvisionTarget == nil {
-						steps1.Provision.ProvisionTarget = nil
-					} else {
-						steps1.Provision.ProvisionTarget = &ProvisionTarget{}
-						if stepsItem.Provision.ProvisionTarget.AppEntitlementID != nil {
-							steps1.Provision.ProvisionTarget.AppEntitlementID = types.StringValue(*stepsItem.Provision.ProvisionTarget.AppEntitlementID)
-						} else {
-							steps1.Provision.ProvisionTarget.AppEntitlementID = types.StringNull()
-						}
-						if stepsItem.Provision.ProvisionTarget.AppID != nil {
-							steps1.Provision.ProvisionTarget.AppID = types.StringValue(*stepsItem.Provision.ProvisionTarget.AppID)
-						} else {
-							steps1.Provision.ProvisionTarget.AppID = types.StringNull()
-						}
-						if stepsItem.Provision.ProvisionTarget.AppUserID != nil {
-							steps1.Provision.ProvisionTarget.AppUserID = types.StringValue(*stepsItem.Provision.ProvisionTarget.AppUserID)
-						} else {
-							steps1.Provision.ProvisionTarget.AppUserID = types.StringNull()
-						}
-						if stepsItem.Provision.ProvisionTarget.GrantDuration != nil {
-							steps1.Provision.ProvisionTarget.GrantDuration = types.StringValue(*stepsItem.Provision.ProvisionTarget.GrantDuration)
-						} else {
-							steps1.Provision.ProvisionTarget.GrantDuration = types.StringNull()
-						}
-					}
+					// Empty struct type inference is the same, so we can just use the same struct as Accept
+					steps1.Provision = &Accept{}
 				}
 				if stepsItem.Reject == nil {
 					steps1.Reject = nil

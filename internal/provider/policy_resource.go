@@ -281,98 +281,11 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											`  - expression` + "\n" +
 											``,
 									},
+									// Provision should be empty on the Policy struct, this field is populated by the app entitlement so it is not empty when getting Policies on Tickets
+									// But we do not need to worry about that case here.
 									"provision": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"assigned": schema.BoolAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `A field indicating whether this step is assigned.`,
-											},
-											"provision_policy": schema.SingleNestedAttribute{
-												Computed: true,
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"connector_provision": schema.SingleNestedAttribute{
-														Optional:    true,
-														Attributes:  map[string]schema.Attribute{},
-														Description: `Indicates that a connector should perform the provisioning. This object has no fields.`,
-													},
-													"delegated_provision": schema.SingleNestedAttribute{
-														Optional: true,
-														Attributes: map[string]schema.Attribute{
-															"app_id": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The AppID of the entitlement to delegate provisioning to.`,
-															},
-															"entitlement_id": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The ID of the entitlement we are delegating provisioning to.`,
-															},
-															"implicit": schema.BoolAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `If true, a binding will be automatically created from the entitlement of the parent app.`,
-															},
-														},
-														Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
-													},
-													"manual_provision": schema.SingleNestedAttribute{
-														Optional: true,
-														Attributes: map[string]schema.Attribute{
-															"instructions": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
-															},
-															"user_ids": schema.ListAttribute{
-																Computed:    true,
-																Optional:    true,
-																ElementType: types.StringType,
-																Description: `An array of users that are required to provision during this step.`,
-															},
-														},
-														Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
-													},
-												},
-												MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
-													`` + "\n" +
-													`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
-													`  - connector` + "\n" +
-													`  - manual` + "\n" +
-													`  - delegated` + "\n" +
-													"\n" +
-													``,
-											},
-											"provision_target": schema.SingleNestedAttribute{
-												Computed: true,
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"app_entitlement_id": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The app entitlement that should be provisioned.`,
-													},
-													"app_id": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The app in which the entitlement should be provisioned`,
-													},
-													"app_user_id": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The app user that should be provisioned. May be unset if the app user is unknown`,
-													},
-													"grant_duration": schema.StringAttribute{
-														Computed: true,
-														Optional: true,
-													},
-												},
-												Description: `ProvisionTarget indicates the specific app, app entitlement, and if known, the app user and grant duration of this provision step`,
-											},
-										},
+										Computed:    true,
+										Attributes:  map[string]schema.Attribute{},
 										Description: `The provision step references a provision policy for this step.`,
 									},
 									"reject": schema.SingleNestedAttribute{
