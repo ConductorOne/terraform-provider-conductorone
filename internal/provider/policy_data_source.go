@@ -308,7 +308,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			},
 			"reassign_tasks_to_delegates": schema.BoolAttribute{
 				Computed:    true,
-				Description: `A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation referrs to the individual delegates users set on their account.`,
+				Description: `A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation refers to the individual delegates users set on their account.`,
 			},
 			"rules": schema.ListNestedAttribute{
 				Computed: true,
