@@ -10,7 +10,7 @@ package shared
 //   - accept
 //   - reject
 type PolicyStep struct {
-// This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
+	// This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
 	Accept *Accept `json:"accept,omitempty"`
 	// The Approval message.
 	//

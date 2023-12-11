@@ -51,23 +51,24 @@ resource "conductorone_policy" "new_policy" {
 
 ### Required
 
-- `display_name` (String) The displayName field.
+- `display_name` (String) The display name of the new policy.
 
 ### Optional
 
-- `description` (String) The description field.
-- `policy_steps` (Attributes Map) The policySteps field. (see [below for nested schema](#nestedatt--policy_steps))
-- `policy_type` (String) must be one of [POLICY_TYPE_UNSPECIFIED, POLICY_TYPE_GRANT, POLICY_TYPE_REVOKE, POLICY_TYPE_CERTIFY, POLICY_TYPE_ACCESS_REQUEST, POLICY_TYPE_PROVISION]
-The policyType field.
-- `post_actions` (Attributes List) The postActions field. (see [below for nested schema](#nestedatt--post_actions))
-- `reassign_tasks_to_delegates` (Boolean) The reassignTasksToDelegates field.
+- `description` (String) The description of the new policy.
+- `policy_steps` (Attributes Map) The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples. (see [below for nested schema](#nestedatt--policy_steps))
+- `policy_type` (String) must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]
+The enum of the policy type.
+- `post_actions` (Attributes List) Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately. (see [below for nested schema](#nestedatt--post_actions))
+- `reassign_tasks_to_delegates` (Boolean) Allows reassigning tasks to delegates.
+- `rules` (Attributes List) The rules field. (see [below for nested schema](#nestedatt--rules))
 
 ### Read-Only
 
 - `created_at` (String)
 - `deleted_at` (String)
-- `id` (String) The id field.
-- `system_builtin` (Boolean) The systemBuiltin field.
+- `id` (String) The ID of the Policy.
+- `system_builtin` (Boolean) Whether this policy is a builtin system policy. Builtin system policies cannot be edited.
 - `updated_at` (String)
 
 <a id="nestedatt--policy_steps"></a>
@@ -75,49 +76,58 @@ The policyType field.
 
 Optional:
 
-- `steps` (Attributes List) The steps field. (see [below for nested schema](#nestedatt--policy_steps--steps))
+- `steps` (Attributes List) An array of policy steps indicating the processing flow of a policy. These steps are oneOfs, and only one property may be set for each array index at a time. (see [below for nested schema](#nestedatt--policy_steps--steps))
 
 <a id="nestedatt--policy_steps--steps"></a>
 ### Nested Schema for `policy_steps.steps`
 
 Optional:
 
-- `approval` (Attributes) The Approval field is used to define who should perform the review.
-This message contains a oneof. Only a single field of the following list may be set at a time:
+- `accept` (Attributes) This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--policy_steps--steps--accept))
+- `approval` (Attributes) The Approval message.
+
+This message contains a oneof named typ. Only a single field of the following list may be set at a time:
   - users
   - manager
   - appOwners
   - group
   - self
-  - entitlementOwners (see [below for nested schema](#nestedatt--policy_steps--steps--approval))
-- `provision` (Attributes) The Provision message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision))
+  - entitlementOwners
+  - expression (see [below for nested schema](#nestedatt--policy_steps--steps--approval))
+- `provision` (Attributes) The provision step references a provision policy for this step. (see [below for nested schema](#nestedatt--policy_steps--steps--provision))
+- `reject` (Attributes) This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--policy_steps--steps--reject))
+
+<a id="nestedatt--policy_steps--steps--accept"></a>
+### Nested Schema for `policy_steps.steps.accept`
+
 
 <a id="nestedatt--policy_steps--steps--approval"></a>
 ### Nested Schema for `policy_steps.steps.approval`
 
 Optional:
 
-- `allow_reassignment` (Boolean) The allowReassignment field.
-- `app_group_approval` (Attributes) The AppGroupApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_group_approval))
-- `app_owner_approval` (Attributes) The AppOwnerApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_owner_approval))
-- `assigned` (Boolean) The assigned field.
-- `entitlement_owner_approval` (Attributes) The EntitlementOwnerApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--entitlement_owner_approval))
-- `manager_approval` (Attributes) The ManagerApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--manager_approval))
-- `require_approval_reason` (Boolean) The requireApprovalReason field.
-- `require_reassignment_reason` (Boolean) The requireReassignmentReason field.
-- `self_approval` (Attributes) The SelfApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--self_approval))
-- `user_approval` (Attributes) The UserApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--user_approval))
+- `allow_reassignment` (Boolean) Configuration to allow reassignment by reviewers during this step.
+- `app_group_approval` (Attributes) The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_group_approval))
+- `app_owner_approval` (Attributes) App owner approval provides the configuration for an approval step when the app owner is the target. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_owner_approval))
+- `assigned` (Boolean) A field indicating whether this step is assigned.
+- `entitlement_owner_approval` (Attributes) The entitlement owner approval allows configuration of the approval step when the target approvers are the entitlement owners. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--entitlement_owner_approval))
+- `expression_approval` (Attributes) The ExpressionApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--expression_approval))
+- `manager_approval` (Attributes) The manager approval object provides configuration options for approval when the target of the approval is the manager of the user in the task. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--manager_approval))
+- `require_approval_reason` (Boolean) Configuration to require a reason when approving this step.
+- `require_reassignment_reason` (Boolean) Configuration to require a reason when reassigning this step.
+- `self_approval` (Attributes) The self approval object describes the configuration of a policy step that needs to be approved by the target of the request. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--self_approval))
+- `user_approval` (Attributes) The user approval object describes the approval configuration of a policy step that needs to be approved by a specific list of users. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--user_approval))
 
 <a id="nestedatt--policy_steps--steps--approval--app_group_approval"></a>
 ### Nested Schema for `policy_steps.steps.approval.user_approval`
 
 Optional:
 
-- `allow_self_approval` (Boolean) The allowSelfApproval field.
-- `app_group_id` (String) The appGroupId field.
-- `app_id` (String) The appId field.
-- `fallback` (Boolean) The fallback field.
-- `fallback_user_ids` (List of String) The fallbackUserIds field.
+- `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is a member of the group during this step.
+- `app_group_id` (String) The ID of the group specified for approval.
+- `app_id` (String) The ID of the app that conatins the group specified for approval.
+- `fallback` (Boolean) Configuration to allow a fallback if the group is empty.
+- `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the group is empty.
 
 
 <a id="nestedatt--policy_steps--steps--approval--app_owner_approval"></a>
@@ -133,9 +143,21 @@ Optional:
 
 Optional:
 
-- `allow_self_approval` (Boolean) Entitlement owner is based on the current entitlement's id and doesn't need to have self-contained data
-- `fallback` (Boolean) The fallback field.
-- `fallback_user_ids` (List of String) The fallbackUserIds field.
+- `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is an entitlement owner during this step.
+- `fallback` (Boolean) Configuration to allow a fallback if the entitlement owner cannot be identified.
+- `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.
+
+
+<a id="nestedatt--policy_steps--steps--approval--expression_approval"></a>
+### Nested Schema for `policy_steps.steps.approval.user_approval`
+
+Optional:
+
+- `allow_self_approval` (Boolean) Configuration to allow self approval of if the user is specified and also the target of the ticket.
+- `assigned_user_ids` (List of String) The assignedUserIds field.
+- `expressions` (List of String) Array of dynamic expressions to determine the approvers.  The first expression to return a non-empty list of users will be used.
+- `fallback` (Boolean) Configuration to allow a fallback if the expression does not return a valid list of users.
+- `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if and the expression does not return a valid list of users.
 
 
 <a id="nestedatt--policy_steps--steps--approval--manager_approval"></a>
@@ -143,10 +165,10 @@ Optional:
 
 Optional:
 
-- `allow_self_approval` (Boolean) The allowSelfApproval field.
-- `assigned_user_ids` (List of String) The assignedUserIds field.
-- `fallback` (Boolean) The fallback field.
-- `fallback_user_ids` (List of String) The fallbackUserIds field.
+- `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is their own manager. This may occur if a service account has an identity user and manager specified as the same person.
+- `assigned_user_ids` (List of String) The array of users determined to be the manager during processing time.
+- `fallback` (Boolean) Configuration to allow a fallback if no manager is found.
+- `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and no manager is found.
 
 
 <a id="nestedatt--policy_steps--steps--approval--self_approval"></a>
@@ -154,12 +176,12 @@ Optional:
 
 Optional:
 
-- `fallback` (Boolean) The fallback field.
-- `fallback_user_ids` (List of String) Self approval is the target of the ticket
+- `fallback` (Boolean) Configuration to allow a fallback if the identity user of the target app user cannot be determined.
+- `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.
 
 Read-Only:
 
-- `assigned_user_ids` (List of String) The assignedUserIds field.
+- `assigned_user_ids` (List of String) The array of users determined to be themselves during approval. This should only ever be one person, but is saved because it may change if the owner of an app user changes while the ticket is open.
 
 
 <a id="nestedatt--policy_steps--steps--approval--user_approval"></a>
@@ -167,54 +189,17 @@ Read-Only:
 
 Optional:
 
-- `allow_self_approval` (Boolean) The allowSelfApproval field.
-- `user_ids` (List of String) The userIds field.
+- `allow_self_approval` (Boolean) Configuration to allow self approval of if the user is specified and also the target of the ticket.
+- `user_ids` (List of String) Array of users configured for approval.
 
 
 
 <a id="nestedatt--policy_steps--steps--provision"></a>
 ### Nested Schema for `policy_steps.steps.provision`
 
-Optional:
 
-- `assigned` (Boolean) The assigned field.
-- `provision_policy` (Attributes) The ProvisionPolicy message.
-This message contains a oneof. Only a single field of the following list may be set at a time:
-  - connector
-  - manual
-  - delegated (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy))
-
-<a id="nestedatt--policy_steps--steps--provision--provision_policy"></a>
-### Nested Schema for `policy_steps.steps.provision.provision_policy`
-
-Optional:
-
-- `connector_provision` (Attributes) The ConnectorProvision message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--connector_provision))
-- `delegated_provision` (Attributes) The DelegatedProvision message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--delegated_provision))
-- `manual_provision` (Attributes) The ManualProvision message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--manual_provision))
-
-<a id="nestedatt--policy_steps--steps--provision--provision_policy--connector_provision"></a>
-### Nested Schema for `policy_steps.steps.provision.provision_policy.connector_provision`
-
-
-<a id="nestedatt--policy_steps--steps--provision--provision_policy--delegated_provision"></a>
-### Nested Schema for `policy_steps.steps.provision.provision_policy.delegated_provision`
-
-Optional:
-
-- `app_id` (String) The appId field.
-- `entitlement_id` (String) The entitlementId field.
-
-
-<a id="nestedatt--policy_steps--steps--provision--provision_policy--manual_provision"></a>
-### Nested Schema for `policy_steps.steps.provision.provision_policy.manual_provision`
-
-Optional:
-
-- `instructions` (String) The instructions field.
-- `user_ids` (List of String) The userIds field.
-
-
+<a id="nestedatt--policy_steps--steps--reject"></a>
+### Nested Schema for `policy_steps.steps.reject`
 
 
 
@@ -226,4 +211,14 @@ Optional:
 
 - `certify_remediate_immediately` (Boolean) ONLY valid when used in a CERTIFY Ticket Type:
  Causes any deprovision or change in a grant to be applied when Certify Ticket is closed.
+This field is part of the `action` oneof.
 See the documentation for `c1.api.policy.v1.PolicyPostActions` for more details.
+
+
+<a id="nestedatt--rules"></a>
+### Nested Schema for `rules`
+
+Optional:
+
+- `condition` (String) The condition field.
+- `policy_key` (String) This is a reference to a list of policy steps from `policy_steps`

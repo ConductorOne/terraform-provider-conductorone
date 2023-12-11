@@ -102,6 +102,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `Configuration to allow reassignment by reviewers during this step.`,
 											},
 											"app_group_approval": schema.SingleNestedAttribute{
@@ -109,18 +110,22 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `Configuration to allow self approval if the target user is a member of the group during this step.`,
 													},
 													"app_group_id": schema.StringAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `The ID of the group specified for approval.`,
 													},
 													"app_id": schema.StringAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `The ID of the app that conatins the group specified for approval.`,
 													},
 													"fallback": schema.BoolAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `Configuration to allow a fallback if the group is empty.`,
 													},
 													"fallback_user_ids": schema.ListAttribute{
@@ -146,6 +151,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											},
 											"assigned": schema.BoolAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `A field indicating whether this step is assigned.`,
 											},
 											"entitlement_owner_approval": schema.SingleNestedAttribute{
@@ -153,14 +159,17 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `Configuration to allow self approval if the target user is an entitlement owner during this step.`,
 													},
 													"fallback": schema.BoolAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `Configuration to allow a fallback if the entitlement owner cannot be identified.`,
 													},
 													"fallback_user_ids": schema.ListAttribute{
 														Computed:    true,
+														Optional:    true,
 														ElementType: types.StringType,
 														Description: `Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
 													},
@@ -173,20 +182,24 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `Configuration to allow self approval of if the user is specified and also the target of the ticket.`,
 													},
 													"assigned_user_ids": schema.ListAttribute{
 														Computed:    true,
+														Optional:    true,
 														ElementType: types.StringType,
 														Description: `The assignedUserIds field.`,
 													},
 													"expressions": schema.ListAttribute{
 														Computed:    true,
+														Optional:    true,
 														ElementType: types.StringType,
 														Description: `Array of dynamic expressions to determine the approvers.  The first expression to return a non-empty list of users will be used.`,
 													},
 													"fallback": schema.BoolAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `Configuration to allow a fallback if the expression does not return a valid list of users.`,
 													},
 													"fallback_user_ids": schema.ListAttribute{
@@ -203,6 +216,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `Configuration to allow self approval if the target user is their own manager. This may occur if a service account has an identity user and manager specified as the same person.`,
 													},
 													"assigned_user_ids": schema.ListAttribute{
@@ -213,6 +227,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													},
 													"fallback": schema.BoolAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `Configuration to allow a fallback if no manager is found.`,
 													},
 													"fallback_user_ids": schema.ListAttribute{
@@ -226,10 +241,12 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											},
 											"require_approval_reason": schema.BoolAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `Configuration to require a reason when approving this step.`,
 											},
 											"require_reassignment_reason": schema.BoolAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `Configuration to require a reason when reassigning this step.`,
 											},
 											"self_approval": schema.SingleNestedAttribute{
@@ -242,6 +259,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													},
 													"fallback": schema.BoolAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `Configuration to allow a fallback if the identity user of the target app user cannot be determined.`,
 													},
 													"fallback_user_ids": schema.ListAttribute{
@@ -258,10 +276,12 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `Configuration to allow self approval of if the user is specified and also the target of the ticket.`,
 													},
 													"user_ids": schema.ListAttribute{
 														Computed:    true,
+														Optional:    true,
 														ElementType: types.StringType,
 														Description: `Array of users configured for approval.`,
 													},
@@ -285,6 +305,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 									// But we do not need to worry about that case here.
 									"provision": schema.SingleNestedAttribute{
 										Computed:    true,
+										Optional:    true,
 										Attributes:  map[string]schema.Attribute{},
 										Description: `The provision step references a provision policy for this step.`,
 									},
@@ -342,14 +363,17 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			},
 			"rules": schema.ListNestedAttribute{
 				Computed: true,
+				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"condition": schema.StringAttribute{
 							Computed:    true,
+							Optional:    true,
 							Description: `The condition field.`,
 						},
 						"policy_key": schema.StringAttribute{
 							Computed:    true,
+							Optional:    true,
 							Description: `This is a reference to a list of policy steps from ` + "`" + `policy_steps` + "`" + ``,
 						},
 					},

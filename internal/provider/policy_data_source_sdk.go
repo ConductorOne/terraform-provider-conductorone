@@ -40,9 +40,6 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 			policyStepsResult.Steps = nil
 			for _, stepsItem := range policyStepsValue.Steps {
 				var steps1 PolicyStep
-				if steps1.Approval == nil {
-					steps1.Approval = &ApprovalInput{}
-				}
 				if stepsItem.Approval == nil {
 					steps1.Approval = nil
 				} else {
@@ -104,6 +101,33 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					}
 					if steps1.Approval.EntitlementOwnerApproval == nil {
 						steps1.Approval.EntitlementOwnerApproval = &EntitlementOwnerApprovalInput{}
+					}
+					if stepsItem.Approval.ExpressionApproval == nil {
+						steps1.Approval.ExpressionApproval = nil
+					} else {
+						steps1.Approval.ExpressionApproval = &ExpressionApprovalInput{}
+						if stepsItem.Approval.ExpressionApproval.AllowSelfApproval != nil {
+							steps1.Approval.ExpressionApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.ExpressionApproval.AllowSelfApproval)
+						} else {
+							steps1.Approval.ExpressionApproval.AllowSelfApproval = types.BoolNull()
+						}
+						steps1.Approval.ExpressionApproval.AssignedUserIds = nil
+						for _, v := range stepsItem.Approval.ExpressionApproval.AssignedUserIds {
+							steps1.Approval.ExpressionApproval.AssignedUserIds = append(steps1.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
+						}
+						steps1.Approval.ExpressionApproval.Expressions = nil
+						for _, v := range stepsItem.Approval.ExpressionApproval.Expressions {
+							steps1.Approval.ExpressionApproval.Expressions = append(steps1.Approval.ExpressionApproval.Expressions, types.StringValue(v))
+						}
+						if stepsItem.Approval.ExpressionApproval.Fallback != nil {
+							steps1.Approval.ExpressionApproval.Fallback = types.BoolValue(*stepsItem.Approval.ExpressionApproval.Fallback)
+						} else {
+							steps1.Approval.ExpressionApproval.Fallback = types.BoolNull()
+						}
+						steps1.Approval.ExpressionApproval.FallbackUserIds = nil
+						for _, v := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
+							steps1.Approval.ExpressionApproval.FallbackUserIds = append(steps1.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
+						}
 					}
 					if stepsItem.Approval.EntitlementOwnerApproval == nil {
 						steps1.Approval.EntitlementOwnerApproval = nil
@@ -199,13 +223,20 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 						}
 					}
 				}
-				if steps1.Provision == nil {
-					steps1.Provision = &Accept{}
-				}
 				if stepsItem.Provision == nil {
 					steps1.Provision = nil
 				} else {
 					steps1.Provision = &Accept{}
+				}
+				if stepsItem.Reject == nil {
+					steps1.Reject = nil
+				} else {
+					steps1.Reject = &Reject{}
+				}
+				if stepsItem.Accept == nil {
+					steps1.Accept = nil
+				} else {
+					steps1.Accept = &Accept{}
 				}
 				policyStepsResult.Steps = append(policyStepsResult.Steps, steps1)
 			}
@@ -231,6 +262,28 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 		r.ReassignTasksToDelegates = types.BoolValue(*resp.ReassignTasksToDelegates)
 	} else {
 		r.ReassignTasksToDelegates = types.BoolNull()
+	}
+	if len(r.Rules) > len(resp.Rules) {
+		r.Rules = r.Rules[:len(resp.Rules)]
+	}
+	for rulesCount, rulesItem := range resp.Rules {
+		var rules1 Rule
+		if rulesItem.Condition != nil {
+			rules1.Condition = types.StringValue(*rulesItem.Condition)
+		} else {
+			rules1.Condition = types.StringNull()
+		}
+		if rulesItem.PolicyKey != nil {
+			rules1.PolicyKey = types.StringValue(*rulesItem.PolicyKey)
+		} else {
+			rules1.PolicyKey = types.StringNull()
+		}
+		if rulesCount+1 > len(r.Rules) {
+			r.Rules = append(r.Rules, rules1)
+		} else {
+			r.Rules[rulesCount].Condition = rules1.Condition
+			r.Rules[rulesCount].PolicyKey = rules1.PolicyKey
+		}
 	}
 	if resp.SystemBuiltin != nil {
 		r.SystemBuiltin = types.BoolValue(*resp.SystemBuiltin)

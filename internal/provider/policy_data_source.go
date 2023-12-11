@@ -36,6 +36,7 @@ type PolicyDataSourceModel struct {
 	PolicyType               types.String           `tfsdk:"policy_type"`
 	PostActions              []PolicyPostActions    `tfsdk:"post_actions"`
 	ReassignTasksToDelegates types.Bool             `tfsdk:"reassign_tasks_to_delegates"`
+	Rules                    []Rule                 `tfsdk:"rules"`
 	SystemBuiltin            types.Bool             `tfsdk:"system_builtin"`
 	UpdatedAt                types.String           `tfsdk:"updated_at"`
 }
@@ -131,6 +132,35 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											"assigned": schema.BoolAttribute{
 												Computed:    true,
 												Description: `The assigned field.`,
+											},
+											"expression_approval": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"allow_self_approval": schema.BoolAttribute{
+														Computed:    true,
+														Description: `Configuration to allow self approval of if the user is specified and also the target of the ticket.`,
+													},
+													"assigned_user_ids": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `The assignedUserIds field.`,
+													},
+													"expressions": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `Array of dynamic expressions to determine the approvers.  The first expression to return a non-empty list of users will be used.`,
+													},
+													"fallback": schema.BoolAttribute{
+														Computed:    true,
+														Description: `Configuration to allow a fallback if the expression does not return a valid list of users.`,
+													},
+													"fallback_user_ids": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `Configuration to specific which users to fallback to if and the expression does not return a valid list of users.`,
+													},
+												},
+												Description: `The ExpressionApproval message.`,
 											},
 											"entitlement_owner_approval": schema.SingleNestedAttribute{
 												Computed: true,
@@ -234,61 +264,19 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											``,
 									},
 									"provision": schema.SingleNestedAttribute{
-										Computed: true,
-										Attributes: map[string]schema.Attribute{
-											"assigned": schema.BoolAttribute{
-												Computed:    true,
-												Description: `The assigned field.`,
-											},
-											"provision_policy": schema.SingleNestedAttribute{
-												Computed: true,
-												Attributes: map[string]schema.Attribute{
-													"connector_provision": schema.SingleNestedAttribute{
-														Computed:    true,
-														Attributes:  map[string]schema.Attribute{},
-														Description: `The ConnectorProvision message.`,
-													},
-													"delegated_provision": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"app_id": schema.StringAttribute{
-																Computed:    true,
-																Description: `The appId field.`,
-															},
-															"entitlement_id": schema.StringAttribute{
-																Computed:    true,
-																Description: `The entitlementId field.`,
-															},
-														},
-														Description: `The DelegatedProvision message.`,
-													},
-													"manual_provision": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"instructions": schema.StringAttribute{
-																Computed:    true,
-																Description: `The instructions field.`,
-															},
-															"user_ids": schema.ListAttribute{
-																Computed:    true,
-																ElementType: types.StringType,
-																Description: `The userIds field.`,
-															},
-														},
-														Description: `The ManualProvision message.`,
-													},
-												},
-												MarkdownDescription: `The ProvisionPolicy message.` + "\n" +
-													`` +
-													`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
-													`  - connector` + "\n" +
-													`  - manual` + "\n" +
-													`  - delegated` + "\n" +
-													"\n" +
-													``,
-											},
-										},
+										Computed:    true,
+										Attributes:  map[string]schema.Attribute{},
 										Description: `The Provision message.`,
+									},
+									"accept": schema.SingleNestedAttribute{
+										Computed:    true,
+										Attributes:  map[string]schema.Attribute{},
+										Description: `This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.`,
+									},
+									"reject": schema.SingleNestedAttribute{
+										Computed:    true,
+										Attributes:  map[string]schema.Attribute{},
+										Description: `This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.`,
 									},
 								},
 							},
@@ -320,7 +308,23 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			},
 			"reassign_tasks_to_delegates": schema.BoolAttribute{
 				Computed:    true,
-				Description: `The reassignTasksToDelegates field.`,
+				Description: `A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation referrs to the individual delegates users set on their account.`,
+			},
+			"rules": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"condition": schema.StringAttribute{
+							Computed:    true,
+							Description: `The condition field.`,
+						},
+						"policy_key": schema.StringAttribute{
+							Computed:    true,
+							Description: `This is a reference to a list of policy steps from ` + "`" + `policy_steps` + "`" + ``,
+						},
+					},
+				},
+				Description: `The rules field.`,
 			},
 			"system_builtin": schema.BoolAttribute{
 				Computed:    true,

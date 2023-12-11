@@ -48,7 +48,8 @@ data "conductorone_policy" "custom_review_policy" {
 - `policy_type` (String) must be one of [POLICY_TYPE_UNSPECIFIED, POLICY_TYPE_GRANT, POLICY_TYPE_REVOKE, POLICY_TYPE_CERTIFY, POLICY_TYPE_ACCESS_REQUEST, POLICY_TYPE_PROVISION]
 The policyType field.
 - `post_actions` (Attributes List) The postActions field. (see [below for nested schema](#nestedatt--post_actions))
-- `reassign_tasks_to_delegates` (Boolean) The reassignTasksToDelegates field.
+- `reassign_tasks_to_delegates` (Boolean) A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation referrs to the individual delegates users set on their account.
+- `rules` (Attributes List) The rules field. (see [below for nested schema](#nestedatt--rules))
 - `system_builtin` (Boolean) The systemBuiltin field.
 - `updated_at` (String)
 
@@ -64,6 +65,7 @@ Read-Only:
 
 Read-Only:
 
+- `accept` (Attributes) This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--policy_steps--steps--accept))
 - `approval` (Attributes) The Approval field is used to define who should perform the review.
 This message contains a oneof. Only a single field of the following list may be set at a time:
   - users
@@ -73,6 +75,11 @@ This message contains a oneof. Only a single field of the following list may be 
   - self
   - entitlementOwners (see [below for nested schema](#nestedatt--policy_steps--steps--approval))
 - `provision` (Attributes) The Provision message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision))
+- `reject` (Attributes) This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--policy_steps--steps--reject))
+
+<a id="nestedatt--policy_steps--steps--accept"></a>
+### Nested Schema for `policy_steps.steps.accept`
+
 
 <a id="nestedatt--policy_steps--steps--approval"></a>
 ### Nested Schema for `policy_steps.steps.approval`
@@ -84,6 +91,7 @@ Read-Only:
 - `app_owner_approval` (Attributes) The AppOwnerApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_owner_approval))
 - `assigned` (Boolean) The assigned field.
 - `entitlement_owner_approval` (Attributes) The EntitlementOwnerApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--entitlement_owner_approval))
+- `expression_approval` (Attributes) The ExpressionApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--expression_approval))
 - `manager_approval` (Attributes) The ManagerApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--manager_approval))
 - `require_approval_reason` (Boolean) The requireApprovalReason field.
 - `require_reassignment_reason` (Boolean) The requireReassignmentReason field.
@@ -120,6 +128,18 @@ Read-Only:
 - `fallback_user_ids` (List of String) The fallbackUserIds field.
 
 
+<a id="nestedatt--policy_steps--steps--approval--expression_approval"></a>
+### Nested Schema for `policy_steps.steps.approval.user_approval`
+
+Read-Only:
+
+- `allow_self_approval` (Boolean) Configuration to allow self approval of if the user is specified and also the target of the ticket.
+- `assigned_user_ids` (List of String) The assignedUserIds field.
+- `expressions` (List of String) Array of dynamic expressions to determine the approvers.  The first expression to return a non-empty list of users will be used.
+- `fallback` (Boolean) Configuration to allow a fallback if the expression does not return a valid list of users.
+- `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if and the expression does not return a valid list of users.
+
+
 <a id="nestedatt--policy_steps--steps--approval--manager_approval"></a>
 ### Nested Schema for `policy_steps.steps.approval.user_approval`
 
@@ -154,46 +174,9 @@ Read-Only:
 <a id="nestedatt--policy_steps--steps--provision"></a>
 ### Nested Schema for `policy_steps.steps.provision`
 
-Read-Only:
 
-- `assigned` (Boolean) The assigned field.
-- `provision_policy` (Attributes) The ProvisionPolicy message.
-This message contains a oneof. Only a single field of the following list may be set at a time:
-  - connector
-  - manual
-  - delegated (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy))
-
-<a id="nestedatt--policy_steps--steps--provision--provision_policy"></a>
-### Nested Schema for `policy_steps.steps.provision.provision_policy`
-
-Read-Only:
-
-- `connector_provision` (Attributes) The ConnectorProvision message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--connector_provision))
-- `delegated_provision` (Attributes) The DelegatedProvision message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--delegated_provision))
-- `manual_provision` (Attributes) The ManualProvision message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--manual_provision))
-
-<a id="nestedatt--policy_steps--steps--provision--provision_policy--connector_provision"></a>
-### Nested Schema for `policy_steps.steps.provision.provision_policy.connector_provision`
-
-
-<a id="nestedatt--policy_steps--steps--provision--provision_policy--delegated_provision"></a>
-### Nested Schema for `policy_steps.steps.provision.provision_policy.delegated_provision`
-
-Read-Only:
-
-- `app_id` (String) The appId field.
-- `entitlement_id` (String) The entitlementId field.
-
-
-<a id="nestedatt--policy_steps--steps--provision--provision_policy--manual_provision"></a>
-### Nested Schema for `policy_steps.steps.provision.provision_policy.manual_provision`
-
-Read-Only:
-
-- `instructions` (String) The instructions field.
-- `user_ids` (List of String) The userIds field.
-
-
+<a id="nestedatt--policy_steps--steps--reject"></a>
+### Nested Schema for `policy_steps.steps.reject`
 
 
 
@@ -206,3 +189,12 @@ Read-Only:
 - `certify_remediate_immediately` (Boolean) ONLY valid when used in a CERTIFY Ticket Type:
  Causes any deprovision or change in a grant to be applied when Certify Ticket is closed.
 See the documentation for `c1.api.policy.v1.PolicyPostActions` for more details.
+
+
+<a id="nestedatt--rules"></a>
+### Nested Schema for `rules`
+
+Read-Only:
+
+- `condition` (String) The condition field.
+- `policy_key` (String) This is a reference to a list of policy steps from `policy_steps`

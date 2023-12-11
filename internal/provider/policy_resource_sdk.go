@@ -313,8 +313,8 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 			*policyKey = rulesItem.PolicyKey.ValueString()
 		} else {
 			policyKey = nil
-	}
-	rules = append(rules, shared.Rule{
+		}
+		rules = append(rules, shared.Rule{
 			Condition: condition,
 			PolicyKey: policyKey,
 		})
@@ -551,7 +551,7 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 				} else {
 					steps1.Reject = &Reject{}
 				}
-			policyStepsResult.Steps = append(policyStepsResult.Steps, steps1)
+				policyStepsResult.Steps = append(policyStepsResult.Steps, steps1)
 			}
 			r.PolicySteps[policyStepsKey] = policyStepsResult
 		}
@@ -571,9 +571,9 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 		} else {
 			postActions1.CertifyRemediateImmediately = types.BoolNull()
 		}
-	if postActionsCount+1 > len(r.PostActions) {
-		r.PostActions = append(r.PostActions, postActions1)
-	} else {
+		if postActionsCount+1 > len(r.PostActions) {
+			r.PostActions = append(r.PostActions, postActions1)
+		} else {
 			r.PostActions[postActionsCount].CertifyRemediateImmediately = postActions1.CertifyRemediateImmediately
 		}
 	}
