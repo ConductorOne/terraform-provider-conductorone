@@ -48,7 +48,7 @@ data "conductorone_policy" "custom_review_policy" {
 - `policy_type` (String) must be one of [POLICY_TYPE_UNSPECIFIED, POLICY_TYPE_GRANT, POLICY_TYPE_REVOKE, POLICY_TYPE_CERTIFY, POLICY_TYPE_ACCESS_REQUEST, POLICY_TYPE_PROVISION]
 The policyType field.
 - `post_actions` (Attributes List) The postActions field. (see [below for nested schema](#nestedatt--post_actions))
-- `reassign_tasks_to_delegates` (Boolean) A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation referrs to the individual delegates users set on their account.
+- `reassign_tasks_to_delegates` (Boolean) A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation refers to the individual delegates users set on their account.
 - `rules` (Attributes List) The rules field. (see [below for nested schema](#nestedatt--rules))
 - `system_builtin` (Boolean) The systemBuiltin field.
 - `updated_at` (String)
