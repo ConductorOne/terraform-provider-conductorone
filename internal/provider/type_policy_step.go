@@ -4,7 +4,7 @@ package provider
 
 type PolicyStep struct {
 	Accept    *DurationUnset `tfsdk:"accept"`
-	Approval  *ApprovalInput `tfsdk:"approval"`
+	Approval  *Approval      `tfsdk:"approval"`
 	Provision *Provision     `tfsdk:"provision"`
 	Reject    *DurationUnset `tfsdk:"reject"`
 }

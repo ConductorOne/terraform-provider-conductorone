@@ -54,7 +54,7 @@ type CreatePolicyRequest struct {
 	// The display name of the new policy.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples.
-	PolicySteps map[string]PolicyStepsInput `json:"policySteps,omitempty"`
+	PolicySteps map[string]PolicySteps `json:"policySteps,omitempty"`
 	// The enum of the policy type.
 	PolicyType *CreatePolicyRequestPolicyType `json:"policyType,omitempty"`
 	// Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately.
@@ -77,7 +77,7 @@ func (o *CreatePolicyRequest) GetDisplayName() *string {
 	return o.DisplayName
 }
 
-func (o *CreatePolicyRequest) GetPolicySteps() map[string]PolicyStepsInput {
+func (o *CreatePolicyRequest) GetPolicySteps() map[string]PolicySteps {
 	if o == nil {
 		return nil
 	}

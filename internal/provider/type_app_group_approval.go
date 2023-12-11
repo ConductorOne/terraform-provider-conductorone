@@ -4,10 +4,10 @@ package provider
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type ExpressionApprovalInput struct {
+type AppGroupApproval struct {
 	AllowSelfApproval types.Bool     `tfsdk:"allow_self_approval"`
-	AssignedUserIds   []types.String `tfsdk:"assigned_user_ids"`
-	Expressions       []types.String `tfsdk:"expressions"`
+	AppGroupID        types.String   `tfsdk:"app_group_id"`
+	AppID             types.String   `tfsdk:"app_id"`
 	Fallback          types.Bool     `tfsdk:"fallback"`
 	FallbackUserIds   []types.String `tfsdk:"fallback_user_ids"`
 }

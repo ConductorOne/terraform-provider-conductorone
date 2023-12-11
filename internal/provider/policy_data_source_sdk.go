@@ -51,7 +51,7 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 				if stepsItem.Approval == nil {
 					steps1.Approval = nil
 				} else {
-					steps1.Approval = &ApprovalInput{}
+					steps1.Approval = &Approval{}
 					if stepsItem.Approval.AllowReassignment != nil {
 						steps1.Approval.AllowReassignment = types.BoolValue(*stepsItem.Approval.AllowReassignment)
 					} else {
@@ -60,7 +60,7 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					if stepsItem.Approval.AppOwnerApproval == nil {
 						steps1.Approval.AppOwnerApproval = nil
 					} else {
-						steps1.Approval.AppOwnerApproval = &AppOwnerApprovalInput{}
+						steps1.Approval.AppOwnerApproval = &AppOwnerApproval{}
 						if stepsItem.Approval.AppOwnerApproval.AllowSelfApproval != nil {
 							steps1.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.AppOwnerApproval.AllowSelfApproval)
 						} else {
@@ -75,7 +75,7 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					if stepsItem.Approval.EntitlementOwnerApproval == nil {
 						steps1.Approval.EntitlementOwnerApproval = nil
 					} else {
-						steps1.Approval.EntitlementOwnerApproval = &EntitlementOwnerApprovalInput{}
+						steps1.Approval.EntitlementOwnerApproval = &EntitlementOwnerApproval{}
 						if stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval != nil {
 							steps1.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
 						} else {
@@ -94,7 +94,7 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					if stepsItem.Approval.ExpressionApproval == nil {
 						steps1.Approval.ExpressionApproval = nil
 					} else {
-						steps1.Approval.ExpressionApproval = &ExpressionApprovalInput{}
+						steps1.Approval.ExpressionApproval = &ExpressionApproval{}
 						if stepsItem.Approval.ExpressionApproval.AllowSelfApproval != nil {
 							steps1.Approval.ExpressionApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.ExpressionApproval.AllowSelfApproval)
 						} else {
@@ -121,7 +121,7 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					if stepsItem.Approval.AppGroupApproval == nil {
 						steps1.Approval.AppGroupApproval = nil
 					} else {
-						steps1.Approval.AppGroupApproval = &AppGroupApprovalInput{}
+						steps1.Approval.AppGroupApproval = &AppGroupApproval{}
 						if stepsItem.Approval.AppGroupApproval.AllowSelfApproval != nil {
 							steps1.Approval.AppGroupApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.AppGroupApproval.AllowSelfApproval)
 						} else {
@@ -150,7 +150,7 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					if stepsItem.Approval.ManagerApproval == nil {
 						steps1.Approval.ManagerApproval = nil
 					} else {
-						steps1.Approval.ManagerApproval = &ManagerApprovalInput{}
+						steps1.Approval.ManagerApproval = &ManagerApproval{}
 						if stepsItem.Approval.ManagerApproval.AllowSelfApproval != nil {
 							steps1.Approval.ManagerApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.ManagerApproval.AllowSelfApproval)
 						} else {
@@ -183,7 +183,7 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					if stepsItem.Approval.SelfApproval == nil {
 						steps1.Approval.SelfApproval = nil
 					} else {
-						steps1.Approval.SelfApproval = &SelfApprovalInput{}
+						steps1.Approval.SelfApproval = &SelfApproval{}
 						steps1.Approval.SelfApproval.AssignedUserIds = nil
 						for _, v := range stepsItem.Approval.SelfApproval.AssignedUserIds {
 							steps1.Approval.SelfApproval.AssignedUserIds = append(steps1.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
@@ -201,7 +201,7 @@ func (r *PolicyDataSourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 					if stepsItem.Approval.UserApproval == nil {
 						steps1.Approval.UserApproval = nil
 					} else {
-						steps1.Approval.UserApproval = &UserApprovalInput{}
+						steps1.Approval.UserApproval = &UserApproval{}
 						if stepsItem.Approval.UserApproval.AllowSelfApproval != nil {
 							steps1.Approval.UserApproval.AllowSelfApproval = types.BoolValue(*stepsItem.Approval.UserApproval.AllowSelfApproval)
 						} else {

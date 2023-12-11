@@ -4,7 +4,9 @@ package provider
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type UserApprovalInput struct {
+type ManagerApproval struct {
 	AllowSelfApproval types.Bool     `tfsdk:"allow_self_approval"`
-	UserIds           []types.String `tfsdk:"user_ids"`
+	AssignedUserIds   []types.String `tfsdk:"assigned_user_ids"`
+	Fallback          types.Bool     `tfsdk:"fallback"`
+	FallbackUserIds   []types.String `tfsdk:"fallback_user_ids"`
 }

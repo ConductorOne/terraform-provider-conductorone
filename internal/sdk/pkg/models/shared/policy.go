@@ -176,7 +176,7 @@ type PolicyInput struct {
 	// The display name of the Policy.
 	DisplayName *string `json:"displayName,omitempty"`
 	// A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set.
-	PolicySteps map[string]PolicyStepsInput `json:"policySteps,omitempty"`
+	PolicySteps map[string]PolicySteps `json:"policySteps,omitempty"`
 	// Indicates the type of this policy. Can also be used to get the value from policySteps.
 	PolicyType *PolicyType `json:"policyType,omitempty"`
 	// An array of actions (ordered) to take place after a policy completes processing.
@@ -201,7 +201,7 @@ func (o *PolicyInput) GetDisplayName() *string {
 	return o.DisplayName
 }
 
-func (o *PolicyInput) GetPolicySteps() map[string]PolicyStepsInput {
+func (o *PolicyInput) GetPolicySteps() map[string]PolicySteps {
 	if o == nil {
 		return nil
 	}
