@@ -187,8 +187,8 @@ func New(opts ...SDKOption) *SDK {
 			Language:          "go",
 			OpenAPIDocVersion: "0.1.0-alpha",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.210.6",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.210.6 0.1.0-alpha terraform",
+			GenVersion:        "2.213.3",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.213.3 0.1.0-alpha terraform",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "example",

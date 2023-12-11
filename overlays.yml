@@ -7,3 +7,7 @@ actions:
     description: Ignore the updateMask property
     update:
       x-speakeasy-terraform-ignore: true
+  - target: "$.components.schemas['c1.api.policy.v1.PolicyStep'].properties.provision"
+    description: Read only
+    update:
+      readOnly: true
