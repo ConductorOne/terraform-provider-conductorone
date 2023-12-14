@@ -120,6 +120,7 @@ func (c *ClientConfig) GetServerURL() string {
 type CustomOptions struct {
 	*ClientConfig
 
+	// nolint:unused
 	withClient *http.Client
 	logger     *zap.Logger
 	tlsConfig  *tls.Config
