@@ -42,8 +42,7 @@ func WithTenantCustom(input string) (CustomSDKOption, error) {
 	}
 
 	return func(sdk *CustomOptions) {
-		sdk.serverURL = resp.ServerURL()
-		sdk.tenant = resp.Tenant()
+		sdk.ClientConfig = resp
 	}, nil
 }
 
@@ -70,15 +69,15 @@ type ClientConfig struct {
 	tenant    string
 }
 
-func (c ClientConfig) UseWithServer() bool {
+func (c *ClientConfig) UseWithServer() bool {
 	return c.serverURL != ""
 }
 
-func (c ClientConfig) UseWithTenant() bool {
+func (c *ClientConfig) UseWithTenant() bool {
 	return c.tenant != ""
 }
 
-func (c ClientConfig) SetTenant(tenant string) error {
+func (c *ClientConfig) SetTenant(tenant string) error {
 	if c.UseWithServer() {
 		return errors.New("cannot set tenant, tenant and serverURL are mutually exclusive")
 	}
@@ -86,7 +85,7 @@ func (c ClientConfig) SetTenant(tenant string) error {
 	return nil
 }
 
-func (c ClientConfig) SetServerURL(serverURL string) error {
+func (c *ClientConfig) SetServerURL(serverURL string) error {
 	if c.UseWithTenant() {
 		return errors.New("cannot set serverURL, tenant and serverURL are mutually exclusive")
 	}
@@ -94,17 +93,17 @@ func (c ClientConfig) SetServerURL(serverURL string) error {
 	return nil
 }
 
-func (c ClientConfig) Tenant() string {
+func (c *ClientConfig) Tenant() string {
 	return c.tenant
 }
 
 // ServerURL returns the server URL.
-func (c ClientConfig) ServerURL() string {
+func (c *ClientConfig) ServerURL() string {
 	return c.serverURL
 }
 
 // GetServerURL returns the server URL. If serverURL is empty (""), it constructs the server URL using the tenant. However, if the tenant is also empty, then it will return an empty string.
-func (c ClientConfig) GetServerURL() string {
+func (c *ClientConfig) GetServerURL() string {
 	if c.UseWithServer() {
 		return c.serverURL
 	}
@@ -119,9 +118,8 @@ func (c ClientConfig) GetServerURL() string {
 }
 
 type CustomOptions struct {
-	ClientConfig
+	*ClientConfig
 
-	// nolint:unused
 	withClient *http.Client
 	logger     *zap.Logger
 	tlsConfig  *tls.Config
@@ -139,7 +137,7 @@ func NewWithCredentials(ctx context.Context, cred *ClientCredentials, opts ...Cu
 		if err != nil {
 			return nil, err
 		}
-		options.ClientConfig = *resp
+		options.ClientConfig = resp
 	}
 
 	tokenSource, err := NewTokenSource(ctx, cred.ClientID, cred.ClientSecret, options.GetServerURL())

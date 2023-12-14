@@ -48,7 +48,7 @@ func TestCustomTenantOptions(t *testing.T) {
 			}
 			customOptions := &CustomOptions{}
 			got(customOptions)
-			testClientConfig(t, tt, &customOptions.ClientConfig)
+			testClientConfig(t, tt, customOptions.ClientConfig)
 		})
 	}
 }
