@@ -6,7 +6,9 @@ import (
 	"conductorone/internal/sdk"
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/providervalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -27,6 +29,16 @@ type ConductoroneProviderModel struct {
 	ServerURL    types.String `tfsdk:"server_url"`
 	ClientID     types.String `tfsdk:"client_id"`
 	ClientSecret types.String `tfsdk:"client_secret"`
+	TenantDomain types.String `tfsdk:"tenant_domain"`
+}
+
+func (p *ConductoroneProvider) ConfigValidators(ctx context.Context) []provider.ConfigValidator {
+	return []provider.ConfigValidator{
+		providervalidator.Conflicting(
+			path.MatchRoot("server_url"),
+			path.MatchRoot("tenant_domain"),
+		),
+	}
 }
 
 func (p *ConductoroneProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -53,6 +65,11 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 				Optional:            false,
 				Required:            true,
 			},
+			"tenant_domain": schema.StringAttribute{
+				MarkdownDescription: "Tenant Domain (derived from client_id if not provided)",
+				Optional:            true,
+				Required:            false,
+			},
 		},
 	}
 }
@@ -69,19 +86,24 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 	ServerURL := data.ServerURL.ValueString()
 	ClientID := data.ClientID.ValueString()
 	ClientSecret := data.ClientSecret.ValueString()
+	TenantDomain := data.TenantDomain.ValueString()
 
-	if ServerURL == "" {
-		ServerURL = "https://{tenantDomain}.conductor.one"
+	optStr := ""
+	if TenantDomain != "" {
+		optStr = TenantDomain
+	} else if ServerURL != "" {
+		optStr = ServerURL
 	}
 
-	opt, err := sdk.WithTenantCustom(ServerURL)
-	if err != nil {
-		return
+	var opts []sdk.CustomSDKOption
+	if optStr != "" {
+		opt, err := sdk.WithTenantCustom(optStr)
+		if err != nil {
+			return
+		}
+		opts = append(opts, opt)
 	}
 
-	opts := []sdk.CustomSDKOption{
-		opt,
-	}
 	client, err := sdk.NewWithCredentials(ctx, &sdk.ClientCredentials{
 		ClientID:     ClientID,
 		ClientSecret: ClientSecret,
