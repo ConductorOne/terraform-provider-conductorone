@@ -184,7 +184,8 @@ func NewTokenSource(ctx context.Context, clientID string, clientSecret string, t
 		ctx:          ctx,
 		clientID:     clientID,
 		clientSecret: secret,
-		tokenHost:    strings.TrimLeft(tokenHost, "https://"),
-		httpClient:   httpClient,
+		// nolint:staticcheck
+		tokenHost:  strings.TrimLeft(tokenHost, "https://"),
+		httpClient: httpClient,
 	}), nil
 }
