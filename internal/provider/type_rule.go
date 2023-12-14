@@ -4,7 +4,7 @@ package provider
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type Provision struct {
-	Assigned        types.Bool       `tfsdk:"assigned"`
-	ProvisionPolicy *ProvisionPolicy `tfsdk:"provision_policy"`
+type Rule struct {
+	Condition types.String `tfsdk:"condition"`
+	PolicyKey types.String `tfsdk:"policy_key"`
 }

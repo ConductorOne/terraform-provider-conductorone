@@ -2,10 +2,33 @@
 
 package shared
 
-// DelegatedProvision - The DelegatedProvision message.
+// DelegatedProvision - This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.
 type DelegatedProvision struct {
-	// The appId field.
+	// The AppID of the entitlement to delegate provisioning to.
 	AppID *string `json:"appId,omitempty"`
-	// The entitlementId field.
+	// The ID of the entitlement we are delegating provisioning to.
 	EntitlementID *string `json:"entitlementId,omitempty"`
+	// If true, a binding will be automatically created from the entitlement of the parent app.
+	Implicit *bool `json:"implicit,omitempty"`
+}
+
+func (o *DelegatedProvision) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
+}
+
+func (o *DelegatedProvision) GetEntitlementID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.EntitlementID
+}
+
+func (o *DelegatedProvision) GetImplicit() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Implicit
 }

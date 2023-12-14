@@ -2,16 +2,8 @@
 
 package shared
 
-// Provision - The Provision message.
+// Provision - The provision step references a provision policy for this step.
 type Provision struct {
-	// The ProvisionPolicy message.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - connector
-	//   - manual
-	//   - delegated
-	//
-	ProvisionPolicy *ProvisionPolicy `json:"provisionPolicy,omitempty"`
-	// The assigned field.
-	Assigned *bool `json:"assigned,omitempty"`
+	// Provision should be empty on the Policy struct, this field is populated by the app entitlement, it is not empty when getting Policies on Tickets
+	// However, terraform does not support tickets, so this field can just point to an empty struct, type inference for empty structs are the same so we can just use the same struct as Accept
 }

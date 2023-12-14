@@ -7,4 +7,5 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type DelegatedProvision struct {
 	AppID         types.String `tfsdk:"app_id"`
 	EntitlementID types.String `tfsdk:"entitlement_id"`
+	Implicit      types.Bool   `tfsdk:"implicit"`
 }
