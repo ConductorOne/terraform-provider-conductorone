@@ -47,14 +47,13 @@ data "conductorone_app_entitlement" "okta_administrators" {
 - `deleted_at` (String)
 - `description` (String) The description field.
 - `display_name` (String) The displayName field.
+- `duration_grant` (String) The DurationGrant field is a string attribute that represents the maximum duration a grant to this entitlement can last. 
+				The format of this is <time in seconds>s. i.e. 1h = 3600s.
+- `duration_unset` (Attributes) The DurationUnset field is set if there is no maximum duration a grant to this entitlement can last. (see [below for nested schema](#nestedatt--duration_unset))
 - `emergency_grant_enabled` (Boolean) The emergencyGrantEnabled field determines whether or not this entitlement has an emergency grant policy.
 - `emergency_grant_policy_id` (String) The emergencyGrantPolicyId field is the ID of the grant policy that will be used for emergency grant tasks. 
 				To set this field, emergencyGrantEnabled must be set to true.
 - `grant_policy_id` (String) The grantPolicyId field is the policy that will be used for access request grant tasks.
-- `max_grant_duration` (Attributes) MaxGrantDuration is a one of.
-This message contains a oneof. Only a single field of the following list may be set at a time:
-  - duration_unset
-  - duration_grant (see [below for nested schema](#nestedatt--max_grant_duration))
 - `provision_policy` (Attributes) The ProvisionPolicy message is the Provision strategy that will be used for granting access for this entitlement.
 This message contains a oneof. Only a single field of the following list may be set at a time:
   - connector
@@ -65,18 +64,8 @@ This message contains a oneof. Only a single field of the following list may be 
 - `slug` (String) The slug field.
 - `updated_at` (String)
 
-<a id="nestedatt--max_grant_duration"></a>
-### Nested Schema for `max_grant_duration`
-
-Read-Only:
-
-- `duration_grant` (String) The DurationGrant field is a string attribute that represents the maximum duration a grant to this entitlement can last. 
-						The format of this is <time in seconds>s. i.e. 1h = 3600s.
-- `duration_unset` (Attributes) The DurationUnset field is set if there is no maximum duration a grant to this entitlement can last. (see [below for nested schema](#nestedatt--max_grant_duration--duration_unset))
-
-<a id="nestedatt--max_grant_duration--duration_unset"></a>
-### Nested Schema for `max_grant_duration.duration_unset`
-
+<a id="nestedatt--duration_unset"></a>
+### Nested Schema for `duration_unset`
 
 
 <a id="nestedatt--provision_policy"></a>

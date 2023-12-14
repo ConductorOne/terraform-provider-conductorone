@@ -70,6 +70,9 @@ Your `<PATH>` may vary depending on how your Go environment variables are config
 
 ## Versions with breaking changes
 
+### [v0.4.0](https://github.com/ConductorOne/terraform-provider-conductorone/releases/tag/v0.4.0)
+- This version fixes issues with importing app entitlements. The SDK and the provider schema did not match so imports were broken, the provider was changed to match the SDK which introduced a breaking change. the `max_grant_druation` object was removed and the internal `duration_unset` and `grant_unset` fields have been moved out.
+
 ### [v0.3.0](https://github.com/ConductorOne/terraform-provider-conductorone/releases/tag/v0.3.0)
 - This version fixes issue where you weren't able to update app owners on the app resource by breaking out app owners into it's own resource. This will break any Terraform configurations that specify appOwners on the app resource. To use the new version of the provider you will need to use the new app_owners resource to configure the owners of an app, and no longer specify owners on the app resource.
 
