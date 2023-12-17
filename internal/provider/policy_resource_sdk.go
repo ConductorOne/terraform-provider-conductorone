@@ -17,14 +17,14 @@ func BoolPointer(b bool) *bool {
 	return &b
 }
 
-func PrependPolicyStepId (id string) string {
+func PrependPolicyStepId(id string) string {
 	if conditionalRegex.MatchString(id) {
 		return "id_" + id
 	}
 	return id
 }
 
-func RemovePolicyStepIdPrefix (id string) string {
+func RemovePolicyStepIdPrefix(id string) string {
 	return strings.TrimPrefix(id, "id_")
 }
 
