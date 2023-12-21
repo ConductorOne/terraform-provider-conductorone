@@ -109,7 +109,8 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 		ClientSecret: ClientSecret,
 	}, opts...)
 	if err != nil {
-		panic(err)
+		resp.Diagnostics.AddError("Failed to create SDK Client", err.Error())
+		return
 	}
 
 	resp.DataSourceData = client
