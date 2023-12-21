@@ -4,12 +4,28 @@ package provider
 
 import (
 	"conductorone/internal/sdk/pkg/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/types"
+	"regexp"
+	"strings"
 	"time"
+
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+var conditionalRegex = regexp.MustCompile("^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}")
 
 func BoolPointer(b bool) *bool {
 	return &b
+}
+
+func PrependPolicyStepId(id string) string {
+	if conditionalRegex.MatchString(id) {
+		return "id_" + id
+	}
+	return id
+}
+
+func RemovePolicyStepIdPrefix(id string) string {
+	return strings.TrimPrefix(id, "id_")
 }
 
 func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
@@ -133,7 +149,7 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 		policyStepsInst := shared.PolicySteps{
 			Steps: steps,
 		}
-		policySteps[policyStepsKey] = policyStepsInst
+		policySteps[PrependPolicyStepId(policyStepsKey)] = policyStepsInst
 	}
 	policyType := new(shared.CreatePolicyRequestPolicyType)
 	if !r.PolicyType.IsUnknown() && !r.PolicyType.IsNull() {
@@ -296,7 +312,7 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 		policyStepsInst := shared.PolicySteps{
 			Steps: steps,
 		}
-		policySteps[policyStepsKey] = policyStepsInst
+		policySteps[RemovePolicyStepIdPrefix(policyStepsKey)] = policyStepsInst
 	}
 	policyType := new(shared.PolicyType)
 	if !r.PolicyType.IsUnknown() && !r.PolicyType.IsNull() {
@@ -575,7 +591,7 @@ func (r *PolicyResourceModel) RefreshFromGetResponse(resp *shared.Policy) {
 				}
 				policyStepsResult.Steps = append(policyStepsResult.Steps, steps1)
 			}
-			r.PolicySteps[policyStepsKey] = policyStepsResult
+			r.PolicySteps[PrependPolicyStepId(policyStepsKey)] = policyStepsResult
 		}
 	}
 	if resp.PolicyType != nil {
