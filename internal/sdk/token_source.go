@@ -42,7 +42,6 @@ type c1Token struct {
 }
 
 type c1TokenSource struct {
-	ctx          context.Context
 	clientID     string
 	clientSecret *jose.JSONWebKey
 	tokenHost    string
@@ -138,7 +137,7 @@ func (c *c1TokenSource) Token() (*oauth2.Token, error) {
 		Path:   "auth/v1/token",
 	}
 
-	req, err := http.NewRequestWithContext(c.ctx, http.MethodPost, tokenUrl.String(), strings.NewReader(body.Encode()))
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodPost, tokenUrl.String(), strings.NewReader(body.Encode()))
 	if err != nil {
 		return nil, err
 	}
@@ -181,7 +180,6 @@ func NewTokenSource(ctx context.Context, clientID string, clientSecret string, t
 		return nil, err
 	}
 	return oauth2.ReuseTokenSource(nil, &c1TokenSource{
-		ctx:          ctx,
 		clientID:     clientID,
 		clientSecret: secret,
 		// nolint:staticcheck
