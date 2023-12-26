@@ -37,7 +37,7 @@ This also allows for debuggers (e.g. delve) to be attached to the provider.
 ```sh
 # You can also run `make`
 go run main.go --debug
-# Export the TF_REATTACH_PROVIDERS env var
+# Export the TF_REATTACH_PROVIDERS env var, you can unset it when you are done
 export TF_REATTACH_PROVIDERS={...}
 # In a new terminal
 cd examples/your-example
