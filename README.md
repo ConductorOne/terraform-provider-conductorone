@@ -35,8 +35,10 @@ Should you want to validate a change locally, the `--debug` flag allows you to e
 This also allows for debuggers (e.g. delve) to be attached to the provider.
 
 ```sh
+# You can also run `make`
 go run main.go --debug
-# Copy the TF_REATTACH_PROVIDERS env var
+# Export the TF_REATTACH_PROVIDERS env var
+export TF_REATTACH_PROVIDERS={...}
 # In a new terminal
 cd examples/your-example
 TF_REATTACH_PROVIDERS=... terraform init
