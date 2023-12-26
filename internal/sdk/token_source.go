@@ -9,6 +9,7 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"time"
 
@@ -42,11 +43,26 @@ type c1Token struct {
 }
 
 type c1TokenSource struct {
-	ctx          context.Context
 	clientID     string
 	clientSecret *jose.JSONWebKey
 	tokenHost    string
 	httpClient   *http.Client
+}
+
+func parseClientID(input string) (string, error) {
+	// split the input into 2 parts by @
+	items := strings.SplitN(input, "@", 2)
+	if len(items) != 2 {
+		return "", ErrInvalidClientID
+	}
+
+	// split the right part into 2 parts by /
+	items = strings.SplitN(items[1], "/", 2)
+	if len(items) != 2 {
+		return "", ErrInvalidClientID
+	}
+
+	return items[0], nil
 }
 
 func parseSecret(input []byte) (*jose.JSONWebKey, error) {
@@ -132,13 +148,17 @@ func (c *c1TokenSource) Token() (*oauth2.Token, error) {
 		"client_assertion":      []string{s},
 	}
 
+	tokenHost := c.tokenHost
+	if envHost, ok := os.LookupEnv("CONE_API_ENDPOINT"); ok {
+		tokenHost = envHost
+	}
 	tokenUrl := url.URL{
 		Scheme: "https",
-		Host:   c.tokenHost,
+		Host:   tokenHost,
 		Path:   "auth/v1/token",
 	}
 
-	req, err := http.NewRequestWithContext(c.ctx, http.MethodPost, tokenUrl.String(), strings.NewReader(body.Encode()))
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodPost, tokenUrl.String(), strings.NewReader(body.Encode()))
 	if err != nil {
 		return nil, err
 	}
@@ -170,7 +190,12 @@ func (c *c1TokenSource) Token() (*oauth2.Token, error) {
 	}, nil
 }
 
-func NewTokenSource(ctx context.Context, clientID string, clientSecret string, tokenHost string) (oauth2.TokenSource, error) {
+func NewC1TokenSource(ctx context.Context, clientID string, clientSecret string) (oauth2.TokenSource, error) {
+	tokenHost, err := parseClientID(clientID)
+	if err != nil {
+		return nil, err
+	}
+
 	secret, err := parseSecret([]byte(clientSecret))
 	if err != nil {
 		return nil, err
@@ -181,11 +206,9 @@ func NewTokenSource(ctx context.Context, clientID string, clientSecret string, t
 		return nil, err
 	}
 	return oauth2.ReuseTokenSource(nil, &c1TokenSource{
-		ctx:          ctx,
 		clientID:     clientID,
 		clientSecret: secret,
-		// nolint:staticcheck
-		tokenHost:  strings.TrimLeft(tokenHost, "https://"),
-		httpClient: httpClient,
+		tokenHost:    tokenHost,
+		httpClient:   httpClient,
 	}), nil
 }
