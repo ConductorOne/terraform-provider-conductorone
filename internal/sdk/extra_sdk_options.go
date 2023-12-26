@@ -141,7 +141,7 @@ func NewWithCredentials(ctx context.Context, cred *ClientCredentials, opts ...Cu
 		options.ClientConfig = resp
 	}
 
-	tokenSource, err := NewTokenSource(ctx, cred.ClientID, cred.ClientSecret, options.GetServerURL())
+	tokenSource, err := NewTokenSource(context.Background(), cred.ClientID, cred.ClientSecret, options.GetServerURL())
 	if err != nil {
 		return nil, err
 	}
