@@ -126,11 +126,13 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Description: `The displayName field.`,
 			},
 			"duration_grant": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
 				Description: `The DurationGrant field is a string attribute that represents the maximum duration a grant to this entitlement can last. 
 				The format of this is <time in seconds>s. i.e. 1h = 3600s.`,
 			},
 			"duration_unset": schema.SingleNestedAttribute{
+				Computed:    true,
 				Optional:    true,
 				Attributes:  map[string]schema.Attribute{},
 				Description: `The DurationUnset field is set if there is no maximum duration a grant to this entitlement can last.`,
