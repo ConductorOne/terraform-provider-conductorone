@@ -78,6 +78,7 @@ type ConductoroneAPI struct {
 	Attributes                *attributes
 	AttributeSearch           *attributeSearch
 	Auth                      *auth
+	AWSExternalIDSettings     *AWSExternalIDSettings
 	Connector                 *connector
 	Directory                 *directory
 	PersonalClient            *personalClient
@@ -206,6 +207,8 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.AttributeSearch = newAttributeSearch(sdk.sdkConfiguration)
 
 	sdk.Auth = newAuth(sdk.sdkConfiguration)
+
+	sdk.AWSExternalIDSettings = newAWSExternalIDSettings(sdk.sdkConfiguration)
 
 	sdk.Connector = newConnector(sdk.sdkConfiguration)
 
