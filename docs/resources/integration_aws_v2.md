@@ -2,22 +2,22 @@
 page_title: "conductorone_integration_aws_v2 Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Awsv2 Integration Resource
+  Aws_v2 Integration Resource
 ---
 
 # conductorone_integration_aws_v2 (Resource)
 
-Aws_v_2 Integration Resource
+Aws_v2 Integration Resource
 
-This resource allows you to configure an instance of the aws_v_2 integration in ConductorOne.
+This resource allows you to configure an instance of the aws_v2 integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_aws_v2" "aws_v_2" {
-  app_id = conductorone_app.aws_v_2.id
+resource "conductorone_integration_aws_v2" "aws_v2" {
+  app_id = conductorone_app.aws_v2.id
   user_ids = [
     conductorone_user.admin.id
   ]

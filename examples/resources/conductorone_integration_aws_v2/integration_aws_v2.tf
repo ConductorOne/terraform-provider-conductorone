@@ -1,5 +1,5 @@
-resource "conductorone_integration_aws_v2" "aws_v_2" {
-  app_id = conductorone_app.aws_v_2.id
+resource "conductorone_integration_aws_v2" "aws_v2" {
+  app_id = conductorone_app.aws_v2.id
   user_ids = [
     conductorone_user.admin.id
   ]

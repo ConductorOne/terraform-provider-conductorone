@@ -57,7 +57,7 @@ func (r *IntegrationAwsV2Resource) Metadata(ctx context.Context, req resource.Me
 
 func (r *IntegrationAwsV2Resource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Aws_v_2 Integration Resource",
+		MarkdownDescription: "Aws_v2 Integration Resource",
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
