@@ -1,0 +1,18 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+The AWS External Id datasource allows you to retrieve the AWS External Id for your tenant to use with your AWS integration.
+
+## Example Usage
+
+{{ tffile "examples/data-sources/conductorone_aws_external_id/aws_external_id.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}
