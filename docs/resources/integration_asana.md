@@ -34,7 +34,7 @@ resource "conductorone_integration_asana" "asana" {
 
 ### Optional
 
-- `asana_api_key` (String, Sensitive) Asana personal access token
+- `asana_api_key` (String, Sensitive) Personal access token
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

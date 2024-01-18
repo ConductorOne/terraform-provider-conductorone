@@ -99,12 +99,12 @@ func (r *IntegrationOneloginResource) Schema(ctx context.Context, req resource.S
 			},
 			"oauth_client_cred_grant_client_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `OneLogin Client ID`,
+				Description: `OneLogin client ID`,
 			},
 			"oauth_client_cred_grant_client_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `OneLogin Client Secret`,
+				Description: `OneLogin client secret`,
 			},
 		},
 	}

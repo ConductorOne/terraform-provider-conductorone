@@ -94,12 +94,12 @@ func (r *IntegrationBambooHrResource) Schema(ctx context.Context, req resource.S
 			},
 			"company_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Company Domain`,
+				Description: `Company domain`,
 			},
 			"api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Key`,
+				Description: `API key`,
 			},
 		},
 	}

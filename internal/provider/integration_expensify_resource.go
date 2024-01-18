@@ -95,12 +95,12 @@ func (r *IntegrationExpensifyResource) Schema(ctx context.Context, req resource.
 			"expensify_user_id": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Expensify User ID`,
+				Description: `User ID`,
 			},
 			"expensify_user_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Expensify User Secret`,
+				Description: `User secret`,
 			},
 		},
 	}

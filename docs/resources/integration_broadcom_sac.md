@@ -36,7 +36,7 @@ resource "conductorone_integration_broadcom_sac" "broadcom_sac" {
 
 ### Optional
 
-- `password` (String, Sensitive) Client Secret
+- `password` (String, Sensitive) Client secret
 - `tenant` (String) Tenant
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 - `username` (String) Client ID

@@ -95,17 +95,17 @@ func (r *IntegrationDatadogResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"datadog_site": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Datadog Site`,
+				Description: `Site`,
 			},
 			"datadog_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Datadog API Key`,
+				Description: `API key`,
 			},
 			"datadog_application_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Datadog Application Key`,
+				Description: `Application key`,
 			},
 		},
 	}

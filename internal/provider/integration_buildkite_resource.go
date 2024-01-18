@@ -95,7 +95,7 @@ func (r *IntegrationBuildkiteResource) Schema(ctx context.Context, req resource.
 			"api_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Token`,
+				Description: `API token`,
 			},
 			"organization": &schema.StringAttribute{
 				Optional:    true,

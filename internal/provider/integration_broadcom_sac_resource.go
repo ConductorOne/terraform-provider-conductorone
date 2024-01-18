@@ -100,7 +100,7 @@ func (r *IntegrationBroadcomSacResource) Schema(ctx context.Context, req resourc
 			"password": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Client Secret`,
+				Description: `Client secret`,
 			},
 			"tenant": &schema.StringAttribute{
 				Optional:    true,

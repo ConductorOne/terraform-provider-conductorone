@@ -36,9 +36,9 @@ resource "conductorone_integration_duo" "duo" {
 
 ### Optional
 
-- `duo_api_hostname` (String, Sensitive) Duo API hostname
-- `duo_integration_key` (String, Sensitive) Duo integration key
-- `duo_secret_key` (String, Sensitive) Duo secret key
+- `duo_api_hostname` (String, Sensitive) API hostname
+- `duo_integration_key` (String, Sensitive) Integration key
+- `duo_secret_key` (String, Sensitive) Secret key
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

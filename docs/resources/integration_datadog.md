@@ -36,9 +36,9 @@ resource "conductorone_integration_datadog" "datadog" {
 
 ### Optional
 
-- `datadog_api_key` (String, Sensitive) Datadog API Key
-- `datadog_application_key` (String, Sensitive) Datadog Application Key
-- `datadog_site` (String) Datadog Site
+- `datadog_api_key` (String, Sensitive) API key
+- `datadog_application_key` (String, Sensitive) Application key
+- `datadog_site` (String) Site
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

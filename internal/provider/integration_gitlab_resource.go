@@ -94,12 +94,12 @@ func (r *IntegrationGitlabResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"gitlab_group": &schema.StringAttribute{
 				Optional:    true,
-				Description: `GitLab Group`,
+				Description: `Group`,
 			},
 			"gitlab_access_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `GitLab Personal Access Token`,
+				Description: `Personal access token`,
 			},
 		},
 	}

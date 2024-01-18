@@ -35,14 +35,14 @@ type IntegrationBitbucketResource struct {
 
 // IntegrationBitbucketResourceModel describes the resource data model.
 type IntegrationBitbucketResourceModel struct {
-	AppID                   types.String   `tfsdk:"app_id"`
-	CreatedAt               types.String   `tfsdk:"created_at"`
-	DeletedAt               types.String   `tfsdk:"deleted_at"`
-	ID                      types.String   `tfsdk:"id"`
-	UpdatedAt               types.String   `tfsdk:"updated_at"`
-	UserIds                 []types.String `tfsdk:"user_ids"`
-	BitbucketConsumerKey    types.String   `tfsdk:"bitbucket_consumer_key"`
-	BitbucketConsumerSecret types.String   `tfsdk:"bitbucket_consumer_secret"`
+	AppID                types.String   `tfsdk:"app_id"`
+	CreatedAt            types.String   `tfsdk:"created_at"`
+	DeletedAt            types.String   `tfsdk:"deleted_at"`
+	ID                   types.String   `tfsdk:"id"`
+	UpdatedAt            types.String   `tfsdk:"updated_at"`
+	UserIds              []types.String `tfsdk:"user_ids"`
+	BitbucketUsername    types.String   `tfsdk:"bitbucket_username"`
+	BitbucketAppPassword types.String   `tfsdk:"bitbucket_app_password"`
 }
 
 func (r *IntegrationBitbucketResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -92,14 +92,14 @@ func (r *IntegrationBitbucketResource) Schema(ctx context.Context, req resource.
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"bitbucket_consumer_key": &schema.StringAttribute{
+			"bitbucket_username": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Consumer Key`,
+				Description: `Username`,
 			},
-			"bitbucket_consumer_secret": &schema.StringAttribute{
+			"bitbucket_app_password": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Consumer Secret`,
+				Description: `App password`,
 			},
 		},
 	}

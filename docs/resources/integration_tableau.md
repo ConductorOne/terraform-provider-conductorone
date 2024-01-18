@@ -37,9 +37,9 @@ resource "conductorone_integration_tableau" "tableau" {
 
 ### Optional
 
-- `tableau_access_token_name` (String) Access Token Name
-- `tableau_access_token_secret` (String, Sensitive) Access Token Secret
-- `tableau_server_path` (String) Server Path
+- `tableau_access_token_name` (String) Access token name
+- `tableau_access_token_secret` (String, Sensitive) Access token secret
+- `tableau_server_path` (String) Server path
 - `tableau_site_id` (String) Site ID
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

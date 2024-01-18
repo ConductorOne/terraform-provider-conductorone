@@ -36,9 +36,9 @@ resource "conductorone_integration_coupa" "coupa" {
 
 ### Optional
 
-- `coupa_domain` (String) Coupa Domain
-- `oauth2_client_cred_grant_client_id` (String) Coupa OAuth2 Client ID
-- `oauth2_client_cred_grant_client_secret` (String, Sensitive) Coupa OAuth2 Client Secret
+- `coupa_domain` (String) Domain
+- `oauth2_client_cred_grant_client_id` (String) Client ID
+- `oauth2_client_cred_grant_client_secret` (String, Sensitive) Client secret
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

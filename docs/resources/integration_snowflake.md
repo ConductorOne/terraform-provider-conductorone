@@ -37,10 +37,10 @@ resource "conductorone_integration_snowflake" "snowflake" {
 
 ### Optional
 
-- `snowflake_account` (String) Snowflake Account ID / Locator
-- `snowflake_password` (String, Sensitive) Snowflake Password
-- `snowflake_user_role` (String) Snowflake User Role
-- `snowflake_username` (String) Snowflake Username
+- `snowflake_account` (String) Account ID / Locator
+- `snowflake_password` (String, Sensitive) Password
+- `snowflake_user_role` (String) User role
+- `snowflake_username` (String) Username
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

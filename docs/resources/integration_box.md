@@ -37,7 +37,7 @@ resource "conductorone_integration_box" "box" {
 ### Optional
 
 - `box_client_id` (String) Client ID
-- `box_client_secret` (String, Sensitive) Client Secret
+- `box_client_secret` (String, Sensitive) Client secret
 - `box_enterprise_id` (String) Enterprise ID
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

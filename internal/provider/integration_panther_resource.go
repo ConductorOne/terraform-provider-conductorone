@@ -95,12 +95,12 @@ func (r *IntegrationPantherResource) Schema(ctx context.Context, req resource.Sc
 			"panther_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Panther API Key`,
+				Description: `API key`,
 			},
 			"panther_url": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Panther API Url`,
+				Description: `API URL`,
 			},
 		},
 	}

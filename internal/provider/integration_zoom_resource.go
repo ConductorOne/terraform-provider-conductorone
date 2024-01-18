@@ -104,7 +104,7 @@ func (r *IntegrationZoomResource) Schema(ctx context.Context, req resource.Schem
 			"zoom_client_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Client Secret`,
+				Description: `Client secret`,
 			},
 		},
 	}

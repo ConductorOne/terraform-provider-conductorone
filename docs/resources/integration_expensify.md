@@ -35,8 +35,8 @@ resource "conductorone_integration_expensify" "expensify" {
 
 ### Optional
 
-- `expensify_user_id` (String, Sensitive) Expensify User ID
-- `expensify_user_secret` (String, Sensitive) Expensify User Secret
+- `expensify_user_id` (String, Sensitive) User ID
+- `expensify_user_secret` (String, Sensitive) User secret
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

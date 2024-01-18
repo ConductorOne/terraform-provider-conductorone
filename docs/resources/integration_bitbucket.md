@@ -21,8 +21,8 @@ resource "conductorone_integration_bitbucket" "bitbucket" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  bitbucket_consumer_key    = "..."
-  bitbucket_consumer_secret = "..."
+  bitbucket_username     = "..."
+  bitbucket_app_password = "..."
 }
 ```
 
@@ -35,8 +35,8 @@ resource "conductorone_integration_bitbucket" "bitbucket" {
 
 ### Optional
 
-- `bitbucket_consumer_key` (String) Consumer Key
-- `bitbucket_consumer_secret` (String, Sensitive) Consumer Secret
+- `bitbucket_app_password` (String, Sensitive) App password
+- `bitbucket_username` (String) Username
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only
