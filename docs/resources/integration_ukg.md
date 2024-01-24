@@ -37,10 +37,10 @@ resource "conductorone_integration_ukg" "ukg" {
 
 ### Optional
 
-- `ukg_customer_api_key` (String) UKG Customer API Key
-- `ukg_password` (String, Sensitive) UKG Password
-- `ukg_service_endpoint` (String) UKG Service Endpoint
-- `ukg_username` (String) UKG Username
+- `ukg_customer_api_key` (String) Customer API key
+- `ukg_password` (String, Sensitive) Password
+- `ukg_service_endpoint` (String) Service endpoint
+- `ukg_username` (String) Username
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

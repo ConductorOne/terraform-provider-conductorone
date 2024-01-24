@@ -36,9 +36,9 @@ resource "conductorone_integration_confluence" "confluence" {
 
 ### Optional
 
-- `confluence_apikey` (String, Sensitive) Confluence API Key
-- `confluence_domain` (String) Confluence Site Domain
-- `confluence_username` (String) Confluence Username
+- `confluence_apikey` (String, Sensitive) API key
+- `confluence_domain` (String) Confluence site domain
+- `confluence_username` (String) Username
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

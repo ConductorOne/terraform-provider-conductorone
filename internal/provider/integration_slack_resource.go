@@ -94,7 +94,7 @@ func (r *IntegrationSlackResource) Schema(ctx context.Context, req resource.Sche
 			"slack_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Slack User Token`,
+				Description: `User token`,
 			},
 		},
 	}

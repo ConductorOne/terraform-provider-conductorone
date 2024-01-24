@@ -94,7 +94,7 @@ func (r *IntegrationCloudamqpResource) Schema(ctx context.Context, req resource.
 			"cloudamqp_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Your CloudAMQP API Key`,
+				Description: `API key`,
 			},
 		},
 	}

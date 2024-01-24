@@ -38,11 +38,11 @@ resource "conductorone_integration_netsuite" "netsuite" {
 
 ### Optional
 
-- `netsuite_account_id` (String) Netsuite Account ID
-- `netsuite_consumer_key` (String) Netsuite Consumer Key
-- `netsuite_consumer_secret` (String, Sensitive) Netsuite Consumer Secret
-- `netsuite_token_key` (String) Netsuite Token Key
-- `netsuite_token_secret` (String, Sensitive) Netsuite Token Secret
+- `netsuite_account_id` (String) Account ID
+- `netsuite_consumer_key` (String) Consumer key
+- `netsuite_consumer_secret` (String, Sensitive) Consumer secret
+- `netsuite_token_key` (String) Token key
+- `netsuite_token_secret` (String, Sensitive) Token secret
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

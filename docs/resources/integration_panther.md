@@ -35,8 +35,8 @@ resource "conductorone_integration_panther" "panther" {
 
 ### Optional
 
-- `panther_api_key` (String, Sensitive) Panther API Key
-- `panther_url` (String, Sensitive) Panther API Url
+- `panther_api_key` (String, Sensitive) API key
+- `panther_url` (String, Sensitive) API URL
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

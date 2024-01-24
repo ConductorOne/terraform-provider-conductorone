@@ -94,7 +94,7 @@ func (r *IntegrationGoogleCloudPlatformResource) Schema(ctx context.Context, req
 			"credentials_json": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Credentials JSON`,
+				Description: `Credentials (JSON)`,
 			},
 		},
 	}

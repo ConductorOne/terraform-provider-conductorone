@@ -96,17 +96,17 @@ func (r *IntegrationDuoResource) Schema(ctx context.Context, req resource.Schema
 			"duo_integration_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Duo integration key`,
+				Description: `Integration key`,
 			},
 			"duo_secret_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Duo secret key`,
+				Description: `Secret key`,
 			},
 			"duo_api_hostname": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Duo API hostname`,
+				Description: `API hostname`,
 			},
 		},
 	}

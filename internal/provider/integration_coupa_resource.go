@@ -95,16 +95,16 @@ func (r *IntegrationCoupaResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"coupa_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Coupa Domain`,
+				Description: `Domain`,
 			},
 			"oauth2_client_cred_grant_client_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Coupa OAuth2 Client ID`,
+				Description: `Client ID`,
 			},
 			"oauth2_client_cred_grant_client_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Coupa OAuth2 Client Secret`,
+				Description: `Client secret`,
 			},
 		},
 	}

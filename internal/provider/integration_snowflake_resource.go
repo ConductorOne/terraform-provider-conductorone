@@ -96,20 +96,20 @@ func (r *IntegrationSnowflakeResource) Schema(ctx context.Context, req resource.
 			},
 			"snowflake_account": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Snowflake Account ID / Locator`,
+				Description: `Account ID / Locator`,
 			},
 			"snowflake_username": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Snowflake Username`,
+				Description: `Username`,
 			},
 			"snowflake_password": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Snowflake Password`,
+				Description: `Password`,
 			},
 			"snowflake_user_role": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Snowflake User Role`,
+				Description: `User role`,
 			},
 		},
 	}

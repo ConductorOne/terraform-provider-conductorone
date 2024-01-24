@@ -36,9 +36,9 @@ resource "conductorone_integration_jira_cloud" "jira_cloud" {
 
 ### Optional
 
-- `jiracloud_apikey` (String, Sensitive) Jira API Key
-- `jiracloud_domain` (String) Jira Site Domain
-- `jiracloud_username` (String) Jira Username
+- `jiracloud_apikey` (String, Sensitive) API key
+- `jiracloud_domain` (String) Jira site domain
+- `jiracloud_username` (String) Username
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

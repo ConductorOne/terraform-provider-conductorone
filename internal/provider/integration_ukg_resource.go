@@ -96,20 +96,20 @@ func (r *IntegrationUkgResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"ukg_customer_api_key": &schema.StringAttribute{
 				Optional:    true,
-				Description: `UKG Customer API Key`,
+				Description: `Customer API key`,
 			},
 			"ukg_username": &schema.StringAttribute{
 				Optional:    true,
-				Description: `UKG Username`,
+				Description: `Username`,
 			},
 			"ukg_password": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `UKG Password`,
+				Description: `Password`,
 			},
 			"ukg_service_endpoint": &schema.StringAttribute{
 				Optional:    true,
-				Description: `UKG Service Endpoint`,
+				Description: `Service endpoint`,
 			},
 		},
 	}

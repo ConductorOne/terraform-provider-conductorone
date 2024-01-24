@@ -95,11 +95,11 @@ func (r *IntegrationTwingateResource) Schema(ctx context.Context, req resource.S
 			"twingate_apikey": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Twingate API Key`,
+				Description: `API key`,
 			},
 			"twingate_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Twingate Domain`,
+				Description: `Domain`,
 			},
 		},
 	}

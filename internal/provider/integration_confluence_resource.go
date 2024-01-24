@@ -95,16 +95,16 @@ func (r *IntegrationConfluenceResource) Schema(ctx context.Context, req resource
 			},
 			"confluence_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Confluence Site Domain`,
+				Description: `Confluence site domain`,
 			},
 			"confluence_username": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Confluence Username`,
+				Description: `Username`,
 			},
 			"confluence_apikey": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Confluence API Key`,
+				Description: `API key`,
 			},
 		},
 	}

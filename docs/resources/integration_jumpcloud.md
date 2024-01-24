@@ -34,7 +34,7 @@ resource "conductorone_integration_jumpcloud" "jumpcloud" {
 
 ### Optional
 
-- `jumpcloud_api_key` (String, Sensitive) JumpCloud API Key
+- `jumpcloud_api_key` (String, Sensitive) API key
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

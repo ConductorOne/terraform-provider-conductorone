@@ -104,7 +104,7 @@ func (r *IntegrationGoogleIdentityPlatformResource) Schema(ctx context.Context, 
 			"credentials_json": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Credentials JSON`,
+				Description: `Credentials (JSON)`,
 			},
 		},
 	}

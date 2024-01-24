@@ -94,12 +94,12 @@ func (r *IntegrationGithubEnterpriseResource) Schema(ctx context.Context, req re
 			},
 			"github_instance_url": &schema.StringAttribute{
 				Optional:    true,
-				Description: `GitHub Instance URL`,
+				Description: `Instance URL`,
 			},
 			"github_access_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `GitHub Personal Access Token`,
+				Description: `Personal access token`,
 			},
 		},
 	}

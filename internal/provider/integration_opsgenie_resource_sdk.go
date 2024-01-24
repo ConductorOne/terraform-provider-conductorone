@@ -21,7 +21,7 @@ func (r *IntegrationOpsgenieResourceModel) ToCreateDelegatedSDKType() *shared.Co
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("OpsGenie"),
+		DisplayName: sdk.String("Opsgenie"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -75,7 +75,7 @@ func (r *IntegrationOpsgenieResourceModel) ToUpdateSDKType() (*shared.Connector,
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("OpsGenie"),
+		DisplayName: sdk.String("Opsgenie"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(opsgenieCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
