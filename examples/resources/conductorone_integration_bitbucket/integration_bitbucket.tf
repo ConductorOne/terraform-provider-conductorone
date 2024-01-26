@@ -3,6 +3,6 @@ resource "conductorone_integration_bitbucket" "bitbucket" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  bitbucket_consumer_key    = "..."
-  bitbucket_consumer_secret = "..."
+  bitbucket_username     = "..."
+  bitbucket_app_password = "..."
 }

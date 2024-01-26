@@ -95,16 +95,16 @@ func (r *IntegrationJiraCloudResource) Schema(ctx context.Context, req resource.
 			},
 			"jiracloud_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Jira Site Domain`,
+				Description: `Jira site domain`,
 			},
 			"jiracloud_username": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Jira Username`,
+				Description: `Username`,
 			},
 			"jiracloud_apikey": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Jira API Key`,
+				Description: `API key`,
 			},
 		},
 	}

@@ -94,7 +94,7 @@ func (r *IntegrationAsanaResource) Schema(ctx context.Context, req resource.Sche
 			"asana_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Asana personal access token`,
+				Description: `Personal access token`,
 			},
 		},
 	}

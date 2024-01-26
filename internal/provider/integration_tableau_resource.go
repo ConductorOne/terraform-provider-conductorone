@@ -100,16 +100,16 @@ func (r *IntegrationTableauResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"tableau_server_path": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Server Path`,
+				Description: `Server path`,
 			},
 			"tableau_access_token_name": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Access Token Name`,
+				Description: `Access token name`,
 			},
 			"tableau_access_token_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Access Token Secret`,
+				Description: `Access token secret`,
 			},
 		},
 	}

@@ -95,11 +95,11 @@ func (r *IntegrationTailscaleResource) Schema(ctx context.Context, req resource.
 			"tailscale_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Tailscale API Key`,
+				Description: `Tailscale API key`,
 			},
 			"tailnet": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Tailscale Tailnet`,
+				Description: `Tailnet`,
 			},
 		},
 	}

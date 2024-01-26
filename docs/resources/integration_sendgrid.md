@@ -34,7 +34,7 @@ resource "conductorone_integration_sendgrid" "sendgrid" {
 
 ### Optional
 
-- `sendgrid_api_key` (String, Sensitive) Sendgrid API Key
+- `sendgrid_api_key` (String, Sensitive) API key
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

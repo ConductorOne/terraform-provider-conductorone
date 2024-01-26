@@ -35,8 +35,8 @@ resource "conductorone_integration_github_enterprise" "github_enterprise" {
 
 ### Optional
 
-- `github_access_token` (String, Sensitive) GitHub Personal Access Token
-- `github_instance_url` (String) GitHub Instance URL
+- `github_access_token` (String, Sensitive) Personal access token
+- `github_instance_url` (String) Instance URL
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

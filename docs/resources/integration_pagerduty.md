@@ -34,7 +34,7 @@ resource "conductorone_integration_pagerduty" "pagerduty" {
 
 ### Optional
 
-- `pagerduty_api_token` (String, Sensitive) API Token
+- `pagerduty_api_token` (String, Sensitive) API token
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

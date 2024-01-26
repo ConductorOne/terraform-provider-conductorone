@@ -99,7 +99,7 @@ func (r *IntegrationCloudflareZeroTrustResource) Schema(ctx context.Context, req
 			"api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Your API Key`,
+				Description: `API key`,
 			},
 		},
 	}

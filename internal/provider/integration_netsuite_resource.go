@@ -97,25 +97,25 @@ func (r *IntegrationNetsuiteResource) Schema(ctx context.Context, req resource.S
 			},
 			"netsuite_account_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Netsuite Account ID`,
+				Description: `Account ID`,
 			},
 			"netsuite_consumer_key": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Netsuite Consumer Key`,
+				Description: `Consumer key`,
 			},
 			"netsuite_consumer_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Netsuite Consumer Secret`,
+				Description: `Consumer secret`,
 			},
 			"netsuite_token_key": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Netsuite Token Key`,
+				Description: `Token key`,
 			},
 			"netsuite_token_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Netsuite Token Secret`,
+				Description: `Token secret`,
 			},
 		},
 	}

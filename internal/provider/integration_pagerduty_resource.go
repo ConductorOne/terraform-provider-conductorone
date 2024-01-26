@@ -94,7 +94,7 @@ func (r *IntegrationPagerdutyResource) Schema(ctx context.Context, req resource.
 			"pagerduty_api_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Token`,
+				Description: `API token`,
 			},
 		},
 	}

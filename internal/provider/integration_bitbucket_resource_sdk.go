@@ -87,23 +87,23 @@ func (r *IntegrationBitbucketResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationBitbucketResourceModel) populateConfig() map[string]*string {
-	bitbucketConsumerKey := new(string)
-	if !r.BitbucketConsumerKey.IsUnknown() && !r.BitbucketConsumerKey.IsNull() {
-		*bitbucketConsumerKey = r.BitbucketConsumerKey.ValueString()
+	bitbucketUsername := new(string)
+	if !r.BitbucketUsername.IsUnknown() && !r.BitbucketUsername.IsNull() {
+		*bitbucketUsername = r.BitbucketUsername.ValueString()
 	} else {
-		bitbucketConsumerKey = nil
+		bitbucketUsername = nil
 	}
 
-	bitbucketConsumerSecret := new(string)
-	if !r.BitbucketConsumerSecret.IsUnknown() && !r.BitbucketConsumerSecret.IsNull() {
-		*bitbucketConsumerSecret = r.BitbucketConsumerSecret.ValueString()
+	bitbucketAppPassword := new(string)
+	if !r.BitbucketAppPassword.IsUnknown() && !r.BitbucketAppPassword.IsNull() {
+		*bitbucketAppPassword = r.BitbucketAppPassword.ValueString()
 	} else {
-		bitbucketConsumerSecret = nil
+		bitbucketAppPassword = nil
 	}
 
 	configValues := map[string]*string{
-		"bitbucket_consumer_key":    bitbucketConsumerKey,
-		"bitbucket_consumer_secret": bitbucketConsumerSecret,
+		"bitbucket_username":     bitbucketUsername,
+		"bitbucket_app_password": bitbucketAppPassword,
 	}
 
 	return configValues
@@ -174,8 +174,8 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromGetResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["bitbucket_consumer_key"]; ok {
-					r.BitbucketConsumerKey = types.StringValue(v.(string))
+				if v, ok := values["bitbucket_username"]; ok {
+					r.BitbucketUsername = types.StringValue(v.(string))
 				}
 
 			}
@@ -221,8 +221,8 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromCreateResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["bitbucket_consumer_key"]; ok {
-					r.BitbucketConsumerKey = types.StringValue(v.(string))
+				if v, ok := values["bitbucket_username"]; ok {
+					r.BitbucketUsername = types.StringValue(v.(string))
 				}
 
 			}

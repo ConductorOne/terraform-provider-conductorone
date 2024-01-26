@@ -104,12 +104,12 @@ func (r *IntegrationGoogleWorkspaceResource) Schema(ctx context.Context, req res
 			},
 			"administrator_email": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Administrator Email`,
+				Description: `Administrator email`,
 			},
 			"credentials_json": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Credentials JSON`,
+				Description: `Credentials (JSON)`,
 			},
 		},
 	}

@@ -35,7 +35,7 @@ resource "conductorone_integration_buildkite" "buildkite" {
 
 ### Optional
 
-- `api_token` (String, Sensitive) API Token
+- `api_token` (String, Sensitive) API token
 - `organization` (String) Organization
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

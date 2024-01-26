@@ -94,7 +94,7 @@ func (r *IntegrationOpsgenieResource) Schema(ctx context.Context, req resource.S
 			"opsgenie_apikey": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `OpsGenie API Key`,
+				Description: `API key`,
 			},
 		},
 	}

@@ -94,7 +94,7 @@ func (r *IntegrationLinearResource) Schema(ctx context.Context, req resource.Sch
 			"linear_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Linear API Key`,
+				Description: `API key`,
 			},
 		},
 	}

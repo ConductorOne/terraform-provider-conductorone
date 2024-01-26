@@ -94,12 +94,12 @@ func (r *IntegrationGithubResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"github_org": &schema.StringAttribute{
 				Optional:    true,
-				Description: `GitHub Organization`,
+				Description: `Organization`,
 			},
 			"github_access_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `GitHub Personal Access Token`,
+				Description: `Personal access token`,
 			},
 		},
 	}

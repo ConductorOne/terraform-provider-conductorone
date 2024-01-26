@@ -94,7 +94,7 @@ func (r *IntegrationJumpcloudResource) Schema(ctx context.Context, req resource.
 			"jumpcloud_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `JumpCloud API Key`,
+				Description: `API key`,
 			},
 		},
 	}

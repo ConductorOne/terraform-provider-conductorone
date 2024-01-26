@@ -96,20 +96,20 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"okta_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `The okta domain field.`,
+				Description: `Okta domain`,
 			},
 			"okta_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `The okta api key field.`,
+				Description: `API key`,
 			},
 			"okta_dont_sync_inactive_apps": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Don't include inactive apps in the sync. Defaults to false. If set to true, the integration will only sync active apps.`,
+				Description: `Do not sync inactive apps`,
 			},
 			"okta_extract_aws_saml_roles": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Extract AWS SAML roles from Okta SAML responses. Defaults to false. If set to true, the integration will extract AWS SAML roles from Okta SAML responses.`,
+				Description: `Extract SAML Role assignments in Okta AWS apps`,
 			},
 		},
 	}

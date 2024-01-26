@@ -94,7 +94,7 @@ func (r *IntegrationSendgridResource) Schema(ctx context.Context, req resource.S
 			"sendgrid_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Sendgrid API Key`,
+				Description: `API key`,
 			},
 		},
 	}

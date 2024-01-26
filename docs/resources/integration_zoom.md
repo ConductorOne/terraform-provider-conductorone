@@ -39,7 +39,7 @@ resource "conductorone_integration_zoom" "zoom" {
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 - `zoom_account_id` (String) Account ID
 - `zoom_client_id` (String) Client ID
-- `zoom_client_secret` (String, Sensitive) Client Secret
+- `zoom_client_secret` (String, Sensitive) Client secret
 
 ### Read-Only
 
