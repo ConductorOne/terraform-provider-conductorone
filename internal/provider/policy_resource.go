@@ -323,19 +323,16 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 				Description: `The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples.`,
 			},
+			// TODO(mstanbCO): Manual changes to remove some values of the oneof that aren't valid for users to set
 			"policy_type": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
-				MarkdownDescription: `must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]` + "\n" +
+				Required: true,
+				MarkdownDescription: `must be one of ["POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY"]` + "\n" +
 					`The enum of the policy type.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						"POLICY_TYPE_UNSPECIFIED",
 						"POLICY_TYPE_GRANT",
 						"POLICY_TYPE_REVOKE",
 						"POLICY_TYPE_CERTIFY",
-						"POLICY_TYPE_ACCESS_REQUEST",
-						"POLICY_TYPE_PROVISION",
 					),
 				},
 			},

@@ -52,13 +52,13 @@ resource "conductorone_policy" "new_policy" {
 ### Required
 
 - `display_name` (String) The display name of the new policy.
+- `policy_type` (String) must be one of ["POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY"]
+The enum of the policy type.
 
 ### Optional
 
 - `description` (String) The description of the new policy.
 - `policy_steps` (Attributes Map) The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples. (see [below for nested schema](#nestedatt--policy_steps))
-- `policy_type` (String) must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]
-The enum of the policy type.
 - `post_actions` (Attributes List) Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately. (see [below for nested schema](#nestedatt--post_actions))
 - `reassign_tasks_to_delegates` (Boolean) Allows reassigning tasks to delegates.
 - `rules` (Attributes List) The rules field. (see [below for nested schema](#nestedatt--rules))
