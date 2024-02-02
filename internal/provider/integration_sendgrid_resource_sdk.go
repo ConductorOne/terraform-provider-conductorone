@@ -87,15 +87,12 @@ func (r *IntegrationSendgridResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationSendgridResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	sendgridApiKey := new(string)
 	if !r.SendgridApiKey.IsUnknown() && !r.SendgridApiKey.IsNull() {
 		*sendgridApiKey = r.SendgridApiKey.ValueString()
-	} else {
-		sendgridApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"sendgrid_api_key": sendgridApiKey,
+		configValues["sendgrid_api_key"] = sendgridApiKey
 	}
 
 	return configValues

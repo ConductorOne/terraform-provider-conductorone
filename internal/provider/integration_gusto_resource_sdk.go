@@ -87,15 +87,12 @@ func (r *IntegrationGustoResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationGustoResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	company := new(string)
 	if !r.Company.IsUnknown() && !r.Company.IsNull() {
 		*company = r.Company.ValueString()
-	} else {
-		company = nil
-	}
-
-	configValues := map[string]*string{
-		"company": company,
+		configValues["company"] = company
 	}
 
 	return configValues

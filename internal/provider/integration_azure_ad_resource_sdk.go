@@ -87,7 +87,6 @@ func (r *IntegrationAzureAdResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationAzureAdResourceModel) populateConfig() map[string]*string {
-
 	configValues := map[string]*string{}
 
 	return configValues

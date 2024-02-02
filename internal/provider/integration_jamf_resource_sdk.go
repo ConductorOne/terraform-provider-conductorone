@@ -87,31 +87,24 @@ func (r *IntegrationJamfResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationJamfResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	jamfInstanceUrl := new(string)
 	if !r.JamfInstanceUrl.IsUnknown() && !r.JamfInstanceUrl.IsNull() {
 		*jamfInstanceUrl = r.JamfInstanceUrl.ValueString()
-	} else {
-		jamfInstanceUrl = nil
+		configValues["jamf_instance_url"] = jamfInstanceUrl
 	}
 
 	jamfUsername := new(string)
 	if !r.JamfUsername.IsUnknown() && !r.JamfUsername.IsNull() {
 		*jamfUsername = r.JamfUsername.ValueString()
-	} else {
-		jamfUsername = nil
+		configValues["jamf_username"] = jamfUsername
 	}
 
 	jamfPassword := new(string)
 	if !r.JamfPassword.IsUnknown() && !r.JamfPassword.IsNull() {
 		*jamfPassword = r.JamfPassword.ValueString()
-	} else {
-		jamfPassword = nil
-	}
-
-	configValues := map[string]*string{
-		"jamf_instance_url": jamfInstanceUrl,
-		"jamf_username":     jamfUsername,
-		"jamf_password":     jamfPassword,
+		configValues["jamf_password"] = jamfPassword
 	}
 
 	return configValues

@@ -87,15 +87,12 @@ func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationCloudamqpResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	cloudamqpApiKey := new(string)
 	if !r.CloudamqpApiKey.IsUnknown() && !r.CloudamqpApiKey.IsNull() {
 		*cloudamqpApiKey = r.CloudamqpApiKey.ValueString()
-	} else {
-		cloudamqpApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"cloudamqp_api_key": cloudamqpApiKey,
+		configValues["cloudamqp_api_key"] = cloudamqpApiKey
 	}
 
 	return configValues

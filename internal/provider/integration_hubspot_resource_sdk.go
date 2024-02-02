@@ -87,15 +87,12 @@ func (r *IntegrationHubspotResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationHubspotResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	hubspotToken := new(string)
 	if !r.HubspotToken.IsUnknown() && !r.HubspotToken.IsNull() {
 		*hubspotToken = r.HubspotToken.ValueString()
-	} else {
-		hubspotToken = nil
-	}
-
-	configValues := map[string]*string{
-		"hubspot_token": hubspotToken,
+		configValues["hubspot_token"] = hubspotToken
 	}
 
 	return configValues

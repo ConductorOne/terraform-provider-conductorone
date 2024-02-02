@@ -87,31 +87,24 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) ToUpdateSDKType() (*sha
 }
 
 func (r *IntegrationGoogleIdentityPlatformResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	projectId := new(string)
 	if !r.ProjectId.IsUnknown() && !r.ProjectId.IsNull() {
 		*projectId = r.ProjectId.ValueString()
-	} else {
-		projectId = nil
+		configValues["project_id"] = projectId
 	}
 
 	tenantId := new(string)
 	if !r.TenantId.IsUnknown() && !r.TenantId.IsNull() {
 		*tenantId = r.TenantId.ValueString()
-	} else {
-		tenantId = nil
+		configValues["tenant_id"] = tenantId
 	}
 
 	credentialsJson := new(string)
 	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
 		*credentialsJson = r.CredentialsJson.ValueString()
-	} else {
-		credentialsJson = nil
-	}
-
-	configValues := map[string]*string{
-		"project_id":       projectId,
-		"tenant_id":        tenantId,
-		"credentials_json": credentialsJson,
+		configValues["credentials_json"] = credentialsJson
 	}
 
 	return configValues

@@ -87,15 +87,12 @@ func (r *IntegrationSlackResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationSlackResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	slackApiKey := new(string)
 	if !r.SlackApiKey.IsUnknown() && !r.SlackApiKey.IsNull() {
 		*slackApiKey = r.SlackApiKey.ValueString()
-	} else {
-		slackApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"slack_api_key": slackApiKey,
+		configValues["slack_api_key"] = slackApiKey
 	}
 
 	return configValues

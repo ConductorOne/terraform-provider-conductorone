@@ -87,15 +87,12 @@ func (r *IntegrationOpsgenieResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationOpsgenieResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	opsgenieApikey := new(string)
 	if !r.OpsgenieApikey.IsUnknown() && !r.OpsgenieApikey.IsNull() {
 		*opsgenieApikey = r.OpsgenieApikey.ValueString()
-	} else {
-		opsgenieApikey = nil
-	}
-
-	configValues := map[string]*string{
-		"opsgenie_apikey": opsgenieApikey,
+		configValues["opsgenie_apikey"] = opsgenieApikey
 	}
 
 	return configValues

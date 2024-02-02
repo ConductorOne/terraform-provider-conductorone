@@ -87,15 +87,12 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationAsanaResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	asanaApiKey := new(string)
 	if !r.AsanaApiKey.IsUnknown() && !r.AsanaApiKey.IsNull() {
 		*asanaApiKey = r.AsanaApiKey.ValueString()
-	} else {
-		asanaApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"asana_api_key": asanaApiKey,
+		configValues["asana_api_key"] = asanaApiKey
 	}
 
 	return configValues

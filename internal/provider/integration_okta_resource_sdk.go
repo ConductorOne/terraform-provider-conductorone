@@ -87,39 +87,30 @@ func (r *IntegrationOktaResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationOktaResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	oktaDomain := new(string)
 	if !r.OktaDomain.IsUnknown() && !r.OktaDomain.IsNull() {
 		*oktaDomain = r.OktaDomain.ValueString()
-	} else {
-		oktaDomain = nil
+		configValues["okta_domain"] = oktaDomain
 	}
 
 	oktaApiKey := new(string)
 	if !r.OktaApiKey.IsUnknown() && !r.OktaApiKey.IsNull() {
 		*oktaApiKey = r.OktaApiKey.ValueString()
-	} else {
-		oktaApiKey = nil
+		configValues["okta_api_key"] = oktaApiKey
 	}
 
 	oktaDontSyncInactiveApps := new(string)
 	if !r.OktaDontSyncInactiveApps.IsUnknown() && !r.OktaDontSyncInactiveApps.IsNull() {
 		*oktaDontSyncInactiveApps = strconv.FormatBool(r.OktaDontSyncInactiveApps.ValueBool())
-	} else {
-		oktaDontSyncInactiveApps = nil
+		configValues["okta_dont_sync_inactive_apps"] = oktaDontSyncInactiveApps
 	}
 
 	oktaExtractAwsSamlRoles := new(string)
 	if !r.OktaExtractAwsSamlRoles.IsUnknown() && !r.OktaExtractAwsSamlRoles.IsNull() {
 		*oktaExtractAwsSamlRoles = strconv.FormatBool(r.OktaExtractAwsSamlRoles.ValueBool())
-	} else {
-		oktaExtractAwsSamlRoles = nil
-	}
-
-	configValues := map[string]*string{
-		"okta_domain":                  oktaDomain,
-		"okta_api_key":                 oktaApiKey,
-		"okta_dont_sync_inactive_apps": oktaDontSyncInactiveApps,
-		"okta_extract_aws_saml_roles":  oktaExtractAwsSamlRoles,
+		configValues["okta_extract_aws_saml_roles"] = oktaExtractAwsSamlRoles
 	}
 
 	return configValues

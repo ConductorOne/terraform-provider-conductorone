@@ -528,7 +528,7 @@ func (s *connector) Update(ctx context.Context, request operations.C1APIAppV1Con
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "ConnectorServiceUpdateRequestInput", "json")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "ConnectorServiceUpdateRequest", "json")
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
@@ -592,7 +592,7 @@ func (s *connector) UpdateDelegated(ctx context.Context, request operations.C1AP
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "ConnectorServiceUpdateDelegatedRequestInput", "json")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "ConnectorServiceUpdateDelegatedRequest", "json")
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
