@@ -87,15 +87,12 @@ func (r *IntegrationNewRelicResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationNewRelicResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	newrelicApiKey := new(string)
 	if !r.NewrelicApiKey.IsUnknown() && !r.NewrelicApiKey.IsNull() {
 		*newrelicApiKey = r.NewrelicApiKey.ValueString()
-	} else {
-		newrelicApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"newrelic_api_key": newrelicApiKey,
+		configValues["newrelic_api_key"] = newrelicApiKey
 	}
 
 	return configValues

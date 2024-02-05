@@ -87,31 +87,24 @@ func (r *IntegrationZoomResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationZoomResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	zoomAccountId := new(string)
 	if !r.ZoomAccountId.IsUnknown() && !r.ZoomAccountId.IsNull() {
 		*zoomAccountId = r.ZoomAccountId.ValueString()
-	} else {
-		zoomAccountId = nil
+		configValues["zoom_account_id"] = zoomAccountId
 	}
 
 	zoomClientId := new(string)
 	if !r.ZoomClientId.IsUnknown() && !r.ZoomClientId.IsNull() {
 		*zoomClientId = r.ZoomClientId.ValueString()
-	} else {
-		zoomClientId = nil
+		configValues["zoom_client_id"] = zoomClientId
 	}
 
 	zoomClientSecret := new(string)
 	if !r.ZoomClientSecret.IsUnknown() && !r.ZoomClientSecret.IsNull() {
 		*zoomClientSecret = r.ZoomClientSecret.ValueString()
-	} else {
-		zoomClientSecret = nil
-	}
-
-	configValues := map[string]*string{
-		"zoom_account_id":    zoomAccountId,
-		"zoom_client_id":     zoomClientId,
-		"zoom_client_secret": zoomClientSecret,
+		configValues["zoom_client_secret"] = zoomClientSecret
 	}
 
 	return configValues

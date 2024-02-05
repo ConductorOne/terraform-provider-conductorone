@@ -87,23 +87,18 @@ func (r *IntegrationPantherResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationPantherResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	pantherApiKey := new(string)
 	if !r.PantherApiKey.IsUnknown() && !r.PantherApiKey.IsNull() {
 		*pantherApiKey = r.PantherApiKey.ValueString()
-	} else {
-		pantherApiKey = nil
+		configValues["panther_api_key"] = pantherApiKey
 	}
 
 	pantherUrl := new(string)
 	if !r.PantherUrl.IsUnknown() && !r.PantherUrl.IsNull() {
 		*pantherUrl = r.PantherUrl.ValueString()
-	} else {
-		pantherUrl = nil
-	}
-
-	configValues := map[string]*string{
-		"panther_api_key": pantherApiKey,
-		"panther_url":     pantherUrl,
+		configValues["panther_url"] = pantherUrl
 	}
 
 	return configValues

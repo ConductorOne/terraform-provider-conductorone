@@ -87,23 +87,18 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Co
 }
 
 func (r *IntegrationGithubEnterpriseResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	githubInstanceUrl := new(string)
 	if !r.GithubInstanceUrl.IsUnknown() && !r.GithubInstanceUrl.IsNull() {
 		*githubInstanceUrl = r.GithubInstanceUrl.ValueString()
-	} else {
-		githubInstanceUrl = nil
+		configValues["github_instance_url"] = githubInstanceUrl
 	}
 
 	githubAccessToken := new(string)
 	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
 		*githubAccessToken = r.GithubAccessToken.ValueString()
-	} else {
-		githubAccessToken = nil
-	}
-
-	configValues := map[string]*string{
-		"github_instance_url": githubInstanceUrl,
-		"github_access_token": githubAccessToken,
+		configValues["github_access_token"] = githubAccessToken
 	}
 
 	return configValues

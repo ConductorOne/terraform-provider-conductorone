@@ -87,15 +87,12 @@ func (r *IntegrationSegmentResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationSegmentResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	segmentAccessToken := new(string)
 	if !r.SegmentAccessToken.IsUnknown() && !r.SegmentAccessToken.IsNull() {
 		*segmentAccessToken = r.SegmentAccessToken.ValueString()
-	} else {
-		segmentAccessToken = nil
-	}
-
-	configValues := map[string]*string{
-		"segment_access_token": segmentAccessToken,
+		configValues["segment_access_token"] = segmentAccessToken
 	}
 
 	return configValues

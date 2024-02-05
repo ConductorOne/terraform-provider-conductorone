@@ -87,31 +87,24 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationJiraCloudResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	jiracloudDomain := new(string)
 	if !r.JiracloudDomain.IsUnknown() && !r.JiracloudDomain.IsNull() {
 		*jiracloudDomain = r.JiracloudDomain.ValueString()
-	} else {
-		jiracloudDomain = nil
+		configValues["jiracloud_domain"] = jiracloudDomain
 	}
 
 	jiracloudUsername := new(string)
 	if !r.JiracloudUsername.IsUnknown() && !r.JiracloudUsername.IsNull() {
 		*jiracloudUsername = r.JiracloudUsername.ValueString()
-	} else {
-		jiracloudUsername = nil
+		configValues["jiracloud_username"] = jiracloudUsername
 	}
 
 	jiracloudApikey := new(string)
 	if !r.JiracloudApikey.IsUnknown() && !r.JiracloudApikey.IsNull() {
 		*jiracloudApikey = r.JiracloudApikey.ValueString()
-	} else {
-		jiracloudApikey = nil
-	}
-
-	configValues := map[string]*string{
-		"jiracloud_domain":   jiracloudDomain,
-		"jiracloud_username": jiracloudUsername,
-		"jiracloud_apikey":   jiracloudApikey,
+		configValues["jiracloud_apikey"] = jiracloudApikey
 	}
 
 	return configValues

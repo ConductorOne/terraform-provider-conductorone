@@ -87,23 +87,18 @@ func (r *IntegrationBitbucketResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationBitbucketResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	bitbucketUsername := new(string)
 	if !r.BitbucketUsername.IsUnknown() && !r.BitbucketUsername.IsNull() {
 		*bitbucketUsername = r.BitbucketUsername.ValueString()
-	} else {
-		bitbucketUsername = nil
+		configValues["bitbucket_username"] = bitbucketUsername
 	}
 
 	bitbucketAppPassword := new(string)
 	if !r.BitbucketAppPassword.IsUnknown() && !r.BitbucketAppPassword.IsNull() {
 		*bitbucketAppPassword = r.BitbucketAppPassword.ValueString()
-	} else {
-		bitbucketAppPassword = nil
-	}
-
-	configValues := map[string]*string{
-		"bitbucket_username":     bitbucketUsername,
-		"bitbucket_app_password": bitbucketAppPassword,
+		configValues["bitbucket_app_password"] = bitbucketAppPassword
 	}
 
 	return configValues

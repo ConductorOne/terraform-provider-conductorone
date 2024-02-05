@@ -87,23 +87,18 @@ func (r *IntegrationGitlabResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationGitlabResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	gitlabGroup := new(string)
 	if !r.GitlabGroup.IsUnknown() && !r.GitlabGroup.IsNull() {
 		*gitlabGroup = r.GitlabGroup.ValueString()
-	} else {
-		gitlabGroup = nil
+		configValues["gitlab_group"] = gitlabGroup
 	}
 
 	gitlabAccessToken := new(string)
 	if !r.GitlabAccessToken.IsUnknown() && !r.GitlabAccessToken.IsNull() {
 		*gitlabAccessToken = r.GitlabAccessToken.ValueString()
-	} else {
-		gitlabAccessToken = nil
-	}
-
-	configValues := map[string]*string{
-		"gitlab_group":        gitlabGroup,
-		"gitlab_access_token": gitlabAccessToken,
+		configValues["gitlab_access_token"] = gitlabAccessToken
 	}
 
 	return configValues
