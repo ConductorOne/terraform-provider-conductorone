@@ -87,7 +87,6 @@ func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationRampResourceModel) populateConfig() map[string]*string {
-
 	configValues := map[string]*string{}
 
 	return configValues

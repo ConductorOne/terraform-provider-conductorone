@@ -87,39 +87,30 @@ func (r *IntegrationUkgResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 }
 
 func (r *IntegrationUkgResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	ukgCustomerApiKey := new(string)
 	if !r.UkgCustomerApiKey.IsUnknown() && !r.UkgCustomerApiKey.IsNull() {
 		*ukgCustomerApiKey = r.UkgCustomerApiKey.ValueString()
-	} else {
-		ukgCustomerApiKey = nil
+		configValues["ukg_customer_api_key"] = ukgCustomerApiKey
 	}
 
 	ukgUsername := new(string)
 	if !r.UkgUsername.IsUnknown() && !r.UkgUsername.IsNull() {
 		*ukgUsername = r.UkgUsername.ValueString()
-	} else {
-		ukgUsername = nil
+		configValues["ukg_username"] = ukgUsername
 	}
 
 	ukgPassword := new(string)
 	if !r.UkgPassword.IsUnknown() && !r.UkgPassword.IsNull() {
 		*ukgPassword = r.UkgPassword.ValueString()
-	} else {
-		ukgPassword = nil
+		configValues["ukg_password"] = ukgPassword
 	}
 
 	ukgServiceEndpoint := new(string)
 	if !r.UkgServiceEndpoint.IsUnknown() && !r.UkgServiceEndpoint.IsNull() {
 		*ukgServiceEndpoint = r.UkgServiceEndpoint.ValueString()
-	} else {
-		ukgServiceEndpoint = nil
-	}
-
-	configValues := map[string]*string{
-		"ukg_customer_api_key": ukgCustomerApiKey,
-		"ukg_username":         ukgUsername,
-		"ukg_password":         ukgPassword,
-		"ukg_service_endpoint": ukgServiceEndpoint,
+		configValues["ukg_service_endpoint"] = ukgServiceEndpoint
 	}
 
 	return configValues

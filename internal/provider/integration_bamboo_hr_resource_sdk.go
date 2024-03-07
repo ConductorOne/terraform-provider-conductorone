@@ -87,23 +87,18 @@ func (r *IntegrationBambooHrResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationBambooHrResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	companyDomain := new(string)
 	if !r.CompanyDomain.IsUnknown() && !r.CompanyDomain.IsNull() {
 		*companyDomain = r.CompanyDomain.ValueString()
-	} else {
-		companyDomain = nil
+		configValues["company_domain"] = companyDomain
 	}
 
 	apiKey := new(string)
 	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
 		*apiKey = r.ApiKey.ValueString()
-	} else {
-		apiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"company_domain": companyDomain,
-		"api_key":        apiKey,
+		configValues["api_key"] = apiKey
 	}
 
 	return configValues

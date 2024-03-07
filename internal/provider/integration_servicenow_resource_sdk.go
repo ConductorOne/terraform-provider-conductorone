@@ -87,31 +87,24 @@ func (r *IntegrationServicenowResourceModel) ToUpdateSDKType() (*shared.Connecto
 }
 
 func (r *IntegrationServicenowResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	password := new(string)
 	if !r.Password.IsUnknown() && !r.Password.IsNull() {
 		*password = r.Password.ValueString()
-	} else {
-		password = nil
+		configValues["password"] = password
 	}
 
 	username := new(string)
 	if !r.Username.IsUnknown() && !r.Username.IsNull() {
 		*username = r.Username.ValueString()
-	} else {
-		username = nil
+		configValues["username"] = username
 	}
 
 	deployment := new(string)
 	if !r.Deployment.IsUnknown() && !r.Deployment.IsNull() {
 		*deployment = r.Deployment.ValueString()
-	} else {
-		deployment = nil
-	}
-
-	configValues := map[string]*string{
-		"password":   password,
-		"username":   username,
-		"deployment": deployment,
+		configValues["deployment"] = deployment
 	}
 
 	return configValues

@@ -87,15 +87,12 @@ func (r *IntegrationJumpcloudResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationJumpcloudResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	jumpcloudApiKey := new(string)
 	if !r.JumpcloudApiKey.IsUnknown() && !r.JumpcloudApiKey.IsNull() {
 		*jumpcloudApiKey = r.JumpcloudApiKey.ValueString()
-	} else {
-		jumpcloudApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"jumpcloud_api_key": jumpcloudApiKey,
+		configValues["jumpcloud_api_key"] = jumpcloudApiKey
 	}
 
 	return configValues

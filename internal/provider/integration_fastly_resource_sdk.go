@@ -87,15 +87,12 @@ func (r *IntegrationFastlyResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationFastlyResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	fastlyAccessToken := new(string)
 	if !r.FastlyAccessToken.IsUnknown() && !r.FastlyAccessToken.IsNull() {
 		*fastlyAccessToken = r.FastlyAccessToken.ValueString()
-	} else {
-		fastlyAccessToken = nil
-	}
-
-	configValues := map[string]*string{
-		"fastly_access_token": fastlyAccessToken,
+		configValues["fastly_access_token"] = fastlyAccessToken
 	}
 
 	return configValues

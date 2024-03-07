@@ -87,23 +87,18 @@ func (r *IntegrationExpensifyResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationExpensifyResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	expensifyUserId := new(string)
 	if !r.ExpensifyUserId.IsUnknown() && !r.ExpensifyUserId.IsNull() {
 		*expensifyUserId = r.ExpensifyUserId.ValueString()
-	} else {
-		expensifyUserId = nil
+		configValues["expensify_user_id"] = expensifyUserId
 	}
 
 	expensifyUserSecret := new(string)
 	if !r.ExpensifyUserSecret.IsUnknown() && !r.ExpensifyUserSecret.IsNull() {
 		*expensifyUserSecret = r.ExpensifyUserSecret.ValueString()
-	} else {
-		expensifyUserSecret = nil
-	}
-
-	configValues := map[string]*string{
-		"expensify_user_id":     expensifyUserId,
-		"expensify_user_secret": expensifyUserSecret,
+		configValues["expensify_user_secret"] = expensifyUserSecret
 	}
 
 	return configValues

@@ -87,23 +87,18 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) ToUpdateSDKType() (*shared
 }
 
 func (r *IntegrationCloudflareZeroTrustResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	accountId := new(string)
 	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
 		*accountId = r.AccountId.ValueString()
-	} else {
-		accountId = nil
+		configValues["account_id"] = accountId
 	}
 
 	apiKey := new(string)
 	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
 		*apiKey = r.ApiKey.ValueString()
-	} else {
-		apiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"account_id": accountId,
-		"api_key":    apiKey,
+		configValues["api_key"] = apiKey
 	}
 
 	return configValues

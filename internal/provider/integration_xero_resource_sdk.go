@@ -87,23 +87,18 @@ func (r *IntegrationXeroResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationXeroResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	xeroClientId := new(string)
 	if !r.XeroClientId.IsUnknown() && !r.XeroClientId.IsNull() {
 		*xeroClientId = r.XeroClientId.ValueString()
-	} else {
-		xeroClientId = nil
+		configValues["xero_client_id"] = xeroClientId
 	}
 
 	xeroClientSecret := new(string)
 	if !r.XeroClientSecret.IsUnknown() && !r.XeroClientSecret.IsNull() {
 		*xeroClientSecret = r.XeroClientSecret.ValueString()
-	} else {
-		xeroClientSecret = nil
-	}
-
-	configValues := map[string]*string{
-		"xero_client_id":     xeroClientId,
-		"xero_client_secret": xeroClientSecret,
+		configValues["xero_client_secret"] = xeroClientSecret
 	}
 
 	return configValues

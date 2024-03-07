@@ -87,23 +87,18 @@ func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationBuildkiteResourceModel) populateConfig() map[string]*string {
+	configValues := map[string]*string{}
+
 	apiToken := new(string)
 	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
 		*apiToken = r.ApiToken.ValueString()
-	} else {
-		apiToken = nil
+		configValues["api_token"] = apiToken
 	}
 
 	organization := new(string)
 	if !r.Organization.IsUnknown() && !r.Organization.IsNull() {
 		*organization = r.Organization.ValueString()
-	} else {
-		organization = nil
-	}
-
-	configValues := map[string]*string{
-		"api_token":    apiToken,
-		"organization": organization,
+		configValues["organization"] = organization
 	}
 
 	return configValues
