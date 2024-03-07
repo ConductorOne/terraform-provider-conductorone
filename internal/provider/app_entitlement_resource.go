@@ -277,6 +277,7 @@ func (r *AppEntitlementResource) Create(ctx context.Context, req resource.Create
 		AppID:                       appID,
 		ID:                          id,
 	}
+
 	res, err := r.client.AppEntitlements.Update(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -379,6 +380,18 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
+	// TODO(mstanbCO): Need a better pattern for stuff like this
+	// These two fields are a oneof in the API, so we need to ensure that only one is set before making the request.
+	if currentAppEntitlement.DurationGrant != nil {
+		if appEntitlement.DurationUnset != nil {
+			appEntitlement.DurationGrant = nil
+		}
+	} else if currentAppEntitlement.DurationUnset != nil {
+		if appEntitlement.DurationGrant != nil {
+			appEntitlement.DurationUnset = nil
+		}
+	}
+
 	// If no value was specified for the ProvisionPolicy, use the current value.
 	if appEntitlement.ProvisionPolicy == nil {
 		appEntitlement.ProvisionPolicy = currentAppEntitlement.ProvisionPolicy
@@ -393,6 +406,7 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		AppID:                       appID,
 		ID:                          id,
 	}
+
 	res, err := r.client.AppEntitlements.Update(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
