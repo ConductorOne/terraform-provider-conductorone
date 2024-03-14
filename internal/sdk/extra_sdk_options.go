@@ -70,11 +70,11 @@ type ClientConfig struct {
 }
 
 func (c *ClientConfig) UseWithServer() bool {
-	return c.serverURL != ""
+	return c != nil && c.serverURL != ""
 }
 
 func (c *ClientConfig) UseWithTenant() bool {
-	return c.tenant != ""
+	return c != nil && c.tenant != ""
 }
 
 func (c *ClientConfig) SetTenant(tenant string) error {
