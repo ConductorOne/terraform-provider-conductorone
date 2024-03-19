@@ -92,20 +92,10 @@ func (r *AppEntitlementDataSourceModel) RefreshFromGetResponse(resp *shared.AppE
 		r.ProvisionPolicy = nil
 	} else {
 		r.ProvisionPolicy = &ProvisionPolicy{}
-		if r.ProvisionPolicy.ConnectorProvision == nil {
+		if resp.ProvisionPolicy.ConnectorProvision != nil {
 			r.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
 		}
-		if resp.ProvisionPolicy.ConnectorProvision == nil {
-			r.ProvisionPolicy.ConnectorProvision = nil
-		} else {
-			r.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
-		}
-		if r.ProvisionPolicy.DelegatedProvision == nil {
-			r.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
-		}
-		if resp.ProvisionPolicy.DelegatedProvision == nil {
-			r.ProvisionPolicy.DelegatedProvision = nil
-		} else {
+		if r.ProvisionPolicy.DelegatedProvision != nil {
 			r.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
 			if resp.ProvisionPolicy.DelegatedProvision.AppID != nil {
 				r.ProvisionPolicy.DelegatedProvision.AppID = types.StringValue(*resp.ProvisionPolicy.DelegatedProvision.AppID)
@@ -117,13 +107,13 @@ func (r *AppEntitlementDataSourceModel) RefreshFromGetResponse(resp *shared.AppE
 			} else {
 				r.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringNull()
 			}
+			if resp.ProvisionPolicy.DelegatedProvision.Implicit != nil {
+				r.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolValue(*resp.ProvisionPolicy.DelegatedProvision.Implicit)
+			} else {
+				r.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolNull()
+			}
 		}
-		if r.ProvisionPolicy.ManualProvision == nil {
-			r.ProvisionPolicy.ManualProvision = &ManualProvision{}
-		}
-		if resp.ProvisionPolicy.ManualProvision == nil {
-			r.ProvisionPolicy.ManualProvision = nil
-		} else {
+		if r.ProvisionPolicy.ManualProvision != nil {
 			r.ProvisionPolicy.ManualProvision = &ManualProvision{}
 			if resp.ProvisionPolicy.ManualProvision.Instructions != nil {
 				r.ProvisionPolicy.ManualProvision.Instructions = types.StringValue(*resp.ProvisionPolicy.ManualProvision.Instructions)

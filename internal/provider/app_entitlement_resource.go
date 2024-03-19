@@ -160,35 +160,48 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			// TODO: this is a oneof
 			"provision_policy": schema.SingleNestedAttribute{
 				Optional: true,
+				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"connector_provision": schema.SingleNestedAttribute{
 						Optional:    true,
+						Computed:    true,
 						Attributes:  map[string]schema.Attribute{},
 						Description: `The ConnectorProvision message.`,
 					},
 					"delegated_provision": schema.SingleNestedAttribute{
 						Optional: true,
+						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
 								Optional:    true,
+								Computed:    true,
 								Description: `The appId field.`,
 							},
 							"entitlement_id": schema.StringAttribute{
 								Optional:    true,
+								Computed:    true,
 								Description: `The entitlementId field.`,
+							},
+							"implicit": schema.BoolAttribute{
+								Optional:    true,
+								Computed:    true,
+								Description: `If true, a binding will be automatically created from the entitlement of the parent app.`,
 							},
 						},
 						Description: `The DelegatedProvision message.`,
 					},
 					"manual_provision": schema.SingleNestedAttribute{
 						Optional: true,
+						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"instructions": schema.StringAttribute{
 								Optional:    true,
+								Computed:    true,
 								Description: `The instructions field.`,
 							},
 							"user_ids": schema.ListAttribute{
 								Optional:    true,
+								Computed:    true,
 								ElementType: types.StringType,
 								Description: `The userIds field.`,
 							},
