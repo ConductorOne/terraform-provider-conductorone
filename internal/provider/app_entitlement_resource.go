@@ -264,6 +264,9 @@ func (r *AppEntitlementResource) Create(ctx context.Context, req resource.Create
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 	})...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	appEntitlement := data.ToUpdateSDKType()
 
