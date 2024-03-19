@@ -88,6 +88,7 @@ Read-Only:
 
 - `app_id` (String) The appId field.
 - `entitlement_id` (String) The entitlementId field.
+- `implicit` (Boolean) If true, a binding will be automatically created from the entitlement of the parent app.
 
 
 <a id="nestedatt--provision_policy--manual_provision"></a>

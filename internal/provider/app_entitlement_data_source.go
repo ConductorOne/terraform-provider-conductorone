@@ -157,6 +157,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 								Computed:    true,
 								Description: `The entitlementId field.`,
 							},
+							"implicit": schema.BoolAttribute{
+								Computed:    true,
+								Description: `If true, a binding will be automatically created from the entitlement of the parent app.`,
+							},
 						},
 						Description: `The DelegatedProvision message.`,
 					},

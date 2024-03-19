@@ -28,9 +28,16 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlement {
 			} else {
 				entitlementID = nil
 			}
+			implicit := new(bool)
+			if !r.ProvisionPolicy.DelegatedProvision.Implicit.IsUnknown() && !r.ProvisionPolicy.DelegatedProvision.Implicit.IsNull() {
+				*implicit = r.ProvisionPolicy.DelegatedProvision.Implicit.ValueBool()
+			} else {
+				implicit = nil
+			}
 			delegatedProvision = &shared.DelegatedProvision{
 				AppID:         appID,
 				EntitlementID: entitlementID,
+				Implicit:      implicit,
 			}
 		}
 		var manualProvision *shared.ManualProvision
@@ -274,52 +281,41 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 	}
 
 	if resp.ProvisionPolicy != nil {
-		if r.ProvisionPolicy != nil {
-			r.ProvisionPolicy = &ProvisionPolicy{}
-			if r.ProvisionPolicy.ConnectorProvision == nil {
-				r.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
-			}
-			if resp.ProvisionPolicy.ConnectorProvision == nil {
-				r.ProvisionPolicy.ConnectorProvision = nil
+		r.ProvisionPolicy = &ProvisionPolicy{}
+		if resp.ProvisionPolicy.ConnectorProvision != nil {
+			r.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
+		}
+		if resp.ProvisionPolicy.DelegatedProvision != nil {
+			r.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
+			if resp.ProvisionPolicy.DelegatedProvision.AppID != nil {
+				r.ProvisionPolicy.DelegatedProvision.AppID = types.StringValue(*resp.ProvisionPolicy.DelegatedProvision.AppID)
 			} else {
-				r.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
+				r.ProvisionPolicy.DelegatedProvision.AppID = types.StringNull()
 			}
-			if r.ProvisionPolicy.DelegatedProvision == nil {
-				r.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
-			}
-			if resp.ProvisionPolicy.DelegatedProvision == nil {
-				r.ProvisionPolicy.DelegatedProvision = nil
+			if resp.ProvisionPolicy.DelegatedProvision.EntitlementID != nil {
+				r.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringValue(*resp.ProvisionPolicy.DelegatedProvision.EntitlementID)
 			} else {
-				r.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
-				if resp.ProvisionPolicy.DelegatedProvision.AppID != nil {
-					r.ProvisionPolicy.DelegatedProvision.AppID = types.StringValue(*resp.ProvisionPolicy.DelegatedProvision.AppID)
-				} else {
-					r.ProvisionPolicy.DelegatedProvision.AppID = types.StringNull()
-				}
-				if resp.ProvisionPolicy.DelegatedProvision.EntitlementID != nil {
-					r.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringValue(*resp.ProvisionPolicy.DelegatedProvision.EntitlementID)
-				} else {
-					r.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringNull()
-				}
+				r.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringNull()
 			}
-			if r.ProvisionPolicy.ManualProvision == nil {
-				r.ProvisionPolicy.ManualProvision = &ManualProvision{}
-			}
-			if resp.ProvisionPolicy.ManualProvision == nil {
-				r.ProvisionPolicy.ManualProvision = nil
+			if resp.ProvisionPolicy.DelegatedProvision.Implicit != nil {
+				r.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolValue(*resp.ProvisionPolicy.DelegatedProvision.Implicit)
 			} else {
-				r.ProvisionPolicy.ManualProvision = &ManualProvision{}
-				if resp.ProvisionPolicy.ManualProvision.Instructions != nil {
-					r.ProvisionPolicy.ManualProvision.Instructions = types.StringValue(*resp.ProvisionPolicy.ManualProvision.Instructions)
-				} else {
-					r.ProvisionPolicy.ManualProvision.Instructions = types.StringNull()
-				}
-				r.ProvisionPolicy.ManualProvision.UserIds = nil
-				for _, v := range resp.ProvisionPolicy.ManualProvision.UserIds {
-					r.ProvisionPolicy.ManualProvision.UserIds = append(r.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
-				}
+				r.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolNull()
 			}
 		}
+		if resp.ProvisionPolicy.ManualProvision != nil {
+			r.ProvisionPolicy.ManualProvision = &ManualProvision{}
+			if resp.ProvisionPolicy.ManualProvision.Instructions != nil {
+				r.ProvisionPolicy.ManualProvision.Instructions = types.StringValue(*resp.ProvisionPolicy.ManualProvision.Instructions)
+			} else {
+				r.ProvisionPolicy.ManualProvision.Instructions = types.StringNull()
+			}
+			r.ProvisionPolicy.ManualProvision.UserIds = nil
+			for _, v := range resp.ProvisionPolicy.ManualProvision.UserIds {
+				r.ProvisionPolicy.ManualProvision.UserIds = append(r.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
+			}
+		}
+
 	}
 	if resp.RevokePolicyID != nil {
 		r.RevokePolicyID = types.StringValue(*resp.RevokePolicyID)
