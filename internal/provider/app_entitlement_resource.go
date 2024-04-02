@@ -208,6 +208,18 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 						},
 						Description: `The ManualProvision message.`,
 					},
+					"webhook_provision": schema.SingleNestedAttribute{
+						Optional: true,
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"webhook_id": schema.StringAttribute{
+								Optional:    true,
+								Computed:    true,
+								Description: `The ID of the webhook to call for provisioning.`,
+							},
+						},
+						Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+					},
 				},
 				MarkdownDescription: `The ProvisionPolicy message is the Provision strategy that will be used for granting access for this entitlement.` + "\n" +
 					`` +
@@ -215,6 +227,7 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					`  - connector` + "\n" +
 					`  - manual` + "\n" +
 					`  - delegated` + "\n" +
+					`  - webhook` + "\n" +
 					"\n" +
 					``,
 			},
@@ -411,6 +424,31 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 	// If no value was specified for the ProvisionPolicy, use the current value.
 	if appEntitlement.ProvisionPolicy == nil {
 		appEntitlement.ProvisionPolicy = currentAppEntitlement.ProvisionPolicy
+	}
+
+	// TODO(mstanbCO): Need a better pattern for handling this in the merge step, instead of doing this.
+	if currentAppEntitlement.ProvisionPolicy != nil {
+		if currentAppEntitlement.ProvisionPolicy.ConnectorProvision != nil {
+			if appEntitlement.ProvisionPolicy.DelegatedProvision != nil || appEntitlement.ProvisionPolicy.ManualProvision != nil ||
+				appEntitlement.ProvisionPolicy.WebhookProvision != nil {
+				appEntitlement.ProvisionPolicy.ConnectorProvision = nil
+			}
+		} else if currentAppEntitlement.ProvisionPolicy.DelegatedProvision != nil {
+			if appEntitlement.ProvisionPolicy.ConnectorProvision != nil || appEntitlement.ProvisionPolicy.ManualProvision != nil ||
+				appEntitlement.ProvisionPolicy.WebhookProvision != nil {
+				appEntitlement.ProvisionPolicy.DelegatedProvision = nil
+			}
+		} else if currentAppEntitlement.ProvisionPolicy.ManualProvision != nil {
+			if appEntitlement.ProvisionPolicy.ConnectorProvision != nil || appEntitlement.ProvisionPolicy.DelegatedProvision != nil ||
+				appEntitlement.ProvisionPolicy.WebhookProvision != nil {
+				appEntitlement.ProvisionPolicy.ManualProvision = nil
+			}
+		} else if currentAppEntitlement.ProvisionPolicy.WebhookProvision != nil {
+			if appEntitlement.ProvisionPolicy.ConnectorProvision != nil || appEntitlement.ProvisionPolicy.DelegatedProvision != nil ||
+				appEntitlement.ProvisionPolicy.ManualProvision != nil {
+				appEntitlement.ProvisionPolicy.WebhookProvision = nil
+			}
+		}
 	}
 
 	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
