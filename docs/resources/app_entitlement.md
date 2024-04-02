@@ -64,7 +64,8 @@ resource "conductorone_app_entitlement" "okta_test_admin" {
 This message contains a oneof. Only a single field of the following list may be set at a time:
   - connector
   - manual
-  - delegated (see [below for nested schema](#nestedatt--provision_policy))
+  - delegated
+  - webhook (see [below for nested schema](#nestedatt--provision_policy))
 - `revoke_policy_id` (String) The revokePolicyId field is the ID of the policy that will be used for revoke access tasks.
 - `risk_level_value_id` (String) The riskLevelValueId field is the ID of the risk level attribute value that will be set on the app entitlement.
 - `slug` (String) The slug field.
@@ -89,6 +90,7 @@ Optional:
 - `connector_provision` (Attributes) The ConnectorProvision message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision))
 - `delegated_provision` (Attributes) The DelegatedProvision message. (see [below for nested schema](#nestedatt--provision_policy--delegated_provision))
 - `manual_provision` (Attributes) The ManualProvision message. (see [below for nested schema](#nestedatt--provision_policy--manual_provision))
+- `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--provision_policy--webhook_provision))
 
 <a id="nestedatt--provision_policy--connector_provision"></a>
 ### Nested Schema for `provision_policy.connector_provision`
@@ -111,3 +113,11 @@ Optional:
 
 - `instructions` (String) The instructions field.
 - `user_ids` (List of String) The userIds field.
+
+
+<a id="nestedatt--provision_policy--webhook_provision"></a>
+### Nested Schema for `provision_policy.webhook_provision`
+
+Optional:
+
+- `webhook_id` (String) The ID of the webhook to call for provisioning.

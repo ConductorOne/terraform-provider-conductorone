@@ -411,14 +411,10 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 
 	// TODO(mstanbCO): Need a better pattern for stuff like this
 	// These two fields are a oneof in the API, so we need to ensure that only one is set before making the request.
-	if currentAppEntitlement.DurationGrant != nil {
-		if appEntitlement.DurationUnset != nil {
-			appEntitlement.DurationGrant = nil
-		}
-	} else if currentAppEntitlement.DurationUnset != nil {
-		if appEntitlement.DurationGrant != nil {
-			appEntitlement.DurationUnset = nil
-		}
+	if currentAppEntitlement.DurationGrant != nil && appEntitlement.DurationUnset != nil {
+		appEntitlement.DurationGrant = nil
+	} else if currentAppEntitlement.DurationUnset != nil && appEntitlement.DurationGrant != nil {
+		appEntitlement.DurationUnset = nil
 	}
 
 	// If no value was specified for the ProvisionPolicy, use the current value.
@@ -428,24 +424,25 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 
 	// TODO(mstanbCO): Need a better pattern for handling this in the merge step, instead of doing this.
 	if currentAppEntitlement.ProvisionPolicy != nil {
+		isDelegatedSet := appEntitlement.ProvisionPolicy.DelegatedProvision != nil
+		isManualSet := appEntitlement.ProvisionPolicy.ManualProvision != nil
+		isWebhookSet := appEntitlement.ProvisionPolicy.WebhookProvision != nil
+		isConnectorSet := appEntitlement.ProvisionPolicy.ConnectorProvision != nil
+
 		if currentAppEntitlement.ProvisionPolicy.ConnectorProvision != nil {
-			if appEntitlement.ProvisionPolicy.DelegatedProvision != nil || appEntitlement.ProvisionPolicy.ManualProvision != nil ||
-				appEntitlement.ProvisionPolicy.WebhookProvision != nil {
+			if isDelegatedSet || isManualSet || isWebhookSet {
 				appEntitlement.ProvisionPolicy.ConnectorProvision = nil
 			}
 		} else if currentAppEntitlement.ProvisionPolicy.DelegatedProvision != nil {
-			if appEntitlement.ProvisionPolicy.ConnectorProvision != nil || appEntitlement.ProvisionPolicy.ManualProvision != nil ||
-				appEntitlement.ProvisionPolicy.WebhookProvision != nil {
+			if isConnectorSet || isManualSet || isWebhookSet {
 				appEntitlement.ProvisionPolicy.DelegatedProvision = nil
 			}
 		} else if currentAppEntitlement.ProvisionPolicy.ManualProvision != nil {
-			if appEntitlement.ProvisionPolicy.ConnectorProvision != nil || appEntitlement.ProvisionPolicy.DelegatedProvision != nil ||
-				appEntitlement.ProvisionPolicy.WebhookProvision != nil {
+			if isConnectorSet || isDelegatedSet || isWebhookSet {
 				appEntitlement.ProvisionPolicy.ManualProvision = nil
 			}
 		} else if currentAppEntitlement.ProvisionPolicy.WebhookProvision != nil {
-			if appEntitlement.ProvisionPolicy.ConnectorProvision != nil || appEntitlement.ProvisionPolicy.DelegatedProvision != nil ||
-				appEntitlement.ProvisionPolicy.ManualProvision != nil {
+			if isConnectorSet || isDelegatedSet || isManualSet {
 				appEntitlement.ProvisionPolicy.WebhookProvision = nil
 			}
 		}
