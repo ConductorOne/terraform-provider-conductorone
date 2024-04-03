@@ -5,8 +5,9 @@ package sdk
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/internal/hooks"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/internal/utils"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/shared"
 	"net/http"
 	"time"
 )
@@ -41,8 +42,7 @@ func Float32(f float32) *float32 { return &f }
 func Float64(f float64) *float64 { return &f }
 
 type sdkConfiguration struct {
-	DefaultClient     HTTPClient
-	SecurityClient    HTTPClient
+	Client            HTTPClient
 	Security          func(context.Context) (interface{}, error)
 	ServerURL         string
 	ServerIndex       int
@@ -53,6 +53,7 @@ type sdkConfiguration struct {
 	GenVersion        string
 	UserAgent         string
 	RetryConfig       *utils.RetryConfig
+	Hooks             *hooks.Hooks
 }
 
 func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
@@ -94,9 +95,12 @@ type SDK struct {
 	RequestCatalogSearch      *RequestCatalogSearch
 	TaskSearch                *TaskSearch
 	UserSearch                *UserSearch
+	AWSExternalIDSettings     *AWSExternalIDSettings
+	SessionSettings           *SessionSettings
 	Task                      *Task
 	TaskActions               *TaskActions
 	User                      *User
+	Webhooks                  *Webhooks
 
 	sdkConfiguration sdkConfiguration
 }
@@ -148,13 +152,13 @@ func WithTenantDomain(tenantDomain string) SDKOption {
 // WithClient allows the overriding of the default HTTP client used by the SDK
 func WithClient(client HTTPClient) SDKOption {
 	return func(sdk *SDK) {
-		sdk.sdkConfiguration.DefaultClient = client
+		sdk.sdkConfiguration.Client = client
 	}
 }
 
 func withSecurity(security interface{}) func(context.Context) (interface{}, error) {
 	return func(context.Context) (interface{}, error) {
-		return &security, nil
+		return security, nil
 	}
 }
 
@@ -187,13 +191,14 @@ func New(opts ...SDKOption) *SDK {
 			Language:          "go",
 			OpenAPIDocVersion: "0.1.0-alpha",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.213.3",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.213.3 0.1.0-alpha terraform",
+			GenVersion:        "2.296.1",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.296.1 0.1.0-alpha github.com/speakeasy/terraform-provider-terraform/internal/sdk",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "example",
 				},
 			},
+			Hooks: hooks.New(),
 		},
 	}
 	for _, opt := range opts {
@@ -201,15 +206,15 @@ func New(opts ...SDKOption) *SDK {
 	}
 
 	// Use WithClient to override the default client if you would like to customize the timeout
-	if sdk.sdkConfiguration.DefaultClient == nil {
-		sdk.sdkConfiguration.DefaultClient = &http.Client{Timeout: 60 * time.Second}
+	if sdk.sdkConfiguration.Client == nil {
+		sdk.sdkConfiguration.Client = &http.Client{Timeout: 60 * time.Second}
 	}
-	if sdk.sdkConfiguration.SecurityClient == nil {
-		if sdk.sdkConfiguration.Security != nil {
-			sdk.sdkConfiguration.SecurityClient = utils.ConfigureSecurityClient(sdk.sdkConfiguration.DefaultClient, sdk.sdkConfiguration.Security)
-		} else {
-			sdk.sdkConfiguration.SecurityClient = sdk.sdkConfiguration.DefaultClient
-		}
+
+	currentServerURL, _ := sdk.sdkConfiguration.GetServerDetails()
+	serverURL := currentServerURL
+	serverURL, sdk.sdkConfiguration.Client = sdk.sdkConfiguration.Hooks.SDKInit(currentServerURL, sdk.sdkConfiguration.Client)
+	if serverURL != currentServerURL {
+		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
 	sdk.Apps = newApps(sdk.sdkConfiguration)
@@ -270,11 +275,17 @@ func New(opts ...SDKOption) *SDK {
 
 	sdk.UserSearch = newUserSearch(sdk.sdkConfiguration)
 
+	sdk.AWSExternalIDSettings = newAWSExternalIDSettings(sdk.sdkConfiguration)
+
+	sdk.SessionSettings = newSessionSettings(sdk.sdkConfiguration)
+
 	sdk.Task = newTask(sdk.sdkConfiguration)
 
 	sdk.TaskActions = newTaskActions(sdk.sdkConfiguration)
 
 	sdk.User = newUser(sdk.sdkConfiguration)
+
+	sdk.Webhooks = newWebhooks(sdk.sdkConfiguration)
 
 	return sdk
 }

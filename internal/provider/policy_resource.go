@@ -5,8 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
-
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -14,8 +12,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	tfTypes "github.com/speakeasy/terraform-provider-terraform/internal/provider/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/shared"
 	"github.com/speakeasy/terraform-provider-terraform/internal/validators"
 )
 
@@ -34,18 +34,19 @@ type PolicyResource struct {
 
 // PolicyResourceModel describes the resource data model.
 type PolicyResourceModel struct {
-	CreatedAt                types.String           `tfsdk:"created_at"`
-	DeletedAt                types.String           `tfsdk:"deleted_at"`
-	Description              types.String           `tfsdk:"description"`
-	DisplayName              types.String           `tfsdk:"display_name"`
-	ID                       types.String           `tfsdk:"id"`
-	PolicySteps              map[string]PolicySteps `tfsdk:"policy_steps"`
-	PolicyType               types.String           `tfsdk:"policy_type"`
-	PostActions              []PolicyPostActions    `tfsdk:"post_actions"`
-	ReassignTasksToDelegates types.Bool             `tfsdk:"reassign_tasks_to_delegates"`
-	Rules                    []Rule                 `tfsdk:"rules"`
-	SystemBuiltin            types.Bool             `tfsdk:"system_builtin"`
-	UpdatedAt                types.String           `tfsdk:"updated_at"`
+	CreatedAt                types.String                   `tfsdk:"created_at"`
+	DeletedAt                types.String                   `tfsdk:"deleted_at"`
+	DeletePolicyRequest      *tfTypes.Three                 `tfsdk:"delete_policy_request"`
+	Description              types.String                   `tfsdk:"description"`
+	DisplayName              types.String                   `tfsdk:"display_name"`
+	ID                       types.String                   `tfsdk:"id"`
+	PolicySteps              map[string]tfTypes.PolicySteps `tfsdk:"policy_steps"`
+	PolicyType               types.String                   `tfsdk:"policy_type"`
+	PostActions              []tfTypes.PolicyPostActions    `tfsdk:"post_actions"`
+	ReassignTasksToDelegates types.Bool                     `tfsdk:"reassign_tasks_to_delegates"`
+	Rules                    []tfTypes.Rule                 `tfsdk:"rules"`
+	SystemBuiltin            types.Bool                     `tfsdk:"system_builtin"`
+	UpdatedAt                types.String                   `tfsdk:"updated_at"`
 }
 
 func (r *PolicyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -68,6 +69,11 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
+			},
+			"delete_policy_request": schema.SingleNestedAttribute{
+				Optional:    true,
+				Attributes:  map[string]schema.Attribute{},
+				Description: `The DeletePolicyRequest message contains the ID of the policy to delete. It uses URL value for input.`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -94,9 +100,15 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"accept": schema.SingleNestedAttribute{
-										Computed:    true,
-										Optional:    true,
-										Attributes:  map[string]schema.Attribute{},
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"accept_message": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `An optional message to include in the comments when a task is automatically accepted.`,
+											},
+										},
 										Description: `This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.`,
 									},
 									"approval": schema.SingleNestedAttribute{
@@ -125,7 +137,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													"app_id": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `The ID of the app that conatins the group specified for approval.`,
+														Description: `The ID of the app that contains the group specified for approval.`,
 													},
 													"fallback": schema.BoolAttribute{
 														Computed:    true,
@@ -250,6 +262,11 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Optional:    true,
 												Description: `Configuration to require a reason when approving this step.`,
 											},
+											"require_denial_reason": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Configuration to require a reason when denying this step.`,
+											},
 											"require_reassignment_reason": schema.BoolAttribute{
 												Computed:    true,
 												Optional:    true,
@@ -369,6 +386,18 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														},
 														Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
 													},
+													"webhook_provision": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"webhook_id": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The ID of the webhook to call for provisioning.`,
+															},
+														},
+														Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+													},
 												},
 												MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
 													`` + "\n" +
@@ -376,6 +405,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													`  - connector` + "\n" +
 													`  - manual` + "\n" +
 													`  - delegated` + "\n" +
+													`  - webhook` + "\n" +
 													``,
 											},
 											"provision_target": schema.SingleNestedAttribute{
@@ -408,9 +438,15 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 										Description: `The provision step references a provision policy for this step.`,
 									},
 									"reject": schema.SingleNestedAttribute{
-										Computed:    true,
-										Optional:    true,
-										Attributes:  map[string]schema.Attribute{},
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"reject_message": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `An optional message to include in the comments when a task is automatically rejected.`,
+											},
+										},
 										Description: `This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.`,
 									},
 								},
@@ -422,10 +458,9 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Description: `The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples.`,
 			},
 			"policy_type": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
-				MarkdownDescription: `must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]` + "\n" +
-					`The enum of the policy type.`,
+				Computed:    true,
+				Optional:    true,
+				Description: `The enum of the policy type. must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"POLICY_TYPE_UNSPECIFIED",
@@ -461,14 +496,17 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			},
 			"rules": schema.ListNestedAttribute{
 				Computed: true,
+				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"condition": schema.StringAttribute{
 							Computed:    true,
+							Optional:    true,
 							Description: `The condition field.`,
 						},
 						"policy_key": schema.StringAttribute{
 							Computed:    true,
+							Optional:    true,
 							Description: `This is a reference to a list of policy steps from ` + "`" + `policy_steps` + "`" + ``,
 						},
 					},
@@ -511,14 +549,14 @@ func (r *PolicyResource) Configure(ctx context.Context, req resource.ConfigureRe
 
 func (r *PolicyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *PolicyResourceModel
-	var item types.Object
+	var plan types.Object
 
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	resp.Diagnostics.Append(item.As(ctx, &data, basetypes.ObjectAsOptions{
+	resp.Diagnostics.Append(plan.As(ctx, &data, basetypes.ObjectAsOptions{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 	})...)
@@ -527,7 +565,7 @@ func (r *PolicyResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	request := data.ToCreateSDKType()
+	request := data.ToSharedCreatePolicyRequest()
 	res, err := r.client.Policies.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -544,11 +582,12 @@ func (r *PolicyResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.CreatePolicyResponse == nil || res.CreatePolicyResponse.Policy == nil {
+	if res.CreatePolicyResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromCreateResponse(res.CreatePolicyResponse.Policy)
+	data.RefreshFromSharedPolicy(res.CreatePolicyResponse.Policy)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -592,11 +631,11 @@ func (r *PolicyResource) Read(ctx context.Context, req resource.ReadRequest, res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.GetPolicyResponse == nil || res.GetPolicyResponse.Policy == nil {
+	if res.GetPolicyResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.GetPolicyResponse.Policy)
+	data.RefreshFromSharedPolicy(res.GetPolicyResponse.Policy)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -604,6 +643,13 @@ func (r *PolicyResource) Read(ctx context.Context, req resource.ReadRequest, res
 
 func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *PolicyResourceModel
+	var plan types.Object
+
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
@@ -611,7 +657,7 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	id := data.ID.ValueString()
 	var updatePolicyRequest *shared.UpdatePolicyRequest
-	policy := data.ToUpdateSDKType()
+	policy := data.ToSharedPolicyInput()
 	updatePolicyRequest = &shared.UpdatePolicyRequest{
 		Policy: policy,
 	}
@@ -635,11 +681,38 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.UpdatePolicyResponse == nil || res.UpdatePolicyResponse.Policy == nil {
+	if res.UpdatePolicyResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromUpdateResponse(res.UpdatePolicyResponse.Policy)
+	data.RefreshFromSharedPolicy(res.UpdatePolicyResponse.Policy)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	id1 := data.ID.ValueString()
+	request1 := operations.C1APIPolicyV1PoliciesGetRequest{
+		ID: id1,
+	}
+	res1, err := r.client.Policies.Get(ctx, request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if res1.GetPolicyResponse == nil {
+		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res1.RawResponse))
+		return
+	}
+	data.RefreshFromSharedPolicy(res1.GetPolicyResponse.Policy)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -664,7 +737,7 @@ func (r *PolicyResource) Delete(ctx context.Context, req resource.DeleteRequest,
 	}
 
 	id := data.ID.ValueString()
-	deletePolicyRequest := data.ToDeleteSDKType()
+	deletePolicyRequest := data.ToSharedDeletePolicyRequest()
 	request := operations.C1APIPolicyV1PoliciesDeleteRequest{
 		ID:                  id,
 		DeletePolicyRequest: deletePolicyRequest,

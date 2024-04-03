@@ -5,9 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
-
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
@@ -16,6 +13,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_stringplanmodifier "github.com/speakeasy/terraform-provider-terraform/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/speakeasy/terraform-provider-terraform/internal/provider/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/operations"
 	"github.com/speakeasy/terraform-provider-terraform/internal/validators"
 )
 
@@ -38,7 +39,8 @@ type ConnectorCredentialResourceModel struct {
 	ClientID                                types.String   `tfsdk:"client_id"`
 	ClientSecret                            types.String   `tfsdk:"client_secret"`
 	ConnectorID                             types.String   `tfsdk:"connector_id"`
-	ConnectorServiceRotateCredentialRequest *DurationUnset `tfsdk:"connector_service_rotate_credential_request"`
+	ConnectorServiceRevokeCredentialRequest *tfTypes.Three `tfsdk:"connector_service_revoke_credential_request"`
+	ConnectorServiceRotateCredentialRequest *tfTypes.Three `tfsdk:"connector_service_rotate_credential_request"`
 	CreatedAt                               types.String   `tfsdk:"created_at"`
 	DeletedAt                               types.String   `tfsdk:"deleted_at"`
 	DisplayName                             types.String   `tfsdk:"display_name"`
@@ -58,12 +60,12 @@ func (r *ConnectorCredentialResource) Schema(ctx context.Context, req resource.S
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
-				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Optional:    true,
-				Description: `The appId of the app the connector is attached to.`,
+				Required:    true,
+				Description: `Requires replacement if changed. `,
 			},
 			"client_id": schema.StringAttribute{
 				Computed:    true,
@@ -74,20 +76,25 @@ func (r *ConnectorCredentialResource) Schema(ctx context.Context, req resource.S
 				Description: `The new clientSecret returned after rotating the connector credential.`,
 			},
 			"connector_id": schema.StringAttribute{
-				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
+				Required:    true,
+				Description: `Requires replacement if changed. `,
+			},
+			"connector_service_revoke_credential_request": schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `The connectorId of the connector the credential is associated with.`,
+				Attributes:  map[string]schema.Attribute{},
+				Description: `ConnectorServiceRevokeCredentialRequest is a request for revoking connector credentials. It uses URL values for input.`,
 			},
 			"connector_service_rotate_credential_request": schema.SingleNestedAttribute{
 				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplace(),
+					objectplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Optional:    true,
 				Attributes:  map[string]schema.Attribute{},
-				Description: `ConnectorServiceRotateCredentialRequest is a request for rotating connector credentials. It uses URL values for input.`,
+				Description: `ConnectorServiceRotateCredentialRequest is a request for rotating connector credentials. It uses URL values for input. Requires replacement if changed. `,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -153,14 +160,14 @@ func (r *ConnectorCredentialResource) Configure(ctx context.Context, req resourc
 
 func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *ConnectorCredentialResourceModel
-	var item types.Object
+	var plan types.Object
 
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	resp.Diagnostics.Append(item.As(ctx, &data, basetypes.ObjectAsOptions{
+	resp.Diagnostics.Append(plan.As(ctx, &data, basetypes.ObjectAsOptions{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 	})...)
@@ -171,7 +178,7 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 
 	appID := data.AppID.ValueString()
 	connectorID := data.ConnectorID.ValueString()
-	connectorServiceRotateCredentialRequest := data.ToCreateSDKType()
+	connectorServiceRotateCredentialRequest := data.ToSharedConnectorServiceRotateCredentialRequest()
 	request := operations.C1APIAppV1ConnectorServiceRotateCredentialRequest{
 		AppID:                                   appID,
 		ConnectorID:                             connectorID,
@@ -193,11 +200,42 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.ConnectorServiceRotateCredentialResponse == nil || res.ConnectorServiceRotateCredentialResponse.ConnectorCredential == nil {
+	if res.ConnectorServiceRotateCredentialResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromCreateResponse(res.ConnectorServiceRotateCredentialResponse.ConnectorCredential)
+	data.RefreshFromSharedConnectorCredential(res.ConnectorServiceRotateCredentialResponse.ConnectorCredential)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	appId1 := data.AppID.ValueString()
+	connectorId1 := data.ConnectorID.ValueString()
+	id := data.ID.ValueString()
+	request1 := operations.C1APIAppV1ConnectorServiceGetCredentialsRequest{
+		AppID:       appId1,
+		ConnectorID: connectorId1,
+		ID:          id,
+	}
+	res1, err := r.client.Connector.GetCredentials(ctx, request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if res1.ConnectorServiceGetCredentialsResponse == nil {
+		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res1.RawResponse))
+		return
+	}
+	data.RefreshFromSharedConnectorCredential(res1.ConnectorServiceGetCredentialsResponse.ConnectorCredential)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -245,11 +283,11 @@ func (r *ConnectorCredentialResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.ConnectorServiceGetCredentialsResponse == nil || res.ConnectorServiceGetCredentialsResponse.ConnectorCredential == nil {
+	if res.ConnectorServiceGetCredentialsResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)
+	data.RefreshFromSharedConnectorCredential(res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -257,6 +295,13 @@ func (r *ConnectorCredentialResource) Read(ctx context.Context, req resource.Rea
 
 func (r *ConnectorCredentialResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *ConnectorCredentialResourceModel
+	var plan types.Object
+
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
@@ -289,7 +334,7 @@ func (r *ConnectorCredentialResource) Delete(ctx context.Context, req resource.D
 	appID := data.AppID.ValueString()
 	connectorID := data.ConnectorID.ValueString()
 	id := data.ID.ValueString()
-	connectorServiceRevokeCredentialRequest := data.ToDeleteSDKType()
+	connectorServiceRevokeCredentialRequest := data.ToSharedConnectorServiceRevokeCredentialRequest()
 	request := operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest{
 		AppID:                                   appID,
 		ConnectorID:                             connectorID,

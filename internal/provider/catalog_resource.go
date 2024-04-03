@@ -5,8 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
-
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -16,8 +14,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	tfTypes "github.com/speakeasy/terraform-provider-terraform/internal/provider/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/shared"
 	"github.com/speakeasy/terraform-provider-terraform/internal/validators"
 )
 
@@ -36,22 +36,25 @@ type CatalogResource struct {
 
 // CatalogResourceModel describes the resource data model.
 type CatalogResourceModel struct {
-	AccessEntitlements       []AppEntitlement                                     `tfsdk:"access_entitlements"`
-	AccessEntitlementsPath   types.String                                         `tfsdk:"access_entitlements_path"`
-	AppIds                   []types.String                                       `tfsdk:"app_ids"`
-	AppPaths                 types.String                                         `tfsdk:"app_paths"`
-	CreatedAt                types.String                                         `tfsdk:"created_at"`
-	CreatedByUserID          types.String                                         `tfsdk:"created_by_user_id"`
-	CreatedByUserPath        types.String                                         `tfsdk:"created_by_user_path"`
-	DeletedAt                types.String                                         `tfsdk:"deleted_at"`
-	Description              types.String                                         `tfsdk:"description"`
-	DisplayName              types.String                                         `tfsdk:"display_name"`
-	Expanded                 []RequestCatalogManagementServiceGetResponseExpanded `tfsdk:"expanded"`
-	ID                       types.String                                         `tfsdk:"id"`
-	Published                types.Bool                                           `tfsdk:"published"`
-	RequestCatalogExpandMask *RequestCatalogExpandMask                            `tfsdk:"request_catalog_expand_mask"`
-	UpdatedAt                types.String                                         `tfsdk:"updated_at"`
-	VisibleToEveryone        types.Bool                                           `tfsdk:"visible_to_everyone"`
+	AccessEntitlements                           []tfTypes.AppEntitlement          `tfsdk:"access_entitlements"`
+	AccessEntitlementsPath                       types.String                      `tfsdk:"access_entitlements_path"`
+	AdditionalProperties                         types.String                      `tfsdk:"additional_properties"`
+	AppIds                                       []types.String                    `tfsdk:"app_ids"`
+	AppPaths                                     types.String                      `tfsdk:"app_paths"`
+	AtType                                       types.String                      `tfsdk:"at_type"`
+	CreatedAt                                    types.String                      `tfsdk:"created_at"`
+	CreatedByUserID                              types.String                      `tfsdk:"created_by_user_id"`
+	CreatedByUserPath                            types.String                      `tfsdk:"created_by_user_path"`
+	DeletedAt                                    types.String                      `tfsdk:"deleted_at"`
+	Description                                  types.String                      `tfsdk:"description"`
+	DisplayName                                  types.String                      `tfsdk:"display_name"`
+	ID                                           types.String                      `tfsdk:"id"`
+	Published                                    types.Bool                        `tfsdk:"published"`
+	RequestBundle                                types.Bool                        `tfsdk:"request_bundle"`
+	RequestCatalogExpandMask                     *tfTypes.RequestCatalogExpandMask `tfsdk:"request_catalog_expand_mask"`
+	RequestCatalogManagementServiceDeleteRequest *tfTypes.Three                    `tfsdk:"request_catalog_management_service_delete_request"`
+	UpdatedAt                                    types.String                      `tfsdk:"updated_at"`
+	VisibleToEveryone                            types.Bool                        `tfsdk:"visible_to_everyone"`
 }
 
 func (r *CatalogResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -139,6 +142,10 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 							Computed:    true,
 							Description: `The unique ID for the App Entitlement.`,
 						},
+						"is_manually_managed": schema.BoolAttribute{
+							Computed:    true,
+							Description: `Flag to indicate if the app entitlement is manually managed.`,
+						},
 						"provision_policy": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
@@ -180,6 +187,16 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 									},
 									Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
 								},
+								"webhook_provision": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"webhook_id": schema.StringAttribute{
+											Computed:    true,
+											Description: `The ID of the webhook to call for provisioning.`,
+										},
+									},
+									Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+								},
 							},
 							MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
 								`` + "\n" +
@@ -187,6 +204,7 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 								`  - connector` + "\n" +
 								`  - manual` + "\n" +
 								`  - delegated` + "\n" +
+								`  - webhook` + "\n" +
 								``,
 						},
 						"revoke_policy_id": schema.StringAttribute{
@@ -200,6 +218,11 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 						"slug": schema.StringAttribute{
 							Computed:    true,
 							Description: `The slug is displayed as an oval next to the name in the frontend of C1, it tells you what permission the entitlement grants. See https://www.conductorone.com/docs/product/manage-access/entitlements/`,
+						},
+						"source_connector_ids": schema.MapAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `Map to tell us which connector the entitlement came from.`,
 						},
 						"system_builtin": schema.BoolAttribute{
 							Computed:    true,
@@ -222,6 +245,13 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Computed:    true,
 				Description: `JSONPATH expression indicating the location of the access entitlement objects, that the request catalog allows users to request, in the array.`,
 			},
+			"additional_properties": schema.StringAttribute{
+				Computed:    true,
+				Description: `Parsed as JSON.`,
+				Validators: []validator.String{
+					validators.IsValidJSON(),
+				},
+			},
 			"app_ids": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
@@ -230,6 +260,10 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 			"app_paths": schema.StringAttribute{
 				Computed:    true,
 				Description: `JSONPATH expression indicating the location of the App object in the array.`,
+			},
+			"at_type": schema.StringAttribute{
+				Computed:    true,
+				Description: `The type of the serialized message.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -261,25 +295,6 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Optional:    true,
 				Description: `The display name of the new request catalog.`,
 			},
-			"expanded": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"at_type": schema.StringAttribute{
-							Computed:    true,
-							Description: `The type of the serialized message.`,
-						},
-						"additional_properties": schema.StringAttribute{
-							Computed:    true,
-							Description: `Parsed as JSON.`,
-							Validators: []validator.String{
-								validators.IsValidJSON(),
-							},
-						},
-					},
-				},
-				Description: `List of serialized related objects.`,
-			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The id of the request catalog.`,
@@ -289,22 +304,32 @@ func (r *CatalogResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Optional:    true,
 				Description: `Whether or not the new catalog should be created as published.`,
 			},
+			"request_bundle": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.`,
+			},
 			"request_catalog_expand_mask": schema.SingleNestedAttribute{
 				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplace(),
+					objectplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"paths": schema.ListAttribute{
 						PlanModifiers: []planmodifier.List{
-							listplanmodifier.RequiresReplace(),
+							listplanmodifier.RequiresReplaceIfConfigured(),
 						},
 						Optional:    true,
 						ElementType: types.StringType,
-						Description: `An array of paths to be expanded in the response. May be any combination of "*", "created_by_user_id", "app_ids", and "access_entitlements".`,
+						Description: `An array of paths to be expanded in the response. May be any combination of "*", "created_by_user_id", "app_ids", and "access_entitlements". Requires replacement if changed. `,
 					},
 				},
-				Description: `The RequestCatalogExpandMask includes the paths in the catalog view to expand in the return value of this call.`,
+				Description: `The RequestCatalogExpandMask includes the paths in the catalog view to expand in the return value of this call. Requires replacement if changed. `,
+			},
+			"request_catalog_management_service_delete_request": schema.SingleNestedAttribute{
+				Optional:    true,
+				Attributes:  map[string]schema.Attribute{},
+				Description: `Delete a request catalog by Id. It uses URL value for input.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -343,14 +368,14 @@ func (r *CatalogResource) Configure(ctx context.Context, req resource.ConfigureR
 
 func (r *CatalogResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *CatalogResourceModel
-	var item types.Object
+	var plan types.Object
 
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	resp.Diagnostics.Append(item.As(ctx, &data, basetypes.ObjectAsOptions{
+	resp.Diagnostics.Append(plan.As(ctx, &data, basetypes.ObjectAsOptions{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 	})...)
@@ -359,7 +384,7 @@ func (r *CatalogResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	request := data.ToCreateSDKType()
+	request := data.ToSharedRequestCatalogManagementServiceCreateRequest()
 	res, err := r.client.RequestCatalogManagement.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -376,11 +401,38 @@ func (r *CatalogResource) Create(ctx context.Context, req resource.CreateRequest
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.RequestCatalogManagementServiceGetResponse == nil || res.RequestCatalogManagementServiceGetResponse.RequestCatalogView == nil {
+	if res.RequestCatalogManagementServiceGetResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromCreateResponse(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
+	data.RefreshFromSharedRequestCatalog(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	id := data.ID.ValueString()
+	request1 := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest{
+		ID: id,
+	}
+	res1, err := r.client.RequestCatalogManagement.Get(ctx, request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if res1.RequestCatalogManagementServiceGetResponse == nil {
+		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res1.RawResponse))
+		return
+	}
+	data.RefreshFromSharedRequestCatalog(res1.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -424,11 +476,11 @@ func (r *CatalogResource) Read(ctx context.Context, req resource.ReadRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.RequestCatalogManagementServiceGetResponse == nil || res.RequestCatalogManagementServiceGetResponse.RequestCatalogView == nil {
+	if res.RequestCatalogManagementServiceGetResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
+	data.RefreshFromSharedRequestCatalog(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -436,6 +488,13 @@ func (r *CatalogResource) Read(ctx context.Context, req resource.ReadRequest, re
 
 func (r *CatalogResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *CatalogResourceModel
+	var plan types.Object
+
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
@@ -443,16 +502,10 @@ func (r *CatalogResource) Update(ctx context.Context, req resource.UpdateRequest
 
 	id := data.ID.ValueString()
 	var requestCatalogManagementServiceUpdateRequest *shared.RequestCatalogManagementServiceUpdateRequest
-	requestCatalog := data.ToUpdateSDKType()
+	requestCatalog := data.ToSharedRequestCatalogInput()
 	var requestCatalogExpandMask *shared.RequestCatalogExpandMask
 	if data != nil {
-		var paths []string = nil
-		for _, pathsItem := range data.Paths {
-			paths = append(paths, pathsItem.ValueString())
-		}
-		requestCatalogExpandMask = &shared.RequestCatalogExpandMask{
-			Paths: paths,
-		}
+		requestCatalogExpandMask = &shared.RequestCatalogExpandMask{}
 	}
 	requestCatalogManagementServiceUpdateRequest = &shared.RequestCatalogManagementServiceUpdateRequest{
 		RequestCatalog:           requestCatalog,
@@ -478,11 +531,38 @@ func (r *CatalogResource) Update(ctx context.Context, req resource.UpdateRequest
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.RequestCatalogManagementServiceGetResponse == nil || res.RequestCatalogManagementServiceGetResponse.RequestCatalogView == nil {
+	if res.RequestCatalogManagementServiceGetResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromUpdateResponse(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
+	data.RefreshFromSharedRequestCatalog(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	id1 := data.ID.ValueString()
+	request1 := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest{
+		ID: id1,
+	}
+	res1, err := r.client.RequestCatalogManagement.Get(ctx, request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if res1.RequestCatalogManagementServiceGetResponse == nil {
+		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res1.RawResponse))
+		return
+	}
+	data.RefreshFromSharedRequestCatalog(res1.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -507,7 +587,7 @@ func (r *CatalogResource) Delete(ctx context.Context, req resource.DeleteRequest
 	}
 
 	id := data.ID.ValueString()
-	requestCatalogManagementServiceDeleteRequest := data.ToDeleteSDKType()
+	requestCatalogManagementServiceDeleteRequest := data.ToSharedRequestCatalogManagementServiceDeleteRequest()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest{
 		ID: id,
 		RequestCatalogManagementServiceDeleteRequest: requestCatalogManagementServiceDeleteRequest,

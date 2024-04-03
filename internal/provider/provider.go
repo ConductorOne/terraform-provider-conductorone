@@ -4,14 +4,14 @@ package provider
 
 import (
 	"context"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
-
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/shared"
+	"net/http"
 )
 
 var _ provider.Provider = &TerraformProvider{}
@@ -81,6 +81,7 @@ func (p *TerraformProvider) Configure(ctx context.Context, req provider.Configur
 	opts := []sdk.SDKOption{
 		sdk.WithServerURL(ServerURL),
 		sdk.WithSecurity(security),
+		sdk.WithClient(http.DefaultClient),
 	}
 	client := sdk.New(opts...)
 
@@ -104,6 +105,7 @@ func (p *TerraformProvider) Resources(ctx context.Context) []func() resource.Res
 func (p *TerraformProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewAppDataSource,
+		NewAwsExternalIDDataSource,
 		NewCatalogDataSource,
 		NewConnectorCredentialDataSource,
 		NewPolicyDataSource,

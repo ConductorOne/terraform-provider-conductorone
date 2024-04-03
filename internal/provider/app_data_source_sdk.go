@@ -3,101 +3,278 @@
 package provider
 
 import (
+	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	tfTypes "github.com/speakeasy/terraform-provider-terraform/internal/provider/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/shared"
 	"math/big"
 	"time"
 )
 
-func (r *AppDataSourceModel) RefreshFromGetResponse(resp *shared.App) {
-	if resp.AppAccountID != nil {
-		r.AppAccountID = types.StringValue(*resp.AppAccountID)
-	} else {
-		r.AppAccountID = types.StringNull()
-	}
-	if resp.AppAccountName != nil {
-		r.AppAccountName = types.StringValue(*resp.AppAccountName)
-	} else {
-		r.AppAccountName = types.StringNull()
-	}
-	if resp.CertifyPolicyID != nil {
-		r.CertifyPolicyID = types.StringValue(*resp.CertifyPolicyID)
-	} else {
-		r.CertifyPolicyID = types.StringNull()
-	}
-	if resp.CreatedAt != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-	} else {
-		r.CreatedAt = types.StringNull()
-	}
-	if resp.DeletedAt != nil {
-		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-	} else {
-		r.DeletedAt = types.StringNull()
-	}
-	if resp.Description != nil {
-		r.Description = types.StringValue(*resp.Description)
-	} else {
-		r.Description = types.StringNull()
-	}
-	if resp.DisplayName != nil {
-		r.DisplayName = types.StringValue(*resp.DisplayName)
-	} else {
-		r.DisplayName = types.StringNull()
-	}
-	if resp.FieldMask != nil {
-		r.FieldMask = types.StringValue(*resp.FieldMask)
-	} else {
-		r.FieldMask = types.StringNull()
-	}
-	if resp.GrantPolicyID != nil {
-		r.GrantPolicyID = types.StringValue(*resp.GrantPolicyID)
-	} else {
-		r.GrantPolicyID = types.StringNull()
-	}
-	if resp.IconURL != nil {
-		r.IconURL = types.StringValue(*resp.IconURL)
-	} else {
-		r.IconURL = types.StringNull()
-	}
-	if resp.ID != nil {
-		r.ID = types.StringValue(*resp.ID)
-	} else {
-		r.ID = types.StringNull()
-	}
-	if resp.IsDirectory != nil {
-		r.IsDirectory = types.BoolValue(*resp.IsDirectory)
-	} else {
-		r.IsDirectory = types.BoolNull()
-	}
-	if resp.LogoURI != nil {
-		r.LogoURI = types.StringValue(*resp.LogoURI)
-	} else {
-		r.LogoURI = types.StringNull()
-	}
-	if resp.MonthlyCostUsd != nil {
-		r.MonthlyCostUsd = types.NumberValue(big.NewFloat(float64(*resp.MonthlyCostUsd)))
-	} else {
-		r.MonthlyCostUsd = types.NumberNull()
-	}
-	if resp.ParentAppID != nil {
-		r.ParentAppID = types.StringValue(*resp.ParentAppID)
-	} else {
-		r.ParentAppID = types.StringNull()
-	}
-	if resp.RevokePolicyID != nil {
-		r.RevokePolicyID = types.StringValue(*resp.RevokePolicyID)
-	} else {
-		r.RevokePolicyID = types.StringNull()
-	}
-	if resp.UpdatedAt != nil {
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-	} else {
-		r.UpdatedAt = types.StringNull()
-	}
-	if resp.UserCount != nil {
-		r.UserCount = types.StringValue(*resp.UserCount)
-	} else {
-		r.UserCount = types.StringNull()
+func (r *AppDataSourceModel) RefreshFromSharedApp(resp *shared.App) {
+	if resp != nil {
+		r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
+		r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
+		if len(r.AppOwners) > len(resp.AppOwners) {
+			r.AppOwners = r.AppOwners[:len(resp.AppOwners)]
+		}
+		for appOwnersCount, appOwnersItem := range resp.AppOwners {
+			var appOwners1 tfTypes.User
+			if appOwnersItem.CreatedAt != nil {
+				appOwners1.CreatedAt = types.StringValue(appOwnersItem.CreatedAt.Format(time.RFC3339Nano))
+			} else {
+				appOwners1.CreatedAt = types.StringNull()
+			}
+			appOwners1.DelegatedUserID = types.StringPointerValue(appOwnersItem.DelegatedUserID)
+			if appOwnersItem.DeletedAt != nil {
+				appOwners1.DeletedAt = types.StringValue(appOwnersItem.DeletedAt.Format(time.RFC3339Nano))
+			} else {
+				appOwners1.DeletedAt = types.StringNull()
+			}
+			appOwners1.Department = types.StringPointerValue(appOwnersItem.Department)
+			for departmentSourcesCount, departmentSourcesItem := range appOwnersItem.DepartmentSources {
+				var departmentSources1 tfTypes.UserAttributeMappingSource
+				departmentSources1.AppID = types.StringPointerValue(departmentSourcesItem.AppID)
+				departmentSources1.AppUserID = types.StringPointerValue(departmentSourcesItem.AppUserID)
+				departmentSources1.AppUserProfileAttributeKey = types.StringPointerValue(departmentSourcesItem.AppUserProfileAttributeKey)
+				departmentSources1.UserAttributeMappingID = types.StringPointerValue(departmentSourcesItem.UserAttributeMappingID)
+				departmentSources1.Value = types.StringPointerValue(departmentSourcesItem.Value)
+				if departmentSourcesCount+1 > len(appOwners1.DepartmentSources) {
+					appOwners1.DepartmentSources = append(appOwners1.DepartmentSources, departmentSources1)
+				} else {
+					appOwners1.DepartmentSources[departmentSourcesCount].AppID = departmentSources1.AppID
+					appOwners1.DepartmentSources[departmentSourcesCount].AppUserID = departmentSources1.AppUserID
+					appOwners1.DepartmentSources[departmentSourcesCount].AppUserProfileAttributeKey = departmentSources1.AppUserProfileAttributeKey
+					appOwners1.DepartmentSources[departmentSourcesCount].UserAttributeMappingID = departmentSources1.UserAttributeMappingID
+					appOwners1.DepartmentSources[departmentSourcesCount].Value = departmentSources1.Value
+				}
+			}
+			appOwners1.DirectoryIds = []types.String{}
+			for _, v := range appOwnersItem.DirectoryIds {
+				appOwners1.DirectoryIds = append(appOwners1.DirectoryIds, types.StringValue(v))
+			}
+			if appOwnersItem.DirectoryStatus != nil {
+				appOwners1.DirectoryStatus = types.StringValue(string(*appOwnersItem.DirectoryStatus))
+			} else {
+				appOwners1.DirectoryStatus = types.StringNull()
+			}
+			for directoryStatusSourcesCount, directoryStatusSourcesItem := range appOwnersItem.DirectoryStatusSources {
+				var directoryStatusSources1 tfTypes.UserAttributeMappingSource
+				directoryStatusSources1.AppID = types.StringPointerValue(directoryStatusSourcesItem.AppID)
+				directoryStatusSources1.AppUserID = types.StringPointerValue(directoryStatusSourcesItem.AppUserID)
+				directoryStatusSources1.AppUserProfileAttributeKey = types.StringPointerValue(directoryStatusSourcesItem.AppUserProfileAttributeKey)
+				directoryStatusSources1.UserAttributeMappingID = types.StringPointerValue(directoryStatusSourcesItem.UserAttributeMappingID)
+				directoryStatusSources1.Value = types.StringPointerValue(directoryStatusSourcesItem.Value)
+				if directoryStatusSourcesCount+1 > len(appOwners1.DirectoryStatusSources) {
+					appOwners1.DirectoryStatusSources = append(appOwners1.DirectoryStatusSources, directoryStatusSources1)
+				} else {
+					appOwners1.DirectoryStatusSources[directoryStatusSourcesCount].AppID = directoryStatusSources1.AppID
+					appOwners1.DirectoryStatusSources[directoryStatusSourcesCount].AppUserID = directoryStatusSources1.AppUserID
+					appOwners1.DirectoryStatusSources[directoryStatusSourcesCount].AppUserProfileAttributeKey = directoryStatusSources1.AppUserProfileAttributeKey
+					appOwners1.DirectoryStatusSources[directoryStatusSourcesCount].UserAttributeMappingID = directoryStatusSources1.UserAttributeMappingID
+					appOwners1.DirectoryStatusSources[directoryStatusSourcesCount].Value = directoryStatusSources1.Value
+				}
+			}
+			appOwners1.DisplayName = types.StringPointerValue(appOwnersItem.DisplayName)
+			appOwners1.Email = types.StringPointerValue(appOwnersItem.Email)
+			appOwners1.Emails = []types.String{}
+			for _, v := range appOwnersItem.Emails {
+				appOwners1.Emails = append(appOwners1.Emails, types.StringValue(v))
+			}
+			appOwners1.EmploymentStatus = types.StringPointerValue(appOwnersItem.EmploymentStatus)
+			for employmentStatusSourcesCount, employmentStatusSourcesItem := range appOwnersItem.EmploymentStatusSources {
+				var employmentStatusSources1 tfTypes.UserAttributeMappingSource
+				employmentStatusSources1.AppID = types.StringPointerValue(employmentStatusSourcesItem.AppID)
+				employmentStatusSources1.AppUserID = types.StringPointerValue(employmentStatusSourcesItem.AppUserID)
+				employmentStatusSources1.AppUserProfileAttributeKey = types.StringPointerValue(employmentStatusSourcesItem.AppUserProfileAttributeKey)
+				employmentStatusSources1.UserAttributeMappingID = types.StringPointerValue(employmentStatusSourcesItem.UserAttributeMappingID)
+				employmentStatusSources1.Value = types.StringPointerValue(employmentStatusSourcesItem.Value)
+				if employmentStatusSourcesCount+1 > len(appOwners1.EmploymentStatusSources) {
+					appOwners1.EmploymentStatusSources = append(appOwners1.EmploymentStatusSources, employmentStatusSources1)
+				} else {
+					appOwners1.EmploymentStatusSources[employmentStatusSourcesCount].AppID = employmentStatusSources1.AppID
+					appOwners1.EmploymentStatusSources[employmentStatusSourcesCount].AppUserID = employmentStatusSources1.AppUserID
+					appOwners1.EmploymentStatusSources[employmentStatusSourcesCount].AppUserProfileAttributeKey = employmentStatusSources1.AppUserProfileAttributeKey
+					appOwners1.EmploymentStatusSources[employmentStatusSourcesCount].UserAttributeMappingID = employmentStatusSources1.UserAttributeMappingID
+					appOwners1.EmploymentStatusSources[employmentStatusSourcesCount].Value = employmentStatusSources1.Value
+				}
+			}
+			appOwners1.EmploymentType = types.StringPointerValue(appOwnersItem.EmploymentType)
+			for employmentTypeSourcesCount, employmentTypeSourcesItem := range appOwnersItem.EmploymentTypeSources {
+				var employmentTypeSources1 tfTypes.UserAttributeMappingSource
+				employmentTypeSources1.AppID = types.StringPointerValue(employmentTypeSourcesItem.AppID)
+				employmentTypeSources1.AppUserID = types.StringPointerValue(employmentTypeSourcesItem.AppUserID)
+				employmentTypeSources1.AppUserProfileAttributeKey = types.StringPointerValue(employmentTypeSourcesItem.AppUserProfileAttributeKey)
+				employmentTypeSources1.UserAttributeMappingID = types.StringPointerValue(employmentTypeSourcesItem.UserAttributeMappingID)
+				employmentTypeSources1.Value = types.StringPointerValue(employmentTypeSourcesItem.Value)
+				if employmentTypeSourcesCount+1 > len(appOwners1.EmploymentTypeSources) {
+					appOwners1.EmploymentTypeSources = append(appOwners1.EmploymentTypeSources, employmentTypeSources1)
+				} else {
+					appOwners1.EmploymentTypeSources[employmentTypeSourcesCount].AppID = employmentTypeSources1.AppID
+					appOwners1.EmploymentTypeSources[employmentTypeSourcesCount].AppUserID = employmentTypeSources1.AppUserID
+					appOwners1.EmploymentTypeSources[employmentTypeSourcesCount].AppUserProfileAttributeKey = employmentTypeSources1.AppUserProfileAttributeKey
+					appOwners1.EmploymentTypeSources[employmentTypeSourcesCount].UserAttributeMappingID = employmentTypeSources1.UserAttributeMappingID
+					appOwners1.EmploymentTypeSources[employmentTypeSourcesCount].Value = employmentTypeSources1.Value
+				}
+			}
+			appOwners1.ID = types.StringPointerValue(appOwnersItem.ID)
+			appOwners1.JobTitle = types.StringPointerValue(appOwnersItem.JobTitle)
+			for jobTitleSourcesCount, jobTitleSourcesItem := range appOwnersItem.JobTitleSources {
+				var jobTitleSources1 tfTypes.UserAttributeMappingSource
+				jobTitleSources1.AppID = types.StringPointerValue(jobTitleSourcesItem.AppID)
+				jobTitleSources1.AppUserID = types.StringPointerValue(jobTitleSourcesItem.AppUserID)
+				jobTitleSources1.AppUserProfileAttributeKey = types.StringPointerValue(jobTitleSourcesItem.AppUserProfileAttributeKey)
+				jobTitleSources1.UserAttributeMappingID = types.StringPointerValue(jobTitleSourcesItem.UserAttributeMappingID)
+				jobTitleSources1.Value = types.StringPointerValue(jobTitleSourcesItem.Value)
+				if jobTitleSourcesCount+1 > len(appOwners1.JobTitleSources) {
+					appOwners1.JobTitleSources = append(appOwners1.JobTitleSources, jobTitleSources1)
+				} else {
+					appOwners1.JobTitleSources[jobTitleSourcesCount].AppID = jobTitleSources1.AppID
+					appOwners1.JobTitleSources[jobTitleSourcesCount].AppUserID = jobTitleSources1.AppUserID
+					appOwners1.JobTitleSources[jobTitleSourcesCount].AppUserProfileAttributeKey = jobTitleSources1.AppUserProfileAttributeKey
+					appOwners1.JobTitleSources[jobTitleSourcesCount].UserAttributeMappingID = jobTitleSources1.UserAttributeMappingID
+					appOwners1.JobTitleSources[jobTitleSourcesCount].Value = jobTitleSources1.Value
+				}
+			}
+			appOwners1.ManagerIds = []types.String{}
+			for _, v := range appOwnersItem.ManagerIds {
+				appOwners1.ManagerIds = append(appOwners1.ManagerIds, types.StringValue(v))
+			}
+			for managerSourcesCount, managerSourcesItem := range appOwnersItem.ManagerSources {
+				var managerSources1 tfTypes.UserAttributeMappingSource
+				managerSources1.AppID = types.StringPointerValue(managerSourcesItem.AppID)
+				managerSources1.AppUserID = types.StringPointerValue(managerSourcesItem.AppUserID)
+				managerSources1.AppUserProfileAttributeKey = types.StringPointerValue(managerSourcesItem.AppUserProfileAttributeKey)
+				managerSources1.UserAttributeMappingID = types.StringPointerValue(managerSourcesItem.UserAttributeMappingID)
+				managerSources1.Value = types.StringPointerValue(managerSourcesItem.Value)
+				if managerSourcesCount+1 > len(appOwners1.ManagerSources) {
+					appOwners1.ManagerSources = append(appOwners1.ManagerSources, managerSources1)
+				} else {
+					appOwners1.ManagerSources[managerSourcesCount].AppID = managerSources1.AppID
+					appOwners1.ManagerSources[managerSourcesCount].AppUserID = managerSources1.AppUserID
+					appOwners1.ManagerSources[managerSourcesCount].AppUserProfileAttributeKey = managerSources1.AppUserProfileAttributeKey
+					appOwners1.ManagerSources[managerSourcesCount].UserAttributeMappingID = managerSources1.UserAttributeMappingID
+					appOwners1.ManagerSources[managerSourcesCount].Value = managerSources1.Value
+				}
+			}
+			if len(appOwnersItem.Profile) > 0 {
+				appOwners1.Profile = make(map[string]tfTypes.Profile)
+				for profileKey, profileValue := range appOwnersItem.Profile {
+					var profileResult tfTypes.Profile
+					if profileValue.Str != nil {
+						profileResult.Str = types.StringPointerValue(profileValue.Str)
+					}
+					if profileValue.Number != nil {
+						if profileValue.Number != nil {
+							profileResult.Number = types.NumberValue(big.NewFloat(float64(*profileValue.Number)))
+						} else {
+							profileResult.Number = types.NumberNull()
+						}
+					}
+					if profileValue.ArrayOfAny != nil {
+						profileResult.ArrayOfAny = nil
+						for _, arrayOfAnyItem := range profileValue.ArrayOfAny {
+							var arrayOfAny types.String
+							arrayOfAnyResult, _ := json.Marshal(arrayOfAnyItem)
+							arrayOfAny = types.StringValue(string(arrayOfAnyResult))
+							profileResult.ArrayOfAny = append(profileResult.ArrayOfAny, arrayOfAny)
+						}
+					}
+					if profileValue.Boolean != nil {
+						profileResult.Boolean = types.BoolPointerValue(profileValue.Boolean)
+					}
+					if profileValue.Three != nil {
+						profileResult.Three = &tfTypes.Three{}
+					}
+					appOwners1.Profile[profileKey] = profileResult
+				}
+			}
+			appOwners1.RoleIds = []types.String{}
+			for _, v := range appOwnersItem.RoleIds {
+				appOwners1.RoleIds = append(appOwners1.RoleIds, types.StringValue(v))
+			}
+			if appOwnersItem.Status != nil {
+				appOwners1.Status = types.StringValue(string(*appOwnersItem.Status))
+			} else {
+				appOwners1.Status = types.StringNull()
+			}
+			if appOwnersItem.UpdatedAt != nil {
+				appOwners1.UpdatedAt = types.StringValue(appOwnersItem.UpdatedAt.Format(time.RFC3339Nano))
+			} else {
+				appOwners1.UpdatedAt = types.StringNull()
+			}
+			appOwners1.Username = types.StringPointerValue(appOwnersItem.Username)
+			appOwners1.Usernames = []types.String{}
+			for _, v := range appOwnersItem.Usernames {
+				appOwners1.Usernames = append(appOwners1.Usernames, types.StringValue(v))
+			}
+			if appOwnersCount+1 > len(r.AppOwners) {
+				r.AppOwners = append(r.AppOwners, appOwners1)
+			} else {
+				r.AppOwners[appOwnersCount].CreatedAt = appOwners1.CreatedAt
+				r.AppOwners[appOwnersCount].DelegatedUserID = appOwners1.DelegatedUserID
+				r.AppOwners[appOwnersCount].DeletedAt = appOwners1.DeletedAt
+				r.AppOwners[appOwnersCount].Department = appOwners1.Department
+				r.AppOwners[appOwnersCount].DepartmentSources = appOwners1.DepartmentSources
+				r.AppOwners[appOwnersCount].DirectoryIds = appOwners1.DirectoryIds
+				r.AppOwners[appOwnersCount].DirectoryStatus = appOwners1.DirectoryStatus
+				r.AppOwners[appOwnersCount].DirectoryStatusSources = appOwners1.DirectoryStatusSources
+				r.AppOwners[appOwnersCount].DisplayName = appOwners1.DisplayName
+				r.AppOwners[appOwnersCount].Email = appOwners1.Email
+				r.AppOwners[appOwnersCount].Emails = appOwners1.Emails
+				r.AppOwners[appOwnersCount].EmploymentStatus = appOwners1.EmploymentStatus
+				r.AppOwners[appOwnersCount].EmploymentStatusSources = appOwners1.EmploymentStatusSources
+				r.AppOwners[appOwnersCount].EmploymentType = appOwners1.EmploymentType
+				r.AppOwners[appOwnersCount].EmploymentTypeSources = appOwners1.EmploymentTypeSources
+				r.AppOwners[appOwnersCount].ID = appOwners1.ID
+				r.AppOwners[appOwnersCount].JobTitle = appOwners1.JobTitle
+				r.AppOwners[appOwnersCount].JobTitleSources = appOwners1.JobTitleSources
+				r.AppOwners[appOwnersCount].ManagerIds = appOwners1.ManagerIds
+				r.AppOwners[appOwnersCount].ManagerSources = appOwners1.ManagerSources
+				r.AppOwners[appOwnersCount].Profile = appOwners1.Profile
+				r.AppOwners[appOwnersCount].RoleIds = appOwners1.RoleIds
+				r.AppOwners[appOwnersCount].Status = appOwners1.Status
+				r.AppOwners[appOwnersCount].UpdatedAt = appOwners1.UpdatedAt
+				r.AppOwners[appOwnersCount].Username = appOwners1.Username
+				r.AppOwners[appOwnersCount].Usernames = appOwners1.Usernames
+			}
+		}
+		r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.CreatedAt = types.StringNull()
+		}
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+		} else {
+			r.DeletedAt = types.StringNull()
+		}
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.FieldMask = types.StringPointerValue(resp.FieldMask)
+		r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
+		r.IconURL = types.StringPointerValue(resp.IconURL)
+		r.ID = types.StringPointerValue(resp.ID)
+		if resp.IdentityMatching != nil {
+			r.IdentityMatching = types.StringValue(string(*resp.IdentityMatching))
+		} else {
+			r.IdentityMatching = types.StringNull()
+		}
+		r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
+		r.LogoURI = types.StringPointerValue(resp.LogoURI)
+		if resp.MonthlyCostUsd != nil {
+			r.MonthlyCostUsd = types.Int64Value(int64(*resp.MonthlyCostUsd))
+		} else {
+			r.MonthlyCostUsd = types.Int64Null()
+		}
+		r.ParentAppID = types.StringPointerValue(resp.ParentAppID)
+		r.RevokePolicyID = types.StringPointerValue(resp.RevokePolicyID)
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.UpdatedAt = types.StringNull()
+		}
+		r.UserCount = types.StringPointerValue(resp.UserCount)
 	}
 }

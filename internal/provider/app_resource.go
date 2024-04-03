@@ -5,8 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
-
+	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -15,8 +15,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	tfTypes "github.com/speakeasy/terraform-provider-terraform/internal/provider/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/operations"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/shared"
 	"github.com/speakeasy/terraform-provider-terraform/internal/validators"
 )
 
@@ -35,25 +37,28 @@ type AppResource struct {
 
 // AppResourceModel describes the resource data model.
 type AppResourceModel struct {
-	AppAccountID    types.String   `tfsdk:"app_account_id"`
-	AppAccountName  types.String   `tfsdk:"app_account_name"`
-	CertifyPolicyID types.String   `tfsdk:"certify_policy_id"`
-	CreatedAt       types.String   `tfsdk:"created_at"`
-	DeletedAt       types.String   `tfsdk:"deleted_at"`
-	Description     types.String   `tfsdk:"description"`
-	DisplayName     types.String   `tfsdk:"display_name"`
-	FieldMask       types.String   `tfsdk:"field_mask"`
-	GrantPolicyID   types.String   `tfsdk:"grant_policy_id"`
-	IconURL         types.String   `tfsdk:"icon_url"`
-	ID              types.String   `tfsdk:"id"`
-	IsDirectory     types.Bool     `tfsdk:"is_directory"`
-	LogoURI         types.String   `tfsdk:"logo_uri"`
-	MonthlyCostUsd  types.Number   `tfsdk:"monthly_cost_usd"`
-	Owners          []types.String `tfsdk:"owners"`
-	ParentAppID     types.String   `tfsdk:"parent_app_id"`
-	RevokePolicyID  types.String   `tfsdk:"revoke_policy_id"`
-	UpdatedAt       types.String   `tfsdk:"updated_at"`
-	UserCount       types.String   `tfsdk:"user_count"`
+	AppAccountID     types.String   `tfsdk:"app_account_id"`
+	AppAccountName   types.String   `tfsdk:"app_account_name"`
+	AppOwners        []tfTypes.User `tfsdk:"app_owners"`
+	CertifyPolicyID  types.String   `tfsdk:"certify_policy_id"`
+	CreatedAt        types.String   `tfsdk:"created_at"`
+	DeleteAppRequest *tfTypes.Three `tfsdk:"delete_app_request"`
+	DeletedAt        types.String   `tfsdk:"deleted_at"`
+	Description      types.String   `tfsdk:"description"`
+	DisplayName      types.String   `tfsdk:"display_name"`
+	FieldMask        types.String   `tfsdk:"field_mask"`
+	GrantPolicyID    types.String   `tfsdk:"grant_policy_id"`
+	IconURL          types.String   `tfsdk:"icon_url"`
+	ID               types.String   `tfsdk:"id"`
+	IdentityMatching types.String   `tfsdk:"identity_matching"`
+	IsDirectory      types.Bool     `tfsdk:"is_directory"`
+	LogoURI          types.String   `tfsdk:"logo_uri"`
+	MonthlyCostUsd   types.Int64    `tfsdk:"monthly_cost_usd"`
+	Owners           []types.String `tfsdk:"owners"`
+	ParentAppID      types.String   `tfsdk:"parent_app_id"`
+	RevokePolicyID   types.String   `tfsdk:"revoke_policy_id"`
+	UpdatedAt        types.String   `tfsdk:"updated_at"`
+	UserCount        types.String   `tfsdk:"user_count"`
 }
 
 func (r *AppResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -73,6 +78,315 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Computed:    true,
 				Description: `The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.`,
 			},
+			"app_owners": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"created_at": schema.StringAttribute{
+							Computed: true,
+							Validators: []validator.String{
+								validators.IsRFC3339(),
+							},
+						},
+						"delegated_user_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The id of the user to whom tasks will be automatically reassigned to.`,
+						},
+						"deleted_at": schema.StringAttribute{
+							Computed: true,
+							Validators: []validator.String{
+								validators.IsRFC3339(),
+							},
+						},
+						"department": schema.StringAttribute{
+							Computed:    true,
+							Description: `The department which the user belongs to in the organization.`,
+						},
+						"department_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on department attribute mappings configured in the system.`,
+						},
+						"directory_ids": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `A list of unique ids that represent different directories.`,
+						},
+						"directory_status": schema.StringAttribute{
+							Computed:    true,
+							Description: `The status of the user in the directory. must be one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
+							Validators: []validator.String{
+								stringvalidator.OneOf(
+									"UNKNOWN",
+									"ENABLED",
+									"DISABLED",
+									"DELETED",
+								),
+							},
+						},
+						"directory_status_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on directoryStatus attribute mappings configured in the system.`,
+						},
+						"display_name": schema.StringAttribute{
+							Computed:    true,
+							Description: `The display name of the user.`,
+						},
+						"email": schema.StringAttribute{
+							Computed:    true,
+							Description: `This is the user's email.`,
+						},
+						"emails": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `This is a list of all of the user's emails from app users.`,
+						},
+						"employment_status": schema.StringAttribute{
+							Computed:    true,
+							Description: `The users employment status.`,
+						},
+						"employment_status_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on employmentStatus attribute mappings configured in the system.`,
+						},
+						"employment_type": schema.StringAttribute{
+							Computed:    true,
+							Description: `The employment type of the user.`,
+						},
+						"employment_type_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on employmentType attribute mappings configured in the system.`,
+						},
+						"id": schema.StringAttribute{
+							Computed:    true,
+							Description: `A unique identifier of the user.`,
+						},
+						"job_title": schema.StringAttribute{
+							Computed:    true,
+							Description: `The job title of the user.`,
+						},
+						"job_title_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on jobTitle attribute mappings configured in the system.`,
+						},
+						"manager_ids": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `A list of ids of the user's managers.`,
+						},
+						"manager_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on managerId attribute mappings configured in the system.`,
+						},
+						"profile": schema.MapNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"str": schema.StringAttribute{
+										Computed: true,
+									},
+									"number": schema.NumberAttribute{
+										Computed: true,
+									},
+									"array_of_any": schema.ListAttribute{
+										Computed:    true,
+										ElementType: types.StringType,
+										Validators: []validator.List{
+											listvalidator.ValueStringsAre(validators.IsValidJSON()),
+										},
+									},
+									"boolean": schema.BoolAttribute{
+										Computed: true,
+									},
+									"three": schema.SingleNestedAttribute{
+										Computed:   true,
+										Attributes: map[string]schema.Attribute{},
+									},
+								},
+								Validators: []validator.Object{
+									validators.ExactlyOneChild(),
+								},
+							},
+						},
+						"role_ids": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `A list of unique identifiers that maps to ConductorOne’s user roles let you assign users permissions tailored to the work they do in the software.`,
+						},
+						"status": schema.StringAttribute{
+							Computed:    true,
+							Description: `The status of the user in the system. must be one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
+							Validators: []validator.String{
+								stringvalidator.OneOf(
+									"UNKNOWN",
+									"ENABLED",
+									"DISABLED",
+									"DELETED",
+								),
+							},
+						},
+						"updated_at": schema.StringAttribute{
+							Computed: true,
+							Validators: []validator.String{
+								validators.IsRFC3339(),
+							},
+						},
+						"username": schema.StringAttribute{
+							Computed:    true,
+							Description: `This is the user's primary username. Typically sourced from the primary directory.`,
+						},
+						"usernames": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `This is a list of all of the user's usernames from app users.`,
+						},
+					},
+				},
+				Description: `The owners of the app.`,
+			},
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -83,6 +397,11 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
+			},
+			"delete_app_request": schema.SingleNestedAttribute{
+				Optional:    true,
+				Attributes:  map[string]schema.Attribute{},
+				Description: `Empty request body`,
 			},
 			"deleted_at": schema.StringAttribute{
 				Computed: true,
@@ -116,6 +435,17 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Computed:    true,
 				Description: `The ID of the app.`,
 			},
+			"identity_matching": schema.StringAttribute{
+				Computed:    true,
+				Description: `The identityMatching field. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"APP_USER_IDENTITY_MATCHING_UNSPECIFIED",
+						"APP_USER_IDENTITY_MATCHING_STRICT",
+						"APP_USER_IDENTITY_MATCHING_DISPLAY_NAME",
+					),
+				},
+			},
 			"is_directory": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Specifies if the app is a directory.`,
@@ -124,18 +454,18 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Computed:    true,
 				Description: `The URL of a logo to display for the app.`,
 			},
-			"monthly_cost_usd": schema.NumberAttribute{
+			"monthly_cost_usd": schema.Int64Attribute{
 				Computed:    true,
 				Optional:    true,
 				Description: `Creates the app with this monthly cost per seat.`,
 			},
 			"owners": schema.ListAttribute{
 				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplace(),
+					listplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `Creates the app with this array of owners.`,
+				Description: `Creates the app with this array of owners. Requires replacement if changed. `,
 			},
 			"parent_app_id": schema.StringAttribute{
 				Computed:    true,
@@ -182,14 +512,14 @@ func (r *AppResource) Configure(ctx context.Context, req resource.ConfigureReque
 
 func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *AppResourceModel
-	var item types.Object
+	var plan types.Object
 
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	resp.Diagnostics.Append(item.As(ctx, &data, basetypes.ObjectAsOptions{
+	resp.Diagnostics.Append(plan.As(ctx, &data, basetypes.ObjectAsOptions{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 	})...)
@@ -198,7 +528,7 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	request := data.ToCreateSDKType()
+	request := data.ToSharedCreateAppRequest()
 	res, err := r.client.Apps.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -215,11 +545,38 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.CreateAppResponse == nil || res.CreateAppResponse.App == nil {
+	if res.CreateAppResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromCreateResponse(res.CreateAppResponse.App)
+	data.RefreshFromSharedApp(res.CreateAppResponse.App)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	id := data.ID.ValueString()
+	request1 := operations.C1APIAppV1AppsGetRequest{
+		ID: id,
+	}
+	res1, err := r.client.Apps.Get(ctx, request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if res1.GetAppResponse == nil {
+		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res1.RawResponse))
+		return
+	}
+	data.RefreshFromSharedApp(res1.GetAppResponse.App)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -263,11 +620,11 @@ func (r *AppResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.GetAppResponse == nil || res.GetAppResponse.App == nil {
+	if res.GetAppResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.GetAppResponse.App)
+	data.RefreshFromSharedApp(res.GetAppResponse.App)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -275,6 +632,13 @@ func (r *AppResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 
 func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *AppResourceModel
+	var plan types.Object
+
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
@@ -282,7 +646,7 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 
 	id := data.ID.ValueString()
 	var updateAppRequest *shared.UpdateAppRequest
-	app := data.ToUpdateSDKType()
+	app := data.ToSharedAppInput()
 	updateAppRequest = &shared.UpdateAppRequest{
 		App: app,
 	}
@@ -306,11 +670,38 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.UpdateAppResponse == nil || res.UpdateAppResponse.App == nil {
+	if res.UpdateAppResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromUpdateResponse(res.UpdateAppResponse.App)
+	data.RefreshFromSharedApp(res.UpdateAppResponse.App)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	id1 := data.ID.ValueString()
+	request1 := operations.C1APIAppV1AppsGetRequest{
+		ID: id1,
+	}
+	res1, err := r.client.Apps.Get(ctx, request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if res1.GetAppResponse == nil {
+		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res1.RawResponse))
+		return
+	}
+	data.RefreshFromSharedApp(res1.GetAppResponse.App)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -335,7 +726,7 @@ func (r *AppResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 	}
 
 	id := data.ID.ValueString()
-	deleteAppRequest := data.ToDeleteSDKType()
+	deleteAppRequest := data.ToSharedDeleteAppRequest()
 	request := operations.C1APIAppV1AppsDeleteRequest{
 		ID:               id,
 		DeleteAppRequest: deleteAppRequest,

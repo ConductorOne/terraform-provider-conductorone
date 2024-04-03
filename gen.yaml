@@ -1,22 +1,17 @@
-configVersion: 1.0.0
+configVersion: 2.0.0
 generation:
-  comments: {}
   sdkClassName: SDK
   maintainOpenAPIOrder: true
   usageSnippets:
     optionalPropertyRendering: withExample
-features:
-  terraform:
-    additionalProperties: 0.1.2
-    core: 3.6.0
-    globalSecurity: 2.81.2
-    globalServerURLs: 2.82.1
-    groups: 2.81.2
-    inputOutputModels: 2.82.0
-    nameOverrides: 2.81.1
-    unions: 2.81.5
+  fixes:
+    nameResolutionDec2023: false
+    parameterOrderingFeb2024: false
+    requestResponseComponentNamesFeb2024: false
+  auth:
+    oAuth2ClientCredentialsEnabled: false
 terraform:
-  version: 0.0.1
+  version: 0.1.0
   author: speakeasy
   imports:
     option: openapi

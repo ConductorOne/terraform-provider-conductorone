@@ -5,9 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
-
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
@@ -15,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -48,23 +47,25 @@ func (r *AppEntitlementOwnerResource) Schema(ctx context.Context, req resource.S
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required: true,
+				Required:    true,
+				Description: `Requires replacement if changed. `,
 			},
 			"entitlement_id": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required: true,
+				Required:    true,
+				Description: `Requires replacement if changed. `,
 			},
 			"user_ids": schema.ListAttribute{
 				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplace(),
+					listplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The user_ids field for the users to set as an owner of the app entitlement.`,
+				Description: `The user_ids field for the users to set as an owner of the app entitlement. Requires replacement if changed. `,
 			},
 		},
 	}
@@ -92,14 +93,14 @@ func (r *AppEntitlementOwnerResource) Configure(ctx context.Context, req resourc
 
 func (r *AppEntitlementOwnerResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *AppEntitlementOwnerResourceModel
-	var item types.Object
+	var plan types.Object
 
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	resp.Diagnostics.Append(item.As(ctx, &data, basetypes.ObjectAsOptions{
+	resp.Diagnostics.Append(plan.As(ctx, &data, basetypes.ObjectAsOptions{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 	})...)
@@ -110,7 +111,7 @@ func (r *AppEntitlementOwnerResource) Create(ctx context.Context, req resource.C
 
 	appID := data.AppID.ValueString()
 	entitlementID := data.EntitlementID.ValueString()
-	setAppEntitlementOwnersRequest := data.ToCreateSDKType()
+	setAppEntitlementOwnersRequest := data.ToSharedSetAppEntitlementOwnersRequest()
 	request := operations.C1APIAppV1AppEntitlementOwnersSetRequest{
 		AppID:                          appID,
 		EntitlementID:                  entitlementID,
@@ -136,7 +137,8 @@ func (r *AppEntitlementOwnerResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromCreateResponse(res.SetAppEntitlementOwnersResponse)
+	data.RefreshFromSharedSetAppEntitlementOwnersResponse(res.SetAppEntitlementOwnersResponse)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -168,6 +170,13 @@ func (r *AppEntitlementOwnerResource) Read(ctx context.Context, req resource.Rea
 
 func (r *AppEntitlementOwnerResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *AppEntitlementOwnerResourceModel
+	var plan types.Object
+
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return

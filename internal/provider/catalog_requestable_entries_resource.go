@@ -5,9 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
-
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
@@ -15,6 +12,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/speakeasy/terraform-provider-terraform/internal/provider/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -32,8 +32,8 @@ type CatalogRequestableEntriesResource struct {
 
 // CatalogRequestableEntriesResourceModel describes the resource data model.
 type CatalogRequestableEntriesResourceModel struct {
-	AppEntitlements []AppEntitlementRef `tfsdk:"app_entitlements"`
-	CatalogID       types.String        `tfsdk:"catalog_id"`
+	AppEntitlements []tfTypes.AppEntitlementRef `tfsdk:"app_entitlements"`
+	CatalogID       types.String                `tfsdk:"catalog_id"`
 }
 
 func (r *CatalogRequestableEntriesResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -47,34 +47,35 @@ func (r *CatalogRequestableEntriesResource) Schema(ctx context.Context, req reso
 		Attributes: map[string]schema.Attribute{
 			"app_entitlements": schema.ListNestedAttribute{
 				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplace(),
+					listplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"app_id": schema.StringAttribute{
 							PlanModifiers: []planmodifier.String{
-								stringplanmodifier.RequiresReplace(),
+								stringplanmodifier.RequiresReplaceIfConfigured(),
 							},
 							Optional:    true,
-							Description: `The appId field.`,
+							Description: `The appId field. Requires replacement if changed. `,
 						},
 						"id": schema.StringAttribute{
 							PlanModifiers: []planmodifier.String{
-								stringplanmodifier.RequiresReplace(),
+								stringplanmodifier.RequiresReplaceIfConfigured(),
 							},
 							Optional:    true,
-							Description: `The id field.`,
+							Description: `The id field. Requires replacement if changed. `,
 						},
 					},
 				},
-				Description: `List of entitlements to add to the request catalog.`,
+				Description: `List of entitlements to add to the request catalog. Requires replacement if changed. `,
 			},
 			"catalog_id": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required: true,
+				Required:    true,
+				Description: `Requires replacement if changed. `,
 			},
 		},
 	}
@@ -102,14 +103,14 @@ func (r *CatalogRequestableEntriesResource) Configure(ctx context.Context, req r
 
 func (r *CatalogRequestableEntriesResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *CatalogRequestableEntriesResourceModel
-	var item types.Object
+	var plan types.Object
 
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	resp.Diagnostics.Append(item.As(ctx, &data, basetypes.ObjectAsOptions{
+	resp.Diagnostics.Append(plan.As(ctx, &data, basetypes.ObjectAsOptions{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 	})...)
@@ -119,7 +120,7 @@ func (r *CatalogRequestableEntriesResource) Create(ctx context.Context, req reso
 	}
 
 	catalogID := data.CatalogID.ValueString()
-	requestCatalogManagementServiceAddAppEntitlementsRequest := data.ToCreateSDKType()
+	requestCatalogManagementServiceAddAppEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest{
 		CatalogID: catalogID,
 		RequestCatalogManagementServiceAddAppEntitlementsRequest: requestCatalogManagementServiceAddAppEntitlementsRequest,
@@ -144,7 +145,8 @@ func (r *CatalogRequestableEntriesResource) Create(ctx context.Context, req reso
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromCreateResponse(res.RequestCatalogManagementServiceAddAppEntitlementsResponse)
+	data.RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(res.RequestCatalogManagementServiceAddAppEntitlementsResponse)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -176,6 +178,13 @@ func (r *CatalogRequestableEntriesResource) Read(ctx context.Context, req resour
 
 func (r *CatalogRequestableEntriesResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *CatalogRequestableEntriesResourceModel
+	var plan types.Object
+
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
@@ -206,7 +215,7 @@ func (r *CatalogRequestableEntriesResource) Delete(ctx context.Context, req reso
 	}
 
 	catalogID := data.CatalogID.ValueString()
-	requestCatalogManagementServiceRemoveAppEntitlementsRequest := data.ToDeleteSDKType()
+	requestCatalogManagementServiceRemoveAppEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest{
 		CatalogID: catalogID,
 		RequestCatalogManagementServiceRemoveAppEntitlementsRequest: requestCatalogManagementServiceRemoveAppEntitlementsRequest,

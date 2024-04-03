@@ -5,9 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
-
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
@@ -15,6 +12,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/speakeasy/terraform-provider-terraform/internal/provider/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -32,8 +32,8 @@ type CatalogVisibilityBindingsResource struct {
 
 // CatalogVisibilityBindingsResourceModel describes the resource data model.
 type CatalogVisibilityBindingsResourceModel struct {
-	AccessEntitlements []AppEntitlementRef `tfsdk:"access_entitlements"`
-	CatalogID          types.String        `tfsdk:"catalog_id"`
+	AccessEntitlements []tfTypes.AppEntitlementRef `tfsdk:"access_entitlements"`
+	CatalogID          types.String                `tfsdk:"catalog_id"`
 }
 
 func (r *CatalogVisibilityBindingsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -47,34 +47,35 @@ func (r *CatalogVisibilityBindingsResource) Schema(ctx context.Context, req reso
 		Attributes: map[string]schema.Attribute{
 			"access_entitlements": schema.ListNestedAttribute{
 				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplace(),
+					listplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"app_id": schema.StringAttribute{
 							PlanModifiers: []planmodifier.String{
-								stringplanmodifier.RequiresReplace(),
+								stringplanmodifier.RequiresReplaceIfConfigured(),
 							},
 							Optional:    true,
-							Description: `The appId field.`,
+							Description: `The appId field. Requires replacement if changed. `,
 						},
 						"id": schema.StringAttribute{
 							PlanModifiers: []planmodifier.String{
-								stringplanmodifier.RequiresReplace(),
+								stringplanmodifier.RequiresReplaceIfConfigured(),
 							},
 							Optional:    true,
-							Description: `The id field.`,
+							Description: `The id field. Requires replacement if changed. `,
 						},
 					},
 				},
-				Description: `List of entitlements to add to the request catalog as access entitlements.`,
+				Description: `List of entitlements to add to the request catalog as access entitlements. Requires replacement if changed. `,
 			},
 			"catalog_id": schema.StringAttribute{
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
+					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required: true,
+				Required:    true,
+				Description: `Requires replacement if changed. `,
 			},
 		},
 	}
@@ -102,14 +103,14 @@ func (r *CatalogVisibilityBindingsResource) Configure(ctx context.Context, req r
 
 func (r *CatalogVisibilityBindingsResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *CatalogVisibilityBindingsResourceModel
-	var item types.Object
+	var plan types.Object
 
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	resp.Diagnostics.Append(item.As(ctx, &data, basetypes.ObjectAsOptions{
+	resp.Diagnostics.Append(plan.As(ctx, &data, basetypes.ObjectAsOptions{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 	})...)
@@ -119,7 +120,7 @@ func (r *CatalogVisibilityBindingsResource) Create(ctx context.Context, req reso
 	}
 
 	catalogID := data.CatalogID.ValueString()
-	requestCatalogManagementServiceAddAccessEntitlementsRequest := data.ToCreateSDKType()
+	requestCatalogManagementServiceAddAccessEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceAddAccessEntitlementsRequest()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest{
 		CatalogID: catalogID,
 		RequestCatalogManagementServiceAddAccessEntitlementsRequest: requestCatalogManagementServiceAddAccessEntitlementsRequest,
@@ -144,7 +145,8 @@ func (r *CatalogVisibilityBindingsResource) Create(ctx context.Context, req reso
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromCreateResponse(res.RequestCatalogManagementServiceAddAccessEntitlementsResponse)
+	data.RefreshFromSharedRequestCatalogManagementServiceAddAccessEntitlementsResponse(res.RequestCatalogManagementServiceAddAccessEntitlementsResponse)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -176,6 +178,13 @@ func (r *CatalogVisibilityBindingsResource) Read(ctx context.Context, req resour
 
 func (r *CatalogVisibilityBindingsResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *CatalogVisibilityBindingsResourceModel
+	var plan types.Object
+
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
@@ -206,7 +215,7 @@ func (r *CatalogVisibilityBindingsResource) Delete(ctx context.Context, req reso
 	}
 
 	catalogID := data.CatalogID.ValueString()
-	requestCatalogManagementServiceRemoveAccessEntitlementsRequest := data.ToDeleteSDKType()
+	requestCatalogManagementServiceRemoveAccessEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceRemoveAccessEntitlementsRequest()
 	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest{
 		CatalogID: catalogID,
 		RequestCatalogManagementServiceRemoveAccessEntitlementsRequest: requestCatalogManagementServiceRemoveAccessEntitlementsRequest,

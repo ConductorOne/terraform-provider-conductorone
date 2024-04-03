@@ -5,13 +5,13 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
-
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/speakeasy/terraform-provider-terraform/internal/provider/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -29,24 +29,26 @@ type AppDataSource struct {
 
 // AppDataSourceModel describes the data model.
 type AppDataSourceModel struct {
-	AppAccountID    types.String `tfsdk:"app_account_id"`
-	AppAccountName  types.String `tfsdk:"app_account_name"`
-	CertifyPolicyID types.String `tfsdk:"certify_policy_id"`
-	CreatedAt       types.String `tfsdk:"created_at"`
-	DeletedAt       types.String `tfsdk:"deleted_at"`
-	Description     types.String `tfsdk:"description"`
-	DisplayName     types.String `tfsdk:"display_name"`
-	FieldMask       types.String `tfsdk:"field_mask"`
-	GrantPolicyID   types.String `tfsdk:"grant_policy_id"`
-	IconURL         types.String `tfsdk:"icon_url"`
-	ID              types.String `tfsdk:"id"`
-	IsDirectory     types.Bool   `tfsdk:"is_directory"`
-	LogoURI         types.String `tfsdk:"logo_uri"`
-	MonthlyCostUsd  types.Number `tfsdk:"monthly_cost_usd"`
-	ParentAppID     types.String `tfsdk:"parent_app_id"`
-	RevokePolicyID  types.String `tfsdk:"revoke_policy_id"`
-	UpdatedAt       types.String `tfsdk:"updated_at"`
-	UserCount       types.String `tfsdk:"user_count"`
+	AppAccountID     types.String   `tfsdk:"app_account_id"`
+	AppAccountName   types.String   `tfsdk:"app_account_name"`
+	AppOwners        []tfTypes.User `tfsdk:"app_owners"`
+	CertifyPolicyID  types.String   `tfsdk:"certify_policy_id"`
+	CreatedAt        types.String   `tfsdk:"created_at"`
+	DeletedAt        types.String   `tfsdk:"deleted_at"`
+	Description      types.String   `tfsdk:"description"`
+	DisplayName      types.String   `tfsdk:"display_name"`
+	FieldMask        types.String   `tfsdk:"field_mask"`
+	GrantPolicyID    types.String   `tfsdk:"grant_policy_id"`
+	IconURL          types.String   `tfsdk:"icon_url"`
+	ID               types.String   `tfsdk:"id"`
+	IdentityMatching types.String   `tfsdk:"identity_matching"`
+	IsDirectory      types.Bool     `tfsdk:"is_directory"`
+	LogoURI          types.String   `tfsdk:"logo_uri"`
+	MonthlyCostUsd   types.Int64    `tfsdk:"monthly_cost_usd"`
+	ParentAppID      types.String   `tfsdk:"parent_app_id"`
+	RevokePolicyID   types.String   `tfsdk:"revoke_policy_id"`
+	UpdatedAt        types.String   `tfsdk:"updated_at"`
+	UserCount        types.String   `tfsdk:"user_count"`
 }
 
 // Metadata returns the data source type name.
@@ -67,6 +69,284 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"app_account_name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.`,
+			},
+			"app_owners": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"created_at": schema.StringAttribute{
+							Computed: true,
+						},
+						"delegated_user_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The id of the user to whom tasks will be automatically reassigned to.`,
+						},
+						"deleted_at": schema.StringAttribute{
+							Computed: true,
+						},
+						"department": schema.StringAttribute{
+							Computed:    true,
+							Description: `The department which the user belongs to in the organization.`,
+						},
+						"department_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on department attribute mappings configured in the system.`,
+						},
+						"directory_ids": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `A list of unique ids that represent different directories.`,
+						},
+						"directory_status": schema.StringAttribute{
+							Computed:    true,
+							Description: `The status of the user in the directory. must be one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
+						},
+						"directory_status_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on directoryStatus attribute mappings configured in the system.`,
+						},
+						"display_name": schema.StringAttribute{
+							Computed:    true,
+							Description: `The display name of the user.`,
+						},
+						"email": schema.StringAttribute{
+							Computed:    true,
+							Description: `This is the user's email.`,
+						},
+						"emails": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `This is a list of all of the user's emails from app users.`,
+						},
+						"employment_status": schema.StringAttribute{
+							Computed:    true,
+							Description: `The users employment status.`,
+						},
+						"employment_status_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on employmentStatus attribute mappings configured in the system.`,
+						},
+						"employment_type": schema.StringAttribute{
+							Computed:    true,
+							Description: `The employment type of the user.`,
+						},
+						"employment_type_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on employmentType attribute mappings configured in the system.`,
+						},
+						"id": schema.StringAttribute{
+							Computed:    true,
+							Description: `A unique identifier of the user.`,
+						},
+						"job_title": schema.StringAttribute{
+							Computed:    true,
+							Description: `The job title of the user.`,
+						},
+						"job_title_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on jobTitle attribute mappings configured in the system.`,
+						},
+						"manager_ids": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `A list of ids of the user's managers.`,
+						},
+						"manager_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of objects mapped based on managerId attribute mappings configured in the system.`,
+						},
+						"profile": schema.MapNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"str": schema.StringAttribute{
+										Computed: true,
+									},
+									"number": schema.NumberAttribute{
+										Computed: true,
+									},
+									"array_of_any": schema.ListAttribute{
+										Computed:    true,
+										ElementType: types.StringType,
+									},
+									"boolean": schema.BoolAttribute{
+										Computed: true,
+									},
+									"three": schema.SingleNestedAttribute{
+										Computed:   true,
+										Attributes: map[string]schema.Attribute{},
+									},
+								},
+							},
+						},
+						"role_ids": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `A list of unique identifiers that maps to ConductorOne’s user roles let you assign users permissions tailored to the work they do in the software.`,
+						},
+						"status": schema.StringAttribute{
+							Computed:    true,
+							Description: `The status of the user in the system. must be one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
+						},
+						"updated_at": schema.StringAttribute{
+							Computed: true,
+						},
+						"username": schema.StringAttribute{
+							Computed:    true,
+							Description: `This is the user's primary username. Typically sourced from the primary directory.`,
+						},
+						"usernames": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `This is a list of all of the user's usernames from app users.`,
+						},
+					},
+				},
+				Description: `The owners of the app.`,
 			},
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
@@ -100,6 +380,10 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"id": schema.StringAttribute{
 				Required: true,
 			},
+			"identity_matching": schema.StringAttribute{
+				Computed:    true,
+				Description: `The identityMatching field. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"]`,
+			},
 			"is_directory": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Specifies if the app is a directory.`,
@@ -108,7 +392,7 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Computed:    true,
 				Description: `The URL of a logo to display for the app.`,
 			},
-			"monthly_cost_usd": schema.NumberAttribute{
+			"monthly_cost_usd": schema.Int64Attribute{
 				Computed:    true,
 				Description: `The cost of an app per-seat, so that total cost can be calculated by the grant count.`,
 			},
@@ -189,11 +473,11 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.GetAppResponse == nil || res.GetAppResponse.App == nil {
+	if res.GetAppResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.GetAppResponse.App)
+	data.RefreshFromSharedApp(res.GetAppResponse.App)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

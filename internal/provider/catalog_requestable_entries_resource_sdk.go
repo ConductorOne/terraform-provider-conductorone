@@ -3,10 +3,10 @@
 package provider
 
 import (
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/shared"
 )
 
-func (r *CatalogRequestableEntriesResourceModel) ToCreateSDKType() *shared.RequestCatalogManagementServiceAddAppEntitlementsRequest {
+func (r *CatalogRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest() *shared.RequestCatalogManagementServiceAddAppEntitlementsRequest {
 	var appEntitlements []shared.AppEntitlementRef = nil
 	for _, appEntitlementsItem := range r.AppEntitlements {
 		appID := new(string)
@@ -32,7 +32,12 @@ func (r *CatalogRequestableEntriesResourceModel) ToCreateSDKType() *shared.Reque
 	return &out
 }
 
-func (r *CatalogRequestableEntriesResourceModel) ToDeleteSDKType() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest {
+func (r *CatalogRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(resp *shared.RequestCatalogManagementServiceAddAppEntitlementsResponse) {
+	if resp != nil {
+	}
+}
+
+func (r *CatalogRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest {
 	var appEntitlements []shared.AppEntitlementRef = nil
 	for _, appEntitlementsItem := range r.AppEntitlements {
 		appID := new(string)
@@ -56,8 +61,4 @@ func (r *CatalogRequestableEntriesResourceModel) ToDeleteSDKType() *shared.Reque
 		AppEntitlements: appEntitlements,
 	}
 	return &out
-}
-
-func (r *CatalogRequestableEntriesResourceModel) RefreshFromCreateResponse(resp *shared.RequestCatalogManagementServiceAddAppEntitlementsResponse) {
-
 }

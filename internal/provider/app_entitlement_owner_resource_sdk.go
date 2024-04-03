@@ -3,10 +3,10 @@
 package provider
 
 import (
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/shared"
 )
 
-func (r *AppEntitlementOwnerResourceModel) ToCreateSDKType() *shared.SetAppEntitlementOwnersRequest {
+func (r *AppEntitlementOwnerResourceModel) ToSharedSetAppEntitlementOwnersRequest() *shared.SetAppEntitlementOwnersRequest {
 	var userIds []string = nil
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -17,6 +17,7 @@ func (r *AppEntitlementOwnerResourceModel) ToCreateSDKType() *shared.SetAppEntit
 	return &out
 }
 
-func (r *AppEntitlementOwnerResourceModel) RefreshFromCreateResponse(resp *shared.SetAppEntitlementOwnersResponse) {
-
+func (r *AppEntitlementOwnerResourceModel) RefreshFromSharedSetAppEntitlementOwnersResponse(resp *shared.SetAppEntitlementOwnersResponse) {
+	if resp != nil {
+	}
 }

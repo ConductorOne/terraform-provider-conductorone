@@ -5,13 +5,13 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
-
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/speakeasy/terraform-provider-terraform/internal/provider/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -29,18 +29,18 @@ type PolicyDataSource struct {
 
 // PolicyDataSourceModel describes the data model.
 type PolicyDataSourceModel struct {
-	CreatedAt                types.String           `tfsdk:"created_at"`
-	DeletedAt                types.String           `tfsdk:"deleted_at"`
-	Description              types.String           `tfsdk:"description"`
-	DisplayName              types.String           `tfsdk:"display_name"`
-	ID                       types.String           `tfsdk:"id"`
-	PolicySteps              map[string]PolicySteps `tfsdk:"policy_steps"`
-	PolicyType               types.String           `tfsdk:"policy_type"`
-	PostActions              []PolicyPostActions    `tfsdk:"post_actions"`
-	ReassignTasksToDelegates types.Bool             `tfsdk:"reassign_tasks_to_delegates"`
-	Rules                    []Rule                 `tfsdk:"rules"`
-	SystemBuiltin            types.Bool             `tfsdk:"system_builtin"`
-	UpdatedAt                types.String           `tfsdk:"updated_at"`
+	CreatedAt                types.String                   `tfsdk:"created_at"`
+	DeletedAt                types.String                   `tfsdk:"deleted_at"`
+	Description              types.String                   `tfsdk:"description"`
+	DisplayName              types.String                   `tfsdk:"display_name"`
+	ID                       types.String                   `tfsdk:"id"`
+	PolicySteps              map[string]tfTypes.PolicySteps `tfsdk:"policy_steps"`
+	PolicyType               types.String                   `tfsdk:"policy_type"`
+	PostActions              []tfTypes.PolicyPostActions    `tfsdk:"post_actions"`
+	ReassignTasksToDelegates types.Bool                     `tfsdk:"reassign_tasks_to_delegates"`
+	Rules                    []tfTypes.Rule                 `tfsdk:"rules"`
+	SystemBuiltin            types.Bool                     `tfsdk:"system_builtin"`
+	UpdatedAt                types.String                   `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -80,8 +80,13 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"accept": schema.SingleNestedAttribute{
-										Computed:    true,
-										Attributes:  map[string]schema.Attribute{},
+										Computed: true,
+										Attributes: map[string]schema.Attribute{
+											"accept_message": schema.StringAttribute{
+												Computed:    true,
+												Description: `An optional message to include in the comments when a task is automatically accepted.`,
+											},
+										},
 										Description: `This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.`,
 									},
 									"approval": schema.SingleNestedAttribute{
@@ -90,6 +95,33 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
 												Description: `Configuration to allow reassignment by reviewers during this step.`,
+											},
+											"app_group_approval": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"allow_self_approval": schema.BoolAttribute{
+														Computed:    true,
+														Description: `Configuration to allow self approval if the target user is a member of the group during this step.`,
+													},
+													"app_group_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The ID of the group specified for approval.`,
+													},
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The ID of the app that contains the group specified for approval.`,
+													},
+													"fallback": schema.BoolAttribute{
+														Computed:    true,
+														Description: `Configuration to allow a fallback if the group is empty.`,
+													},
+													"fallback_user_ids": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `Configuration to specific which users to fallback to if fallback is enabled and the group is empty.`,
+													},
+												},
+												Description: `The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step.`,
 											},
 											"app_owner_approval": schema.SingleNestedAttribute{
 												Computed: true,
@@ -153,33 +185,6 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 												},
 												Description: `The ExpressionApproval message.`,
 											},
-											"app_group_approval": schema.SingleNestedAttribute{
-												Computed: true,
-												Attributes: map[string]schema.Attribute{
-													"allow_self_approval": schema.BoolAttribute{
-														Computed:    true,
-														Description: `Configuration to allow self approval if the target user is a member of the group during this step.`,
-													},
-													"app_group_id": schema.StringAttribute{
-														Computed:    true,
-														Description: `The ID of the group specified for approval.`,
-													},
-													"app_id": schema.StringAttribute{
-														Computed:    true,
-														Description: `The ID of the app that conatins the group specified for approval.`,
-													},
-													"fallback": schema.BoolAttribute{
-														Computed:    true,
-														Description: `Configuration to allow a fallback if the group is empty.`,
-													},
-													"fallback_user_ids": schema.ListAttribute{
-														Computed:    true,
-														ElementType: types.StringType,
-														Description: `Configuration to specific which users to fallback to if fallback is enabled and the group is empty.`,
-													},
-												},
-												Description: `The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step.`,
-											},
 											"manager_approval": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
@@ -207,6 +212,10 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											"require_approval_reason": schema.BoolAttribute{
 												Computed:    true,
 												Description: `Configuration to require a reason when approving this step.`,
+											},
+											"require_denial_reason": schema.BoolAttribute{
+												Computed:    true,
+												Description: `Configuration to require a reason when denying this step.`,
 											},
 											"require_reassignment_reason": schema.BoolAttribute{
 												Computed:    true,
@@ -308,6 +317,16 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 														},
 														Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
 													},
+													"webhook_provision": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"webhook_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The ID of the webhook to call for provisioning.`,
+															},
+														},
+														Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+													},
 												},
 												MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
 													`` + "\n" +
@@ -315,6 +334,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													`  - connector` + "\n" +
 													`  - manual` + "\n" +
 													`  - delegated` + "\n" +
+													`  - webhook` + "\n" +
 													``,
 											},
 											"provision_target": schema.SingleNestedAttribute{
@@ -342,8 +362,13 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 										Description: `The provision step references a provision policy for this step.`,
 									},
 									"reject": schema.SingleNestedAttribute{
-										Computed:    true,
-										Attributes:  map[string]schema.Attribute{},
+										Computed: true,
+										Attributes: map[string]schema.Attribute{
+											"reject_message": schema.StringAttribute{
+												Computed:    true,
+												Description: `An optional message to include in the comments when a task is automatically rejected.`,
+											},
+										},
 										Description: `This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.`,
 									},
 								},
@@ -355,9 +380,8 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				Description: `A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set.`,
 			},
 			"policy_type": schema.StringAttribute{
-				Computed: true,
-				MarkdownDescription: `must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]` + "\n" +
-					`Indicates the type of this policy. Can also be used to get the value from policySteps.`,
+				Computed:    true,
+				Description: `Indicates the type of this policy. Can also be used to get the value from policySteps. must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]`,
 			},
 			"post_actions": schema.ListNestedAttribute{
 				Computed: true,
@@ -376,7 +400,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			},
 			"reassign_tasks_to_delegates": schema.BoolAttribute{
 				Computed:    true,
-				Description: `A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation referrs to the individual delegates users set on their account.`,
+				Description: `A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation refers to the individual delegates users set on their account.`,
 			},
 			"rules": schema.ListNestedAttribute{
 				Computed: true,
@@ -463,11 +487,11 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.GetPolicyResponse == nil || res.GetPolicyResponse.Policy == nil {
+	if res.GetPolicyResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.GetPolicyResponse.Policy)
+	data.RefreshFromSharedPolicy(res.GetPolicyResponse.Policy)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

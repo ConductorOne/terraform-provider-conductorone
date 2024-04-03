@@ -5,13 +5,13 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/operations"
-
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/speakeasy/terraform-provider-terraform/internal/provider/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -29,21 +29,23 @@ type CatalogDataSource struct {
 
 // CatalogDataSourceModel describes the data model.
 type CatalogDataSourceModel struct {
-	AccessEntitlements     []AppEntitlement                                     `tfsdk:"access_entitlements"`
-	AccessEntitlementsPath types.String                                         `tfsdk:"access_entitlements_path"`
-	AppIds                 []types.String                                       `tfsdk:"app_ids"`
-	AppPaths               types.String                                         `tfsdk:"app_paths"`
-	CreatedAt              types.String                                         `tfsdk:"created_at"`
-	CreatedByUserID        types.String                                         `tfsdk:"created_by_user_id"`
-	CreatedByUserPath      types.String                                         `tfsdk:"created_by_user_path"`
-	DeletedAt              types.String                                         `tfsdk:"deleted_at"`
-	Description            types.String                                         `tfsdk:"description"`
-	DisplayName            types.String                                         `tfsdk:"display_name"`
-	Expanded               []RequestCatalogManagementServiceGetResponseExpanded `tfsdk:"expanded"`
-	ID                     types.String                                         `tfsdk:"id"`
-	Published              types.Bool                                           `tfsdk:"published"`
-	UpdatedAt              types.String                                         `tfsdk:"updated_at"`
-	VisibleToEveryone      types.Bool                                           `tfsdk:"visible_to_everyone"`
+	AccessEntitlements     []tfTypes.AppEntitlement `tfsdk:"access_entitlements"`
+	AccessEntitlementsPath types.String             `tfsdk:"access_entitlements_path"`
+	AdditionalProperties   types.String             `tfsdk:"additional_properties"`
+	AppIds                 []types.String           `tfsdk:"app_ids"`
+	AppPaths               types.String             `tfsdk:"app_paths"`
+	AtType                 types.String             `tfsdk:"at_type"`
+	CreatedAt              types.String             `tfsdk:"created_at"`
+	CreatedByUserID        types.String             `tfsdk:"created_by_user_id"`
+	CreatedByUserPath      types.String             `tfsdk:"created_by_user_path"`
+	DeletedAt              types.String             `tfsdk:"deleted_at"`
+	Description            types.String             `tfsdk:"description"`
+	DisplayName            types.String             `tfsdk:"display_name"`
+	ID                     types.String             `tfsdk:"id"`
+	Published              types.Bool               `tfsdk:"published"`
+	RequestBundle          types.Bool               `tfsdk:"request_bundle"`
+	UpdatedAt              types.String             `tfsdk:"updated_at"`
+	VisibleToEveryone      types.Bool               `tfsdk:"visible_to_everyone"`
 }
 
 // Metadata returns the data source type name.
@@ -127,6 +129,10 @@ func (r *CatalogDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 							Computed:    true,
 							Description: `The unique ID for the App Entitlement.`,
 						},
+						"is_manually_managed": schema.BoolAttribute{
+							Computed:    true,
+							Description: `Flag to indicate if the app entitlement is manually managed.`,
+						},
 						"provision_policy": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
@@ -168,6 +174,16 @@ func (r *CatalogDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 									},
 									Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
 								},
+								"webhook_provision": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"webhook_id": schema.StringAttribute{
+											Computed:    true,
+											Description: `The ID of the webhook to call for provisioning.`,
+										},
+									},
+									Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+								},
 							},
 							MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
 								`` + "\n" +
@@ -175,6 +191,7 @@ func (r *CatalogDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 								`  - connector` + "\n" +
 								`  - manual` + "\n" +
 								`  - delegated` + "\n" +
+								`  - webhook` + "\n" +
 								``,
 						},
 						"revoke_policy_id": schema.StringAttribute{
@@ -188,6 +205,11 @@ func (r *CatalogDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 						"slug": schema.StringAttribute{
 							Computed:    true,
 							Description: `The slug is displayed as an oval next to the name in the frontend of C1, it tells you what permission the entitlement grants. See https://www.conductorone.com/docs/product/manage-access/entitlements/`,
+						},
+						"source_connector_ids": schema.MapAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `Map to tell us which connector the entitlement came from.`,
 						},
 						"system_builtin": schema.BoolAttribute{
 							Computed:    true,
@@ -207,6 +229,10 @@ func (r *CatalogDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				Computed:    true,
 				Description: `JSONPATH expression indicating the location of the access entitlement objects, that the request catalog allows users to request, in the array.`,
 			},
+			"additional_properties": schema.StringAttribute{
+				Computed:    true,
+				Description: `Parsed as JSON.`,
+			},
 			"app_ids": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
@@ -215,6 +241,10 @@ func (r *CatalogDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 			"app_paths": schema.StringAttribute{
 				Computed:    true,
 				Description: `JSONPATH expression indicating the location of the App object in the array.`,
+			},
+			"at_type": schema.StringAttribute{
+				Computed:    true,
+				Description: `The type of the serialized message.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -238,28 +268,16 @@ func (r *CatalogDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				Computed:    true,
 				Description: `The display name of the request catalog.`,
 			},
-			"expanded": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"at_type": schema.StringAttribute{
-							Computed:    true,
-							Description: `The type of the serialized message.`,
-						},
-						"additional_properties": schema.StringAttribute{
-							Computed:    true,
-							Description: `Parsed as JSON.`,
-						},
-					},
-				},
-				Description: `List of serialized related objects.`,
-			},
 			"id": schema.StringAttribute{
 				Required: true,
 			},
 			"published": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Whether or not this catalog is published.`,
+			},
+			"request_bundle": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -330,11 +348,11 @@ func (r *CatalogDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if res.RequestCatalogManagementServiceGetResponse == nil || res.RequestCatalogManagementServiceGetResponse.RequestCatalogView == nil {
+	if res.RequestCatalogManagementServiceGetResponse == nil {
 		resp.Diagnostics.AddError("unexpected response from API. No response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromGetResponse(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
+	data.RefreshFromSharedRequestCatalog(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

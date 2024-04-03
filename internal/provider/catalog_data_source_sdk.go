@@ -4,250 +4,157 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	tfTypes "github.com/speakeasy/terraform-provider-terraform/internal/provider/types"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/shared"
 	"time"
 )
 
-func (r *CatalogDataSourceModel) RefreshFromGetResponse(resp *shared.RequestCatalog) {
-	if len(r.AccessEntitlements) > len(resp.AccessEntitlements) {
-		r.AccessEntitlements = r.AccessEntitlements[:len(resp.AccessEntitlements)]
-	}
-	for accessEntitlementsCount, accessEntitlementsItem := range resp.AccessEntitlements {
-		var accessEntitlements1 AppEntitlement
-		if accessEntitlementsItem.Alias != nil {
-			accessEntitlements1.Alias = types.StringValue(*accessEntitlementsItem.Alias)
-		} else {
-			accessEntitlements1.Alias = types.StringNull()
+func (r *CatalogDataSourceModel) RefreshFromSharedRequestCatalog(resp *shared.RequestCatalog) {
+	if resp != nil {
+		if len(r.AccessEntitlements) > len(resp.AccessEntitlements) {
+			r.AccessEntitlements = r.AccessEntitlements[:len(resp.AccessEntitlements)]
 		}
-		if accessEntitlementsItem.AppID != nil {
-			accessEntitlements1.AppID = types.StringValue(*accessEntitlementsItem.AppID)
-		} else {
-			accessEntitlements1.AppID = types.StringNull()
-		}
-		if accessEntitlementsItem.AppResourceID != nil {
-			accessEntitlements1.AppResourceID = types.StringValue(*accessEntitlementsItem.AppResourceID)
-		} else {
-			accessEntitlements1.AppResourceID = types.StringNull()
-		}
-		if accessEntitlementsItem.AppResourceTypeID != nil {
-			accessEntitlements1.AppResourceTypeID = types.StringValue(*accessEntitlementsItem.AppResourceTypeID)
-		} else {
-			accessEntitlements1.AppResourceTypeID = types.StringNull()
-		}
-		if accessEntitlementsItem.CertifyPolicyID != nil {
-			accessEntitlements1.CertifyPolicyID = types.StringValue(*accessEntitlementsItem.CertifyPolicyID)
-		} else {
-			accessEntitlements1.CertifyPolicyID = types.StringNull()
-		}
-		accessEntitlements1.ComplianceFrameworkValueIds = nil
-		for _, v := range accessEntitlementsItem.ComplianceFrameworkValueIds {
-			accessEntitlements1.ComplianceFrameworkValueIds = append(accessEntitlements1.ComplianceFrameworkValueIds, types.StringValue(v))
-		}
-		if accessEntitlementsItem.CreatedAt != nil {
-			accessEntitlements1.CreatedAt = types.StringValue(accessEntitlementsItem.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			accessEntitlements1.CreatedAt = types.StringNull()
-		}
-		if accessEntitlementsItem.DeletedAt != nil {
-			accessEntitlements1.DeletedAt = types.StringValue(accessEntitlementsItem.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			accessEntitlements1.DeletedAt = types.StringNull()
-		}
-		if accessEntitlementsItem.Description != nil {
-			accessEntitlements1.Description = types.StringValue(*accessEntitlementsItem.Description)
-		} else {
-			accessEntitlements1.Description = types.StringNull()
-		}
-		if accessEntitlementsItem.DisplayName != nil {
-			accessEntitlements1.DisplayName = types.StringValue(*accessEntitlementsItem.DisplayName)
-		} else {
-			accessEntitlements1.DisplayName = types.StringNull()
-		}
-		if accessEntitlementsItem.DurationGrant != nil {
-			accessEntitlements1.DurationGrant = types.StringValue(*accessEntitlementsItem.DurationGrant)
-		} else {
-			accessEntitlements1.DurationGrant = types.StringNull()
-		}
-		if accessEntitlementsItem.DurationUnset == nil {
-			accessEntitlements1.DurationUnset = nil
-		} else {
-			accessEntitlements1.DurationUnset = &DurationUnset{}
-		}
-		if accessEntitlementsItem.EmergencyGrantEnabled != nil {
-			accessEntitlements1.EmergencyGrantEnabled = types.BoolValue(*accessEntitlementsItem.EmergencyGrantEnabled)
-		} else {
-			accessEntitlements1.EmergencyGrantEnabled = types.BoolNull()
-		}
-		if accessEntitlementsItem.EmergencyGrantPolicyID != nil {
-			accessEntitlements1.EmergencyGrantPolicyID = types.StringValue(*accessEntitlementsItem.EmergencyGrantPolicyID)
-		} else {
-			accessEntitlements1.EmergencyGrantPolicyID = types.StringNull()
-		}
-		if accessEntitlementsItem.GrantCount != nil {
-			accessEntitlements1.GrantCount = types.StringValue(*accessEntitlementsItem.GrantCount)
-		} else {
-			accessEntitlements1.GrantCount = types.StringNull()
-		}
-		if accessEntitlementsItem.GrantPolicyID != nil {
-			accessEntitlements1.GrantPolicyID = types.StringValue(*accessEntitlementsItem.GrantPolicyID)
-		} else {
-			accessEntitlements1.GrantPolicyID = types.StringNull()
-		}
-		if accessEntitlementsItem.ID != nil {
-			accessEntitlements1.ID = types.StringValue(*accessEntitlementsItem.ID)
-		} else {
-			accessEntitlements1.ID = types.StringNull()
-		}
-		if accessEntitlementsItem.ProvisionPolicy == nil {
-			accessEntitlements1.ProvisionPolicy = nil
-		} else {
-			accessEntitlements1.ProvisionPolicy = &ProvisionPolicy{}
-			if accessEntitlementsItem.ProvisionPolicy.ConnectorProvision == nil {
-				accessEntitlements1.ProvisionPolicy.ConnectorProvision = nil
-			} else {
-				accessEntitlements1.ProvisionPolicy.ConnectorProvision = &DurationUnset{}
+		for accessEntitlementsCount, accessEntitlementsItem := range resp.AccessEntitlements {
+			var accessEntitlements1 tfTypes.AppEntitlement
+			accessEntitlements1.Alias = types.StringPointerValue(accessEntitlementsItem.Alias)
+			accessEntitlements1.AppID = types.StringPointerValue(accessEntitlementsItem.AppID)
+			accessEntitlements1.AppResourceID = types.StringPointerValue(accessEntitlementsItem.AppResourceID)
+			accessEntitlements1.AppResourceTypeID = types.StringPointerValue(accessEntitlementsItem.AppResourceTypeID)
+			accessEntitlements1.CertifyPolicyID = types.StringPointerValue(accessEntitlementsItem.CertifyPolicyID)
+			accessEntitlements1.ComplianceFrameworkValueIds = []types.String{}
+			for _, v := range accessEntitlementsItem.ComplianceFrameworkValueIds {
+				accessEntitlements1.ComplianceFrameworkValueIds = append(accessEntitlements1.ComplianceFrameworkValueIds, types.StringValue(v))
 			}
-			if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision == nil {
-				accessEntitlements1.ProvisionPolicy.DelegatedProvision = nil
+			if accessEntitlementsItem.CreatedAt != nil {
+				accessEntitlements1.CreatedAt = types.StringValue(accessEntitlementsItem.CreatedAt.Format(time.RFC3339Nano))
 			} else {
-				accessEntitlements1.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
-				if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID != nil {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.AppID = types.StringValue(*accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID)
+				accessEntitlements1.CreatedAt = types.StringNull()
+			}
+			if accessEntitlementsItem.DeletedAt != nil {
+				accessEntitlements1.DeletedAt = types.StringValue(accessEntitlementsItem.DeletedAt.Format(time.RFC3339Nano))
+			} else {
+				accessEntitlements1.DeletedAt = types.StringNull()
+			}
+			accessEntitlements1.Description = types.StringPointerValue(accessEntitlementsItem.Description)
+			accessEntitlements1.DisplayName = types.StringPointerValue(accessEntitlementsItem.DisplayName)
+			accessEntitlements1.DurationGrant = types.StringPointerValue(accessEntitlementsItem.DurationGrant)
+			if accessEntitlementsItem.DurationUnset == nil {
+				accessEntitlements1.DurationUnset = nil
+			} else {
+				accessEntitlements1.DurationUnset = &tfTypes.Three{}
+			}
+			accessEntitlements1.EmergencyGrantEnabled = types.BoolPointerValue(accessEntitlementsItem.EmergencyGrantEnabled)
+			accessEntitlements1.EmergencyGrantPolicyID = types.StringPointerValue(accessEntitlementsItem.EmergencyGrantPolicyID)
+			accessEntitlements1.GrantCount = types.StringPointerValue(accessEntitlementsItem.GrantCount)
+			accessEntitlements1.GrantPolicyID = types.StringPointerValue(accessEntitlementsItem.GrantPolicyID)
+			accessEntitlements1.ID = types.StringPointerValue(accessEntitlementsItem.ID)
+			accessEntitlements1.IsManuallyManaged = types.BoolPointerValue(accessEntitlementsItem.IsManuallyManaged)
+			if accessEntitlementsItem.ProvisionPolicy == nil {
+				accessEntitlements1.ProvisionPolicy = nil
+			} else {
+				accessEntitlements1.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
+				if accessEntitlementsItem.ProvisionPolicy.ConnectorProvision == nil {
+					accessEntitlements1.ProvisionPolicy.ConnectorProvision = nil
 				} else {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.AppID = types.StringNull()
+					accessEntitlements1.ProvisionPolicy.ConnectorProvision = &tfTypes.Three{}
 				}
-				if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID != nil {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringValue(*accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID)
+				if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision == nil {
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision = nil
 				} else {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringNull()
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.AppID)
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.EntitlementID)
+					accessEntitlements1.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolPointerValue(accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit)
 				}
-				if accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit != nil {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolValue(*accessEntitlementsItem.ProvisionPolicy.DelegatedProvision.Implicit)
+				if accessEntitlementsItem.ProvisionPolicy.ManualProvision == nil {
+					accessEntitlements1.ProvisionPolicy.ManualProvision = nil
 				} else {
-					accessEntitlements1.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolNull()
+					accessEntitlements1.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
+					accessEntitlements1.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions)
+					accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds = []types.String{}
+					for _, v := range accessEntitlementsItem.ProvisionPolicy.ManualProvision.UserIds {
+						accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds = append(accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
+					}
+				}
+				if accessEntitlementsItem.ProvisionPolicy.WebhookProvision == nil {
+					accessEntitlements1.ProvisionPolicy.WebhookProvision = nil
+				} else {
+					accessEntitlements1.ProvisionPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
+					accessEntitlements1.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(accessEntitlementsItem.ProvisionPolicy.WebhookProvision.WebhookID)
 				}
 			}
-			if accessEntitlementsItem.ProvisionPolicy.ManualProvision == nil {
-				accessEntitlements1.ProvisionPolicy.ManualProvision = nil
-			} else {
-				accessEntitlements1.ProvisionPolicy.ManualProvision = &ManualProvision{}
-				if accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions != nil {
-					accessEntitlements1.ProvisionPolicy.ManualProvision.Instructions = types.StringValue(*accessEntitlementsItem.ProvisionPolicy.ManualProvision.Instructions)
-				} else {
-					accessEntitlements1.ProvisionPolicy.ManualProvision.Instructions = types.StringNull()
-				}
-				accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds = nil
-				for _, v := range accessEntitlementsItem.ProvisionPolicy.ManualProvision.UserIds {
-					accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds = append(accessEntitlements1.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
+			accessEntitlements1.RevokePolicyID = types.StringPointerValue(accessEntitlementsItem.RevokePolicyID)
+			accessEntitlements1.RiskLevelValueID = types.StringPointerValue(accessEntitlementsItem.RiskLevelValueID)
+			accessEntitlements1.Slug = types.StringPointerValue(accessEntitlementsItem.Slug)
+			if len(accessEntitlementsItem.SourceConnectorIds) > 0 {
+				accessEntitlements1.SourceConnectorIds = make(map[string]types.String)
+				for key, value := range accessEntitlementsItem.SourceConnectorIds {
+					accessEntitlements1.SourceConnectorIds[key] = types.StringValue(value)
 				}
 			}
+			accessEntitlements1.SystemBuiltin = types.BoolPointerValue(accessEntitlementsItem.SystemBuiltin)
+			if accessEntitlementsItem.UpdatedAt != nil {
+				accessEntitlements1.UpdatedAt = types.StringValue(accessEntitlementsItem.UpdatedAt.Format(time.RFC3339Nano))
+			} else {
+				accessEntitlements1.UpdatedAt = types.StringNull()
+			}
+			accessEntitlements1.UserEditedMask = types.StringPointerValue(accessEntitlementsItem.UserEditedMask)
+			if accessEntitlementsCount+1 > len(r.AccessEntitlements) {
+				r.AccessEntitlements = append(r.AccessEntitlements, accessEntitlements1)
+			} else {
+				r.AccessEntitlements[accessEntitlementsCount].Alias = accessEntitlements1.Alias
+				r.AccessEntitlements[accessEntitlementsCount].AppID = accessEntitlements1.AppID
+				r.AccessEntitlements[accessEntitlementsCount].AppResourceID = accessEntitlements1.AppResourceID
+				r.AccessEntitlements[accessEntitlementsCount].AppResourceTypeID = accessEntitlements1.AppResourceTypeID
+				r.AccessEntitlements[accessEntitlementsCount].CertifyPolicyID = accessEntitlements1.CertifyPolicyID
+				r.AccessEntitlements[accessEntitlementsCount].ComplianceFrameworkValueIds = accessEntitlements1.ComplianceFrameworkValueIds
+				r.AccessEntitlements[accessEntitlementsCount].CreatedAt = accessEntitlements1.CreatedAt
+				r.AccessEntitlements[accessEntitlementsCount].DeletedAt = accessEntitlements1.DeletedAt
+				r.AccessEntitlements[accessEntitlementsCount].Description = accessEntitlements1.Description
+				r.AccessEntitlements[accessEntitlementsCount].DisplayName = accessEntitlements1.DisplayName
+				r.AccessEntitlements[accessEntitlementsCount].DurationGrant = accessEntitlements1.DurationGrant
+				r.AccessEntitlements[accessEntitlementsCount].DurationUnset = accessEntitlements1.DurationUnset
+				r.AccessEntitlements[accessEntitlementsCount].EmergencyGrantEnabled = accessEntitlements1.EmergencyGrantEnabled
+				r.AccessEntitlements[accessEntitlementsCount].EmergencyGrantPolicyID = accessEntitlements1.EmergencyGrantPolicyID
+				r.AccessEntitlements[accessEntitlementsCount].GrantCount = accessEntitlements1.GrantCount
+				r.AccessEntitlements[accessEntitlementsCount].GrantPolicyID = accessEntitlements1.GrantPolicyID
+				r.AccessEntitlements[accessEntitlementsCount].ID = accessEntitlements1.ID
+				r.AccessEntitlements[accessEntitlementsCount].IsManuallyManaged = accessEntitlements1.IsManuallyManaged
+				r.AccessEntitlements[accessEntitlementsCount].ProvisionPolicy = accessEntitlements1.ProvisionPolicy
+				r.AccessEntitlements[accessEntitlementsCount].RevokePolicyID = accessEntitlements1.RevokePolicyID
+				r.AccessEntitlements[accessEntitlementsCount].RiskLevelValueID = accessEntitlements1.RiskLevelValueID
+				r.AccessEntitlements[accessEntitlementsCount].Slug = accessEntitlements1.Slug
+				r.AccessEntitlements[accessEntitlementsCount].SourceConnectorIds = accessEntitlements1.SourceConnectorIds
+				r.AccessEntitlements[accessEntitlementsCount].SystemBuiltin = accessEntitlements1.SystemBuiltin
+				r.AccessEntitlements[accessEntitlementsCount].UpdatedAt = accessEntitlements1.UpdatedAt
+				r.AccessEntitlements[accessEntitlementsCount].UserEditedMask = accessEntitlements1.UserEditedMask
+			}
 		}
-		if accessEntitlementsItem.RevokePolicyID != nil {
-			accessEntitlements1.RevokePolicyID = types.StringValue(*accessEntitlementsItem.RevokePolicyID)
+		r.AppIds = []types.String{}
+		for _, v := range resp.AppIds {
+			r.AppIds = append(r.AppIds, types.StringValue(v))
+		}
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
 		} else {
-			accessEntitlements1.RevokePolicyID = types.StringNull()
+			r.CreatedAt = types.StringNull()
 		}
-		if accessEntitlementsItem.RiskLevelValueID != nil {
-			accessEntitlements1.RiskLevelValueID = types.StringValue(*accessEntitlementsItem.RiskLevelValueID)
+		r.CreatedByUserID = types.StringPointerValue(resp.CreatedByUserID)
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
 		} else {
-			accessEntitlements1.RiskLevelValueID = types.StringNull()
+			r.DeletedAt = types.StringNull()
 		}
-		if accessEntitlementsItem.Slug != nil {
-			accessEntitlements1.Slug = types.StringValue(*accessEntitlementsItem.Slug)
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Published = types.BoolPointerValue(resp.Published)
+		r.RequestBundle = types.BoolPointerValue(resp.RequestBundle)
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 		} else {
-			accessEntitlements1.Slug = types.StringNull()
+			r.UpdatedAt = types.StringNull()
 		}
-		if accessEntitlementsItem.SystemBuiltin != nil {
-			accessEntitlements1.SystemBuiltin = types.BoolValue(*accessEntitlementsItem.SystemBuiltin)
-		} else {
-			accessEntitlements1.SystemBuiltin = types.BoolNull()
-		}
-		if accessEntitlementsItem.UpdatedAt != nil {
-			accessEntitlements1.UpdatedAt = types.StringValue(accessEntitlementsItem.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			accessEntitlements1.UpdatedAt = types.StringNull()
-		}
-		if accessEntitlementsItem.UserEditedMask != nil {
-			accessEntitlements1.UserEditedMask = types.StringValue(*accessEntitlementsItem.UserEditedMask)
-		} else {
-			accessEntitlements1.UserEditedMask = types.StringNull()
-		}
-		if accessEntitlementsCount+1 > len(r.AccessEntitlements) {
-			r.AccessEntitlements = append(r.AccessEntitlements, accessEntitlements1)
-		} else {
-			r.AccessEntitlements[accessEntitlementsCount].Alias = accessEntitlements1.Alias
-			r.AccessEntitlements[accessEntitlementsCount].AppID = accessEntitlements1.AppID
-			r.AccessEntitlements[accessEntitlementsCount].AppResourceID = accessEntitlements1.AppResourceID
-			r.AccessEntitlements[accessEntitlementsCount].AppResourceTypeID = accessEntitlements1.AppResourceTypeID
-			r.AccessEntitlements[accessEntitlementsCount].CertifyPolicyID = accessEntitlements1.CertifyPolicyID
-			r.AccessEntitlements[accessEntitlementsCount].ComplianceFrameworkValueIds = accessEntitlements1.ComplianceFrameworkValueIds
-			r.AccessEntitlements[accessEntitlementsCount].CreatedAt = accessEntitlements1.CreatedAt
-			r.AccessEntitlements[accessEntitlementsCount].DeletedAt = accessEntitlements1.DeletedAt
-			r.AccessEntitlements[accessEntitlementsCount].Description = accessEntitlements1.Description
-			r.AccessEntitlements[accessEntitlementsCount].DisplayName = accessEntitlements1.DisplayName
-			r.AccessEntitlements[accessEntitlementsCount].DurationGrant = accessEntitlements1.DurationGrant
-			r.AccessEntitlements[accessEntitlementsCount].DurationUnset = accessEntitlements1.DurationUnset
-			r.AccessEntitlements[accessEntitlementsCount].EmergencyGrantEnabled = accessEntitlements1.EmergencyGrantEnabled
-			r.AccessEntitlements[accessEntitlementsCount].EmergencyGrantPolicyID = accessEntitlements1.EmergencyGrantPolicyID
-			r.AccessEntitlements[accessEntitlementsCount].GrantCount = accessEntitlements1.GrantCount
-			r.AccessEntitlements[accessEntitlementsCount].GrantPolicyID = accessEntitlements1.GrantPolicyID
-			r.AccessEntitlements[accessEntitlementsCount].ID = accessEntitlements1.ID
-			r.AccessEntitlements[accessEntitlementsCount].ProvisionPolicy = accessEntitlements1.ProvisionPolicy
-			r.AccessEntitlements[accessEntitlementsCount].RevokePolicyID = accessEntitlements1.RevokePolicyID
-			r.AccessEntitlements[accessEntitlementsCount].RiskLevelValueID = accessEntitlements1.RiskLevelValueID
-			r.AccessEntitlements[accessEntitlementsCount].Slug = accessEntitlements1.Slug
-			r.AccessEntitlements[accessEntitlementsCount].SystemBuiltin = accessEntitlements1.SystemBuiltin
-			r.AccessEntitlements[accessEntitlementsCount].UpdatedAt = accessEntitlements1.UpdatedAt
-			r.AccessEntitlements[accessEntitlementsCount].UserEditedMask = accessEntitlements1.UserEditedMask
-		}
-	}
-	r.AppIds = nil
-	for _, v := range resp.AppIds {
-		r.AppIds = append(r.AppIds, types.StringValue(v))
-	}
-	if resp.CreatedAt != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-	} else {
-		r.CreatedAt = types.StringNull()
-	}
-	if resp.CreatedByUserID != nil {
-		r.CreatedByUserID = types.StringValue(*resp.CreatedByUserID)
-	} else {
-		r.CreatedByUserID = types.StringNull()
-	}
-	if resp.DeletedAt != nil {
-		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-	} else {
-		r.DeletedAt = types.StringNull()
-	}
-	if resp.Description != nil {
-		r.Description = types.StringValue(*resp.Description)
-	} else {
-		r.Description = types.StringNull()
-	}
-	if resp.DisplayName != nil {
-		r.DisplayName = types.StringValue(*resp.DisplayName)
-	} else {
-		r.DisplayName = types.StringNull()
-	}
-	if resp.ID != nil {
-		r.ID = types.StringValue(*resp.ID)
-	} else {
-		r.ID = types.StringNull()
-	}
-	if resp.Published != nil {
-		r.Published = types.BoolValue(*resp.Published)
-	} else {
-		r.Published = types.BoolNull()
-	}
-	if resp.UpdatedAt != nil {
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-	} else {
-		r.UpdatedAt = types.StringNull()
-	}
-	if resp.VisibleToEveryone != nil {
-		r.VisibleToEveryone = types.BoolValue(*resp.VisibleToEveryone)
-	} else {
-		r.VisibleToEveryone = types.BoolNull()
+		r.VisibleToEveryone = types.BoolPointerValue(resp.VisibleToEveryone)
 	}
 }

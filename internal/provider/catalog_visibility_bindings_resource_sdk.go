@@ -3,10 +3,10 @@
 package provider
 
 import (
-	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/pkg/models/shared"
+	"github.com/speakeasy/terraform-provider-terraform/internal/sdk/models/shared"
 )
 
-func (r *CatalogVisibilityBindingsResourceModel) ToCreateSDKType() *shared.RequestCatalogManagementServiceAddAccessEntitlementsRequest {
+func (r *CatalogVisibilityBindingsResourceModel) ToSharedRequestCatalogManagementServiceAddAccessEntitlementsRequest() *shared.RequestCatalogManagementServiceAddAccessEntitlementsRequest {
 	var accessEntitlements []shared.AppEntitlementRef = nil
 	for _, accessEntitlementsItem := range r.AccessEntitlements {
 		appID := new(string)
@@ -32,7 +32,12 @@ func (r *CatalogVisibilityBindingsResourceModel) ToCreateSDKType() *shared.Reque
 	return &out
 }
 
-func (r *CatalogVisibilityBindingsResourceModel) ToDeleteSDKType() *shared.RequestCatalogManagementServiceRemoveAccessEntitlementsRequest {
+func (r *CatalogVisibilityBindingsResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAccessEntitlementsResponse(resp *shared.RequestCatalogManagementServiceAddAccessEntitlementsResponse) {
+	if resp != nil {
+	}
+}
+
+func (r *CatalogVisibilityBindingsResourceModel) ToSharedRequestCatalogManagementServiceRemoveAccessEntitlementsRequest() *shared.RequestCatalogManagementServiceRemoveAccessEntitlementsRequest {
 	var accessEntitlements []shared.AppEntitlementRef = nil
 	for _, accessEntitlementsItem := range r.AccessEntitlements {
 		appID := new(string)
@@ -56,8 +61,4 @@ func (r *CatalogVisibilityBindingsResourceModel) ToDeleteSDKType() *shared.Reque
 		AccessEntitlements: accessEntitlements,
 	}
 	return &out
-}
-
-func (r *CatalogVisibilityBindingsResourceModel) RefreshFromCreateResponse(resp *shared.RequestCatalogManagementServiceAddAccessEntitlementsResponse) {
-
 }
