@@ -61,6 +61,6 @@ type CreatePolicyRequest struct {
 	PostActions []PolicyPostActions `json:"postActions,omitempty"`
 	// Allows reassigning tasks to delegates.
 	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
-// The rules field.
+	// The rules field.
 	Rules []Rule `json:"rules,omitempty"`
 }
