@@ -18,6 +18,7 @@ import (
 )
 
 func debugResponse(response *http.Response) string {
+	response.Request.Header.Set("Authorization", "[REDACTED]")
 	dumpReq, err := httputil.DumpRequest(response.Request, false)
 	if err != nil {
 		return err.Error()
