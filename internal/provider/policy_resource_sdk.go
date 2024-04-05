@@ -5,27 +5,23 @@ package provider
 import (
 	"conductorone/internal/sdk/pkg/models/shared"
 	"regexp"
-	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-var conditionalRegex = regexp.MustCompile("^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}")
+var conditionalRegex = regexp.MustCompile("^[0-9]{1}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}")
 
 func BoolPointer(b bool) *bool {
 	return &b
 }
 
 func PrependPolicyStepId(id string) string {
-	if conditionalRegex.MatchString(id) {
+	// Terraform does not allow resource names to start with a number
+	if id[0] >= '0' && id[0] <= '9'{
 		return "id_" + id
 	}
 	return id
-}
-
-func RemovePolicyStepIdPrefix(id string) string {
-	return strings.TrimPrefix(id, "id_")
 }
 
 func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
@@ -332,7 +328,7 @@ func (r *PolicyResourceModel) ToUpdateSDKType() *shared.PolicyInput {
 		policyStepsInst := shared.PolicySteps{
 			Steps: steps,
 		}
-		policySteps[RemovePolicyStepIdPrefix(policyStepsKey)] = policyStepsInst
+		policySteps[policyStepsKey] = policyStepsInst
 	}
 	policyType := new(shared.PolicyType)
 	if !r.PolicyType.IsUnknown() && !r.PolicyType.IsNull() {
