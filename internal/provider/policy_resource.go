@@ -251,9 +251,11 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											},
 											"self_approval": schema.SingleNestedAttribute{
 												Optional: true,
+												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"assigned_user_ids": schema.ListAttribute{
 														Computed:    true,
+														Optional:    true,
 														ElementType: types.StringType,
 														Description: `The array of users determined to be themselves during approval. This should only ever be one person, but is saved because it may change if the owner of an app user changes while the ticket is open.`,
 													},
