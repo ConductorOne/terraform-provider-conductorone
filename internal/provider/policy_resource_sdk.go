@@ -4,13 +4,10 @@ package provider
 
 import (
 	"conductorone/internal/sdk/pkg/models/shared"
-	"regexp"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
-
-var conditionalRegex = regexp.MustCompile("^[0-9]{1}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}")
 
 func BoolPointer(b bool) *bool {
 	return &b
