@@ -176,12 +176,9 @@ Optional:
 
 Optional:
 
+- `assigned_user_ids` (List of String) The array of users determined to be themselves during approval. This should only ever be one person, but is saved because it may change if the owner of an app user changes while the ticket is open.
 - `fallback` (Boolean) Configuration to allow a fallback if the identity user of the target app user cannot be determined.
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.
-
-Read-Only:
-
-- `assigned_user_ids` (List of String) The array of users determined to be themselves during approval. This should only ever be one person, but is saved because it may change if the owner of an app user changes while the ticket is open.
 
 
 <a id="nestedatt--policy_steps--steps--approval--user_approval"></a>
