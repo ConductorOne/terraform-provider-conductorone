@@ -6,4 +6,5 @@ type ProvisionPolicy struct {
 	ConnectorProvision *ConnectorProvision `tfsdk:"connector_provision"`
 	DelegatedProvision *DelegatedProvision `tfsdk:"delegated_provision"`
 	ManualProvision    *ManualProvision    `tfsdk:"manual_provision"`
+	WebhookProvision   *WebhookProvision   `tfsdk:"webhook_provision"`
 }

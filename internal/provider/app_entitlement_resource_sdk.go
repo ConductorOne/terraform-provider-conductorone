@@ -8,13 +8,11 @@ import (
 )
 
 func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlement {
-	var provisionPolicy *shared.ProvisionPolicy
+	provisionPolicy := &shared.ProvisionPolicy{}
 	if r.ProvisionPolicy != nil {
-		var connectorProvision *shared.ConnectorProvision
 		if r.ProvisionPolicy.ConnectorProvision != nil {
-			connectorProvision = &shared.ConnectorProvision{}
+			provisionPolicy.ConnectorProvision = &shared.ConnectorProvision{}
 		}
-		var delegatedProvision *shared.DelegatedProvision
 		if r.ProvisionPolicy.DelegatedProvision != nil {
 			appID := new(string)
 			if !r.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !r.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
@@ -34,13 +32,12 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlement {
 			} else {
 				implicit = nil
 			}
-			delegatedProvision = &shared.DelegatedProvision{
+			provisionPolicy.DelegatedProvision = &shared.DelegatedProvision{
 				AppID:         appID,
 				EntitlementID: entitlementID,
 				Implicit:      implicit,
 			}
 		}
-		var manualProvision *shared.ManualProvision
 		if r.ProvisionPolicy.ManualProvision != nil {
 			instructions := new(string)
 			if !r.ProvisionPolicy.ManualProvision.Instructions.IsUnknown() && !r.ProvisionPolicy.ManualProvision.Instructions.IsNull() {
@@ -52,15 +49,21 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlement {
 			for _, userIdsItem := range r.ProvisionPolicy.ManualProvision.UserIds {
 				userIds = append(userIds, userIdsItem.ValueString())
 			}
-			manualProvision = &shared.ManualProvision{
+			provisionPolicy.ManualProvision = &shared.ManualProvision{
 				Instructions: instructions,
 				UserIds:      userIds,
 			}
 		}
-		provisionPolicy = &shared.ProvisionPolicy{
-			ConnectorProvision: connectorProvision,
-			DelegatedProvision: delegatedProvision,
-			ManualProvision:    manualProvision,
+		if r.ProvisionPolicy.WebhookProvision != nil {
+			webhookID := new(string)
+			if !r.ProvisionPolicy.WebhookProvision.WebhookID.IsUnknown() && !r.ProvisionPolicy.WebhookProvision.WebhookID.IsNull() {
+				*webhookID = r.ProvisionPolicy.WebhookProvision.WebhookID.ValueString()
+			} else {
+				webhookID = nil
+			}
+			provisionPolicy.WebhookProvision = &shared.WebhookProvision{
+				WebhookID: webhookID,
+			}
 		}
 	}
 	alias := new(string)
@@ -315,7 +318,14 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 				r.ProvisionPolicy.ManualProvision.UserIds = append(r.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 			}
 		}
-
+		if resp.ProvisionPolicy.WebhookProvision != nil {
+			r.ProvisionPolicy.WebhookProvision = &WebhookProvision{}
+			if resp.ProvisionPolicy.WebhookProvision.WebhookID != nil {
+				r.ProvisionPolicy.WebhookProvision.WebhookID = types.StringValue(*resp.ProvisionPolicy.WebhookProvision.WebhookID)
+			} else {
+				r.ProvisionPolicy.WebhookProvision.WebhookID = types.StringNull()
+			}
+		}
 	}
 	if resp.RevokePolicyID != nil {
 		r.RevokePolicyID = types.StringValue(*resp.RevokePolicyID)

@@ -208,6 +208,18 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 						},
 						Description: `The ManualProvision message.`,
 					},
+					"webhook_provision": schema.SingleNestedAttribute{
+						Optional: true,
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"webhook_id": schema.StringAttribute{
+								Optional:    true,
+								Computed:    true,
+								Description: `The ID of the webhook to call for provisioning.`,
+							},
+						},
+						Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+					},
 				},
 				MarkdownDescription: `The ProvisionPolicy message is the Provision strategy that will be used for granting access for this entitlement.` + "\n" +
 					`` +
@@ -215,6 +227,7 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					`  - connector` + "\n" +
 					`  - manual` + "\n" +
 					`  - delegated` + "\n" +
+					`  - webhook` + "\n" +
 					"\n" +
 					``,
 			},
@@ -398,19 +411,41 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 
 	// TODO(mstanbCO): Need a better pattern for stuff like this
 	// These two fields are a oneof in the API, so we need to ensure that only one is set before making the request.
-	if currentAppEntitlement.DurationGrant != nil {
-		if appEntitlement.DurationUnset != nil {
-			appEntitlement.DurationGrant = nil
-		}
-	} else if currentAppEntitlement.DurationUnset != nil {
-		if appEntitlement.DurationGrant != nil {
-			appEntitlement.DurationUnset = nil
-		}
+	if currentAppEntitlement.DurationGrant != nil && appEntitlement.DurationUnset != nil {
+		appEntitlement.DurationGrant = nil
+	} else if currentAppEntitlement.DurationUnset != nil && appEntitlement.DurationGrant != nil {
+		appEntitlement.DurationUnset = nil
 	}
 
 	// If no value was specified for the ProvisionPolicy, use the current value.
 	if appEntitlement.ProvisionPolicy == nil {
 		appEntitlement.ProvisionPolicy = currentAppEntitlement.ProvisionPolicy
+	}
+
+	// TODO(mstanbCO): Need a better pattern for handling this in the merge step, instead of doing this.
+	if currentAppEntitlement.ProvisionPolicy != nil {
+		isDelegatedSet := appEntitlement.ProvisionPolicy.DelegatedProvision != nil
+		isManualSet := appEntitlement.ProvisionPolicy.ManualProvision != nil
+		isWebhookSet := appEntitlement.ProvisionPolicy.WebhookProvision != nil
+		isConnectorSet := appEntitlement.ProvisionPolicy.ConnectorProvision != nil
+
+		if currentAppEntitlement.ProvisionPolicy.ConnectorProvision != nil {
+			if isDelegatedSet || isManualSet || isWebhookSet {
+				appEntitlement.ProvisionPolicy.ConnectorProvision = nil
+			}
+		} else if currentAppEntitlement.ProvisionPolicy.DelegatedProvision != nil {
+			if isConnectorSet || isManualSet || isWebhookSet {
+				appEntitlement.ProvisionPolicy.DelegatedProvision = nil
+			}
+		} else if currentAppEntitlement.ProvisionPolicy.ManualProvision != nil {
+			if isConnectorSet || isDelegatedSet || isWebhookSet {
+				appEntitlement.ProvisionPolicy.ManualProvision = nil
+			}
+		} else if currentAppEntitlement.ProvisionPolicy.WebhookProvision != nil {
+			if isConnectorSet || isDelegatedSet || isManualSet {
+				appEntitlement.ProvisionPolicy.WebhookProvision = nil
+			}
+		}
 	}
 
 	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
