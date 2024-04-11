@@ -131,6 +131,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewComplianceFrameworkResource,
 		NewAppEntitlementOwnerResource,
 		NewAppOwnerResource,
+		NewWebhookResource,
 	}
 
 	resources = append(resources, getIntegrationResources()...)
@@ -147,6 +148,7 @@ func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasou
 		NewRiskLevelDataSource,
 		NewComplianceFrameworkDataSource,
 		NewAwsExternalIDDataSource,
+		NewWebhookDataSource,
 	}
 }
 
