@@ -222,7 +222,7 @@ func (r *WebhookResource) Update(ctx context.Context, req resource.UpdateRequest
 	webhook := data.ToSharedWebhookInput()
 	webhooksServiceUpdateRequest = &shared.WebhooksServiceUpdateRequest{
 		Webhook:    webhook,
-		UpdateMask: "url",
+		UpdateMask: "url,displayName,description",
 	}
 	request := operations.C1APIWebhooksV1WebhooksServiceUpdateRequest{
 		ID:                           id,

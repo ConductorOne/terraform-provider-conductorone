@@ -185,7 +185,7 @@ func (r *RiskLevelDataSource) Read(ctx context.Context, req datasource.ReadReque
 		return
 	}
 
-	if len(res.SearchAttributeValuesResponse.List) > 2 {
+	if len(res.SearchAttributeValuesResponse.List) > 1 {
 		resp.Diagnostics.AddError("unexpected response from API. More than 1 RiskLevel was found", debugResponse(res.RawResponse))
 		return
 	}

@@ -185,7 +185,7 @@ func (r *WebhookDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return
 	}
 
-	if len(res.WebhooksSearchResponse.List) > 2 {
+	if len(res.WebhooksSearchResponse.List) > 1 {
 		resp.Diagnostics.AddError("unexpected response from API. More than 1 Webhook was found", debugResponse(res.RawResponse))
 		return
 	}
