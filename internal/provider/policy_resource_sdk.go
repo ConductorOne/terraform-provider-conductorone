@@ -175,6 +175,25 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 	} else {
 		reassignTasksToDelegates = nil
 	}
+	var rules []shared.Rule = nil
+	for _, rulesItem := range r.Rules {
+		condition := new(string)
+		if !rulesItem.Condition.IsUnknown() && !rulesItem.Condition.IsNull() {
+			*condition = rulesItem.Condition.ValueString()
+		} else {
+			condition = nil
+		}
+		policyKey := new(string)
+		if !rulesItem.PolicyKey.IsUnknown() && !rulesItem.PolicyKey.IsNull() {
+			*policyKey = rulesItem.PolicyKey.ValueString()
+		} else {
+			policyKey = nil
+		}
+		rules = append(rules, shared.Rule{
+			Condition: condition,
+			PolicyKey: policyKey,
+		})
+	}
 	out := shared.CreatePolicyRequest{
 		Description:              description,
 		DisplayName:              displayName,
@@ -182,6 +201,7 @@ func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
 		PolicyType:               policyType,
 		PostActions:              postActions,
 		ReassignTasksToDelegates: reassignTasksToDelegates,
+		Rules:                    rules,
 	}
 	return &out
 }
