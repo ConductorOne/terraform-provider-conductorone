@@ -254,9 +254,9 @@ func (r *CatalogResourceModel) ToSharedRequestCatalogInput() *shared.RequestCata
 		} else {
 			durationGrant = nil
 		}
-		var durationUnset *shared.DurationUnset
+		var durationUnset *shared.AppEntitlementDurationUnset
 		if accessEntitlementsItem.DurationUnset != nil {
-			durationUnset = &shared.DurationUnset{}
+			durationUnset = &shared.AppEntitlementDurationUnset{}
 		}
 		emergencyGrantEnabled := new(bool)
 		if !accessEntitlementsItem.EmergencyGrantEnabled.IsUnknown() && !accessEntitlementsItem.EmergencyGrantEnabled.IsNull() {

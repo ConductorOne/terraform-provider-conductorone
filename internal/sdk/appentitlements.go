@@ -117,6 +117,8 @@ func (s *AppEntitlements) List(ctx context.Context, request operations.C1APIAppV
 
 // ListUsers - List Users
 // List the users, as AppEntitlementUsers objects, of an app entitlement.
+//
+// Deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
 func (s *AppEntitlements) ListUsers(ctx context.Context, request operations.C1APIAppV1AppEntitlementsListUsersRequest) (*operations.C1APIAppV1AppEntitlementsListUsersResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,

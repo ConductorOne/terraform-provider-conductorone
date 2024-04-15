@@ -29,26 +29,27 @@ type AppDataSource struct {
 
 // AppDataSourceModel describes the data model.
 type AppDataSourceModel struct {
-	AppAccountID     types.String   `tfsdk:"app_account_id"`
-	AppAccountName   types.String   `tfsdk:"app_account_name"`
-	AppOwners        []tfTypes.User `tfsdk:"app_owners"`
-	CertifyPolicyID  types.String   `tfsdk:"certify_policy_id"`
-	CreatedAt        types.String   `tfsdk:"created_at"`
-	DeletedAt        types.String   `tfsdk:"deleted_at"`
-	Description      types.String   `tfsdk:"description"`
-	DisplayName      types.String   `tfsdk:"display_name"`
-	FieldMask        types.String   `tfsdk:"field_mask"`
-	GrantPolicyID    types.String   `tfsdk:"grant_policy_id"`
-	IconURL          types.String   `tfsdk:"icon_url"`
-	ID               types.String   `tfsdk:"id"`
-	IdentityMatching types.String   `tfsdk:"identity_matching"`
-	IsDirectory      types.Bool     `tfsdk:"is_directory"`
-	LogoURI          types.String   `tfsdk:"logo_uri"`
-	MonthlyCostUsd   types.Int64    `tfsdk:"monthly_cost_usd"`
-	ParentAppID      types.String   `tfsdk:"parent_app_id"`
-	RevokePolicyID   types.String   `tfsdk:"revoke_policy_id"`
-	UpdatedAt        types.String   `tfsdk:"updated_at"`
-	UserCount        types.String   `tfsdk:"user_count"`
+	AccessRequestDefaultsID types.String   `tfsdk:"access_request_defaults_id"`
+	AppAccountID            types.String   `tfsdk:"app_account_id"`
+	AppAccountName          types.String   `tfsdk:"app_account_name"`
+	AppOwners               []tfTypes.User `tfsdk:"app_owners"`
+	CertifyPolicyID         types.String   `tfsdk:"certify_policy_id"`
+	CreatedAt               types.String   `tfsdk:"created_at"`
+	DeletedAt               types.String   `tfsdk:"deleted_at"`
+	Description             types.String   `tfsdk:"description"`
+	DisplayName             types.String   `tfsdk:"display_name"`
+	FieldMask               types.String   `tfsdk:"field_mask"`
+	GrantPolicyID           types.String   `tfsdk:"grant_policy_id"`
+	IconURL                 types.String   `tfsdk:"icon_url"`
+	ID                      types.String   `tfsdk:"id"`
+	IdentityMatching        types.String   `tfsdk:"identity_matching"`
+	IsDirectory             types.Bool     `tfsdk:"is_directory"`
+	LogoURI                 types.String   `tfsdk:"logo_uri"`
+	MonthlyCostUsd          types.Int64    `tfsdk:"monthly_cost_usd"`
+	ParentAppID             types.String   `tfsdk:"parent_app_id"`
+	RevokePolicyID          types.String   `tfsdk:"revoke_policy_id"`
+	UpdatedAt               types.String   `tfsdk:"updated_at"`
+	UserCount               types.String   `tfsdk:"user_count"`
 }
 
 // Metadata returns the data source type name.
@@ -62,6 +63,10 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 		MarkdownDescription: "App DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"access_request_defaults_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The ID of the object that has the default access request settings for select entitlements of this app.`,
+			},
 			"app_account_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the Account named by AccountName.`,
@@ -343,6 +348,34 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							Computed:    true,
 							ElementType: types.StringType,
 							Description: `This is a list of all of the user's usernames from app users.`,
+						},
+						"username_sources": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"app_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appId field.`,
+									},
+									"app_user_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserId field.`,
+									},
+									"app_user_profile_attribute_key": schema.StringAttribute{
+										Computed:    true,
+										Description: `The appUserProfileAttributeKey field.`,
+									},
+									"user_attribute_mapping_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The userAttributeMappingId field.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `The value field.`,
+									},
+								},
+							},
+							Description: `A list of source data for the usernames attribute.`,
 						},
 					},
 				},

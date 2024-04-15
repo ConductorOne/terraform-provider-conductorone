@@ -1,16 +1,17 @@
 lockVersion: 2.0.0
 id: 7c0407b2-4f59-416a-8ae6-d44cef4baf96
 management:
-  docChecksum: ecb2e376e7c9b4f9a210884386c7b579
+  docChecksum: b03bcc0b5048506cd0b16e374274173c
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.233.2
   generationVersion: 2.296.1
-  releaseVersion: 0.1.0
-  configChecksum: 05688b5c3a87b2acdc9f711a953f83cb
+  releaseVersion: 0.2.0
+  configChecksum: 96b5a0bbb57d41d43348833f564db69f
 features:
   terraform:
     additionalProperties: 0.1.2
     core: 3.12.1
+    deprecations: 2.81.1
     globalSecurity: 2.81.6
     globalServerURLs: 2.82.1
     groups: 2.81.2
@@ -19,8 +20,10 @@ features:
     unions: 2.81.10
 generatedFiles:
   - internal/sdk/apps.go
+  - internal/sdk/appaccessrequestsdefaults.go
   - internal/sdk/connector.go
   - internal/sdk/appentitlements.go
+  - internal/sdk/appentitlementsearch.go
   - internal/sdk/appentitlementuserbinding.go
   - internal/sdk/appentitlementowners.go
   - internal/sdk/appowners.go
@@ -42,7 +45,6 @@ generatedFiles:
   - internal/sdk/appresourcesearch.go
   - internal/sdk/appsearch.go
   - internal/sdk/attributesearch.go
-  - internal/sdk/appentitlementsearch.go
   - internal/sdk/policysearch.go
   - internal/sdk/requestcatalogsearch.go
   - internal/sdk/tasksearch.go
@@ -75,6 +77,8 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1appsdelete.go
   - internal/sdk/models/operations/c1apiappv1appsget.go
   - internal/sdk/models/operations/c1apiappv1appsupdate.go
+  - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicecreateappaccessrequestsdefaults.go
+  - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicegetappaccessrequestsdefaults.go
   - internal/sdk/models/operations/c1apiappv1connectorservicelist.go
   - internal/sdk/models/operations/c1apiappv1connectorservicecreatedelegated.go
   - internal/sdk/models/operations/c1apiappv1connectorservicerotatecredential.go
@@ -92,6 +96,8 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1appentitlementsupdate.go
   - internal/sdk/models/operations/c1apiappv1appentitlementslistforappresource.go
   - internal/sdk/models/operations/c1apiappv1appentitlementslistforappuser.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsearchservicesearchappentitlementswithexpired.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsearchservicesearch.go
   - internal/sdk/models/operations/c1apiappv1appentitlementuserbindingservicelistappusersforidentitywithgrant.go
   - internal/sdk/models/operations/c1apiappv1appentitlementownerslist.go
   - internal/sdk/models/operations/c1apiappv1appentitlementownersadd.go
@@ -145,7 +151,6 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1appresourcesearchsearchappresourcetypes.go
   - internal/sdk/models/operations/c1apiappv1appsearchsearch.go
   - internal/sdk/models/operations/c1apiattributev1attributesearchsearchattributevalues.go
-  - internal/sdk/models/operations/c1apiappv1appentitlementsearchservicesearch.go
   - internal/sdk/models/operations/c1apipolicyv1policysearchsearch.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogsearchservicesearchentitlements.go
   - internal/sdk/models/operations/c1apitaskv1tasksearchservicesearch.go
@@ -175,6 +180,9 @@ generatedFiles:
   - internal/sdk/models/shared/getappresponse.go
   - internal/sdk/models/shared/updateappresponse.go
   - internal/sdk/models/shared/updateapprequest.go
+  - internal/sdk/models/shared/appaccessrequestdefaults.go
+  - internal/sdk/models/shared/createaccessrequestdefaultsrequest.go
+  - internal/sdk/models/shared/getaccessrequestdefaultsrequest.go
   - internal/sdk/models/shared/connectorservicelistresponse.go
   - internal/sdk/models/shared/connectorview.go
   - internal/sdk/models/shared/connector.go
@@ -216,6 +224,16 @@ generatedFiles:
   - internal/sdk/models/shared/updateappentitlementresponse.go
   - internal/sdk/models/shared/updateappentitlementrequest.go
   - internal/sdk/models/shared/appentitlementexpandmask.go
+  - internal/sdk/models/shared/searchappentitlementswithexpiredresponse.go
+  - internal/sdk/models/shared/appentitlementwithexpired.go
+  - internal/sdk/models/shared/appentitlementsearchservicesearchresponse.go
+  - internal/sdk/models/shared/facets.go
+  - internal/sdk/models/shared/facetcategory.go
+  - internal/sdk/models/shared/facetvalueitem.go
+  - internal/sdk/models/shared/facetvalue.go
+  - internal/sdk/models/shared/facetrangeitem.go
+  - internal/sdk/models/shared/facetrange.go
+  - internal/sdk/models/shared/appentitlementsearchservicesearchrequest.go
   - internal/sdk/models/shared/listappusersforidentitywithgrantresponse.go
   - internal/sdk/models/shared/appentitlementuserbinding.go
   - internal/sdk/models/shared/listappentitlementownersresponse.go
@@ -336,14 +354,6 @@ generatedFiles:
   - internal/sdk/models/shared/searchappsrequest.go
   - internal/sdk/models/shared/searchattributevaluesresponse.go
   - internal/sdk/models/shared/searchattributevaluesrequest.go
-  - internal/sdk/models/shared/appentitlementsearchservicesearchresponse.go
-  - internal/sdk/models/shared/facets.go
-  - internal/sdk/models/shared/facetcategory.go
-  - internal/sdk/models/shared/facetvalueitem.go
-  - internal/sdk/models/shared/facetvalue.go
-  - internal/sdk/models/shared/facetrangeitem.go
-  - internal/sdk/models/shared/facetrange.go
-  - internal/sdk/models/shared/appentitlementsearchservicesearchrequest.go
   - internal/sdk/models/shared/searchpoliciesrequest.go
   - internal/sdk/models/shared/policyref.go
   - internal/sdk/models/shared/requestcatalogsearchservicesearchentitlementsresponse.go

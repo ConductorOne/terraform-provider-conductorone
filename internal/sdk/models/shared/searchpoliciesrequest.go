@@ -50,6 +50,8 @@ func (e *PolicyTypes) UnmarshalJSON(data []byte) error {
 type SearchPoliciesRequest struct {
 	// Search for policies with a case insensitive match on the display name.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The includeDeleted field.
+	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
 	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
@@ -67,6 +69,13 @@ func (o *SearchPoliciesRequest) GetDisplayName() *string {
 		return nil
 	}
 	return o.DisplayName
+}
+
+func (o *SearchPoliciesRequest) GetIncludeDeleted() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IncludeDeleted
 }
 
 func (o *SearchPoliciesRequest) GetPageSize() *int {

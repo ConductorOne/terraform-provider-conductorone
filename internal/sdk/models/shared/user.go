@@ -258,6 +258,8 @@ type User struct {
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 	// This is the user's primary username. Typically sourced from the primary directory.
 	Username *string `json:"username,omitempty"`
+	// A list of source data for the usernames attribute.
+	UsernameSources []UserAttributeMappingSource `json:"usernameSources,omitempty"`
 	// This is a list of all of the user's usernames from app users.
 	Usernames []string `json:"usernames,omitempty"`
 }
@@ -446,6 +448,13 @@ func (o *User) GetUsername() *string {
 		return nil
 	}
 	return o.Username
+}
+
+func (o *User) GetUsernameSources() []UserAttributeMappingSource {
+	if o == nil {
+		return nil
+	}
+	return o.UsernameSources
 }
 
 func (o *User) GetUsernames() []string {

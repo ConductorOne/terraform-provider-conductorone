@@ -42,6 +42,8 @@ func (e *IdentityMatching) UnmarshalJSON(data []byte) error {
 
 // The App object provides all of the details for an app, as well as some configuration.
 type App struct {
+	// The ID of the object that has the default access request settings for select entitlements of this app.
+	AccessRequestDefaultsID *string `json:"accessRequestDefaultsId,omitempty"`
 	// The ID of the Account named by AccountName.
 	AppAccountID *string `json:"appAccountId,omitempty"`
 	// The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
@@ -89,6 +91,13 @@ func (a *App) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *App) GetAccessRequestDefaultsID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AccessRequestDefaultsID
 }
 
 func (o *App) GetAppAccountID() *string {
@@ -233,6 +242,8 @@ func (o *App) GetUserCount() *string {
 
 // AppInput - The App object provides all of the details for an app, as well as some configuration.
 type AppInput struct {
+	// The ID of the object that has the default access request settings for select entitlements of this app.
+	AccessRequestDefaultsID *string `json:"accessRequestDefaultsId,omitempty"`
 	// The ID of the Certify Policy associated with this App.
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
 	// The app's description.
@@ -249,6 +260,13 @@ type AppInput struct {
 	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
 	// The ID of the Revoke Policy associated with this App.
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
+}
+
+func (o *AppInput) GetAccessRequestDefaultsID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AccessRequestDefaultsID
 }
 
 func (o *AppInput) GetCertifyPolicyID() *string {

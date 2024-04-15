@@ -13,6 +13,7 @@ import (
 
 func (r *AppDataSourceModel) RefreshFromSharedApp(resp *shared.App) {
 	if resp != nil {
+		r.AccessRequestDefaultsID = types.StringPointerValue(resp.AccessRequestDefaultsID)
 		r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
 		r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
 		if len(r.AppOwners) > len(resp.AppOwners) {
@@ -208,6 +209,23 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(resp *shared.App) {
 			for _, v := range appOwnersItem.Usernames {
 				appOwners1.Usernames = append(appOwners1.Usernames, types.StringValue(v))
 			}
+			for usernameSourcesCount, usernameSourcesItem := range appOwnersItem.UsernameSources {
+				var usernameSources1 tfTypes.UserAttributeMappingSource
+				usernameSources1.AppID = types.StringPointerValue(usernameSourcesItem.AppID)
+				usernameSources1.AppUserID = types.StringPointerValue(usernameSourcesItem.AppUserID)
+				usernameSources1.AppUserProfileAttributeKey = types.StringPointerValue(usernameSourcesItem.AppUserProfileAttributeKey)
+				usernameSources1.UserAttributeMappingID = types.StringPointerValue(usernameSourcesItem.UserAttributeMappingID)
+				usernameSources1.Value = types.StringPointerValue(usernameSourcesItem.Value)
+				if usernameSourcesCount+1 > len(appOwners1.UsernameSources) {
+					appOwners1.UsernameSources = append(appOwners1.UsernameSources, usernameSources1)
+				} else {
+					appOwners1.UsernameSources[usernameSourcesCount].AppID = usernameSources1.AppID
+					appOwners1.UsernameSources[usernameSourcesCount].AppUserID = usernameSources1.AppUserID
+					appOwners1.UsernameSources[usernameSourcesCount].AppUserProfileAttributeKey = usernameSources1.AppUserProfileAttributeKey
+					appOwners1.UsernameSources[usernameSourcesCount].UserAttributeMappingID = usernameSources1.UserAttributeMappingID
+					appOwners1.UsernameSources[usernameSourcesCount].Value = usernameSources1.Value
+				}
+			}
 			if appOwnersCount+1 > len(r.AppOwners) {
 				r.AppOwners = append(r.AppOwners, appOwners1)
 			} else {
@@ -237,6 +255,7 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(resp *shared.App) {
 				r.AppOwners[appOwnersCount].UpdatedAt = appOwners1.UpdatedAt
 				r.AppOwners[appOwnersCount].Username = appOwners1.Username
 				r.AppOwners[appOwnersCount].Usernames = appOwners1.Usernames
+				r.AppOwners[appOwnersCount].UsernameSources = appOwners1.UsernameSources
 			}
 		}
 		r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)

@@ -31,4 +31,5 @@ type User struct {
 	UpdatedAt               types.String                 `tfsdk:"updated_at"`
 	Username                types.String                 `tfsdk:"username"`
 	Usernames               []types.String               `tfsdk:"usernames"`
+	UsernameSources         []UserAttributeMappingSource `tfsdk:"username_sources"`
 }

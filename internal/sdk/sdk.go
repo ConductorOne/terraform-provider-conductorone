@@ -67,8 +67,10 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 // SDK - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
 type SDK struct {
 	Apps                      *Apps
+	AppAccessRequestsDefaults *AppAccessRequestsDefaults
 	Connector                 *Connector
 	AppEntitlements           *AppEntitlements
+	AppEntitlementSearch      *AppEntitlementSearch
 	AppEntitlementUserBinding *AppEntitlementUserBinding
 	AppEntitlementOwners      *AppEntitlementOwners
 	AppOwners                 *AppOwners
@@ -90,7 +92,6 @@ type SDK struct {
 	AppResourceSearch         *AppResourceSearch
 	AppSearch                 *AppSearch
 	AttributeSearch           *AttributeSearch
-	AppEntitlementSearch      *AppEntitlementSearch
 	PolicySearch              *PolicySearch
 	RequestCatalogSearch      *RequestCatalogSearch
 	TaskSearch                *TaskSearch
@@ -219,9 +220,13 @@ func New(opts ...SDKOption) *SDK {
 
 	sdk.Apps = newApps(sdk.sdkConfiguration)
 
+	sdk.AppAccessRequestsDefaults = newAppAccessRequestsDefaults(sdk.sdkConfiguration)
+
 	sdk.Connector = newConnector(sdk.sdkConfiguration)
 
 	sdk.AppEntitlements = newAppEntitlements(sdk.sdkConfiguration)
+
+	sdk.AppEntitlementSearch = newAppEntitlementSearch(sdk.sdkConfiguration)
 
 	sdk.AppEntitlementUserBinding = newAppEntitlementUserBinding(sdk.sdkConfiguration)
 
@@ -264,8 +269,6 @@ func New(opts ...SDKOption) *SDK {
 	sdk.AppSearch = newAppSearch(sdk.sdkConfiguration)
 
 	sdk.AttributeSearch = newAttributeSearch(sdk.sdkConfiguration)
-
-	sdk.AppEntitlementSearch = newAppEntitlementSearch(sdk.sdkConfiguration)
 
 	sdk.PolicySearch = newPolicySearch(sdk.sdkConfiguration)
 
