@@ -92,6 +92,8 @@ type ConductoroneAPI struct {
 	TaskSearch                *taskSearch
 	User                      *user
 	UserSearch                *userSearch
+	Webhooks                  *webhooks
+	WebhooksSearch            *webhooksSearch
 
 	sdkConfiguration sdkConfiguration
 }
@@ -235,6 +237,10 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.User = newUser(sdk.sdkConfiguration)
 
 	sdk.UserSearch = newUserSearch(sdk.sdkConfiguration)
+
+	sdk.Webhooks = newWebhooks(sdk.sdkConfiguration)
+
+	sdk.WebhooksSearch = newWebhooksSearch(sdk.sdkConfiguration)
 
 	return sdk
 }

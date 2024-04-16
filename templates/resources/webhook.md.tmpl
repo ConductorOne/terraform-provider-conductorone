@@ -1,0 +1,19 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This resource allows you to create and configure a webhook in ConductorOne.
+When creating a webhook you must provide a display name, and a URL. Optionally you can provide a description for the webhook.
+
+## Example Usage
+
+{{ tffile "examples/resources/conductorone_webhook/webhook.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

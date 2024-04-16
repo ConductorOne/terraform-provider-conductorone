@@ -315,7 +315,7 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 		return
 	}
 
-	if len(res.AppEntitlementSearchServiceSearchResponse.List) > 2 {
+	if len(res.AppEntitlementSearchServiceSearchResponse.List) > 1 {
 		resp.Diagnostics.AddError("unexpected response from API. More than 1 app entitlement was found", debugResponse(res.RawResponse))
 		return
 	}
