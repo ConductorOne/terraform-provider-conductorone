@@ -251,6 +251,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											},
 											"self_approval": schema.SingleNestedAttribute{
 												Optional: true,
+												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"assigned_user_ids": schema.ListAttribute{
 														Computed:    true,
