@@ -13,6 +13,7 @@ import (
 func BoolPointer(b bool) *bool {
 	return &b
 }
+
 const prefix = "c1_prefixed_"
 
 func isDigit(c byte) bool {
@@ -20,7 +21,7 @@ func isDigit(c byte) bool {
 }
 
 func PrependPolicyStepId(id string) string {
-	if (isDigit(id[0])) {
+	if isDigit(id[0]) {
 		return prefix + id
 	}
 	return id
@@ -29,7 +30,7 @@ func PrependPolicyStepId(id string) string {
 func RemovePolicyStepIdPrefix(id string) string {
 	prefix_length := len(prefix)
 	// We only want to remove the prefix if we appended it, this is not a foolproof way to check but the odds someone will have a policy step id that starts with c1_prefixed_\d{1} is low.
-	if (len(id) >= prefix_length+1 && id[:prefix_length] == prefix && isDigit(id[prefix_length])) {
+	if len(id) >= prefix_length+1 && id[:prefix_length] == prefix && isDigit(id[prefix_length]) {
 		return strings.TrimPrefix(id, prefix)
 	}
 	return id
