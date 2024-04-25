@@ -4,28 +4,36 @@ package provider
 
 import (
 	"conductorone/internal/sdk/pkg/models/shared"
-	"regexp"
 	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-var conditionalRegex = regexp.MustCompile("^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}")
-
 func BoolPointer(b bool) *bool {
 	return &b
 }
 
+const prefix = "c1_prefixed_"
+
+func isDigit(c byte) bool {
+	return c >= '0' && c <= '9'
+}
+
 func PrependPolicyStepId(id string) string {
-	if conditionalRegex.MatchString(id) {
-		return "id_" + id
+	if isDigit(id[0]) {
+		return prefix + id
 	}
 	return id
 }
 
 func RemovePolicyStepIdPrefix(id string) string {
-	return strings.TrimPrefix(id, "id_")
+	prefix_length := len(prefix)
+	// We only want to remove the prefix if we appended it, this is not a foolproof way to check but the odds someone will have a policy step id that starts with c1_prefixed_\d{1} is low.
+	if len(id) >= prefix_length+1 && id[:prefix_length] == prefix && isDigit(id[prefix_length]) {
+		return strings.TrimPrefix(id, prefix)
+	}
+	return id
 }
 
 func (r *PolicyResourceModel) ToCreateSDKType() *shared.CreatePolicyRequest {
