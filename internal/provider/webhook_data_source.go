@@ -1,12 +1,12 @@
 package provider
 
 import (
+	"context"
+	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
-	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"

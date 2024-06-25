@@ -1,9 +1,9 @@
 package provider
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"context"
 	"fmt"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"strings"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
