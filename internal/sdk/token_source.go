@@ -21,7 +21,7 @@ import (
 	"gopkg.in/square/go-jose.v2/json"
 	"gopkg.in/square/go-jose.v2/jwt"
 
-	"conductorone/internal/sdk/uhttp"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/uhttp"
 )
 
 const (

@@ -7,7 +7,7 @@ import (
 	"flag"
 	"log"
 
-	"conductorone/internal/provider"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 )
 

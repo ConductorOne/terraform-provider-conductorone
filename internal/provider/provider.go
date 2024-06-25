@@ -3,7 +3,7 @@
 package provider
 
 import (
-	"conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/providervalidator"

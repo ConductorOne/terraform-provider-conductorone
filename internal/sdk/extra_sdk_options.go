@@ -10,7 +10,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"conductorone/internal/sdk/uhttp"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/uhttp"
 )
 
 const c1TenantDomain = ".conductor.one"

@@ -3,7 +3,7 @@
 package provider
 
 import (
-	tfReflect "conductorone/internal/provider/reflect"
+	tfReflect "github.com/conductorone/terraform-provider-conductorone/internal/provider/reflect"
 	"context"
 	"encoding/json"
 	"fmt"
