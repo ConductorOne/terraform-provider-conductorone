@@ -3,8 +3,8 @@
 package mapplanmodifier
 
 import (
-	"conductorone/internal/planmodifiers/utils"
 	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/utils"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 )

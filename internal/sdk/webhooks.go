@@ -4,12 +4,12 @@ package sdk
 
 import (
 	"bytes"
-	"conductorone/internal/sdk/pkg/models/errors"
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/sdk/pkg/utils"
 	"context"
 	"fmt"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/errors"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"io"
 	"net/http"
 	"net/url"

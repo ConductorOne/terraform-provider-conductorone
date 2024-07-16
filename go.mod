@@ -1,4 +1,4 @@
-module conductorone
+module github.com/conductorone/terraform-provider-conductorone
 
 go 1.20
 

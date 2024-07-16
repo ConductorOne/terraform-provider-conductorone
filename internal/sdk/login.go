@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"conductorone/internal/sdk/pkg/utils"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/utils"
 )
 
 type ClientCredentials struct {

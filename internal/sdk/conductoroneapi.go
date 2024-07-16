@@ -3,8 +3,8 @@
 package sdk
 
 import (
-	"conductorone/internal/sdk/pkg/utils"
 	"fmt"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/utils"
 	"net/http"
 	"time"
 )

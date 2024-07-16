@@ -1,4 +1,4 @@
-module tools
+module github.com/conductorone/terraform-provider-conductorone/tools
 
 go 1.20
 
