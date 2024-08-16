@@ -2,7 +2,7 @@
 
 package shared
 
-// The ExpressionApproval message.
+// ExpressionApproval - The ExpressionApproval message.
 type ExpressionApproval struct {
 	// Configuration to allow self approval of if the user is specified and also the target of the ticket.
 	AllowSelfApproval *bool `json:"allowSelfApproval,omitempty"`

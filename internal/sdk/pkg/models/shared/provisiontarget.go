@@ -2,7 +2,7 @@
 
 package shared
 
-// ProvisionTarget indicates the specific app, app entitlement, and if known, the app user and grant duration of this provision step
+// ProvisionTarget - ProvisionTarget indicates the specific app, app entitlement, and if known, the app user and grant duration of this provision step
 type ProvisionTarget struct {
 	// The app entitlement that should be provisioned.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`

@@ -2,8 +2,15 @@
 
 package shared
 
-// UserRef - The UserRef message.
+// UserRef - A reference to a user.
 type UserRef struct {
-	// The id field.
+	// The id of the user.
 	ID *string `json:"id,omitempty"`
+}
+
+func (o *UserRef) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }

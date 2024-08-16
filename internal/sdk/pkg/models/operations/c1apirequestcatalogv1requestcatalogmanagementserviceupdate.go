@@ -3,19 +3,61 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest struct {
-	RequestCatalogManagementServiceUpdateRequest *shared.RequestCatalogManagementServiceUpdateRequest `request:"mediaType=application/json"`
-	ID                                           string                                               `pathParam:"style=simple,explode=false,name=id"`
+	RequestCatalogManagementServiceUpdateRequestInput *shared.RequestCatalogManagementServiceUpdateRequestInput `request:"mediaType=application/json"`
+	ID                                                string                                                    `pathParam:"style=simple,explode=false,name=id"`
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest) GetRequestCatalogManagementServiceUpdateRequestInput() *shared.RequestCatalogManagementServiceUpdateRequestInput {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceUpdateRequestInput
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
 }
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse struct {
 	ContentType string
-	// Successful response
+	// The request catalog management service get response returns a request catalog view with the expanded items in the expanded array indicated by the expand mask in the request.
 	RequestCatalogManagementServiceGetResponse *shared.RequestCatalogManagementServiceGetResponse
 	StatusCode                                 int
 	RawResponse                                *http.Response
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse) GetRequestCatalogManagementServiceGetResponse() *shared.RequestCatalogManagementServiceGetResponse {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceGetResponse
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

@@ -2,20 +2,26 @@
 
 package shared
 
-// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
+// ProvisionPolicy - ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
 //
 // This message contains a oneof named typ. Only a single field of the following list may be set at a time:
 //   - connector
 //   - manual
 //   - delegated
 //   - webhook
+//   - multiStep
+//   - externalTicket
 type ProvisionPolicy struct {
 	// Indicates that a connector should perform the provisioning. This object has no fields.
 	ConnectorProvision *ConnectorProvision `json:"connector,omitempty"`
 	// This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.
 	DelegatedProvision *DelegatedProvision `json:"delegated,omitempty"`
+	// This provision step indicates that we should check an external ticket to provision this entitlement
+	ExternalTicketProvision *ExternalTicketProvision `json:"externalTicket,omitempty"`
 	// Manual provisioning indicates that a human must intervene for the provisioning of this step.
 	ManualProvision *ManualProvision `json:"manual,omitempty"`
+	// MultiStep indicates that this provision step has multiple steps to process.
+	MultiStep *MultiStep `json:"multiStep,omitempty"`
 	// This provision step indicates that a webhook should be called to provision this entitlement.
 	WebhookProvision *WebhookProvision `json:"webhook,omitempty"`
 }
@@ -34,11 +40,25 @@ func (o *ProvisionPolicy) GetDelegatedProvision() *DelegatedProvision {
 	return o.DelegatedProvision
 }
 
+func (o *ProvisionPolicy) GetExternalTicketProvision() *ExternalTicketProvision {
+	if o == nil {
+		return nil
+	}
+	return o.ExternalTicketProvision
+}
+
 func (o *ProvisionPolicy) GetManualProvision() *ManualProvision {
 	if o == nil {
 		return nil
 	}
 	return o.ManualProvision
+}
+
+func (o *ProvisionPolicy) GetMultiStep() *MultiStep {
+	if o == nil {
+		return nil
+	}
+	return o.MultiStep
 }
 
 func (o *ProvisionPolicy) GetWebhookProvision() *WebhookProvision {

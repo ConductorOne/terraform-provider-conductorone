@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIPolicyV1PoliciesDeleteRequest struct {
@@ -12,10 +12,52 @@ type C1APIPolicyV1PoliciesDeleteRequest struct {
 	ID                  string                      `pathParam:"style=simple,explode=false,name=id"`
 }
 
+func (o *C1APIPolicyV1PoliciesDeleteRequest) GetDeletePolicyRequest() *shared.DeletePolicyRequest {
+	if o == nil {
+		return nil
+	}
+	return o.DeletePolicyRequest
+}
+
+func (o *C1APIPolicyV1PoliciesDeleteRequest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
 type C1APIPolicyV1PoliciesDeleteResponse struct {
 	ContentType string
-	// Successful response
+	// Empty response with a status code indicating success.
 	DeletePolicyResponse *shared.DeletePolicyResponse
 	StatusCode           int
 	RawResponse          *http.Response
+}
+
+func (o *C1APIPolicyV1PoliciesDeleteResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIPolicyV1PoliciesDeleteResponse) GetDeletePolicyResponse() *shared.DeletePolicyResponse {
+	if o == nil {
+		return nil
+	}
+	return o.DeletePolicyResponse
+}
+
+func (o *C1APIPolicyV1PoliciesDeleteResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIPolicyV1PoliciesDeleteResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

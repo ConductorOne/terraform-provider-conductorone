@@ -12,6 +12,11 @@ generation:
   sdkClassName: conductorone-sdk-terraform
   singleTagPerOp: false
   tagNamespacingDisabled: false
+go:
+  version: 0.0.1
+  clientServerStatusCodesAsErrors: true
+  maxMethodParams: 0
+  packageName: openapi
 terraform:
   version: 1.0.0
   author: ConductorOne

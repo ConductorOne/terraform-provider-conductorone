@@ -2,6 +2,6 @@
 
 package shared
 
-// RemoveAppEntitlementOwnerResponse - The RemoveAppEntitlementOwnerResponse message.
+// RemoveAppEntitlementOwnerResponse - The empty response message for removing an app entitlement owner.
 type RemoveAppEntitlementOwnerResponse struct {
 }

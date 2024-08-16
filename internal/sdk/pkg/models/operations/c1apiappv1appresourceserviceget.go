@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1AppResourceServiceGetRequest struct {
@@ -13,10 +13,59 @@ type C1APIAppV1AppResourceServiceGetRequest struct {
 	ID                string `pathParam:"style=simple,explode=false,name=id"`
 }
 
+func (o *C1APIAppV1AppResourceServiceGetRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1AppResourceServiceGetRequest) GetAppResourceTypeID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppResourceTypeID
+}
+
+func (o *C1APIAppV1AppResourceServiceGetRequest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
 type C1APIAppV1AppResourceServiceGetResponse struct {
-	// Successful response
+	// The app resource service get response contains the app resource view and array of expanded items indicated by the request's expand mask.
 	AppResourceServiceGetResponse *shared.AppResourceServiceGetResponse
 	ContentType                   string
 	StatusCode                    int
 	RawResponse                   *http.Response
+}
+
+func (o *C1APIAppV1AppResourceServiceGetResponse) GetAppResourceServiceGetResponse() *shared.AppResourceServiceGetResponse {
+	if o == nil {
+		return nil
+	}
+	return o.AppResourceServiceGetResponse
+}
+
+func (o *C1APIAppV1AppResourceServiceGetResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppResourceServiceGetResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppResourceServiceGetResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

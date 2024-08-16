@@ -1,0 +1,9 @@
+# C1APIAppV1ConnectorServiceCreateDelegatedRequest
+
+
+## Fields
+
+| Field                                                                                                           | Type                                                                                                            | Required                                                                                                        | Description                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `ConnectorServiceCreateDelegatedRequest`                                                                        | [*shared.ConnectorServiceCreateDelegatedRequest](../../models/shared/connectorservicecreatedelegatedrequest.md) | :heavy_minus_sign:                                                                                              | N/A                                                                                                             |
+| `AppID`                                                                                                         | *string*                                                                                                        | :heavy_check_mark:                                                                                              | N/A                                                                                                             |

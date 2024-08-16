@@ -2,9 +2,15 @@
 
 package shared
 
-// AppOwnerApproval - The AppOwnerApproval message.
+// AppOwnerApproval - App owner approval provides the configuration for an approval step when the app owner is the target.
 type AppOwnerApproval struct {
-	//  App owner is based on the app id and doesn't need to have self-contained data
-	//
+	// Configuration that allows a user to self approve if they are an app owner during this approval step.
 	AllowSelfApproval *bool `json:"allowSelfApproval,omitempty"`
+}
+
+func (o *AppOwnerApproval) GetAllowSelfApproval() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AllowSelfApproval
 }

@@ -3,14 +3,61 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
+
+type C1APIUserV1UserServiceListRequest struct {
+	PageSize  *int    `queryParam:"style=form,explode=true,name=page_size"`
+	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
+}
+
+func (o *C1APIUserV1UserServiceListRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *C1APIUserV1UserServiceListRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
+}
 
 type C1APIUserV1UserServiceListResponse struct {
 	ContentType string
 	StatusCode  int
 	RawResponse *http.Response
-	// Successful response
+	// The UserServiceListResponse message contains a list of results and a nextPageToken if applicable.
 	UserServiceListResponse *shared.UserServiceListResponse
+}
+
+func (o *C1APIUserV1UserServiceListResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIUserV1UserServiceListResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIUserV1UserServiceListResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
+}
+
+func (o *C1APIUserV1UserServiceListResponse) GetUserServiceListResponse() *shared.UserServiceListResponse {
+	if o == nil {
+		return nil
+	}
+	return o.UserServiceListResponse
 }

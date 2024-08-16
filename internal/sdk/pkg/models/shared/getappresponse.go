@@ -2,8 +2,15 @@
 
 package shared
 
-// GetAppResponse - The GetAppResponse message.
+// GetAppResponse - The GetAppResponse message contains the details of the requested app in the app field.
 type GetAppResponse struct {
-	// The App message.
+	// The App object provides all of the details for an app, as well as some configuration.
 	App *App `json:"app,omitempty"`
+}
+
+func (o *GetAppResponse) GetApp() *App {
+	if o == nil {
+		return nil
+	}
+	return o.App
 }

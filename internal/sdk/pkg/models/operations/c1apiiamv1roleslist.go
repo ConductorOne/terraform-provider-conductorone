@@ -3,14 +3,61 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
+
+type C1APIIamV1RolesListRequest struct {
+	PageSize  *int    `queryParam:"style=form,explode=true,name=page_size"`
+	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
+}
+
+func (o *C1APIIamV1RolesListRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *C1APIIamV1RolesListRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
+}
 
 type C1APIIamV1RolesListResponse struct {
 	ContentType string
-	// Successful response
+	// The ListRolesResponse message contains a list of results and a nextPageToken if applicable.
 	ListRolesResponse *shared.ListRolesResponse
 	StatusCode        int
 	RawResponse       *http.Response
+}
+
+func (o *C1APIIamV1RolesListResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIIamV1RolesListResponse) GetListRolesResponse() *shared.ListRolesResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ListRolesResponse
+}
+
+func (o *C1APIIamV1RolesListResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIIamV1RolesListResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

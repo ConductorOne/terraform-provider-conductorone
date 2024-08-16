@@ -1,0 +1,11 @@
+# C1APIAttributeV1AttributesGetAttributeValueResponse
+
+
+## Fields
+
+| Field                                                                                 | Type                                                                                  | Required                                                                              | Description                                                                           |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `ContentType`                                                                         | *string*                                                                              | :heavy_check_mark:                                                                    | N/A                                                                                   |
+| `GetAttributeValueResponse`                                                           | [*shared.GetAttributeValueResponse](../../models/shared/getattributevalueresponse.md) | :heavy_minus_sign:                                                                    | GetAttributeValueResponse is the response for getting an attribute value by id.       |
+| `StatusCode`                                                                          | *int*                                                                                 | :heavy_check_mark:                                                                    | N/A                                                                                   |
+| `RawResponse`                                                                         | [*http.Response](https://pkg.go.dev/net/http#Response)                                | :heavy_minus_sign:                                                                    | N/A                                                                                   |

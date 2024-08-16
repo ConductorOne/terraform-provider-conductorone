@@ -2,23 +2,16 @@
 
 package shared
 
-// The WebhooksSearchRequest message.
+// WebhooksSearchRequest - The WebhooksSearchRequest message.
 type WebhooksSearchRequest struct {
-	// Search for webhooks with a case insensitive match on the display name.
-	DisplayName *string `json:"displayName,omitempty"`
 	// The pageSize field.
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
 	// The query field.
 	Query *string `json:"query,omitempty"`
-}
-
-func (o *WebhooksSearchRequest) GetDisplayName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DisplayName
+	// The refs field.
+	Refs []WebhookRef `json:"refs,omitempty"`
 }
 
 func (o *WebhooksSearchRequest) GetPageSize() *int {
@@ -40,4 +33,11 @@ func (o *WebhooksSearchRequest) GetQuery() *string {
 		return nil
 	}
 	return o.Query
+}
+
+func (o *WebhooksSearchRequest) GetRefs() []WebhookRef {
+	if o == nil {
+		return nil
+	}
+	return o.Refs
 }

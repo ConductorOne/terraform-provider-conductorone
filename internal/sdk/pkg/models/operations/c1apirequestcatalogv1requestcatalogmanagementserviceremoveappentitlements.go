@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest struct {
@@ -12,10 +12,52 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRe
 	CatalogID                                                   string                                                              `pathParam:"style=simple,explode=false,name=catalog_id"`
 }
 
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest) GetRequestCatalogManagementServiceRemoveAppEntitlementsRequest() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceRemoveAppEntitlementsRequest
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest) GetCatalogID() string {
+	if o == nil {
+		return ""
+	}
+	return o.CatalogID
+}
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse struct {
 	ContentType string
-	// Successful response
+	// Empty response with a status code indicating success
 	RequestCatalogManagementServiceRemoveAppEntitlementsResponse *shared.RequestCatalogManagementServiceRemoveAppEntitlementsResponse
 	StatusCode                                                   int
 	RawResponse                                                  *http.Response
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetRequestCatalogManagementServiceRemoveAppEntitlementsResponse() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsResponse {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceRemoveAppEntitlementsResponse
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

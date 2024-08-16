@@ -2,68 +2,33 @@
 
 package shared
 
-import (
-	"encoding/json"
-)
-
-// ListAppEntitlementsResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type ListAppEntitlementsResponseExpanded struct {
-	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
-}
-type _ListAppEntitlementsResponseExpanded ListAppEntitlementsResponseExpanded
-
-func (c *ListAppEntitlementsResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _ListAppEntitlementsResponseExpanded{}
-
-	if err := json.Unmarshal(bs, &data); err != nil {
-		return err
-	}
-	*c = ListAppEntitlementsResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
-	return nil
-}
-
-func (c ListAppEntitlementsResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_ListAppEntitlementsResponseExpanded(c))
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
-}
-
-// ListAppEntitlementsResponse - The ListAppEntitlementsResponse message.
+// ListAppEntitlementsResponse - The ListAppEntitlementsResponse message contains a list of results and a nextPageToken if applicable.
 type ListAppEntitlementsResponse struct {
-	// The expanded field.
-	Expanded []ListAppEntitlementsResponseExpanded `json:"expanded,omitempty"`
-	// The list field.
+	// List of related objects
+	Expanded []map[string]interface{} `json:"expanded,omitempty"`
+	// The list of results containing up to X results, where X is the page size defined in the request.
 	List []AppEntitlementView `json:"list,omitempty"`
-	// The nextPageToken field.
+	// The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
+}
+
+func (o *ListAppEntitlementsResponse) GetExpanded() []map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
+}
+
+func (o *ListAppEntitlementsResponse) GetList() []AppEntitlementView {
+	if o == nil {
+		return nil
+	}
+	return o.List
+}
+
+func (o *ListAppEntitlementsResponse) GetNextPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.NextPageToken
 }

@@ -4,6 +4,13 @@ package shared
 
 // ListAppUsersForIdentityWithGrantResponse - The ListAppUsersForIdentityWithGrantResponse message.
 type ListAppUsersForIdentityWithGrantResponse struct {
-	// The bindings field.
+	// The list of app users that may also have grant information.
 	Bindings []AppEntitlementUserBinding `json:"bindings,omitempty"`
+}
+
+func (o *ListAppUsersForIdentityWithGrantResponse) GetBindings() []AppEntitlementUserBinding {
+	if o == nil {
+		return nil
+	}
+	return o.Bindings
 }

@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1ConnectorServiceCreateRequest struct {
@@ -12,11 +12,52 @@ type C1APIAppV1ConnectorServiceCreateRequest struct {
 	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
 }
 
+func (o *C1APIAppV1ConnectorServiceCreateRequest) GetConnectorServiceCreateRequest() *shared.ConnectorServiceCreateRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceCreateRequest
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
 type C1APIAppV1ConnectorServiceCreateResponse struct {
-	//  The ConnectorServiceCreateResponse is the response returned from creating a connector.
-	//
+	// The ConnectorServiceCreateResponse is the response returned from creating a connector.
 	ConnectorServiceCreateResponse *shared.ConnectorServiceCreateResponse
 	ContentType                    string
 	StatusCode                     int
 	RawResponse                    *http.Response
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateResponse) GetConnectorServiceCreateResponse() *shared.ConnectorServiceCreateResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceCreateResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1ConnectorServiceCreateResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

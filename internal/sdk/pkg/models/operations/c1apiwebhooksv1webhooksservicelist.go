@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIWebhooksV1WebhooksServiceListRequest struct {
@@ -27,11 +27,8 @@ func (o *C1APIWebhooksV1WebhooksServiceListRequest) GetPageToken() *string {
 }
 
 type C1APIWebhooksV1WebhooksServiceListResponse struct {
-	// HTTP response content type for this operation
 	ContentType string
-	// HTTP response status code for this operation
-	StatusCode int
-	// Raw HTTP response; suitable for custom response parsing
+	StatusCode  int
 	RawResponse *http.Response
 	// Successful response
 	WebhooksServiceListResponse *shared.WebhooksServiceListResponse

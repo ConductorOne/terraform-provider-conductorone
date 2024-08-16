@@ -2,8 +2,15 @@
 
 package shared
 
-// DirectoryExpandMask - The DirectoryExpandMask message.
+// DirectoryExpandMask - The fields to be included in the directory response.
 type DirectoryExpandMask struct {
-	// The paths field.
+	// An array of fields to be included in the directory response.
 	Paths []string `json:"paths,omitempty"`
+}
+
+func (o *DirectoryExpandMask) GetPaths() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Paths
 }

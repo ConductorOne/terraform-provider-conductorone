@@ -2,6 +2,6 @@
 
 package shared
 
-// AddAppEntitlementOwnerResponse - The AddAppEntitlementOwnerResponse message.
+// AddAppEntitlementOwnerResponse - The empty response message for adding an app entitlement owner.
 type AddAppEntitlementOwnerResponse struct {
 }

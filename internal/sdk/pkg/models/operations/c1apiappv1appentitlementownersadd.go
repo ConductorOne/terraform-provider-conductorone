@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1AppEntitlementOwnersAddRequest struct {
@@ -13,10 +13,59 @@ type C1APIAppV1AppEntitlementOwnersAddRequest struct {
 	EntitlementID                 string                                `pathParam:"style=simple,explode=false,name=entitlement_id"`
 }
 
+func (o *C1APIAppV1AppEntitlementOwnersAddRequest) GetAddAppEntitlementOwnerRequest() *shared.AddAppEntitlementOwnerRequest {
+	if o == nil {
+		return nil
+	}
+	return o.AddAppEntitlementOwnerRequest
+}
+
+func (o *C1APIAppV1AppEntitlementOwnersAddRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1AppEntitlementOwnersAddRequest) GetEntitlementID() string {
+	if o == nil {
+		return ""
+	}
+	return o.EntitlementID
+}
+
 type C1APIAppV1AppEntitlementOwnersAddResponse struct {
-	// Successful response
+	// The empty response message for adding an app entitlement owner.
 	AddAppEntitlementOwnerResponse *shared.AddAppEntitlementOwnerResponse
 	ContentType                    string
 	StatusCode                     int
 	RawResponse                    *http.Response
+}
+
+func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetAddAppEntitlementOwnerResponse() *shared.AddAppEntitlementOwnerResponse {
+	if o == nil {
+		return nil
+	}
+	return o.AddAppEntitlementOwnerResponse
+}
+
+func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

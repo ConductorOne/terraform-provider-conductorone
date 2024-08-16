@@ -1,0 +1,9 @@
+# C1APISystemlogV1ExportServiceUpdateRequest
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `ExportServiceUpdateRequestInput`                                                                 | [*shared.ExportServiceUpdateRequestInput](../../models/shared/exportserviceupdaterequestinput.md) | :heavy_minus_sign:                                                                                | N/A                                                                                               |
+| `ExportID`                                                                                        | *string*                                                                                          | :heavy_check_mark:                                                                                | N/A                                                                                               |

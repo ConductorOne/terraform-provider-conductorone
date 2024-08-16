@@ -3,14 +3,35 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1AppOwnersListRequest struct {
-	AppID     string   `pathParam:"style=simple,explode=false,name=app_id"`
-	PageSize  *float64 `queryParam:"style=form,explode=true,name=page_size"`
-	PageToken *string  `queryParam:"style=form,explode=true,name=page_token"`
+	AppID     string  `pathParam:"style=simple,explode=false,name=app_id"`
+	PageSize  *int    `queryParam:"style=form,explode=true,name=page_size"`
+	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
+}
+
+func (o *C1APIAppV1AppOwnersListRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1AppOwnersListRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *C1APIAppV1AppOwnersListRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 type C1APIAppV1AppOwnersListResponse struct {
@@ -19,4 +40,32 @@ type C1APIAppV1AppOwnersListResponse struct {
 	ListAppOwnersResponse *shared.ListAppOwnersResponse
 	StatusCode            int
 	RawResponse           *http.Response
+}
+
+func (o *C1APIAppV1AppOwnersListResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppOwnersListResponse) GetListAppOwnersResponse() *shared.ListAppOwnersResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ListAppOwnersResponse
+}
+
+func (o *C1APIAppV1AppOwnersListResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppOwnersListResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

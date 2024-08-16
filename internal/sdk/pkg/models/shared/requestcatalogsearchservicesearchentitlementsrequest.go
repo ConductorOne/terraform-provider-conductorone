@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-// RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus - The grantedStatus field.
+// RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus - Search entitlements with this granted status for your signed in user.
 type RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus string
 
 const (
@@ -41,18 +41,78 @@ func (e *RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus) Unma
 	}
 }
 
-// RequestCatalogSearchServiceSearchEntitlementsRequest - The RequestCatalogSearchServiceSearchEntitlementsRequest message.
+// RequestCatalogSearchServiceSearchEntitlementsRequest - The RequestCatalogSearchServiceSearchEntitlementsRequest searches entitlements, but only ones that are available to you through the open catalogs.
 type RequestCatalogSearchServiceSearchEntitlementsRequest struct {
-	// The AppEntitlementExpandMask message.
+	// The app entitlement expand mask allows the user to get additional information when getting responses containing app entitlement views.
 	AppEntitlementExpandMask *AppEntitlementExpandMask `json:"expandMask,omitempty"`
-	// The entitlementAlias field.
+	// Search entitlements that belong to this app name (exact match).
+	AppDisplayName *string `json:"appDisplayName,omitempty"`
+	// Search for entitlements with this alias (exact match).
 	EntitlementAlias *string `json:"entitlementAlias,omitempty"`
-	// The grantedStatus field.
+	// Search entitlements with this granted status for your signed in user.
 	GrantedStatus *RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus `json:"grantedStatus,omitempty"`
-	// The pageSize field.
-	PageSize *float64 `json:"pageSize,omitempty"`
+	// Include deleted entitlements
+	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The query field.
+	// Fuzzy search the display name of resource types.
 	Query *string `json:"query,omitempty"`
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetAppEntitlementExpandMask() *AppEntitlementExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.AppEntitlementExpandMask
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetAppDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppDisplayName
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetEntitlementAlias() *string {
+	if o == nil {
+		return nil
+	}
+	return o.EntitlementAlias
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetGrantedStatus() *RequestCatalogSearchServiceSearchEntitlementsRequestGrantedStatus {
+	if o == nil {
+		return nil
+	}
+	return o.GrantedStatus
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetIncludeDeleted() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IncludeDeleted
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
+}
+
+func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetQuery() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Query
 }

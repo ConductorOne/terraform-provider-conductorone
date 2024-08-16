@@ -2,7 +2,7 @@
 
 package shared
 
-// The WebhooksSearchResponse message.
+// WebhooksSearchResponse - The WebhooksSearchResponse message.
 type WebhooksSearchResponse struct {
 	// The list field.
 	List []Webhook `json:"list,omitempty"`

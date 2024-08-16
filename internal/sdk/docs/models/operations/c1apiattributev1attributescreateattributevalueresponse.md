@@ -1,0 +1,11 @@
+# C1APIAttributeV1AttributesCreateAttributeValueResponse
+
+
+## Fields
+
+| Field                                                                                       | Type                                                                                        | Required                                                                                    | Description                                                                                 |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `ContentType`                                                                               | *string*                                                                                    | :heavy_check_mark:                                                                          | N/A                                                                                         |
+| `CreateAttributeValueResponse`                                                              | [*shared.CreateAttributeValueResponse](../../models/shared/createattributevalueresponse.md) | :heavy_minus_sign:                                                                          | CreateAttributeValueResponse is the response for creating an attribute value.               |
+| `StatusCode`                                                                                | *int*                                                                                       | :heavy_check_mark:                                                                          | N/A                                                                                         |
+| `RawResponse`                                                                               | [*http.Response](https://pkg.go.dev/net/http#Response)                                      | :heavy_minus_sign:                                                                          | N/A                                                                                         |

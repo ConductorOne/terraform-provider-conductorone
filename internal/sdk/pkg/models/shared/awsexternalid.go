@@ -2,7 +2,7 @@
 
 package shared
 
-// The AWSExternalID message.
+// AWSExternalID - The AWSExternalID message.
 type AWSExternalID struct {
 	// The externalId field.
 	ExternalID *string `json:"externalId,omitempty"`

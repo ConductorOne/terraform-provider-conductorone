@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// The Webhook message.
+// Webhook - The Webhook message.
 type Webhook struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
@@ -64,6 +64,46 @@ func (o *Webhook) GetUpdatedAt() *time.Time {
 }
 
 func (o *Webhook) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+// WebhookInput - The Webhook message.
+type WebhookInput struct {
+	// The description field.
+	Description *string `json:"description,omitempty"`
+	// The displayName field.
+	DisplayName *string `json:"displayName,omitempty"`
+	// The id field.
+	ID *string `json:"id,omitempty"`
+	// The url field.
+	URL *string `json:"url,omitempty"`
+}
+
+func (o *WebhookInput) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *WebhookInput) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *WebhookInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *WebhookInput) GetURL() *string {
 	if o == nil {
 		return nil
 	}

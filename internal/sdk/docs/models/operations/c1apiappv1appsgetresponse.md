@@ -1,0 +1,11 @@
+# C1APIAppV1AppsGetResponse
+
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `ContentType`                                                                          | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
+| `GetAppResponse`                                                                       | [*shared.GetAppResponse](../../models/shared/getappresponse.md)                        | :heavy_minus_sign:                                                                     | The GetAppResponse message contains the details of the requested app in the app field. |
+| `StatusCode`                                                                           | *int*                                                                                  | :heavy_check_mark:                                                                     | N/A                                                                                    |
+| `RawResponse`                                                                          | [*http.Response](https://pkg.go.dev/net/http#Response)                                 | :heavy_minus_sign:                                                                     | N/A                                                                                    |

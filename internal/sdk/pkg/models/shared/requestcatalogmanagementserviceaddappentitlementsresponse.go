@@ -2,6 +2,6 @@
 
 package shared
 
-// RequestCatalogManagementServiceAddAppEntitlementsResponse - The RequestCatalogManagementServiceAddAppEntitlementsResponse message.
+// RequestCatalogManagementServiceAddAppEntitlementsResponse - Empty response with a status code indicating success.
 type RequestCatalogManagementServiceAddAppEntitlementsResponse struct {
 }

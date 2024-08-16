@@ -2,7 +2,7 @@
 
 package shared
 
-// The Rule message.
+// Rule - The Rule message.
 type Rule struct {
 	// The condition field.
 	Condition *string `json:"condition,omitempty"`

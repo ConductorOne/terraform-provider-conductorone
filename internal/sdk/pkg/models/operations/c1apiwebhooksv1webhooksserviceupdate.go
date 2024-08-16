@@ -3,13 +3,20 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIWebhooksV1WebhooksServiceUpdateRequest struct {
-	ID                           string                               `pathParam:"style=simple,explode=false,name=id"`
-	WebhooksServiceUpdateRequest *shared.WebhooksServiceUpdateRequest `request:"mediaType=application/json"`
+	WebhooksServiceUpdateRequestInput *shared.WebhooksServiceUpdateRequestInput `request:"mediaType=application/json"`
+	ID                                string                                    `pathParam:"style=simple,explode=false,name=id"`
+}
+
+func (o *C1APIWebhooksV1WebhooksServiceUpdateRequest) GetWebhooksServiceUpdateRequestInput() *shared.WebhooksServiceUpdateRequestInput {
+	if o == nil {
+		return nil
+	}
+	return o.WebhooksServiceUpdateRequestInput
 }
 
 func (o *C1APIWebhooksV1WebhooksServiceUpdateRequest) GetID() string {
@@ -19,19 +26,9 @@ func (o *C1APIWebhooksV1WebhooksServiceUpdateRequest) GetID() string {
 	return o.ID
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceUpdateRequest) GetWebhooksServiceUpdateRequest() *shared.WebhooksServiceUpdateRequest {
-	if o == nil {
-		return nil
-	}
-	return o.WebhooksServiceUpdateRequest
-}
-
 type C1APIWebhooksV1WebhooksServiceUpdateResponse struct {
-	// HTTP response content type for this operation
 	ContentType string
-	// HTTP response status code for this operation
-	StatusCode int
-	// Raw HTTP response; suitable for custom response parsing
+	StatusCode  int
 	RawResponse *http.Response
 	// Successful response
 	WebhooksServiceUpdateResponse *shared.WebhooksServiceUpdateResponse

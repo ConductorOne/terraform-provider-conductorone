@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1AppOwnersRemoveRequest struct {
@@ -13,10 +13,59 @@ type C1APIAppV1AppOwnersRemoveRequest struct {
 	UserID                string                        `pathParam:"style=simple,explode=false,name=user_id"`
 }
 
+func (o *C1APIAppV1AppOwnersRemoveRequest) GetRemoveAppOwnerRequest() *shared.RemoveAppOwnerRequest {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveAppOwnerRequest
+}
+
+func (o *C1APIAppV1AppOwnersRemoveRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1AppOwnersRemoveRequest) GetUserID() string {
+	if o == nil {
+		return ""
+	}
+	return o.UserID
+}
+
 type C1APIAppV1AppOwnersRemoveResponse struct {
 	ContentType string
-	// Successful response
+	// Empty response with a status code indicating success.
 	RemoveAppOwnerResponse *shared.RemoveAppOwnerResponse
 	StatusCode             int
 	RawResponse            *http.Response
+}
+
+func (o *C1APIAppV1AppOwnersRemoveResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppOwnersRemoveResponse) GetRemoveAppOwnerResponse() *shared.RemoveAppOwnerResponse {
+	if o == nil {
+		return nil
+	}
+	return o.RemoveAppOwnerResponse
+}
+
+func (o *C1APIAppV1AppOwnersRemoveResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppOwnersRemoveResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

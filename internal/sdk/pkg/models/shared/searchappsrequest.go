@@ -2,18 +2,69 @@
 
 package shared
 
-// SearchAppsRequest - The SearchAppsRequest message.
+// SearchAppsRequest - Search Apps by a few properties.
 type SearchAppsRequest struct {
-	// The appIds field.
+	// A list of app IDs to restrict the search to.
 	AppIds []string `json:"appIds,omitempty"`
-	// The displayName field.
+	// Search for apps with a case insensitive match on the display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The excludeAppIds field.
+	// A list of app IDs to remove from the results.
 	ExcludeAppIds []string `json:"excludeAppIds,omitempty"`
-	// The pageSize field.
-	PageSize *float64 `json:"pageSize,omitempty"`
+	// Only return apps which are directories
+	OnlyDirectories *bool `json:"onlyDirectories,omitempty"`
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The query field.
+	// Query the apps with a fuzzy search on display name and description.
 	Query *string `json:"query,omitempty"`
+}
+
+func (o *SearchAppsRequest) GetAppIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.AppIds
+}
+
+func (o *SearchAppsRequest) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *SearchAppsRequest) GetExcludeAppIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludeAppIds
+}
+
+func (o *SearchAppsRequest) GetOnlyDirectories() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.OnlyDirectories
+}
+
+func (o *SearchAppsRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchAppsRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
+}
+
+func (o *SearchAppsRequest) GetQuery() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Query
 }

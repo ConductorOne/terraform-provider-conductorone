@@ -2,8 +2,15 @@
 
 package shared
 
-// ConnectorExpandMask - The ConnectorExpandMask message.
+// ConnectorExpandMask - The ConnectorExpandMask is used to expand related objects on a connector.
 type ConnectorExpandMask struct {
-	// The paths field.
+	// Paths that you want expanded in the response. Possible values are "app_id" and "*".
 	Paths []string `json:"paths,omitempty"`
+}
+
+func (o *ConnectorExpandMask) GetPaths() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Paths
 }

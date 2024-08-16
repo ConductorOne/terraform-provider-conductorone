@@ -3,14 +3,42 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1AppsCreateResponse struct {
 	ContentType string
-	// Successful response
+	// Returns the new app's values.
 	CreateAppResponse *shared.CreateAppResponse
 	StatusCode        int
 	RawResponse       *http.Response
+}
+
+func (o *C1APIAppV1AppsCreateResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppsCreateResponse) GetCreateAppResponse() *shared.CreateAppResponse {
+	if o == nil {
+		return nil
+	}
+	return o.CreateAppResponse
+}
+
+func (o *C1APIAppV1AppsCreateResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppsCreateResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

@@ -8,15 +8,16 @@ import (
 	"time"
 )
 
-// TaskTypeGrantOutcome - The outcome field.
+// TaskTypeGrantOutcome - The outcome of the grant.
 type TaskTypeGrantOutcome string
 
 const (
-	TaskTypeGrantOutcomeGrantOutcomeUnspecified TaskTypeGrantOutcome = "GRANT_OUTCOME_UNSPECIFIED"
-	TaskTypeGrantOutcomeGrantOutcomeGranted     TaskTypeGrantOutcome = "GRANT_OUTCOME_GRANTED"
-	TaskTypeGrantOutcomeGrantOutcomeDenied      TaskTypeGrantOutcome = "GRANT_OUTCOME_DENIED"
-	TaskTypeGrantOutcomeGrantOutcomeError       TaskTypeGrantOutcome = "GRANT_OUTCOME_ERROR"
-	TaskTypeGrantOutcomeGrantOutcomeCancelled   TaskTypeGrantOutcome = "GRANT_OUTCOME_CANCELLED"
+	TaskTypeGrantOutcomeGrantOutcomeUnspecified  TaskTypeGrantOutcome = "GRANT_OUTCOME_UNSPECIFIED"
+	TaskTypeGrantOutcomeGrantOutcomeGranted      TaskTypeGrantOutcome = "GRANT_OUTCOME_GRANTED"
+	TaskTypeGrantOutcomeGrantOutcomeDenied       TaskTypeGrantOutcome = "GRANT_OUTCOME_DENIED"
+	TaskTypeGrantOutcomeGrantOutcomeError        TaskTypeGrantOutcome = "GRANT_OUTCOME_ERROR"
+	TaskTypeGrantOutcomeGrantOutcomeCancelled    TaskTypeGrantOutcome = "GRANT_OUTCOME_CANCELLED"
+	TaskTypeGrantOutcomeGrantOutcomeWaitTimedOut TaskTypeGrantOutcome = "GRANT_OUTCOME_WAIT_TIMED_OUT"
 )
 
 func (e TaskTypeGrantOutcome) ToPointer() *TaskTypeGrantOutcome {
@@ -38,6 +39,8 @@ func (e *TaskTypeGrantOutcome) UnmarshalJSON(data []byte) error {
 	case "GRANT_OUTCOME_ERROR":
 		fallthrough
 	case "GRANT_OUTCOME_CANCELLED":
+		fallthrough
+	case "GRANT_OUTCOME_WAIT_TIMED_OUT":
 		*e = TaskTypeGrantOutcome(v)
 		return nil
 	default:
@@ -45,18 +48,89 @@ func (e *TaskTypeGrantOutcome) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// TaskTypeGrant - The TaskTypeGrant message.
+// TaskTypeGrant - The TaskTypeGrant message indicates that a task is a grant task and all related details.
 type TaskTypeGrant struct {
-	// The appEntitlementId field.
+	// The TaskGrantSource message tracks which external URL was the source of the specificed grant ticket.
+	TaskGrantSource *TaskGrantSource `json:"source,omitempty"`
+	// The ID of the app entitlement.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
-	// The appId field.
+	// The ID of the app.
 	AppID *string `json:"appId,omitempty"`
-	// The appUserId field.
+	// The ID of the app user.
 	AppUserID     *string `json:"appUserId,omitempty"`
 	GrantDuration *string `json:"grantDuration,omitempty"`
-	// The identityUserId field.
+	// The ID of the user.
 	IdentityUserID *string `json:"identityUserId,omitempty"`
-	// The outcome field.
+	// The outcome of the grant.
 	Outcome     *TaskTypeGrantOutcome `json:"outcome,omitempty"`
 	OutcomeTime *time.Time            `json:"outcomeTime,omitempty"`
+}
+
+func (o *TaskTypeGrant) GetTaskGrantSource() *TaskGrantSource {
+	if o == nil {
+		return nil
+	}
+	return o.TaskGrantSource
+}
+
+func (o *TaskTypeGrant) GetAppEntitlementID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppEntitlementID
+}
+
+func (o *TaskTypeGrant) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
+}
+
+func (o *TaskTypeGrant) GetAppUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserID
+}
+
+func (o *TaskTypeGrant) GetGrantDuration() *string {
+	if o == nil {
+		return nil
+	}
+	return o.GrantDuration
+}
+
+func (o *TaskTypeGrant) GetIdentityUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IdentityUserID
+}
+
+func (o *TaskTypeGrant) GetOutcome() *TaskTypeGrantOutcome {
+	if o == nil {
+		return nil
+	}
+	return o.Outcome
+}
+
+func (o *TaskTypeGrant) GetOutcomeTime() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.OutcomeTime
+}
+
+// TaskTypeGrantInput - The TaskTypeGrant message indicates that a task is a grant task and all related details.
+type TaskTypeGrantInput struct {
+	// The TaskGrantSource message tracks which external URL was the source of the specificed grant ticket.
+	TaskGrantSource *TaskGrantSource `json:"source,omitempty"`
+}
+
+func (o *TaskTypeGrantInput) GetTaskGrantSource() *TaskGrantSource {
+	if o == nil {
+		return nil
+	}
+	return o.TaskGrantSource
 }

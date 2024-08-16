@@ -2,6 +2,6 @@
 
 package shared
 
-// ConnectorServiceDeleteRequest - The ConnectorServiceDeleteRequest message.
+// ConnectorServiceDeleteRequest - ConnectorServiceDeleteRequest is a request for deleting a connector. It uses URL values for input.
 type ConnectorServiceDeleteRequest struct {
 }

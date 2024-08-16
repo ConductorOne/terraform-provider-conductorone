@@ -2,6 +2,6 @@
 
 package shared
 
-// The WebhooksServiceDeleteRequest message.
+// WebhooksServiceDeleteRequest - The WebhooksServiceDeleteRequest message.
 type WebhooksServiceDeleteRequest struct {
 }

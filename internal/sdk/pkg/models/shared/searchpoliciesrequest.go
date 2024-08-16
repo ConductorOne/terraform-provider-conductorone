@@ -46,16 +46,69 @@ func (e *SearchPoliciesRequestPolicyTypes) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// SearchPoliciesRequest - The SearchPoliciesRequest message.
+// SearchPoliciesRequest - Search Policies by a few properties.
 type SearchPoliciesRequest struct {
-	// The displayName field.
+	// Search for policies with a case insensitive match on the display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The pageSize field.
-	PageSize *float64 `json:"pageSize,omitempty"`
+	// The includeDeleted field.
+	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The policyTypes field.
+	// The policy type to search on. This can be POLICY_TYPE_GRANT, POLICY_TYPE_REVOKE, POLICY_TYPE_CERTIFY, POLICY_TYPE_ACCESS_REQUEST, or POLICY_TYPE_PROVISION.
 	PolicyTypes []SearchPoliciesRequestPolicyTypes `json:"policyTypes,omitempty"`
-	// The query field.
+	// Query the policies with a fuzzy search on display name and description.
 	Query *string `json:"query,omitempty"`
+	// The refs field.
+	Refs []PolicyRef `json:"refs,omitempty"`
+}
+
+func (o *SearchPoliciesRequest) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *SearchPoliciesRequest) GetIncludeDeleted() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IncludeDeleted
+}
+
+func (o *SearchPoliciesRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchPoliciesRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
+}
+
+func (o *SearchPoliciesRequest) GetPolicyTypes() []SearchPoliciesRequestPolicyTypes {
+	if o == nil {
+		return nil
+	}
+	return o.PolicyTypes
+}
+
+func (o *SearchPoliciesRequest) GetQuery() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Query
+}
+
+func (o *SearchPoliciesRequest) GetRefs() []PolicyRef {
+	if o == nil {
+		return nil
+	}
+	return o.Refs
 }

@@ -2,7 +2,7 @@
 
 package shared
 
-// The GetAWSExternalIDResponse message.
+// GetAWSExternalIDResponse - The GetAWSExternalIDResponse message.
 type GetAWSExternalIDResponse struct {
 	// The AWSExternalID message.
 	AWSExternalID *AWSExternalID `json:"awsExternalId,omitempty"`

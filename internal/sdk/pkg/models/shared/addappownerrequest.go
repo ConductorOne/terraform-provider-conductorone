@@ -2,6 +2,6 @@
 
 package shared
 
-// AddAppOwnerRequest - The AddAppOwnerRequest message.
+// AddAppOwnerRequest - Empty request body. Just placeholder for the add app owner request which uses URL values for input.
 type AddAppOwnerRequest struct {
 }

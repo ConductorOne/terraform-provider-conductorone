@@ -2,6 +2,6 @@
 
 package shared
 
-// DirectoryServiceDeleteResponse - The DirectoryServiceDeleteResponse message.
+// DirectoryServiceDeleteResponse - Empty response with a status code indicating success.
 type DirectoryServiceDeleteResponse struct {
 }

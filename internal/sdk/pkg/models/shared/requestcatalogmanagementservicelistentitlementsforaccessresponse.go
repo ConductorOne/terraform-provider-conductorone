@@ -2,68 +2,35 @@
 
 package shared
 
-import (
-	"encoding/json"
-)
-
-// RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded struct {
-	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
-}
-type _RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded
-
-func (c *RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded{}
-
-	if err := json.Unmarshal(bs, &data); err != nil {
-		return err
-	}
-	*c = RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
-	return nil
-}
-
-func (c RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded(c))
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
-}
-
-// RequestCatalogManagementServiceListEntitlementsForAccessResponse - The RequestCatalogManagementServiceListEntitlementsForAccessResponse message.
+// RequestCatalogManagementServiceListEntitlementsForAccessResponse - The RequestCatalogManagementServiceListEntitlementsForAccessResponse message contains a list of results and a nextPageToken if applicable.
 type RequestCatalogManagementServiceListEntitlementsForAccessResponse struct {
-	// The expanded field.
-	Expanded []RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded `json:"expanded,omitempty"`
-	// The list field.
+	// List of serialized related objects.
+	Expanded []map[string]interface{} `json:"expanded,omitempty"`
+	// The list of results containing up to X results, where X is the page size defined in the request.
 	List []AppEntitlementView `json:"list,omitempty"`
-	// The nextPageToken field.
+	// The nextPageToken is shown for the next page if the number of results is larger than the max page size.
+	//  The server returns one page of results and the nextPageToken until all results are retreived.
+	//  To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
+}
+
+func (o *RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetExpanded() []map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
+}
+
+func (o *RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetList() []AppEntitlementView {
+	if o == nil {
+		return nil
+	}
+	return o.List
+}
+
+func (o *RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetNextPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.NextPageToken
 }

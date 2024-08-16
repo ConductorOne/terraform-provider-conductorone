@@ -15,3 +15,38 @@ type UserAttributeMappingSource struct {
 	// The value field.
 	Value *string `json:"value,omitempty"`
 }
+
+func (o *UserAttributeMappingSource) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
+}
+
+func (o *UserAttributeMappingSource) GetAppUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserID
+}
+
+func (o *UserAttributeMappingSource) GetAppUserProfileAttributeKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserProfileAttributeKey
+}
+
+func (o *UserAttributeMappingSource) GetUserAttributeMappingID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UserAttributeMappingID
+}
+
+func (o *UserAttributeMappingSource) GetValue() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Value
+}

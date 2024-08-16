@@ -1,0 +1,11 @@
+# UserServiceGetResponse
+
+The UserServiceGetResponse returns a user view which has a user including JSONPATHs to the expanded items in the expanded array.
+
+
+## Fields
+
+| Field                                                                                                               | Type                                                                                                                | Required                                                                                                            | Description                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `UserView`                                                                                                          | [*UserView](../../models/shared/userview.md)                                                                        | :heavy_minus_sign:                                                                                                  | The UserView object provides a user response object, as well as JSONPATHs to related objects provided by expanders. |
+| `Expanded`                                                                                                          | []map[string]*interface{}*                                                                                          | :heavy_minus_sign:                                                                                                  | List of serialized related objects.                                                                                 |

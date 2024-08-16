@@ -2,6 +2,6 @@
 
 package shared
 
-// DeletePolicyRequest - The DeletePolicyRequest message.
+// DeletePolicyRequest - The DeletePolicyRequest message contains the ID of the policy to delete. It uses URL value for input.
 type DeletePolicyRequest struct {
 }

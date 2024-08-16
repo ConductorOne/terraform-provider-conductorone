@@ -2,10 +2,24 @@
 
 package shared
 
-// Facets - The Facets message.
+// Facets - Indicates one value of a facet.
 type Facets struct {
-	// The count field.
+	// The count of items in this facet.
 	Count *string `json:"count,omitempty"`
-	// The facets field.
+	// The facet being referenced.
 	Facets []FacetCategory `json:"facets,omitempty"`
+}
+
+func (o *Facets) GetCount() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Count
+}
+
+func (o *Facets) GetFacets() []FacetCategory {
+	if o == nil {
+		return nil
+	}
+	return o.Facets
 }

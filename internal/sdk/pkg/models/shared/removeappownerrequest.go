@@ -2,6 +2,6 @@
 
 package shared
 
-// RemoveAppOwnerRequest - The RemoveAppOwnerRequest message.
+// RemoveAppOwnerRequest - RemoveAppOwnerRequest is the request body for removing an app owner. It uses URL values for input.
 type RemoveAppOwnerRequest struct {
 }

@@ -2,19 +2,50 @@
 
 package shared
 
-// PolicyInstance - The PolicyInstance message.
+// PolicyInstance - A policy instance is an object that contains a reference to the policy it was created from, the currently executing step, the next steps, and the history of previously completed steps.
 type PolicyInstance struct {
-	// The Policy message.
+	// A policy describes the behavior of the ConductorOne system when processing a task. You can describe the type, approvers, fallback behavior, and escalation processes.
 	Policy *Policy `json:"policy,omitempty"`
-	// The PolicyStepInstance message.
+	// The policy step instance includes a reference to an instance of a policy step that tracks state and has a unique ID.
 	//
 	// This message contains a oneof named instance. Only a single field of the following list may be set at a time:
 	//   - approval
 	//   - provision
+	//   - accept
+	//   - reject
+	//   - wait
 	//
 	PolicyStepInstance *PolicyStepInstance `json:"current,omitempty"`
-	// The history field.
+	// An array of steps that were previously processed by the ticket with their outcomes set, in order.
 	History []PolicyStepInstance `json:"history,omitempty"`
-	// The next field.
+	// An array of steps that will be processed by the ticket, in order.
 	Next []PolicyStep `json:"next,omitempty"`
+}
+
+func (o *PolicyInstance) GetPolicy() *Policy {
+	if o == nil {
+		return nil
+	}
+	return o.Policy
+}
+
+func (o *PolicyInstance) GetPolicyStepInstance() *PolicyStepInstance {
+	if o == nil {
+		return nil
+	}
+	return o.PolicyStepInstance
+}
+
+func (o *PolicyInstance) GetHistory() []PolicyStepInstance {
+	if o == nil {
+		return nil
+	}
+	return o.History
+}
+
+func (o *PolicyInstance) GetNext() []PolicyStep {
+	if o == nil {
+		return nil
+	}
+	return o.Next
 }

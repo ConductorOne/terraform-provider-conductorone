@@ -2,6 +2,6 @@
 
 package shared
 
-// RequestCatalogManagementServiceDeleteResponse - The RequestCatalogManagementServiceDeleteResponse message.
+// RequestCatalogManagementServiceDeleteResponse - Empty response with a status code indicating success.
 type RequestCatalogManagementServiceDeleteResponse struct {
 }

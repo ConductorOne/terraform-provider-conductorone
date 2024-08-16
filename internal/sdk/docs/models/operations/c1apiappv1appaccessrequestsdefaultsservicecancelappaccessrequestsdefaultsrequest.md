@@ -1,0 +1,9 @@
+# C1APIAppV1AppAccessRequestsDefaultsServiceCancelAppAccessRequestsDefaultsRequest
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `CancelAccessRequestDefaultsRequest`                                                                    | [*shared.CancelAccessRequestDefaultsRequest](../../models/shared/cancelaccessrequestdefaultsrequest.md) | :heavy_minus_sign:                                                                                      | N/A                                                                                                     |
+| `AppID`                                                                                                 | *string*                                                                                                | :heavy_check_mark:                                                                                      | N/A                                                                                                     |

@@ -2,68 +2,33 @@
 
 package shared
 
-import (
-	"encoding/json"
-)
-
-// TaskActionsServiceApproveResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type TaskActionsServiceApproveResponseExpanded struct {
-	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
-}
-type _TaskActionsServiceApproveResponseExpanded TaskActionsServiceApproveResponseExpanded
-
-func (c *TaskActionsServiceApproveResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _TaskActionsServiceApproveResponseExpanded{}
-
-	if err := json.Unmarshal(bs, &data); err != nil {
-		return err
-	}
-	*c = TaskActionsServiceApproveResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
-	return nil
-}
-
-func (c TaskActionsServiceApproveResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_TaskActionsServiceApproveResponseExpanded(c))
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
-}
-
-// TaskActionsServiceApproveResponse - The TaskActionsServiceApproveResponse message.
+// TaskActionsServiceApproveResponse - The TaskActionsServiceApproveResponse returns a task view with paths indicating the location of expanded items in the array.
 type TaskActionsServiceApproveResponse struct {
-	// The TaskView message.
+	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
 	TaskView *TaskView `json:"taskView,omitempty"`
-	// The expanded field.
-	Expanded []TaskActionsServiceApproveResponseExpanded `json:"expanded,omitempty"`
-	// The ticketActionId field.
+	// List of serialized related objects.
+	Expanded []map[string]interface{} `json:"expanded,omitempty"`
+	// The ID of the ticket (task) approve action created by this request.
 	TicketActionID *string `json:"ticketActionId,omitempty"`
+}
+
+func (o *TaskActionsServiceApproveResponse) GetTaskView() *TaskView {
+	if o == nil {
+		return nil
+	}
+	return o.TaskView
+}
+
+func (o *TaskActionsServiceApproveResponse) GetExpanded() []map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
+}
+
+func (o *TaskActionsServiceApproveResponse) GetTicketActionID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TicketActionID
 }

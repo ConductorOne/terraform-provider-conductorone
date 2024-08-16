@@ -2,6 +2,6 @@
 
 package shared
 
-// ConnectorProvision - The ConnectorProvision message.
+// ConnectorProvision - Indicates that a connector should perform the provisioning. This object has no fields.
 type ConnectorProvision struct {
 }

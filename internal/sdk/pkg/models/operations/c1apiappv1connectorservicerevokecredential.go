@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1ConnectorServiceRevokeCredentialRequest struct {
@@ -14,10 +14,66 @@ type C1APIAppV1ConnectorServiceRevokeCredentialRequest struct {
 	ID                                      string                                          `pathParam:"style=simple,explode=false,name=id"`
 }
 
+func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetConnectorServiceRevokeCredentialRequest() *shared.ConnectorServiceRevokeCredentialRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceRevokeCredentialRequest
+}
+
+func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetConnectorID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ConnectorID
+}
+
+func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
 type C1APIAppV1ConnectorServiceRevokeCredentialResponse struct {
-	// Successful response
+	// Empty response body. Status code indicates success.
 	ConnectorServiceRevokeCredentialResponse *shared.ConnectorServiceRevokeCredentialResponse
 	ContentType                              string
 	StatusCode                               int
 	RawResponse                              *http.Response
+}
+
+func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetConnectorServiceRevokeCredentialResponse() *shared.ConnectorServiceRevokeCredentialResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceRevokeCredentialResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

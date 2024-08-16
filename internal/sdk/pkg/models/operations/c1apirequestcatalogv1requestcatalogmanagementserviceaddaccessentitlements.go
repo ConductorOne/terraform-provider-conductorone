@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest struct {
@@ -12,10 +12,52 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRe
 	CatalogID                                                   string                                                              `pathParam:"style=simple,explode=false,name=catalog_id"`
 }
 
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest) GetRequestCatalogManagementServiceAddAccessEntitlementsRequest() *shared.RequestCatalogManagementServiceAddAccessEntitlementsRequest {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceAddAccessEntitlementsRequest
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest) GetCatalogID() string {
+	if o == nil {
+		return ""
+	}
+	return o.CatalogID
+}
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsResponse struct {
 	ContentType string
-	// Successful response
+	// Empty response with a status code indicating success.
 	RequestCatalogManagementServiceAddAccessEntitlementsResponse *shared.RequestCatalogManagementServiceAddAccessEntitlementsResponse
 	StatusCode                                                   int
 	RawResponse                                                  *http.Response
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsResponse) GetRequestCatalogManagementServiceAddAccessEntitlementsResponse() *shared.RequestCatalogManagementServiceAddAccessEntitlementsResponse {
+	if o == nil {
+		return nil
+	}
+	return o.RequestCatalogManagementServiceAddAccessEntitlementsResponse
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

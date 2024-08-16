@@ -1,0 +1,10 @@
+# C1APIAppV1ConnectorServiceDeleteRequest
+
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `ConnectorServiceDeleteRequest`                                                               | [*shared.ConnectorServiceDeleteRequest](../../models/shared/connectorservicedeleterequest.md) | :heavy_minus_sign:                                                                            | N/A                                                                                           |
+| `AppID`                                                                                       | *string*                                                                                      | :heavy_check_mark:                                                                            | N/A                                                                                           |
+| `ID`                                                                                          | *string*                                                                                      | :heavy_check_mark:                                                                            | N/A                                                                                           |
