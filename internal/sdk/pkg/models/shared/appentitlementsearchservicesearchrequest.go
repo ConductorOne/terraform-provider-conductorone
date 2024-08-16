@@ -2,34 +2,233 @@
 
 package shared
 
-// AppEntitlementSearchServiceSearchRequest - The AppEntitlementSearchServiceSearchRequest message.
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type AppEntitlementSearchServiceSearchRequestMembershipType string
+
+const (
+	AppEntitlementSearchServiceSearchRequestMembershipTypeAppEntitlementMembershipTypeUnspecified AppEntitlementSearchServiceSearchRequestMembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_UNSPECIFIED"
+	AppEntitlementSearchServiceSearchRequestMembershipTypeAppEntitlementMembershipTypeMember      AppEntitlementSearchServiceSearchRequestMembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_MEMBER"
+	AppEntitlementSearchServiceSearchRequestMembershipTypeAppEntitlementMembershipTypeOwner       AppEntitlementSearchServiceSearchRequestMembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER"
+	AppEntitlementSearchServiceSearchRequestMembershipTypeAppEntitlementMembershipTypeExclusion   AppEntitlementSearchServiceSearchRequestMembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_EXCLUSION"
+)
+
+func (e AppEntitlementSearchServiceSearchRequestMembershipType) ToPointer() *AppEntitlementSearchServiceSearchRequestMembershipType {
+	return &e
+}
+
+func (e *AppEntitlementSearchServiceSearchRequestMembershipType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_UNSPECIFIED":
+		fallthrough
+	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_MEMBER":
+		fallthrough
+	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER":
+		fallthrough
+	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_EXCLUSION":
+		*e = AppEntitlementSearchServiceSearchRequestMembershipType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AppEntitlementSearchServiceSearchRequestMembershipType: %v", v)
+	}
+}
+
+// AppEntitlementSearchServiceSearchRequest - Search app entitlements by a variety of filters.
 type AppEntitlementSearchServiceSearchRequest struct {
-	// The AppEntitlementExpandMask message.
+	// The app entitlement expand mask allows the user to get additional information when getting responses containing app entitlement views.
 	AppEntitlementExpandMask *AppEntitlementExpandMask `json:"expandMask,omitempty"`
-	// The accessReviewId field.
+	// Search for app entitlements that are being reviewed as part of this access review campaign.
 	AccessReviewID *string `json:"accessReviewId,omitempty"`
-	// The appIds field.
+	// Search for app entitlements that have this alias (exact match).
+	Alias *string `json:"alias,omitempty"`
+	// Search for app entitlements contained in any of these apps.
 	AppIds []string `json:"appIds,omitempty"`
-	// The appUserIds field.
+	// Search for app entitlements that are granted to any of these app user ids.
 	AppUserIds []string `json:"appUserIds,omitempty"`
-	// The complianceFrameworkIds field.
+	// Search for app entitlements that are part of these compliace frameworks.
 	ComplianceFrameworkIds []string `json:"complianceFrameworkIds,omitempty"`
-	// The excludeAppIds field.
+	// Exclude app entitlements from the results that are in these app IDs.
 	ExcludeAppIds []string `json:"excludeAppIds,omitempty"`
-	// The excludeAppUserIds field.
+	// Exclude app entitlements from the results that these app users have granted.
 	ExcludeAppUserIds []string `json:"excludeAppUserIds,omitempty"`
-	// The onlyGetExpiring field.
+	// The excludeResourceTypeIds field.
+	ExcludeResourceTypeIds []string `json:"excludeResourceTypeIds,omitempty"`
+	// Include deleted app entitlements, this includes app entitlements that have a deleted parent object (app, app resource, app resource type)
+	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
+	// The isAutomated field.
+	IsAutomated *bool `json:"isAutomated,omitempty"`
+	// The membershipType field.
+	MembershipType []AppEntitlementSearchServiceSearchRequestMembershipType `json:"membershipType,omitempty"`
+	// Restrict results to only those who have expiring app entitlement user bindings.
 	OnlyGetExpiring *bool `json:"onlyGetExpiring,omitempty"`
-	// The pageSize field.
-	PageSize *float64 `json:"pageSize,omitempty"`
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The query field.
+	// Query the app entitlements with a fuzzy search on display name and description.
 	Query *string `json:"query,omitempty"`
-	// The resourceTypeIds field.
+	// The refs field.
+	Refs []AppEntitlementRef `json:"refs,omitempty"`
+	// Search for app entitlements that belongs to these resources.
+	ResourceIds []string `json:"resourceIds,omitempty"`
+	// The resourceTraitIds field.
+	ResourceTraitIds []string `json:"resourceTraitIds,omitempty"`
+	// Search for app entitlements that are for items with resources types that have matching names. Example names are "group", "role", and "app".
 	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
-	// The riskLevelIds field.
+	// Search for app entitlements with these risk levels.
 	RiskLevelIds []string `json:"riskLevelIds,omitempty"`
-	// The alias field.
-	Alias *string `json:"alias,omitempty"`
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetAppEntitlementExpandMask() *AppEntitlementExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.AppEntitlementExpandMask
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetAccessReviewID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AccessReviewID
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetAlias() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Alias
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetAppIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.AppIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetAppUserIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetComplianceFrameworkIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ComplianceFrameworkIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeAppIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludeAppIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeAppUserIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludeAppUserIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeResourceTypeIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludeResourceTypeIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetIncludeDeleted() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IncludeDeleted
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetIsAutomated() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IsAutomated
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetMembershipType() []AppEntitlementSearchServiceSearchRequestMembershipType {
+	if o == nil {
+		return nil
+	}
+	return o.MembershipType
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetOnlyGetExpiring() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.OnlyGetExpiring
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetQuery() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Query
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetRefs() []AppEntitlementRef {
+	if o == nil {
+		return nil
+	}
+	return o.Refs
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetResourceIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ResourceIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetResourceTraitIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ResourceTraitIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetResourceTypeIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ResourceTypeIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetRiskLevelIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.RiskLevelIds
 }

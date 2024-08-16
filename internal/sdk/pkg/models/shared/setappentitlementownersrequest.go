@@ -7,3 +7,10 @@ type SetAppEntitlementOwnersRequest struct {
 	// The user_ids field for the users to set as an owner of the app entitlement.
 	UserIds []string `json:"userIds,omitempty"`
 }
+
+func (o *SetAppEntitlementOwnersRequest) GetUserIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UserIds
+}

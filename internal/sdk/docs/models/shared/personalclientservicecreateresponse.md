@@ -1,0 +1,11 @@
+# PersonalClientServiceCreateResponse
+
+The PersonalClientServiceCreateResponse message contains the created personal client and client secret.
+
+
+## Fields
+
+| Field                                                                                                                              | Type                                                                                                                               | Required                                                                                                                           | Description                                                                                                                        |
+| ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `PersonalClient`                                                                                                                   | [*PersonalClient](../../models/shared/personalclient.md)                                                                           | :heavy_minus_sign:                                                                                                                 | The PersonalClient message contains information about a presonal client credential.                                                |
+| `ClientSecret`                                                                                                                     | **string*                                                                                                                          | :heavy_minus_sign:                                                                                                                 | The client secret that corresponds to the personal client. Make sure to save this, because it cannot be returned or queried again. |

@@ -1,0 +1,12 @@
+# AppEntitlementUserView
+
+The AppEntitlementUserView (aka grant view) describes the relationship between an app user and an entitlement. They have more recently been referred to as grants.
+
+
+## Fields
+
+| Field                                                                                                              | Type                                                                                                               | Required                                                                                                           | Description                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `AppUserView`                                                                                                      | [*AppUserView](../../models/shared/appuserview.md)                                                                 | :heavy_minus_sign:                                                                                                 | The AppUserView contains an app user as well as paths for apps, identity users, and last usage in expanded arrays. |
+| `AppEntitlementUserBindingCreatedAt`                                                                               | [*time.Time](https://pkg.go.dev/time#Time)                                                                         | :heavy_minus_sign:                                                                                                 | N/A                                                                                                                |
+| `AppEntitlementUserBindingDeprovisionAt`                                                                           | [*time.Time](https://pkg.go.dev/time#Time)                                                                         | :heavy_minus_sign:                                                                                                 | N/A                                                                                                                |

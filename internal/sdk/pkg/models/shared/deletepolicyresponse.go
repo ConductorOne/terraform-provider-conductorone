@@ -2,6 +2,6 @@
 
 package shared
 
-// DeletePolicyResponse - The DeletePolicyResponse message.
+// DeletePolicyResponse - Empty response with a status code indicating success.
 type DeletePolicyResponse struct {
 }

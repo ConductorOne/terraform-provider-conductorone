@@ -2,13 +2,14 @@
 
 package shared
 
-// The PolicyStep message.
+// PolicyStep - The PolicyStep message.
 //
 // This message contains a oneof named step. Only a single field of the following list may be set at a time:
 //   - approval
 //   - provision
 //   - accept
 //   - reject
+//   - wait
 type PolicyStep struct {
 	// This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
 	Accept *Accept `json:"accept,omitempty"`
@@ -22,12 +23,19 @@ type PolicyStep struct {
 	//   - self
 	//   - entitlementOwners
 	//   - expression
+	//   - webhook
 	//
 	Approval *Approval `json:"approval,omitempty"`
 	// The provision step references a provision policy for this step.
 	Provision *Provision `json:"provision,omitempty"`
 	// This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
 	Reject *Reject `json:"reject,omitempty"`
+	// Define a Wait step for a policy to wait on a condition to be met.
+	//
+	// This message contains a oneof named until. Only a single field of the following list may be set at a time:
+	//   - condition
+	//
+	Wait *Wait `json:"wait,omitempty"`
 }
 
 func (o *PolicyStep) GetAccept() *Accept {
@@ -56,4 +64,11 @@ func (o *PolicyStep) GetReject() *Reject {
 		return nil
 	}
 	return o.Reject
+}
+
+func (o *PolicyStep) GetWait() *Wait {
+	if o == nil {
+		return nil
+	}
+	return o.Wait
 }

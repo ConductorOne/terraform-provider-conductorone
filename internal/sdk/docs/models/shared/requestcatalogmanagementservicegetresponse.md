@@ -1,0 +1,11 @@
+# RequestCatalogManagementServiceGetResponse
+
+The request catalog management service get response returns a request catalog view with the expanded items in the expanded array indicated by the expand mask in the request.
+
+
+## Fields
+
+| Field                                                                                                                    | Type                                                                                                                     | Required                                                                                                                 | Description                                                                                                              |
+| ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `RequestCatalogView`                                                                                                     | [*RequestCatalogView](../../models/shared/requestcatalogview.md)                                                         | :heavy_minus_sign:                                                                                                       | The request catalog view contains the serialized request catalog and paths to objects referenced by the request catalog. |
+| `Expanded`                                                                                                               | []map[string]*interface{}*                                                                                               | :heavy_minus_sign:                                                                                                       | List of serialized related objects.                                                                                      |

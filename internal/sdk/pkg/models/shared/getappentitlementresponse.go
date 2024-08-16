@@ -2,66 +2,24 @@
 
 package shared
 
-import (
-	"encoding/json"
-)
-
-// GetAppEntitlementResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type GetAppEntitlementResponseExpanded struct {
-	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
-}
-type _GetAppEntitlementResponseExpanded GetAppEntitlementResponseExpanded
-
-func (c *GetAppEntitlementResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _GetAppEntitlementResponseExpanded{}
-
-	if err := json.Unmarshal(bs, &data); err != nil {
-		return err
-	}
-	*c = GetAppEntitlementResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
-	return nil
-}
-
-func (c GetAppEntitlementResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_GetAppEntitlementResponseExpanded(c))
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
-}
-
-// GetAppEntitlementResponse - The GetAppEntitlementResponse message.
+// GetAppEntitlementResponse - The get app entitlement response returns an entitlement view containing paths in the expanded array for the objects expanded as indicated by the expand mask in the request.
 type GetAppEntitlementResponse struct {
-	// The AppEntitlementView message.
+	// The app entitlement view contains the serialized app entitlement and paths to objects referenced by the app entitlement.
 	AppEntitlementView *AppEntitlementView `json:"appEntitlementView,omitempty"`
-	// The expanded field.
-	Expanded []GetAppEntitlementResponseExpanded `json:"expanded,omitempty"`
+	// List of serialized related objects.
+	Expanded []map[string]interface{} `json:"expanded,omitempty"`
+}
+
+func (o *GetAppEntitlementResponse) GetAppEntitlementView() *AppEntitlementView {
+	if o == nil {
+		return nil
+	}
+	return o.AppEntitlementView
+}
+
+func (o *GetAppEntitlementResponse) GetExpanded() []map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
 }

@@ -2,7 +2,7 @@
 
 package shared
 
-// The ValidatePolicyCELRequest message.
+// ValidatePolicyCELRequest - The ValidatePolicyCELRequest message.
 type ValidatePolicyCELRequest struct {
 	// The cel field.
 	Cel *string `json:"cel,omitempty"`

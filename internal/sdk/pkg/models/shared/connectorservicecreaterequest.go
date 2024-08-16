@@ -2,73 +2,51 @@
 
 package shared
 
-import (
-	"encoding/json"
-)
-
-// ConnectorServiceCreateRequestConfig - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type ConnectorServiceCreateRequestConfig struct {
-	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
-}
-type _ConnectorServiceCreateRequestConfig ConnectorServiceCreateRequestConfig
-
-func (c *ConnectorServiceCreateRequestConfig) UnmarshalJSON(bs []byte) error {
-	data := _ConnectorServiceCreateRequestConfig{}
-
-	if err := json.Unmarshal(bs, &data); err != nil {
-		return err
-	}
-	*c = ConnectorServiceCreateRequestConfig(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
-	return nil
-}
-
-func (c ConnectorServiceCreateRequestConfig) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_ConnectorServiceCreateRequestConfig(c))
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
-}
-
 // ConnectorServiceCreateRequest - The ConnectorServiceCreateRequest message.
 type ConnectorServiceCreateRequest struct {
-	//  The ConnectorExpandMask is used to expand related objects on a connector.
-	//
+	// The ConnectorExpandMask is used to expand related objects on a connector.
 	ConnectorExpandMask *ConnectorExpandMask `json:"expandMask,omitempty"`
 	// The catalogId field.
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-	Config *ConnectorServiceCreateRequestConfig `json:"config,omitempty"`
+	Config map[string]interface{} `json:"config,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The userIds field.
 	UserIds []string `json:"userIds,omitempty"`
+}
+
+func (o *ConnectorServiceCreateRequest) GetConnectorExpandMask() *ConnectorExpandMask {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorExpandMask
+}
+
+func (o *ConnectorServiceCreateRequest) GetCatalogID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CatalogID
+}
+
+func (o *ConnectorServiceCreateRequest) GetConfig() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.Config
+}
+
+func (o *ConnectorServiceCreateRequest) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *ConnectorServiceCreateRequest) GetUserIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UserIds
 }

@@ -6,16 +6,58 @@ import (
 	"time"
 )
 
-// ReassignedByErrorAction - The ReassignedByErrorAction message.
+// ReassignedByErrorAction - The ReassignedByErrorAction object describes the outcome of a policy step that has been reassigned because it had an error provisioning.
 type ReassignedByErrorAction struct {
-	// The description field.
+	// The description of the error with more details on why this was reassigned.
 	Description *string `json:"description,omitempty"`
-	// The errorCode field.
+	// Additional information about the error, like http status codes or error messages from SDKs.
 	ErrorCode *string `json:"errorCode,omitempty"`
-	// The errorUserId field.
+	// The UserID of the user who reassigned this due to an error. This will exclusively be the System's UserID.
 	ErrorUserID *string    `json:"errorUserId,omitempty"`
 	ErroredAt   *time.Time `json:"erroredAt,omitempty"`
-	// The newPolicyStepId field.
+	// The ID of the policy step that was created by this reassignment.
 	NewPolicyStepID *string    `json:"newPolicyStepId,omitempty"`
 	ReassignedAt    *time.Time `json:"reassignedAt,omitempty"`
+}
+
+func (o *ReassignedByErrorAction) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *ReassignedByErrorAction) GetErrorCode() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ErrorCode
+}
+
+func (o *ReassignedByErrorAction) GetErrorUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ErrorUserID
+}
+
+func (o *ReassignedByErrorAction) GetErroredAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.ErroredAt
+}
+
+func (o *ReassignedByErrorAction) GetNewPolicyStepID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.NewPolicyStepID
+}
+
+func (o *ReassignedByErrorAction) GetReassignedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.ReassignedAt
 }

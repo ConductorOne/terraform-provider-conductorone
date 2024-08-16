@@ -2,10 +2,24 @@
 
 package shared
 
-// AttributeType - The AttributeType message.
+// AttributeType - AttributeType defines the type of an attribute.
 type AttributeType struct {
-	// The id field.
+	// The ID of the AttributeType.
 	ID *string `json:"id,omitempty"`
-	// The name field.
+	// The name of the AttributeType.
 	Name *string `json:"name,omitempty"`
+}
+
+func (o *AttributeType) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AttributeType) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
 }

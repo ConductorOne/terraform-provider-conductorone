@@ -2,6 +2,6 @@
 
 package shared
 
-// ConnectorServiceRevokeCredentialRequest - The ConnectorServiceRevokeCredentialRequest message.
+// ConnectorServiceRevokeCredentialRequest - ConnectorServiceRevokeCredentialRequest is a request for revoking connector credentials. It uses URL values for input.
 type ConnectorServiceRevokeCredentialRequest struct {
 }

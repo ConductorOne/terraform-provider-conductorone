@@ -1,0 +1,11 @@
+# ConnectorServiceCreateResponse
+
+The ConnectorServiceCreateResponse is the response returned from creating a connector.
+
+
+## Fields
+
+| Field                                                                                                                         | Type                                                                                                                          | Required                                                                                                                      | Description                                                                                                                   |
+| ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `ConnectorView`                                                                                                               | [*ConnectorView](../../models/shared/connectorview.md)                                                                        | :heavy_minus_sign:                                                                                                            | The ConnectorView object provides a connector response object, as well as JSONPATHs to related objects provided by expanders. |
+| `Expanded`                                                                                                                    | []map[string]*interface{}*                                                                                                    | :heavy_minus_sign:                                                                                                            | The array of expanded items indicated by the request.                                                                         |

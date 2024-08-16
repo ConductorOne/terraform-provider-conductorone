@@ -2,6 +2,6 @@
 
 package shared
 
-// AddAppOwnerResponse - The AddAppOwnerResponse message.
+// AddAppOwnerResponse - Empty response with a status code indicating success
 type AddAppOwnerResponse struct {
 }

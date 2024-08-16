@@ -4,4 +4,13 @@ package shared
 
 // Accept - This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
 type Accept struct {
+	// An optional message to include in the comments when a task is automatically accepted.
+	AcceptMessage *string `json:"acceptMessage,omitempty"`
+}
+
+func (o *Accept) GetAcceptMessage() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AcceptMessage
 }

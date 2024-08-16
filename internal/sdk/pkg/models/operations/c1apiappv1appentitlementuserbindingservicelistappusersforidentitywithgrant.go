@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest struct {
@@ -13,10 +13,59 @@ type C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantR
 	IdentityUserID   string `pathParam:"style=simple,explode=false,name=identity_user_id"`
 }
 
+func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppEntitlementID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppEntitlementID
+}
+
+func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetIdentityUserID() string {
+	if o == nil {
+		return ""
+	}
+	return o.IdentityUserID
+}
+
 type C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse struct {
 	ContentType string
 	// Successful response
 	ListAppUsersForIdentityWithGrantResponse *shared.ListAppUsersForIdentityWithGrantResponse
 	StatusCode                               int
 	RawResponse                              *http.Response
+}
+
+func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetListAppUsersForIdentityWithGrantResponse() *shared.ListAppUsersForIdentityWithGrantResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ListAppUsersForIdentityWithGrantResponse
+}
+
+func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

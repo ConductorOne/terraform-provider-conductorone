@@ -3,19 +3,61 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1AppsUpdateRequest struct {
-	UpdateAppRequest *shared.UpdateAppRequest `request:"mediaType=application/json"`
-	ID               string                   `pathParam:"style=simple,explode=false,name=id"`
+	UpdateAppRequestInput *shared.UpdateAppRequestInput `request:"mediaType=application/json"`
+	ID                    string                        `pathParam:"style=simple,explode=false,name=id"`
+}
+
+func (o *C1APIAppV1AppsUpdateRequest) GetUpdateAppRequestInput() *shared.UpdateAppRequestInput {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateAppRequestInput
+}
+
+func (o *C1APIAppV1AppsUpdateRequest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
 }
 
 type C1APIAppV1AppsUpdateResponse struct {
 	ContentType string
 	StatusCode  int
 	RawResponse *http.Response
-	// Successful response
+	// Returns the updated app's new values.
 	UpdateAppResponse *shared.UpdateAppResponse
+}
+
+func (o *C1APIAppV1AppsUpdateResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppsUpdateResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppsUpdateResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppsUpdateResponse) GetUpdateAppResponse() *shared.UpdateAppResponse {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateAppResponse
 }

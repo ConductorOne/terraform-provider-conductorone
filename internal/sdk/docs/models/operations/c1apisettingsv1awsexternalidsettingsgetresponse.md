@@ -1,0 +1,11 @@
+# C1APISettingsV1AWSExternalIDSettingsGetResponse
+
+
+## Fields
+
+| Field                                                                               | Type                                                                                | Required                                                                            | Description                                                                         |
+| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `ContentType`                                                                       | *string*                                                                            | :heavy_check_mark:                                                                  | N/A                                                                                 |
+| `GetAWSExternalIDResponse`                                                          | [*shared.GetAWSExternalIDResponse](../../models/shared/getawsexternalidresponse.md) | :heavy_minus_sign:                                                                  | Successful response                                                                 |
+| `StatusCode`                                                                        | *int*                                                                               | :heavy_check_mark:                                                                  | N/A                                                                                 |
+| `RawResponse`                                                                       | [*http.Response](https://pkg.go.dev/net/http#Response)                              | :heavy_minus_sign:                                                                  | N/A                                                                                 |

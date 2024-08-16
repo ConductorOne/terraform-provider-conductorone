@@ -2,17 +2,23 @@
 
 package shared
 
-// The WebhooksServiceUpdateRequest message contains the webhook object to update and a field mask to indicate which fields to update. It uses URL value for input.
-type WebhooksServiceUpdateRequest struct {
+// WebhooksServiceUpdateRequestInput - The WebhooksServiceUpdateRequest message contains the webhook object to update and a field mask to indicate which fields to update. It uses URL value for input.
+type WebhooksServiceUpdateRequestInput struct {
 	// The Webhook message.
-	Webhook *WebhookInput `json:"webhook,omitempty"`
-	// FIXME(mstanbCO): Manually added!
-	UpdateMask string `json:"update_mask,omitempty"`
+	Webhook    *WebhookInput `json:"webhook,omitempty"`
+	UpdateMask *string       `json:"updateMask,omitempty"`
 }
 
-func (o *WebhooksServiceUpdateRequest) GetWebhook() *WebhookInput {
+func (o *WebhooksServiceUpdateRequestInput) GetWebhook() *WebhookInput {
 	if o == nil {
 		return nil
 	}
 	return o.Webhook
+}
+
+func (o *WebhooksServiceUpdateRequestInput) GetUpdateMask() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateMask
 }

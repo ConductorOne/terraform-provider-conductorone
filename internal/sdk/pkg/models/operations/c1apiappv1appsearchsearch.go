@@ -3,14 +3,42 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1AppSearchSearchResponse struct {
 	ContentType string
-	// Successful response
+	// The SearchAppsResponse message contains a list of results and a nextPageToken if applicable.
 	SearchAppsResponse *shared.SearchAppsResponse
 	StatusCode         int
 	RawResponse        *http.Response
+}
+
+func (o *C1APIAppV1AppSearchSearchResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppSearchSearchResponse) GetSearchAppsResponse() *shared.SearchAppsResponse {
+	if o == nil {
+		return nil
+	}
+	return o.SearchAppsResponse
+}
+
+func (o *C1APIAppV1AppSearchSearchResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppSearchSearchResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

@@ -2,17 +2,94 @@
 
 package shared
 
-// TaskType - The TaskType message.
+// TaskType - Task Type provides configuration for the type of task: certify, grant, or revoke
 //
 // This message contains a oneof named task_type. Only a single field of the following list may be set at a time:
 //   - grant
 //   - revoke
 //   - certify
+//   - offboarding
 type TaskType struct {
-	// The TaskTypeCertify message.
-	TaskTypeCertify *TaskTypeCertify `json:"certify,omitempty"`
-	// The TaskTypeGrant message.
+	// The TaskTypeCertify message indicates that a task is a certify task and all related details.
+	TaskTypeCertify *TaskTypeCertify1 `json:"certify,omitempty"`
+	// The TaskTypeGrant message indicates that a task is a grant task and all related details.
 	TaskTypeGrant *TaskTypeGrant `json:"grant,omitempty"`
-	// The TaskTypeRevoke message.
+	// The TaskTypeOffboarding message.
+	TaskTypeOffboarding *TaskTypeOffboarding1 `json:"offboarding,omitempty"`
+	// The TaskTypeRevoke message indicates that a task is a revoke task and all related details.
 	TaskTypeRevoke *TaskTypeRevoke `json:"revoke,omitempty"`
+}
+
+func (o *TaskType) GetTaskTypeCertify() *TaskTypeCertify1 {
+	if o == nil {
+		return nil
+	}
+	return o.TaskTypeCertify
+}
+
+func (o *TaskType) GetTaskTypeGrant() *TaskTypeGrant {
+	if o == nil {
+		return nil
+	}
+	return o.TaskTypeGrant
+}
+
+func (o *TaskType) GetTaskTypeOffboarding() *TaskTypeOffboarding1 {
+	if o == nil {
+		return nil
+	}
+	return o.TaskTypeOffboarding
+}
+
+func (o *TaskType) GetTaskTypeRevoke() *TaskTypeRevoke {
+	if o == nil {
+		return nil
+	}
+	return o.TaskTypeRevoke
+}
+
+// TaskTypeInput - Task Type provides configuration for the type of task: certify, grant, or revoke
+//
+// This message contains a oneof named task_type. Only a single field of the following list may be set at a time:
+//   - grant
+//   - revoke
+//   - certify
+//   - offboarding
+type TaskTypeInput struct {
+	// The TaskTypeCertify message indicates that a task is a certify task and all related details.
+	TaskTypeCertify *TaskTypeCertify `json:"certify,omitempty"`
+	// The TaskTypeGrant message indicates that a task is a grant task and all related details.
+	TaskTypeGrant *TaskTypeGrantInput `json:"grant,omitempty"`
+	// The TaskTypeOffboarding message.
+	TaskTypeOffboarding *TaskTypeOffboarding `json:"offboarding,omitempty"`
+	// The TaskTypeRevoke message indicates that a task is a revoke task and all related details.
+	TaskTypeRevoke *TaskTypeRevokeInput `json:"revoke,omitempty"`
+}
+
+func (o *TaskTypeInput) GetTaskTypeCertify() *TaskTypeCertify {
+	if o == nil {
+		return nil
+	}
+	return o.TaskTypeCertify
+}
+
+func (o *TaskTypeInput) GetTaskTypeGrant() *TaskTypeGrantInput {
+	if o == nil {
+		return nil
+	}
+	return o.TaskTypeGrant
+}
+
+func (o *TaskTypeInput) GetTaskTypeOffboarding() *TaskTypeOffboarding {
+	if o == nil {
+		return nil
+	}
+	return o.TaskTypeOffboarding
+}
+
+func (o *TaskTypeInput) GetTaskTypeRevoke() *TaskTypeRevokeInput {
+	if o == nil {
+		return nil
+	}
+	return o.TaskTypeRevoke
 }

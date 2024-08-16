@@ -2,6 +2,6 @@
 
 package shared
 
-// DeleteAppResponse - The DeleteAppResponse message.
+// DeleteAppResponse - Empty response body. Status code indicates success.
 type DeleteAppResponse struct {
 }

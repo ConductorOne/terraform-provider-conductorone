@@ -2,7 +2,7 @@
 
 package shared
 
-// The WebhooksServiceCreateRequest message.
+// WebhooksServiceCreateRequest - The WebhooksServiceCreateRequest message.
 type WebhooksServiceCreateRequest struct {
 	// The description field.
 	Description *string `json:"description,omitempty"`

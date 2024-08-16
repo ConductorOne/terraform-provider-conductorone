@@ -3,14 +3,35 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1AppEntitlementsUpdateRequest struct {
-	UpdateAppEntitlementRequest *shared.UpdateAppEntitlementRequest `request:"mediaType=application/json"`
-	AppID                       string                              `pathParam:"style=simple,explode=false,name=app_id"`
-	ID                          string                              `pathParam:"style=simple,explode=false,name=id"`
+	UpdateAppEntitlementRequestInput *shared.UpdateAppEntitlementRequestInput `request:"mediaType=application/json"`
+	AppID                            string                                   `pathParam:"style=simple,explode=false,name=app_id"`
+	ID                               string                                   `pathParam:"style=simple,explode=false,name=id"`
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateRequest) GetUpdateAppEntitlementRequestInput() *shared.UpdateAppEntitlementRequestInput {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateAppEntitlementRequestInput
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateRequest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
 }
 
 type C1APIAppV1AppEntitlementsUpdateResponse struct {
@@ -19,4 +40,32 @@ type C1APIAppV1AppEntitlementsUpdateResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	UpdateAppEntitlementResponse *shared.UpdateAppEntitlementResponse
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
+}
+
+func (o *C1APIAppV1AppEntitlementsUpdateResponse) GetUpdateAppEntitlementResponse() *shared.UpdateAppEntitlementResponse {
+	if o == nil {
+		return nil
+	}
+	return o.UpdateAppEntitlementResponse
 }

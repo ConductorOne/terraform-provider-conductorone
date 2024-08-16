@@ -9,3 +9,17 @@ type AppEntitlementRef struct {
 	// The id field.
 	ID *string `json:"id,omitempty"`
 }
+
+func (o *AppEntitlementRef) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
+}
+
+func (o *AppEntitlementRef) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}

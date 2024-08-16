@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-// ApprovalInstanceState - The state field.
+// ApprovalInstanceState - The state of the approval instance
 type ApprovalInstanceState string
 
 const (
@@ -44,7 +44,7 @@ func (e *ApprovalInstanceState) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// ApprovalInstance - The ApprovalInstance message.
+// ApprovalInstance - The approval instance object describes the way a policy step should be approved as well as its outcomes and state.
 //
 // This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
 //   - approved
@@ -62,18 +62,69 @@ type ApprovalInstance struct {
 	//   - group
 	//   - self
 	//   - entitlementOwners
+	//   - expression
+	//   - webhook
 	//
 	Approval *Approval `json:"approval,omitempty"`
-	// The ApprovedAction message.
+	// The approved action indicates that the approvalinstance had an outcome of approved.
 	ApprovedAction *ApprovedAction `json:"approved,omitempty"`
-	// The DeniedAction message.
+	// The denied action indicates that the c1.api.policy.v1.ApprovalInstance had an outcome of denied.
 	DeniedAction *DeniedAction `json:"denied,omitempty"`
-	// The ReassignedAction message.
+	// The ReassignedAction object describes the outcome of a policy step that has been reassigned.
 	ReassignedAction *ReassignedAction `json:"reassigned,omitempty"`
-	// The ReassignedByErrorAction message.
+	// The ReassignedByErrorAction object describes the outcome of a policy step that has been reassigned because it had an error provisioning.
 	ReassignedByErrorAction *ReassignedByErrorAction `json:"reassignedByError,omitempty"`
-	// The RestartAction message.
+	// The restart action describes the outcome of policy steps for when the task was restarted. This can be applied to multiple steps since restart skips all pending next steps.
 	RestartAction *RestartAction `json:"restarted,omitempty"`
-	// The state field.
+	// The state of the approval instance
 	State *ApprovalInstanceState `json:"state,omitempty"`
+}
+
+func (o *ApprovalInstance) GetApproval() *Approval {
+	if o == nil {
+		return nil
+	}
+	return o.Approval
+}
+
+func (o *ApprovalInstance) GetApprovedAction() *ApprovedAction {
+	if o == nil {
+		return nil
+	}
+	return o.ApprovedAction
+}
+
+func (o *ApprovalInstance) GetDeniedAction() *DeniedAction {
+	if o == nil {
+		return nil
+	}
+	return o.DeniedAction
+}
+
+func (o *ApprovalInstance) GetReassignedAction() *ReassignedAction {
+	if o == nil {
+		return nil
+	}
+	return o.ReassignedAction
+}
+
+func (o *ApprovalInstance) GetReassignedByErrorAction() *ReassignedByErrorAction {
+	if o == nil {
+		return nil
+	}
+	return o.ReassignedByErrorAction
+}
+
+func (o *ApprovalInstance) GetRestartAction() *RestartAction {
+	if o == nil {
+		return nil
+	}
+	return o.RestartAction
+}
+
+func (o *ApprovalInstance) GetState() *ApprovalInstanceState {
+	if o == nil {
+		return nil
+	}
+	return o.State
 }

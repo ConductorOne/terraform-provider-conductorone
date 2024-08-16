@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAttributeV1AttributesDeleteAttributeValueRequest struct {
@@ -12,10 +12,52 @@ type C1APIAttributeV1AttributesDeleteAttributeValueRequest struct {
 	ID                          string                              `pathParam:"style=simple,explode=false,name=id"`
 }
 
+func (o *C1APIAttributeV1AttributesDeleteAttributeValueRequest) GetDeleteAttributeValueRequest() *shared.DeleteAttributeValueRequest {
+	if o == nil {
+		return nil
+	}
+	return o.DeleteAttributeValueRequest
+}
+
+func (o *C1APIAttributeV1AttributesDeleteAttributeValueRequest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
 type C1APIAttributeV1AttributesDeleteAttributeValueResponse struct {
 	ContentType string
-	// Successful response
+	// DeleteAttributeValueResponse is the empty response for deleting an attribute value.
 	DeleteAttributeValueResponse *shared.DeleteAttributeValueResponse
 	StatusCode                   int
 	RawResponse                  *http.Response
+}
+
+func (o *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetDeleteAttributeValueResponse() *shared.DeleteAttributeValueResponse {
+	if o == nil {
+		return nil
+	}
+	return o.DeleteAttributeValueResponse
+}
+
+func (o *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

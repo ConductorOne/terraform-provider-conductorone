@@ -3,20 +3,69 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1ConnectorServiceUpdateRequest struct {
-	ConnectorServiceUpdateRequest *shared.ConnectorServiceUpdateRequest `request:"mediaType=application/json"`
-	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
-	ID                            string                                `pathParam:"style=simple,explode=false,name=id"`
+	ConnectorServiceUpdateRequestInput *shared.ConnectorServiceUpdateRequestInput `request:"mediaType=application/json"`
+	AppID                              string                                     `pathParam:"style=simple,explode=false,name=app_id"`
+	ID                                 string                                     `pathParam:"style=simple,explode=false,name=id"`
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateRequest) GetConnectorServiceUpdateRequestInput() *shared.ConnectorServiceUpdateRequestInput {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceUpdateRequestInput
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateRequest) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
 }
 
 type C1APIAppV1ConnectorServiceUpdateResponse struct {
-	// Successful response
+	// ConnectorServiceUpdateResponse is the response returned by the update method.
 	ConnectorServiceUpdateResponse *shared.ConnectorServiceUpdateResponse
 	ContentType                    string
 	StatusCode                     int
 	RawResponse                    *http.Response
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetConnectorServiceUpdateResponse() *shared.ConnectorServiceUpdateResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceUpdateResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1ConnectorServiceUpdateResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

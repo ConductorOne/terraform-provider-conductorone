@@ -9,3 +9,17 @@ type CreateAttributeValueRequest struct {
 	// The value field.
 	Value *string `json:"value,omitempty"`
 }
+
+func (o *CreateAttributeValueRequest) GetAttributeTypeID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AttributeTypeID
+}
+
+func (o *CreateAttributeValueRequest) GetValue() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Value
+}

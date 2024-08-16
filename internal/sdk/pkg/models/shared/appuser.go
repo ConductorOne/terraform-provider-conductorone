@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// AppUserAppUserType - The appUserType field.
+// AppUserAppUserType - The appplication user type. Type can be user, system or service.
 type AppUserAppUserType string
 
 const (
@@ -42,24 +42,150 @@ func (e *AppUserAppUserType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// AppUser - The AppUser message.
+// AppUserInput - Application User that represents an account in the application.
+type AppUserInput struct {
+	// The satus of the applicaiton user.
+	AppUserStatus *AppUserStatus1 `json:"status,omitempty"`
+	// The appplication user type. Type can be user, system or service.
+	AppUserType *AppUserAppUserType `json:"appUserType,omitempty"`
+}
+
+func (o *AppUserInput) GetAppUserStatus() *AppUserStatus1 {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserStatus
+}
+
+func (o *AppUserInput) GetAppUserType() *AppUserAppUserType {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserType
+}
+
+// AppUser - Application User that represents an account in the application.
 type AppUser struct {
-	// The AppUserStatus message.
+	// The satus of the applicaiton user.
 	AppUserStatus *AppUserStatus `json:"status,omitempty"`
-	// The appId field.
+	// The ID of the application.
 	AppID *string `json:"appId,omitempty"`
-	// The appUserType field.
+	// The appplication user type. Type can be user, system or service.
 	AppUserType *AppUserAppUserType `json:"appUserType,omitempty"`
 	CreatedAt   *time.Time          `json:"createdAt,omitempty"`
 	DeletedAt   *time.Time          `json:"deletedAt,omitempty"`
-	// The displayName field.
+	// The display name of the application user.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The email field.
+	// The email field of the application user.
 	Email *string `json:"email,omitempty"`
-	// The id field.
+	// The emails field of the application user.
+	Emails []string `json:"emails,omitempty"`
+	// A unique idenditfier of the application user.
 	ID *string `json:"id,omitempty"`
-	// The identityUserId field.
+	// The conductor one user ID of the account owner.
 	IdentityUserID *string                `json:"identityUserId,omitempty"`
 	Profile        map[string]interface{} `json:"profile,omitempty"`
 	UpdatedAt      *time.Time             `json:"updatedAt,omitempty"`
+	// The username field of the application user.
+	Username *string `json:"username,omitempty"`
+	// The usernames field of the application user.
+	Usernames []string `json:"usernames,omitempty"`
+}
+
+func (o *AppUser) GetAppUserStatus() *AppUserStatus {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserStatus
+}
+
+func (o *AppUser) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
+}
+
+func (o *AppUser) GetAppUserType() *AppUserAppUserType {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserType
+}
+
+func (o *AppUser) GetCreatedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
+}
+
+func (o *AppUser) GetDeletedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.DeletedAt
+}
+
+func (o *AppUser) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *AppUser) GetEmail() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Email
+}
+
+func (o *AppUser) GetEmails() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Emails
+}
+
+func (o *AppUser) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AppUser) GetIdentityUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IdentityUserID
+}
+
+func (o *AppUser) GetProfile() map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.Profile
+}
+
+func (o *AppUser) GetUpdatedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *AppUser) GetUsername() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Username
+}
+
+func (o *AppUser) GetUsernames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Usernames
 }

@@ -3,14 +3,42 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIPolicyV1PoliciesCreateResponse struct {
 	ContentType string
-	// Successful response
+	// The CreatePolicyResponse message contains the created policy object.
 	CreatePolicyResponse *shared.CreatePolicyResponse
 	StatusCode           int
 	RawResponse          *http.Response
+}
+
+func (o *C1APIPolicyV1PoliciesCreateResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIPolicyV1PoliciesCreateResponse) GetCreatePolicyResponse() *shared.CreatePolicyResponse {
+	if o == nil {
+		return nil
+	}
+	return o.CreatePolicyResponse
+}
+
+func (o *C1APIPolicyV1PoliciesCreateResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIPolicyV1PoliciesCreateResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

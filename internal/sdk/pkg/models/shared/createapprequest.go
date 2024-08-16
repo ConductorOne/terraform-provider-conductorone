@@ -2,20 +2,69 @@
 
 package shared
 
-// CreateAppRequest - The CreateAppRequest message.
+// CreateAppRequest - The CreateAppRequest message is used to create a new app.
 type CreateAppRequest struct {
-	// The certifyPolicyId field.
+	// Creates the app with this certify policy.
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
-	// The description field.
+	// Creates the app with this description.
 	Description *string `json:"description,omitempty"`
-	// The displayName field.
+	// Creates the app with this display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The grantPolicyId field.
+	// Creates the app with this grant policy.
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
-	// The monthlyCostUsd field.
-	MonthlyCostUsd *float64 `json:"monthlyCostUsd,omitempty"`
-	// The owners field.
+	// Creates the app with this monthly cost per seat.
+	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
+	// Creates the app with this array of owners.
 	Owners []string `json:"owners,omitempty"`
-	// The revokePolicyId field.
+	// Creates the app with this revoke policy.
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
+}
+
+func (o *CreateAppRequest) GetCertifyPolicyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertifyPolicyID
+}
+
+func (o *CreateAppRequest) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *CreateAppRequest) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *CreateAppRequest) GetGrantPolicyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.GrantPolicyID
+}
+
+func (o *CreateAppRequest) GetMonthlyCostUsd() *int {
+	if o == nil {
+		return nil
+	}
+	return o.MonthlyCostUsd
+}
+
+func (o *CreateAppRequest) GetOwners() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Owners
+}
+
+func (o *CreateAppRequest) GetRevokePolicyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RevokePolicyID
 }

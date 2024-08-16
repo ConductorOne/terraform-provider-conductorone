@@ -47,7 +47,7 @@ func (e *CreatePolicyRequestPolicyType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// The CreatePolicyRequest message is used to create a new policy.
+// CreatePolicyRequest - The CreatePolicyRequest message is used to create a new policy.
 type CreatePolicyRequest struct {
 	// The description of the new policy.
 	Description *string `json:"description,omitempty"`
@@ -63,4 +63,53 @@ type CreatePolicyRequest struct {
 	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
 	// The rules field.
 	Rules []Rule `json:"rules,omitempty"`
+}
+
+func (o *CreatePolicyRequest) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *CreatePolicyRequest) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *CreatePolicyRequest) GetPolicySteps() map[string]PolicySteps {
+	if o == nil {
+		return nil
+	}
+	return o.PolicySteps
+}
+
+func (o *CreatePolicyRequest) GetPolicyType() *CreatePolicyRequestPolicyType {
+	if o == nil {
+		return nil
+	}
+	return o.PolicyType
+}
+
+func (o *CreatePolicyRequest) GetPostActions() []PolicyPostActions {
+	if o == nil {
+		return nil
+	}
+	return o.PostActions
+}
+
+func (o *CreatePolicyRequest) GetReassignTasksToDelegates() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReassignTasksToDelegates
+}
+
+func (o *CreatePolicyRequest) GetRules() []Rule {
+	if o == nil {
+		return nil
+	}
+	return o.Rules
 }

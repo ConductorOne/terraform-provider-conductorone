@@ -2,6 +2,6 @@
 
 package shared
 
-// DirectoryServiceDeleteRequest - The DirectoryServiceDeleteRequest message.
+// DirectoryServiceDeleteRequest - DirectoryServiceDeleteRequest is the request message for deleting a directory. It uses URL values for input.
 type DirectoryServiceDeleteRequest struct {
 }

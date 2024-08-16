@@ -2,8 +2,15 @@
 
 package shared
 
-// GetRolesResponse - The GetRolesResponse message.
+// GetRolesResponse - The GetRolesResponse message contains the retrieved role.
 type GetRolesResponse struct {
-	// The Role message.
+	// Role is a role that can be assigned to a user in ConductorOne.
 	Role *Role `json:"role,omitempty"`
+}
+
+func (o *GetRolesResponse) GetRole() *Role {
+	if o == nil {
+		return nil
+	}
+	return o.Role
 }

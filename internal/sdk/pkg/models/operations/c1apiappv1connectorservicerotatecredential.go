@@ -3,8 +3,8 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1ConnectorServiceRotateCredentialRequest struct {
@@ -13,10 +13,59 @@ type C1APIAppV1ConnectorServiceRotateCredentialRequest struct {
 	ConnectorID                             string                                          `pathParam:"style=simple,explode=false,name=connector_id"`
 }
 
+func (o *C1APIAppV1ConnectorServiceRotateCredentialRequest) GetConnectorServiceRotateCredentialRequest() *shared.ConnectorServiceRotateCredentialRequest {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceRotateCredentialRequest
+}
+
+func (o *C1APIAppV1ConnectorServiceRotateCredentialRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
+}
+
+func (o *C1APIAppV1ConnectorServiceRotateCredentialRequest) GetConnectorID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ConnectorID
+}
+
 type C1APIAppV1ConnectorServiceRotateCredentialResponse struct {
-	// Successful response
+	// ConnectorServiceRotateCredentialResponse is the response returned by the rotate method.
 	ConnectorServiceRotateCredentialResponse *shared.ConnectorServiceRotateCredentialResponse
 	ContentType                              string
 	StatusCode                               int
 	RawResponse                              *http.Response
+}
+
+func (o *C1APIAppV1ConnectorServiceRotateCredentialResponse) GetConnectorServiceRotateCredentialResponse() *shared.ConnectorServiceRotateCredentialResponse {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorServiceRotateCredentialResponse
+}
+
+func (o *C1APIAppV1ConnectorServiceRotateCredentialResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1ConnectorServiceRotateCredentialResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1ConnectorServiceRotateCredentialResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

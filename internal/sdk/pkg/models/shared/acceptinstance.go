@@ -6,4 +6,13 @@ package shared
 //
 //	The instance is just a marker for it being copied into an active policy.
 type AcceptInstance struct {
+	// An optional message to include in the comments when a task is automatically accepted.
+	AcceptMessage *string `json:"acceptMessage,omitempty"`
+}
+
+func (o *AcceptInstance) GetAcceptMessage() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AcceptMessage
 }

@@ -2,66 +2,24 @@
 
 package shared
 
-import (
-	"encoding/json"
-)
-
-// TaskServiceCreateGrantResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type TaskServiceCreateGrantResponseExpanded struct {
-	// The type of the serialized message.
-	AtType *string `json:"@type,omitempty"`
-
-	AdditionalProperties interface{} `json:"-"`
-}
-type _TaskServiceCreateGrantResponseExpanded TaskServiceCreateGrantResponseExpanded
-
-func (c *TaskServiceCreateGrantResponseExpanded) UnmarshalJSON(bs []byte) error {
-	data := _TaskServiceCreateGrantResponseExpanded{}
-
-	if err := json.Unmarshal(bs, &data); err != nil {
-		return err
-	}
-	*c = TaskServiceCreateGrantResponseExpanded(data)
-
-	additionalFields := make(map[string]interface{})
-
-	if err := json.Unmarshal(bs, &additionalFields); err != nil {
-		return err
-	}
-	delete(additionalFields, "@type")
-
-	c.AdditionalProperties = additionalFields
-
-	return nil
-}
-
-func (c TaskServiceCreateGrantResponseExpanded) MarshalJSON() ([]byte, error) {
-	out := map[string]interface{}{}
-	bs, err := json.Marshal(_TaskServiceCreateGrantResponseExpanded(c))
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	bs, err = json.Marshal(c.AdditionalProperties)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal([]byte(bs), &out); err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(out)
-}
-
-// TaskServiceCreateGrantResponse - The TaskServiceCreateGrantResponse message.
+// TaskServiceCreateGrantResponse - The TaskServiceCreateGrantResponse returns a task view which has a task including JSONPATHs to the expanded items in the expanded array.
 type TaskServiceCreateGrantResponse struct {
-	// The TaskView message.
+	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
 	TaskView *TaskView `json:"taskView,omitempty"`
-	// The expanded field.
-	Expanded []TaskServiceCreateGrantResponseExpanded `json:"expanded,omitempty"`
+	// List of serialized related objects.
+	Expanded []map[string]interface{} `json:"expanded,omitempty"`
+}
+
+func (o *TaskServiceCreateGrantResponse) GetTaskView() *TaskView {
+	if o == nil {
+		return nil
+	}
+	return o.TaskView
+}
+
+func (o *TaskServiceCreateGrantResponse) GetExpanded() []map[string]interface{} {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
 }

@@ -2,24 +2,96 @@
 
 package shared
 
-// TaskView - The TaskView message.
+// TaskView - Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
 type TaskView struct {
-	// The Task message.
+	// A fully-fleged task object. Includes its policy, references to external apps, its type, its processing history, and more.
 	Task *Task `json:"task,omitempty"`
-	// The accessReviewPath field.
+	// JSONPATH expression indicating the location of the AccessReview object in the expanded array
 	AccessReviewPath *string `json:"accessReviewPath,omitempty"`
-	// The appPath field.
+	// JSONPATH expression indicating the location of the App object in the expanded array
 	AppPath *string `json:"appPath,omitempty"`
-	// The appUserPath field.
+	// JSONPATH expression indicating the location of the AppUser object in the expanded array
 	AppUserPath *string `json:"appUserPath,omitempty"`
-	// The createdByUserPath field.
+	// JSONPATH expression indicating the location of the object of the User that created the ticket in the expanded array
 	CreatedByUserPath *string `json:"createdByUserPath,omitempty"`
-	// The entitlementsPath field.
+	// JSONPATH expression indicating the location of the Entitlements objects in the expanded array
 	EntitlementsPath *string `json:"entitlementsPath,omitempty"`
-	// The identityUserPath field.
+	// JSONPATH expression indicating the location of the User object of the User that this task is targeting in the expanded array. This is the user that is the identity when the target of a task is an app user.
 	IdentityUserPath *string `json:"identityUserPath,omitempty"`
-	// The stepApproversPath field.
+	// JSONPATH expression indicating the location of the Insights objects in the expanded array
+	InsightsPath *string `json:"insightsPath,omitempty"`
+	// JSONPATH expression indicating the location of the StepApproverUsers objects in the expanded array
 	StepApproversPath *string `json:"stepApproversPath,omitempty"`
-	// The userPath field.
+	// JSONPATH expression indicating the location of the User object in the expanded array. This is the user that is a direct target of the ticket without a specific relationship to a potentially non-existent app user.
 	UserPath *string `json:"userPath,omitempty"`
+}
+
+func (o *TaskView) GetTask() *Task {
+	if o == nil {
+		return nil
+	}
+	return o.Task
+}
+
+func (o *TaskView) GetAccessReviewPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AccessReviewPath
+}
+
+func (o *TaskView) GetAppPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppPath
+}
+
+func (o *TaskView) GetAppUserPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserPath
+}
+
+func (o *TaskView) GetCreatedByUserPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedByUserPath
+}
+
+func (o *TaskView) GetEntitlementsPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.EntitlementsPath
+}
+
+func (o *TaskView) GetIdentityUserPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IdentityUserPath
+}
+
+func (o *TaskView) GetInsightsPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InsightsPath
+}
+
+func (o *TaskView) GetStepApproversPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StepApproversPath
+}
+
+func (o *TaskView) GetUserPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.UserPath
 }

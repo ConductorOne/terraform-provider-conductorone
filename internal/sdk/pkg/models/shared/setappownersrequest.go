@@ -7,3 +7,10 @@ type SetAppOwnersRequest struct {
 	// The user_ids field for the users to set as an owner of the app.
 	UserIds []string `json:"userIds,omitempty"`
 }
+
+func (o *SetAppOwnersRequest) GetUserIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.UserIds
+}

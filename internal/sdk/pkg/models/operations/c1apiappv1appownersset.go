@@ -3,13 +3,27 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"net/http"
+	"openapi/pkg/models/shared"
 )
 
 type C1APIAppV1AppOwnersSetRequest struct {
 	SetAppOwnersRequest *shared.SetAppOwnersRequest `request:"mediaType=application/json"`
 	AppID               string                      `pathParam:"style=simple,explode=false,name=app_id"`
+}
+
+func (o *C1APIAppV1AppOwnersSetRequest) GetSetAppOwnersRequest() *shared.SetAppOwnersRequest {
+	if o == nil {
+		return nil
+	}
+	return o.SetAppOwnersRequest
+}
+
+func (o *C1APIAppV1AppOwnersSetRequest) GetAppID() string {
+	if o == nil {
+		return ""
+	}
+	return o.AppID
 }
 
 type C1APIAppV1AppOwnersSetResponse struct {
@@ -18,4 +32,32 @@ type C1APIAppV1AppOwnersSetResponse struct {
 	SetAppOwnersResponse *shared.SetAppOwnersResponse
 	StatusCode           int
 	RawResponse          *http.Response
+}
+
+func (o *C1APIAppV1AppOwnersSetResponse) GetContentType() string {
+	if o == nil {
+		return ""
+	}
+	return o.ContentType
+}
+
+func (o *C1APIAppV1AppOwnersSetResponse) GetSetAppOwnersResponse() *shared.SetAppOwnersResponse {
+	if o == nil {
+		return nil
+	}
+	return o.SetAppOwnersResponse
+}
+
+func (o *C1APIAppV1AppOwnersSetResponse) GetStatusCode() int {
+	if o == nil {
+		return 0
+	}
+	return o.StatusCode
+}
+
+func (o *C1APIAppV1AppOwnersSetResponse) GetRawResponse() *http.Response {
+	if o == nil {
+		return nil
+	}
+	return o.RawResponse
 }

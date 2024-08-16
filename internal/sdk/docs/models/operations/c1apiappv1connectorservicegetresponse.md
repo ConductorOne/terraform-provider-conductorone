@@ -1,0 +1,11 @@
+# C1APIAppV1ConnectorServiceGetResponse
+
+
+## Fields
+
+| Field                                                                                     | Type                                                                                      | Required                                                                                  | Description                                                                               |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `ConnectorServiceGetResponse`                                                             | [*shared.ConnectorServiceGetResponse](../../models/shared/connectorservicegetresponse.md) | :heavy_minus_sign:                                                                        | The ConnectorServiceGetResponse message contains the connectorView, and an expand mask.   |
+| `ContentType`                                                                             | *string*                                                                                  | :heavy_check_mark:                                                                        | N/A                                                                                       |
+| `StatusCode`                                                                              | *int*                                                                                     | :heavy_check_mark:                                                                        | N/A                                                                                       |
+| `RawResponse`                                                                             | [*http.Response](https://pkg.go.dev/net/http#Response)                                    | :heavy_minus_sign:                                                                        | N/A                                                                                       |

@@ -1,0 +1,11 @@
+# C1APIAttributeV1AttributesDeleteAttributeValueResponse
+
+
+## Fields
+
+| Field                                                                                       | Type                                                                                        | Required                                                                                    | Description                                                                                 |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `ContentType`                                                                               | *string*                                                                                    | :heavy_check_mark:                                                                          | N/A                                                                                         |
+| `DeleteAttributeValueResponse`                                                              | [*shared.DeleteAttributeValueResponse](../../models/shared/deleteattributevalueresponse.md) | :heavy_minus_sign:                                                                          | DeleteAttributeValueResponse is the empty response for deleting an attribute value.         |
+| `StatusCode`                                                                                | *int*                                                                                       | :heavy_check_mark:                                                                          | N/A                                                                                         |
+| `RawResponse`                                                                               | [*http.Response](https://pkg.go.dev/net/http#Response)                                      | :heavy_minus_sign:                                                                          | N/A                                                                                         |

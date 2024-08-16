@@ -1,0 +1,12 @@
+# RequestCatalogManagementServiceUpdateRequestInput
+
+Update a request catalog object by ID.
+
+
+## Fields
+
+| Field                                                                                                           | Type                                                                                                            | Required                                                                                                        | Description                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `RequestCatalog`                                                                                                | [*RequestCatalogInput](../../models/shared/requestcataloginput.md)                                              | :heavy_minus_sign:                                                                                              | The RequestCatalog is used for managing which entitlements are requestable, and who can request them.           |
+| `RequestCatalogExpandMask`                                                                                      | [*RequestCatalogExpandMask](../../models/shared/requestcatalogexpandmask.md)                                    | :heavy_minus_sign:                                                                                              | The RequestCatalogExpandMask includes the paths in the catalog view to expand in the return value of this call. |
+| `UpdateMask`                                                                                                    | **string*                                                                                                       | :heavy_minus_sign:                                                                                              | N/A                                                                                                             |

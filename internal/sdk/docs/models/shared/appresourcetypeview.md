@@ -1,0 +1,11 @@
+# AppResourceTypeView
+
+The AppResourceTypeView message.
+
+
+## Fields
+
+| Field                                                                                                                    | Type                                                                                                                     | Required                                                                                                                 | Description                                                                                                              |
+| ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `AppResourceType`                                                                                                        | [*AppResourceType](../../models/shared/appresourcetype.md)                                                               | :heavy_minus_sign:                                                                                                       | The AppResourceType is referenced by an app entitlement defining its resource types. Commonly things like Group or Role. |
+| `AppPath`                                                                                                                | **string*                                                                                                                | :heavy_minus_sign:                                                                                                       | JSONPATH expression indicating the location of the App object in the  array                                              |
