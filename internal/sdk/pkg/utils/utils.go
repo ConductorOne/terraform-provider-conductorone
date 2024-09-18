@@ -150,3 +150,19 @@ func populateFromGlobals(fieldType reflect.StructField, valType reflect.Value, p
 
 	return valType
 }
+
+func isNil(typ reflect.Type, val reflect.Value) bool {
+	// `reflect.TypeOf(nil) == nil` so calling typ.Kind() will cause a nil pointer
+	// dereference panic. Catch it and return early.
+	// https://github.com/golang/go/issues/51649
+	// https://github.com/golang/go/issues/54208
+	if typ == nil {
+		return true
+	}
+
+	if typ.Kind() == reflect.Ptr || typ.Kind() == reflect.Map || typ.Kind() == reflect.Slice || typ.Kind() == reflect.Interface {
+		return val.IsNil()
+	}
+
+	return false
+}

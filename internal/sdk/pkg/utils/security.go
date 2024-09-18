@@ -290,3 +290,16 @@ func parseSecurityTag(field reflect.StructField) *securityTag {
 		SubType: securitySubType,
 	}
 }
+
+func trueReflectValue(val reflect.Value) reflect.Value {
+	kind := val.Type().Kind()
+	for kind == reflect.Interface || kind == reflect.Ptr {
+		innerVal := val.Elem()
+		if !innerVal.IsValid() {
+			break
+		}
+		val = innerVal
+		kind = val.Type().Kind()
+	}
+	return val
+}
