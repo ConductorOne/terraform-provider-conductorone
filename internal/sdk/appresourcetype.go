@@ -6,10 +6,10 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/errors"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/utils"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/errors"
 	"io"
 	"net/http"
 )
