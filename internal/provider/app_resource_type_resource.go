@@ -8,16 +8,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -37,13 +37,13 @@ type AppResourceTypeResource struct {
 
 // AppResourceTypeResourceModel describes the resource data model.
 type AppResourceTypeResourceModel struct {
-	AppID                                    types.String              `tfsdk:"app_id"`
-	CreatedAt                                types.String              `tfsdk:"created_at"`
-	DeletedAt                                types.String              `tfsdk:"deleted_at"`
-	DisplayName                              types.String              `tfsdk:"display_name"`
-	ID                                       types.String              `tfsdk:"id"`
-	ResourceType                             types.String              `tfsdk:"resource_type"`
-	UpdatedAt                                types.String              `tfsdk:"updated_at"`
+	AppID        types.String `tfsdk:"app_id"`
+	CreatedAt    types.String `tfsdk:"created_at"`
+	DeletedAt    types.String `tfsdk:"deleted_at"`
+	DisplayName  types.String `tfsdk:"display_name"`
+	ID           types.String `tfsdk:"id"`
+	ResourceType types.String `tfsdk:"resource_type"`
+	UpdatedAt    types.String `tfsdk:"updated_at"`
 }
 
 func (r *AppResourceTypeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -74,11 +74,11 @@ func (r *AppResourceTypeResource) Schema(ctx context.Context, req resource.Schem
 				Description: `The unique ID for the app resource type.`,
 			},
 			"display_name": schema.StringAttribute{
-				Optional: true,
+				Required:    true,
 				Description: `The display name field.`,
 			},
 			"resource_type": schema.StringAttribute{
-				Optional: true,
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
@@ -287,8 +287,10 @@ func (r *AppResourceTypeResource) Update(ctx context.Context, req resource.Updat
 
 	var updateManuallyManagedResourceTypeRequest *shared.UpdateManuallyManagedResourceTypeRequest
 	appResourceType := data.ToSharedAppResourceTypeInput()
+	updateMask := "displayName"
 	updateManuallyManagedResourceTypeRequest = &shared.UpdateManuallyManagedResourceTypeRequest{
 		AppResourceType: appResourceType,
+		UpdateMask:      &updateMask,
 	}
 	request := operations.C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest{
 		AppID:                                    appID,

@@ -3,8 +3,8 @@
 package provider
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"time"
 )
 

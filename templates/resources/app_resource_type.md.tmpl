@@ -1,0 +1,19 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This resource allows you to create and manage an app resource type.
+When creating an app resource type you must provide an app_id, display_name and resource_type.
+
+## Example Usage
+
+{{ tffile "examples/resources/conductorone_app_resource_type/app_resource_type.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}
