@@ -132,6 +132,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewAppEntitlementOwnerResource,
 		NewAppOwnerResource,
 		NewWebhookResource,
+		NewAppResourceResource,
 	}
 
 	resources = append(resources, getIntegrationResources()...)
