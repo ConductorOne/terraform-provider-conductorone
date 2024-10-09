@@ -1,13 +1,14 @@
 package provider
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"time"
+
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlement {
+func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementInput {
 	provisionPolicy := &shared.ProvisionPolicy{}
 	if r.ProvisionPolicy != nil {
 		if r.ProvisionPolicy.ConnectorProvision != nil {
@@ -177,7 +178,7 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlement {
 		slug = nil
 	}
 
-	out := shared.AppEntitlement{
+	out := shared.AppEntitlementInput{
 		ProvisionPolicy:             provisionPolicy,
 		Alias:                       alias,
 		AppID:                       appId1,
