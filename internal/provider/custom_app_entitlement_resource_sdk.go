@@ -79,11 +79,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 		grantPolicyID = nil
 	}
 	overrideAccessRequestsDefaults := new(bool)
-	if !r.OverrideAccessRequestsDefaults.IsUnknown() && !r.OverrideAccessRequestsDefaults.IsNull() {
-		*overrideAccessRequestsDefaults = r.OverrideAccessRequestsDefaults.ValueBool()
-	} else {
-		overrideAccessRequestsDefaults = nil
-	}
+	*overrideAccessRequestsDefaults = true
 	var provisionPolicy *shared.ProvisionPolicy
 	if r.ProvisionPolicy != nil {
 		var connectorProvision *shared.ConnectorProvision

@@ -181,7 +181,6 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			},
 			"override_access_requests_defaults": schema.BoolAttribute{
 				Computed:    true,
-				Optional:    true,
 				Description: `The overrideAccessRequestsDefaults field.`,
 			},
 			"provision_policy": schema.SingleNestedAttribute{
@@ -525,11 +524,7 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		appEntitlementExpandMask = &shared.AppEntitlementExpandMask{}
 	}
 	overrideAccessRequestsDefaults := new(bool)
-	if !data.OverrideAccessRequestsDefaults.IsUnknown() && !data.OverrideAccessRequestsDefaults.IsNull() {
-		*overrideAccessRequestsDefaults = data.OverrideAccessRequestsDefaults.ValueBool()
-	} else {
-		overrideAccessRequestsDefaults = nil
-	}
+	*overrideAccessRequestsDefaults = true
 
 	currentAppEntitlement, err := r.readAppEntitlementAndValidate(ctx, appID, id)
 	if err != nil {
