@@ -12,14 +12,13 @@ resource "conductorone_custom_app_entitlement" "custom_app_entitlement" {
       ]
     }
   }
-  risk_level_value_id               = data.conductorone_risk_level.high.id
-  slug                              = "test slug"
-  description                       = "test description"
-  compliance_framework_value_ids    = [data.conductorone_compliance_framework.soc2.id]
-  override_access_requests_defaults = true
-  certify_policy_id                 = "<certify_policy_id>"
-  grant_policy_id                   = "<grant_policy_id>"
-  purpose                           = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
-  revoke_policy_id                  = "<revoke_policy_id>"
-  duration_grant                    = "3601s"
+  risk_level_value_id            = data.conductorone_risk_level.high.id
+  slug                           = "test slug"
+  description                    = "test description"
+  compliance_framework_value_ids = [data.conductorone_compliance_framework.soc2.id]
+  certify_policy_id              = "<certify_policy_id>"
+  grant_policy_id                = "<grant_policy_id>"
+  purpose                        = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
+  revoke_policy_id               = "<revoke_policy_id>"
+  duration_grant                 = "3601s"
 }

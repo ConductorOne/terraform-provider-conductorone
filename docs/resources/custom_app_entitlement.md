@@ -33,16 +33,15 @@ resource "conductorone_custom_app_entitlement" "custom_app_entitlement" {
       ]
     }
   }
-  risk_level_value_id               = data.conductorone_risk_level.high.id
-  slug                              = "test slug"
-  description                       = "test description"
-  compliance_framework_value_ids    = [data.conductorone_compliance_framework.soc2.id]
-  override_access_requests_defaults = true
-  certify_policy_id                 = "<certify_policy_id>"
-  grant_policy_id                   = "<grant_policy_id>"
-  purpose                           = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
-  revoke_policy_id                  = "<revoke_policy_id>"
-  duration_grant                    = "3601s"
+  risk_level_value_id            = data.conductorone_risk_level.high.id
+  slug                           = "test slug"
+  description                    = "test description"
+  compliance_framework_value_ids = [data.conductorone_compliance_framework.soc2.id]
+  certify_policy_id              = "<certify_policy_id>"
+  grant_policy_id                = "<grant_policy_id>"
+  purpose                        = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
+  revoke_policy_id               = "<revoke_policy_id>"
+  duration_grant                 = "3601s"
 }
 ```
 
@@ -68,7 +67,6 @@ resource "conductorone_custom_app_entitlement" "custom_app_entitlement" {
 - `emergency_grant_enabled` (Boolean) The emergencyGrantEnabled field.
 - `emergency_grant_policy_id` (String) The emergencyGrantPolicyId field.
 - `grant_policy_id` (String) The grantPolicyId field.
-- `override_access_requests_defaults` (Boolean) The overrideAccessRequestsDefaults field.
 - `provision_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -92,6 +90,7 @@ This message contains a oneof named typ. Only a single field of the following li
 - `id` (String) The unique ID for the App Entitlement.
 - `is_automation_enabled` (Boolean) Flag to indicate whether automation (for adding users to entitlement based on rules) has been enabled.
 - `is_manually_managed` (Boolean) Flag to indicate if the app entitlement is manually managed.
+- `override_access_requests_defaults` (Boolean) The overrideAccessRequestsDefaults field.
 - `source_connector_ids` (Map of String) Map to tell us which connector the entitlement came from.
 - `system_builtin` (Boolean) This field indicates if this is a system builtin entitlement.
 - `updated_at` (String)
