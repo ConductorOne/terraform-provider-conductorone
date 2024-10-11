@@ -64,6 +64,7 @@ type ConductoroneAPI struct {
 	AppEntitlementOwners      *appEntitlementOwners
 	AppEntitlementUserBinding *appEntitlementUserBinding
 	AppEntitlements           *appEntitlements
+	AppEntitlementsProxy      *appEntitlementsProxy
 	AppOwners                 *appOwners
 	AppReport                 *appReport
 	AppReportAction           *appReportAction
@@ -183,6 +184,8 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.AppEntitlements = newAppEntitlements(sdk.sdkConfiguration)
 
 	sdk.AppEntitlementSearch = newAppEntitlementSearch(sdk.sdkConfiguration)
+
+	sdk.AppEntitlementsProxy = newAppEntitlementsProxy(sdk.sdkConfiguration)
 
 	sdk.AppOwners = newAppOwners(sdk.sdkConfiguration)
 
