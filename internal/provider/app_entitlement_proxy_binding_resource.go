@@ -6,12 +6,13 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
-	"github.com/hashicorp/terraform-plugin-framework/path"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -158,17 +159,13 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		return
 	}
 
-	var srcAppID string
-	srcAppID = data.SrcAppID.ValueString()
+	srcAppID := data.SrcAppID.ValueString()
 
-	var srcAppEntitlementID string
-	srcAppEntitlementID = data.SrcAppEntitlementID.ValueString()
+	srcAppEntitlementID := data.SrcAppEntitlementID.ValueString()
 
-	var dstAppEntitlementID string
-	dstAppEntitlementID = data.DstAppEntitlementID.ValueString()
+	dstAppEntitlementID := data.DstAppEntitlementID.ValueString()
 
-	var dstAppID string
-	dstAppID = data.DstAppID.ValueString()
+	dstAppID := data.DstAppID.ValueString()
 
 	createAppEntitlementProxyRequest := data.ToSharedCreateAppEntitlementProxyRequest()
 	request := operations.C1APIAppV1AppEntitlementsProxyCreateRequest{
@@ -200,17 +197,11 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		return
 	}
 	data.RefreshFromSharedAppEntitlementProxy(res.CreateAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)
-	var srcAppId1 string
-	srcAppId1 = data.SrcAppID.ValueString()
 
-	var srcAppEntitlementId1 string
-	srcAppEntitlementId1 = data.SrcAppEntitlementID.ValueString()
-
-	var dstAppId1 string
-	dstAppId1 = data.DstAppID.ValueString()
-
-	var dstAppEntitlementId1 string
-	dstAppEntitlementId1 = data.DstAppEntitlementID.ValueString()
+	srcAppId1 := data.SrcAppID.ValueString()
+	srcAppEntitlementId1 := data.SrcAppEntitlementID.ValueString()
+	dstAppId1 := data.DstAppID.ValueString()
+	dstAppEntitlementId1 := data.DstAppEntitlementID.ValueString()
 
 	request1 := operations.C1APIAppV1AppEntitlementsProxyGetRequest{
 		SrcAppID:            srcAppId1,
@@ -262,17 +253,10 @@ func (r *AppEntitlementProxyBindingResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	var srcAppID string
-	srcAppID = data.SrcAppID.ValueString()
-
-	var srcAppEntitlementID string
-	srcAppEntitlementID = data.SrcAppEntitlementID.ValueString()
-
-	var dstAppEntitlementID string
-	dstAppEntitlementID = data.DstAppEntitlementID.ValueString()
-
-	var dstAppID string
-	dstAppID = data.DstAppID.ValueString()
+	srcAppID := data.SrcAppID.ValueString()
+	srcAppEntitlementID := data.SrcAppEntitlementID.ValueString()
+	dstAppEntitlementID := data.DstAppEntitlementID.ValueString()
+	dstAppID := data.DstAppID.ValueString()
 
 	request := operations.C1APIAppV1AppEntitlementsProxyGetRequest{
 		SrcAppID:            srcAppID,
@@ -348,17 +332,10 @@ func (r *AppEntitlementProxyBindingResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	var srcAppID string
-	srcAppID = data.SrcAppID.ValueString()
-
-	var srcAppEntitlementID string
-	srcAppEntitlementID = data.SrcAppEntitlementID.ValueString()
-
-	var dstAppEntitlementID string
-	dstAppEntitlementID = data.DstAppEntitlementID.ValueString()
-
-	var dstAppID string
-	dstAppID = data.DstAppID.ValueString()
+	srcAppID := data.SrcAppID.ValueString()
+	srcAppEntitlementID := data.SrcAppEntitlementID.ValueString()
+	dstAppEntitlementID := data.DstAppEntitlementID.ValueString()
+	dstAppID := data.DstAppID.ValueString()
 
 	deleteAppEntitlementProxyRequest := data.ToSharedDeleteAppEntitlementProxyRequest()
 	request := operations.C1APIAppV1AppEntitlementsProxyDeleteRequest{
