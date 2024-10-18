@@ -134,6 +134,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewWebhookResource,
 		NewAppResourceResource,
 		NewAppResourceTypeResource,
+		NewCustomAppEntitlementResource,
 	}
 
 	resources = append(resources, getIntegrationResources()...)
@@ -152,6 +153,7 @@ func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasou
 		NewAwsExternalIDDataSource,
 		NewWebhookDataSource,
 		NewAppResourceTypeDataSource,
+		NewAppResourceDataSource,
 	}
 }
 

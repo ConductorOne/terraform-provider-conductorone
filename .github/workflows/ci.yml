@@ -12,6 +12,11 @@ on:
       - 'README.md'
       - 'website/*'
 
+permissions:
+  contents: read
+  pull-requests: read
+  checks: write
+
 jobs:
 
   build:
