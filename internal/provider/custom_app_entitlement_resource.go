@@ -6,12 +6,13 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
-	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -374,8 +375,7 @@ func (r *CustomAppEntitlementResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	appID := data.AppID.ValueString()
 
 	createAppEntitlementRequest := data.ToSharedCreateAppEntitlementRequest()
 	request := operations.C1APIAppV1AppEntitlementsCreateRequest{
@@ -403,11 +403,9 @@ func (r *CustomAppEntitlementResource) Create(ctx context.Context, req resource.
 		return
 	}
 	data.RefreshFromSharedAppEntitlement(res.CreateAppEntitlementResponse.AppEntitlementView.AppEntitlement)
-	var appId1 string
-	appId1 = data.AppID.ValueString()
+	appId1 := data.AppID.ValueString()
 
-	var id string
-	id = data.ID.ValueString()
+	id := data.ID.ValueString()
 
 	request1 := operations.C1APIAppV1AppEntitlementsGetRequest{
 		AppID: appId1,
@@ -457,11 +455,9 @@ func (r *CustomAppEntitlementResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	appID := data.AppID.ValueString()
 
-	var id string
-	id = data.ID.ValueString()
+	id := data.ID.ValueString()
 
 	request := operations.C1APIAppV1AppEntitlementsGetRequest{
 		AppID: appID,
@@ -511,11 +507,9 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	appID := data.AppID.ValueString()
 
-	var id string
-	id = data.ID.ValueString()
+	id := data.ID.ValueString()
 
 	var updateAppEntitlementRequest *shared.UpdateAppEntitlementRequest
 	appEntitlement := data.ToSharedAppEntitlementInput()
@@ -607,11 +601,10 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		return
 	}
 	data.RefreshFromSharedAppEntitlement(res.UpdateAppEntitlementResponse.AppEntitlementView.AppEntitlement)
-	var appId1 string
-	appId1 = data.AppID.ValueString()
 
-	var id1 string
-	id1 = data.ID.ValueString()
+	appId1 := data.AppID.ValueString()
+
+	id1 := data.ID.ValueString()
 
 	request1 := operations.C1APIAppV1AppEntitlementsGetRequest{
 		AppID: appId1,
@@ -661,11 +654,9 @@ func (r *CustomAppEntitlementResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	appID := data.AppID.ValueString()
 
-	var id string
-	id = data.ID.ValueString()
+	id := data.ID.ValueString()
 
 	deleteAppEntitlementRequest := data.ToSharedDeleteAppEntitlementRequest()
 	request := operations.C1APIAppV1AppEntitlementsDeleteRequest{
