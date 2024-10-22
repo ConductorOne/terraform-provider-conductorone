@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationPagerdutyResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationPagerdutyResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	pagerdutyApiToken := new(string)
 	if !r.PagerdutyApiToken.IsUnknown() && !r.PagerdutyApiToken.IsNull() {
 		*pagerdutyApiToken = r.PagerdutyApiToken.ValueString()
-		configValues["pagerduty_api_token"] = pagerdutyApiToken
+	} else {
+		pagerdutyApiToken = nil
+	}
+
+	configValues := map[string]*string{
+		"pagerduty_api_token": pagerdutyApiToken,
 	}
 
 	return configValues

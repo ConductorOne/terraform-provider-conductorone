@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/operations"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -42,7 +42,9 @@ type IntegrationCloudflareZeroTrustResourceModel struct {
 	UpdatedAt types.String   `tfsdk:"updated_at"`
 	UserIds   []types.String `tfsdk:"user_ids"`
 	AccountId types.String   `tfsdk:"account_id"`
+	ApiToken  types.String   `tfsdk:"api_token"`
 	ApiKey    types.String   `tfsdk:"api_key"`
+	Email     types.String   `tfsdk:"email"`
 }
 
 func (r *IntegrationCloudflareZeroTrustResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -93,13 +95,18 @@ func (r *IntegrationCloudflareZeroTrustResource) Schema(ctx context.Context, req
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"account_id": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Account ID`,
+				Description: `Account ID (required)`,
+			},
+			"api_token": &schema.StringAttribute{
+				Sensitive:   true,
+				Description: `API token`,
 			},
 			"api_key": &schema.StringAttribute{
-				Optional:    true,
 				Sensitive:   true,
-				Description: `API key`,
+				Description: `API key (required if API token not provided)`,
+			},
+			"email": &schema.StringAttribute{
+				Description: `Email (required if API token not provided)`,
 			},
 		},
 	}

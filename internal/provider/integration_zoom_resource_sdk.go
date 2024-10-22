@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,31 @@ func (r *IntegrationZoomResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationZoomResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	zoomAccountId := new(string)
 	if !r.ZoomAccountId.IsUnknown() && !r.ZoomAccountId.IsNull() {
 		*zoomAccountId = r.ZoomAccountId.ValueString()
-		configValues["zoom_account_id"] = zoomAccountId
+	} else {
+		zoomAccountId = nil
 	}
 
 	zoomClientId := new(string)
 	if !r.ZoomClientId.IsUnknown() && !r.ZoomClientId.IsNull() {
 		*zoomClientId = r.ZoomClientId.ValueString()
-		configValues["zoom_client_id"] = zoomClientId
+	} else {
+		zoomClientId = nil
 	}
 
 	zoomClientSecret := new(string)
 	if !r.ZoomClientSecret.IsUnknown() && !r.ZoomClientSecret.IsNull() {
 		*zoomClientSecret = r.ZoomClientSecret.ValueString()
-		configValues["zoom_client_secret"] = zoomClientSecret
+	} else {
+		zoomClientSecret = nil
+	}
+
+	configValues := map[string]*string{
+		"zoom_account_id":    zoomAccountId,
+		"zoom_client_id":     zoomClientId,
+		"zoom_client_secret": zoomClientSecret,
 	}
 
 	return configValues

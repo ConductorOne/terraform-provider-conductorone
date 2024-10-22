@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/operations"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,16 +35,17 @@ type IntegrationOktaResource struct {
 
 // IntegrationOktaResourceModel describes the resource data model.
 type IntegrationOktaResourceModel struct {
-	AppID                    types.String   `tfsdk:"app_id"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	DeletedAt                types.String   `tfsdk:"deleted_at"`
-	ID                       types.String   `tfsdk:"id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	UserIds                  []types.String `tfsdk:"user_ids"`
-	OktaDomain               types.String   `tfsdk:"okta_domain"`
-	OktaApiKey               types.String   `tfsdk:"okta_api_key"`
-	OktaDontSyncInactiveApps types.Bool     `tfsdk:"okta_dont_sync_inactive_apps"`
-	OktaExtractAwsSamlRoles  types.Bool     `tfsdk:"okta_extract_aws_saml_roles"`
+	AppID                      types.String   `tfsdk:"app_id"`
+	CreatedAt                  types.String   `tfsdk:"created_at"`
+	DeletedAt                  types.String   `tfsdk:"deleted_at"`
+	ID                         types.String   `tfsdk:"id"`
+	UpdatedAt                  types.String   `tfsdk:"updated_at"`
+	UserIds                    []types.String `tfsdk:"user_ids"`
+	OktaDomain                 types.String   `tfsdk:"okta_domain"`
+	OktaApiKey                 types.String   `tfsdk:"okta_api_key"`
+	OktaDontSyncInactiveApps   types.Bool     `tfsdk:"okta_dont_sync_inactive_apps"`
+	OktaExtractAwsSamlRoles    types.Bool     `tfsdk:"okta_extract_aws_saml_roles"`
+	OktaSyncDeprovisionedUsers types.Bool     `tfsdk:"okta_sync_deprovisioned_users"`
 }
 
 func (r *IntegrationOktaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -95,11 +96,9 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"okta_domain": &schema.StringAttribute{
-				Optional:    true,
 				Description: `Okta domain`,
 			},
 			"okta_api_key": &schema.StringAttribute{
-				Optional:    true,
 				Sensitive:   true,
 				Description: `API key`,
 			},
@@ -110,6 +109,10 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 			"okta_extract_aws_saml_roles": &schema.BoolAttribute{
 				Optional:    true,
 				Description: `Extract SAML Role assignments in Okta AWS apps`,
+			},
+			"okta_sync_deprovisioned_users": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Sync deprovisioned users`,
 			},
 		},
 	}

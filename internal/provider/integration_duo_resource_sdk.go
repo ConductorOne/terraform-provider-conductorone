@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,31 @@ func (r *IntegrationDuoResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 }
 
 func (r *IntegrationDuoResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	duoIntegrationKey := new(string)
 	if !r.DuoIntegrationKey.IsUnknown() && !r.DuoIntegrationKey.IsNull() {
 		*duoIntegrationKey = r.DuoIntegrationKey.ValueString()
-		configValues["duo_integration_key"] = duoIntegrationKey
+	} else {
+		duoIntegrationKey = nil
 	}
 
 	duoSecretKey := new(string)
 	if !r.DuoSecretKey.IsUnknown() && !r.DuoSecretKey.IsNull() {
 		*duoSecretKey = r.DuoSecretKey.ValueString()
-		configValues["duo_secret_key"] = duoSecretKey
+	} else {
+		duoSecretKey = nil
 	}
 
 	duoApiHostname := new(string)
 	if !r.DuoApiHostname.IsUnknown() && !r.DuoApiHostname.IsNull() {
 		*duoApiHostname = r.DuoApiHostname.ValueString()
-		configValues["duo_api_hostname"] = duoApiHostname
+	} else {
+		duoApiHostname = nil
+	}
+
+	configValues := map[string]*string{
+		"duo_integration_key": duoIntegrationKey,
+		"duo_secret_key":      duoSecretKey,
+		"duo_api_hostname":    duoApiHostname,
 	}
 
 	return configValues

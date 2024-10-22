@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationXsoarResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationXsoarResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	apiUrl := new(string)
 	if !r.ApiUrl.IsUnknown() && !r.ApiUrl.IsNull() {
 		*apiUrl = r.ApiUrl.ValueString()
-		configValues["api_url"] = apiUrl
+	} else {
+		apiUrl = nil
 	}
 
 	token := new(string)
 	if !r.Token.IsUnknown() && !r.Token.IsNull() {
 		*token = r.Token.ValueString()
-		configValues["token"] = token
+	} else {
+		token = nil
+	}
+
+	configValues := map[string]*string{
+		"api_url": apiUrl,
+		"token":   token,
 	}
 
 	return configValues

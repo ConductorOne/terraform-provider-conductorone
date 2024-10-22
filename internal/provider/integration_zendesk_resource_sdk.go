@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,31 @@ func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationZendeskResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	email := new(string)
 	if !r.Email.IsUnknown() && !r.Email.IsNull() {
 		*email = r.Email.ValueString()
-		configValues["email"] = email
+	} else {
+		email = nil
 	}
 
 	subdomain := new(string)
 	if !r.Subdomain.IsUnknown() && !r.Subdomain.IsNull() {
 		*subdomain = r.Subdomain.ValueString()
-		configValues["subdomain"] = subdomain
+	} else {
+		subdomain = nil
 	}
 
 	apiToken := new(string)
 	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
 		*apiToken = r.ApiToken.ValueString()
-		configValues["api_token"] = apiToken
+	} else {
+		apiToken = nil
+	}
+
+	configValues := map[string]*string{
+		"email":     email,
+		"subdomain": subdomain,
+		"api_token": apiToken,
 	}
 
 	return configValues

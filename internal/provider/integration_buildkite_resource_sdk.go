@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationBuildkiteResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	apiToken := new(string)
 	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
 		*apiToken = r.ApiToken.ValueString()
-		configValues["api_token"] = apiToken
+	} else {
+		apiToken = nil
 	}
 
 	organization := new(string)
 	if !r.Organization.IsUnknown() && !r.Organization.IsNull() {
 		*organization = r.Organization.ValueString()
-		configValues["organization"] = organization
+	} else {
+		organization = nil
+	}
+
+	configValues := map[string]*string{
+		"api_token":    apiToken,
+		"organization": organization,
 	}
 
 	return configValues

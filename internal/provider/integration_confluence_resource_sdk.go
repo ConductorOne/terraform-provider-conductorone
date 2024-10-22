@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,31 @@ func (r *IntegrationConfluenceResourceModel) ToUpdateSDKType() (*shared.Connecto
 }
 
 func (r *IntegrationConfluenceResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	confluenceDomain := new(string)
 	if !r.ConfluenceDomain.IsUnknown() && !r.ConfluenceDomain.IsNull() {
 		*confluenceDomain = r.ConfluenceDomain.ValueString()
-		configValues["confluence_domain"] = confluenceDomain
+	} else {
+		confluenceDomain = nil
 	}
 
 	confluenceUsername := new(string)
 	if !r.ConfluenceUsername.IsUnknown() && !r.ConfluenceUsername.IsNull() {
 		*confluenceUsername = r.ConfluenceUsername.ValueString()
-		configValues["confluence_username"] = confluenceUsername
+	} else {
+		confluenceUsername = nil
 	}
 
 	confluenceApikey := new(string)
 	if !r.ConfluenceApikey.IsUnknown() && !r.ConfluenceApikey.IsNull() {
 		*confluenceApikey = r.ConfluenceApikey.ValueString()
-		configValues["confluence_apikey"] = confluenceApikey
+	} else {
+		confluenceApikey = nil
+	}
+
+	configValues := map[string]*string{
+		"confluence_domain":   confluenceDomain,
+		"confluence_username": confluenceUsername,
+		"confluence_apikey":   confluenceApikey,
 	}
 
 	return configValues

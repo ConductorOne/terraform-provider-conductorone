@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,31 @@ func (r *IntegrationDatadogResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationDatadogResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	datadogSite := new(string)
 	if !r.DatadogSite.IsUnknown() && !r.DatadogSite.IsNull() {
 		*datadogSite = r.DatadogSite.ValueString()
-		configValues["datadog_site"] = datadogSite
+	} else {
+		datadogSite = nil
 	}
 
 	datadogApiKey := new(string)
 	if !r.DatadogApiKey.IsUnknown() && !r.DatadogApiKey.IsNull() {
 		*datadogApiKey = r.DatadogApiKey.ValueString()
-		configValues["datadog_api_key"] = datadogApiKey
+	} else {
+		datadogApiKey = nil
 	}
 
 	datadogApplicationKey := new(string)
 	if !r.DatadogApplicationKey.IsUnknown() && !r.DatadogApplicationKey.IsNull() {
 		*datadogApplicationKey = r.DatadogApplicationKey.ValueString()
-		configValues["datadog_application_key"] = datadogApplicationKey
+	} else {
+		datadogApplicationKey = nil
+	}
+
+	configValues := map[string]*string{
+		"datadog_site":            datadogSite,
+		"datadog_api_key":         datadogApiKey,
+		"datadog_application_key": datadogApplicationKey,
 	}
 
 	return configValues

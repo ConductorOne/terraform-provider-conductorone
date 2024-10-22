@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,31 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationCoupaResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	coupaDomain := new(string)
 	if !r.CoupaDomain.IsUnknown() && !r.CoupaDomain.IsNull() {
 		*coupaDomain = r.CoupaDomain.ValueString()
-		configValues["coupa-domain"] = coupaDomain
+	} else {
+		coupaDomain = nil
 	}
 
 	oauth2ClientCredGrantClientId := new(string)
 	if !r.Oauth2ClientCredGrantClientId.IsUnknown() && !r.Oauth2ClientCredGrantClientId.IsNull() {
 		*oauth2ClientCredGrantClientId = r.Oauth2ClientCredGrantClientId.ValueString()
-		configValues["oauth2_client_cred_grant_client_id"] = oauth2ClientCredGrantClientId
+	} else {
+		oauth2ClientCredGrantClientId = nil
 	}
 
 	oauth2ClientCredGrantClientSecret := new(string)
 	if !r.Oauth2ClientCredGrantClientSecret.IsUnknown() && !r.Oauth2ClientCredGrantClientSecret.IsNull() {
 		*oauth2ClientCredGrantClientSecret = r.Oauth2ClientCredGrantClientSecret.ValueString()
-		configValues["oauth2_client_cred_grant_client_secret"] = oauth2ClientCredGrantClientSecret
+	} else {
+		oauth2ClientCredGrantClientSecret = nil
+	}
+
+	configValues := map[string]*string{
+		"coupa-domain":                           coupaDomain,
+		"oauth2_client_cred_grant_client_id":     oauth2ClientCredGrantClientId,
+		"oauth2_client_cred_grant_client_secret": oauth2ClientCredGrantClientSecret,
 	}
 
 	return configValues

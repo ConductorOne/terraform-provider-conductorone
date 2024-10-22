@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,30 +87,39 @@ func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationSnowflakeResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	snowflakeAccount := new(string)
 	if !r.SnowflakeAccount.IsUnknown() && !r.SnowflakeAccount.IsNull() {
 		*snowflakeAccount = r.SnowflakeAccount.ValueString()
-		configValues["snowflake_account"] = snowflakeAccount
+	} else {
+		snowflakeAccount = nil
 	}
 
 	snowflakeUsername := new(string)
 	if !r.SnowflakeUsername.IsUnknown() && !r.SnowflakeUsername.IsNull() {
 		*snowflakeUsername = r.SnowflakeUsername.ValueString()
-		configValues["snowflake_username"] = snowflakeUsername
+	} else {
+		snowflakeUsername = nil
 	}
 
 	snowflakePassword := new(string)
 	if !r.SnowflakePassword.IsUnknown() && !r.SnowflakePassword.IsNull() {
 		*snowflakePassword = r.SnowflakePassword.ValueString()
-		configValues["snowflake_password"] = snowflakePassword
+	} else {
+		snowflakePassword = nil
 	}
 
 	snowflakeUserRole := new(string)
 	if !r.SnowflakeUserRole.IsUnknown() && !r.SnowflakeUserRole.IsNull() {
 		*snowflakeUserRole = r.SnowflakeUserRole.ValueString()
-		configValues["snowflake_user_role"] = snowflakeUserRole
+	} else {
+		snowflakeUserRole = nil
+	}
+
+	configValues := map[string]*string{
+		"snowflake_account":   snowflakeAccount,
+		"snowflake_username":  snowflakeUsername,
+		"snowflake_password":  snowflakePassword,
+		"snowflake_user_role": snowflakeUserRole,
 	}
 
 	return configValues

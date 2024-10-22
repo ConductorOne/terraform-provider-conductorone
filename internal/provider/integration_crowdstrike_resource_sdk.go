@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -21,7 +21,7 @@ func (r *IntegrationCrowdstrikeResourceModel) ToCreateDelegatedSDKType() *shared
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("Crowdstrike"),
+		DisplayName: sdk.String("CrowdStrike"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -75,7 +75,7 @@ func (r *IntegrationCrowdstrikeResourceModel) ToUpdateSDKType() (*shared.Connect
 	}
 
 	out := shared.Connector{
-		DisplayName: sdk.String("Crowdstrike"),
+		DisplayName: sdk.String("CrowdStrike"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(crowdstrikeCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
@@ -87,24 +87,31 @@ func (r *IntegrationCrowdstrikeResourceModel) ToUpdateSDKType() (*shared.Connect
 }
 
 func (r *IntegrationCrowdstrikeResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	crowdstrikeClientId := new(string)
 	if !r.CrowdstrikeClientId.IsUnknown() && !r.CrowdstrikeClientId.IsNull() {
 		*crowdstrikeClientId = r.CrowdstrikeClientId.ValueString()
-		configValues["crowdstrike_client_id"] = crowdstrikeClientId
+	} else {
+		crowdstrikeClientId = nil
 	}
 
 	crowdstrikeClientSecret := new(string)
 	if !r.CrowdstrikeClientSecret.IsUnknown() && !r.CrowdstrikeClientSecret.IsNull() {
 		*crowdstrikeClientSecret = r.CrowdstrikeClientSecret.ValueString()
-		configValues["crowdstrike_client_secret"] = crowdstrikeClientSecret
+	} else {
+		crowdstrikeClientSecret = nil
 	}
 
 	region := new(string)
 	if !r.Region.IsUnknown() && !r.Region.IsNull() {
 		*region = r.Region.ValueString()
-		configValues["region"] = region
+	} else {
+		region = nil
+	}
+
+	configValues := map[string]*string{
+		"crowdstrike_client_id":     crowdstrikeClientId,
+		"crowdstrike_client_secret": crowdstrikeClientSecret,
+		"region":                    region,
 	}
 
 	return configValues

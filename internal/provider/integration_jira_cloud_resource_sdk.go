@@ -3,11 +3,11 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,39 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationJiraCloudResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	jiracloudDomain := new(string)
 	if !r.JiracloudDomain.IsUnknown() && !r.JiracloudDomain.IsNull() {
 		*jiracloudDomain = r.JiracloudDomain.ValueString()
-		configValues["jiracloud_domain"] = jiracloudDomain
+	} else {
+		jiracloudDomain = nil
 	}
 
 	jiracloudUsername := new(string)
 	if !r.JiracloudUsername.IsUnknown() && !r.JiracloudUsername.IsNull() {
 		*jiracloudUsername = r.JiracloudUsername.ValueString()
-		configValues["jiracloud_username"] = jiracloudUsername
+	} else {
+		jiracloudUsername = nil
 	}
 
 	jiracloudApikey := new(string)
 	if !r.JiracloudApikey.IsUnknown() && !r.JiracloudApikey.IsNull() {
 		*jiracloudApikey = r.JiracloudApikey.ValueString()
-		configValues["jiracloud_apikey"] = jiracloudApikey
+	} else {
+		jiracloudApikey = nil
+	}
+
+	enableExternalTicketProvisioning := new(string)
+	if !r.EnableExternalTicketProvisioning.IsUnknown() && !r.EnableExternalTicketProvisioning.IsNull() {
+		*enableExternalTicketProvisioning = strconv.FormatBool(r.EnableExternalTicketProvisioning.ValueBool())
+	} else {
+		enableExternalTicketProvisioning = nil
+	}
+
+	configValues := map[string]*string{
+		"jiracloud_domain":                    jiracloudDomain,
+		"jiracloud_username":                  jiracloudUsername,
+		"jiracloud_apikey":                    jiracloudApikey,
+		"enable_external_ticket_provisioning": enableExternalTicketProvisioning,
 	}
 
 	return configValues
@@ -172,6 +187,7 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -181,6 +197,17 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromGetResponse(resp *shared.
 
 				if v, ok := values["jiracloud_username"]; ok {
 					r.JiracloudUsername = types.StringValue(v.(string))
+				}
+
+				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
+					if v, ok := values["enable_external_ticket_provisioning"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+							}
+						}
+					}
 				}
 
 			}
@@ -223,6 +250,7 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -232,6 +260,17 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromCreateResponse(resp *shar
 
 				if v, ok := values["jiracloud_username"]; ok {
 					r.JiracloudUsername = types.StringValue(v.(string))
+				}
+
+				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
+					if v, ok := values["enable_external_ticket_provisioning"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+							}
+						}
+					}
 				}
 
 			}

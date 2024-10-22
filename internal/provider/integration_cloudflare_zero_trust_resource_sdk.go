@@ -6,13 +6,13 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const cloudflareZeroTrustCatalogID = "29zVdFKuAw81JUeJPRGuDKORGN7"
+const cloudflareZeroTrustCatalogID = "2bKQFJUbLO9xukxSfZlQIaiYLG5"
 
 func (r *IntegrationCloudflareZeroTrustResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(cloudflareZeroTrustCatalogID)
@@ -87,18 +87,39 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) ToUpdateSDKType() (*shared
 }
 
 func (r *IntegrationCloudflareZeroTrustResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	accountId := new(string)
 	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
 		*accountId = r.AccountId.ValueString()
-		configValues["account_id"] = accountId
+	} else {
+		accountId = nil
+	}
+
+	apiToken := new(string)
+	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
+		*apiToken = r.ApiToken.ValueString()
+	} else {
+		apiToken = nil
 	}
 
 	apiKey := new(string)
 	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
 		*apiKey = r.ApiKey.ValueString()
-		configValues["api_key"] = apiKey
+	} else {
+		apiKey = nil
+	}
+
+	email := new(string)
+	if !r.Email.IsUnknown() && !r.Email.IsNull() {
+		*email = r.Email.ValueString()
+	} else {
+		email = nil
+	}
+
+	configValues := map[string]*string{
+		"account_id": accountId,
+		"api_token":  apiToken,
+		"api_key":    apiKey,
+		"email":      email,
 	}
 
 	return configValues
@@ -173,6 +194,10 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) RefreshFromGetResponse(res
 					r.AccountId = types.StringValue(v.(string))
 				}
 
+				if v, ok := values["email"]; ok {
+					r.Email = types.StringValue(v.(string))
+				}
+
 			}
 		}
 	}
@@ -218,6 +243,10 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) RefreshFromCreateResponse(
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["account_id"]; ok {
 					r.AccountId = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["email"]; ok {
+					r.Email = types.StringValue(v.(string))
 				}
 
 			}
