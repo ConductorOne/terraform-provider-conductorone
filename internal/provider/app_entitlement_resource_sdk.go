@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
@@ -38,6 +39,43 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 				EntitlementID: entitlementID,
 				Implicit:      implicit,
 			}
+		}
+		if r.ProvisionPolicy.ExternalTicketProvision != nil {
+			appId1 := new(string)
+			if !r.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
+				*appId1 = r.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
+			} else {
+				appId1 = nil
+			}
+			connectorID := new(string)
+			if !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
+				*connectorID = r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+			} else {
+				connectorID = nil
+			}
+			externalTicketProvisionerConfigID := new(string)
+			if !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
+				*externalTicketProvisionerConfigID = r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.ValueString()
+			} else {
+				externalTicketProvisionerConfigID = nil
+			}
+			instructions := new(string)
+			if !r.ProvisionPolicy.ExternalTicketProvision.Instructions.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.Instructions.IsNull() {
+				*instructions = r.ProvisionPolicy.ExternalTicketProvision.Instructions.ValueString()
+			} else {
+				instructions = nil
+			}
+			provisionPolicy.ExternalTicketProvision = &shared.ExternalTicketProvision{
+				AppID:                             appId1,
+				ConnectorID:                       connectorID,
+				ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
+				Instructions:                      instructions,
+			}
+		}
+		var multiStep interface{}
+		if !r.ProvisionPolicy.MultiStep.IsUnknown() && !r.ProvisionPolicy.MultiStep.IsNull() {
+			_ = json.Unmarshal([]byte(r.ProvisionPolicy.MultiStep.ValueString()), &multiStep)
+			provisionPolicy.MultiStep = multiStep
 		}
 		if r.ProvisionPolicy.ManualProvision != nil {
 			instructions := new(string)
@@ -318,6 +356,21 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 			for _, v := range resp.ProvisionPolicy.ManualProvision.UserIds {
 				r.ProvisionPolicy.ManualProvision.UserIds = append(r.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 			}
+		}
+		if resp.ProvisionPolicy.ExternalTicketProvision == nil {
+			r.ProvisionPolicy.ExternalTicketProvision = nil
+		} else {
+			r.ProvisionPolicy.ExternalTicketProvision = &ExternalTicketProvision{}
+			r.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.AppID)
+			r.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
+			r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
+			r.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.Instructions)
+		}
+		if resp.ProvisionPolicy.MultiStep == nil {
+			r.ProvisionPolicy.MultiStep = types.StringNull()
+		} else {
+			multiStepResult, _ := json.Marshal(resp.ProvisionPolicy.MultiStep)
+			r.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult))
 		}
 		if resp.ProvisionPolicy.WebhookProvision != nil {
 			r.ProvisionPolicy.WebhookProvision = &WebhookProvision{}
