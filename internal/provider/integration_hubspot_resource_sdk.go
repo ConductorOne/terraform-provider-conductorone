@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationHubspotResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationHubspotResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	hubspotToken := new(string)
 	if !r.HubspotToken.IsUnknown() && !r.HubspotToken.IsNull() {
 		*hubspotToken = r.HubspotToken.ValueString()
-		configValues["hubspot_token"] = hubspotToken
+	} else {
+		hubspotToken = nil
+	}
+
+	configValues := map[string]*string{
+		"hubspot_token": hubspotToken,
 	}
 
 	return configValues

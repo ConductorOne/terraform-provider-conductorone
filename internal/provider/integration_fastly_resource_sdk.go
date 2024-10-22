@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationFastlyResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationFastlyResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	fastlyAccessToken := new(string)
 	if !r.FastlyAccessToken.IsUnknown() && !r.FastlyAccessToken.IsNull() {
 		*fastlyAccessToken = r.FastlyAccessToken.ValueString()
-		configValues["fastly_access_token"] = fastlyAccessToken
+	} else {
+		fastlyAccessToken = nil
+	}
+
+	configValues := map[string]*string{
+		"fastly_access_token": fastlyAccessToken,
 	}
 
 	return configValues

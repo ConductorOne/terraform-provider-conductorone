@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationDocusignResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	accountId := new(string)
 	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
 		*accountId = r.AccountId.ValueString()
-		configValues["account_id"] = accountId
+	} else {
+		accountId = nil
+	}
+
+	configValues := map[string]*string{
+		"account_id": accountId,
 	}
 
 	return configValues

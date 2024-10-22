@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/operations"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,15 +35,16 @@ type IntegrationJiraCloudResource struct {
 
 // IntegrationJiraCloudResourceModel describes the resource data model.
 type IntegrationJiraCloudResourceModel struct {
-	AppID             types.String   `tfsdk:"app_id"`
-	CreatedAt         types.String   `tfsdk:"created_at"`
-	DeletedAt         types.String   `tfsdk:"deleted_at"`
-	ID                types.String   `tfsdk:"id"`
-	UpdatedAt         types.String   `tfsdk:"updated_at"`
-	UserIds           []types.String `tfsdk:"user_ids"`
-	JiracloudDomain   types.String   `tfsdk:"jiracloud_domain"`
-	JiracloudUsername types.String   `tfsdk:"jiracloud_username"`
-	JiracloudApikey   types.String   `tfsdk:"jiracloud_apikey"`
+	AppID                            types.String   `tfsdk:"app_id"`
+	CreatedAt                        types.String   `tfsdk:"created_at"`
+	DeletedAt                        types.String   `tfsdk:"deleted_at"`
+	ID                               types.String   `tfsdk:"id"`
+	UpdatedAt                        types.String   `tfsdk:"updated_at"`
+	UserIds                          []types.String `tfsdk:"user_ids"`
+	JiracloudDomain                  types.String   `tfsdk:"jiracloud_domain"`
+	JiracloudUsername                types.String   `tfsdk:"jiracloud_username"`
+	JiracloudApikey                  types.String   `tfsdk:"jiracloud_apikey"`
+	EnableExternalTicketProvisioning types.Bool     `tfsdk:"enable_external_ticket_provisioning"`
 }
 
 func (r *IntegrationJiraCloudResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -94,17 +95,18 @@ func (r *IntegrationJiraCloudResource) Schema(ctx context.Context, req resource.
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"jiracloud_domain": &schema.StringAttribute{
-				Optional:    true,
 				Description: `Jira site domain`,
 			},
 			"jiracloud_username": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Username`,
+				Description: `Your Jira email address`,
 			},
 			"jiracloud_apikey": &schema.StringAttribute{
-				Optional:    true,
 				Sensitive:   true,
-				Description: `API key`,
+				Description: `API token`,
+			},
+			"enable_external_ticket_provisioning": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Enable external ticket provisioning`,
 			},
 		},
 	}

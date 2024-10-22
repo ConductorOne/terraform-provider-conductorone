@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationNewRelicResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationNewRelicResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	newrelicApiKey := new(string)
 	if !r.NewrelicApiKey.IsUnknown() && !r.NewrelicApiKey.IsNull() {
 		*newrelicApiKey = r.NewrelicApiKey.ValueString()
-		configValues["newrelic_api_key"] = newrelicApiKey
+	} else {
+		newrelicApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"newrelic_api_key": newrelicApiKey,
 	}
 
 	return configValues

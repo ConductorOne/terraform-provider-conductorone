@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/operations"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -43,6 +43,7 @@ type IntegrationGitlabResourceModel struct {
 	UserIds           []types.String `tfsdk:"user_ids"`
 	GitlabGroup       types.String   `tfsdk:"gitlab_group"`
 	GitlabAccessToken types.String   `tfsdk:"gitlab_access_token"`
+	GitlabUrl         types.String   `tfsdk:"gitlab_url"`
 }
 
 func (r *IntegrationGitlabResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -93,13 +94,15 @@ func (r *IntegrationGitlabResource) Schema(ctx context.Context, req resource.Sch
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"gitlab_group": &schema.StringAttribute{
-				Optional:    true,
 				Description: `Group`,
 			},
 			"gitlab_access_token": &schema.StringAttribute{
-				Optional:    true,
 				Sensitive:   true,
 				Description: `Personal access token`,
+			},
+			"gitlab_url": &schema.StringAttribute{
+				Optional:    true,
+				Description: `URL (optional)`,
 			},
 		},
 	}

@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/operations"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -94,16 +94,13 @@ func (r *IntegrationCrowdstrikeResource) Schema(ctx context.Context, req resourc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"crowdstrike_client_id": &schema.StringAttribute{
-				Optional:    true,
 				Description: `Client ID`,
 			},
 			"crowdstrike_client_secret": &schema.StringAttribute{
-				Optional:    true,
 				Sensitive:   true,
 				Description: `Client secret`,
 			},
 			"region": &schema.StringAttribute{
-				Optional:    true,
 				Description: `Region`,
 			},
 		},

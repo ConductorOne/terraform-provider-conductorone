@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationSalesforceResourceModel) ToUpdateSDKType() (*shared.Connecto
 }
 
 func (r *IntegrationSalesforceResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	salesforceInstanceUrl := new(string)
 	if !r.SalesforceInstanceUrl.IsUnknown() && !r.SalesforceInstanceUrl.IsNull() {
 		*salesforceInstanceUrl = r.SalesforceInstanceUrl.ValueString()
-		configValues["salesforce_instance_url"] = salesforceInstanceUrl
+	} else {
+		salesforceInstanceUrl = nil
 	}
 
 	salesforceUsernameForEmail := new(string)
 	if !r.SalesforceUsernameForEmail.IsUnknown() && !r.SalesforceUsernameForEmail.IsNull() {
 		*salesforceUsernameForEmail = strconv.FormatBool(r.SalesforceUsernameForEmail.ValueBool())
-		configValues["salesforce_username_for_email"] = salesforceUsernameForEmail
+	} else {
+		salesforceUsernameForEmail = nil
+	}
+
+	configValues := map[string]*string{
+		"salesforce_instance_url":       salesforceInstanceUrl,
+		"salesforce_username_for_email": salesforceUsernameForEmail,
 	}
 
 	return configValues

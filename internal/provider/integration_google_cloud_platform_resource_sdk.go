@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared
 }
 
 func (r *IntegrationGoogleCloudPlatformResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	credentialsJson := new(string)
 	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
 		*credentialsJson = r.CredentialsJson.ValueString()
-		configValues["credentials_json"] = credentialsJson
+	} else {
+		credentialsJson = nil
+	}
+
+	configValues := map[string]*string{
+		"credentials_json": credentialsJson,
 	}
 
 	return configValues

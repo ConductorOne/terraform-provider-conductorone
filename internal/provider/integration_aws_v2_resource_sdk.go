@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,48 +87,64 @@ func (r *IntegrationAwsV2ResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationAwsV2ResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
 
 	awsRoleArn := new(string)
 	if !r.AwsRoleArn.IsUnknown() && !r.AwsRoleArn.IsNull() {
 		*awsRoleArn = r.AwsRoleArn.ValueString()
-		configValues["aws_role_arn"] = awsRoleArn
+	} else {
+		awsRoleArn = nil
 	}
 
 	awsOrgsEnable := new(string)
 	if !r.AwsOrgsEnable.IsUnknown() && !r.AwsOrgsEnable.IsNull() {
 		*awsOrgsEnable = strconv.FormatBool(r.AwsOrgsEnable.ValueBool())
-		configValues["aws_orgs_enable"] = awsOrgsEnable
+	} else {
+		awsOrgsEnable = nil
 	}
 
 	awsSsoEnable := new(string)
 	if !r.AwsSsoEnable.IsUnknown() && !r.AwsSsoEnable.IsNull() {
 		*awsSsoEnable = strconv.FormatBool(r.AwsSsoEnable.ValueBool())
-		configValues["aws_sso_enable"] = awsSsoEnable
+	} else {
+		awsSsoEnable = nil
 	}
 
 	awsSsoRegion := new(string)
 	if !r.AwsSsoRegion.IsUnknown() && !r.AwsSsoRegion.IsNull() {
 		*awsSsoRegion = r.AwsSsoRegion.ValueString()
-		configValues["aws_sso_region"] = awsSsoRegion
+	} else {
+		awsSsoRegion = nil
 	}
 
 	awsSsoScimEnable := new(string)
 	if !r.AwsSsoScimEnable.IsUnknown() && !r.AwsSsoScimEnable.IsNull() {
 		*awsSsoScimEnable = strconv.FormatBool(r.AwsSsoScimEnable.ValueBool())
-		configValues["aws_sso_scim_enable"] = awsSsoScimEnable
+	} else {
+		awsSsoScimEnable = nil
 	}
 
 	awsSsoScimEndpoint := new(string)
 	if !r.AwsSsoScimEndpoint.IsUnknown() && !r.AwsSsoScimEndpoint.IsNull() {
 		*awsSsoScimEndpoint = r.AwsSsoScimEndpoint.ValueString()
-		configValues["aws_sso_scim_endpoint"] = awsSsoScimEndpoint
+	} else {
+		awsSsoScimEndpoint = nil
 	}
 
 	awsSsoScimAccessToken := new(string)
 	if !r.AwsSsoScimAccessToken.IsUnknown() && !r.AwsSsoScimAccessToken.IsNull() {
 		*awsSsoScimAccessToken = r.AwsSsoScimAccessToken.ValueString()
-		configValues["aws_sso_scim_access_token"] = awsSsoScimAccessToken
+	} else {
+		awsSsoScimAccessToken = nil
+	}
+
+	configValues := map[string]*string{
+		"aws_role_arn":              awsRoleArn,
+		"aws_orgs_enable":           awsOrgsEnable,
+		"aws_sso_enable":            awsSsoEnable,
+		"aws_sso_region":            awsSsoRegion,
+		"aws_sso_scim_enable":       awsSsoScimEnable,
+		"aws_sso_scim_endpoint":     awsSsoScimEndpoint,
+		"aws_sso_scim_access_token": awsSsoScimAccessToken,
 	}
 
 	return configValues

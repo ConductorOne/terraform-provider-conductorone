@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,31 @@ func (r *IntegrationGitlabResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationGitlabResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	gitlabGroup := new(string)
 	if !r.GitlabGroup.IsUnknown() && !r.GitlabGroup.IsNull() {
 		*gitlabGroup = r.GitlabGroup.ValueString()
-		configValues["gitlab_group"] = gitlabGroup
+	} else {
+		gitlabGroup = nil
 	}
 
 	gitlabAccessToken := new(string)
 	if !r.GitlabAccessToken.IsUnknown() && !r.GitlabAccessToken.IsNull() {
 		*gitlabAccessToken = r.GitlabAccessToken.ValueString()
-		configValues["gitlab_access_token"] = gitlabAccessToken
+	} else {
+		gitlabAccessToken = nil
+	}
+
+	gitlabUrl := new(string)
+	if !r.GitlabUrl.IsUnknown() && !r.GitlabUrl.IsNull() {
+		*gitlabUrl = r.GitlabUrl.ValueString()
+	} else {
+		gitlabUrl = nil
+	}
+
+	configValues := map[string]*string{
+		"gitlab_group":        gitlabGroup,
+		"gitlab_access_token": gitlabAccessToken,
+		"gitlab_url":          gitlabUrl,
 	}
 
 	return configValues
@@ -173,6 +186,10 @@ func (r *IntegrationGitlabResourceModel) RefreshFromGetResponse(resp *shared.Con
 					r.GitlabGroup = types.StringValue(v.(string))
 				}
 
+				if v, ok := values["gitlab_url"]; ok {
+					r.GitlabUrl = types.StringValue(v.(string))
+				}
+
 			}
 		}
 	}
@@ -218,6 +235,10 @@ func (r *IntegrationGitlabResourceModel) RefreshFromCreateResponse(resp *shared.
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["gitlab_group"]; ok {
 					r.GitlabGroup = types.StringValue(v.(string))
+				}
+
+				if v, ok := values["gitlab_url"]; ok {
+					r.GitlabUrl = types.StringValue(v.(string))
 				}
 
 			}

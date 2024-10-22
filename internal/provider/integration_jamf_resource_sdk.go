@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,31 @@ func (r *IntegrationJamfResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationJamfResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	jamfInstanceUrl := new(string)
 	if !r.JamfInstanceUrl.IsUnknown() && !r.JamfInstanceUrl.IsNull() {
 		*jamfInstanceUrl = r.JamfInstanceUrl.ValueString()
-		configValues["jamf_instance_url"] = jamfInstanceUrl
+	} else {
+		jamfInstanceUrl = nil
 	}
 
 	jamfUsername := new(string)
 	if !r.JamfUsername.IsUnknown() && !r.JamfUsername.IsNull() {
 		*jamfUsername = r.JamfUsername.ValueString()
-		configValues["jamf_username"] = jamfUsername
+	} else {
+		jamfUsername = nil
 	}
 
 	jamfPassword := new(string)
 	if !r.JamfPassword.IsUnknown() && !r.JamfPassword.IsNull() {
 		*jamfPassword = r.JamfPassword.ValueString()
-		configValues["jamf_password"] = jamfPassword
+	} else {
+		jamfPassword = nil
+	}
+
+	configValues := map[string]*string{
+		"jamf_instance_url": jamfInstanceUrl,
+		"jamf_username":     jamfUsername,
+		"jamf_password":     jamfPassword,
 	}
 
 	return configValues

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationAsanaResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	asanaApiKey := new(string)
 	if !r.AsanaApiKey.IsUnknown() && !r.AsanaApiKey.IsNull() {
 		*asanaApiKey = r.AsanaApiKey.ValueString()
-		configValues["asana_api_key"] = asanaApiKey
+	} else {
+		asanaApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"asana_api_key": asanaApiKey,
 	}
 
 	return configValues

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,36 +87,47 @@ func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationNetsuiteResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	netsuiteAccountId := new(string)
 	if !r.NetsuiteAccountId.IsUnknown() && !r.NetsuiteAccountId.IsNull() {
 		*netsuiteAccountId = r.NetsuiteAccountId.ValueString()
-		configValues["netsuite_account_id"] = netsuiteAccountId
+	} else {
+		netsuiteAccountId = nil
 	}
 
 	netsuiteConsumerKey := new(string)
 	if !r.NetsuiteConsumerKey.IsUnknown() && !r.NetsuiteConsumerKey.IsNull() {
 		*netsuiteConsumerKey = r.NetsuiteConsumerKey.ValueString()
-		configValues["netsuite_consumer_key"] = netsuiteConsumerKey
+	} else {
+		netsuiteConsumerKey = nil
 	}
 
 	netsuiteConsumerSecret := new(string)
 	if !r.NetsuiteConsumerSecret.IsUnknown() && !r.NetsuiteConsumerSecret.IsNull() {
 		*netsuiteConsumerSecret = r.NetsuiteConsumerSecret.ValueString()
-		configValues["netsuite_consumer_secret"] = netsuiteConsumerSecret
+	} else {
+		netsuiteConsumerSecret = nil
 	}
 
 	netsuiteTokenKey := new(string)
 	if !r.NetsuiteTokenKey.IsUnknown() && !r.NetsuiteTokenKey.IsNull() {
 		*netsuiteTokenKey = r.NetsuiteTokenKey.ValueString()
-		configValues["netsuite_token_key"] = netsuiteTokenKey
+	} else {
+		netsuiteTokenKey = nil
 	}
 
 	netsuiteTokenSecret := new(string)
 	if !r.NetsuiteTokenSecret.IsUnknown() && !r.NetsuiteTokenSecret.IsNull() {
 		*netsuiteTokenSecret = r.NetsuiteTokenSecret.ValueString()
-		configValues["netsuite_token_secret"] = netsuiteTokenSecret
+	} else {
+		netsuiteTokenSecret = nil
+	}
+
+	configValues := map[string]*string{
+		"netsuite_account_id":      netsuiteAccountId,
+		"netsuite_consumer_key":    netsuiteConsumerKey,
+		"netsuite_consumer_secret": netsuiteConsumerSecret,
+		"netsuite_token_key":       netsuiteTokenKey,
+		"netsuite_token_secret":    netsuiteTokenSecret,
 	}
 
 	return configValues

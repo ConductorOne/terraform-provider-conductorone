@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,31 @@ func (r *IntegrationMicrosoft365ResourceModel) ToUpdateSDKType() (*shared.Connec
 }
 
 func (r *IntegrationMicrosoft365ResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	ms365TenantId := new(string)
 	if !r.Ms365TenantId.IsUnknown() && !r.Ms365TenantId.IsNull() {
 		*ms365TenantId = r.Ms365TenantId.ValueString()
-		configValues["ms365_tenant_id"] = ms365TenantId
+	} else {
+		ms365TenantId = nil
 	}
 
 	ms365ClientId := new(string)
 	if !r.Ms365ClientId.IsUnknown() && !r.Ms365ClientId.IsNull() {
 		*ms365ClientId = r.Ms365ClientId.ValueString()
-		configValues["ms365_client_id"] = ms365ClientId
+	} else {
+		ms365ClientId = nil
 	}
 
 	ms365ClientSecret := new(string)
 	if !r.Ms365ClientSecret.IsUnknown() && !r.Ms365ClientSecret.IsNull() {
 		*ms365ClientSecret = r.Ms365ClientSecret.ValueString()
-		configValues["ms365_client_secret"] = ms365ClientSecret
+	} else {
+		ms365ClientSecret = nil
+	}
+
+	configValues := map[string]*string{
+		"ms365_tenant_id":     ms365TenantId,
+		"ms365_client_id":     ms365ClientId,
+		"ms365_client_secret": ms365ClientSecret,
 	}
 
 	return configValues

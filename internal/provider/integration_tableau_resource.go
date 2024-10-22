@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/operations"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -95,19 +95,15 @@ func (r *IntegrationTableauResource) Schema(ctx context.Context, req resource.Sc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"tableau_site_id": &schema.StringAttribute{
-				Optional:    true,
 				Description: `Site ID`,
 			},
 			"tableau_server_path": &schema.StringAttribute{
-				Optional:    true,
 				Description: `Server path`,
 			},
 			"tableau_access_token_name": &schema.StringAttribute{
-				Optional:    true,
 				Description: `Access token name`,
 			},
 			"tableau_access_token_secret": &schema.StringAttribute{
-				Optional:    true,
 				Sensitive:   true,
 				Description: `Access token secret`,
 			},

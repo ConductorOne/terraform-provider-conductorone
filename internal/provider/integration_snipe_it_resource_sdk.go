@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationSnipeItResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationSnipeItResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	snipeitBaseUrl := new(string)
 	if !r.SnipeitBaseUrl.IsUnknown() && !r.SnipeitBaseUrl.IsNull() {
 		*snipeitBaseUrl = r.SnipeitBaseUrl.ValueString()
-		configValues["snipeit_base_url"] = snipeitBaseUrl
+	} else {
+		snipeitBaseUrl = nil
 	}
 
 	snipeitAccessToken := new(string)
 	if !r.SnipeitAccessToken.IsUnknown() && !r.SnipeitAccessToken.IsNull() {
 		*snipeitAccessToken = r.SnipeitAccessToken.ValueString()
-		configValues["snipeit_access_token"] = snipeitAccessToken
+	} else {
+		snipeitAccessToken = nil
+	}
+
+	configValues := map[string]*string{
+		"snipeit_base_url":     snipeitBaseUrl,
+		"snipeit_access_token": snipeitAccessToken,
 	}
 
 	return configValues

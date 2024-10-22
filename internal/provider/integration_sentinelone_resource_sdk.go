@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationSentineloneResourceModel) ToUpdateSDKType() (*shared.Connect
 }
 
 func (r *IntegrationSentineloneResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	sentineloneBaseUrl := new(string)
 	if !r.SentineloneBaseUrl.IsUnknown() && !r.SentineloneBaseUrl.IsNull() {
 		*sentineloneBaseUrl = r.SentineloneBaseUrl.ValueString()
-		configValues["sentinelone_base_url"] = sentineloneBaseUrl
+	} else {
+		sentineloneBaseUrl = nil
 	}
 
 	sentineloneToken := new(string)
 	if !r.SentineloneToken.IsUnknown() && !r.SentineloneToken.IsNull() {
 		*sentineloneToken = r.SentineloneToken.ValueString()
-		configValues["sentinelone_token"] = sentineloneToken
+	} else {
+		sentineloneToken = nil
+	}
+
+	configValues := map[string]*string{
+		"sentinelone_base_url": sentineloneBaseUrl,
+		"sentinelone_token":    sentineloneToken,
 	}
 
 	return configValues

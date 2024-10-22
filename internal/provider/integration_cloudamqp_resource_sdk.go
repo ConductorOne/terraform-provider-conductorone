@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationCloudamqpResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	cloudamqpApiKey := new(string)
 	if !r.CloudamqpApiKey.IsUnknown() && !r.CloudamqpApiKey.IsNull() {
 		*cloudamqpApiKey = r.CloudamqpApiKey.ValueString()
-		configValues["cloudamqp_api_key"] = cloudamqpApiKey
+	} else {
+		cloudamqpApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"cloudamqp_api_key": cloudamqpApiKey,
 	}
 
 	return configValues

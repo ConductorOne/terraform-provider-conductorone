@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationSlackResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationSlackResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	slackApiKey := new(string)
 	if !r.SlackApiKey.IsUnknown() && !r.SlackApiKey.IsNull() {
 		*slackApiKey = r.SlackApiKey.ValueString()
-		configValues["slack_api_key"] = slackApiKey
+	} else {
+		slackApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"slack_api_key": slackApiKey,
 	}
 
 	return configValues

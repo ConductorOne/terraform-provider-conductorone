@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,24 @@ func (r *IntegrationBitbucketResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationBitbucketResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	bitbucketUsername := new(string)
 	if !r.BitbucketUsername.IsUnknown() && !r.BitbucketUsername.IsNull() {
 		*bitbucketUsername = r.BitbucketUsername.ValueString()
-		configValues["bitbucket_username"] = bitbucketUsername
+	} else {
+		bitbucketUsername = nil
 	}
 
 	bitbucketAppPassword := new(string)
 	if !r.BitbucketAppPassword.IsUnknown() && !r.BitbucketAppPassword.IsNull() {
 		*bitbucketAppPassword = r.BitbucketAppPassword.ValueString()
-		configValues["bitbucket_app_password"] = bitbucketAppPassword
+	} else {
+		bitbucketAppPassword = nil
+	}
+
+	configValues := map[string]*string{
+		"bitbucket_username":       bitbucketUsername,
+		"bitbucket_app_password":   bitbucketAppPassword,
+		"bitbucket_workspace_list": bitbucketWorkspaceList,
 	}
 
 	return configValues

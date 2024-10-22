@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,31 @@ func (r *IntegrationBoxResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 }
 
 func (r *IntegrationBoxResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	boxClientId := new(string)
 	if !r.BoxClientId.IsUnknown() && !r.BoxClientId.IsNull() {
 		*boxClientId = r.BoxClientId.ValueString()
-		configValues["box_client_id"] = boxClientId
+	} else {
+		boxClientId = nil
 	}
 
 	boxClientSecret := new(string)
 	if !r.BoxClientSecret.IsUnknown() && !r.BoxClientSecret.IsNull() {
 		*boxClientSecret = r.BoxClientSecret.ValueString()
-		configValues["box_client_secret"] = boxClientSecret
+	} else {
+		boxClientSecret = nil
 	}
 
 	boxEnterpriseId := new(string)
 	if !r.BoxEnterpriseId.IsUnknown() && !r.BoxEnterpriseId.IsNull() {
 		*boxEnterpriseId = r.BoxEnterpriseId.ValueString()
-		configValues["box_enterprise_id"] = boxEnterpriseId
+	} else {
+		boxEnterpriseId = nil
+	}
+
+	configValues := map[string]*string{
+		"box_client_id":     boxClientId,
+		"box_client_secret": boxClientSecret,
+		"box_enterprise_id": boxEnterpriseId,
 	}
 
 	return configValues

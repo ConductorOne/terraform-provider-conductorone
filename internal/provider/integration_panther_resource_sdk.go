@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationPantherResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationPantherResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	pantherApiKey := new(string)
 	if !r.PantherApiKey.IsUnknown() && !r.PantherApiKey.IsNull() {
 		*pantherApiKey = r.PantherApiKey.ValueString()
-		configValues["panther_api_key"] = pantherApiKey
+	} else {
+		pantherApiKey = nil
 	}
 
 	pantherUrl := new(string)
 	if !r.PantherUrl.IsUnknown() && !r.PantherUrl.IsNull() {
 		*pantherUrl = r.PantherUrl.ValueString()
-		configValues["panther_url"] = pantherUrl
+	} else {
+		pantherUrl = nil
+	}
+
+	configValues := map[string]*string{
+		"panther_api_key": pantherApiKey,
+		"panther_url":     pantherUrl,
 	}
 
 	return configValues

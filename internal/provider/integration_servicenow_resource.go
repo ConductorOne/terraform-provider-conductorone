@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/operations"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,15 +35,18 @@ type IntegrationServicenowResource struct {
 
 // IntegrationServicenowResourceModel describes the resource data model.
 type IntegrationServicenowResourceModel struct {
-	AppID      types.String   `tfsdk:"app_id"`
-	CreatedAt  types.String   `tfsdk:"created_at"`
-	DeletedAt  types.String   `tfsdk:"deleted_at"`
-	ID         types.String   `tfsdk:"id"`
-	UpdatedAt  types.String   `tfsdk:"updated_at"`
-	UserIds    []types.String `tfsdk:"user_ids"`
-	Password   types.String   `tfsdk:"password"`
-	Username   types.String   `tfsdk:"username"`
-	Deployment types.String   `tfsdk:"deployment"`
+	AppID                            types.String   `tfsdk:"app_id"`
+	CreatedAt                        types.String   `tfsdk:"created_at"`
+	DeletedAt                        types.String   `tfsdk:"deleted_at"`
+	ID                               types.String   `tfsdk:"id"`
+	UpdatedAt                        types.String   `tfsdk:"updated_at"`
+	UserIds                          []types.String `tfsdk:"user_ids"`
+	Deployment                       types.String   `tfsdk:"deployment"`
+	Username                         types.String   `tfsdk:"username"`
+	Password                         types.String   `tfsdk:"password"`
+	EnableExternalTicketProvisioning types.Bool     `tfsdk:"enable_external_ticket_provisioning"`
+	CatalogId                        types.String   `tfsdk:"catalog_id"`
+	CategoryId                       types.String   `tfsdk:"category_id"`
 }
 
 func (r *IntegrationServicenowResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -93,18 +96,27 @@ func (r *IntegrationServicenowResource) Schema(ctx context.Context, req resource
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
+			"deployment": &schema.StringAttribute{
+				Description: `Deployment`,
+			},
+			"username": &schema.StringAttribute{
+				Description: `Username`,
+			},
 			"password": &schema.StringAttribute{
-				Optional:    true,
 				Sensitive:   true,
 				Description: `Password`,
 			},
-			"username": &schema.StringAttribute{
+			"enable_external_ticket_provisioning": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Username`,
+				Description: `Enable external ticket provisioning`,
 			},
-			"deployment": &schema.StringAttribute{
+			"catalog_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Deployment`,
+				Description: `Catalog ID`,
+			},
+			"category_id": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Category ID`,
 			},
 		},
 	}

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,30 +87,39 @@ func (r *IntegrationUkgResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 }
 
 func (r *IntegrationUkgResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	ukgCustomerApiKey := new(string)
 	if !r.UkgCustomerApiKey.IsUnknown() && !r.UkgCustomerApiKey.IsNull() {
 		*ukgCustomerApiKey = r.UkgCustomerApiKey.ValueString()
-		configValues["ukg_customer_api_key"] = ukgCustomerApiKey
+	} else {
+		ukgCustomerApiKey = nil
 	}
 
 	ukgUsername := new(string)
 	if !r.UkgUsername.IsUnknown() && !r.UkgUsername.IsNull() {
 		*ukgUsername = r.UkgUsername.ValueString()
-		configValues["ukg_username"] = ukgUsername
+	} else {
+		ukgUsername = nil
 	}
 
 	ukgPassword := new(string)
 	if !r.UkgPassword.IsUnknown() && !r.UkgPassword.IsNull() {
 		*ukgPassword = r.UkgPassword.ValueString()
-		configValues["ukg_password"] = ukgPassword
+	} else {
+		ukgPassword = nil
 	}
 
 	ukgServiceEndpoint := new(string)
 	if !r.UkgServiceEndpoint.IsUnknown() && !r.UkgServiceEndpoint.IsNull() {
 		*ukgServiceEndpoint = r.UkgServiceEndpoint.ValueString()
-		configValues["ukg_service_endpoint"] = ukgServiceEndpoint
+	} else {
+		ukgServiceEndpoint = nil
+	}
+
+	configValues := map[string]*string{
+		"ukg_customer_api_key": ukgCustomerApiKey,
+		"ukg_username":         ukgUsername,
+		"ukg_password":         ukgPassword,
+		"ukg_service_endpoint": ukgServiceEndpoint,
 	}
 
 	return configValues

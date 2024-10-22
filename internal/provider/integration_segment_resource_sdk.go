@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationSegmentResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationSegmentResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	segmentAccessToken := new(string)
 	if !r.SegmentAccessToken.IsUnknown() && !r.SegmentAccessToken.IsNull() {
 		*segmentAccessToken = r.SegmentAccessToken.ValueString()
-		configValues["segment_access_token"] = segmentAccessToken
+	} else {
+		segmentAccessToken = nil
+	}
+
+	configValues := map[string]*string{
+		"segment_access_token": segmentAccessToken,
 	}
 
 	return configValues

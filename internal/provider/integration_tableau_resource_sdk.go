@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,30 +87,39 @@ func (r *IntegrationTableauResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationTableauResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	tableauSiteId := new(string)
 	if !r.TableauSiteId.IsUnknown() && !r.TableauSiteId.IsNull() {
 		*tableauSiteId = r.TableauSiteId.ValueString()
-		configValues["tableau_site_id"] = tableauSiteId
+	} else {
+		tableauSiteId = nil
 	}
 
 	tableauServerPath := new(string)
 	if !r.TableauServerPath.IsUnknown() && !r.TableauServerPath.IsNull() {
 		*tableauServerPath = r.TableauServerPath.ValueString()
-		configValues["tableau_server_path"] = tableauServerPath
+	} else {
+		tableauServerPath = nil
 	}
 
 	tableauAccessTokenName := new(string)
 	if !r.TableauAccessTokenName.IsUnknown() && !r.TableauAccessTokenName.IsNull() {
 		*tableauAccessTokenName = r.TableauAccessTokenName.ValueString()
-		configValues["tableau_access_token_name"] = tableauAccessTokenName
+	} else {
+		tableauAccessTokenName = nil
 	}
 
 	tableauAccessTokenSecret := new(string)
 	if !r.TableauAccessTokenSecret.IsUnknown() && !r.TableauAccessTokenSecret.IsNull() {
 		*tableauAccessTokenSecret = r.TableauAccessTokenSecret.ValueString()
-		configValues["tableau_access_token_secret"] = tableauAccessTokenSecret
+	} else {
+		tableauAccessTokenSecret = nil
+	}
+
+	configValues := map[string]*string{
+		"tableau_site_id":             tableauSiteId,
+		"tableau_server_path":         tableauServerPath,
+		"tableau_access_token_name":   tableauAccessTokenName,
+		"tableau_access_token_secret": tableauAccessTokenSecret,
 	}
 
 	return configValues

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,31 @@ func (r *IntegrationOneloginResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationOneloginResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	oneloginDomain := new(string)
 	if !r.OneloginDomain.IsUnknown() && !r.OneloginDomain.IsNull() {
 		*oneloginDomain = r.OneloginDomain.ValueString()
-		configValues["onelogin_domain"] = oneloginDomain
+	} else {
+		oneloginDomain = nil
 	}
 
 	oauthClientCredGrantClientId := new(string)
 	if !r.OauthClientCredGrantClientId.IsUnknown() && !r.OauthClientCredGrantClientId.IsNull() {
 		*oauthClientCredGrantClientId = r.OauthClientCredGrantClientId.ValueString()
-		configValues["oauth_client_cred_grant_client_id"] = oauthClientCredGrantClientId
+	} else {
+		oauthClientCredGrantClientId = nil
 	}
 
 	oauthClientCredGrantClientSecret := new(string)
 	if !r.OauthClientCredGrantClientSecret.IsUnknown() && !r.OauthClientCredGrantClientSecret.IsNull() {
 		*oauthClientCredGrantClientSecret = r.OauthClientCredGrantClientSecret.ValueString()
-		configValues["oauth_client_cred_grant_client_secret"] = oauthClientCredGrantClientSecret
+	} else {
+		oauthClientCredGrantClientSecret = nil
+	}
+
+	configValues := map[string]*string{
+		"onelogin_domain":                       oneloginDomain,
+		"oauth_client_cred_grant_client_id":     oauthClientCredGrantClientId,
+		"oauth_client_cred_grant_client_secret": oauthClientCredGrantClientSecret,
 	}
 
 	return configValues

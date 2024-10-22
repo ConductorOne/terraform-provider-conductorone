@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationXeroResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationXeroResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	xeroClientId := new(string)
 	if !r.XeroClientId.IsUnknown() && !r.XeroClientId.IsNull() {
 		*xeroClientId = r.XeroClientId.ValueString()
-		configValues["xero_client_id"] = xeroClientId
+	} else {
+		xeroClientId = nil
 	}
 
 	xeroClientSecret := new(string)
 	if !r.XeroClientSecret.IsUnknown() && !r.XeroClientSecret.IsNull() {
 		*xeroClientSecret = r.XeroClientSecret.ValueString()
-		configValues["xero_client_secret"] = xeroClientSecret
+	} else {
+		xeroClientSecret = nil
+	}
+
+	configValues := map[string]*string{
+		"xero_client_id":     xeroClientId,
+		"xero_client_secret": xeroClientSecret,
 	}
 
 	return configValues

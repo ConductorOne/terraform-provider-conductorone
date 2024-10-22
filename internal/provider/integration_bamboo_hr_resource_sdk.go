@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationBambooHrResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationBambooHrResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	companyDomain := new(string)
 	if !r.CompanyDomain.IsUnknown() && !r.CompanyDomain.IsNull() {
 		*companyDomain = r.CompanyDomain.ValueString()
-		configValues["company_domain"] = companyDomain
+	} else {
+		companyDomain = nil
 	}
 
 	apiKey := new(string)
 	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
 		*apiKey = r.ApiKey.ValueString()
-		configValues["api_key"] = apiKey
+	} else {
+		apiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"company_domain": companyDomain,
+		"api_key":        apiKey,
 	}
 
 	return configValues

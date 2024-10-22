@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,6 +87,7 @@ func (r *IntegrationAzureAdResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationAzureAdResourceModel) populateConfig() map[string]*string {
+
 	configValues := map[string]*string{}
 
 	return configValues

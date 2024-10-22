@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationOpsgenieResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationOpsgenieResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	opsgenieApikey := new(string)
 	if !r.OpsgenieApikey.IsUnknown() && !r.OpsgenieApikey.IsNull() {
 		*opsgenieApikey = r.OpsgenieApikey.ValueString()
-		configValues["opsgenie_apikey"] = opsgenieApikey
+	} else {
+		opsgenieApikey = nil
+	}
+
+	configValues := map[string]*string{
+		"opsgenie_apikey": opsgenieApikey,
 	}
 
 	return configValues

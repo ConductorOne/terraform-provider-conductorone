@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationGithubResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationGithubResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	githubOrg := new(string)
 	if !r.GithubOrg.IsUnknown() && !r.GithubOrg.IsNull() {
 		*githubOrg = r.GithubOrg.ValueString()
-		configValues["github_org"] = githubOrg
+	} else {
+		githubOrg = nil
 	}
 
 	githubAccessToken := new(string)
 	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
 		*githubAccessToken = r.GithubAccessToken.ValueString()
-		configValues["github_access_token"] = githubAccessToken
+	} else {
+		githubAccessToken = nil
+	}
+
+	configValues := map[string]*string{
+		"github_org":          githubOrg,
+		"github_access_token": githubAccessToken,
 	}
 
 	return configValues
