@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,24 +87,31 @@ func (r *IntegrationBroadcomSacResourceModel) ToUpdateSDKType() (*shared.Connect
 }
 
 func (r *IntegrationBroadcomSacResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	username := new(string)
 	if !r.Username.IsUnknown() && !r.Username.IsNull() {
 		*username = r.Username.ValueString()
-		configValues["username"] = username
+	} else {
+		username = nil
 	}
 
 	password := new(string)
 	if !r.Password.IsUnknown() && !r.Password.IsNull() {
 		*password = r.Password.ValueString()
-		configValues["password"] = password
+	} else {
+		password = nil
 	}
 
 	tenant := new(string)
 	if !r.Tenant.IsUnknown() && !r.Tenant.IsNull() {
 		*tenant = r.Tenant.ValueString()
-		configValues["tenant"] = tenant
+	} else {
+		tenant = nil
+	}
+
+	configValues := map[string]*string{
+		"username": username,
+		"password": password,
+		"tenant":   tenant,
 	}
 
 	return configValues

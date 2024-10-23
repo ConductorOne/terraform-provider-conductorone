@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	tailscaleApiKey := new(string)
 	if !r.TailscaleApiKey.IsUnknown() && !r.TailscaleApiKey.IsNull() {
 		*tailscaleApiKey = r.TailscaleApiKey.ValueString()
-		configValues["tailscale_api_key"] = tailscaleApiKey
+	} else {
+		tailscaleApiKey = nil
 	}
 
 	tailnet := new(string)
 	if !r.Tailnet.IsUnknown() && !r.Tailnet.IsNull() {
 		*tailnet = r.Tailnet.ValueString()
-		configValues["tailnet"] = tailnet
+	} else {
+		tailnet = nil
+	}
+
+	configValues := map[string]*string{
+		"tailscale_api_key": tailscaleApiKey,
+		"tailnet":           tailnet,
 	}
 
 	return configValues

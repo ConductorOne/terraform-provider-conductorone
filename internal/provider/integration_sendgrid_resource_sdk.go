@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationSendgridResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationSendgridResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	sendgridApiKey := new(string)
 	if !r.SendgridApiKey.IsUnknown() && !r.SendgridApiKey.IsNull() {
 		*sendgridApiKey = r.SendgridApiKey.ValueString()
-		configValues["sendgrid_api_key"] = sendgridApiKey
+	} else {
+		sendgridApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"sendgrid_api_key": sendgridApiKey,
 	}
 
 	return configValues

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationCloudflareResourceModel) ToUpdateSDKType() (*shared.Connecto
 }
 
 func (r *IntegrationCloudflareResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	accountId := new(string)
 	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
 		*accountId = r.AccountId.ValueString()
-		configValues["account_id"] = accountId
+	} else {
+		accountId = nil
 	}
 
 	apiKey := new(string)
 	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
 		*apiKey = r.ApiKey.ValueString()
-		configValues["api_key"] = apiKey
+	} else {
+		apiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"account_id": accountId,
+		"api_key":    apiKey,
 	}
 
 	return configValues

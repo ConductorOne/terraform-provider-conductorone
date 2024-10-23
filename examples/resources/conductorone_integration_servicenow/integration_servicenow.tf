@@ -3,7 +3,10 @@ resource "conductorone_integration_servicenow" "servicenow" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  password   = "..."
-  username   = "..."
-  deployment = "..."
+  deployment                          = "..."
+  username                            = "..."
+  password                            = "..."
+  enable_external_ticket_provisioning = false
+  catalog_id                          = "..."
+  category_id                         = "..."
 }

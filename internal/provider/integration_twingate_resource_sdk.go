@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationTwingateResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	twingateApikey := new(string)
 	if !r.TwingateApikey.IsUnknown() && !r.TwingateApikey.IsNull() {
 		*twingateApikey = r.TwingateApikey.ValueString()
-		configValues["twingate_apikey"] = twingateApikey
+	} else {
+		twingateApikey = nil
 	}
 
 	twingateDomain := new(string)
 	if !r.TwingateDomain.IsUnknown() && !r.TwingateDomain.IsNull() {
 		*twingateDomain = r.TwingateDomain.ValueString()
-		configValues["twingate_domain"] = twingateDomain
+	} else {
+		twingateDomain = nil
+	}
+
+	configValues := map[string]*string{
+		"twingate_apikey": twingateApikey,
+		"twingate_domain": twingateDomain,
 	}
 
 	return configValues

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,30 +87,39 @@ func (r *IntegrationGoogleWorkspaceResourceModel) ToUpdateSDKType() (*shared.Con
 }
 
 func (r *IntegrationGoogleWorkspaceResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	customerId := new(string)
 	if !r.CustomerId.IsUnknown() && !r.CustomerId.IsNull() {
 		*customerId = r.CustomerId.ValueString()
-		configValues["customer_id"] = customerId
+	} else {
+		customerId = nil
 	}
 
 	domain := new(string)
 	if !r.Domain.IsUnknown() && !r.Domain.IsNull() {
 		*domain = r.Domain.ValueString()
-		configValues["domain"] = domain
+	} else {
+		domain = nil
 	}
 
 	administratorEmail := new(string)
 	if !r.AdministratorEmail.IsUnknown() && !r.AdministratorEmail.IsNull() {
 		*administratorEmail = r.AdministratorEmail.ValueString()
-		configValues["administrator_email"] = administratorEmail
+	} else {
+		administratorEmail = nil
 	}
 
 	credentialsJson := new(string)
 	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
 		*credentialsJson = r.CredentialsJson.ValueString()
-		configValues["credentials_json"] = credentialsJson
+	} else {
+		credentialsJson = nil
+	}
+
+	configValues := map[string]*string{
+		"customer_id":         customerId,
+		"domain":              domain,
+		"administrator_email": administratorEmail,
+		"credentials_json":    credentialsJson,
 	}
 
 	return configValues

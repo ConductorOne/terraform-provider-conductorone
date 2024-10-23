@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationExpensifyResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationExpensifyResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	expensifyUserId := new(string)
 	if !r.ExpensifyUserId.IsUnknown() && !r.ExpensifyUserId.IsNull() {
 		*expensifyUserId = r.ExpensifyUserId.ValueString()
-		configValues["expensify_user_id"] = expensifyUserId
+	} else {
+		expensifyUserId = nil
 	}
 
 	expensifyUserSecret := new(string)
 	if !r.ExpensifyUserSecret.IsUnknown() && !r.ExpensifyUserSecret.IsNull() {
 		*expensifyUserSecret = r.ExpensifyUserSecret.ValueString()
-		configValues["expensify_user_secret"] = expensifyUserSecret
+	} else {
+		expensifyUserSecret = nil
+	}
+
+	configValues := map[string]*string{
+		"expensify_user_id":     expensifyUserId,
+		"expensify_user_secret": expensifyUserSecret,
 	}
 
 	return configValues

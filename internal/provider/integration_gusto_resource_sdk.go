@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationGustoResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationGustoResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	company := new(string)
 	if !r.Company.IsUnknown() && !r.Company.IsNull() {
 		*company = r.Company.ValueString()
-		configValues["company"] = company
+	} else {
+		company = nil
+	}
+
+	configValues := map[string]*string{
+		"company": company,
 	}
 
 	return configValues

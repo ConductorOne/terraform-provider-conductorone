@@ -5,4 +5,5 @@ resource "conductorone_integration_gitlab" "gitlab" {
   ]
   gitlab_group        = "..."
   gitlab_access_token = "..."
+  gitlab_url          = "..."
 }

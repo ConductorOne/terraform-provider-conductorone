@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,24 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Co
 }
 
 func (r *IntegrationGithubEnterpriseResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	githubInstanceUrl := new(string)
 	if !r.GithubInstanceUrl.IsUnknown() && !r.GithubInstanceUrl.IsNull() {
 		*githubInstanceUrl = r.GithubInstanceUrl.ValueString()
-		configValues["github_instance_url"] = githubInstanceUrl
+	} else {
+		githubInstanceUrl = nil
 	}
 
 	githubAccessToken := new(string)
 	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
 		*githubAccessToken = r.GithubAccessToken.ValueString()
-		configValues["github_access_token"] = githubAccessToken
+	} else {
+		githubAccessToken = nil
+	}
+
+	configValues := map[string]*string{
+		"github_instance_url": githubInstanceUrl,
+		"github_access_token": githubAccessToken,
+		"github_org_list":     githubOrgList,
 	}
 
 	return configValues

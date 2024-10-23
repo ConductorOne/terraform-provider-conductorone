@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,12 +87,15 @@ func (r *IntegrationJumpcloudResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationJumpcloudResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	jumpcloudApiKey := new(string)
 	if !r.JumpcloudApiKey.IsUnknown() && !r.JumpcloudApiKey.IsNull() {
 		*jumpcloudApiKey = r.JumpcloudApiKey.ValueString()
-		configValues["jumpcloud_api_key"] = jumpcloudApiKey
+	} else {
+		jumpcloudApiKey = nil
+	}
+
+	configValues := map[string]*string{
+		"jumpcloud_api_key": jumpcloudApiKey,
 	}
 
 	return configValues

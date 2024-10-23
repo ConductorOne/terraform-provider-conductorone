@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,30 +87,47 @@ func (r *IntegrationOktaResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationOktaResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	oktaDomain := new(string)
 	if !r.OktaDomain.IsUnknown() && !r.OktaDomain.IsNull() {
 		*oktaDomain = r.OktaDomain.ValueString()
-		configValues["okta_domain"] = oktaDomain
+	} else {
+		oktaDomain = nil
 	}
 
 	oktaApiKey := new(string)
 	if !r.OktaApiKey.IsUnknown() && !r.OktaApiKey.IsNull() {
 		*oktaApiKey = r.OktaApiKey.ValueString()
-		configValues["okta_api_key"] = oktaApiKey
+	} else {
+		oktaApiKey = nil
 	}
 
 	oktaDontSyncInactiveApps := new(string)
 	if !r.OktaDontSyncInactiveApps.IsUnknown() && !r.OktaDontSyncInactiveApps.IsNull() {
 		*oktaDontSyncInactiveApps = strconv.FormatBool(r.OktaDontSyncInactiveApps.ValueBool())
-		configValues["okta_dont_sync_inactive_apps"] = oktaDontSyncInactiveApps
+	} else {
+		oktaDontSyncInactiveApps = nil
 	}
 
 	oktaExtractAwsSamlRoles := new(string)
 	if !r.OktaExtractAwsSamlRoles.IsUnknown() && !r.OktaExtractAwsSamlRoles.IsNull() {
 		*oktaExtractAwsSamlRoles = strconv.FormatBool(r.OktaExtractAwsSamlRoles.ValueBool())
-		configValues["okta_extract_aws_saml_roles"] = oktaExtractAwsSamlRoles
+	} else {
+		oktaExtractAwsSamlRoles = nil
+	}
+
+	oktaSyncDeprovisionedUsers := new(string)
+	if !r.OktaSyncDeprovisionedUsers.IsUnknown() && !r.OktaSyncDeprovisionedUsers.IsNull() {
+		*oktaSyncDeprovisionedUsers = strconv.FormatBool(r.OktaSyncDeprovisionedUsers.ValueBool())
+	} else {
+		oktaSyncDeprovisionedUsers = nil
+	}
+
+	configValues := map[string]*string{
+		"okta_domain":                   oktaDomain,
+		"okta_api_key":                  oktaApiKey,
+		"okta_dont_sync_inactive_apps":  oktaDontSyncInactiveApps,
+		"okta_extract_aws_saml_roles":   oktaExtractAwsSamlRoles,
+		"okta_sync_deprovisioned_users": oktaSyncDeprovisionedUsers,
 	}
 
 	return configValues
@@ -208,6 +225,17 @@ func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Conne
 					}
 				}
 
+				if localV, ok := configValues["okta_sync_deprovisioned_users"]; ok {
+					if v, ok := values["okta_sync_deprovisioned_users"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.OktaSyncDeprovisionedUsers = types.BoolValue(bv)
+							}
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -273,6 +301,17 @@ func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Co
 						if err == nil {
 							if localV != nil || (localV == nil && !bv) {
 								r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
+							}
+						}
+					}
+				}
+
+				if localV, ok := configValues["okta_sync_deprovisioned_users"]; ok {
+					if v, ok := values["okta_sync_deprovisioned_users"]; ok {
+						bv, err := strconv.ParseBool(v.(string))
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.OktaSyncDeprovisionedUsers = types.BoolValue(bv)
 							}
 						}
 					}

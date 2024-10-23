@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"conductorone/internal/sdk"
+	"conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -87,18 +87,23 @@ func (r *IntegrationSentryResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationSentryResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
-
 	sentryOrgSlug := new(string)
 	if !r.SentryOrgSlug.IsUnknown() && !r.SentryOrgSlug.IsNull() {
 		*sentryOrgSlug = r.SentryOrgSlug.ValueString()
-		configValues["sentry_org_slug"] = sentryOrgSlug
+	} else {
+		sentryOrgSlug = nil
 	}
 
 	sentryToken := new(string)
 	if !r.SentryToken.IsUnknown() && !r.SentryToken.IsNull() {
 		*sentryToken = r.SentryToken.ValueString()
-		configValues["sentry_token"] = sentryToken
+	} else {
+		sentryToken = nil
+	}
+
+	configValues := map[string]*string{
+		"sentry_org_slug": sentryOrgSlug,
+		"sentry_token":    sentryToken,
 	}
 
 	return configValues
