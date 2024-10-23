@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
@@ -164,6 +165,41 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						},
 						Description: `The DelegatedProvision message.`,
 					},
+					"external_ticket_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The appId field.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The connectorId field.`,
+							},
+							"external_ticket_provisioner_config_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The externalTicketProvisionerConfigId field.`,
+							},
+							"instructions": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+							},
+						},
+						Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
+					},
+					"multi_step": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+						Validators: []validator.String{
+							validators.IsValidJSON(),
+						},
+					},
 					"manual_provision": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -178,6 +214,18 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 							},
 						},
 						Description: `The ManualProvision message.`,
+					},
+					"webhook_provision": schema.SingleNestedAttribute{
+						Optional: true,
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"webhook_id": schema.StringAttribute{
+								Optional:    true,
+								Computed:    true,
+								Description: `The ID of the webhook to call for provisioning.`,
+							},
+						},
+						Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
 					},
 				},
 				MarkdownDescription: `The ProvisionPolicy message is the Provision strategy that will be used for granting access for this entitlement.` + "\n" +

@@ -71,11 +71,36 @@ This message contains a oneof. Only a single field of the following list may be 
 <a id="nestedatt--provision_policy"></a>
 ### Nested Schema for `provision_policy`
 
+Optional:
+
+- `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--provision_policy--external_ticket_provision))
+- `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
+- `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--provision_policy--webhook_provision))
+
 Read-Only:
 
 - `connector_provision` (Attributes) The ConnectorProvision message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision))
 - `delegated_provision` (Attributes) The DelegatedProvision message. (see [below for nested schema](#nestedatt--provision_policy--delegated_provision))
 - `manual_provision` (Attributes) The ManualProvision message. (see [below for nested schema](#nestedatt--provision_policy--manual_provision))
+
+<a id="nestedatt--provision_policy--external_ticket_provision"></a>
+### Nested Schema for `provision_policy.external_ticket_provision`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `connector_id` (String) The connectorId field.
+- `external_ticket_provisioner_config_id` (String) The externalTicketProvisionerConfigId field.
+- `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
+
+
+<a id="nestedatt--provision_policy--webhook_provision"></a>
+### Nested Schema for `provision_policy.webhook_provision`
+
+Optional:
+
+- `webhook_id` (String) The ID of the webhook to call for provisioning.
+
 
 <a id="nestedatt--provision_policy--connector_provision"></a>
 ### Nested Schema for `provision_policy.connector_provision`

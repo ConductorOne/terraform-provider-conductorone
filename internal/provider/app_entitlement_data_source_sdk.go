@@ -1,8 +1,10 @@
 package provider
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"encoding/json"
 	"time"
+
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -124,6 +126,21 @@ func (r *AppEntitlementDataSourceModel) RefreshFromGetResponse(resp *shared.AppE
 			for _, v := range resp.ProvisionPolicy.ManualProvision.UserIds {
 				r.ProvisionPolicy.ManualProvision.UserIds = append(r.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 			}
+		}
+		if resp.ProvisionPolicy.ExternalTicketProvision == nil {
+			r.ProvisionPolicy.ExternalTicketProvision = nil
+		} else {
+			r.ProvisionPolicy.ExternalTicketProvision = &ExternalTicketProvision{}
+			r.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.AppID)
+			r.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
+			r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
+			r.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.Instructions)
+		}
+		if resp.ProvisionPolicy.MultiStep == nil {
+			r.ProvisionPolicy.MultiStep = types.StringNull()
+		} else {
+			multiStepResult, _ := json.Marshal(resp.ProvisionPolicy.MultiStep)
+			r.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult))
 		}
 	}
 	if resp.RevokePolicyID != nil {

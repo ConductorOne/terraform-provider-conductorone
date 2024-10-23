@@ -3,8 +3,9 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"strings"
+
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
@@ -190,6 +191,33 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 						},
 						Description: `The DelegatedProvision message.`,
 					},
+					"external_ticket_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The appId field.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The connectorId field.`,
+							},
+							"external_ticket_provisioner_config_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The externalTicketProvisionerConfigId field.`,
+							},
+							"instructions": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+							},
+						},
+						Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
+					},
 					"manual_provision": schema.SingleNestedAttribute{
 						Optional: true,
 						Computed: true,
@@ -207,6 +235,14 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 							},
 						},
 						Description: `The ManualProvision message.`,
+					},
+					"multi_step": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+						Validators: []validator.String{
+							validators.IsValidJSON(),
+						},
 					},
 					"webhook_provision": schema.SingleNestedAttribute{
 						Optional: true,
@@ -228,8 +264,9 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					`  - manual` + "\n" +
 					`  - delegated` + "\n" +
 					`  - webhook` + "\n" +
-					"\n" +
-					``,
+					`  - multiStep` + "\n" +
+					`  - externalTicket` +
+					"\n",
 			},
 			"revoke_policy_id": schema.StringAttribute{
 				Computed:    true,
@@ -428,6 +465,8 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		isManualSet := appEntitlement.ProvisionPolicy.ManualProvision != nil
 		isWebhookSet := appEntitlement.ProvisionPolicy.WebhookProvision != nil
 		isConnectorSet := appEntitlement.ProvisionPolicy.ConnectorProvision != nil
+		isExternalTicketSet := appEntitlement.ProvisionPolicy.ExternalTicketProvision != nil
+		isMultiStepSet := appEntitlement.ProvisionPolicy.MultiStep != nil
 
 		if currentAppEntitlement.ProvisionPolicy.ConnectorProvision != nil {
 			if isDelegatedSet || isManualSet || isWebhookSet {
@@ -444,6 +483,14 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		} else if currentAppEntitlement.ProvisionPolicy.WebhookProvision != nil {
 			if isConnectorSet || isDelegatedSet || isManualSet {
 				appEntitlement.ProvisionPolicy.WebhookProvision = nil
+			}
+		} else if currentAppEntitlement.ProvisionPolicy.ExternalTicketProvision != nil {
+			if isConnectorSet || isDelegatedSet || isManualSet || isWebhookSet || isMultiStepSet {
+				appEntitlement.ProvisionPolicy.ExternalTicketProvision = nil
+			}
+		} else if currentAppEntitlement.ProvisionPolicy.MultiStep != nil {
+			if isConnectorSet || isDelegatedSet || isManualSet || isWebhookSet || isExternalTicketSet {
+				appEntitlement.ProvisionPolicy.MultiStep = nil
 			}
 		}
 	}
