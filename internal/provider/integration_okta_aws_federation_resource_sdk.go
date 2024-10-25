@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationOktaAwsFederationResourceModel) ToUpdateSDKType() (*shared.C
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationOktaAwsFederationResourceModel) ToUpdateSDKType() (*shared.C
 	return &out, configSet
 }
 
-func (r *IntegrationOktaAwsFederationResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationOktaAwsFederationResourceModel) populateConfig() map[string]interface{} {
 	oktaAwsFederationDomain := new(string)
 	if !r.OktaAwsFederationDomain.IsUnknown() && !r.OktaAwsFederationDomain.IsNull() {
 		*oktaAwsFederationDomain = r.OktaAwsFederationDomain.ValueString()
@@ -108,7 +108,7 @@ func (r *IntegrationOktaAwsFederationResourceModel) populateConfig() map[string]
 		oktaAwsFederationAwsOktaAppId = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"okta_aws_federation_domain":          oktaAwsFederationDomain,
 		"okta_aws_federation_api_token":       oktaAwsFederationApiToken,
 		"okta_aws_federation_aws_okta_app_id": oktaAwsFederationAwsOktaAppId,
@@ -117,14 +117,14 @@ func (r *IntegrationOktaAwsFederationResourceModel) populateConfig() map[string]
 	return configValues
 }
 
-func (r *IntegrationOktaAwsFederationResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationOktaAwsFederationResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -183,11 +183,15 @@ func (r *IntegrationOktaAwsFederationResourceModel) RefreshFromGetResponse(resp 
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["okta_aws_federation_domain"]; ok {
-					r.OktaAwsFederationDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OktaAwsFederationDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["okta_aws_federation_aws_okta_app_id"]; ok {
-					r.OktaAwsFederationAwsOktaAppId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OktaAwsFederationAwsOktaAppId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -234,11 +238,15 @@ func (r *IntegrationOktaAwsFederationResourceModel) RefreshFromCreateResponse(re
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["okta_aws_federation_domain"]; ok {
-					r.OktaAwsFederationDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OktaAwsFederationDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["okta_aws_federation_aws_okta_app_id"]; ok {
-					r.OktaAwsFederationAwsOktaAppId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OktaAwsFederationAwsOktaAppId = types.StringValue(val)
+					}
 				}
 
 			}

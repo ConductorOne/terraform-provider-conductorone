@@ -9,9 +9,9 @@ const (
 	envConfigType = "type.googleapis.com/c1.api.app.v1.EnvConfig"
 )
 
-func makeConnectorConfig(config map[string]string) *shared.ConnectorConfig {
+func makeConnectorConfig(config map[string]interface{}) *shared.ConnectorConfig {
 	if config == nil {
-		config = make(map[string]string)
+		config = make(map[string]interface{})
 	}
 
 	return &shared.ConnectorConfig{

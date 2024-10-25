@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationOktaResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationOktaResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 	return &out, configSet
 }
 
-func (r *IntegrationOktaResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationOktaResourceModel) populateConfig() map[string]interface{} {
 	oktaDomain := new(string)
 	if !r.OktaDomain.IsUnknown() && !r.OktaDomain.IsNull() {
 		*oktaDomain = r.OktaDomain.ValueString()
@@ -122,7 +122,7 @@ func (r *IntegrationOktaResourceModel) populateConfig() map[string]*string {
 		oktaSyncDeprovisionedUsers = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"okta_domain":                   oktaDomain,
 		"okta_api_key":                  oktaApiKey,
 		"okta_dont_sync_inactive_apps":  oktaDontSyncInactiveApps,
@@ -133,14 +133,14 @@ func (r *IntegrationOktaResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationOktaResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationOktaResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -200,15 +200,19 @@ func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Conne
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["okta_domain"]; ok {
-					r.OktaDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OktaDomain = types.StringValue(val)
+					}
 				}
 
 				if localV, ok := configValues["okta_dont_sync_inactive_apps"]; ok {
 					if v, ok := values["okta_dont_sync_inactive_apps"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.OktaDontSyncInactiveApps = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.OktaDontSyncInactiveApps = types.BoolValue(bv)
+								}
 							}
 						}
 					}
@@ -216,10 +220,12 @@ func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Conne
 
 				if localV, ok := configValues["okta_extract_aws_saml_roles"]; ok {
 					if v, ok := values["okta_extract_aws_saml_roles"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
+								}
 							}
 						}
 					}
@@ -227,10 +233,12 @@ func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Conne
 
 				if localV, ok := configValues["okta_sync_deprovisioned_users"]; ok {
 					if v, ok := values["okta_sync_deprovisioned_users"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.OktaSyncDeprovisionedUsers = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.OktaSyncDeprovisionedUsers = types.BoolValue(bv)
+								}
 							}
 						}
 					}
@@ -281,15 +289,19 @@ func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["okta_domain"]; ok {
-					r.OktaDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OktaDomain = types.StringValue(val)
+					}
 				}
 
 				if localV, ok := configValues["okta_dont_sync_inactive_apps"]; ok {
 					if v, ok := values["okta_dont_sync_inactive_apps"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.OktaDontSyncInactiveApps = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.OktaDontSyncInactiveApps = types.BoolValue(bv)
+								}
 							}
 						}
 					}
@@ -297,10 +309,12 @@ func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Co
 
 				if localV, ok := configValues["okta_extract_aws_saml_roles"]; ok {
 					if v, ok := values["okta_extract_aws_saml_roles"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.OktaExtractAwsSamlRoles = types.BoolValue(bv)
+								}
 							}
 						}
 					}
@@ -308,10 +322,12 @@ func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Co
 
 				if localV, ok := configValues["okta_sync_deprovisioned_users"]; ok {
 					if v, ok := values["okta_sync_deprovisioned_users"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.OktaSyncDeprovisionedUsers = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.OktaSyncDeprovisionedUsers = types.BoolValue(bv)
+								}
 							}
 						}
 					}

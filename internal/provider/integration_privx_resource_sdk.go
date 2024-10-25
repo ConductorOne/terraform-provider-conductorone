@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationPrivxResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationPrivxResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	return &out, configSet
 }
 
-func (r *IntegrationPrivxResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationPrivxResourceModel) populateConfig() map[string]interface{} {
 	privxBaseUrl := new(string)
 	if !r.PrivxBaseUrl.IsUnknown() && !r.PrivxBaseUrl.IsNull() {
 		*privxBaseUrl = r.PrivxBaseUrl.ValueString()
@@ -122,7 +122,7 @@ func (r *IntegrationPrivxResourceModel) populateConfig() map[string]*string {
 		privxOauthClientSecret = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"privx_base_url":            privxBaseUrl,
 		"privx_client_id":           privxClientId,
 		"privx_client_secret":       privxClientSecret,
@@ -133,14 +133,14 @@ func (r *IntegrationPrivxResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationPrivxResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationPrivxResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -199,15 +199,21 @@ func (r *IntegrationPrivxResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["privx_base_url"]; ok {
-					r.PrivxBaseUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.PrivxBaseUrl = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["privx_client_id"]; ok {
-					r.PrivxClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.PrivxClientId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["privx_oauth_client_id"]; ok {
-					r.PrivxOauthClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.PrivxOauthClientId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -254,15 +260,21 @@ func (r *IntegrationPrivxResourceModel) RefreshFromCreateResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["privx_base_url"]; ok {
-					r.PrivxBaseUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.PrivxBaseUrl = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["privx_client_id"]; ok {
-					r.PrivxClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.PrivxClientId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["privx_oauth_client_id"]; ok {
-					r.PrivxOauthClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.PrivxOauthClientId = types.StringValue(val)
+					}
 				}
 
 			}

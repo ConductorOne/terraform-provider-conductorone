@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationJiraCloudResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationJiraCloudResourceModel) populateConfig() map[string]interface{} {
 	jiracloudDomain := new(string)
 	if !r.JiracloudDomain.IsUnknown() && !r.JiracloudDomain.IsNull() {
 		*jiracloudDomain = r.JiracloudDomain.ValueString()
@@ -115,7 +115,7 @@ func (r *IntegrationJiraCloudResourceModel) populateConfig() map[string]*string 
 		enableExternalTicketProvisioning = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"jiracloud_domain":                    jiracloudDomain,
 		"jiracloud_username":                  jiracloudUsername,
 		"jiracloud_apikey":                    jiracloudApikey,
@@ -125,14 +125,14 @@ func (r *IntegrationJiraCloudResourceModel) populateConfig() map[string]*string 
 	return configValues
 }
 
-func (r *IntegrationJiraCloudResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationJiraCloudResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -192,19 +192,25 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromGetResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["jiracloud_domain"]; ok {
-					r.JiracloudDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.JiracloudDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["jiracloud_username"]; ok {
-					r.JiracloudUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.JiracloudUsername = types.StringValue(val)
+					}
 				}
 
 				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
 					if v, ok := values["enable_external_ticket_provisioning"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+								}
 							}
 						}
 					}
@@ -255,19 +261,25 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromCreateResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["jiracloud_domain"]; ok {
-					r.JiracloudDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.JiracloudDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["jiracloud_username"]; ok {
-					r.JiracloudUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.JiracloudUsername = types.StringValue(val)
+					}
 				}
 
 				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
 					if v, ok := values["enable_external_ticket_provisioning"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+								}
 							}
 						}
 					}

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationMongodbAtlasResourceModel) ToUpdateSDKType() (*shared.Connec
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationMongodbAtlasResourceModel) ToUpdateSDKType() (*shared.Connec
 	return &out, configSet
 }
 
-func (r *IntegrationMongodbAtlasResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationMongodbAtlasResourceModel) populateConfig() map[string]interface{} {
 	mongodbatlasPublicKey := new(string)
 	if !r.MongodbatlasPublicKey.IsUnknown() && !r.MongodbatlasPublicKey.IsNull() {
 		*mongodbatlasPublicKey = r.MongodbatlasPublicKey.ValueString()
@@ -101,7 +101,7 @@ func (r *IntegrationMongodbAtlasResourceModel) populateConfig() map[string]*stri
 		mongodbatlasPrivateKey = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"mongodbatlas_public_key":  mongodbatlasPublicKey,
 		"mongodbatlas_private_key": mongodbatlasPrivateKey,
 	}
@@ -109,14 +109,14 @@ func (r *IntegrationMongodbAtlasResourceModel) populateConfig() map[string]*stri
 	return configValues
 }
 
-func (r *IntegrationMongodbAtlasResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationMongodbAtlasResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -175,7 +175,9 @@ func (r *IntegrationMongodbAtlasResourceModel) RefreshFromGetResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["mongodbatlas_public_key"]; ok {
-					r.MongodbatlasPublicKey = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.MongodbatlasPublicKey = types.StringValue(val)
+					}
 				}
 
 			}
@@ -222,7 +224,9 @@ func (r *IntegrationMongodbAtlasResourceModel) RefreshFromCreateResponse(resp *s
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["mongodbatlas_public_key"]; ok {
-					r.MongodbatlasPublicKey = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.MongodbatlasPublicKey = types.StringValue(val)
+					}
 				}
 
 			}

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationOktaCiamResourceModel) ToUpdateSDKType() (*shared.Connector,
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationOktaCiamResourceModel) ToUpdateSDKType() (*shared.Connector,
 	return &out, configSet
 }
 
-func (r *IntegrationOktaCiamResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationOktaCiamResourceModel) populateConfig() map[string]interface{} {
 	oktaCiamDomain := new(string)
 	if !r.OktaCiamDomain.IsUnknown() && !r.OktaCiamDomain.IsNull() {
 		*oktaCiamDomain = r.OktaCiamDomain.ValueString()
@@ -108,7 +108,7 @@ func (r *IntegrationOktaCiamResourceModel) populateConfig() map[string]*string {
 		oktaCiamEmailDomains = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"okta_ciam_domain":        oktaCiamDomain,
 		"okta_ciam_api_token":     oktaCiamApiToken,
 		"okta_ciam_email_domains": oktaCiamEmailDomains,
@@ -117,14 +117,14 @@ func (r *IntegrationOktaCiamResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationOktaCiamResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationOktaCiamResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -183,11 +183,15 @@ func (r *IntegrationOktaCiamResourceModel) RefreshFromGetResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["okta_ciam_domain"]; ok {
-					r.OktaCiamDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OktaCiamDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["okta_ciam_email_domains"]; ok {
-					r.OktaCiamEmailDomains = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OktaCiamEmailDomains = types.StringValue(val)
+					}
 				}
 
 			}
@@ -234,11 +238,15 @@ func (r *IntegrationOktaCiamResourceModel) RefreshFromCreateResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["okta_ciam_domain"]; ok {
-					r.OktaCiamDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OktaCiamDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["okta_ciam_email_domains"]; ok {
-					r.OktaCiamEmailDomains = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OktaCiamEmailDomains = types.StringValue(val)
+					}
 				}
 
 			}

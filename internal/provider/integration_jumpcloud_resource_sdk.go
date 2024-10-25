@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationJumpcloudResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationJumpcloudResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationJumpcloudResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationJumpcloudResourceModel) populateConfig() map[string]interface{} {
 	jumpcloudApiKey := new(string)
 	if !r.JumpcloudApiKey.IsUnknown() && !r.JumpcloudApiKey.IsNull() {
 		*jumpcloudApiKey = r.JumpcloudApiKey.ValueString()
@@ -94,21 +94,21 @@ func (r *IntegrationJumpcloudResourceModel) populateConfig() map[string]*string 
 		jumpcloudApiKey = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"jumpcloud_api_key": jumpcloudApiKey,
 	}
 
 	return configValues
 }
 
-func (r *IntegrationJumpcloudResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationJumpcloudResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

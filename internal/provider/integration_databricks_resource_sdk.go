@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationDatabricksResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationDatabricksResourceModel) ToUpdateSDKType() (*shared.Connecto
 	return &out, configSet
 }
 
-func (r *IntegrationDatabricksResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationDatabricksResourceModel) populateConfig() map[string]interface{} {
 	databricksAccountId := new(string)
 	if !r.DatabricksAccountId.IsUnknown() && !r.DatabricksAccountId.IsNull() {
 		*databricksAccountId = r.DatabricksAccountId.ValueString()
@@ -136,7 +136,7 @@ func (r *IntegrationDatabricksResourceModel) populateConfig() map[string]*string
 		databricksPassword = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"databricks_account_id":    databricksAccountId,
 		"databricks_client_id":     databricksClientId,
 		"databricks_client_secret": databricksClientSecret,
@@ -149,14 +149,14 @@ func (r *IntegrationDatabricksResourceModel) populateConfig() map[string]*string
 	return configValues
 }
 
-func (r *IntegrationDatabricksResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationDatabricksResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -215,19 +215,27 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromGetResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["databricks_account_id"]; ok {
-					r.DatabricksAccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DatabricksAccountId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["databricks_client_id"]; ok {
-					r.DatabricksClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DatabricksClientId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["databricks_workspace"]; ok {
-					r.DatabricksWorkspace = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DatabricksWorkspace = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["databricks_username"]; ok {
-					r.DatabricksUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DatabricksUsername = types.StringValue(val)
+					}
 				}
 
 			}
@@ -274,19 +282,27 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromCreateResponse(resp *sha
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["databricks_account_id"]; ok {
-					r.DatabricksAccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DatabricksAccountId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["databricks_client_id"]; ok {
-					r.DatabricksClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DatabricksClientId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["databricks_workspace"]; ok {
-					r.DatabricksWorkspace = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DatabricksWorkspace = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["databricks_username"]; ok {
-					r.DatabricksUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DatabricksUsername = types.StringValue(val)
+					}
 				}
 
 			}

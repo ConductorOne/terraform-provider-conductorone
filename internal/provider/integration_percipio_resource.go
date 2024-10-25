@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -43,6 +43,7 @@ type IntegrationPercipioResourceModel struct {
 	UserIds                []types.String `tfsdk:"user_ids"`
 	PercipioOrganizationId types.String   `tfsdk:"percipio_organization_id"`
 	PercipioApiToken       types.String   `tfsdk:"percipio_api_token"`
+	PercipioCourseIds      []types.String `tfsdk:"percipio_course_ids"`
 }
 
 func (r *IntegrationPercipioResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -98,6 +99,11 @@ func (r *IntegrationPercipioResource) Schema(ctx context.Context, req resource.S
 			"percipio_api_token": &schema.StringAttribute{
 				Sensitive:   true,
 				Description: `API Token`,
+			},
+			"percipio_course_ids": &schema.ListAttribute{
+				Optional:    true,
+				Description: `Course IDs`,
+				ElementType: types.StringType,
 			},
 		},
 	}

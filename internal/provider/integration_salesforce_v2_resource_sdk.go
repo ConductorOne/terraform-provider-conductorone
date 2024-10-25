@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationSalesforceV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationSalesforceV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 	return &out, configSet
 }
 
-func (r *IntegrationSalesforceV2ResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationSalesforceV2ResourceModel) populateConfig() map[string]interface{} {
 	salesforceInstanceUrl := new(string)
 	if !r.SalesforceInstanceUrl.IsUnknown() && !r.SalesforceInstanceUrl.IsNull() {
 		*salesforceInstanceUrl = r.SalesforceInstanceUrl.ValueString()
@@ -122,7 +122,7 @@ func (r *IntegrationSalesforceV2ResourceModel) populateConfig() map[string]*stri
 		salesforceSecurityToken = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"salesforce_instance_url":       salesforceInstanceUrl,
 		"salesforce_username_for_email": salesforceUsernameForEmail,
 		"salesforce_username":           salesforceUsername,
@@ -133,14 +133,14 @@ func (r *IntegrationSalesforceV2ResourceModel) populateConfig() map[string]*stri
 	return configValues
 }
 
-func (r *IntegrationSalesforceV2ResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationSalesforceV2ResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -200,22 +200,28 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromGetResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["salesforce_instance_url"]; ok {
-					r.SalesforceInstanceUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SalesforceInstanceUrl = types.StringValue(val)
+					}
 				}
 
 				if localV, ok := configValues["salesforce_username_for_email"]; ok {
 					if v, ok := values["salesforce_username_for_email"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SalesforceUsernameForEmail = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SalesforceUsernameForEmail = types.BoolValue(bv)
+								}
 							}
 						}
 					}
 				}
 
 				if v, ok := values["salesforce_username"]; ok {
-					r.SalesforceUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SalesforceUsername = types.StringValue(val)
+					}
 				}
 
 			}
@@ -263,22 +269,28 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromCreateResponse(resp *s
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["salesforce_instance_url"]; ok {
-					r.SalesforceInstanceUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SalesforceInstanceUrl = types.StringValue(val)
+					}
 				}
 
 				if localV, ok := configValues["salesforce_username_for_email"]; ok {
 					if v, ok := values["salesforce_username_for_email"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SalesforceUsernameForEmail = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SalesforceUsernameForEmail = types.BoolValue(bv)
+								}
 							}
 						}
 					}
 				}
 
 				if v, ok := values["salesforce_username"]; ok {
-					r.SalesforceUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SalesforceUsername = types.StringValue(val)
+					}
 				}
 
 			}

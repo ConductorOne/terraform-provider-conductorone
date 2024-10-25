@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.Connector,
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.Connector,
 	return &out, configSet
 }
 
-func (r *IntegrationNetsuiteResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationNetsuiteResourceModel) populateConfig() map[string]interface{} {
 	netsuiteAccountId := new(string)
 	if !r.NetsuiteAccountId.IsUnknown() && !r.NetsuiteAccountId.IsNull() {
 		*netsuiteAccountId = r.NetsuiteAccountId.ValueString()
@@ -122,7 +122,7 @@ func (r *IntegrationNetsuiteResourceModel) populateConfig() map[string]*string {
 		netsuiteTokenSecret = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"netsuite_account_id":      netsuiteAccountId,
 		"netsuite_consumer_key":    netsuiteConsumerKey,
 		"netsuite_consumer_secret": netsuiteConsumerSecret,
@@ -133,14 +133,14 @@ func (r *IntegrationNetsuiteResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationNetsuiteResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationNetsuiteResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -199,15 +199,21 @@ func (r *IntegrationNetsuiteResourceModel) RefreshFromGetResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["netsuite_account_id"]; ok {
-					r.NetsuiteAccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.NetsuiteAccountId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["netsuite_consumer_key"]; ok {
-					r.NetsuiteConsumerKey = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.NetsuiteConsumerKey = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["netsuite_token_key"]; ok {
-					r.NetsuiteTokenKey = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.NetsuiteTokenKey = types.StringValue(val)
+					}
 				}
 
 			}
@@ -254,15 +260,21 @@ func (r *IntegrationNetsuiteResourceModel) RefreshFromCreateResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["netsuite_account_id"]; ok {
-					r.NetsuiteAccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.NetsuiteAccountId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["netsuite_consumer_key"]; ok {
-					r.NetsuiteConsumerKey = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.NetsuiteConsumerKey = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["netsuite_token_key"]; ok {
-					r.NetsuiteTokenKey = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.NetsuiteTokenKey = types.StringValue(val)
+					}
 				}
 
 			}

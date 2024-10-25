@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationCloudflareResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationCloudflareResourceModel) ToUpdateSDKType() (*shared.Connecto
 	return &out, configSet
 }
 
-func (r *IntegrationCloudflareResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationCloudflareResourceModel) populateConfig() map[string]interface{} {
 	accountId := new(string)
 	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
 		*accountId = r.AccountId.ValueString()
@@ -101,7 +101,7 @@ func (r *IntegrationCloudflareResourceModel) populateConfig() map[string]*string
 		apiKey = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"account_id": accountId,
 		"api_key":    apiKey,
 	}
@@ -109,14 +109,14 @@ func (r *IntegrationCloudflareResourceModel) populateConfig() map[string]*string
 	return configValues
 }
 
-func (r *IntegrationCloudflareResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationCloudflareResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -175,7 +175,9 @@ func (r *IntegrationCloudflareResourceModel) RefreshFromGetResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["account_id"]; ok {
-					r.AccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.AccountId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -222,7 +224,9 @@ func (r *IntegrationCloudflareResourceModel) RefreshFromCreateResponse(resp *sha
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["account_id"]; ok {
-					r.AccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.AccountId = types.StringValue(val)
+					}
 				}
 
 			}

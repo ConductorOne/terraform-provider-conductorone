@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]interface{} {
 	tailscaleApiKey := new(string)
 	if !r.TailscaleApiKey.IsUnknown() && !r.TailscaleApiKey.IsNull() {
 		*tailscaleApiKey = r.TailscaleApiKey.ValueString()
@@ -101,7 +101,7 @@ func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]*string 
 		tailnet = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"tailscale_api_key": tailscaleApiKey,
 		"tailnet":           tailnet,
 	}
@@ -109,14 +109,14 @@ func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]*string 
 	return configValues
 }
 
-func (r *IntegrationTailscaleResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationTailscaleResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -176,7 +176,9 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromGetResponse(resp *shared.
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["tailnet"]; ok {
-					r.Tailnet = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Tailnet = types.StringValue(val)
+					}
 				}
 
 			}
@@ -224,7 +226,9 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromCreateResponse(resp *shar
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["tailnet"]; ok {
-					r.Tailnet = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Tailnet = types.StringValue(val)
+					}
 				}
 
 			}

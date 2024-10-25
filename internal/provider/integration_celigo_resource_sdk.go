@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationCeligoResourceModel) ToUpdateSDKType() (*shared.Connector, b
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationCeligoResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	return &out, configSet
 }
 
-func (r *IntegrationCeligoResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationCeligoResourceModel) populateConfig() map[string]interface{} {
 	celigoRegion := new(string)
 	if !r.CeligoRegion.IsUnknown() && !r.CeligoRegion.IsNull() {
 		*celigoRegion = r.CeligoRegion.ValueString()
@@ -101,7 +101,7 @@ func (r *IntegrationCeligoResourceModel) populateConfig() map[string]*string {
 		celigoAccessToken = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"celigo_region":       celigoRegion,
 		"celigo_access_token": celigoAccessToken,
 	}
@@ -109,14 +109,14 @@ func (r *IntegrationCeligoResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationCeligoResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationCeligoResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -175,7 +175,9 @@ func (r *IntegrationCeligoResourceModel) RefreshFromGetResponse(resp *shared.Con
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["celigo_region"]; ok {
-					r.CeligoRegion = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.CeligoRegion = types.StringValue(val)
+					}
 				}
 
 			}
@@ -222,7 +224,9 @@ func (r *IntegrationCeligoResourceModel) RefreshFromCreateResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["celigo_region"]; ok {
-					r.CeligoRegion = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.CeligoRegion = types.StringValue(val)
+					}
 				}
 
 			}

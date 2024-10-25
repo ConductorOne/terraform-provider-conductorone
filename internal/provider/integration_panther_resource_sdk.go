@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationPantherResourceModel) ToUpdateSDKType() (*shared.Connector, 
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationPantherResourceModel) ToUpdateSDKType() (*shared.Connector, 
 	return &out, configSet
 }
 
-func (r *IntegrationPantherResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationPantherResourceModel) populateConfig() map[string]interface{} {
 	pantherApiKey := new(string)
 	if !r.PantherApiKey.IsUnknown() && !r.PantherApiKey.IsNull() {
 		*pantherApiKey = r.PantherApiKey.ValueString()
@@ -101,7 +101,7 @@ func (r *IntegrationPantherResourceModel) populateConfig() map[string]*string {
 		pantherUrl = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"panther_api_key": pantherApiKey,
 		"panther_url":     pantherUrl,
 	}
@@ -109,14 +109,14 @@ func (r *IntegrationPantherResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationPantherResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationPantherResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

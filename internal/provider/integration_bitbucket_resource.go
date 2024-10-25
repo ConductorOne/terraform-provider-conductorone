@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,14 +35,15 @@ type IntegrationBitbucketResource struct {
 
 // IntegrationBitbucketResourceModel describes the resource data model.
 type IntegrationBitbucketResourceModel struct {
-	AppID                types.String   `tfsdk:"app_id"`
-	CreatedAt            types.String   `tfsdk:"created_at"`
-	DeletedAt            types.String   `tfsdk:"deleted_at"`
-	ID                   types.String   `tfsdk:"id"`
-	UpdatedAt            types.String   `tfsdk:"updated_at"`
-	UserIds              []types.String `tfsdk:"user_ids"`
-	BitbucketUsername    types.String   `tfsdk:"bitbucket_username"`
-	BitbucketAppPassword types.String   `tfsdk:"bitbucket_app_password"`
+	AppID                  types.String   `tfsdk:"app_id"`
+	CreatedAt              types.String   `tfsdk:"created_at"`
+	DeletedAt              types.String   `tfsdk:"deleted_at"`
+	ID                     types.String   `tfsdk:"id"`
+	UpdatedAt              types.String   `tfsdk:"updated_at"`
+	UserIds                []types.String `tfsdk:"user_ids"`
+	BitbucketUsername      types.String   `tfsdk:"bitbucket_username"`
+	BitbucketAppPassword   types.String   `tfsdk:"bitbucket_app_password"`
+	BitbucketWorkspaceList []types.String `tfsdk:"bitbucket_workspace_list"`
 }
 
 func (r *IntegrationBitbucketResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -98,6 +99,11 @@ func (r *IntegrationBitbucketResource) Schema(ctx context.Context, req resource.
 			"bitbucket_app_password": &schema.StringAttribute{
 				Sensitive:   true,
 				Description: `App password`,
+			},
+			"bitbucket_workspace_list": &schema.ListAttribute{
+				Optional:    true,
+				Description: `Workspaces - optional`,
+				ElementType: types.StringType,
 			},
 		},
 	}

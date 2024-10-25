@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationJdEdwardsResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationJdEdwardsResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationJdEdwardsResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationJdEdwardsResourceModel) populateConfig() map[string]interface{} {
 	jdedwardsAisUrl := new(string)
 	if !r.JdedwardsAisUrl.IsUnknown() && !r.JdedwardsAisUrl.IsNull() {
 		*jdedwardsAisUrl = r.JdedwardsAisUrl.ValueString()
@@ -115,7 +115,7 @@ func (r *IntegrationJdEdwardsResourceModel) populateConfig() map[string]*string 
 		jdedwardsEnv = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"jdedwards_ais_url":  jdedwardsAisUrl,
 		"jdedwards_username": jdedwardsUsername,
 		"jdedwards_password": jdedwardsPassword,
@@ -125,14 +125,14 @@ func (r *IntegrationJdEdwardsResourceModel) populateConfig() map[string]*string 
 	return configValues
 }
 
-func (r *IntegrationJdEdwardsResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationJdEdwardsResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -191,15 +191,21 @@ func (r *IntegrationJdEdwardsResourceModel) RefreshFromGetResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["jdedwards_ais_url"]; ok {
-					r.JdedwardsAisUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.JdedwardsAisUrl = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["jdedwards_username"]; ok {
-					r.JdedwardsUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.JdedwardsUsername = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["jdedwards_env"]; ok {
-					r.JdedwardsEnv = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.JdedwardsEnv = types.StringValue(val)
+					}
 				}
 
 			}
@@ -246,15 +252,21 @@ func (r *IntegrationJdEdwardsResourceModel) RefreshFromCreateResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["jdedwards_ais_url"]; ok {
-					r.JdedwardsAisUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.JdedwardsAisUrl = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["jdedwards_username"]; ok {
-					r.JdedwardsUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.JdedwardsUsername = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["jdedwards_env"]; ok {
-					r.JdedwardsEnv = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.JdedwardsEnv = types.StringValue(val)
+					}
 				}
 
 			}

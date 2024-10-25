@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationSnipeItResourceModel) ToUpdateSDKType() (*shared.Connector, 
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationSnipeItResourceModel) ToUpdateSDKType() (*shared.Connector, 
 	return &out, configSet
 }
 
-func (r *IntegrationSnipeItResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationSnipeItResourceModel) populateConfig() map[string]interface{} {
 	snipeitBaseUrl := new(string)
 	if !r.SnipeitBaseUrl.IsUnknown() && !r.SnipeitBaseUrl.IsNull() {
 		*snipeitBaseUrl = r.SnipeitBaseUrl.ValueString()
@@ -101,7 +101,7 @@ func (r *IntegrationSnipeItResourceModel) populateConfig() map[string]*string {
 		snipeitAccessToken = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"snipeit_base_url":     snipeitBaseUrl,
 		"snipeit_access_token": snipeitAccessToken,
 	}
@@ -109,14 +109,14 @@ func (r *IntegrationSnipeItResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationSnipeItResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationSnipeItResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -175,7 +175,9 @@ func (r *IntegrationSnipeItResourceModel) RefreshFromGetResponse(resp *shared.Co
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["snipeit_base_url"]; ok {
-					r.SnipeitBaseUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnipeitBaseUrl = types.StringValue(val)
+					}
 				}
 
 			}
@@ -222,7 +224,9 @@ func (r *IntegrationSnipeItResourceModel) RefreshFromCreateResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["snipeit_base_url"]; ok {
-					r.SnipeitBaseUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnipeitBaseUrl = types.StringValue(val)
+					}
 				}
 
 			}

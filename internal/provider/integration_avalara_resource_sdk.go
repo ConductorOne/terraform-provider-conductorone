@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationAvalaraResourceModel) ToUpdateSDKType() (*shared.Connector, 
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationAvalaraResourceModel) ToUpdateSDKType() (*shared.Connector, 
 	return &out, configSet
 }
 
-func (r *IntegrationAvalaraResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationAvalaraResourceModel) populateConfig() map[string]interface{} {
 	avalaraUsername := new(string)
 	if !r.AvalaraUsername.IsUnknown() && !r.AvalaraUsername.IsNull() {
 		*avalaraUsername = r.AvalaraUsername.ValueString()
@@ -108,7 +108,7 @@ func (r *IntegrationAvalaraResourceModel) populateConfig() map[string]*string {
 		avalaraEnvironment = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"avalara_username":    avalaraUsername,
 		"avalara_password":    avalaraPassword,
 		"avalara_environment": avalaraEnvironment,
@@ -117,14 +117,14 @@ func (r *IntegrationAvalaraResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationAvalaraResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationAvalaraResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -183,11 +183,15 @@ func (r *IntegrationAvalaraResourceModel) RefreshFromGetResponse(resp *shared.Co
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["avalara_username"]; ok {
-					r.AvalaraUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.AvalaraUsername = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["avalara_environment"]; ok {
-					r.AvalaraEnvironment = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.AvalaraEnvironment = types.StringValue(val)
+					}
 				}
 
 			}
@@ -234,11 +238,15 @@ func (r *IntegrationAvalaraResourceModel) RefreshFromCreateResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["avalara_username"]; ok {
-					r.AvalaraUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.AvalaraUsername = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["avalara_environment"]; ok {
-					r.AvalaraEnvironment = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.AvalaraEnvironment = types.StringValue(val)
+					}
 				}
 
 			}

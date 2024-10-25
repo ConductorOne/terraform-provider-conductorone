@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector,
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector,
 	return &out, configSet
 }
 
-func (r *IntegrationTwingateResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationTwingateResourceModel) populateConfig() map[string]interface{} {
 	twingateApikey := new(string)
 	if !r.TwingateApikey.IsUnknown() && !r.TwingateApikey.IsNull() {
 		*twingateApikey = r.TwingateApikey.ValueString()
@@ -101,7 +101,7 @@ func (r *IntegrationTwingateResourceModel) populateConfig() map[string]*string {
 		twingateDomain = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"twingate_apikey": twingateApikey,
 		"twingate_domain": twingateDomain,
 	}
@@ -109,14 +109,14 @@ func (r *IntegrationTwingateResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationTwingateResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationTwingateResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -176,7 +176,9 @@ func (r *IntegrationTwingateResourceModel) RefreshFromGetResponse(resp *shared.C
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["twingate_domain"]; ok {
-					r.TwingateDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.TwingateDomain = types.StringValue(val)
+					}
 				}
 
 			}
@@ -224,7 +226,9 @@ func (r *IntegrationTwingateResourceModel) RefreshFromCreateResponse(resp *share
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["twingate_domain"]; ok {
-					r.TwingateDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.TwingateDomain = types.StringValue(val)
+					}
 				}
 
 			}

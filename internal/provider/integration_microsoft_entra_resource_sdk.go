@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationMicrosoftEntraResourceModel) ToUpdateSDKType() (*shared.Conn
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationMicrosoftEntraResourceModel) ToUpdateSDKType() (*shared.Conn
 	return &out, configSet
 }
 
-func (r *IntegrationMicrosoftEntraResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationMicrosoftEntraResourceModel) populateConfig() map[string]interface{} {
 	entraTenantId := new(string)
 	if !r.EntraTenantId.IsUnknown() && !r.EntraTenantId.IsNull() {
 		*entraTenantId = r.EntraTenantId.ValueString()
@@ -115,7 +115,7 @@ func (r *IntegrationMicrosoftEntraResourceModel) populateConfig() map[string]*st
 		entraSkipAdGroups = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"entra_tenant_id":      entraTenantId,
 		"entra_client_id":      entraClientId,
 		"entra_client_secret":  entraClientSecret,
@@ -125,14 +125,14 @@ func (r *IntegrationMicrosoftEntraResourceModel) populateConfig() map[string]*st
 	return configValues
 }
 
-func (r *IntegrationMicrosoftEntraResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationMicrosoftEntraResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -192,19 +192,25 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromGetResponse(resp *sh
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["entra_tenant_id"]; ok {
-					r.EntraTenantId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.EntraTenantId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["entra_client_id"]; ok {
-					r.EntraClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.EntraClientId = types.StringValue(val)
+					}
 				}
 
 				if localV, ok := configValues["entra_skip_ad_groups"]; ok {
 					if v, ok := values["entra_skip_ad_groups"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EntraSkipAdGroups = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EntraSkipAdGroups = types.BoolValue(bv)
+								}
 							}
 						}
 					}
@@ -255,19 +261,25 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromCreateResponse(resp 
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["entra_tenant_id"]; ok {
-					r.EntraTenantId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.EntraTenantId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["entra_client_id"]; ok {
-					r.EntraClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.EntraClientId = types.StringValue(val)
+					}
 				}
 
 				if localV, ok := configValues["entra_skip_ad_groups"]; ok {
 					if v, ok := values["entra_skip_ad_groups"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EntraSkipAdGroups = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EntraSkipAdGroups = types.BoolValue(bv)
+								}
 							}
 						}
 					}

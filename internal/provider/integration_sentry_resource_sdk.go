@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationSentryResourceModel) ToUpdateSDKType() (*shared.Connector, b
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationSentryResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	return &out, configSet
 }
 
-func (r *IntegrationSentryResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationSentryResourceModel) populateConfig() map[string]interface{} {
 	sentryOrgSlug := new(string)
 	if !r.SentryOrgSlug.IsUnknown() && !r.SentryOrgSlug.IsNull() {
 		*sentryOrgSlug = r.SentryOrgSlug.ValueString()
@@ -101,7 +101,7 @@ func (r *IntegrationSentryResourceModel) populateConfig() map[string]*string {
 		sentryToken = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"sentry_org_slug": sentryOrgSlug,
 		"sentry_token":    sentryToken,
 	}
@@ -109,14 +109,14 @@ func (r *IntegrationSentryResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationSentryResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationSentryResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -175,7 +175,9 @@ func (r *IntegrationSentryResourceModel) RefreshFromGetResponse(resp *shared.Con
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["sentry_org_slug"]; ok {
-					r.SentryOrgSlug = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SentryOrgSlug = types.StringValue(val)
+					}
 				}
 
 			}
@@ -222,7 +224,9 @@ func (r *IntegrationSentryResourceModel) RefreshFromCreateResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["sentry_org_slug"]; ok {
-					r.SentryOrgSlug = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SentryOrgSlug = types.StringValue(val)
+					}
 				}
 
 			}

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationMiroResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationMiroResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 	return &out, configSet
 }
 
-func (r *IntegrationMiroResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationMiroResourceModel) populateConfig() map[string]interface{} {
 	miroAccessToken := new(string)
 	if !r.MiroAccessToken.IsUnknown() && !r.MiroAccessToken.IsNull() {
 		*miroAccessToken = r.MiroAccessToken.ValueString()
@@ -94,21 +94,21 @@ func (r *IntegrationMiroResourceModel) populateConfig() map[string]*string {
 		miroAccessToken = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"miro_access_token": miroAccessToken,
 	}
 
 	return configValues
 }
 
-func (r *IntegrationMiroResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationMiroResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

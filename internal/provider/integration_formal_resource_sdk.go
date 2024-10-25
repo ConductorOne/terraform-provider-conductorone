@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationFormalResourceModel) ToUpdateSDKType() (*shared.Connector, b
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationFormalResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	return &out, configSet
 }
 
-func (r *IntegrationFormalResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationFormalResourceModel) populateConfig() map[string]interface{} {
 	formalApiKey := new(string)
 	if !r.FormalApiKey.IsUnknown() && !r.FormalApiKey.IsNull() {
 		*formalApiKey = r.FormalApiKey.ValueString()
@@ -94,21 +94,21 @@ func (r *IntegrationFormalResourceModel) populateConfig() map[string]*string {
 		formalApiKey = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"formal_api_key": formalApiKey,
 	}
 
 	return configValues
 }
 
-func (r *IntegrationFormalResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationFormalResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

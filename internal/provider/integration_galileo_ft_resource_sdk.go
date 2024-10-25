@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationGalileoFtResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationGalileoFtResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationGalileoFtResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationGalileoFtResourceModel) populateConfig() map[string]interface{} {
 	galileoftProviderId := new(string)
 	if !r.GalileoftProviderId.IsUnknown() && !r.GalileoftProviderId.IsNull() {
 		*galileoftProviderId = r.GalileoftProviderId.ValueString()
@@ -115,7 +115,7 @@ func (r *IntegrationGalileoFtResourceModel) populateConfig() map[string]*string 
 		galileoftHostname = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"galileoft_provider_id":   galileoftProviderId,
 		"galileoft_api_login":     galileoftApiLogin,
 		"galileoft_api_trans_key": galileoftApiTransKey,
@@ -125,14 +125,14 @@ func (r *IntegrationGalileoFtResourceModel) populateConfig() map[string]*string 
 	return configValues
 }
 
-func (r *IntegrationGalileoFtResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationGalileoFtResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -191,15 +191,21 @@ func (r *IntegrationGalileoFtResourceModel) RefreshFromGetResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["galileoft_provider_id"]; ok {
-					r.GalileoftProviderId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.GalileoftProviderId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["galileoft_api_login"]; ok {
-					r.GalileoftApiLogin = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.GalileoftApiLogin = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["galileoft_hostname"]; ok {
-					r.GalileoftHostname = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.GalileoftHostname = types.StringValue(val)
+					}
 				}
 
 			}
@@ -246,15 +252,21 @@ func (r *IntegrationGalileoFtResourceModel) RefreshFromCreateResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["galileoft_provider_id"]; ok {
-					r.GalileoftProviderId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.GalileoftProviderId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["galileoft_api_login"]; ok {
-					r.GalileoftApiLogin = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.GalileoftApiLogin = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["galileoft_hostname"]; ok {
-					r.GalileoftHostname = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.GalileoftHostname = types.StringValue(val)
+					}
 				}
 
 			}

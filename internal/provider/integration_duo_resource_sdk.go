@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationDuoResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationDuoResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 	return &out, configSet
 }
 
-func (r *IntegrationDuoResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationDuoResourceModel) populateConfig() map[string]interface{} {
 	duoIntegrationKey := new(string)
 	if !r.DuoIntegrationKey.IsUnknown() && !r.DuoIntegrationKey.IsNull() {
 		*duoIntegrationKey = r.DuoIntegrationKey.ValueString()
@@ -108,7 +108,7 @@ func (r *IntegrationDuoResourceModel) populateConfig() map[string]*string {
 		duoApiHostname = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"duo_integration_key": duoIntegrationKey,
 		"duo_secret_key":      duoSecretKey,
 		"duo_api_hostname":    duoApiHostname,
@@ -117,14 +117,14 @@ func (r *IntegrationDuoResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationDuoResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationDuoResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

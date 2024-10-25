@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationSnowflakeResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationSnowflakeResourceModel) populateConfig() map[string]interface{} {
 	snowflakeAccount := new(string)
 	if !r.SnowflakeAccount.IsUnknown() && !r.SnowflakeAccount.IsNull() {
 		*snowflakeAccount = r.SnowflakeAccount.ValueString()
@@ -115,7 +115,7 @@ func (r *IntegrationSnowflakeResourceModel) populateConfig() map[string]*string 
 		snowflakeUserRole = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"snowflake_account":   snowflakeAccount,
 		"snowflake_username":  snowflakeUsername,
 		"snowflake_password":  snowflakePassword,
@@ -125,14 +125,14 @@ func (r *IntegrationSnowflakeResourceModel) populateConfig() map[string]*string 
 	return configValues
 }
 
-func (r *IntegrationSnowflakeResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationSnowflakeResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -191,15 +191,21 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromGetResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["snowflake_account"]; ok {
-					r.SnowflakeAccount = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeAccount = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["snowflake_username"]; ok {
-					r.SnowflakeUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeUsername = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["snowflake_user_role"]; ok {
-					r.SnowflakeUserRole = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeUserRole = types.StringValue(val)
+					}
 				}
 
 			}
@@ -246,15 +252,21 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromCreateResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["snowflake_account"]; ok {
-					r.SnowflakeAccount = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeAccount = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["snowflake_username"]; ok {
-					r.SnowflakeUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeUsername = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["snowflake_user_role"]; ok {
-					r.SnowflakeUserRole = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeUserRole = types.StringValue(val)
+					}
 				}
 
 			}

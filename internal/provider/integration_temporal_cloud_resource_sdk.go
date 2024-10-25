@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationTemporalCloudResourceModel) ToUpdateSDKType() (*shared.Conne
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationTemporalCloudResourceModel) ToUpdateSDKType() (*shared.Conne
 	return &out, configSet
 }
 
-func (r *IntegrationTemporalCloudResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationTemporalCloudResourceModel) populateConfig() map[string]interface{} {
 	temporalCloudApiKey := new(string)
 	if !r.TemporalCloudApiKey.IsUnknown() && !r.TemporalCloudApiKey.IsNull() {
 		*temporalCloudApiKey = r.TemporalCloudApiKey.ValueString()
@@ -94,21 +94,21 @@ func (r *IntegrationTemporalCloudResourceModel) populateConfig() map[string]*str
 		temporalCloudApiKey = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"temporal_cloud_api_key": temporalCloudApiKey,
 	}
 
 	return configValues
 }
 
-func (r *IntegrationTemporalCloudResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationTemporalCloudResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

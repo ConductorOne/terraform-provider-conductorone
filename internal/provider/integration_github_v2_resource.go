@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -42,6 +42,7 @@ type IntegrationGithubV2ResourceModel struct {
 	UpdatedAt         types.String   `tfsdk:"updated_at"`
 	UserIds           []types.String `tfsdk:"user_ids"`
 	GithubAccessToken types.String   `tfsdk:"github_access_token"`
+	GithubOrgList     []types.String `tfsdk:"github_org_list"`
 }
 
 func (r *IntegrationGithubV2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -94,6 +95,11 @@ func (r *IntegrationGithubV2Resource) Schema(ctx context.Context, req resource.S
 			"github_access_token": &schema.StringAttribute{
 				Sensitive:   true,
 				Description: `Personal access token`,
+			},
+			"github_org_list": &schema.ListAttribute{
+				Optional:    true,
+				Description: `Organizations - optional`,
+				ElementType: types.StringType,
 			},
 		},
 	}

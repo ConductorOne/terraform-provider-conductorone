@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationSnowflakeV2ResourceModel) ToUpdateSDKType() (*shared.Connect
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationSnowflakeV2ResourceModel) ToUpdateSDKType() (*shared.Connect
 	return &out, configSet
 }
 
-func (r *IntegrationSnowflakeV2ResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationSnowflakeV2ResourceModel) populateConfig() map[string]interface{} {
 	snowflakeAccountUrl := new(string)
 	if !r.SnowflakeAccountUrl.IsUnknown() && !r.SnowflakeAccountUrl.IsNull() {
 		*snowflakeAccountUrl = r.SnowflakeAccountUrl.ValueString()
@@ -115,7 +115,7 @@ func (r *IntegrationSnowflakeV2ResourceModel) populateConfig() map[string]*strin
 		snowflakePrivateKey = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"snowflake_account_url": snowflakeAccountUrl,
 		"snowflake_account_id":  snowflakeAccountId,
 		"snowflake_user_id":     snowflakeUserId,
@@ -125,14 +125,14 @@ func (r *IntegrationSnowflakeV2ResourceModel) populateConfig() map[string]*strin
 	return configValues
 }
 
-func (r *IntegrationSnowflakeV2ResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationSnowflakeV2ResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -191,15 +191,21 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromGetResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["snowflake_account_url"]; ok {
-					r.SnowflakeAccountUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeAccountUrl = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["snowflake_account_id"]; ok {
-					r.SnowflakeAccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeAccountId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["snowflake_user_id"]; ok {
-					r.SnowflakeUserId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeUserId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -246,15 +252,21 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromCreateResponse(resp *sh
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["snowflake_account_url"]; ok {
-					r.SnowflakeAccountUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeAccountUrl = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["snowflake_account_id"]; ok {
-					r.SnowflakeAccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeAccountId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["snowflake_user_id"]; ok {
-					r.SnowflakeUserId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnowflakeUserId = types.StringValue(val)
+					}
 				}
 
 			}

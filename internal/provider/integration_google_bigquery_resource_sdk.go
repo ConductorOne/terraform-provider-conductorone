@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationGoogleBigqueryResourceModel) ToUpdateSDKType() (*shared.Conn
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationGoogleBigqueryResourceModel) ToUpdateSDKType() (*shared.Conn
 	return &out, configSet
 }
 
-func (r *IntegrationGoogleBigqueryResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationGoogleBigqueryResourceModel) populateConfig() map[string]interface{} {
 	credentialsJson := new(string)
 	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
 		*credentialsJson = r.CredentialsJson.ValueString()
@@ -94,21 +94,21 @@ func (r *IntegrationGoogleBigqueryResourceModel) populateConfig() map[string]*st
 		credentialsJson = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"credentials_json": credentialsJson,
 	}
 
 	return configValues
 }
 
-func (r *IntegrationGoogleBigqueryResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationGoogleBigqueryResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

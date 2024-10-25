@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationConfluenceV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationConfluenceV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 	return &out, configSet
 }
 
-func (r *IntegrationConfluenceV2ResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationConfluenceV2ResourceModel) populateConfig() map[string]interface{} {
 	domainUrl := new(string)
 	if !r.DomainUrl.IsUnknown() && !r.DomainUrl.IsNull() {
 		*domainUrl = r.DomainUrl.ValueString()
@@ -108,7 +108,7 @@ func (r *IntegrationConfluenceV2ResourceModel) populateConfig() map[string]*stri
 		apiKey = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"domain-url": domainUrl,
 		"username":   username,
 		"api-key":    apiKey,
@@ -117,14 +117,14 @@ func (r *IntegrationConfluenceV2ResourceModel) populateConfig() map[string]*stri
 	return configValues
 }
 
-func (r *IntegrationConfluenceV2ResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationConfluenceV2ResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -183,11 +183,15 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromGetResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["domain-url"]; ok {
-					r.DomainUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DomainUrl = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["username"]; ok {
-					r.Username = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Username = types.StringValue(val)
+					}
 				}
 
 			}
@@ -234,11 +238,15 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromCreateResponse(resp *s
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["domain-url"]; ok {
-					r.DomainUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DomainUrl = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["username"]; ok {
-					r.Username = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Username = types.StringValue(val)
+					}
 				}
 
 			}

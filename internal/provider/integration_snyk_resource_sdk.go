@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationSnykResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationSnykResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 	return &out, configSet
 }
 
-func (r *IntegrationSnykResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationSnykResourceModel) populateConfig() map[string]interface{} {
 	snykApiToken := new(string)
 	if !r.SnykApiToken.IsUnknown() && !r.SnykApiToken.IsNull() {
 		*snykApiToken = r.SnykApiToken.ValueString()
@@ -101,7 +101,12 @@ func (r *IntegrationSnykResourceModel) populateConfig() map[string]*string {
 		snykGroupId = nil
 	}
 
-	configValues := map[string]*string{
+	snykOrgIds := make([]string, 0)
+	for _, item := range r.SnykOrgIds {
+		snykOrgIds = append(snykOrgIds, item.ValueString())
+	}
+
+	configValues := map[string]interface{}{
 		"snyk_api_token": snykApiToken,
 		"snyk_group_id":  snykGroupId,
 		"snyk_org_ids":   snykOrgIds,
@@ -110,14 +115,14 @@ func (r *IntegrationSnykResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationSnykResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationSnykResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -177,7 +182,18 @@ func (r *IntegrationSnykResourceModel) RefreshFromGetResponse(resp *shared.Conne
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["snyk_group_id"]; ok {
-					r.SnykGroupId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnykGroupId = types.StringValue(val)
+					}
+				}
+
+				r.SnykOrgIds = nil
+				if v, ok := values["snyk_org_ids"]; ok {
+					if val, ok := v.([]string); ok {
+						for _, item := range val {
+							r.SnykOrgIds = append(r.SnykOrgIds, types.StringValue(item))
+						}
+					}
 				}
 
 			}
@@ -225,7 +241,18 @@ func (r *IntegrationSnykResourceModel) RefreshFromCreateResponse(resp *shared.Co
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["snyk_group_id"]; ok {
-					r.SnykGroupId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SnykGroupId = types.StringValue(val)
+					}
+				}
+
+				r.SnykOrgIds = nil
+				if v, ok := values["snyk_org_ids"]; ok {
+					if val, ok := v.([]string); ok {
+						for _, item := range val {
+							r.SnykOrgIds = append(r.SnykOrgIds, types.StringValue(item))
+						}
+					}
 				}
 
 			}

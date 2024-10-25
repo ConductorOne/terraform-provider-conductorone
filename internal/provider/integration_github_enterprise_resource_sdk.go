@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Co
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Co
 	return &out, configSet
 }
 
-func (r *IntegrationGithubEnterpriseResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationGithubEnterpriseResourceModel) populateConfig() map[string]interface{} {
 	githubInstanceUrl := new(string)
 	if !r.GithubInstanceUrl.IsUnknown() && !r.GithubInstanceUrl.IsNull() {
 		*githubInstanceUrl = r.GithubInstanceUrl.ValueString()
@@ -101,7 +101,12 @@ func (r *IntegrationGithubEnterpriseResourceModel) populateConfig() map[string]*
 		githubAccessToken = nil
 	}
 
-	configValues := map[string]*string{
+	githubOrgList := make([]string, 0)
+	for _, item := range r.GithubOrgList {
+		githubOrgList = append(githubOrgList, item.ValueString())
+	}
+
+	configValues := map[string]interface{}{
 		"github_instance_url": githubInstanceUrl,
 		"github_access_token": githubAccessToken,
 		"github_org_list":     githubOrgList,
@@ -110,14 +115,14 @@ func (r *IntegrationGithubEnterpriseResourceModel) populateConfig() map[string]*
 	return configValues
 }
 
-func (r *IntegrationGithubEnterpriseResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationGithubEnterpriseResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -176,7 +181,18 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromGetResponse(resp *
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["github_instance_url"]; ok {
-					r.GithubInstanceUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.GithubInstanceUrl = types.StringValue(val)
+					}
+				}
+
+				r.GithubOrgList = nil
+				if v, ok := values["github_org_list"]; ok {
+					if val, ok := v.([]string); ok {
+						for _, item := range val {
+							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
+						}
+					}
 				}
 
 			}
@@ -223,7 +239,18 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromCreateResponse(res
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["github_instance_url"]; ok {
-					r.GithubInstanceUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.GithubInstanceUrl = types.StringValue(val)
+					}
+				}
+
+				r.GithubOrgList = nil
+				if v, ok := values["github_org_list"]; ok {
+					if val, ok := v.([]string); ok {
+						for _, item := range val {
+							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
+						}
+					}
 				}
 
 			}

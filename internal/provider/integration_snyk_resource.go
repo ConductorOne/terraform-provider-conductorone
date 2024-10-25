@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -43,6 +43,7 @@ type IntegrationSnykResourceModel struct {
 	UserIds      []types.String `tfsdk:"user_ids"`
 	SnykApiToken types.String   `tfsdk:"snyk_api_token"`
 	SnykGroupId  types.String   `tfsdk:"snyk_group_id"`
+	SnykOrgIds   []types.String `tfsdk:"snyk_org_ids"`
 }
 
 func (r *IntegrationSnykResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -98,6 +99,11 @@ func (r *IntegrationSnykResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"snyk_group_id": &schema.StringAttribute{
 				Description: `Group ID`,
+			},
+			"snyk_org_ids": &schema.ListAttribute{
+				Optional:    true,
+				Description: `Org IDs`,
+				ElementType: types.StringType,
 			},
 		},
 	}

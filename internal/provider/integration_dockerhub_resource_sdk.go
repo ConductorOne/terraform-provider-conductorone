@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationDockerhubResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationDockerhubResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationDockerhubResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationDockerhubResourceModel) populateConfig() map[string]interface{} {
 	dockerhubUsername := new(string)
 	if !r.DockerhubUsername.IsUnknown() && !r.DockerhubUsername.IsNull() {
 		*dockerhubUsername = r.DockerhubUsername.ValueString()
@@ -101,7 +101,7 @@ func (r *IntegrationDockerhubResourceModel) populateConfig() map[string]*string 
 		dockerhubPassword = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"dockerhub_username": dockerhubUsername,
 		"dockerhub_password": dockerhubPassword,
 	}
@@ -109,14 +109,14 @@ func (r *IntegrationDockerhubResourceModel) populateConfig() map[string]*string 
 	return configValues
 }
 
-func (r *IntegrationDockerhubResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationDockerhubResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -175,7 +175,9 @@ func (r *IntegrationDockerhubResourceModel) RefreshFromGetResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["dockerhub_username"]; ok {
-					r.DockerhubUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DockerhubUsername = types.StringValue(val)
+					}
 				}
 
 			}
@@ -222,7 +224,9 @@ func (r *IntegrationDockerhubResourceModel) RefreshFromCreateResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["dockerhub_username"]; ok {
-					r.DockerhubUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DockerhubUsername = types.StringValue(val)
+					}
 				}
 
 			}

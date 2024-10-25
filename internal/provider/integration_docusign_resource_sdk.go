@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() (*shared.Connector,
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() (*shared.Connector,
 	return &out, configSet
 }
 
-func (r *IntegrationDocusignResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationDocusignResourceModel) populateConfig() map[string]interface{} {
 	accountId := new(string)
 	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
 		*accountId = r.AccountId.ValueString()
@@ -94,21 +94,21 @@ func (r *IntegrationDocusignResourceModel) populateConfig() map[string]*string {
 		accountId = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"account_id": accountId,
 	}
 
 	return configValues
 }
 
-func (r *IntegrationDocusignResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationDocusignResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -167,7 +167,9 @@ func (r *IntegrationDocusignResourceModel) RefreshFromGetResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["account_id"]; ok {
-					r.AccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.AccountId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -214,7 +216,9 @@ func (r *IntegrationDocusignResourceModel) RefreshFromCreateResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["account_id"]; ok {
-					r.AccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.AccountId = types.StringValue(val)
+					}
 				}
 
 			}

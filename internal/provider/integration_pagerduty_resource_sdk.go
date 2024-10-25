@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationPagerdutyResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationPagerdutyResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationPagerdutyResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationPagerdutyResourceModel) populateConfig() map[string]interface{} {
 	pagerdutyApiToken := new(string)
 	if !r.PagerdutyApiToken.IsUnknown() && !r.PagerdutyApiToken.IsNull() {
 		*pagerdutyApiToken = r.PagerdutyApiToken.ValueString()
@@ -94,21 +94,21 @@ func (r *IntegrationPagerdutyResourceModel) populateConfig() map[string]*string 
 		pagerdutyApiToken = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"pagerduty_api_token": pagerdutyApiToken,
 	}
 
 	return configValues
 }
 
-func (r *IntegrationPagerdutyResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationPagerdutyResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

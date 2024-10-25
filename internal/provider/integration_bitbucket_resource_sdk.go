@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationBitbucketResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationBitbucketResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationBitbucketResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationBitbucketResourceModel) populateConfig() map[string]interface{} {
 	bitbucketUsername := new(string)
 	if !r.BitbucketUsername.IsUnknown() && !r.BitbucketUsername.IsNull() {
 		*bitbucketUsername = r.BitbucketUsername.ValueString()
@@ -101,7 +101,12 @@ func (r *IntegrationBitbucketResourceModel) populateConfig() map[string]*string 
 		bitbucketAppPassword = nil
 	}
 
-	configValues := map[string]*string{
+	bitbucketWorkspaceList := make([]string, 0)
+	for _, item := range r.BitbucketWorkspaceList {
+		bitbucketWorkspaceList = append(bitbucketWorkspaceList, item.ValueString())
+	}
+
+	configValues := map[string]interface{}{
 		"bitbucket_username":       bitbucketUsername,
 		"bitbucket_app_password":   bitbucketAppPassword,
 		"bitbucket_workspace_list": bitbucketWorkspaceList,
@@ -110,14 +115,14 @@ func (r *IntegrationBitbucketResourceModel) populateConfig() map[string]*string 
 	return configValues
 }
 
-func (r *IntegrationBitbucketResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationBitbucketResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -176,7 +181,18 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromGetResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["bitbucket_username"]; ok {
-					r.BitbucketUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.BitbucketUsername = types.StringValue(val)
+					}
+				}
+
+				r.BitbucketWorkspaceList = nil
+				if v, ok := values["bitbucket_workspace_list"]; ok {
+					if val, ok := v.([]string); ok {
+						for _, item := range val {
+							r.BitbucketWorkspaceList = append(r.BitbucketWorkspaceList, types.StringValue(item))
+						}
+					}
 				}
 
 			}
@@ -223,7 +239,18 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromCreateResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["bitbucket_username"]; ok {
-					r.BitbucketUsername = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.BitbucketUsername = types.StringValue(val)
+					}
+				}
+
+				r.BitbucketWorkspaceList = nil
+				if v, ok := values["bitbucket_workspace_list"]; ok {
+					if val, ok := v.([]string); ok {
+						for _, item := range val {
+							r.BitbucketWorkspaceList = append(r.BitbucketWorkspaceList, types.StringValue(item))
+						}
+					}
 				}
 
 			}

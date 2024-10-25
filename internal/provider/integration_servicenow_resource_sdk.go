@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationServicenowResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationServicenowResourceModel) ToUpdateSDKType() (*shared.Connecto
 	return &out, configSet
 }
 
-func (r *IntegrationServicenowResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationServicenowResourceModel) populateConfig() map[string]interface{} {
 	deployment := new(string)
 	if !r.Deployment.IsUnknown() && !r.Deployment.IsNull() {
 		*deployment = r.Deployment.ValueString()
@@ -129,7 +129,7 @@ func (r *IntegrationServicenowResourceModel) populateConfig() map[string]*string
 		categoryId = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"deployment":                          deployment,
 		"username":                            username,
 		"password":                            password,
@@ -141,14 +141,14 @@ func (r *IntegrationServicenowResourceModel) populateConfig() map[string]*string
 	return configValues
 }
 
-func (r *IntegrationServicenowResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationServicenowResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -208,30 +208,40 @@ func (r *IntegrationServicenowResourceModel) RefreshFromGetResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["deployment"]; ok {
-					r.Deployment = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Deployment = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["username"]; ok {
-					r.Username = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Username = types.StringValue(val)
+					}
 				}
 
 				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
 					if v, ok := values["enable_external_ticket_provisioning"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+								}
 							}
 						}
 					}
 				}
 
 				if v, ok := values["catalog_id"]; ok {
-					r.CatalogId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.CatalogId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["category_id"]; ok {
-					r.CategoryId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.CategoryId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -279,30 +289,40 @@ func (r *IntegrationServicenowResourceModel) RefreshFromCreateResponse(resp *sha
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["deployment"]; ok {
-					r.Deployment = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Deployment = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["username"]; ok {
-					r.Username = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Username = types.StringValue(val)
+					}
 				}
 
 				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
 					if v, ok := values["enable_external_ticket_provisioning"]; ok {
-						bv, err := strconv.ParseBool(v.(string))
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+								}
 							}
 						}
 					}
 				}
 
 				if v, ok := values["catalog_id"]; ok {
-					r.CatalogId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.CatalogId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["category_id"]; ok {
-					r.CategoryId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.CategoryId = types.StringValue(val)
+					}
 				}
 
 			}

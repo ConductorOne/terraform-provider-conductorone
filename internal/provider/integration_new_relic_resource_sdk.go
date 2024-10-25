@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationNewRelicResourceModel) ToUpdateSDKType() (*shared.Connector,
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationNewRelicResourceModel) ToUpdateSDKType() (*shared.Connector,
 	return &out, configSet
 }
 
-func (r *IntegrationNewRelicResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationNewRelicResourceModel) populateConfig() map[string]interface{} {
 	newrelicApiKey := new(string)
 	if !r.NewrelicApiKey.IsUnknown() && !r.NewrelicApiKey.IsNull() {
 		*newrelicApiKey = r.NewrelicApiKey.ValueString()
@@ -94,21 +94,21 @@ func (r *IntegrationNewRelicResourceModel) populateConfig() map[string]*string {
 		newrelicApiKey = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"newrelic_api_key": newrelicApiKey,
 	}
 
 	return configValues
 }
 
-func (r *IntegrationNewRelicResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationNewRelicResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

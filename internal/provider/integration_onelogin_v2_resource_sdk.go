@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationOneloginV2ResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationOneloginV2ResourceModel) ToUpdateSDKType() (*shared.Connecto
 	return &out, configSet
 }
 
-func (r *IntegrationOneloginV2ResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationOneloginV2ResourceModel) populateConfig() map[string]interface{} {
 	oneloginDomain := new(string)
 	if !r.OneloginDomain.IsUnknown() && !r.OneloginDomain.IsNull() {
 		*oneloginDomain = r.OneloginDomain.ValueString()
@@ -108,7 +108,7 @@ func (r *IntegrationOneloginV2ResourceModel) populateConfig() map[string]*string
 		oauthClientCredGrantClientSecret = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"onelogin_domain":                       oneloginDomain,
 		"oauth_client_cred_grant_client_id":     oauthClientCredGrantClientId,
 		"oauth_client_cred_grant_client_secret": oauthClientCredGrantClientSecret,
@@ -117,14 +117,14 @@ func (r *IntegrationOneloginV2ResourceModel) populateConfig() map[string]*string
 	return configValues
 }
 
-func (r *IntegrationOneloginV2ResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationOneloginV2ResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -183,11 +183,15 @@ func (r *IntegrationOneloginV2ResourceModel) RefreshFromGetResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["onelogin_domain"]; ok {
-					r.OneloginDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OneloginDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
-					r.OauthClientCredGrantClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OauthClientCredGrantClientId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -234,11 +238,15 @@ func (r *IntegrationOneloginV2ResourceModel) RefreshFromCreateResponse(resp *sha
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["onelogin_domain"]; ok {
-					r.OneloginDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OneloginDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
-					r.OauthClientCredGrantClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OauthClientCredGrantClientId = types.StringValue(val)
+					}
 				}
 
 			}

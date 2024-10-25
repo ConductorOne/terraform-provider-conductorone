@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,14 +35,15 @@ type IntegrationLitmosResource struct {
 
 // IntegrationLitmosResourceModel describes the resource data model.
 type IntegrationLitmosResourceModel struct {
-	AppID        types.String   `tfsdk:"app_id"`
-	CreatedAt    types.String   `tfsdk:"created_at"`
-	DeletedAt    types.String   `tfsdk:"deleted_at"`
-	ID           types.String   `tfsdk:"id"`
-	UpdatedAt    types.String   `tfsdk:"updated_at"`
-	UserIds      []types.String `tfsdk:"user_ids"`
-	LitmosSource types.String   `tfsdk:"litmos_source"`
-	LitmosApiKey types.String   `tfsdk:"litmos_api_key"`
+	AppID           types.String   `tfsdk:"app_id"`
+	CreatedAt       types.String   `tfsdk:"created_at"`
+	DeletedAt       types.String   `tfsdk:"deleted_at"`
+	ID              types.String   `tfsdk:"id"`
+	UpdatedAt       types.String   `tfsdk:"updated_at"`
+	UserIds         []types.String `tfsdk:"user_ids"`
+	LitmosSource    types.String   `tfsdk:"litmos_source"`
+	LitmosApiKey    types.String   `tfsdk:"litmos_api_key"`
+	LitmosCourseIds []types.String `tfsdk:"litmos_course_ids"`
 }
 
 func (r *IntegrationLitmosResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -98,6 +99,11 @@ func (r *IntegrationLitmosResource) Schema(ctx context.Context, req resource.Sch
 			"litmos_api_key": &schema.StringAttribute{
 				Sensitive:   true,
 				Description: `API key`,
+			},
+			"litmos_course_ids": &schema.ListAttribute{
+				Optional:    true,
+				Description: `Course IDs`,
+				ElementType: types.StringType,
 			},
 		},
 	}

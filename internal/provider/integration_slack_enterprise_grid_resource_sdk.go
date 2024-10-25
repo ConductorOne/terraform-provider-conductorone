@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -61,12 +61,12 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) ToUpdateSDKType() (*shared
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,7 +86,7 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) ToUpdateSDKType() (*shared
 	return &out, configSet
 }
 
-func (r *IntegrationSlackEnterpriseGridResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationSlackEnterpriseGridResourceModel) populateConfig() map[string]interface{} {
 	slackApiKey := new(string)
 	if !r.SlackApiKey.IsUnknown() && !r.SlackApiKey.IsNull() {
 		*slackApiKey = r.SlackApiKey.ValueString()
@@ -101,7 +101,7 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) populateConfig() map[strin
 		slackApiEnterpriseKey = nil
 	}
 
-	configValues := map[string]*string{
+	configValues := map[string]interface{}{
 		"slack_api_key":            slackApiKey,
 		"slack_api_enterprise_key": slackApiEnterpriseKey,
 	}
@@ -109,14 +109,14 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) populateConfig() map[strin
 	return configValues
 }
 
-func (r *IntegrationSlackEnterpriseGridResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationSlackEnterpriseGridResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
