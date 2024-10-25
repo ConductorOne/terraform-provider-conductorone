@@ -5,5 +5,5 @@ resource "conductorone_integration_github_enterprise" "github_enterprise" {
   ]
   github_instance_url = "..."
   github_access_token = "..."
-  github_org_list     = false
+  github_org_list     = ["..."]
 }

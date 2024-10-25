@@ -4,5 +4,5 @@ resource "conductorone_integration_github_v2" "github_v2" {
     conductorone_user.admin.id
   ]
   github_access_token = "..."
-  github_org_list     = false
+  github_org_list     = ["..."]
 }

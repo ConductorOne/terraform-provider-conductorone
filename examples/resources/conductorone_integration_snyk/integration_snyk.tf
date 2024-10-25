@@ -5,5 +5,5 @@ resource "conductorone_integration_snyk" "snyk" {
   ]
   snyk_api_token = "..."
   snyk_group_id  = "..."
-  snyk_org_ids   = false
+  snyk_org_ids   = ["..."]
 }

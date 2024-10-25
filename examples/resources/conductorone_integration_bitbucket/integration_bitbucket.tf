@@ -5,5 +5,5 @@ resource "conductorone_integration_bitbucket" "bitbucket" {
   ]
   bitbucket_username       = "..."
   bitbucket_app_password   = "..."
-  bitbucket_workspace_list = false
+  bitbucket_workspace_list = ["..."]
 }

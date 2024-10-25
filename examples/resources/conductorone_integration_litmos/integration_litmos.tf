@@ -5,5 +5,5 @@ resource "conductorone_integration_litmos" "litmos" {
   ]
   litmos_source     = "..."
   litmos_api_key    = "..."
-  litmos_course_ids = false
+  litmos_course_ids = ["..."]
 }

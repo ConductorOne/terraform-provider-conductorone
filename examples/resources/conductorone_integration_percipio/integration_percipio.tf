@@ -5,5 +5,5 @@ resource "conductorone_integration_percipio" "percipio" {
   ]
   percipio_organization_id = "..."
   percipio_api_token       = "..."
-  percipio_course_ids      = false
+  percipio_course_ids      = ["..."]
 }
