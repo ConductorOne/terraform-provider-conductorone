@@ -4,7 +4,5 @@ resource "conductorone_integration_cloudflare_zero_trust" "cloudflare_zero_trust
     conductorone_user.admin.id
   ]
   account_id = "..."
-  api_token  = "..."
   api_key    = "..."
-  email      = "..."
 }

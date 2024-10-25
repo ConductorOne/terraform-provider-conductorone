@@ -21,20 +21,20 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &IntegrationCloudflareZeroTrustResource{}
-var _ resource.ResourceWithImportState = &IntegrationCloudflareZeroTrustResource{}
+var _ resource.Resource = &IntegrationCloudflareZeroTrustV2Resource{}
+var _ resource.ResourceWithImportState = &IntegrationCloudflareZeroTrustV2Resource{}
 
-func NewIntegrationCloudflareZeroTrustResource() resource.Resource {
-	return &IntegrationCloudflareZeroTrustResource{}
+func NewIntegrationCloudflareZeroTrustV2Resource() resource.Resource {
+	return &IntegrationCloudflareZeroTrustV2Resource{}
 }
 
-// IntegrationCloudflareZeroTrustResource defines the resource implementation.
-type IntegrationCloudflareZeroTrustResource struct {
+// IntegrationCloudflareZeroTrustV2Resource defines the resource implementation.
+type IntegrationCloudflareZeroTrustV2Resource struct {
 	client *sdk.ConductoroneAPI
 }
 
-// IntegrationCloudflareZeroTrustResourceModel describes the resource data model.
-type IntegrationCloudflareZeroTrustResourceModel struct {
+// IntegrationCloudflareZeroTrustV2ResourceModel describes the resource data model.
+type IntegrationCloudflareZeroTrustV2ResourceModel struct {
 	AppID     types.String   `tfsdk:"app_id"`
 	CreatedAt types.String   `tfsdk:"created_at"`
 	DeletedAt types.String   `tfsdk:"deleted_at"`
@@ -42,16 +42,18 @@ type IntegrationCloudflareZeroTrustResourceModel struct {
 	UpdatedAt types.String   `tfsdk:"updated_at"`
 	UserIds   []types.String `tfsdk:"user_ids"`
 	AccountId types.String   `tfsdk:"account_id"`
+	ApiToken  types.String   `tfsdk:"api_token"`
 	ApiKey    types.String   `tfsdk:"api_key"`
+	Email     types.String   `tfsdk:"email"`
 }
 
-func (r *IntegrationCloudflareZeroTrustResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_integration_cloudflare_zero_trust"
+func (r *IntegrationCloudflareZeroTrustV2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_integration_cloudflare_zero_trust_v2"
 }
 
-func (r *IntegrationCloudflareZeroTrustResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *IntegrationCloudflareZeroTrustV2Resource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Cloudflare_zero_trust Integration Resource",
+		MarkdownDescription: "Cloudflare_zero_trust_v2 Integration Resource",
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
@@ -93,17 +95,24 @@ func (r *IntegrationCloudflareZeroTrustResource) Schema(ctx context.Context, req
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"account_id": &schema.StringAttribute{
-				Description: `Account ID`,
+				Description: `Account ID (required)`,
+			},
+			"api_token": &schema.StringAttribute{
+				Sensitive:   true,
+				Description: `API token`,
 			},
 			"api_key": &schema.StringAttribute{
 				Sensitive:   true,
-				Description: `API key`,
+				Description: `API key (required if API token not provided)`,
+			},
+			"email": &schema.StringAttribute{
+				Description: `Email (required if API token not provided)`,
 			},
 		},
 	}
 }
 
-func (r *IntegrationCloudflareZeroTrustResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *IntegrationCloudflareZeroTrustV2Resource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -123,8 +132,8 @@ func (r *IntegrationCloudflareZeroTrustResource) Configure(ctx context.Context, 
 	r.client = client
 }
 
-func (r *IntegrationCloudflareZeroTrustResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationCloudflareZeroTrustResourceModel
+func (r *IntegrationCloudflareZeroTrustV2Resource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *IntegrationCloudflareZeroTrustV2ResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -206,8 +215,8 @@ func (r *IntegrationCloudflareZeroTrustResource) Create(ctx context.Context, req
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationCloudflareZeroTrustResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationCloudflareZeroTrustResourceModel
+func (r *IntegrationCloudflareZeroTrustV2Resource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *IntegrationCloudflareZeroTrustV2ResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -241,7 +250,7 @@ func (r *IntegrationCloudflareZeroTrustResource) Read(ctx context.Context, req r
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationCloudflareZeroTrustResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
+func (r *IntegrationCloudflareZeroTrustV2Resource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
 	request := operations.C1APIAppV1ConnectorServiceGetRequest{
 		AppID: appID,
 		ID:    id,
@@ -262,8 +271,8 @@ func (r *IntegrationCloudflareZeroTrustResource) get(ctx context.Context, appID 
 	return res.ConnectorServiceGetResponse, nil
 }
 
-func (r *IntegrationCloudflareZeroTrustResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationCloudflareZeroTrustResourceModel
+func (r *IntegrationCloudflareZeroTrustV2Resource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *IntegrationCloudflareZeroTrustV2ResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
@@ -323,8 +332,8 @@ func (r *IntegrationCloudflareZeroTrustResource) Update(ctx context.Context, req
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationCloudflareZeroTrustResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *IntegrationCloudflareZeroTrustResourceModel
+func (r *IntegrationCloudflareZeroTrustV2Resource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *IntegrationCloudflareZeroTrustV2ResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -364,6 +373,6 @@ func (r *IntegrationCloudflareZeroTrustResource) Delete(ctx context.Context, req
 	}
 }
 
-func (r *IntegrationCloudflareZeroTrustResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *IntegrationCloudflareZeroTrustV2Resource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource connector.")
 }

@@ -12,10 +12,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const cloudflareZeroTrustCatalogID = "29zVdFKuAw81JUeJPRGuDKORGN7"
+const cloudflareZeroTrustV2CatalogID = "2bKQFJUbLO9xukxSfZlQIaiYLG5"
 
-func (r *IntegrationCloudflareZeroTrustResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := sdk.String(cloudflareZeroTrustCatalogID)
+func (r *IntegrationCloudflareZeroTrustV2ResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+	catalogID := sdk.String(cloudflareZeroTrustV2CatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -28,8 +28,8 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) ToCreateDelegatedSDKType()
 	return &out
 }
 
-func (r *IntegrationCloudflareZeroTrustResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
-	catalogID := sdk.String(cloudflareZeroTrustCatalogID)
+func (r *IntegrationCloudflareZeroTrustV2ResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
+	catalogID := sdk.String(cloudflareZeroTrustV2CatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -53,7 +53,7 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) ToCreateSDKType() (*shared
 	return &out, nil
 }
 
-func (r *IntegrationCloudflareZeroTrustResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationCloudflareZeroTrustV2ResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -77,7 +77,7 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) ToUpdateSDKType() (*shared
 	out := shared.Connector{
 		DisplayName: sdk.String("Cloudflare Zero Trust"),
 		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(cloudflareZeroTrustCatalogID),
+		CatalogID:   sdk.String(cloudflareZeroTrustV2CatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
 		UserIds:     userIds,
 		Config:      makeConnectorConfig(configOut),
@@ -86,12 +86,19 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) ToUpdateSDKType() (*shared
 	return &out, configSet
 }
 
-func (r *IntegrationCloudflareZeroTrustResourceModel) populateConfig() map[string]interface{} {
+func (r *IntegrationCloudflareZeroTrustV2ResourceModel) populateConfig() map[string]interface{} {
 	accountId := new(string)
 	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
 		*accountId = r.AccountId.ValueString()
 	} else {
 		accountId = nil
+	}
+
+	apiToken := new(string)
+	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
+		*apiToken = r.ApiToken.ValueString()
+	} else {
+		apiToken = nil
 	}
 
 	apiKey := new(string)
@@ -101,15 +108,24 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) populateConfig() map[strin
 		apiKey = nil
 	}
 
+	email := new(string)
+	if !r.Email.IsUnknown() && !r.Email.IsNull() {
+		*email = r.Email.ValueString()
+	} else {
+		email = nil
+	}
+
 	configValues := map[string]interface{}{
 		"account_id": accountId,
+		"api_token":  apiToken,
 		"api_key":    apiKey,
+		"email":      email,
 	}
 
 	return configValues
 }
 
-func (r *IntegrationCloudflareZeroTrustResourceModel) getConfig() (map[string]interface{}, bool) {
+func (r *IntegrationCloudflareZeroTrustV2ResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
@@ -126,17 +142,17 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) getConfig() (map[string]in
 	return configOut, configSet
 }
 
-func (r *IntegrationCloudflareZeroTrustResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationCloudflareZeroTrustV2ResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationCloudflareZeroTrustResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationCloudflareZeroTrustV2ResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationCloudflareZeroTrustResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
+func (r *IntegrationCloudflareZeroTrustV2ResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
 	if resp == nil {
 		return
 	}
@@ -180,16 +196,22 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) RefreshFromGetResponse(res
 					}
 				}
 
+				if v, ok := values["email"]; ok {
+					if val, ok := v.(string); ok {
+						r.Email = types.StringValue(val)
+					}
+				}
+
 			}
 		}
 	}
 }
 
-func (r *IntegrationCloudflareZeroTrustResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
+func (r *IntegrationCloudflareZeroTrustV2ResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
 	r.RefreshFromGetResponse(resp)
 }
 
-func (r *IntegrationCloudflareZeroTrustResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
+func (r *IntegrationCloudflareZeroTrustV2ResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
 	if resp.AppID != nil {
 		r.AppID = types.StringValue(*resp.AppID)
 	} else {
@@ -226,6 +248,12 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) RefreshFromCreateResponse(
 				if v, ok := values["account_id"]; ok {
 					if val, ok := v.(string); ok {
 						r.AccountId = types.StringValue(val)
+					}
+				}
+
+				if v, ok := values["email"]; ok {
+					if val, ok := v.(string); ok {
+						r.Email = types.StringValue(val)
 					}
 				}
 

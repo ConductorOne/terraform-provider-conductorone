@@ -22,7 +22,7 @@ func getIntegrationResources() []func() resource.Resource {
 		NewIntegrationCloudflareResource,
 		NewIntegrationCloudflareV2Resource,
 		NewIntegrationCloudflareZeroTrustResource,
-		NewIntegrationCloudflareZeroTrustResource,
+		NewIntegrationCloudflareZeroTrustV2Resource,
 		NewIntegrationConfluenceResource,
 		NewIntegrationConfluenceV2Resource,
 		NewIntegrationCoupaResource,
