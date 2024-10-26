@@ -93,9 +93,11 @@ func (r *IntegrationGithubResource) Schema(ctx context.Context, req resource.Sch
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"github_org": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Organization`,
 			},
 			"github_access_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Personal access token`,
 			},

@@ -94,13 +94,16 @@ func (r *IntegrationOktaAwsFederationResource) Schema(ctx context.Context, req r
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"okta_aws_federation_domain": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Okta Domain`,
 			},
 			"okta_aws_federation_api_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API token`,
 			},
 			"okta_aws_federation_aws_okta_app_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `AWS Okta App ID`,
 			},
 		},

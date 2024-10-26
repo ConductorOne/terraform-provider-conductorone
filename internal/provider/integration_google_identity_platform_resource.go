@@ -94,9 +94,11 @@ func (r *IntegrationGoogleIdentityPlatformResource) Schema(ctx context.Context, 
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"project_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Project ID`,
 			},
 			"tenant_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Tenant ID`,
 			},
 			"credentials_json": &schema.StringAttribute{

@@ -94,13 +94,16 @@ func (r *IntegrationCrowdstrikeResource) Schema(ctx context.Context, req resourc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"crowdstrike_client_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Client ID`,
 			},
 			"crowdstrike_client_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Client secret`,
 			},
 			"region": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Region`,
 			},
 		},

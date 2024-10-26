@@ -94,12 +94,15 @@ func (r *IntegrationCoupaResource) Schema(ctx context.Context, req resource.Sche
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"coupa_domain": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Domain`,
 			},
 			"oauth2_client_cred_grant_client_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Client ID`,
 			},
 			"oauth2_client_cred_grant_client_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Client secret`,
 			},

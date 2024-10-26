@@ -95,15 +95,19 @@ func (r *IntegrationTableauResource) Schema(ctx context.Context, req resource.Sc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"tableau_site_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Site ID`,
 			},
 			"tableau_server_path": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Server path`,
 			},
 			"tableau_access_token_name": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Access token name`,
 			},
 			"tableau_access_token_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Access token secret`,
 			},

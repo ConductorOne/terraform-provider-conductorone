@@ -95,12 +95,15 @@ func (r *IntegrationGalileoFtResource) Schema(ctx context.Context, req resource.
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"galileoft_provider_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Organization ID`,
 			},
 			"galileoft_api_login": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Username`,
 			},
 			"galileoft_api_trans_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Password`,
 			},

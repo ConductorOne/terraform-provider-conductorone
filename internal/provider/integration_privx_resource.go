@@ -96,19 +96,24 @@ func (r *IntegrationPrivxResource) Schema(ctx context.Context, req resource.Sche
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"privx_base_url": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Base URL`,
 			},
 			"privx_client_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Client ID`,
 			},
 			"privx_client_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Client secret`,
 			},
 			"privx_oauth_client_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `OAuth client ID`,
 			},
 			"privx_oauth_client_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `OAuth client secret`,
 			},

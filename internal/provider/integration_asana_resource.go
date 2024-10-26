@@ -92,6 +92,7 @@ func (r *IntegrationAsanaResource) Schema(ctx context.Context, req resource.Sche
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"asana_api_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Personal access token`,
 			},

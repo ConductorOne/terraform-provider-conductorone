@@ -95,12 +95,15 @@ func (r *IntegrationJdEdwardsResource) Schema(ctx context.Context, req resource.
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"jdedwards_ais_url": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Application Interface Services (AIS) URL`,
 			},
 			"jdedwards_username": &schema.StringAttribute{
+				Optional:    true,
 				Description: `JD Edwards EnterpriseOne username`,
 			},
 			"jdedwards_password": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `JD Edwards EnterpriseOne password`,
 			},

@@ -93,9 +93,11 @@ func (r *IntegrationSnipeItResource) Schema(ctx context.Context, req resource.Sc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"snipeit_base_url": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Base URL`,
 			},
 			"snipeit_access_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Access Token`,
 			},

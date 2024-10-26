@@ -96,6 +96,7 @@ func (r *IntegrationSalesforceV2Resource) Schema(ctx context.Context, req resour
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"salesforce_instance_url": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Domain`,
 			},
 			"salesforce_username_for_email": &schema.BoolAttribute{
@@ -103,9 +104,11 @@ func (r *IntegrationSalesforceV2Resource) Schema(ctx context.Context, req resour
 				Description: `Use Salesforce usernames for email`,
 			},
 			"salesforce_username": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Your Salesforce username`,
 			},
 			"salesforce_password": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Your Salesforce password`,
 			},

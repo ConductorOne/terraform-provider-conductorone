@@ -92,6 +92,7 @@ func (r *IntegrationFormalResource) Schema(ctx context.Context, req resource.Sch
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"formal_api_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API Key`,
 			},

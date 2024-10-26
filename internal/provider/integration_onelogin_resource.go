@@ -94,12 +94,15 @@ func (r *IntegrationOneloginResource) Schema(ctx context.Context, req resource.S
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"onelogin_domain": &schema.StringAttribute{
+				Optional:    true,
 				Description: `OneLogin domain`,
 			},
 			"oauth_client_cred_grant_client_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `OneLogin client ID`,
 			},
 			"oauth_client_cred_grant_client_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `OneLogin client secret`,
 			},

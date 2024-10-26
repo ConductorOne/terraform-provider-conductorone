@@ -94,12 +94,15 @@ func (r *IntegrationMicrosoft365Resource) Schema(ctx context.Context, req resour
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"ms365_tenant_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Tenant ID`,
 			},
 			"ms365_client_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Client ID`,
 			},
 			"ms365_client_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Client secret`,
 			},

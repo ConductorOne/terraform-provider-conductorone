@@ -98,26 +98,33 @@ func (r *IntegrationDatabricksResource) Schema(ctx context.Context, req resource
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"databricks_account_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Account ID`,
 			},
 			"databricks_client_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `OAuth2 Client ID`,
 			},
 			"databricks_client_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `OAuth2 Client Secret`,
 			},
 			"databricks_access_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Personal Access Token`,
 			},
 			"databricks_workspace": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Workspace ID`,
 			},
 			"databricks_username": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Username`,
 			},
 			"databricks_password": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Password`,
 			},

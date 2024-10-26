@@ -96,19 +96,24 @@ func (r *IntegrationDayforceResource) Schema(ctx context.Context, req resource.S
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"dayforce_username": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Username`,
 			},
 			"dayforce_password": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Password`,
 			},
 			"dayforce_environment": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Environment`,
 			},
 			"dayforce_url": &schema.StringAttribute{
+				Optional:    true,
 				Description: `URL`,
 			},
 			"dayforce_client_namespace": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Client Namespace`,
 			},
 		},

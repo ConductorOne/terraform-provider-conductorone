@@ -96,9 +96,11 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"okta_domain": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Okta domain`,
 			},
 			"okta_api_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API key`,
 			},

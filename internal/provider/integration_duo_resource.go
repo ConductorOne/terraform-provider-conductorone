@@ -94,14 +94,17 @@ func (r *IntegrationDuoResource) Schema(ctx context.Context, req resource.Schema
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"duo_integration_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Integration key`,
 			},
 			"duo_secret_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Secret key`,
 			},
 			"duo_api_hostname": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API hostname`,
 			},

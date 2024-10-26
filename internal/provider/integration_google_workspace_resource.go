@@ -95,12 +95,15 @@ func (r *IntegrationGoogleWorkspaceResource) Schema(ctx context.Context, req res
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"customer_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Customer ID`,
 			},
 			"domain": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Domain`,
 			},
 			"administrator_email": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Administrator email`,
 			},
 			"credentials_json": &schema.StringAttribute{

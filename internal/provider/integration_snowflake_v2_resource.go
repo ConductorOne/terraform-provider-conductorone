@@ -95,12 +95,15 @@ func (r *IntegrationSnowflakeV2Resource) Schema(ctx context.Context, req resourc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"snowflake_account_url": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Account URL`,
 			},
 			"snowflake_account_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Account ID / Locator`,
 			},
 			"snowflake_user_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `User identifier`,
 			},
 			"snowflake_private_key": &schema.StringAttribute{

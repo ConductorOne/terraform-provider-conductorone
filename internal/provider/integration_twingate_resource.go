@@ -93,10 +93,12 @@ func (r *IntegrationTwingateResource) Schema(ctx context.Context, req resource.S
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"twingate_apikey": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API key`,
 			},
 			"twingate_domain": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Domain`,
 			},
 		},

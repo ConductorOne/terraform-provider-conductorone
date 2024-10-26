@@ -93,10 +93,12 @@ func (r *IntegrationSlackEnterpriseGridResource) Schema(ctx context.Context, req
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"slack_api_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `User token`,
 			},
 			"slack_api_enterprise_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Bot token`,
 			},

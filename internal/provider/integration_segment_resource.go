@@ -92,6 +92,7 @@ func (r *IntegrationSegmentResource) Schema(ctx context.Context, req resource.Sc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"segment_access_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API token`,
 			},

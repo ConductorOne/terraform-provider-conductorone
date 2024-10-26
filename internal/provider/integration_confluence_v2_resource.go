@@ -94,12 +94,15 @@ func (r *IntegrationConfluenceV2Resource) Schema(ctx context.Context, req resour
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"domain_url": &schema.StringAttribute{
+				Optional:    true,
 				Description: `The domain URL for your Confluence account`,
 			},
 			"username": &schema.StringAttribute{
+				Optional:    true,
 				Description: `The username for your Confluence account`,
 			},
 			"api_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `The API key for your Confluence account`,
 			},

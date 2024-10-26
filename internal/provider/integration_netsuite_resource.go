@@ -96,19 +96,24 @@ func (r *IntegrationNetsuiteResource) Schema(ctx context.Context, req resource.S
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"netsuite_account_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Account ID`,
 			},
 			"netsuite_consumer_key": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Consumer key`,
 			},
 			"netsuite_consumer_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Consumer secret`,
 			},
 			"netsuite_token_key": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Token key`,
 			},
 			"netsuite_token_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Token secret`,
 			},

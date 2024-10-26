@@ -93,6 +93,7 @@ func (r *IntegrationBuildkiteResource) Schema(ctx context.Context, req resource.
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"api_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API token`,
 			},

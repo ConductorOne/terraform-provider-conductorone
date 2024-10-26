@@ -94,9 +94,11 @@ func (r *IntegrationBitbucketResource) Schema(ctx context.Context, req resource.
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"bitbucket_username": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Username`,
 			},
 			"bitbucket_app_password": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `App password`,
 			},

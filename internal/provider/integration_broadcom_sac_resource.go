@@ -94,13 +94,16 @@ func (r *IntegrationBroadcomSacResource) Schema(ctx context.Context, req resourc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"username": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Client ID`,
 			},
 			"password": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Client secret`,
 			},
 			"tenant": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Tenant`,
 			},
 		},

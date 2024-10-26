@@ -94,13 +94,16 @@ func (r *IntegrationAvalaraResource) Schema(ctx context.Context, req resource.Sc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"avalara_username": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Username`,
 			},
 			"avalara_password": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Password`,
 			},
 			"avalara_environment": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Environment`,
 			},
 		},

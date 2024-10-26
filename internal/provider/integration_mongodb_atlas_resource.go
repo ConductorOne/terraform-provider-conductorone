@@ -93,9 +93,11 @@ func (r *IntegrationMongodbAtlasResource) Schema(ctx context.Context, req resour
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"mongodbatlas_public_key": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Public Key`,
 			},
 			"mongodbatlas_private_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Private Key`,
 			},

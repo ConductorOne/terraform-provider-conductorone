@@ -103,6 +103,7 @@ func (r *IntegrationAwsResource) Schema(ctx context.Context, req resource.Schema
 				Description: `External ID`,
 			},
 			"aws_role_arn": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Role ARN`,
 			},
 			"aws_orgs_enable": &schema.BoolAttribute{

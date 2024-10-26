@@ -95,12 +95,15 @@ func (r *IntegrationJiraCloudV2Resource) Schema(ctx context.Context, req resourc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"jiracloud_domain": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Jira site domain`,
 			},
 			"jiracloud_username": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Your Jira email address`,
 			},
 			"jiracloud_apikey": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API token`,
 			},

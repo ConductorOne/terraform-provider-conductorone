@@ -94,9 +94,11 @@ func (r *IntegrationPercipioResource) Schema(ctx context.Context, req resource.S
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"percipio_organization_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Organization ID`,
 			},
 			"percipio_api_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API Token`,
 			},

@@ -95,6 +95,7 @@ func (r *IntegrationElasticResource) Schema(ctx context.Context, req resource.Sc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"elastic_api_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API Key`,
 			},

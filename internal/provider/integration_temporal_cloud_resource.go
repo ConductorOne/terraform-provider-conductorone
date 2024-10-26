@@ -92,6 +92,7 @@ func (r *IntegrationTemporalCloudResource) Schema(ctx context.Context, req resou
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"temporal_cloud_api_key": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API Key`,
 			},

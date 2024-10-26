@@ -94,9 +94,11 @@ func (r *IntegrationGitlabResource) Schema(ctx context.Context, req resource.Sch
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"gitlab_group": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Group`,
 			},
 			"gitlab_access_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Personal access token`,
 			},

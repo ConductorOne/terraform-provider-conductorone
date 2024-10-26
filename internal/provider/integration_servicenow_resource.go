@@ -97,12 +97,15 @@ func (r *IntegrationServicenowResource) Schema(ctx context.Context, req resource
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"deployment": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Deployment`,
 			},
 			"username": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Username`,
 			},
 			"password": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Password`,
 			},

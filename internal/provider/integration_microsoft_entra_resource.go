@@ -99,9 +99,11 @@ func (r *IntegrationMicrosoftEntraResource) Schema(ctx context.Context, req reso
 				Description: `Entra Tenant ID`,
 			},
 			"entra_client_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Entra Client ID`,
 			},
 			"entra_client_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Entra Client Secret`,
 			},

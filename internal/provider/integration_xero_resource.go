@@ -93,9 +93,11 @@ func (r *IntegrationXeroResource) Schema(ctx context.Context, req resource.Schem
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"xero_client_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `API client ID`,
 			},
 			"xero_client_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API client secret`,
 			},

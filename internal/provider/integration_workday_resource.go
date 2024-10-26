@@ -96,20 +96,25 @@ func (r *IntegrationWorkdayResource) Schema(ctx context.Context, req resource.Sc
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"workday_client_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Client ID`,
 			},
 			"workday_client_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Client Secret`,
 			},
 			"refresh_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Refresh Token`,
 			},
 			"workday_url": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Workday URL`,
 			},
 			"tenant_name": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Tenant Name`,
 			},
 		},

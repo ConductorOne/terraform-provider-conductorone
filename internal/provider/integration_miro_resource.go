@@ -92,6 +92,7 @@ func (r *IntegrationMiroResource) Schema(ctx context.Context, req resource.Schem
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"miro_access_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Access Token`,
 			},

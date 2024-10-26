@@ -93,9 +93,11 @@ func (r *IntegrationSentryResource) Schema(ctx context.Context, req resource.Sch
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"sentry_org_slug": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Organization slug`,
 			},
 			"sentry_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Token`,
 			},

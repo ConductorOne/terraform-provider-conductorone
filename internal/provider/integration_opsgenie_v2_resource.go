@@ -92,6 +92,7 @@ func (r *IntegrationOpsgenieV2Resource) Schema(ctx context.Context, req resource
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"opsgenie_apikey": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API key`,
 			},

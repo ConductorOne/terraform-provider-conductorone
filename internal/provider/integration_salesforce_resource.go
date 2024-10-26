@@ -93,6 +93,7 @@ func (r *IntegrationSalesforceResource) Schema(ctx context.Context, req resource
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"salesforce_instance_url": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Domain`,
 			},
 			"salesforce_username_for_email": &schema.BoolAttribute{

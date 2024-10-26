@@ -94,13 +94,16 @@ func (r *IntegrationBoxResource) Schema(ctx context.Context, req resource.Schema
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"box_client_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Client ID`,
 			},
 			"box_client_secret": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Client secret`,
 			},
 			"box_enterprise_id": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Enterprise ID`,
 			},
 		},

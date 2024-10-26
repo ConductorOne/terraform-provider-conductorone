@@ -95,16 +95,20 @@ func (r *IntegrationCloudflareV2Resource) Schema(ctx context.Context, req resour
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"account_id_v2": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Account ID`,
 			},
 			"api_token": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API token`,
 			},
 			"email": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Email ID`,
 			},
 			"api_key_v2": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `API key`,
 			},

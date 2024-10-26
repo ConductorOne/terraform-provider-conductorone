@@ -95,16 +95,20 @@ func (r *IntegrationUkgResource) Schema(ctx context.Context, req resource.Schema
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
 			"ukg_customer_api_key": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Customer API key`,
 			},
 			"ukg_username": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Username`,
 			},
 			"ukg_password": &schema.StringAttribute{
+				Optional:    true,
 				Sensitive:   true,
 				Description: `Password`,
 			},
 			"ukg_service_endpoint": &schema.StringAttribute{
+				Optional:    true,
 				Description: `Service endpoint`,
 			},
 		},
