@@ -1,29 +1,31 @@
 ---
-page_title: "conductorone_integration_bitbucket Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_workday Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Bitbucket Integration Resource
+  Workday Integration Resource
 ---
 
-# conductorone_integration_bitbucket (Resource)
+# conductorone_integration_workday (Resource)
 
-Bitbucket Integration Resource
+Workday Integration Resource
 
-This resource allows you to configure an instance of the bitbucket integration in ConductorOne.
+This resource allows you to configure an instance of the workday integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_bitbucket" "bitbucket" {
-  app_id = conductorone_app.bitbucket.id
+resource "conductorone_integration_workday" "workday" {
+  app_id = conductorone_app.workday.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  bitbucket_username       = "..."
-  bitbucket_app_password   = "..."
-  bitbucket_workspace_list = ["..."]
+  workday_client_id     = "..."
+  workday_client_secret = "..."
+  refresh_token         = "..."
+  workday_url           = "..."
+  tenant_name           = "..."
 }
 ```
 
@@ -36,10 +38,12 @@ resource "conductorone_integration_bitbucket" "bitbucket" {
 
 ### Optional
 
-- `bitbucket_app_password` (String, Sensitive) App password
-- `bitbucket_username` (String) Username
-- `bitbucket_workspace_list` (List of String) Workspaces - optional
+- `refresh_token` (String, Sensitive) Refresh Token
+- `tenant_name` (String) Tenant Name
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
+- `workday_client_id` (String) Client ID
+- `workday_client_secret` (String, Sensitive) Client Secret
+- `workday_url` (String) Workday URL
 
 ### Read-Only
 

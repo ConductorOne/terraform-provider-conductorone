@@ -1,29 +1,30 @@
 ---
-page_title: "conductorone_integration_bitbucket Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_snowflake_v2 Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Bitbucket Integration Resource
+  Snowflake_v2 Integration Resource
 ---
 
-# conductorone_integration_bitbucket (Resource)
+# conductorone_integration_snowflake_v2 (Resource)
 
-Bitbucket Integration Resource
+Snowflake_v2 Integration Resource
 
-This resource allows you to configure an instance of the bitbucket integration in ConductorOne.
+This resource allows you to configure an instance of the snowflake_v2 integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_bitbucket" "bitbucket" {
-  app_id = conductorone_app.bitbucket.id
+resource "conductorone_integration_snowflake_v2" "snowflake_v2" {
+  app_id = conductorone_app.snowflake_v2.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  bitbucket_username       = "..."
-  bitbucket_app_password   = "..."
-  bitbucket_workspace_list = ["..."]
+  snowflake_account_url = "..."
+  snowflake_account_id  = "..."
+  snowflake_user_id     = "..."
+  snowflake_private_key = "..."
 }
 ```
 
@@ -36,9 +37,10 @@ resource "conductorone_integration_bitbucket" "bitbucket" {
 
 ### Optional
 
-- `bitbucket_app_password` (String, Sensitive) App password
-- `bitbucket_username` (String) Username
-- `bitbucket_workspace_list` (List of String) Workspaces - optional
+- `snowflake_account_id` (String) Account ID / Locator
+- `snowflake_account_url` (String) Account URL
+- `snowflake_private_key` (String, Sensitive) RSA Private Key (PEM Format)
+- `snowflake_user_id` (String) User identifier
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

@@ -1,29 +1,30 @@
 ---
-page_title: "conductorone_integration_bitbucket Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_jd_edwards Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Bitbucket Integration Resource
+  Jd_edwards Integration Resource
 ---
 
-# conductorone_integration_bitbucket (Resource)
+# conductorone_integration_jd_edwards (Resource)
 
-Bitbucket Integration Resource
+Jd_edwards Integration Resource
 
-This resource allows you to configure an instance of the bitbucket integration in ConductorOne.
+This resource allows you to configure an instance of the jd_edwards integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_bitbucket" "bitbucket" {
-  app_id = conductorone_app.bitbucket.id
+resource "conductorone_integration_jd_edwards" "jd_edwards" {
+  app_id = conductorone_app.jd_edwards.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  bitbucket_username       = "..."
-  bitbucket_app_password   = "..."
-  bitbucket_workspace_list = ["..."]
+  jdedwards_ais_url  = "..."
+  jdedwards_username = "..."
+  jdedwards_password = "..."
+  jdedwards_env      = "..."
 }
 ```
 
@@ -36,9 +37,10 @@ resource "conductorone_integration_bitbucket" "bitbucket" {
 
 ### Optional
 
-- `bitbucket_app_password` (String, Sensitive) App password
-- `bitbucket_username` (String) Username
-- `bitbucket_workspace_list` (List of String) Workspaces - optional
+- `jdedwards_ais_url` (String) Application Interface Services (AIS) URL
+- `jdedwards_env` (String) Environment to use for login
+- `jdedwards_password` (String, Sensitive) JD Edwards EnterpriseOne password
+- `jdedwards_username` (String) JD Edwards EnterpriseOne username
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

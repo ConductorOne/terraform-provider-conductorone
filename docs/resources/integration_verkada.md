@@ -1,29 +1,28 @@
 ---
-page_title: "conductorone_integration_bitbucket Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_verkada Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Bitbucket Integration Resource
+  Verkada Integration Resource
 ---
 
-# conductorone_integration_bitbucket (Resource)
+# conductorone_integration_verkada (Resource)
 
-Bitbucket Integration Resource
+Verkada Integration Resource
 
-This resource allows you to configure an instance of the bitbucket integration in ConductorOne.
+This resource allows you to configure an instance of the verkada integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_bitbucket" "bitbucket" {
-  app_id = conductorone_app.bitbucket.id
+resource "conductorone_integration_verkada" "verkada" {
+  app_id = conductorone_app.verkada.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  bitbucket_username       = "..."
-  bitbucket_app_password   = "..."
-  bitbucket_workspace_list = ["..."]
+  verkada_api_key = "..."
+  verkada_region  = "..."
 }
 ```
 
@@ -36,10 +35,9 @@ resource "conductorone_integration_bitbucket" "bitbucket" {
 
 ### Optional
 
-- `bitbucket_app_password` (String, Sensitive) App password
-- `bitbucket_username` (String) Username
-- `bitbucket_workspace_list` (List of String) Workspaces - optional
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
+- `verkada_api_key` (String, Sensitive) API Key
+- `verkada_region` (String) Region
 
 ### Read-Only
 

@@ -1,29 +1,29 @@
 ---
-page_title: "conductorone_integration_bitbucket Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_okta_v2 Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Bitbucket Integration Resource
+  Okta_v2 Integration Resource
 ---
 
-# conductorone_integration_bitbucket (Resource)
+# conductorone_integration_okta_v2 (Resource)
 
-Bitbucket Integration Resource
+Okta_v2 Integration Resource
 
-This resource allows you to configure an instance of the bitbucket integration in ConductorOne.
+This resource allows you to configure an instance of the okta_v2 integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_bitbucket" "bitbucket" {
-  app_id = conductorone_app.bitbucket.id
+resource "conductorone_integration_okta_v2" "okta_v2" {
+  app_id = conductorone_app.okta_v2.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  bitbucket_username       = "..."
-  bitbucket_app_password   = "..."
-  bitbucket_workspace_list = ["..."]
+  okta_v2_domain         = "..."
+  okta_v2_api_token      = "..."
+  okta_sync_custom_roles = false
 }
 ```
 
@@ -36,9 +36,9 @@ resource "conductorone_integration_bitbucket" "bitbucket" {
 
 ### Optional
 
-- `bitbucket_app_password` (String, Sensitive) App password
-- `bitbucket_username` (String) Username
-- `bitbucket_workspace_list` (List of String) Workspaces - optional
+- `okta_sync_custom_roles` (Boolean) Sync custom roles
+- `okta_v2_api_token` (String, Sensitive) API token
+- `okta_v2_domain` (String) Okta Domain
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

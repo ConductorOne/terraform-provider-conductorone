@@ -21,9 +21,12 @@ resource "conductorone_integration_servicenow" "servicenow" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  password   = "..."
-  username   = "..."
-  deployment = "..."
+  deployment                          = "..."
+  username                            = "..."
+  password                            = "..."
+  enable_external_ticket_provisioning = false
+  catalog_id                          = "..."
+  category_id                         = "..."
 }
 ```
 
@@ -36,7 +39,10 @@ resource "conductorone_integration_servicenow" "servicenow" {
 
 ### Optional
 
+- `catalog_id` (String) Catalog ID
+- `category_id` (String) Category ID
 - `deployment` (String) Deployment
+- `enable_external_ticket_provisioning` (Boolean) Enable external ticket provisioning
 - `password` (String, Sensitive) Password
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 - `username` (String) Username
