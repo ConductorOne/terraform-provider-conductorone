@@ -87,47 +87,36 @@ func (r *IntegrationDayforceResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationDayforceResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	dayforceUsername := new(string)
 	if !r.DayforceUsername.IsUnknown() && !r.DayforceUsername.IsNull() {
 		*dayforceUsername = r.DayforceUsername.ValueString()
-	} else {
-		dayforceUsername = nil
+		configValues["dayforce_username"] = dayforceUsername
 	}
 
 	dayforcePassword := new(string)
 	if !r.DayforcePassword.IsUnknown() && !r.DayforcePassword.IsNull() {
 		*dayforcePassword = r.DayforcePassword.ValueString()
-	} else {
-		dayforcePassword = nil
+		configValues["dayforce_password"] = dayforcePassword
 	}
 
 	dayforceEnvironment := new(string)
 	if !r.DayforceEnvironment.IsUnknown() && !r.DayforceEnvironment.IsNull() {
 		*dayforceEnvironment = r.DayforceEnvironment.ValueString()
-	} else {
-		dayforceEnvironment = nil
+		configValues["dayforce_environment"] = dayforceEnvironment
 	}
 
 	dayforceUrl := new(string)
 	if !r.DayforceUrl.IsUnknown() && !r.DayforceUrl.IsNull() {
 		*dayforceUrl = r.DayforceUrl.ValueString()
-	} else {
-		dayforceUrl = nil
+		configValues["dayforce_url"] = dayforceUrl
 	}
 
 	dayforceClientNamespace := new(string)
 	if !r.DayforceClientNamespace.IsUnknown() && !r.DayforceClientNamespace.IsNull() {
 		*dayforceClientNamespace = r.DayforceClientNamespace.ValueString()
-	} else {
-		dayforceClientNamespace = nil
-	}
-
-	configValues := map[string]interface{}{
-		"dayforce_username":         dayforceUsername,
-		"dayforce_password":         dayforcePassword,
-		"dayforce_environment":      dayforceEnvironment,
-		"dayforce_url":              dayforceUrl,
-		"dayforce_client_namespace": dayforceClientNamespace,
+		configValues["dayforce_client_namespace"] = dayforceClientNamespace
 	}
 
 	return configValues

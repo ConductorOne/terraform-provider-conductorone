@@ -87,39 +87,30 @@ func (r *IntegrationTableauResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationTableauResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	tableauSiteId := new(string)
 	if !r.TableauSiteId.IsUnknown() && !r.TableauSiteId.IsNull() {
 		*tableauSiteId = r.TableauSiteId.ValueString()
-	} else {
-		tableauSiteId = nil
+		configValues["tableau_site_id"] = tableauSiteId
 	}
 
 	tableauServerPath := new(string)
 	if !r.TableauServerPath.IsUnknown() && !r.TableauServerPath.IsNull() {
 		*tableauServerPath = r.TableauServerPath.ValueString()
-	} else {
-		tableauServerPath = nil
+		configValues["tableau_server_path"] = tableauServerPath
 	}
 
 	tableauAccessTokenName := new(string)
 	if !r.TableauAccessTokenName.IsUnknown() && !r.TableauAccessTokenName.IsNull() {
 		*tableauAccessTokenName = r.TableauAccessTokenName.ValueString()
-	} else {
-		tableauAccessTokenName = nil
+		configValues["tableau_access_token_name"] = tableauAccessTokenName
 	}
 
 	tableauAccessTokenSecret := new(string)
 	if !r.TableauAccessTokenSecret.IsUnknown() && !r.TableauAccessTokenSecret.IsNull() {
 		*tableauAccessTokenSecret = r.TableauAccessTokenSecret.ValueString()
-	} else {
-		tableauAccessTokenSecret = nil
-	}
-
-	configValues := map[string]interface{}{
-		"tableau_site_id":             tableauSiteId,
-		"tableau_server_path":         tableauServerPath,
-		"tableau_access_token_name":   tableauAccessTokenName,
-		"tableau_access_token_secret": tableauAccessTokenSecret,
+		configValues["tableau_access_token_secret"] = tableauAccessTokenSecret
 	}
 
 	return configValues

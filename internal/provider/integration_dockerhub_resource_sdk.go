@@ -87,23 +87,18 @@ func (r *IntegrationDockerhubResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationDockerhubResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	dockerhubUsername := new(string)
 	if !r.DockerhubUsername.IsUnknown() && !r.DockerhubUsername.IsNull() {
 		*dockerhubUsername = r.DockerhubUsername.ValueString()
-	} else {
-		dockerhubUsername = nil
+		configValues["dockerhub_username"] = dockerhubUsername
 	}
 
 	dockerhubPassword := new(string)
 	if !r.DockerhubPassword.IsUnknown() && !r.DockerhubPassword.IsNull() {
 		*dockerhubPassword = r.DockerhubPassword.ValueString()
-	} else {
-		dockerhubPassword = nil
-	}
-
-	configValues := map[string]interface{}{
-		"dockerhub_username": dockerhubUsername,
-		"dockerhub_password": dockerhubPassword,
+		configValues["dockerhub_password"] = dockerhubPassword
 	}
 
 	return configValues

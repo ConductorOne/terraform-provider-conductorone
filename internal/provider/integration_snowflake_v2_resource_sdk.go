@@ -87,39 +87,30 @@ func (r *IntegrationSnowflakeV2ResourceModel) ToUpdateSDKType() (*shared.Connect
 }
 
 func (r *IntegrationSnowflakeV2ResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	snowflakeAccountUrl := new(string)
 	if !r.SnowflakeAccountUrl.IsUnknown() && !r.SnowflakeAccountUrl.IsNull() {
 		*snowflakeAccountUrl = r.SnowflakeAccountUrl.ValueString()
-	} else {
-		snowflakeAccountUrl = nil
+		configValues["snowflake_account_url"] = snowflakeAccountUrl
 	}
 
 	snowflakeAccountId := new(string)
 	if !r.SnowflakeAccountId.IsUnknown() && !r.SnowflakeAccountId.IsNull() {
 		*snowflakeAccountId = r.SnowflakeAccountId.ValueString()
-	} else {
-		snowflakeAccountId = nil
+		configValues["snowflake_account_id"] = snowflakeAccountId
 	}
 
 	snowflakeUserId := new(string)
 	if !r.SnowflakeUserId.IsUnknown() && !r.SnowflakeUserId.IsNull() {
 		*snowflakeUserId = r.SnowflakeUserId.ValueString()
-	} else {
-		snowflakeUserId = nil
+		configValues["snowflake_user_id"] = snowflakeUserId
 	}
 
 	snowflakePrivateKey := new(string)
 	if !r.SnowflakePrivateKey.IsUnknown() && !r.SnowflakePrivateKey.IsNull() {
 		*snowflakePrivateKey = r.SnowflakePrivateKey.ValueString()
-	} else {
-		snowflakePrivateKey = nil
-	}
-
-	configValues := map[string]interface{}{
-		"snowflake_account_url": snowflakeAccountUrl,
-		"snowflake_account_id":  snowflakeAccountId,
-		"snowflake_user_id":     snowflakeUserId,
-		"snowflake_private_key": snowflakePrivateKey,
+		configValues["snowflake_private_key"] = snowflakePrivateKey
 	}
 
 	return configValues

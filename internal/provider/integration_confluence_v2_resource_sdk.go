@@ -87,31 +87,24 @@ func (r *IntegrationConfluenceV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 }
 
 func (r *IntegrationConfluenceV2ResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	domainUrl := new(string)
 	if !r.DomainUrl.IsUnknown() && !r.DomainUrl.IsNull() {
 		*domainUrl = r.DomainUrl.ValueString()
-	} else {
-		domainUrl = nil
+		configValues["domain-url"] = domainUrl
 	}
 
 	username := new(string)
 	if !r.Username.IsUnknown() && !r.Username.IsNull() {
 		*username = r.Username.ValueString()
-	} else {
-		username = nil
+		configValues["username"] = username
 	}
 
 	apiKey := new(string)
 	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
 		*apiKey = r.ApiKey.ValueString()
-	} else {
-		apiKey = nil
-	}
-
-	configValues := map[string]interface{}{
-		"domain-url": domainUrl,
-		"username":   username,
-		"api-key":    apiKey,
+		configValues["api-key"] = apiKey
 	}
 
 	return configValues

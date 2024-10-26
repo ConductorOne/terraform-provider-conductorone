@@ -87,30 +87,25 @@ func (r *IntegrationLitmosResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationLitmosResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	litmosSource := new(string)
 	if !r.LitmosSource.IsUnknown() && !r.LitmosSource.IsNull() {
 		*litmosSource = r.LitmosSource.ValueString()
-	} else {
-		litmosSource = nil
+		configValues["litmos_source"] = litmosSource
 	}
 
 	litmosApiKey := new(string)
 	if !r.LitmosApiKey.IsUnknown() && !r.LitmosApiKey.IsNull() {
 		*litmosApiKey = r.LitmosApiKey.ValueString()
-	} else {
-		litmosApiKey = nil
+		configValues["litmos_api_key"] = litmosApiKey
 	}
 
 	litmosCourseIds := make([]string, 0)
 	for _, item := range r.LitmosCourseIds {
 		litmosCourseIds = append(litmosCourseIds, item.ValueString())
 	}
-
-	configValues := map[string]interface{}{
-		"litmos_source":     litmosSource,
-		"litmos_api_key":    litmosApiKey,
-		"litmos_course_ids": litmosCourseIds,
-	}
+	configValues["litmos_course_ids"] = litmosCourseIds
 
 	return configValues
 }

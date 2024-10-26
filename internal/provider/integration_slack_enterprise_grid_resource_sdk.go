@@ -87,23 +87,18 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) ToUpdateSDKType() (*shared
 }
 
 func (r *IntegrationSlackEnterpriseGridResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	slackApiKey := new(string)
 	if !r.SlackApiKey.IsUnknown() && !r.SlackApiKey.IsNull() {
 		*slackApiKey = r.SlackApiKey.ValueString()
-	} else {
-		slackApiKey = nil
+		configValues["slack_api_key"] = slackApiKey
 	}
 
 	slackApiEnterpriseKey := new(string)
 	if !r.SlackApiEnterpriseKey.IsUnknown() && !r.SlackApiEnterpriseKey.IsNull() {
 		*slackApiEnterpriseKey = r.SlackApiEnterpriseKey.ValueString()
-	} else {
-		slackApiEnterpriseKey = nil
-	}
-
-	configValues := map[string]interface{}{
-		"slack_api_key":            slackApiKey,
-		"slack_api_enterprise_key": slackApiEnterpriseKey,
+		configValues["slack_api_enterprise_key"] = slackApiEnterpriseKey
 	}
 
 	return configValues

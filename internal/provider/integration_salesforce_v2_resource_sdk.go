@@ -87,47 +87,36 @@ func (r *IntegrationSalesforceV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 }
 
 func (r *IntegrationSalesforceV2ResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	salesforceInstanceUrl := new(string)
 	if !r.SalesforceInstanceUrl.IsUnknown() && !r.SalesforceInstanceUrl.IsNull() {
 		*salesforceInstanceUrl = r.SalesforceInstanceUrl.ValueString()
-	} else {
-		salesforceInstanceUrl = nil
+		configValues["salesforce_instance_url"] = salesforceInstanceUrl
 	}
 
 	salesforceUsernameForEmail := new(string)
 	if !r.SalesforceUsernameForEmail.IsUnknown() && !r.SalesforceUsernameForEmail.IsNull() {
 		*salesforceUsernameForEmail = strconv.FormatBool(r.SalesforceUsernameForEmail.ValueBool())
-	} else {
-		salesforceUsernameForEmail = nil
+		configValues["salesforce_username_for_email"] = salesforceUsernameForEmail
 	}
 
 	salesforceUsername := new(string)
 	if !r.SalesforceUsername.IsUnknown() && !r.SalesforceUsername.IsNull() {
 		*salesforceUsername = r.SalesforceUsername.ValueString()
-	} else {
-		salesforceUsername = nil
+		configValues["salesforce_username"] = salesforceUsername
 	}
 
 	salesforcePassword := new(string)
 	if !r.SalesforcePassword.IsUnknown() && !r.SalesforcePassword.IsNull() {
 		*salesforcePassword = r.SalesforcePassword.ValueString()
-	} else {
-		salesforcePassword = nil
+		configValues["salesforce_password"] = salesforcePassword
 	}
 
 	salesforceSecurityToken := new(string)
 	if !r.SalesforceSecurityToken.IsUnknown() && !r.SalesforceSecurityToken.IsNull() {
 		*salesforceSecurityToken = r.SalesforceSecurityToken.ValueString()
-	} else {
-		salesforceSecurityToken = nil
-	}
-
-	configValues := map[string]interface{}{
-		"salesforce_instance_url":       salesforceInstanceUrl,
-		"salesforce_username_for_email": salesforceUsernameForEmail,
-		"salesforce_username":           salesforceUsername,
-		"salesforce_password":           salesforcePassword,
-		"salesforce_security_token":     salesforceSecurityToken,
+		configValues["salesforce_security_token"] = salesforceSecurityToken
 	}
 
 	return configValues

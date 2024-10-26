@@ -87,55 +87,42 @@ func (r *IntegrationServicenowResourceModel) ToUpdateSDKType() (*shared.Connecto
 }
 
 func (r *IntegrationServicenowResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	deployment := new(string)
 	if !r.Deployment.IsUnknown() && !r.Deployment.IsNull() {
 		*deployment = r.Deployment.ValueString()
-	} else {
-		deployment = nil
+		configValues["deployment"] = deployment
 	}
 
 	username := new(string)
 	if !r.Username.IsUnknown() && !r.Username.IsNull() {
 		*username = r.Username.ValueString()
-	} else {
-		username = nil
+		configValues["username"] = username
 	}
 
 	password := new(string)
 	if !r.Password.IsUnknown() && !r.Password.IsNull() {
 		*password = r.Password.ValueString()
-	} else {
-		password = nil
+		configValues["password"] = password
 	}
 
 	enableExternalTicketProvisioning := new(string)
 	if !r.EnableExternalTicketProvisioning.IsUnknown() && !r.EnableExternalTicketProvisioning.IsNull() {
 		*enableExternalTicketProvisioning = strconv.FormatBool(r.EnableExternalTicketProvisioning.ValueBool())
-	} else {
-		enableExternalTicketProvisioning = nil
+		configValues["enable_external_ticket_provisioning"] = enableExternalTicketProvisioning
 	}
 
 	catalogId := new(string)
 	if !r.CatalogId.IsUnknown() && !r.CatalogId.IsNull() {
 		*catalogId = r.CatalogId.ValueString()
-	} else {
-		catalogId = nil
+		configValues["catalog_id"] = catalogId
 	}
 
 	categoryId := new(string)
 	if !r.CategoryId.IsUnknown() && !r.CategoryId.IsNull() {
 		*categoryId = r.CategoryId.ValueString()
-	} else {
-		categoryId = nil
-	}
-
-	configValues := map[string]interface{}{
-		"deployment":                          deployment,
-		"username":                            username,
-		"password":                            password,
-		"enable_external_ticket_provisioning": enableExternalTicketProvisioning,
-		"catalog_id":                          catalogId,
-		"category_id":                         categoryId,
+		configValues["category_id"] = categoryId
 	}
 
 	return configValues

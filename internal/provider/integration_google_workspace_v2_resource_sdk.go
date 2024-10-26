@@ -87,39 +87,30 @@ func (r *IntegrationGoogleWorkspaceV2ResourceModel) ToUpdateSDKType() (*shared.C
 }
 
 func (r *IntegrationGoogleWorkspaceV2ResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	customerId := new(string)
 	if !r.CustomerId.IsUnknown() && !r.CustomerId.IsNull() {
 		*customerId = r.CustomerId.ValueString()
-	} else {
-		customerId = nil
+		configValues["customer_id"] = customerId
 	}
 
 	domain := new(string)
 	if !r.Domain.IsUnknown() && !r.Domain.IsNull() {
 		*domain = r.Domain.ValueString()
-	} else {
-		domain = nil
+		configValues["domain"] = domain
 	}
 
 	administratorEmail := new(string)
 	if !r.AdministratorEmail.IsUnknown() && !r.AdministratorEmail.IsNull() {
 		*administratorEmail = r.AdministratorEmail.ValueString()
-	} else {
-		administratorEmail = nil
+		configValues["administrator_email"] = administratorEmail
 	}
 
 	credentialsJson := new(string)
 	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
 		*credentialsJson = r.CredentialsJson.ValueString()
-	} else {
-		credentialsJson = nil
-	}
-
-	configValues := map[string]interface{}{
-		"customer_id":         customerId,
-		"domain":              domain,
-		"administrator_email": administratorEmail,
-		"credentials_json":    credentialsJson,
+		configValues["credentials_json"] = credentialsJson
 	}
 
 	return configValues

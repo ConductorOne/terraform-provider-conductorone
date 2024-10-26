@@ -87,15 +87,12 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared
 }
 
 func (r *IntegrationGoogleCloudPlatformResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	credentialsJson := new(string)
 	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
 		*credentialsJson = r.CredentialsJson.ValueString()
-	} else {
-		credentialsJson = nil
-	}
-
-	configValues := map[string]interface{}{
-		"credentials_json": credentialsJson,
+		configValues["credentials_json"] = credentialsJson
 	}
 
 	return configValues

@@ -87,39 +87,30 @@ func (r *IntegrationCloudflareZeroTrustV2ResourceModel) ToUpdateSDKType() (*shar
 }
 
 func (r *IntegrationCloudflareZeroTrustV2ResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	accountId := new(string)
 	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
 		*accountId = r.AccountId.ValueString()
-	} else {
-		accountId = nil
+		configValues["account_id"] = accountId
 	}
 
 	apiToken := new(string)
 	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
 		*apiToken = r.ApiToken.ValueString()
-	} else {
-		apiToken = nil
+		configValues["api_token"] = apiToken
 	}
 
 	apiKey := new(string)
 	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
 		*apiKey = r.ApiKey.ValueString()
-	} else {
-		apiKey = nil
+		configValues["api_key"] = apiKey
 	}
 
 	email := new(string)
 	if !r.Email.IsUnknown() && !r.Email.IsNull() {
 		*email = r.Email.ValueString()
-	} else {
-		email = nil
-	}
-
-	configValues := map[string]interface{}{
-		"account_id": accountId,
-		"api_token":  apiToken,
-		"api_key":    apiKey,
-		"email":      email,
+		configValues["email"] = email
 	}
 
 	return configValues

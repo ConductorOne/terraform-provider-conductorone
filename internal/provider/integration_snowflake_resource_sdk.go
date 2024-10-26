@@ -87,39 +87,30 @@ func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationSnowflakeResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	snowflakeAccount := new(string)
 	if !r.SnowflakeAccount.IsUnknown() && !r.SnowflakeAccount.IsNull() {
 		*snowflakeAccount = r.SnowflakeAccount.ValueString()
-	} else {
-		snowflakeAccount = nil
+		configValues["snowflake_account"] = snowflakeAccount
 	}
 
 	snowflakeUsername := new(string)
 	if !r.SnowflakeUsername.IsUnknown() && !r.SnowflakeUsername.IsNull() {
 		*snowflakeUsername = r.SnowflakeUsername.ValueString()
-	} else {
-		snowflakeUsername = nil
+		configValues["snowflake_username"] = snowflakeUsername
 	}
 
 	snowflakePassword := new(string)
 	if !r.SnowflakePassword.IsUnknown() && !r.SnowflakePassword.IsNull() {
 		*snowflakePassword = r.SnowflakePassword.ValueString()
-	} else {
-		snowflakePassword = nil
+		configValues["snowflake_password"] = snowflakePassword
 	}
 
 	snowflakeUserRole := new(string)
 	if !r.SnowflakeUserRole.IsUnknown() && !r.SnowflakeUserRole.IsNull() {
 		*snowflakeUserRole = r.SnowflakeUserRole.ValueString()
-	} else {
-		snowflakeUserRole = nil
-	}
-
-	configValues := map[string]interface{}{
-		"snowflake_account":   snowflakeAccount,
-		"snowflake_username":  snowflakeUsername,
-		"snowflake_password":  snowflakePassword,
-		"snowflake_user_role": snowflakeUserRole,
+		configValues["snowflake_user_role"] = snowflakeUserRole
 	}
 
 	return configValues

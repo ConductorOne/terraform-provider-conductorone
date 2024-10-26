@@ -87,31 +87,24 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationCoupaResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	coupaDomain := new(string)
 	if !r.CoupaDomain.IsUnknown() && !r.CoupaDomain.IsNull() {
 		*coupaDomain = r.CoupaDomain.ValueString()
-	} else {
-		coupaDomain = nil
+		configValues["coupa-domain"] = coupaDomain
 	}
 
 	oauth2ClientCredGrantClientId := new(string)
 	if !r.Oauth2ClientCredGrantClientId.IsUnknown() && !r.Oauth2ClientCredGrantClientId.IsNull() {
 		*oauth2ClientCredGrantClientId = r.Oauth2ClientCredGrantClientId.ValueString()
-	} else {
-		oauth2ClientCredGrantClientId = nil
+		configValues["oauth2_client_cred_grant_client_id"] = oauth2ClientCredGrantClientId
 	}
 
 	oauth2ClientCredGrantClientSecret := new(string)
 	if !r.Oauth2ClientCredGrantClientSecret.IsUnknown() && !r.Oauth2ClientCredGrantClientSecret.IsNull() {
 		*oauth2ClientCredGrantClientSecret = r.Oauth2ClientCredGrantClientSecret.ValueString()
-	} else {
-		oauth2ClientCredGrantClientSecret = nil
-	}
-
-	configValues := map[string]interface{}{
-		"coupa-domain":                           coupaDomain,
-		"oauth2_client_cred_grant_client_id":     oauth2ClientCredGrantClientId,
-		"oauth2_client_cred_grant_client_secret": oauth2ClientCredGrantClientSecret,
+		configValues["oauth2_client_cred_grant_client_secret"] = oauth2ClientCredGrantClientSecret
 	}
 
 	return configValues

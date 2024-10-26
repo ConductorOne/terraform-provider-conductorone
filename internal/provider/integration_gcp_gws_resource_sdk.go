@@ -87,55 +87,42 @@ func (r *IntegrationGcpGwsResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationGcpGwsResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	customerId := new(string)
 	if !r.CustomerId.IsUnknown() && !r.CustomerId.IsNull() {
 		*customerId = r.CustomerId.ValueString()
-	} else {
-		customerId = nil
+		configValues["customer_id"] = customerId
 	}
 
 	domain := new(string)
 	if !r.Domain.IsUnknown() && !r.Domain.IsNull() {
 		*domain = r.Domain.ValueString()
-	} else {
-		domain = nil
+		configValues["domain"] = domain
 	}
 
 	administratorEmail := new(string)
 	if !r.AdministratorEmail.IsUnknown() && !r.AdministratorEmail.IsNull() {
 		*administratorEmail = r.AdministratorEmail.ValueString()
-	} else {
-		administratorEmail = nil
+		configValues["administrator_email"] = administratorEmail
 	}
 
 	credentialsJson := new(string)
 	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
 		*credentialsJson = r.CredentialsJson.ValueString()
-	} else {
-		credentialsJson = nil
+		configValues["credentials_json"] = credentialsJson
 	}
 
 	skipSystemAccounts := new(string)
 	if !r.SkipSystemAccounts.IsUnknown() && !r.SkipSystemAccounts.IsNull() {
 		*skipSystemAccounts = strconv.FormatBool(r.SkipSystemAccounts.ValueBool())
-	} else {
-		skipSystemAccounts = nil
+		configValues["skip_system_accounts"] = skipSystemAccounts
 	}
 
 	skipDefaultProjects := new(string)
 	if !r.SkipDefaultProjects.IsUnknown() && !r.SkipDefaultProjects.IsNull() {
 		*skipDefaultProjects = strconv.FormatBool(r.SkipDefaultProjects.ValueBool())
-	} else {
-		skipDefaultProjects = nil
-	}
-
-	configValues := map[string]interface{}{
-		"customer_id":           customerId,
-		"domain":                domain,
-		"administrator_email":   administratorEmail,
-		"credentials_json":      credentialsJson,
-		"skip_system_accounts":  skipSystemAccounts,
-		"skip_default_projects": skipDefaultProjects,
+		configValues["skip_default_projects"] = skipDefaultProjects
 	}
 
 	return configValues

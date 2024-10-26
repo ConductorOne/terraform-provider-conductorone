@@ -87,23 +87,18 @@ func (r *IntegrationMongodbAtlasResourceModel) ToUpdateSDKType() (*shared.Connec
 }
 
 func (r *IntegrationMongodbAtlasResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	mongodbatlasPublicKey := new(string)
 	if !r.MongodbatlasPublicKey.IsUnknown() && !r.MongodbatlasPublicKey.IsNull() {
 		*mongodbatlasPublicKey = r.MongodbatlasPublicKey.ValueString()
-	} else {
-		mongodbatlasPublicKey = nil
+		configValues["mongodbatlas_public_key"] = mongodbatlasPublicKey
 	}
 
 	mongodbatlasPrivateKey := new(string)
 	if !r.MongodbatlasPrivateKey.IsUnknown() && !r.MongodbatlasPrivateKey.IsNull() {
 		*mongodbatlasPrivateKey = r.MongodbatlasPrivateKey.ValueString()
-	} else {
-		mongodbatlasPrivateKey = nil
-	}
-
-	configValues := map[string]interface{}{
-		"mongodbatlas_public_key":  mongodbatlasPublicKey,
-		"mongodbatlas_private_key": mongodbatlasPrivateKey,
+		configValues["mongodbatlas_private_key"] = mongodbatlasPrivateKey
 	}
 
 	return configValues

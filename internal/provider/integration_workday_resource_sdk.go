@@ -87,47 +87,36 @@ func (r *IntegrationWorkdayResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationWorkdayResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	workdayClientId := new(string)
 	if !r.WorkdayClientId.IsUnknown() && !r.WorkdayClientId.IsNull() {
 		*workdayClientId = r.WorkdayClientId.ValueString()
-	} else {
-		workdayClientId = nil
+		configValues["workday_client_id"] = workdayClientId
 	}
 
 	workdayClientSecret := new(string)
 	if !r.WorkdayClientSecret.IsUnknown() && !r.WorkdayClientSecret.IsNull() {
 		*workdayClientSecret = r.WorkdayClientSecret.ValueString()
-	} else {
-		workdayClientSecret = nil
+		configValues["workday_client_secret"] = workdayClientSecret
 	}
 
 	refreshToken := new(string)
 	if !r.RefreshToken.IsUnknown() && !r.RefreshToken.IsNull() {
 		*refreshToken = r.RefreshToken.ValueString()
-	} else {
-		refreshToken = nil
+		configValues["refresh_token"] = refreshToken
 	}
 
 	workdayUrl := new(string)
 	if !r.WorkdayUrl.IsUnknown() && !r.WorkdayUrl.IsNull() {
 		*workdayUrl = r.WorkdayUrl.ValueString()
-	} else {
-		workdayUrl = nil
+		configValues["workday_url"] = workdayUrl
 	}
 
 	tenantName := new(string)
 	if !r.TenantName.IsUnknown() && !r.TenantName.IsNull() {
 		*tenantName = r.TenantName.ValueString()
-	} else {
-		tenantName = nil
-	}
-
-	configValues := map[string]interface{}{
-		"workday_client_id":     workdayClientId,
-		"workday_client_secret": workdayClientSecret,
-		"refresh_token":         refreshToken,
-		"workday_url":           workdayUrl,
-		"tenant_name":           tenantName,
+		configValues["tenant_name"] = tenantName
 	}
 
 	return configValues

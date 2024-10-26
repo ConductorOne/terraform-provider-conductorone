@@ -87,23 +87,18 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationTwingateResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	twingateApikey := new(string)
 	if !r.TwingateApikey.IsUnknown() && !r.TwingateApikey.IsNull() {
 		*twingateApikey = r.TwingateApikey.ValueString()
-	} else {
-		twingateApikey = nil
+		configValues["twingate_apikey"] = twingateApikey
 	}
 
 	twingateDomain := new(string)
 	if !r.TwingateDomain.IsUnknown() && !r.TwingateDomain.IsNull() {
 		*twingateDomain = r.TwingateDomain.ValueString()
-	} else {
-		twingateDomain = nil
-	}
-
-	configValues := map[string]interface{}{
-		"twingate_apikey": twingateApikey,
-		"twingate_domain": twingateDomain,
+		configValues["twingate_domain"] = twingateDomain
 	}
 
 	return configValues

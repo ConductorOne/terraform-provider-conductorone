@@ -87,31 +87,24 @@ func (r *IntegrationOktaV2ResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationOktaV2ResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	oktaV2Domain := new(string)
 	if !r.OktaV2Domain.IsUnknown() && !r.OktaV2Domain.IsNull() {
 		*oktaV2Domain = r.OktaV2Domain.ValueString()
-	} else {
-		oktaV2Domain = nil
+		configValues["okta_v2_domain"] = oktaV2Domain
 	}
 
 	oktaV2ApiToken := new(string)
 	if !r.OktaV2ApiToken.IsUnknown() && !r.OktaV2ApiToken.IsNull() {
 		*oktaV2ApiToken = r.OktaV2ApiToken.ValueString()
-	} else {
-		oktaV2ApiToken = nil
+		configValues["okta_v2_api_token"] = oktaV2ApiToken
 	}
 
 	oktaSyncCustomRoles := new(string)
 	if !r.OktaSyncCustomRoles.IsUnknown() && !r.OktaSyncCustomRoles.IsNull() {
 		*oktaSyncCustomRoles = strconv.FormatBool(r.OktaSyncCustomRoles.ValueBool())
-	} else {
-		oktaSyncCustomRoles = nil
-	}
-
-	configValues := map[string]interface{}{
-		"okta_v2_domain":         oktaV2Domain,
-		"okta_v2_api_token":      oktaV2ApiToken,
-		"okta_sync_custom_roles": oktaSyncCustomRoles,
+		configValues["okta_sync_custom_roles"] = oktaSyncCustomRoles
 	}
 
 	return configValues

@@ -87,15 +87,12 @@ func (r *IntegrationTemporalCloudResourceModel) ToUpdateSDKType() (*shared.Conne
 }
 
 func (r *IntegrationTemporalCloudResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	temporalCloudApiKey := new(string)
 	if !r.TemporalCloudApiKey.IsUnknown() && !r.TemporalCloudApiKey.IsNull() {
 		*temporalCloudApiKey = r.TemporalCloudApiKey.ValueString()
-	} else {
-		temporalCloudApiKey = nil
-	}
-
-	configValues := map[string]interface{}{
-		"temporal_cloud_api_key": temporalCloudApiKey,
+		configValues["temporal_cloud_api_key"] = temporalCloudApiKey
 	}
 
 	return configValues

@@ -87,15 +87,12 @@ func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationDocusignResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	accountId := new(string)
 	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
 		*accountId = r.AccountId.ValueString()
-	} else {
-		accountId = nil
-	}
-
-	configValues := map[string]interface{}{
-		"account_id": accountId,
+		configValues["account_id"] = accountId
 	}
 
 	return configValues

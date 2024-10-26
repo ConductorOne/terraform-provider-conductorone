@@ -87,31 +87,24 @@ func (r *IntegrationOktaAwsFederationResourceModel) ToUpdateSDKType() (*shared.C
 }
 
 func (r *IntegrationOktaAwsFederationResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	oktaAwsFederationDomain := new(string)
 	if !r.OktaAwsFederationDomain.IsUnknown() && !r.OktaAwsFederationDomain.IsNull() {
 		*oktaAwsFederationDomain = r.OktaAwsFederationDomain.ValueString()
-	} else {
-		oktaAwsFederationDomain = nil
+		configValues["okta_aws_federation_domain"] = oktaAwsFederationDomain
 	}
 
 	oktaAwsFederationApiToken := new(string)
 	if !r.OktaAwsFederationApiToken.IsUnknown() && !r.OktaAwsFederationApiToken.IsNull() {
 		*oktaAwsFederationApiToken = r.OktaAwsFederationApiToken.ValueString()
-	} else {
-		oktaAwsFederationApiToken = nil
+		configValues["okta_aws_federation_api_token"] = oktaAwsFederationApiToken
 	}
 
 	oktaAwsFederationAwsOktaAppId := new(string)
 	if !r.OktaAwsFederationAwsOktaAppId.IsUnknown() && !r.OktaAwsFederationAwsOktaAppId.IsNull() {
 		*oktaAwsFederationAwsOktaAppId = r.OktaAwsFederationAwsOktaAppId.ValueString()
-	} else {
-		oktaAwsFederationAwsOktaAppId = nil
-	}
-
-	configValues := map[string]interface{}{
-		"okta_aws_federation_domain":          oktaAwsFederationDomain,
-		"okta_aws_federation_api_token":       oktaAwsFederationApiToken,
-		"okta_aws_federation_aws_okta_app_id": oktaAwsFederationAwsOktaAppId,
+		configValues["okta_aws_federation_aws_okta_app_id"] = oktaAwsFederationAwsOktaAppId
 	}
 
 	return configValues

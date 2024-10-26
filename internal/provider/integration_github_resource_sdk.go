@@ -87,23 +87,18 @@ func (r *IntegrationGithubResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationGithubResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	githubOrg := new(string)
 	if !r.GithubOrg.IsUnknown() && !r.GithubOrg.IsNull() {
 		*githubOrg = r.GithubOrg.ValueString()
-	} else {
-		githubOrg = nil
+		configValues["github_org"] = githubOrg
 	}
 
 	githubAccessToken := new(string)
 	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
 		*githubAccessToken = r.GithubAccessToken.ValueString()
-	} else {
-		githubAccessToken = nil
-	}
-
-	configValues := map[string]interface{}{
-		"github_org":          githubOrg,
-		"github_access_token": githubAccessToken,
+		configValues["github_access_token"] = githubAccessToken
 	}
 
 	return configValues

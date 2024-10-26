@@ -87,23 +87,18 @@ func (r *IntegrationCeligoResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationCeligoResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	celigoRegion := new(string)
 	if !r.CeligoRegion.IsUnknown() && !r.CeligoRegion.IsNull() {
 		*celigoRegion = r.CeligoRegion.ValueString()
-	} else {
-		celigoRegion = nil
+		configValues["celigo_region"] = celigoRegion
 	}
 
 	celigoAccessToken := new(string)
 	if !r.CeligoAccessToken.IsUnknown() && !r.CeligoAccessToken.IsNull() {
 		*celigoAccessToken = r.CeligoAccessToken.ValueString()
-	} else {
-		celigoAccessToken = nil
-	}
-
-	configValues := map[string]interface{}{
-		"celigo_region":       celigoRegion,
-		"celigo_access_token": celigoAccessToken,
+		configValues["celigo_access_token"] = celigoAccessToken
 	}
 
 	return configValues

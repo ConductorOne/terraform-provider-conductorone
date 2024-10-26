@@ -87,15 +87,12 @@ func (r *IntegrationFormalResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationFormalResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	formalApiKey := new(string)
 	if !r.FormalApiKey.IsUnknown() && !r.FormalApiKey.IsNull() {
 		*formalApiKey = r.FormalApiKey.ValueString()
-	} else {
-		formalApiKey = nil
-	}
-
-	configValues := map[string]interface{}{
-		"formal_api_key": formalApiKey,
+		configValues["formal_api_key"] = formalApiKey
 	}
 
 	return configValues

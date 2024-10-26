@@ -3,7 +3,6 @@ package provider
 
 import (
 	"fmt"
-
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -87,22 +86,19 @@ func (r *IntegrationGithubV2ResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationGithubV2ResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	githubAccessToken := new(string)
 	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
 		*githubAccessToken = r.GithubAccessToken.ValueString()
-	} else {
-		githubAccessToken = nil
+		configValues["github_access_token"] = githubAccessToken
 	}
 
 	githubOrgList := make([]string, 0)
 	for _, item := range r.GithubOrgList {
 		githubOrgList = append(githubOrgList, item.ValueString())
 	}
-
-	configValues := map[string]interface{}{
-		"github_access_token": githubAccessToken,
-		"github_org_list":     githubOrgList,
-	}
+	configValues["github_org_list"] = githubOrgList
 
 	return configValues
 }

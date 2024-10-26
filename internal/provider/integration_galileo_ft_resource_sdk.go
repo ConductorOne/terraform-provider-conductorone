@@ -87,39 +87,30 @@ func (r *IntegrationGalileoFtResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationGalileoFtResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	galileoftProviderId := new(string)
 	if !r.GalileoftProviderId.IsUnknown() && !r.GalileoftProviderId.IsNull() {
 		*galileoftProviderId = r.GalileoftProviderId.ValueString()
-	} else {
-		galileoftProviderId = nil
+		configValues["galileoft_provider_id"] = galileoftProviderId
 	}
 
 	galileoftApiLogin := new(string)
 	if !r.GalileoftApiLogin.IsUnknown() && !r.GalileoftApiLogin.IsNull() {
 		*galileoftApiLogin = r.GalileoftApiLogin.ValueString()
-	} else {
-		galileoftApiLogin = nil
+		configValues["galileoft_api_login"] = galileoftApiLogin
 	}
 
 	galileoftApiTransKey := new(string)
 	if !r.GalileoftApiTransKey.IsUnknown() && !r.GalileoftApiTransKey.IsNull() {
 		*galileoftApiTransKey = r.GalileoftApiTransKey.ValueString()
-	} else {
-		galileoftApiTransKey = nil
+		configValues["galileoft_api_trans_key"] = galileoftApiTransKey
 	}
 
 	galileoftHostname := new(string)
 	if !r.GalileoftHostname.IsUnknown() && !r.GalileoftHostname.IsNull() {
 		*galileoftHostname = r.GalileoftHostname.ValueString()
-	} else {
-		galileoftHostname = nil
-	}
-
-	configValues := map[string]interface{}{
-		"galileoft_provider_id":   galileoftProviderId,
-		"galileoft_api_login":     galileoftApiLogin,
-		"galileoft_api_trans_key": galileoftApiTransKey,
-		"galileoft_hostname":      galileoftHostname,
+		configValues["galileoft_hostname"] = galileoftHostname
 	}
 
 	return configValues

@@ -87,23 +87,18 @@ func (r *IntegrationXsoarResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationXsoarResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	apiUrl := new(string)
 	if !r.ApiUrl.IsUnknown() && !r.ApiUrl.IsNull() {
 		*apiUrl = r.ApiUrl.ValueString()
-	} else {
-		apiUrl = nil
+		configValues["api_url"] = apiUrl
 	}
 
 	token := new(string)
 	if !r.Token.IsUnknown() && !r.Token.IsNull() {
 		*token = r.Token.ValueString()
-	} else {
-		token = nil
-	}
-
-	configValues := map[string]interface{}{
-		"api_url": apiUrl,
-		"token":   token,
+		configValues["token"] = token
 	}
 
 	return configValues

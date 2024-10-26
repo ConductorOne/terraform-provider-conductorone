@@ -87,63 +87,48 @@ func (r *IntegrationDatabricksResourceModel) ToUpdateSDKType() (*shared.Connecto
 }
 
 func (r *IntegrationDatabricksResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	databricksAccountId := new(string)
 	if !r.DatabricksAccountId.IsUnknown() && !r.DatabricksAccountId.IsNull() {
 		*databricksAccountId = r.DatabricksAccountId.ValueString()
-	} else {
-		databricksAccountId = nil
+		configValues["databricks_account_id"] = databricksAccountId
 	}
 
 	databricksClientId := new(string)
 	if !r.DatabricksClientId.IsUnknown() && !r.DatabricksClientId.IsNull() {
 		*databricksClientId = r.DatabricksClientId.ValueString()
-	} else {
-		databricksClientId = nil
+		configValues["databricks_client_id"] = databricksClientId
 	}
 
 	databricksClientSecret := new(string)
 	if !r.DatabricksClientSecret.IsUnknown() && !r.DatabricksClientSecret.IsNull() {
 		*databricksClientSecret = r.DatabricksClientSecret.ValueString()
-	} else {
-		databricksClientSecret = nil
+		configValues["databricks_client_secret"] = databricksClientSecret
 	}
 
 	databricksAccessToken := new(string)
 	if !r.DatabricksAccessToken.IsUnknown() && !r.DatabricksAccessToken.IsNull() {
 		*databricksAccessToken = r.DatabricksAccessToken.ValueString()
-	} else {
-		databricksAccessToken = nil
+		configValues["databricks_access_token"] = databricksAccessToken
 	}
 
 	databricksWorkspace := new(string)
 	if !r.DatabricksWorkspace.IsUnknown() && !r.DatabricksWorkspace.IsNull() {
 		*databricksWorkspace = r.DatabricksWorkspace.ValueString()
-	} else {
-		databricksWorkspace = nil
+		configValues["databricks_workspace"] = databricksWorkspace
 	}
 
 	databricksUsername := new(string)
 	if !r.DatabricksUsername.IsUnknown() && !r.DatabricksUsername.IsNull() {
 		*databricksUsername = r.DatabricksUsername.ValueString()
-	} else {
-		databricksUsername = nil
+		configValues["databricks_username"] = databricksUsername
 	}
 
 	databricksPassword := new(string)
 	if !r.DatabricksPassword.IsUnknown() && !r.DatabricksPassword.IsNull() {
 		*databricksPassword = r.DatabricksPassword.ValueString()
-	} else {
-		databricksPassword = nil
-	}
-
-	configValues := map[string]interface{}{
-		"databricks_account_id":    databricksAccountId,
-		"databricks_client_id":     databricksClientId,
-		"databricks_client_secret": databricksClientSecret,
-		"databricks_access_token":  databricksAccessToken,
-		"databricks_workspace":     databricksWorkspace,
-		"databricks_username":      databricksUsername,
-		"databricks_password":      databricksPassword,
+		configValues["databricks_password"] = databricksPassword
 	}
 
 	return configValues

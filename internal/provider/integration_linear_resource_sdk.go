@@ -87,15 +87,12 @@ func (r *IntegrationLinearResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationLinearResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	linearApiKey := new(string)
 	if !r.LinearApiKey.IsUnknown() && !r.LinearApiKey.IsNull() {
 		*linearApiKey = r.LinearApiKey.ValueString()
-	} else {
-		linearApiKey = nil
-	}
-
-	configValues := map[string]interface{}{
-		"linear_api_key": linearApiKey,
+		configValues["linear_api_key"] = linearApiKey
 	}
 
 	return configValues

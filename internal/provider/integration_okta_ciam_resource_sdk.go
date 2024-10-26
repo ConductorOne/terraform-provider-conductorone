@@ -87,31 +87,24 @@ func (r *IntegrationOktaCiamResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationOktaCiamResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	oktaCiamDomain := new(string)
 	if !r.OktaCiamDomain.IsUnknown() && !r.OktaCiamDomain.IsNull() {
 		*oktaCiamDomain = r.OktaCiamDomain.ValueString()
-	} else {
-		oktaCiamDomain = nil
+		configValues["okta_ciam_domain"] = oktaCiamDomain
 	}
 
 	oktaCiamApiToken := new(string)
 	if !r.OktaCiamApiToken.IsUnknown() && !r.OktaCiamApiToken.IsNull() {
 		*oktaCiamApiToken = r.OktaCiamApiToken.ValueString()
-	} else {
-		oktaCiamApiToken = nil
+		configValues["okta_ciam_api_token"] = oktaCiamApiToken
 	}
 
 	oktaCiamEmailDomains := new(string)
 	if !r.OktaCiamEmailDomains.IsUnknown() && !r.OktaCiamEmailDomains.IsNull() {
 		*oktaCiamEmailDomains = r.OktaCiamEmailDomains.ValueString()
-	} else {
-		oktaCiamEmailDomains = nil
-	}
-
-	configValues := map[string]interface{}{
-		"okta_ciam_domain":        oktaCiamDomain,
-		"okta_ciam_api_token":     oktaCiamApiToken,
-		"okta_ciam_email_domains": oktaCiamEmailDomains,
+		configValues["okta_ciam_email_domains"] = oktaCiamEmailDomains
 	}
 
 	return configValues

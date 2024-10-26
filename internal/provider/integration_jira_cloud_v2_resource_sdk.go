@@ -87,39 +87,30 @@ func (r *IntegrationJiraCloudV2ResourceModel) ToUpdateSDKType() (*shared.Connect
 }
 
 func (r *IntegrationJiraCloudV2ResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	jiracloudDomain := new(string)
 	if !r.JiracloudDomain.IsUnknown() && !r.JiracloudDomain.IsNull() {
 		*jiracloudDomain = r.JiracloudDomain.ValueString()
-	} else {
-		jiracloudDomain = nil
+		configValues["jiracloud_domain"] = jiracloudDomain
 	}
 
 	jiracloudUsername := new(string)
 	if !r.JiracloudUsername.IsUnknown() && !r.JiracloudUsername.IsNull() {
 		*jiracloudUsername = r.JiracloudUsername.ValueString()
-	} else {
-		jiracloudUsername = nil
+		configValues["jiracloud_username"] = jiracloudUsername
 	}
 
 	jiracloudApikey := new(string)
 	if !r.JiracloudApikey.IsUnknown() && !r.JiracloudApikey.IsNull() {
 		*jiracloudApikey = r.JiracloudApikey.ValueString()
-	} else {
-		jiracloudApikey = nil
+		configValues["jiracloud_apikey"] = jiracloudApikey
 	}
 
 	enableExternalTicketProvisioning := new(string)
 	if !r.EnableExternalTicketProvisioning.IsUnknown() && !r.EnableExternalTicketProvisioning.IsNull() {
 		*enableExternalTicketProvisioning = strconv.FormatBool(r.EnableExternalTicketProvisioning.ValueBool())
-	} else {
-		enableExternalTicketProvisioning = nil
-	}
-
-	configValues := map[string]interface{}{
-		"jiracloud_domain":                    jiracloudDomain,
-		"jiracloud_username":                  jiracloudUsername,
-		"jiracloud_apikey":                    jiracloudApikey,
-		"enable_external_ticket_provisioning": enableExternalTicketProvisioning,
+		configValues["enable_external_ticket_provisioning"] = enableExternalTicketProvisioning
 	}
 
 	return configValues

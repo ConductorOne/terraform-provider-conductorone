@@ -87,23 +87,18 @@ func (r *IntegrationSentryResourceModel) ToUpdateSDKType() (*shared.Connector, b
 }
 
 func (r *IntegrationSentryResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	sentryOrgSlug := new(string)
 	if !r.SentryOrgSlug.IsUnknown() && !r.SentryOrgSlug.IsNull() {
 		*sentryOrgSlug = r.SentryOrgSlug.ValueString()
-	} else {
-		sentryOrgSlug = nil
+		configValues["sentry_org_slug"] = sentryOrgSlug
 	}
 
 	sentryToken := new(string)
 	if !r.SentryToken.IsUnknown() && !r.SentryToken.IsNull() {
 		*sentryToken = r.SentryToken.ValueString()
-	} else {
-		sentryToken = nil
-	}
-
-	configValues := map[string]interface{}{
-		"sentry_org_slug": sentryOrgSlug,
-		"sentry_token":    sentryToken,
+		configValues["sentry_token"] = sentryToken
 	}
 
 	return configValues

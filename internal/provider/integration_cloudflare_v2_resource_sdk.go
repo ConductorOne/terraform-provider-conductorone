@@ -87,39 +87,30 @@ func (r *IntegrationCloudflareV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 }
 
 func (r *IntegrationCloudflareV2ResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	accountIdV2 := new(string)
 	if !r.AccountIdV2.IsUnknown() && !r.AccountIdV2.IsNull() {
 		*accountIdV2 = r.AccountIdV2.ValueString()
-	} else {
-		accountIdV2 = nil
+		configValues["account_id_v2"] = accountIdV2
 	}
 
 	apiToken := new(string)
 	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
 		*apiToken = r.ApiToken.ValueString()
-	} else {
-		apiToken = nil
+		configValues["api_token"] = apiToken
 	}
 
 	email := new(string)
 	if !r.Email.IsUnknown() && !r.Email.IsNull() {
 		*email = r.Email.ValueString()
-	} else {
-		email = nil
+		configValues["email"] = email
 	}
 
 	apiKeyV2 := new(string)
 	if !r.ApiKeyV2.IsUnknown() && !r.ApiKeyV2.IsNull() {
 		*apiKeyV2 = r.ApiKeyV2.ValueString()
-	} else {
-		apiKeyV2 = nil
-	}
-
-	configValues := map[string]interface{}{
-		"account_id_v2": accountIdV2,
-		"api_token":     apiToken,
-		"email":         email,
-		"api_key_v2":    apiKeyV2,
+		configValues["api_key_v2"] = apiKeyV2
 	}
 
 	return configValues

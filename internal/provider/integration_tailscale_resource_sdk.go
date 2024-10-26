@@ -87,23 +87,18 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	tailscaleApiKey := new(string)
 	if !r.TailscaleApiKey.IsUnknown() && !r.TailscaleApiKey.IsNull() {
 		*tailscaleApiKey = r.TailscaleApiKey.ValueString()
-	} else {
-		tailscaleApiKey = nil
+		configValues["tailscale_api_key"] = tailscaleApiKey
 	}
 
 	tailnet := new(string)
 	if !r.Tailnet.IsUnknown() && !r.Tailnet.IsNull() {
 		*tailnet = r.Tailnet.ValueString()
-	} else {
-		tailnet = nil
-	}
-
-	configValues := map[string]interface{}{
-		"tailscale_api_key": tailscaleApiKey,
-		"tailnet":           tailnet,
+		configValues["tailnet"] = tailnet
 	}
 
 	return configValues

@@ -87,15 +87,12 @@ func (r *IntegrationPagerdutyResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationPagerdutyResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	pagerdutyApiToken := new(string)
 	if !r.PagerdutyApiToken.IsUnknown() && !r.PagerdutyApiToken.IsNull() {
 		*pagerdutyApiToken = r.PagerdutyApiToken.ValueString()
-	} else {
-		pagerdutyApiToken = nil
-	}
-
-	configValues := map[string]interface{}{
-		"pagerduty_api_token": pagerdutyApiToken,
+		configValues["pagerduty_api_token"] = pagerdutyApiToken
 	}
 
 	return configValues

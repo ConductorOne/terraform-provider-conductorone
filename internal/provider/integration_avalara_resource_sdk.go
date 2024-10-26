@@ -87,31 +87,24 @@ func (r *IntegrationAvalaraResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationAvalaraResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	avalaraUsername := new(string)
 	if !r.AvalaraUsername.IsUnknown() && !r.AvalaraUsername.IsNull() {
 		*avalaraUsername = r.AvalaraUsername.ValueString()
-	} else {
-		avalaraUsername = nil
+		configValues["avalara_username"] = avalaraUsername
 	}
 
 	avalaraPassword := new(string)
 	if !r.AvalaraPassword.IsUnknown() && !r.AvalaraPassword.IsNull() {
 		*avalaraPassword = r.AvalaraPassword.ValueString()
-	} else {
-		avalaraPassword = nil
+		configValues["avalara_password"] = avalaraPassword
 	}
 
 	avalaraEnvironment := new(string)
 	if !r.AvalaraEnvironment.IsUnknown() && !r.AvalaraEnvironment.IsNull() {
 		*avalaraEnvironment = r.AvalaraEnvironment.ValueString()
-	} else {
-		avalaraEnvironment = nil
-	}
-
-	configValues := map[string]interface{}{
-		"avalara_username":    avalaraUsername,
-		"avalara_password":    avalaraPassword,
-		"avalara_environment": avalaraEnvironment,
+		configValues["avalara_environment"] = avalaraEnvironment
 	}
 
 	return configValues

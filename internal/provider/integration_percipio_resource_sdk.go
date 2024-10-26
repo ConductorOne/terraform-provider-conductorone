@@ -87,30 +87,25 @@ func (r *IntegrationPercipioResourceModel) ToUpdateSDKType() (*shared.Connector,
 }
 
 func (r *IntegrationPercipioResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	percipioOrganizationId := new(string)
 	if !r.PercipioOrganizationId.IsUnknown() && !r.PercipioOrganizationId.IsNull() {
 		*percipioOrganizationId = r.PercipioOrganizationId.ValueString()
-	} else {
-		percipioOrganizationId = nil
+		configValues["percipio_organization_id"] = percipioOrganizationId
 	}
 
 	percipioApiToken := new(string)
 	if !r.PercipioApiToken.IsUnknown() && !r.PercipioApiToken.IsNull() {
 		*percipioApiToken = r.PercipioApiToken.ValueString()
-	} else {
-		percipioApiToken = nil
+		configValues["percipio_api_token"] = percipioApiToken
 	}
 
 	percipioCourseIds := make([]string, 0)
 	for _, item := range r.PercipioCourseIds {
 		percipioCourseIds = append(percipioCourseIds, item.ValueString())
 	}
-
-	configValues := map[string]interface{}{
-		"percipio_organization_id": percipioOrganizationId,
-		"percipio_api_token":       percipioApiToken,
-		"percipio_course_ids":      percipioCourseIds,
-	}
+	configValues["percipio_course_ids"] = percipioCourseIds
 
 	return configValues
 }

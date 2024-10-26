@@ -87,31 +87,24 @@ func (r *IntegrationConfluenceResourceModel) ToUpdateSDKType() (*shared.Connecto
 }
 
 func (r *IntegrationConfluenceResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	confluenceDomain := new(string)
 	if !r.ConfluenceDomain.IsUnknown() && !r.ConfluenceDomain.IsNull() {
 		*confluenceDomain = r.ConfluenceDomain.ValueString()
-	} else {
-		confluenceDomain = nil
+		configValues["confluence_domain"] = confluenceDomain
 	}
 
 	confluenceUsername := new(string)
 	if !r.ConfluenceUsername.IsUnknown() && !r.ConfluenceUsername.IsNull() {
 		*confluenceUsername = r.ConfluenceUsername.ValueString()
-	} else {
-		confluenceUsername = nil
+		configValues["confluence_username"] = confluenceUsername
 	}
 
 	confluenceApikey := new(string)
 	if !r.ConfluenceApikey.IsUnknown() && !r.ConfluenceApikey.IsNull() {
 		*confluenceApikey = r.ConfluenceApikey.ValueString()
-	} else {
-		confluenceApikey = nil
-	}
-
-	configValues := map[string]interface{}{
-		"confluence_domain":   confluenceDomain,
-		"confluence_username": confluenceUsername,
-		"confluence_apikey":   confluenceApikey,
+		configValues["confluence_apikey"] = confluenceApikey
 	}
 
 	return configValues

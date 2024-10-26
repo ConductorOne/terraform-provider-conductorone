@@ -87,23 +87,18 @@ func (r *IntegrationTorqResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationTorqResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	torqClientId := new(string)
 	if !r.TorqClientId.IsUnknown() && !r.TorqClientId.IsNull() {
 		*torqClientId = r.TorqClientId.ValueString()
-	} else {
-		torqClientId = nil
+		configValues["torq_client_id"] = torqClientId
 	}
 
 	torqClientSecret := new(string)
 	if !r.TorqClientSecret.IsUnknown() && !r.TorqClientSecret.IsNull() {
 		*torqClientSecret = r.TorqClientSecret.ValueString()
-	} else {
-		torqClientSecret = nil
-	}
-
-	configValues := map[string]interface{}{
-		"torq_client_id":     torqClientId,
-		"torq_client_secret": torqClientSecret,
+		configValues["torq_client_secret"] = torqClientSecret
 	}
 
 	return configValues

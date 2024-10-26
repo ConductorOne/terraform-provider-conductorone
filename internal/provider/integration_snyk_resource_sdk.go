@@ -87,30 +87,25 @@ func (r *IntegrationSnykResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationSnykResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	snykApiToken := new(string)
 	if !r.SnykApiToken.IsUnknown() && !r.SnykApiToken.IsNull() {
 		*snykApiToken = r.SnykApiToken.ValueString()
-	} else {
-		snykApiToken = nil
+		configValues["snyk_api_token"] = snykApiToken
 	}
 
 	snykGroupId := new(string)
 	if !r.SnykGroupId.IsUnknown() && !r.SnykGroupId.IsNull() {
 		*snykGroupId = r.SnykGroupId.ValueString()
-	} else {
-		snykGroupId = nil
+		configValues["snyk_group_id"] = snykGroupId
 	}
 
 	snykOrgIds := make([]string, 0)
 	for _, item := range r.SnykOrgIds {
 		snykOrgIds = append(snykOrgIds, item.ValueString())
 	}
-
-	configValues := map[string]interface{}{
-		"snyk_api_token": snykApiToken,
-		"snyk_group_id":  snykGroupId,
-		"snyk_org_ids":   snykOrgIds,
-	}
+	configValues["snyk_org_ids"] = snykOrgIds
 
 	return configValues
 }

@@ -87,23 +87,18 @@ func (r *IntegrationSentineloneResourceModel) ToUpdateSDKType() (*shared.Connect
 }
 
 func (r *IntegrationSentineloneResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	sentineloneBaseUrl := new(string)
 	if !r.SentineloneBaseUrl.IsUnknown() && !r.SentineloneBaseUrl.IsNull() {
 		*sentineloneBaseUrl = r.SentineloneBaseUrl.ValueString()
-	} else {
-		sentineloneBaseUrl = nil
+		configValues["sentinelone_base_url"] = sentineloneBaseUrl
 	}
 
 	sentineloneToken := new(string)
 	if !r.SentineloneToken.IsUnknown() && !r.SentineloneToken.IsNull() {
 		*sentineloneToken = r.SentineloneToken.ValueString()
-	} else {
-		sentineloneToken = nil
-	}
-
-	configValues := map[string]interface{}{
-		"sentinelone_base_url": sentineloneBaseUrl,
-		"sentinelone_token":    sentineloneToken,
+		configValues["sentinelone_token"] = sentineloneToken
 	}
 
 	return configValues

@@ -87,15 +87,12 @@ func (r *IntegrationMiroResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 }
 
 func (r *IntegrationMiroResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	miroAccessToken := new(string)
 	if !r.MiroAccessToken.IsUnknown() && !r.MiroAccessToken.IsNull() {
 		*miroAccessToken = r.MiroAccessToken.ValueString()
-	} else {
-		miroAccessToken = nil
-	}
-
-	configValues := map[string]interface{}{
-		"miro_access_token": miroAccessToken,
+		configValues["miro_access_token"] = miroAccessToken
 	}
 
 	return configValues

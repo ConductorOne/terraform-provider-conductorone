@@ -87,39 +87,30 @@ func (r *IntegrationJdEdwardsResourceModel) ToUpdateSDKType() (*shared.Connector
 }
 
 func (r *IntegrationJdEdwardsResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	jdedwardsAisUrl := new(string)
 	if !r.JdedwardsAisUrl.IsUnknown() && !r.JdedwardsAisUrl.IsNull() {
 		*jdedwardsAisUrl = r.JdedwardsAisUrl.ValueString()
-	} else {
-		jdedwardsAisUrl = nil
+		configValues["jdedwards_ais_url"] = jdedwardsAisUrl
 	}
 
 	jdedwardsUsername := new(string)
 	if !r.JdedwardsUsername.IsUnknown() && !r.JdedwardsUsername.IsNull() {
 		*jdedwardsUsername = r.JdedwardsUsername.ValueString()
-	} else {
-		jdedwardsUsername = nil
+		configValues["jdedwards_username"] = jdedwardsUsername
 	}
 
 	jdedwardsPassword := new(string)
 	if !r.JdedwardsPassword.IsUnknown() && !r.JdedwardsPassword.IsNull() {
 		*jdedwardsPassword = r.JdedwardsPassword.ValueString()
-	} else {
-		jdedwardsPassword = nil
+		configValues["jdedwards_password"] = jdedwardsPassword
 	}
 
 	jdedwardsEnv := new(string)
 	if !r.JdedwardsEnv.IsUnknown() && !r.JdedwardsEnv.IsNull() {
 		*jdedwardsEnv = r.JdedwardsEnv.ValueString()
-	} else {
-		jdedwardsEnv = nil
-	}
-
-	configValues := map[string]interface{}{
-		"jdedwards_ais_url":  jdedwardsAisUrl,
-		"jdedwards_username": jdedwardsUsername,
-		"jdedwards_password": jdedwardsPassword,
-		"jdedwards_env":      jdedwardsEnv,
+		configValues["jdedwards_env"] = jdedwardsEnv
 	}
 
 	return configValues

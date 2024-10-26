@@ -87,23 +87,18 @@ func (r *IntegrationSalesforceResourceModel) ToUpdateSDKType() (*shared.Connecto
 }
 
 func (r *IntegrationSalesforceResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	salesforceInstanceUrl := new(string)
 	if !r.SalesforceInstanceUrl.IsUnknown() && !r.SalesforceInstanceUrl.IsNull() {
 		*salesforceInstanceUrl = r.SalesforceInstanceUrl.ValueString()
-	} else {
-		salesforceInstanceUrl = nil
+		configValues["salesforce_instance_url"] = salesforceInstanceUrl
 	}
 
 	salesforceUsernameForEmail := new(string)
 	if !r.SalesforceUsernameForEmail.IsUnknown() && !r.SalesforceUsernameForEmail.IsNull() {
 		*salesforceUsernameForEmail = strconv.FormatBool(r.SalesforceUsernameForEmail.ValueBool())
-	} else {
-		salesforceUsernameForEmail = nil
-	}
-
-	configValues := map[string]interface{}{
-		"salesforce_instance_url":       salesforceInstanceUrl,
-		"salesforce_username_for_email": salesforceUsernameForEmail,
+		configValues["salesforce_username_for_email"] = salesforceUsernameForEmail
 	}
 
 	return configValues

@@ -87,47 +87,36 @@ func (r *IntegrationPrivxResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationPrivxResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	privxBaseUrl := new(string)
 	if !r.PrivxBaseUrl.IsUnknown() && !r.PrivxBaseUrl.IsNull() {
 		*privxBaseUrl = r.PrivxBaseUrl.ValueString()
-	} else {
-		privxBaseUrl = nil
+		configValues["privx_base_url"] = privxBaseUrl
 	}
 
 	privxClientId := new(string)
 	if !r.PrivxClientId.IsUnknown() && !r.PrivxClientId.IsNull() {
 		*privxClientId = r.PrivxClientId.ValueString()
-	} else {
-		privxClientId = nil
+		configValues["privx_client_id"] = privxClientId
 	}
 
 	privxClientSecret := new(string)
 	if !r.PrivxClientSecret.IsUnknown() && !r.PrivxClientSecret.IsNull() {
 		*privxClientSecret = r.PrivxClientSecret.ValueString()
-	} else {
-		privxClientSecret = nil
+		configValues["privx_client_secret"] = privxClientSecret
 	}
 
 	privxOauthClientId := new(string)
 	if !r.PrivxOauthClientId.IsUnknown() && !r.PrivxOauthClientId.IsNull() {
 		*privxOauthClientId = r.PrivxOauthClientId.ValueString()
-	} else {
-		privxOauthClientId = nil
+		configValues["privx_oauth_client_id"] = privxOauthClientId
 	}
 
 	privxOauthClientSecret := new(string)
 	if !r.PrivxOauthClientSecret.IsUnknown() && !r.PrivxOauthClientSecret.IsNull() {
 		*privxOauthClientSecret = r.PrivxOauthClientSecret.ValueString()
-	} else {
-		privxOauthClientSecret = nil
-	}
-
-	configValues := map[string]interface{}{
-		"privx_base_url":            privxBaseUrl,
-		"privx_client_id":           privxClientId,
-		"privx_client_secret":       privxClientSecret,
-		"privx_oauth_client_id":     privxOauthClientId,
-		"privx_oauth_client_secret": privxOauthClientSecret,
+		configValues["privx_oauth_client_secret"] = privxOauthClientSecret
 	}
 
 	return configValues

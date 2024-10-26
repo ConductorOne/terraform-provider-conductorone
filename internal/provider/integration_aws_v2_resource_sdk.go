@@ -87,64 +87,48 @@ func (r *IntegrationAwsV2ResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 }
 
 func (r *IntegrationAwsV2ResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	awsRoleArn := new(string)
 	if !r.AwsRoleArn.IsUnknown() && !r.AwsRoleArn.IsNull() {
 		*awsRoleArn = r.AwsRoleArn.ValueString()
-	} else {
-		awsRoleArn = nil
+		configValues["aws_role_arn"] = awsRoleArn
 	}
 
 	awsOrgsEnable := new(string)
 	if !r.AwsOrgsEnable.IsUnknown() && !r.AwsOrgsEnable.IsNull() {
 		*awsOrgsEnable = strconv.FormatBool(r.AwsOrgsEnable.ValueBool())
-	} else {
-		awsOrgsEnable = nil
+		configValues["aws_orgs_enable"] = awsOrgsEnable
 	}
 
 	awsSsoEnable := new(string)
 	if !r.AwsSsoEnable.IsUnknown() && !r.AwsSsoEnable.IsNull() {
 		*awsSsoEnable = strconv.FormatBool(r.AwsSsoEnable.ValueBool())
-	} else {
-		awsSsoEnable = nil
+		configValues["aws_sso_enable"] = awsSsoEnable
 	}
 
 	awsSsoRegion := new(string)
 	if !r.AwsSsoRegion.IsUnknown() && !r.AwsSsoRegion.IsNull() {
 		*awsSsoRegion = r.AwsSsoRegion.ValueString()
-	} else {
-		awsSsoRegion = nil
+		configValues["aws_sso_region"] = awsSsoRegion
 	}
 
 	awsSsoScimEnable := new(string)
 	if !r.AwsSsoScimEnable.IsUnknown() && !r.AwsSsoScimEnable.IsNull() {
 		*awsSsoScimEnable = strconv.FormatBool(r.AwsSsoScimEnable.ValueBool())
-	} else {
-		awsSsoScimEnable = nil
+		configValues["aws_sso_scim_enable"] = awsSsoScimEnable
 	}
 
 	awsSsoScimEndpoint := new(string)
 	if !r.AwsSsoScimEndpoint.IsUnknown() && !r.AwsSsoScimEndpoint.IsNull() {
 		*awsSsoScimEndpoint = r.AwsSsoScimEndpoint.ValueString()
-	} else {
-		awsSsoScimEndpoint = nil
+		configValues["aws_sso_scim_endpoint"] = awsSsoScimEndpoint
 	}
 
 	awsSsoScimAccessToken := new(string)
 	if !r.AwsSsoScimAccessToken.IsUnknown() && !r.AwsSsoScimAccessToken.IsNull() {
 		*awsSsoScimAccessToken = r.AwsSsoScimAccessToken.ValueString()
-	} else {
-		awsSsoScimAccessToken = nil
-	}
-
-	configValues := map[string]interface{}{
-		"aws_role_arn":              awsRoleArn,
-		"aws_orgs_enable":           awsOrgsEnable,
-		"aws_sso_enable":            awsSsoEnable,
-		"aws_sso_region":            awsSsoRegion,
-		"aws_sso_scim_enable":       awsSsoScimEnable,
-		"aws_sso_scim_endpoint":     awsSsoScimEndpoint,
-		"aws_sso_scim_access_token": awsSsoScimAccessToken,
+		configValues["aws_sso_scim_access_token"] = awsSsoScimAccessToken
 	}
 
 	return configValues

@@ -87,8 +87,7 @@ func (r *IntegrationAzureAdResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationAzureAdResourceModel) populateConfig() map[string]interface{} {
-
-	configValues := map[string]interface{}{}
+	configValues := make(map[string]interface{})
 
 	return configValues
 }

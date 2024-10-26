@@ -87,31 +87,24 @@ func (r *IntegrationCrowdstrikeResourceModel) ToUpdateSDKType() (*shared.Connect
 }
 
 func (r *IntegrationCrowdstrikeResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	crowdstrikeClientId := new(string)
 	if !r.CrowdstrikeClientId.IsUnknown() && !r.CrowdstrikeClientId.IsNull() {
 		*crowdstrikeClientId = r.CrowdstrikeClientId.ValueString()
-	} else {
-		crowdstrikeClientId = nil
+		configValues["crowdstrike_client_id"] = crowdstrikeClientId
 	}
 
 	crowdstrikeClientSecret := new(string)
 	if !r.CrowdstrikeClientSecret.IsUnknown() && !r.CrowdstrikeClientSecret.IsNull() {
 		*crowdstrikeClientSecret = r.CrowdstrikeClientSecret.ValueString()
-	} else {
-		crowdstrikeClientSecret = nil
+		configValues["crowdstrike_client_secret"] = crowdstrikeClientSecret
 	}
 
 	region := new(string)
 	if !r.Region.IsUnknown() && !r.Region.IsNull() {
 		*region = r.Region.ValueString()
-	} else {
-		region = nil
-	}
-
-	configValues := map[string]interface{}{
-		"crowdstrike_client_id":     crowdstrikeClientId,
-		"crowdstrike_client_secret": crowdstrikeClientSecret,
-		"region":                    region,
+		configValues["region"] = region
 	}
 
 	return configValues

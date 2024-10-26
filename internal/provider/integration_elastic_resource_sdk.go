@@ -87,39 +87,30 @@ func (r *IntegrationElasticResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationElasticResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	elasticApiKey := new(string)
 	if !r.ElasticApiKey.IsUnknown() && !r.ElasticApiKey.IsNull() {
 		*elasticApiKey = r.ElasticApiKey.ValueString()
-	} else {
-		elasticApiKey = nil
+		configValues["elastic_api_key"] = elasticApiKey
 	}
 
 	elasticDeploymentApiKey := new(string)
 	if !r.ElasticDeploymentApiKey.IsUnknown() && !r.ElasticDeploymentApiKey.IsNull() {
 		*elasticDeploymentApiKey = r.ElasticDeploymentApiKey.ValueString()
-	} else {
-		elasticDeploymentApiKey = nil
+		configValues["elastic_deployment_api_key"] = elasticDeploymentApiKey
 	}
 
 	elasticDeploymentEndpoint := new(string)
 	if !r.ElasticDeploymentEndpoint.IsUnknown() && !r.ElasticDeploymentEndpoint.IsNull() {
 		*elasticDeploymentEndpoint = r.ElasticDeploymentEndpoint.ValueString()
-	} else {
-		elasticDeploymentEndpoint = nil
+		configValues["elastic_deployment_endpoint"] = elasticDeploymentEndpoint
 	}
 
 	elasticOrganizationId := new(string)
 	if !r.ElasticOrganizationId.IsUnknown() && !r.ElasticOrganizationId.IsNull() {
 		*elasticOrganizationId = r.ElasticOrganizationId.ValueString()
-	} else {
-		elasticOrganizationId = nil
-	}
-
-	configValues := map[string]interface{}{
-		"elastic_api_key":             elasticApiKey,
-		"elastic_deployment_api_key":  elasticDeploymentApiKey,
-		"elastic_deployment_endpoint": elasticDeploymentEndpoint,
-		"elastic_organization_id":     elasticOrganizationId,
+		configValues["elastic_organization_id"] = elasticOrganizationId
 	}
 
 	return configValues

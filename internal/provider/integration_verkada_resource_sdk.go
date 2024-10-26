@@ -87,23 +87,18 @@ func (r *IntegrationVerkadaResourceModel) ToUpdateSDKType() (*shared.Connector, 
 }
 
 func (r *IntegrationVerkadaResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	verkadaApiKey := new(string)
 	if !r.VerkadaApiKey.IsUnknown() && !r.VerkadaApiKey.IsNull() {
 		*verkadaApiKey = r.VerkadaApiKey.ValueString()
-	} else {
-		verkadaApiKey = nil
+		configValues["verkada_api_key"] = verkadaApiKey
 	}
 
 	verkadaRegion := new(string)
 	if !r.VerkadaRegion.IsUnknown() && !r.VerkadaRegion.IsNull() {
 		*verkadaRegion = r.VerkadaRegion.ValueString()
-	} else {
-		verkadaRegion = nil
-	}
-
-	configValues := map[string]interface{}{
-		"verkada_api_key": verkadaApiKey,
-		"verkada_region":  verkadaRegion,
+		configValues["verkada_region"] = verkadaRegion
 	}
 
 	return configValues

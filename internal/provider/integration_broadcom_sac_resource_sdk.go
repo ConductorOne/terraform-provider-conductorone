@@ -87,31 +87,24 @@ func (r *IntegrationBroadcomSacResourceModel) ToUpdateSDKType() (*shared.Connect
 }
 
 func (r *IntegrationBroadcomSacResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	username := new(string)
 	if !r.Username.IsUnknown() && !r.Username.IsNull() {
 		*username = r.Username.ValueString()
-	} else {
-		username = nil
+		configValues["username"] = username
 	}
 
 	password := new(string)
 	if !r.Password.IsUnknown() && !r.Password.IsNull() {
 		*password = r.Password.ValueString()
-	} else {
-		password = nil
+		configValues["password"] = password
 	}
 
 	tenant := new(string)
 	if !r.Tenant.IsUnknown() && !r.Tenant.IsNull() {
 		*tenant = r.Tenant.ValueString()
-	} else {
-		tenant = nil
-	}
-
-	configValues := map[string]interface{}{
-		"username": username,
-		"password": password,
-		"tenant":   tenant,
+		configValues["tenant"] = tenant
 	}
 
 	return configValues

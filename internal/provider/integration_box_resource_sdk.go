@@ -87,31 +87,24 @@ func (r *IntegrationBoxResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 }
 
 func (r *IntegrationBoxResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	boxClientId := new(string)
 	if !r.BoxClientId.IsUnknown() && !r.BoxClientId.IsNull() {
 		*boxClientId = r.BoxClientId.ValueString()
-	} else {
-		boxClientId = nil
+		configValues["box_client_id"] = boxClientId
 	}
 
 	boxClientSecret := new(string)
 	if !r.BoxClientSecret.IsUnknown() && !r.BoxClientSecret.IsNull() {
 		*boxClientSecret = r.BoxClientSecret.ValueString()
-	} else {
-		boxClientSecret = nil
+		configValues["box_client_secret"] = boxClientSecret
 	}
 
 	boxEnterpriseId := new(string)
 	if !r.BoxEnterpriseId.IsUnknown() && !r.BoxEnterpriseId.IsNull() {
 		*boxEnterpriseId = r.BoxEnterpriseId.ValueString()
-	} else {
-		boxEnterpriseId = nil
-	}
-
-	configValues := map[string]interface{}{
-		"box_client_id":     boxClientId,
-		"box_client_secret": boxClientSecret,
-		"box_enterprise_id": boxEnterpriseId,
+		configValues["box_enterprise_id"] = boxEnterpriseId
 	}
 
 	return configValues

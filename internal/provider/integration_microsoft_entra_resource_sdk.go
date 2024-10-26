@@ -87,39 +87,30 @@ func (r *IntegrationMicrosoftEntraResourceModel) ToUpdateSDKType() (*shared.Conn
 }
 
 func (r *IntegrationMicrosoftEntraResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	entraTenantId := new(string)
 	if !r.EntraTenantId.IsUnknown() && !r.EntraTenantId.IsNull() {
 		*entraTenantId = r.EntraTenantId.ValueString()
-	} else {
-		entraTenantId = nil
+		configValues["entra_tenant_id"] = entraTenantId
 	}
 
 	entraClientId := new(string)
 	if !r.EntraClientId.IsUnknown() && !r.EntraClientId.IsNull() {
 		*entraClientId = r.EntraClientId.ValueString()
-	} else {
-		entraClientId = nil
+		configValues["entra_client_id"] = entraClientId
 	}
 
 	entraClientSecret := new(string)
 	if !r.EntraClientSecret.IsUnknown() && !r.EntraClientSecret.IsNull() {
 		*entraClientSecret = r.EntraClientSecret.ValueString()
-	} else {
-		entraClientSecret = nil
+		configValues["entra_client_secret"] = entraClientSecret
 	}
 
 	entraSkipAdGroups := new(string)
 	if !r.EntraSkipAdGroups.IsUnknown() && !r.EntraSkipAdGroups.IsNull() {
 		*entraSkipAdGroups = strconv.FormatBool(r.EntraSkipAdGroups.ValueBool())
-	} else {
-		entraSkipAdGroups = nil
-	}
-
-	configValues := map[string]interface{}{
-		"entra_tenant_id":      entraTenantId,
-		"entra_client_id":      entraClientId,
-		"entra_client_secret":  entraClientSecret,
-		"entra_skip_ad_groups": entraSkipAdGroups,
+		configValues["entra_skip_ad_groups"] = entraSkipAdGroups
 	}
 
 	return configValues

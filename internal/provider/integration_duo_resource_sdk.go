@@ -87,31 +87,24 @@ func (r *IntegrationDuoResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 }
 
 func (r *IntegrationDuoResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	duoIntegrationKey := new(string)
 	if !r.DuoIntegrationKey.IsUnknown() && !r.DuoIntegrationKey.IsNull() {
 		*duoIntegrationKey = r.DuoIntegrationKey.ValueString()
-	} else {
-		duoIntegrationKey = nil
+		configValues["duo_integration_key"] = duoIntegrationKey
 	}
 
 	duoSecretKey := new(string)
 	if !r.DuoSecretKey.IsUnknown() && !r.DuoSecretKey.IsNull() {
 		*duoSecretKey = r.DuoSecretKey.ValueString()
-	} else {
-		duoSecretKey = nil
+		configValues["duo_secret_key"] = duoSecretKey
 	}
 
 	duoApiHostname := new(string)
 	if !r.DuoApiHostname.IsUnknown() && !r.DuoApiHostname.IsNull() {
 		*duoApiHostname = r.DuoApiHostname.ValueString()
-	} else {
-		duoApiHostname = nil
-	}
-
-	configValues := map[string]interface{}{
-		"duo_integration_key": duoIntegrationKey,
-		"duo_secret_key":      duoSecretKey,
-		"duo_api_hostname":    duoApiHostname,
+		configValues["duo_api_hostname"] = duoApiHostname
 	}
 
 	return configValues
