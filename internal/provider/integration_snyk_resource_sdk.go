@@ -4,6 +4,7 @@ package provider
 import (
 	"fmt"
 
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -105,7 +106,9 @@ func (r *IntegrationSnykResourceModel) populateConfig() map[string]interface{} {
 	for _, item := range r.SnykOrgIds {
 		snykOrgIds = append(snykOrgIds, item.ValueString())
 	}
-	configValues["snyk_org_ids"] = snykOrgIds
+	if len(snykOrgIds) > 0 {
+		configValues["snyk_org_ids"] = strings.Join(snykOrgIds, ",")
+	}
 
 	return configValues
 }
@@ -184,8 +187,9 @@ func (r *IntegrationSnykResourceModel) RefreshFromGetResponse(resp *shared.Conne
 
 				r.SnykOrgIds = nil
 				if v, ok := values["snyk_org_ids"]; ok {
-					if val, ok := v.([]string); ok {
-						for _, item := range val {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
 							r.SnykOrgIds = append(r.SnykOrgIds, types.StringValue(item))
 						}
 					}
@@ -243,8 +247,9 @@ func (r *IntegrationSnykResourceModel) RefreshFromCreateResponse(resp *shared.Co
 
 				r.SnykOrgIds = nil
 				if v, ok := values["snyk_org_ids"]; ok {
-					if val, ok := v.([]string); ok {
-						for _, item := range val {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
 							r.SnykOrgIds = append(r.SnykOrgIds, types.StringValue(item))
 						}
 					}

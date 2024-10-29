@@ -4,6 +4,7 @@ package provider
 import (
 	"fmt"
 
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -105,7 +106,9 @@ func (r *IntegrationBitbucketResourceModel) populateConfig() map[string]interfac
 	for _, item := range r.BitbucketWorkspaceList {
 		bitbucketWorkspaceList = append(bitbucketWorkspaceList, item.ValueString())
 	}
-	configValues["bitbucket_workspace_list"] = bitbucketWorkspaceList
+	if len(bitbucketWorkspaceList) > 0 {
+		configValues["bitbucket_workspace_list"] = strings.Join(bitbucketWorkspaceList, ",")
+	}
 
 	return configValues
 }
@@ -183,8 +186,9 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromGetResponse(resp *shared.
 
 				r.BitbucketWorkspaceList = nil
 				if v, ok := values["bitbucket_workspace_list"]; ok {
-					if val, ok := v.([]string); ok {
-						for _, item := range val {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
 							r.BitbucketWorkspaceList = append(r.BitbucketWorkspaceList, types.StringValue(item))
 						}
 					}
@@ -241,8 +245,9 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromCreateResponse(resp *shar
 
 				r.BitbucketWorkspaceList = nil
 				if v, ok := values["bitbucket_workspace_list"]; ok {
-					if val, ok := v.([]string); ok {
-						for _, item := range val {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
 							r.BitbucketWorkspaceList = append(r.BitbucketWorkspaceList, types.StringValue(item))
 						}
 					}

@@ -4,6 +4,7 @@ package provider
 import (
 	"fmt"
 
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -105,7 +106,9 @@ func (r *IntegrationLitmosResourceModel) populateConfig() map[string]interface{}
 	for _, item := range r.LitmosCourseIds {
 		litmosCourseIds = append(litmosCourseIds, item.ValueString())
 	}
-	configValues["litmos_course_ids"] = litmosCourseIds
+	if len(litmosCourseIds) > 0 {
+		configValues["litmos_course_ids"] = strings.Join(litmosCourseIds, ",")
+	}
 
 	return configValues
 }
@@ -183,8 +186,9 @@ func (r *IntegrationLitmosResourceModel) RefreshFromGetResponse(resp *shared.Con
 
 				r.LitmosCourseIds = nil
 				if v, ok := values["litmos_course_ids"]; ok {
-					if val, ok := v.([]string); ok {
-						for _, item := range val {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
 							r.LitmosCourseIds = append(r.LitmosCourseIds, types.StringValue(item))
 						}
 					}
@@ -241,8 +245,9 @@ func (r *IntegrationLitmosResourceModel) RefreshFromCreateResponse(resp *shared.
 
 				r.LitmosCourseIds = nil
 				if v, ok := values["litmos_course_ids"]; ok {
-					if val, ok := v.([]string); ok {
-						for _, item := range val {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
 							r.LitmosCourseIds = append(r.LitmosCourseIds, types.StringValue(item))
 						}
 					}

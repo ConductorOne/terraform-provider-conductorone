@@ -4,6 +4,7 @@ package provider
 import (
 	"fmt"
 
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -105,7 +106,9 @@ func (r *IntegrationPercipioResourceModel) populateConfig() map[string]interface
 	for _, item := range r.PercipioCourseIds {
 		percipioCourseIds = append(percipioCourseIds, item.ValueString())
 	}
-	configValues["percipio_course_ids"] = percipioCourseIds
+	if len(percipioCourseIds) > 0 {
+		configValues["percipio_course_ids"] = strings.Join(percipioCourseIds, ",")
+	}
 
 	return configValues
 }
@@ -183,8 +186,9 @@ func (r *IntegrationPercipioResourceModel) RefreshFromGetResponse(resp *shared.C
 
 				r.PercipioCourseIds = nil
 				if v, ok := values["percipio_course_ids"]; ok {
-					if val, ok := v.([]string); ok {
-						for _, item := range val {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
 							r.PercipioCourseIds = append(r.PercipioCourseIds, types.StringValue(item))
 						}
 					}
@@ -241,8 +245,9 @@ func (r *IntegrationPercipioResourceModel) RefreshFromCreateResponse(resp *share
 
 				r.PercipioCourseIds = nil
 				if v, ok := values["percipio_course_ids"]; ok {
-					if val, ok := v.([]string); ok {
-						for _, item := range val {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
 							r.PercipioCourseIds = append(r.PercipioCourseIds, types.StringValue(item))
 						}
 					}

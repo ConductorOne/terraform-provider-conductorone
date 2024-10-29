@@ -3,6 +3,7 @@ package provider
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -98,7 +99,9 @@ func (r *IntegrationGithubV2ResourceModel) populateConfig() map[string]interface
 	for _, item := range r.GithubOrgList {
 		githubOrgList = append(githubOrgList, item.ValueString())
 	}
-	configValues["github_org_list"] = githubOrgList
+	if len(githubOrgList) > 0 {
+		configValues["github_org_list"] = strings.Join(githubOrgList, ",")
+	}
 
 	return configValues
 }
@@ -171,8 +174,9 @@ func (r *IntegrationGithubV2ResourceModel) RefreshFromGetResponse(resp *shared.C
 
 				r.GithubOrgList = nil
 				if v, ok := values["github_org_list"]; ok {
-					if val, ok := v.([]string); ok {
-						for _, item := range val {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
 							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
 						}
 					}
@@ -224,8 +228,9 @@ func (r *IntegrationGithubV2ResourceModel) RefreshFromCreateResponse(resp *share
 
 				r.GithubOrgList = nil
 				if v, ok := values["github_org_list"]; ok {
-					if val, ok := v.([]string); ok {
-						for _, item := range val {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
 							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
 						}
 					}
