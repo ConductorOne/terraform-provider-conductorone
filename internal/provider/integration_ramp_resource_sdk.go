@@ -61,12 +61,12 @@ func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,20 +86,20 @@ func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 	return &out, configSet
 }
 
-func (r *IntegrationRampResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationRampResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	return configValues
 }
 
-func (r *IntegrationRampResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationRampResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

@@ -61,12 +61,12 @@ func (r *IntegrationOneloginResourceModel) ToUpdateSDKType() (*shared.Connector,
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationOneloginResourceModel) ToUpdateSDKType() (*shared.Connector,
 	return &out, configSet
 }
 
-func (r *IntegrationOneloginResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationOneloginResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	oneloginDomain := new(string)
 	if !r.OneloginDomain.IsUnknown() && !r.OneloginDomain.IsNull() {
@@ -110,14 +110,14 @@ func (r *IntegrationOneloginResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationOneloginResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationOneloginResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -176,11 +176,15 @@ func (r *IntegrationOneloginResourceModel) RefreshFromGetResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["onelogin_domain"]; ok {
-					r.OneloginDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OneloginDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
-					r.OauthClientCredGrantClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OauthClientCredGrantClientId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -227,11 +231,15 @@ func (r *IntegrationOneloginResourceModel) RefreshFromCreateResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["onelogin_domain"]; ok {
-					r.OneloginDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OneloginDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
-					r.OauthClientCredGrantClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.OauthClientCredGrantClientId = types.StringValue(val)
+					}
 				}
 
 			}

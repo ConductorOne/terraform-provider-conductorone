@@ -61,12 +61,12 @@ func (r *IntegrationBoxResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationBoxResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 	return &out, configSet
 }
 
-func (r *IntegrationBoxResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationBoxResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	boxClientId := new(string)
 	if !r.BoxClientId.IsUnknown() && !r.BoxClientId.IsNull() {
@@ -110,14 +110,14 @@ func (r *IntegrationBoxResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationBoxResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationBoxResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -176,11 +176,15 @@ func (r *IntegrationBoxResourceModel) RefreshFromGetResponse(resp *shared.Connec
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["box_client_id"]; ok {
-					r.BoxClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.BoxClientId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["box_enterprise_id"]; ok {
-					r.BoxEnterpriseId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.BoxEnterpriseId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -227,11 +231,15 @@ func (r *IntegrationBoxResourceModel) RefreshFromCreateResponse(resp *shared.Con
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["box_client_id"]; ok {
-					r.BoxClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.BoxClientId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["box_enterprise_id"]; ok {
-					r.BoxEnterpriseId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.BoxEnterpriseId = types.StringValue(val)
+					}
 				}
 
 			}

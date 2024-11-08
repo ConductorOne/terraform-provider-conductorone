@@ -61,12 +61,12 @@ func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationBuildkiteResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationBuildkiteResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	apiToken := new(string)
 	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
@@ -104,14 +104,14 @@ func (r *IntegrationBuildkiteResourceModel) populateConfig() map[string]*string 
 	return configValues
 }
 
-func (r *IntegrationBuildkiteResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationBuildkiteResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -171,7 +171,9 @@ func (r *IntegrationBuildkiteResourceModel) RefreshFromGetResponse(resp *shared.
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["organization"]; ok {
-					r.Organization = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Organization = types.StringValue(val)
+					}
 				}
 
 			}
@@ -219,7 +221,9 @@ func (r *IntegrationBuildkiteResourceModel) RefreshFromCreateResponse(resp *shar
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["organization"]; ok {
-					r.Organization = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Organization = types.StringValue(val)
+					}
 				}
 
 			}

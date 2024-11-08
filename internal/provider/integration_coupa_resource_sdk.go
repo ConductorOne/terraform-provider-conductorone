@@ -61,12 +61,12 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	return &out, configSet
 }
 
-func (r *IntegrationCoupaResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationCoupaResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	coupaDomain := new(string)
 	if !r.CoupaDomain.IsUnknown() && !r.CoupaDomain.IsNull() {
@@ -110,14 +110,14 @@ func (r *IntegrationCoupaResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationCoupaResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationCoupaResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -176,11 +176,15 @@ func (r *IntegrationCoupaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["coupa-domain"]; ok {
-					r.CoupaDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.CoupaDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["oauth2_client_cred_grant_client_id"]; ok {
-					r.Oauth2ClientCredGrantClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Oauth2ClientCredGrantClientId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -227,11 +231,15 @@ func (r *IntegrationCoupaResourceModel) RefreshFromCreateResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["coupa-domain"]; ok {
-					r.CoupaDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.CoupaDomain = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["oauth2_client_cred_grant_client_id"]; ok {
-					r.Oauth2ClientCredGrantClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Oauth2ClientCredGrantClientId = types.StringValue(val)
+					}
 				}
 
 			}

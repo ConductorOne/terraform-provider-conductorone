@@ -61,12 +61,12 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	tailscaleApiKey := new(string)
 	if !r.TailscaleApiKey.IsUnknown() && !r.TailscaleApiKey.IsNull() {
@@ -104,14 +104,14 @@ func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]*string 
 	return configValues
 }
 
-func (r *IntegrationTailscaleResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationTailscaleResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -171,7 +171,9 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromGetResponse(resp *shared.
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["tailnet"]; ok {
-					r.Tailnet = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Tailnet = types.StringValue(val)
+					}
 				}
 
 			}
@@ -219,7 +221,9 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromCreateResponse(resp *shar
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["tailnet"]; ok {
-					r.Tailnet = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Tailnet = types.StringValue(val)
+					}
 				}
 
 			}

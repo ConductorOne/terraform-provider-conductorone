@@ -61,12 +61,12 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector,
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector,
 	return &out, configSet
 }
 
-func (r *IntegrationTwingateResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationTwingateResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	twingateApikey := new(string)
 	if !r.TwingateApikey.IsUnknown() && !r.TwingateApikey.IsNull() {
@@ -104,14 +104,14 @@ func (r *IntegrationTwingateResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationTwingateResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationTwingateResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -171,7 +171,9 @@ func (r *IntegrationTwingateResourceModel) RefreshFromGetResponse(resp *shared.C
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["twingate_domain"]; ok {
-					r.TwingateDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.TwingateDomain = types.StringValue(val)
+					}
 				}
 
 			}
@@ -219,7 +221,9 @@ func (r *IntegrationTwingateResourceModel) RefreshFromCreateResponse(resp *share
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if v, ok := values["twingate_domain"]; ok {
-					r.TwingateDomain = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.TwingateDomain = types.StringValue(val)
+					}
 				}
 
 			}

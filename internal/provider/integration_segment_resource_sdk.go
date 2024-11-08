@@ -61,12 +61,12 @@ func (r *IntegrationSegmentResourceModel) ToUpdateSDKType() (*shared.Connector, 
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationSegmentResourceModel) ToUpdateSDKType() (*shared.Connector, 
 	return &out, configSet
 }
 
-func (r *IntegrationSegmentResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationSegmentResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	segmentAccessToken := new(string)
 	if !r.SegmentAccessToken.IsUnknown() && !r.SegmentAccessToken.IsNull() {
@@ -98,14 +98,14 @@ func (r *IntegrationSegmentResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationSegmentResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationSegmentResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

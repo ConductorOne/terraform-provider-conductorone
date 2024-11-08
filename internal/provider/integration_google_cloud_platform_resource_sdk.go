@@ -61,12 +61,12 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared
 	return &out, configSet
 }
 
-func (r *IntegrationGoogleCloudPlatformResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationGoogleCloudPlatformResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	credentialsJson := new(string)
 	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
@@ -98,14 +98,14 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) populateConfig() map[strin
 	return configValues
 }
 
-func (r *IntegrationGoogleCloudPlatformResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationGoogleCloudPlatformResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

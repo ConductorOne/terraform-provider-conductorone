@@ -61,12 +61,12 @@ func (r *IntegrationXsoarResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationXsoarResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	return &out, configSet
 }
 
-func (r *IntegrationXsoarResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationXsoarResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	apiUrl := new(string)
 	if !r.ApiUrl.IsUnknown() && !r.ApiUrl.IsNull() {
@@ -104,14 +104,14 @@ func (r *IntegrationXsoarResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationXsoarResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationXsoarResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -170,7 +170,9 @@ func (r *IntegrationXsoarResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["api_url"]; ok {
-					r.ApiUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.ApiUrl = types.StringValue(val)
+					}
 				}
 
 			}
@@ -217,7 +219,9 @@ func (r *IntegrationXsoarResourceModel) RefreshFromCreateResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["api_url"]; ok {
-					r.ApiUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.ApiUrl = types.StringValue(val)
+					}
 				}
 
 			}

@@ -61,12 +61,12 @@ func (r *IntegrationAzureAdResourceModel) ToUpdateSDKType() (*shared.Connector, 
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,20 +86,20 @@ func (r *IntegrationAzureAdResourceModel) ToUpdateSDKType() (*shared.Connector, 
 	return &out, configSet
 }
 
-func (r *IntegrationAzureAdResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationAzureAdResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	return configValues
 }
 
-func (r *IntegrationAzureAdResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationAzureAdResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

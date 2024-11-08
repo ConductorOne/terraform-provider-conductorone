@@ -61,12 +61,12 @@ func (r *IntegrationLinearResourceModel) ToUpdateSDKType() (*shared.Connector, b
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationLinearResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	return &out, configSet
 }
 
-func (r *IntegrationLinearResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationLinearResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	linearApiKey := new(string)
 	if !r.LinearApiKey.IsUnknown() && !r.LinearApiKey.IsNull() {
@@ -98,14 +98,14 @@ func (r *IntegrationLinearResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationLinearResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationLinearResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

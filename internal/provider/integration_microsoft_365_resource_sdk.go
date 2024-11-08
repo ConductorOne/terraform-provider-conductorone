@@ -61,12 +61,12 @@ func (r *IntegrationMicrosoft365ResourceModel) ToUpdateSDKType() (*shared.Connec
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationMicrosoft365ResourceModel) ToUpdateSDKType() (*shared.Connec
 	return &out, configSet
 }
 
-func (r *IntegrationMicrosoft365ResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationMicrosoft365ResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	ms365TenantId := new(string)
 	if !r.Ms365TenantId.IsUnknown() && !r.Ms365TenantId.IsNull() {
@@ -110,14 +110,14 @@ func (r *IntegrationMicrosoft365ResourceModel) populateConfig() map[string]*stri
 	return configValues
 }
 
-func (r *IntegrationMicrosoft365ResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationMicrosoft365ResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -176,11 +176,15 @@ func (r *IntegrationMicrosoft365ResourceModel) RefreshFromGetResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["ms365_tenant_id"]; ok {
-					r.Ms365TenantId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Ms365TenantId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["ms365_client_id"]; ok {
-					r.Ms365ClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Ms365ClientId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -227,11 +231,15 @@ func (r *IntegrationMicrosoft365ResourceModel) RefreshFromCreateResponse(resp *s
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["ms365_tenant_id"]; ok {
-					r.Ms365TenantId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Ms365TenantId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["ms365_client_id"]; ok {
-					r.Ms365ClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.Ms365ClientId = types.StringValue(val)
+					}
 				}
 
 			}

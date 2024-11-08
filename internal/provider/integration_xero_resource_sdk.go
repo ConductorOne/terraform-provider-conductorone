@@ -61,12 +61,12 @@ func (r *IntegrationXeroResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationXeroResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 	return &out, configSet
 }
 
-func (r *IntegrationXeroResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationXeroResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	xeroClientId := new(string)
 	if !r.XeroClientId.IsUnknown() && !r.XeroClientId.IsNull() {
@@ -104,14 +104,14 @@ func (r *IntegrationXeroResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationXeroResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationXeroResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -170,7 +170,9 @@ func (r *IntegrationXeroResourceModel) RefreshFromGetResponse(resp *shared.Conne
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["xero_client_id"]; ok {
-					r.XeroClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.XeroClientId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -217,7 +219,9 @@ func (r *IntegrationXeroResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["xero_client_id"]; ok {
-					r.XeroClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.XeroClientId = types.StringValue(val)
+					}
 				}
 
 			}

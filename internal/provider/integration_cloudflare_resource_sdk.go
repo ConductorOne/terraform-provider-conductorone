@@ -61,12 +61,12 @@ func (r *IntegrationCloudflareResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationCloudflareResourceModel) ToUpdateSDKType() (*shared.Connecto
 	return &out, configSet
 }
 
-func (r *IntegrationCloudflareResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationCloudflareResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	accountId := new(string)
 	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
@@ -104,14 +104,14 @@ func (r *IntegrationCloudflareResourceModel) populateConfig() map[string]*string
 	return configValues
 }
 
-func (r *IntegrationCloudflareResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationCloudflareResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -170,7 +170,9 @@ func (r *IntegrationCloudflareResourceModel) RefreshFromGetResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["account_id"]; ok {
-					r.AccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.AccountId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -217,7 +219,9 @@ func (r *IntegrationCloudflareResourceModel) RefreshFromCreateResponse(resp *sha
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["account_id"]; ok {
-					r.AccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.AccountId = types.StringValue(val)
+					}
 				}
 
 			}

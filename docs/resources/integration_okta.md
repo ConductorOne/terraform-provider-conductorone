@@ -21,10 +21,11 @@ resource "conductorone_integration_okta" "okta" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  okta_domain                  = "..."
-  okta_api_key                 = "..."
-  okta_dont_sync_inactive_apps = false
-  okta_extract_aws_saml_roles  = false
+  okta_domain                   = "..."
+  okta_api_key                  = "..."
+  okta_dont_sync_inactive_apps  = false
+  okta_extract_aws_saml_roles   = false
+  okta_sync_deprovisioned_users = false
 }
 ```
 
@@ -41,6 +42,7 @@ resource "conductorone_integration_okta" "okta" {
 - `okta_domain` (String) Okta domain
 - `okta_dont_sync_inactive_apps` (Boolean) Do not sync inactive apps
 - `okta_extract_aws_saml_roles` (Boolean) Extract SAML Role assignments in Okta AWS apps
+- `okta_sync_deprovisioned_users` (Boolean) Sync deprovisioned users
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

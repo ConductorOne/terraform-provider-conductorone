@@ -43,6 +43,7 @@ type IntegrationGitlabResourceModel struct {
 	UserIds           []types.String `tfsdk:"user_ids"`
 	GitlabGroup       types.String   `tfsdk:"gitlab_group"`
 	GitlabAccessToken types.String   `tfsdk:"gitlab_access_token"`
+	GitlabUrl         types.String   `tfsdk:"gitlab_url"`
 }
 
 func (r *IntegrationGitlabResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -100,6 +101,10 @@ func (r *IntegrationGitlabResource) Schema(ctx context.Context, req resource.Sch
 				Optional:    true,
 				Sensitive:   true,
 				Description: `Personal access token`,
+			},
+			"gitlab_url": &schema.StringAttribute{
+				Optional:    true,
+				Description: `URL (optional)`,
 			},
 		},
 	}

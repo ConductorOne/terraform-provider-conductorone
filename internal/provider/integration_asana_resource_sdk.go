@@ -61,12 +61,12 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	return &out, configSet
 }
 
-func (r *IntegrationAsanaResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationAsanaResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	asanaApiKey := new(string)
 	if !r.AsanaApiKey.IsUnknown() && !r.AsanaApiKey.IsNull() {
@@ -98,14 +98,14 @@ func (r *IntegrationAsanaResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationAsanaResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationAsanaResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}

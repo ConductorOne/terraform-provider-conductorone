@@ -61,12 +61,12 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) ToUpdateSDKType() (*sha
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) ToUpdateSDKType() (*sha
 	return &out, configSet
 }
 
-func (r *IntegrationGoogleIdentityPlatformResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationGoogleIdentityPlatformResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	projectId := new(string)
 	if !r.ProjectId.IsUnknown() && !r.ProjectId.IsNull() {
@@ -110,14 +110,14 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) populateConfig() map[st
 	return configValues
 }
 
-func (r *IntegrationGoogleIdentityPlatformResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationGoogleIdentityPlatformResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -176,11 +176,15 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) RefreshFromGetResponse(
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["project_id"]; ok {
-					r.ProjectId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.ProjectId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["tenant_id"]; ok {
-					r.TenantId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.TenantId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -227,11 +231,15 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) RefreshFromCreateRespon
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["project_id"]; ok {
-					r.ProjectId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.ProjectId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["tenant_id"]; ok {
-					r.TenantId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.TenantId = types.StringValue(val)
+					}
 				}
 
 			}

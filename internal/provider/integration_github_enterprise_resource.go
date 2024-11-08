@@ -43,6 +43,7 @@ type IntegrationGithubEnterpriseResourceModel struct {
 	UserIds           []types.String `tfsdk:"user_ids"`
 	GithubInstanceUrl types.String   `tfsdk:"github_instance_url"`
 	GithubAccessToken types.String   `tfsdk:"github_access_token"`
+	GithubOrgList     []types.String `tfsdk:"github_org_list"`
 }
 
 func (r *IntegrationGithubEnterpriseResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -100,6 +101,11 @@ func (r *IntegrationGithubEnterpriseResource) Schema(ctx context.Context, req re
 				Optional:    true,
 				Sensitive:   true,
 				Description: `Personal access token`,
+			},
+			"github_org_list": &schema.ListAttribute{
+				Optional:    true,
+				Description: `Organizations - optional`,
+				ElementType: types.StringType,
 			},
 		},
 	}

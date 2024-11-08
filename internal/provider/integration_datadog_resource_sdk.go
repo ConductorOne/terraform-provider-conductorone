@@ -61,12 +61,12 @@ func (r *IntegrationDatadogResourceModel) ToUpdateSDKType() (*shared.Connector, 
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationDatadogResourceModel) ToUpdateSDKType() (*shared.Connector, 
 	return &out, configSet
 }
 
-func (r *IntegrationDatadogResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationDatadogResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	datadogSite := new(string)
 	if !r.DatadogSite.IsUnknown() && !r.DatadogSite.IsNull() {
@@ -110,14 +110,14 @@ func (r *IntegrationDatadogResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationDatadogResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationDatadogResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -176,7 +176,9 @@ func (r *IntegrationDatadogResourceModel) RefreshFromGetResponse(resp *shared.Co
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["datadog_site"]; ok {
-					r.DatadogSite = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DatadogSite = types.StringValue(val)
+					}
 				}
 
 			}
@@ -223,7 +225,9 @@ func (r *IntegrationDatadogResourceModel) RefreshFromCreateResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["datadog_site"]; ok {
-					r.DatadogSite = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.DatadogSite = types.StringValue(val)
+					}
 				}
 
 			}

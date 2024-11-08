@@ -61,12 +61,12 @@ func (r *IntegrationSentineloneResourceModel) ToUpdateSDKType() (*shared.Connect
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationSentineloneResourceModel) ToUpdateSDKType() (*shared.Connect
 	return &out, configSet
 }
 
-func (r *IntegrationSentineloneResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationSentineloneResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	sentineloneBaseUrl := new(string)
 	if !r.SentineloneBaseUrl.IsUnknown() && !r.SentineloneBaseUrl.IsNull() {
@@ -104,14 +104,14 @@ func (r *IntegrationSentineloneResourceModel) populateConfig() map[string]*strin
 	return configValues
 }
 
-func (r *IntegrationSentineloneResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationSentineloneResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -170,7 +170,9 @@ func (r *IntegrationSentineloneResourceModel) RefreshFromGetResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["sentinelone_base_url"]; ok {
-					r.SentineloneBaseUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SentineloneBaseUrl = types.StringValue(val)
+					}
 				}
 
 			}
@@ -217,7 +219,9 @@ func (r *IntegrationSentineloneResourceModel) RefreshFromCreateResponse(resp *sh
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["sentinelone_base_url"]; ok {
-					r.SentineloneBaseUrl = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.SentineloneBaseUrl = types.StringValue(val)
+					}
 				}
 
 			}

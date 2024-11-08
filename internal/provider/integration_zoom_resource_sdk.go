@@ -61,12 +61,12 @@ func (r *IntegrationZoomResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -86,8 +86,8 @@ func (r *IntegrationZoomResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 	return &out, configSet
 }
 
-func (r *IntegrationZoomResourceModel) populateConfig() map[string]*string {
-	configValues := map[string]*string{}
+func (r *IntegrationZoomResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	zoomAccountId := new(string)
 	if !r.ZoomAccountId.IsUnknown() && !r.ZoomAccountId.IsNull() {
@@ -110,14 +110,14 @@ func (r *IntegrationZoomResourceModel) populateConfig() map[string]*string {
 	return configValues
 }
 
-func (r *IntegrationZoomResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationZoomResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = configValue
 			configSet = true
 		}
 	}
@@ -176,11 +176,15 @@ func (r *IntegrationZoomResourceModel) RefreshFromGetResponse(resp *shared.Conne
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["zoom_account_id"]; ok {
-					r.ZoomAccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.ZoomAccountId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["zoom_client_id"]; ok {
-					r.ZoomClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.ZoomClientId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -227,11 +231,15 @@ func (r *IntegrationZoomResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["zoom_account_id"]; ok {
-					r.ZoomAccountId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.ZoomAccountId = types.StringValue(val)
+					}
 				}
 
 				if v, ok := values["zoom_client_id"]; ok {
-					r.ZoomClientId = types.StringValue(v.(string))
+					if val, ok := v.(string); ok {
+						r.ZoomClientId = types.StringValue(val)
+					}
 				}
 
 			}
