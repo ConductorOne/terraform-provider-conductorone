@@ -469,19 +469,19 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		isMultiStepSet := appEntitlement.ProvisionPolicy.MultiStep != nil
 
 		if currentAppEntitlement.ProvisionPolicy.ConnectorProvision != nil {
-			if isDelegatedSet || isManualSet || isWebhookSet {
+			if isDelegatedSet || isManualSet || isWebhookSet || isExternalTicketSet || isMultiStepSet {
 				appEntitlement.ProvisionPolicy.ConnectorProvision = nil
 			}
 		} else if currentAppEntitlement.ProvisionPolicy.DelegatedProvision != nil {
-			if isConnectorSet || isManualSet || isWebhookSet {
+			if isConnectorSet || isManualSet || isWebhookSet || isExternalTicketSet || isMultiStepSet {
 				appEntitlement.ProvisionPolicy.DelegatedProvision = nil
 			}
 		} else if currentAppEntitlement.ProvisionPolicy.ManualProvision != nil {
-			if isConnectorSet || isDelegatedSet || isWebhookSet {
+			if isConnectorSet || isDelegatedSet || isWebhookSet || isExternalTicketSet || isMultiStepSet {
 				appEntitlement.ProvisionPolicy.ManualProvision = nil
 			}
 		} else if currentAppEntitlement.ProvisionPolicy.WebhookProvision != nil {
-			if isConnectorSet || isDelegatedSet || isManualSet {
+			if isConnectorSet || isDelegatedSet || isManualSet || isExternalTicketSet || isMultiStepSet {
 				appEntitlement.ProvisionPolicy.WebhookProvision = nil
 			}
 		} else if currentAppEntitlement.ProvisionPolicy.ExternalTicketProvision != nil {
