@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"os"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/providervalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -84,9 +85,21 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 	}
 
 	ServerURL := data.ServerURL.ValueString()
+	if ServerURL == "" {
+		ServerURL = os.Getenv("CONDUCTORONE_SERVER_URL")
+	}
 	ClientID := data.ClientID.ValueString()
+	if ClientID == "" {
+		ClientID = os.Getenv("CONDUCTORONE_CLIENT_ID")
+	}
 	ClientSecret := data.ClientSecret.ValueString()
+	if ClientSecret == "" {
+		ClientSecret = os.Getenv("CONDUCTORONE_CLIENT_SECRET")
+	}
 	TenantDomain := data.TenantDomain.ValueString()
+	if TenantDomain == "" {
+		TenantDomain = os.Getenv("CONDUCTORONE_TENANT_DOMAIN")
+	}
 
 	optStr := ""
 	if TenantDomain != "" {
