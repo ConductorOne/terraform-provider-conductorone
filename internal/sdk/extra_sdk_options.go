@@ -6,9 +6,11 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 
 	"go.uber.org/zap"
+	"golang.org/x/oauth2"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/uhttp"
 )
@@ -129,6 +131,7 @@ type CustomOptions struct {
 }
 
 func NewWithCredentials(ctx context.Context, cred *ClientCredentials, opts ...CustomSDKOption) (*ConductoroneAPI, error) {
+	var err error
 	options := &CustomOptions{}
 	for _, opt := range opts {
 		opt(options)
@@ -141,9 +144,15 @@ func NewWithCredentials(ctx context.Context, cred *ClientCredentials, opts ...Cu
 		options.ClientConfig = resp
 	}
 
-	tokenSource, err := NewTokenSource(ctx, cred.ClientID, cred.ClientSecret, options.GetServerURL())
-	if err != nil {
-		return nil, err
+	var tokenSource oauth2.TokenSource
+	accessTokenEnvVar := os.Getenv("CONDUCTORONE_ACCESS_TOKEN")
+	if accessTokenEnvVar != "" {
+		tokenSource = NewStaticTokenSource(ctx, accessTokenEnvVar)
+	} else {
+		tokenSource, err = NewTokenSource(ctx, cred.ClientID, cred.ClientSecret, options.GetServerURL())
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	if options.userAgent == "" {
