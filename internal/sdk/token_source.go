@@ -186,3 +186,9 @@ func NewTokenSource(ctx context.Context, clientID string, clientSecret string, t
 		httpClient:   httpClient,
 	}), nil
 }
+
+func NewStaticTokenSource(ctx context.Context, token string) oauth2.TokenSource {
+	return oauth2.StaticTokenSource(&oauth2.Token{
+		AccessToken: token,
+	})
+}
