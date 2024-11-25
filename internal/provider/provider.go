@@ -54,22 +54,18 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 			"server_url": schema.StringAttribute{
 				MarkdownDescription: "Server URL (defaults to https://{tenantDomain}.conductor.one)",
 				Optional:            true,
-				Required:            false,
 			},
 			"client_id": schema.StringAttribute{
 				MarkdownDescription: "ClientId for Auth",
-				Optional:            false,
-				Required:            true,
+				Optional:            true,
 			},
 			"client_secret": schema.StringAttribute{
 				MarkdownDescription: "ClientSecret for Auth",
-				Optional:            false,
-				Required:            true,
+				Optional:            true,
 			},
 			"tenant_domain": schema.StringAttribute{
 				MarkdownDescription: "Tenant Domain (derived from client_id if not provided)",
 				Optional:            true,
-				Required:            false,
 			},
 		},
 	}
