@@ -12,6 +12,8 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -60,6 +62,9 @@ func (r *AppResourceResource) Schema(ctx context.Context, req resource.SchemaReq
 			},
 			"app_resource_type_id": schema.StringAttribute{
 				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
