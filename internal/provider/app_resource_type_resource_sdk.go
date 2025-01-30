@@ -9,20 +9,12 @@ import (
 )
 
 func (r *AppResourceTypeResourceModel) ToSharedCreateManuallyManagedResourceTypeRequest() *shared.CreateManuallyManagedResourceTypeRequest {
-	name := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*name = r.DisplayName.ValueString()
-	} else {
-		name = nil
-	}
-	resourceType := new(shared.ResourceType)
-	if !r.ResourceType.IsUnknown() && !r.ResourceType.IsNull() {
-		*resourceType = shared.ResourceType(r.ResourceType.ValueString())
-	} else {
-		resourceType = nil
-	}
+	var displayName string
+	displayName = r.DisplayName.ValueString()
+
+	resourceType := shared.ResourceType(r.ResourceType.ValueString())
 	out := shared.CreateManuallyManagedResourceTypeRequest{
-		Name:         name,
+		DisplayName:  displayName,
 		ResourceType: resourceType,
 	}
 	return &out
