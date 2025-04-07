@@ -2,12 +2,12 @@ name: CI
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ terraform_v2, main ]
     paths-ignore:
       - 'README.md'
       - 'website/*'
   push:
-    branches: [ main ]
+    branches: [ terraform_v2, main ]
     paths-ignore:
       - 'README.md'
       - 'website/*'

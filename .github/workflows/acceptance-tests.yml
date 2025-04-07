@@ -3,10 +3,10 @@ name: Acceptance Tests
 on:
   push:
     branches:
-      - main
+      - terraform_v2
   pull_request:
     branches:
-      - main
+      - terraform_v2
 
 jobs:
   acceptance-tests:
