@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_workday Resource - conductorone"
+page_title: "conductorone_integration_workday Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Workday Integration Resource

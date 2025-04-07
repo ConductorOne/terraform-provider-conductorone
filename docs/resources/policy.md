@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_policy Resource - conductorone"
+page_title: "conductorone_policy Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Policy Resource

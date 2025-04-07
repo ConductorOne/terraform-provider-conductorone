@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_google_workspace Resource - conductorone"
+page_title: "conductorone_integration_google_workspace Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Google_workspace Integration Resource

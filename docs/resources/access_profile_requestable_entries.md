@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_access_profile_requestable_entries Resource - conductorone"
+page_title: "conductorone_access_profile_requestable_entries Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AccessProfileRequestableEntries Resource

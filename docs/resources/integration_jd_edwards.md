@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_jd_edwards Resource - conductorone"
+page_title: "conductorone_integration_jd_edwards Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Jd_edwards Integration Resource

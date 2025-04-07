@@ -74,9 +74,9 @@ type SplitFunc func(n uint64) *Big
 // BinarySplit sets z to the result of the binary splitting formula and returns
 // z. The formula is defined as:
 //
-//         ∞    a(n)p(0) ... p(n)
-//     S = Σ   -------------------
-//         n=0  b(n)q(0) ... q(n)
+//	    ∞    a(n)p(0) ... p(n)
+//	S = Σ   -------------------
+//	    n=0  b(n)q(0) ... q(n)
 //
 // It should only be used when the number of terms is known ahead of time. If
 // start is not in [start, stop) or stop is not in (start, stop], BinarySplit
@@ -437,11 +437,10 @@ func (s *apbqBinarySplitState) calculate(ctx Context, start, end uint64, A, P, B
 
 // combine computes the following:
 //
-//     B = B_l*B_r
-//     P = P_l*P_r
-//     Q = Q_l*Q_r
-//     T = B_l*P_l*T_r + B_r*Q_r*T_l
-//
+//	B = B_l*B_r
+//	P = P_l*P_r
+//	Q = Q_l*Q_r
+//	T = B_l*P_l*T_r + B_r*Q_r*T_l
 func (s *apbqBinarySplitState) combine(ctx Context, L, R *apbqBinarySplitState) {
 	// T = L.B*L.P*R.T, t1 = R.B*R.Q*L.T
 	t0 := getDec(ctx)

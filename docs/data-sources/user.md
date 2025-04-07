@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_user Data Source - conductorone"
+page_title: "conductorone_user Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   User DataSource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_jamf Resource - conductorone"
+page_title: "conductorone_integration_jamf Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Jamf Integration Resource

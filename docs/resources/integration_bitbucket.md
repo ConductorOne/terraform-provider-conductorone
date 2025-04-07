@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_bitbucket Resource - conductorone"
+page_title: "conductorone_integration_bitbucket Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Bitbucket Integration Resource

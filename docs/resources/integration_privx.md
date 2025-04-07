@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_privx Resource - conductorone"
+page_title: "conductorone_integration_privx Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Privx Integration Resource
