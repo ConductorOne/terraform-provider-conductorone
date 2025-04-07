@@ -1,8 +1,8 @@
 ---
-page_title: "conductorone_custom_app_entitlement Resource - terraform-provider-conductorone"
+page_title: "conductorone_custom_app_entitlement Resource - conductorone"
 subcategory: ""
 ---
-page_title: "conductorone_custom_app_entitlement Resource - terraform-provider-conductorone"
+page_title: "conductorone_custom_app_entitlement Resource - conductorone"
 subcategory: ""
 description: |-
   CustomAppEntitlement Resource
@@ -19,29 +19,63 @@ This is different than the App Entitlement resource which only allows you to upd
 ## Example Usage
 
 ```terraform
-resource "conductorone_custom_app_entitlement" "custom_app_entitlement" {
-  app_id               = "<app_id>"
-  app_resource_id      = "<app_resource_id>"
-  app_resource_type_id = "<app_resource_type_id>"
-  display_name         = "Test new entitlement"
-  alias                = "terraform_test_entitlement"
+resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
+  alias                = "...my_alias..."
+  app_id               = "...my_app_id..."
+  app_resource_id      = "...my_app_resource_id..."
+  app_resource_type_id = "...my_app_resource_type_id..."
+  certify_policy_id    = "...my_certify_policy_id..."
+  compliance_framework_value_ids = [
+    "..."
+  ]
+  description    = "...my_description..."
+  display_name   = "...my_display_name..."
+  duration_grant = "...my_duration_grant..."
+  duration_unset = {
+    # ...
+  }
+  emergency_grant_enabled           = false
+  emergency_grant_policy_id         = "...my_emergency_grant_policy_id..."
+  grant_policy_id                   = "...my_grant_policy_id..."
+  override_access_requests_defaults = true
   provision_policy = {
+    connector_provision = {
+      account_provision = {
+        config = {
+          # ...
+        }
+        connector_id = "...my_connector_id..."
+        schema_id    = "...my_schema_id..."
+      }
+      default_behavior = {
+        connector_id = "...my_connector_id..."
+      }
+    }
+    delegated_provision = {
+      app_id         = "...my_app_id..."
+      entitlement_id = "...my_entitlement_id..."
+    }
+    external_ticket_provision = {
+      app_id                                = "...my_app_id..."
+      connector_id                          = "...my_connector_id..."
+      external_ticket_provisioner_config_id = "...my_external_ticket_provisioner_config_id..."
+      instructions                          = "...my_instructions..."
+    }
     manual_provision = {
-      instructions = "Please contact the IT department to request this entitlement."
+      instructions = "...my_instructions..."
       user_ids = [
-        data.conductorone_user.my_user.id
+        "..."
       ]
     }
+    multi_step = "{ \"see\": \"documentation\" }"
+    webhook_provision = {
+      webhook_id = "...my_webhook_id..."
+    }
   }
-  risk_level_value_id            = data.conductorone_risk_level.high.id
-  slug                           = "test slug"
-  description                    = "test description"
-  compliance_framework_value_ids = [data.conductorone_compliance_framework.soc2.id]
-  certify_policy_id              = "<certify_policy_id>"
-  grant_policy_id                = "<grant_policy_id>"
-  purpose                        = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
-  revoke_policy_id               = "<revoke_policy_id>"
-  duration_grant                 = "3601s"
+  purpose             = "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED"
+  revoke_policy_id    = "...my_revoke_policy_id..."
+  risk_level_value_id = "...my_risk_level_value_id..."
+  slug                = "...my_slug..."
 }
 ```
 
@@ -51,22 +85,22 @@ resource "conductorone_custom_app_entitlement" "custom_app_entitlement" {
 ### Required
 
 - `app_id` (String)
-- `app_resource_id` (String) The appResourceId field.
-- `app_resource_type_id` (String) The appResourceTypeId field.
 - `display_name` (String) The displayName field.
 
 ### Optional
 
 - `alias` (String) The alias field.
+- `app_resource_id` (String) The appResourceId field. Requires replacement if changed.
+- `app_resource_type_id` (String) The appResourceTypeId field. Requires replacement if changed.
 - `certify_policy_id` (String) The certifyPolicyId field.
 - `compliance_framework_value_ids` (List of String) The complianceFrameworkValueIds field.
 - `description` (String) The description field.
-- `duration_grant` (String) The DurationGrant field is a string attribute that represents the maximum duration a grant to this entitlement can last. 
-				The format of this is <time in seconds>s. i.e. 1h = 3600s.
-- `duration_unset` (Attributes) The DurationUnset field is set if there is no maximum duration a grant to this entitlement can last. (see [below for nested schema](#nestedatt--duration_unset))
+- `duration_grant` (String)
+- `duration_unset` (Attributes) (see [below for nested schema](#nestedatt--duration_unset))
 - `emergency_grant_enabled` (Boolean) The emergencyGrantEnabled field.
 - `emergency_grant_policy_id` (String) The emergencyGrantPolicyId field.
 - `grant_policy_id` (String) The grantPolicyId field.
+- `override_access_requests_defaults` (Boolean) The overrideAccessRequestsDefaults field.
 - `provision_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -85,12 +119,11 @@ This message contains a oneof named typ. Only a single field of the following li
 
 - `created_at` (String)
 - `default_values_applied` (Boolean) Flag to indicate if app-level access request defaults have been applied to the entitlement
-- `deleted_at` (String)
+- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
 - `grant_count` (String) The amount of grants open for this entitlement
 - `id` (String) The unique ID for the App Entitlement.
 - `is_automation_enabled` (Boolean) Flag to indicate whether automation (for adding users to entitlement based on rules) has been enabled.
 - `is_manually_managed` (Boolean) Flag to indicate if the app entitlement is manually managed.
-- `override_access_requests_defaults` (Boolean) The overrideAccessRequestsDefaults field.
 - `source_connector_ids` (Map of String) Map to tell us which connector the entitlement came from.
 - `system_builtin` (Boolean) This field indicates if this is a system builtin entitlement.
 - `updated_at` (String)
@@ -104,7 +137,11 @@ This message contains a oneof named typ. Only a single field of the following li
 
 Optional:
 
-- `connector_provision` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields. (see [below for nested schema](#nestedatt--provision_policy--connector_provision))
+- `connector_provision` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
+
+This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
+  - defaultBehavior
+  - account (see [below for nested schema](#nestedatt--provision_policy--connector_provision))
 - `delegated_provision` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--provision_policy--delegated_provision))
 - `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--provision_policy--external_ticket_provision))
 - `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--provision_policy--manual_provision))
@@ -114,6 +151,34 @@ Optional:
 <a id="nestedatt--provision_policy--connector_provision"></a>
 ### Nested Schema for `provision_policy.connector_provision`
 
+Optional:
+
+- `account_provision` (Attributes) The AccountProvision message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision--account_provision))
+- `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision--default_behavior))
+
+<a id="nestedatt--provision_policy--connector_provision--account_provision"></a>
+### Nested Schema for `provision_policy.connector_provision.account_provision`
+
+Optional:
+
+- `config` (Attributes) (see [below for nested schema](#nestedatt--provision_policy--connector_provision--account_provision--config))
+- `connector_id` (String) The connectorId field.
+- `schema_id` (String) The schemaId field.
+
+<a id="nestedatt--provision_policy--connector_provision--account_provision--config"></a>
+### Nested Schema for `provision_policy.connector_provision.account_provision.config`
+
+
+
+<a id="nestedatt--provision_policy--connector_provision--default_behavior"></a>
+### Nested Schema for `provision_policy.connector_provision.default_behavior`
+
+Optional:
+
+- `connector_id` (String) this checks if the entitlement is enabled by provisioning in a specific connector
+ this can happen automatically and doesn't need any extra info
+
+
 
 <a id="nestedatt--provision_policy--delegated_provision"></a>
 ### Nested Schema for `provision_policy.delegated_provision`
@@ -122,7 +187,6 @@ Optional:
 
 - `app_id` (String) The AppID of the entitlement to delegate provisioning to.
 - `entitlement_id` (String) The ID of the entitlement we are delegating provisioning to.
-- `implicit` (Boolean) If true, a binding will be automatically created from the entitlement of the parent app.
 
 
 <a id="nestedatt--provision_policy--external_ticket_provision"></a>
@@ -151,3 +215,8 @@ Optional:
 Optional:
 
 - `webhook_id` (String) The ID of the webhook to call for provisioning.
+
+
+
+<a id="nestedatt--expanded"></a>
+### Nested Schema for `expanded`

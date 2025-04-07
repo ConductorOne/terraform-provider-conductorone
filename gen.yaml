@@ -16,3 +16,8 @@ terraform:
   version: 1.0.0
   author: ConductorOne
   packageName: conductorone
+  enableTypeDeduplication: false
+  additionalResources:
+    - importAlias: AppEntitlement
+      importLocation: /conductorone/internal/provider/app_entitlement_resource.go
+      resource: AppEntitlement

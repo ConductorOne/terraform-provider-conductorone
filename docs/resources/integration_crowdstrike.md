@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_crowdstrike Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_crowdstrike Resource - conductorone"
 subcategory: ""
 description: |-
   Crowdstrike Integration Resource

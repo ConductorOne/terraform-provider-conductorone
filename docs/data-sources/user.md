@@ -1,13 +1,13 @@
 ---
-page_title: "conductorone_user Data Source - terraform-provider-conductorone"
+page_title: "conductorone_user Data Source - conductorone"
 subcategory: ""
 description: |-
-  App DataSource
+  User DataSource
 ---
 
 # conductorone_user (Data Source)
 
-App DataSource
+User DataSource
 
 The User datasource allows you to retrieve a User by `email` (case sensitive), or `id` in ConductorOne.
 
@@ -15,7 +15,27 @@ The User datasource allows you to retrieve a User by `email` (case sensitive), o
 
 ```terraform
 data "conductorone_user" "my_user" {
-  email = "<user_email>"
+  email = "...my_email..."
+  exclude_ids = [
+    "..."
+  ]
+  ids = [
+    "..."
+  ]
+  page_size  = 10
+  page_token = "...my_page_token..."
+  query      = "...my_query..."
+  refs = [
+    {
+      id = "...my_id..."
+    }
+  ]
+  role_ids = [
+    "..."
+  ]
+  user_statuses = [
+    "DELETED"
+  ]
 }
 ```
 
@@ -24,33 +44,57 @@ data "conductorone_user" "my_user" {
 
 ### Optional
 
-- `email` (String) The email field.
-- `id` (String) The id field.
+- `email` (String) Search for users based on their email (exact match).
+- `exclude_ids` (List of String) An array of users IDs to exclude from the results.
+- `ids` (List of String) Deprecated. Use refs array instead.
+- `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+- `page_token` (String) The pageToken field.
+- `query` (String) Query the apps with a fuzzy search on display name and emails.
+- `refs` (Attributes List) An array of user refs to restrict the return values to by ID. (see [below for nested schema](#nestedatt--refs))
+- `role_ids` (List of String) Search for users that have any of the role IDs on this list.
+- `user_statuses` (List of String) Search for users that have any of the statuses on this list. This can only be ENABLED, DISABLED, and DELETED
 
 ### Read-Only
 
 - `created_at` (String)
-- `delegated_user_id` (String) The delegatedUserId field.
+- `delegated_user_id` (String) The id of the user to whom tasks will be automatically reassigned to.
+- `delegated_user_path` (String) JSONPATH expression indicating the location of the user objects of delegates of the current user in the expanded array.
 - `deleted_at` (String)
-- `department` (String) The department field.
-- `department_sources` (Attributes List) The departmentSources field. (see [below for nested schema](#nestedatt--department_sources))
-- `directory_ids` (List of String) The directoryIds field.
-- `directory_status` (String) must be one of [UNKNOWN, ENABLED, DISABLED, DELETED]
-The directoryStatus field.
-- `directory_status_sources` (Attributes List) The directoryStatusSources field. (see [below for nested schema](#nestedatt--directory_status_sources))
-- `display_name` (String) The displayName field.
-- `employment_status` (String) The employmentStatus field.
-- `employment_status_sources` (Attributes List) The employmentStatusSources field. (see [below for nested schema](#nestedatt--employment_status_sources))
-- `employment_type` (String) The employmentType field.
-- `employment_type_sources` (Attributes List) The employmentTypeSources field. (see [below for nested schema](#nestedatt--employment_type_sources))
-- `job_title` (String) The jobTitle field.
-- `job_title_sources` (Attributes List) The jobTitleSources field. (see [below for nested schema](#nestedatt--job_title_sources))
-- `manager_ids` (List of String) The managerIds field.
-- `manager_sources` (Attributes List) The managerSources field. (see [below for nested schema](#nestedatt--manager_sources))
-- `role_ids` (List of String) The roleIds field.
-- `status` (String) must be one of [UNKNOWN, ENABLED, DISABLED, DELETED]
-The status field.
+- `department` (String) The department which the user belongs to in the organization.
+- `department_sources` (Attributes List) A list of objects mapped based on department attribute mappings configured in the system. (see [below for nested schema](#nestedatt--department_sources))
+- `directories_path` (String) JSONPATH expression indicating the location of directory objects in the expanded array.
+- `directory_ids` (List of String) A list of unique ids that represent different directories.
+- `directory_status` (String) The status of the user in the directory.
+- `directory_status_sources` (Attributes List) A list of objects mapped based on directoryStatus attribute mappings configured in the system. (see [below for nested schema](#nestedatt--directory_status_sources))
+- `display_name` (String) The display name of the user.
+- `emails` (List of String) This is a list of all of the user's emails from app users.
+- `employment_status` (String) The users employment status.
+- `employment_status_sources` (Attributes List) A list of objects mapped based on employmentStatus attribute mappings configured in the system. (see [below for nested schema](#nestedatt--employment_status_sources))
+- `employment_type` (String) The employment type of the user.
+- `employment_type_sources` (Attributes List) A list of objects mapped based on employmentType attribute mappings configured in the system. (see [below for nested schema](#nestedatt--employment_type_sources))
+- `expanded` (Attributes List) List of related objects (see [below for nested schema](#nestedatt--expanded))
+- `id` (String) A unique identifier of the user.
+- `job_title` (String) The job title of the user.
+- `job_title_sources` (Attributes List) A list of objects mapped based on jobTitle attribute mappings configured in the system. (see [below for nested schema](#nestedatt--job_title_sources))
+- `manager_ids` (List of String) A list of ids of the user's managers.
+- `manager_sources` (Attributes List) A list of objects mapped based on managerId attribute mappings configured in the system. (see [below for nested schema](#nestedatt--manager_sources))
+- `managers_path` (String) JSONPATH expression indicating the location of the user objects that managed the current user in the expanded array.
+- `next_page_token` (String) The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
+- `profile` (Attributes) (see [below for nested schema](#nestedatt--profile))
+- `roles_path` (String) JSONPATH expression indicating the location of the roles of the current user in the expanded array.
+- `status` (String) The status of the user in the system.
 - `updated_at` (String)
+- `username` (String) This is the user's primary username. Typically sourced from the primary directory.
+- `username_sources` (Attributes List) A list of source data for the usernames attribute. (see [below for nested schema](#nestedatt--username_sources))
+- `usernames` (List of String) This is a list of all of the user's usernames from app users.
+
+<a id="nestedatt--refs"></a>
+### Nested Schema for `refs`
+
+Optional:
+
+- `id` (String) The id of the user.
+
 
 <a id="nestedatt--department_sources"></a>
 ### Nested Schema for `department_sources`
@@ -100,6 +144,10 @@ Read-Only:
 - `value` (String) The value field.
 
 
+<a id="nestedatt--expanded"></a>
+### Nested Schema for `expanded`
+
+
 <a id="nestedatt--job_title_sources"></a>
 ### Nested Schema for `job_title_sources`
 
@@ -114,6 +162,22 @@ Read-Only:
 
 <a id="nestedatt--manager_sources"></a>
 ### Nested Schema for `manager_sources`
+
+Read-Only:
+
+- `app_id` (String) The appId field.
+- `app_user_id` (String) The appUserId field.
+- `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `user_attribute_mapping_id` (String) The userAttributeMappingId field.
+- `value` (String) The value field.
+
+
+<a id="nestedatt--profile"></a>
+### Nested Schema for `profile`
+
+
+<a id="nestedatt--username_sources"></a>
+### Nested Schema for `username_sources`
 
 Read-Only:
 

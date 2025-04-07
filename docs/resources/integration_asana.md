@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_asana Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_asana Resource - conductorone"
 subcategory: ""
 description: |-
   Asana Integration Resource

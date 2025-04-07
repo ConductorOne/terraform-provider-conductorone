@@ -1,8 +1,8 @@
 ---
-page_title: "conductorone_integration_google_workspace_v2 Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_google_workspace_v2 Resource - conductorone"
 subcategory: ""
 description: |-
-  Googleworkspacev2 Integration Resource
+  Google_workspace_v2 Integration Resource
 ---
 
 # conductorone_integration_google_workspace_v2 (Resource)

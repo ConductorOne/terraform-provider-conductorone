@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_twingate Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_twingate Resource - conductorone"
 subcategory: ""
 description: |-
   Twingate Integration Resource

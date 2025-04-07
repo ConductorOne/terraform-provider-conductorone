@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_xero Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_xero Resource - conductorone"
 subcategory: ""
 description: |-
   Xero Integration Resource

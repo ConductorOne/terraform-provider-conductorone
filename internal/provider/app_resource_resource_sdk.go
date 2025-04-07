@@ -3,7 +3,7 @@
 package provider
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"time"
 )
@@ -15,12 +15,9 @@ func (r *AppResourceResourceModel) ToSharedCreateManuallyManagedAppResourceReque
 	} else {
 		description = nil
 	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
+	var displayName string
+	displayName = r.DisplayName.ValueString()
+
 	out := shared.CreateManuallyManagedAppResourceRequest{
 		Description: description,
 		DisplayName: displayName,
@@ -69,17 +66,17 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput() *shared.AppResourc
 	} else {
 		appResourceTypeID = nil
 	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
 	} else {
 		description = nil
+	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
 	}
 	grantCount := new(string)
 	if !r.GrantCount.IsUnknown() && !r.GrantCount.IsNull() {
@@ -108,17 +105,12 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput() *shared.AppResourc
 	out := shared.AppResourceInput{
 		AppID:                   appID,
 		AppResourceTypeID:       appResourceTypeID,
-		DisplayName:             displayName,
 		Description:             description,
+		DisplayName:             displayName,
 		GrantCount:              grantCount,
 		ID:                      id,
 		ParentAppResourceID:     parentAppResourceID,
 		ParentAppResourceTypeID: parentAppResourceTypeID,
 	}
-	return &out
-}
-
-func (r *AppResourceResourceModel) ToSharedDeleteManuallyManagedAppResourceRequest() *shared.DeleteManuallyManagedAppResourceRequest {
-	out := shared.DeleteManuallyManagedAppResourceRequest{}
 	return &out
 }

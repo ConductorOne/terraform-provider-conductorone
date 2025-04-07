@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_azure_ad Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_azure_ad Resource - conductorone"
 subcategory: ""
 description: |-
   Azure_ad Integration Resource

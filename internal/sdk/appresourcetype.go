@@ -6,31 +6,66 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/errors"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/utils"
-	"io"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/hooks"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/errors"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"net/http"
 )
 
-type appResourceType struct {
+type AppResourceType struct {
 	sdkConfiguration sdkConfiguration
 }
 
-func newAppResourceType(sdkConfig sdkConfiguration) *appResourceType {
-	return &appResourceType{
+func newAppResourceType(sdkConfig sdkConfiguration) *AppResourceType {
+	return &AppResourceType{
 		sdkConfiguration: sdkConfig,
 	}
 }
 
 // List
 // List app resource types.
-func (s *appResourceType) List(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceListRequest) (*operations.C1APIAppV1AppResourceTypeServiceListResponse, error) {
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+func (s *AppResourceType) List(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceListRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceTypeServiceListResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/resource_types", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "c1.api.app.v1.AppResourceTypeService.List",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -38,20 +73,47 @@ func (s *appResourceType) List(ctx context.Context, request operations.C1APIAppV
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	client := s.sdkConfiguration.DefaultClient
-
-	httpRes, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("error sending request: %w", err)
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
 	}
-	if httpRes == nil {
-		return nil, fmt.Errorf("error sending request: no response")
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	res := &operations.C1APIAppV1AppResourceTypeServiceListResponse{
@@ -60,45 +122,33 @@ func (s *appResourceType) List(ctx context.Context, request operations.C1APIAppV
 		RawResponse: httpRes,
 	}
 
-	getRawBody := func() ([]byte, error) {
-		rawBody, err := io.ReadAll(httpRes.Body)
-		if err != nil {
-			return nil, fmt.Errorf("error reading response body: %w", err)
-		}
-		httpRes.Body.Close()
-		httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
-		return rawBody, nil
-	}
-
 	switch {
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			rawBody, err := getRawBody()
+			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
 			var out shared.AppResourceTypeServiceListResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
 			res.AppResourceTypeServiceListResponse = &out
 		default:
-			rawBody, err := getRawBody()
+			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
-
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	default:
-		rawBody, err := getRawBody()
+		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
 			return nil, err
 		}
-
 		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
 	}
 
@@ -108,16 +158,50 @@ func (s *appResourceType) List(ctx context.Context, request operations.C1APIAppV
 
 // CreateManuallyManagedResourceType - Create Manually Managed Resource Type
 // Invokes the c1.api.app.v1.AppResourceTypeService.CreateManuallyManagedResourceType method.
-func (s *appResourceType) CreateManuallyManagedResourceType(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeRequest) (*operations.C1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeResponse, error) {
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+func (s *AppResourceType) CreateManuallyManagedResourceType(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/resource_types", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "CreateManuallyManagedResourceTypeRequest", "json")
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "c1.api.app.v1.AppResourceTypeService.CreateManuallyManagedResourceType",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateManuallyManagedResourceTypeRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -125,17 +209,46 @@ func (s *appResourceType) CreateManuallyManagedResourceType(ctx context.Context,
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
-	req.Header.Set("Content-Type", reqContentType)
-
-	client := s.sdkConfiguration.DefaultClient
-
-	httpRes, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("error sending request: %w", err)
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
 	}
-	if httpRes == nil {
-		return nil, fmt.Errorf("error sending request: no response")
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	res := &operations.C1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeResponse{
@@ -144,45 +257,33 @@ func (s *appResourceType) CreateManuallyManagedResourceType(ctx context.Context,
 		RawResponse: httpRes,
 	}
 
-	getRawBody := func() ([]byte, error) {
-		rawBody, err := io.ReadAll(httpRes.Body)
-		if err != nil {
-			return nil, fmt.Errorf("error reading response body: %w", err)
-		}
-		httpRes.Body.Close()
-		httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
-		return rawBody, nil
-	}
-
 	switch {
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			rawBody, err := getRawBody()
+			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
 			var out shared.CreateManuallyManagedResourceTypeResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
 			res.CreateManuallyManagedResourceTypeResponse = &out
 		default:
-			rawBody, err := getRawBody()
+			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
-
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	default:
-		rawBody, err := getRawBody()
+		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
 			return nil, err
 		}
-
 		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
 	}
 
@@ -192,16 +293,50 @@ func (s *appResourceType) CreateManuallyManagedResourceType(ctx context.Context,
 
 // DeleteManuallyManagedResourceType - Delete Manually Managed Resource Type
 // Invokes the c1.api.app.v1.AppResourceTypeService.DeleteManuallyManagedResourceType method.
-func (s *appResourceType) DeleteManuallyManagedResourceType(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest) (*operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse, error) {
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+func (s *AppResourceType) DeleteManuallyManagedResourceType(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/resource_types/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "DeleteManuallyManagedResourceTypeRequest", "json")
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "c1.api.app.v1.AppResourceTypeService.DeleteManuallyManagedResourceType",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteManuallyManagedResourceTypeRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "DELETE", opURL, bodyReader)
@@ -209,17 +344,46 @@ func (s *appResourceType) DeleteManuallyManagedResourceType(ctx context.Context,
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
-	req.Header.Set("Content-Type", reqContentType)
-
-	client := s.sdkConfiguration.DefaultClient
-
-	httpRes, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("error sending request: %w", err)
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
 	}
-	if httpRes == nil {
-		return nil, fmt.Errorf("error sending request: no response")
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	res := &operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse{
@@ -228,45 +392,33 @@ func (s *appResourceType) DeleteManuallyManagedResourceType(ctx context.Context,
 		RawResponse: httpRes,
 	}
 
-	getRawBody := func() ([]byte, error) {
-		rawBody, err := io.ReadAll(httpRes.Body)
-		if err != nil {
-			return nil, fmt.Errorf("error reading response body: %w", err)
-		}
-		httpRes.Body.Close()
-		httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
-		return rawBody, nil
-	}
-
 	switch {
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			rawBody, err := getRawBody()
+			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
 			var out shared.DeleteManuallyManagedResourceTypeResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
 			res.DeleteManuallyManagedResourceTypeResponse = &out
 		default:
-			rawBody, err := getRawBody()
+			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
-
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	default:
-		rawBody, err := getRawBody()
+		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
 			return nil, err
 		}
-
 		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
 	}
 
@@ -276,11 +428,46 @@ func (s *appResourceType) DeleteManuallyManagedResourceType(ctx context.Context,
 
 // Get
 // Get an app resource type.
-func (s *appResourceType) Get(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceGetRequest) (*operations.C1APIAppV1AppResourceTypeServiceGetResponse, error) {
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+func (s *AppResourceType) Get(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceGetRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceTypeServiceGetResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/resource_types/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "c1.api.app.v1.AppResourceTypeService.Get",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
@@ -288,16 +475,43 @@ func (s *appResourceType) Get(ctx context.Context, request operations.C1APIAppV1
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	client := s.sdkConfiguration.DefaultClient
-
-	httpRes, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("error sending request: %w", err)
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
 	}
-	if httpRes == nil {
-		return nil, fmt.Errorf("error sending request: no response")
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	res := &operations.C1APIAppV1AppResourceTypeServiceGetResponse{
@@ -306,45 +520,33 @@ func (s *appResourceType) Get(ctx context.Context, request operations.C1APIAppV1
 		RawResponse: httpRes,
 	}
 
-	getRawBody := func() ([]byte, error) {
-		rawBody, err := io.ReadAll(httpRes.Body)
-		if err != nil {
-			return nil, fmt.Errorf("error reading response body: %w", err)
-		}
-		httpRes.Body.Close()
-		httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
-		return rawBody, nil
-	}
-
 	switch {
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			rawBody, err := getRawBody()
+			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
 			var out shared.AppResourceTypeServiceGetResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
 			res.AppResourceTypeServiceGetResponse = &out
 		default:
-			rawBody, err := getRawBody()
+			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
-
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	default:
-		rawBody, err := getRawBody()
+		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
 			return nil, err
 		}
-
 		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
 	}
 
@@ -354,16 +556,50 @@ func (s *appResourceType) Get(ctx context.Context, request operations.C1APIAppV1
 
 // UpdateManuallyManagedResourceType - Update Manually Managed Resource Type
 // Invokes the c1.api.app.v1.AppResourceTypeService.UpdateManuallyManagedResourceType method.
-func (s *appResourceType) UpdateManuallyManagedResourceType(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest) (*operations.C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeResponse, error) {
-	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+func (s *AppResourceType) UpdateManuallyManagedResourceType(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/api/v1/apps/{app_id}/resource_types/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "UpdateManuallyManagedResourceTypeRequest", "json")
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "c1.api.app.v1.AppResourceTypeService.UpdateManuallyManagedResourceType",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateManuallyManagedResourceTypeRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
@@ -371,17 +607,46 @@ func (s *appResourceType) UpdateManuallyManagedResourceType(ctx context.Context,
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", fmt.Sprintf("speakeasy-sdk/%s %s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion, s.sdkConfiguration.OpenAPIDocVersion))
-	req.Header.Set("Content-Type", reqContentType)
-
-	client := s.sdkConfiguration.DefaultClient
-
-	httpRes, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("error sending request: %w", err)
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
 	}
-	if httpRes == nil {
-		return nil, fmt.Errorf("error sending request: no response")
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	res := &operations.C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeResponse{
@@ -390,45 +655,33 @@ func (s *appResourceType) UpdateManuallyManagedResourceType(ctx context.Context,
 		RawResponse: httpRes,
 	}
 
-	getRawBody := func() ([]byte, error) {
-		rawBody, err := io.ReadAll(httpRes.Body)
-		if err != nil {
-			return nil, fmt.Errorf("error reading response body: %w", err)
-		}
-		httpRes.Body.Close()
-		httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
-		return rawBody, nil
-	}
-
 	switch {
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			rawBody, err := getRawBody()
+			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
 
 			var out shared.UpdateManuallyManagedResourceTypeResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
 			res.UpdateManuallyManagedResourceTypeResponse = &out
 		default:
-			rawBody, err := getRawBody()
+			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
 				return nil, err
 			}
-
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	default:
-		rawBody, err := getRawBody()
+		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
 			return nil, err
 		}
-
 		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
 	}
 

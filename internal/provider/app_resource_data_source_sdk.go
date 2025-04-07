@@ -3,7 +3,7 @@
 package provider
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"time"
 )
@@ -17,7 +17,6 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(resp *shared.A
 		} else {
 			r.CreatedAt = types.StringNull()
 		}
-		r.CustomDescription = types.StringPointerValue(resp.CustomDescription)
 		if resp.DeletedAt != nil {
 			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
 		} else {

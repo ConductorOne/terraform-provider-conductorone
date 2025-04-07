@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_google_bigquery Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_google_bigquery Resource - conductorone"
 subcategory: ""
 description: |-
   Google_bigquery Integration Resource

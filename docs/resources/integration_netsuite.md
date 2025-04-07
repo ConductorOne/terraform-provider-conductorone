@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_netsuite Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_netsuite Resource - conductorone"
 subcategory: ""
 description: |-
   Netsuite Integration Resource

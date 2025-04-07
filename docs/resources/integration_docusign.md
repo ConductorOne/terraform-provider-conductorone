@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_docusign Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_docusign Resource - conductorone"
 subcategory: ""
 description: |-
   Docusign Integration Resource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_resource Data Source - terraform-provider-conductorone"
+page_title: "conductorone_app_resource Data Source - conductorone"
 subcategory: ""
 description: |-
   AppResource DataSource
@@ -14,10 +14,10 @@ The App Resource datasource allows you to retrieve an App Resource by `id`, `app
 ## Example Usage
 
 ```terraform
-data "conductorone_app_resource" "test_admin" {
-  app_id               = "<app_id>"
-  id                   = "<resource_id>"
-  app_resource_type_id = "<app_resource_type_id>"
+data "conductorone_app_resource" "my_app_resource" {
+  app_id               = "...my_app_id..."
+  app_resource_type_id = "...my_app_resource_type_id..."
+  id                   = "...my_id..."
 }
 ```
 
@@ -32,12 +32,15 @@ data "conductorone_app_resource" "test_admin" {
 ### Read-Only
 
 - `created_at` (String)
-- `custom_description` (String) A custom description that can be set for a resource.
 - `deleted_at` (String)
 - `description` (String) The description set for the resource.
 - `display_name` (String) The display name for this resource.
+- `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
 - `grant_count` (String) The number of grants to this resource.
 - `id` (String) The ID of this resource.
 - `parent_app_resource_id` (String) The parent resource id, if this resource is a child of another resource.
 - `parent_app_resource_type_id` (String) The parent resource type id, if this resource is a child of another resource.
 - `updated_at` (String)
+
+<a id="nestedatt--expanded"></a>
+### Nested Schema for `expanded`

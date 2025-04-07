@@ -69,6 +69,8 @@ provider_installation {
 Your `<PATH>` may vary depending on how your Go environment variables are configured. Execute `go env GOBIN` to set it, then set the `<PATH>` to the value returned. If nothing is returned, set it to the default location, `$HOME/go/bin`.
 
 ## Versions with breaking changes
+### [v1.0.0](https://github.com/ConductorOne/terraform-provider-conductorone/releases/tag/v1.0.0)
+- This version introduces a breaking change to the `request_catalog` resource and datasource. The `request_catalog` resource and datasource are now the `access_profile` resource and datasource.
 
 ### [v0.4.0](https://github.com/ConductorOne/terraform-provider-conductorone/releases/tag/v0.4.0)
 - This version fixes issues with importing app entitlements. The SDK and the provider schema did not match so imports were broken, the provider was changed to match the SDK which introduced a breaking change. the `max_grant_druation` object was removed and the internal `duration_unset` and `grant_unset` fields have been moved out.

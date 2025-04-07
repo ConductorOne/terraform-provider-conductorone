@@ -5,8 +5,9 @@ package provider
 import (
 	"context"
 	"fmt"
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -28,18 +29,18 @@ type AppResourceDataSource struct {
 
 // AppResourceDataSourceModel describes the data model.
 type AppResourceDataSourceModel struct {
-	AppID                   types.String `tfsdk:"app_id"`
-	AppResourceTypeID       types.String `tfsdk:"app_resource_type_id"`
-	CreatedAt               types.String `tfsdk:"created_at"`
-	CustomDescription       types.String `tfsdk:"custom_description"`
-	DeletedAt               types.String `tfsdk:"deleted_at"`
-	Description             types.String `tfsdk:"description"`
-	DisplayName             types.String `tfsdk:"display_name"`
-	GrantCount              types.String `tfsdk:"grant_count"`
-	ID                      types.String `tfsdk:"id"`
-	ParentAppResourceID     types.String `tfsdk:"parent_app_resource_id"`
-	ParentAppResourceTypeID types.String `tfsdk:"parent_app_resource_type_id"`
-	UpdatedAt               types.String `tfsdk:"updated_at"`
+	AppID                   types.String                                    `tfsdk:"app_id"`
+	AppResourceTypeID       types.String                                    `tfsdk:"app_resource_type_id"`
+	CreatedAt               types.String                                    `tfsdk:"created_at"`
+	DeletedAt               types.String                                    `tfsdk:"deleted_at"`
+	Description             types.String                                    `tfsdk:"description"`
+	DisplayName             types.String                                    `tfsdk:"display_name"`
+	Expanded                []tfTypes.AppResourceServiceGetResponseExpanded `tfsdk:"expanded"`
+	GrantCount              types.String                                    `tfsdk:"grant_count"`
+	ID                      types.String                                    `tfsdk:"id"`
+	ParentAppResourceID     types.String                                    `tfsdk:"parent_app_resource_id"`
+	ParentAppResourceTypeID types.String                                    `tfsdk:"parent_app_resource_type_id"`
+	UpdatedAt               types.String                                    `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -62,10 +63,6 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},
-			"custom_description": schema.StringAttribute{
-				Computed:    true,
-				Description: `A custom description that can be set for a resource.`,
-			},
 			"deleted_at": schema.StringAttribute{
 				Computed: true,
 			},
@@ -76,6 +73,13 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The display name for this resource.`,
+			},
+			"expanded": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{},
+				},
+				Description: `List of serialized related objects.`,
 			},
 			"grant_count": schema.StringAttribute{
 				Computed:    true,
@@ -110,7 +114,7 @@ func (r *AppResourceDataSource) Configure(ctx context.Context, req datasource.Co
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected DataSource Configure Type",
-			fmt.Sprintf("Expected *sdk.Conductorone, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.ConductoroneAPI, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return

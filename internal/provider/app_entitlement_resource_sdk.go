@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
-
+	ptypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -27,17 +27,6 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 				*entitlementID = r.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueString()
 			} else {
 				entitlementID = nil
-			}
-			implicit := new(bool)
-			if !r.ProvisionPolicy.DelegatedProvision.Implicit.IsUnknown() && !r.ProvisionPolicy.DelegatedProvision.Implicit.IsNull() {
-				*implicit = r.ProvisionPolicy.DelegatedProvision.Implicit.ValueBool()
-			} else {
-				implicit = nil
-			}
-			provisionPolicy.DelegatedProvision = &shared.DelegatedProvision{
-				AppID:         appID,
-				EntitlementID: entitlementID,
-				Implicit:      implicit,
 			}
 		}
 		if r.ProvisionPolicy.ExternalTicketProvision != nil {
@@ -224,8 +213,6 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 		AppResourceTypeID:           appResourceTypeID,
 		CertifyPolicyID:             certifyPolicyID,
 		ComplianceFrameworkValueIds: complianceFrameworkValueIds,
-		CreatedAt:                   createdAt,
-		DeletedAt:                   deletedAt,
 		Description:                 description,
 		DisplayName:                 displayName,
 		DurationGrant:               durationGrant,
@@ -233,7 +220,6 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 		EmergencyGrantEnabled:       emergencyGrantEnabled,
 		EmergencyGrantPolicyID:      emergencyGrantPolicyID,
 		GrantPolicyID:               grantPolicyID,
-		ID:                          id,
 		RevokePolicyID:              revokePolicyID,
 		RiskLevelValueID:            riskLevelValueID,
 		Slug:                        slug,
@@ -299,7 +285,7 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 	if resp.DurationUnset == nil {
 		r.DurationUnset = nil
 	} else {
-		r.DurationUnset = &AppEntitlementDurationUnset{}
+		r.DurationUnset = &ptypes.CreateAppEntitlementRequestDurationUnset{}
 	}
 	if resp.EmergencyGrantEnabled != nil {
 		r.EmergencyGrantEnabled = types.BoolValue(*resp.EmergencyGrantEnabled)
@@ -323,12 +309,17 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 	}
 
 	if resp.ProvisionPolicy != nil {
-		r.ProvisionPolicy = &ProvisionPolicy{}
+		r.ProvisionPolicy = &ptypes.ProvisionPolicy{}
 		if resp.ProvisionPolicy.ConnectorProvision != nil {
-			r.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
+			if resp.ProvisionPolicy.ConnectorProvision.AccountProvision == nil &&
+				resp.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
+				r.ProvisionPolicy.ConnectorProvision = nil
+			} else {
+				r.ProvisionPolicy.ConnectorProvision = &ptypes.ConnectorProvision{}
+			}
 		}
 		if resp.ProvisionPolicy.DelegatedProvision != nil {
-			r.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
+			r.ProvisionPolicy.DelegatedProvision = &ptypes.DelegatedProvision{}
 			if resp.ProvisionPolicy.DelegatedProvision.AppID != nil {
 				r.ProvisionPolicy.DelegatedProvision.AppID = types.StringValue(*resp.ProvisionPolicy.DelegatedProvision.AppID)
 			} else {
@@ -339,14 +330,9 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 			} else {
 				r.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringNull()
 			}
-			if resp.ProvisionPolicy.DelegatedProvision.Implicit != nil {
-				r.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolValue(*resp.ProvisionPolicy.DelegatedProvision.Implicit)
-			} else {
-				r.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolNull()
-			}
 		}
 		if resp.ProvisionPolicy.ManualProvision != nil {
-			r.ProvisionPolicy.ManualProvision = &ManualProvision{}
+			r.ProvisionPolicy.ManualProvision = &ptypes.ManualProvision{}
 			if resp.ProvisionPolicy.ManualProvision.Instructions != nil {
 				r.ProvisionPolicy.ManualProvision.Instructions = types.StringValue(*resp.ProvisionPolicy.ManualProvision.Instructions)
 			} else {
@@ -360,7 +346,7 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 		if resp.ProvisionPolicy.ExternalTicketProvision == nil {
 			r.ProvisionPolicy.ExternalTicketProvision = nil
 		} else {
-			r.ProvisionPolicy.ExternalTicketProvision = &ExternalTicketProvision{}
+			r.ProvisionPolicy.ExternalTicketProvision = &ptypes.ExternalTicketProvision{}
 			r.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.AppID)
 			r.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
 			r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
@@ -373,7 +359,7 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 			r.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult))
 		}
 		if resp.ProvisionPolicy.WebhookProvision != nil {
-			r.ProvisionPolicy.WebhookProvision = &WebhookProvision{}
+			r.ProvisionPolicy.WebhookProvision = &ptypes.WebhookProvision{}
 			if resp.ProvisionPolicy.WebhookProvision.WebhookID != nil {
 				r.ProvisionPolicy.WebhookProvision.WebhookID = types.StringValue(*resp.ProvisionPolicy.WebhookProvision.WebhookID)
 			} else {

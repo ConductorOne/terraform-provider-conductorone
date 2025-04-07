@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_owner Resource - terraform-provider-conductorone"
+page_title: "conductorone_app_owner Resource - conductorone"
 subcategory: ""
 description: |-
   AppOwner Resource
@@ -17,10 +17,10 @@ Note: The owners you set here will replace any existing owners for the app.
 ## Example Usage
 
 ```terraform
-resource "conductorone_app_owner" "test_okta_app_admin_myself" {
-  app_id = data.conductorone_app.test_okta.id
+resource "conductorone_app_owner" "my_app_owner" {
+  app_id = "...my_app_id..."
   user_ids = [
-    data.conductorone_user.my_user.id
+    "..."
   ]
 }
 ```
@@ -30,5 +30,8 @@ resource "conductorone_app_owner" "test_okta_app_admin_myself" {
 
 ### Required
 
-- `app_id` (String)
-- `user_ids` (List of String) The user_ids field for the users to set as an owner of the app.
+- `app_id` (String) Requires replacement if changed.
+
+### Optional
+
+- `user_ids` (List of String) The user_ids field for the users to set as an owner of the app. Requires replacement if changed.

@@ -7,9 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -36,17 +38,18 @@ type AppResourceResource struct {
 
 // AppResourceResourceModel describes the resource data model.
 type AppResourceResourceModel struct {
-	AppID                   types.String `tfsdk:"app_id"`
-	AppResourceTypeID       types.String `tfsdk:"app_resource_type_id"`
-	CreatedAt               types.String `tfsdk:"created_at"`
-	DeletedAt               types.String `tfsdk:"deleted_at"`
-	Description             types.String `tfsdk:"description"`
-	DisplayName             types.String `tfsdk:"display_name"`
-	GrantCount              types.String `tfsdk:"grant_count"`
-	ID                      types.String `tfsdk:"id"`
-	ParentAppResourceID     types.String `tfsdk:"parent_app_resource_id"`
-	ParentAppResourceTypeID types.String `tfsdk:"parent_app_resource_type_id"`
-	UpdatedAt               types.String `tfsdk:"updated_at"`
+	AppID                   types.String                                    `tfsdk:"app_id"`
+	AppResourceTypeID       types.String                                    `tfsdk:"app_resource_type_id"`
+	CreatedAt               types.String                                    `tfsdk:"created_at"`
+	DeletedAt               types.String                                    `tfsdk:"-"`
+	Description             types.String                                    `tfsdk:"description"`
+	DisplayName             types.String                                    `tfsdk:"display_name"`
+	Expanded                []tfTypes.AppResourceServiceGetResponseExpanded `tfsdk:"expanded"`
+	GrantCount              types.String                                    `tfsdk:"grant_count"`
+	ID                      types.String                                    `tfsdk:"id"`
+	ParentAppResourceID     types.String                                    `tfsdk:"parent_app_resource_id"`
+	ParentAppResourceTypeID types.String                                    `tfsdk:"parent_app_resource_type_id"`
+	UpdatedAt               types.String                                    `tfsdk:"updated_at"`
 }
 
 func (r *AppResourceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,15 +67,11 @@ func (r *AppResourceResource) Schema(ctx context.Context, req resource.SchemaReq
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
+				Description: `Requires replacement if changed.`,
 			},
 			"created_at": schema.StringAttribute{
-				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
-			},
-			"deleted_at": schema.StringAttribute{
 				Computed: true,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -81,12 +80,18 @@ func (r *AppResourceResource) Schema(ctx context.Context, req resource.SchemaReq
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description field. Requires replacement if changed.`,
+				Description: `The description field.`,
 			},
 			"display_name": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: `The displayName field.`,
+			},
+			"expanded": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{},
+				},
+				Description: `List of serialized related objects.`,
 			},
 			"grant_count": schema.StringAttribute{
 				Computed:    true,
@@ -125,7 +130,7 @@ func (r *AppResourceResource) Configure(ctx context.Context, req resource.Config
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *sdk.Conductorone, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.ConductoroneAPI, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -185,41 +190,7 @@ func (r *AppResourceResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 	data.RefreshFromSharedAppResource(res.CreateManuallyManagedAppResourceResponse.AppResource)
-	var appId1 string
-	appId1 = data.AppID.ValueString()
-
-	var appResourceTypeId1 string
-	appResourceTypeId1 = data.AppResourceTypeID.ValueString()
-
-	var id string
-	id = data.ID.ValueString()
-
-	request1 := operations.C1APIAppV1AppResourceServiceGetRequest{
-		AppID:             appId1,
-		AppResourceTypeID: appResourceTypeId1,
-		ID:                id,
-	}
-	res1, err := r.client.AppResource.Get(ctx, request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.AppResourceServiceGetResponse != nil && res1.AppResourceServiceGetResponse.AppResourceView != nil && res1.AppResourceServiceGetResponse.AppResourceView.AppResource != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	data.RefreshFromSharedAppResource(res1.AppResourceServiceGetResponse.AppResourceView.AppResource)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -283,6 +254,11 @@ func (r *AppResourceResource) Read(ctx context.Context, req resource.ReadRequest
 	}
 	data.RefreshFromSharedAppResource(res.AppResourceServiceGetResponse.AppResourceView.AppResource)
 
+	if !data.DeletedAt.IsNull() {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -312,13 +288,8 @@ func (r *AppResourceResource) Update(ctx context.Context, req resource.UpdateReq
 
 	var appResourceServiceUpdateRequest *shared.AppResourceServiceUpdateRequest
 	appResource := data.ToSharedAppResourceInput()
-	var appResourceExpandMask *shared.AppResourceExpandMask
-	appResourceExpandMask = &shared.AppResourceExpandMask{}
-	updateMask := "displayName,description"
 	appResourceServiceUpdateRequest = &shared.AppResourceServiceUpdateRequest{
-		AppResource:           appResource,
-		AppResourceExpandMask: appResourceExpandMask,
-		UpdateMask:            &updateMask,
+		AppResource: appResource,
 	}
 	request := operations.C1APIAppV1AppResourceServiceUpdateRequest{
 		AppID:                           appID,
@@ -347,6 +318,7 @@ func (r *AppResourceResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 	data.RefreshFromSharedAppResource(res.AppResourceServiceUpdateResponse.AppResourceView.AppResource)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 	var appId1 string
 	appId1 = data.AppID.ValueString()
 
@@ -382,6 +354,7 @@ func (r *AppResourceResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 	data.RefreshFromSharedAppResource(res1.AppResourceServiceGetResponse.AppResourceView.AppResource)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -414,12 +387,10 @@ func (r *AppResourceResource) Delete(ctx context.Context, req resource.DeleteReq
 	var id string
 	id = data.ID.ValueString()
 
-	deleteManuallyManagedAppResourceRequest := data.ToSharedDeleteManuallyManagedAppResourceRequest()
 	request := operations.C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest{
-		AppID:                                   appID,
-		AppResourceTypeID:                       appResourceTypeID,
-		ID:                                      id,
-		DeleteManuallyManagedAppResourceRequest: deleteManuallyManagedAppResourceRequest,
+		AppID:             appID,
+		AppResourceTypeID: appResourceTypeID,
+		ID:                id,
 	}
 	res, err := r.client.AppResource.DeleteManuallyManagedAppResource(ctx, request)
 	if err != nil {

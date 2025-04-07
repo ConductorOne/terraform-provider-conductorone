@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_buildkite Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_buildkite Resource - conductorone"
 subcategory: ""
 description: |-
   Buildkite Integration Resource

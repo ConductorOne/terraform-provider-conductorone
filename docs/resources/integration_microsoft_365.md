@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_microsoft_365 Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_microsoft_365 Resource - conductorone"
 subcategory: ""
 description: |-
   Microsoft_365 Integration Resource

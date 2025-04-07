@@ -4,7 +4,8 @@ package provider
 
 import (
 	"encoding/json"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"time"
 )
@@ -44,12 +45,9 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 	} else {
 		description = nil
 	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
+	var displayName string
+	displayName = r.DisplayName.ValueString()
+
 	durationGrant := new(string)
 	if !r.DurationGrant.IsUnknown() && !r.DurationGrant.IsNull() {
 		*durationGrant = r.DurationGrant.ValueString()
@@ -79,12 +77,55 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 		grantPolicyID = nil
 	}
 	overrideAccessRequestsDefaults := new(bool)
-	*overrideAccessRequestsDefaults = true
+	if !r.OverrideAccessRequestsDefaults.IsUnknown() && !r.OverrideAccessRequestsDefaults.IsNull() {
+		*overrideAccessRequestsDefaults = r.OverrideAccessRequestsDefaults.ValueBool()
+	} else {
+		overrideAccessRequestsDefaults = nil
+	}
 	var provisionPolicy *shared.ProvisionPolicy
 	if r.ProvisionPolicy != nil {
 		var connectorProvision *shared.ConnectorProvision
 		if r.ProvisionPolicy.ConnectorProvision != nil {
-			connectorProvision = &shared.ConnectorProvision{}
+			var accountProvision *shared.AccountProvision
+			if r.ProvisionPolicy.ConnectorProvision.AccountProvision != nil {
+				var config *shared.AccountProvisionConfig
+				if r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config != nil {
+					config = &shared.AccountProvisionConfig{}
+				}
+				connectorID := new(string)
+				if !r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
+					*connectorID = r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
+				} else {
+					connectorID = nil
+				}
+				schemaID := new(string)
+				if !r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsNull() {
+					*schemaID = r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.ValueString()
+				} else {
+					schemaID = nil
+				}
+				accountProvision = &shared.AccountProvision{
+					Config:      config,
+					ConnectorID: connectorID,
+					SchemaID:    schemaID,
+				}
+			}
+			var defaultBehavior *shared.DefaultBehavior
+			if r.ProvisionPolicy.ConnectorProvision.DefaultBehavior != nil {
+				connectorId1 := new(string)
+				if !r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
+					*connectorId1 = r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
+				} else {
+					connectorId1 = nil
+				}
+				defaultBehavior = &shared.DefaultBehavior{
+					ConnectorID: connectorId1,
+				}
+			}
+			connectorProvision = &shared.ConnectorProvision{
+				AccountProvision: accountProvision,
+				DefaultBehavior:  defaultBehavior,
+			}
 		}
 		var delegatedProvision *shared.DelegatedProvision
 		if r.ProvisionPolicy.DelegatedProvision != nil {
@@ -100,16 +141,9 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 			} else {
 				entitlementID = nil
 			}
-			implicit := new(bool)
-			if !r.ProvisionPolicy.DelegatedProvision.Implicit.IsUnknown() && !r.ProvisionPolicy.DelegatedProvision.Implicit.IsNull() {
-				*implicit = r.ProvisionPolicy.DelegatedProvision.Implicit.ValueBool()
-			} else {
-				implicit = nil
-			}
 			delegatedProvision = &shared.DelegatedProvision{
 				AppID:         appID,
 				EntitlementID: entitlementID,
-				Implicit:      implicit,
 			}
 		}
 		var externalTicketProvision *shared.ExternalTicketProvision
@@ -120,11 +154,11 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 			} else {
 				appId1 = nil
 			}
-			connectorID := new(string)
+			connectorId2 := new(string)
 			if !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-				*connectorID = r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+				*connectorId2 = r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
 			} else {
-				connectorID = nil
+				connectorId2 = nil
 			}
 			externalTicketProvisionerConfigID := new(string)
 			if !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
@@ -140,7 +174,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 			}
 			externalTicketProvision = &shared.ExternalTicketProvision{
 				AppID:                             appId1,
-				ConnectorID:                       connectorID,
+				ConnectorID:                       connectorId2,
 				ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 				Instructions:                      instructions,
 			}
@@ -187,9 +221,9 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 			WebhookProvision:        webhookProvision,
 		}
 	}
-	purpose := new(shared.CreateAppEntitlementRequestPurpose)
+	purpose := new(shared.Purpose)
 	if !r.Purpose.IsUnknown() && !r.Purpose.IsNull() {
-		*purpose = shared.CreateAppEntitlementRequestPurpose(r.Purpose.ValueString())
+		*purpose = shared.Purpose(r.Purpose.ValueString())
 	} else {
 		purpose = nil
 	}
@@ -241,9 +275,11 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(resp
 		r.AppResourceID = types.StringPointerValue(resp.AppResourceID)
 		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
 		r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
-		r.ComplianceFrameworkValueIds = []types.String{}
-		for _, v := range resp.ComplianceFrameworkValueIds {
-			r.ComplianceFrameworkValueIds = append(r.ComplianceFrameworkValueIds, types.StringValue(v))
+		if resp.ComplianceFrameworkValueIds != nil {
+			r.ComplianceFrameworkValueIds = make([]types.String, 0, len(resp.ComplianceFrameworkValueIds))
+			for _, v := range resp.ComplianceFrameworkValueIds {
+				r.ComplianceFrameworkValueIds = append(r.ComplianceFrameworkValueIds, types.StringValue(v))
+			}
 		}
 		if resp.CreatedAt != nil {
 			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
@@ -262,7 +298,7 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(resp
 		if resp.DurationUnset == nil {
 			r.DurationUnset = nil
 		} else {
-			r.DurationUnset = &DurationUnset{}
+			r.DurationUnset = &tfTypes.CreateAppEntitlementRequestDurationUnset{}
 		}
 		r.EmergencyGrantEnabled = types.BoolPointerValue(resp.EmergencyGrantEnabled)
 		r.EmergencyGrantPolicyID = types.StringPointerValue(resp.EmergencyGrantPolicyID)
@@ -275,24 +311,41 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(resp
 		if resp.ProvisionPolicy == nil {
 			r.ProvisionPolicy = nil
 		} else {
-			r.ProvisionPolicy = &ProvisionPolicy{}
+			r.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
 			if resp.ProvisionPolicy.ConnectorProvision == nil {
 				r.ProvisionPolicy.ConnectorProvision = nil
 			} else {
-				r.ProvisionPolicy.ConnectorProvision = &ConnectorProvision{}
+				r.ProvisionPolicy.ConnectorProvision = &tfTypes.ConnectorProvision{}
+				if resp.ProvisionPolicy.ConnectorProvision.AccountProvision == nil {
+					r.ProvisionPolicy.ConnectorProvision.AccountProvision = nil
+				} else {
+					r.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
+					if resp.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
+						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = nil
+					} else {
+						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+					}
+					r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
+					r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
+				}
+				if resp.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
+					r.ProvisionPolicy.ConnectorProvision.DefaultBehavior = nil
+				} else {
+					r.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
+					r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+				}
 			}
 			if resp.ProvisionPolicy.DelegatedProvision == nil {
 				r.ProvisionPolicy.DelegatedProvision = nil
 			} else {
-				r.ProvisionPolicy.DelegatedProvision = &DelegatedProvision{}
+				r.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
 				r.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.DelegatedProvision.AppID)
 				r.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.ProvisionPolicy.DelegatedProvision.EntitlementID)
-				r.ProvisionPolicy.DelegatedProvision.Implicit = types.BoolPointerValue(resp.ProvisionPolicy.DelegatedProvision.Implicit)
 			}
 			if resp.ProvisionPolicy.ExternalTicketProvision == nil {
 				r.ProvisionPolicy.ExternalTicketProvision = nil
 			} else {
-				r.ProvisionPolicy.ExternalTicketProvision = &ExternalTicketProvision{}
+				r.ProvisionPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
 				r.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.AppID)
 				r.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
 				r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
@@ -301,11 +354,13 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(resp
 			if resp.ProvisionPolicy.ManualProvision == nil {
 				r.ProvisionPolicy.ManualProvision = nil
 			} else {
-				r.ProvisionPolicy.ManualProvision = &ManualProvision{}
+				r.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
 				r.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(resp.ProvisionPolicy.ManualProvision.Instructions)
-				r.ProvisionPolicy.ManualProvision.UserIds = []types.String{}
-				for _, v := range resp.ProvisionPolicy.ManualProvision.UserIds {
-					r.ProvisionPolicy.ManualProvision.UserIds = append(r.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
+				if resp.ProvisionPolicy.ManualProvision.UserIds != nil {
+					r.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(resp.ProvisionPolicy.ManualProvision.UserIds))
+					for _, v := range resp.ProvisionPolicy.ManualProvision.UserIds {
+						r.ProvisionPolicy.ManualProvision.UserIds = append(r.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
+					}
 				}
 			}
 			if resp.ProvisionPolicy.MultiStep == nil {
@@ -317,7 +372,7 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(resp
 			if resp.ProvisionPolicy.WebhookProvision == nil {
 				r.ProvisionPolicy.WebhookProvision = nil
 			} else {
-				r.ProvisionPolicy.WebhookProvision = &WebhookProvision{}
+				r.ProvisionPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
 				r.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(resp.ProvisionPolicy.WebhookProvision.WebhookID)
 			}
 		}
@@ -330,7 +385,7 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(resp
 		r.RiskLevelValueID = types.StringPointerValue(resp.RiskLevelValueID)
 		r.Slug = types.StringPointerValue(resp.Slug)
 		if len(resp.SourceConnectorIds) > 0 {
-			r.SourceConnectorIds = make(map[string]types.String)
+			r.SourceConnectorIds = make(map[string]types.String, len(resp.SourceConnectorIds))
 			for key, value := range resp.SourceConnectorIds {
 				r.SourceConnectorIds[key] = types.StringValue(value)
 			}
@@ -441,7 +496,46 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 	if r.ProvisionPolicy != nil {
 		var connectorProvision *shared.ConnectorProvision
 		if r.ProvisionPolicy.ConnectorProvision != nil {
-			connectorProvision = &shared.ConnectorProvision{}
+			var accountProvision *shared.AccountProvision
+			if r.ProvisionPolicy.ConnectorProvision.AccountProvision != nil {
+				var config *shared.AccountProvisionConfig
+				if r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config != nil {
+					config = &shared.AccountProvisionConfig{}
+				}
+				connectorID := new(string)
+				if !r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
+					*connectorID = r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
+				} else {
+					connectorID = nil
+				}
+				schemaID := new(string)
+				if !r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsNull() {
+					*schemaID = r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.ValueString()
+				} else {
+					schemaID = nil
+				}
+				accountProvision = &shared.AccountProvision{
+					Config:      config,
+					ConnectorID: connectorID,
+					SchemaID:    schemaID,
+				}
+			}
+			var defaultBehavior *shared.DefaultBehavior
+			if r.ProvisionPolicy.ConnectorProvision.DefaultBehavior != nil {
+				connectorId1 := new(string)
+				if !r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
+					*connectorId1 = r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
+				} else {
+					connectorId1 = nil
+				}
+				defaultBehavior = &shared.DefaultBehavior{
+					ConnectorID: connectorId1,
+				}
+			}
+			connectorProvision = &shared.ConnectorProvision{
+				AccountProvision: accountProvision,
+				DefaultBehavior:  defaultBehavior,
+			}
 		}
 		var delegatedProvision *shared.DelegatedProvision
 		if r.ProvisionPolicy.DelegatedProvision != nil {
@@ -457,16 +551,9 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 			} else {
 				entitlementID = nil
 			}
-			implicit := new(bool)
-			if !r.ProvisionPolicy.DelegatedProvision.Implicit.IsUnknown() && !r.ProvisionPolicy.DelegatedProvision.Implicit.IsNull() {
-				*implicit = r.ProvisionPolicy.DelegatedProvision.Implicit.ValueBool()
-			} else {
-				implicit = nil
-			}
 			delegatedProvision = &shared.DelegatedProvision{
 				AppID:         appId1,
 				EntitlementID: entitlementID,
-				Implicit:      implicit,
 			}
 		}
 		var externalTicketProvision *shared.ExternalTicketProvision
@@ -477,11 +564,11 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 			} else {
 				appId2 = nil
 			}
-			connectorID := new(string)
+			connectorId2 := new(string)
 			if !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-				*connectorID = r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+				*connectorId2 = r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
 			} else {
-				connectorID = nil
+				connectorId2 = nil
 			}
 			externalTicketProvisionerConfigID := new(string)
 			if !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
@@ -497,7 +584,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 			}
 			externalTicketProvision = &shared.ExternalTicketProvision{
 				AppID:                             appId2,
-				ConnectorID:                       connectorID,
+				ConnectorID:                       connectorId2,
 				ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 				Instructions:                      instructions,
 			}
@@ -544,9 +631,9 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 			WebhookProvision:        webhookProvision,
 		}
 	}
-	purpose := new(shared.Purpose)
+	purpose := new(shared.AppEntitlementPurpose)
 	if !r.Purpose.IsUnknown() && !r.Purpose.IsNull() {
-		*purpose = shared.Purpose(r.Purpose.ValueString())
+		*purpose = shared.AppEntitlementPurpose(r.Purpose.ValueString())
 	} else {
 		purpose = nil
 	}
@@ -599,10 +686,5 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 		Slug:                           slug,
 		SourceConnectorIds:             sourceConnectorIds,
 	}
-	return &out
-}
-
-func (r *CustomAppEntitlementResourceModel) ToSharedDeleteAppEntitlementRequest() *shared.DeleteAppEntitlementRequest {
-	out := shared.DeleteAppEntitlementRequest{}
 	return &out
 }

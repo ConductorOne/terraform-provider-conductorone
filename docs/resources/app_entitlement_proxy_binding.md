@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement_proxy_binding Resource - terraform-provider-conductorone"
+page_title: "conductorone_app_entitlement_proxy_binding Resource - conductorone"
 subcategory: ""
 description: |-
   AppEntitlementProxyBinding Resource
@@ -15,11 +15,11 @@ In order to create a proxy binding, you must provide the `src_app_entitlement_id
 ## Example Usage
 
 ```terraform
-resource "conductorone_app_entitlement_proxy_binding" "test_binding" {
-  src_app_id             = "<src_app_id>"
-  src_app_entitlement_id = "<src_app_entitlement_id>"
-  dst_app_id             = "<dst_app_id>"
-  dst_app_entitlement_id = "<dst_app_entitlement_id>"
+resource "conductorone_app_entitlement_proxy_binding" "my_app_entitlement_proxy_binding" {
+  dst_app_entitlement_id = "...my_dst_app_entitlement_id..."
+  dst_app_id             = "...my_dst_app_id..."
+  src_app_entitlement_id = "...my_src_app_entitlement_id..."
+  src_app_id             = "...my_src_app_id..."
 }
 ```
 
@@ -28,18 +28,17 @@ resource "conductorone_app_entitlement_proxy_binding" "test_binding" {
 
 ### Required
 
-- `dst_app_entitlement_id` (String) The dstAppEntitlementId field. Requires replacement if changed.
-- `dst_app_id` (String) The dstAppId field. Requires replacement if changed.
+- `dst_app_entitlement_id` (String) Requires replacement if changed.
+- `dst_app_id` (String) Requires replacement if changed.
 - `src_app_entitlement_id` (String) Requires replacement if changed.
 - `src_app_id` (String) Requires replacement if changed.
 
 ### Read-Only
 
 - `created_at` (String)
-- `deleted_at` (String)
-- `implicit` (Boolean) If true, the binding doesn't not exist yet and is from the list of the entitlements from the parent app.
- typically the IdP that handles provisioning for the app instead of C1s connector.
-This field is part of the `_implicit` oneof.
-See the documentation for `c1.api.app.v1.AppEntitlementProxy` for more details.
+- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
 - `system_builtin` (Boolean) The systemBuiltin field.
 - `updated_at` (String)
+
+<a id="nestedatt--expanded"></a>
+### Nested Schema for `expanded`

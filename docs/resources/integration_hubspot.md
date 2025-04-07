@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_hubspot Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_hubspot Resource - conductorone"
 subcategory: ""
 description: |-
   Hubspot Integration Resource

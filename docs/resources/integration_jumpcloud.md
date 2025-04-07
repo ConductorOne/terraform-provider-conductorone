@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_jumpcloud Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_jumpcloud Resource - conductorone"
 subcategory: ""
 description: |-
   Jumpcloud Integration Resource

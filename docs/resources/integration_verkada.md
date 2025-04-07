@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_verkada Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_verkada Resource - conductorone"
 subcategory: ""
 description: |-
   Verkada Integration Resource

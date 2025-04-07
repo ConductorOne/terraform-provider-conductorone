@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_gusto Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_gusto Resource - conductorone"
 subcategory: ""
 description: |-
   Gusto Integration Resource

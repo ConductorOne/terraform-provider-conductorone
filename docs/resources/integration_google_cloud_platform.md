@@ -1,8 +1,8 @@
 ---
-page_title: "conductorone_integration_google_cloud_platform Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_google_cloud_platform Resource - conductorone"
 subcategory: ""
 description: |-
-  Googlecloudplatform Integration Resource
+  Google_cloud_platform Integration Resource
 ---
 
 # conductorone_integration_google_cloud_platform (Resource)

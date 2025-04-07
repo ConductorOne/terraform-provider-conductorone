@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -43,7 +43,7 @@ func (r *IntegrationOneloginV2ResourceModel) ToCreateSDKType() (*shared.Connecto
 	out := shared.ConnectorServiceCreateRequest{
 		CatalogID: catalogID,
 		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
+		Config: &shared.Config{
 			AtType: sdk.String(envConfigType),
 			AdditionalProperties: map[string]interface{}{
 				"configuration": configOut,
@@ -53,7 +53,7 @@ func (r *IntegrationOneloginV2ResourceModel) ToCreateSDKType() (*shared.Connecto
 	return &out, nil
 }
 
-func (r *IntegrationOneloginV2ResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationOneloginV2ResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -74,7 +74,7 @@ func (r *IntegrationOneloginV2ResourceModel) ToUpdateSDKType() (*shared.Connecto
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("OneLogin v2"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(oneloginV2CatalogID),

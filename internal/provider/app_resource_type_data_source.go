@@ -6,12 +6,15 @@ import (
 	"context"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
+
+// Ensure provider defined types fully satisfy framework interfaces.
+var _ datasource.DataSource = &AppResourceTypeDataSource{}
+var _ datasource.DataSourceWithConfigure = &AppResourceTypeDataSource{}
 
 func NewAppResourceTypeDataSource() datasource.DataSource {
 	return &AppResourceTypeDataSource{}
@@ -24,12 +27,23 @@ type AppResourceTypeDataSource struct {
 
 // AppResourceTypeDataSourceModel describes the data model.
 type AppResourceTypeDataSourceModel struct {
-	AppID       types.String `tfsdk:"app_id"`
-	CreatedAt   types.String `tfsdk:"created_at"`
-	DeletedAt   types.String `tfsdk:"deleted_at"`
-	DisplayName types.String `tfsdk:"display_name"`
-	ID          types.String `tfsdk:"id"`
-	UpdatedAt   types.String `tfsdk:"updated_at"`
+	AppID                       types.String   `tfsdk:"app_id"`
+	AppIds                      []types.String `tfsdk:"app_ids"`
+	AppUserIds                  []types.String `tfsdk:"app_user_ids"`
+	CreatedAt                   types.String   `tfsdk:"created_at"`
+	DeletedAt                   types.String   `tfsdk:"deleted_at"`
+	DisplayName                 types.String   `tfsdk:"display_name"`
+	ExcludeResourceTypeIds      []types.String `tfsdk:"exclude_resource_type_ids"`
+	ExcludeResourceTypeTraitIds []types.String `tfsdk:"exclude_resource_type_trait_ids"`
+	ID                          types.String   `tfsdk:"id"`
+	NextPageToken               types.String   `tfsdk:"next_page_token"`
+	PageSize                    types.Int32    `tfsdk:"page_size"`
+	PageToken                   types.String   `tfsdk:"page_token"`
+	Query                       types.String   `tfsdk:"query"`
+	ResourceTypeIds             []types.String `tfsdk:"resource_type_ids"`
+	ResourceTypeTraitIds        []types.String `tfsdk:"resource_type_trait_ids"`
+	TraitIds                    []types.String `tfsdk:"trait_ids"`
+	UpdatedAt                   types.String   `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -44,7 +58,18 @@ func (r *AppResourceTypeDataSource) Schema(ctx context.Context, req datasource.S
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Computed:    true,
+				Description: `The ID of the app that is associated with the app resource type`,
+			},
+			"app_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `A list of app IDs to restrict the search by.`,
+			},
+			"app_user_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `A list of app user IDs to restrict the search by.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -54,10 +79,55 @@ func (r *AppResourceTypeDataSource) Schema(ctx context.Context, req datasource.S
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
-				Description: `The display name of the app resource type.`,
+				Optional:    true,
+				Description: `Exact match on display name`,
+			},
+			"exclude_resource_type_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `A list of resource type IDs to exclude from the search.`,
+			},
+			"exclude_resource_type_trait_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `A list of resource type trait IDs to exclude from the search.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Computed:    true,
+				Description: `The unique ID for the app resource type.`,
+			},
+			"next_page_token": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `The nextPageToken is shown for the next page if the number of results is larger than the max page size.` + "\n" +
+					` The server returns one page of results and the nextPageToken until all results are retreived.` + "\n" +
+					` To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
+			},
+			"page_size": schema.Int32Attribute{
+				Optional:    true,
+				Description: `The pageSize where 10 <= pageSize <= 100, default 25.`,
+			},
+			"page_token": schema.StringAttribute{
+				Optional:    true,
+				Description: `The pageToken field.`,
+			},
+			"query": schema.StringAttribute{
+				Optional:    true,
+				Description: `Fuzzy search the display name of resource types.`,
+			},
+			"resource_type_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `A list of resource type IDs to restrict the search by.`,
+			},
+			"resource_type_trait_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `A list of resource type trait IDs to restrict the search by.`,
+			},
+			"trait_ids": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `Associated trait ids`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -77,7 +147,7 @@ func (r *AppResourceTypeDataSource) Configure(ctx context.Context, req datasourc
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected DataSource Configure Type",
-			fmt.Sprintf("Expected *sdk.Conductorone, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *sdk.ConductoroneAPI, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
 		return
@@ -104,17 +174,8 @@ func (r *AppResourceTypeDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
-
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.C1APIAppV1AppResourceTypeServiceGetRequest{
-		AppID: appID,
-		ID:    id,
-	}
-	res, err := r.client.AppResourceType.Get(ctx, request)
+	request := data.ToSharedSearchAppResourceTypesRequest()
+	res, err := r.client.AppResourceSearch.SearchAppResourceTypes(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -134,11 +195,11 @@ func (r *AppResourceTypeDataSource) Read(ctx context.Context, req datasource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AppResourceTypeServiceGetResponse != nil && res.AppResourceTypeServiceGetResponse.AppResourceTypeView != nil && res.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType != nil) {
+	if !(res.SearchAppResourceTypesResponse != nil && res.SearchAppResourceTypesResponse.List != nil && len(res.SearchAppResourceTypesResponse.List) > 0) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppResourceType(res.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)
+	data.RefreshFromSharedAppResourceType(&res.SearchAppResourceTypesResponse.List[0])
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_gcp_gws Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_gcp_gws Resource - conductorone"
 subcategory: ""
 description: |-
   Gcp_gws Integration Resource

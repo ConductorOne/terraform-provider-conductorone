@@ -1,25 +1,28 @@
 ---
-page_title: "conductorone_webhook Data Source - terraform-provider-conductorone"
+page_title: "conductorone_webhook Data Source - conductorone"
 subcategory: ""
 description: |-
-  Webhook Data Source
+  Webhook DataSource
 ---
 
 # conductorone_webhook (Data Source)
 
-Webhook Data Source
+Webhook DataSource
 
 The Webhook datasource allows you to retrieve a Webhook by `display_name` (case insensitive), or `id` in ConductorOne.
 
 ## Example Usage
 
 ```terraform
-data "conductorone_webhook" "test_webhook" {
-  display_name = "<webhook_display_name>"
-}
-
-data "conductorone_webhook" "another_webhook" {
-  id = "<webhook_id>"
+data "conductorone_webhook" "my_webhook" {
+  page_size  = 3
+  page_token = "...my_page_token..."
+  query      = "...my_query..."
+  refs = [
+    {
+      id = "...my_id..."
+    }
+  ]
 }
 ```
 
@@ -28,13 +31,25 @@ data "conductorone_webhook" "another_webhook" {
 
 ### Optional
 
-- `display_name` (String) The displayName field.
-- `id` (String) The id field.
+- `page_size` (Number) The pageSize field.
+- `page_token` (String) The pageToken field.
+- `query` (String) The query field.
+- `refs` (Attributes List) The refs field. (see [below for nested schema](#nestedatt--refs))
 
 ### Read-Only
 
 - `created_at` (String)
 - `deleted_at` (String)
 - `description` (String) The description field.
+- `display_name` (String) The displayName field.
+- `id` (String) The id field.
+- `next_page_token` (String) The nextPageToken field.
 - `updated_at` (String)
 - `url` (String) The url field.
+
+<a id="nestedatt--refs"></a>
+### Nested Schema for `refs`
+
+Optional:
+
+- `id` (String) The id field.

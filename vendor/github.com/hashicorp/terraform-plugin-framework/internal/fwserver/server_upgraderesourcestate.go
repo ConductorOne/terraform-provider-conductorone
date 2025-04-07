@@ -20,7 +20,14 @@ import (
 // UpgradeResourceStateRequest is the framework server request for the
 // UpgradeResourceState RPC.
 type UpgradeResourceStateRequest struct {
-	// TODO: Create framework defined type that is not protocol specific.
+	// Using the tfprotov6 type here was a pragmatic effort decision around when
+	// the framework introduced compatibility promises. This type was chosen as
+	// it was readily available and trivial to convert between tfprotov5.
+	//
+	// Using a terraform-plugin-go type is not ideal for the framework as almost
+	// all terraform-plugin-go types have framework abstractions, but if there
+	// is ever a time where it makes sense to re-evaluate this decision, such as
+	// a major version bump, it could be changed then.
 	// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/340
 	RawState *tfprotov6.RawState
 
@@ -218,9 +225,19 @@ func (s *Server) UpgradeResourceState(ctx context.Context, req *UpgradeResourceS
 			return
 		}
 
+		// Set any write-only attributes in the state to null
+		modifiedState, err := tftypes.Transform(upgradedStateValue, NullifyWriteOnlyAttributes(ctx, req.ResourceSchema))
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error Modifying Upgraded Resource State",
+				"There was an unexpected error modifying the Upgraded Resource State. This is always a problem with the provider. Please report the following to the provider developer:\n\n"+err.Error(),
+			)
+			return
+		}
+
 		resp.UpgradedState = &tfsdk.State{
 			Schema: req.ResourceSchema,
-			Raw:    upgradedStateValue,
+			Raw:    modifiedState,
 		}
 
 		return
@@ -235,6 +252,17 @@ func (s *Server) UpgradeResourceState(ctx context.Context, req *UpgradeResourceS
 		)
 		return
 	}
+
+	// Set any write-only attributes in the state to null
+	modifiedState, err := tftypes.Transform(upgradeResourceStateResponse.State.Raw, NullifyWriteOnlyAttributes(ctx, req.ResourceSchema))
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Modifying Upgraded Resource State",
+			"There was an unexpected error modifying the Upgraded Resource State. This is always a problem with the provider. Please report the following to the provider developer:\n\n"+err.Error(),
+		)
+		return
+	}
+	upgradeResourceStateResponse.State.Raw = modifiedState
 
 	resp.UpgradedState = &upgradeResourceStateResponse.State
 }

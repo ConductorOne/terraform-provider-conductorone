@@ -10,6 +10,8 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
+	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fwschema"
 	"github.com/hashicorp/terraform-plugin-framework/internal/logging"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -31,6 +33,11 @@ type Server struct {
 	// [provider.ConfigureResponse.ResourceData] field value which is passed
 	// to [resource.ConfigureRequest.ProviderData].
 	ResourceConfigureData any
+
+	// EphemeralResourceConfigureData is the
+	// [provider.ConfigureResponse.EphemeralResourceData] field value which is passed
+	// to [ephemeral.ConfigureRequest.ProviderData].
+	EphemeralResourceConfigureData any
 
 	// dataSourceSchemas is the cached DataSource Schemas for RPCs that need to
 	// convert configuration data from the protocol. If not found, it will be
@@ -54,6 +61,57 @@ type Server struct {
 	// dataSourceTypesMutex is a mutex to protect concurrent dataSourceTypes
 	// access from race conditions.
 	dataSourceTypesMutex sync.Mutex
+
+	// ephemeralResourceSchemas is the cached EphemeralResource Schemas for RPCs that need to
+	// convert configuration data from the protocol. If not found, it will be
+	// fetched from the EphemeralResourceType.GetSchema() method.
+	ephemeralResourceSchemas map[string]fwschema.Schema
+
+	// ephemeralResourceSchemasMutex is a mutex to protect concurrent ephemeralResourceSchemas
+	// access from race conditions.
+	ephemeralResourceSchemasMutex sync.RWMutex
+
+	// ephemeralResourceFuncs is the cached EphemeralResource functions for RPCs that need to
+	// access ephemeral resources. If not found, it will be fetched from the
+	// Provider.EphemeralResources() method.
+	ephemeralResourceFuncs map[string]func() ephemeral.EphemeralResource
+
+	// ephemeralResourceFuncsDiags is the cached Diagnostics obtained while populating
+	// ephemeralResourceFuncs. This is to ensure any warnings or errors are also
+	// returned appropriately when fetching ephemeralResourceFuncs.
+	ephemeralResourceFuncsDiags diag.Diagnostics
+
+	// ephemeralResourceFuncsMutex is a mutex to protect concurrent ephemeralResourceFuncs
+	// access from race conditions.
+	ephemeralResourceFuncsMutex sync.Mutex
+
+	// deferred indicates an automatic provider deferral. When this is set,
+	// the provider will automatically defer the PlanResourceChange, ReadResource,
+	// ImportResourceState, and ReadDataSource RPCs.
+	deferred *provider.Deferred
+
+	// functionDefinitions is the cached Function Definitions for RPCs that need to
+	// convert data from the protocol. If not found, it will be fetched from the
+	// Function.Definition() method.
+	functionDefinitions map[string]function.Definition
+
+	// functionDefinitionsMutex is a mutex to protect concurrent functionDefinitions
+	// access from race conditions.
+	functionDefinitionsMutex sync.RWMutex
+
+	// functionFuncs is the cached Function functions for RPCs that need to
+	// access functions. If not found, it will be fetched from the
+	// Provider.Functions() method.
+	functionFuncs map[string]func() function.Function
+
+	// functionFuncsDiags is the cached Diagnostics obtained while populating
+	// functionFuncs. This is to ensure any warnings or errors are also
+	// returned appropriately when fetching functionFuncs.
+	functionFuncsDiags diag.Diagnostics
+
+	// functionFuncsMutex is a mutex to protect concurrent functionFuncs
+	// access from race conditions.
+	functionFuncsMutex sync.Mutex
 
 	// providerSchema is the cached Provider Schema for RPCs that need to
 	// convert configuration data from the protocol. If not found, it will be
@@ -83,9 +141,13 @@ type Server struct {
 	// access from race conditions.
 	providerMetaSchemaMutex sync.Mutex
 
-	// providerTypeName is the type name of the provider, if the provider
-	// implemented the Metadata method.
+	// providerTypeName is the cached type name of the provider, if the provider
+	// implemented the Metadata method. Access this field with the Provider.ProviderTypeName() method.
 	providerTypeName string
+
+	// providerTypeNameMutex is a mutex to protect concurrent providerTypeName
+	// access from race conditions.
+	providerTypeNameMutex sync.Mutex
 
 	// resourceSchemas is the cached Resource Schemas for RPCs that need to
 	// convert configuration data from the protocol. If not found, it will be
@@ -109,6 +171,19 @@ type Server struct {
 	// resourceTypesMutex is a mutex to protect concurrent resourceTypes
 	// access from race conditions.
 	resourceTypesMutex sync.Mutex
+
+	// resourceBehaviors is the cached Resource behaviors for RPCs that need to
+	// control framework-specific logic when interacting with a resource.
+	resourceBehaviors map[string]resource.ResourceBehavior
+
+	// resourceBehaviorsDiags is the cached Diagnostics obtained while populating
+	// resourceBehaviors. This is to ensure any warnings or errors are also
+	// returned appropriately when fetching resourceBehaviors.
+	resourceBehaviorsDiags diag.Diagnostics
+
+	// resourceBehaviorsMutex is a mutex to protect concurrent resourceBehaviors
+	// access from race conditions.
+	resourceBehaviorsMutex sync.Mutex
 }
 
 // DataSource returns the DataSource for a given type name.
@@ -140,6 +215,7 @@ func (s *Server) DataSourceFuncs(ctx context.Context) (map[string]func() datasou
 		return s.dataSourceFuncs, s.dataSourceTypesDiags
 	}
 
+	providerTypeName := s.ProviderTypeName(ctx)
 	s.dataSourceFuncs = make(map[string]func() datasource.DataSource)
 
 	logging.FrameworkTrace(ctx, "Calling provider defined Provider DataSources")
@@ -150,7 +226,7 @@ func (s *Server) DataSourceFuncs(ctx context.Context) (map[string]func() datasou
 		dataSource := dataSourceFunc()
 
 		dataSourceTypeNameReq := datasource.MetadataRequest{
-			ProviderTypeName: s.providerTypeName,
+			ProviderTypeName: providerTypeName,
 		}
 		dataSourceTypeNameResp := datasource.MetadataResponse{}
 
@@ -181,6 +257,22 @@ func (s *Server) DataSourceFuncs(ctx context.Context) (map[string]func() datasou
 	}
 
 	return s.dataSourceFuncs, s.dataSourceTypesDiags
+}
+
+// DataSourceMetadatas returns a slice of DataSourceMetadata for the GetMetadata
+// RPC.
+func (s *Server) DataSourceMetadatas(ctx context.Context) ([]DataSourceMetadata, diag.Diagnostics) {
+	datasourceFuncs, diags := s.DataSourceFuncs(ctx)
+
+	datasourceMetadatas := make([]DataSourceMetadata, 0, len(datasourceFuncs))
+
+	for typeName := range datasourceFuncs {
+		datasourceMetadatas = append(datasourceMetadatas, DataSourceMetadata{
+			TypeName: typeName,
+		})
+	}
+
+	return datasourceMetadatas, diags
 }
 
 // DataSourceSchema returns the DataSource Schema for the given type name and
@@ -269,6 +361,28 @@ func (s *Server) DataSourceSchemas(ctx context.Context) (map[string]fwschema.Sch
 	return dataSourceSchemas, diags
 }
 
+// ProviderTypeName returns the TypeName associated with the Provider. The TypeName is cached on first use.
+func (s *Server) ProviderTypeName(ctx context.Context) string {
+	logging.FrameworkTrace(ctx, "Checking ProviderTypeName lock")
+	s.providerTypeNameMutex.Lock()
+	defer s.providerTypeNameMutex.Unlock()
+
+	if s.providerTypeName != "" {
+		return s.providerTypeName
+	}
+
+	metadataReq := provider.MetadataRequest{}
+	metadataResp := provider.MetadataResponse{}
+
+	logging.FrameworkTrace(ctx, "Calling provider defined Provider Metadata")
+	s.Provider.Metadata(ctx, metadataReq, &metadataResp)
+	logging.FrameworkTrace(ctx, "Called provider defined Provider Metadata")
+
+	s.providerTypeName = metadataResp.TypeName
+
+	return s.providerTypeName
+}
+
 // ProviderSchema returns the Schema associated with the Provider. The Schema
 // and Diagnostics are cached on first use.
 func (s *Server) ProviderSchema(ctx context.Context) (fwschema.Schema, diag.Diagnostics) {
@@ -347,6 +461,78 @@ func (s *Server) Resource(ctx context.Context, typeName string) (resource.Resour
 	return resourceFunc(), diags
 }
 
+// ResourceBehavior returns the ResourceBehavior for a given type name.
+func (s *Server) ResourceBehavior(ctx context.Context, typeName string) (resource.ResourceBehavior, diag.Diagnostics) {
+	resourceBehaviors, diags := s.ResourceBehaviors(ctx)
+
+	resourceBehavior, ok := resourceBehaviors[typeName]
+
+	if !ok {
+		diags.AddError(
+			"Resource Type Not Found",
+			fmt.Sprintf("No resource type named %q was found in the provider.", typeName),
+		)
+
+		return resource.ResourceBehavior{}, diags
+	}
+
+	return resourceBehavior, diags
+}
+
+// ResourceBehaviors returns a map of ResourceBehavior. The results are cached
+// on first use.
+func (s *Server) ResourceBehaviors(ctx context.Context) (map[string]resource.ResourceBehavior, diag.Diagnostics) {
+	logging.FrameworkTrace(ctx, "Checking ResourceBehaviors lock")
+	s.resourceBehaviorsMutex.Lock()
+	defer s.resourceBehaviorsMutex.Unlock()
+
+	if s.resourceBehaviors != nil {
+		return s.resourceBehaviors, s.resourceBehaviorsDiags
+	}
+
+	providerTypeName := s.ProviderTypeName(ctx)
+	s.resourceBehaviors = make(map[string]resource.ResourceBehavior)
+
+	resourceFuncs, diags := s.ResourceFuncs(ctx)
+	s.resourceBehaviorsDiags.Append(diags...)
+
+	for _, resourceFunc := range resourceFuncs {
+		res := resourceFunc()
+
+		metadataRequest := resource.MetadataRequest{
+			ProviderTypeName: providerTypeName,
+		}
+		metadataResponse := resource.MetadataResponse{}
+
+		res.Metadata(ctx, metadataRequest, &metadataResponse)
+
+		if metadataResponse.TypeName == "" {
+			s.resourceBehaviorsDiags.AddError(
+				"Resource Type Name Missing",
+				fmt.Sprintf("The %T Resource returned an empty string from the Metadata method. ", res)+
+					"This is always an issue with the provider and should be reported to the provider developers.",
+			)
+			continue
+		}
+
+		logging.FrameworkTrace(ctx, "Found resource type", map[string]interface{}{logging.KeyResourceType: metadataResponse.TypeName})
+
+		if _, ok := s.resourceBehaviors[metadataResponse.TypeName]; ok {
+			s.resourceBehaviorsDiags.AddError(
+				"Duplicate Resource Type Defined",
+				fmt.Sprintf("The %s resource type name was returned for multiple resources. ", metadataResponse.TypeName)+
+					"Resource type names must be unique. "+
+					"This is always an issue with the provider and should be reported to the provider developers.",
+			)
+			continue
+		}
+
+		s.resourceBehaviors[metadataResponse.TypeName] = metadataResponse.ResourceBehavior
+	}
+
+	return s.resourceBehaviors, s.resourceBehaviorsDiags
+}
+
 // ResourceFuncs returns a map of Resource functions. The results are cached
 // on first use.
 func (s *Server) ResourceFuncs(ctx context.Context) (map[string]func() resource.Resource, diag.Diagnostics) {
@@ -358,6 +544,7 @@ func (s *Server) ResourceFuncs(ctx context.Context) (map[string]func() resource.
 		return s.resourceFuncs, s.resourceTypesDiags
 	}
 
+	providerTypeName := s.ProviderTypeName(ctx)
 	s.resourceFuncs = make(map[string]func() resource.Resource)
 
 	logging.FrameworkTrace(ctx, "Calling provider defined Provider Resources")
@@ -368,7 +555,7 @@ func (s *Server) ResourceFuncs(ctx context.Context) (map[string]func() resource.
 		res := resourceFunc()
 
 		resourceTypeNameReq := resource.MetadataRequest{
-			ProviderTypeName: s.providerTypeName,
+			ProviderTypeName: providerTypeName,
 		}
 		resourceTypeNameResp := resource.MetadataResponse{}
 
@@ -399,6 +586,22 @@ func (s *Server) ResourceFuncs(ctx context.Context) (map[string]func() resource.
 	}
 
 	return s.resourceFuncs, s.resourceTypesDiags
+}
+
+// ResourceMetadatas returns a slice of ResourceMetadata for the GetMetadata
+// RPC.
+func (s *Server) ResourceMetadatas(ctx context.Context) ([]ResourceMetadata, diag.Diagnostics) {
+	resourceFuncs, diags := s.ResourceFuncs(ctx)
+
+	resourceMetadatas := make([]ResourceMetadata, 0, len(resourceFuncs))
+
+	for typeName := range resourceFuncs {
+		resourceMetadatas = append(resourceMetadatas, ResourceMetadata{
+			TypeName: typeName,
+		})
+	}
+
+	return resourceMetadatas, diags
 }
 
 // ResourceSchema returns the Resource Schema for the given type name and

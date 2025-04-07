@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_resource Resource - terraform-provider-conductorone"
+page_title: "conductorone_app_resource Resource - conductorone"
 subcategory: ""
 description: |-
   AppResource Resource
@@ -15,11 +15,11 @@ When creating an AppResource you must provide a display name, app_id and app_res
 ## Example Usage
 
 ```terraform
-resource "conductorone_app_resource" "test_new_app_resource" {
-  display_name         = "Custom app resource"
-  app_resource_type_id = "<app_resource_type_id>"
-  description          = "This is a resource created via Terraform"
-  app_id               = data.conductorone_app.test_okta.id
+resource "conductorone_app_resource" "my_app_resource" {
+  app_id               = "...my_app_id..."
+  app_resource_type_id = "...my_app_resource_type_id..."
+  description          = "...my_description..."
+  display_name         = "...my_display_name..."
 }
 ```
 
@@ -29,19 +29,22 @@ resource "conductorone_app_resource" "test_new_app_resource" {
 ### Required
 
 - `app_id` (String)
-- `app_resource_type_id` (String)
+- `app_resource_type_id` (String) Requires replacement if changed.
+- `display_name` (String) The displayName field.
 
 ### Optional
 
-- `description` (String) The description field. Requires replacement if changed.
-- `display_name` (String) The displayName field.
+- `description` (String) The description field.
 
 ### Read-Only
 
 - `created_at` (String)
-- `deleted_at` (String)
+- `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
 - `grant_count` (String) The number of grants to this resource.
 - `id` (String) The id of the resource.
 - `parent_app_resource_id` (String) The parent resource id, if this resource is a child of another resource.
 - `parent_app_resource_type_id` (String) The parent resource type id, if this resource is a child of another resource.
 - `updated_at` (String)
+
+<a id="nestedatt--expanded"></a>
+### Nested Schema for `expanded`

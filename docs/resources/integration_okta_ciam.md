@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_okta_ciam Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_okta_ciam Resource - conductorone"
 subcategory: ""
 description: |-
   Okta_ciam Integration Resource

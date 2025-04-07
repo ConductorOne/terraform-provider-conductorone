@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_snowflake Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_snowflake Resource - conductorone"
 subcategory: ""
 description: |-
   Snowflake Integration Resource

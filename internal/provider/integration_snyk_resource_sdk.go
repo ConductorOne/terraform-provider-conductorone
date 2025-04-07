@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -44,7 +44,7 @@ func (r *IntegrationSnykResourceModel) ToCreateSDKType() (*shared.ConnectorServi
 	out := shared.ConnectorServiceCreateRequest{
 		CatalogID: catalogID,
 		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
+		Config: &shared.Config{
 			AtType: sdk.String(envConfigType),
 			AdditionalProperties: map[string]interface{}{
 				"configuration": configOut,
@@ -54,7 +54,7 @@ func (r *IntegrationSnykResourceModel) ToCreateSDKType() (*shared.ConnectorServi
 	return &out, nil
 }
 
-func (r *IntegrationSnykResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationSnykResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -75,7 +75,7 @@ func (r *IntegrationSnykResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Snyk"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(snykCatalogID),

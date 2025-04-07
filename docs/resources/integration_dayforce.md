@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_dayforce Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_dayforce Resource - conductorone"
 subcategory: ""
 description: |-
   Dayforce Integration Resource

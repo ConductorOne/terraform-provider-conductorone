@@ -5,12 +5,14 @@ package fwschemadata
 
 import (
 	"context"
+	"errors"
+
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fromtftypes"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fwschema"
 	"github.com/hashicorp/terraform-plugin-framework/internal/logging"
-	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 // NullifyCollectionBlocks converts list and set block empty values to null
@@ -22,9 +24,23 @@ func (d *Data) NullifyCollectionBlocks(ctx context.Context) diag.Diagnostics {
 
 	// Errors are handled as richer diag.Diagnostics instead.
 	d.TerraformValue, _ = tftypes.Transform(d.TerraformValue, func(tfTypePath *tftypes.AttributePath, tfTypeValue tftypes.Value) (tftypes.Value, error) {
+		// Skip the root of the data
+		if len(tfTypePath.Steps()) < 1 {
+			return tfTypeValue, nil
+		}
+
 		// Do not transform if value is already null or is not fully known.
 		if tfTypeValue.IsNull() || !tfTypeValue.IsFullyKnown() {
 			return tfTypeValue, nil
+		}
+
+		_, err := d.Schema.AttributeAtTerraformPath(ctx, tfTypePath)
+		if err != nil {
+			if errors.Is(err, fwschema.ErrPathInsideDynamicAttribute) {
+				// ignore attributes/elements inside schema.DynamicAttribute
+				logging.FrameworkTrace(ctx, "attribute is inside of a dynamic attribute, skipping nullify collection blocks")
+				return tfTypeValue, nil
+			}
 		}
 
 		fwPath, fwPathDiags := fromtftypes.AttributePath(ctx, tfTypePath, d.Schema)

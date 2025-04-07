@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app Data Source - terraform-provider-conductorone"
+page_title: "conductorone_app Data Source - conductorone"
 subcategory: ""
 description: |-
   App DataSource
@@ -14,12 +14,18 @@ The App datasource allows you to retrieve an App instance by `display_name` (cas
 ## Example Usage
 
 ```terraform
-data "conductorone_app" "test_okta" {
-  display_name = "Okta"
-}
-
-data "conductorone_app" "test_google_workspace" {
-  id = "<app_id>"
+data "conductorone_app" "my_app" {
+  app_ids = [
+    "..."
+  ]
+  display_name = "...my_display_name..."
+  exclude_app_ids = [
+    "..."
+  ]
+  only_directories = true
+  page_size        = 6
+  page_token       = "...my_page_token..."
+  query            = "...my_query..."
 }
 ```
 
@@ -28,23 +34,33 @@ data "conductorone_app" "test_google_workspace" {
 
 ### Optional
 
-- `display_name` (String) The displayName field.
-- `id` (String) The id field.
+- `app_ids` (List of String) A list of app IDs to restrict the search to.
+- `display_name` (String) Search for apps with a case insensitive match on the display name.
+- `exclude_app_ids` (List of String) A list of app IDs to remove from the results.
+- `only_directories` (Boolean) Only return apps which are directories
+- `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+- `page_token` (String) The pageToken field.
+- `query` (String) Query the apps with a fuzzy search on display name and description.
 
 ### Read-Only
 
-- `app_account_id` (String) The appAccountId field.
-- `app_account_name` (String) The appAccountName field.
-- `certify_policy_id` (String) The certifyPolicyId is the ID of the policy that will be used for access review certify tasks.
+- `app_account_id` (String) The ID of the Account named by AccountName.
+- `app_account_name` (String) The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
+- `certify_policy_id` (String) The ID of the Certify Policy associated with this App.
 - `created_at` (String)
 - `deleted_at` (String)
-- `description` (String) The description field.
-- `field_mask` (String)
-- `grant_policy_id` (String) The grantPolicyId field is the policy that will be used for access request grant tasks.
-- `icon_url` (String) The iconUrl field.
-- `logo_uri` (String) The logoUri field.
-- `monthly_cost_usd` (Number) The monthlyCostUsd field is the monthly cost per seat for the given app.
-- `parent_app_id` (String) The parentAppId field is the ID of the parent app if one exists.
-- `revoke_policy_id` (String) The revokePolicyId is the ID of the policy that will be used for revoke access tasks.
+- `description` (String) The app's description.
+- `grant_policy_id` (String) The ID of the Grant Policy associated with this App.
+- `id` (String) The ID of the app.
+- `identity_matching` (String) The identityMatching field.
+- `is_directory` (Boolean) Specifies if the app is a directory.
+- `is_manually_managed` (Boolean) The isManuallyManaged field.
+- `monthly_cost_usd` (Number) The cost of an app per-seat, so that total cost can be calculated by the grant count.
+- `next_page_token` (String) The nextPageToken is shown for the next page if the number of results is larger than the max page size.
+ The server returns one page of results and the nextPageToken until all results are retreived.
+ To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
+- `parent_app_id` (String) The ID of the app that created this app, if any.
+- `revoke_policy_id` (String) The ID of the Revoke Policy associated with this App.
+- `strict_access_entitlement_provisioning` (Boolean) The strictAccessEntitlementProvisioning field.
 - `updated_at` (String)
-- `user_count` (String) The userCount field is the number of app users that are associated with the app.
+- `user_count` (String) The number of users with grants to this app.

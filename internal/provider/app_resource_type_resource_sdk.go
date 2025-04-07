@@ -3,7 +3,7 @@
 package provider
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"time"
 )
@@ -35,6 +35,12 @@ func (r *AppResourceTypeResourceModel) RefreshFromSharedAppResourceType(resp *sh
 		}
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.ID = types.StringPointerValue(resp.ID)
+		if resp.TraitIds != nil {
+			r.TraitIds = make([]types.String, 0, len(resp.TraitIds))
+			for _, v := range resp.TraitIds {
+				r.TraitIds = append(r.TraitIds, types.StringValue(v))
+			}
+		}
 		if resp.UpdatedAt != nil {
 			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 		} else {
@@ -50,13 +56,13 @@ func (r *AppResourceTypeResourceModel) ToSharedAppResourceTypeInput() *shared.Ap
 	} else {
 		displayName = nil
 	}
+	var traitIds []string = []string{}
+	for _, traitIdsItem := range r.TraitIds {
+		traitIds = append(traitIds, traitIdsItem.ValueString())
+	}
 	out := shared.AppResourceTypeInput{
 		DisplayName: displayName,
+		TraitIds:    traitIds,
 	}
-	return &out
-}
-
-func (r *AppResourceTypeResourceModel) ToSharedDeleteManuallyManagedResourceTypeRequest() *shared.DeleteManuallyManagedResourceTypeRequest {
-	out := shared.DeleteManuallyManagedResourceTypeRequest{}
 	return &out
 }

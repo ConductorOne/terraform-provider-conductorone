@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_tableau Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_tableau Resource - conductorone"
 subcategory: ""
 description: |-
   Tableau Integration Resource

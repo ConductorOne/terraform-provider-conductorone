@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_expensify Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_expensify Resource - conductorone"
 subcategory: ""
 description: |-
   Expensify Integration Resource

@@ -3,30 +3,98 @@
 package provider
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"time"
 )
 
+func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest() *shared.SearchAppResourceTypesRequest {
+	var appIds []string = []string{}
+	for _, appIdsItem := range r.AppIds {
+		appIds = append(appIds, appIdsItem.ValueString())
+	}
+	var appUserIds []string = []string{}
+	for _, appUserIdsItem := range r.AppUserIds {
+		appUserIds = append(appUserIds, appUserIdsItem.ValueString())
+	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
+	var excludeResourceTypeIds []string = []string{}
+	for _, excludeResourceTypeIdsItem := range r.ExcludeResourceTypeIds {
+		excludeResourceTypeIds = append(excludeResourceTypeIds, excludeResourceTypeIdsItem.ValueString())
+	}
+	var excludeResourceTypeTraitIds []string = []string{}
+	for _, excludeResourceTypeTraitIdsItem := range r.ExcludeResourceTypeTraitIds {
+		excludeResourceTypeTraitIds = append(excludeResourceTypeTraitIds, excludeResourceTypeTraitIdsItem.ValueString())
+	}
+	pageSize := new(int)
+	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
+		*pageSize = int(r.PageSize.ValueInt32())
+	} else {
+		pageSize = nil
+	}
+	pageToken := new(string)
+	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
+		*pageToken = r.PageToken.ValueString()
+	} else {
+		pageToken = nil
+	}
+	query := new(string)
+	if !r.Query.IsUnknown() && !r.Query.IsNull() {
+		*query = r.Query.ValueString()
+	} else {
+		query = nil
+	}
+	var resourceTypeIds []string = []string{}
+	for _, resourceTypeIdsItem := range r.ResourceTypeIds {
+		resourceTypeIds = append(resourceTypeIds, resourceTypeIdsItem.ValueString())
+	}
+	var resourceTypeTraitIds []string = []string{}
+	for _, resourceTypeTraitIdsItem := range r.ResourceTypeTraitIds {
+		resourceTypeTraitIds = append(resourceTypeTraitIds, resourceTypeTraitIdsItem.ValueString())
+	}
+	out := shared.SearchAppResourceTypesRequest{
+		AppIds:                      appIds,
+		AppUserIds:                  appUserIds,
+		DisplayName:                 displayName,
+		ExcludeResourceTypeIds:      excludeResourceTypeIds,
+		ExcludeResourceTypeTraitIds: excludeResourceTypeTraitIds,
+		PageSize:                    pageSize,
+		PageToken:                   pageToken,
+		Query:                       query,
+		ResourceTypeIds:             resourceTypeIds,
+		ResourceTypeTraitIds:        resourceTypeTraitIds,
+	}
+	return &out
+}
+
 func (r *AppResourceTypeDataSourceModel) RefreshFromSharedAppResourceType(resp *shared.AppResourceType) {
-	if resp != nil {
-		r.AppID = types.StringPointerValue(resp.AppID)
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
+	r.AppID = types.StringPointerValue(resp.AppID)
+	if resp.CreatedAt != nil {
+		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+	} else {
+		r.CreatedAt = types.StringNull()
+	}
+	if resp.DeletedAt != nil {
+		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+	} else {
+		r.DeletedAt = types.StringNull()
+	}
+	r.DisplayName = types.StringPointerValue(resp.DisplayName)
+	r.ID = types.StringPointerValue(resp.ID)
+	if resp.TraitIds != nil {
+		r.TraitIds = make([]types.String, 0, len(resp.TraitIds))
+		for _, v := range resp.TraitIds {
+			r.TraitIds = append(r.TraitIds, types.StringValue(v))
 		}
-		if resp.DeletedAt != nil {
-			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			r.DeletedAt = types.StringNull()
-		}
-		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		r.ID = types.StringPointerValue(resp.ID)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+	}
+	if resp.UpdatedAt != nil {
+		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+	} else {
+		r.UpdatedAt = types.StringNull()
 	}
 }

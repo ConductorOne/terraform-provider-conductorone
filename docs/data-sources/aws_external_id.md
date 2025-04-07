@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_aws_external_id Data Source - terraform-provider-conductorone"
+page_title: "conductorone_aws_external_id Data Source - conductorone"
 subcategory: ""
 description: |-
   AwsExternalID DataSource
@@ -14,7 +14,7 @@ The AWS External Id datasource allows you to retrieve the AWS External Id for yo
 ## Example Usage
 
 ```terraform
-data "conductorone_aws_external_id" "aws_external_id" {
+data "conductorone_aws_external_id" "my_aws_external_id" {
 }
 ```
 

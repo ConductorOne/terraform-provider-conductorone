@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_bamboo_hr Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_bamboo_hr Resource - conductorone"
 subcategory: ""
 description: |-
   Bamboo_hr Integration Resource

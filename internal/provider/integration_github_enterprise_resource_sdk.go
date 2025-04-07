@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -44,7 +44,7 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToCreateSDKType() (*shared.Co
 	out := shared.ConnectorServiceCreateRequest{
 		CatalogID: catalogID,
 		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
+		Config: &shared.Config{
 			AtType: sdk.String(envConfigType),
 			AdditionalProperties: map[string]interface{}{
 				"configuration": configOut,
@@ -54,7 +54,7 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToCreateSDKType() (*shared.Co
 	return &out, nil
 }
 
-func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -75,7 +75,7 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Co
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("GitHub Enterprise"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(githubEnterpriseCatalogID),

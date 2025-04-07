@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_snipe_it Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_snipe_it Resource - conductorone"
 subcategory: ""
 description: |-
   Snipe_it Integration Resource

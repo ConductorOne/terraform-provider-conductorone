@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement_owner Resource - terraform-provider-conductorone"
+page_title: "conductorone_app_entitlement_owner Resource - conductorone"
 subcategory: ""
 description: |-
   AppEntitlementOwner Resource
@@ -17,12 +17,11 @@ Note: The owners you set here will replace any existing owners for the entitleme
 ## Example Usage
 
 ```terraform
-resource "conductorone_app_entitlement_owner" "okta_test_admin_myself" {
-  entitlement_id = data.conductorone_app_entitlement.okta_test_admin.id
-  app_id         = data.conductorone_app_entitlement.okta_test_admin.app_id
+resource "conductorone_app_entitlement_owner" "my_app_entitlement_owner" {
+  app_id         = "...my_app_id..."
+  entitlement_id = "...my_entitlement_id..."
   user_ids = [
-    data.conductorone_user.my_user.id,
-    "...",
+    "..."
   ]
 }
 ```
@@ -32,6 +31,9 @@ resource "conductorone_app_entitlement_owner" "okta_test_admin_myself" {
 
 ### Required
 
-- `app_id` (String)
-- `entitlement_id` (String)
-- `user_ids` (List of String) The user_ids field for the users to set as an owner of the app entitlement.
+- `app_id` (String) Requires replacement if changed.
+- `entitlement_id` (String) Requires replacement if changed.
+
+### Optional
+
+- `user_ids` (List of String) The user_ids field for the users to set as an owner of the app entitlement. Requires replacement if changed.

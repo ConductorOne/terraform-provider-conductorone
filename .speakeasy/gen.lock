@@ -1,0 +1,2253 @@
+lockVersion: 2.0.0
+id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
+management:
+  docChecksum: 56737430fb42af43565ece4e9aa42a14
+  docVersion: 0.1.0-alpha
+  speakeasyVersion: 1.513.7
+  generationVersion: 2.545.7
+  releaseVersion: 0.6.3
+  configChecksum: cfec2afdb0d8e8c72fe077cee46fc517
+features:
+  terraform:
+    additionalDependencies: 0.1.0
+    additionalProperties: 0.1.2
+    core: 3.36.1
+    deprecations: 2.82.0
+    devContainers: 0.0.0
+    envVarSecurityUsage: 0.1.0
+    globalSecurity: 2.81.10
+    globalServerURLs: 2.82.1
+    groups: 2.81.2
+    ignores: 2.81.1
+    includes: 2.81.1
+    inputOutputModels: 2.83.0
+    nameOverrides: 2.81.2
+    nullables: 0.0.0
+    typeOverrides: 2.81.1
+generatedFiles:
+  - .gitattributes
+  - USAGE.md
+  - examples/README.md
+  - examples/data-sources/conductorone_access_profile/data-source.tf
+  - examples/data-sources/conductorone_app/data-source.tf
+  - examples/data-sources/conductorone_app_entitlement/data-source.tf
+  - examples/data-sources/conductorone_app_entitlement_automation/data-source.tf
+  - examples/data-sources/conductorone_app_entitlement_proxy_binding/data-source.tf
+  - examples/data-sources/conductorone_app_resource/data-source.tf
+  - examples/data-sources/conductorone_app_resource_type/data-source.tf
+  - examples/data-sources/conductorone_aws_external_id/data-source.tf
+  - examples/data-sources/conductorone_bundle_automation/data-source.tf
+  - examples/data-sources/conductorone_compliance_framework/data-source.tf
+  - examples/data-sources/conductorone_connector_credential/data-source.tf
+  - examples/data-sources/conductorone_policy/data-source.tf
+  - examples/data-sources/conductorone_risk_level/data-source.tf
+  - examples/data-sources/conductorone_user/data-source.tf
+  - examples/data-sources/conductorone_webhook/data-source.tf
+  - examples/provider/provider.tf
+  - examples/resources/conductorone_access_profile/import.sh
+  - examples/resources/conductorone_access_profile/resource.tf
+  - examples/resources/conductorone_access_profile_requestable_entries/resource.tf
+  - examples/resources/conductorone_access_profile_visibility_bindings/resource.tf
+  - examples/resources/conductorone_app/import.sh
+  - examples/resources/conductorone_app/resource.tf
+  - examples/resources/conductorone_app_entitlement_automation/import.sh
+  - examples/resources/conductorone_app_entitlement_automation/resource.tf
+  - examples/resources/conductorone_app_entitlement_owner/resource.tf
+  - examples/resources/conductorone_app_entitlement_proxy_binding/import.sh
+  - examples/resources/conductorone_app_entitlement_proxy_binding/resource.tf
+  - examples/resources/conductorone_app_owner/resource.tf
+  - examples/resources/conductorone_app_resource/import.sh
+  - examples/resources/conductorone_app_resource/resource.tf
+  - examples/resources/conductorone_app_resource_type/import.sh
+  - examples/resources/conductorone_app_resource_type/resource.tf
+  - examples/resources/conductorone_compliance_framework/import.sh
+  - examples/resources/conductorone_compliance_framework/resource.tf
+  - examples/resources/conductorone_connector_credential/import.sh
+  - examples/resources/conductorone_connector_credential/resource.tf
+  - examples/resources/conductorone_custom_app_entitlement/import.sh
+  - examples/resources/conductorone_custom_app_entitlement/resource.tf
+  - examples/resources/conductorone_policy/import.sh
+  - examples/resources/conductorone_policy/resource.tf
+  - examples/resources/conductorone_risk_level/import.sh
+  - examples/resources/conductorone_risk_level/resource.tf
+  - examples/resources/conductorone_webhook/import.sh
+  - examples/resources/conductorone_webhook/resource.tf
+  - go.mod
+  - go.sum
+  - internal/planmodifiers/boolplanmodifier/suppress_diff.go
+  - internal/planmodifiers/float32planmodifier/suppress_diff.go
+  - internal/planmodifiers/float64planmodifier/suppress_diff.go
+  - internal/planmodifiers/int32planmodifier/suppress_diff.go
+  - internal/planmodifiers/int64planmodifier/suppress_diff.go
+  - internal/planmodifiers/listplanmodifier/suppress_diff.go
+  - internal/planmodifiers/mapplanmodifier/suppress_diff.go
+  - internal/planmodifiers/numberplanmodifier/suppress_diff.go
+  - internal/planmodifiers/objectplanmodifier/suppress_diff.go
+  - internal/planmodifiers/setplanmodifier/suppress_diff.go
+  - internal/planmodifiers/stringplanmodifier/suppress_diff.go
+  - internal/planmodifiers/utils/state_check.go
+  - internal/provider/access_profile_data_source.go
+  - internal/provider/access_profile_data_source_sdk.go
+  - internal/provider/access_profile_requestable_entries_resource.go
+  - internal/provider/access_profile_requestable_entries_resource_sdk.go
+  - internal/provider/access_profile_resource.go
+  - internal/provider/access_profile_resource_sdk.go
+  - internal/provider/access_profile_visibility_bindings_resource.go
+  - internal/provider/access_profile_visibility_bindings_resource_sdk.go
+  - internal/provider/app_data_source.go
+  - internal/provider/app_data_source_sdk.go
+  - internal/provider/app_entitlement_automation_data_source.go
+  - internal/provider/app_entitlement_automation_data_source_sdk.go
+  - internal/provider/app_entitlement_automation_resource.go
+  - internal/provider/app_entitlement_automation_resource_sdk.go
+  - internal/provider/app_entitlement_data_source.go
+  - internal/provider/app_entitlement_data_source_sdk.go
+  - internal/provider/app_entitlement_owner_resource.go
+  - internal/provider/app_entitlement_owner_resource_sdk.go
+  - internal/provider/app_entitlement_proxy_binding_data_source.go
+  - internal/provider/app_entitlement_proxy_binding_data_source_sdk.go
+  - internal/provider/app_entitlement_proxy_binding_resource.go
+  - internal/provider/app_entitlement_proxy_binding_resource_sdk.go
+  - internal/provider/app_owner_resource.go
+  - internal/provider/app_owner_resource_sdk.go
+  - internal/provider/app_resource.go
+  - internal/provider/app_resource_data_source.go
+  - internal/provider/app_resource_data_source_sdk.go
+  - internal/provider/app_resource_resource.go
+  - internal/provider/app_resource_resource_sdk.go
+  - internal/provider/app_resource_sdk.go
+  - internal/provider/app_resource_type_data_source.go
+  - internal/provider/app_resource_type_data_source_sdk.go
+  - internal/provider/app_resource_type_resource.go
+  - internal/provider/app_resource_type_resource_sdk.go
+  - internal/provider/aws_external_id_data_source.go
+  - internal/provider/aws_external_id_data_source_sdk.go
+  - internal/provider/bundleautomation_data_source.go
+  - internal/provider/bundleautomation_data_source_sdk.go
+  - internal/provider/compliance_framework_data_source.go
+  - internal/provider/compliance_framework_data_source_sdk.go
+  - internal/provider/compliance_framework_resource.go
+  - internal/provider/compliance_framework_resource_sdk.go
+  - internal/provider/connectorcredential_data_source.go
+  - internal/provider/connectorcredential_data_source_sdk.go
+  - internal/provider/connectorcredential_resource.go
+  - internal/provider/connectorcredential_resource_sdk.go
+  - internal/provider/custom_app_entitlement_resource.go
+  - internal/provider/custom_app_entitlement_resource_sdk.go
+  - internal/provider/policy_data_source.go
+  - internal/provider/policy_data_source_sdk.go
+  - internal/provider/policy_resource.go
+  - internal/provider/policy_resource_sdk.go
+  - internal/provider/reflect/diags.go
+  - internal/provider/reflect/doc.go
+  - internal/provider/reflect/generic_attr_value.go
+  - internal/provider/reflect/helpers.go
+  - internal/provider/reflect/interfaces.go
+  - internal/provider/reflect/into.go
+  - internal/provider/reflect/map.go
+  - internal/provider/reflect/number.go
+  - internal/provider/reflect/options.go
+  - internal/provider/reflect/outof.go
+  - internal/provider/reflect/pointer.go
+  - internal/provider/reflect/primitive.go
+  - internal/provider/reflect/slice.go
+  - internal/provider/reflect/struct.go
+  - internal/provider/risk_level_data_source.go
+  - internal/provider/risk_level_data_source_sdk.go
+  - internal/provider/risk_level_resource.go
+  - internal/provider/risk_level_resource_sdk.go
+  - internal/provider/types/accept.go
+  - internal/provider/types/account_provision.go
+  - internal/provider/types/account_provision_config.go
+  - internal/provider/types/app_entitlement_automation_last_run_status.go
+  - internal/provider/types/app_entitlement_automation_rule_basic.go
+  - internal/provider/types/app_entitlement_automation_rule_cel.go
+  - internal/provider/types/app_entitlement_automation_rule_entitlement.go
+  - internal/provider/types/app_entitlement_automation_rule_none.go
+  - internal/provider/types/app_entitlement_duration_unset.go
+  - internal/provider/types/app_entitlement_ref.go
+  - internal/provider/types/app_group_approval.go
+  - internal/provider/types/app_owner_approval.go
+  - internal/provider/types/app_resource_service_get_response_expanded.go
+  - internal/provider/types/app_resource_type_service_get_response_expanded.go
+  - internal/provider/types/approval.go
+  - internal/provider/types/bundle_automation_last_run_state.go
+  - internal/provider/types/bundle_automation_rule_entitlement.go
+  - internal/provider/types/connector_provision.go
+  - internal/provider/types/create_app_entitlement_request_duration_unset.go
+  - internal/provider/types/default_behavior.go
+  - internal/provider/types/delegated_provision.go
+  - internal/provider/types/entitlement_owner_approval.go
+  - internal/provider/types/expression_approval.go
+  - internal/provider/types/external_ticket_provision.go
+  - internal/provider/types/get_app_entitlement_proxy_response_expanded.go
+  - internal/provider/types/get_app_entitlement_response_expanded.go
+  - internal/provider/types/manager_approval.go
+  - internal/provider/types/manual_provision.go
+  - internal/provider/types/policy_post_actions.go
+  - internal/provider/types/policy_ref.go
+  - internal/provider/types/policy_step.go
+  - internal/provider/types/policy_steps.go
+  - internal/provider/types/profile.go
+  - internal/provider/types/provision.go
+  - internal/provider/types/provision_policy.go
+  - internal/provider/types/provision_target.go
+  - internal/provider/types/reject.go
+  - internal/provider/types/request_catalog_management_service_get_response_expanded.go
+  - internal/provider/types/resource_owner_approval.go
+  - internal/provider/types/rule.go
+  - internal/provider/types/search_users_response_expanded.go
+  - internal/provider/types/self_approval.go
+  - internal/provider/types/user_approval.go
+  - internal/provider/types/user_attribute_mapping_source.go
+  - internal/provider/types/user_ref.go
+  - internal/provider/types/wait.go
+  - internal/provider/types/wait_condition.go
+  - internal/provider/types/webhook_approval.go
+  - internal/provider/types/webhook_provision.go
+  - internal/provider/types/webhook_ref.go
+  - internal/provider/user_data_source.go
+  - internal/provider/user_data_source_sdk.go
+  - internal/provider/utils.go
+  - internal/provider/webhook_data_source.go
+  - internal/provider/webhook_data_source_sdk.go
+  - internal/provider/webhook_resource.go
+  - internal/provider/webhook_resource_sdk.go
+  - internal/sdk/.gitattributes
+  - internal/sdk/accountprovisionpolicytest.go
+  - internal/sdk/appaccessrequestsdefaults.go
+  - internal/sdk/appentitlementowners.go
+  - internal/sdk/appentitlements.go
+  - internal/sdk/appentitlementsearch.go
+  - internal/sdk/appentitlementsproxy.go
+  - internal/sdk/appentitlementuserbinding.go
+  - internal/sdk/appowners.go
+  - internal/sdk/appreport.go
+  - internal/sdk/appreportaction.go
+  - internal/sdk/appresource.go
+  - internal/sdk/appresourceowners.go
+  - internal/sdk/appresourcesearch.go
+  - internal/sdk/appresourcetype.go
+  - internal/sdk/apps.go
+  - internal/sdk/appsearch.go
+  - internal/sdk/appusagecontrols.go
+  - internal/sdk/appuser.go
+  - internal/sdk/attributes.go
+  - internal/sdk/attributesearch.go
+  - internal/sdk/auth.go
+  - internal/sdk/awsexternalidsettings.go
+  - internal/sdk/conductoroneapi.go
+  - internal/sdk/connector.go
+  - internal/sdk/directory.go
+  - internal/sdk/export.go
+  - internal/sdk/exportssearch.go
+  - internal/sdk/internal/hooks/hooks.go
+  - internal/sdk/internal/utils/contenttype.go
+  - internal/sdk/internal/utils/env.go
+  - internal/sdk/internal/utils/form.go
+  - internal/sdk/internal/utils/headers.go
+  - internal/sdk/internal/utils/json.go
+  - internal/sdk/internal/utils/pathparams.go
+  - internal/sdk/internal/utils/queryparams.go
+  - internal/sdk/internal/utils/requestbody.go
+  - internal/sdk/internal/utils/retries.go
+  - internal/sdk/internal/utils/security.go
+  - internal/sdk/internal/utils/utils.go
+  - internal/sdk/models/errors/sdkerror.go
+  - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicecancelappaccessrequestsdefaults.go
+  - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicecreateappaccessrequestsdefaults.go
+  - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicegetappaccessrequestsdefaults.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementownersadd.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementownerslist.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementownersremove.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementownersset.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsaddautomationexclusion.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsaddmanuallymanagedmembers.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementscreate.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementscreateautomation.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsdelete.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsdeleteautomation.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsearchservicesearch.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsearchservicesearchappentitlementsforappuser.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsearchservicesearchappentitlementswithexpired.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsget.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsgetautomation.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementslist.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementslistautomationexclusions.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementslistforappresource.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementslistforappuser.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementslistusers.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsproxycreate.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsproxydelete.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsproxyget.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsremoveautomationexclusion.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsremoveentitlementmembership.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsupdate.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsupdateautomation.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementuserbindingservicelistappusersforidentitywithgrant.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementuserbindingservicesearchgrantfeed.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementuserbindingservicesearchpastgrants.go
+  - internal/sdk/models/operations/c1apiappv1appownersadd.go
+  - internal/sdk/models/operations/c1apiappv1appownerslist.go
+  - internal/sdk/models/operations/c1apiappv1appownersremove.go
+  - internal/sdk/models/operations/c1apiappv1appownersset.go
+  - internal/sdk/models/operations/c1apiappv1appreportactionservicegeneratereport.go
+  - internal/sdk/models/operations/c1apiappv1appreportservicelist.go
+  - internal/sdk/models/operations/c1apiappv1appresourceownersadd.go
+  - internal/sdk/models/operations/c1apiappv1appresourceownerslist.go
+  - internal/sdk/models/operations/c1apiappv1appresourceownersremove.go
+  - internal/sdk/models/operations/c1apiappv1appresourcesearchsearchappresourcetypes.go
+  - internal/sdk/models/operations/c1apiappv1appresourceservicecreatemanuallymanagedappresource.go
+  - internal/sdk/models/operations/c1apiappv1appresourceservicedeletemanuallymanagedappresource.go
+  - internal/sdk/models/operations/c1apiappv1appresourceserviceget.go
+  - internal/sdk/models/operations/c1apiappv1appresourceservicelist.go
+  - internal/sdk/models/operations/c1apiappv1appresourceserviceupdate.go
+  - internal/sdk/models/operations/c1apiappv1appresourcetypeservicecreatemanuallymanagedresourcetype.go
+  - internal/sdk/models/operations/c1apiappv1appresourcetypeservicedeletemanuallymanagedresourcetype.go
+  - internal/sdk/models/operations/c1apiappv1appresourcetypeserviceget.go
+  - internal/sdk/models/operations/c1apiappv1appresourcetypeservicelist.go
+  - internal/sdk/models/operations/c1apiappv1appresourcetypeserviceupdatemanuallymanagedresourcetype.go
+  - internal/sdk/models/operations/c1apiappv1appscreate.go
+  - internal/sdk/models/operations/c1apiappv1appsdelete.go
+  - internal/sdk/models/operations/c1apiappv1appsearchsearch.go
+  - internal/sdk/models/operations/c1apiappv1appsget.go
+  - internal/sdk/models/operations/c1apiappv1appslist.go
+  - internal/sdk/models/operations/c1apiappv1appsupdate.go
+  - internal/sdk/models/operations/c1apiappv1appusagecontrolsserviceget.go
+  - internal/sdk/models/operations/c1apiappv1appusagecontrolsserviceupdate.go
+  - internal/sdk/models/operations/c1apiappv1appuserservicelist.go
+  - internal/sdk/models/operations/c1apiappv1appuserservicelistappusercredentials.go
+  - internal/sdk/models/operations/c1apiappv1appuserservicelistappusersforuser.go
+  - internal/sdk/models/operations/c1apiappv1appuserservicesearch.go
+  - internal/sdk/models/operations/c1apiappv1appuserserviceupdate.go
+  - internal/sdk/models/operations/c1apiappv1connectorservicecreate.go
+  - internal/sdk/models/operations/c1apiappv1connectorservicecreatedelegated.go
+  - internal/sdk/models/operations/c1apiappv1connectorservicedelete.go
+  - internal/sdk/models/operations/c1apiappv1connectorserviceforcesync.go
+  - internal/sdk/models/operations/c1apiappv1connectorserviceget.go
+  - internal/sdk/models/operations/c1apiappv1connectorservicegetcredentials.go
+  - internal/sdk/models/operations/c1apiappv1connectorservicelist.go
+  - internal/sdk/models/operations/c1apiappv1connectorservicerevokecredential.go
+  - internal/sdk/models/operations/c1apiappv1connectorservicerotatecredential.go
+  - internal/sdk/models/operations/c1apiappv1connectorserviceupdate.go
+  - internal/sdk/models/operations/c1apiappv1connectorserviceupdatedelegated.go
+  - internal/sdk/models/operations/c1apiattributev1attributescreateattributevalue.go
+  - internal/sdk/models/operations/c1apiattributev1attributescreatecomplianceframeworkattributevalue.go
+  - internal/sdk/models/operations/c1apiattributev1attributescreaterisklevelattributevalue.go
+  - internal/sdk/models/operations/c1apiattributev1attributesdeleteattributevalue.go
+  - internal/sdk/models/operations/c1apiattributev1attributesdeletecomplianceframeworkattributevalue.go
+  - internal/sdk/models/operations/c1apiattributev1attributesdeleterisklevelattributevalue.go
+  - internal/sdk/models/operations/c1apiattributev1attributesearchsearchattributevalues.go
+  - internal/sdk/models/operations/c1apiattributev1attributesgetattributevalue.go
+  - internal/sdk/models/operations/c1apiattributev1attributesgetcomplianceframeworkattributevalue.go
+  - internal/sdk/models/operations/c1apiattributev1attributesgetrisklevelattributevalue.go
+  - internal/sdk/models/operations/c1apiattributev1attributeslistattributetypes.go
+  - internal/sdk/models/operations/c1apiattributev1attributeslistattributevalues.go
+  - internal/sdk/models/operations/c1apiauthv1authintrospect.go
+  - internal/sdk/models/operations/c1apidirectoryv1directoryservicecreate.go
+  - internal/sdk/models/operations/c1apidirectoryv1directoryservicedelete.go
+  - internal/sdk/models/operations/c1apidirectoryv1directoryserviceget.go
+  - internal/sdk/models/operations/c1apidirectoryv1directoryservicelist.go
+  - internal/sdk/models/operations/c1apiiamv1personalclientsearchservicesearch.go
+  - internal/sdk/models/operations/c1apiiamv1personalclientservicecreate.go
+  - internal/sdk/models/operations/c1apiiamv1personalclientservicedelete.go
+  - internal/sdk/models/operations/c1apiiamv1personalclientserviceget.go
+  - internal/sdk/models/operations/c1apiiamv1personalclientservicelist.go
+  - internal/sdk/models/operations/c1apiiamv1personalclientserviceupdate.go
+  - internal/sdk/models/operations/c1apiiamv1rolesget.go
+  - internal/sdk/models/operations/c1apiiamv1roleslist.go
+  - internal/sdk/models/operations/c1apiiamv1rolesupdate.go
+  - internal/sdk/models/operations/c1apipolicyv1accountprovisionpolicytesttest.go
+  - internal/sdk/models/operations/c1apipolicyv1policiescreate.go
+  - internal/sdk/models/operations/c1apipolicyv1policiesdelete.go
+  - internal/sdk/models/operations/c1apipolicyv1policiesget.go
+  - internal/sdk/models/operations/c1apipolicyv1policieslist.go
+  - internal/sdk/models/operations/c1apipolicyv1policiesupdate.go
+  - internal/sdk/models/operations/c1apipolicyv1policysearchsearch.go
+  - internal/sdk/models/operations/c1apipolicyv1policyvalidatevalidatecel.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceaddaccessentitlements.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceaddappentitlements.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicecreate.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicedelete.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceforcerunbundleautomation.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceget.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicegetbundleautomation.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelist.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementsforaccess.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementspercatalog.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceremoveaccessentitlements.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceremoveappentitlements.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicesetbundleautomation.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceupdate.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogsearchservicesearchentitlements.go
+  - internal/sdk/models/operations/c1apisettingsv1awsexternalidsettingsget.go
+  - internal/sdk/models/operations/c1apisettingsv1sessionsettingsserviceget.go
+  - internal/sdk/models/operations/c1apisettingsv1sessionsettingsservicetestsourceip.go
+  - internal/sdk/models/operations/c1apisettingsv1sessionsettingsserviceupdate.go
+  - internal/sdk/models/operations/c1apisystemlogv1exportservicecreate.go
+  - internal/sdk/models/operations/c1apisystemlogv1exportservicedelete.go
+  - internal/sdk/models/operations/c1apisystemlogv1exportserviceget.go
+  - internal/sdk/models/operations/c1apisystemlogv1exportservicelist.go
+  - internal/sdk/models/operations/c1apisystemlogv1exportservicelistevents.go
+  - internal/sdk/models/operations/c1apisystemlogv1exportserviceupdate.go
+  - internal/sdk/models/operations/c1apisystemlogv1exportssearchservicesearch.go
+  - internal/sdk/models/operations/c1apisystemlogv1systemlogservicelistevents.go
+  - internal/sdk/models/operations/c1apitaskv1taskactionsserviceapprove.go
+  - internal/sdk/models/operations/c1apitaskv1taskactionsservicecomment.go
+  - internal/sdk/models/operations/c1apitaskv1taskactionsservicedeny.go
+  - internal/sdk/models/operations/c1apitaskv1taskactionsserviceescalatetoemergencyaccess.go
+  - internal/sdk/models/operations/c1apitaskv1taskactionsservicehardreset.go
+  - internal/sdk/models/operations/c1apitaskv1taskactionsserviceprocessnow.go
+  - internal/sdk/models/operations/c1apitaskv1taskactionsservicereassign.go
+  - internal/sdk/models/operations/c1apitaskv1taskactionsservicerestart.go
+  - internal/sdk/models/operations/c1apitaskv1tasksearchservicesearch.go
+  - internal/sdk/models/operations/c1apitaskv1taskservicecreategranttask.go
+  - internal/sdk/models/operations/c1apitaskv1taskservicecreateoffboardingtask.go
+  - internal/sdk/models/operations/c1apitaskv1taskservicecreaterevoketask.go
+  - internal/sdk/models/operations/c1apitaskv1taskserviceget.go
+  - internal/sdk/models/operations/c1apiuserv1usersearchsearch.go
+  - internal/sdk/models/operations/c1apiuserv1userserviceget.go
+  - internal/sdk/models/operations/c1apiuserv1userservicelist.go
+  - internal/sdk/models/operations/c1apiwebhooksv1webhookssearchsearch.go
+  - internal/sdk/models/operations/c1apiwebhooksv1webhooksservicecreate.go
+  - internal/sdk/models/operations/c1apiwebhooksv1webhooksservicedelete.go
+  - internal/sdk/models/operations/c1apiwebhooksv1webhooksserviceget.go
+  - internal/sdk/models/operations/c1apiwebhooksv1webhooksservicelist.go
+  - internal/sdk/models/operations/c1apiwebhooksv1webhooksservicetest.go
+  - internal/sdk/models/operations/c1apiwebhooksv1webhooksserviceupdate.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowexecutionactionsserviceterminateworkflow.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowexecutionsearchservicesearchworkflowexecutions.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowexecutionservicegetworkflowexecution.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowexecutionservicelistworkflowexecutions.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowsearchservicesearchworkflows.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowservicecreateworkflow.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowservicedeleteworkflow.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowserviceexecuteworkflow.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowservicegetworkflow.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowservicelistworkflows.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowserviceupdateworkflow.go
+  - internal/sdk/models/operations/options.go
+  - internal/sdk/models/shared/accept.go
+  - internal/sdk/models/shared/acceptinstance.go
+  - internal/sdk/models/shared/accountprovision.go
+  - internal/sdk/models/shared/addappentitlementownerrequest.go
+  - internal/sdk/models/shared/addappentitlementownerresponse.go
+  - internal/sdk/models/shared/addappownerrequest.go
+  - internal/sdk/models/shared/addappownerresponse.go
+  - internal/sdk/models/shared/addappresourceownerrequest.go
+  - internal/sdk/models/shared/addappresourceownerresponse.go
+  - internal/sdk/models/shared/addautomationexclusionrequest.go
+  - internal/sdk/models/shared/addautomationexclusionresponse.go
+  - internal/sdk/models/shared/addmanuallymanagedusersrequest.go
+  - internal/sdk/models/shared/app.go
+  - internal/sdk/models/shared/appaccessrequestdefaults.go
+  - internal/sdk/models/shared/appactionsservicegeneratereportrequest.go
+  - internal/sdk/models/shared/appactionsservicegeneratereportresponse.go
+  - internal/sdk/models/shared/appentitlement.go
+  - internal/sdk/models/shared/appentitlementautomation.go
+  - internal/sdk/models/shared/appentitlementautomationinput.go
+  - internal/sdk/models/shared/appentitlementautomationlastrunstatus.go
+  - internal/sdk/models/shared/appentitlementautomationlastrunstatusinput.go
+  - internal/sdk/models/shared/appentitlementautomationrulebasic.go
+  - internal/sdk/models/shared/appentitlementautomationrulecel.go
+  - internal/sdk/models/shared/appentitlementautomationruleentitlement.go
+  - internal/sdk/models/shared/appentitlementautomationrulenone.go
+  - internal/sdk/models/shared/appentitlementproxy.go
+  - internal/sdk/models/shared/appentitlementproxyview.go
+  - internal/sdk/models/shared/appentitlementref.go
+  - internal/sdk/models/shared/appentitlementreference.go
+  - internal/sdk/models/shared/appentitlementsearchservicesearchrequest.go
+  - internal/sdk/models/shared/appentitlementsearchservicesearchresponse.go
+  - internal/sdk/models/shared/appentitlementservicegetautomationresponse.go
+  - internal/sdk/models/shared/appentitlementserviceupdateautomationrequest.go
+  - internal/sdk/models/shared/appentitlementserviceupdateautomationresponse.go
+  - internal/sdk/models/shared/appentitlementuserbinding.go
+  - internal/sdk/models/shared/appentitlementuserbindingexpandhistorymask.go
+  - internal/sdk/models/shared/appentitlementuserbindingfeed.go
+  - internal/sdk/models/shared/appentitlementuserbindingfeedview.go
+  - internal/sdk/models/shared/appentitlementuserbindinghistory.go
+  - internal/sdk/models/shared/appentitlementuserbindinghistoryview.go
+  - internal/sdk/models/shared/appentitlementuserview.go
+  - internal/sdk/models/shared/appentitlementview.go
+  - internal/sdk/models/shared/appentitlementwithexpired.go
+  - internal/sdk/models/shared/appentitlementwithuserbindings.go
+  - internal/sdk/models/shared/appgroupapproval.go
+  - internal/sdk/models/shared/appmanagedstatebindingref.go
+  - internal/sdk/models/shared/appownerapproval.go
+  - internal/sdk/models/shared/apppopulationreport.go
+  - internal/sdk/models/shared/appref.go
+  - internal/sdk/models/shared/appreportservicelistresponse.go
+  - internal/sdk/models/shared/appresource.go
+  - internal/sdk/models/shared/appresourceinput.go
+  - internal/sdk/models/shared/appresourceservicegetresponse.go
+  - internal/sdk/models/shared/appresourceservicelistresponse.go
+  - internal/sdk/models/shared/appresourceserviceupdaterequest.go
+  - internal/sdk/models/shared/appresourceserviceupdateresponse.go
+  - internal/sdk/models/shared/appresourcetype.go
+  - internal/sdk/models/shared/appresourcetypeinput.go
+  - internal/sdk/models/shared/appresourcetypeservicegetresponse.go
+  - internal/sdk/models/shared/appresourcetypeservicelistresponse.go
+  - internal/sdk/models/shared/appresourcetypeview.go
+  - internal/sdk/models/shared/appresourceview.go
+  - internal/sdk/models/shared/approval.go
+  - internal/sdk/models/shared/approvalinput.go
+  - internal/sdk/models/shared/approvalinstance.go
+  - internal/sdk/models/shared/approvedaction.go
+  - internal/sdk/models/shared/appusagecontrols.go
+  - internal/sdk/models/shared/appuser.go
+  - internal/sdk/models/shared/appusercredential.go
+  - internal/sdk/models/shared/appuserref.go
+  - internal/sdk/models/shared/appuserservicelistcredentialsresponse.go
+  - internal/sdk/models/shared/appuserservicelistresponse.go
+  - internal/sdk/models/shared/appuserservicesearchrequest.go
+  - internal/sdk/models/shared/appuserservicesearchresponse.go
+  - internal/sdk/models/shared/appuserserviceupdaterequest.go
+  - internal/sdk/models/shared/appuserserviceupdateresponse.go
+  - internal/sdk/models/shared/appusersforuserservicelistresponse.go
+  - internal/sdk/models/shared/appuserstatus.go
+  - internal/sdk/models/shared/appuserstatusinput.go
+  - internal/sdk/models/shared/appuserview.go
+  - internal/sdk/models/shared/attributetype.go
+  - internal/sdk/models/shared/attributevalue.go
+  - internal/sdk/models/shared/awsexternalid.go
+  - internal/sdk/models/shared/body.go
+  - internal/sdk/models/shared/bundleautomation.go
+  - internal/sdk/models/shared/bundleautomationlastrunstate.go
+  - internal/sdk/models/shared/bundleautomationruleentitlement.go
+  - internal/sdk/models/shared/cancelaccessrequestdefaultsrequest.go
+  - internal/sdk/models/shared/cancelledaction.go
+  - internal/sdk/models/shared/cidrrestriction.go
+  - internal/sdk/models/shared/closeaction.go
+  - internal/sdk/models/shared/completedaction.go
+  - internal/sdk/models/shared/conditionsucceeded.go
+  - internal/sdk/models/shared/conditiontimedout.go
+  - internal/sdk/models/shared/connector.go
+  - internal/sdk/models/shared/connectorcredential.go
+  - internal/sdk/models/shared/connectorprovision.go
+  - internal/sdk/models/shared/connectorservicecreatedelegatedrequest.go
+  - internal/sdk/models/shared/connectorservicecreaterequest.go
+  - internal/sdk/models/shared/connectorservicecreateresponse.go
+  - internal/sdk/models/shared/connectorservicedeleterequest.go
+  - internal/sdk/models/shared/connectorservicedeleteresponse.go
+  - internal/sdk/models/shared/connectorservicegetcredentialsresponse.go
+  - internal/sdk/models/shared/connectorservicegetresponse.go
+  - internal/sdk/models/shared/connectorservicelistresponse.go
+  - internal/sdk/models/shared/connectorservicerevokecredentialrequest.go
+  - internal/sdk/models/shared/connectorservicerevokecredentialresponse.go
+  - internal/sdk/models/shared/connectorservicerotatecredentialrequest.go
+  - internal/sdk/models/shared/connectorservicerotatecredentialresponse.go
+  - internal/sdk/models/shared/connectorserviceupdatedelegatedrequest.go
+  - internal/sdk/models/shared/connectorserviceupdaterequest.go
+  - internal/sdk/models/shared/connectorserviceupdateresponse.go
+  - internal/sdk/models/shared/connectorstatus.go
+  - internal/sdk/models/shared/connectorview.go
+  - internal/sdk/models/shared/createaccessreview.go
+  - internal/sdk/models/shared/createappentitlementproxyrequest.go
+  - internal/sdk/models/shared/createappentitlementproxyresponse.go
+  - internal/sdk/models/shared/createappentitlementrequest.go
+  - internal/sdk/models/shared/createappentitlementresponse.go
+  - internal/sdk/models/shared/createapprequest.go
+  - internal/sdk/models/shared/createappresponse.go
+  - internal/sdk/models/shared/createattributevaluerequest.go
+  - internal/sdk/models/shared/createattributevalueresponse.go
+  - internal/sdk/models/shared/createautomationrequest.go
+  - internal/sdk/models/shared/createautomationresponse.go
+  - internal/sdk/models/shared/createcomplianceframeworkattributevaluerequest.go
+  - internal/sdk/models/shared/createcomplianceframeworkattributevalueresponse.go
+  - internal/sdk/models/shared/createmanuallymanagedappresourcerequest.go
+  - internal/sdk/models/shared/createmanuallymanagedappresourceresponse.go
+  - internal/sdk/models/shared/createmanuallymanagedresourcetyperequest.go
+  - internal/sdk/models/shared/createmanuallymanagedresourcetyperesponse.go
+  - internal/sdk/models/shared/createpolicyrequest.go
+  - internal/sdk/models/shared/createpolicyresponse.go
+  - internal/sdk/models/shared/createrevoketasks.go
+  - internal/sdk/models/shared/createrisklevelattributevaluerequest.go
+  - internal/sdk/models/shared/createrisklevelattributevalueresponse.go
+  - internal/sdk/models/shared/createworkflowrequest.go
+  - internal/sdk/models/shared/createworkflowresponse.go
+  - internal/sdk/models/shared/defaultbehavior.go
+  - internal/sdk/models/shared/delegatedprovision.go
+  - internal/sdk/models/shared/deleteappentitlementproxyrequest.go
+  - internal/sdk/models/shared/deleteappentitlementproxyresponse.go
+  - internal/sdk/models/shared/deleteappentitlementrequest.go
+  - internal/sdk/models/shared/deleteappentitlementresponse.go
+  - internal/sdk/models/shared/deleteapprequest.go
+  - internal/sdk/models/shared/deleteappresponse.go
+  - internal/sdk/models/shared/deleteattributevaluerequest.go
+  - internal/sdk/models/shared/deleteattributevalueresponse.go
+  - internal/sdk/models/shared/deleteautomationrequest.go
+  - internal/sdk/models/shared/deleteautomationresponse.go
+  - internal/sdk/models/shared/deletecomplianceframeworkattributevaluerequest.go
+  - internal/sdk/models/shared/deletecomplianceframeworkattributevalueresponse.go
+  - internal/sdk/models/shared/deletemanuallymanagedappresourcerequest.go
+  - internal/sdk/models/shared/deletemanuallymanagedappresourceresponse.go
+  - internal/sdk/models/shared/deletemanuallymanagedresourcetyperequest.go
+  - internal/sdk/models/shared/deletemanuallymanagedresourcetyperesponse.go
+  - internal/sdk/models/shared/deletepolicyrequest.go
+  - internal/sdk/models/shared/deletepolicyresponse.go
+  - internal/sdk/models/shared/deleterisklevelattributevaluerequest.go
+  - internal/sdk/models/shared/deleterisklevelattributevalueresponse.go
+  - internal/sdk/models/shared/deleteworkflowrequest.go
+  - internal/sdk/models/shared/deleteworkflowresponse.go
+  - internal/sdk/models/shared/deniedaction.go
+  - internal/sdk/models/shared/directory.go
+  - internal/sdk/models/shared/directoryservicecreaterequest.go
+  - internal/sdk/models/shared/directoryservicecreateresponse.go
+  - internal/sdk/models/shared/directoryservicedeleterequest.go
+  - internal/sdk/models/shared/directoryservicedeleteresponse.go
+  - internal/sdk/models/shared/directoryservicegetresponse.go
+  - internal/sdk/models/shared/directoryservicelistresponse.go
+  - internal/sdk/models/shared/directoryview.go
+  - internal/sdk/models/shared/encrypteddata.go
+  - internal/sdk/models/shared/entitlementownerapproval.go
+  - internal/sdk/models/shared/erroredaction.go
+  - internal/sdk/models/shared/executeworkflowrequest.go
+  - internal/sdk/models/shared/executeworkflowresponse.go
+  - internal/sdk/models/shared/exporter.go
+  - internal/sdk/models/shared/exporterinput.go
+  - internal/sdk/models/shared/exporterref.go
+  - internal/sdk/models/shared/exportservicecreaterequest.go
+  - internal/sdk/models/shared/exportservicecreateresponse.go
+  - internal/sdk/models/shared/exportservicedeleterequest.go
+  - internal/sdk/models/shared/exportservicedeleteresponse.go
+  - internal/sdk/models/shared/exportservicegetresponse.go
+  - internal/sdk/models/shared/exportservicelisteventsrequest.go
+  - internal/sdk/models/shared/exportservicelisteventsresponse.go
+  - internal/sdk/models/shared/exportservicelistresponse.go
+  - internal/sdk/models/shared/exportserviceupdaterequest.go
+  - internal/sdk/models/shared/exportserviceupdateresponse.go
+  - internal/sdk/models/shared/exportssearchservicesearchrequest.go
+  - internal/sdk/models/shared/exportssearchservicesearchresponse.go
+  - internal/sdk/models/shared/exporttodatasource.go
+  - internal/sdk/models/shared/expressionapproval.go
+  - internal/sdk/models/shared/expressionapprovalinput.go
+  - internal/sdk/models/shared/externalref.go
+  - internal/sdk/models/shared/externalticketprovision.go
+  - internal/sdk/models/shared/forcerunbundleautomationrequest.go
+  - internal/sdk/models/shared/forcerunbundleautomationresponse.go
+  - internal/sdk/models/shared/forcesyncrequest.go
+  - internal/sdk/models/shared/forcesyncresponse.go
+  - internal/sdk/models/shared/getappentitlementproxyresponse.go
+  - internal/sdk/models/shared/getappentitlementresponse.go
+  - internal/sdk/models/shared/getappresponse.go
+  - internal/sdk/models/shared/getappusagecontrolsresponse.go
+  - internal/sdk/models/shared/getattributevalueresponse.go
+  - internal/sdk/models/shared/getawsexternalidresponse.go
+  - internal/sdk/models/shared/getcomplianceframeworkattributevalueresponse.go
+  - internal/sdk/models/shared/getpolicyresponse.go
+  - internal/sdk/models/shared/getrisklevelattributevalueresponse.go
+  - internal/sdk/models/shared/getrolesresponse.go
+  - internal/sdk/models/shared/getsessionsettingsresponse.go
+  - internal/sdk/models/shared/getworkflowexecutionresponse.go
+  - internal/sdk/models/shared/getworkflowresponse.go
+  - internal/sdk/models/shared/grantreason.go
+  - internal/sdk/models/shared/introspectresponse.go
+  - internal/sdk/models/shared/listappentitlementownersresponse.go
+  - internal/sdk/models/shared/listappentitlementsresponse.go
+  - internal/sdk/models/shared/listappentitlementusersresponse.go
+  - internal/sdk/models/shared/listappownersresponse.go
+  - internal/sdk/models/shared/listappresourceownersresponse.go
+  - internal/sdk/models/shared/listappsresponse.go
+  - internal/sdk/models/shared/listappusersforidentitywithgrantresponse.go
+  - internal/sdk/models/shared/listattributetypesresponse.go
+  - internal/sdk/models/shared/listattributevaluesresponse.go
+  - internal/sdk/models/shared/listautomationexclusionsresponse.go
+  - internal/sdk/models/shared/listpolicyresponse.go
+  - internal/sdk/models/shared/listrolesresponse.go
+  - internal/sdk/models/shared/listworkflowexecutionsresponse.go
+  - internal/sdk/models/shared/listworkflowsresponse.go
+  - internal/sdk/models/shared/managerapproval.go
+  - internal/sdk/models/shared/managerapprovalinput.go
+  - internal/sdk/models/shared/manuallymanagedusersresponse.go
+  - internal/sdk/models/shared/manualprovision.go
+  - internal/sdk/models/shared/manualworkflowtrigger.go
+  - internal/sdk/models/shared/marker.go
+  - internal/sdk/models/shared/oauth2authorizedas.go
+  - internal/sdk/models/shared/oauth2authorizedasinput.go
+  - internal/sdk/models/shared/payloadpolicyapprovalstep.go
+  - internal/sdk/models/shared/payloadpolicypostaction.go
+  - internal/sdk/models/shared/payloadprovisionstep.go
+  - internal/sdk/models/shared/payloadtest.go
+  - internal/sdk/models/shared/personalclient.go
+  - internal/sdk/models/shared/personalclientinput.go
+  - internal/sdk/models/shared/personalclientsearchservicesearchrequest.go
+  - internal/sdk/models/shared/personalclientsearchservicesearchresponse.go
+  - internal/sdk/models/shared/personalclientservicecreaterequest.go
+  - internal/sdk/models/shared/personalclientservicecreateresponse.go
+  - internal/sdk/models/shared/personalclientservicedeleterequest.go
+  - internal/sdk/models/shared/personalclientservicedeleteresponse.go
+  - internal/sdk/models/shared/personalclientservicegetresponse.go
+  - internal/sdk/models/shared/personalclientservicelistresponse.go
+  - internal/sdk/models/shared/personalclientserviceupdaterequest.go
+  - internal/sdk/models/shared/personalclientserviceupdateresponse.go
+  - internal/sdk/models/shared/policy.go
+  - internal/sdk/models/shared/policyinstance.go
+  - internal/sdk/models/shared/policypostactions.go
+  - internal/sdk/models/shared/policyref.go
+  - internal/sdk/models/shared/policystep.go
+  - internal/sdk/models/shared/policystepinput.go
+  - internal/sdk/models/shared/policystepinstance.go
+  - internal/sdk/models/shared/policysteps.go
+  - internal/sdk/models/shared/policystepsinput.go
+  - internal/sdk/models/shared/provision.go
+  - internal/sdk/models/shared/provisioninstance.go
+  - internal/sdk/models/shared/provisionpolicy.go
+  - internal/sdk/models/shared/provisiontarget.go
+  - internal/sdk/models/shared/reassignaction.go
+  - internal/sdk/models/shared/reassignedaction.go
+  - internal/sdk/models/shared/reassignedbyerroraction.go
+  - internal/sdk/models/shared/reject.go
+  - internal/sdk/models/shared/rejectinstance.go
+  - internal/sdk/models/shared/removeappentitlementownerrequest.go
+  - internal/sdk/models/shared/removeappentitlementownerresponse.go
+  - internal/sdk/models/shared/removeappownerrequest.go
+  - internal/sdk/models/shared/removeappownerresponse.go
+  - internal/sdk/models/shared/removeappresourceownerrequest.go
+  - internal/sdk/models/shared/removeappresourceownerresponse.go
+  - internal/sdk/models/shared/removeautomationexclusionrequest.go
+  - internal/sdk/models/shared/removeautomationexclusionresponse.go
+  - internal/sdk/models/shared/removeentitlementmembershiprequest.go
+  - internal/sdk/models/shared/removeentitlementmembershipresponse.go
+  - internal/sdk/models/shared/removefromdelegation.go
+  - internal/sdk/models/shared/requestcatalog.go
+  - internal/sdk/models/shared/requestcatalogmanagementserviceaddaccessentitlementsrequest.go
+  - internal/sdk/models/shared/requestcatalogmanagementserviceaddaccessentitlementsresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementserviceaddappentitlementsrequest.go
+  - internal/sdk/models/shared/requestcatalogmanagementserviceaddappentitlementsresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicecreaterequest.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicedeleterequest.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicedeleteresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicegetresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicelistentitlementsforaccessresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicelistentitlementspercatalogresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicelistresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementserviceremoveaccessentitlementsrequest.go
+  - internal/sdk/models/shared/requestcatalogmanagementserviceremoveaccessentitlementsresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementserviceremoveappentitlementsrequest.go
+  - internal/sdk/models/shared/requestcatalogmanagementserviceremoveappentitlementsresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementserviceupdaterequest.go
+  - internal/sdk/models/shared/requestcatalogsearchservicesearchentitlementsrequest.go
+  - internal/sdk/models/shared/requestcatalogsearchservicesearchentitlementsresponse.go
+  - internal/sdk/models/shared/requestcatalogview.go
+  - internal/sdk/models/shared/resourceownerapproval.go
+  - internal/sdk/models/shared/responsepolicyapprovalreplacepolicy.go
+  - internal/sdk/models/shared/responsepolicyapprovalstep.go
+  - internal/sdk/models/shared/responsepolicyapprovalstepapprove.go
+  - internal/sdk/models/shared/responsepolicyapprovalstepdeny.go
+  - internal/sdk/models/shared/responsepolicyapprovalstepreassign.go
+  - internal/sdk/models/shared/responsepolicypostaction.go
+  - internal/sdk/models/shared/responseprovisionstep.go
+  - internal/sdk/models/shared/responseprovisionstepcomplete.go
+  - internal/sdk/models/shared/responseprovisionsteperrored.go
+  - internal/sdk/models/shared/responsetest.go
+  - internal/sdk/models/shared/restartaction.go
+  - internal/sdk/models/shared/role.go
+  - internal/sdk/models/shared/roleinput.go
+  - internal/sdk/models/shared/rule.go
+  - internal/sdk/models/shared/runworkflow.go
+  - internal/sdk/models/shared/searchappentitlementswithexpiredresponse.go
+  - internal/sdk/models/shared/searchappresourcetypesrequest.go
+  - internal/sdk/models/shared/searchappresourcetypesresponse.go
+  - internal/sdk/models/shared/searchappsrequest.go
+  - internal/sdk/models/shared/searchappsresponse.go
+  - internal/sdk/models/shared/searchattributevaluesrequest.go
+  - internal/sdk/models/shared/searchattributevaluesresponse.go
+  - internal/sdk/models/shared/searchgrantfeedrequest.go
+  - internal/sdk/models/shared/searchgrantfeedresponse.go
+  - internal/sdk/models/shared/searchpastgrantsrequest.go
+  - internal/sdk/models/shared/searchpastgrantsresponse.go
+  - internal/sdk/models/shared/searchpoliciesrequest.go
+  - internal/sdk/models/shared/searchusersrequest.go
+  - internal/sdk/models/shared/searchusersresponse.go
+  - internal/sdk/models/shared/searchworkflowexecutionsrequest.go
+  - internal/sdk/models/shared/searchworkflowexecutionsresponse.go
+  - internal/sdk/models/shared/searchworkflowsrequest.go
+  - internal/sdk/models/shared/searchworkflowsresponse.go
+  - internal/sdk/models/shared/security.go
+  - internal/sdk/models/shared/selfapproval.go
+  - internal/sdk/models/shared/selfapprovalinput.go
+  - internal/sdk/models/shared/sendemail.go
+  - internal/sdk/models/shared/sessionsettings.go
+  - internal/sdk/models/shared/setappentitlementownersrequest.go
+  - internal/sdk/models/shared/setappentitlementownersresponse.go
+  - internal/sdk/models/shared/setappownersrequest.go
+  - internal/sdk/models/shared/setappownersresponse.go
+  - internal/sdk/models/shared/setbundleautomationrequest.go
+  - internal/sdk/models/shared/status.go
+  - internal/sdk/models/shared/systemlogservicelisteventsrequest.go
+  - internal/sdk/models/shared/systemlogservicelisteventsresponse.go
+  - internal/sdk/models/shared/task.go
+  - internal/sdk/models/shared/taskaction.go
+  - internal/sdk/models/shared/taskactionsserviceapproverequest.go
+  - internal/sdk/models/shared/taskactionsserviceapproveresponse.go
+  - internal/sdk/models/shared/taskactionsservicecommentrequest.go
+  - internal/sdk/models/shared/taskactionsservicecommentresponse.go
+  - internal/sdk/models/shared/taskactionsservicedenyrequest.go
+  - internal/sdk/models/shared/taskactionsservicedenyresponse.go
+  - internal/sdk/models/shared/taskactionsserviceescalatetoemergencyaccessrequest.go
+  - internal/sdk/models/shared/taskactionsservicehardresetrequest.go
+  - internal/sdk/models/shared/taskactionsservicehardresetresponse.go
+  - internal/sdk/models/shared/taskactionsserviceprocessnowrequest.go
+  - internal/sdk/models/shared/taskactionsserviceprocessnowresponse.go
+  - internal/sdk/models/shared/taskactionsservicereassignrequest.go
+  - internal/sdk/models/shared/taskactionsservicereassignresponse.go
+  - internal/sdk/models/shared/taskactionsservicerestartrequest.go
+  - internal/sdk/models/shared/taskactionsservicerestartresponse.go
+  - internal/sdk/models/shared/taskgrantsource.go
+  - internal/sdk/models/shared/taskref.go
+  - internal/sdk/models/shared/taskrevokesource.go
+  - internal/sdk/models/shared/taskrevokesourceexpired.go
+  - internal/sdk/models/shared/taskrevokesourcenonusage.go
+  - internal/sdk/models/shared/taskrevokesourcerequest.go
+  - internal/sdk/models/shared/taskrevokesourcereview.go
+  - internal/sdk/models/shared/tasksearchrequest.go
+  - internal/sdk/models/shared/tasksearchresponse.go
+  - internal/sdk/models/shared/taskserviceactionresponse.go
+  - internal/sdk/models/shared/taskservicecreategrantrequest.go
+  - internal/sdk/models/shared/taskservicecreategrantresponse.go
+  - internal/sdk/models/shared/taskservicecreateoffboardingrequest.go
+  - internal/sdk/models/shared/taskservicecreateoffboardingresponse.go
+  - internal/sdk/models/shared/taskservicecreaterevokerequest.go
+  - internal/sdk/models/shared/taskservicecreaterevokeresponse.go
+  - internal/sdk/models/shared/taskservicegetresponse.go
+  - internal/sdk/models/shared/tasktype.go
+  - internal/sdk/models/shared/tasktypecertify.go
+  - internal/sdk/models/shared/tasktypecertifyinput.go
+  - internal/sdk/models/shared/tasktypegrant.go
+  - internal/sdk/models/shared/tasktypegrantinput.go
+  - internal/sdk/models/shared/tasktypeinput.go
+  - internal/sdk/models/shared/tasktypeoffboarding.go
+  - internal/sdk/models/shared/tasktypeoffboardinginput.go
+  - internal/sdk/models/shared/tasktyperevoke.go
+  - internal/sdk/models/shared/tasktyperevokeinput.go
+  - internal/sdk/models/shared/taskview.go
+  - internal/sdk/models/shared/terminateworkflowrequest.go
+  - internal/sdk/models/shared/terminateworkflowresponse.go
+  - internal/sdk/models/shared/testaccountprovisionpolicyrequest.go
+  - internal/sdk/models/shared/testaccountprovisionpolicyresponse.go
+  - internal/sdk/models/shared/testsourceiprequest.go
+  - internal/sdk/models/shared/testsourceipresponse.go
+  - internal/sdk/models/shared/unenrollfromallaccessprofiles.go
+  - internal/sdk/models/shared/updateappentitlementrequest.go
+  - internal/sdk/models/shared/updateappentitlementresponse.go
+  - internal/sdk/models/shared/updateapprequest.go
+  - internal/sdk/models/shared/updateappresponse.go
+  - internal/sdk/models/shared/updateappusagecontrolsrequest.go
+  - internal/sdk/models/shared/updateappusagecontrolsresponse.go
+  - internal/sdk/models/shared/updatemanuallymanagedresourcetyperequest.go
+  - internal/sdk/models/shared/updatemanuallymanagedresourcetyperesponse.go
+  - internal/sdk/models/shared/updatepolicyrequest.go
+  - internal/sdk/models/shared/updatepolicyresponse.go
+  - internal/sdk/models/shared/updaterolerequest.go
+  - internal/sdk/models/shared/updaterolesresponse.go
+  - internal/sdk/models/shared/updatesessionsettingsrequest.go
+  - internal/sdk/models/shared/updatesessionsettingsresponse.go
+  - internal/sdk/models/shared/updateuser.go
+  - internal/sdk/models/shared/updateworkflowrequest.go
+  - internal/sdk/models/shared/updateworkflowresponse.go
+  - internal/sdk/models/shared/user.go
+  - internal/sdk/models/shared/userapproval.go
+  - internal/sdk/models/shared/userattributemappingsource.go
+  - internal/sdk/models/shared/userprofilechangetrigger.go
+  - internal/sdk/models/shared/userref.go
+  - internal/sdk/models/shared/userservicegetresponse.go
+  - internal/sdk/models/shared/userservicelistresponse.go
+  - internal/sdk/models/shared/userview.go
+  - internal/sdk/models/shared/userwithappentitlementuserbindingview.go
+  - internal/sdk/models/shared/validatepolicycelrequest.go
+  - internal/sdk/models/shared/validatepolicycelresponse.go
+  - internal/sdk/models/shared/wait.go
+  - internal/sdk/models/shared/waitcondition.go
+  - internal/sdk/models/shared/waitconditioninstance.go
+  - internal/sdk/models/shared/waitforduration.go
+  - internal/sdk/models/shared/waitinstance.go
+  - internal/sdk/models/shared/webhook.go
+  - internal/sdk/models/shared/webhookapproval.go
+  - internal/sdk/models/shared/webhookinput.go
+  - internal/sdk/models/shared/webhookinstance.go
+  - internal/sdk/models/shared/webhookprovision.go
+  - internal/sdk/models/shared/webhookref.go
+  - internal/sdk/models/shared/webhooksource.go
+  - internal/sdk/models/shared/webhooksourceapprovalstep.go
+  - internal/sdk/models/shared/webhooksourcepolicypostaction.go
+  - internal/sdk/models/shared/webhooksourceprovisionstep.go
+  - internal/sdk/models/shared/webhooksourcetest.go
+  - internal/sdk/models/shared/webhookspec.go
+  - internal/sdk/models/shared/webhookssearchrequest.go
+  - internal/sdk/models/shared/webhookssearchresponse.go
+  - internal/sdk/models/shared/webhooksservicecreaterequest.go
+  - internal/sdk/models/shared/webhooksservicecreateresponse.go
+  - internal/sdk/models/shared/webhooksservicedeleterequest.go
+  - internal/sdk/models/shared/webhooksservicedeleteresponse.go
+  - internal/sdk/models/shared/webhooksservicegetresponse.go
+  - internal/sdk/models/shared/webhooksservicelistresponse.go
+  - internal/sdk/models/shared/webhooksservicetestrequest.go
+  - internal/sdk/models/shared/webhooksservicetestresponse.go
+  - internal/sdk/models/shared/webhooksserviceupdaterequest.go
+  - internal/sdk/models/shared/webhooksserviceupdateresponse.go
+  - internal/sdk/models/shared/workflow.go
+  - internal/sdk/models/shared/workflowcontext.go
+  - internal/sdk/models/shared/workflowexecution.go
+  - internal/sdk/models/shared/workflowexecutionview.go
+  - internal/sdk/models/shared/workflowinput.go
+  - internal/sdk/models/shared/workflowstep.go
+  - internal/sdk/models/shared/workflowtemplateref.go
+  - internal/sdk/models/shared/workflowtrigger.go
+  - internal/sdk/personalclient.go
+  - internal/sdk/personalclientsearch.go
+  - internal/sdk/policies.go
+  - internal/sdk/policysearch.go
+  - internal/sdk/policyvalidate.go
+  - internal/sdk/requestcatalogmanagement.go
+  - internal/sdk/requestcatalogsearch.go
+  - internal/sdk/retry/config.go
+  - internal/sdk/roles.go
+  - internal/sdk/sessionsettings.go
+  - internal/sdk/systemlog.go
+  - internal/sdk/task.go
+  - internal/sdk/taskactions.go
+  - internal/sdk/tasksearch.go
+  - internal/sdk/types/bigint.go
+  - internal/sdk/types/date.go
+  - internal/sdk/types/datetime.go
+  - internal/sdk/types/decimal.go
+  - internal/sdk/types/pointers.go
+  - internal/sdk/user.go
+  - internal/sdk/usersearch.go
+  - internal/sdk/webhooks.go
+  - internal/sdk/webhookssearch.go
+  - internal/sdk/workflow.go
+  - internal/sdk/workflowexecution.go
+  - internal/sdk/workflowexecutionactions.go
+  - internal/sdk/workflowexecutionsearch.go
+  - internal/sdk/workflowsearch.go
+  - internal/validators/DateValidator.go
+  - internal/validators/ExactlyOneChild.go
+  - internal/validators/JSONParseValidator.go
+  - internal/validators/RFC3339Validator.go
+  - internal/validators/boolvalidators/not_null.go
+  - internal/validators/float32validators/not_null.go
+  - internal/validators/float64validators/not_null.go
+  - internal/validators/int32validators/not_null.go
+  - internal/validators/int64validators/not_null.go
+  - internal/validators/listvalidators/not_null.go
+  - internal/validators/mapvalidators/not_null.go
+  - internal/validators/numbervalidators/not_null.go
+  - internal/validators/objectvalidators/not_null.go
+  - internal/validators/setvalidators/not_null.go
+  - internal/validators/stringvalidators/not_null.go
+  - main.go
+  - terraform-registry-manifest.json
+  - tools/tools.go
+examples:
+  c1.api.workflows.v1beta.WorkflowExecutionService.ListWorkflowExecutions:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-execution-service-list-workflow-executions:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.workflows.v1beta.WorkflowExecutionService.GetWorkflowExecution:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-execution-service-get-workflow-execution:
+      parameters:
+        path:
+          id: "<value>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.workflows.v1beta.WorkflowExecutionActionsService.TerminateWorkflow:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-execution-actions-service-terminate-workflow:
+      parameters:
+        path:
+          id: "<value>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.workflows.v1beta.WorkflowExecutionSearchService.SearchWorkflowExecutions:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-execution-search-service-search-workflow-executions:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.workflows.v1beta.WorkflowService.ListWorkflows:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-service-list-workflows:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.workflows.v1beta.WorkflowService.CreateWorkflow:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-service-create-workflow:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.workflows.v1beta.WorkflowService.DeleteWorkflow:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-service-delete-workflow:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.workflows.v1beta.WorkflowService.GetWorkflow:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-service-get-workflow:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.workflows.v1beta.WorkflowService.UpdateWorkflow:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-service-update-workflow:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.workflows.v1beta.WorkflowService.ExecuteWorkflow:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-service-execute-workflow:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.workflows.v1beta.WorkflowSearchService.SearchWorkflows:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-search-service-search-workflows:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.Apps.List:
+    speakeasy-default-c1-api-app-v1-apps-list:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.Apps.Create:
+    speakeasy-default-c1-api-app-v1-apps-create:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.Apps.Delete:
+    speakeasy-default-c1-api-app-v1-apps-delete:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.Apps.Get:
+    speakeasy-default-c1-api-app-v1-apps-get:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.Apps.Update:
+    speakeasy-default-c1-api-app-v1-apps-update:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppAccessRequestsDefaultsService.GetAppAccessRequestsDefaults:
+    speakeasy-default-c1-api-app-v1-app-access-requests-defaults-service-get-app-access-requests-defaults:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppAccessRequestsDefaultsService.CreateAppAccessRequestsDefaults:
+    speakeasy-default-c1-api-app-v1-app-access-requests-defaults-service-create-app-access-requests-defaults:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppAccessRequestsDefaultsService.CancelAppAccessRequestsDefaults:
+    speakeasy-default-c1-api-app-v1-app-access-requests-defaults-service-cancel-app-access-requests-defaults:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppUserService.List:
+    speakeasy-default-c1-api-app-v1-app-user-service-list:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppUserService.ListAppUserCredentials:
+    speakeasy-default-c1-api-app-v1-app-user-service-list-app-user-credentials:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppUserService.ListAppUsersForUser:
+    speakeasy-default-c1-api-app-v1-app-user-service-list-app-users-for-user:
+      parameters:
+        path:
+          app_id: "<id>"
+          user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppUserService.Update:
+    speakeasy-default-c1-api-app-v1-app-user-service-update:
+      parameters:
+        path:
+          app_user_app_id: "<id>"
+          app_user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppUserService.Search:
+    speakeasy-default-c1-api-app-v1-app-user-service-search:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.List:
+    speakeasy-default-c1-api-app-v1-connector-service-list:
+      parameters:
+        path:
+          app_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.CreateDelegated:
+    speakeasy-default-c1-api-app-v1-connector-service-create-delegated:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.RotateCredential:
+    speakeasy-default-c1-api-app-v1-connector-service-rotate-credential:
+      parameters:
+        path:
+          app_id: "<id>"
+          connector_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.GetCredentials:
+    speakeasy-default-c1-api-app-v1-connector-service-get-credentials:
+      parameters:
+        path:
+          app_id: "<id>"
+          connector_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.RevokeCredential:
+    speakeasy-default-c1-api-app-v1-connector-service-revoke-credential:
+      parameters:
+        path:
+          app_id: "<id>"
+          connector_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.ForceSync:
+    speakeasy-default-c1-api-app-v1-connector-service-force-sync:
+      parameters:
+        path:
+          app_id: "<id>"
+          connector_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.Delete:
+    speakeasy-default-c1-api-app-v1-connector-service-delete:
+      parameters:
+        path:
+          app_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.Get:
+    speakeasy-default-c1-api-app-v1-connector-service-get:
+      parameters:
+        path:
+          app_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.Update:
+    speakeasy-default-c1-api-app-v1-connector-service-update:
+      parameters:
+        path:
+          app_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.Create:
+    speakeasy-default-c1-api-app-v1-connector-service-create:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.UpdateDelegated:
+    speakeasy-default-c1-api-app-v1-connector-service-update-delegated:
+      parameters:
+        path:
+          connector_app_id: "<id>"
+          connector_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.List:
+    speakeasy-default-c1-api-app-v1-app-entitlements-list:
+      parameters:
+        path:
+          app_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.Create:
+    speakeasy-default-c1-api-app-v1-app-entitlements-create:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.AddManuallyManagedMembers:
+    speakeasy-default-c1-api-app-v1-app-entitlements-add-manually-managed-members:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.RemoveEntitlementMembership:
+    speakeasy-default-c1-api-app-v1-app-entitlements-remove-entitlement-membership:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.ListUsers:
+    speakeasy-default-c1-api-app-v1-app-entitlements-list-users:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.Delete:
+    speakeasy-default-c1-api-app-v1-app-entitlements-delete:
+      parameters:
+        path:
+          app_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.Get:
+    speakeasy-default-c1-api-app-v1-app-entitlements-get:
+      parameters:
+        path:
+          app_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.Update:
+    speakeasy-default-c1-api-app-v1-app-entitlements-update:
+      parameters:
+        path:
+          app_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.ListForAppResource:
+    speakeasy-default-c1-api-app-v1-app-entitlements-list-for-app-resource:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_resource_type_id: "<id>"
+          app_resource_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.ListForAppUser:
+    speakeasy-default-c1-api-app-v1-app-entitlements-list-for-app-user:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_user_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementSearchService.SearchAppEntitlementsWithExpired:
+    speakeasy-default-c1-api-app-v1-app-entitlement-search-service-search-app-entitlements-with-expired:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementSearchService.SearchAppEntitlementsForAppUser:
+    speakeasy-default-c1-api-app-v1-app-entitlement-search-service-search-app-entitlements-for-app-user:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_user_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementSearchService.Search:
+    speakeasy-default-c1-api-app-v1-app-entitlement-search-service-search:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementUserBindingService.ListAppUsersForIdentityWithGrant:
+    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-list-app-users-for-identity-with-grant:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+          identity_user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementUserBindingService.SearchGrantFeed:
+    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-search-grant-feed:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementUserBindingService.SearchPastGrants:
+    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-search-past-grants:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementOwners.List:
+    speakeasy-default-c1-api-app-v1-app-entitlement-owners-list:
+      parameters:
+        path:
+          app_id: "<id>"
+          entitlement_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementOwners.Add:
+    speakeasy-default-c1-api-app-v1-app-entitlement-owners-add:
+      parameters:
+        path:
+          app_id: "<id>"
+          entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementOwners.Set:
+    speakeasy-default-c1-api-app-v1-app-entitlement-owners-set:
+      parameters:
+        path:
+          app_id: "<id>"
+          entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementOwners.Remove:
+    speakeasy-default-c1-api-app-v1-app-entitlement-owners-remove:
+      parameters:
+        path:
+          app_id: "<id>"
+          entitlement_id: "<id>"
+          user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppOwners.List:
+    speakeasy-default-c1-api-app-v1-app-owners-list:
+      parameters:
+        path:
+          app_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppOwners.Set:
+    speakeasy-default-c1-api-app-v1-app-owners-set:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppOwners.Remove:
+    speakeasy-default-c1-api-app-v1-app-owners-remove:
+      parameters:
+        path:
+          app_id: "<id>"
+          user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppOwners.Add:
+    speakeasy-default-c1-api-app-v1-app-owners-add:
+      parameters:
+        path:
+          app_id: "<id>"
+          user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppReportService.List:
+    speakeasy-default-c1-api-app-v1-app-report-service-list:
+      parameters:
+        path:
+          app_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppReportActionService.GenerateReport:
+    speakeasy-default-c1-api-app-v1-app-report-action-service-generate-report:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceTypeService.List:
+    speakeasy-default-c1-api-app-v1-app-resource-type-service-list:
+      parameters:
+        path:
+          app_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceTypeService.CreateManuallyManagedResourceType:
+    speakeasy-default-c1-api-app-v1-app-resource-type-service-create-manually-managed-resource-type:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceTypeService.DeleteManuallyManagedResourceType:
+    speakeasy-default-c1-api-app-v1-app-resource-type-service-delete-manually-managed-resource-type:
+      parameters:
+        path:
+          app_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceTypeService.Get:
+    speakeasy-default-c1-api-app-v1-app-resource-type-service-get:
+      parameters:
+        path:
+          app_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceTypeService.UpdateManuallyManagedResourceType:
+    speakeasy-default-c1-api-app-v1-app-resource-type-service-update-manually-managed-resource-type:
+      parameters:
+        path:
+          app_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceService.List:
+    speakeasy-default-c1-api-app-v1-app-resource-service-list:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_resource_type_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceService.CreateManuallyManagedAppResource:
+    speakeasy-default-c1-api-app-v1-app-resource-service-create-manually-managed-app-resource:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_resource_type_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceService.DeleteManuallyManagedAppResource:
+    speakeasy-default-c1-api-app-v1-app-resource-service-delete-manually-managed-app-resource:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_resource_type_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceService.Get:
+    speakeasy-default-c1-api-app-v1-app-resource-service-get:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_resource_type_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceService.Update:
+    speakeasy-default-c1-api-app-v1-app-resource-service-update:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_resource_type_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceOwners.Remove:
+    speakeasy-default-c1-api-app-v1-app-resource-owners-remove:
+      parameters:
+        path:
+          app_id: "<id>"
+          resource_type_id: "<id>"
+          resource_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceOwners.List:
+    speakeasy-default-c1-api-app-v1-app-resource-owners-list:
+      parameters:
+        path:
+          app_id: "<id>"
+          resource_type_id: "<id>"
+          resource_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceOwners.Add:
+    speakeasy-default-c1-api-app-v1-app-resource-owners-add:
+      parameters:
+        path:
+          app_id: "<id>"
+          resource_type_id: "<id>"
+          resource_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppUsageControlsService.Get:
+    speakeasy-default-c1-api-app-v1-app-usage-controls-service-get:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppUsageControlsService.Update:
+    speakeasy-default-c1-api-app-v1-app-usage-controls-service-update:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementsProxy.Delete:
+    speakeasy-default-c1-api-app-v1-app-entitlements-proxy-delete:
+      parameters:
+        path:
+          src_app_id: "<id>"
+          src_app_entitlement_id: "<id>"
+          dst_app_id: "<id>"
+          dst_app_entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementsProxy.Get:
+    speakeasy-default-c1-api-app-v1-app-entitlements-proxy-get:
+      parameters:
+        path:
+          src_app_id: "<id>"
+          src_app_entitlement_id: "<id>"
+          dst_app_id: "<id>"
+          dst_app_entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementsProxy.Create:
+    speakeasy-default-c1-api-app-v1-app-entitlements-proxy-create:
+      parameters:
+        path:
+          src_app_id: "<id>"
+          src_app_entitlement_id: "<id>"
+          dst_app_id: "<id>"
+          dst_app_entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.DeleteAttributeValue:
+    speakeasy-default-c1-api-attribute-v1-attributes-delete-attribute-value:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.CreateAttributeValue:
+    speakeasy-default-c1-api-attribute-v1-attributes-create-attribute-value:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.GetAttributeValue:
+    speakeasy-default-c1-api-attribute-v1-attributes-get-attribute-value:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.CreateComplianceFrameworkAttributeValue:
+    speakeasy-default-c1-api-attribute-v1-attributes-create-compliance-framework-attribute-value:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.DeleteComplianceFrameworkAttributeValue:
+    speakeasy-default-c1-api-attribute-v1-attributes-delete-compliance-framework-attribute-value:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.GetComplianceFrameworkAttributeValue:
+    speakeasy-default-c1-api-attribute-v1-attributes-get-compliance-framework-attribute-value:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.CreateRiskLevelAttributeValue:
+    speakeasy-default-c1-api-attribute-v1-attributes-create-risk-level-attribute-value:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.DeleteRiskLevelAttributeValue:
+    speakeasy-default-c1-api-attribute-v1-attributes-delete-risk-level-attribute-value:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.GetRiskLevelAttributeValue:
+    speakeasy-default-c1-api-attribute-v1-attributes-get-risk-level-attribute-value:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.ListAttributeTypes:
+    speakeasy-default-c1-api-attribute-v1-attributes-list-attribute-types:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.ListAttributeValues:
+    speakeasy-default-c1-api-attribute-v1-attributes-list-attribute-values:
+      parameters:
+        path:
+          attribute_type_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.auth.v1.Auth.Introspect:
+    speakeasy-default-c1-api-auth-v1-auth-introspect:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.List:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-list:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.Create:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-create:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.ListEntitlementsPerCatalog:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-list-entitlements-per-catalog:
+      parameters:
+        path:
+          catalog_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.RemoveAppEntitlements:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-remove-app-entitlements:
+      parameters:
+        path:
+          catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.AddAppEntitlements:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-add-app-entitlements:
+      parameters:
+        path:
+          catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.RemoveAccessEntitlements:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-remove-access-entitlements:
+      parameters:
+        path:
+          catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.AddAccessEntitlements:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-add-access-entitlements:
+      parameters:
+        path:
+          catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.ListEntitlementsForAccess:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-list-entitlements-for-access:
+      parameters:
+        path:
+          catalog_id: "<id>"
+        query: {}
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.Delete:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-delete:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.Get:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-get:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.Update:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-update:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.GetBundleAutomation:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-get-bundle-automation:
+      parameters:
+        path:
+          request_catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.SetBundleAutomation:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-set-bundle-automation:
+      parameters:
+        path:
+          request_catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.ForceRunBundleAutomation:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-force-run-bundle-automation:
+      parameters:
+        path:
+          request_catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.directory.v1.DirectoryService.List:
+    speakeasy-default-c1-api-directory-v1-directory-service-list:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.directory.v1.DirectoryService.Create:
+    speakeasy-default-c1-api-directory-v1-directory-service-create:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.directory.v1.DirectoryService.Delete:
+    speakeasy-default-c1-api-directory-v1-directory-service-delete:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.directory.v1.DirectoryService.Get:
+    speakeasy-default-c1-api-directory-v1-directory-service-get:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.iam.v1.PersonalClientService.List:
+    speakeasy-default-c1-api-iam-v1-personal-client-service-list:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.iam.v1.PersonalClientService.Create:
+    speakeasy-default-c1-api-iam-v1-personal-client-service-create:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.iam.v1.PersonalClientService.Delete:
+    speakeasy-default-c1-api-iam-v1-personal-client-service-delete:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.iam.v1.PersonalClientService.Get:
+    speakeasy-default-c1-api-iam-v1-personal-client-service-get:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.iam.v1.PersonalClientService.Update:
+    speakeasy-default-c1-api-iam-v1-personal-client-service-update:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.iam.v1.Roles.List:
+    speakeasy-default-c1-api-iam-v1-roles-list:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.iam.v1.Roles.Get:
+    speakeasy-default-c1-api-iam-v1-roles-get:
+      parameters:
+        path:
+          role_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.iam.v1.Roles.Update:
+    speakeasy-default-c1-api-iam-v1-roles-update:
+      parameters:
+        path:
+          role_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.policy.v1.Policies.List:
+    speakeasy-default-c1-api-policy-v1-policies-list:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.policy.v1.Policies.Create:
+    speakeasy-default-c1-api-policy-v1-policies-create:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.policy.v1.Policies.Delete:
+    speakeasy-default-c1-api-policy-v1-policies-delete:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.policy.v1.Policies.Get:
+    speakeasy-default-c1-api-policy-v1-policies-get:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.policy.v1.Policies.Update:
+    speakeasy-default-c1-api-policy-v1-policies-update:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.policy.v1.PolicyValidate.ValidateCEL:
+    speakeasy-default-c1-api-policy-v1-policy-validate-validate-CEL:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceSearch.SearchAppResourceTypes:
+    speakeasy-default-c1-api-app-v1-app-resource-search-search-app-resource-types:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppSearch.Search:
+    speakeasy-default-c1-api-app-v1-app-search-search:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.AttributeSearch.SearchAttributeValues:
+    speakeasy-default-c1-api-attribute-v1-attribute-search-search-attribute-values:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.iam.v1.PersonalClientSearchService.Search:
+    speakeasy-default-c1-api-iam-v1-personal-client-search-service-search:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.policy.v1.PolicySearch.Search:
+    speakeasy-default-c1-api-policy-v1-policy-search-search:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogSearchService.SearchEntitlements:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-search-service-search-entitlements:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.systemlog.v1.ExportsSearchService.Search:
+    speakeasy-default-c1-api-systemlog-v1-exports-search-service-search:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskSearchService.Search:
+    speakeasy-default-c1-api-task-v1-task-search-service-search:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.user.v1.UserSearch.Search:
+    speakeasy-default-c1-api-user-v1-user-search-search:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.webhooks.v1.WebhooksSearch.Search:
+    speakeasy-default-c1-api-webhooks-v1-webhooks-search-search:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.settings.v1.AWSExternalIDSettings.Get:
+    speakeasy-default-c1-api-settings-v1-AWS-external-ID-settings-get:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.settings.v1.SessionSettingsService.Get:
+    speakeasy-default-c1-api-settings-v1-session-settings-service-get:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.settings.v1.SessionSettingsService.Update:
+    speakeasy-default-c1-api-settings-v1-session-settings-service-update:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.settings.v1.SessionSettingsService.TestSourceIP:
+    speakeasy-default-c1-api-settings-v1-session-settings-service-test-source-IP:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.systemlog.v1.SystemLogService.ListEvents:
+    speakeasy-default-c1-api-systemlog-v1-system-log-service-list-events:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.systemlog.v1.ExportService.List:
+    speakeasy-default-c1-api-systemlog-v1-export-service-list:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.systemlog.v1.ExportService.Create:
+    speakeasy-default-c1-api-systemlog-v1-export-service-create:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.systemlog.v1.ExportService.Delete:
+    speakeasy-default-c1-api-systemlog-v1-export-service-delete:
+      parameters:
+        path:
+          export_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.systemlog.v1.ExportService.Get:
+    speakeasy-default-c1-api-systemlog-v1-export-service-get:
+      parameters:
+        path:
+          export_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.systemlog.v1.ExportService.Update:
+    speakeasy-default-c1-api-systemlog-v1-export-service-update:
+      parameters:
+        path:
+          export_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.systemlog.v1.ExportService.ListEvents:
+    speakeasy-default-c1-api-systemlog-v1-export-service-list-events:
+      parameters:
+        path:
+          export_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskService.CreateGrantTask:
+    speakeasy-default-c1-api-task-v1-task-service-create-grant-task:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskService.CreateOffboardingTask:
+    speakeasy-default-c1-api-task-v1-task-service-create-offboarding-task:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskService.CreateRevokeTask:
+    speakeasy-default-c1-api-task-v1-task-service-create-revoke-task:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskService.Get:
+    speakeasy-default-c1-api-task-v1-task-service-get:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskActionsService.Approve:
+    speakeasy-default-c1-api-task-v1-task-actions-service-approve:
+      parameters:
+        path:
+          task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskActionsService.Comment:
+    speakeasy-default-c1-api-task-v1-task-actions-service-comment:
+      parameters:
+        path:
+          task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskActionsService.Deny:
+    speakeasy-default-c1-api-task-v1-task-actions-service-deny:
+      parameters:
+        path:
+          task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskActionsService.EscalateToEmergencyAccess:
+    speakeasy-default-c1-api-task-v1-task-actions-service-escalate-to-emergency-access:
+      parameters:
+        path:
+          task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskActionsService.ProcessNow:
+    speakeasy-default-c1-api-task-v1-task-actions-service-process-now:
+      parameters:
+        path:
+          task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskActionsService.Reassign:
+    speakeasy-default-c1-api-task-v1-task-actions-service-reassign:
+      parameters:
+        path:
+          task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskActionsService.HardReset:
+    speakeasy-default-c1-api-task-v1-task-actions-service-hard-reset:
+      parameters:
+        path:
+          task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskActionsService.Restart:
+    speakeasy-default-c1-api-task-v1-task-actions-service-restart:
+      parameters:
+        path:
+          task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.user.v1.UserService.List:
+    speakeasy-default-c1-api-user-v1-user-service-list:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.user.v1.UserService.Get:
+    speakeasy-default-c1-api-user-v1-user-service-get:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.webhooks.v1.WebhooksService.List:
+    speakeasy-default-c1-api-webhooks-v1-webhooks-service-list:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.webhooks.v1.WebhooksService.Create:
+    speakeasy-default-c1-api-webhooks-v1-webhooks-service-create:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.webhooks.v1.WebhooksService.Delete:
+    speakeasy-default-c1-api-webhooks-v1-webhooks-service-delete:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.webhooks.v1.WebhooksService.Get:
+    speakeasy-default-c1-api-webhooks-v1-webhooks-service-get:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.webhooks.v1.WebhooksService.Update:
+    speakeasy-default-c1-api-webhooks-v1-webhooks-service-update:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.webhooks.v1.WebhooksService.Test:
+    speakeasy-default-c1-api-webhooks-v1-webhooks-service-test:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.policy.v1.AccountProvisionPolicyTest.Test:
+    speakeasy-default-c1-api-policy-v1-account-provision-policy-test-test:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.DeleteAutomation:
+    speakeasy-default-c1-api-app-v1-app-entitlements-delete-automation:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.GetAutomation:
+    speakeasy-default-c1-api-app-v1-app-entitlements-get-automation:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.UpdateAutomation:
+    speakeasy-default-c1-api-app-v1-app-entitlements-update-automation:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.RemoveAutomationExclusion:
+    speakeasy-default-c1-api-app-v1-app-entitlements-remove-automation-exclusion:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.ListAutomationExclusions:
+    speakeasy-default-c1-api-app-v1-app-entitlements-list-automation-exclusions:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.AddAutomationExclusion:
+    speakeasy-default-c1-api-app-v1-app-entitlements-add-automation-exclusion:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlements.CreateAutomation:
+    speakeasy-default-c1-api-app-v1-app-entitlements-create-automation:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+examplesVersion: 1.0.0
+generatedTests: {}

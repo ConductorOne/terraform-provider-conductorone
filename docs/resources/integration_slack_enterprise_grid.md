@@ -1,8 +1,8 @@
 ---
-page_title: "conductorone_integration_slack_enterprise_grid Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_slack_enterprise_grid Resource - conductorone"
 subcategory: ""
 description: |-
-  Slackenterprisegrid Integration Resource
+  Slack_enterprise_grid Integration Resource
 ---
 
 # conductorone_integration_slack_enterprise_grid (Resource)

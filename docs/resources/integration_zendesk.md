@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_zendesk Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_zendesk Resource - conductorone"
 subcategory: ""
 description: |-
   Zendesk Integration Resource

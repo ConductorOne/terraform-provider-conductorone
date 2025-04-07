@@ -18,10 +18,12 @@ func GetProviderSchemaResponse(ctx context.Context, fw *fwserver.GetProviderSche
 	}
 
 	protov5 := &tfprotov5.GetProviderSchemaResponse{
-		DataSourceSchemas:  map[string]*tfprotov5.Schema{},
-		Diagnostics:        Diagnostics(ctx, fw.Diagnostics),
-		ResourceSchemas:    map[string]*tfprotov5.Schema{},
-		ServerCapabilities: ServerCapabilities(ctx, fw.ServerCapabilities),
+		DataSourceSchemas:        make(map[string]*tfprotov5.Schema, len(fw.DataSourceSchemas)),
+		Diagnostics:              Diagnostics(ctx, fw.Diagnostics),
+		EphemeralResourceSchemas: make(map[string]*tfprotov5.Schema, len(fw.EphemeralResourceSchemas)),
+		Functions:                make(map[string]*tfprotov5.Function, len(fw.FunctionDefinitions)),
+		ResourceSchemas:          make(map[string]*tfprotov5.Schema, len(fw.ResourceSchemas)),
+		ServerCapabilities:       ServerCapabilities(ctx, fw.ServerCapabilities),
 	}
 
 	var err error
@@ -64,6 +66,10 @@ func GetProviderSchemaResponse(ctx context.Context, fw *fwserver.GetProviderSche
 		}
 	}
 
+	for name, functionDefinition := range fw.FunctionDefinitions {
+		protov5.Functions[name] = Function(ctx, functionDefinition)
+	}
+
 	for resourceType, resourceSchema := range fw.ResourceSchemas {
 		protov5.ResourceSchemas[resourceType], err = Schema(ctx, resourceSchema)
 
@@ -72,6 +78,20 @@ func GetProviderSchemaResponse(ctx context.Context, fw *fwserver.GetProviderSche
 				Severity: tfprotov5.DiagnosticSeverityError,
 				Summary:  "Error converting resource schema",
 				Detail:   "The schema for the resource \"" + resourceType + "\" couldn't be converted into a usable type. This is always a problem with the provider. Please report the following to the provider developer:\n\n" + err.Error(),
+			})
+
+			return protov5
+		}
+	}
+
+	for ephemeralResourceType, ephemeralResourceSchema := range fw.EphemeralResourceSchemas {
+		protov5.EphemeralResourceSchemas[ephemeralResourceType], err = Schema(ctx, ephemeralResourceSchema)
+
+		if err != nil {
+			protov5.Diagnostics = append(protov5.Diagnostics, &tfprotov5.Diagnostic{
+				Severity: tfprotov5.DiagnosticSeverityError,
+				Summary:  "Error converting ephemeral resource schema",
+				Detail:   "The schema for the ephemeral resource \"" + ephemeralResourceType + "\" couldn't be converted into a usable type. This is always a problem with the provider. Please report the following to the provider developer:\n\n" + err.Error(),
 			})
 
 			return protov5

@@ -5,13 +5,11 @@ import (
 	"fmt"
 	"strings"
 
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/operations"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
-
-	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,36 +33,27 @@ type AppEntitlementResource struct {
 
 // AppEntitlementResourceModel describes the resource data model.
 type AppEntitlementResourceModel struct {
-	Alias                       types.String                 `tfsdk:"alias"`
-	AppID                       types.String                 `tfsdk:"app_id"`
-	AppResourceID               types.String                 `tfsdk:"app_resource_id"`
-	AppResourceTypeID           types.String                 `tfsdk:"app_resource_type_id"`
-	CertifyPolicyID             types.String                 `tfsdk:"certify_policy_id"`
-	ComplianceFrameworkValueIds []types.String               `tfsdk:"compliance_framework_value_ids"`
-	CreatedAt                   types.String                 `tfsdk:"created_at"`
-	DeletedAt                   types.String                 `tfsdk:"deleted_at"`
-	Description                 types.String                 `tfsdk:"description"`
-	DisplayName                 types.String                 `tfsdk:"display_name"`
-	DurationGrant               types.String                 `tfsdk:"duration_grant"`
-	DurationUnset               *AppEntitlementDurationUnset `tfsdk:"duration_unset"`
-	EmergencyGrantEnabled       types.Bool                   `tfsdk:"emergency_grant_enabled"`
-	EmergencyGrantPolicyID      types.String                 `tfsdk:"emergency_grant_policy_id"`
-	GrantPolicyID               types.String                 `tfsdk:"grant_policy_id"`
-	ID                          types.String                 `tfsdk:"id"`
-	ProvisionPolicy             *ProvisionPolicy             `tfsdk:"provision_policy"`
-	RevokePolicyID              types.String                 `tfsdk:"revoke_policy_id"`
-	RiskLevelValueID            types.String                 `tfsdk:"risk_level_value_id"`
-	Slug                        types.String                 `tfsdk:"slug"`
-	UpdatedAt                   types.String                 `tfsdk:"updated_at"`
-}
-
-func (r *AppEntitlementResource) ConfigValidators(ctx context.Context) []resource.ConfigValidator {
-	return []resource.ConfigValidator{
-		resourcevalidator.Conflicting(
-			path.MatchRoot("duration_grant"),
-			path.MatchRoot("duration_unset"),
-		),
-	}
+	Alias                       types.String                                      `tfsdk:"alias"`
+	AppID                       types.String                                      `tfsdk:"app_id"`
+	AppResourceID               types.String                                      `tfsdk:"app_resource_id"`
+	AppResourceTypeID           types.String                                      `tfsdk:"app_resource_type_id"`
+	CertifyPolicyID             types.String                                      `tfsdk:"certify_policy_id"`
+	ComplianceFrameworkValueIds []types.String                                    `tfsdk:"compliance_framework_value_ids"`
+	CreatedAt                   types.String                                      `tfsdk:"created_at"`
+	DeletedAt                   types.String                                      `tfsdk:"deleted_at"`
+	Description                 types.String                                      `tfsdk:"description"`
+	DisplayName                 types.String                                      `tfsdk:"display_name"`
+	DurationGrant               types.String                                      `tfsdk:"duration_grant"`
+	DurationUnset               *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset"`
+	EmergencyGrantEnabled       types.Bool                                        `tfsdk:"emergency_grant_enabled"`
+	EmergencyGrantPolicyID      types.String                                      `tfsdk:"emergency_grant_policy_id"`
+	GrantPolicyID               types.String                                      `tfsdk:"grant_policy_id"`
+	ID                          types.String                                      `tfsdk:"id"`
+	ProvisionPolicy             *tfTypes.ProvisionPolicy                          `tfsdk:"provision_policy"`
+	RevokePolicyID              types.String                                      `tfsdk:"revoke_policy_id"`
+	RiskLevelValueID            types.String                                      `tfsdk:"risk_level_value_id"`
+	Slug                        types.String                                      `tfsdk:"slug"`
+	UpdatedAt                   types.String                                      `tfsdk:"updated_at"`
 }
 
 func (r *AppEntitlementResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

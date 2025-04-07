@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_celigo Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_celigo Resource - conductorone"
 subcategory: ""
 description: |-
   Celigo Integration Resource

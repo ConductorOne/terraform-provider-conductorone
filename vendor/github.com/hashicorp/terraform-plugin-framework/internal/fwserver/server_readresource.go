@@ -6,6 +6,8 @@ package fwserver
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
+
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fwschemadata"
 	"github.com/hashicorp/terraform-plugin-framework/internal/logging"
@@ -17,15 +19,17 @@ import (
 // ReadResourceRequest is the framework server request for the
 // ReadResource RPC.
 type ReadResourceRequest struct {
-	CurrentState *tfsdk.State
-	Resource     resource.Resource
-	Private      *privatestate.Data
-	ProviderMeta *tfsdk.Config
+	ClientCapabilities resource.ReadClientCapabilities
+	CurrentState       *tfsdk.State
+	Resource           resource.Resource
+	Private            *privatestate.Data
+	ProviderMeta       *tfsdk.Config
 }
 
 // ReadResourceResponse is the framework server response for the
 // ReadResource RPC.
 type ReadResourceResponse struct {
+	Deferred    *resource.Deferred
 	Diagnostics diag.Diagnostics
 	NewState    *tfsdk.State
 	Private     *privatestate.Data
@@ -44,6 +48,19 @@ func (s *Server) ReadResource(ctx context.Context, req *ReadResourceRequest, res
 				"This is always a problem with Terraform or terraform-plugin-framework. Please report this to the provider developer.",
 		)
 
+		return
+	}
+
+	if s.deferred != nil {
+		logging.FrameworkDebug(ctx, "Provider has deferred response configured, automatically returning deferred response.",
+			map[string]interface{}{
+				logging.KeyDeferredReason: s.deferred.Reason.String(),
+			},
+		)
+		resp.NewState = req.CurrentState
+		resp.Deferred = &resource.Deferred{
+			Reason: resource.DeferredReason(s.deferred.Reason),
+		}
 		return
 	}
 
@@ -67,6 +84,7 @@ func (s *Server) ReadResource(ctx context.Context, req *ReadResourceRequest, res
 	}
 
 	readReq := resource.ReadRequest{
+		ClientCapabilities: req.ClientCapabilities,
 		State: tfsdk.State{
 			Schema: req.CurrentState.Schema,
 			Raw:    req.CurrentState.Raw.Copy(),
@@ -103,6 +121,7 @@ func (s *Server) ReadResource(ctx context.Context, req *ReadResourceRequest, res
 
 	resp.Diagnostics = readResp.Diagnostics
 	resp.NewState = &readResp.State
+	resp.Deferred = readResp.Deferred
 
 	if readResp.Private != nil {
 		if resp.Private == nil {
@@ -140,11 +159,21 @@ func (s *Server) ReadResource(ctx context.Context, req *ReadResourceRequest, res
 		return
 	}
 
-	if semanticEqualityResp.NewData.TerraformValue.Equal(resp.NewState.Raw) {
+	if !semanticEqualityResp.NewData.TerraformValue.Equal(resp.NewState.Raw) {
+		logging.FrameworkDebug(ctx, "State updated due to semantic equality")
+
+		resp.NewState.Raw = semanticEqualityResp.NewData.TerraformValue
+	}
+
+	// Set any write-only attributes in the state to null
+	modifiedState, err := tftypes.Transform(resp.NewState.Raw, NullifyWriteOnlyAttributes(ctx, resp.NewState.Schema))
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Modifying State",
+			"There was an unexpected error modifying the NewState. This is always a problem with the provider. Please report the following to the provider developer:\n\n"+err.Error(),
+		)
 		return
 	}
 
-	logging.FrameworkDebug(ctx, "State updated due to semantic equality")
-
-	resp.NewState.Raw = semanticEqualityResp.NewData.TerraformValue
+	resp.NewState.Raw = modifiedState
 }

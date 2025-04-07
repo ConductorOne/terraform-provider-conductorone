@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_salesforce Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_salesforce Resource - conductorone"
 subcategory: ""
 description: |-
   Salesforce Integration Resource

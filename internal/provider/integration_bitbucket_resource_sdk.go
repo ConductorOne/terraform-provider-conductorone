@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -44,7 +44,7 @@ func (r *IntegrationBitbucketResourceModel) ToCreateSDKType() (*shared.Connector
 	out := shared.ConnectorServiceCreateRequest{
 		CatalogID: catalogID,
 		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
+		Config: &shared.Config{
 			AtType: sdk.String(envConfigType),
 			AdditionalProperties: map[string]interface{}{
 				"configuration": configOut,
@@ -54,7 +54,7 @@ func (r *IntegrationBitbucketResourceModel) ToCreateSDKType() (*shared.Connector
 	return &out, nil
 }
 
-func (r *IntegrationBitbucketResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationBitbucketResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -75,7 +75,7 @@ func (r *IntegrationBitbucketResourceModel) ToUpdateSDKType() (*shared.Connector
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Bitbucket"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(bitbucketCatalogID),
