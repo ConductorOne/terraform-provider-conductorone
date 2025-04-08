@@ -1,23 +1,38 @@
-configVersion: 1.0.0
-management:
-  docChecksum: 6c2ecdd15e5497d75245f64b7e75a15c
-  docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.53.0
-  generationVersion: 2.58.0
+configVersion: 2.0.0
 generation:
-  comments:
-    disableComments: false
-    omitDescriptionIfSummaryPresent: false
-  baseServerURL: ""
-  sdkClassName: conductorone-sdk-terraform
-  singleTagPerOp: false
-  tagNamespacingDisabled: false
+  devContainers:
+    enabled: true
+    schemaPath: path/to/schema
+  baseServerUrl: speakeasy.bar/public/api/
+  sdkClassName: conductoroneAPI
+  maintainOpenAPIOrder: true
+  usageSnippets:
+    optionalPropertyRendering: withExample
+  useClassNamesForArrayFields: true
+  fixes:
+    nameResolutionDec2023: true
+    nameResolutionFeb2025: false
+    parameterOrderingFeb2024: true
+    requestResponseComponentNamesFeb2024: true
+    securityFeb2025: false
+  auth:
+    oAuth2ClientCredentialsEnabled: false
+    oAuth2PasswordEnabled: false
+  mockServer:
+    disabled: true
 terraform:
-  version: 1.0.0
-  author: ConductorOne
-  packageName: conductorone
-  enableTypeDeduplication: false
+  version: 1.1.4
+  additionalDataSources: []
+  additionalDependencies: {}
+  additionalProviderAttributes:
+    httpHeaders: ""
   additionalResources:
     - importAlias: AppEntitlement
       importLocation: /conductorone/internal/provider/app_entitlement_resource.go
       resource: AppEntitlement
+  allowUnknownFieldsInWeakUnions: false
+  author: conductorone
+  defaultErrorName: SDKError
+  enableTypeDeduplication: false
+  environmentVariables: []
+  packageName: conductorone

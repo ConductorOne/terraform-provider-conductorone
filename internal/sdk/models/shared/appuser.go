@@ -59,11 +59,15 @@ type AppUser struct {
 	Email *string `json:"email,omitempty"`
 	// The emails field of the application user.
 	Emails []string `json:"emails,omitempty"`
+	// The employee IDs field of the application user.
+	EmployeeIds []string `json:"employeeIds,omitempty"`
 	// A unique idenditfier of the application user.
 	ID *string `json:"id,omitempty"`
 	// The conductor one user ID of the account owner.
-	IdentityUserID *string         `json:"identityUserId,omitempty"`
-	Profile        *AppUserProfile `json:"profile,omitempty"`
+	IdentityUserID *string `json:"identityUserId,omitempty"`
+	// The isExternal field.
+	IsExternal *bool           `json:"isExternal,omitempty"`
+	Profile    *AppUserProfile `json:"profile,omitempty"`
 	// The satus of the applicaiton user.
 	AppUserStatus *AppUserStatus `json:"status,omitempty"`
 	UpdatedAt     *time.Time     `json:"updatedAt,omitempty"`
@@ -133,6 +137,13 @@ func (o *AppUser) GetEmails() []string {
 	return o.Emails
 }
 
+func (o *AppUser) GetEmployeeIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.EmployeeIds
+}
+
 func (o *AppUser) GetID() *string {
 	if o == nil {
 		return nil
@@ -145,6 +156,13 @@ func (o *AppUser) GetIdentityUserID() *string {
 		return nil
 	}
 	return o.IdentityUserID
+}
+
+func (o *AppUser) GetIsExternal() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IsExternal
 }
 
 func (o *AppUser) GetProfile() *AppUserProfile {

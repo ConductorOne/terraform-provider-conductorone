@@ -209,8 +209,17 @@ func (r *AccessProfileResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRequestCatalog(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalog(ctx, res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -264,7 +273,11 @@ func (r *AccessProfileResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRequestCatalog(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalog(ctx, res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -321,8 +334,17 @@ func (r *AccessProfileResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRequestCatalog(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalog(ctx, res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	var id1 string
 	id1 = data.ID.ValueString()
 
@@ -349,8 +371,17 @@ func (r *AccessProfileResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRequestCatalog(res1.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalog(ctx, res1.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -14,7 +14,10 @@ package shared
 //   - expression
 //   - webhook
 //   - resourceOwners
+//   - agent
 type ApprovalInput struct {
+	// The agent to assign the task to.
+	AgentApproval *AgentApproval `json:"agent,omitempty"`
 	// Configuration to allow reassignment by reviewers during this step.
 	AllowReassignment *bool `json:"allowReassignment,omitempty"`
 	// App owner approval provides the configuration for an approval step when the app owner is the target.
@@ -33,6 +36,9 @@ type ApprovalInput struct {
 	RequireDenialReason *bool `json:"requireDenialReason,omitempty"`
 	// Configuration to require a reason when reassigning this step.
 	RequireReassignmentReason *bool `json:"requireReassignmentReason,omitempty"`
+	// The ID of a step-up authentication provider that will be required for approvals on this step.
+	//  If set, approvers must complete the step-up authentication flow before they can approve.
+	RequiresStepUpProviderID *string `json:"requiresStepUpProviderId,omitempty"`
 	// The resource owner approval allows configuration of the approval step when the target approvers are the resource owners.
 	ResourceOwnerApproval *ResourceOwnerApproval `json:"resourceOwners,omitempty"`
 	// The self approval object describes the configuration of a policy step that needs to be approved by the target of the request.
@@ -41,6 +47,13 @@ type ApprovalInput struct {
 	UserApproval *UserApproval `json:"users,omitempty"`
 	// The WebhookApproval message.
 	WebhookApproval *WebhookApproval `json:"webhook,omitempty"`
+}
+
+func (o *ApprovalInput) GetAgentApproval() *AgentApproval {
+	if o == nil {
+		return nil
+	}
+	return o.AgentApproval
 }
 
 func (o *ApprovalInput) GetAllowReassignment() *bool {
@@ -104,6 +117,13 @@ func (o *ApprovalInput) GetRequireReassignmentReason() *bool {
 		return nil
 	}
 	return o.RequireReassignmentReason
+}
+
+func (o *ApprovalInput) GetRequiresStepUpProviderID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RequiresStepUpProviderID
 }
 
 func (o *ApprovalInput) GetResourceOwnerApproval() *ResourceOwnerApproval {

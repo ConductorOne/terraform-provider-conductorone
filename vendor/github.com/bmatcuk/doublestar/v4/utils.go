@@ -29,9 +29,6 @@ import (
 // `meta*/**`), it will return "." and the unaltered pattern (`meta*/**` in
 // this example).
 //
-// Note that SplitPattern will also unescape any meta characters in the
-// returned base string, so that it can be passed straight to os.DirFS().
-//
 // Of course, it is your responsibility to decide if the returned base path is
 // "safe" in the context of your application. Perhaps you could use Match() to
 // validate against a list of approved base directories?
@@ -55,7 +52,7 @@ func SplitPattern(p string) (base, pattern string) {
 	if splitIdx == 0 {
 		return "/", p[1:]
 	} else if splitIdx > 0 {
-		return unescapeMeta(p[:splitIdx]), p[splitIdx+1:]
+		return p[:splitIdx], p[splitIdx+1:]
 	}
 
 	return

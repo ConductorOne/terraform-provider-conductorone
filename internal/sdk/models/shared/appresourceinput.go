@@ -3,6 +3,9 @@
 package shared
 
 // AppResourceInput - The app resource message is a single resource that can have entitlements.
+//
+// This message contains a oneof named metadata. Only a single field of the following list may be set at a time:
+//   - secretTrait
 type AppResourceInput struct {
 	// The app that this resource belongs to.
 	AppID *string `json:"appId,omitempty"`
@@ -22,6 +25,8 @@ type AppResourceInput struct {
 	ParentAppResourceID *string `json:"parentAppResourceId,omitempty"`
 	// The parent resource type id, if this resource is a child of another resource.
 	ParentAppResourceTypeID *string `json:"parentAppResourceTypeId,omitempty"`
+	// The SecretTrait message.
+	SecretTrait *SecretTrait `json:"secretTrait,omitempty"`
 }
 
 func (o *AppResourceInput) GetAppID() *string {
@@ -85,4 +90,11 @@ func (o *AppResourceInput) GetParentAppResourceTypeID() *string {
 		return nil
 	}
 	return o.ParentAppResourceTypeID
+}
+
+func (o *AppResourceInput) GetSecretTrait() *SecretTrait {
+	if o == nil {
+		return nil
+	}
+	return o.SecretTrait
 }

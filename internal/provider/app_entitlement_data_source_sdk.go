@@ -3,11 +3,13 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
 
 func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearchRequest() *shared.AppEntitlementSearchServiceSearchRequest {
@@ -69,18 +71,6 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 	} else {
 		onlyGetExpiring = nil
 	}
-	pageSize := new(int)
-	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
-		*pageSize = int(r.PageSize.ValueInt32())
-	} else {
-		pageSize = nil
-	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
-	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -122,6 +112,12 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 	for _, riskLevelIdsItem := range r.RiskLevelIds {
 		riskLevelIds = append(riskLevelIds, riskLevelIdsItem.ValueString())
 	}
+	sourceConnectorID := new(string)
+	if !r.SourceConnectorID.IsUnknown() && !r.SourceConnectorID.IsNull() {
+		*sourceConnectorID = r.SourceConnectorID.ValueString()
+	} else {
+		sourceConnectorID = nil
+	}
 	out := shared.AppEntitlementSearchServiceSearchRequest{
 		AccessReviewID:         accessReviewID,
 		Alias:                  alias,
@@ -135,19 +131,20 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 		IsAutomated:            isAutomated,
 		MembershipType:         membershipType,
 		OnlyGetExpiring:        onlyGetExpiring,
-		PageSize:               pageSize,
-		PageToken:              pageToken,
 		Query:                  query,
 		Refs:                   refs,
 		ResourceIds:            resourceIds,
 		ResourceTraitIds:       resourceTraitIds,
 		ResourceTypeIds:        resourceTypeIds,
 		RiskLevelIds:           riskLevelIds,
+		SourceConnectorID:      sourceConnectorID,
 	}
 	return &out
 }
 
-func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(resp *shared.AppEntitlement) {
+func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx context.Context, resp *shared.AppEntitlement) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.Alias = types.StringPointerValue(resp.Alias)
 		r.AppID = types.StringPointerValue(resp.AppID)
@@ -160,17 +157,9 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(resp *sh
 				r.ComplianceFrameworkValueIds = append(r.ComplianceFrameworkValueIds, types.StringValue(v))
 			}
 		}
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DefaultValuesApplied = types.BoolPointerValue(resp.DefaultValuesApplied)
-		if resp.DeletedAt != nil {
-			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			r.DeletedAt = types.StringNull()
-		}
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.DurationGrant = types.StringPointerValue(resp.DurationGrant)
@@ -255,6 +244,74 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(resp *sh
 				r.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(resp.ProvisionPolicy.WebhookProvision.WebhookID)
 			}
 		}
+		if resp.ProvisionPolicy1 == nil {
+			r.ProvisionPolicy1 = nil
+		} else {
+			r.ProvisionPolicy1 = &tfTypes.ProvisionPolicy{}
+			if resp.ProvisionPolicy1.ConnectorProvision == nil {
+				r.ProvisionPolicy1.ConnectorProvision = nil
+			} else {
+				r.ProvisionPolicy1.ConnectorProvision = &tfTypes.ConnectorProvision{}
+				if resp.ProvisionPolicy1.ConnectorProvision.AccountProvision == nil {
+					r.ProvisionPolicy1.ConnectorProvision.AccountProvision = nil
+				} else {
+					r.ProvisionPolicy1.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
+					if resp.ProvisionPolicy1.ConnectorProvision.AccountProvision.Config == nil {
+						r.ProvisionPolicy1.ConnectorProvision.AccountProvision.Config = nil
+					} else {
+						r.ProvisionPolicy1.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+					}
+					r.ProvisionPolicy1.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy1.ConnectorProvision.AccountProvision.ConnectorID)
+					r.ProvisionPolicy1.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.ProvisionPolicy1.ConnectorProvision.AccountProvision.SchemaID)
+				}
+				if resp.ProvisionPolicy1.ConnectorProvision.DefaultBehavior == nil {
+					r.ProvisionPolicy1.ConnectorProvision.DefaultBehavior = nil
+				} else {
+					r.ProvisionPolicy1.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
+					r.ProvisionPolicy1.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy1.ConnectorProvision.DefaultBehavior.ConnectorID)
+				}
+			}
+			if resp.ProvisionPolicy1.DelegatedProvision == nil {
+				r.ProvisionPolicy1.DelegatedProvision = nil
+			} else {
+				r.ProvisionPolicy1.DelegatedProvision = &tfTypes.DelegatedProvision{}
+				r.ProvisionPolicy1.DelegatedProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy1.DelegatedProvision.AppID)
+				r.ProvisionPolicy1.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.ProvisionPolicy1.DelegatedProvision.EntitlementID)
+			}
+			if resp.ProvisionPolicy1.ExternalTicketProvision == nil {
+				r.ProvisionPolicy1.ExternalTicketProvision = nil
+			} else {
+				r.ProvisionPolicy1.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
+				r.ProvisionPolicy1.ExternalTicketProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy1.ExternalTicketProvision.AppID)
+				r.ProvisionPolicy1.ExternalTicketProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy1.ExternalTicketProvision.ConnectorID)
+				r.ProvisionPolicy1.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.ProvisionPolicy1.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
+				r.ProvisionPolicy1.ExternalTicketProvision.Instructions = types.StringPointerValue(resp.ProvisionPolicy1.ExternalTicketProvision.Instructions)
+			}
+			if resp.ProvisionPolicy1.ManualProvision == nil {
+				r.ProvisionPolicy1.ManualProvision = nil
+			} else {
+				r.ProvisionPolicy1.ManualProvision = &tfTypes.ManualProvision{}
+				r.ProvisionPolicy1.ManualProvision.Instructions = types.StringPointerValue(resp.ProvisionPolicy1.ManualProvision.Instructions)
+				if resp.ProvisionPolicy1.ManualProvision.UserIds != nil {
+					r.ProvisionPolicy1.ManualProvision.UserIds = make([]types.String, 0, len(resp.ProvisionPolicy1.ManualProvision.UserIds))
+					for _, v := range resp.ProvisionPolicy1.ManualProvision.UserIds {
+						r.ProvisionPolicy1.ManualProvision.UserIds = append(r.ProvisionPolicy1.ManualProvision.UserIds, types.StringValue(v))
+					}
+				}
+			}
+			if resp.ProvisionPolicy1.MultiStep == nil {
+				r.ProvisionPolicy1.MultiStep = types.StringNull()
+			} else {
+				multiStepResult1, _ := json.Marshal(resp.ProvisionPolicy1.MultiStep)
+				r.ProvisionPolicy1.MultiStep = types.StringValue(string(multiStepResult1))
+			}
+			if resp.ProvisionPolicy1.WebhookProvision == nil {
+				r.ProvisionPolicy1.WebhookProvision = nil
+			} else {
+				r.ProvisionPolicy1.WebhookProvision = &tfTypes.WebhookProvision{}
+				r.ProvisionPolicy1.WebhookProvision.WebhookID = types.StringPointerValue(resp.ProvisionPolicy1.WebhookProvision.WebhookID)
+			}
+		}
 		if resp.Purpose != nil {
 			r.Purpose = types.StringValue(string(*resp.Purpose))
 		} else {
@@ -270,10 +327,8 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(resp *sh
 			}
 		}
 		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
+
+	return diags
 }

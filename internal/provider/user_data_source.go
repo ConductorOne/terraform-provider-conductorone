@@ -40,12 +40,16 @@ type UserDataSourceModel struct {
 	DirectoryStatusSources  []tfTypes.UserAttributeMappingSource  `tfsdk:"directory_status_sources"`
 	DisplayName             types.String                          `tfsdk:"display_name"`
 	Email                   types.String                          `tfsdk:"email"`
+	EmailSources            []tfTypes.UserAttributeMappingSource  `tfsdk:"email_sources"`
 	Emails                  []types.String                        `tfsdk:"emails"`
+	EmployeeIDSources       []tfTypes.UserAttributeMappingSource  `tfsdk:"employee_id_sources"`
+	EmployeeIds             []types.String                        `tfsdk:"employee_ids"`
 	EmploymentStatus        types.String                          `tfsdk:"employment_status"`
 	EmploymentStatusSources []tfTypes.UserAttributeMappingSource  `tfsdk:"employment_status_sources"`
 	EmploymentType          types.String                          `tfsdk:"employment_type"`
 	EmploymentTypeSources   []tfTypes.UserAttributeMappingSource  `tfsdk:"employment_type_sources"`
 	ExcludeIds              []types.String                        `tfsdk:"exclude_ids"`
+	ExcludeTypes            []types.String                        `tfsdk:"exclude_types"`
 	Expanded                []tfTypes.SearchUsersResponseExpanded `tfsdk:"expanded"`
 	ID                      types.String                          `tfsdk:"id"`
 	Ids                     []types.String                        `tfsdk:"ids"`
@@ -55,8 +59,6 @@ type UserDataSourceModel struct {
 	ManagerSources          []tfTypes.UserAttributeMappingSource  `tfsdk:"manager_sources"`
 	ManagersPath            types.String                          `tfsdk:"managers_path"`
 	NextPageToken           types.String                          `tfsdk:"next_page_token"`
-	PageSize                types.Int32                           `tfsdk:"page_size"`
-	PageToken               types.String                          `tfsdk:"page_token"`
 	Profile                 *tfTypes.Profile                      `tfsdk:"profile"`
 	Query                   types.String                          `tfsdk:"query"`
 	Refs                    []tfTypes.UserRef                     `tfsdk:"refs"`
@@ -177,10 +179,71 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Optional:    true,
 				Description: `Search for users based on their email (exact match).`,
 			},
+			"email_sources": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"app_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The appId field.`,
+						},
+						"app_user_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The appUserId field.`,
+						},
+						"app_user_profile_attribute_key": schema.StringAttribute{
+							Computed:    true,
+							Description: `The appUserProfileAttributeKey field.`,
+						},
+						"user_attribute_mapping_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The userAttributeMappingId field.`,
+						},
+						"value": schema.StringAttribute{
+							Computed:    true,
+							Description: `The value field.`,
+						},
+					},
+				},
+				Description: `A list of source data for the email attribute.`,
+			},
 			"emails": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `This is a list of all of the user's emails from app users.`,
+			},
+			"employee_id_sources": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"app_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The appId field.`,
+						},
+						"app_user_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The appUserId field.`,
+						},
+						"app_user_profile_attribute_key": schema.StringAttribute{
+							Computed:    true,
+							Description: `The appUserProfileAttributeKey field.`,
+						},
+						"user_attribute_mapping_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The userAttributeMappingId field.`,
+						},
+						"value": schema.StringAttribute{
+							Computed:    true,
+							Description: `The value field.`,
+						},
+					},
+				},
+				Description: `A list of source data for the employee IDs attribute.`,
+			},
+			"employee_ids": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `This is a list of all of the user's employee IDs from app users.`,
 			},
 			"employment_status": schema.StringAttribute{
 				Computed:    true,
@@ -250,6 +313,11 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An array of users IDs to exclude from the results.`,
+			},
+			"exclude_types": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `An array of types to exclude from the results.`,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
@@ -339,14 +407,6 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
 				Description: `The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
-			},
-			"page_size": schema.Int32Attribute{
-				Optional:    true,
-				Description: `The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)`,
-			},
-			"page_token": schema.StringAttribute{
-				Optional:    true,
-				Description: `The pageToken field.`,
 			},
 			"profile": schema.SingleNestedAttribute{
 				Computed: true,
@@ -493,7 +553,11 @@ func (r *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUser(res.SearchUsersResponse.List[0].User)
+	resp.Diagnostics.Append(data.RefreshFromSharedUser(ctx, res.SearchUsersResponse.List[0].User)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -5,6 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Approval struct {
+	AgentApproval             *AgentApproval            `tfsdk:"agent_approval"`
 	AllowReassignment         types.Bool                `tfsdk:"allow_reassignment"`
 	AppGroupApproval          *AppGroupApproval         `tfsdk:"app_group_approval"`
 	AppOwnerApproval          *AppOwnerApproval         `tfsdk:"app_owner_approval"`
@@ -15,6 +16,7 @@ type Approval struct {
 	RequireApprovalReason     types.Bool                `tfsdk:"require_approval_reason"`
 	RequireDenialReason       types.Bool                `tfsdk:"require_denial_reason"`
 	RequireReassignmentReason types.Bool                `tfsdk:"require_reassignment_reason"`
+	RequiresStepUpProviderID  types.String              `tfsdk:"requires_step_up_provider_id"`
 	ResourceOwnerApproval     *ResourceOwnerApproval    `tfsdk:"resource_owner_approval"`
 	SelfApproval              *SelfApproval             `tfsdk:"self_approval"`
 	UserApproval              *UserApproval             `tfsdk:"user_approval"`

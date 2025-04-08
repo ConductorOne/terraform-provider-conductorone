@@ -71,6 +71,7 @@ type WebhookInstance struct {
 	//   - policyPostAction
 	//   - approvalStep
 	//   - provisionStep
+	//   - workflowStep
 	//
 	WebhookSource *WebhookSource `json:"source,omitempty"`
 	// The WebhookSpec message.

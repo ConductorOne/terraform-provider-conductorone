@@ -45,20 +45,20 @@ func (e *DirectoryStatus) UnmarshalJSON(data []byte) error {
 type Profile struct {
 }
 
-// UserStatus1 - The status of the user in the system.
-type UserStatus1 string
+// UserStatus - The status of the user in the system.
+type UserStatus string
 
 const (
-	UserStatus1Unknown  UserStatus1 = "UNKNOWN"
-	UserStatus1Enabled  UserStatus1 = "ENABLED"
-	UserStatus1Disabled UserStatus1 = "DISABLED"
-	UserStatus1Deleted  UserStatus1 = "DELETED"
+	UserStatusUnknown  UserStatus = "UNKNOWN"
+	UserStatusEnabled  UserStatus = "ENABLED"
+	UserStatusDisabled UserStatus = "DISABLED"
+	UserStatusDeleted  UserStatus = "DELETED"
 )
 
-func (e UserStatus1) ToPointer() *UserStatus1 {
+func (e UserStatus) ToPointer() *UserStatus {
 	return &e
 }
-func (e *UserStatus1) UnmarshalJSON(data []byte) error {
+func (e *UserStatus) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -71,10 +71,10 @@ func (e *UserStatus1) UnmarshalJSON(data []byte) error {
 	case "DISABLED":
 		fallthrough
 	case "DELETED":
-		*e = UserStatus1(v)
+		*e = UserStatus(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for UserStatus1: %v", v)
+		return fmt.Errorf("invalid value for UserStatus: %v", v)
 	}
 }
 
@@ -98,8 +98,14 @@ type User struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// This is the user's email.
 	Email *string `json:"email,omitempty"`
+	// A list of source data for the email attribute.
+	EmailSources []UserAttributeMappingSource `json:"emailSources,omitempty"`
 	// This is a list of all of the user's emails from app users.
 	Emails []string `json:"emails,omitempty"`
+	// A list of source data for the employee IDs attribute.
+	EmployeeIDSources []UserAttributeMappingSource `json:"employeeIdSources,omitempty"`
+	// This is a list of all of the user's employee IDs from app users.
+	EmployeeIds []string `json:"employeeIds,omitempty"`
 	// The users employment status.
 	EmploymentStatus *string `json:"employmentStatus,omitempty"`
 	// A list of objects mapped based on employmentStatus attribute mappings configured in the system.
@@ -119,11 +125,11 @@ type User struct {
 	// A list of objects mapped based on managerId attribute mappings configured in the system.
 	ManagerSources []UserAttributeMappingSource `json:"managerSources,omitempty"`
 	Profile        *Profile                     `json:"profile,omitempty"`
-	// A list of unique identifiers that maps to ConductorOne’s user roles let you assign users permissions tailored to the work they do in the software.
+	// A list of unique identifiers that maps to ConductorOne's user roles let you assign users permissions tailored to the work they do in the software.
 	RoleIds []string `json:"roleIds,omitempty"`
 	// The status of the user in the system.
-	Status    *UserStatus1 `json:"status,omitempty"`
-	UpdatedAt *time.Time   `json:"updatedAt,omitempty"`
+	Status    *UserStatus `json:"status,omitempty"`
+	UpdatedAt *time.Time  `json:"updatedAt,omitempty"`
 	// This is the user's primary username. Typically sourced from the primary directory.
 	Username *string `json:"username,omitempty"`
 	// A list of source data for the usernames attribute.
@@ -213,11 +219,32 @@ func (o *User) GetEmail() *string {
 	return o.Email
 }
 
+func (o *User) GetEmailSources() []UserAttributeMappingSource {
+	if o == nil {
+		return nil
+	}
+	return o.EmailSources
+}
+
 func (o *User) GetEmails() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Emails
+}
+
+func (o *User) GetEmployeeIDSources() []UserAttributeMappingSource {
+	if o == nil {
+		return nil
+	}
+	return o.EmployeeIDSources
+}
+
+func (o *User) GetEmployeeIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.EmployeeIds
 }
 
 func (o *User) GetEmploymentStatus() *string {
@@ -297,7 +324,7 @@ func (o *User) GetRoleIds() []string {
 	return o.RoleIds
 }
 
-func (o *User) GetStatus() *UserStatus1 {
+func (o *User) GetStatus() *UserStatus {
 	if o == nil {
 		return nil
 	}

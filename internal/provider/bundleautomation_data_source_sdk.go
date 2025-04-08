@@ -3,24 +3,24 @@
 package provider
 
 import (
+	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
 
-func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(resp *shared.BundleAutomation) {
+func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(ctx context.Context, resp *shared.BundleAutomation) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.BundleAutomationLastRunState == nil {
 			r.BundleAutomationLastRunState = nil
 		} else {
 			r.BundleAutomationLastRunState = &tfTypes.BundleAutomationLastRunState{}
 			r.BundleAutomationLastRunState.ErrorMessage = types.StringPointerValue(resp.BundleAutomationLastRunState.ErrorMessage)
-			if resp.BundleAutomationLastRunState.LastRunAt != nil {
-				r.BundleAutomationLastRunState.LastRunAt = types.StringValue(resp.BundleAutomationLastRunState.LastRunAt.Format(time.RFC3339Nano))
-			} else {
-				r.BundleAutomationLastRunState.LastRunAt = types.StringNull()
-			}
+			r.BundleAutomationLastRunState.LastRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationLastRunState.LastRunAt))
 			if resp.BundleAutomationLastRunState.Status != nil {
 				r.BundleAutomationLastRunState.Status = types.StringValue(string(*resp.BundleAutomationLastRunState.Status))
 			} else {
@@ -37,36 +37,26 @@ func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(resp
 					r.BundleAutomationRuleEntitlement.EntitlementRefs = r.BundleAutomationRuleEntitlement.EntitlementRefs[:len(resp.BundleAutomationRuleEntitlement.EntitlementRefs)]
 				}
 				for entitlementRefsCount, entitlementRefsItem := range resp.BundleAutomationRuleEntitlement.EntitlementRefs {
-					var entitlementRefs1 tfTypes.AppEntitlementRef
-					entitlementRefs1.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
-					entitlementRefs1.ID = types.StringPointerValue(entitlementRefsItem.ID)
+					var entitlementRefs tfTypes.AppEntitlementRef
+					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
+					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
 					if entitlementRefsCount+1 > len(r.BundleAutomationRuleEntitlement.EntitlementRefs) {
-						r.BundleAutomationRuleEntitlement.EntitlementRefs = append(r.BundleAutomationRuleEntitlement.EntitlementRefs, entitlementRefs1)
+						r.BundleAutomationRuleEntitlement.EntitlementRefs = append(r.BundleAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
 					} else {
-						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].AppID = entitlementRefs1.AppID
-						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].ID = entitlementRefs1.ID
+						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].AppID = entitlementRefs.AppID
+						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].ID = entitlementRefs.ID
 					}
 				}
 			}
 		}
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CreateTasks = types.BoolPointerValue(resp.CreateTasks)
-		if resp.DeletedAt != nil {
-			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			r.DeletedAt = types.StringNull()
-		}
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.RequestCatalogID = types.StringPointerValue(resp.RequestCatalogID)
 		r.TenantID = types.StringPointerValue(resp.TenantID)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
+
+	return diags
 }

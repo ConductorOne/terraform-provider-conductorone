@@ -9,6 +9,7 @@ package shared
 //   - policyPostAction
 //   - approvalStep
 //   - provisionStep
+//   - workflowStep
 type WebhookSource struct {
 	// The WebhookSourceApprovalStep message.
 	WebhookSourceApprovalStep *WebhookSourceApprovalStep `json:"approvalStep,omitempty"`
@@ -18,6 +19,8 @@ type WebhookSource struct {
 	WebhookSourceProvisionStep *WebhookSourceProvisionStep `json:"provisionStep,omitempty"`
 	// The WebhookSourceTest message.
 	WebhookSourceTest *WebhookSourceTest `json:"test,omitempty"`
+	// The WebhookSourceWorkflowStep message.
+	WebhookSourceWorkflowStep *WebhookSourceWorkflowStep `json:"workflowStep,omitempty"`
 }
 
 func (o *WebhookSource) GetWebhookSourceApprovalStep() *WebhookSourceApprovalStep {
@@ -46,4 +49,11 @@ func (o *WebhookSource) GetWebhookSourceTest() *WebhookSourceTest {
 		return nil
 	}
 	return o.WebhookSourceTest
+}
+
+func (o *WebhookSource) GetWebhookSourceWorkflowStep() *WebhookSourceWorkflowStep {
+	if o == nil {
+		return nil
+	}
+	return o.WebhookSourceWorkflowStep
 }

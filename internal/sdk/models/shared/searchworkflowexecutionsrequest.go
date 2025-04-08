@@ -2,30 +2,84 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type ExecutionStepStates string
+
+const (
+	ExecutionStepStatesWorkflowExecutionStateUnspecified  ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_UNSPECIFIED"
+	ExecutionStepStatesWorkflowExecutionStatePending      ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_PENDING"
+	ExecutionStepStatesWorkflowExecutionStateCreating     ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_CREATING"
+	ExecutionStepStatesWorkflowExecutionStateGetStep      ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_GET_STEP"
+	ExecutionStepStatesWorkflowExecutionStateProcessStep  ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_PROCESS_STEP"
+	ExecutionStepStatesWorkflowExecutionStateCompleteStep ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_COMPLETE_STEP"
+	ExecutionStepStatesWorkflowExecutionStateDone         ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_DONE"
+	ExecutionStepStatesWorkflowExecutionStateError        ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_ERROR"
+	ExecutionStepStatesWorkflowExecutionStateTerminate    ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_TERMINATE"
+)
+
+func (e ExecutionStepStates) ToPointer() *ExecutionStepStates {
+	return &e
+}
+func (e *ExecutionStepStates) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "WORKFLOW_EXECUTION_STATE_UNSPECIFIED":
+		fallthrough
+	case "WORKFLOW_EXECUTION_STATE_PENDING":
+		fallthrough
+	case "WORKFLOW_EXECUTION_STATE_CREATING":
+		fallthrough
+	case "WORKFLOW_EXECUTION_STATE_GET_STEP":
+		fallthrough
+	case "WORKFLOW_EXECUTION_STATE_PROCESS_STEP":
+		fallthrough
+	case "WORKFLOW_EXECUTION_STATE_COMPLETE_STEP":
+		fallthrough
+	case "WORKFLOW_EXECUTION_STATE_DONE":
+		fallthrough
+	case "WORKFLOW_EXECUTION_STATE_ERROR":
+		fallthrough
+	case "WORKFLOW_EXECUTION_STATE_TERMINATE":
+		*e = ExecutionStepStates(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ExecutionStepStates: %v", v)
+	}
+}
+
 // The SearchWorkflowExecutionsRequest message.
 type SearchWorkflowExecutionsRequest struct {
-	// The pageSize field.
-	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
-	PageToken *string `json:"pageToken,omitempty"`
+	// The executionStepStates field.
+	ExecutionStepStates []ExecutionStepStates `json:"executionStepStates,omitempty"`
+	// The WorkflowExecutionExpandMask message.
+	WorkflowExecutionExpandMask *WorkflowExecutionExpandMask `json:"expandMask,omitempty"`
 	// The query field.
 	Query *string `json:"query,omitempty"`
+	// The refs field.
+	Refs []WorkflowExecutionRef `json:"refs,omitempty"`
 	// The workflowTemplateId field.
 	WorkflowTemplateID *string `json:"workflowTemplateId,omitempty"`
 }
 
-func (o *SearchWorkflowExecutionsRequest) GetPageSize() *int {
+func (o *SearchWorkflowExecutionsRequest) GetExecutionStepStates() []ExecutionStepStates {
 	if o == nil {
 		return nil
 	}
-	return o.PageSize
+	return o.ExecutionStepStates
 }
 
-func (o *SearchWorkflowExecutionsRequest) GetPageToken() *string {
+func (o *SearchWorkflowExecutionsRequest) GetWorkflowExecutionExpandMask() *WorkflowExecutionExpandMask {
 	if o == nil {
 		return nil
 	}
-	return o.PageToken
+	return o.WorkflowExecutionExpandMask
 }
 
 func (o *SearchWorkflowExecutionsRequest) GetQuery() *string {
@@ -33,6 +87,13 @@ func (o *SearchWorkflowExecutionsRequest) GetQuery() *string {
 		return nil
 	}
 	return o.Query
+}
+
+func (o *SearchWorkflowExecutionsRequest) GetRefs() []WorkflowExecutionRef {
+	if o == nil {
+		return nil
+	}
+	return o.Refs
 }
 
 func (o *SearchWorkflowExecutionsRequest) GetWorkflowTemplateID() *string {

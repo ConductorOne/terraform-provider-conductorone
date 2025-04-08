@@ -3,32 +3,26 @@
 package provider
 
 import (
+	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
 
-func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedAppEntitlementProxy(resp *shared.AppEntitlementProxy) {
+func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedAppEntitlementProxy(ctx context.Context, resp *shared.AppEntitlementProxy) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
-		if resp.DeletedAt != nil {
-			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			r.DeletedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.DstAppEntitlementID = types.StringPointerValue(resp.DstAppEntitlementID)
 		r.DstAppID = types.StringPointerValue(resp.DstAppID)
 		r.SrcAppEntitlementID = types.StringPointerValue(resp.SrcAppEntitlementID)
 		r.SrcAppID = types.StringPointerValue(resp.SrcAppID)
 		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
+
+	return diags
 }

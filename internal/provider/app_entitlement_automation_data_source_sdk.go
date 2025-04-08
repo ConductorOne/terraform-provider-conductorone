@@ -3,13 +3,17 @@
 package provider
 
 import (
+	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
 
-func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlementAutomation(resp *shared.AppEntitlementAutomation) {
+func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlementAutomation(ctx context.Context, resp *shared.AppEntitlementAutomation) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.AppEntitlementID = types.StringPointerValue(resp.AppEntitlementID)
 		r.AppID = types.StringPointerValue(resp.AppID)
@@ -18,11 +22,7 @@ func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlemen
 		} else {
 			r.AppEntitlementAutomationLastRunStatus = &tfTypes.AppEntitlementAutomationLastRunStatus{}
 			r.AppEntitlementAutomationLastRunStatus.ErrorMessage = types.StringPointerValue(resp.AppEntitlementAutomationLastRunStatus.ErrorMessage)
-			if resp.AppEntitlementAutomationLastRunStatus.LastCompletedAt != nil {
-				r.AppEntitlementAutomationLastRunStatus.LastCompletedAt = types.StringValue(resp.AppEntitlementAutomationLastRunStatus.LastCompletedAt.Format(time.RFC3339Nano))
-			} else {
-				r.AppEntitlementAutomationLastRunStatus.LastCompletedAt = types.StringNull()
-			}
+			r.AppEntitlementAutomationLastRunStatus.LastCompletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.AppEntitlementAutomationLastRunStatus.LastCompletedAt))
 			if resp.AppEntitlementAutomationLastRunStatus.Status != nil {
 				r.AppEntitlementAutomationLastRunStatus.Status = types.StringValue(string(*resp.AppEntitlementAutomationLastRunStatus.Status))
 			} else {
@@ -51,14 +51,14 @@ func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlemen
 					r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[:len(resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs)]
 				}
 				for entitlementRefsCount, entitlementRefsItem := range resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
-					var entitlementRefs1 tfTypes.AppEntitlementRef
-					entitlementRefs1.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
-					entitlementRefs1.ID = types.StringPointerValue(entitlementRefsItem.ID)
+					var entitlementRefs tfTypes.AppEntitlementRef
+					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
+					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
 					if entitlementRefsCount+1 > len(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs) {
-						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = append(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs, entitlementRefs1)
+						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = append(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
 					} else {
-						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].AppID = entitlementRefs1.AppID
-						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].ID = entitlementRefs1.ID
+						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].AppID = entitlementRefs.AppID
+						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].ID = entitlementRefs.ID
 					}
 				}
 			}
@@ -68,22 +68,12 @@ func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlemen
 		} else {
 			r.AppEntitlementAutomationRuleNone = &tfTypes.AppEntitlementAutomationRuleNone{}
 		}
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
-		if resp.DeletedAt != nil {
-			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			r.DeletedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
+
+	return diags
 }

@@ -180,8 +180,17 @@ func (r *AppResourceTypeResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppResourceType(res.CreateManuallyManagedResourceTypeResponse.AppResourceType)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res.CreateManuallyManagedResourceTypeResponse.AppResourceType)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	var appId1 string
 	appId1 = data.AppID.ValueString()
 
@@ -212,8 +221,17 @@ func (r *AppResourceTypeResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppResourceType(res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -271,7 +289,11 @@ func (r *AppResourceTypeResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppResourceType(res.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -332,8 +354,17 @@ func (r *AppResourceTypeResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppResourceType(res.UpdateManuallyManagedResourceTypeResponse.AppResourceType)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res.UpdateManuallyManagedResourceTypeResponse.AppResourceType)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	var appId1 string
 	appId1 = data.AppID.ValueString()
 
@@ -364,8 +395,17 @@ func (r *AppResourceTypeResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppResourceType(res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -427,7 +467,7 @@ func (r *AppResourceTypeResource) ImportState(ctx context.Context, req resource.
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "app_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_id": "",  "id": ""}': `+err.Error())
 		return
 	}
 

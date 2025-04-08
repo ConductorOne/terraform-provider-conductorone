@@ -12,6 +12,8 @@ type ApprovedAction struct {
 	ApprovedAt *time.Time `json:"approvedAt,omitempty"`
 	// The entitlements that were approved. This will only ever be a list of one entitlement.
 	Entitlements []AppEntitlementReference `json:"entitlements,omitempty"`
+	// The ID of the step-up transaction that was used for this approval, if step-up was required.
+	StepUpTransactionID *string `json:"stepUpTransactionId,omitempty"`
 	// The UserID that approved this step.
 	UserID *string `json:"userId,omitempty"`
 }
@@ -39,6 +41,13 @@ func (o *ApprovedAction) GetEntitlements() []AppEntitlementReference {
 		return nil
 	}
 	return o.Entitlements
+}
+
+func (o *ApprovedAction) GetStepUpTransactionID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StepUpTransactionID
 }
 
 func (o *ApprovedAction) GetUserID() *string {

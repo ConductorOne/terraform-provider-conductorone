@@ -4,10 +4,19 @@ package shared
 
 // The UnenrollFromAllAccessProfiles message.
 type UnenrollFromAllAccessProfiles struct {
+	// Optional list of catalog IDs to unenroll from. If empty, unenroll from all catalogs.
+	CatalogIds []string `json:"catalogIds,omitempty"`
 	// The userIdsCel field.
 	UserIdsCel *string `json:"userIdsCel,omitempty"`
 	// The userRefs field.
 	UserRefs []UserRef `json:"userRefs,omitempty"`
+}
+
+func (o *UnenrollFromAllAccessProfiles) GetCatalogIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.CatalogIds
 }
 
 func (o *UnenrollFromAllAccessProfiles) GetUserIdsCel() *string {

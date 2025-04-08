@@ -35,8 +35,6 @@ type PolicyDataSourceModel struct {
 	ID                       types.String                   `tfsdk:"id"`
 	IncludeDeleted           types.Bool                     `tfsdk:"include_deleted"`
 	NextPageToken            types.String                   `tfsdk:"next_page_token"`
-	PageSize                 types.Int32                    `tfsdk:"page_size"`
-	PageToken                types.String                   `tfsdk:"page_token"`
 	PolicySteps              map[string]tfTypes.PolicySteps `tfsdk:"policy_steps"`
 	PolicyType               types.String                   `tfsdk:"policy_type"`
 	PolicyTypes              []types.String                 `tfsdk:"policy_types"`
@@ -87,14 +85,6 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				Computed:    true,
 				Description: `The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
 			},
-			"page_size": schema.Int32Attribute{
-				Optional:    true,
-				Description: `The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)`,
-			},
-			"page_token": schema.StringAttribute{
-				Optional:    true,
-				Description: `The pageToken field.`,
-			},
 			"policy_steps": schema.MapNestedAttribute{
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
@@ -116,6 +106,20 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 									"approval": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
+											"agent_approval": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"agent_user_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The agent user ID to assign the task to.`,
+													},
+													"instructions": schema.StringAttribute{
+														Computed:    true,
+														Description: `Instructions for the agent.`,
+													},
+												},
+												Description: `The agent to assign the task to.`,
+											},
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
 												Description: `Configuration to allow reassignment by reviewers during this step.`,
@@ -245,6 +249,11 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 												Computed:    true,
 												Description: `Configuration to require a reason when reassigning this step.`,
 											},
+											"requires_step_up_provider_id": schema.StringAttribute{
+												Computed: true,
+												MarkdownDescription: `The ID of a step-up authentication provider that will be required for approvals on this step.` + "\n" +
+													` If set, approvers must complete the step-up authentication flow before they can approve.`,
+											},
 											"resource_owner_approval": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
@@ -321,7 +330,8 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											`  - entitlementOwners` + "\n" +
 											`  - expression` + "\n" +
 											`  - webhook` + "\n" +
-											`  - resourceOwners`,
+											`  - resourceOwners` + "\n" +
+											`  - agent`,
 									},
 									"provision": schema.SingleNestedAttribute{
 										Computed: true,
@@ -657,7 +667,11 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPolicy(&res.ListPolicyResponse.List[0])
+	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, &res.ListPolicyResponse.List[0])...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

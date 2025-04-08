@@ -3,7 +3,9 @@
 package provider
 
 import (
+	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
 func (r *AppOwnerResourceModel) ToSharedSetAppOwnersRequest() *shared.SetAppOwnersRequest {
@@ -17,7 +19,11 @@ func (r *AppOwnerResourceModel) ToSharedSetAppOwnersRequest() *shared.SetAppOwne
 	return &out
 }
 
-func (r *AppOwnerResourceModel) RefreshFromSharedSetAppOwnersResponse(resp *shared.SetAppOwnersResponse) {
+func (r *AppOwnerResourceModel) RefreshFromSharedSetAppOwnersResponse(ctx context.Context, resp *shared.SetAppOwnersResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 	}
+
+	return diags
 }

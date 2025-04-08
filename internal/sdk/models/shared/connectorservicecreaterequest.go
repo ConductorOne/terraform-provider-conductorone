@@ -6,32 +6,32 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 )
 
-// Config - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type Config struct {
+// ConnectorServiceCreateRequestConfig - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+type ConnectorServiceCreateRequestConfig struct {
 	// The type of the serialized message.
 	AtType               *string `json:"@type,omitempty"`
 	AdditionalProperties any     `additionalProperties:"true" json:"-"`
 }
 
-func (c Config) MarshalJSON() ([]byte, error) {
+func (c ConnectorServiceCreateRequestConfig) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *Config) UnmarshalJSON(data []byte) error {
+func (c *ConnectorServiceCreateRequestConfig) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Config) GetAtType() *string {
+func (o *ConnectorServiceCreateRequestConfig) GetAtType() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AtType
 }
 
-func (o *Config) GetAdditionalProperties() any {
+func (o *ConnectorServiceCreateRequestConfig) GetAdditionalProperties() any {
 	if o == nil {
 		return nil
 	}
@@ -43,7 +43,7 @@ type ConnectorServiceCreateRequest struct {
 	// The catalogId field.
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-	Config *Config `json:"config,omitempty"`
+	Config *ConnectorServiceCreateRequestConfig `json:"config,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The userIds field.
@@ -57,7 +57,7 @@ func (o *ConnectorServiceCreateRequest) GetCatalogID() *string {
 	return o.CatalogID
 }
 
-func (o *ConnectorServiceCreateRequest) GetConfig() *Config {
+func (o *ConnectorServiceCreateRequest) GetConfig() *ConnectorServiceCreateRequestConfig {
 	if o == nil {
 		return nil
 	}

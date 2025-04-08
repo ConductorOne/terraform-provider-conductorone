@@ -4,28 +4,10 @@ package shared
 
 // The WebhooksSearchRequest message.
 type WebhooksSearchRequest struct {
-	// The pageSize field.
-	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
-	PageToken *string `json:"pageToken,omitempty"`
 	// The query field.
 	Query *string `json:"query,omitempty"`
 	// The refs field.
 	Refs []WebhookRef `json:"refs,omitempty"`
-}
-
-func (o *WebhooksSearchRequest) GetPageSize() *int {
-	if o == nil {
-		return nil
-	}
-	return o.PageSize
-}
-
-func (o *WebhooksSearchRequest) GetPageToken() *string {
-	if o == nil {
-		return nil
-	}
-	return o.PageToken
 }
 
 func (o *WebhooksSearchRequest) GetQuery() *string {

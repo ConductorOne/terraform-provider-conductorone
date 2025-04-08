@@ -3,9 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
 
 func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCreateRequest() *shared.RequestCatalogManagementServiceCreateRequest {
@@ -18,9 +20,9 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 	var displayName string
 	displayName = r.DisplayName.ValueString()
 
-	enrollmentBehavior := new(shared.EnrollmentBehavior)
+	enrollmentBehavior := new(shared.RequestCatalogManagementServiceCreateRequestEnrollmentBehavior)
 	if !r.EnrollmentBehavior.IsUnknown() && !r.EnrollmentBehavior.IsNull() {
-		*enrollmentBehavior = shared.EnrollmentBehavior(r.EnrollmentBehavior.ValueString())
+		*enrollmentBehavior = shared.RequestCatalogManagementServiceCreateRequestEnrollmentBehavior(r.EnrollmentBehavior.ValueString())
 	} else {
 		enrollmentBehavior = nil
 	}
@@ -36,15 +38,15 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 	} else {
 		requestBundle = nil
 	}
-	unenrollmentBehavior := new(shared.UnenrollmentBehavior)
+	unenrollmentBehavior := new(shared.RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior)
 	if !r.UnenrollmentBehavior.IsUnknown() && !r.UnenrollmentBehavior.IsNull() {
-		*unenrollmentBehavior = shared.UnenrollmentBehavior(r.UnenrollmentBehavior.ValueString())
+		*unenrollmentBehavior = shared.RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior(r.UnenrollmentBehavior.ValueString())
 	} else {
 		unenrollmentBehavior = nil
 	}
-	unenrollmentEntitlementBehavior := new(shared.UnenrollmentEntitlementBehavior)
+	unenrollmentEntitlementBehavior := new(shared.RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior)
 	if !r.UnenrollmentEntitlementBehavior.IsUnknown() && !r.UnenrollmentEntitlementBehavior.IsNull() {
-		*unenrollmentEntitlementBehavior = shared.UnenrollmentEntitlementBehavior(r.UnenrollmentEntitlementBehavior.ValueString())
+		*unenrollmentEntitlementBehavior = shared.RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior(r.UnenrollmentEntitlementBehavior.ValueString())
 	} else {
 		unenrollmentEntitlementBehavior = nil
 	}
@@ -67,19 +69,13 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 	return &out
 }
 
-func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(resp *shared.RequestCatalog) {
+func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context.Context, resp *shared.RequestCatalog) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CreatedByUserID = types.StringPointerValue(resp.CreatedByUserID)
-		if resp.DeletedAt != nil {
-			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			r.DeletedAt = types.StringNull()
-		}
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		if resp.EnrollmentBehavior != nil {
@@ -100,13 +96,11 @@ func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(resp *share
 		} else {
 			r.UnenrollmentEntitlementBehavior = types.StringNull()
 		}
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 		r.VisibleToEveryone = types.BoolPointerValue(resp.VisibleToEveryone)
 	}
+
+	return diags
 }
 
 func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput() *shared.RequestCatalogInput {
@@ -128,9 +122,9 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput() *shared.Reque
 	} else {
 		displayName = nil
 	}
-	enrollmentBehavior := new(shared.RequestCatalogEnrollmentBehavior)
+	enrollmentBehavior := new(shared.EnrollmentBehavior)
 	if !r.EnrollmentBehavior.IsUnknown() && !r.EnrollmentBehavior.IsNull() {
-		*enrollmentBehavior = shared.RequestCatalogEnrollmentBehavior(r.EnrollmentBehavior.ValueString())
+		*enrollmentBehavior = shared.EnrollmentBehavior(r.EnrollmentBehavior.ValueString())
 	} else {
 		enrollmentBehavior = nil
 	}
@@ -152,15 +146,15 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput() *shared.Reque
 	} else {
 		requestBundle = nil
 	}
-	unenrollmentBehavior := new(shared.RequestCatalogUnenrollmentBehavior)
+	unenrollmentBehavior := new(shared.UnenrollmentBehavior)
 	if !r.UnenrollmentBehavior.IsUnknown() && !r.UnenrollmentBehavior.IsNull() {
-		*unenrollmentBehavior = shared.RequestCatalogUnenrollmentBehavior(r.UnenrollmentBehavior.ValueString())
+		*unenrollmentBehavior = shared.UnenrollmentBehavior(r.UnenrollmentBehavior.ValueString())
 	} else {
 		unenrollmentBehavior = nil
 	}
-	unenrollmentEntitlementBehavior := new(shared.RequestCatalogUnenrollmentEntitlementBehavior)
+	unenrollmentEntitlementBehavior := new(shared.UnenrollmentEntitlementBehavior)
 	if !r.UnenrollmentEntitlementBehavior.IsUnknown() && !r.UnenrollmentEntitlementBehavior.IsNull() {
-		*unenrollmentEntitlementBehavior = shared.RequestCatalogUnenrollmentEntitlementBehavior(r.UnenrollmentEntitlementBehavior.ValueString())
+		*unenrollmentEntitlementBehavior = shared.UnenrollmentEntitlementBehavior(r.UnenrollmentEntitlementBehavior.ValueString())
 	} else {
 		unenrollmentEntitlementBehavior = nil
 	}

@@ -3,9 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
 
 func (r *AppResourceTypeResourceModel) ToSharedCreateManuallyManagedResourceTypeRequest() *shared.CreateManuallyManagedResourceTypeRequest {
@@ -20,19 +22,13 @@ func (r *AppResourceTypeResourceModel) ToSharedCreateManuallyManagedResourceType
 	return &out
 }
 
-func (r *AppResourceTypeResourceModel) RefreshFromSharedAppResourceType(resp *shared.AppResourceType) {
+func (r *AppResourceTypeResourceModel) RefreshFromSharedAppResourceType(ctx context.Context, resp *shared.AppResourceType) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.AppID = types.StringPointerValue(resp.AppID)
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
-		if resp.DeletedAt != nil {
-			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			r.DeletedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.ID = types.StringPointerValue(resp.ID)
 		if resp.TraitIds != nil {
@@ -41,12 +37,10 @@ func (r *AppResourceTypeResourceModel) RefreshFromSharedAppResourceType(resp *sh
 				r.TraitIds = append(r.TraitIds, types.StringValue(v))
 			}
 		}
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
+
+	return diags
 }
 
 func (r *AppResourceTypeResourceModel) ToSharedAppResourceTypeInput() *shared.AppResourceTypeInput {

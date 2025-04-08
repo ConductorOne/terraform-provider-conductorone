@@ -3,11 +3,13 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
 
 func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest() *shared.CreateAppEntitlementRequest {
@@ -221,9 +223,9 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 			WebhookProvision:        webhookProvision,
 		}
 	}
-	purpose := new(shared.Purpose)
+	purpose := new(shared.CreateAppEntitlementRequestPurpose)
 	if !r.Purpose.IsUnknown() && !r.Purpose.IsNull() {
-		*purpose = shared.Purpose(r.Purpose.ValueString())
+		*purpose = shared.CreateAppEntitlementRequestPurpose(r.Purpose.ValueString())
 	} else {
 		purpose = nil
 	}
@@ -268,7 +270,9 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 	return &out
 }
 
-func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(resp *shared.AppEntitlement) {
+func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx context.Context, resp *shared.AppEntitlement) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.Alias = types.StringPointerValue(resp.Alias)
 		r.AppID = types.StringPointerValue(resp.AppID)
@@ -281,17 +285,9 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(resp
 				r.ComplianceFrameworkValueIds = append(r.ComplianceFrameworkValueIds, types.StringValue(v))
 			}
 		}
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DefaultValuesApplied = types.BoolPointerValue(resp.DefaultValuesApplied)
-		if resp.DeletedAt != nil {
-			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			r.DeletedAt = types.StringNull()
-		}
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.DurationGrant = types.StringPointerValue(resp.DurationGrant)
@@ -376,6 +372,74 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(resp
 				r.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(resp.ProvisionPolicy.WebhookProvision.WebhookID)
 			}
 		}
+		if resp.ProvisionPolicy1 == nil {
+			r.ProvisionPolicy1 = nil
+		} else {
+			r.ProvisionPolicy1 = &tfTypes.ProvisionPolicy{}
+			if resp.ProvisionPolicy1.ConnectorProvision == nil {
+				r.ProvisionPolicy1.ConnectorProvision = nil
+			} else {
+				r.ProvisionPolicy1.ConnectorProvision = &tfTypes.ConnectorProvision{}
+				if resp.ProvisionPolicy1.ConnectorProvision.AccountProvision == nil {
+					r.ProvisionPolicy1.ConnectorProvision.AccountProvision = nil
+				} else {
+					r.ProvisionPolicy1.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
+					if resp.ProvisionPolicy1.ConnectorProvision.AccountProvision.Config == nil {
+						r.ProvisionPolicy1.ConnectorProvision.AccountProvision.Config = nil
+					} else {
+						r.ProvisionPolicy1.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+					}
+					r.ProvisionPolicy1.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy1.ConnectorProvision.AccountProvision.ConnectorID)
+					r.ProvisionPolicy1.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.ProvisionPolicy1.ConnectorProvision.AccountProvision.SchemaID)
+				}
+				if resp.ProvisionPolicy1.ConnectorProvision.DefaultBehavior == nil {
+					r.ProvisionPolicy1.ConnectorProvision.DefaultBehavior = nil
+				} else {
+					r.ProvisionPolicy1.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
+					r.ProvisionPolicy1.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy1.ConnectorProvision.DefaultBehavior.ConnectorID)
+				}
+			}
+			if resp.ProvisionPolicy1.DelegatedProvision == nil {
+				r.ProvisionPolicy1.DelegatedProvision = nil
+			} else {
+				r.ProvisionPolicy1.DelegatedProvision = &tfTypes.DelegatedProvision{}
+				r.ProvisionPolicy1.DelegatedProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy1.DelegatedProvision.AppID)
+				r.ProvisionPolicy1.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.ProvisionPolicy1.DelegatedProvision.EntitlementID)
+			}
+			if resp.ProvisionPolicy1.ExternalTicketProvision == nil {
+				r.ProvisionPolicy1.ExternalTicketProvision = nil
+			} else {
+				r.ProvisionPolicy1.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
+				r.ProvisionPolicy1.ExternalTicketProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy1.ExternalTicketProvision.AppID)
+				r.ProvisionPolicy1.ExternalTicketProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy1.ExternalTicketProvision.ConnectorID)
+				r.ProvisionPolicy1.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.ProvisionPolicy1.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
+				r.ProvisionPolicy1.ExternalTicketProvision.Instructions = types.StringPointerValue(resp.ProvisionPolicy1.ExternalTicketProvision.Instructions)
+			}
+			if resp.ProvisionPolicy1.ManualProvision == nil {
+				r.ProvisionPolicy1.ManualProvision = nil
+			} else {
+				r.ProvisionPolicy1.ManualProvision = &tfTypes.ManualProvision{}
+				r.ProvisionPolicy1.ManualProvision.Instructions = types.StringPointerValue(resp.ProvisionPolicy1.ManualProvision.Instructions)
+				if resp.ProvisionPolicy1.ManualProvision.UserIds != nil {
+					r.ProvisionPolicy1.ManualProvision.UserIds = make([]types.String, 0, len(resp.ProvisionPolicy1.ManualProvision.UserIds))
+					for _, v := range resp.ProvisionPolicy1.ManualProvision.UserIds {
+						r.ProvisionPolicy1.ManualProvision.UserIds = append(r.ProvisionPolicy1.ManualProvision.UserIds, types.StringValue(v))
+					}
+				}
+			}
+			if resp.ProvisionPolicy1.MultiStep == nil {
+				r.ProvisionPolicy1.MultiStep = types.StringNull()
+			} else {
+				multiStepResult1, _ := json.Marshal(resp.ProvisionPolicy1.MultiStep)
+				r.ProvisionPolicy1.MultiStep = types.StringValue(string(multiStepResult1))
+			}
+			if resp.ProvisionPolicy1.WebhookProvision == nil {
+				r.ProvisionPolicy1.WebhookProvision = nil
+			} else {
+				r.ProvisionPolicy1.WebhookProvision = &tfTypes.WebhookProvision{}
+				r.ProvisionPolicy1.WebhookProvision.WebhookID = types.StringPointerValue(resp.ProvisionPolicy1.WebhookProvision.WebhookID)
+			}
+		}
 		if resp.Purpose != nil {
 			r.Purpose = types.StringValue(string(*resp.Purpose))
 		} else {
@@ -391,12 +455,10 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(resp
 			}
 		}
 		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
+
+	return diags
 }
 
 func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *shared.AppEntitlementInput {
@@ -439,58 +501,6 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 		*defaultValuesApplied = r.DefaultValuesApplied.ValueBool()
 	} else {
 		defaultValuesApplied = nil
-	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
-	durationGrant := new(string)
-	if !r.DurationGrant.IsUnknown() && !r.DurationGrant.IsNull() {
-		*durationGrant = r.DurationGrant.ValueString()
-	} else {
-		durationGrant = nil
-	}
-	var durationUnset *shared.AppEntitlementDurationUnset
-	if r.DurationUnset != nil {
-		durationUnset = &shared.AppEntitlementDurationUnset{}
-	}
-	emergencyGrantEnabled := new(bool)
-	if !r.EmergencyGrantEnabled.IsUnknown() && !r.EmergencyGrantEnabled.IsNull() {
-		*emergencyGrantEnabled = r.EmergencyGrantEnabled.ValueBool()
-	} else {
-		emergencyGrantEnabled = nil
-	}
-	emergencyGrantPolicyID := new(string)
-	if !r.EmergencyGrantPolicyID.IsUnknown() && !r.EmergencyGrantPolicyID.IsNull() {
-		*emergencyGrantPolicyID = r.EmergencyGrantPolicyID.ValueString()
-	} else {
-		emergencyGrantPolicyID = nil
-	}
-	grantPolicyID := new(string)
-	if !r.GrantPolicyID.IsUnknown() && !r.GrantPolicyID.IsNull() {
-		*grantPolicyID = r.GrantPolicyID.ValueString()
-	} else {
-		grantPolicyID = nil
-	}
-	isManuallyManaged := new(bool)
-	if !r.IsManuallyManaged.IsUnknown() && !r.IsManuallyManaged.IsNull() {
-		*isManuallyManaged = r.IsManuallyManaged.ValueBool()
-	} else {
-		isManuallyManaged = nil
-	}
-	overrideAccessRequestsDefaults := new(bool)
-	if !r.OverrideAccessRequestsDefaults.IsUnknown() && !r.OverrideAccessRequestsDefaults.IsNull() {
-		*overrideAccessRequestsDefaults = r.OverrideAccessRequestsDefaults.ValueBool()
-	} else {
-		overrideAccessRequestsDefaults = nil
 	}
 	var provisionPolicy *shared.ProvisionPolicy
 	if r.ProvisionPolicy != nil {
@@ -631,9 +641,200 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 			WebhookProvision:        webhookProvision,
 		}
 	}
-	purpose := new(shared.AppEntitlementPurpose)
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
+	durationGrant := new(string)
+	if !r.DurationGrant.IsUnknown() && !r.DurationGrant.IsNull() {
+		*durationGrant = r.DurationGrant.ValueString()
+	} else {
+		durationGrant = nil
+	}
+	var durationUnset *shared.AppEntitlementDurationUnset
+	if r.DurationUnset != nil {
+		durationUnset = &shared.AppEntitlementDurationUnset{}
+	}
+	emergencyGrantEnabled := new(bool)
+	if !r.EmergencyGrantEnabled.IsUnknown() && !r.EmergencyGrantEnabled.IsNull() {
+		*emergencyGrantEnabled = r.EmergencyGrantEnabled.ValueBool()
+	} else {
+		emergencyGrantEnabled = nil
+	}
+	emergencyGrantPolicyID := new(string)
+	if !r.EmergencyGrantPolicyID.IsUnknown() && !r.EmergencyGrantPolicyID.IsNull() {
+		*emergencyGrantPolicyID = r.EmergencyGrantPolicyID.ValueString()
+	} else {
+		emergencyGrantPolicyID = nil
+	}
+	grantPolicyID := new(string)
+	if !r.GrantPolicyID.IsUnknown() && !r.GrantPolicyID.IsNull() {
+		*grantPolicyID = r.GrantPolicyID.ValueString()
+	} else {
+		grantPolicyID = nil
+	}
+	isManuallyManaged := new(bool)
+	if !r.IsManuallyManaged.IsUnknown() && !r.IsManuallyManaged.IsNull() {
+		*isManuallyManaged = r.IsManuallyManaged.ValueBool()
+	} else {
+		isManuallyManaged = nil
+	}
+	overrideAccessRequestsDefaults := new(bool)
+	if !r.OverrideAccessRequestsDefaults.IsUnknown() && !r.OverrideAccessRequestsDefaults.IsNull() {
+		*overrideAccessRequestsDefaults = r.OverrideAccessRequestsDefaults.ValueBool()
+	} else {
+		overrideAccessRequestsDefaults = nil
+	}
+	var provisionPolicy1 *shared.ProvisionPolicy
+	if r.ProvisionPolicy1 != nil {
+		var connectorProvision1 *shared.ConnectorProvision
+		if r.ProvisionPolicy1.ConnectorProvision != nil {
+			var accountProvision1 *shared.AccountProvision
+			if r.ProvisionPolicy1.ConnectorProvision.AccountProvision != nil {
+				var config1 *shared.AccountProvisionConfig
+				if r.ProvisionPolicy1.ConnectorProvision.AccountProvision.Config != nil {
+					config1 = &shared.AccountProvisionConfig{}
+				}
+				connectorId3 := new(string)
+				if !r.ProvisionPolicy1.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !r.ProvisionPolicy1.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
+					*connectorId3 = r.ProvisionPolicy1.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
+				} else {
+					connectorId3 = nil
+				}
+				schemaId1 := new(string)
+				if !r.ProvisionPolicy1.ConnectorProvision.AccountProvision.SchemaID.IsUnknown() && !r.ProvisionPolicy1.ConnectorProvision.AccountProvision.SchemaID.IsNull() {
+					*schemaId1 = r.ProvisionPolicy1.ConnectorProvision.AccountProvision.SchemaID.ValueString()
+				} else {
+					schemaId1 = nil
+				}
+				accountProvision1 = &shared.AccountProvision{
+					Config:      config1,
+					ConnectorID: connectorId3,
+					SchemaID:    schemaId1,
+				}
+			}
+			var defaultBehavior1 *shared.DefaultBehavior
+			if r.ProvisionPolicy1.ConnectorProvision.DefaultBehavior != nil {
+				connectorId4 := new(string)
+				if !r.ProvisionPolicy1.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !r.ProvisionPolicy1.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
+					*connectorId4 = r.ProvisionPolicy1.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
+				} else {
+					connectorId4 = nil
+				}
+				defaultBehavior1 = &shared.DefaultBehavior{
+					ConnectorID: connectorId4,
+				}
+			}
+			connectorProvision1 = &shared.ConnectorProvision{
+				AccountProvision: accountProvision1,
+				DefaultBehavior:  defaultBehavior1,
+			}
+		}
+		var delegatedProvision1 *shared.DelegatedProvision
+		if r.ProvisionPolicy1.DelegatedProvision != nil {
+			appId3 := new(string)
+			if !r.ProvisionPolicy1.DelegatedProvision.AppID.IsUnknown() && !r.ProvisionPolicy1.DelegatedProvision.AppID.IsNull() {
+				*appId3 = r.ProvisionPolicy1.DelegatedProvision.AppID.ValueString()
+			} else {
+				appId3 = nil
+			}
+			entitlementId1 := new(string)
+			if !r.ProvisionPolicy1.DelegatedProvision.EntitlementID.IsUnknown() && !r.ProvisionPolicy1.DelegatedProvision.EntitlementID.IsNull() {
+				*entitlementId1 = r.ProvisionPolicy1.DelegatedProvision.EntitlementID.ValueString()
+			} else {
+				entitlementId1 = nil
+			}
+			delegatedProvision1 = &shared.DelegatedProvision{
+				AppID:         appId3,
+				EntitlementID: entitlementId1,
+			}
+		}
+		var externalTicketProvision1 *shared.ExternalTicketProvision
+		if r.ProvisionPolicy1.ExternalTicketProvision != nil {
+			appId4 := new(string)
+			if !r.ProvisionPolicy1.ExternalTicketProvision.AppID.IsUnknown() && !r.ProvisionPolicy1.ExternalTicketProvision.AppID.IsNull() {
+				*appId4 = r.ProvisionPolicy1.ExternalTicketProvision.AppID.ValueString()
+			} else {
+				appId4 = nil
+			}
+			connectorId5 := new(string)
+			if !r.ProvisionPolicy1.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.ProvisionPolicy1.ExternalTicketProvision.ConnectorID.IsNull() {
+				*connectorId5 = r.ProvisionPolicy1.ExternalTicketProvision.ConnectorID.ValueString()
+			} else {
+				connectorId5 = nil
+			}
+			externalTicketProvisionerConfigId1 := new(string)
+			if !r.ProvisionPolicy1.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !r.ProvisionPolicy1.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
+				*externalTicketProvisionerConfigId1 = r.ProvisionPolicy1.ExternalTicketProvision.ExternalTicketProvisionerConfigID.ValueString()
+			} else {
+				externalTicketProvisionerConfigId1 = nil
+			}
+			instructions2 := new(string)
+			if !r.ProvisionPolicy1.ExternalTicketProvision.Instructions.IsUnknown() && !r.ProvisionPolicy1.ExternalTicketProvision.Instructions.IsNull() {
+				*instructions2 = r.ProvisionPolicy1.ExternalTicketProvision.Instructions.ValueString()
+			} else {
+				instructions2 = nil
+			}
+			externalTicketProvision1 = &shared.ExternalTicketProvision{
+				AppID:                             appId4,
+				ConnectorID:                       connectorId5,
+				ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigId1,
+				Instructions:                      instructions2,
+			}
+		}
+		var manualProvision1 *shared.ManualProvision
+		if r.ProvisionPolicy1.ManualProvision != nil {
+			instructions3 := new(string)
+			if !r.ProvisionPolicy1.ManualProvision.Instructions.IsUnknown() && !r.ProvisionPolicy1.ManualProvision.Instructions.IsNull() {
+				*instructions3 = r.ProvisionPolicy1.ManualProvision.Instructions.ValueString()
+			} else {
+				instructions3 = nil
+			}
+			var userIds1 []string = []string{}
+			for _, userIdsItem1 := range r.ProvisionPolicy1.ManualProvision.UserIds {
+				userIds1 = append(userIds1, userIdsItem1.ValueString())
+			}
+			manualProvision1 = &shared.ManualProvision{
+				Instructions: instructions3,
+				UserIds:      userIds1,
+			}
+		}
+		var multiStep1 interface{}
+		if !r.ProvisionPolicy1.MultiStep.IsUnknown() && !r.ProvisionPolicy1.MultiStep.IsNull() {
+			_ = json.Unmarshal([]byte(r.ProvisionPolicy1.MultiStep.ValueString()), &multiStep1)
+		}
+		var webhookProvision1 *shared.WebhookProvision
+		if r.ProvisionPolicy1.WebhookProvision != nil {
+			webhookId1 := new(string)
+			if !r.ProvisionPolicy1.WebhookProvision.WebhookID.IsUnknown() && !r.ProvisionPolicy1.WebhookProvision.WebhookID.IsNull() {
+				*webhookId1 = r.ProvisionPolicy1.WebhookProvision.WebhookID.ValueString()
+			} else {
+				webhookId1 = nil
+			}
+			webhookProvision1 = &shared.WebhookProvision{
+				WebhookID: webhookId1,
+			}
+		}
+		provisionPolicy1 = &shared.ProvisionPolicy{
+			ConnectorProvision:      connectorProvision1,
+			DelegatedProvision:      delegatedProvision1,
+			ExternalTicketProvision: externalTicketProvision1,
+			ManualProvision:         manualProvision1,
+			MultiStep:               multiStep1,
+			WebhookProvision:        webhookProvision1,
+		}
+	}
+	purpose := new(shared.Purpose)
 	if !r.Purpose.IsUnknown() && !r.Purpose.IsNull() {
-		*purpose = shared.AppEntitlementPurpose(r.Purpose.ValueString())
+		*purpose = shared.Purpose(r.Purpose.ValueString())
 	} else {
 		purpose = nil
 	}
@@ -670,6 +871,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 		CertifyPolicyID:                certifyPolicyID,
 		ComplianceFrameworkValueIds:    complianceFrameworkValueIds,
 		DefaultValuesApplied:           defaultValuesApplied,
+		ProvisionPolicy:                provisionPolicy,
 		Description:                    description,
 		DisplayName:                    displayName,
 		DurationGrant:                  durationGrant,
@@ -679,7 +881,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 		GrantPolicyID:                  grantPolicyID,
 		IsManuallyManaged:              isManuallyManaged,
 		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
-		ProvisionPolicy:                provisionPolicy,
+		ProvisionPolicy1:               provisionPolicy1,
 		Purpose:                        purpose,
 		RevokePolicyID:                 revokePolicyID,
 		RiskLevelValueID:               riskLevelValueID,

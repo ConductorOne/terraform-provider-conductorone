@@ -9,6 +9,10 @@ resource "conductorone_policy" "my_policy" {
             accept_message = "...my_accept_message..."
           }
           approval = {
+            agent_approval = {
+              agent_user_id = "...my_agent_user_id..."
+              instructions  = "...my_instructions..."
+            }
             allow_reassignment = false
             app_group_approval = {
               allow_self_approval = true
@@ -46,9 +50,10 @@ resource "conductorone_policy" "my_policy" {
                 "..."
               ]
             }
-            require_approval_reason     = true
-            require_denial_reason       = true
-            require_reassignment_reason = true
+            require_approval_reason      = true
+            require_denial_reason        = true
+            require_reassignment_reason  = true
+            requires_step_up_provider_id = "...my_requires_step_up_provider_id..."
             resource_owner_approval = {
               allow_self_approval = true
               fallback            = false

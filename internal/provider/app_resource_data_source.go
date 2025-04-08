@@ -40,6 +40,7 @@ type AppResourceDataSourceModel struct {
 	ID                      types.String                                    `tfsdk:"id"`
 	ParentAppResourceID     types.String                                    `tfsdk:"parent_app_resource_id"`
 	ParentAppResourceTypeID types.String                                    `tfsdk:"parent_app_resource_type_id"`
+	SecretTrait             *tfTypes.SecretTrait                            `tfsdk:"secret_trait"`
 	UpdatedAt               types.String                                    `tfsdk:"updated_at"`
 }
 
@@ -95,6 +96,25 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 			"parent_app_resource_type_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The parent resource type id, if this resource is a child of another resource.`,
+			},
+			"secret_trait": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"identity_app_user_id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The identityAppUserId field.`,
+					},
+					"last_used_at": schema.StringAttribute{
+						Computed: true,
+					},
+					"secret_created_at": schema.StringAttribute{
+						Computed: true,
+					},
+					"secret_expires_at": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+				Description: `The SecretTrait message.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -179,7 +199,11 @@ func (r *AppResourceDataSource) Read(ctx context.Context, req datasource.ReadReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppResource(res.AppResourceServiceGetResponse.AppResourceView.AppResource)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResource(ctx, res.AppResourceServiceGetResponse.AppResourceView.AppResource)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

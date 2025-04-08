@@ -49,6 +49,7 @@ type AppResourceResourceModel struct {
 	ID                      types.String                                    `tfsdk:"id"`
 	ParentAppResourceID     types.String                                    `tfsdk:"parent_app_resource_id"`
 	ParentAppResourceTypeID types.String                                    `tfsdk:"parent_app_resource_type_id"`
+	SecretTrait             *tfTypes.SecretTrait                            `tfsdk:"secret_trait"`
 	UpdatedAt               types.String                                    `tfsdk:"updated_at"`
 }
 
@@ -108,6 +109,34 @@ func (r *AppResourceResource) Schema(ctx context.Context, req resource.SchemaReq
 			"parent_app_resource_type_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The parent resource type id, if this resource is a child of another resource.`,
+			},
+			"secret_trait": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"identity_app_user_id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The identityAppUserId field.`,
+					},
+					"last_used_at": schema.StringAttribute{
+						Computed: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"secret_created_at": schema.StringAttribute{
+						Computed: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"secret_expires_at": schema.StringAttribute{
+						Computed: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+				},
+				Description: `The SecretTrait message.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -189,8 +218,17 @@ func (r *AppResourceResource) Create(ctx context.Context, req resource.CreateReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppResource(res.CreateManuallyManagedAppResourceResponse.AppResource)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResource(ctx, res.CreateManuallyManagedAppResourceResponse.AppResource)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -252,7 +290,11 @@ func (r *AppResourceResource) Read(ctx context.Context, req resource.ReadRequest
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppResource(res.AppResourceServiceGetResponse.AppResourceView.AppResource)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResource(ctx, res.AppResourceServiceGetResponse.AppResourceView.AppResource)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -317,8 +359,17 @@ func (r *AppResourceResource) Update(ctx context.Context, req resource.UpdateReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppResource(res.AppResourceServiceUpdateResponse.AppResourceView.AppResource)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResource(ctx, res.AppResourceServiceUpdateResponse.AppResourceView.AppResource)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	var appId1 string
 	appId1 = data.AppID.ValueString()
 
@@ -353,8 +404,17 @@ func (r *AppResourceResource) Update(ctx context.Context, req resource.UpdateReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppResource(res1.AppResourceServiceGetResponse.AppResourceView.AppResource)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResource(ctx, res1.AppResourceServiceGetResponse.AppResourceView.AppResource)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -421,7 +481,7 @@ func (r *AppResourceResource) ImportState(ctx context.Context, req resource.Impo
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "app_id": "",  "app_resource_type_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_id": "",  "app_resource_type_id": "",  "id": ""}': `+err.Error())
 		return
 	}
 

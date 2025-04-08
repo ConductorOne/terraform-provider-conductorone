@@ -3,24 +3,14 @@
 package provider
 
 import (
+	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
 
 func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest() *shared.WebhooksSearchRequest {
-	pageSize := new(int)
-	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
-		*pageSize = int(r.PageSize.ValueInt32())
-	} else {
-		pageSize = nil
-	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
-	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -40,32 +30,22 @@ func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest() *shared.Webhook
 		})
 	}
 	out := shared.WebhooksSearchRequest{
-		PageSize:  pageSize,
-		PageToken: pageToken,
-		Query:     query,
-		Refs:      refs,
+		Query: query,
+		Refs:  refs,
 	}
 	return &out
 }
 
-func (r *WebhookDataSourceModel) RefreshFromSharedWebhook(resp *shared.Webhook) {
-	if resp.CreatedAt != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-	} else {
-		r.CreatedAt = types.StringNull()
-	}
-	if resp.DeletedAt != nil {
-		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-	} else {
-		r.DeletedAt = types.StringNull()
-	}
+func (r *WebhookDataSourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 	r.Description = types.StringPointerValue(resp.Description)
 	r.DisplayName = types.StringPointerValue(resp.DisplayName)
 	r.ID = types.StringPointerValue(resp.ID)
-	if resp.UpdatedAt != nil {
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-	} else {
-		r.UpdatedAt = types.StringNull()
-	}
+	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	r.URL = types.StringPointerValue(resp.URL)
+
+	return diags
 }

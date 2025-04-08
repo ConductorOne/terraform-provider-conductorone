@@ -319,10 +319,10 @@ MATCH:
 	// we've reached the end of `name`; we've successfully matched if we've also
 	// reached the end of `pattern`, or if the rest of `pattern` can match a
 	// zero-length string
-	return isZeroLengthPattern(pattern[patIdx:], separator, validate)
+	return isZeroLengthPattern(pattern[patIdx:], separator)
 }
 
-func isZeroLengthPattern(pattern string, separator rune, validate bool) (ret bool, err error) {
+func isZeroLengthPattern(pattern string, separator rune) (ret bool, err error) {
 	// `/**`, `**/`, and `/**/` are special cases - a pattern such as `path/to/a/**` or `path/to/a/**/`
 	// *should* match `path/to/a` because `a` might be a directory
 	if pattern == "" ||
@@ -350,18 +350,18 @@ func isZeroLengthPattern(pattern string, separator rune, validate bool) (ret boo
 			}
 			commaIdx += patIdx
 
-			ret, err = isZeroLengthPattern(pattern[patIdx:commaIdx]+pattern[closingIdx+1:], separator, validate)
+			ret, err = isZeroLengthPattern(pattern[patIdx:commaIdx]+pattern[closingIdx+1:], separator)
 			if ret || err != nil {
 				return
 			}
 
 			patIdx = commaIdx + 1
 		}
-		return isZeroLengthPattern(pattern[patIdx:closingIdx]+pattern[closingIdx+1:], separator, validate)
+		return isZeroLengthPattern(pattern[patIdx:closingIdx]+pattern[closingIdx+1:], separator)
 	}
 
 	// no luck - validate the rest of the pattern
-	if validate && !doValidatePattern(pattern, separator) {
+	if !doValidatePattern(pattern, separator) {
 		return false, ErrBadPattern
 	}
 	return false, nil

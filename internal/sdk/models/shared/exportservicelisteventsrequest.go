@@ -4,22 +4,4 @@ package shared
 
 // The ExportServiceListEventsRequest message.
 type ExportServiceListEventsRequest struct {
-	// The pageSize field.
-	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
-	PageToken *string `json:"pageToken,omitempty"`
-}
-
-func (o *ExportServiceListEventsRequest) GetPageSize() *int {
-	if o == nil {
-		return nil
-	}
-	return o.PageSize
-}
-
-func (o *ExportServiceListEventsRequest) GetPageToken() *string {
-	if o == nil {
-		return nil
-	}
-	return o.PageToken
 }

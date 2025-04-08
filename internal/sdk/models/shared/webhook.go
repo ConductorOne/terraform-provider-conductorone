@@ -2,82 +2,43 @@
 
 package shared
 
-import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
-	"time"
-)
+type Payload struct {
+}
 
 // The Webhook message.
+//
+// This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
+//   - webhookId
+//   - webhookIdCel
 type Webhook struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
-	// The description field.
-	Description *string `json:"description,omitempty"`
-	// The displayName field.
-	DisplayName *string `json:"displayName,omitempty"`
-	// The id field.
-	ID        *string    `json:"id,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
-	// The url field.
-	URL *string `json:"url,omitempty"`
+	Payload *Payload `json:"payload,omitempty"`
+	// The webhookId field.
+	// This field is part of the `webhook_identifier` oneof.
+	// See the documentation for `c1.api.workflows.v1beta.Webhook` for more details.
+	WebhookID *string `json:"webhookId,omitempty"`
+	// The webhookIdCel field.
+	// This field is part of the `webhook_identifier` oneof.
+	// See the documentation for `c1.api.workflows.v1beta.Webhook` for more details.
+	WebhookIDCel *string `json:"webhookIdCel,omitempty"`
 }
 
-func (w Webhook) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(w, "", false)
-}
-
-func (w *Webhook) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *Webhook) GetCreatedAt() *time.Time {
+func (o *Webhook) GetPayload() *Payload {
 	if o == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return o.Payload
 }
 
-func (o *Webhook) GetDeletedAt() *time.Time {
+func (o *Webhook) GetWebhookID() *string {
 	if o == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return o.WebhookID
 }
 
-func (o *Webhook) GetDescription() *string {
+func (o *Webhook) GetWebhookIDCel() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Description
-}
-
-func (o *Webhook) GetDisplayName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DisplayName
-}
-
-func (o *Webhook) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *Webhook) GetUpdatedAt() *time.Time {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
-func (o *Webhook) GetURL() *string {
-	if o == nil {
-		return nil
-	}
-	return o.URL
+	return o.WebhookIDCel
 }

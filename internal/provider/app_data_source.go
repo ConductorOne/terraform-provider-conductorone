@@ -44,8 +44,6 @@ type AppDataSourceModel struct {
 	MonthlyCostUsd                      types.Int32    `tfsdk:"monthly_cost_usd"`
 	NextPageToken                       types.String   `tfsdk:"next_page_token"`
 	OnlyDirectories                     types.Bool     `tfsdk:"only_directories"`
-	PageSize                            types.Int32    `tfsdk:"page_size"`
-	PageToken                           types.String   `tfsdk:"page_token"`
 	ParentAppID                         types.String   `tfsdk:"parent_app_id"`
 	Query                               types.String   `tfsdk:"query"`
 	RevokePolicyID                      types.String   `tfsdk:"revoke_policy_id"`
@@ -135,14 +133,6 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"only_directories": schema.BoolAttribute{
 				Optional:    true,
 				Description: `Only return apps which are directories`,
-			},
-			"page_size": schema.Int32Attribute{
-				Optional:    true,
-				Description: `The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)`,
-			},
-			"page_token": schema.StringAttribute{
-				Optional:    true,
-				Description: `The pageToken field.`,
 			},
 			"parent_app_id": schema.StringAttribute{
 				Computed:    true,
@@ -234,7 +224,11 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedApp(&res.SearchAppsResponse.List[0])
+	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, &res.SearchAppsResponse.List[0])...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -1,8 +1,6 @@
 data "conductorone_policy" "my_policy" {
   display_name    = "...my_display_name..."
   include_deleted = false
-  page_size       = 7
-  page_token      = "...my_page_token..."
   policy_types = [
     "POLICY_TYPE_ACCESS_REQUEST"
   ]

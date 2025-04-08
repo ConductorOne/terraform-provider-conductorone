@@ -183,7 +183,11 @@ func (r *AccessProfileDataSource) Read(ctx context.Context, req datasource.ReadR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRequestCatalog(res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalog(ctx, res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
