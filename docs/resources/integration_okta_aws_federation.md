@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_okta_aws_federation Resource - conductorone"
+page_title: "conductorone_integration_okta_aws_federation Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Okta_aws_federation Integration Resource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_litmos Resource - conductorone"
+page_title: "conductorone_integration_litmos Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Litmos Integration Resource

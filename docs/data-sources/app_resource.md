@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_resource Data Source - conductorone"
+page_title: "conductorone_app_resource Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppResource DataSource
@@ -40,7 +40,19 @@ data "conductorone_app_resource" "my_app_resource" {
 - `id` (String) The ID of this resource.
 - `parent_app_resource_id` (String) The parent resource id, if this resource is a child of another resource.
 - `parent_app_resource_type_id` (String) The parent resource type id, if this resource is a child of another resource.
+- `secret_trait` (Attributes) The SecretTrait message. (see [below for nested schema](#nestedatt--secret_trait))
 - `updated_at` (String)
 
 <a id="nestedatt--expanded"></a>
 ### Nested Schema for `expanded`
+
+
+<a id="nestedatt--secret_trait"></a>
+### Nested Schema for `secret_trait`
+
+Read-Only:
+
+- `identity_app_user_id` (String) The identityAppUserId field.
+- `last_used_at` (String)
+- `secret_created_at` (String)
+- `secret_expires_at` (String)

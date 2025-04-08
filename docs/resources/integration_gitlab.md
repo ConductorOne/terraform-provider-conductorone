@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_gitlab Resource - conductorone"
+page_title: "conductorone_integration_gitlab Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Gitlab Integration Resource

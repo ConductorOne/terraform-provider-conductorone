@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_servicenow Resource - conductorone"
+page_title: "conductorone_integration_servicenow Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Servicenow Integration Resource

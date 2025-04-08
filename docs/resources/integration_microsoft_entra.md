@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_microsoft_entra Resource - conductorone"
+page_title: "conductorone_integration_microsoft_entra Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Microsoft_entra Integration Resource

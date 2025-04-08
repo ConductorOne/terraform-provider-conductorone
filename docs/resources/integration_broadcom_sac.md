@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_broadcom_sac Resource - conductorone"
+page_title: "conductorone_integration_broadcom_sac Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Broadcom_sac Integration Resource

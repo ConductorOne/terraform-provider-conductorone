@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_tailscale Resource - conductorone"
+page_title: "conductorone_integration_tailscale Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Tailscale Integration Resource

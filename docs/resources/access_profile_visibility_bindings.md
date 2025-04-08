@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_access_profile_visibility_bindings Resource - conductorone"
+page_title: "conductorone_access_profile_visibility_bindings Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AccessProfileVisibilityBindings Resource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_panther Resource - conductorone"
+page_title: "conductorone_integration_panther Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Panther Integration Resource
