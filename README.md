@@ -4,29 +4,6 @@
 
 [See the docs for usage information](./docs)
 
-<!-- Start SDK Installation -->
-## SDK Installation
-
-To install this provider, copy and paste this code into your Terraform configuration. Then, run `terraform init`.
-
-```hcl
-terraform {
-  required_providers {
-    conductorone = {
-      source  = "ConductorOne/conductorone"
-      version = ">=0.0.1"
-    }
-  }
-}
-
-provider "conductorone" {
-  server_url    = "<server_url>"
-  client_id     = "<client_id>"
-  client_secret = "<client_secret>"
-}
-```
-<!-- End SDK Installation -->
-
 <!-- Start SDK Example Usage -->
 ## Testing the provider locally
 
@@ -106,7 +83,8 @@ Your `<PATH>` may vary depending on how your Go environment variables are config
 
 ## Versions with breaking changes
 ### [v1.0.0](https://github.com/ConductorOne/terraform-provider-conductorone/releases/tag/v1.0.0)
-- This version introduces a breaking change to the `request_catalog` resource and datasource. The `request_catalog` resource and datasource are now the `access_profile` resource and datasource.
+- This version introduces a breaking change to the `request_catalog` resource and datasource. The `request_catalog` resource and datasource are now the `access_profile` resource and datasource. 
+- There are also breaking changes to many of the datasources, as we switched to using search endpoints to give more options on how to filter the result. This may require you to update your Terraform configurations to use the proper fields for the datasources as some of the field names have changed. 
 
 ### [v0.4.0](https://github.com/ConductorOne/terraform-provider-conductorone/releases/tag/v0.4.0)
 - This version fixes issues with importing app entitlements. The SDK and the provider schema did not match so imports were broken, the provider was changed to match the SDK which introduced a breaking change. the `max_grant_druation` object was removed and the internal `duration_unset` and `grant_unset` fields have been moved out.
