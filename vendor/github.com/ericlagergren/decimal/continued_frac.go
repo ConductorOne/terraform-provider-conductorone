@@ -6,8 +6,8 @@ import (
 
 // Term is a specific term in a continued fraction. A and B correspond with the
 // a and b variables of the typical representation of a continued fraction. An
-// example can be seen in the book, ``Numerical Recipes in C: The Art of
-// Scientific Computing'' (ISBN 0-521-43105-5) in figure 5.2.1 on page 169.
+// example can be seen in the book, “Numerical Recipes in C: The Art of
+// Scientific Computing” (ISBN 0-521-43105-5) in figure 5.2.1 on page 169.
 type Term struct {
 	A, B *Big
 }
@@ -142,21 +142,21 @@ var tiny = New(10, 60)
 //
 // The continued fraction should be represented as such:
 //
-//                          a1
-//     f(x) = b0 + --------------------
-//                            a2
-//                 b1 + ---------------
-//                               a3
-//                      b2 + ----------
-//                                 a4
-//                           b3 + -----
-//                                  ...
+//	                     a1
+//	f(x) = b0 + --------------------
+//	                       a2
+//	            b1 + ---------------
+//	                          a3
+//	                 b2 + ----------
+//	                            a4
+//	                      b3 + -----
+//	                             ...
 //
 // Or, equivalently:
 //
-//                  a1   a2   a3
-//     f(x) = b0 + ---- ---- ----
-//                  b1 + b2 + b3 + ···
+//	             a1   a2   a3
+//	f(x) = b0 + ---- ---- ----
+//	             b1 + b2 + b3 + ···
 //
 // If terms need to be subtracted, the a_N terms should be
 // negative. To compute a continued fraction without b_0, divide

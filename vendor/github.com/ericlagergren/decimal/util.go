@@ -120,12 +120,11 @@ func (z *Big) invalidContext(c Context) bool {
 // copybits can be useful when we want to allocate a big.Int without calling
 // new or big.Int.Set. For example:
 //
-//   var x big.Int
-//   if foo {
-//       x.SetBits(copybits(y.Bits()))
-//   }
-//   ...
-//
+//	var x big.Int
+//	if foo {
+//	    x.SetBits(copybits(y.Bits()))
+//	}
+//	...
 func copybits(x []big.Word) []big.Word {
 	z := make([]big.Word, len(x))
 	copy(z, x)
