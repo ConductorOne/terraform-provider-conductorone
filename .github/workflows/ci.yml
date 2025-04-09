@@ -92,3 +92,7 @@ jobs:
 
       - name: Run acceptance test
         run: make testacc
+        env:
+          CONDUCTORONE_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          CONDUCTORONE_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CONDUCTORONE_SERVER_URL: ${{ secrets.SERVER_URL }}
