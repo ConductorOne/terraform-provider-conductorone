@@ -41,6 +41,7 @@ type AppEntitlementDataSourceModel struct {
 	CreatedAt                      types.String                         `tfsdk:"created_at"`
 	DefaultValuesApplied           types.Bool                           `tfsdk:"default_values_applied"`
 	DeletedAt                      types.String                         `tfsdk:"deleted_at"`
+	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy         `tfsdk:"deprovisioner_policy" tfPlanOnly:"true"`
 	Description                    types.String                         `tfsdk:"description"`
 	DisplayName                    types.String                         `tfsdk:"display_name"`
 	DurationGrant                  types.String                         `tfsdk:"duration_grant" tfPlanOnly:"true"`
@@ -62,7 +63,6 @@ type AppEntitlementDataSourceModel struct {
 	OnlyGetExpiring                types.Bool                           `tfsdk:"only_get_expiring"`
 	OverrideAccessRequestsDefaults types.Bool                           `tfsdk:"override_access_requests_defaults"`
 	ProvisionPolicy                *tfTypes.ProvisionPolicy             `tfsdk:"provision_policy" tfPlanOnly:"true"`
-	ProvisionPolicy1               *tfTypes.ProvisionPolicy             `tfsdk:"provision_policy1" tfPlanOnly:"true"`
 	Purpose                        types.String                         `tfsdk:"purpose"`
 	Query                          types.String                         `tfsdk:"query"`
 	Refs                           []tfTypes.AppEntitlementRef          `tfsdk:"refs"`
@@ -145,89 +145,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"deleted_at": schema.StringAttribute{
 				Computed: true,
 			},
-			"description": schema.StringAttribute{
-				Computed:    true,
-				Description: `The description of the app entitlement.`,
-			},
-			"display_name": schema.StringAttribute{
-				Computed:    true,
-				Description: `The display name of the app entitlement.`,
-			},
-			"duration_grant": schema.StringAttribute{
-				Computed: true,
-			},
-			"duration_unset": schema.SingleNestedAttribute{
-				Computed: true,
-			},
-			"emergency_grant_enabled": schema.BoolAttribute{
-				Computed:    true,
-				Description: `This enables tasks to be created in an emergency and use a selected emergency access policy.`,
-			},
-			"emergency_grant_policy_id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The ID of the policy that will be used for emergency access grant tasks.`,
-			},
-			"exclude_app_ids": schema.ListAttribute{
-				Optional:    true,
-				ElementType: types.StringType,
-				Description: `Exclude app entitlements from the results that are in these app IDs.`,
-			},
-			"exclude_app_user_ids": schema.ListAttribute{
-				Optional:    true,
-				ElementType: types.StringType,
-				Description: `Exclude app entitlements from the results that these app users have granted.`,
-			},
-			"exclude_resource_type_ids": schema.ListAttribute{
-				Optional:    true,
-				ElementType: types.StringType,
-				Description: `The excludeResourceTypeIds field.`,
-			},
-			"grant_count": schema.StringAttribute{
-				Computed:    true,
-				Description: `The amount of grants open for this entitlement`,
-			},
-			"grant_policy_id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The ID of the policy that will be used for grant tickets related to the app entitlement.`,
-			},
-			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The unique ID for the App Entitlement.`,
-			},
-			"include_deleted": schema.BoolAttribute{
-				Optional:    true,
-				Description: `Include deleted app entitlements, this includes app entitlements that have a deleted parent object (app, app resource, app resource type)`,
-			},
-			"is_automated": schema.BoolAttribute{
-				Optional:    true,
-				Description: `The isAutomated field.`,
-			},
-			"is_automation_enabled": schema.BoolAttribute{
-				Computed:    true,
-				Description: `Flag to indicate whether automation (for adding users to entitlement based on rules) has been enabled.`,
-			},
-			"is_manually_managed": schema.BoolAttribute{
-				Computed:    true,
-				Description: `Flag to indicate if the app entitlement is manually managed.`,
-			},
-			"membership_type": schema.ListAttribute{
-				Optional:    true,
-				ElementType: types.StringType,
-				Description: `The membershipType field.`,
-			},
-			"next_page_token": schema.StringAttribute{
-				Computed:    true,
-				Description: `The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
-			},
-			"only_get_expiring": schema.BoolAttribute{
-				Optional:    true,
-				Description: `Restrict results to only those who have expiring app entitlement user bindings.`,
-			},
-			"override_access_requests_defaults": schema.BoolAttribute{
-				Computed:    true,
-				Description: `Flag to indicate if the app-level access request settings have been overridden for the entitlement`,
-			},
-			"provision_policy": schema.SingleNestedAttribute{
+			"deprovisioner_policy": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"connector_provision": schema.SingleNestedAttribute{
@@ -344,7 +262,89 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 					`  - multiStep` + "\n" +
 					`  - externalTicket`,
 			},
-			"provision_policy1": schema.SingleNestedAttribute{
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Description: `The description of the app entitlement.`,
+			},
+			"display_name": schema.StringAttribute{
+				Computed:    true,
+				Description: `The display name of the app entitlement.`,
+			},
+			"duration_grant": schema.StringAttribute{
+				Computed: true,
+			},
+			"duration_unset": schema.SingleNestedAttribute{
+				Computed: true,
+			},
+			"emergency_grant_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `This enables tasks to be created in an emergency and use a selected emergency access policy.`,
+			},
+			"emergency_grant_policy_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The ID of the policy that will be used for emergency access grant tasks.`,
+			},
+			"exclude_app_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Exclude app entitlements from the results that are in these app IDs.`,
+			},
+			"exclude_app_user_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Exclude app entitlements from the results that these app users have granted.`,
+			},
+			"exclude_resource_type_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `The excludeResourceTypeIds field.`,
+			},
+			"grant_count": schema.StringAttribute{
+				Computed:    true,
+				Description: `The amount of grants open for this entitlement`,
+			},
+			"grant_policy_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The ID of the policy that will be used for grant tickets related to the app entitlement.`,
+			},
+			"id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The unique ID for the App Entitlement.`,
+			},
+			"include_deleted": schema.BoolAttribute{
+				Optional:    true,
+				Description: `Include deleted app entitlements, this includes app entitlements that have a deleted parent object (app, app resource, app resource type)`,
+			},
+			"is_automated": schema.BoolAttribute{
+				Optional:    true,
+				Description: `The isAutomated field.`,
+			},
+			"is_automation_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Flag to indicate whether automation (for adding users to entitlement based on rules) has been enabled.`,
+			},
+			"is_manually_managed": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Flag to indicate if the app entitlement is manually managed.`,
+			},
+			"membership_type": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `The membershipType field.`,
+			},
+			"next_page_token": schema.StringAttribute{
+				Computed:    true,
+				Description: `The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
+			},
+			"only_get_expiring": schema.BoolAttribute{
+				Optional:    true,
+				Description: `Restrict results to only those who have expiring app entitlement user bindings.`,
+			},
+			"override_access_requests_defaults": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Flag to indicate if the app-level access request settings have been overridden for the entitlement`,
+			},
+			"provision_policy": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"connector_provision": schema.SingleNestedAttribute{

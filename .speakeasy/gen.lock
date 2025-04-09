@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 4770c9e34d9eeec5f0a81be78b98e199
+  docChecksum: b280ff4bfcc3fd0293f7c18212c01121
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.531.0
   generationVersion: 2.568.2
-  releaseVersion: 1.1.4
-  configChecksum: 624ea09ec0c6a58a8eb6a78ce1c90288
+  releaseVersion: 1.1.6
+  configChecksum: b4f7cb66b9ab89db7dd5a8f72b27486e
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -181,6 +181,7 @@ generatedFiles:
   - internal/provider/types/create_app_entitlement_request_duration_unset.go
   - internal/provider/types/default_behavior.go
   - internal/provider/types/delegated_provision.go
+  - internal/provider/types/deprovisioner_policy.go
   - internal/provider/types/entitlement_owner_approval.go
   - internal/provider/types/expression_approval.go
   - internal/provider/types/external_ticket_provision.go
@@ -459,7 +460,7 @@ generatedFiles:
   - internal/sdk/models/shared/addautomationexclusionresponse.go
   - internal/sdk/models/shared/addmanuallymanagedusersrequest.go
   - internal/sdk/models/shared/agentapproval.go
-  - internal/sdk/models/shared/appaccessrequestdefaults1.go
+  - internal/sdk/models/shared/appaccessrequestdefaults.go
   - internal/sdk/models/shared/appactionsservicegeneratereportrequest.go
   - internal/sdk/models/shared/appactionsservicegeneratereportresponse.go
   - internal/sdk/models/shared/appentitlementautomation.go
@@ -514,9 +515,9 @@ generatedFiles:
   - internal/sdk/models/shared/approvalinstance.go
   - internal/sdk/models/shared/approvedaction.go
   - internal/sdk/models/shared/appusagecontrols.go
-  - internal/sdk/models/shared/appuser.go
   - internal/sdk/models/shared/appusercreatedtrigger.go
   - internal/sdk/models/shared/appusercredential.go
+  - internal/sdk/models/shared/appuserinput.go
   - internal/sdk/models/shared/appuserref.go
   - internal/sdk/models/shared/appuserservicelistcredentialsresponse.go
   - internal/sdk/models/shared/appuserservicelistresponse.go
@@ -543,9 +544,9 @@ generatedFiles:
   - internal/sdk/models/shared/completedaction.go
   - internal/sdk/models/shared/conditionsucceeded.go
   - internal/sdk/models/shared/conditiontimedout.go
-  - internal/sdk/models/shared/connector.go
   - internal/sdk/models/shared/connectoraction.go
   - internal/sdk/models/shared/connectorcredential.go
+  - internal/sdk/models/shared/connectorinput.go
   - internal/sdk/models/shared/connectorprovision.go
   - internal/sdk/models/shared/connectorref.go
   - internal/sdk/models/shared/connectorservicecreatedelegatedrequest.go
@@ -714,7 +715,7 @@ generatedFiles:
   - internal/sdk/models/shared/personalclientservicelistresponse.go
   - internal/sdk/models/shared/personalclientserviceupdaterequest.go
   - internal/sdk/models/shared/personalclientserviceupdateresponse.go
-  - internal/sdk/models/shared/policyinput.go
+  - internal/sdk/models/shared/policy.go
   - internal/sdk/models/shared/policyinstance.go
   - internal/sdk/models/shared/policypostactions.go
   - internal/sdk/models/shared/policyref.go

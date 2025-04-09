@@ -42,6 +42,77 @@ func (e *Purpose) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// DeprovisionerPolicy - ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
+//
+// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+//   - connector
+//   - manual
+//   - delegated
+//   - webhook
+//   - multiStep
+//   - externalTicket
+type DeprovisionerPolicy struct {
+	// Indicates that a connector should perform the provisioning. This object has no fields.
+	//
+	// This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
+	//   - defaultBehavior
+	//   - account
+	//
+	ConnectorProvision *ConnectorProvision `json:"connector,omitempty"`
+	// This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.
+	DelegatedProvision *DelegatedProvision `json:"delegated,omitempty"`
+	// This provision step indicates that we should check an external ticket to provision this entitlement
+	ExternalTicketProvision *ExternalTicketProvision `json:"externalTicket,omitempty"`
+	// Manual provisioning indicates that a human must intervene for the provisioning of this step.
+	ManualProvision *ManualProvision `json:"manual,omitempty"`
+	// MultiStep indicates that this provision step has multiple steps to process.
+	MultiStep any `json:"multiStep,omitempty"`
+	// This provision step indicates that a webhook should be called to provision this entitlement.
+	WebhookProvision *WebhookProvision `json:"webhook,omitempty"`
+}
+
+func (o *DeprovisionerPolicy) GetConnectorProvision() *ConnectorProvision {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorProvision
+}
+
+func (o *DeprovisionerPolicy) GetDelegatedProvision() *DelegatedProvision {
+	if o == nil {
+		return nil
+	}
+	return o.DelegatedProvision
+}
+
+func (o *DeprovisionerPolicy) GetExternalTicketProvision() *ExternalTicketProvision {
+	if o == nil {
+		return nil
+	}
+	return o.ExternalTicketProvision
+}
+
+func (o *DeprovisionerPolicy) GetManualProvision() *ManualProvision {
+	if o == nil {
+		return nil
+	}
+	return o.ManualProvision
+}
+
+func (o *DeprovisionerPolicy) GetMultiStep() any {
+	if o == nil {
+		return nil
+	}
+	return o.MultiStep
+}
+
+func (o *DeprovisionerPolicy) GetWebhookProvision() *WebhookProvision {
+	if o == nil {
+		return nil
+	}
+	return o.WebhookProvision
+}
+
 // AppEntitlementInput - The app entitlement represents one permission in a downstream App (SAAS) that can be granted. For example, GitHub Read vs GitHub Write.
 //
 // This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
@@ -62,17 +133,6 @@ type AppEntitlementInput struct {
 	ComplianceFrameworkValueIds []string `json:"complianceFrameworkValueIds,omitempty"`
 	// Flag to indicate if app-level access request defaults have been applied to the entitlement
 	DefaultValuesApplied *bool `json:"defaultValuesApplied,omitempty"`
-	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - connector
-	//   - manual
-	//   - delegated
-	//   - webhook
-	//   - multiStep
-	//   - externalTicket
-	//
-	ProvisionPolicy *ProvisionPolicy `json:"deprovisionerPolicy,omitempty"`
 	// The description of the app entitlement.
 	Description *string `json:"description,omitempty"`
 	// The display name of the app entitlement.
@@ -99,7 +159,7 @@ type AppEntitlementInput struct {
 	//   - multiStep
 	//   - externalTicket
 	//
-	ProvisionPolicy1 *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
+	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The purpose field.
 	Purpose *Purpose `json:"purpose,omitempty"`
 	// The ID of the policy that will be used for revoke tickets related to the app entitlement
@@ -109,7 +169,8 @@ type AppEntitlementInput struct {
 	// The slug is displayed as an oval next to the name in the frontend of C1, it tells you what permission the entitlement grants. See https://www.conductorone.com/docs/product/admin/entitlements/
 	Slug *string `json:"slug,omitempty"`
 	// Map to tell us which connector the entitlement came from.
-	SourceConnectorIds map[string]string `json:"sourceConnectorIds,omitempty"`
+	SourceConnectorIds  map[string]string    `json:"sourceConnectorIds,omitempty"`
+	DeprovisionerPolicy *DeprovisionerPolicy `json:"deprovisionerPolicy,omitempty"`
 }
 
 func (o *AppEntitlementInput) GetAlias() *string {
@@ -159,13 +220,6 @@ func (o *AppEntitlementInput) GetDefaultValuesApplied() *bool {
 		return nil
 	}
 	return o.DefaultValuesApplied
-}
-
-func (o *AppEntitlementInput) GetProvisionPolicy() *ProvisionPolicy {
-	if o == nil {
-		return nil
-	}
-	return o.ProvisionPolicy
 }
 
 func (o *AppEntitlementInput) GetDescription() *string {
@@ -231,11 +285,11 @@ func (o *AppEntitlementInput) GetOverrideAccessRequestsDefaults() *bool {
 	return o.OverrideAccessRequestsDefaults
 }
 
-func (o *AppEntitlementInput) GetProvisionPolicy1() *ProvisionPolicy {
+func (o *AppEntitlementInput) GetProvisionPolicy() *ProvisionPolicy {
 	if o == nil {
 		return nil
 	}
-	return o.ProvisionPolicy1
+	return o.ProvisionPolicy
 }
 
 func (o *AppEntitlementInput) GetPurpose() *Purpose {
@@ -273,6 +327,13 @@ func (o *AppEntitlementInput) GetSourceConnectorIds() map[string]string {
 	return o.SourceConnectorIds
 }
 
+func (o *AppEntitlementInput) GetDeprovisionerPolicy() *DeprovisionerPolicy {
+	if o == nil {
+		return nil
+	}
+	return o.DeprovisionerPolicy
+}
+
 // AppEntitlement - The app entitlement represents one permission in a downstream App (SAAS) that can be granted. For example, GitHub Read vs GitHub Write.
 //
 // This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
@@ -295,17 +356,6 @@ type AppEntitlement struct {
 	// Flag to indicate if app-level access request defaults have been applied to the entitlement
 	DefaultValuesApplied *bool      `json:"defaultValuesApplied,omitempty"`
 	DeletedAt            *time.Time `json:"deletedAt,omitempty"`
-	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - connector
-	//   - manual
-	//   - delegated
-	//   - webhook
-	//   - multiStep
-	//   - externalTicket
-	//
-	ProvisionPolicy *ProvisionPolicy `json:"deprovisionerPolicy,omitempty"`
 	// The description of the app entitlement.
 	Description *string `json:"description,omitempty"`
 	// The display name of the app entitlement.
@@ -338,7 +388,7 @@ type AppEntitlement struct {
 	//   - multiStep
 	//   - externalTicket
 	//
-	ProvisionPolicy1 *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
+	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The purpose field.
 	Purpose *Purpose `json:"purpose,omitempty"`
 	// The ID of the policy that will be used for revoke tickets related to the app entitlement
@@ -350,8 +400,9 @@ type AppEntitlement struct {
 	// Map to tell us which connector the entitlement came from.
 	SourceConnectorIds map[string]string `json:"sourceConnectorIds,omitempty"`
 	// This field indicates if this is a system builtin entitlement.
-	SystemBuiltin *bool      `json:"systemBuiltin,omitempty"`
-	UpdatedAt     *time.Time `json:"updatedAt,omitempty"`
+	SystemBuiltin       *bool                `json:"systemBuiltin,omitempty"`
+	UpdatedAt           *time.Time           `json:"updatedAt,omitempty"`
+	DeprovisionerPolicy *DeprovisionerPolicy `json:"deprovisionerPolicy,omitempty"`
 }
 
 func (a AppEntitlement) MarshalJSON() ([]byte, error) {
@@ -426,13 +477,6 @@ func (o *AppEntitlement) GetDeletedAt() *time.Time {
 		return nil
 	}
 	return o.DeletedAt
-}
-
-func (o *AppEntitlement) GetProvisionPolicy() *ProvisionPolicy {
-	if o == nil {
-		return nil
-	}
-	return o.ProvisionPolicy
 }
 
 func (o *AppEntitlement) GetDescription() *string {
@@ -519,11 +563,11 @@ func (o *AppEntitlement) GetOverrideAccessRequestsDefaults() *bool {
 	return o.OverrideAccessRequestsDefaults
 }
 
-func (o *AppEntitlement) GetProvisionPolicy1() *ProvisionPolicy {
+func (o *AppEntitlement) GetProvisionPolicy() *ProvisionPolicy {
 	if o == nil {
 		return nil
 	}
-	return o.ProvisionPolicy1
+	return o.ProvisionPolicy
 }
 
 func (o *AppEntitlement) GetPurpose() *Purpose {
@@ -573,4 +617,11 @@ func (o *AppEntitlement) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return o.UpdatedAt
+}
+
+func (o *AppEntitlement) GetDeprovisionerPolicy() *DeprovisionerPolicy {
+	if o == nil {
+		return nil
+	}
+	return o.DeprovisionerPolicy
 }

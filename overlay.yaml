@@ -51,6 +51,14 @@ actions:
   - target: $["components"]["schemas"]["c1.api.user.v1.User"]
     update:
       x-speakeasy-entity: User
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["deprovisionerPolicy"]
+    remove: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]
+    update:
+      deprovisionerPolicy:
+        allOf:
+          - $ref: '#/components/schemas/c1.api.policy.v1.ProvisionPolicy'
+          - x-speakeasy-name-override: deprovisionerPolicy
   - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["appResourceTypeId"]
     update:
       x-speakeasy-param-force-new: true
