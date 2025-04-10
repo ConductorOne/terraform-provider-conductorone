@@ -9,7 +9,15 @@ description: |-
 
 User DataSource
 
-The User datasource allows you to retrieve a User by `email` (case sensitive), or `id` in ConductorOne.
+This data source enables you to retrieve ConductorOne users using the following search criteria:
+
+* `email` - Filter by email address (case sensitive)
+* `exclude_ids` - List of user IDs to exclude
+* `exclude_types` - List of user types to exclude (e.g. "USER_TYPE_HUMAN")
+* `ids` - List of specific user IDs to include
+* `query` - Search query string
+* `role_ids` - List of role IDs to filter by
+* `user_statuses` - List of user statuses to filter by (e.g. "DELETED")
 
 ## Example Usage
 

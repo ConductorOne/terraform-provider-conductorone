@@ -9,7 +9,16 @@ description: |-
 
 AppResourceType DataSource
 
-The app resource type datasource allows you to retrieve an app resource type by `id` and `app_id` in ConductorOne.
+This data source enables you to retrieve ConductorOne app resource types using the following search criteria:
+
+* `app_ids` - List of app IDs to filter by
+* `app_user_ids` - List of app user IDs to filter by
+* `display_name` - Filter by display name
+* `query` - Search query string
+* `resource_type_ids` - List of resource type IDs to include
+* `resource_type_trait_ids` - List of resource type trait IDs to include
+* `exclude_resource_type_ids` - List of resource type IDs to exclude
+* `exclude_resource_type_trait_ids` - List of resource type trait IDs to exclude
 
 ## Example Usage
 

@@ -9,7 +9,13 @@ description: |-
 
 App DataSource
 
-The App datasource allows you to retrieve an App instance by `display_name` (case insensitive), or `id` in ConductorOne.
+This data source enables you to retrieve ConductorOne apps using the following search criteria:
+
+* `app_ids` - List of specific app IDs to include
+* `display_name` - Filter by display name (case insensitive)
+* `exclude_app_ids` - List of app IDs to exclude
+* `only_directories` - Filter to only return directory apps
+* `query` - Search query string
 
 ## Example Usage
 

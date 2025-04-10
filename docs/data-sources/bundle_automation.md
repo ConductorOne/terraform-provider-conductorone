@@ -9,7 +9,9 @@ description: |-
 
 BundleAutomation DataSource
 
-The Bundle Automation datasource allows you to retrieve a Bundle Automation by specifying `request_catalog_id` in ConductorOne.
+This data source enables you to retrieve ConductorOne bundle automations using the following search criteria:
+
+* `request_catalog_id` - The ID of the request catalog
 
 ## Example Usage
 

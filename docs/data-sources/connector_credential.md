@@ -9,7 +9,11 @@ description: |-
 
 ConnectorCredential DataSource
 
-The Connector Credential datasource allows you to retrieve a Connector Credential by `specifying app_id`, `connector_id`, and `id` in ConductorOne.
+This data source enables you to retrieve ConductorOne connector credentials using the following search criteria:
+
+* `app_id` - The ID of the app
+* `connector_id` - The ID of the connector
+* `id` - The ID of the connector credential
 
 ## Example Usage
 

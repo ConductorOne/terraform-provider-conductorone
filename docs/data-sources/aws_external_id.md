@@ -9,7 +9,7 @@ description: |-
 
 AwsExternalID DataSource
 
-The AWS External Id datasource allows you to retrieve the AWS External Id for your tenant to use with your AWS integration.
+This data source enables you to retrieve the AWS External ID for your ConductorOne tenant to use with your AWS integration.
 
 ## Example Usage
 
