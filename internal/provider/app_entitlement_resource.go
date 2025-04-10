@@ -596,29 +596,3 @@ func (r *AppEntitlementResource) ImportState(ctx context.Context, req resource.I
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), idParts[0])...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), idParts[1])...)
 }
-
-func (r *AppEntitlementResource) readAppEntitlementAndValidate(ctx context.Context, appID string, id string) (*shared.AppEntitlement, error) {
-	request := operations.C1APIAppV1AppEntitlementsGetRequest{
-		AppID: appID,
-		ID:    id,
-	}
-	res, err := r.client.AppEntitlements.Get(ctx, request)
-	if err != nil {
-		return nil, fmt.Errorf("failure to invoke API")
-	}
-	if res == nil {
-		return nil, fmt.Errorf("unexpected response from API")
-	}
-	if res.StatusCode != 200 {
-		return nil, fmt.Errorf("unexpected response from API. Got an unexpected response code %v", res.StatusCode)
-	}
-
-	if res.GetAppEntitlementResponse.AppEntitlementView == nil {
-		return nil, fmt.Errorf("unexpected response from API. No response body")
-	}
-
-	if res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement == nil {
-		return nil, fmt.Errorf("unexpected response from API. No response body")
-	}
-	return res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement, nil
-}

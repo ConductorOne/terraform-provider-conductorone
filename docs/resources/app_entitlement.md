@@ -34,8 +34,10 @@ AppEntitlement Resource
 - `emergency_grant_policy_id` (String) The emergencyGrantPolicyId field is the ID of the grant policy that will be used for emergency grant tasks. 
 				To set this field, emergencyGrantEnabled must be set to true.
 - `grant_policy_id` (String) The grantPolicyId field is the policy that will be used for access request grant tasks.
-- `provision_policy` (Attributes) The ProvisionPolicy message is the Provision strategy that will be used for granting access for this entitlement.
-This message contains a oneof. Only a single field of the following list may be set at a time:
+- `override_access_requests_defaults` (Boolean) The overrideAccessRequestsDefaults field.
+- `provision_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
+
+This message contains a oneof named typ. Only a single field of the following list may be set at a time:
   - connector
   - manual
   - delegated
@@ -63,15 +65,47 @@ This message contains a oneof. Only a single field of the following list may be 
 
 Optional:
 
-- `connector_provision` (Attributes) The ConnectorProvision message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision))
-- `delegated_provision` (Attributes) The DelegatedProvision message. (see [below for nested schema](#nestedatt--provision_policy--delegated_provision))
+- `connector_provision` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
+
+This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
+  - defaultBehavior
+  - account (see [below for nested schema](#nestedatt--provision_policy--connector_provision))
+- `delegated_provision` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--provision_policy--delegated_provision))
 - `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--provision_policy--external_ticket_provision))
-- `manual_provision` (Attributes) The ManualProvision message. (see [below for nested schema](#nestedatt--provision_policy--manual_provision))
+- `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--provision_policy--manual_provision))
 - `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
 - `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--provision_policy--webhook_provision))
 
 <a id="nestedatt--provision_policy--connector_provision"></a>
 ### Nested Schema for `provision_policy.connector_provision`
+
+Optional:
+
+- `account_provision` (Attributes) The AccountProvision message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision--account_provision))
+- `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision--default_behavior))
+
+<a id="nestedatt--provision_policy--connector_provision--account_provision"></a>
+### Nested Schema for `provision_policy.connector_provision.account_provision`
+
+Optional:
+
+- `config` (Attributes) (see [below for nested schema](#nestedatt--provision_policy--connector_provision--account_provision--config))
+- `connector_id` (String) The connectorId field.
+- `schema_id` (String) The schemaId field.
+
+<a id="nestedatt--provision_policy--connector_provision--account_provision--config"></a>
+### Nested Schema for `provision_policy.connector_provision.account_provision.config`
+
+
+
+<a id="nestedatt--provision_policy--connector_provision--default_behavior"></a>
+### Nested Schema for `provision_policy.connector_provision.default_behavior`
+
+Optional:
+
+- `connector_id` (String) this checks if the entitlement is enabled by provisioning in a specific connector
+ this can happen automatically and doesn't need any extra info
+
 
 
 <a id="nestedatt--provision_policy--delegated_provision"></a>
@@ -79,9 +113,8 @@ Optional:
 
 Optional:
 
-- `app_id` (String) The appId field.
-- `entitlement_id` (String) The entitlementId field.
-- `implicit` (Boolean) If true, a binding will be automatically created from the entitlement of the parent app.
+- `app_id` (String) The AppID of the entitlement to delegate provisioning to.
+- `entitlement_id` (String) The ID of the entitlement we are delegating provisioning to.
 
 
 <a id="nestedatt--provision_policy--external_ticket_provision"></a>
@@ -100,8 +133,8 @@ Optional:
 
 Optional:
 
-- `instructions` (String) The instructions field.
-- `user_ids` (List of String) The userIds field.
+- `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
+- `user_ids` (List of String) An array of users that are required to provision during this step.
 
 
 <a id="nestedatt--provision_policy--webhook_provision"></a>
