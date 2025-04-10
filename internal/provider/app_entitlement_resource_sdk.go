@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"time"
 
-	ptypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -242,25 +241,32 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 	} else {
 		slug = nil
 	}
+	overrideAccessRequestsDefaults := new(bool)
+	if !r.OverrideAccessRequestsDefaults.IsUnknown() && !r.OverrideAccessRequestsDefaults.IsNull() {
+		*overrideAccessRequestsDefaults = r.OverrideAccessRequestsDefaults.ValueBool()
+	} else {
+		overrideAccessRequestsDefaults = nil
+	}
 
 	out := shared.AppEntitlementInput{
-		ProvisionPolicy:             provisionPolicy,
-		Alias:                       alias,
-		AppID:                       appId1,
-		AppResourceID:               appResourceID,
-		AppResourceTypeID:           appResourceTypeID,
-		CertifyPolicyID:             certifyPolicyID,
-		ComplianceFrameworkValueIds: complianceFrameworkValueIds,
-		Description:                 description,
-		DisplayName:                 displayName,
-		DurationGrant:               durationGrant,
-		DurationUnset:               durationUnset,
-		EmergencyGrantEnabled:       emergencyGrantEnabled,
-		EmergencyGrantPolicyID:      emergencyGrantPolicyID,
-		GrantPolicyID:               grantPolicyID,
-		RevokePolicyID:              revokePolicyID,
-		RiskLevelValueID:            riskLevelValueID,
-		Slug:                        slug,
+		ProvisionPolicy:                provisionPolicy,
+		Alias:                          alias,
+		AppID:                          appId1,
+		AppResourceID:                  appResourceID,
+		AppResourceTypeID:              appResourceTypeID,
+		CertifyPolicyID:                certifyPolicyID,
+		ComplianceFrameworkValueIds:    complianceFrameworkValueIds,
+		Description:                    description,
+		DisplayName:                    displayName,
+		DurationGrant:                  durationGrant,
+		DurationUnset:                  durationUnset,
+		EmergencyGrantEnabled:          emergencyGrantEnabled,
+		EmergencyGrantPolicyID:         emergencyGrantPolicyID,
+		GrantPolicyID:                  grantPolicyID,
+		RevokePolicyID:                 revokePolicyID,
+		RiskLevelValueID:               riskLevelValueID,
+		Slug:                           slug,
+		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
 	}
 	return &out
 }
@@ -323,7 +329,7 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 	if resp.DurationUnset == nil {
 		r.DurationUnset = nil
 	} else {
-		r.DurationUnset = &ptypes.CreateAppEntitlementRequestDurationUnset{}
+		r.DurationUnset = &tfTypes.CreateAppEntitlementRequestDurationUnset{}
 	}
 	if resp.EmergencyGrantEnabled != nil {
 		r.EmergencyGrantEnabled = types.BoolValue(*resp.EmergencyGrantEnabled)
@@ -433,6 +439,11 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339))
 	} else {
 		r.UpdatedAt = types.StringNull()
+	}
+	if resp.OverrideAccessRequestsDefaults != nil {
+		r.OverrideAccessRequestsDefaults = types.BoolValue(*resp.OverrideAccessRequestsDefaults)
+	} else {
+		r.OverrideAccessRequestsDefaults = types.BoolNull()
 	}
 }
 

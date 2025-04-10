@@ -35,27 +35,28 @@ type AppEntitlementResource struct {
 
 // AppEntitlementResourceModel describes the resource data model.
 type AppEntitlementResourceModel struct {
-	Alias                       types.String                                      `tfsdk:"alias"`
-	AppID                       types.String                                      `tfsdk:"app_id"`
-	AppResourceID               types.String                                      `tfsdk:"app_resource_id"`
-	AppResourceTypeID           types.String                                      `tfsdk:"app_resource_type_id"`
-	CertifyPolicyID             types.String                                      `tfsdk:"certify_policy_id"`
-	ComplianceFrameworkValueIds []types.String                                    `tfsdk:"compliance_framework_value_ids"`
-	CreatedAt                   types.String                                      `tfsdk:"created_at"`
-	DeletedAt                   types.String                                      `tfsdk:"deleted_at"`
-	Description                 types.String                                      `tfsdk:"description"`
-	DisplayName                 types.String                                      `tfsdk:"display_name"`
-	DurationGrant               types.String                                      `tfsdk:"duration_grant"`
-	DurationUnset               *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset"`
-	EmergencyGrantEnabled       types.Bool                                        `tfsdk:"emergency_grant_enabled"`
-	EmergencyGrantPolicyID      types.String                                      `tfsdk:"emergency_grant_policy_id"`
-	GrantPolicyID               types.String                                      `tfsdk:"grant_policy_id"`
-	ID                          types.String                                      `tfsdk:"id"`
-	ProvisionPolicy             *tfTypes.ProvisionPolicy                          `tfsdk:"provision_policy" tfPlanOnly:"true"`
-	RevokePolicyID              types.String                                      `tfsdk:"revoke_policy_id"`
-	RiskLevelValueID            types.String                                      `tfsdk:"risk_level_value_id"`
-	Slug                        types.String                                      `tfsdk:"slug"`
-	UpdatedAt                   types.String                                      `tfsdk:"updated_at"`
+	Alias                          types.String                                      `tfsdk:"alias"`
+	AppID                          types.String                                      `tfsdk:"app_id"`
+	AppResourceID                  types.String                                      `tfsdk:"app_resource_id"`
+	AppResourceTypeID              types.String                                      `tfsdk:"app_resource_type_id"`
+	CertifyPolicyID                types.String                                      `tfsdk:"certify_policy_id"`
+	ComplianceFrameworkValueIds    []types.String                                    `tfsdk:"compliance_framework_value_ids"`
+	CreatedAt                      types.String                                      `tfsdk:"created_at"`
+	DeletedAt                      types.String                                      `tfsdk:"deleted_at"`
+	Description                    types.String                                      `tfsdk:"description"`
+	DisplayName                    types.String                                      `tfsdk:"display_name"`
+	DurationGrant                  types.String                                      `tfsdk:"duration_grant"`
+	DurationUnset                  *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset"`
+	EmergencyGrantEnabled          types.Bool                                        `tfsdk:"emergency_grant_enabled"`
+	EmergencyGrantPolicyID         types.String                                      `tfsdk:"emergency_grant_policy_id"`
+	GrantPolicyID                  types.String                                      `tfsdk:"grant_policy_id"`
+	ID                             types.String                                      `tfsdk:"id"`
+	OverrideAccessRequestsDefaults types.Bool                                        `tfsdk:"override_access_requests_defaults"`
+	ProvisionPolicy                *tfTypes.ProvisionPolicy                          `tfsdk:"provision_policy" tfPlanOnly:"true"`
+	RevokePolicyID                 types.String                                      `tfsdk:"revoke_policy_id"`
+	RiskLevelValueID               types.String                                      `tfsdk:"risk_level_value_id"`
+	Slug                           types.String                                      `tfsdk:"slug"`
+	UpdatedAt                      types.String                                      `tfsdk:"updated_at"`
 }
 
 func (r *AppEntitlementResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -148,6 +149,11 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			"id": schema.StringAttribute{
 				Required:    true,
 				Description: `The id field.`,
+			},
+			"override_access_requests_defaults": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The overrideAccessRequestsDefaults field.`,
 			},
 			"provision_policy": schema.SingleNestedAttribute{
 				Computed: true,
@@ -515,8 +521,15 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 	appID := data.AppID.ValueString()
 	id := data.ID.ValueString()
 
+	overrideAccessRequestsDefaults := new(bool)
+	if !data.OverrideAccessRequestsDefaults.IsUnknown() && !data.OverrideAccessRequestsDefaults.IsNull() {
+		*overrideAccessRequestsDefaults = data.OverrideAccessRequestsDefaults.ValueBool()
+	} else {
+		overrideAccessRequestsDefaults = nil
+	}
 	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
-		AppEntitlement: appEntitlement,
+		AppEntitlement:                 appEntitlement,
+		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
 	}
 
 	request := operations.C1APIAppV1AppEntitlementsUpdateRequest{
