@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement_automation Data Source - conductorone"
+page_title: "conductorone_app_entitlement_automation Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppEntitlementAutomation DataSource
@@ -9,7 +9,10 @@ description: |-
 
 AppEntitlementAutomation DataSource
 
-The App Entitlement Automation datasource allows you to retrieve an App Entitlement Automation by `app_entitlement_id` and `app_id` in ConductorOne.
+This data source enables you to retrieve ConductorOne app entitlement automations using the following search criteria:
+
+* `app_entitlement_id` - The ID of the app entitlement
+* `app_id` - The ID of the app
 
 ## Example Usage
 

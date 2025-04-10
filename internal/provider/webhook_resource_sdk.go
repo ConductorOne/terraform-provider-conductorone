@@ -3,9 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
 
 func (r *WebhookResourceModel) ToSharedWebhooksServiceCreateRequest() *shared.WebhooksServiceCreateRequest {
@@ -29,28 +31,20 @@ func (r *WebhookResourceModel) ToSharedWebhooksServiceCreateRequest() *shared.We
 	return &out
 }
 
-func (r *WebhookResourceModel) RefreshFromSharedWebhook(resp *shared.Webhook) {
+func (r *WebhookResourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
-		if resp.DeletedAt != nil {
-			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			r.DeletedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.ID = types.StringPointerValue(resp.ID)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 		r.URL = types.StringPointerValue(resp.URL)
 	}
+
+	return diags
 }
 
 func (r *WebhookResourceModel) ToSharedWebhookInput() *shared.WebhookInput {

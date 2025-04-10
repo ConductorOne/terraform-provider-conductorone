@@ -41,6 +41,7 @@ type AppEntitlementDataSourceModel struct {
 	CreatedAt                      types.String                         `tfsdk:"created_at"`
 	DefaultValuesApplied           types.Bool                           `tfsdk:"default_values_applied"`
 	DeletedAt                      types.String                         `tfsdk:"deleted_at"`
+	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy         `tfsdk:"deprovisioner_policy" tfPlanOnly:"true"`
 	Description                    types.String                         `tfsdk:"description"`
 	DisplayName                    types.String                         `tfsdk:"display_name"`
 	DurationGrant                  types.String                         `tfsdk:"duration_grant" tfPlanOnly:"true"`
@@ -61,8 +62,6 @@ type AppEntitlementDataSourceModel struct {
 	NextPageToken                  types.String                         `tfsdk:"next_page_token"`
 	OnlyGetExpiring                types.Bool                           `tfsdk:"only_get_expiring"`
 	OverrideAccessRequestsDefaults types.Bool                           `tfsdk:"override_access_requests_defaults"`
-	PageSize                       types.Int32                          `tfsdk:"page_size"`
-	PageToken                      types.String                         `tfsdk:"page_token"`
 	ProvisionPolicy                *tfTypes.ProvisionPolicy             `tfsdk:"provision_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                         `tfsdk:"purpose"`
 	Query                          types.String                         `tfsdk:"query"`
@@ -74,6 +73,7 @@ type AppEntitlementDataSourceModel struct {
 	RiskLevelIds                   []types.String                       `tfsdk:"risk_level_ids"`
 	RiskLevelValueID               types.String                         `tfsdk:"risk_level_value_id"`
 	Slug                           types.String                         `tfsdk:"slug"`
+	SourceConnectorID              types.String                         `tfsdk:"source_connector_id"`
 	SourceConnectorIds             map[string]types.String              `tfsdk:"source_connector_ids"`
 	SystemBuiltin                  types.Bool                           `tfsdk:"system_builtin"`
 	UpdatedAt                      types.String                         `tfsdk:"updated_at"`
@@ -144,6 +144,123 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"deleted_at": schema.StringAttribute{
 				Computed: true,
+			},
+			"deprovisioner_policy": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"connector_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"account_provision": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"config": schema.SingleNestedAttribute{
+										Computed: true,
+									},
+									"connector_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The connectorId field.`,
+									},
+									"schema_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The schemaId field.`,
+									},
+								},
+								Description: `The AccountProvision message.`,
+							},
+							"default_behavior": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Computed: true,
+										MarkdownDescription: `this checks if the entitlement is enabled by provisioning in a specific connector` + "\n" +
+											` this can happen automatically and doesn't need any extra info`,
+									},
+								},
+								Description: `The DefaultBehavior message.`,
+							},
+						},
+						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
+							`` + "\n" +
+							`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
+							`  - defaultBehavior` + "\n" +
+							`  - account`,
+					},
+					"delegated_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The AppID of the entitlement to delegate provisioning to.`,
+							},
+							"entitlement_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The ID of the entitlement we are delegating provisioning to.`,
+							},
+						},
+						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
+					},
+					"external_ticket_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The appId field.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The connectorId field.`,
+							},
+							"external_ticket_provisioner_config_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The externalTicketProvisionerConfigId field.`,
+							},
+							"instructions": schema.StringAttribute{
+								Computed:    true,
+								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+							},
+						},
+						Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
+					},
+					"manual_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"instructions": schema.StringAttribute{
+								Computed:    true,
+								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+							},
+							"user_ids": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+								Description: `An array of users that are required to provision during this step.`,
+							},
+						},
+						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
+					},
+					"multi_step": schema.StringAttribute{
+						Computed:    true,
+						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+					},
+					"webhook_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"webhook_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The ID of the webhook to call for provisioning.`,
+							},
+						},
+						Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+					},
+				},
+				MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - connector` + "\n" +
+					`  - manual` + "\n" +
+					`  - delegated` + "\n" +
+					`  - webhook` + "\n" +
+					`  - multiStep` + "\n" +
+					`  - externalTicket`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -226,14 +343,6 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"override_access_requests_defaults": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Flag to indicate if the app-level access request settings have been overridden for the entitlement`,
-			},
-			"page_size": schema.Int32Attribute{
-				Optional:    true,
-				Description: `The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)`,
-			},
-			"page_token": schema.StringAttribute{
-				Optional:    true,
-				Description: `The pageToken field.`,
 			},
 			"provision_policy": schema.SingleNestedAttribute{
 				Computed: true,
@@ -408,6 +517,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				Computed:    true,
 				Description: `The slug is displayed as an oval next to the name in the frontend of C1, it tells you what permission the entitlement grants. See https://www.conductorone.com/docs/product/admin/entitlements/`,
 			},
+			"source_connector_id": schema.StringAttribute{
+				Optional:    true,
+				Description: `The sourceConnectorId field.`,
+			},
 			"source_connector_ids": schema.MapAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
@@ -487,7 +600,11 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlement(res.AppEntitlementSearchServiceSearchResponse.List[0].AppEntitlement)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.AppEntitlementSearchServiceSearchResponse.List[0].AppEntitlement)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

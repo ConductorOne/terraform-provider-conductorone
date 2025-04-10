@@ -19,10 +19,6 @@ type SearchGrantFeedRequest struct {
 	Before      *time.Time   `json:"before,omitempty"`
 	// The AppEntitlementUserBindingExpandHistoryMask message.
 	AppEntitlementUserBindingExpandHistoryMask *AppEntitlementUserBindingExpandHistoryMask `json:"expandMask,omitempty"`
-	// The pageSize where 10 <= pageSize <= 100, default 25.
-	PageSize *int `json:"pageSize,omitempty"`
-	// The page_token field for pagination.
-	PageToken *string `json:"pageToken,omitempty"`
 	// The list of C1 users to limit the search to.
 	UserRefs []UserRef `json:"userRefs,omitempty"`
 }
@@ -78,20 +74,6 @@ func (o *SearchGrantFeedRequest) GetAppEntitlementUserBindingExpandHistoryMask()
 		return nil
 	}
 	return o.AppEntitlementUserBindingExpandHistoryMask
-}
-
-func (o *SearchGrantFeedRequest) GetPageSize() *int {
-	if o == nil {
-		return nil
-	}
-	return o.PageSize
-}
-
-func (o *SearchGrantFeedRequest) GetPageToken() *string {
-	if o == nil {
-		return nil
-	}
-	return o.PageToken
 }
 
 func (o *SearchGrantFeedRequest) GetUserRefs() []UserRef {

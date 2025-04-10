@@ -10,10 +10,6 @@ type SearchAttributeValuesRequest struct {
 	ExcludeIds []string `json:"excludeIds,omitempty"`
 	// Include attributes with these ids in the search results.
 	Ids []string `json:"ids,omitempty"`
-	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
-	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
-	PageToken *string `json:"pageToken,omitempty"`
 	// Query the attributes with a fuzzy search on display name and description.
 	Query *string `json:"query,omitempty"`
 	// Search for attributes with a case insensitive match on the attribute value which is the attribute name.
@@ -39,20 +35,6 @@ func (o *SearchAttributeValuesRequest) GetIds() []string {
 		return nil
 	}
 	return o.Ids
-}
-
-func (o *SearchAttributeValuesRequest) GetPageSize() *int {
-	if o == nil {
-		return nil
-	}
-	return o.PageSize
-}
-
-func (o *SearchAttributeValuesRequest) GetPageToken() *string {
-	if o == nil {
-		return nil
-	}
-	return o.PageToken
 }
 
 func (o *SearchAttributeValuesRequest) GetQuery() *string {

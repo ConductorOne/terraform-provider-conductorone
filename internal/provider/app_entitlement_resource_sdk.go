@@ -28,6 +28,10 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 			} else {
 				entitlementID = nil
 			}
+			provisionPolicy.DelegatedProvision = &shared.DelegatedProvision{
+				AppID:         appID,
+				EntitlementID: entitlementID,
+			}
 		}
 		if r.ProvisionPolicy.ExternalTicketProvision != nil {
 			appId1 := new(string)
@@ -128,18 +132,6 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 	for _, complianceFrameworkValueIdsItem := range r.ComplianceFrameworkValueIds {
 		complianceFrameworkValueIds = append(complianceFrameworkValueIds, complianceFrameworkValueIdsItem.ValueString())
 	}
-	createdAt := new(time.Time)
-	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
-		*createdAt, _ = time.Parse(time.RFC3339Nano, r.CreatedAt.ValueString())
-	} else {
-		createdAt = nil
-	}
-	deletedAt := new(time.Time)
-	if !r.DeletedAt.IsUnknown() && !r.DeletedAt.IsNull() {
-		*deletedAt, _ = time.Parse(time.RFC3339Nano, r.DeletedAt.ValueString())
-	} else {
-		deletedAt = nil
-	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -179,12 +171,6 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 		*grantPolicyID = r.GrantPolicyID.ValueString()
 	} else {
 		grantPolicyID = nil
-	}
-	id := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id = r.ID.ValueString()
-	} else {
-		id = nil
 	}
 	revokePolicyID := new(string)
 	if !r.RevokePolicyID.IsUnknown() && !r.RevokePolicyID.IsNull() {

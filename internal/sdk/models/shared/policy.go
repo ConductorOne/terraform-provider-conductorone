@@ -9,22 +9,22 @@ import (
 	"time"
 )
 
-// PolicyPolicyType - Indicates the type of this policy. Can also be used to get the value from policySteps.
-type PolicyPolicyType string
+// PolicyType - Indicates the type of this policy. Can also be used to get the value from policySteps.
+type PolicyType string
 
 const (
-	PolicyPolicyTypePolicyTypeUnspecified   PolicyPolicyType = "POLICY_TYPE_UNSPECIFIED"
-	PolicyPolicyTypePolicyTypeGrant         PolicyPolicyType = "POLICY_TYPE_GRANT"
-	PolicyPolicyTypePolicyTypeRevoke        PolicyPolicyType = "POLICY_TYPE_REVOKE"
-	PolicyPolicyTypePolicyTypeCertify       PolicyPolicyType = "POLICY_TYPE_CERTIFY"
-	PolicyPolicyTypePolicyTypeAccessRequest PolicyPolicyType = "POLICY_TYPE_ACCESS_REQUEST"
-	PolicyPolicyTypePolicyTypeProvision     PolicyPolicyType = "POLICY_TYPE_PROVISION"
+	PolicyTypePolicyTypeUnspecified   PolicyType = "POLICY_TYPE_UNSPECIFIED"
+	PolicyTypePolicyTypeGrant         PolicyType = "POLICY_TYPE_GRANT"
+	PolicyTypePolicyTypeRevoke        PolicyType = "POLICY_TYPE_REVOKE"
+	PolicyTypePolicyTypeCertify       PolicyType = "POLICY_TYPE_CERTIFY"
+	PolicyTypePolicyTypeAccessRequest PolicyType = "POLICY_TYPE_ACCESS_REQUEST"
+	PolicyTypePolicyTypeProvision     PolicyType = "POLICY_TYPE_PROVISION"
 )
 
-func (e PolicyPolicyType) ToPointer() *PolicyPolicyType {
+func (e PolicyType) ToPointer() *PolicyType {
 	return &e
 }
-func (e *PolicyPolicyType) UnmarshalJSON(data []byte) error {
+func (e *PolicyType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -41,10 +41,10 @@ func (e *PolicyPolicyType) UnmarshalJSON(data []byte) error {
 	case "POLICY_TYPE_ACCESS_REQUEST":
 		fallthrough
 	case "POLICY_TYPE_PROVISION":
-		*e = PolicyPolicyType(v)
+		*e = PolicyType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PolicyPolicyType: %v", v)
+		return fmt.Errorf("invalid value for PolicyType: %v", v)
 	}
 }
 
@@ -61,7 +61,7 @@ type Policy struct {
 	// A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set.
 	PolicySteps map[string]PolicySteps `json:"policySteps,omitempty"`
 	// Indicates the type of this policy. Can also be used to get the value from policySteps.
-	PolicyType *PolicyPolicyType `json:"policyType,omitempty"`
+	PolicyType *PolicyType `json:"policyType,omitempty"`
 	// An array of actions (ordered) to take place after a policy completes processing.
 	PostActions []PolicyPostActions `json:"postActions,omitempty"`
 	// A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation refers to the individual delegates users set on their account.
@@ -126,7 +126,7 @@ func (o *Policy) GetPolicySteps() map[string]PolicySteps {
 	return o.PolicySteps
 }
 
-func (o *Policy) GetPolicyType() *PolicyPolicyType {
+func (o *Policy) GetPolicyType() *PolicyType {
 	if o == nil {
 		return nil
 	}
@@ -177,7 +177,7 @@ type PolicyInput struct {
 	// A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set.
 	PolicySteps map[string]PolicyStepsInput `json:"policySteps,omitempty"`
 	// Indicates the type of this policy. Can also be used to get the value from policySteps.
-	PolicyType *PolicyPolicyType `json:"policyType,omitempty"`
+	PolicyType *PolicyType `json:"policyType,omitempty"`
 	// An array of actions (ordered) to take place after a policy completes processing.
 	PostActions []PolicyPostActions `json:"postActions,omitempty"`
 	// A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation refers to the individual delegates users set on their account.
@@ -207,7 +207,7 @@ func (o *PolicyInput) GetPolicySteps() map[string]PolicyStepsInput {
 	return o.PolicySteps
 }
 
-func (o *PolicyInput) GetPolicyType() *PolicyPolicyType {
+func (o *PolicyInput) GetPolicyType() *PolicyType {
 	if o == nil {
 		return nil
 	}

@@ -20,6 +20,7 @@ type AppUserCredential struct {
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
 	// EncryptedData is a message that contains encrypted bytes and metadata.
 	EncryptedData *EncryptedData `json:"encryptedData,omitempty"`
+	ExpiresAt     *time.Time     `json:"expiresAt,omitempty"`
 	// A unique identifier of the credential.
 	ID        *string    `json:"id,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -69,6 +70,13 @@ func (o *AppUserCredential) GetEncryptedData() *EncryptedData {
 		return nil
 	}
 	return o.EncryptedData
+}
+
+func (o *AppUserCredential) GetExpiresAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.ExpiresAt
 }
 
 func (o *AppUserCredential) GetID() *string {

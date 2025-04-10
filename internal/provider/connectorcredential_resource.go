@@ -186,8 +186,17 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConnectorCredential(res.ConnectorServiceRotateCredentialResponse.ConnectorCredential)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res.ConnectorServiceRotateCredentialResponse.ConnectorCredential)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	var appId1 string
 	appId1 = data.AppID.ValueString()
 
@@ -222,8 +231,17 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConnectorCredential(res1.ConnectorServiceGetCredentialsResponse.ConnectorCredential)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res1.ConnectorServiceGetCredentialsResponse.ConnectorCredential)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -285,7 +303,11 @@ func (r *ConnectorCredentialResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConnectorCredential(res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)
+	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -377,7 +399,7 @@ func (r *ConnectorCredentialResource) ImportState(ctx context.Context, req resou
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "app_id": "",  "connector_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_id": "",  "connector_id": "",  "id": ""}': `+err.Error())
 		return
 	}
 

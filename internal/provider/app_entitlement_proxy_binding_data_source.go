@@ -167,7 +167,11 @@ func (r *AppEntitlementProxyBindingDataSource) Read(ctx context.Context, req dat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlementProxy(res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

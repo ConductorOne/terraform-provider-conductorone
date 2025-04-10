@@ -106,7 +106,7 @@ func (g *glob) doGlob(fsys fs.FS, pattern string, m []string, firstSegment, befo
 	// characters. They would be equal if they are both -1, which means `dir`
 	// will be ".", and we know that doesn't have meta characters either.
 	if splitIdx <= patternStart {
-		return g.globDir(fsys, unescapeMeta(dir), pattern, matches, firstSegment, beforeMeta)
+		return g.globDir(fsys, dir, pattern, matches, firstSegment, beforeMeta)
 	}
 
 	var dirs []string

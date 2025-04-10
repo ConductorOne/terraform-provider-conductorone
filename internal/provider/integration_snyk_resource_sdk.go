@@ -44,7 +44,7 @@ func (r *IntegrationSnykResourceModel) ToCreateSDKType() (*shared.ConnectorServi
 	out := shared.ConnectorServiceCreateRequest{
 		CatalogID: catalogID,
 		UserIds:   userIds,
-		Config: &shared.Config{
+		Config: &shared.ConnectorServiceCreateRequestConfig{
 			AtType: sdk.String(envConfigType),
 			AdditionalProperties: map[string]interface{}{
 				"configuration": configOut,

@@ -3,7 +3,9 @@
 package provider
 
 import (
+	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
 func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest() *shared.RequestCatalogManagementServiceAddAppEntitlementsRequest {
@@ -39,9 +41,13 @@ func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogMan
 	return &out
 }
 
-func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(resp *shared.RequestCatalogManagementServiceAddAppEntitlementsResponse) {
+func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceAddAppEntitlementsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 	}
+
+	return diags
 }
 
 func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest {

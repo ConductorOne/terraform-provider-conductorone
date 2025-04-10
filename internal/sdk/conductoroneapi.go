@@ -107,14 +107,18 @@ type ConductoroneAPI struct {
 	PersonalClientSearch       *PersonalClientSearch
 	PolicySearch               *PolicySearch
 	RequestCatalogSearch       *RequestCatalogSearch
+	StepUpProvider             *StepUpProvider
+	StepUpTransaction          *StepUpTransaction
 	ExportsSearch              *ExportsSearch
 	TaskSearch                 *TaskSearch
 	UserSearch                 *UserSearch
 	WebhooksSearch             *WebhooksSearch
 	AWSExternalIDSettings      *AWSExternalIDSettings
+	OrgDomain                  *OrgDomain
 	SessionSettings            *SessionSettings
 	SystemLog                  *SystemLog
 	Export                     *Export
+	TaskAudit                  *TaskAudit
 	Task                       *Task
 	TaskActions                *TaskActions
 	User                       *User
@@ -209,9 +213,9 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "0.1.0-alpha",
-			SDKVersion:        "0.6.3",
-			GenVersion:        "2.545.7",
-			UserAgent:         "speakeasy-sdk/terraform 0.6.3 2.545.7 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			SDKVersion:        "1.1.6",
+			GenVersion:        "2.568.2",
+			UserAgent:         "speakeasy-sdk/terraform 1.1.6 2.568.2 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "example",
@@ -308,6 +312,10 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 
 	sdk.RequestCatalogSearch = newRequestCatalogSearch(sdk.sdkConfiguration)
 
+	sdk.StepUpProvider = newStepUpProvider(sdk.sdkConfiguration)
+
+	sdk.StepUpTransaction = newStepUpTransaction(sdk.sdkConfiguration)
+
 	sdk.ExportsSearch = newExportsSearch(sdk.sdkConfiguration)
 
 	sdk.TaskSearch = newTaskSearch(sdk.sdkConfiguration)
@@ -318,11 +326,15 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 
 	sdk.AWSExternalIDSettings = newAWSExternalIDSettings(sdk.sdkConfiguration)
 
+	sdk.OrgDomain = newOrgDomain(sdk.sdkConfiguration)
+
 	sdk.SessionSettings = newSessionSettings(sdk.sdkConfiguration)
 
 	sdk.SystemLog = newSystemLog(sdk.sdkConfiguration)
 
 	sdk.Export = newExport(sdk.sdkConfiguration)
+
+	sdk.TaskAudit = newTaskAudit(sdk.sdkConfiguration)
 
 	sdk.Task = newTask(sdk.sdkConfiguration)
 

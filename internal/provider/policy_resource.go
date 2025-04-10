@@ -117,6 +117,23 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
+											"agent_approval": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"agent_user_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The agent user ID to assign the task to.`,
+													},
+													"instructions": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Instructions for the agent.`,
+													},
+												},
+												Description: `The agent to assign the task to.`,
+											},
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
 												Optional:    true,
@@ -331,6 +348,12 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Optional:    true,
 												Description: `Configuration to require a reason when reassigning this step.`,
 											},
+											"requires_step_up_provider_id": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												MarkdownDescription: `The ID of a step-up authentication provider that will be required for approvals on this step.` + "\n" +
+													` If set, approvers must complete the step-up authentication flow before they can approve.`,
+											},
 											"resource_owner_approval": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
@@ -467,7 +490,8 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											`  - entitlementOwners` + "\n" +
 											`  - expression` + "\n" +
 											`  - webhook` + "\n" +
-											`  - resourceOwners`,
+											`  - resourceOwners` + "\n" +
+											`  - agent`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("accept"),
@@ -929,8 +953,17 @@ func (r *PolicyResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPolicy(res.CreatePolicyResponse.Policy)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res.CreatePolicyResponse.Policy)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -984,7 +1017,11 @@ func (r *PolicyResource) Read(ctx context.Context, req resource.ReadRequest, res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPolicy(res.GetPolicyResponse.Policy)
+	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res.GetPolicyResponse.Policy)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -1041,8 +1078,17 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPolicy(res.UpdatePolicyResponse.Policy)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res.UpdatePolicyResponse.Policy)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	var id1 string
 	id1 = data.ID.ValueString()
 
@@ -1069,8 +1115,17 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPolicy(res1.GetPolicyResponse.Policy)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res1.GetPolicyResponse.Policy)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

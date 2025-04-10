@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_user Data Source - conductorone"
+page_title: "conductorone_user Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   User DataSource
@@ -9,7 +9,15 @@ description: |-
 
 User DataSource
 
-The User datasource allows you to retrieve a User by `email` (case sensitive), or `id` in ConductorOne.
+This data source enables you to retrieve ConductorOne users using the following search criteria:
+
+* `email` - Filter by email address (case sensitive)
+* `exclude_ids` - List of user IDs to exclude
+* `exclude_types` - List of user types to exclude (e.g. "USER_TYPE_HUMAN")
+* `ids` - List of specific user IDs to include
+* `query` - Search query string
+* `role_ids` - List of role IDs to filter by
+* `user_statuses` - List of user statuses to filter by (e.g. "DELETED")
 
 ## Example Usage
 
@@ -19,12 +27,13 @@ data "conductorone_user" "my_user" {
   exclude_ids = [
     "..."
   ]
+  exclude_types = [
+    "USER_TYPE_HUMAN"
+  ]
   ids = [
     "..."
   ]
-  page_size  = 10
-  page_token = "...my_page_token..."
-  query      = "...my_query..."
+  query = "...my_query..."
   refs = [
     {
       id = "...my_id..."
@@ -46,9 +55,8 @@ data "conductorone_user" "my_user" {
 
 - `email` (String) Search for users based on their email (exact match).
 - `exclude_ids` (List of String) An array of users IDs to exclude from the results.
+- `exclude_types` (List of String) An array of types to exclude from the results.
 - `ids` (List of String) Deprecated. Use refs array instead.
-- `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
-- `page_token` (String) The pageToken field.
 - `query` (String) Query the apps with a fuzzy search on display name and emails.
 - `refs` (Attributes List) An array of user refs to restrict the return values to by ID. (see [below for nested schema](#nestedatt--refs))
 - `role_ids` (List of String) Search for users that have any of the role IDs on this list.
@@ -67,7 +75,10 @@ data "conductorone_user" "my_user" {
 - `directory_status` (String) The status of the user in the directory.
 - `directory_status_sources` (Attributes List) A list of objects mapped based on directoryStatus attribute mappings configured in the system. (see [below for nested schema](#nestedatt--directory_status_sources))
 - `display_name` (String) The display name of the user.
+- `email_sources` (Attributes List) A list of source data for the email attribute. (see [below for nested schema](#nestedatt--email_sources))
 - `emails` (List of String) This is a list of all of the user's emails from app users.
+- `employee_id_sources` (Attributes List) A list of source data for the employee IDs attribute. (see [below for nested schema](#nestedatt--employee_id_sources))
+- `employee_ids` (List of String) This is a list of all of the user's employee IDs from app users.
 - `employment_status` (String) The users employment status.
 - `employment_status_sources` (Attributes List) A list of objects mapped based on employmentStatus attribute mappings configured in the system. (see [below for nested schema](#nestedatt--employment_status_sources))
 - `employment_type` (String) The employment type of the user.
@@ -110,6 +121,30 @@ Read-Only:
 
 <a id="nestedatt--directory_status_sources"></a>
 ### Nested Schema for `directory_status_sources`
+
+Read-Only:
+
+- `app_id` (String) The appId field.
+- `app_user_id` (String) The appUserId field.
+- `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `user_attribute_mapping_id` (String) The userAttributeMappingId field.
+- `value` (String) The value field.
+
+
+<a id="nestedatt--email_sources"></a>
+### Nested Schema for `email_sources`
+
+Read-Only:
+
+- `app_id` (String) The appId field.
+- `app_user_id` (String) The appUserId field.
+- `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `user_attribute_mapping_id` (String) The userAttributeMappingId field.
+- `value` (String) The value field.
+
+
+<a id="nestedatt--employee_id_sources"></a>
+### Nested Schema for `employee_id_sources`
 
 Read-Only:
 

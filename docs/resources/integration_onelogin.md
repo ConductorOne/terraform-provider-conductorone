@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_onelogin Resource - conductorone"
+page_title: "conductorone_integration_onelogin Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Onelogin Integration Resource

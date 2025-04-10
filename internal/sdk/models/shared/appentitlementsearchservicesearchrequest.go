@@ -14,6 +14,7 @@ const (
 	MembershipTypeAppEntitlementMembershipTypeMember      MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_MEMBER"
 	MembershipTypeAppEntitlementMembershipTypeOwner       MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER"
 	MembershipTypeAppEntitlementMembershipTypeExclusion   MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_EXCLUSION"
+	MembershipTypeAppEntitlementMembershipTypeAdmin       MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_ADMIN"
 )
 
 func (e MembershipType) ToPointer() *MembershipType {
@@ -32,6 +33,8 @@ func (e *MembershipType) UnmarshalJSON(data []byte) error {
 	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER":
 		fallthrough
 	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_EXCLUSION":
+		fallthrough
+	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_ADMIN":
 		*e = MembershipType(v)
 		return nil
 	default:
@@ -65,10 +68,6 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	MembershipType []MembershipType `json:"membershipType,omitempty"`
 	// Restrict results to only those who have expiring app entitlement user bindings.
 	OnlyGetExpiring *bool `json:"onlyGetExpiring,omitempty"`
-	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
-	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
-	PageToken *string `json:"pageToken,omitempty"`
 	// Query the app entitlements with a fuzzy search on display name and description.
 	Query *string `json:"query,omitempty"`
 	// The refs field.
@@ -81,6 +80,8 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
 	// Search for app entitlements with these risk levels.
 	RiskLevelIds []string `json:"riskLevelIds,omitempty"`
+	// The sourceConnectorId field.
+	SourceConnectorID *string `json:"sourceConnectorId,omitempty"`
 }
 
 func (o *AppEntitlementSearchServiceSearchRequest) GetAccessReviewID() *string {
@@ -167,20 +168,6 @@ func (o *AppEntitlementSearchServiceSearchRequest) GetOnlyGetExpiring() *bool {
 	return o.OnlyGetExpiring
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetPageSize() *int {
-	if o == nil {
-		return nil
-	}
-	return o.PageSize
-}
-
-func (o *AppEntitlementSearchServiceSearchRequest) GetPageToken() *string {
-	if o == nil {
-		return nil
-	}
-	return o.PageToken
-}
-
 func (o *AppEntitlementSearchServiceSearchRequest) GetQuery() *string {
 	if o == nil {
 		return nil
@@ -221,4 +208,11 @@ func (o *AppEntitlementSearchServiceSearchRequest) GetRiskLevelIds() []string {
 		return nil
 	}
 	return o.RiskLevelIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetSourceConnectorID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SourceConnectorID
 }

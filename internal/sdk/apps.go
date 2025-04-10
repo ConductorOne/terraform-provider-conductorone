@@ -158,7 +158,7 @@ func (s *Apps) List(ctx context.Context, request operations.C1APIAppV1AppsListRe
 }
 
 // Create
-// Create a new app.
+// Create a new manual app without a connector.
 func (s *Apps) Create(ctx context.Context, request *shared.CreateAppRequest, opts ...operations.Option) (*operations.C1APIAppV1AppsCreateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

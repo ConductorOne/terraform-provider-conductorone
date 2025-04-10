@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_policy Data Source - conductorone"
+page_title: "conductorone_policy Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Policy DataSource
@@ -9,7 +9,12 @@ description: |-
 
 Policy DataSource
 
-The Policy datasource allows you to retrieve a Policy instance by `display_name` (case insensitive), or `id` in ConductorOne.
+This data source enables you to retrieve ConductorOne policies using the following search criteria:
+
+* `display_name` - Filter by display name (case insensitive)
+* `include_deleted` - Include deleted policies in results
+* `policy_types` - List of policy types to filter by (e.g. "POLICY_TYPE_ACCESS_REQUEST")
+* `query` - Search query string
 
 ## Example Usage
 
@@ -17,8 +22,6 @@ The Policy datasource allows you to retrieve a Policy instance by `display_name`
 data "conductorone_policy" "my_policy" {
   display_name    = "...my_display_name..."
   include_deleted = false
-  page_size       = 7
-  page_token      = "...my_page_token..."
   policy_types = [
     "POLICY_TYPE_ACCESS_REQUEST"
   ]
@@ -38,8 +41,6 @@ data "conductorone_policy" "my_policy" {
 
 - `display_name` (String) Search for policies with a case insensitive match on the display name.
 - `include_deleted` (Boolean) The includeDeleted field.
-- `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
-- `page_token` (String) The pageToken field.
 - `policy_types` (List of String) The policy type to search on. This can be POLICY_TYPE_GRANT, POLICY_TYPE_REVOKE, POLICY_TYPE_CERTIFY, POLICY_TYPE_ACCESS_REQUEST, or POLICY_TYPE_PROVISION.
 - `query` (String) Query the policies with a fuzzy search on display name and description.
 - `refs` (Attributes List) The refs field. (see [below for nested schema](#nestedatt--refs))
@@ -91,7 +92,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - entitlementOwners
   - expression
   - webhook
-  - resourceOwners (see [below for nested schema](#nestedatt--policy_steps--steps--approval))
+  - resourceOwners
+  - agent (see [below for nested schema](#nestedatt--policy_steps--steps--approval))
 - `provision` (Attributes) The provision step references a provision policy for this step. (see [below for nested schema](#nestedatt--policy_steps--steps--provision))
 - `reject` (Attributes) This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--policy_steps--steps--reject))
 - `wait` (Attributes) Define a Wait step for a policy to wait on a condition to be met.
@@ -112,6 +114,7 @@ Read-Only:
 
 Read-Only:
 
+- `agent_approval` (Attributes) The agent to assign the task to. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--agent_approval))
 - `allow_reassignment` (Boolean) Configuration to allow reassignment by reviewers during this step.
 - `app_group_approval` (Attributes) The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_group_approval))
 - `app_owner_approval` (Attributes) App owner approval provides the configuration for an approval step when the app owner is the target. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_owner_approval))
@@ -122,10 +125,21 @@ Read-Only:
 - `require_approval_reason` (Boolean) Configuration to require a reason when approving this step.
 - `require_denial_reason` (Boolean) Configuration to require a reason when denying this step.
 - `require_reassignment_reason` (Boolean) Configuration to require a reason when reassigning this step.
+- `requires_step_up_provider_id` (String) The ID of a step-up authentication provider that will be required for approvals on this step.
+ If set, approvers must complete the step-up authentication flow before they can approve.
 - `resource_owner_approval` (Attributes) The resource owner approval allows configuration of the approval step when the target approvers are the resource owners. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--resource_owner_approval))
 - `self_approval` (Attributes) The self approval object describes the configuration of a policy step that needs to be approved by the target of the request. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--self_approval))
 - `user_approval` (Attributes) The user approval object describes the approval configuration of a policy step that needs to be approved by a specific list of users. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--user_approval))
 - `webhook_approval` (Attributes) The WebhookApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--webhook_approval))
+
+<a id="nestedatt--policy_steps--steps--approval--agent_approval"></a>
+### Nested Schema for `policy_steps.steps.approval.agent_approval`
+
+Read-Only:
+
+- `agent_user_id` (String) The agent user ID to assign the task to.
+- `instructions` (String) Instructions for the agent.
+
 
 <a id="nestedatt--policy_steps--steps--approval--app_group_approval"></a>
 ### Nested Schema for `policy_steps.steps.approval.app_group_approval`

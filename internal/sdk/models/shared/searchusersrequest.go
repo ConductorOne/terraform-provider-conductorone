@@ -7,6 +7,41 @@ import (
 	"fmt"
 )
 
+type ExcludeTypes string
+
+const (
+	ExcludeTypesUserTypeUnspecified ExcludeTypes = "USER_TYPE_UNSPECIFIED"
+	ExcludeTypesUserTypeSystem      ExcludeTypes = "USER_TYPE_SYSTEM"
+	ExcludeTypesUserTypeHuman       ExcludeTypes = "USER_TYPE_HUMAN"
+	ExcludeTypesUserTypeService     ExcludeTypes = "USER_TYPE_SERVICE"
+	ExcludeTypesUserTypeAgent       ExcludeTypes = "USER_TYPE_AGENT"
+)
+
+func (e ExcludeTypes) ToPointer() *ExcludeTypes {
+	return &e
+}
+func (e *ExcludeTypes) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "USER_TYPE_UNSPECIFIED":
+		fallthrough
+	case "USER_TYPE_SYSTEM":
+		fallthrough
+	case "USER_TYPE_HUMAN":
+		fallthrough
+	case "USER_TYPE_SERVICE":
+		fallthrough
+	case "USER_TYPE_AGENT":
+		*e = ExcludeTypes(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ExcludeTypes: %v", v)
+	}
+}
+
 type UserStatuses string
 
 const (
@@ -45,12 +80,10 @@ type SearchUsersRequest struct {
 	Email *string `json:"email,omitempty"`
 	// An array of users IDs to exclude from the results.
 	ExcludeIds []string `json:"excludeIds,omitempty"`
+	// An array of types to exclude from the results.
+	ExcludeTypes []ExcludeTypes `json:"excludeTypes,omitempty"`
 	// Deprecated. Use refs array instead.
 	Ids []string `json:"ids,omitempty"`
-	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
-	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
-	PageToken *string `json:"pageToken,omitempty"`
 	// Query the apps with a fuzzy search on display name and emails.
 	Query *string `json:"query,omitempty"`
 	// An array of user refs to restrict the return values to by ID.
@@ -75,25 +108,18 @@ func (o *SearchUsersRequest) GetExcludeIds() []string {
 	return o.ExcludeIds
 }
 
+func (o *SearchUsersRequest) GetExcludeTypes() []ExcludeTypes {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludeTypes
+}
+
 func (o *SearchUsersRequest) GetIds() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Ids
-}
-
-func (o *SearchUsersRequest) GetPageSize() *int {
-	if o == nil {
-		return nil
-	}
-	return o.PageSize
-}
-
-func (o *SearchUsersRequest) GetPageToken() *string {
-	if o == nil {
-		return nil
-	}
-	return o.PageToken
 }
 
 func (o *SearchUsersRequest) GetQuery() *string {

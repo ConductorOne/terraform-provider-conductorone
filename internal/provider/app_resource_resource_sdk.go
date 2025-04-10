@@ -3,7 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"time"
 )
@@ -25,32 +29,33 @@ func (r *AppResourceResourceModel) ToSharedCreateManuallyManagedAppResourceReque
 	return &out
 }
 
-func (r *AppResourceResourceModel) RefreshFromSharedAppResource(resp *shared.AppResource) {
+func (r *AppResourceResourceModel) RefreshFromSharedAppResource(ctx context.Context, resp *shared.AppResource) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
-		if resp.DeletedAt != nil {
-			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			r.DeletedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.GrantCount = types.StringPointerValue(resp.GrantCount)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.ParentAppResourceID = types.StringPointerValue(resp.ParentAppResourceID)
 		r.ParentAppResourceTypeID = types.StringPointerValue(resp.ParentAppResourceTypeID)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		if resp.SecretTrait == nil {
+			r.SecretTrait = nil
 		} else {
-			r.UpdatedAt = types.StringNull()
+			r.SecretTrait = &tfTypes.SecretTrait{}
+			r.SecretTrait.IdentityAppUserID = types.StringPointerValue(resp.SecretTrait.IdentityAppUserID)
+			r.SecretTrait.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.LastUsedAt))
+			r.SecretTrait.SecretCreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.SecretCreatedAt))
+			r.SecretTrait.SecretExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.SecretExpiresAt))
 		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
+
+	return diags
 }
 
 func (r *AppResourceResourceModel) ToSharedAppResourceInput() *shared.AppResourceInput {
@@ -102,6 +107,39 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput() *shared.AppResourc
 	} else {
 		parentAppResourceTypeID = nil
 	}
+	var secretTrait *shared.SecretTrait
+	if r.SecretTrait != nil {
+		identityAppUserID := new(string)
+		if !r.SecretTrait.IdentityAppUserID.IsUnknown() && !r.SecretTrait.IdentityAppUserID.IsNull() {
+			*identityAppUserID = r.SecretTrait.IdentityAppUserID.ValueString()
+		} else {
+			identityAppUserID = nil
+		}
+		lastUsedAt := new(time.Time)
+		if !r.SecretTrait.LastUsedAt.IsUnknown() && !r.SecretTrait.LastUsedAt.IsNull() {
+			*lastUsedAt, _ = time.Parse(time.RFC3339Nano, r.SecretTrait.LastUsedAt.ValueString())
+		} else {
+			lastUsedAt = nil
+		}
+		secretCreatedAt := new(time.Time)
+		if !r.SecretTrait.SecretCreatedAt.IsUnknown() && !r.SecretTrait.SecretCreatedAt.IsNull() {
+			*secretCreatedAt, _ = time.Parse(time.RFC3339Nano, r.SecretTrait.SecretCreatedAt.ValueString())
+		} else {
+			secretCreatedAt = nil
+		}
+		secretExpiresAt := new(time.Time)
+		if !r.SecretTrait.SecretExpiresAt.IsUnknown() && !r.SecretTrait.SecretExpiresAt.IsNull() {
+			*secretExpiresAt, _ = time.Parse(time.RFC3339Nano, r.SecretTrait.SecretExpiresAt.ValueString())
+		} else {
+			secretExpiresAt = nil
+		}
+		secretTrait = &shared.SecretTrait{
+			IdentityAppUserID: identityAppUserID,
+			LastUsedAt:        lastUsedAt,
+			SecretCreatedAt:   secretCreatedAt,
+			SecretExpiresAt:   secretExpiresAt,
+		}
+	}
 	out := shared.AppResourceInput{
 		AppID:                   appID,
 		AppResourceTypeID:       appResourceTypeID,
@@ -111,6 +149,7 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput() *shared.AppResourc
 		ID:                      id,
 		ParentAppResourceID:     parentAppResourceID,
 		ParentAppResourceTypeID: parentAppResourceTypeID,
+		SecretTrait:             secretTrait,
 	}
 	return &out
 }

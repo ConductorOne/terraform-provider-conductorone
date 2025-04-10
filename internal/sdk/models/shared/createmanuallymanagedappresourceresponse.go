@@ -5,6 +5,10 @@ package shared
 // The CreateManuallyManagedAppResourceResponse message.
 type CreateManuallyManagedAppResourceResponse struct {
 	// The app resource message is a single resource that can have entitlements.
+	//
+	// This message contains a oneof named metadata. Only a single field of the following list may be set at a time:
+	//   - secretTrait
+	//
 	AppResource *AppResource `json:"appResource,omitempty"`
 }
 

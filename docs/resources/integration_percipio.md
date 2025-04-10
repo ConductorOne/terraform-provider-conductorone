@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_percipio Resource - conductorone"
+page_title: "conductorone_integration_percipio Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Percipio Integration Resource

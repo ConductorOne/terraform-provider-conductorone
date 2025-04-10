@@ -111,7 +111,11 @@ func (r *AwsExternalIDDataSource) Read(ctx context.Context, req datasource.ReadR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAWSExternalID(res.GetAWSExternalIDResponse.AWSExternalID)
+	resp.Diagnostics.Append(data.RefreshFromSharedAWSExternalID(ctx, res.GetAWSExternalIDResponse.AWSExternalID)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

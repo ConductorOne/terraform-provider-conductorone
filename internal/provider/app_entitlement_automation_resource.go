@@ -298,8 +298,17 @@ func (r *AppEntitlementAutomationResource) Create(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlementAutomation(res.CreateAutomationResponse.AppEntitlementAutomation)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementAutomation(ctx, res.CreateAutomationResponse.AppEntitlementAutomation)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -357,7 +366,11 @@ func (r *AppEntitlementAutomationResource) Read(ctx context.Context, req resourc
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlementAutomation(res.AppEntitlementServiceGetAutomationResponse.AppEntitlementAutomation)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementAutomation(ctx, res.AppEntitlementServiceGetAutomationResponse.AppEntitlementAutomation)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -414,8 +427,17 @@ func (r *AppEntitlementAutomationResource) Update(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlementAutomation(res.AppEntitlementServiceUpdateAutomationResponse.AppEntitlementAutomation)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementAutomation(ctx, res.AppEntitlementServiceUpdateAutomationResponse.AppEntitlementAutomation)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	var appId1 string
 	appId1 = data.AppID.ValueString()
 
@@ -446,8 +468,17 @@ func (r *AppEntitlementAutomationResource) Update(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlementAutomation(res1.AppEntitlementServiceGetAutomationResponse.AppEntitlementAutomation)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementAutomation(ctx, res1.AppEntitlementServiceGetAutomationResponse.AppEntitlementAutomation)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -509,7 +540,7 @@ func (r *AppEntitlementAutomationResource) ImportState(ctx context.Context, req 
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "app_entitlement_id": "",  "app_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_entitlement_id": "",  "app_id": ""}': `+err.Error())
 		return
 	}
 

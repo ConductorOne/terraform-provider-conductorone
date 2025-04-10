@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement_proxy_binding Data Source - conductorone"
+page_title: "conductorone_app_entitlement_proxy_binding Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppEntitlementProxyBinding DataSource
@@ -9,7 +9,12 @@ description: |-
 
 AppEntitlementProxyBinding DataSource
 
-The App Entitlement Proxy Binding datasource allows you to retrieve an App Entitlement Proxy Binding by specifying `src_app_entitlement_id`, `src_app_id`, `dst_app_entitlement_id`, and `dst_app_id` in ConductorOne.
+This data source enables you to retrieve ConductorOne app entitlement proxy bindings using the following search criteria:
+
+* `src_app_entitlement_id` - Source app entitlement ID
+* `src_app_id` - Source app ID
+* `dst_app_entitlement_id` - Destination app entitlement ID
+* `dst_app_id` - Destination app ID
 
 ## Example Usage
 

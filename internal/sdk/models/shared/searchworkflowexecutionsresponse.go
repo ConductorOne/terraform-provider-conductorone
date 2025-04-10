@@ -2,12 +2,25 @@
 
 package shared
 
+// Expanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+type Expanded struct {
+}
+
 // The SearchWorkflowExecutionsResponse message.
 type SearchWorkflowExecutionsResponse struct {
+	// The expanded field.
+	Expanded []Expanded `json:"expanded,omitempty"`
 	// The list field.
 	List []WorkflowExecutionView `json:"list,omitempty"`
 	// The nextPageToken field.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
+}
+
+func (o *SearchWorkflowExecutionsResponse) GetExpanded() []Expanded {
+	if o == nil {
+		return nil
+	}
+	return o.Expanded
 }
 
 func (o *SearchWorkflowExecutionsResponse) GetList() []WorkflowExecutionView {

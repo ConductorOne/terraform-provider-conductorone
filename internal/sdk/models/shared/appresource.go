@@ -8,6 +8,9 @@ import (
 )
 
 // AppResource - The app resource message is a single resource that can have entitlements.
+//
+// This message contains a oneof named metadata. Only a single field of the following list may be set at a time:
+//   - secretTrait
 type AppResource struct {
 	// The app that this resource belongs to.
 	AppID *string `json:"appId,omitempty"`
@@ -28,8 +31,10 @@ type AppResource struct {
 	// The parent resource id, if this resource is a child of another resource.
 	ParentAppResourceID *string `json:"parentAppResourceId,omitempty"`
 	// The parent resource type id, if this resource is a child of another resource.
-	ParentAppResourceTypeID *string    `json:"parentAppResourceTypeId,omitempty"`
-	UpdatedAt               *time.Time `json:"updatedAt,omitempty"`
+	ParentAppResourceTypeID *string `json:"parentAppResourceTypeId,omitempty"`
+	// The SecretTrait message.
+	SecretTrait *SecretTrait `json:"secretTrait,omitempty"`
+	UpdatedAt   *time.Time   `json:"updatedAt,omitempty"`
 }
 
 func (a AppResource) MarshalJSON() ([]byte, error) {
@@ -118,6 +123,13 @@ func (o *AppResource) GetParentAppResourceTypeID() *string {
 		return nil
 	}
 	return o.ParentAppResourceTypeID
+}
+
+func (o *AppResource) GetSecretTrait() *SecretTrait {
+	if o == nil {
+		return nil
+	}
+	return o.SecretTrait
 }
 
 func (o *AppResource) GetUpdatedAt() *time.Time {

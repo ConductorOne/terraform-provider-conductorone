@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app Data Source - conductorone"
+page_title: "conductorone_app Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   App DataSource
@@ -9,7 +9,13 @@ description: |-
 
 App DataSource
 
-The App datasource allows you to retrieve an App instance by `display_name` (case insensitive), or `id` in ConductorOne.
+This data source enables you to retrieve ConductorOne apps using the following search criteria:
+
+* `app_ids` - List of specific app IDs to include
+* `display_name` - Filter by display name (case insensitive)
+* `exclude_app_ids` - List of app IDs to exclude
+* `only_directories` - Filter to only return directory apps
+* `query` - Search query string
 
 ## Example Usage
 
@@ -23,8 +29,6 @@ data "conductorone_app" "my_app" {
     "..."
   ]
   only_directories = true
-  page_size        = 6
-  page_token       = "...my_page_token..."
   query            = "...my_query..."
 }
 ```
@@ -38,8 +42,6 @@ data "conductorone_app" "my_app" {
 - `display_name` (String) Search for apps with a case insensitive match on the display name.
 - `exclude_app_ids` (List of String) A list of app IDs to remove from the results.
 - `only_directories` (Boolean) Only return apps which are directories
-- `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
-- `page_token` (String) The pageToken field.
 - `query` (String) Query the apps with a fuzzy search on display name and description.
 
 ### Read-Only

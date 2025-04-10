@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_linear Resource - conductorone"
+page_title: "conductorone_integration_linear Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Linear Integration Resource

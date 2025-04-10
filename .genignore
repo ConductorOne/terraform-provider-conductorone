@@ -1,5 +1,6 @@
 Makefile
 openapi.yaml
+overlay.yaml
 .gitignore
 .idea
 /internal/provider/provider.go

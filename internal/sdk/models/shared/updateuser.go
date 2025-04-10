@@ -7,20 +7,22 @@ import (
 	"fmt"
 )
 
-// UserStatus - The userStatus field.
-type UserStatus string
+// UserStatusEnum - The userStatusEnum field.
+// This field is part of the `user_status` oneof.
+// See the documentation for `c1.api.workflows.v1beta.UpdateUser` for more details.
+type UserStatusEnum string
 
 const (
-	UserStatusUnknown  UserStatus = "UNKNOWN"
-	UserStatusEnabled  UserStatus = "ENABLED"
-	UserStatusDisabled UserStatus = "DISABLED"
-	UserStatusDeleted  UserStatus = "DELETED"
+	UserStatusEnumUnknown  UserStatusEnum = "UNKNOWN"
+	UserStatusEnumEnabled  UserStatusEnum = "ENABLED"
+	UserStatusEnumDisabled UserStatusEnum = "DISABLED"
+	UserStatusEnumDeleted  UserStatusEnum = "DELETED"
 )
 
-func (e UserStatus) ToPointer() *UserStatus {
+func (e UserStatusEnum) ToPointer() *UserStatusEnum {
 	return &e
 }
-func (e *UserStatus) UnmarshalJSON(data []byte) error {
+func (e *UserStatusEnum) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -33,23 +35,37 @@ func (e *UserStatus) UnmarshalJSON(data []byte) error {
 	case "DISABLED":
 		fallthrough
 	case "DELETED":
-		*e = UserStatus(v)
+		*e = UserStatusEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for UserStatus: %v", v)
+		return fmt.Errorf("invalid value for UserStatusEnum: %v", v)
 	}
 }
 
 // The UpdateUser message.
+//
+// This message contains a oneof named user. Only a single field of the following list may be set at a time:
+//   - userIdCel
+//   - userRef
+//
+// This message contains a oneof named user_status. Only a single field of the following list may be set at a time:
+//   - userStatusEnum
+//   - userStatusCel
 type UpdateUser struct {
 	// The userIdCel field.
+	// This field is part of the `user` oneof.
+	// See the documentation for `c1.api.workflows.v1beta.UpdateUser` for more details.
 	UserIDCel *string `json:"userIdCel,omitempty"`
 	// A reference to a user.
 	UserRef *UserRef `json:"userRef,omitempty"`
-	// The userStatus field.
-	UserStatus *UserStatus `json:"userStatus,omitempty"`
 	// The userStatusCel field.
+	// This field is part of the `user_status` oneof.
+	// See the documentation for `c1.api.workflows.v1beta.UpdateUser` for more details.
 	UserStatusCel *string `json:"userStatusCel,omitempty"`
+	// The userStatusEnum field.
+	// This field is part of the `user_status` oneof.
+	// See the documentation for `c1.api.workflows.v1beta.UpdateUser` for more details.
+	UserStatusEnum *UserStatusEnum `json:"userStatusEnum,omitempty"`
 }
 
 func (o *UpdateUser) GetUserIDCel() *string {
@@ -66,16 +82,16 @@ func (o *UpdateUser) GetUserRef() *UserRef {
 	return o.UserRef
 }
 
-func (o *UpdateUser) GetUserStatus() *UserStatus {
-	if o == nil {
-		return nil
-	}
-	return o.UserStatus
-}
-
 func (o *UpdateUser) GetUserStatusCel() *string {
 	if o == nil {
 		return nil
 	}
 	return o.UserStatusCel
+}
+
+func (o *UpdateUser) GetUserStatusEnum() *UserStatusEnum {
+	if o == nil {
+		return nil
+	}
+	return o.UserStatusEnum
 }

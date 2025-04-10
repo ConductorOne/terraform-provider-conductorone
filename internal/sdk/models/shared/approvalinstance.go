@@ -64,6 +64,7 @@ type ApprovalInstance struct {
 	//   - expression
 	//   - webhook
 	//   - resourceOwners
+	//   - agent
 	//
 	Approval *Approval `json:"approval,omitempty"`
 	// The approved action indicates that the approvalinstance had an outcome of approved.

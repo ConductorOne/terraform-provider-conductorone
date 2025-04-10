@@ -7,19 +7,19 @@ import (
 	"fmt"
 )
 
-// IdentityMatching - Define the app user identity matching strategy for this app.
-type IdentityMatching string
+// CreateAppRequestIdentityMatching - Define the app user identity matching strategy for this app.
+type CreateAppRequestIdentityMatching string
 
 const (
-	IdentityMatchingAppUserIdentityMatchingUnspecified IdentityMatching = "APP_USER_IDENTITY_MATCHING_UNSPECIFIED"
-	IdentityMatchingAppUserIdentityMatchingStrict      IdentityMatching = "APP_USER_IDENTITY_MATCHING_STRICT"
-	IdentityMatchingAppUserIdentityMatchingDisplayName IdentityMatching = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
+	CreateAppRequestIdentityMatchingAppUserIdentityMatchingUnspecified CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_UNSPECIFIED"
+	CreateAppRequestIdentityMatchingAppUserIdentityMatchingStrict      CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_STRICT"
+	CreateAppRequestIdentityMatchingAppUserIdentityMatchingDisplayName CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
 )
 
-func (e IdentityMatching) ToPointer() *IdentityMatching {
+func (e CreateAppRequestIdentityMatching) ToPointer() *CreateAppRequestIdentityMatching {
 	return &e
 }
-func (e *IdentityMatching) UnmarshalJSON(data []byte) error {
+func (e *CreateAppRequestIdentityMatching) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -30,10 +30,10 @@ func (e *IdentityMatching) UnmarshalJSON(data []byte) error {
 	case "APP_USER_IDENTITY_MATCHING_STRICT":
 		fallthrough
 	case "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME":
-		*e = IdentityMatching(v)
+		*e = CreateAppRequestIdentityMatching(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for IdentityMatching: %v", v)
+		return fmt.Errorf("invalid value for CreateAppRequestIdentityMatching: %v", v)
 	}
 }
 
@@ -48,7 +48,7 @@ type CreateAppRequest struct {
 	// Creates the app with this grant policy.
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// Define the app user identity matching strategy for this app.
-	IdentityMatching *IdentityMatching `json:"identityMatching,omitempty"`
+	IdentityMatching *CreateAppRequestIdentityMatching `json:"identityMatching,omitempty"`
 	// Creates the app with this monthly cost per seat.
 	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
 	// Creates the app with this array of owners.
@@ -87,7 +87,7 @@ func (o *CreateAppRequest) GetGrantPolicyID() *string {
 	return o.GrantPolicyID
 }
 
-func (o *CreateAppRequest) GetIdentityMatching() *IdentityMatching {
+func (o *CreateAppRequest) GetIdentityMatching() *CreateAppRequestIdentityMatching {
 	if o == nil {
 		return nil
 	}

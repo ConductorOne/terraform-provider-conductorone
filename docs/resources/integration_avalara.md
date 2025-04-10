@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_avalara Resource - conductorone"
+page_title: "conductorone_integration_avalara Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Avalara Integration Resource

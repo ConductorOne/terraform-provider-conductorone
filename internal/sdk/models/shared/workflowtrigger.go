@@ -7,11 +7,50 @@ package shared
 // This message contains a oneof named kind. Only a single field of the following list may be set at a time:
 //   - manual
 //   - userProfileChange
+//   - appUserCreated
+//   - appUserUpdated
 type WorkflowTrigger struct {
+	// The AppUserCreatedTrigger message.
+	//
+	// This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
+	//   - appId
+	//   - appIdCel
+	//
+	AppUserCreatedTrigger *AppUserCreatedTrigger `json:"appUserCreated,omitempty"`
+	// The AppUserUpdatedTrigger message.
+	//
+	// This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
+	//   - appId
+	//   - appIdCel
+	//
+	AppUserUpdatedTrigger *AppUserUpdatedTrigger `json:"appUserUpdated,omitempty"`
+	// The condition field.
+	Condition *string `json:"condition,omitempty"`
 	// The ManualWorkflowTrigger message.
 	ManualWorkflowTrigger *ManualWorkflowTrigger `json:"manual,omitempty"`
 	// The UserProfileChangeTrigger message.
 	UserProfileChangeTrigger *UserProfileChangeTrigger `json:"userProfileChange,omitempty"`
+}
+
+func (o *WorkflowTrigger) GetAppUserCreatedTrigger() *AppUserCreatedTrigger {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserCreatedTrigger
+}
+
+func (o *WorkflowTrigger) GetAppUserUpdatedTrigger() *AppUserUpdatedTrigger {
+	if o == nil {
+		return nil
+	}
+	return o.AppUserUpdatedTrigger
+}
+
+func (o *WorkflowTrigger) GetCondition() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Condition
 }
 
 func (o *WorkflowTrigger) GetManualWorkflowTrigger() *ManualWorkflowTrigger {

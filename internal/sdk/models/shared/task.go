@@ -24,8 +24,8 @@ const (
 	ActionsTaskActionTypeProvisionComplete                        Actions = "TASK_ACTION_TYPE_PROVISION_COMPLETE"
 	ActionsTaskActionTypeProvisionCancelled                       Actions = "TASK_ACTION_TYPE_PROVISION_CANCELLED"
 	ActionsTaskActionTypeProvisionErrored                         Actions = "TASK_ACTION_TYPE_PROVISION_ERRORED"
-	ActionsTaskActionTypeProvisionAppUserTargetCreated            Actions = "TASK_ACTION_TYPE_PROVISION_APP_USER_TARGET_CREATED"
 	ActionsTaskActionTypeRollbackSkipped                          Actions = "TASK_ACTION_TYPE_ROLLBACK_SKIPPED"
+	ActionsTaskActionTypeProvisionAppUserTargetCreated            Actions = "TASK_ACTION_TYPE_PROVISION_APP_USER_TARGET_CREATED"
 	ActionsTaskActionTypeHardReset                                Actions = "TASK_ACTION_TYPE_HARD_RESET"
 	ActionsTaskActionTypeEscalateToEmergencyAccess                Actions = "TASK_ACTION_TYPE_ESCALATE_TO_EMERGENCY_ACCESS"
 	ActionsTaskActionTypeChangePolicy                             Actions = "TASK_ACTION_TYPE_CHANGE_POLICY"
@@ -34,6 +34,7 @@ const (
 	ActionsTaskActionTypeSetAnalysisID                            Actions = "TASK_ACTION_TYPE_SET_ANALYSIS_ID"
 	ActionsTaskActionTypeRecalculateApproversList                 Actions = "TASK_ACTION_TYPE_RECALCULATE_APPROVERS_LIST"
 	ActionsTaskActionTypeProcessNow                               Actions = "TASK_ACTION_TYPE_PROCESS_NOW"
+	ActionsTaskActionTypeApproveWithStepUp                        Actions = "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP"
 )
 
 func (e Actions) ToPointer() *Actions {
@@ -69,9 +70,9 @@ func (e *Actions) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "TASK_ACTION_TYPE_PROVISION_ERRORED":
 		fallthrough
-	case "TASK_ACTION_TYPE_PROVISION_APP_USER_TARGET_CREATED":
-		fallthrough
 	case "TASK_ACTION_TYPE_ROLLBACK_SKIPPED":
+		fallthrough
+	case "TASK_ACTION_TYPE_PROVISION_APP_USER_TARGET_CREATED":
 		fallthrough
 	case "TASK_ACTION_TYPE_HARD_RESET":
 		fallthrough
@@ -88,6 +89,8 @@ func (e *Actions) UnmarshalJSON(data []byte) error {
 	case "TASK_ACTION_TYPE_RECALCULATE_APPROVERS_LIST":
 		fallthrough
 	case "TASK_ACTION_TYPE_PROCESS_NOW":
+		fallthrough
+	case "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP":
 		*e = Actions(v)
 		return nil
 	default:

@@ -4,28 +4,10 @@ package shared
 
 // The PersonalClientSearchServiceSearchRequest message.
 type PersonalClientSearchServiceSearchRequest struct {
-	// The pageSize field.
-	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
-	PageToken *string `json:"pageToken,omitempty"`
 	// The query field.
 	Query *string `json:"query,omitempty"`
 	// The users field.
 	Users []UserRef `json:"users,omitempty"`
-}
-
-func (o *PersonalClientSearchServiceSearchRequest) GetPageSize() *int {
-	if o == nil {
-		return nil
-	}
-	return o.PageSize
-}
-
-func (o *PersonalClientSearchServiceSearchRequest) GetPageToken() *string {
-	if o == nil {
-		return nil
-	}
-	return o.PageToken
 }
 
 func (o *PersonalClientSearchServiceSearchRequest) GetQuery() *string {

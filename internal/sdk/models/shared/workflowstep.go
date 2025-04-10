@@ -14,7 +14,15 @@ package shared
 //   - runWorkflow
 //   - updateUser
 //   - taskAction
+//   - webhook
+//   - connectorAction
 type WorkflowStep struct {
+	// The ConnectorAction message.
+	//
+	// This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:
+	//   - connectorRef
+	//
+	ConnectorAction *ConnectorAction `json:"connectorAction,omitempty"`
 	// The CreateAccessReview message.
 	CreateAccessReview *CreateAccessReview `json:"createAccessReview,omitempty"`
 	// The CreateRevokeTasks message.
@@ -44,9 +52,33 @@ type WorkflowStep struct {
 	// The UnenrollFromAllAccessProfiles message.
 	UnenrollFromAllAccessProfiles *UnenrollFromAllAccessProfiles `json:"unenrollFromAllAccessProfiles,omitempty"`
 	// The UpdateUser message.
+	//
+	// This message contains a oneof named user. Only a single field of the following list may be set at a time:
+	//   - userIdCel
+	//   - userRef
+	//
+	//
+	// This message contains a oneof named user_status. Only a single field of the following list may be set at a time:
+	//   - userStatusEnum
+	//   - userStatusCel
+	//
 	UpdateUser *UpdateUser `json:"updateUser,omitempty"`
 	// The WaitForDuration message.
 	WaitForDuration *WaitForDuration `json:"waitForDuration,omitempty"`
+	// The Webhook message.
+	//
+	// This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
+	//   - webhookId
+	//   - webhookIdCel
+	//
+	Webhook *Webhook `json:"webhook,omitempty"`
+}
+
+func (o *WorkflowStep) GetConnectorAction() *ConnectorAction {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorAction
 }
 
 func (o *WorkflowStep) GetCreateAccessReview() *CreateAccessReview {
@@ -124,4 +156,11 @@ func (o *WorkflowStep) GetWaitForDuration() *WaitForDuration {
 		return nil
 	}
 	return o.WaitForDuration
+}
+
+func (o *WorkflowStep) GetWebhook() *Webhook {
+	if o == nil {
+		return nil
+	}
+	return o.Webhook
 }

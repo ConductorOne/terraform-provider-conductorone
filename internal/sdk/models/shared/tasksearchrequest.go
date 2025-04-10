@@ -162,6 +162,7 @@ const (
 	StepApprovalTypesStepApprovalTypeExpression        StepApprovalTypes = "STEP_APPROVAL_TYPE_EXPRESSION"
 	StepApprovalTypesStepApprovalTypeWebhook           StepApprovalTypes = "STEP_APPROVAL_TYPE_WEBHOOK"
 	StepApprovalTypesStepApprovalTypeResourceOwners    StepApprovalTypes = "STEP_APPROVAL_TYPE_RESOURCE_OWNERS"
+	StepApprovalTypesStepApprovalTypeAgent             StepApprovalTypes = "STEP_APPROVAL_TYPE_AGENT"
 )
 
 func (e StepApprovalTypes) ToPointer() *StepApprovalTypes {
@@ -192,6 +193,8 @@ func (e *StepApprovalTypes) UnmarshalJSON(data []byte) error {
 	case "STEP_APPROVAL_TYPE_WEBHOOK":
 		fallthrough
 	case "STEP_APPROVAL_TYPE_RESOURCE_OWNERS":
+		fallthrough
+	case "STEP_APPROVAL_TYPE_AGENT":
 		*e = StepApprovalTypes(v)
 		return nil
 	default:
@@ -269,10 +272,6 @@ type TaskSearchRequest struct {
 	OlderThanDuration *string  `json:"olderThanDuration,omitempty"`
 	// Search tasks that were created by any of the users in this array.
 	OpenerIds []string `json:"openerIds,omitempty"`
-	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
-	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
-	PageToken *string `json:"pageToken,omitempty"`
 	// Search tasks that were acted on by any of these users.
 	PreviouslyActedOnIds []string `json:"previouslyActedOnIds,omitempty"`
 	// Fuzzy search tasks by display name or description. Also can search by numeric ID.
@@ -449,20 +448,6 @@ func (o *TaskSearchRequest) GetOpenerIds() []string {
 		return nil
 	}
 	return o.OpenerIds
-}
-
-func (o *TaskSearchRequest) GetPageSize() *int {
-	if o == nil {
-		return nil
-	}
-	return o.PageSize
-}
-
-func (o *TaskSearchRequest) GetPageToken() *string {
-	if o == nil {
-		return nil
-	}
-	return o.PageToken
 }
 
 func (o *TaskSearchRequest) GetPreviouslyActedOnIds() []string {

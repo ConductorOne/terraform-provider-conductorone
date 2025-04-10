@@ -8,8 +8,10 @@ import (
 )
 
 type C1APIAppV1AppUserServiceListAppUserCredentialsRequest struct {
-	AppID     string `pathParam:"style=simple,explode=false,name=app_id"`
-	AppUserID string `pathParam:"style=simple,explode=false,name=app_user_id"`
+	AppID     string  `pathParam:"style=simple,explode=false,name=app_id"`
+	AppUserID string  `pathParam:"style=simple,explode=false,name=app_user_id"`
+	PageSize  *int    `queryParam:"style=form,explode=true,name=page_size"`
+	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
 func (o *C1APIAppV1AppUserServiceListAppUserCredentialsRequest) GetAppID() string {
@@ -24,6 +26,20 @@ func (o *C1APIAppV1AppUserServiceListAppUserCredentialsRequest) GetAppUserID() s
 		return ""
 	}
 	return o.AppUserID
+}
+
+func (o *C1APIAppV1AppUserServiceListAppUserCredentialsRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *C1APIAppV1AppUserServiceListAppUserCredentialsRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 type C1APIAppV1AppUserServiceListAppUserCredentialsResponse struct {

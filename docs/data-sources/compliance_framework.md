@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_compliance_framework Data Source - conductorone"
+page_title: "conductorone_compliance_framework Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   ComplianceFramework DataSource
@@ -9,8 +9,9 @@ description: |-
 
 ComplianceFramework DataSource
 
-The Compliance Framework datasource allows you to retrieve a Compliance Framework Attribute by `value` (case insensitive), or `id` in ConductorOne.
-The `value` of a Compliance Framework Attribute is the name of the Attribute in ConductorOne.
+This data source enables you to retrieve ConductorOne compliance frameworks using the following search criteria:
+
+* `id` - The ID of the compliance framework attribute
 
 ## Example Usage
 

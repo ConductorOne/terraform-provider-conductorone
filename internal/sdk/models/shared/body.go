@@ -2,8 +2,8 @@
 
 package shared
 
-// Payload - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type Payload struct {
+// BodyPayload - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+type BodyPayload struct {
 }
 
 // The Body message.
@@ -26,7 +26,7 @@ type Body struct {
 	//  - "c1.webhooks.v1.PayloadProvisionStep"
 	Event *string `json:"event,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-	Payload *Payload `json:"payload,omitempty"`
+	Payload *BodyPayload `json:"payload,omitempty"`
 	// version contains the constant value "v1". Future versions of the Webhook body will use a different string.
 	//
 	//  This value will match the "Webhook-Version" header.
@@ -51,7 +51,7 @@ func (o *Body) GetEvent() *string {
 	return o.Event
 }
 
-func (o *Body) GetPayload() *Payload {
+func (o *Body) GetPayload() *BodyPayload {
 	if o == nil {
 		return nil
 	}

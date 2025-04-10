@@ -66,16 +66,7 @@ jobs:
         os:
           - ubuntu-latest
         terraform:
-          - '0.12.*'
-          - '0.13.*'
-          - '0.14.*'
-          - '0.15.*'
-          - '1.0.*'
-          - '1.1.*'
-          - '1.2.*'
-          - '1.3.*'
-          - '1.4.*'
-          - '1.5.*'
+          - 'latest'
 
     steps:
 
@@ -92,3 +83,7 @@ jobs:
 
       - name: Run acceptance test
         run: make testacc
+        env:
+          CONDUCTORONE_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          CONDUCTORONE_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CONDUCTORONE_SERVER_URL: ${{ secrets.SERVER_URL }}

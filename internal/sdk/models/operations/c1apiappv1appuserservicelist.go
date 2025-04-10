@@ -8,7 +8,9 @@ import (
 )
 
 type C1APIAppV1AppUserServiceListRequest struct {
-	AppID string `pathParam:"style=simple,explode=false,name=app_id"`
+	AppID     string  `pathParam:"style=simple,explode=false,name=app_id"`
+	PageSize  *int    `queryParam:"style=form,explode=true,name=page_size"`
+	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
 func (o *C1APIAppV1AppUserServiceListRequest) GetAppID() string {
@@ -16,6 +18,20 @@ func (o *C1APIAppV1AppUserServiceListRequest) GetAppID() string {
 		return ""
 	}
 	return o.AppID
+}
+
+func (o *C1APIAppV1AppUserServiceListRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *C1APIAppV1AppUserServiceListRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 type C1APIAppV1AppUserServiceListResponse struct {

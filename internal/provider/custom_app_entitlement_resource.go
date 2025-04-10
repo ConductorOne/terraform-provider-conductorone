@@ -49,6 +49,7 @@ type CustomAppEntitlementResourceModel struct {
 	CreatedAt                      types.String                                      `tfsdk:"created_at"`
 	DefaultValuesApplied           types.Bool                                        `tfsdk:"default_values_applied"`
 	DeletedAt                      types.String                                      `tfsdk:"-"`
+	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy                      `tfsdk:"deprovisioner_policy" tfPlanOnly:"true"`
 	Description                    types.String                                      `tfsdk:"description"`
 	DisplayName                    types.String                                      `tfsdk:"display_name"`
 	DurationGrant                  types.String                                      `tfsdk:"duration_grant" tfPlanOnly:"true"`
@@ -126,6 +127,178 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"default_values_applied": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
+			},
+			"deprovisioner_policy": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"connector_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"account_provision": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"config": schema.SingleNestedAttribute{
+										Computed: true,
+									},
+									"connector_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The connectorId field.`,
+									},
+									"schema_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The schemaId field.`,
+									},
+								},
+								Description: `The AccountProvision message.`,
+							},
+							"default_behavior": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Computed: true,
+										MarkdownDescription: `this checks if the entitlement is enabled by provisioning in a specific connector` + "\n" +
+											` this can happen automatically and doesn't need any extra info`,
+									},
+								},
+								Description: `The DefaultBehavior message.`,
+							},
+						},
+						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
+							`` + "\n" +
+							`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
+							`  - defaultBehavior` + "\n" +
+							`  - account`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"delegated_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The AppID of the entitlement to delegate provisioning to.`,
+							},
+							"entitlement_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The ID of the entitlement we are delegating provisioning to.`,
+							},
+						},
+						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"external_ticket_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The appId field.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The connectorId field.`,
+							},
+							"external_ticket_provisioner_config_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The externalTicketProvisionerConfigId field.`,
+							},
+							"instructions": schema.StringAttribute{
+								Computed:    true,
+								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+							},
+						},
+						Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"manual_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"instructions": schema.StringAttribute{
+								Computed:    true,
+								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+							},
+							"user_ids": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+								Description: `An array of users that are required to provision during this step.`,
+							},
+						},
+						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"multi_step": schema.StringAttribute{
+						Computed:    true,
+						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+						Validators: []validator.String{
+							stringvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+							validators.IsValidJSON(),
+						},
+					},
+					"webhook_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"webhook_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The ID of the webhook to call for provisioning.`,
+							},
+						},
+						Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+							}...),
+						},
+					},
+				},
+				MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - connector` + "\n" +
+					`  - manual` + "\n" +
+					`  - delegated` + "\n" +
+					`  - webhook` + "\n" +
+					`  - multiStep` + "\n" +
+					`  - externalTicket`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -503,8 +676,17 @@ func (r *CustomAppEntitlementResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlement(res.CreateAppEntitlementResponse.AppEntitlementView.AppEntitlement)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.CreateAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -562,7 +744,11 @@ func (r *CustomAppEntitlementResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlement(res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -630,8 +816,17 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlement(res.UpdateAppEntitlementResponse.AppEntitlementView.AppEntitlement)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.UpdateAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	var appId1 string
 	appId1 = data.AppID.ValueString()
 
@@ -662,8 +857,17 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlement(res1.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res1.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -725,7 +929,7 @@ func (r *CustomAppEntitlementResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "app_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_id": "",  "id": ""}': `+err.Error())
 		return
 	}
 

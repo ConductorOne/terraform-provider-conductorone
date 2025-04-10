@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_ukg Resource - conductorone"
+page_title: "conductorone_integration_ukg Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Ukg Integration Resource

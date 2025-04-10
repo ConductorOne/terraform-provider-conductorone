@@ -5,12 +5,12 @@ package shared
 // The WebhooksSearchResponse message.
 type WebhooksSearchResponse struct {
 	// The list field.
-	List []Webhook `json:"list,omitempty"`
+	List []Webhook1 `json:"list,omitempty"`
 	// The nextPageToken field.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *WebhooksSearchResponse) GetList() []Webhook {
+func (o *WebhooksSearchResponse) GetList() []Webhook1 {
 	if o == nil {
 		return nil
 	}

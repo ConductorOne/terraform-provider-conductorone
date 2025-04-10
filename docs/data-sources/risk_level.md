@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_risk_level Data Source - conductorone"
+page_title: "conductorone_risk_level Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   RiskLevel DataSource
@@ -9,8 +9,9 @@ description: |-
 
 RiskLevel DataSource
 
-The Risk Level datasource allows you to retrieve a Risk Level Attribute by `value` (case insensitive), or `id` in ConductorOne.
-The `value` of a Risk Level Attribute is the name of the Attribute in ConductorOne.
+This data source enables you to retrieve ConductorOne risk levels using the following search criteria:
+
+* `id` - The ID of the risk level attribute
 
 ## Example Usage
 

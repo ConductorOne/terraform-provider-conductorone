@@ -3,9 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
 
 func (r *AppDataSourceModel) ToSharedSearchAppsRequest() *shared.SearchAppsRequest {
@@ -29,18 +31,6 @@ func (r *AppDataSourceModel) ToSharedSearchAppsRequest() *shared.SearchAppsReque
 	} else {
 		onlyDirectories = nil
 	}
-	pageSize := new(int)
-	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
-		*pageSize = int(r.PageSize.ValueInt32())
-	} else {
-		pageSize = nil
-	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
-	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -52,27 +42,19 @@ func (r *AppDataSourceModel) ToSharedSearchAppsRequest() *shared.SearchAppsReque
 		DisplayName:     displayName,
 		ExcludeAppIds:   excludeAppIds,
 		OnlyDirectories: onlyDirectories,
-		PageSize:        pageSize,
-		PageToken:       pageToken,
 		Query:           query,
 	}
 	return &out
 }
 
-func (r *AppDataSourceModel) RefreshFromSharedApp(resp *shared.App) {
+func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *shared.App) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
 	r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
 	r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
-	if resp.CreatedAt != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-	} else {
-		r.CreatedAt = types.StringNull()
-	}
-	if resp.DeletedAt != nil {
-		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-	} else {
-		r.DeletedAt = types.StringNull()
-	}
+	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 	r.Description = types.StringPointerValue(resp.Description)
 	r.DisplayName = types.StringPointerValue(resp.DisplayName)
 	r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
@@ -84,18 +66,12 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(resp *shared.App) {
 	}
 	r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
 	r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
-	if resp.MonthlyCostUsd != nil {
-		r.MonthlyCostUsd = types.Int32Value(int32(*resp.MonthlyCostUsd))
-	} else {
-		r.MonthlyCostUsd = types.Int32Null()
-	}
+	r.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.MonthlyCostUsd))
 	r.ParentAppID = types.StringPointerValue(resp.ParentAppID)
 	r.RevokePolicyID = types.StringPointerValue(resp.RevokePolicyID)
 	r.StrictAccessEntitlementProvisioning = types.BoolPointerValue(resp.StrictAccessEntitlementProvisioning)
-	if resp.UpdatedAt != nil {
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-	} else {
-		r.UpdatedAt = types.StringNull()
-	}
+	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	r.UserCount = types.StringPointerValue(resp.UserCount)
+
+	return diags
 }

@@ -3,24 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
 
-func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalog(resp *shared.RequestCatalog) {
+func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalog(ctx context.Context, resp *shared.RequestCatalog) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CreatedByUserID = types.StringPointerValue(resp.CreatedByUserID)
-		if resp.DeletedAt != nil {
-			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
-		} else {
-			r.DeletedAt = types.StringNull()
-		}
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		if resp.EnrollmentBehavior != nil {
@@ -41,11 +37,9 @@ func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalog(resp *sha
 		} else {
 			r.UnenrollmentEntitlementBehavior = types.StringNull()
 		}
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 		r.VisibleToEveryone = types.BoolPointerValue(resp.VisibleToEveryone)
 	}
+
+	return diags
 }

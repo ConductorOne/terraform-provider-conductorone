@@ -191,8 +191,17 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlementProxy(res.CreateAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.CreateAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	var srcAppId1 string
 	srcAppId1 = data.SrcAppID.ValueString()
 
@@ -231,8 +240,17 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlementProxy(res1.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res1.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -298,7 +316,11 @@ func (r *AppEntitlementProxyBindingResource) Read(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAppEntitlementProxy(res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -395,7 +417,7 @@ func (r *AppEntitlementProxyBindingResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "dst_app_entitlement_id": "",  "dst_app_id": "",  "src_app_entitlement_id": "",  "src_app_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "dst_app_entitlement_id": "",  "dst_app_id": "",  "src_app_entitlement_id": "",  "src_app_id": ""}': `+err.Error())
 		return
 	}
 

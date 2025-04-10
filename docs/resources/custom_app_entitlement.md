@@ -1,8 +1,8 @@
 ---
-page_title: "conductorone_custom_app_entitlement Resource - conductorone"
+page_title: "conductorone_custom_app_entitlement Resource - terraform-provider-conductorone"
 subcategory: ""
 ---
-page_title: "conductorone_custom_app_entitlement Resource - conductorone"
+page_title: "conductorone_custom_app_entitlement Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   CustomAppEntitlement Resource
@@ -119,6 +119,15 @@ This message contains a oneof named typ. Only a single field of the following li
 
 - `created_at` (String)
 - `default_values_applied` (Boolean) Flag to indicate if app-level access request defaults have been applied to the entitlement
+- `deprovisioner_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
+
+This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+  - connector
+  - manual
+  - delegated
+  - webhook
+  - multiStep
+  - externalTicket (see [below for nested schema](#nestedatt--deprovisioner_policy))
 - `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
 - `grant_count` (String) The amount of grants open for this entitlement
 - `id` (String) The unique ID for the App Entitlement.
@@ -213,6 +222,92 @@ Optional:
 ### Nested Schema for `provision_policy.webhook_provision`
 
 Optional:
+
+- `webhook_id` (String) The ID of the webhook to call for provisioning.
+
+
+
+<a id="nestedatt--deprovisioner_policy"></a>
+### Nested Schema for `deprovisioner_policy`
+
+Read-Only:
+
+- `connector_provision` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
+
+This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
+  - defaultBehavior
+  - account (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision))
+- `delegated_provision` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--deprovisioner_policy--delegated_provision))
+- `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--deprovisioner_policy--external_ticket_provision))
+- `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--deprovisioner_policy--manual_provision))
+- `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
+- `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--deprovisioner_policy--webhook_provision))
+
+<a id="nestedatt--deprovisioner_policy--connector_provision"></a>
+### Nested Schema for `deprovisioner_policy.connector_provision`
+
+Read-Only:
+
+- `account_provision` (Attributes) The AccountProvision message. (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision--account_provision))
+- `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision--default_behavior))
+
+<a id="nestedatt--deprovisioner_policy--connector_provision--account_provision"></a>
+### Nested Schema for `deprovisioner_policy.connector_provision.account_provision`
+
+Read-Only:
+
+- `config` (Attributes) (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision--account_provision--config))
+- `connector_id` (String) The connectorId field.
+- `schema_id` (String) The schemaId field.
+
+<a id="nestedatt--deprovisioner_policy--connector_provision--account_provision--config"></a>
+### Nested Schema for `deprovisioner_policy.connector_provision.account_provision.config`
+
+
+
+<a id="nestedatt--deprovisioner_policy--connector_provision--default_behavior"></a>
+### Nested Schema for `deprovisioner_policy.connector_provision.default_behavior`
+
+Read-Only:
+
+- `connector_id` (String) this checks if the entitlement is enabled by provisioning in a specific connector
+ this can happen automatically and doesn't need any extra info
+
+
+
+<a id="nestedatt--deprovisioner_policy--delegated_provision"></a>
+### Nested Schema for `deprovisioner_policy.delegated_provision`
+
+Read-Only:
+
+- `app_id` (String) The AppID of the entitlement to delegate provisioning to.
+- `entitlement_id` (String) The ID of the entitlement we are delegating provisioning to.
+
+
+<a id="nestedatt--deprovisioner_policy--external_ticket_provision"></a>
+### Nested Schema for `deprovisioner_policy.external_ticket_provision`
+
+Read-Only:
+
+- `app_id` (String) The appId field.
+- `connector_id` (String) The connectorId field.
+- `external_ticket_provisioner_config_id` (String) The externalTicketProvisionerConfigId field.
+- `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
+
+
+<a id="nestedatt--deprovisioner_policy--manual_provision"></a>
+### Nested Schema for `deprovisioner_policy.manual_provision`
+
+Read-Only:
+
+- `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
+- `user_ids` (List of String) An array of users that are required to provision during this step.
+
+
+<a id="nestedatt--deprovisioner_policy--webhook_provision"></a>
+### Nested Schema for `deprovisioner_policy.webhook_provision`
+
+Read-Only:
 
 - `webhook_id` (String) The ID of the webhook to call for provisioning.
 
