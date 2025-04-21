@@ -17828,7 +17828,7 @@ security:
       oauth: []
 servers:
     - description: The ConductorOne API server for the current tenant.
-      url: https://{tenantDomain}.vipul.d2.ductone.com:2443
+      url: https://{tenantDomain}.conductor.one
       variables:
         tenantDomain:
             default: example

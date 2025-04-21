@@ -20,10 +20,7 @@ This data source enables you to retrieve ConductorOne policies using the followi
 
 ```terraform
 data "conductorone_policy" "my_policy" {
-  display_name = "...my_display_name..."
-  exclude_policy_ids = [
-    "..."
-  ]
+  display_name    = "...my_display_name..."
   include_deleted = false
   policy_types = [
     "POLICY_TYPE_ACCESS_REQUEST"
@@ -43,7 +40,6 @@ data "conductorone_policy" "my_policy" {
 ### Optional
 
 - `display_name` (String) Search for policies with a case insensitive match on the display name.
-- `exclude_policy_ids` (List of String) The policy IDs to exclude from the search.
 - `include_deleted` (Boolean) The includeDeleted field.
 - `policy_types` (List of String) The policy type to search on. This can be POLICY_TYPE_GRANT, POLICY_TYPE_REVOKE, POLICY_TYPE_CERTIFY, POLICY_TYPE_ACCESS_REQUEST, or POLICY_TYPE_PROVISION.
 - `query` (String) Query the policies with a fuzzy search on display name and description.
@@ -143,7 +139,6 @@ Read-Only:
 
 - `agent_user_id` (String) The agent user ID to assign the task to.
 - `instructions` (String) Instructions for the agent.
-- `policy_ids` (List of String) The policyIds field.
 
 
 <a id="nestedatt--policy_steps--steps--approval--app_group_approval"></a>

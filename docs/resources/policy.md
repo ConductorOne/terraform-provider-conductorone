@@ -29,9 +29,6 @@ resource "conductorone_policy" "my_policy" {
             agent_approval = {
               agent_user_id = "...my_agent_user_id..."
               instructions  = "...my_instructions..."
-              policy_ids = [
-                "..."
-              ]
             }
             allow_reassignment = false
             app_group_approval = {
@@ -269,7 +266,6 @@ Optional:
 
 - `agent_user_id` (String) The agent user ID to assign the task to.
 - `instructions` (String) Instructions for the agent.
-- `policy_ids` (List of String) The policyIds field.
 
 
 <a id="nestedatt--policy_steps--steps--approval--app_group_approval"></a>
