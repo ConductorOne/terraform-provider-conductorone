@@ -5,10 +5,24 @@ package provider
 import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+func (r *RiskLevelDataSourceModel) ToOperationsC1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
 
 func (r *RiskLevelDataSourceModel) RefreshFromSharedAttributeValue(ctx context.Context, resp *shared.AttributeValue) diag.Diagnostics {
 	var diags diag.Diagnostics

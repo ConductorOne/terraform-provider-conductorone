@@ -7,7 +7,6 @@ import (
 	"fmt"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -121,7 +120,12 @@ func (r *ComplianceFrameworkResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request := data.ToSharedCreateComplianceFrameworkAttributeValueRequest()
+	request, requestDiags := data.ToSharedCreateComplianceFrameworkAttributeValueRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.Attributes.CreateComplianceFrameworkAttributeValue(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -176,13 +180,13 @@ func (r *ComplianceFrameworkResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Attributes.GetComplianceFrameworkAttributeValue(ctx, request)
+	res, err := r.client.Attributes.GetComplianceFrameworkAttributeValue(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -259,13 +263,13 @@ func (r *ComplianceFrameworkResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Attributes.DeleteComplianceFrameworkAttributeValue(ctx, request)
+	res, err := r.client.Attributes.DeleteComplianceFrameworkAttributeValue(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
@@ -108,19 +107,13 @@ func (r *AppEntitlementOwnerResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementOwnersSetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var entitlementID string
-	entitlementID = data.EntitlementID.ValueString()
-
-	setAppEntitlementOwnersRequest := data.ToSharedSetAppEntitlementOwnersRequest()
-	request := operations.C1APIAppV1AppEntitlementOwnersSetRequest{
-		AppID:                          appID,
-		EntitlementID:                  entitlementID,
-		SetAppEntitlementOwnersRequest: setAppEntitlementOwnersRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlementOwners.Set(ctx, request)
+	res, err := r.client.AppEntitlementOwners.Set(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -7,8 +7,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
@@ -130,12 +128,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Computed:    true,
 														Optional:    true,
 														Description: `Instructions for the agent.`,
-													},
-													"policy_ids": schema.ListAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: types.StringType,
-														Description: `The policyIds field.`,
 													},
 												},
 												Description: `The agent to assign the task to.`,
@@ -938,7 +930,12 @@ func (r *PolicyResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	request := data.ToSharedCreatePolicyRequest()
+	request, requestDiags := data.ToSharedCreatePolicyRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.Policies.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -993,13 +990,13 @@ func (r *PolicyResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIPolicyV1PoliciesGetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIPolicyV1PoliciesGetRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Policies.Get(ctx, request)
+	res, err := r.client.Policies.Get(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1052,19 +1049,13 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIPolicyV1PoliciesUpdateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var updatePolicyRequest *shared.UpdatePolicyRequest
-	policy := data.ToSharedPolicyInput()
-	updatePolicyRequest = &shared.UpdatePolicyRequest{
-		Policy: policy,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	request := operations.C1APIPolicyV1PoliciesUpdateRequest{
-		ID:                  id,
-		UpdatePolicyRequest: updatePolicyRequest,
-	}
-	res, err := r.client.Policies.Update(ctx, request)
+	res, err := r.client.Policies.Update(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1095,13 +1086,13 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var id1 string
-	id1 = data.ID.ValueString()
+	request1, request1Diags := data.ToOperationsC1APIPolicyV1PoliciesGetRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	request1 := operations.C1APIPolicyV1PoliciesGetRequest{
-		ID: id1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.Policies.Get(ctx, request1)
+	res1, err := r.client.Policies.Get(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -1155,13 +1146,13 @@ func (r *PolicyResource) Delete(ctx context.Context, req resource.DeleteRequest,
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIPolicyV1PoliciesDeleteRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIPolicyV1PoliciesDeleteRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Policies.Delete(ctx, request)
+	res, err := r.client.Policies.Delete(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

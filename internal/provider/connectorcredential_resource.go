@@ -9,7 +9,6 @@ import (
 	"fmt"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -156,17 +155,13 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1ConnectorServiceRotateCredentialRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var connectorID string
-	connectorID = data.ConnectorID.ValueString()
-
-	request := operations.C1APIAppV1ConnectorServiceRotateCredentialRequest{
-		AppID:       appID,
-		ConnectorID: connectorID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Connector.RotateCredential(ctx, request)
+	res, err := r.client.Connector.RotateCredential(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -197,21 +192,13 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var appId1 string
-	appId1 = data.AppID.ValueString()
+	request1, request1Diags := data.ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	var connectorId1 string
-	connectorId1 = data.ConnectorID.ValueString()
-
-	var id string
-	id = data.ID.ValueString()
-
-	request1 := operations.C1APIAppV1ConnectorServiceGetCredentialsRequest{
-		AppID:       appId1,
-		ConnectorID: connectorId1,
-		ID:          id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.Connector.GetCredentials(ctx, request1)
+	res1, err := r.client.Connector.GetCredentials(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -265,21 +252,13 @@ func (r *ConnectorCredentialResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var connectorID string
-	connectorID = data.ConnectorID.ValueString()
-
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.C1APIAppV1ConnectorServiceGetCredentialsRequest{
-		AppID:       appID,
-		ConnectorID: connectorID,
-		ID:          id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Connector.GetCredentials(ctx, request)
+	res, err := r.client.Connector.GetCredentials(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -356,21 +335,13 @@ func (r *ConnectorCredentialResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1ConnectorServiceRevokeCredentialRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var connectorID string
-	connectorID = data.ConnectorID.ValueString()
-
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest{
-		AppID:       appID,
-		ConnectorID: connectorID,
-		ID:          id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Connector.RevokeCredential(ctx, request)
+	res, err := r.client.Connector.RevokeCredential(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

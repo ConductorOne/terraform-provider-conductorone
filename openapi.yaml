@@ -4575,13 +4575,6 @@ components:
                     description: Instructions for the agent.
                     readOnly: false
                     type: string
-                policyIds:
-                    description: The policyIds field.
-                    items:
-                        type: string
-                    nullable: true
-                    readOnly: false
-                    type: array
             title: Agent Approval
             type: object
             x-speakeasy-name-override: AgentApproval
@@ -5640,13 +5633,6 @@ components:
                     description: Search for policies with a case insensitive match on the display name.
                     readOnly: false
                     type: string
-                excludePolicyIds:
-                    description: The policy IDs to exclude from the search.
-                    items:
-                        type: string
-                    nullable: true
-                    readOnly: false
-                    type: array
                 includeDeleted:
                     description: The includeDeleted field.
                     readOnly: false
@@ -17842,7 +17828,7 @@ security:
       oauth: []
 servers:
     - description: The ConductorOne API server for the current tenant.
-      url: https://{tenantDomain}.conductor.one
+      url: https://{tenantDomain}.vipul.d2.ductone.com:2443
       variables:
         tenantDomain:
             default: example

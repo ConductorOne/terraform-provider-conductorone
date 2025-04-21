@@ -10,7 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest() *shared.WebhooksSearchRequest {
+func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest(ctx context.Context) (*shared.WebhooksSearchRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -33,7 +35,8 @@ func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest() *shared.Webhook
 		Query: query,
 		Refs:  refs,
 	}
-	return &out
+
+	return &out, diags
 }
 
 func (r *WebhookDataSourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {
