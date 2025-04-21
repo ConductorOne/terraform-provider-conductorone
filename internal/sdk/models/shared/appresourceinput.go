@@ -21,6 +21,8 @@ type AppResourceInput struct {
 	GrantCount *string `json:"grantCount,omitempty"`
 	// The id of the resource.
 	ID *string `json:"id,omitempty"`
+	// The matchBatonId field.
+	MatchBatonID *string `json:"matchBatonId,omitempty"`
 	// The parent resource id, if this resource is a child of another resource.
 	ParentAppResourceID *string `json:"parentAppResourceId,omitempty"`
 	// The parent resource type id, if this resource is a child of another resource.
@@ -76,6 +78,13 @@ func (o *AppResourceInput) GetID() *string {
 		return nil
 	}
 	return o.ID
+}
+
+func (o *AppResourceInput) GetMatchBatonID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.MatchBatonID
 }
 
 func (o *AppResourceInput) GetParentAppResourceID() *string {

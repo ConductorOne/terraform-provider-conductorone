@@ -117,7 +117,6 @@ ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne r
 <!-- $toc-max-depth=2 -->
 * [ConductorOne Terraform Provider](#conductorone-terraform-provider)
   * [Usage](#usage)
-  * [SDK Installation](#sdk-installation)
   * [Testing the provider locally](#testing-the-provider-locally)
   * [Available Resources and Data Sources](#available-resources-and-data-sources)
   * [Versions with breaking changes](#versions-with-breaking-changes)
@@ -137,7 +136,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.1.6"
+      version = "1.1.7"
     }
   }
 }

@@ -39,100 +39,6 @@ func (e *IdentityMatching) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// AppInput - The App object provides all of the details for an app, as well as some configuration.
-type AppInput struct {
-	// The ID of the Certify Policy associated with this App.
-	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
-	// The app's description.
-	Description *string `json:"description,omitempty"`
-	// The app's display name.
-	DisplayName *string `json:"displayName,omitempty"`
-	// The ID of the Grant Policy associated with this App.
-	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
-	// The URL of an icon to display for the app.
-	IconURL *string `json:"iconUrl,omitempty"`
-	// The identityMatching field.
-	IdentityMatching *IdentityMatching `json:"identityMatching,omitempty"`
-	// The isManuallyManaged field.
-	IsManuallyManaged *bool `json:"isManuallyManaged,omitempty"`
-	// The cost of an app per-seat, so that total cost can be calculated by the grant count.
-	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
-	// The ID of the Revoke Policy associated with this App.
-	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
-	// The strictAccessEntitlementProvisioning field.
-	StrictAccessEntitlementProvisioning *bool `json:"strictAccessEntitlementProvisioning,omitempty"`
-}
-
-func (o *AppInput) GetCertifyPolicyID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.CertifyPolicyID
-}
-
-func (o *AppInput) GetDescription() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Description
-}
-
-func (o *AppInput) GetDisplayName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DisplayName
-}
-
-func (o *AppInput) GetGrantPolicyID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.GrantPolicyID
-}
-
-func (o *AppInput) GetIconURL() *string {
-	if o == nil {
-		return nil
-	}
-	return o.IconURL
-}
-
-func (o *AppInput) GetIdentityMatching() *IdentityMatching {
-	if o == nil {
-		return nil
-	}
-	return o.IdentityMatching
-}
-
-func (o *AppInput) GetIsManuallyManaged() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.IsManuallyManaged
-}
-
-func (o *AppInput) GetMonthlyCostUsd() *int {
-	if o == nil {
-		return nil
-	}
-	return o.MonthlyCostUsd
-}
-
-func (o *AppInput) GetRevokePolicyID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RevokePolicyID
-}
-
-func (o *AppInput) GetStrictAccessEntitlementProvisioning() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.StrictAccessEntitlementProvisioning
-}
-
 // The App object provides all of the details for an app, as well as some configuration.
 type App struct {
 	// The ID of the Account named by AccountName.
@@ -340,4 +246,98 @@ func (o *App) GetUserCount() *string {
 		return nil
 	}
 	return o.UserCount
+}
+
+// AppInput - The App object provides all of the details for an app, as well as some configuration.
+type AppInput struct {
+	// The ID of the Certify Policy associated with this App.
+	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
+	// The app's description.
+	Description *string `json:"description,omitempty"`
+	// The app's display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// The ID of the Grant Policy associated with this App.
+	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
+	// The URL of an icon to display for the app.
+	IconURL *string `json:"iconUrl,omitempty"`
+	// The identityMatching field.
+	IdentityMatching *IdentityMatching `json:"identityMatching,omitempty"`
+	// The isManuallyManaged field.
+	IsManuallyManaged *bool `json:"isManuallyManaged,omitempty"`
+	// The cost of an app per-seat, so that total cost can be calculated by the grant count.
+	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
+	// The ID of the Revoke Policy associated with this App.
+	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
+	// The strictAccessEntitlementProvisioning field.
+	StrictAccessEntitlementProvisioning *bool `json:"strictAccessEntitlementProvisioning,omitempty"`
+}
+
+func (o *AppInput) GetCertifyPolicyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CertifyPolicyID
+}
+
+func (o *AppInput) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *AppInput) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *AppInput) GetGrantPolicyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.GrantPolicyID
+}
+
+func (o *AppInput) GetIconURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.IconURL
+}
+
+func (o *AppInput) GetIdentityMatching() *IdentityMatching {
+	if o == nil {
+		return nil
+	}
+	return o.IdentityMatching
+}
+
+func (o *AppInput) GetIsManuallyManaged() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IsManuallyManaged
+}
+
+func (o *AppInput) GetMonthlyCostUsd() *int {
+	if o == nil {
+		return nil
+	}
+	return o.MonthlyCostUsd
+}
+
+func (o *AppInput) GetRevokePolicyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RevokePolicyID
+}
+
+func (o *AppInput) GetStrictAccessEntitlementProvisioning() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.StrictAccessEntitlementProvisioning
 }

@@ -62,6 +62,7 @@ type CustomAppEntitlementResourceModel struct {
 	ID                             types.String                                      `tfsdk:"id"`
 	IsAutomationEnabled            types.Bool                                        `tfsdk:"is_automation_enabled"`
 	IsManuallyManaged              types.Bool                                        `tfsdk:"is_manually_managed"`
+	MatchBatonID                   types.String                                      `tfsdk:"match_baton_id"`
 	OverrideAccessRequestsDefaults types.Bool                                        `tfsdk:"override_access_requests_defaults"`
 	ProvisionPolicy                *tfTypes.ProvisionPolicy                          `tfsdk:"provision_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                                      `tfsdk:"purpose"`
@@ -364,6 +365,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"is_manually_managed": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Flag to indicate if the app entitlement is manually managed.`,
+			},
+			"match_baton_id": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `If supplied, it's implied that the entitlement is created before sync and needs to be merged with connector entitlement.`,
 			},
 			"override_access_requests_defaults": schema.BoolAttribute{
 				Computed:    true,

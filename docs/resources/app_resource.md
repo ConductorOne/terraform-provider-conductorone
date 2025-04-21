@@ -20,6 +20,7 @@ resource "conductorone_app_resource" "my_app_resource" {
   app_resource_type_id = "...my_app_resource_type_id..."
   description          = "...my_description..."
   display_name         = "...my_display_name..."
+  match_baton_id       = "...my_match_baton_id..."
 }
 ```
 
@@ -35,6 +36,7 @@ resource "conductorone_app_resource" "my_app_resource" {
 ### Optional
 
 - `description` (String) The description field.
+- `match_baton_id` (String) If supplied, it's implied that the resource is created before sync and needs to be merged with connector resource.
 
 ### Read-Only
 

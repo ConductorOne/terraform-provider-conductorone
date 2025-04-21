@@ -243,6 +243,7 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 		r.ID = types.StringPointerValue(resp.ID)
 		r.IsAutomationEnabled = types.BoolPointerValue(resp.IsAutomationEnabled)
 		r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
+		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
 		r.OverrideAccessRequestsDefaults = types.BoolPointerValue(resp.OverrideAccessRequestsDefaults)
 		if resp.ProvisionPolicy == nil {
 			r.ProvisionPolicy = nil

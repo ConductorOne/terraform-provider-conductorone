@@ -408,6 +408,10 @@ components:
                     description: Flag to indicate if the app entitlement is manually managed.
                     readOnly: false
                     type: boolean
+                matchBatonId:
+                    description: The matchBatonId field.
+                    readOnly: false
+                    type: string
                 overrideAccessRequestsDefaults:
                     description: Flag to indicate if the app-level access request settings have been overridden for the entitlement
                     readOnly: false
@@ -1278,6 +1282,10 @@ components:
                     type: string
                 id:
                     description: The id of the resource.
+                    readOnly: false
+                    type: string
+                matchBatonId:
+                    description: The matchBatonId field.
                     readOnly: false
                     type: string
                 parentAppResourceId:
@@ -2525,6 +2533,10 @@ components:
                     description: The grantPolicyId field.
                     readOnly: false
                     type: string
+                matchBatonId:
+                    description: If supplied, it's implied that the entitlement is created before sync and needs to be merged with connector entitlement.
+                    readOnly: false
+                    type: string
                 overrideAccessRequestsDefaults:
                     description: The overrideAccessRequestsDefaults field.
                     readOnly: false
@@ -2666,6 +2678,10 @@ components:
                     type: string
                 displayName:
                     description: The displayName field.
+                    readOnly: false
+                    type: string
+                matchBatonId:
+                    description: If supplied, it's implied that the resource is created before sync and needs to be merged with connector resource.
                     readOnly: false
                     type: string
                 resourceOwnerUserIds:
@@ -4559,6 +4575,13 @@ components:
                     description: Instructions for the agent.
                     readOnly: false
                     type: string
+                policyIds:
+                    description: The policyIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
             title: Agent Approval
             type: object
             x-speakeasy-name-override: AgentApproval
@@ -5611,6 +5634,13 @@ components:
                     description: Search for policies with a case insensitive match on the display name.
                     readOnly: false
                     type: string
+                excludePolicyIds:
+                    description: The policy IDs to exclude from the search.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
                 includeDeleted:
                     description: The includeDeleted field.
                     readOnly: false
@@ -8420,6 +8450,33 @@ components:
             title: Task Audit External Ticket Error
             type: object
             x-speakeasy-name-override: TaskAuditExternalTicketError
+        c1.api.task.v1.TaskAuditExternalTicketProvisionStepResolved:
+            description: The TaskAuditExternalTicketProvisionStepResolved message.
+            nullable: true
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                connectorId:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
+                externalTicketId:
+                    description: The externalTicketId field.
+                    readOnly: false
+                    type: string
+                externalTicketProvisionerConfigId:
+                    description: The externalTicketProvisionerConfigId field.
+                    readOnly: false
+                    type: string
+                externalTicketUrl:
+                    description: The externalTicketUrl field.
+                    readOnly: false
+                    type: string
+            title: Task Audit External Ticket Provision Step Resolved
+            type: object
+            x-speakeasy-name-override: TaskAuditExternalTicketProvisionStepResolved
         c1.api.task.v1.TaskAuditExternalTicketTriggered:
             description: The TaskAuditExternalTicketTriggered message.
             nullable: true
@@ -8760,6 +8817,7 @@ components:
                   - waitStepAnalysisWaiting
                   - waitStepAnalysisTimedOut
                   - stepUpApproval
+                  - externalTicketProvisionStepResolved
             properties:
                 accessRequestOutcome:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditAccessRequestOutcome'
@@ -8817,6 +8875,8 @@ components:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditExternalTicketCreated'
                 externalTicketError:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditExternalTicketError'
+                externalTicketProvisionStepResolved:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskAuditExternalTicketProvisionStepResolved'
                 externalTicketTriggered:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditExternalTicketTriggered'
                 grantOutcome:
@@ -11096,6 +11156,7 @@ components:
                             - WORKFLOW_EXECUTION_STATE_DONE
                             - WORKFLOW_EXECUTION_STATE_ERROR
                             - WORKFLOW_EXECUTION_STATE_TERMINATE
+                            - WORKFLOW_EXECUTION_STATE_WAITING
                         type: string
                     nullable: true
                     readOnly: false
@@ -11424,6 +11485,20 @@ components:
                     description: The displayName field.
                     readOnly: false
                     type: string
+                draftTriggers:
+                    description: The draftTriggers field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowTrigger'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                draftWorkflowSteps:
+                    description: The draftWorkflowSteps field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowStep'
+                    nullable: true
+                    readOnly: false
+                    type: array
                 enabled:
                     description: The enabled field.
                     readOnly: false
@@ -11501,6 +11576,7 @@ components:
                         - WORKFLOW_EXECUTION_STATE_DONE
                         - WORKFLOW_EXECUTION_STATE_ERROR
                         - WORKFLOW_EXECUTION_STATE_TERMINATE
+                        - WORKFLOW_EXECUTION_STATE_WAITING
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow

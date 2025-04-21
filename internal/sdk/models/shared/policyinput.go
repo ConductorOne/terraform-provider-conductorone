@@ -48,6 +48,73 @@ func (e *PolicyType) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// PolicyInput - A policy describes the behavior of the ConductorOne system when processing a task. You can describe the type, approvers, fallback behavior, and escalation processes.
+type PolicyInput struct {
+	// The description of the Policy.
+	Description *string `json:"description,omitempty"`
+	// The display name of the Policy.
+	DisplayName *string `json:"displayName,omitempty"`
+	// A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set.
+	PolicySteps map[string]PolicyStepsInput `json:"policySteps,omitempty"`
+	// Indicates the type of this policy. Can also be used to get the value from policySteps.
+	PolicyType *PolicyType `json:"policyType,omitempty"`
+	// An array of actions (ordered) to take place after a policy completes processing.
+	PostActions []PolicyPostActions `json:"postActions,omitempty"`
+	// A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation refers to the individual delegates users set on their account.
+	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
+	// The rules field.
+	Rules []Rule `json:"rules,omitempty"`
+}
+
+func (o *PolicyInput) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *PolicyInput) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *PolicyInput) GetPolicySteps() map[string]PolicyStepsInput {
+	if o == nil {
+		return nil
+	}
+	return o.PolicySteps
+}
+
+func (o *PolicyInput) GetPolicyType() *PolicyType {
+	if o == nil {
+		return nil
+	}
+	return o.PolicyType
+}
+
+func (o *PolicyInput) GetPostActions() []PolicyPostActions {
+	if o == nil {
+		return nil
+	}
+	return o.PostActions
+}
+
+func (o *PolicyInput) GetReassignTasksToDelegates() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ReassignTasksToDelegates
+}
+
+func (o *PolicyInput) GetRules() []Rule {
+	if o == nil {
+		return nil
+	}
+	return o.Rules
+}
+
 // Policy - A policy describes the behavior of the ConductorOne system when processing a task. You can describe the type, approvers, fallback behavior, and escalation processes.
 type Policy struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
@@ -166,71 +233,4 @@ func (o *Policy) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return o.UpdatedAt
-}
-
-// PolicyInput - A policy describes the behavior of the ConductorOne system when processing a task. You can describe the type, approvers, fallback behavior, and escalation processes.
-type PolicyInput struct {
-	// The description of the Policy.
-	Description *string `json:"description,omitempty"`
-	// The display name of the Policy.
-	DisplayName *string `json:"displayName,omitempty"`
-	// A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set.
-	PolicySteps map[string]PolicyStepsInput `json:"policySteps,omitempty"`
-	// Indicates the type of this policy. Can also be used to get the value from policySteps.
-	PolicyType *PolicyType `json:"policyType,omitempty"`
-	// An array of actions (ordered) to take place after a policy completes processing.
-	PostActions []PolicyPostActions `json:"postActions,omitempty"`
-	// A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation refers to the individual delegates users set on their account.
-	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
-	// The rules field.
-	Rules []Rule `json:"rules,omitempty"`
-}
-
-func (o *PolicyInput) GetDescription() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Description
-}
-
-func (o *PolicyInput) GetDisplayName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DisplayName
-}
-
-func (o *PolicyInput) GetPolicySteps() map[string]PolicyStepsInput {
-	if o == nil {
-		return nil
-	}
-	return o.PolicySteps
-}
-
-func (o *PolicyInput) GetPolicyType() *PolicyType {
-	if o == nil {
-		return nil
-	}
-	return o.PolicyType
-}
-
-func (o *PolicyInput) GetPostActions() []PolicyPostActions {
-	if o == nil {
-		return nil
-	}
-	return o.PostActions
-}
-
-func (o *PolicyInput) GetReassignTasksToDelegates() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.ReassignTasksToDelegates
-}
-
-func (o *PolicyInput) GetRules() []Rule {
-	if o == nil {
-		return nil
-	}
-	return o.Rules
 }

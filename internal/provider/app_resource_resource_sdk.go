@@ -22,9 +22,16 @@ func (r *AppResourceResourceModel) ToSharedCreateManuallyManagedAppResourceReque
 	var displayName string
 	displayName = r.DisplayName.ValueString()
 
+	matchBatonID := new(string)
+	if !r.MatchBatonID.IsUnknown() && !r.MatchBatonID.IsNull() {
+		*matchBatonID = r.MatchBatonID.ValueString()
+	} else {
+		matchBatonID = nil
+	}
 	out := shared.CreateManuallyManagedAppResourceRequest{
-		Description: description,
-		DisplayName: displayName,
+		Description:  description,
+		DisplayName:  displayName,
+		MatchBatonID: matchBatonID,
 	}
 	return &out
 }
@@ -41,6 +48,7 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResource(ctx context.Cont
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.GrantCount = types.StringPointerValue(resp.GrantCount)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
 		r.ParentAppResourceID = types.StringPointerValue(resp.ParentAppResourceID)
 		r.ParentAppResourceTypeID = types.StringPointerValue(resp.ParentAppResourceTypeID)
 		if resp.SecretTrait == nil {
@@ -95,6 +103,12 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput() *shared.AppResourc
 	} else {
 		id = nil
 	}
+	matchBatonID := new(string)
+	if !r.MatchBatonID.IsUnknown() && !r.MatchBatonID.IsNull() {
+		*matchBatonID = r.MatchBatonID.ValueString()
+	} else {
+		matchBatonID = nil
+	}
 	parentAppResourceID := new(string)
 	if !r.ParentAppResourceID.IsUnknown() && !r.ParentAppResourceID.IsNull() {
 		*parentAppResourceID = r.ParentAppResourceID.ValueString()
@@ -147,6 +161,7 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput() *shared.AppResourc
 		DisplayName:             displayName,
 		GrantCount:              grantCount,
 		ID:                      id,
+		MatchBatonID:            matchBatonID,
 		ParentAppResourceID:     parentAppResourceID,
 		ParentAppResourceTypeID: parentAppResourceTypeID,
 		SecretTrait:             secretTrait,
