@@ -1,8 +1,5 @@
 data "conductorone_policy" "my_policy" {
-  display_name = "...my_display_name..."
-  exclude_policy_ids = [
-    "..."
-  ]
+  display_name    = "...my_display_name..."
   include_deleted = false
   policy_types = [
     "POLICY_TYPE_ACCESS_REQUEST"

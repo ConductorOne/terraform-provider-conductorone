@@ -10,7 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppDataSourceModel) ToSharedSearchAppsRequest() *shared.SearchAppsRequest {
+func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*shared.SearchAppsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var appIds []string = []string{}
 	for _, appIdsItem := range r.AppIds {
 		appIds = append(appIds, appIdsItem.ValueString())
@@ -44,7 +46,8 @@ func (r *AppDataSourceModel) ToSharedSearchAppsRequest() *shared.SearchAppsReque
 		OnlyDirectories: onlyDirectories,
 		Query:           query,
 	}
-	return &out
+
+	return &out, diags
 }
 
 func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *shared.App) diag.Diagnostics {

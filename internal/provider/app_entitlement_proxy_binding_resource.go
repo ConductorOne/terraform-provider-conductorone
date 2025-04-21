@@ -10,7 +10,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -153,25 +152,13 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		return
 	}
 
-	var srcAppID string
-	srcAppID = data.SrcAppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsProxyCreateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var srcAppEntitlementID string
-	srcAppEntitlementID = data.SrcAppEntitlementID.ValueString()
-
-	var dstAppID string
-	dstAppID = data.DstAppID.ValueString()
-
-	var dstAppEntitlementID string
-	dstAppEntitlementID = data.DstAppEntitlementID.ValueString()
-
-	request := operations.C1APIAppV1AppEntitlementsProxyCreateRequest{
-		SrcAppID:            srcAppID,
-		SrcAppEntitlementID: srcAppEntitlementID,
-		DstAppID:            dstAppID,
-		DstAppEntitlementID: dstAppEntitlementID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlementsProxy.Create(ctx, request)
+	res, err := r.client.AppEntitlementsProxy.Create(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -202,25 +189,13 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var srcAppId1 string
-	srcAppId1 = data.SrcAppID.ValueString()
+	request1, request1Diags := data.ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	var srcAppEntitlementId1 string
-	srcAppEntitlementId1 = data.SrcAppEntitlementID.ValueString()
-
-	var dstAppId1 string
-	dstAppId1 = data.DstAppID.ValueString()
-
-	var dstAppEntitlementId1 string
-	dstAppEntitlementId1 = data.DstAppEntitlementID.ValueString()
-
-	request1 := operations.C1APIAppV1AppEntitlementsProxyGetRequest{
-		SrcAppID:            srcAppId1,
-		SrcAppEntitlementID: srcAppEntitlementId1,
-		DstAppID:            dstAppId1,
-		DstAppEntitlementID: dstAppEntitlementId1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.AppEntitlementsProxy.Get(ctx, request1)
+	res1, err := r.client.AppEntitlementsProxy.Get(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -274,25 +249,13 @@ func (r *AppEntitlementProxyBindingResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	var srcAppID string
-	srcAppID = data.SrcAppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var srcAppEntitlementID string
-	srcAppEntitlementID = data.SrcAppEntitlementID.ValueString()
-
-	var dstAppID string
-	dstAppID = data.DstAppID.ValueString()
-
-	var dstAppEntitlementID string
-	dstAppEntitlementID = data.DstAppEntitlementID.ValueString()
-
-	request := operations.C1APIAppV1AppEntitlementsProxyGetRequest{
-		SrcAppID:            srcAppID,
-		SrcAppEntitlementID: srcAppEntitlementID,
-		DstAppID:            dstAppID,
-		DstAppEntitlementID: dstAppEntitlementID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlementsProxy.Get(ctx, request)
+	res, err := r.client.AppEntitlementsProxy.Get(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -369,25 +332,13 @@ func (r *AppEntitlementProxyBindingResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	var srcAppID string
-	srcAppID = data.SrcAppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsProxyDeleteRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var srcAppEntitlementID string
-	srcAppEntitlementID = data.SrcAppEntitlementID.ValueString()
-
-	var dstAppID string
-	dstAppID = data.DstAppID.ValueString()
-
-	var dstAppEntitlementID string
-	dstAppEntitlementID = data.DstAppEntitlementID.ValueString()
-
-	request := operations.C1APIAppV1AppEntitlementsProxyDeleteRequest{
-		SrcAppID:            srcAppID,
-		SrcAppEntitlementID: srcAppEntitlementID,
-		DstAppID:            dstAppID,
-		DstAppEntitlementID: dstAppEntitlementID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlementsProxy.Delete(ctx, request)
+	res, err := r.client.AppEntitlementsProxy.Delete(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

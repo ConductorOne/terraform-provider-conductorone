@@ -12,7 +12,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearchRequest() *shared.AppEntitlementSearchServiceSearchRequest {
+func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearchRequest(ctx context.Context) (*shared.AppEntitlementSearchServiceSearchRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	accessReviewID := new(string)
 	if !r.AccessReviewID.IsUnknown() && !r.AccessReviewID.IsNull() {
 		*accessReviewID = r.AccessReviewID.ValueString()
@@ -139,7 +141,8 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 		RiskLevelIds:           riskLevelIds,
 		SourceConnectorID:      sourceConnectorID,
 	}
-	return &out
+
+	return &out, diags
 }
 
 func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx context.Context, resp *shared.AppEntitlement) diag.Diagnostics {

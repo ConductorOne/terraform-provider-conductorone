@@ -5,10 +5,86 @@ package provider
 import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyCreateRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyCreateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var srcAppID string
+	srcAppID = r.SrcAppID.ValueString()
+
+	var srcAppEntitlementID string
+	srcAppEntitlementID = r.SrcAppEntitlementID.ValueString()
+
+	var dstAppID string
+	dstAppID = r.DstAppID.ValueString()
+
+	var dstAppEntitlementID string
+	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementsProxyCreateRequest{
+		SrcAppID:            srcAppID,
+		SrcAppEntitlementID: srcAppEntitlementID,
+		DstAppID:            dstAppID,
+		DstAppEntitlementID: dstAppEntitlementID,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyGetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var srcAppID string
+	srcAppID = r.SrcAppID.ValueString()
+
+	var srcAppEntitlementID string
+	srcAppEntitlementID = r.SrcAppEntitlementID.ValueString()
+
+	var dstAppID string
+	dstAppID = r.DstAppID.ValueString()
+
+	var dstAppEntitlementID string
+	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementsProxyGetRequest{
+		SrcAppID:            srcAppID,
+		SrcAppEntitlementID: srcAppEntitlementID,
+		DstAppID:            dstAppID,
+		DstAppEntitlementID: dstAppEntitlementID,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyDeleteRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyDeleteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var srcAppID string
+	srcAppID = r.SrcAppID.ValueString()
+
+	var srcAppEntitlementID string
+	srcAppEntitlementID = r.SrcAppEntitlementID.ValueString()
+
+	var dstAppID string
+	dstAppID = r.DstAppID.ValueString()
+
+	var dstAppEntitlementID string
+	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementsProxyDeleteRequest{
+		SrcAppID:            srcAppID,
+		SrcAppEntitlementID: srcAppEntitlementID,
+		DstAppID:            dstAppID,
+		DstAppEntitlementID: dstAppEntitlementID,
+	}
+
+	return &out, diags
+}
 
 func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedAppEntitlementProxy(ctx context.Context, resp *shared.AppEntitlementProxy) diag.Diagnostics {
 	var diags diag.Diagnostics

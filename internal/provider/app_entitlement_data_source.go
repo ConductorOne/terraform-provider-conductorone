@@ -580,7 +580,12 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 		return
 	}
 
-	request := data.ToSharedAppEntitlementSearchServiceSearchRequest()
+	request, requestDiags := data.ToSharedAppEntitlementSearchServiceSearchRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.AppEntitlementSearch.Search(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())

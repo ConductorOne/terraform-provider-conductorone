@@ -549,3 +549,21 @@ actions:
   - target: $["components"]["schemas"]["c1.api.attribute.v1.DeleteRiskLevelAttributeValueRequestInput"]
     update:
       x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.CreateBundleAutomationRequestInput"]
+    update:
+      x-speakeasy-terraform-plan-only: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.CreateBundleAutomationRequestInput"]["properties"]["enabled"]
+    update:
+      x-speakeasy-optional: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.CreateBundleAutomationRequestInput"]["properties"]["createTasks"]
+    update:
+      x-speakeasy-optional: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.CreateBundleAutomationRequestInput"]["properties"]["entitlements"]
+    update:
+      x-speakeasy-optional: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.DeleteBundleAutomationRequestInput"]
+    update:
+      x-speakeasy-terraform-plan-only: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.SetBundleAutomationRequestInput"]
+    update:
+      x-speakeasy-terraform-plan-only: true

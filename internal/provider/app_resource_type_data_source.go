@@ -164,7 +164,12 @@ func (r *AppResourceTypeDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
-	request := data.ToSharedSearchAppResourceTypesRequest()
+	request, requestDiags := data.ToSharedSearchAppResourceTypesRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.AppResourceSearch.SearchAppResourceTypes(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())

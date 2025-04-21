@@ -7,7 +7,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -182,17 +181,13 @@ func (r *AppEntitlementAutomationDataSource) Read(ctx context.Context, req datas
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsGetAutomationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var appEntitlementID string
-	appEntitlementID = data.AppEntitlementID.ValueString()
-
-	request := operations.C1APIAppV1AppEntitlementsGetAutomationRequest{
-		AppID:            appID,
-		AppEntitlementID: appEntitlementID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlements.GetAutomation(ctx, request)
+	res, err := r.client.AppEntitlements.GetAutomation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
