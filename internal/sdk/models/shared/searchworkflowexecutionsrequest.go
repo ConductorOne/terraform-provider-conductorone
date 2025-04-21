@@ -19,6 +19,7 @@ const (
 	ExecutionStepStatesWorkflowExecutionStateDone         ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_DONE"
 	ExecutionStepStatesWorkflowExecutionStateError        ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_ERROR"
 	ExecutionStepStatesWorkflowExecutionStateTerminate    ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_TERMINATE"
+	ExecutionStepStatesWorkflowExecutionStateWaiting      ExecutionStepStates = "WORKFLOW_EXECUTION_STATE_WAITING"
 )
 
 func (e ExecutionStepStates) ToPointer() *ExecutionStepStates {
@@ -47,6 +48,8 @@ func (e *ExecutionStepStates) UnmarshalJSON(data []byte) error {
 	case "WORKFLOW_EXECUTION_STATE_ERROR":
 		fallthrough
 	case "WORKFLOW_EXECUTION_STATE_TERMINATE":
+		fallthrough
+	case "WORKFLOW_EXECUTION_STATE_WAITING":
 		*e = ExecutionStepStates(v)
 		return nil
 	default:

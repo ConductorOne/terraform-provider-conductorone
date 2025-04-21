@@ -54,9 +54,14 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest() *shared.CreatePolicy
 					} else {
 						instructions = nil
 					}
+					var policyIds []string = []string{}
+					for _, policyIdsItem := range stepsItem.Approval.AgentApproval.PolicyIds {
+						policyIds = append(policyIds, policyIdsItem.ValueString())
+					}
 					agentApproval = &shared.AgentApproval{
 						AgentUserID:  agentUserID,
 						Instructions: instructions,
+						PolicyIds:    policyIds,
 					}
 				}
 				allowReassignment := new(bool)
@@ -649,6 +654,12 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Approval.AgentApproval = &tfTypes.AgentApproval{}
 								steps.Approval.AgentApproval.AgentUserID = types.StringPointerValue(stepsItem.Approval.AgentApproval.AgentUserID)
 								steps.Approval.AgentApproval.Instructions = types.StringPointerValue(stepsItem.Approval.AgentApproval.Instructions)
+								if stepsItem.Approval.AgentApproval.PolicyIds != nil {
+									steps.Approval.AgentApproval.PolicyIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.PolicyIds))
+									for _, v := range stepsItem.Approval.AgentApproval.PolicyIds {
+										steps.Approval.AgentApproval.PolicyIds = append(steps.Approval.AgentApproval.PolicyIds, types.StringValue(v))
+									}
+								}
 							}
 							steps.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
 							if stepsItem.Approval.AppGroupApproval == nil {
@@ -993,9 +1004,14 @@ func (r *PolicyResourceModel) ToSharedPolicyInput() *shared.PolicyInput {
 					} else {
 						instructions = nil
 					}
+					var policyIds []string = []string{}
+					for _, policyIdsItem := range stepsItem.Approval.AgentApproval.PolicyIds {
+						policyIds = append(policyIds, policyIdsItem.ValueString())
+					}
 					agentApproval = &shared.AgentApproval{
 						AgentUserID:  agentUserID,
 						Instructions: instructions,
+						PolicyIds:    policyIds,
 					}
 				}
 				allowReassignment := new(bool)

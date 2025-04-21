@@ -147,6 +147,8 @@ type AppEntitlementInput struct {
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// Flag to indicate if the app entitlement is manually managed.
 	IsManuallyManaged *bool `json:"isManuallyManaged,omitempty"`
+	// The matchBatonId field.
+	MatchBatonID *string `json:"matchBatonId,omitempty"`
 	// Flag to indicate if the app-level access request settings have been overridden for the entitlement
 	OverrideAccessRequestsDefaults *bool `json:"overrideAccessRequestsDefaults,omitempty"`
 	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
@@ -278,6 +280,13 @@ func (o *AppEntitlementInput) GetIsManuallyManaged() *bool {
 	return o.IsManuallyManaged
 }
 
+func (o *AppEntitlementInput) GetMatchBatonID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.MatchBatonID
+}
+
 func (o *AppEntitlementInput) GetOverrideAccessRequestsDefaults() *bool {
 	if o == nil {
 		return nil
@@ -376,6 +385,8 @@ type AppEntitlement struct {
 	IsAutomationEnabled *bool `json:"isAutomationEnabled,omitempty"`
 	// Flag to indicate if the app entitlement is manually managed.
 	IsManuallyManaged *bool `json:"isManuallyManaged,omitempty"`
+	// The matchBatonId field.
+	MatchBatonID *string `json:"matchBatonId,omitempty"`
 	// Flag to indicate if the app-level access request settings have been overridden for the entitlement
 	OverrideAccessRequestsDefaults *bool `json:"overrideAccessRequestsDefaults,omitempty"`
 	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
@@ -554,6 +565,13 @@ func (o *AppEntitlement) GetIsManuallyManaged() *bool {
 		return nil
 	}
 	return o.IsManuallyManaged
+}
+
+func (o *AppEntitlement) GetMatchBatonID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.MatchBatonID
 }
 
 func (o *AppEntitlement) GetOverrideAccessRequestsDefaults() *bool {

@@ -16,6 +16,10 @@ type WorkflowInput struct {
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The draftTriggers field.
+	DraftTriggers []WorkflowTrigger `json:"draftTriggers,omitempty"`
+	// The draftWorkflowSteps field.
+	DraftWorkflowSteps []WorkflowStep `json:"draftWorkflowSteps,omitempty"`
 	// The enabled field.
 	Enabled        *bool      `json:"enabled,omitempty"`
 	LastExecutedAt *time.Time `json:"lastExecutedAt,omitempty"`
@@ -62,6 +66,20 @@ func (o *WorkflowInput) GetDisplayName() *string {
 		return nil
 	}
 	return o.DisplayName
+}
+
+func (o *WorkflowInput) GetDraftTriggers() []WorkflowTrigger {
+	if o == nil {
+		return nil
+	}
+	return o.DraftTriggers
+}
+
+func (o *WorkflowInput) GetDraftWorkflowSteps() []WorkflowStep {
+	if o == nil {
+		return nil
+	}
+	return o.DraftWorkflowSteps
 }
 
 func (o *WorkflowInput) GetEnabled() *bool {

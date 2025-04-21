@@ -115,6 +115,7 @@ func (e *TaskAuditViewEventType) UnmarshalJSON(data []byte) error {
 //   - waitStepAnalysisWaiting
 //   - waitStepAnalysisTimedOut
 //   - stepUpApproval
+//   - externalTicketProvisionStepResolved
 type TaskAuditView struct {
 	// The TaskAuditAccessRequestOutcome message.
 	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
@@ -161,6 +162,8 @@ type TaskAuditView struct {
 	TaskAuditExternalTicketCreated *TaskAuditExternalTicketCreated `json:"externalTicketCreated,omitempty"`
 	// The TaskAuditExternalTicketError message.
 	TaskAuditExternalTicketError *TaskAuditExternalTicketError `json:"externalTicketError,omitempty"`
+	// The TaskAuditExternalTicketProvisionStepResolved message.
+	TaskAuditExternalTicketProvisionStepResolved *TaskAuditExternalTicketProvisionStepResolved `json:"externalTicketProvisionStepResolved,omitempty"`
 	// The TaskAuditExternalTicketTriggered message.
 	TaskAuditExternalTicketTriggered *TaskAuditExternalTicketTriggered `json:"externalTicketTriggered,omitempty"`
 	// The TaskAuditGrantOutcome message.
@@ -372,6 +375,13 @@ func (o *TaskAuditView) GetTaskAuditExternalTicketError() *TaskAuditExternalTick
 		return nil
 	}
 	return o.TaskAuditExternalTicketError
+}
+
+func (o *TaskAuditView) GetTaskAuditExternalTicketProvisionStepResolved() *TaskAuditExternalTicketProvisionStepResolved {
+	if o == nil {
+		return nil
+	}
+	return o.TaskAuditExternalTicketProvisionStepResolved
 }
 
 func (o *TaskAuditView) GetTaskAuditExternalTicketTriggered() *TaskAuditExternalTicketTriggered {

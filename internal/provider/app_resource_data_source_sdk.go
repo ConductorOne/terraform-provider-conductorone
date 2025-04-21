@@ -23,6 +23,7 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.GrantCount = types.StringPointerValue(resp.GrantCount)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
 		r.ParentAppResourceID = types.StringPointerValue(resp.ParentAppResourceID)
 		r.ParentAppResourceTypeID = types.StringPointerValue(resp.ParentAppResourceTypeID)
 		if resp.SecretTrait == nil {

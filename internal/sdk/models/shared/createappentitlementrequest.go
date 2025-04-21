@@ -68,6 +68,8 @@ type CreateAppEntitlementRequest struct {
 	EmergencyGrantPolicyID *string `json:"emergencyGrantPolicyId,omitempty"`
 	// The grantPolicyId field.
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
+	// If supplied, it's implied that the entitlement is created before sync and needs to be merged with connector entitlement.
+	MatchBatonID *string `json:"matchBatonId,omitempty"`
 	// The overrideAccessRequestsDefaults field.
 	OverrideAccessRequestsDefaults *bool `json:"overrideAccessRequestsDefaults,omitempty"`
 	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
@@ -173,6 +175,13 @@ func (o *CreateAppEntitlementRequest) GetGrantPolicyID() *string {
 		return nil
 	}
 	return o.GrantPolicyID
+}
+
+func (o *CreateAppEntitlementRequest) GetMatchBatonID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.MatchBatonID
 }
 
 func (o *CreateAppEntitlementRequest) GetOverrideAccessRequestsDefaults() *bool {

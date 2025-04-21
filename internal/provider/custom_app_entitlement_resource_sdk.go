@@ -78,6 +78,12 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 	} else {
 		grantPolicyID = nil
 	}
+	matchBatonID := new(string)
+	if !r.MatchBatonID.IsUnknown() && !r.MatchBatonID.IsNull() {
+		*matchBatonID = r.MatchBatonID.ValueString()
+	} else {
+		matchBatonID = nil
+	}
 	overrideAccessRequestsDefaults := new(bool)
 	if !r.OverrideAccessRequestsDefaults.IsUnknown() && !r.OverrideAccessRequestsDefaults.IsNull() {
 		*overrideAccessRequestsDefaults = r.OverrideAccessRequestsDefaults.ValueBool()
@@ -260,6 +266,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 		EmergencyGrantEnabled:          emergencyGrantEnabled,
 		EmergencyGrantPolicyID:         emergencyGrantPolicyID,
 		GrantPolicyID:                  grantPolicyID,
+		MatchBatonID:                   matchBatonID,
 		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
 		ProvisionPolicy:                provisionPolicy,
 		Purpose:                        purpose,
@@ -371,6 +378,7 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 		r.ID = types.StringPointerValue(resp.ID)
 		r.IsAutomationEnabled = types.BoolPointerValue(resp.IsAutomationEnabled)
 		r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
+		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
 		r.OverrideAccessRequestsDefaults = types.BoolPointerValue(resp.OverrideAccessRequestsDefaults)
 		if resp.ProvisionPolicy == nil {
 			r.ProvisionPolicy = nil
@@ -547,6 +555,12 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 		*isManuallyManaged = r.IsManuallyManaged.ValueBool()
 	} else {
 		isManuallyManaged = nil
+	}
+	matchBatonID := new(string)
+	if !r.MatchBatonID.IsUnknown() && !r.MatchBatonID.IsNull() {
+		*matchBatonID = r.MatchBatonID.ValueString()
+	} else {
+		matchBatonID = nil
 	}
 	overrideAccessRequestsDefaults := new(bool)
 	if !r.OverrideAccessRequestsDefaults.IsUnknown() && !r.OverrideAccessRequestsDefaults.IsNull() {
@@ -879,6 +893,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput() *share
 		EmergencyGrantPolicyID:         emergencyGrantPolicyID,
 		GrantPolicyID:                  grantPolicyID,
 		IsManuallyManaged:              isManuallyManaged,
+		MatchBatonID:                   matchBatonID,
 		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
 		ProvisionPolicy:                provisionPolicy,
 		Purpose:                        purpose,

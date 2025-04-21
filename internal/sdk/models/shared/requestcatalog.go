@@ -102,100 +102,6 @@ func (e *UnenrollmentEntitlementBehavior) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// RequestCatalogInput - The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
-type RequestCatalogInput struct {
-	// The id of the user this request catalog was created by.
-	CreatedByUserID *string `json:"createdByUserId,omitempty"`
-	// The description of the request catalog.
-	Description *string `json:"description,omitempty"`
-	// The display name of the request catalog.
-	DisplayName *string `json:"displayName,omitempty"`
-	// Defines how to handle the request policies of the entitlements in the catalog during enrollment.
-	EnrollmentBehavior *EnrollmentBehavior `json:"enrollmentBehavior,omitempty"`
-	// The id of the request catalog.
-	ID *string `json:"id,omitempty"`
-	// Whether or not this catalog is published.
-	Published *bool `json:"published,omitempty"`
-	// Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
-	RequestBundle *bool `json:"requestBundle,omitempty"`
-	// Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
-	UnenrollmentBehavior *UnenrollmentBehavior `json:"unenrollmentBehavior,omitempty"`
-	// Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
-	UnenrollmentEntitlementBehavior *UnenrollmentEntitlementBehavior `json:"unenrollmentEntitlementBehavior,omitempty"`
-	// If this is true, the access entitlement requirement is ignored.
-	VisibleToEveryone *bool `json:"visibleToEveryone,omitempty"`
-}
-
-func (o *RequestCatalogInput) GetCreatedByUserID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.CreatedByUserID
-}
-
-func (o *RequestCatalogInput) GetDescription() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Description
-}
-
-func (o *RequestCatalogInput) GetDisplayName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DisplayName
-}
-
-func (o *RequestCatalogInput) GetEnrollmentBehavior() *EnrollmentBehavior {
-	if o == nil {
-		return nil
-	}
-	return o.EnrollmentBehavior
-}
-
-func (o *RequestCatalogInput) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *RequestCatalogInput) GetPublished() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Published
-}
-
-func (o *RequestCatalogInput) GetRequestBundle() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RequestBundle
-}
-
-func (o *RequestCatalogInput) GetUnenrollmentBehavior() *UnenrollmentBehavior {
-	if o == nil {
-		return nil
-	}
-	return o.UnenrollmentBehavior
-}
-
-func (o *RequestCatalogInput) GetUnenrollmentEntitlementBehavior() *UnenrollmentEntitlementBehavior {
-	if o == nil {
-		return nil
-	}
-	return o.UnenrollmentEntitlementBehavior
-}
-
-func (o *RequestCatalogInput) GetVisibleToEveryone() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.VisibleToEveryone
-}
-
 // The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
 type RequestCatalog struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
@@ -319,6 +225,100 @@ func (o *RequestCatalog) GetUpdatedAt() *time.Time {
 }
 
 func (o *RequestCatalog) GetVisibleToEveryone() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.VisibleToEveryone
+}
+
+// RequestCatalogInput - The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
+type RequestCatalogInput struct {
+	// The id of the user this request catalog was created by.
+	CreatedByUserID *string `json:"createdByUserId,omitempty"`
+	// The description of the request catalog.
+	Description *string `json:"description,omitempty"`
+	// The display name of the request catalog.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Defines how to handle the request policies of the entitlements in the catalog during enrollment.
+	EnrollmentBehavior *EnrollmentBehavior `json:"enrollmentBehavior,omitempty"`
+	// The id of the request catalog.
+	ID *string `json:"id,omitempty"`
+	// Whether or not this catalog is published.
+	Published *bool `json:"published,omitempty"`
+	// Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
+	RequestBundle *bool `json:"requestBundle,omitempty"`
+	// Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
+	UnenrollmentBehavior *UnenrollmentBehavior `json:"unenrollmentBehavior,omitempty"`
+	// Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
+	UnenrollmentEntitlementBehavior *UnenrollmentEntitlementBehavior `json:"unenrollmentEntitlementBehavior,omitempty"`
+	// If this is true, the access entitlement requirement is ignored.
+	VisibleToEveryone *bool `json:"visibleToEveryone,omitempty"`
+}
+
+func (o *RequestCatalogInput) GetCreatedByUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedByUserID
+}
+
+func (o *RequestCatalogInput) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *RequestCatalogInput) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *RequestCatalogInput) GetEnrollmentBehavior() *EnrollmentBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.EnrollmentBehavior
+}
+
+func (o *RequestCatalogInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *RequestCatalogInput) GetPublished() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Published
+}
+
+func (o *RequestCatalogInput) GetRequestBundle() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.RequestBundle
+}
+
+func (o *RequestCatalogInput) GetUnenrollmentBehavior() *UnenrollmentBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.UnenrollmentBehavior
+}
+
+func (o *RequestCatalogInput) GetUnenrollmentEntitlementBehavior() *UnenrollmentEntitlementBehavior {
+	if o == nil {
+		return nil
+	}
+	return o.UnenrollmentEntitlementBehavior
+}
+
+func (o *RequestCatalogInput) GetVisibleToEveryone() *bool {
 	if o == nil {
 		return nil
 	}

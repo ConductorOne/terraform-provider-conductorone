@@ -21,7 +21,7 @@ generation:
   mockServer:
     disabled: true
 terraform:
-  version: 1.1.6
+  version: 1.1.7
   additionalDataSources: []
   additionalDependencies: {}
   additionalProviderAttributes:

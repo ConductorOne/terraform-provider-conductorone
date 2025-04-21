@@ -38,6 +38,7 @@ type AppResourceDataSourceModel struct {
 	Expanded                []tfTypes.AppResourceServiceGetResponseExpanded `tfsdk:"expanded"`
 	GrantCount              types.String                                    `tfsdk:"grant_count"`
 	ID                      types.String                                    `tfsdk:"id"`
+	MatchBatonID            types.String                                    `tfsdk:"match_baton_id"`
 	ParentAppResourceID     types.String                                    `tfsdk:"parent_app_resource_id"`
 	ParentAppResourceTypeID types.String                                    `tfsdk:"parent_app_resource_type_id"`
 	SecretTrait             *tfTypes.SecretTrait                            `tfsdk:"secret_trait"`
@@ -88,6 +89,10 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 			},
 			"id": schema.StringAttribute{
 				Required: true,
+			},
+			"match_baton_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The matchBatonId field.`,
 			},
 			"parent_app_resource_id": schema.StringAttribute{
 				Computed:    true,

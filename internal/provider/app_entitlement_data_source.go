@@ -58,6 +58,7 @@ type AppEntitlementDataSourceModel struct {
 	IsAutomated                    types.Bool                           `tfsdk:"is_automated"`
 	IsAutomationEnabled            types.Bool                           `tfsdk:"is_automation_enabled"`
 	IsManuallyManaged              types.Bool                           `tfsdk:"is_manually_managed"`
+	MatchBatonID                   types.String                         `tfsdk:"match_baton_id"`
 	MembershipType                 []types.String                       `tfsdk:"membership_type"`
 	NextPageToken                  types.String                         `tfsdk:"next_page_token"`
 	OnlyGetExpiring                types.Bool                           `tfsdk:"only_get_expiring"`
@@ -326,6 +327,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"is_manually_managed": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Flag to indicate if the app entitlement is manually managed.`,
+			},
+			"match_baton_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The matchBatonId field.`,
 			},
 			"membership_type": schema.ListAttribute{
 				Optional:    true,

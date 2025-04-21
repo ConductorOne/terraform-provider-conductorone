@@ -16,6 +16,7 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
   emergency_grant_enabled           = false
   emergency_grant_policy_id         = "...my_emergency_grant_policy_id..."
   grant_policy_id                   = "...my_grant_policy_id..."
+  match_baton_id                    = "...my_match_baton_id..."
   override_access_requests_defaults = true
   provision_policy = {
     connector_provision = {
