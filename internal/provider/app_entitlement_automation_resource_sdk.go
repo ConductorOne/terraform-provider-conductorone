@@ -6,12 +6,15 @@ import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementAutomationInput() *shared.AppEntitlementAutomationInput {
+func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementAutomationInput(ctx context.Context) (*shared.AppEntitlementAutomationInput, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var appEntitlementAutomationRuleBasic *shared.AppEntitlementAutomationRuleBasic
 	if r.AppEntitlementAutomationRuleBasic != nil {
 		expression := new(string)
@@ -90,77 +93,13 @@ func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementAutomation
 		AppEntitlementAutomationLastRunStatus:   appEntitlementAutomationLastRunStatus,
 		AppEntitlementAutomationRuleNone:        appEntitlementAutomationRuleNone,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *AppEntitlementAutomationResourceModel) RefreshFromSharedAppEntitlementAutomation(ctx context.Context, resp *shared.AppEntitlementAutomation) diag.Diagnostics {
+func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementServiceUpdateAutomationRequest(ctx context.Context) (*shared.AppEntitlementServiceUpdateAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.AppEntitlementID = types.StringPointerValue(resp.AppEntitlementID)
-		r.AppID = types.StringPointerValue(resp.AppID)
-		if resp.AppEntitlementAutomationLastRunStatus == nil {
-			r.AppEntitlementAutomationLastRunStatus = nil
-		} else {
-			r.AppEntitlementAutomationLastRunStatus = &tfTypes.AppEntitlementAutomationLastRunStatus{}
-			r.AppEntitlementAutomationLastRunStatus.ErrorMessage = types.StringPointerValue(resp.AppEntitlementAutomationLastRunStatus.ErrorMessage)
-			r.AppEntitlementAutomationLastRunStatus.LastCompletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.AppEntitlementAutomationLastRunStatus.LastCompletedAt))
-			if resp.AppEntitlementAutomationLastRunStatus.Status != nil {
-				r.AppEntitlementAutomationLastRunStatus.Status = types.StringValue(string(*resp.AppEntitlementAutomationLastRunStatus.Status))
-			} else {
-				r.AppEntitlementAutomationLastRunStatus.Status = types.StringNull()
-			}
-		}
-		if resp.AppEntitlementAutomationRuleBasic == nil {
-			r.AppEntitlementAutomationRuleBasic = nil
-		} else {
-			r.AppEntitlementAutomationRuleBasic = &tfTypes.AppEntitlementAutomationRuleBasic{}
-			r.AppEntitlementAutomationRuleBasic.Expression = types.StringPointerValue(resp.AppEntitlementAutomationRuleBasic.Expression)
-		}
-		if resp.AppEntitlementAutomationRuleCEL == nil {
-			r.AppEntitlementAutomationRuleCEL = nil
-		} else {
-			r.AppEntitlementAutomationRuleCEL = &tfTypes.AppEntitlementAutomationRuleCEL{}
-			r.AppEntitlementAutomationRuleCEL.Expression = types.StringPointerValue(resp.AppEntitlementAutomationRuleCEL.Expression)
-		}
-		if resp.AppEntitlementAutomationRuleEntitlement == nil {
-			r.AppEntitlementAutomationRuleEntitlement = nil
-		} else {
-			r.AppEntitlementAutomationRuleEntitlement = &tfTypes.AppEntitlementAutomationRuleEntitlement{}
-			if resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs != nil {
-				r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = []tfTypes.AppEntitlementRef{}
-				if len(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs) > len(resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs) {
-					r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[:len(resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs)]
-				}
-				for entitlementRefsCount, entitlementRefsItem := range resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
-					var entitlementRefs tfTypes.AppEntitlementRef
-					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
-					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
-					if entitlementRefsCount+1 > len(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs) {
-						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = append(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
-					} else {
-						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].AppID = entitlementRefs.AppID
-						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].ID = entitlementRefs.ID
-					}
-				}
-			}
-		}
-		if resp.AppEntitlementAutomationRuleNone == nil {
-			r.AppEntitlementAutomationRuleNone = nil
-		} else {
-			r.AppEntitlementAutomationRuleNone = &tfTypes.AppEntitlementAutomationRuleNone{}
-		}
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	}
-
-	return diags
-}
-
-func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementServiceUpdateAutomationRequest() *shared.AppEntitlementServiceUpdateAutomationRequest {
 	var appEntitlementAutomationRuleBasic *shared.AppEntitlementAutomationRuleBasic
 	if r.AppEntitlementAutomationRuleBasic != nil {
 		expression := new(string)
@@ -234,5 +173,149 @@ func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementServiceUpd
 		AppEntitlementAutomationRuleEntitlement: appEntitlementAutomationRuleEntitlement,
 		AppEntitlementAutomationRuleNone:        appEntitlementAutomationRuleNone,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitlementsCreateAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsCreateAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appEntitlementID string
+	appEntitlementID = r.AppEntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementsCreateAutomationRequest{
+		AppID:            appID,
+		AppEntitlementID: appEntitlementID,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitlementsGetAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsGetAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appEntitlementID string
+	appEntitlementID = r.AppEntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementsGetAutomationRequest{
+		AppID:            appID,
+		AppEntitlementID: appEntitlementID,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitlementsUpdateAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsUpdateAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appEntitlementID string
+	appEntitlementID = r.AppEntitlementID.ValueString()
+
+	appEntitlementServiceUpdateAutomationRequest, appEntitlementServiceUpdateAutomationRequestDiags := r.ToSharedAppEntitlementServiceUpdateAutomationRequest(ctx)
+	diags.Append(appEntitlementServiceUpdateAutomationRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIAppV1AppEntitlementsUpdateAutomationRequest{
+		AppID:            appID,
+		AppEntitlementID: appEntitlementID,
+		AppEntitlementServiceUpdateAutomationRequest: appEntitlementServiceUpdateAutomationRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitlementsDeleteAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsDeleteAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appEntitlementID string
+	appEntitlementID = r.AppEntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementsDeleteAutomationRequest{
+		AppID:            appID,
+		AppEntitlementID: appEntitlementID,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) RefreshFromSharedAppEntitlementAutomation(ctx context.Context, resp *shared.AppEntitlementAutomation) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.AppEntitlementID = types.StringPointerValue(resp.AppEntitlementID)
+		r.AppID = types.StringPointerValue(resp.AppID)
+		if resp.AppEntitlementAutomationLastRunStatus == nil {
+			r.AppEntitlementAutomationLastRunStatus = nil
+		} else {
+			r.AppEntitlementAutomationLastRunStatus = &tfTypes.AppEntitlementAutomationLastRunStatus{}
+			r.AppEntitlementAutomationLastRunStatus.ErrorMessage = types.StringPointerValue(resp.AppEntitlementAutomationLastRunStatus.ErrorMessage)
+			r.AppEntitlementAutomationLastRunStatus.LastCompletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.AppEntitlementAutomationLastRunStatus.LastCompletedAt))
+			if resp.AppEntitlementAutomationLastRunStatus.Status != nil {
+				r.AppEntitlementAutomationLastRunStatus.Status = types.StringValue(string(*resp.AppEntitlementAutomationLastRunStatus.Status))
+			} else {
+				r.AppEntitlementAutomationLastRunStatus.Status = types.StringNull()
+			}
+		}
+		if resp.AppEntitlementAutomationRuleBasic == nil {
+			r.AppEntitlementAutomationRuleBasic = nil
+		} else {
+			r.AppEntitlementAutomationRuleBasic = &tfTypes.AppEntitlementAutomationRuleBasic{}
+			r.AppEntitlementAutomationRuleBasic.Expression = types.StringPointerValue(resp.AppEntitlementAutomationRuleBasic.Expression)
+		}
+		if resp.AppEntitlementAutomationRuleCEL == nil {
+			r.AppEntitlementAutomationRuleCEL = nil
+		} else {
+			r.AppEntitlementAutomationRuleCEL = &tfTypes.AppEntitlementAutomationRuleCEL{}
+			r.AppEntitlementAutomationRuleCEL.Expression = types.StringPointerValue(resp.AppEntitlementAutomationRuleCEL.Expression)
+		}
+		if resp.AppEntitlementAutomationRuleEntitlement == nil {
+			r.AppEntitlementAutomationRuleEntitlement = nil
+		} else {
+			r.AppEntitlementAutomationRuleEntitlement = &tfTypes.AppEntitlementAutomationRuleEntitlement{}
+			if resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs != nil {
+				r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = []tfTypes.AppEntitlementRef{}
+				if len(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs) > len(resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs) {
+					r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[:len(resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs)]
+				}
+				for entitlementRefsCount, entitlementRefsItem := range resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
+					var entitlementRefs tfTypes.AppEntitlementRef
+					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
+					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
+					if entitlementRefsCount+1 > len(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs) {
+						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = append(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
+					} else {
+						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].AppID = entitlementRefs.AppID
+						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].ID = entitlementRefs.ID
+					}
+				}
+			}
+		}
+		if resp.AppEntitlementAutomationRuleNone == nil {
+			r.AppEntitlementAutomationRuleNone = nil
+		} else {
+			r.AppEntitlementAutomationRuleNone = &tfTypes.AppEntitlementAutomationRuleNone{}
+		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
 }

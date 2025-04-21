@@ -49,8 +49,6 @@ func (e *PolicyTypes) UnmarshalJSON(data []byte) error {
 type SearchPoliciesRequest struct {
 	// Search for policies with a case insensitive match on the display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The policy IDs to exclude from the search.
-	ExcludePolicyIds []string `json:"excludePolicyIds,omitempty"`
 	// The includeDeleted field.
 	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
 	// The policy type to search on. This can be POLICY_TYPE_GRANT, POLICY_TYPE_REVOKE, POLICY_TYPE_CERTIFY, POLICY_TYPE_ACCESS_REQUEST, or POLICY_TYPE_PROVISION.
@@ -66,13 +64,6 @@ func (o *SearchPoliciesRequest) GetDisplayName() *string {
 		return nil
 	}
 	return o.DisplayName
-}
-
-func (o *SearchPoliciesRequest) GetExcludePolicyIds() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ExcludePolicyIds
 }
 
 func (o *SearchPoliciesRequest) GetIncludeDeleted() *bool {

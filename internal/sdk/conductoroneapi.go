@@ -16,7 +16,7 @@ import (
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
 	// The ConductorOne API server for the current tenant.
-	"https://{tenantDomain}.conductor.one",
+	"https://{tenantDomain}.vipul.d2.ductone.com:2443",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
