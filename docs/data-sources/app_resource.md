@@ -42,6 +42,7 @@ data "conductorone_app_resource" "my_app_resource" {
 - `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
 - `grant_count` (String) The number of grants to this resource.
 - `id` (String) The ID of this resource.
+- `match_baton_id` (String) The matchBatonId field.
 - `parent_app_resource_id` (String) The parent resource id, if this resource is a child of another resource.
 - `parent_app_resource_type_id` (String) The parent resource type id, if this resource is a child of another resource.
 - `secret_trait` (Attributes) The SecretTrait message. (see [below for nested schema](#nestedatt--secret_trait))

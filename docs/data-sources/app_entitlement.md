@@ -138,6 +138,7 @@ This message contains a oneof named typ. Only a single field of the following li
 - `id` (String) The unique ID for the App Entitlement.
 - `is_automation_enabled` (Boolean) Flag to indicate whether automation (for adding users to entitlement based on rules) has been enabled.
 - `is_manually_managed` (Boolean) Flag to indicate if the app entitlement is manually managed.
+- `match_baton_id` (String) The matchBatonId field.
 - `next_page_token` (String) The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
 - `override_access_requests_defaults` (Boolean) Flag to indicate if the app-level access request settings have been overridden for the entitlement
 - `provision_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.

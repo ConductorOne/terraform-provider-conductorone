@@ -37,6 +37,7 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
   emergency_grant_enabled           = false
   emergency_grant_policy_id         = "...my_emergency_grant_policy_id..."
   grant_policy_id                   = "...my_grant_policy_id..."
+  match_baton_id                    = "...my_match_baton_id..."
   override_access_requests_defaults = true
   provision_policy = {
     connector_provision = {
@@ -100,6 +101,7 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
 - `emergency_grant_enabled` (Boolean) The emergencyGrantEnabled field.
 - `emergency_grant_policy_id` (String) The emergencyGrantPolicyId field.
 - `grant_policy_id` (String) The grantPolicyId field.
+- `match_baton_id` (String) If supplied, it's implied that the entitlement is created before sync and needs to be merged with connector entitlement.
 - `override_access_requests_defaults` (Boolean) The overrideAccessRequestsDefaults field.
 - `provision_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
 
