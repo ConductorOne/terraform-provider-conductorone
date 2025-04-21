@@ -35,13 +35,14 @@ type IntegrationAsanaResource struct {
 
 // IntegrationAsanaResourceModel describes the resource data model.
 type IntegrationAsanaResourceModel struct {
-	AppID       types.String   `tfsdk:"app_id"`
-	CreatedAt   types.String   `tfsdk:"created_at"`
-	DeletedAt   types.String   `tfsdk:"deleted_at"`
-	ID          types.String   `tfsdk:"id"`
-	UpdatedAt   types.String   `tfsdk:"updated_at"`
-	UserIds     []types.String `tfsdk:"user_ids"`
-	AsanaApiKey types.String   `tfsdk:"asana_api_key"`
+	AppID                 types.String   `tfsdk:"app_id"`
+	CreatedAt             types.String   `tfsdk:"created_at"`
+	DeletedAt             types.String   `tfsdk:"deleted_at"`
+	ID                    types.String   `tfsdk:"id"`
+	UpdatedAt             types.String   `tfsdk:"updated_at"`
+	UserIds               []types.String `tfsdk:"user_ids"`
+	AsanaApiKey           types.String   `tfsdk:"asana_api_key"`
+	AsanaIsServiceAccount types.Bool     `tfsdk:"asana_is_service_account"`
 }
 
 func (r *IntegrationAsanaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -95,6 +96,10 @@ func (r *IntegrationAsanaResource) Schema(ctx context.Context, req resource.Sche
 				Optional:    true,
 				Sensitive:   true,
 				Description: `Personal access token`,
+			},
+			"asana_is_service_account": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Is service account`,
 			},
 		},
 	}

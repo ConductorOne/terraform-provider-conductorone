@@ -95,7 +95,7 @@ func (r *IntegrationVerkadaResource) Schema(ctx context.Context, req resource.Sc
 			"verkada_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Key`,
+				Description: `API key`,
 			},
 			"verkada_region": &schema.StringAttribute{
 				Optional:    true,

@@ -97,16 +97,16 @@ func (r *IntegrationElasticResource) Schema(ctx context.Context, req resource.Sc
 			"elastic_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Key`,
+				Description: `API key`,
 			},
 			"elastic_deployment_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Deployment API Key`,
+				Description: `Deployment API key`,
 			},
 			"elastic_deployment_endpoint": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Deployment Endpoint`,
+				Description: `Deployment endpoint`,
 			},
 			"elastic_organization_id": &schema.StringAttribute{
 				Optional:    true,

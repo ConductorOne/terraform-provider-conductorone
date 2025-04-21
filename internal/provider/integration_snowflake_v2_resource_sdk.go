@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -113,6 +113,12 @@ func (r *IntegrationSnowflakeV2ResourceModel) populateConfig() map[string]interf
 		configValues["snowflake_private_key"] = snowflakePrivateKey
 	}
 
+	snowflakeSyncSecrets := new(string)
+	if !r.SnowflakeSyncSecrets.IsUnknown() && !r.SnowflakeSyncSecrets.IsNull() {
+		*snowflakeSyncSecrets = strconv.FormatBool(r.SnowflakeSyncSecrets.ValueBool())
+		configValues["snowflake_sync_secrets"] = snowflakeSyncSecrets
+	}
+
 	return configValues
 }
 
@@ -178,6 +184,7 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromGetResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -196,6 +203,19 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromGetResponse(resp *share
 				if v, ok := values["snowflake_user_id"]; ok {
 					if val, ok := v.(string); ok {
 						r.SnowflakeUserId = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["snowflake_sync_secrets"]; ok {
+					if v, ok := values["snowflake_sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SnowflakeSyncSecrets = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 
@@ -239,6 +259,7 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromCreateResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -257,6 +278,19 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromCreateResponse(resp *sh
 				if v, ok := values["snowflake_user_id"]; ok {
 					if val, ok := v.(string); ok {
 						r.SnowflakeUserId = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["snowflake_sync_secrets"]; ok {
+					if v, ok := values["snowflake_sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SnowflakeSyncSecrets = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 

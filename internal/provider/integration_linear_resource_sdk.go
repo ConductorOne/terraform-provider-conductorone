@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -95,6 +95,12 @@ func (r *IntegrationLinearResourceModel) populateConfig() map[string]interface{}
 		configValues["linear_api_key"] = linearApiKey
 	}
 
+	enableExternalTicketProvisioning := new(string)
+	if !r.EnableExternalTicketProvisioning.IsUnknown() && !r.EnableExternalTicketProvisioning.IsNull() {
+		*enableExternalTicketProvisioning = strconv.FormatBool(r.EnableExternalTicketProvisioning.ValueBool())
+		configValues["enable_external_ticket_provisioning"] = enableExternalTicketProvisioning
+	}
+
 	return configValues
 }
 
@@ -160,6 +166,27 @@ func (r *IntegrationLinearResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
+					if v, ok := values["enable_external_ticket_provisioning"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationLinearResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -197,4 +224,25 @@ func (r *IntegrationLinearResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
+					if v, ok := values["enable_external_ticket_provisioning"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+			}
+		}
+	}
 }

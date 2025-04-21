@@ -89,6 +89,18 @@ func (r *IntegrationDatabricksResourceModel) ToUpdateSDKType() (*shared.Connecto
 func (r *IntegrationDatabricksResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
+	databricksAccountHostname := new(string)
+	if !r.DatabricksAccountHostname.IsUnknown() && !r.DatabricksAccountHostname.IsNull() {
+		*databricksAccountHostname = r.DatabricksAccountHostname.ValueString()
+		configValues["databricks_account_hostname"] = databricksAccountHostname
+	}
+
+	databricksHostname := new(string)
+	if !r.DatabricksHostname.IsUnknown() && !r.DatabricksHostname.IsNull() {
+		*databricksHostname = r.DatabricksHostname.ValueString()
+		configValues["databricks_hostname"] = databricksHostname
+	}
+
 	databricksAccountId := new(string)
 	if !r.DatabricksAccountId.IsUnknown() && !r.DatabricksAccountId.IsNull() {
 		*databricksAccountId = r.DatabricksAccountId.ValueString()
@@ -199,6 +211,18 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromGetResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["databricks_account_hostname"]; ok {
+					if val, ok := v.(string); ok {
+						r.DatabricksAccountHostname = types.StringValue(val)
+					}
+				}
+
+				if v, ok := values["databricks_hostname"]; ok {
+					if val, ok := v.(string); ok {
+						r.DatabricksHostname = types.StringValue(val)
+					}
+				}
+
 				if v, ok := values["databricks_account_id"]; ok {
 					if val, ok := v.(string); ok {
 						r.DatabricksAccountId = types.StringValue(val)
@@ -266,6 +290,18 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromCreateResponse(resp *sha
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if v, ok := values["databricks_account_hostname"]; ok {
+					if val, ok := v.(string); ok {
+						r.DatabricksAccountHostname = types.StringValue(val)
+					}
+				}
+
+				if v, ok := values["databricks_hostname"]; ok {
+					if val, ok := v.(string); ok {
+						r.DatabricksHostname = types.StringValue(val)
+					}
+				}
+
 				if v, ok := values["databricks_account_id"]; ok {
 					if val, ok := v.(string); ok {
 						r.DatabricksAccountId = types.StringValue(val)

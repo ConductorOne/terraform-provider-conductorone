@@ -35,13 +35,14 @@ type IntegrationLinearResource struct {
 
 // IntegrationLinearResourceModel describes the resource data model.
 type IntegrationLinearResourceModel struct {
-	AppID        types.String   `tfsdk:"app_id"`
-	CreatedAt    types.String   `tfsdk:"created_at"`
-	DeletedAt    types.String   `tfsdk:"deleted_at"`
-	ID           types.String   `tfsdk:"id"`
-	UpdatedAt    types.String   `tfsdk:"updated_at"`
-	UserIds      []types.String `tfsdk:"user_ids"`
-	LinearApiKey types.String   `tfsdk:"linear_api_key"`
+	AppID                            types.String   `tfsdk:"app_id"`
+	CreatedAt                        types.String   `tfsdk:"created_at"`
+	DeletedAt                        types.String   `tfsdk:"deleted_at"`
+	ID                               types.String   `tfsdk:"id"`
+	UpdatedAt                        types.String   `tfsdk:"updated_at"`
+	UserIds                          []types.String `tfsdk:"user_ids"`
+	LinearApiKey                     types.String   `tfsdk:"linear_api_key"`
+	EnableExternalTicketProvisioning types.Bool     `tfsdk:"enable_external_ticket_provisioning"`
 }
 
 func (r *IntegrationLinearResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -95,6 +96,10 @@ func (r *IntegrationLinearResource) Schema(ctx context.Context, req resource.Sch
 				Optional:    true,
 				Sensitive:   true,
 				Description: `API key`,
+			},
+			"enable_external_ticket_provisioning": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Enable external ticket provisioning`,
 			},
 		},
 	}

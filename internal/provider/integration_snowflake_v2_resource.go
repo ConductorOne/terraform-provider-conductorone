@@ -35,16 +35,17 @@ type IntegrationSnowflakeV2Resource struct {
 
 // IntegrationSnowflakeV2ResourceModel describes the resource data model.
 type IntegrationSnowflakeV2ResourceModel struct {
-	AppID               types.String   `tfsdk:"app_id"`
-	CreatedAt           types.String   `tfsdk:"created_at"`
-	DeletedAt           types.String   `tfsdk:"deleted_at"`
-	ID                  types.String   `tfsdk:"id"`
-	UpdatedAt           types.String   `tfsdk:"updated_at"`
-	UserIds             []types.String `tfsdk:"user_ids"`
-	SnowflakeAccountUrl types.String   `tfsdk:"snowflake_account_url"`
-	SnowflakeAccountId  types.String   `tfsdk:"snowflake_account_id"`
-	SnowflakeUserId     types.String   `tfsdk:"snowflake_user_id"`
-	SnowflakePrivateKey types.String   `tfsdk:"snowflake_private_key"`
+	AppID                types.String   `tfsdk:"app_id"`
+	CreatedAt            types.String   `tfsdk:"created_at"`
+	DeletedAt            types.String   `tfsdk:"deleted_at"`
+	ID                   types.String   `tfsdk:"id"`
+	UpdatedAt            types.String   `tfsdk:"updated_at"`
+	UserIds              []types.String `tfsdk:"user_ids"`
+	SnowflakeAccountUrl  types.String   `tfsdk:"snowflake_account_url"`
+	SnowflakeAccountId   types.String   `tfsdk:"snowflake_account_id"`
+	SnowflakeUserId      types.String   `tfsdk:"snowflake_user_id"`
+	SnowflakePrivateKey  types.String   `tfsdk:"snowflake_private_key"`
+	SnowflakeSyncSecrets types.Bool     `tfsdk:"snowflake_sync_secrets"`
 }
 
 func (r *IntegrationSnowflakeV2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -110,6 +111,10 @@ func (r *IntegrationSnowflakeV2Resource) Schema(ctx context.Context, req resourc
 				Optional:    true,
 				Sensitive:   true,
 				Description: `RSA Private Key (PEM Format)`,
+			},
+			"snowflake_sync_secrets": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Sync secrets`,
 			},
 		},
 	}

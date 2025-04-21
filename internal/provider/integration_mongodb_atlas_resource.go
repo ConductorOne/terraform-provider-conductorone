@@ -94,12 +94,12 @@ func (r *IntegrationMongodbAtlasResource) Schema(ctx context.Context, req resour
 			},
 			"mongodbatlas_public_key": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Public Key`,
+				Description: `Public key`,
 			},
 			"mongodbatlas_private_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Private Key`,
+				Description: `Private key`,
 			},
 		},
 	}

@@ -96,7 +96,7 @@ func (r *IntegrationSnykResource) Schema(ctx context.Context, req resource.Schem
 			"snyk_api_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Token`,
+				Description: `API token`,
 			},
 			"snyk_group_id": &schema.StringAttribute{
 				Optional:    true,

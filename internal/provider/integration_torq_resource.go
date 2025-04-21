@@ -99,7 +99,7 @@ func (r *IntegrationTorqResource) Schema(ctx context.Context, req resource.Schem
 			"torq_client_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Client Secret`,
+				Description: `Client secret`,
 			},
 		},
 	}

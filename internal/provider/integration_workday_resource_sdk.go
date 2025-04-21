@@ -119,6 +119,24 @@ func (r *IntegrationWorkdayResourceModel) populateConfig() map[string]interface{
 		configValues["tenant_name"] = tenantName
 	}
 
+	workdayReportUrl := new(string)
+	if !r.WorkdayReportUrl.IsUnknown() && !r.WorkdayReportUrl.IsNull() {
+		*workdayReportUrl = r.WorkdayReportUrl.ValueString()
+		configValues["workday_report_url"] = workdayReportUrl
+	}
+
+	workdayReportUsername := new(string)
+	if !r.WorkdayReportUsername.IsUnknown() && !r.WorkdayReportUsername.IsNull() {
+		*workdayReportUsername = r.WorkdayReportUsername.ValueString()
+		configValues["workday_report_username"] = workdayReportUsername
+	}
+
+	workdayReportUserPassword := new(string)
+	if !r.WorkdayReportUserPassword.IsUnknown() && !r.WorkdayReportUserPassword.IsNull() {
+		*workdayReportUserPassword = r.WorkdayReportUserPassword.ValueString()
+		configValues["workday_report_user_password"] = workdayReportUserPassword
+	}
+
 	return configValues
 }
 
@@ -205,6 +223,18 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromGetResponse(resp *shared.Co
 					}
 				}
 
+				if v, ok := values["workday_report_url"]; ok {
+					if val, ok := v.(string); ok {
+						r.WorkdayReportUrl = types.StringValue(val)
+					}
+				}
+
+				if v, ok := values["workday_report_username"]; ok {
+					if val, ok := v.(string); ok {
+						r.WorkdayReportUsername = types.StringValue(val)
+					}
+				}
+
 			}
 		}
 	}
@@ -263,6 +293,18 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromCreateResponse(resp *shared
 				if v, ok := values["tenant_name"]; ok {
 					if val, ok := v.(string); ok {
 						r.TenantName = types.StringValue(val)
+					}
+				}
+
+				if v, ok := values["workday_report_url"]; ok {
+					if val, ok := v.(string); ok {
+						r.WorkdayReportUrl = types.StringValue(val)
+					}
+				}
+
+				if v, ok := values["workday_report_username"]; ok {
+					if val, ok := v.(string); ok {
+						r.WorkdayReportUsername = types.StringValue(val)
 					}
 				}
 

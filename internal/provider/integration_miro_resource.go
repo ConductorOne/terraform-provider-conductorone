@@ -94,7 +94,7 @@ func (r *IntegrationMiroResource) Schema(ctx context.Context, req resource.Schem
 			"miro_access_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Access Token`,
+				Description: `Access token`,
 			},
 		},
 	}

@@ -45,6 +45,8 @@ type IntegrationJiraCloudResourceModel struct {
 	JiracloudUsername                types.String   `tfsdk:"jiracloud_username"`
 	JiracloudApikey                  types.String   `tfsdk:"jiracloud_apikey"`
 	EnableExternalTicketProvisioning types.Bool     `tfsdk:"enable_external_ticket_provisioning"`
+	JiracloudProjectKeys             []types.String `tfsdk:"jiracloud_project_keys"`
+	JiracloudSkipProjectParticipants types.Bool     `tfsdk:"jiracloud_skip_project_participants"`
 }
 
 func (r *IntegrationJiraCloudResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -110,6 +112,15 @@ func (r *IntegrationJiraCloudResource) Schema(ctx context.Context, req resource.
 			"enable_external_ticket_provisioning": &schema.BoolAttribute{
 				Optional:    true,
 				Description: `Enable external ticket provisioning`,
+			},
+			"jiracloud_project_keys": &schema.ListAttribute{
+				Optional:    true,
+				Description: `Project Keys`,
+				ElementType: types.StringType,
+			},
+			"jiracloud_skip_project_participants": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Skip project participants`,
 			},
 		},
 	}

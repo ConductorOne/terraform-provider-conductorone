@@ -35,17 +35,20 @@ type IntegrationWorkdayResource struct {
 
 // IntegrationWorkdayResourceModel describes the resource data model.
 type IntegrationWorkdayResourceModel struct {
-	AppID               types.String   `tfsdk:"app_id"`
-	CreatedAt           types.String   `tfsdk:"created_at"`
-	DeletedAt           types.String   `tfsdk:"deleted_at"`
-	ID                  types.String   `tfsdk:"id"`
-	UpdatedAt           types.String   `tfsdk:"updated_at"`
-	UserIds             []types.String `tfsdk:"user_ids"`
-	WorkdayClientId     types.String   `tfsdk:"workday_client_id"`
-	WorkdayClientSecret types.String   `tfsdk:"workday_client_secret"`
-	RefreshToken        types.String   `tfsdk:"refresh_token"`
-	WorkdayUrl          types.String   `tfsdk:"workday_url"`
-	TenantName          types.String   `tfsdk:"tenant_name"`
+	AppID                     types.String   `tfsdk:"app_id"`
+	CreatedAt                 types.String   `tfsdk:"created_at"`
+	DeletedAt                 types.String   `tfsdk:"deleted_at"`
+	ID                        types.String   `tfsdk:"id"`
+	UpdatedAt                 types.String   `tfsdk:"updated_at"`
+	UserIds                   []types.String `tfsdk:"user_ids"`
+	WorkdayClientId           types.String   `tfsdk:"workday_client_id"`
+	WorkdayClientSecret       types.String   `tfsdk:"workday_client_secret"`
+	RefreshToken              types.String   `tfsdk:"refresh_token"`
+	WorkdayUrl                types.String   `tfsdk:"workday_url"`
+	TenantName                types.String   `tfsdk:"tenant_name"`
+	WorkdayReportUrl          types.String   `tfsdk:"workday_report_url"`
+	WorkdayReportUsername     types.String   `tfsdk:"workday_report_username"`
+	WorkdayReportUserPassword types.String   `tfsdk:"workday_report_user_password"`
 }
 
 func (r *IntegrationWorkdayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -102,12 +105,12 @@ func (r *IntegrationWorkdayResource) Schema(ctx context.Context, req resource.Sc
 			"workday_client_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Client Secret`,
+				Description: `Client secret`,
 			},
 			"refresh_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Refresh Token`,
+				Description: `Refresh token`,
 			},
 			"workday_url": &schema.StringAttribute{
 				Optional:    true,
@@ -116,6 +119,19 @@ func (r *IntegrationWorkdayResource) Schema(ctx context.Context, req resource.Sc
 			"tenant_name": &schema.StringAttribute{
 				Optional:    true,
 				Description: `Tenant Name`,
+			},
+			"workday_report_url": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Report URL`,
+			},
+			"workday_report_username": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Report Username`,
+			},
+			"workday_report_user_password": &schema.StringAttribute{
+				Optional:    true,
+				Sensitive:   true,
+				Description: `Report User Password`,
 			},
 		},
 	}

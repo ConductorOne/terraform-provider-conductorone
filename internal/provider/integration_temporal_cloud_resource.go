@@ -94,7 +94,7 @@ func (r *IntegrationTemporalCloudResource) Schema(ctx context.Context, req resou
 			"temporal_cloud_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Key`,
+				Description: `API key`,
 			},
 		},
 	}

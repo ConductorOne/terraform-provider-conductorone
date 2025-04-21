@@ -3,8 +3,9 @@ resource "conductorone_integration_snowflake_v2" "snowflake_v2" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  snowflake_account_url = "..."
-  snowflake_account_id  = "..."
-  snowflake_user_id     = "..."
-  snowflake_private_key = "..."
+  snowflake_account_url  = "..."
+  snowflake_account_id   = "..."
+  snowflake_user_id      = "..."
+  snowflake_private_key  = "..."
+  snowflake_sync_secrets = false
 }

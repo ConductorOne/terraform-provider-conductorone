@@ -6,4 +6,5 @@ resource "conductorone_integration_datadog_v2" "datadog_v2" {
   datadog_site            = "..."
   datadog_api_key         = "..."
   datadog_application_key = "..."
+  sync_secrets            = false
 }

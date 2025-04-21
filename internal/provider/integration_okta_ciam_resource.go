@@ -104,7 +104,7 @@ func (r *IntegrationOktaCiamResource) Schema(ctx context.Context, req resource.S
 			},
 			"okta_ciam_email_domains": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Okta Email Domains (optional)`,
+				Description: `Okta email domains - optional`,
 			},
 		},
 	}

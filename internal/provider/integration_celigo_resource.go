@@ -99,7 +99,7 @@ func (r *IntegrationCeligoResource) Schema(ctx context.Context, req resource.Sch
 			"celigo_access_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Access Token`,
+				Description: `Access token`,
 			},
 		},
 	}
