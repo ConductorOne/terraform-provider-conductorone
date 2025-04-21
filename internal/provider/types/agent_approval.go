@@ -5,6 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AgentApproval struct {
-	AgentUserID  types.String `tfsdk:"agent_user_id"`
-	Instructions types.String `tfsdk:"instructions"`
+	AgentUserID  types.String   `tfsdk:"agent_user_id"`
+	Instructions types.String   `tfsdk:"instructions"`
+	PolicyIds    []types.String `tfsdk:"policy_ids"`
 }

@@ -8,6 +8,8 @@ type AgentApproval struct {
 	AgentUserID *string `json:"agentUserId,omitempty"`
 	// Instructions for the agent.
 	Instructions *string `json:"instructions,omitempty"`
+	// The policyIds field.
+	PolicyIds []string `json:"policyIds,omitempty"`
 }
 
 func (o *AgentApproval) GetAgentUserID() *string {
@@ -22,4 +24,11 @@ func (o *AgentApproval) GetInstructions() *string {
 		return nil
 	}
 	return o.Instructions
+}
+
+func (o *AgentApproval) GetPolicyIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.PolicyIds
 }

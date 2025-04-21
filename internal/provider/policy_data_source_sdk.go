@@ -21,6 +21,10 @@ func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Contex
 	} else {
 		displayName = nil
 	}
+	var excludePolicyIds []string = []string{}
+	for _, excludePolicyIdsItem := range r.ExcludePolicyIds {
+		excludePolicyIds = append(excludePolicyIds, excludePolicyIdsItem.ValueString())
+	}
 	includeDeleted := new(bool)
 	if !r.IncludeDeleted.IsUnknown() && !r.IncludeDeleted.IsNull() {
 		*includeDeleted = r.IncludeDeleted.ValueBool()
@@ -50,11 +54,12 @@ func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Contex
 		})
 	}
 	out := shared.SearchPoliciesRequest{
-		DisplayName:    displayName,
-		IncludeDeleted: includeDeleted,
-		PolicyTypes:    policyTypes,
-		Query:          query,
-		Refs:           refs,
+		DisplayName:      displayName,
+		ExcludePolicyIds: excludePolicyIds,
+		IncludeDeleted:   includeDeleted,
+		PolicyTypes:      policyTypes,
+		Query:            query,
+		Refs:             refs,
 	}
 
 	return &out, diags
@@ -92,6 +97,12 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							steps.Approval.AgentApproval = &tfTypes.AgentApproval{}
 							steps.Approval.AgentApproval.AgentUserID = types.StringPointerValue(stepsItem.Approval.AgentApproval.AgentUserID)
 							steps.Approval.AgentApproval.Instructions = types.StringPointerValue(stepsItem.Approval.AgentApproval.Instructions)
+							if stepsItem.Approval.AgentApproval.PolicyIds != nil {
+								steps.Approval.AgentApproval.PolicyIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.PolicyIds))
+								for _, v := range stepsItem.Approval.AgentApproval.PolicyIds {
+									steps.Approval.AgentApproval.PolicyIds = append(steps.Approval.AgentApproval.PolicyIds, types.StringValue(v))
+								}
+							}
 						}
 						steps.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
 						if stepsItem.Approval.AppGroupApproval == nil {

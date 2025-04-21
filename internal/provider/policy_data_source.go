@@ -32,6 +32,7 @@ type PolicyDataSourceModel struct {
 	DeletedAt                types.String                   `tfsdk:"deleted_at"`
 	Description              types.String                   `tfsdk:"description"`
 	DisplayName              types.String                   `tfsdk:"display_name"`
+	ExcludePolicyIds         []types.String                 `tfsdk:"exclude_policy_ids"`
 	ID                       types.String                   `tfsdk:"id"`
 	IncludeDeleted           types.Bool                     `tfsdk:"include_deleted"`
 	NextPageToken            types.String                   `tfsdk:"next_page_token"`
@@ -72,6 +73,11 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				Computed:    true,
 				Optional:    true,
 				Description: `Search for policies with a case insensitive match on the display name.`,
+			},
+			"exclude_policy_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `The policy IDs to exclude from the search.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -116,6 +122,11 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													"instructions": schema.StringAttribute{
 														Computed:    true,
 														Description: `Instructions for the agent.`,
+													},
+													"policy_ids": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `The policyIds field.`,
 													},
 												},
 												Description: `The agent to assign the task to.`,
