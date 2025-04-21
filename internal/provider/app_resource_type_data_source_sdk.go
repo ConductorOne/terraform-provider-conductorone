@@ -10,7 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest() *shared.SearchAppResourceTypesRequest {
+func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest(ctx context.Context) (*shared.SearchAppResourceTypesRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var appIds []string = []string{}
 	for _, appIdsItem := range r.AppIds {
 		appIds = append(appIds, appIdsItem.ValueString())
@@ -57,7 +59,8 @@ func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest()
 		ResourceTypeIds:             resourceTypeIds,
 		ResourceTypeTraitIds:        resourceTypeTraitIds,
 	}
-	return &out
+
+	return &out, diags
 }
 
 func (r *AppResourceTypeDataSourceModel) RefreshFromSharedAppResourceType(ctx context.Context, resp *shared.AppResourceType) diag.Diagnostics {

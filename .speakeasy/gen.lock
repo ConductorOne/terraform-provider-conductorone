@@ -11,7 +11,7 @@ features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
-    core: 3.39.2
+    core: 3.41.1
     deprecations: 2.82.0
     devContainers: 0.0.0
     envVarSecurityUsage: 0.1.0
@@ -472,6 +472,7 @@ generatedFiles:
   - internal/sdk/models/shared/appaccessrequestdefaults1.go
   - internal/sdk/models/shared/appactionsservicegeneratereportrequest.go
   - internal/sdk/models/shared/appactionsservicegeneratereportresponse.go
+  - internal/sdk/models/shared/appentitlement.go
   - internal/sdk/models/shared/appentitlementautomation.go
   - internal/sdk/models/shared/appentitlementautomationinput.go
   - internal/sdk/models/shared/appentitlementautomationlastrunstatus.go
@@ -480,7 +481,6 @@ generatedFiles:
   - internal/sdk/models/shared/appentitlementautomationrulecel.go
   - internal/sdk/models/shared/appentitlementautomationruleentitlement.go
   - internal/sdk/models/shared/appentitlementautomationrulenone.go
-  - internal/sdk/models/shared/appentitlementinput.go
   - internal/sdk/models/shared/appentitlementproxy.go
   - internal/sdk/models/shared/appentitlementproxyview.go
   - internal/sdk/models/shared/appentitlementref.go
@@ -726,7 +726,7 @@ generatedFiles:
   - internal/sdk/models/shared/personalclientservicelistresponse.go
   - internal/sdk/models/shared/personalclientserviceupdaterequest.go
   - internal/sdk/models/shared/personalclientserviceupdateresponse.go
-  - internal/sdk/models/shared/policyinput.go
+  - internal/sdk/models/shared/policy.go
   - internal/sdk/models/shared/policyinstance.go
   - internal/sdk/models/shared/policypostactions.go
   - internal/sdk/models/shared/policyref.go

@@ -6,10 +6,28 @@ import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+func (r *AppEntitlementAutomationDataSourceModel) ToOperationsC1APIAppV1AppEntitlementsGetAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsGetAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appEntitlementID string
+	appEntitlementID = r.AppEntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementsGetAutomationRequest{
+		AppID:            appID,
+		AppEntitlementID: appEntitlementID,
+	}
+
+	return &out, diags
+}
 
 func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlementAutomation(ctx context.Context, resp *shared.AppEntitlementAutomation) diag.Diagnostics {
 	var diags diag.Diagnostics

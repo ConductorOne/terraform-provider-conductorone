@@ -12,9 +12,6 @@ resource "conductorone_policy" "my_policy" {
             agent_approval = {
               agent_user_id = "...my_agent_user_id..."
               instructions  = "...my_instructions..."
-              policy_ids = [
-                "..."
-              ]
             }
             allow_reassignment = false
             app_group_approval = {

@@ -10,8 +10,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -654,15 +652,13 @@ func (r *CustomAppEntitlementResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsCreateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createAppEntitlementRequest := data.ToSharedCreateAppEntitlementRequest()
-	request := operations.C1APIAppV1AppEntitlementsCreateRequest{
-		AppID:                       appID,
-		CreateAppEntitlementRequest: createAppEntitlementRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlements.Create(ctx, request)
+	res, err := r.client.AppEntitlements.Create(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -716,17 +712,13 @@ func (r *CustomAppEntitlementResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsGetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.C1APIAppV1AppEntitlementsGetRequest{
-		AppID: appID,
-		ID:    id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlements.Get(ctx, request)
+	res, err := r.client.AppEntitlements.Get(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -779,30 +771,13 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsUpdateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	var updateAppEntitlementRequest *shared.UpdateAppEntitlementRequest
-	appEntitlement := data.ToSharedAppEntitlementInput()
-	overrideAccessRequestsDefaults := new(bool)
-	if !data.OverrideAccessRequestsDefaults.IsUnknown() && !data.OverrideAccessRequestsDefaults.IsNull() {
-		*overrideAccessRequestsDefaults = data.OverrideAccessRequestsDefaults.ValueBool()
-	} else {
-		overrideAccessRequestsDefaults = nil
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
-		AppEntitlement:                 appEntitlement,
-		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
-	}
-	request := operations.C1APIAppV1AppEntitlementsUpdateRequest{
-		AppID:                       appID,
-		ID:                          id,
-		UpdateAppEntitlementRequest: updateAppEntitlementRequest,
-	}
-	res, err := r.client.AppEntitlements.Update(ctx, request)
+	res, err := r.client.AppEntitlements.Update(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -833,17 +808,13 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var appId1 string
-	appId1 = data.AppID.ValueString()
+	request1, request1Diags := data.ToOperationsC1APIAppV1AppEntitlementsGetRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	var id1 string
-	id1 = data.ID.ValueString()
-
-	request1 := operations.C1APIAppV1AppEntitlementsGetRequest{
-		AppID: appId1,
-		ID:    id1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.AppEntitlements.Get(ctx, request1)
+	res1, err := r.client.AppEntitlements.Get(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -897,17 +868,13 @@ func (r *CustomAppEntitlementResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsDeleteRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.C1APIAppV1AppEntitlementsDeleteRequest{
-		AppID: appID,
-		ID:    id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlements.Delete(ctx, request)
+	res, err := r.client.AppEntitlements.Delete(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
