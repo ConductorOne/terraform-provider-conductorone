@@ -21,11 +21,14 @@ resource "conductorone_integration_workday" "workday" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  workday_client_id     = "..."
-  workday_client_secret = "..."
-  refresh_token         = "..."
-  workday_url           = "..."
-  tenant_name           = "..."
+  workday_client_id            = "..."
+  workday_client_secret        = "..."
+  refresh_token                = "..."
+  workday_url                  = "..."
+  tenant_name                  = "..."
+  workday_report_url           = "..."
+  workday_report_username      = "..."
+  workday_report_user_password = "..."
 }
 ```
 
@@ -38,11 +41,14 @@ resource "conductorone_integration_workday" "workday" {
 
 ### Optional
 
-- `refresh_token` (String, Sensitive) Refresh Token
+- `refresh_token` (String, Sensitive) Refresh token
 - `tenant_name` (String) Tenant Name
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 - `workday_client_id` (String) Client ID
-- `workday_client_secret` (String, Sensitive) Client Secret
+- `workday_client_secret` (String, Sensitive) Client secret
+- `workday_report_url` (String) Report URL
+- `workday_report_user_password` (String, Sensitive) Report User Password
+- `workday_report_username` (String) Report Username
 - `workday_url` (String) Workday URL
 
 ### Read-Only

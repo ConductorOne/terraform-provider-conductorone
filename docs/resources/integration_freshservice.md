@@ -1,29 +1,30 @@
 ---
-page_title: "conductorone_integration_okta_ciam Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_freshservice Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Okta_ciam Integration Resource
+  Freshservice Integration Resource
 ---
 
-# conductorone_integration_okta_ciam (Resource)
+# conductorone_integration_freshservice (Resource)
 
-Okta_ciam Integration Resource
+Freshservice Integration Resource
 
-This resource allows you to configure an instance of the okta_ciam integration in ConductorOne.
+This resource allows you to configure an instance of the freshservice integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_okta_ciam" "okta_ciam" {
-  app_id = conductorone_app.okta_ciam.id
+resource "conductorone_integration_freshservice" "freshservice" {
+  app_id = conductorone_app.freshservice.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  okta_ciam_domain        = "..."
-  okta_ciam_api_token     = "..."
-  okta_ciam_email_domains = "..."
+  domain                              = "..."
+  api_key                             = "..."
+  enable_external_ticket_provisioning = false
+  category_id                         = "..."
 }
 ```
 
@@ -36,9 +37,10 @@ resource "conductorone_integration_okta_ciam" "okta_ciam" {
 
 ### Optional
 
-- `okta_ciam_api_token` (String, Sensitive) API token
-- `okta_ciam_domain` (String) Okta Domain
-- `okta_ciam_email_domains` (String) Okta email domains - optional
+- `api_key` (String, Sensitive) API key
+- `category_id` (String) Category ID
+- `domain` (String) Domain
+- `enable_external_ticket_provisioning` (Boolean) Enable external ticket provisioning
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

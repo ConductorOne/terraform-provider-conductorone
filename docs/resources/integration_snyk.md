@@ -36,7 +36,7 @@ resource "conductorone_integration_snyk" "snyk" {
 
 ### Optional
 
-- `snyk_api_token` (String, Sensitive) API Token
+- `snyk_api_token` (String, Sensitive) API token
 - `snyk_group_id` (String) Group ID
 - `snyk_org_ids` (List of String) Org IDs
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.

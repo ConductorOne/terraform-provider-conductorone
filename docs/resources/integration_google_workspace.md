@@ -40,7 +40,7 @@ resource "conductorone_integration_google_workspace" "google_workspace" {
 - `administrator_email` (String) Administrator email
 - `credentials_json` (String, Sensitive) Credentials (JSON)
 - `customer_id` (String) Customer ID
-- `domain` (String) Domain
+- `domain` (String) Limit to domain
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

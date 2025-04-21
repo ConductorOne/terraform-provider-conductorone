@@ -21,11 +21,12 @@ resource "conductorone_integration_salesforce_v2" "salesforce_v2" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  salesforce_instance_url       = "..."
-  salesforce_username_for_email = false
-  salesforce_username           = "..."
-  salesforce_password           = "..."
-  salesforce_security_token     = "..."
+  salesforce_instance_url        = "..."
+  salesforce_username_for_email  = false
+  salesforce_username            = "..."
+  salesforce_password            = "..."
+  salesforce_security_token      = "..."
+  salesforce_sync_connected_apps = false
 }
 ```
 
@@ -41,6 +42,7 @@ resource "conductorone_integration_salesforce_v2" "salesforce_v2" {
 - `salesforce_instance_url` (String) Domain
 - `salesforce_password` (String, Sensitive) Your Salesforce password
 - `salesforce_security_token` (String, Sensitive) Your Salesforce security token (optional if trusted IP is configured)
+- `salesforce_sync_connected_apps` (Boolean) Sync Connected Apps
 - `salesforce_username` (String) Your Salesforce username
 - `salesforce_username_for_email` (Boolean) Use Salesforce usernames for email
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.

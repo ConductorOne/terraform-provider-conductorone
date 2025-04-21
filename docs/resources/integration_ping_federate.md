@@ -1,29 +1,29 @@
 ---
-page_title: "conductorone_integration_okta_ciam Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_ping_federate Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Okta_ciam Integration Resource
+  Ping_federate Integration Resource
 ---
 
-# conductorone_integration_okta_ciam (Resource)
+# conductorone_integration_ping_federate (Resource)
 
-Okta_ciam Integration Resource
+Ping_federate Integration Resource
 
-This resource allows you to configure an instance of the okta_ciam integration in ConductorOne.
+This resource allows you to configure an instance of the ping_federate integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_okta_ciam" "okta_ciam" {
-  app_id = conductorone_app.okta_ciam.id
+resource "conductorone_integration_ping_federate" "ping_federate" {
+  app_id = conductorone_app.ping_federate.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  okta_ciam_domain        = "..."
-  okta_ciam_api_token     = "..."
-  okta_ciam_email_domains = "..."
+  pingfed_instance_url = "..."
+  pingfed_username     = "..."
+  pingfed_password     = "..."
 }
 ```
 
@@ -36,9 +36,9 @@ resource "conductorone_integration_okta_ciam" "okta_ciam" {
 
 ### Optional
 
-- `okta_ciam_api_token` (String, Sensitive) API token
-- `okta_ciam_domain` (String) Okta Domain
-- `okta_ciam_email_domains` (String) Okta email domains - optional
+- `pingfed_instance_url` (String) Instance URL
+- `pingfed_password` (String, Sensitive) Password
+- `pingfed_username` (String) Username
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

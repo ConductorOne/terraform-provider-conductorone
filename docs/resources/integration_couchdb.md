@@ -1,29 +1,29 @@
 ---
-page_title: "conductorone_integration_okta_ciam Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_couchdb Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Okta_ciam Integration Resource
+  Couchdb Integration Resource
 ---
 
-# conductorone_integration_okta_ciam (Resource)
+# conductorone_integration_couchdb (Resource)
 
-Okta_ciam Integration Resource
+Couchdb Integration Resource
 
-This resource allows you to configure an instance of the okta_ciam integration in ConductorOne.
+This resource allows you to configure an instance of the couchdb integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_okta_ciam" "okta_ciam" {
-  app_id = conductorone_app.okta_ciam.id
+resource "conductorone_integration_couchdb" "couchdb" {
+  app_id = conductorone_app.couchdb.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  okta_ciam_domain        = "..."
-  okta_ciam_api_token     = "..."
-  okta_ciam_email_domains = "..."
+  couchdb_url      = "..."
+  couchdb_username = "..."
+  couchdb_password = "..."
 }
 ```
 
@@ -36,9 +36,9 @@ resource "conductorone_integration_okta_ciam" "okta_ciam" {
 
 ### Optional
 
-- `okta_ciam_api_token` (String, Sensitive) API token
-- `okta_ciam_domain` (String) Okta Domain
-- `okta_ciam_email_domains` (String) Okta email domains - optional
+- `couchdb_password` (String, Sensitive) CouchDB Password
+- `couchdb_url` (String) CouchDB URL
+- `couchdb_username` (String) CouchDB Username
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

@@ -35,7 +35,7 @@ resource "conductorone_integration_celigo" "celigo" {
 
 ### Optional
 
-- `celigo_access_token` (String, Sensitive) Access Token
+- `celigo_access_token` (String, Sensitive) Access token
 - `celigo_region` (String) Region
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

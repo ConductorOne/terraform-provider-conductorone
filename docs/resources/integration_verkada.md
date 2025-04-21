@@ -36,7 +36,7 @@ resource "conductorone_integration_verkada" "verkada" {
 ### Optional
 
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
-- `verkada_api_key` (String, Sensitive) API Key
+- `verkada_api_key` (String, Sensitive) API key
 - `verkada_region` (String) Region
 
 ### Read-Only

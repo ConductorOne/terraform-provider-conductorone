@@ -1,29 +1,30 @@
 ---
-page_title: "conductorone_integration_okta_ciam Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_atlassian Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Okta_ciam Integration Resource
+  Atlassian Integration Resource
 ---
 
-# conductorone_integration_okta_ciam (Resource)
+# conductorone_integration_atlassian (Resource)
 
-Okta_ciam Integration Resource
+Atlassian Integration Resource
 
-This resource allows you to configure an instance of the okta_ciam integration in ConductorOne.
+This resource allows you to configure an instance of the atlassian integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_okta_ciam" "okta_ciam" {
-  app_id = conductorone_app.okta_ciam.id
+resource "conductorone_integration_atlassian" "atlassian" {
+  app_id = conductorone_app.atlassian.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  okta_ciam_domain        = "..."
-  okta_ciam_api_token     = "..."
-  okta_ciam_email_domains = "..."
+  atlassian_user_email      = "..."
+  atlassian_api_token       = "..."
+  atlassian_organization_id = "..."
+  atlassian_site_id         = "..."
 }
 ```
 
@@ -36,9 +37,10 @@ resource "conductorone_integration_okta_ciam" "okta_ciam" {
 
 ### Optional
 
-- `okta_ciam_api_token` (String, Sensitive) API token
-- `okta_ciam_domain` (String) Okta Domain
-- `okta_ciam_email_domains` (String) Okta email domains - optional
+- `atlassian_api_token` (String, Sensitive) API Token
+- `atlassian_organization_id` (String) Organization ID
+- `atlassian_site_id` (String) Site ID (optional)
+- `atlassian_user_email` (String) User Email
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

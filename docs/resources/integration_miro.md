@@ -34,7 +34,7 @@ resource "conductorone_integration_miro" "miro" {
 
 ### Optional
 
-- `miro_access_token` (String, Sensitive) Access Token
+- `miro_access_token` (String, Sensitive) Access token
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

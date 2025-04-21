@@ -35,8 +35,8 @@ resource "conductorone_integration_mongodb_atlas" "mongodb_atlas" {
 
 ### Optional
 
-- `mongodbatlas_private_key` (String, Sensitive) Private Key
-- `mongodbatlas_public_key` (String) Public Key
+- `mongodbatlas_private_key` (String, Sensitive) Private key
+- `mongodbatlas_public_key` (String) Public key
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

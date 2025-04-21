@@ -21,10 +21,11 @@ resource "conductorone_integration_snowflake_v2" "snowflake_v2" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  snowflake_account_url = "..."
-  snowflake_account_id  = "..."
-  snowflake_user_id     = "..."
-  snowflake_private_key = "..."
+  snowflake_account_url  = "..."
+  snowflake_account_id   = "..."
+  snowflake_user_id      = "..."
+  snowflake_private_key  = "..."
+  snowflake_sync_secrets = false
 }
 ```
 
@@ -40,6 +41,7 @@ resource "conductorone_integration_snowflake_v2" "snowflake_v2" {
 - `snowflake_account_id` (String) Account ID / Locator
 - `snowflake_account_url` (String) Account URL
 - `snowflake_private_key` (String, Sensitive) RSA Private Key (PEM Format)
+- `snowflake_sync_secrets` (Boolean) Sync secrets
 - `snowflake_user_id` (String) User identifier
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
