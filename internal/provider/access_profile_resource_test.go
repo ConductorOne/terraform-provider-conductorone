@@ -37,13 +37,13 @@ func TestAccRequestAccessProfileResource(t *testing.T) {
 			{
 				Config: providerConfig + `
 				resource "conductorone_access_profile" "test" {
-					display_name = ""
-					description = ""
+					display_name = "automated-test changed"
+					description = "this is a changed test description"
 					enrollment_behavior = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY"
 					published = false
 					request_bundle = false
-					unenrollment_behavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS"
-					unenrollment_entitlement_behavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS"
+					unenrollment_behavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED"
+					unenrollment_entitlement_behavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE"
 					visible_to_everyone = false
 				}
 				`,
