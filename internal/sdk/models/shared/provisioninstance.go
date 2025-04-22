@@ -65,6 +65,7 @@ func (e *ProvisionInstanceState) UnmarshalJSON(data []byte) error {
 //   - cancelled
 //   - errored
 //   - reassignedByError
+//   - skipped
 type ProvisionInstance struct {
 	// The outcome of a provision instance that is cancelled.
 	CancelledAction *CancelledAction `json:"cancelled,omitempty"`
@@ -78,6 +79,8 @@ type ProvisionInstance struct {
 	Provision *Provision `json:"provision,omitempty"`
 	// The ReassignedByErrorAction object describes the outcome of a policy step that has been reassigned because it had an error provisioning.
 	ReassignedByErrorAction *ReassignedByErrorAction `json:"reassignedByError,omitempty"`
+	// The SkippedAction object describes the outcome of a policy step that has been skipped.
+	SkippedAction *SkippedAction `json:"skipped,omitempty"`
 	// This property indicates the current state of this step.
 	State *ProvisionInstanceState `json:"state,omitempty"`
 }
@@ -122,6 +125,13 @@ func (o *ProvisionInstance) GetReassignedByErrorAction() *ReassignedByErrorActio
 		return nil
 	}
 	return o.ReassignedByErrorAction
+}
+
+func (o *ProvisionInstance) GetSkippedAction() *SkippedAction {
+	if o == nil {
+		return nil
+	}
+	return o.SkippedAction
 }
 
 func (o *ProvisionInstance) GetState() *ProvisionInstanceState {
