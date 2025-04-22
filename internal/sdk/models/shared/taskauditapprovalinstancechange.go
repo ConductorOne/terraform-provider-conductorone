@@ -12,6 +12,7 @@ type TaskAuditApprovalInstanceChange struct {
 	//   - reassigned
 	//   - restarted
 	//   - reassignedByError
+	//   - skipped
 	//
 	ApprovalInstance *ApprovalInstance `json:"instance,omitempty"`
 }

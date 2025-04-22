@@ -51,6 +51,7 @@ func (e *ApprovalInstanceState) UnmarshalJSON(data []byte) error {
 //   - reassigned
 //   - restarted
 //   - reassignedByError
+//   - skipped
 type ApprovalInstance struct {
 	// The Approval message.
 	//
@@ -77,6 +78,8 @@ type ApprovalInstance struct {
 	ReassignedByErrorAction *ReassignedByErrorAction `json:"reassignedByError,omitempty"`
 	// The restart action describes the outcome of policy steps for when the task was restarted. This can be applied to multiple steps since restart skips all pending next steps.
 	RestartAction *RestartAction `json:"restarted,omitempty"`
+	// The SkippedAction object describes the outcome of a policy step that has been skipped.
+	SkippedAction *SkippedAction `json:"skipped,omitempty"`
 	// The state of the approval instance
 	State *ApprovalInstanceState `json:"state,omitempty"`
 }
@@ -121,6 +124,13 @@ func (o *ApprovalInstance) GetRestartAction() *RestartAction {
 		return nil
 	}
 	return o.RestartAction
+}
+
+func (o *ApprovalInstance) GetSkippedAction() *SkippedAction {
+	if o == nil {
+		return nil
+	}
+	return o.SkippedAction
 }
 
 func (o *ApprovalInstance) GetState() *ApprovalInstanceState {

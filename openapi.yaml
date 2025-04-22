@@ -4716,6 +4716,7 @@ components:
                   - reassigned
                   - restarted
                   - reassignedByError
+                  - skipped
             nullable: true
             properties:
                 approval:
@@ -4730,6 +4731,8 @@ components:
                     $ref: '#/components/schemas/c1.api.policy.v1.ReassignedByErrorAction'
                 restarted:
                     $ref: '#/components/schemas/c1.api.policy.v1.RestartAction'
+                skipped:
+                    $ref: '#/components/schemas/c1.api.policy.v1.SkippedAction'
                 state:
                     description: The state of the approval instance
                     enum:
@@ -5414,6 +5417,7 @@ components:
                   - cancelled
                   - errored
                   - reassignedByError
+                  - skipped
             nullable: true
             properties:
                 cancelled:
@@ -5430,6 +5434,8 @@ components:
                     $ref: '#/components/schemas/c1.api.policy.v1.Provision'
                 reassignedByError:
                     $ref: '#/components/schemas/c1.api.policy.v1.ReassignedByErrorAction'
+                skipped:
+                    $ref: '#/components/schemas/c1.api.policy.v1.SkippedAction'
                 state:
                     description: This property indicates the current state of this step.
                     enum:
@@ -5707,6 +5713,25 @@ components:
             title: Self Approval
             type: object
             x-speakeasy-name-override: SelfApproval
+        c1.api.policy.v1.SkippedAction:
+            description: The SkippedAction object describes the outcome of a policy step that has been skipped.
+            nullable: true
+            properties:
+                newPolicyStepId:
+                    description: The ID of the policy step that was created as a result of this skipping.
+                    readOnly: true
+                    type: string
+                skippedAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                userId:
+                    description: The UserID of the user who skipped this step.
+                    readOnly: true
+                    type: string
+            title: Skipped Action
+            type: object
+            x-speakeasy-name-override: SkippedAction
         c1.api.policy.v1.TestAccountProvisionPolicyRequest:
             description: The TestAccountProvisionPolicyRequest message.
             properties:
@@ -5854,6 +5879,7 @@ components:
                 This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
                   - succeeded
                   - timedOut
+                  - skipped
             nullable: true
             properties:
                 commentOnFirstWait:
@@ -5870,6 +5896,8 @@ components:
                     description: The name field.
                     readOnly: false
                     type: string
+                skipped:
+                    $ref: '#/components/schemas/c1.api.policy.v1.SkippedAction'
                 startedWaitingAt:
                     format: date-time
                     readOnly: false
@@ -6038,6 +6066,36 @@ components:
             title: Bundle Automation Rule Entitlement
             type: object
             x-speakeasy-name-override: BundleAutomationRuleEntitlement
+        c1.api.requestcatalog.v1.CreateBundleAutomationRequestInput:
+            description: |
+                The CreateBundleAutomationRequest message.
+
+                This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
+                  - entitlements
+            properties:
+                createTasks:
+                    description: The createTasks field.
+                    readOnly: false
+                    type: boolean
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+                entitlements:
+                    $ref: '#/components/schemas/c1.api.requestcatalog.v1.BundleAutomationRuleEntitlement'
+            title: Create Bundle Automation Request
+            type: object
+            x-speakeasy-name-override: CreateBundleAutomationRequest
+        c1.api.requestcatalog.v1.DeleteBundleAutomationRequestInput:
+            description: The DeleteBundleAutomationRequest message.
+            title: Delete Bundle Automation Request
+            type: object
+            x-speakeasy-name-override: DeleteBundleAutomationRequest
+        c1.api.requestcatalog.v1.DeleteBundleAutomationResponse:
+            description: The DeleteBundleAutomationResponse message.
+            title: Delete Bundle Automation Response
+            type: object
+            x-speakeasy-name-override: DeleteBundleAutomationResponse
         c1.api.requestcatalog.v1.ForceRunBundleAutomationRequestInput:
             description: The ForceRunBundleAutomationRequest message.
             properties:
@@ -7659,6 +7717,7 @@ components:
                             - TASK_ACTION_TYPE_RECALCULATE_APPROVERS_LIST
                             - TASK_ACTION_TYPE_PROCESS_NOW
                             - TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP
+                            - TASK_ACTION_TYPE_SKIP_STEP
                         type: string
                     nullable: true
                     readOnly: true
@@ -7832,6 +7891,7 @@ components:
                         - TASK_ACTION_TYPE_RECALCULATE_APPROVERS_LIST
                         - TASK_ACTION_TYPE_PROCESS_NOW
                         - TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP
+                        - TASK_ACTION_TYPE_SKIP_STEP
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
@@ -8217,6 +8277,24 @@ components:
             title: Task Actions Service Restart Response
             type: object
             x-speakeasy-name-override: TaskActionsServiceRestartResponse
+        c1.api.task.v1.TaskActionsServiceSkipStepRequestInput:
+            description: The TaskActionsServiceSkipStepRequest object lets you skip a policy step in a task.
+            properties:
+                comment:
+                    description: The comment attached to the request.
+                    readOnly: false
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskExpandMask'
+                policyStepId:
+                    description: The ID of the policy step to skip.
+                    readOnly: false
+                    type: string
+            required:
+                - policyStepId
+            title: Task Actions Service Skip Step Request
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceSkipStepRequest
         c1.api.task.v1.TaskAuditAccessRequestOutcome:
             description: The TaskAuditAccessRequestOutcome message.
             nullable: true
@@ -8758,6 +8836,17 @@ components:
             title: Task Audit State Change
             type: object
             x-speakeasy-name-override: TaskAuditStateChange
+        c1.api.task.v1.TaskAuditStepSkipped:
+            description: The TaskAuditStepSkipped message.
+            nullable: true
+            properties:
+                skippedBy:
+                    description: The skippedBy field.
+                    readOnly: false
+                    type: string
+            title: Task Audit Step Skipped
+            type: object
+            x-speakeasy-name-override: TaskAuditStepSkipped
         c1.api.task.v1.TaskAuditStepUpApproval:
             description: The TaskAuditStepUpApproval message.
             nullable: true
@@ -8818,6 +8907,7 @@ components:
                   - waitStepAnalysisTimedOut
                   - stepUpApproval
                   - externalTicketProvisionStepResolved
+                  - stepSkipped
             properties:
                 accessRequestOutcome:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditAccessRequestOutcome'
@@ -8901,6 +8991,8 @@ components:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditRevokeOutcome'
                 stateChange:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditStateChange'
+                stepSkipped:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskAuditStepSkipped'
                 stepUpApproval:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditStepUpApproval'
                 taskCreated:
@@ -15590,6 +15682,36 @@ paths:
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: Update
     /api/v1/catalogs/{request_catalog_id}/bundle_automation:
+        delete:
+            description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.DeleteBundleAutomation method.
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.DeleteBundleAutomation
+            parameters:
+                - in: path
+                  name: request_catalog_id
+                  required: true
+                  schema:
+                    description: The requestCatalogId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.requestcatalog.v1.DeleteBundleAutomationRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.DeleteBundleAutomationResponse'
+                    description: Successful response
+            summary: Delete Bundle Automation
+            tags:
+                - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-resource: BundleAutomation#delete
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: DeleteBundleAutomation
         get:
             description: Get bundle automation
             operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.GetBundleAutomation
@@ -15646,6 +15768,37 @@ paths:
                 terraform-resource: BundleAutomation#update
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: SetBundleAutomation
+    /api/v1/catalogs/{request_catalog_id}/bundle_automation/create:
+        post:
+            description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.CreateBundleAutomation method.
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.CreateBundleAutomation
+            parameters:
+                - in: path
+                  name: request_catalog_id
+                  required: true
+                  schema:
+                    description: The requestCatalogId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.requestcatalog.v1.CreateBundleAutomationRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.BundleAutomation'
+                    description: Successful response
+            summary: Create Bundle Automation
+            tags:
+                - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-resource: BundleAutomation#create
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: CreateBundleAutomation
     /api/v1/catalogs/{request_catalog_id}/bundle_automation/run:
         post:
             description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ForceRunBundleAutomation method.
@@ -17433,6 +17586,35 @@ paths:
                 - Task
             x-speakeasy-group: TaskActions
             x-speakeasy-name-override: Restart
+    /api/v1/tasks/{task_id}/action/skip-step:
+        post:
+            description: Invokes the c1.api.task.v1.TaskActionsService.SkipStep method.
+            operationId: c1.api.task.v1.TaskActionsService.SkipStep
+            parameters:
+                - in: path
+                  name: task_id
+                  required: true
+                  schema:
+                    description: The ID of the task containing the step to skip.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceSkipStepRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.task.v1.TaskServiceActionResponse'
+                    description: Successful response
+            summary: Skip Step
+            tags:
+                - Task
+            x-speakeasy-group: TaskActions
+            x-speakeasy-name-override: SkipStep
     /api/v1/users:
         get:
             description: List users.

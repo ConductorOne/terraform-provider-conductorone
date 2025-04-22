@@ -57,6 +57,7 @@ type PolicyStepInstance struct {
 	//   - reassigned
 	//   - restarted
 	//   - reassignedByError
+	//   - skipped
 	//
 	ApprovalInstance *ApprovalInstance `json:"approval,omitempty"`
 	// The ID of the PolicyStepInstance. This is required by many action submission endpoints to indicate what step you're approving.
@@ -70,6 +71,7 @@ type PolicyStepInstance struct {
 	//   - cancelled
 	//   - errored
 	//   - reassignedByError
+	//   - skipped
 	//
 	ProvisionInstance *ProvisionInstance `json:"provision,omitempty"`
 	// This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
@@ -86,6 +88,7 @@ type PolicyStepInstance struct {
 	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
 	//   - succeeded
 	//   - timedOut
+	//   - skipped
 	//
 	WaitInstance *WaitInstance `json:"wait,omitempty"`
 }
