@@ -6,12 +6,15 @@ import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest() *shared.CreateBundleAutomationRequest {
+func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ctx context.Context) (*shared.CreateBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createTasks := new(bool)
 	if !r.CreateTasks.IsUnknown() && !r.CreateTasks.IsNull() {
 		*createTasks = r.CreateTasks.ValueBool()
@@ -54,7 +57,138 @@ func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest() 
 		Enabled:                         enabled,
 		BundleAutomationRuleEntitlement: bundleAutomationRuleEntitlement,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestCatalogID string
+	requestCatalogID = r.RequestCatalogID.ValueString()
+
+	createBundleAutomationRequest, createBundleAutomationRequestDiags := r.ToSharedCreateBundleAutomationRequest(ctx)
+	diags.Append(createBundleAutomationRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest{
+		RequestCatalogID:              requestCatalogID,
+		CreateBundleAutomationRequest: createBundleAutomationRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest(ctx context.Context) (*shared.SetBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	createTasks := new(bool)
+	if !r.CreateTasks.IsUnknown() && !r.CreateTasks.IsNull() {
+		*createTasks = r.CreateTasks.ValueBool()
+	} else {
+		createTasks = nil
+	}
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	var bundleAutomationRuleEntitlement *shared.BundleAutomationRuleEntitlement
+	if r.BundleAutomationRuleEntitlement != nil {
+		var entitlementRefs []shared.AppEntitlementRef = []shared.AppEntitlementRef{}
+		for _, entitlementRefsItem := range r.BundleAutomationRuleEntitlement.EntitlementRefs {
+			appID := new(string)
+			if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
+				*appID = entitlementRefsItem.AppID.ValueString()
+			} else {
+				appID = nil
+			}
+			id := new(string)
+			if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
+				*id = entitlementRefsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			entitlementRefs = append(entitlementRefs, shared.AppEntitlementRef{
+				AppID: appID,
+				ID:    id,
+			})
+		}
+		bundleAutomationRuleEntitlement = &shared.BundleAutomationRuleEntitlement{
+			EntitlementRefs: entitlementRefs,
+		}
+	}
+	out := shared.SetBundleAutomationRequest{
+		CreateTasks:                     createTasks,
+		Enabled:                         enabled,
+		BundleAutomationRuleEntitlement: bundleAutomationRuleEntitlement,
+	}
+
+	return &out, diags
+}
+
+func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestCatalogID string
+	requestCatalogID = r.RequestCatalogID.ValueString()
+
+	setBundleAutomationRequest, setBundleAutomationRequestDiags := r.ToSharedSetBundleAutomationRequest(ctx)
+	diags.Append(setBundleAutomationRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest{
+		RequestCatalogID:           requestCatalogID,
+		SetBundleAutomationRequest: setBundleAutomationRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *BundleAutomationResourceModel) ToSharedDeleteBundleAutomationRequest(ctx context.Context) (*shared.DeleteBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeleteBundleAutomationRequest{}
+
+	return &out, diags
+}
+
+func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestCatalogID string
+	requestCatalogID = r.RequestCatalogID.ValueString()
+
+	var deleteBundleAutomationRequest *shared.DeleteBundleAutomationRequest
+	if r.DeleteBundleAutomationRequest != nil {
+		deleteBundleAutomationRequest = &shared.DeleteBundleAutomationRequest{}
+	}
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest{
+		RequestCatalogID:              requestCatalogID,
+		DeleteBundleAutomationRequest: deleteBundleAutomationRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestCatalogID string
+	requestCatalogID = r.RequestCatalogID.ValueString()
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest{
+		RequestCatalogID: requestCatalogID,
+	}
+
+	return &out, diags
 }
 
 func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx context.Context, resp *shared.BundleAutomation) diag.Diagnostics {
@@ -105,55 +239,4 @@ func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx co
 	}
 
 	return diags
-}
-
-func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest() *shared.SetBundleAutomationRequest {
-	createTasks := new(bool)
-	if !r.CreateTasks.IsUnknown() && !r.CreateTasks.IsNull() {
-		*createTasks = r.CreateTasks.ValueBool()
-	} else {
-		createTasks = nil
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	var bundleAutomationRuleEntitlement *shared.BundleAutomationRuleEntitlement
-	if r.BundleAutomationRuleEntitlement != nil {
-		var entitlementRefs []shared.AppEntitlementRef = []shared.AppEntitlementRef{}
-		for _, entitlementRefsItem := range r.BundleAutomationRuleEntitlement.EntitlementRefs {
-			appID := new(string)
-			if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
-				*appID = entitlementRefsItem.AppID.ValueString()
-			} else {
-				appID = nil
-			}
-			id := new(string)
-			if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
-				*id = entitlementRefsItem.ID.ValueString()
-			} else {
-				id = nil
-			}
-			entitlementRefs = append(entitlementRefs, shared.AppEntitlementRef{
-				AppID: appID,
-				ID:    id,
-			})
-		}
-		bundleAutomationRuleEntitlement = &shared.BundleAutomationRuleEntitlement{
-			EntitlementRefs: entitlementRefs,
-		}
-	}
-	out := shared.SetBundleAutomationRequest{
-		CreateTasks:                     createTasks,
-		Enabled:                         enabled,
-		BundleAutomationRuleEntitlement: bundleAutomationRuleEntitlement,
-	}
-	return &out
-}
-
-func (r *BundleAutomationResourceModel) ToSharedDeleteBundleAutomationRequest() *shared.DeleteBundleAutomationRequest {
-	out := shared.DeleteBundleAutomationRequest{}
-	return &out
 }

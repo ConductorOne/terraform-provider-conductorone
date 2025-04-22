@@ -12,7 +12,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest() *shared.SearchPoliciesRequest {
+func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Context) (*shared.SearchPoliciesRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	displayName := new(string)
 	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
 		*displayName = r.DisplayName.ValueString()
@@ -59,7 +61,8 @@ func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest() *shared.SearchPo
 		Query:            query,
 		Refs:             refs,
 	}
-	return &out
+
+	return &out, diags
 }
 
 func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, resp *shared.Policy) diag.Diagnostics {

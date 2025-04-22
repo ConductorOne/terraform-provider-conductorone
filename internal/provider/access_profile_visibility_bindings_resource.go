@@ -7,7 +7,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
@@ -122,15 +121,13 @@ func (r *AccessProfileVisibilityBindingsResource) Create(ctx context.Context, re
 		return
 	}
 
-	var catalogID string
-	catalogID = data.CatalogID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	requestCatalogManagementServiceAddAccessEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceAddAccessEntitlementsRequest()
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest{
-		CatalogID: catalogID,
-		RequestCatalogManagementServiceAddAccessEntitlementsRequest: requestCatalogManagementServiceAddAccessEntitlementsRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.AddAccessEntitlements(ctx, request)
+	res, err := r.client.RequestCatalogManagement.AddAccessEntitlements(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -228,15 +225,13 @@ func (r *AccessProfileVisibilityBindingsResource) Delete(ctx context.Context, re
 		return
 	}
 
-	var catalogID string
-	catalogID = data.CatalogID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	requestCatalogManagementServiceRemoveAccessEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceRemoveAccessEntitlementsRequest()
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest{
-		CatalogID: catalogID,
-		RequestCatalogManagementServiceRemoveAccessEntitlementsRequest: requestCatalogManagementServiceRemoveAccessEntitlementsRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.RemoveAccessEntitlements(ctx, request)
+	res, err := r.client.RequestCatalogManagement.RemoveAccessEntitlements(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

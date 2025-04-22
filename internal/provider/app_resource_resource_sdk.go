@@ -6,13 +6,16 @@ import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"time"
 )
 
-func (r *AppResourceResourceModel) ToSharedCreateManuallyManagedAppResourceRequest() *shared.CreateManuallyManagedAppResourceRequest {
+func (r *AppResourceResourceModel) ToSharedCreateManuallyManagedAppResourceRequest(ctx context.Context) (*shared.CreateManuallyManagedAppResourceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -33,40 +36,38 @@ func (r *AppResourceResourceModel) ToSharedCreateManuallyManagedAppResourceReque
 		DisplayName:  displayName,
 		MatchBatonID: matchBatonID,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *AppResourceResourceModel) RefreshFromSharedAppResource(ctx context.Context, resp *shared.AppResource) diag.Diagnostics {
+func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.AppID = types.StringPointerValue(resp.AppID)
-		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		r.GrantCount = types.StringPointerValue(resp.GrantCount)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
-		r.ParentAppResourceID = types.StringPointerValue(resp.ParentAppResourceID)
-		r.ParentAppResourceTypeID = types.StringPointerValue(resp.ParentAppResourceTypeID)
-		if resp.SecretTrait == nil {
-			r.SecretTrait = nil
-		} else {
-			r.SecretTrait = &tfTypes.SecretTrait{}
-			r.SecretTrait.IdentityAppUserID = types.StringPointerValue(resp.SecretTrait.IdentityAppUserID)
-			r.SecretTrait.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.LastUsedAt))
-			r.SecretTrait.SecretCreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.SecretCreatedAt))
-			r.SecretTrait.SecretExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.SecretExpiresAt))
-		}
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appResourceTypeID string
+	appResourceTypeID = r.AppResourceTypeID.ValueString()
+
+	createManuallyManagedAppResourceRequest, createManuallyManagedAppResourceRequestDiags := r.ToSharedCreateManuallyManagedAppResourceRequest(ctx)
+	diags.Append(createManuallyManagedAppResourceRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
 	}
 
-	return diags
+	out := operations.C1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceRequest{
+		AppID:                                   appID,
+		AppResourceTypeID:                       appResourceTypeID,
+		CreateManuallyManagedAppResourceRequest: createManuallyManagedAppResourceRequest,
+	}
+
+	return &out, diags
 }
 
-func (r *AppResourceResourceModel) ToSharedAppResourceInput() *shared.AppResourceInput {
+func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context) (*shared.AppResourceInput, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	appID := new(string)
 	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
 		*appID = r.AppID.ValueString()
@@ -166,5 +167,124 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput() *shared.AppResourc
 		ParentAppResourceTypeID: parentAppResourceTypeID,
 		SecretTrait:             secretTrait,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *AppResourceResourceModel) ToSharedAppResourceServiceUpdateRequest(ctx context.Context) (*shared.AppResourceServiceUpdateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	appResource, appResourceDiags := r.ToSharedAppResourceInput(ctx)
+	diags.Append(appResourceDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := shared.AppResourceServiceUpdateRequest{
+		AppResource: appResource,
+	}
+
+	return &out, diags
+}
+
+func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceUpdateRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceUpdateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appResourceTypeID string
+	appResourceTypeID = r.AppResourceTypeID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	appResourceServiceUpdateRequest, appResourceServiceUpdateRequestDiags := r.ToSharedAppResourceServiceUpdateRequest(ctx)
+	diags.Append(appResourceServiceUpdateRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIAppV1AppResourceServiceUpdateRequest{
+		AppID:                           appID,
+		AppResourceTypeID:               appResourceTypeID,
+		ID:                              id,
+		AppResourceServiceUpdateRequest: appResourceServiceUpdateRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceGetRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceGetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appResourceTypeID string
+	appResourceTypeID = r.AppResourceTypeID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAppV1AppResourceServiceGetRequest{
+		AppID:             appID,
+		AppResourceTypeID: appResourceTypeID,
+		ID:                id,
+	}
+
+	return &out, diags
+}
+
+func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appResourceTypeID string
+	appResourceTypeID = r.AppResourceTypeID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest{
+		AppID:             appID,
+		AppResourceTypeID: appResourceTypeID,
+		ID:                id,
+	}
+
+	return &out, diags
+}
+
+func (r *AppResourceResourceModel) RefreshFromSharedAppResource(ctx context.Context, resp *shared.AppResource) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.AppID = types.StringPointerValue(resp.AppID)
+		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.GrantCount = types.StringPointerValue(resp.GrantCount)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
+		r.ParentAppResourceID = types.StringPointerValue(resp.ParentAppResourceID)
+		r.ParentAppResourceTypeID = types.StringPointerValue(resp.ParentAppResourceTypeID)
+		if resp.SecretTrait == nil {
+			r.SecretTrait = nil
+		} else {
+			r.SecretTrait = &tfTypes.SecretTrait{}
+			r.SecretTrait.IdentityAppUserID = types.StringPointerValue(resp.SecretTrait.IdentityAppUserID)
+			r.SecretTrait.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.LastUsedAt))
+			r.SecretTrait.SecretCreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.SecretCreatedAt))
+			r.SecretTrait.SecretExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.SecretExpiresAt))
+		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
 }

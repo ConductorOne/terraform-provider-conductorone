@@ -3,15 +3,15 @@ id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
   docChecksum: affde78602cd717351039e87816d2e85
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.531.0
-  generationVersion: 2.568.2
-  releaseVersion: 1.1.8
-  configChecksum: 60c754fa5d37cb69bfc710332316d0e7
+  speakeasyVersion: 1.537.0
+  generationVersion: 2.588.0
+  releaseVersion: 1.2.0
+  configChecksum: 3e789f88cb1a550690ba9c21d61ec893
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
-    core: 3.39.2
+    core: 3.41.2
     deprecations: 2.82.0
     devContainers: 0.0.0
     envVarSecurityUsage: 0.1.0
@@ -469,9 +469,10 @@ generatedFiles:
   - internal/sdk/models/shared/addmanuallymanagedusersrequest.go
   - internal/sdk/models/shared/agentapproval.go
   - internal/sdk/models/shared/app.go
-  - internal/sdk/models/shared/appaccessrequestdefaults1.go
+  - internal/sdk/models/shared/appaccessrequestdefaults.go
   - internal/sdk/models/shared/appactionsservicegeneratereportrequest.go
   - internal/sdk/models/shared/appactionsservicegeneratereportresponse.go
+  - internal/sdk/models/shared/appentitlement.go
   - internal/sdk/models/shared/appentitlementautomation.go
   - internal/sdk/models/shared/appentitlementautomationinput.go
   - internal/sdk/models/shared/appentitlementautomationlastrunstatus.go
@@ -480,7 +481,6 @@ generatedFiles:
   - internal/sdk/models/shared/appentitlementautomationrulecel.go
   - internal/sdk/models/shared/appentitlementautomationruleentitlement.go
   - internal/sdk/models/shared/appentitlementautomationrulenone.go
-  - internal/sdk/models/shared/appentitlementinput.go
   - internal/sdk/models/shared/appentitlementproxy.go
   - internal/sdk/models/shared/appentitlementproxyview.go
   - internal/sdk/models/shared/appentitlementref.go
@@ -726,7 +726,7 @@ generatedFiles:
   - internal/sdk/models/shared/personalclientservicelistresponse.go
   - internal/sdk/models/shared/personalclientserviceupdaterequest.go
   - internal/sdk/models/shared/personalclientserviceupdateresponse.go
-  - internal/sdk/models/shared/policyinput.go
+  - internal/sdk/models/shared/policy.go
   - internal/sdk/models/shared/policyinstance.go
   - internal/sdk/models/shared/policypostactions.go
   - internal/sdk/models/shared/policyref.go

@@ -7,7 +7,6 @@ import (
 	"fmt"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -121,7 +120,12 @@ func (r *RiskLevelResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 
-	request := data.ToSharedCreateRiskLevelAttributeValueRequest()
+	request, requestDiags := data.ToSharedCreateRiskLevelAttributeValueRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.Attributes.CreateRiskLevelAttributeValue(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -176,13 +180,13 @@ func (r *RiskLevelResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Attributes.GetRiskLevelAttributeValue(ctx, request)
+	res, err := r.client.Attributes.GetRiskLevelAttributeValue(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -259,13 +263,13 @@ func (r *RiskLevelResource) Delete(ctx context.Context, req resource.DeleteReque
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Attributes.DeleteRiskLevelAttributeValue(ctx, request)
+	res, err := r.client.Attributes.DeleteRiskLevelAttributeValue(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

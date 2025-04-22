@@ -7,7 +7,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -186,15 +185,13 @@ func (r *BundleAutomationResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	var requestCatalogID string
-	requestCatalogID = data.RequestCatalogID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createBundleAutomationRequest := data.ToSharedCreateBundleAutomationRequest()
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest{
-		RequestCatalogID:              requestCatalogID,
-		CreateBundleAutomationRequest: createBundleAutomationRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.CreateBundleAutomation(ctx, request)
+	res, err := r.client.RequestCatalogManagement.CreateBundleAutomation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -248,13 +245,13 @@ func (r *BundleAutomationResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	var requestCatalogID string
-	requestCatalogID = data.RequestCatalogID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest{
-		RequestCatalogID: requestCatalogID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.GetBundleAutomation(ctx, request)
+	res, err := r.client.RequestCatalogManagement.GetBundleAutomation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -307,15 +304,13 @@ func (r *BundleAutomationResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	var requestCatalogID string
-	requestCatalogID = data.RequestCatalogID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	setBundleAutomationRequest := data.ToSharedSetBundleAutomationRequest()
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest{
-		RequestCatalogID:           requestCatalogID,
-		SetBundleAutomationRequest: setBundleAutomationRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.SetBundleAutomation(ctx, request)
+	res, err := r.client.RequestCatalogManagement.SetBundleAutomation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -369,15 +364,13 @@ func (r *BundleAutomationResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	var requestCatalogID string
-	requestCatalogID = data.RequestCatalogID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	deleteBundleAutomationRequest := data.ToSharedDeleteBundleAutomationRequest()
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest{
-		RequestCatalogID:              requestCatalogID,
-		DeleteBundleAutomationRequest: deleteBundleAutomationRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.DeleteBundleAutomation(ctx, request)
+	res, err := r.client.RequestCatalogManagement.DeleteBundleAutomation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -6,8 +6,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -189,7 +187,12 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	request := data.ToSharedCreateAppRequest()
+	request, requestDiags := data.ToSharedCreateAppRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.Apps.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -221,13 +224,13 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var id string
-	id = data.ID.ValueString()
+	request1, request1Diags := data.ToOperationsC1APIAppV1AppsGetRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	request1 := operations.C1APIAppV1AppsGetRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.Apps.Get(ctx, request1)
+	res1, err := r.client.Apps.Get(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -281,13 +284,13 @@ func (r *AppResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppsGetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIAppV1AppsGetRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Apps.Get(ctx, request)
+	res, err := r.client.Apps.Get(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -340,19 +343,13 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppsUpdateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var updateAppRequest *shared.UpdateAppRequest
-	app := data.ToSharedAppInput()
-	updateAppRequest = &shared.UpdateAppRequest{
-		App: app,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	request := operations.C1APIAppV1AppsUpdateRequest{
-		ID:               id,
-		UpdateAppRequest: updateAppRequest,
-	}
-	res, err := r.client.Apps.Update(ctx, request)
+	res, err := r.client.Apps.Update(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -383,13 +380,13 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var id1 string
-	id1 = data.ID.ValueString()
+	request1, request1Diags := data.ToOperationsC1APIAppV1AppsGetRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	request1 := operations.C1APIAppV1AppsGetRequest{
-		ID: id1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.Apps.Get(ctx, request1)
+	res1, err := r.client.Apps.Get(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -443,13 +440,13 @@ func (r *AppResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppsDeleteRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIAppV1AppsDeleteRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Apps.Delete(ctx, request)
+	res, err := r.client.Apps.Delete(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
