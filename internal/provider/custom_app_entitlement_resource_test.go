@@ -61,7 +61,6 @@ func TestAccCustomAppEntitlementResource(t *testing.T) {
 					description                    = "Terraform generated admin role"
 					compliance_framework_value_ids = [resource.conductorone_compliance_framework.soc2.id]
 					purpose                        = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
-					duration_grant                 = "3601s"
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -151,9 +150,6 @@ func TestAccCustomAppEntitlementResource(t *testing.T) {
 					resource.TestCheckResourceAttrPair("conductorone_custom_app_entitlement.test", "compliance_framework_value_ids.0",
 						"conductorone_compliance_framework.soc2", "id"),
 					resource.TestCheckResourceAttr("conductorone_custom_app_entitlement.test", "purpose", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"),
-
-					// Check if "duration_grant" is null or unset
-					resource.TestCheckNoResourceAttr("conductorone_custom_app_entitlement.test", "duration_grant"),
 				),
 			},
 		},
