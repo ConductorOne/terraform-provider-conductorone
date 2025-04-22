@@ -11,7 +11,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *UserDataSourceModel) ToSharedSearchUsersRequest() *shared.SearchUsersRequest {
+func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*shared.SearchUsersRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	email := new(string)
 	if !r.Email.IsUnknown() && !r.Email.IsNull() {
 		*email = r.Email.ValueString()
@@ -66,7 +68,8 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest() *shared.SearchUsersRe
 		RoleIds:      roleIds,
 		UserStatuses: userStatuses,
 	}
-	return &out
+
+	return &out, diags
 }
 
 func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *shared.User) diag.Diagnostics {

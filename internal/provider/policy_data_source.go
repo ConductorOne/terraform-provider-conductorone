@@ -653,7 +653,12 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		return
 	}
 
-	request := data.ToSharedSearchPoliciesRequest()
+	request, requestDiags := data.ToSharedSearchPoliciesRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.PolicySearch.Search(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())

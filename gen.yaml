@@ -21,9 +21,10 @@ generation:
   mockServer:
     disabled: true
 terraform:
-  version: 1.1.7
+  version: 1.2.0
   additionalDataSources: []
   additionalDependencies: {}
+  additionalEphemeralResources: []
   additionalProviderAttributes:
     httpHeaders: ""
   additionalResources:

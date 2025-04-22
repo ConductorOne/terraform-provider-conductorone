@@ -7,7 +7,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -156,13 +155,13 @@ func (r *BundleAutomationDataSource) Read(ctx context.Context, req datasource.Re
 		return
 	}
 
-	var requestCatalogID string
-	requestCatalogID = data.RequestCatalogID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest{
-		RequestCatalogID: requestCatalogID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.GetBundleAutomation(ctx, request)
+	res, err := r.client.RequestCatalogManagement.GetBundleAutomation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -5,10 +5,70 @@ package provider
 import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServiceRotateCredentialRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceRotateCredentialRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var connectorID string
+	connectorID = r.ConnectorID.ValueString()
+
+	out := operations.C1APIAppV1ConnectorServiceRotateCredentialRequest{
+		AppID:       appID,
+		ConnectorID: connectorID,
+	}
+
+	return &out, diags
+}
+
+func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceGetCredentialsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var connectorID string
+	connectorID = r.ConnectorID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAppV1ConnectorServiceGetCredentialsRequest{
+		AppID:       appID,
+		ConnectorID: connectorID,
+		ID:          id,
+	}
+
+	return &out, diags
+}
+
+func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServiceRevokeCredentialRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var connectorID string
+	connectorID = r.ConnectorID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest{
+		AppID:       appID,
+		ConnectorID: connectorID,
+		ID:          id,
+	}
+
+	return &out, diags
+}
 
 func (r *ConnectorCredentialResourceModel) RefreshFromSharedConnectorCredential(ctx context.Context, resp *shared.ConnectorCredential) diag.Diagnostics {
 	var diags diag.Diagnostics

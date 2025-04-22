@@ -36,6 +36,7 @@ TF_REATTACH_PROVIDERS=... terraform apply
 * [conductorone_app_resource_type](docs/resources/app_resource_type.md)
 * [conductorone_app_entitlement_owner](docs/resources/app_entitlement_owner.md)
 * [conductorone_app_owner](docs/resources/app_owner.md)
+* [conductorone_bundle_automation](docs/resources/bundle_automation.md)
 * [conductorone_compliance_framework](docs/resources/compliance_framework.md)
 * [conductorone_connector_credential](docs/resources/connector_credential.md)
 * [conductorone_custom_app_entitlement](docs/resources/custom_app_entitlement.md)
@@ -136,7 +137,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.1.7"
+      version = "1.2.0"
     }
   }
 }

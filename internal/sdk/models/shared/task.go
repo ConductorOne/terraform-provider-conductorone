@@ -35,6 +35,7 @@ const (
 	ActionsTaskActionTypeRecalculateApproversList                 Actions = "TASK_ACTION_TYPE_RECALCULATE_APPROVERS_LIST"
 	ActionsTaskActionTypeProcessNow                               Actions = "TASK_ACTION_TYPE_PROCESS_NOW"
 	ActionsTaskActionTypeApproveWithStepUp                        Actions = "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP"
+	ActionsTaskActionTypeSkipStep                                 Actions = "TASK_ACTION_TYPE_SKIP_STEP"
 )
 
 func (e Actions) ToPointer() *Actions {
@@ -91,6 +92,8 @@ func (e *Actions) UnmarshalJSON(data []byte) error {
 	case "TASK_ACTION_TYPE_PROCESS_NOW":
 		fallthrough
 	case "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP":
+		fallthrough
+	case "TASK_ACTION_TYPE_SKIP_STEP":
 		*e = Actions(v)
 		return nil
 	default:

@@ -11,8 +11,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
@@ -262,23 +260,13 @@ func (r *AppEntitlementAutomationResource) Create(ctx context.Context, req resou
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsCreateAutomationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var appEntitlementID string
-	appEntitlementID = data.AppEntitlementID.ValueString()
-
-	var createAutomationRequest *shared.CreateAutomationRequest
-	appEntitlementAutomation := data.ToSharedAppEntitlementAutomationInput()
-	createAutomationRequest = &shared.CreateAutomationRequest{
-		AppEntitlementAutomation: appEntitlementAutomation,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	request := operations.C1APIAppV1AppEntitlementsCreateAutomationRequest{
-		AppID:                   appID,
-		AppEntitlementID:        appEntitlementID,
-		CreateAutomationRequest: createAutomationRequest,
-	}
-	res, err := r.client.AppEntitlements.CreateAutomation(ctx, request)
+	res, err := r.client.AppEntitlements.CreateAutomation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -332,17 +320,13 @@ func (r *AppEntitlementAutomationResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsGetAutomationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var appEntitlementID string
-	appEntitlementID = data.AppEntitlementID.ValueString()
-
-	request := operations.C1APIAppV1AppEntitlementsGetAutomationRequest{
-		AppID:            appID,
-		AppEntitlementID: appEntitlementID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlements.GetAutomation(ctx, request)
+	res, err := r.client.AppEntitlements.GetAutomation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -395,19 +379,13 @@ func (r *AppEntitlementAutomationResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsUpdateAutomationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var appEntitlementID string
-	appEntitlementID = data.AppEntitlementID.ValueString()
-
-	appEntitlementServiceUpdateAutomationRequest := data.ToSharedAppEntitlementServiceUpdateAutomationRequest()
-	request := operations.C1APIAppV1AppEntitlementsUpdateAutomationRequest{
-		AppID:            appID,
-		AppEntitlementID: appEntitlementID,
-		AppEntitlementServiceUpdateAutomationRequest: appEntitlementServiceUpdateAutomationRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlements.UpdateAutomation(ctx, request)
+	res, err := r.client.AppEntitlements.UpdateAutomation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -438,17 +416,13 @@ func (r *AppEntitlementAutomationResource) Update(ctx context.Context, req resou
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var appId1 string
-	appId1 = data.AppID.ValueString()
+	request1, request1Diags := data.ToOperationsC1APIAppV1AppEntitlementsGetAutomationRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	var appEntitlementId1 string
-	appEntitlementId1 = data.AppEntitlementID.ValueString()
-
-	request1 := operations.C1APIAppV1AppEntitlementsGetAutomationRequest{
-		AppID:            appId1,
-		AppEntitlementID: appEntitlementId1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.AppEntitlements.GetAutomation(ctx, request1)
+	res1, err := r.client.AppEntitlements.GetAutomation(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -502,17 +476,13 @@ func (r *AppEntitlementAutomationResource) Delete(ctx context.Context, req resou
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsDeleteAutomationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var appEntitlementID string
-	appEntitlementID = data.AppEntitlementID.ValueString()
-
-	request := operations.C1APIAppV1AppEntitlementsDeleteAutomationRequest{
-		AppID:            appID,
-		AppEntitlementID: appEntitlementID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlements.DeleteAutomation(ctx, request)
+	res, err := r.client.AppEntitlements.DeleteAutomation(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

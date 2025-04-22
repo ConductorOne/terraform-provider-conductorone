@@ -116,6 +116,7 @@ func (e *TaskAuditViewEventType) UnmarshalJSON(data []byte) error {
 //   - waitStepAnalysisTimedOut
 //   - stepUpApproval
 //   - externalTicketProvisionStepResolved
+//   - stepSkipped
 type TaskAuditView struct {
 	// The TaskAuditAccessRequestOutcome message.
 	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
@@ -186,6 +187,8 @@ type TaskAuditView struct {
 	TaskAuditRevokeOutcome *TaskAuditRevokeOutcome `json:"revokeOutcome,omitempty"`
 	// The TaskAuditStateChange message.
 	TaskAuditStateChange *TaskAuditStateChange `json:"stateChange,omitempty"`
+	// The TaskAuditStepSkipped message.
+	TaskAuditStepSkipped *TaskAuditStepSkipped `json:"stepSkipped,omitempty"`
 	// The TaskAuditStepUpApproval message.
 	TaskAuditStepUpApproval *TaskAuditStepUpApproval `json:"stepUpApproval,omitempty"`
 	// The TaskAuditNewTask message.
@@ -459,6 +462,13 @@ func (o *TaskAuditView) GetTaskAuditStateChange() *TaskAuditStateChange {
 		return nil
 	}
 	return o.TaskAuditStateChange
+}
+
+func (o *TaskAuditView) GetTaskAuditStepSkipped() *TaskAuditStepSkipped {
+	if o == nil {
+		return nil
+	}
+	return o.TaskAuditStepSkipped
 }
 
 func (o *TaskAuditView) GetTaskAuditStepUpApproval() *TaskAuditStepUpApproval {

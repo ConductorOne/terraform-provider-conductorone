@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: cba1fb7cdc93e54f1c6819d77c5c8e0e
+  docChecksum: 3ee4b794f0188e845cb449c66eba9070
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.531.0
-  generationVersion: 2.568.2
-  releaseVersion: 1.1.7
-  configChecksum: f91148421451762b23d3ae062dfbd91c
+  speakeasyVersion: 1.535.1
+  generationVersion: 2.585.2
+  releaseVersion: 1.2.0
+  configChecksum: 3e789f88cb1a550690ba9c21d61ec893
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
-    core: 3.39.2
+    core: 3.41.1
     deprecations: 2.82.0
     devContainers: 0.0.0
     envVarSecurityUsage: 0.1.0
@@ -60,6 +60,8 @@ generatedFiles:
   - examples/resources/conductorone_app_resource/resource.tf
   - examples/resources/conductorone_app_resource_type/import.sh
   - examples/resources/conductorone_app_resource_type/resource.tf
+  - examples/resources/conductorone_bundle_automation/import.sh
+  - examples/resources/conductorone_bundle_automation/resource.tf
   - examples/resources/conductorone_compliance_framework/import.sh
   - examples/resources/conductorone_compliance_framework/resource.tf
   - examples/resources/conductorone_connector_credential/import.sh
@@ -124,6 +126,8 @@ generatedFiles:
   - internal/provider/aws_external_id_data_source_sdk.go
   - internal/provider/bundleautomation_data_source.go
   - internal/provider/bundleautomation_data_source_sdk.go
+  - internal/provider/bundleautomation_resource.go
+  - internal/provider/bundleautomation_resource_sdk.go
   - internal/provider/compliance_framework_data_source.go
   - internal/provider/compliance_framework_data_source_sdk.go
   - internal/provider/compliance_framework_resource.go
@@ -181,6 +185,7 @@ generatedFiles:
   - internal/provider/types/create_app_entitlement_request_duration_unset.go
   - internal/provider/types/default_behavior.go
   - internal/provider/types/delegated_provision.go
+  - internal/provider/types/delete_bundle_automation_request.go
   - internal/provider/types/deprovisioner_policy.go
   - internal/provider/types/entitlement_owner_approval.go
   - internal/provider/types/expression_approval.go
@@ -374,7 +379,9 @@ generatedFiles:
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceaddaccessentitlements.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceaddappentitlements.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicecreate.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicecreatebundleautomation.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicedelete.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicedeletebundleautomation.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceforcerunbundleautomation.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceget.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicegetbundleautomation.go
@@ -419,6 +426,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apitaskv1taskactionsserviceprocessnow.go
   - internal/sdk/models/operations/c1apitaskv1taskactionsservicereassign.go
   - internal/sdk/models/operations/c1apitaskv1taskactionsservicerestart.go
+  - internal/sdk/models/operations/c1apitaskv1taskactionsserviceskipstep.go
   - internal/sdk/models/operations/c1apitaskv1taskauditlist.go
   - internal/sdk/models/operations/c1apitaskv1tasksearchservicesearch.go
   - internal/sdk/models/operations/c1apitaskv1taskservicecreategranttask.go
@@ -464,6 +472,7 @@ generatedFiles:
   - internal/sdk/models/shared/appaccessrequestdefaults.go
   - internal/sdk/models/shared/appactionsservicegeneratereportrequest.go
   - internal/sdk/models/shared/appactionsservicegeneratereportresponse.go
+  - internal/sdk/models/shared/appentitlement.go
   - internal/sdk/models/shared/appentitlementautomation.go
   - internal/sdk/models/shared/appentitlementautomationinput.go
   - internal/sdk/models/shared/appentitlementautomationlastrunstatus.go
@@ -472,7 +481,6 @@ generatedFiles:
   - internal/sdk/models/shared/appentitlementautomationrulecel.go
   - internal/sdk/models/shared/appentitlementautomationruleentitlement.go
   - internal/sdk/models/shared/appentitlementautomationrulenone.go
-  - internal/sdk/models/shared/appentitlementinput.go
   - internal/sdk/models/shared/appentitlementproxy.go
   - internal/sdk/models/shared/appentitlementproxyview.go
   - internal/sdk/models/shared/appentitlementref.go
@@ -515,9 +523,9 @@ generatedFiles:
   - internal/sdk/models/shared/approvalinstance.go
   - internal/sdk/models/shared/approvedaction.go
   - internal/sdk/models/shared/appusagecontrols.go
+  - internal/sdk/models/shared/appuser.go
   - internal/sdk/models/shared/appusercreatedtrigger.go
   - internal/sdk/models/shared/appusercredential.go
-  - internal/sdk/models/shared/appuserinput.go
   - internal/sdk/models/shared/appuserref.go
   - internal/sdk/models/shared/appuserservicelistcredentialsresponse.go
   - internal/sdk/models/shared/appuserservicelistresponse.go
@@ -577,6 +585,7 @@ generatedFiles:
   - internal/sdk/models/shared/createattributevalueresponse.go
   - internal/sdk/models/shared/createautomationrequest.go
   - internal/sdk/models/shared/createautomationresponse.go
+  - internal/sdk/models/shared/createbundleautomationrequest.go
   - internal/sdk/models/shared/createcomplianceframeworkattributevaluerequest.go
   - internal/sdk/models/shared/createcomplianceframeworkattributevalueresponse.go
   - internal/sdk/models/shared/createmanuallymanagedappresourcerequest.go
@@ -604,6 +613,8 @@ generatedFiles:
   - internal/sdk/models/shared/deleteattributevalueresponse.go
   - internal/sdk/models/shared/deleteautomationrequest.go
   - internal/sdk/models/shared/deleteautomationresponse.go
+  - internal/sdk/models/shared/deletebundleautomationrequest.go
+  - internal/sdk/models/shared/deletebundleautomationresponse.go
   - internal/sdk/models/shared/deletecomplianceframeworkattributevaluerequest.go
   - internal/sdk/models/shared/deletecomplianceframeworkattributevalueresponse.go
   - internal/sdk/models/shared/deletemanuallymanagedappresourcerequest.go
@@ -715,7 +726,7 @@ generatedFiles:
   - internal/sdk/models/shared/personalclientservicelistresponse.go
   - internal/sdk/models/shared/personalclientserviceupdaterequest.go
   - internal/sdk/models/shared/personalclientserviceupdateresponse.go
-  - internal/sdk/models/shared/policyinput.go
+  - internal/sdk/models/shared/policy.go
   - internal/sdk/models/shared/policyinstance.go
   - internal/sdk/models/shared/policypostactions.go
   - internal/sdk/models/shared/policyref.go
@@ -814,6 +825,7 @@ generatedFiles:
   - internal/sdk/models/shared/setappownersrequest.go
   - internal/sdk/models/shared/setappownersresponse.go
   - internal/sdk/models/shared/setbundleautomationrequest.go
+  - internal/sdk/models/shared/skippedaction.go
   - internal/sdk/models/shared/status.go
   - internal/sdk/models/shared/stepupmicrosoftsettings.go
   - internal/sdk/models/shared/stepupoauth2settings.go
@@ -845,6 +857,7 @@ generatedFiles:
   - internal/sdk/models/shared/taskactionsservicereassignresponse.go
   - internal/sdk/models/shared/taskactionsservicerestartrequest.go
   - internal/sdk/models/shared/taskactionsservicerestartresponse.go
+  - internal/sdk/models/shared/taskactionsserviceskipsteprequest.go
   - internal/sdk/models/shared/taskauditaccessrequestoutcome.go
   - internal/sdk/models/shared/taskauditactionsubmitted.go
   - internal/sdk/models/shared/taskauditapprovalautoacceptedbypolicy.go
@@ -880,6 +893,7 @@ generatedFiles:
   - internal/sdk/models/shared/taskauditrevokeoutcome.go
   - internal/sdk/models/shared/taskauditstartedconnectoractions.go
   - internal/sdk/models/shared/taskauditstatechange.go
+  - internal/sdk/models/shared/taskauditstepskipped.go
   - internal/sdk/models/shared/taskauditstepupapproval.go
   - internal/sdk/models/shared/taskauditsuccessresult.go
   - internal/sdk/models/shared/taskauditview.go
@@ -2459,6 +2473,30 @@ examples:
       parameters:
         path:
           id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.DeleteBundleAutomation:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-delete-bundle-automation:
+      parameters:
+        path:
+          request_catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.CreateBundleAutomation:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-create-bundle-automation:
+      parameters:
+        path:
+          request_catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskActionsService.SkipStep:
+    speakeasy-default-c1-api-task-v1-task-actions-service-skip-step:
+      parameters:
+        path:
+          task_id: "<id>"
       responses:
         "200":
           application/json: {}

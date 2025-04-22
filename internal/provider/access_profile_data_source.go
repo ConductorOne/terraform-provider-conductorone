@@ -7,7 +7,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -153,13 +152,13 @@ func (r *AccessProfileDataSource) Read(ctx context.Context, req datasource.ReadR
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.Get(ctx, request)
+	res, err := r.client.RequestCatalogManagement.Get(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

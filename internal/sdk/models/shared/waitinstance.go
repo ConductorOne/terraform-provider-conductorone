@@ -50,6 +50,7 @@ func (e *WaitInstanceState) UnmarshalJSON(data []byte) error {
 // This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
 //   - succeeded
 //   - timedOut
+//   - skipped
 type WaitInstance struct {
 	// The comment to post on first failed check.
 	CommentOnFirstWait *string `json:"commentOnFirstWait,omitempty"`
@@ -58,8 +59,10 @@ type WaitInstance struct {
 	// Used by the policy engine to describe an instantiated condition to wait on.
 	WaitConditionInstance *WaitConditionInstance `json:"condition,omitempty"`
 	// The name field.
-	Name             *string    `json:"name,omitempty"`
-	StartedWaitingAt *time.Time `json:"startedWaitingAt,omitempty"`
+	Name *string `json:"name,omitempty"`
+	// The SkippedAction object describes the outcome of a policy step that has been skipped.
+	SkippedAction    *SkippedAction `json:"skipped,omitempty"`
+	StartedWaitingAt *time.Time     `json:"startedWaitingAt,omitempty"`
 	// The state field.
 	State *WaitInstanceState `json:"state,omitempty"`
 	// The ConditionSucceeded message.
@@ -107,6 +110,13 @@ func (o *WaitInstance) GetName() *string {
 		return nil
 	}
 	return o.Name
+}
+
+func (o *WaitInstance) GetSkippedAction() *SkippedAction {
+	if o == nil {
+		return nil
+	}
+	return o.SkippedAction
 }
 
 func (o *WaitInstance) GetStartedWaitingAt() *time.Time {
