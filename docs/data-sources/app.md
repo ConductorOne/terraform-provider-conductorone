@@ -49,6 +49,7 @@ data "conductorone_app" "my_app" {
 - `app_account_id` (String) The ID of the Account named by AccountName.
 - `app_account_name` (String) The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
 - `certify_policy_id` (String) The ID of the Certify Policy associated with this App.
+- `connector_version` (Number) The connectorVersion field.
 - `created_at` (String)
 - `deleted_at` (String)
 - `description` (String) The app's description.
