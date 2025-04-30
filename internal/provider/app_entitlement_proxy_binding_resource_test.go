@@ -171,20 +171,20 @@ func TestAccAppEntitlementProxyBindingResource(t *testing.T) {
 				}
 
 				resource "conductorone_app_entitlement_proxy_binding" "test" {
-					src_app_entitlement_id = conductorone_custom_app_entitlement.test-one.id
-					src_app_id = conductorone_custom_app_entitlement.test-one.app_id
-					dst_app_entitlement_id = conductorone_custom_app_entitlement.test-two.id
-					dst_app_id = conductorone_custom_app_entitlement.test-two.app_id
+					src_app_entitlement_id = conductorone_custom_app_entitlement.test-two.id
+					src_app_id = conductorone_custom_app_entitlement.test-two.app_id
+					dst_app_entitlement_id = conductorone_custom_app_entitlement.test-one.id
+					dst_app_id = conductorone_custom_app_entitlement.test-one.app_id
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttrPair("conductorone_custom_app_entitlement.test-one", "app_id",
-						"conductorone_app_entitlement_proxy_binding.test", "src_app_id"),
-					resource.TestCheckResourceAttrPair("conductorone_custom_app_entitlement.test-one", "id",
-						"conductorone_app_entitlement_proxy_binding.test", "src_app_entitlement_id"),
 					resource.TestCheckResourceAttrPair("conductorone_custom_app_entitlement.test-two", "app_id",
-						"conductorone_app_entitlement_proxy_binding.test", "dst_app_id"),
+						"conductorone_app_entitlement_proxy_binding.test", "src_app_id"),
 					resource.TestCheckResourceAttrPair("conductorone_custom_app_entitlement.test-two", "id",
+						"conductorone_app_entitlement_proxy_binding.test", "src_app_entitlement_id"),
+					resource.TestCheckResourceAttrPair("conductorone_custom_app_entitlement.test-one", "app_id",
+						"conductorone_app_entitlement_proxy_binding.test", "dst_app_id"),
+					resource.TestCheckResourceAttrPair("conductorone_custom_app_entitlement.test-one", "id",
 						"conductorone_app_entitlement_proxy_binding.test", "dst_app_entitlement_id"),
 				),
 			},
