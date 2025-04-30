@@ -12,7 +12,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearchRequest() *shared.AppEntitlementSearchServiceSearchRequest {
+func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearchRequest(ctx context.Context) (*shared.AppEntitlementSearchServiceSearchRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	accessReviewID := new(string)
 	if !r.AccessReviewID.IsUnknown() && !r.AccessReviewID.IsNull() {
 		*accessReviewID = r.AccessReviewID.ValueString()
@@ -25,29 +27,47 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 	} else {
 		alias = nil
 	}
-	var appIds []string = []string{}
-	for _, appIdsItem := range r.AppIds {
-		appIds = append(appIds, appIdsItem.ValueString())
+	var appIds []string
+	if r.AppIds != nil {
+		appIds = make([]string, 0, len(r.AppIds))
+		for _, appIdsItem := range r.AppIds {
+			appIds = append(appIds, appIdsItem.ValueString())
+		}
 	}
-	var appUserIds []string = []string{}
-	for _, appUserIdsItem := range r.AppUserIds {
-		appUserIds = append(appUserIds, appUserIdsItem.ValueString())
+	var appUserIds []string
+	if r.AppUserIds != nil {
+		appUserIds = make([]string, 0, len(r.AppUserIds))
+		for _, appUserIdsItem := range r.AppUserIds {
+			appUserIds = append(appUserIds, appUserIdsItem.ValueString())
+		}
 	}
-	var complianceFrameworkIds []string = []string{}
-	for _, complianceFrameworkIdsItem := range r.ComplianceFrameworkIds {
-		complianceFrameworkIds = append(complianceFrameworkIds, complianceFrameworkIdsItem.ValueString())
+	var complianceFrameworkIds []string
+	if r.ComplianceFrameworkIds != nil {
+		complianceFrameworkIds = make([]string, 0, len(r.ComplianceFrameworkIds))
+		for _, complianceFrameworkIdsItem := range r.ComplianceFrameworkIds {
+			complianceFrameworkIds = append(complianceFrameworkIds, complianceFrameworkIdsItem.ValueString())
+		}
 	}
-	var excludeAppIds []string = []string{}
-	for _, excludeAppIdsItem := range r.ExcludeAppIds {
-		excludeAppIds = append(excludeAppIds, excludeAppIdsItem.ValueString())
+	var excludeAppIds []string
+	if r.ExcludeAppIds != nil {
+		excludeAppIds = make([]string, 0, len(r.ExcludeAppIds))
+		for _, excludeAppIdsItem := range r.ExcludeAppIds {
+			excludeAppIds = append(excludeAppIds, excludeAppIdsItem.ValueString())
+		}
 	}
-	var excludeAppUserIds []string = []string{}
-	for _, excludeAppUserIdsItem := range r.ExcludeAppUserIds {
-		excludeAppUserIds = append(excludeAppUserIds, excludeAppUserIdsItem.ValueString())
+	var excludeAppUserIds []string
+	if r.ExcludeAppUserIds != nil {
+		excludeAppUserIds = make([]string, 0, len(r.ExcludeAppUserIds))
+		for _, excludeAppUserIdsItem := range r.ExcludeAppUserIds {
+			excludeAppUserIds = append(excludeAppUserIds, excludeAppUserIdsItem.ValueString())
+		}
 	}
-	var excludeResourceTypeIds []string = []string{}
-	for _, excludeResourceTypeIdsItem := range r.ExcludeResourceTypeIds {
-		excludeResourceTypeIds = append(excludeResourceTypeIds, excludeResourceTypeIdsItem.ValueString())
+	var excludeResourceTypeIds []string
+	if r.ExcludeResourceTypeIds != nil {
+		excludeResourceTypeIds = make([]string, 0, len(r.ExcludeResourceTypeIds))
+		for _, excludeResourceTypeIdsItem := range r.ExcludeResourceTypeIds {
+			excludeResourceTypeIds = append(excludeResourceTypeIds, excludeResourceTypeIdsItem.ValueString())
+		}
 	}
 	includeDeleted := new(bool)
 	if !r.IncludeDeleted.IsUnknown() && !r.IncludeDeleted.IsNull() {
@@ -61,9 +81,12 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 	} else {
 		isAutomated = nil
 	}
-	var membershipType []shared.MembershipType = []shared.MembershipType{}
-	for _, membershipTypeItem := range r.MembershipType {
-		membershipType = append(membershipType, shared.MembershipType(membershipTypeItem.ValueString()))
+	var membershipType []shared.MembershipType
+	if r.MembershipType != nil {
+		membershipType = make([]shared.MembershipType, 0, len(r.MembershipType))
+		for _, membershipTypeItem := range r.MembershipType {
+			membershipType = append(membershipType, shared.MembershipType(membershipTypeItem.ValueString()))
+		}
 	}
 	onlyGetExpiring := new(bool)
 	if !r.OnlyGetExpiring.IsUnknown() && !r.OnlyGetExpiring.IsNull() {
@@ -77,40 +100,55 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 	} else {
 		query = nil
 	}
-	var refs []shared.AppEntitlementRef = []shared.AppEntitlementRef{}
-	for _, refsItem := range r.Refs {
-		appID := new(string)
-		if !refsItem.AppID.IsUnknown() && !refsItem.AppID.IsNull() {
-			*appID = refsItem.AppID.ValueString()
-		} else {
-			appID = nil
+	var refs []shared.AppEntitlementRef
+	if r.Refs != nil {
+		refs = make([]shared.AppEntitlementRef, 0, len(r.Refs))
+		for _, refsItem := range r.Refs {
+			appID := new(string)
+			if !refsItem.AppID.IsUnknown() && !refsItem.AppID.IsNull() {
+				*appID = refsItem.AppID.ValueString()
+			} else {
+				appID = nil
+			}
+			id := new(string)
+			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
+				*id = refsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			refs = append(refs, shared.AppEntitlementRef{
+				AppID: appID,
+				ID:    id,
+			})
 		}
-		id := new(string)
-		if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-			*id = refsItem.ID.ValueString()
-		} else {
-			id = nil
+	}
+	var resourceIds []string
+	if r.ResourceIds != nil {
+		resourceIds = make([]string, 0, len(r.ResourceIds))
+		for _, resourceIdsItem := range r.ResourceIds {
+			resourceIds = append(resourceIds, resourceIdsItem.ValueString())
 		}
-		refs = append(refs, shared.AppEntitlementRef{
-			AppID: appID,
-			ID:    id,
-		})
 	}
-	var resourceIds []string = []string{}
-	for _, resourceIdsItem := range r.ResourceIds {
-		resourceIds = append(resourceIds, resourceIdsItem.ValueString())
+	var resourceTraitIds []string
+	if r.ResourceTraitIds != nil {
+		resourceTraitIds = make([]string, 0, len(r.ResourceTraitIds))
+		for _, resourceTraitIdsItem := range r.ResourceTraitIds {
+			resourceTraitIds = append(resourceTraitIds, resourceTraitIdsItem.ValueString())
+		}
 	}
-	var resourceTraitIds []string = []string{}
-	for _, resourceTraitIdsItem := range r.ResourceTraitIds {
-		resourceTraitIds = append(resourceTraitIds, resourceTraitIdsItem.ValueString())
+	var resourceTypeIds []string
+	if r.ResourceTypeIds != nil {
+		resourceTypeIds = make([]string, 0, len(r.ResourceTypeIds))
+		for _, resourceTypeIdsItem := range r.ResourceTypeIds {
+			resourceTypeIds = append(resourceTypeIds, resourceTypeIdsItem.ValueString())
+		}
 	}
-	var resourceTypeIds []string = []string{}
-	for _, resourceTypeIdsItem := range r.ResourceTypeIds {
-		resourceTypeIds = append(resourceTypeIds, resourceTypeIdsItem.ValueString())
-	}
-	var riskLevelIds []string = []string{}
-	for _, riskLevelIdsItem := range r.RiskLevelIds {
-		riskLevelIds = append(riskLevelIds, riskLevelIdsItem.ValueString())
+	var riskLevelIds []string
+	if r.RiskLevelIds != nil {
+		riskLevelIds = make([]string, 0, len(r.RiskLevelIds))
+		for _, riskLevelIdsItem := range r.RiskLevelIds {
+			riskLevelIds = append(riskLevelIds, riskLevelIdsItem.ValueString())
+		}
 	}
 	sourceConnectorID := new(string)
 	if !r.SourceConnectorID.IsUnknown() && !r.SourceConnectorID.IsNull() {
@@ -139,7 +177,8 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 		RiskLevelIds:           riskLevelIds,
 		SourceConnectorID:      sourceConnectorID,
 	}
-	return &out
+
+	return &out, diags
 }
 
 func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx context.Context, resp *shared.AppEntitlement) diag.Diagnostics {
@@ -178,6 +217,22 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
 					}
 					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID)
+					if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
+						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
+					} else {
+						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
+					}
+					if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
+						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
+					} else {
+						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
+						if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
+							r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+							for _, v := range resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+								r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
+							}
+						}
+					}
 					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SchemaID)
 				}
 				if resp.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior == nil {
@@ -221,6 +276,11 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 				multiStepResult, _ := json.Marshal(resp.DeprovisionerPolicy.MultiStep)
 				r.DeprovisionerPolicy.MultiStep = types.StringValue(string(multiStepResult))
 			}
+			if resp.DeprovisionerPolicy.UnconfiguredProvision == nil {
+				r.DeprovisionerPolicy.UnconfiguredProvision = nil
+			} else {
+				r.DeprovisionerPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
+			}
 			if resp.DeprovisionerPolicy.WebhookProvision == nil {
 				r.DeprovisionerPolicy.WebhookProvision = nil
 			} else {
@@ -263,6 +323,22 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
 					}
 					r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
+					if resp.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
+						r.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
+					} else {
+						r.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
+					}
+					if resp.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
+						r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
+					} else {
+						r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
+						if resp.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
+							r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+							for _, v := range resp.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+								r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
+							}
+						}
+					}
 					r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
 				}
 				if resp.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
@@ -305,6 +381,11 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 			} else {
 				multiStepResult1, _ := json.Marshal(resp.ProvisionPolicy.MultiStep)
 				r.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult1))
+			}
+			if resp.ProvisionPolicy.UnconfiguredProvision == nil {
+				r.ProvisionPolicy.UnconfiguredProvision = nil
+			} else {
+				r.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
 			}
 			if resp.ProvisionPolicy.WebhookProvision == nil {
 				r.ProvisionPolicy.WebhookProvision = nil

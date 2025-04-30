@@ -31,6 +31,7 @@ type AppDataSourceModel struct {
 	AppAccountName                      types.String   `tfsdk:"app_account_name"`
 	AppIds                              []types.String `tfsdk:"app_ids"`
 	CertifyPolicyID                     types.String   `tfsdk:"certify_policy_id"`
+	ConnectorVersion                    types.Int64    `tfsdk:"connector_version"`
 	CreatedAt                           types.String   `tfsdk:"created_at"`
 	DeletedAt                           types.String   `tfsdk:"deleted_at"`
 	Description                         types.String   `tfsdk:"description"`
@@ -79,6 +80,10 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the Certify Policy associated with this App.`,
+			},
+			"connector_version": schema.Int64Attribute{
+				Computed:    true,
+				Description: `The connectorVersion field.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -199,7 +204,12 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		return
 	}
 
-	request := data.ToSharedSearchAppsRequest()
+	request, requestDiags := data.ToSharedSearchAppsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.AppSearch.Search(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -210,10 +220,6 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

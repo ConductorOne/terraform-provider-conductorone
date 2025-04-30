@@ -4,19 +4,51 @@ package provider
 
 import (
 	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
-func (r *AppEntitlementOwnerResourceModel) ToSharedSetAppEntitlementOwnersRequest() *shared.SetAppEntitlementOwnersRequest {
-	var userIds []string = []string{}
-	for _, userIdsItem := range r.UserIds {
-		userIds = append(userIds, userIdsItem.ValueString())
+func (r *AppEntitlementOwnerResourceModel) ToSharedSetAppEntitlementOwnersRequest(ctx context.Context) (*shared.SetAppEntitlementOwnersRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var userIds []string
+	if r.UserIds != nil {
+		userIds = make([]string, 0, len(r.UserIds))
+		for _, userIdsItem := range r.UserIds {
+			userIds = append(userIds, userIdsItem.ValueString())
+		}
 	}
 	out := shared.SetAppEntitlementOwnersRequest{
 		UserIds: userIds,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *AppEntitlementOwnerResourceModel) ToOperationsC1APIAppV1AppEntitlementOwnersSetRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementOwnersSetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var entitlementID string
+	entitlementID = r.EntitlementID.ValueString()
+
+	setAppEntitlementOwnersRequest, setAppEntitlementOwnersRequestDiags := r.ToSharedSetAppEntitlementOwnersRequest(ctx)
+	diags.Append(setAppEntitlementOwnersRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIAppV1AppEntitlementOwnersSetRequest{
+		AppID:                          appID,
+		EntitlementID:                  entitlementID,
+		SetAppEntitlementOwnersRequest: setAppEntitlementOwnersRequest,
+	}
+
+	return &out, diags
 }
 
 func (r *AppEntitlementOwnerResourceModel) RefreshFromSharedSetAppEntitlementOwnersResponse(ctx context.Context, resp *shared.SetAppEntitlementOwnersResponse) diag.Diagnostics {

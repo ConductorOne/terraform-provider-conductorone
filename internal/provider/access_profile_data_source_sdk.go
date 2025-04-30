@@ -5,10 +5,24 @@ package provider
 import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+func (r *AccessProfileDataSourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
 
 func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalog(ctx context.Context, resp *shared.RequestCatalog) diag.Diagnostics {
 	var diags diag.Diagnostics

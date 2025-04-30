@@ -6,6 +6,7 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Approval struct {
 	AgentApproval             *AgentApproval            `tfsdk:"agent_approval"`
+	AllowedReassignees        []types.String            `tfsdk:"allowed_reassignees"`
 	AllowReassignment         types.Bool                `tfsdk:"allow_reassignment"`
 	AppGroupApproval          *AppGroupApproval         `tfsdk:"app_group_approval"`
 	AppOwnerApproval          *AppOwnerApproval         `tfsdk:"app_owner_approval"`

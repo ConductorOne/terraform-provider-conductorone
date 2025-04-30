@@ -23,7 +23,9 @@ type Workflow struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The id field.
-	ID             *string    `json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
+	// The isDraft field.
+	IsDraft        *bool      `json:"isDraft,omitempty"`
 	LastExecutedAt *time.Time `json:"lastExecutedAt,omitempty"`
 	// The triggers field.
 	Triggers []WorkflowTrigger `json:"triggers,omitempty"`
@@ -96,6 +98,13 @@ func (o *Workflow) GetID() *string {
 		return nil
 	}
 	return o.ID
+}
+
+func (o *Workflow) GetIsDraft() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IsDraft
 }
 
 func (o *Workflow) GetLastExecutedAt() *time.Time {

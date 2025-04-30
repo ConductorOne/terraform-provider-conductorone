@@ -6,10 +6,18 @@ type AccountProvisionConfig struct {
 }
 
 // The AccountProvision message.
+//
+// This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:
+//   - saveToVault
+//   - doNotSave
 type AccountProvision struct {
 	Config *AccountProvisionConfig `json:"config,omitempty"`
 	// The connectorId field.
 	ConnectorID *string `json:"connectorId,omitempty"`
+	// The DoNotSave message.
+	DoNotSave *DoNotSave `json:"doNotSave,omitempty"`
+	// The SaveToVault message.
+	SaveToVault *SaveToVault `json:"saveToVault,omitempty"`
 	// The schemaId field.
 	SchemaID *string `json:"schemaId,omitempty"`
 }
@@ -26,6 +34,20 @@ func (o *AccountProvision) GetConnectorID() *string {
 		return nil
 	}
 	return o.ConnectorID
+}
+
+func (o *AccountProvision) GetDoNotSave() *DoNotSave {
+	if o == nil {
+		return nil
+	}
+	return o.DoNotSave
+}
+
+func (o *AccountProvision) GetSaveToVault() *SaveToVault {
+	if o == nil {
+		return nil
+	}
+	return o.SaveToVault
 }
 
 func (o *AccountProvision) GetSchemaID() *string {

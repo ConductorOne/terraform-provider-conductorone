@@ -10,8 +10,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -192,19 +190,13 @@ func (r *AppResourceResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var appResourceTypeID string
-	appResourceTypeID = data.AppResourceTypeID.ValueString()
-
-	createManuallyManagedAppResourceRequest := data.ToSharedCreateManuallyManagedAppResourceRequest()
-	request := operations.C1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceRequest{
-		AppID:                                   appID,
-		AppResourceTypeID:                       appResourceTypeID,
-		CreateManuallyManagedAppResourceRequest: createManuallyManagedAppResourceRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppResource.CreateManuallyManagedAppResource(ctx, request)
+	res, err := r.client.AppResource.CreateManuallyManagedAppResource(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -258,21 +250,13 @@ func (r *AppResourceResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceServiceGetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var appResourceTypeID string
-	appResourceTypeID = data.AppResourceTypeID.ValueString()
-
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.C1APIAppV1AppResourceServiceGetRequest{
-		AppID:             appID,
-		AppResourceTypeID: appResourceTypeID,
-		ID:                id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppResource.Get(ctx, request)
+	res, err := r.client.AppResource.Get(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -325,27 +309,13 @@ func (r *AppResourceResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceServiceUpdateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var appResourceTypeID string
-	appResourceTypeID = data.AppResourceTypeID.ValueString()
-
-	var id string
-	id = data.ID.ValueString()
-
-	var appResourceServiceUpdateRequest *shared.AppResourceServiceUpdateRequest
-	appResource := data.ToSharedAppResourceInput()
-	appResourceServiceUpdateRequest = &shared.AppResourceServiceUpdateRequest{
-		AppResource: appResource,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	request := operations.C1APIAppV1AppResourceServiceUpdateRequest{
-		AppID:                           appID,
-		AppResourceTypeID:               appResourceTypeID,
-		ID:                              id,
-		AppResourceServiceUpdateRequest: appResourceServiceUpdateRequest,
-	}
-	res, err := r.client.AppResource.Update(ctx, request)
+	res, err := r.client.AppResource.Update(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -376,21 +346,13 @@ func (r *AppResourceResource) Update(ctx context.Context, req resource.UpdateReq
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var appId1 string
-	appId1 = data.AppID.ValueString()
+	request1, request1Diags := data.ToOperationsC1APIAppV1AppResourceServiceGetRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	var appResourceTypeId1 string
-	appResourceTypeId1 = data.AppResourceTypeID.ValueString()
-
-	var id1 string
-	id1 = data.ID.ValueString()
-
-	request1 := operations.C1APIAppV1AppResourceServiceGetRequest{
-		AppID:             appId1,
-		AppResourceTypeID: appResourceTypeId1,
-		ID:                id1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.AppResource.Get(ctx, request1)
+	res1, err := r.client.AppResource.Get(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -444,21 +406,13 @@ func (r *AppResourceResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var appResourceTypeID string
-	appResourceTypeID = data.AppResourceTypeID.ValueString()
-
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest{
-		AppID:             appID,
-		AppResourceTypeID: appResourceTypeID,
-		ID:                id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppResource.DeleteManuallyManagedAppResource(ctx, request)
+	res, err := r.client.AppResource.DeleteManuallyManagedAppResource(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

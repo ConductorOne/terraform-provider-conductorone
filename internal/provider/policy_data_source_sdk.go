@@ -12,16 +12,21 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest() *shared.SearchPoliciesRequest {
+func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Context) (*shared.SearchPoliciesRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	displayName := new(string)
 	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
 		*displayName = r.DisplayName.ValueString()
 	} else {
 		displayName = nil
 	}
-	var excludePolicyIds []string = []string{}
-	for _, excludePolicyIdsItem := range r.ExcludePolicyIds {
-		excludePolicyIds = append(excludePolicyIds, excludePolicyIdsItem.ValueString())
+	var excludePolicyIds []string
+	if r.ExcludePolicyIds != nil {
+		excludePolicyIds = make([]string, 0, len(r.ExcludePolicyIds))
+		for _, excludePolicyIdsItem := range r.ExcludePolicyIds {
+			excludePolicyIds = append(excludePolicyIds, excludePolicyIdsItem.ValueString())
+		}
 	}
 	includeDeleted := new(bool)
 	if !r.IncludeDeleted.IsUnknown() && !r.IncludeDeleted.IsNull() {
@@ -29,9 +34,12 @@ func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest() *shared.SearchPo
 	} else {
 		includeDeleted = nil
 	}
-	var policyTypes []shared.PolicyTypes = []shared.PolicyTypes{}
-	for _, policyTypesItem := range r.PolicyTypes {
-		policyTypes = append(policyTypes, shared.PolicyTypes(policyTypesItem.ValueString()))
+	var policyTypes []shared.PolicyTypes
+	if r.PolicyTypes != nil {
+		policyTypes = make([]shared.PolicyTypes, 0, len(r.PolicyTypes))
+		for _, policyTypesItem := range r.PolicyTypes {
+			policyTypes = append(policyTypes, shared.PolicyTypes(policyTypesItem.ValueString()))
+		}
 	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
@@ -39,17 +47,20 @@ func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest() *shared.SearchPo
 	} else {
 		query = nil
 	}
-	var refs []shared.PolicyRef = []shared.PolicyRef{}
-	for _, refsItem := range r.Refs {
-		id := new(string)
-		if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-			*id = refsItem.ID.ValueString()
-		} else {
-			id = nil
+	var refs []shared.PolicyRef
+	if r.Refs != nil {
+		refs = make([]shared.PolicyRef, 0, len(r.Refs))
+		for _, refsItem := range r.Refs {
+			id := new(string)
+			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
+				*id = refsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			refs = append(refs, shared.PolicyRef{
+				ID: id,
+			})
 		}
-		refs = append(refs, shared.PolicyRef{
-			ID: id,
-		})
 	}
 	out := shared.SearchPoliciesRequest{
 		DisplayName:      displayName,
@@ -59,7 +70,8 @@ func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest() *shared.SearchPo
 		Query:            query,
 		Refs:             refs,
 	}
-	return &out
+
+	return &out, diags
 }
 
 func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, resp *shared.Policy) diag.Diagnostics {
@@ -99,6 +111,12 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 								for _, v := range stepsItem.Approval.AgentApproval.PolicyIds {
 									steps.Approval.AgentApproval.PolicyIds = append(steps.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 								}
+							}
+						}
+						if stepsItem.Approval.AllowedReassignees != nil {
+							steps.Approval.AllowedReassignees = make([]types.String, 0, len(stepsItem.Approval.AllowedReassignees))
+							for _, v := range stepsItem.Approval.AllowedReassignees {
+								steps.Approval.AllowedReassignees = append(steps.Approval.AllowedReassignees, types.StringValue(v))
 							}
 						}
 						steps.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
@@ -258,6 +276,22 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
 									}
 									steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
+									if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
+										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
+									} else {
+										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
+									}
+									if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
+										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
+									} else {
+										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
+										if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
+											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+											for _, v := range stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+												steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
+											}
+										}
+									}
 									steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
 								}
 								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
@@ -300,6 +334,11 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								multiStepResult, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.MultiStep)
 								steps.Provision.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult))
+							}
+							if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
+								steps.Provision.ProvisionPolicy.UnconfiguredProvision = nil
+							} else {
+								steps.Provision.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
 							}
 							if stepsItem.Provision.ProvisionPolicy.WebhookProvision == nil {
 								steps.Provision.ProvisionPolicy.WebhookProvision = nil

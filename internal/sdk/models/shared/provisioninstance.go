@@ -73,6 +73,10 @@ type ProvisionInstance struct {
 	CompletedAction *CompletedAction `json:"completed,omitempty"`
 	// The outcome of a provision instance that has errored.
 	ErroredAction *ErroredAction `json:"errored,omitempty"`
+	// This indicates the external ticket id for this step.
+	ExternalTicketID *string `json:"externalTicketId,omitempty"`
+	// This indicates the external ticket provisioner config id for this step.
+	ExternalTicketProvisionerConfigID *string `json:"externalTicketProvisionerConfigId,omitempty"`
 	// This indicates the notification id for this step.
 	NotificationID *string `json:"notificationId,omitempty"`
 	// The provision step references a provision policy for this step.
@@ -83,6 +87,10 @@ type ProvisionInstance struct {
 	SkippedAction *SkippedAction `json:"skipped,omitempty"`
 	// This property indicates the current state of this step.
 	State *ProvisionInstanceState `json:"state,omitempty"`
+	// This indicates the webhook id for this step.
+	WebhookID *string `json:"webhookId,omitempty"`
+	// This indicates the webhook instance id for this step.
+	WebhookInstanceID *string `json:"webhookInstanceId,omitempty"`
 }
 
 func (o *ProvisionInstance) GetCancelledAction() *CancelledAction {
@@ -104,6 +112,20 @@ func (o *ProvisionInstance) GetErroredAction() *ErroredAction {
 		return nil
 	}
 	return o.ErroredAction
+}
+
+func (o *ProvisionInstance) GetExternalTicketID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ExternalTicketID
+}
+
+func (o *ProvisionInstance) GetExternalTicketProvisionerConfigID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ExternalTicketProvisionerConfigID
 }
 
 func (o *ProvisionInstance) GetNotificationID() *string {
@@ -139,4 +161,18 @@ func (o *ProvisionInstance) GetState() *ProvisionInstanceState {
 		return nil
 	}
 	return o.State
+}
+
+func (o *ProvisionInstance) GetWebhookID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.WebhookID
+}
+
+func (o *ProvisionInstance) GetWebhookInstanceID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.WebhookInstanceID
 }

@@ -9,8 +9,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -152,15 +150,13 @@ func (r *AppResourceTypeResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createManuallyManagedResourceTypeRequest := data.ToSharedCreateManuallyManagedResourceTypeRequest()
-	request := operations.C1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeRequest{
-		AppID:                                    appID,
-		CreateManuallyManagedResourceTypeRequest: createManuallyManagedResourceTypeRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppResourceType.CreateManuallyManagedResourceType(ctx, request)
+	res, err := r.client.AppResourceType.CreateManuallyManagedResourceType(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -191,17 +187,13 @@ func (r *AppResourceTypeResource) Create(ctx context.Context, req resource.Creat
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var appId1 string
-	appId1 = data.AppID.ValueString()
+	request1, request1Diags := data.ToOperationsC1APIAppV1AppResourceTypeServiceGetRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	request1 := operations.C1APIAppV1AppResourceTypeServiceGetRequest{
-		AppID: appId1,
-		ID:    id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.AppResourceType.Get(ctx, request1)
+	res1, err := r.client.AppResourceType.Get(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -255,17 +247,13 @@ func (r *AppResourceTypeResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceTypeServiceGetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.C1APIAppV1AppResourceTypeServiceGetRequest{
-		AppID: appID,
-		ID:    id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppResourceType.Get(ctx, request)
+	res, err := r.client.AppResourceType.Get(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -318,23 +306,13 @@ func (r *AppResourceTypeResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	var updateManuallyManagedResourceTypeRequest *shared.UpdateManuallyManagedResourceTypeRequest
-	appResourceType := data.ToSharedAppResourceTypeInput()
-	updateManuallyManagedResourceTypeRequest = &shared.UpdateManuallyManagedResourceTypeRequest{
-		AppResourceType: appResourceType,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	request := operations.C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest{
-		AppID:                                    appID,
-		ID:                                       id,
-		UpdateManuallyManagedResourceTypeRequest: updateManuallyManagedResourceTypeRequest,
-	}
-	res, err := r.client.AppResourceType.UpdateManuallyManagedResourceType(ctx, request)
+	res, err := r.client.AppResourceType.UpdateManuallyManagedResourceType(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -365,17 +343,13 @@ func (r *AppResourceTypeResource) Update(ctx context.Context, req resource.Updat
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var appId1 string
-	appId1 = data.AppID.ValueString()
+	request1, request1Diags := data.ToOperationsC1APIAppV1AppResourceTypeServiceGetRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	var id1 string
-	id1 = data.ID.ValueString()
-
-	request1 := operations.C1APIAppV1AppResourceTypeServiceGetRequest{
-		AppID: appId1,
-		ID:    id1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.AppResourceType.Get(ctx, request1)
+	res1, err := r.client.AppResourceType.Get(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -429,17 +403,13 @@ func (r *AppResourceTypeResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest{
-		AppID: appID,
-		ID:    id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppResourceType.DeleteManuallyManagedResourceType(ctx, request)
+	res, err := r.client.AppResourceType.DeleteManuallyManagedResourceType(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -10,30 +10,36 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest() *shared.WebhooksSearchRequest {
+func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest(ctx context.Context) (*shared.WebhooksSearchRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
 	} else {
 		query = nil
 	}
-	var refs []shared.WebhookRef = []shared.WebhookRef{}
-	for _, refsItem := range r.Refs {
-		id := new(string)
-		if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-			*id = refsItem.ID.ValueString()
-		} else {
-			id = nil
+	var refs []shared.WebhookRef
+	if r.Refs != nil {
+		refs = make([]shared.WebhookRef, 0, len(r.Refs))
+		for _, refsItem := range r.Refs {
+			id := new(string)
+			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
+				*id = refsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			refs = append(refs, shared.WebhookRef{
+				ID: id,
+			})
 		}
-		refs = append(refs, shared.WebhookRef{
-			ID: id,
-		})
 	}
 	out := shared.WebhooksSearchRequest{
 		Query: query,
 		Refs:  refs,
 	}
-	return &out
+
+	return &out, diags
 }
 
 func (r *WebhookDataSourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {

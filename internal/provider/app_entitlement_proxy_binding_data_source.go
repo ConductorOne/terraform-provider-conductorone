@@ -7,7 +7,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -125,25 +124,13 @@ func (r *AppEntitlementProxyBindingDataSource) Read(ctx context.Context, req dat
 		return
 	}
 
-	var srcAppID string
-	srcAppID = data.SrcAppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var srcAppEntitlementID string
-	srcAppEntitlementID = data.SrcAppEntitlementID.ValueString()
-
-	var dstAppID string
-	dstAppID = data.DstAppID.ValueString()
-
-	var dstAppEntitlementID string
-	dstAppEntitlementID = data.DstAppEntitlementID.ValueString()
-
-	request := operations.C1APIAppV1AppEntitlementsProxyGetRequest{
-		SrcAppID:            srcAppID,
-		SrcAppEntitlementID: srcAppEntitlementID,
-		DstAppID:            dstAppID,
-		DstAppEntitlementID: dstAppEntitlementID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppEntitlementsProxy.Get(ctx, request)
+	res, err := r.client.AppEntitlementsProxy.Get(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -153,10 +140,6 @@ func (r *AppEntitlementProxyBindingDataSource) Read(ctx context.Context, req dat
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

@@ -11,6 +11,7 @@ package shared
 //   - webhook
 //   - multiStep
 //   - externalTicket
+//   - unconfigured
 type ProvisionPolicy struct {
 	// Indicates that a connector should perform the provisioning. This object has no fields.
 	//
@@ -27,6 +28,8 @@ type ProvisionPolicy struct {
 	ManualProvision *ManualProvision `json:"manual,omitempty"`
 	// MultiStep indicates that this provision step has multiple steps to process.
 	MultiStep any `json:"multiStep,omitempty"`
+	// The UnconfiguredProvision message.
+	UnconfiguredProvision *UnconfiguredProvision `json:"unconfigured,omitempty"`
 	// This provision step indicates that a webhook should be called to provision this entitlement.
 	WebhookProvision *WebhookProvision `json:"webhook,omitempty"`
 }
@@ -64,6 +67,13 @@ func (o *ProvisionPolicy) GetMultiStep() any {
 		return nil
 	}
 	return o.MultiStep
+}
+
+func (o *ProvisionPolicy) GetUnconfiguredProvision() *UnconfiguredProvision {
+	if o == nil {
+		return nil
+	}
+	return o.UnconfiguredProvision
 }
 
 func (o *ProvisionPolicy) GetWebhookProvision() *WebhookProvision {

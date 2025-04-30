@@ -6,12 +6,15 @@ import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementAutomationInput() *shared.AppEntitlementAutomationInput {
+func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementAutomationInput(ctx context.Context) (*shared.AppEntitlementAutomationInput, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var appEntitlementAutomationRuleBasic *shared.AppEntitlementAutomationRuleBasic
 	if r.AppEntitlementAutomationRuleBasic != nil {
 		expression := new(string)
@@ -50,24 +53,27 @@ func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementAutomation
 	}
 	var appEntitlementAutomationRuleEntitlement *shared.AppEntitlementAutomationRuleEntitlement
 	if r.AppEntitlementAutomationRuleEntitlement != nil {
-		var entitlementRefs []shared.AppEntitlementRef = []shared.AppEntitlementRef{}
-		for _, entitlementRefsItem := range r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
-			appID := new(string)
-			if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
-				*appID = entitlementRefsItem.AppID.ValueString()
-			} else {
-				appID = nil
+		var entitlementRefs []shared.AppEntitlementRef
+		if r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs != nil {
+			entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs))
+			for _, entitlementRefsItem := range r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
+				appID := new(string)
+				if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
+					*appID = entitlementRefsItem.AppID.ValueString()
+				} else {
+					appID = nil
+				}
+				id := new(string)
+				if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
+					*id = entitlementRefsItem.ID.ValueString()
+				} else {
+					id = nil
+				}
+				entitlementRefs = append(entitlementRefs, shared.AppEntitlementRef{
+					AppID: appID,
+					ID:    id,
+				})
 			}
-			id := new(string)
-			if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
-				*id = entitlementRefsItem.ID.ValueString()
-			} else {
-				id = nil
-			}
-			entitlementRefs = append(entitlementRefs, shared.AppEntitlementRef{
-				AppID: appID,
-				ID:    id,
-			})
 		}
 		appEntitlementAutomationRuleEntitlement = &shared.AppEntitlementAutomationRuleEntitlement{
 			EntitlementRefs: entitlementRefs,
@@ -90,7 +96,192 @@ func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementAutomation
 		AppEntitlementAutomationLastRunStatus:   appEntitlementAutomationLastRunStatus,
 		AppEntitlementAutomationRuleNone:        appEntitlementAutomationRuleNone,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Context) (*shared.CreateAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	appEntitlementAutomation, appEntitlementAutomationDiags := r.ToSharedAppEntitlementAutomationInput(ctx)
+	diags.Append(appEntitlementAutomationDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := shared.CreateAutomationRequest{
+		AppEntitlementAutomation: appEntitlementAutomation,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitlementsCreateAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsCreateAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appEntitlementID string
+	appEntitlementID = r.AppEntitlementID.ValueString()
+
+	createAutomationRequest, createAutomationRequestDiags := r.ToSharedCreateAutomationRequest(ctx)
+	diags.Append(createAutomationRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIAppV1AppEntitlementsCreateAutomationRequest{
+		AppID:                   appID,
+		AppEntitlementID:        appEntitlementID,
+		CreateAutomationRequest: createAutomationRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementServiceUpdateAutomationRequest(ctx context.Context) (*shared.AppEntitlementServiceUpdateAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appEntitlementAutomationRuleBasic *shared.AppEntitlementAutomationRuleBasic
+	if r.AppEntitlementAutomationRuleBasic != nil {
+		expression := new(string)
+		if !r.AppEntitlementAutomationRuleBasic.Expression.IsUnknown() && !r.AppEntitlementAutomationRuleBasic.Expression.IsNull() {
+			*expression = r.AppEntitlementAutomationRuleBasic.Expression.ValueString()
+		} else {
+			expression = nil
+		}
+		appEntitlementAutomationRuleBasic = &shared.AppEntitlementAutomationRuleBasic{
+			Expression: expression,
+		}
+	}
+	var appEntitlementAutomationRuleCEL *shared.AppEntitlementAutomationRuleCEL
+	if r.AppEntitlementAutomationRuleCEL != nil {
+		expression1 := new(string)
+		if !r.AppEntitlementAutomationRuleCEL.Expression.IsUnknown() && !r.AppEntitlementAutomationRuleCEL.Expression.IsNull() {
+			*expression1 = r.AppEntitlementAutomationRuleCEL.Expression.ValueString()
+		} else {
+			expression1 = nil
+		}
+		appEntitlementAutomationRuleCEL = &shared.AppEntitlementAutomationRuleCEL{
+			Expression: expression1,
+		}
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
+	var appEntitlementAutomationRuleEntitlement *shared.AppEntitlementAutomationRuleEntitlement
+	if r.AppEntitlementAutomationRuleEntitlement != nil {
+		var entitlementRefs []shared.AppEntitlementRef
+		if r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs != nil {
+			entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs))
+			for _, entitlementRefsItem := range r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
+				appID := new(string)
+				if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
+					*appID = entitlementRefsItem.AppID.ValueString()
+				} else {
+					appID = nil
+				}
+				id := new(string)
+				if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
+					*id = entitlementRefsItem.ID.ValueString()
+				} else {
+					id = nil
+				}
+				entitlementRefs = append(entitlementRefs, shared.AppEntitlementRef{
+					AppID: appID,
+					ID:    id,
+				})
+			}
+		}
+		appEntitlementAutomationRuleEntitlement = &shared.AppEntitlementAutomationRuleEntitlement{
+			EntitlementRefs: entitlementRefs,
+		}
+	}
+	var appEntitlementAutomationRuleNone *shared.AppEntitlementAutomationRuleNone
+	if r.AppEntitlementAutomationRuleNone != nil {
+		appEntitlementAutomationRuleNone = &shared.AppEntitlementAutomationRuleNone{}
+	}
+	out := shared.AppEntitlementServiceUpdateAutomationRequest{
+		AppEntitlementAutomationRuleBasic:       appEntitlementAutomationRuleBasic,
+		AppEntitlementAutomationRuleCEL:         appEntitlementAutomationRuleCEL,
+		Description:                             description,
+		DisplayName:                             displayName,
+		AppEntitlementAutomationRuleEntitlement: appEntitlementAutomationRuleEntitlement,
+		AppEntitlementAutomationRuleNone:        appEntitlementAutomationRuleNone,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitlementsUpdateAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsUpdateAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appEntitlementID string
+	appEntitlementID = r.AppEntitlementID.ValueString()
+
+	appEntitlementServiceUpdateAutomationRequest, appEntitlementServiceUpdateAutomationRequestDiags := r.ToSharedAppEntitlementServiceUpdateAutomationRequest(ctx)
+	diags.Append(appEntitlementServiceUpdateAutomationRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIAppV1AppEntitlementsUpdateAutomationRequest{
+		AppID:            appID,
+		AppEntitlementID: appEntitlementID,
+		AppEntitlementServiceUpdateAutomationRequest: appEntitlementServiceUpdateAutomationRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitlementsGetAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsGetAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appEntitlementID string
+	appEntitlementID = r.AppEntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementsGetAutomationRequest{
+		AppID:            appID,
+		AppEntitlementID: appEntitlementID,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitlementsDeleteAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsDeleteAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appEntitlementID string
+	appEntitlementID = r.AppEntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementsDeleteAutomationRequest{
+		AppID:            appID,
+		AppEntitlementID: appEntitlementID,
+	}
+
+	return &out, diags
 }
 
 func (r *AppEntitlementAutomationResourceModel) RefreshFromSharedAppEntitlementAutomation(ctx context.Context, resp *shared.AppEntitlementAutomation) diag.Diagnostics {
@@ -158,81 +349,4 @@ func (r *AppEntitlementAutomationResourceModel) RefreshFromSharedAppEntitlementA
 	}
 
 	return diags
-}
-
-func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementServiceUpdateAutomationRequest() *shared.AppEntitlementServiceUpdateAutomationRequest {
-	var appEntitlementAutomationRuleBasic *shared.AppEntitlementAutomationRuleBasic
-	if r.AppEntitlementAutomationRuleBasic != nil {
-		expression := new(string)
-		if !r.AppEntitlementAutomationRuleBasic.Expression.IsUnknown() && !r.AppEntitlementAutomationRuleBasic.Expression.IsNull() {
-			*expression = r.AppEntitlementAutomationRuleBasic.Expression.ValueString()
-		} else {
-			expression = nil
-		}
-		appEntitlementAutomationRuleBasic = &shared.AppEntitlementAutomationRuleBasic{
-			Expression: expression,
-		}
-	}
-	var appEntitlementAutomationRuleCEL *shared.AppEntitlementAutomationRuleCEL
-	if r.AppEntitlementAutomationRuleCEL != nil {
-		expression1 := new(string)
-		if !r.AppEntitlementAutomationRuleCEL.Expression.IsUnknown() && !r.AppEntitlementAutomationRuleCEL.Expression.IsNull() {
-			*expression1 = r.AppEntitlementAutomationRuleCEL.Expression.ValueString()
-		} else {
-			expression1 = nil
-		}
-		appEntitlementAutomationRuleCEL = &shared.AppEntitlementAutomationRuleCEL{
-			Expression: expression1,
-		}
-	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
-	var appEntitlementAutomationRuleEntitlement *shared.AppEntitlementAutomationRuleEntitlement
-	if r.AppEntitlementAutomationRuleEntitlement != nil {
-		var entitlementRefs []shared.AppEntitlementRef = []shared.AppEntitlementRef{}
-		for _, entitlementRefsItem := range r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
-			appID := new(string)
-			if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
-				*appID = entitlementRefsItem.AppID.ValueString()
-			} else {
-				appID = nil
-			}
-			id := new(string)
-			if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
-				*id = entitlementRefsItem.ID.ValueString()
-			} else {
-				id = nil
-			}
-			entitlementRefs = append(entitlementRefs, shared.AppEntitlementRef{
-				AppID: appID,
-				ID:    id,
-			})
-		}
-		appEntitlementAutomationRuleEntitlement = &shared.AppEntitlementAutomationRuleEntitlement{
-			EntitlementRefs: entitlementRefs,
-		}
-	}
-	var appEntitlementAutomationRuleNone *shared.AppEntitlementAutomationRuleNone
-	if r.AppEntitlementAutomationRuleNone != nil {
-		appEntitlementAutomationRuleNone = &shared.AppEntitlementAutomationRuleNone{}
-	}
-	out := shared.AppEntitlementServiceUpdateAutomationRequest{
-		AppEntitlementAutomationRuleBasic:       appEntitlementAutomationRuleBasic,
-		AppEntitlementAutomationRuleCEL:         appEntitlementAutomationRuleCEL,
-		Description:                             description,
-		DisplayName:                             displayName,
-		AppEntitlementAutomationRuleEntitlement: appEntitlementAutomationRuleEntitlement,
-		AppEntitlementAutomationRuleNone:        appEntitlementAutomationRuleNone,
-	}
-	return &out
 }

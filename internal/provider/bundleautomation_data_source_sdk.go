@@ -6,10 +6,24 @@ import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+func (r *BundleAutomationDataSourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestCatalogID string
+	requestCatalogID = r.RequestCatalogID.ValueString()
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest{
+		RequestCatalogID: requestCatalogID,
+	}
+
+	return &out, diags
+}
 
 func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(ctx context.Context, resp *shared.BundleAutomation) diag.Diagnostics {
 	var diags diag.Diagnostics

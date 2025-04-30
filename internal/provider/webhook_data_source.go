@@ -138,7 +138,12 @@ func (r *WebhookDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return
 	}
 
-	request := data.ToSharedWebhooksSearchRequest()
+	request, requestDiags := data.ToSharedWebhooksSearchRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.WebhooksSearch.Search(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -149,10 +154,6 @@ func (r *WebhookDataSource) Read(ctx context.Context, req datasource.ReadRequest
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

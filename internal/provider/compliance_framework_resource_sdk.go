@@ -5,12 +5,15 @@ package provider
 import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *ComplianceFrameworkResourceModel) ToSharedCreateComplianceFrameworkAttributeValueRequest() *shared.CreateComplianceFrameworkAttributeValueRequest {
+func (r *ComplianceFrameworkResourceModel) ToSharedCreateComplianceFrameworkAttributeValueRequest(ctx context.Context) (*shared.CreateComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	value := new(string)
 	if !r.Value.IsUnknown() && !r.Value.IsNull() {
 		*value = r.Value.ValueString()
@@ -20,7 +23,34 @@ func (r *ComplianceFrameworkResourceModel) ToSharedCreateComplianceFrameworkAttr
 	out := shared.CreateComplianceFrameworkAttributeValueRequest{
 		Value: value,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *ComplianceFrameworkResourceModel) ToOperationsC1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
+
+func (r *ComplianceFrameworkResourceModel) ToOperationsC1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest{
+		ID: id,
+	}
+
+	return &out, diags
 }
 
 func (r *ComplianceFrameworkResourceModel) RefreshFromSharedAttributeValue(ctx context.Context, resp *shared.AttributeValue) diag.Diagnostics {

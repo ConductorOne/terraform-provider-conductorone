@@ -11,24 +11,35 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *UserDataSourceModel) ToSharedSearchUsersRequest() *shared.SearchUsersRequest {
+func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*shared.SearchUsersRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	email := new(string)
 	if !r.Email.IsUnknown() && !r.Email.IsNull() {
 		*email = r.Email.ValueString()
 	} else {
 		email = nil
 	}
-	var excludeIds []string = []string{}
-	for _, excludeIdsItem := range r.ExcludeIds {
-		excludeIds = append(excludeIds, excludeIdsItem.ValueString())
+	var excludeIds []string
+	if r.ExcludeIds != nil {
+		excludeIds = make([]string, 0, len(r.ExcludeIds))
+		for _, excludeIdsItem := range r.ExcludeIds {
+			excludeIds = append(excludeIds, excludeIdsItem.ValueString())
+		}
 	}
-	var excludeTypes []shared.ExcludeTypes = []shared.ExcludeTypes{}
-	for _, excludeTypesItem := range r.ExcludeTypes {
-		excludeTypes = append(excludeTypes, shared.ExcludeTypes(excludeTypesItem.ValueString()))
+	var excludeTypes []shared.ExcludeTypes
+	if r.ExcludeTypes != nil {
+		excludeTypes = make([]shared.ExcludeTypes, 0, len(r.ExcludeTypes))
+		for _, excludeTypesItem := range r.ExcludeTypes {
+			excludeTypes = append(excludeTypes, shared.ExcludeTypes(excludeTypesItem.ValueString()))
+		}
 	}
-	var ids []string = []string{}
-	for _, idsItem := range r.Ids {
-		ids = append(ids, idsItem.ValueString())
+	var ids []string
+	if r.Ids != nil {
+		ids = make([]string, 0, len(r.Ids))
+		for _, idsItem := range r.Ids {
+			ids = append(ids, idsItem.ValueString())
+		}
 	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
@@ -36,25 +47,34 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest() *shared.SearchUsersRe
 	} else {
 		query = nil
 	}
-	var refs []shared.UserRef = []shared.UserRef{}
-	for _, refsItem := range r.Refs {
-		id := new(string)
-		if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-			*id = refsItem.ID.ValueString()
-		} else {
-			id = nil
+	var refs []shared.UserRef
+	if r.Refs != nil {
+		refs = make([]shared.UserRef, 0, len(r.Refs))
+		for _, refsItem := range r.Refs {
+			id := new(string)
+			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
+				*id = refsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			refs = append(refs, shared.UserRef{
+				ID: id,
+			})
 		}
-		refs = append(refs, shared.UserRef{
-			ID: id,
-		})
 	}
-	var roleIds []string = []string{}
-	for _, roleIdsItem := range r.RoleIds {
-		roleIds = append(roleIds, roleIdsItem.ValueString())
+	var roleIds []string
+	if r.RoleIds != nil {
+		roleIds = make([]string, 0, len(r.RoleIds))
+		for _, roleIdsItem := range r.RoleIds {
+			roleIds = append(roleIds, roleIdsItem.ValueString())
+		}
 	}
-	var userStatuses []shared.UserStatuses = []shared.UserStatuses{}
-	for _, userStatusesItem := range r.UserStatuses {
-		userStatuses = append(userStatuses, shared.UserStatuses(userStatusesItem.ValueString()))
+	var userStatuses []shared.UserStatuses
+	if r.UserStatuses != nil {
+		userStatuses = make([]shared.UserStatuses, 0, len(r.UserStatuses))
+		for _, userStatusesItem := range r.UserStatuses {
+			userStatuses = append(userStatuses, shared.UserStatuses(userStatusesItem.ValueString()))
+		}
 	}
 	out := shared.SearchUsersRequest{
 		Email:        email,
@@ -66,7 +86,8 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest() *shared.SearchUsersRe
 		RoleIds:      roleIds,
 		UserStatuses: userStatuses,
 	}
-	return &out
+
+	return &out, diags
 }
 
 func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *shared.User) diag.Diagnostics {
@@ -311,6 +332,11 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			r.Status = types.StringValue(string(*resp.Status))
 		} else {
 			r.Status = types.StringNull()
+		}
+		if resp.Type != nil {
+			r.Type = types.StringValue(string(*resp.Type))
+		} else {
+			r.Type = types.StringNull()
 		}
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 		r.Username = types.StringPointerValue(resp.Username)

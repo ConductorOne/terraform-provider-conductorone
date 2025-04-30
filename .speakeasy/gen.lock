@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: affde78602cd717351039e87816d2e85
+  docChecksum: 5798417a6db07f9511c818d2166bdf8b
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.531.0
-  generationVersion: 2.568.2
-  releaseVersion: 1.1.8
-  configChecksum: 60c754fa5d37cb69bfc710332316d0e7
+  speakeasyVersion: 1.541.2
+  generationVersion: 2.595.4
+  releaseVersion: 1.2.0
+  configChecksum: 8660d782d224bd4ba8f9d086bdb4e001
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
-    core: 3.39.2
+    core: 3.41.6
     deprecations: 2.82.0
     devContainers: 0.0.0
     envVarSecurityUsage: 0.1.0
@@ -33,6 +33,7 @@ generatedFiles:
   - examples/data-sources/conductorone_app_entitlement/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_automation/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_proxy_binding/data-source.tf
+  - examples/data-sources/conductorone_app_entitlements/data-source.tf
   - examples/data-sources/conductorone_app_resource/data-source.tf
   - examples/data-sources/conductorone_app_resource_type/data-source.tf
   - examples/data-sources/conductorone_aws_external_id/data-source.tf
@@ -110,6 +111,8 @@ generatedFiles:
   - internal/provider/app_entitlement_proxy_binding_data_source_sdk.go
   - internal/provider/app_entitlement_proxy_binding_resource.go
   - internal/provider/app_entitlement_proxy_binding_resource_sdk.go
+  - internal/provider/app_entitlements_data_source.go
+  - internal/provider/app_entitlements_data_source_sdk.go
   - internal/provider/app_owner_resource.go
   - internal/provider/app_owner_resource_sdk.go
   - internal/provider/app_resource.go
@@ -167,6 +170,7 @@ generatedFiles:
   - internal/provider/types/account_provision.go
   - internal/provider/types/account_provision_config.go
   - internal/provider/types/agent_approval.go
+  - internal/provider/types/app_entitlement.go
   - internal/provider/types/app_entitlement_automation_last_run_status.go
   - internal/provider/types/app_entitlement_automation_rule_basic.go
   - internal/provider/types/app_entitlement_automation_rule_cel.go
@@ -174,6 +178,7 @@ generatedFiles:
   - internal/provider/types/app_entitlement_automation_rule_none.go
   - internal/provider/types/app_entitlement_duration_unset.go
   - internal/provider/types/app_entitlement_ref.go
+  - internal/provider/types/app_entitlement_view.go
   - internal/provider/types/app_group_approval.go
   - internal/provider/types/app_owner_approval.go
   - internal/provider/types/app_resource_service_get_response_expanded.go
@@ -187,6 +192,7 @@ generatedFiles:
   - internal/provider/types/delegated_provision.go
   - internal/provider/types/delete_bundle_automation_request.go
   - internal/provider/types/deprovisioner_policy.go
+  - internal/provider/types/do_not_save.go
   - internal/provider/types/entitlement_owner_approval.go
   - internal/provider/types/expression_approval.go
   - internal/provider/types/external_ticket_provision.go
@@ -206,9 +212,11 @@ generatedFiles:
   - internal/provider/types/request_catalog_management_service_get_response_expanded.go
   - internal/provider/types/resource_owner_approval.go
   - internal/provider/types/rule.go
+  - internal/provider/types/save_to_vault.go
   - internal/provider/types/search_users_response_expanded.go
   - internal/provider/types/secret_trait.go
   - internal/provider/types/self_approval.go
+  - internal/provider/types/unconfigured_provision.go
   - internal/provider/types/user_approval.go
   - internal/provider/types/user_attribute_mapping_source.go
   - internal/provider/types/user_ref.go
@@ -281,6 +289,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1appentitlementsearchservicesearch.go
   - internal/sdk/models/operations/c1apiappv1appentitlementsearchservicesearchappentitlementsforappuser.go
   - internal/sdk/models/operations/c1apiappv1appentitlementsearchservicesearchappentitlementswithexpired.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementsearchservicesearchgrants.go
   - internal/sdk/models/operations/c1apiappv1appentitlementsget.go
   - internal/sdk/models/operations/c1apiappv1appentitlementsgetautomation.go
   - internal/sdk/models/operations/c1apiappv1appentitlementslist.go
@@ -296,8 +305,10 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1appentitlementsupdate.go
   - internal/sdk/models/operations/c1apiappv1appentitlementsupdateautomation.go
   - internal/sdk/models/operations/c1apiappv1appentitlementuserbindingservicelistappusersforidentitywithgrant.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementuserbindingserviceremovegrantduration.go
   - internal/sdk/models/operations/c1apiappv1appentitlementuserbindingservicesearchgrantfeed.go
   - internal/sdk/models/operations/c1apiappv1appentitlementuserbindingservicesearchpastgrants.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementuserbindingserviceupdategrantduration.go
   - internal/sdk/models/operations/c1apiappv1appownersadd.go
   - internal/sdk/models/operations/c1apiappv1appownerslist.go
   - internal/sdk/models/operations/c1apiappv1appownersremove.go
@@ -469,9 +480,10 @@ generatedFiles:
   - internal/sdk/models/shared/addmanuallymanagedusersrequest.go
   - internal/sdk/models/shared/agentapproval.go
   - internal/sdk/models/shared/app.go
-  - internal/sdk/models/shared/appaccessrequestdefaults1.go
+  - internal/sdk/models/shared/appaccessrequestdefaults.go
   - internal/sdk/models/shared/appactionsservicegeneratereportrequest.go
   - internal/sdk/models/shared/appactionsservicegeneratereportresponse.go
+  - internal/sdk/models/shared/appentitlement.go
   - internal/sdk/models/shared/appentitlementautomation.go
   - internal/sdk/models/shared/appentitlementautomationinput.go
   - internal/sdk/models/shared/appentitlementautomationlastrunstatus.go
@@ -480,11 +492,12 @@ generatedFiles:
   - internal/sdk/models/shared/appentitlementautomationrulecel.go
   - internal/sdk/models/shared/appentitlementautomationruleentitlement.go
   - internal/sdk/models/shared/appentitlementautomationrulenone.go
-  - internal/sdk/models/shared/appentitlementinput.go
   - internal/sdk/models/shared/appentitlementproxy.go
   - internal/sdk/models/shared/appentitlementproxyview.go
   - internal/sdk/models/shared/appentitlementref.go
   - internal/sdk/models/shared/appentitlementreference.go
+  - internal/sdk/models/shared/appentitlementsearchservicesearchgrantsrequest.go
+  - internal/sdk/models/shared/appentitlementsearchservicesearchgrantsresponse.go
   - internal/sdk/models/shared/appentitlementsearchservicesearchrequest.go
   - internal/sdk/models/shared/appentitlementsearchservicesearchresponse.go
   - internal/sdk/models/shared/appentitlementservicegetautomationresponse.go
@@ -499,6 +512,7 @@ generatedFiles:
   - internal/sdk/models/shared/appentitlementuserview.go
   - internal/sdk/models/shared/appentitlementview.go
   - internal/sdk/models/shared/appentitlementwithexpired.go
+  - internal/sdk/models/shared/appentitlementwithuserbinding.go
   - internal/sdk/models/shared/appentitlementwithuserbindings.go
   - internal/sdk/models/shared/appgroupapproval.go
   - internal/sdk/models/shared/appmanagedstatebindingref.go
@@ -638,6 +652,7 @@ generatedFiles:
   - internal/sdk/models/shared/directoryservicegetresponse.go
   - internal/sdk/models/shared/directoryservicelistresponse.go
   - internal/sdk/models/shared/directoryview.go
+  - internal/sdk/models/shared/donotsave.go
   - internal/sdk/models/shared/encrypteddata.go
   - internal/sdk/models/shared/entitlementownerapproval.go
   - internal/sdk/models/shared/erroredaction.go
@@ -726,7 +741,7 @@ generatedFiles:
   - internal/sdk/models/shared/personalclientservicelistresponse.go
   - internal/sdk/models/shared/personalclientserviceupdaterequest.go
   - internal/sdk/models/shared/personalclientserviceupdateresponse.go
-  - internal/sdk/models/shared/policyinput.go
+  - internal/sdk/models/shared/policy.go
   - internal/sdk/models/shared/policyinstance.go
   - internal/sdk/models/shared/policypostactions.go
   - internal/sdk/models/shared/policyref.go
@@ -755,6 +770,8 @@ generatedFiles:
   - internal/sdk/models/shared/removeentitlementmembershiprequest.go
   - internal/sdk/models/shared/removeentitlementmembershipresponse.go
   - internal/sdk/models/shared/removefromdelegation.go
+  - internal/sdk/models/shared/removegrantdurationrequest.go
+  - internal/sdk/models/shared/removegrantdurationresponse.go
   - internal/sdk/models/shared/requestcatalog.go
   - internal/sdk/models/shared/requestcatalogmanagementserviceaddaccessentitlementsrequest.go
   - internal/sdk/models/shared/requestcatalogmanagementserviceaddaccessentitlementsresponse.go
@@ -792,6 +809,7 @@ generatedFiles:
   - internal/sdk/models/shared/roleinput.go
   - internal/sdk/models/shared/rule.go
   - internal/sdk/models/shared/runworkflow.go
+  - internal/sdk/models/shared/savetovault.go
   - internal/sdk/models/shared/searchappentitlementswithexpiredresponse.go
   - internal/sdk/models/shared/searchappresourcetypesrequest.go
   - internal/sdk/models/shared/searchappresourcetypesresponse.go
@@ -889,6 +907,7 @@ generatedFiles:
   - internal/sdk/models/shared/taskauditpolicyprovisionerror.go
   - internal/sdk/models/shared/taskauditpolicyprovisionreassigned.go
   - internal/sdk/models/shared/taskauditreassignedtodelegate.go
+  - internal/sdk/models/shared/taskauditreassignmentlisterror.go
   - internal/sdk/models/shared/taskauditrestart.go
   - internal/sdk/models/shared/taskauditrevokeoutcome.go
   - internal/sdk/models/shared/taskauditstartedconnectoractions.go
@@ -947,6 +966,7 @@ generatedFiles:
   - internal/sdk/models/shared/testsourceipresponse.go
   - internal/sdk/models/shared/teststepupproviderrequest.go
   - internal/sdk/models/shared/teststepupproviderresponse.go
+  - internal/sdk/models/shared/unconfiguredprovision.go
   - internal/sdk/models/shared/unenrollfromallaccessprofiles.go
   - internal/sdk/models/shared/updateappentitlementrequest.go
   - internal/sdk/models/shared/updateappentitlementresponse.go
@@ -954,6 +974,8 @@ generatedFiles:
   - internal/sdk/models/shared/updateappresponse.go
   - internal/sdk/models/shared/updateappusagecontrolsrequest.go
   - internal/sdk/models/shared/updateappusagecontrolsresponse.go
+  - internal/sdk/models/shared/updategrantdurationrequest.go
+  - internal/sdk/models/shared/updategrantdurationresponse.go
   - internal/sdk/models/shared/updatemanuallymanagedresourcetyperequest.go
   - internal/sdk/models/shared/updatemanuallymanagedresourcetyperesponse.go
   - internal/sdk/models/shared/updateorgdomainrequest.go
@@ -2497,6 +2519,31 @@ examples:
       parameters:
         path:
           task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementSearchService.SearchGrants:
+    speakeasy-default-c1-api-app-v1-app-entitlement-search-service-search-grants:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementUserBindingService.RemoveGrantDuration:
+    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-remove-grant-duration:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+          app_user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementUserBindingService.UpdateGrantDuration:
+    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-update-grant-duration:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+          app_user_id: "<id>"
       responses:
         "200":
           application/json: {}
