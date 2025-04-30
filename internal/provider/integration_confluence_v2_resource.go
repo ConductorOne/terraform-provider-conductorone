@@ -35,15 +35,16 @@ type IntegrationConfluenceV2Resource struct {
 
 // IntegrationConfluenceV2ResourceModel describes the resource data model.
 type IntegrationConfluenceV2ResourceModel struct {
-	AppID     types.String   `tfsdk:"app_id"`
-	CreatedAt types.String   `tfsdk:"created_at"`
-	DeletedAt types.String   `tfsdk:"deleted_at"`
-	ID        types.String   `tfsdk:"id"`
-	UpdatedAt types.String   `tfsdk:"updated_at"`
-	UserIds   []types.String `tfsdk:"user_ids"`
-	DomainUrl types.String   `tfsdk:"domain_url"`
-	Username  types.String   `tfsdk:"username"`
-	ApiKey    types.String   `tfsdk:"api_key"`
+	AppID              types.String   `tfsdk:"app_id"`
+	CreatedAt          types.String   `tfsdk:"created_at"`
+	DeletedAt          types.String   `tfsdk:"deleted_at"`
+	ID                 types.String   `tfsdk:"id"`
+	UpdatedAt          types.String   `tfsdk:"updated_at"`
+	UserIds            []types.String `tfsdk:"user_ids"`
+	DomainUrl          types.String   `tfsdk:"domain_url"`
+	Username           types.String   `tfsdk:"username"`
+	ApiKey             types.String   `tfsdk:"api_key"`
+	SkipPersonalSpaces types.Bool     `tfsdk:"skip_personal_spaces"`
 }
 
 func (r *IntegrationConfluenceV2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -105,6 +106,10 @@ func (r *IntegrationConfluenceV2Resource) Schema(ctx context.Context, req resour
 				Optional:    true,
 				Sensitive:   true,
 				Description: `The API key for your Confluence account`,
+			},
+			"skip_personal_spaces": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Skip syncing personal spaces and their permissions`,
 			},
 		},
 	}

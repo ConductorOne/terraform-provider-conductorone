@@ -3,5 +3,6 @@ resource "conductorone_integration_asana" "asana" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  asana_api_key = "..."
+  asana_api_key            = "..."
+  asana_is_service_account = false
 }

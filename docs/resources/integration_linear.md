@@ -21,7 +21,8 @@ resource "conductorone_integration_linear" "linear" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  linear_api_key = "..."
+  linear_api_key                      = "..."
+  enable_external_ticket_provisioning = false
 }
 ```
 
@@ -34,6 +35,7 @@ resource "conductorone_integration_linear" "linear" {
 
 ### Optional
 
+- `enable_external_ticket_provisioning` (Boolean) Enable external ticket provisioning
 - `linear_api_key` (String, Sensitive) API key
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

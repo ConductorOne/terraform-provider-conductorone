@@ -7,4 +7,6 @@ resource "conductorone_integration_jira_cloud" "jira_cloud" {
   jiracloud_username                  = "..."
   jiracloud_apikey                    = "..."
   enable_external_ticket_provisioning = false
+  jiracloud_project_keys              = ["..."]
+  jiracloud_skip_project_participants = false
 }

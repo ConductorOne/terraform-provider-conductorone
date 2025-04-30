@@ -35,15 +35,17 @@ type IntegrationOktaV2Resource struct {
 
 // IntegrationOktaV2ResourceModel describes the resource data model.
 type IntegrationOktaV2ResourceModel struct {
-	AppID               types.String   `tfsdk:"app_id"`
-	CreatedAt           types.String   `tfsdk:"created_at"`
-	DeletedAt           types.String   `tfsdk:"deleted_at"`
-	ID                  types.String   `tfsdk:"id"`
-	UpdatedAt           types.String   `tfsdk:"updated_at"`
-	UserIds             []types.String `tfsdk:"user_ids"`
-	OktaV2Domain        types.String   `tfsdk:"okta_v2_domain"`
-	OktaV2ApiToken      types.String   `tfsdk:"okta_v2_api_token"`
-	OktaSyncCustomRoles types.Bool     `tfsdk:"okta_sync_custom_roles"`
+	AppID                   types.String   `tfsdk:"app_id"`
+	CreatedAt               types.String   `tfsdk:"created_at"`
+	DeletedAt               types.String   `tfsdk:"deleted_at"`
+	ID                      types.String   `tfsdk:"id"`
+	UpdatedAt               types.String   `tfsdk:"updated_at"`
+	UserIds                 []types.String `tfsdk:"user_ids"`
+	OktaV2Domain            types.String   `tfsdk:"okta_v2_domain"`
+	OktaV2ApiToken          types.String   `tfsdk:"okta_v2_api_token"`
+	OktaSyncCustomRoles     types.Bool     `tfsdk:"okta_sync_custom_roles"`
+	OktaSkipSecondaryEmails types.Bool     `tfsdk:"okta_skip_secondary_emails"`
+	OktaSyncSecrets         types.Bool     `tfsdk:"okta_sync_secrets"`
 }
 
 func (r *IntegrationOktaV2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -105,6 +107,14 @@ func (r *IntegrationOktaV2Resource) Schema(ctx context.Context, req resource.Sch
 			"okta_sync_custom_roles": &schema.BoolAttribute{
 				Optional:    true,
 				Description: `Sync custom roles`,
+			},
+			"okta_skip_secondary_emails": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Skip secondary emails`,
+			},
+			"okta_sync_secrets": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Sync secrets`,
 			},
 		},
 	}

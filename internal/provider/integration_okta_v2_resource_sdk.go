@@ -107,6 +107,18 @@ func (r *IntegrationOktaV2ResourceModel) populateConfig() map[string]interface{}
 		configValues["okta_sync_custom_roles"] = oktaSyncCustomRoles
 	}
 
+	oktaSkipSecondaryEmails := new(string)
+	if !r.OktaSkipSecondaryEmails.IsUnknown() && !r.OktaSkipSecondaryEmails.IsNull() {
+		*oktaSkipSecondaryEmails = strconv.FormatBool(r.OktaSkipSecondaryEmails.ValueBool())
+		configValues["okta_skip_secondary_emails"] = oktaSkipSecondaryEmails
+	}
+
+	oktaSyncSecrets := new(string)
+	if !r.OktaSyncSecrets.IsUnknown() && !r.OktaSyncSecrets.IsNull() {
+		*oktaSyncSecrets = strconv.FormatBool(r.OktaSyncSecrets.ValueBool())
+		configValues["okta_sync_secrets"] = oktaSyncSecrets
+	}
+
 	return configValues
 }
 
@@ -195,6 +207,32 @@ func (r *IntegrationOktaV2ResourceModel) RefreshFromGetResponse(resp *shared.Con
 					}
 				}
 
+				if localV, ok := configValues["okta_skip_secondary_emails"]; ok {
+					if v, ok := values["okta_skip_secondary_emails"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.OktaSkipSecondaryEmails = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+				if localV, ok := configValues["okta_sync_secrets"]; ok {
+					if v, ok := values["okta_sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.OktaSyncSecrets = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -252,6 +290,32 @@ func (r *IntegrationOktaV2ResourceModel) RefreshFromCreateResponse(resp *shared.
 							if err == nil {
 								if localV != nil || (localV == nil && !bv) {
 									r.OktaSyncCustomRoles = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+				if localV, ok := configValues["okta_skip_secondary_emails"]; ok {
+					if v, ok := values["okta_skip_secondary_emails"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.OktaSkipSecondaryEmails = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+				if localV, ok := configValues["okta_sync_secrets"]; ok {
+					if v, ok := values["okta_sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.OktaSyncSecrets = types.BoolValue(bv)
 								}
 							}
 						}

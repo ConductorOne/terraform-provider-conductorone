@@ -3,5 +3,6 @@ resource "conductorone_integration_linear" "linear" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  linear_api_key = "..."
+  linear_api_key                      = "..."
+  enable_external_ticket_provisioning = false
 }

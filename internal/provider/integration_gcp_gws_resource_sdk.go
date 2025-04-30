@@ -4,6 +4,7 @@ package provider
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -125,6 +126,20 @@ func (r *IntegrationGcpGwsResourceModel) populateConfig() map[string]interface{}
 		configValues["skip_default_projects"] = skipDefaultProjects
 	}
 
+	syncSecrets := new(string)
+	if !r.SyncSecrets.IsUnknown() && !r.SyncSecrets.IsNull() {
+		*syncSecrets = strconv.FormatBool(r.SyncSecrets.ValueBool())
+		configValues["sync_secrets"] = syncSecrets
+	}
+
+	projectIds := make([]string, 0)
+	for _, item := range r.ProjectIds {
+		projectIds = append(projectIds, item.ValueString())
+	}
+	if len(projectIds) > 0 {
+		configValues["project_ids"] = strings.Join(projectIds, ",")
+	}
+
 	return configValues
 }
 
@@ -238,6 +253,29 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromGetResponse(resp *shared.Con
 					}
 				}
 
+				if localV, ok := configValues["sync_secrets"]; ok {
+					if v, ok := values["sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SyncSecrets = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+				r.ProjectIds = nil
+				if v, ok := values["project_ids"]; ok {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							r.ProjectIds = append(r.ProjectIds, types.StringValue(item))
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -322,6 +360,29 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromCreateResponse(resp *shared.
 									r.SkipDefaultProjects = types.BoolValue(bv)
 								}
 							}
+						}
+					}
+				}
+
+				if localV, ok := configValues["sync_secrets"]; ok {
+					if v, ok := values["sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SyncSecrets = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+				r.ProjectIds = nil
+				if v, ok := values["project_ids"]; ok {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							r.ProjectIds = append(r.ProjectIds, types.StringValue(item))
 						}
 					}
 				}

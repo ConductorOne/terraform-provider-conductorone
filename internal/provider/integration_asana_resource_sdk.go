@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -95,6 +95,12 @@ func (r *IntegrationAsanaResourceModel) populateConfig() map[string]interface{} 
 		configValues["asana_api_key"] = asanaApiKey
 	}
 
+	asanaIsServiceAccount := new(string)
+	if !r.AsanaIsServiceAccount.IsUnknown() && !r.AsanaIsServiceAccount.IsNull() {
+		*asanaIsServiceAccount = strconv.FormatBool(r.AsanaIsServiceAccount.ValueBool())
+		configValues["asana_is_service_account"] = asanaIsServiceAccount
+	}
+
 	return configValues
 }
 
@@ -160,6 +166,27 @@ func (r *IntegrationAsanaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if localV, ok := configValues["asana_is_service_account"]; ok {
+					if v, ok := values["asana_is_service_account"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.AsanaIsServiceAccount = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationAsanaResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -197,4 +224,25 @@ func (r *IntegrationAsanaResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if localV, ok := configValues["asana_is_service_account"]; ok {
+					if v, ok := values["asana_is_service_account"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.AsanaIsServiceAccount = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+			}
+		}
+	}
 }

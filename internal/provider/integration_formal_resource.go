@@ -94,7 +94,7 @@ func (r *IntegrationFormalResource) Schema(ctx context.Context, req resource.Sch
 			"formal_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Key`,
+				Description: `API key`,
 			},
 		},
 	}

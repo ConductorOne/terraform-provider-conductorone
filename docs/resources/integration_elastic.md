@@ -37,9 +37,9 @@ resource "conductorone_integration_elastic" "elastic" {
 
 ### Optional
 
-- `elastic_api_key` (String, Sensitive) API Key
-- `elastic_deployment_api_key` (String, Sensitive) Deployment API Key
-- `elastic_deployment_endpoint` (String) Deployment Endpoint
+- `elastic_api_key` (String, Sensitive) API key
+- `elastic_deployment_api_key` (String, Sensitive) Deployment API key
+- `elastic_deployment_endpoint` (String) Deployment endpoint
 - `elastic_organization_id` (String) Organization ID
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

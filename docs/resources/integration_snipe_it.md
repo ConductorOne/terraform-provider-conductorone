@@ -35,7 +35,7 @@ resource "conductorone_integration_snipe_it" "snipe_it" {
 
 ### Optional
 
-- `snipeit_access_token` (String, Sensitive) Access Token
+- `snipeit_access_token` (String, Sensitive) Access token
 - `snipeit_base_url` (String) Base URL
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

@@ -35,16 +35,19 @@ type IntegrationMicrosoftEntraResource struct {
 
 // IntegrationMicrosoftEntraResourceModel describes the resource data model.
 type IntegrationMicrosoftEntraResourceModel struct {
-	AppID             types.String   `tfsdk:"app_id"`
-	CreatedAt         types.String   `tfsdk:"created_at"`
-	DeletedAt         types.String   `tfsdk:"deleted_at"`
-	ID                types.String   `tfsdk:"id"`
-	UpdatedAt         types.String   `tfsdk:"updated_at"`
-	UserIds           []types.String `tfsdk:"user_ids"`
-	EntraTenantId     types.String   `tfsdk:"entra_tenant_id"`
-	EntraClientId     types.String   `tfsdk:"entra_client_id"`
-	EntraClientSecret types.String   `tfsdk:"entra_client_secret"`
-	EntraSkipAdGroups types.Bool     `tfsdk:"entra_skip_ad_groups"`
+	AppID                         types.String   `tfsdk:"app_id"`
+	CreatedAt                     types.String   `tfsdk:"created_at"`
+	DeletedAt                     types.String   `tfsdk:"deleted_at"`
+	ID                            types.String   `tfsdk:"id"`
+	UpdatedAt                     types.String   `tfsdk:"updated_at"`
+	UserIds                       []types.String `tfsdk:"user_ids"`
+	EntraTenantId                 types.String   `tfsdk:"entra_tenant_id"`
+	EntraClientId                 types.String   `tfsdk:"entra_client_id"`
+	EntraClientSecret             types.String   `tfsdk:"entra_client_secret"`
+	EntraSkipAdGroups             types.Bool     `tfsdk:"entra_skip_ad_groups"`
+	EntraGraphDomain              types.String   `tfsdk:"entra_graph_domain"`
+	EntraSignInActivity           types.Bool     `tfsdk:"entra_sign_in_activity"`
+	EntraScheduleScimProvisioning types.Bool     `tfsdk:"entra_schedule_scim_provisioning"`
 }
 
 func (r *IntegrationMicrosoftEntraResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -96,20 +99,32 @@ func (r *IntegrationMicrosoftEntraResource) Schema(ctx context.Context, req reso
 			},
 			"entra_tenant_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Entra Tenant ID`,
+				Description: `Entra tenant ID`,
 			},
 			"entra_client_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Entra Client ID`,
+				Description: `Entra client ID`,
 			},
 			"entra_client_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Entra Client Secret`,
+				Description: `Entra client secret`,
 			},
 			"entra_skip_ad_groups": &schema.BoolAttribute{
 				Optional:    true,
 				Description: `Skip syncing Active Directory Server groups`,
+			},
+			"entra_graph_domain": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Entra Graph Domain`,
+			},
+			"entra_sign_in_activity": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Fetch User Sign-in Activity`,
+			},
+			"entra_schedule_scim_provisioning": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Schedule SCIM Provisioning`,
 			},
 		},
 	}

@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -107,6 +107,12 @@ func (r *IntegrationDatadogResourceModel) populateConfig() map[string]interface{
 		configValues["datadog_application_key"] = datadogApplicationKey
 	}
 
+	syncSecrets := new(string)
+	if !r.SyncSecrets.IsUnknown() && !r.SyncSecrets.IsNull() {
+		*syncSecrets = strconv.FormatBool(r.SyncSecrets.ValueBool())
+		configValues["sync_secrets"] = syncSecrets
+	}
+
 	return configValues
 }
 
@@ -172,12 +178,26 @@ func (r *IntegrationDatadogResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["datadog_site"]; ok {
 					if val, ok := v.(string); ok {
 						r.DatadogSite = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["sync_secrets"]; ok {
+					if v, ok := values["sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SyncSecrets = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 
@@ -221,12 +241,26 @@ func (r *IntegrationDatadogResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if v, ok := values["datadog_site"]; ok {
 					if val, ok := v.(string); ok {
 						r.DatadogSite = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["sync_secrets"]; ok {
+					if v, ok := values["sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SyncSecrets = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 

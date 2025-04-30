@@ -38,7 +38,7 @@ resource "conductorone_integration_gitlab" "gitlab" {
 
 - `gitlab_access_token` (String, Sensitive) Personal access token
 - `gitlab_group` (String) Group
-- `gitlab_url` (String) URL (optional)
+- `gitlab_url` (String) URL - optional
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

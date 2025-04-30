@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -107,6 +107,12 @@ func (r *IntegrationConfluenceV2ResourceModel) populateConfig() map[string]inter
 		configValues["api-key"] = apiKey
 	}
 
+	skipPersonalSpaces := new(string)
+	if !r.SkipPersonalSpaces.IsUnknown() && !r.SkipPersonalSpaces.IsNull() {
+		*skipPersonalSpaces = strconv.FormatBool(r.SkipPersonalSpaces.ValueBool())
+		configValues["skip-personal-spaces"] = skipPersonalSpaces
+	}
+
 	return configValues
 }
 
@@ -172,6 +178,7 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromGetResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -184,6 +191,19 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromGetResponse(resp *shar
 				if v, ok := values["username"]; ok {
 					if val, ok := v.(string); ok {
 						r.Username = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["skip-personal-spaces"]; ok {
+					if v, ok := values["skip-personal-spaces"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SkipPersonalSpaces = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 
@@ -227,6 +247,7 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromCreateResponse(resp *s
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -239,6 +260,19 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromCreateResponse(resp *s
 				if v, ok := values["username"]; ok {
 					if val, ok := v.(string); ok {
 						r.Username = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["skip-personal-spaces"]; ok {
+					if v, ok := values["skip-personal-spaces"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SkipPersonalSpaces = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 

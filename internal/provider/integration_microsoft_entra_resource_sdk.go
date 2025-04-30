@@ -113,6 +113,24 @@ func (r *IntegrationMicrosoftEntraResourceModel) populateConfig() map[string]int
 		configValues["entra_skip_ad_groups"] = entraSkipAdGroups
 	}
 
+	entraGraphDomain := new(string)
+	if !r.EntraGraphDomain.IsUnknown() && !r.EntraGraphDomain.IsNull() {
+		*entraGraphDomain = r.EntraGraphDomain.ValueString()
+		configValues["entra_graph_domain"] = entraGraphDomain
+	}
+
+	entraSignInActivity := new(string)
+	if !r.EntraSignInActivity.IsUnknown() && !r.EntraSignInActivity.IsNull() {
+		*entraSignInActivity = strconv.FormatBool(r.EntraSignInActivity.ValueBool())
+		configValues["entra_sign_in_activity"] = entraSignInActivity
+	}
+
+	entraScheduleScimProvisioning := new(string)
+	if !r.EntraScheduleScimProvisioning.IsUnknown() && !r.EntraScheduleScimProvisioning.IsNull() {
+		*entraScheduleScimProvisioning = strconv.FormatBool(r.EntraScheduleScimProvisioning.ValueBool())
+		configValues["entra_schedule_scim_provisioning"] = entraScheduleScimProvisioning
+	}
+
 	return configValues
 }
 
@@ -207,6 +225,38 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromGetResponse(resp *sh
 					}
 				}
 
+				if v, ok := values["entra_graph_domain"]; ok {
+					if val, ok := v.(string); ok {
+						r.EntraGraphDomain = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["entra_sign_in_activity"]; ok {
+					if v, ok := values["entra_sign_in_activity"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EntraSignInActivity = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+				if localV, ok := configValues["entra_schedule_scim_provisioning"]; ok {
+					if v, ok := values["entra_schedule_scim_provisioning"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EntraScheduleScimProvisioning = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -270,6 +320,38 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromCreateResponse(resp 
 							if err == nil {
 								if localV != nil || (localV == nil && !bv) {
 									r.EntraSkipAdGroups = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+				if v, ok := values["entra_graph_domain"]; ok {
+					if val, ok := v.(string); ok {
+						r.EntraGraphDomain = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["entra_sign_in_activity"]; ok {
+					if v, ok := values["entra_sign_in_activity"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EntraSignInActivity = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+				if localV, ok := configValues["entra_schedule_scim_provisioning"]; ok {
+					if v, ok := values["entra_schedule_scim_provisioning"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EntraScheduleScimProvisioning = types.BoolValue(bv)
 								}
 							}
 						}

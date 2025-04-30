@@ -47,6 +47,8 @@ type IntegrationGcpGwsResourceModel struct {
 	CredentialsJson     types.String   `tfsdk:"credentials_json"`
 	SkipSystemAccounts  types.Bool     `tfsdk:"skip_system_accounts"`
 	SkipDefaultProjects types.Bool     `tfsdk:"skip_default_projects"`
+	SyncSecrets         types.Bool     `tfsdk:"sync_secrets"`
+	ProjectIds          []types.String `tfsdk:"project_ids"`
 }
 
 func (r *IntegrationGcpGwsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -120,6 +122,15 @@ func (r *IntegrationGcpGwsResource) Schema(ctx context.Context, req resource.Sch
 			"skip_default_projects": &schema.BoolAttribute{
 				Optional:    true,
 				Description: `Skip Google Cloud Platform default projects`,
+			},
+			"sync_secrets": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Sync secrets`,
+			},
+			"project_ids": &schema.ListAttribute{
+				Optional:    true,
+				Description: `Project IDs`,
+				ElementType: types.StringType,
 			},
 		},
 	}

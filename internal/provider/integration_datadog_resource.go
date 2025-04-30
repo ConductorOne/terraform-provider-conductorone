@@ -44,6 +44,7 @@ type IntegrationDatadogResourceModel struct {
 	DatadogSite           types.String   `tfsdk:"datadog_site"`
 	DatadogApiKey         types.String   `tfsdk:"datadog_api_key"`
 	DatadogApplicationKey types.String   `tfsdk:"datadog_application_key"`
+	SyncSecrets           types.Bool     `tfsdk:"sync_secrets"`
 }
 
 func (r *IntegrationDatadogResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -106,6 +107,10 @@ func (r *IntegrationDatadogResource) Schema(ctx context.Context, req resource.Sc
 				Optional:    true,
 				Sensitive:   true,
 				Description: `Application key`,
+			},
+			"sync_secrets": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Sync secrets`,
 			},
 		},
 	}

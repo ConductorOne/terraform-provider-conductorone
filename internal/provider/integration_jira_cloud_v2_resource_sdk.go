@@ -4,6 +4,7 @@ package provider
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -113,6 +114,20 @@ func (r *IntegrationJiraCloudV2ResourceModel) populateConfig() map[string]interf
 		configValues["enable_external_ticket_provisioning"] = enableExternalTicketProvisioning
 	}
 
+	jiracloudProjectKeys := make([]string, 0)
+	for _, item := range r.JiracloudProjectKeys {
+		jiracloudProjectKeys = append(jiracloudProjectKeys, item.ValueString())
+	}
+	if len(jiracloudProjectKeys) > 0 {
+		configValues["jiracloud_project_keys"] = strings.Join(jiracloudProjectKeys, ",")
+	}
+
+	jiracloudSkipProjectParticipants := new(string)
+	if !r.JiracloudSkipProjectParticipants.IsUnknown() && !r.JiracloudSkipProjectParticipants.IsNull() {
+		*jiracloudSkipProjectParticipants = strconv.FormatBool(r.JiracloudSkipProjectParticipants.ValueBool())
+		configValues["jiracloud_skip_project_participants"] = jiracloudSkipProjectParticipants
+	}
+
 	return configValues
 }
 
@@ -207,6 +222,29 @@ func (r *IntegrationJiraCloudV2ResourceModel) RefreshFromGetResponse(resp *share
 					}
 				}
 
+				r.JiracloudProjectKeys = nil
+				if v, ok := values["jiracloud_project_keys"]; ok {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							r.JiracloudProjectKeys = append(r.JiracloudProjectKeys, types.StringValue(item))
+						}
+					}
+				}
+
+				if localV, ok := configValues["jiracloud_skip_project_participants"]; ok {
+					if v, ok := values["jiracloud_skip_project_participants"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.JiracloudSkipProjectParticipants = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -270,6 +308,29 @@ func (r *IntegrationJiraCloudV2ResourceModel) RefreshFromCreateResponse(resp *sh
 							if err == nil {
 								if localV != nil || (localV == nil && !bv) {
 									r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+				r.JiracloudProjectKeys = nil
+				if v, ok := values["jiracloud_project_keys"]; ok {
+					if val, ok := v.(string); ok {
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							r.JiracloudProjectKeys = append(r.JiracloudProjectKeys, types.StringValue(item))
+						}
+					}
+				}
+
+				if localV, ok := configValues["jiracloud_skip_project_participants"]; ok {
+					if v, ok := values["jiracloud_skip_project_participants"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.JiracloudSkipProjectParticipants = types.BoolValue(bv)
 								}
 							}
 						}

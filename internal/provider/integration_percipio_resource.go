@@ -100,7 +100,7 @@ func (r *IntegrationPercipioResource) Schema(ctx context.Context, req resource.S
 			"percipio_api_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Token`,
+				Description: `API token`,
 			},
 			"percipio_course_ids": &schema.ListAttribute{
 				Optional:    true,

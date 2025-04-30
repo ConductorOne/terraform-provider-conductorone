@@ -21,9 +21,11 @@ resource "conductorone_integration_okta_v2" "okta_v2" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  okta_v2_domain         = "..."
-  okta_v2_api_token      = "..."
-  okta_sync_custom_roles = false
+  okta_v2_domain             = "..."
+  okta_v2_api_token          = "..."
+  okta_sync_custom_roles     = false
+  okta_skip_secondary_emails = false
+  okta_sync_secrets          = false
 }
 ```
 
@@ -36,7 +38,9 @@ resource "conductorone_integration_okta_v2" "okta_v2" {
 
 ### Optional
 
+- `okta_skip_secondary_emails` (Boolean) Skip secondary emails
 - `okta_sync_custom_roles` (Boolean) Sync custom roles
+- `okta_sync_secrets` (Boolean) Sync secrets
 - `okta_v2_api_token` (String, Sensitive) API token
 - `okta_v2_domain` (String) Okta Domain
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.

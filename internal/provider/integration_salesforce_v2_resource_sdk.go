@@ -119,6 +119,12 @@ func (r *IntegrationSalesforceV2ResourceModel) populateConfig() map[string]inter
 		configValues["salesforce_security_token"] = salesforceSecurityToken
 	}
 
+	salesforceSyncConnectedApps := new(string)
+	if !r.SalesforceSyncConnectedApps.IsUnknown() && !r.SalesforceSyncConnectedApps.IsNull() {
+		*salesforceSyncConnectedApps = strconv.FormatBool(r.SalesforceSyncConnectedApps.ValueBool())
+		configValues["salesforce_sync_connected_apps"] = salesforceSyncConnectedApps
+	}
+
 	return configValues
 }
 
@@ -213,6 +219,19 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromGetResponse(resp *shar
 					}
 				}
 
+				if localV, ok := configValues["salesforce_sync_connected_apps"]; ok {
+					if v, ok := values["salesforce_sync_connected_apps"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SalesforceSyncConnectedApps = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -279,6 +298,19 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromCreateResponse(resp *s
 				if v, ok := values["salesforce_username"]; ok {
 					if val, ok := v.(string); ok {
 						r.SalesforceUsername = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["salesforce_sync_connected_apps"]; ok {
+					if v, ok := values["salesforce_sync_connected_apps"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SalesforceSyncConnectedApps = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 

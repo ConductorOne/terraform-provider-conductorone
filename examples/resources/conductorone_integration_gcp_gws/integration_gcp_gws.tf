@@ -9,4 +9,6 @@ resource "conductorone_integration_gcp_gws" "gcp_gws" {
   credentials_json      = "..."
   skip_system_accounts  = false
   skip_default_projects = false
+  sync_secrets          = false
+  project_ids           = ["..."]
 }

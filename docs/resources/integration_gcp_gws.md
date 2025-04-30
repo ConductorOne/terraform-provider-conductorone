@@ -27,6 +27,8 @@ resource "conductorone_integration_gcp_gws" "gcp_gws" {
   credentials_json      = "..."
   skip_system_accounts  = false
   skip_default_projects = false
+  sync_secrets          = false
+  project_ids           = ["..."]
 }
 ```
 
@@ -43,8 +45,10 @@ resource "conductorone_integration_gcp_gws" "gcp_gws" {
 - `credentials_json` (String, Sensitive) Credentials (JSON)
 - `customer_id` (String) Google Workspace Customer ID
 - `domain` (String) Google Workspace Domain
+- `project_ids` (List of String) Project IDs
 - `skip_default_projects` (Boolean) Skip Google Cloud Platform default projects
 - `skip_system_accounts` (Boolean) Skip Google Cloud Platform system accounts
+- `sync_secrets` (Boolean) Sync secrets
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

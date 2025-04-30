@@ -100,7 +100,7 @@ func (r *IntegrationGoogleWorkspaceResource) Schema(ctx context.Context, req res
 			},
 			"domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Domain`,
+				Description: `Limit to domain`,
 			},
 			"administrator_email": &schema.StringAttribute{
 				Optional:    true,
