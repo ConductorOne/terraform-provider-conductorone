@@ -131,6 +131,12 @@ func (r *IntegrationAwsResourceModel) populateConfig() map[string]interface{} {
 		configValues["aws_sso_scim_access_token"] = awsSsoScimAccessToken
 	}
 
+	awsSyncSecrets := new(string)
+	if !r.AwsSyncSecrets.IsUnknown() && !r.AwsSyncSecrets.IsNull() {
+		*awsSyncSecrets = strconv.FormatBool(r.AwsSyncSecrets.ValueBool())
+		configValues["aws_sync_secrets"] = awsSyncSecrets
+	}
+
 	return configValues
 }
 
@@ -263,6 +269,19 @@ func (r *IntegrationAwsResourceModel) RefreshFromGetResponse(resp *shared.Connec
 					}
 				}
 
+				if localV, ok := configValues["aws_sync_secrets"]; ok {
+					if v, ok := values["aws_sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.AwsSyncSecrets = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -367,6 +386,19 @@ func (r *IntegrationAwsResourceModel) RefreshFromCreateResponse(resp *shared.Con
 				if v, ok := values["aws_sso_scim_endpoint"]; ok {
 					if val, ok := v.(string); ok {
 						r.AwsSsoScimEndpoint = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["aws_sync_secrets"]; ok {
+					if v, ok := values["aws_sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.AwsSyncSecrets = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 

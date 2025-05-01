@@ -43,6 +43,7 @@ type IntegrationAsanaResourceModel struct {
 	UserIds               []types.String `tfsdk:"user_ids"`
 	AsanaApiKey           types.String   `tfsdk:"asana_api_key"`
 	AsanaIsServiceAccount types.Bool     `tfsdk:"asana_is_service_account"`
+	AsanaDefaultWorkspace types.String   `tfsdk:"asana_default_workspace"`
 }
 
 func (r *IntegrationAsanaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -100,6 +101,10 @@ func (r *IntegrationAsanaResource) Schema(ctx context.Context, req resource.Sche
 			"asana_is_service_account": &schema.BoolAttribute{
 				Optional:    true,
 				Description: `Is service account`,
+			},
+			"asana_default_workspace": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Default workspace`,
 			},
 		},
 	}
