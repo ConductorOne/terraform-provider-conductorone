@@ -1,29 +1,27 @@
 ---
-page_title: "conductorone_integration_asana Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_tray_ai Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Asana Integration Resource
+  Tray_ai Integration Resource
 ---
 
-# conductorone_integration_asana (Resource)
+# conductorone_integration_tray_ai (Resource)
 
-Asana Integration Resource
+Tray_ai Integration Resource
 
-This resource allows you to configure an instance of the asana integration in ConductorOne.
+This resource allows you to configure an instance of the tray_ai integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_asana" "asana" {
-  app_id = conductorone_app.asana.id
+resource "conductorone_integration_tray_ai" "tray_ai" {
+  app_id = conductorone_app.tray_ai.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  asana_api_key            = "..."
-  asana_is_service_account = false
-  asana_default_workspace  = "..."
+  trayai_authorization_token = "..."
 }
 ```
 
@@ -36,9 +34,7 @@ resource "conductorone_integration_asana" "asana" {
 
 ### Optional
 
-- `asana_api_key` (String, Sensitive) Personal access token
-- `asana_default_workspace` (String) Default workspace
-- `asana_is_service_account` (Boolean) Is service account
+- `trayai_authorization_token` (String, Sensitive) authentication token
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only
