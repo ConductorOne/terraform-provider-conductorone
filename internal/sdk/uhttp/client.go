@@ -5,9 +5,12 @@ import (
 	"crypto/tls"
 	"net/http"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/logging"
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 )
+
+const subsystem = "terraform-provider-conductorone"
 
 type tlsClientConfigOption struct {
 	config *tls.Config
@@ -96,6 +99,6 @@ func NewClient(ctx context.Context, options ...Option) (*http.Client, error) {
 		return nil, err
 	}
 	return &http.Client{
-		Transport: t,
+		Transport: logging.NewSubsystemLoggingHTTPTransport(subsystem, t),
 	}, nil
 }

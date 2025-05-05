@@ -9,6 +9,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/logging"
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 
@@ -165,6 +166,7 @@ func NewWithCredentials(ctx context.Context, cred *ClientCredentials, opts ...Cu
 		uhttp.WithLogger(options.logger != nil, options.logger),
 		uhttp.WithUserAgent(options.userAgent),
 		uhttp.WithTLSClientConfig(options.tlsConfig),
+		uhttp.WithDebug(logging.IsDebugOrHigher()),
 	)
 	if err != nil {
 		return nil, err
