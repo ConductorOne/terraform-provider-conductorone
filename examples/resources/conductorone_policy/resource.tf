@@ -17,6 +17,9 @@ resource "conductorone_policy" "my_policy" {
               ]
             }
             allow_reassignment = false
+            allowed_reassignees = [
+              "..."
+            ]
             app_group_approval = {
               allow_self_approval = true
               app_group_id        = "...my_app_group_id..."
@@ -89,7 +92,15 @@ resource "conductorone_policy" "my_policy" {
                     # ...
                   }
                   connector_id = "...my_connector_id..."
-                  schema_id    = "...my_schema_id..."
+                  do_not_save = {
+                    # ...
+                  }
+                  save_to_vault = {
+                    vault_ids = [
+                      "..."
+                    ]
+                  }
+                  schema_id = "...my_schema_id..."
                 }
                 default_behavior = {
                   connector_id = "...my_connector_id..."
@@ -112,6 +123,9 @@ resource "conductorone_policy" "my_policy" {
                 ]
               }
               multi_step = "{ \"see\": \"documentation\" }"
+              unconfigured_provision = {
+                # ...
+              }
               webhook_provision = {
                 webhook_id = "...my_webhook_id..."
               }

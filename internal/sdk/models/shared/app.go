@@ -48,9 +48,11 @@ type App struct {
 	// The owners of the app.
 	AppOwners []User `json:"appOwners,omitempty"`
 	// The ID of the Certify Policy associated with this App.
-	CertifyPolicyID *string    `json:"certifyPolicyId,omitempty"`
-	CreatedAt       *time.Time `json:"createdAt,omitempty"`
-	DeletedAt       *time.Time `json:"deletedAt,omitempty"`
+	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
+	// The connectorVersion field.
+	ConnectorVersion *int64     `json:"connectorVersion,omitempty"`
+	CreatedAt        *time.Time `json:"createdAt,omitempty"`
+	DeletedAt        *time.Time `json:"deletedAt,omitempty"`
 	// The app's description.
 	Description *string `json:"description,omitempty"`
 	// The app's display name.
@@ -120,6 +122,13 @@ func (o *App) GetCertifyPolicyID() *string {
 		return nil
 	}
 	return o.CertifyPolicyID
+}
+
+func (o *App) GetConnectorVersion() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorVersion
 }
 
 func (o *App) GetCreatedAt() *time.Time {
@@ -252,6 +261,8 @@ func (o *App) GetUserCount() *string {
 type AppInput struct {
 	// The ID of the Certify Policy associated with this App.
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
+	// The connectorVersion field.
+	ConnectorVersion *int64 `json:"connectorVersion,omitempty"`
 	// The app's description.
 	Description *string `json:"description,omitempty"`
 	// The app's display name.
@@ -277,6 +288,13 @@ func (o *AppInput) GetCertifyPolicyID() *string {
 		return nil
 	}
 	return o.CertifyPolicyID
+}
+
+func (o *AppInput) GetConnectorVersion() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorVersion
 }
 
 func (o *AppInput) GetDescription() *string {

@@ -20,6 +20,8 @@ type Approval struct {
 	AgentApproval *AgentApproval `json:"agent,omitempty"`
 	// Configuration to allow reassignment by reviewers during this step.
 	AllowReassignment *bool `json:"allowReassignment,omitempty"`
+	// List of users for whom this step can be reassigned.
+	AllowedReassignees []string `json:"allowedReassignees,omitempty"`
 	// App owner approval provides the configuration for an approval step when the app owner is the target.
 	AppOwnerApproval *AppOwnerApproval `json:"appOwners,omitempty"`
 	// A field indicating whether this step is assigned.
@@ -63,6 +65,13 @@ func (o *Approval) GetAllowReassignment() *bool {
 		return nil
 	}
 	return o.AllowReassignment
+}
+
+func (o *Approval) GetAllowedReassignees() []string {
+	if o == nil {
+		return nil
+	}
+	return o.AllowedReassignees
 }
 
 func (o *Approval) GetAppOwnerApproval() *AppOwnerApproval {

@@ -7,5 +7,7 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type AccountProvision struct {
 	Config      *AccountProvisionConfig `tfsdk:"config"`
 	ConnectorID types.String            `tfsdk:"connector_id"`
+	DoNotSave   *DoNotSave              `tfsdk:"do_not_save"`
+	SaveToVault *SaveToVault            `tfsdk:"save_to_vault"`
 	SchemaID    types.String            `tfsdk:"schema_id"`
 }

@@ -10,5 +10,6 @@ type DeprovisionerPolicy struct {
 	ExternalTicketProvision *ExternalTicketProvision `tfsdk:"external_ticket_provision"`
 	ManualProvision         *ManualProvision         `tfsdk:"manual_provision"`
 	MultiStep               types.String             `tfsdk:"multi_step"`
+	UnconfiguredProvision   *UnconfiguredProvision   `tfsdk:"unconfigured_provision"`
 	WebhookProvision        *WebhookProvision        `tfsdk:"webhook_provision"`
 }

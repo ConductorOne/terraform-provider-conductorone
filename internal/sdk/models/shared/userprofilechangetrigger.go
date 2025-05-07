@@ -4,8 +4,17 @@ package shared
 
 // The UserProfileChangeTrigger message.
 type UserProfileChangeTrigger struct {
+	// The profileAttributeCel field.
+	ProfileAttributeCel *string `json:"profileAttributeCel,omitempty"`
 	// The profileAttributeKey field.
 	ProfileAttributeKey *string `json:"profileAttributeKey,omitempty"`
+}
+
+func (o *UserProfileChangeTrigger) GetProfileAttributeCel() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ProfileAttributeCel
 }
 
 func (o *UserProfileChangeTrigger) GetProfileAttributeKey() *string {

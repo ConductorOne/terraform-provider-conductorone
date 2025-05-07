@@ -34,6 +34,9 @@ resource "conductorone_policy" "my_policy" {
               ]
             }
             allow_reassignment = false
+            allowed_reassignees = [
+              "..."
+            ]
             app_group_approval = {
               allow_self_approval = true
               app_group_id        = "...my_app_group_id..."
@@ -106,7 +109,15 @@ resource "conductorone_policy" "my_policy" {
                     # ...
                   }
                   connector_id = "...my_connector_id..."
-                  schema_id    = "...my_schema_id..."
+                  do_not_save = {
+                    # ...
+                  }
+                  save_to_vault = {
+                    vault_ids = [
+                      "..."
+                    ]
+                  }
+                  schema_id = "...my_schema_id..."
                 }
                 default_behavior = {
                   connector_id = "...my_connector_id..."
@@ -129,6 +140,9 @@ resource "conductorone_policy" "my_policy" {
                 ]
               }
               multi_step = "{ \"see\": \"documentation\" }"
+              unconfigured_provision = {
+                # ...
+              }
               webhook_provision = {
                 webhook_id = "...my_webhook_id..."
               }
@@ -243,6 +257,7 @@ Optional:
 
 - `agent_approval` (Attributes) The agent to assign the task to. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--agent_approval))
 - `allow_reassignment` (Boolean) Configuration to allow reassignment by reviewers during this step.
+- `allowed_reassignees` (List of String) List of users for whom this step can be reassigned.
 - `app_group_approval` (Attributes) The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_group_approval))
 - `app_owner_approval` (Attributes) App owner approval provides the configuration for an approval step when the app owner is the target. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_owner_approval))
 - `entitlement_owner_approval` (Attributes) The entitlement owner approval allows configuration of the approval step when the target approvers are the entitlement owners. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--entitlement_owner_approval))
@@ -386,7 +401,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - delegated
   - webhook
   - multiStep
-  - externalTicket (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy))
+  - externalTicket
+  - unconfigured (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy))
 - `provision_target` (Attributes) ProvisionTarget indicates the specific app, app entitlement, and if known, the app user and grant duration of this provision step (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_target))
 
 <a id="nestedatt--policy_steps--steps--provision--provision_policy"></a>
@@ -403,6 +419,7 @@ This message contains a oneof named provision_type. Only a single field of the f
 - `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--external_ticket_provision))
 - `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--manual_provision))
 - `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
+- `unconfigured_provision` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--unconfigured_provision))
 - `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--webhook_provision))
 
 <a id="nestedatt--policy_steps--steps--provision--provision_policy--connector_provision"></a>
@@ -410,7 +427,11 @@ This message contains a oneof named provision_type. Only a single field of the f
 
 Optional:
 
-- `account_provision` (Attributes) The AccountProvision message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--connector_provision--account_provision))
+- `account_provision` (Attributes) The AccountProvision message.
+
+This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:
+  - saveToVault
+  - doNotSave (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--connector_provision--account_provision))
 - `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--connector_provision--default_behavior))
 
 <a id="nestedatt--policy_steps--steps--provision--provision_policy--connector_provision--account_provision"></a>
@@ -420,10 +441,24 @@ Optional:
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--connector_provision--account_provision--config))
 - `connector_id` (String) The connectorId field.
+- `do_not_save` (Attributes) The DoNotSave message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--connector_provision--account_provision--do_not_save))
+- `save_to_vault` (Attributes) The SaveToVault message. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--connector_provision--account_provision--save_to_vault))
 - `schema_id` (String) The schemaId field.
 
 <a id="nestedatt--policy_steps--steps--provision--provision_policy--connector_provision--account_provision--config"></a>
 ### Nested Schema for `policy_steps.steps.provision.provision_policy.connector_provision.account_provision.config`
+
+
+<a id="nestedatt--policy_steps--steps--provision--provision_policy--connector_provision--account_provision--do_not_save"></a>
+### Nested Schema for `policy_steps.steps.provision.provision_policy.connector_provision.account_provision.do_not_save`
+
+
+<a id="nestedatt--policy_steps--steps--provision--provision_policy--connector_provision--account_provision--save_to_vault"></a>
+### Nested Schema for `policy_steps.steps.provision.provision_policy.connector_provision.account_provision.save_to_vault`
+
+Optional:
+
+- `vault_ids` (List of String) The vaultIds field.
 
 
 
@@ -464,6 +499,10 @@ Optional:
 
 - `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
 - `user_ids` (List of String) An array of users that are required to provision during this step.
+
+
+<a id="nestedatt--policy_steps--steps--provision--provision_policy--unconfigured_provision"></a>
+### Nested Schema for `policy_steps.steps.provision.provision_policy.unconfigured_provision`
 
 
 <a id="nestedatt--policy_steps--steps--provision--provision_policy--webhook_provision"></a>

@@ -4,29 +4,35 @@ package provider
 
 import (
 	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
-func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest() *shared.RequestCatalogManagementServiceAddAppEntitlementsRequest {
-	var appEntitlements []shared.AppEntitlementRef = []shared.AppEntitlementRef{}
-	for _, appEntitlementsItem := range r.AppEntitlements {
-		appID := new(string)
-		if !appEntitlementsItem.AppID.IsUnknown() && !appEntitlementsItem.AppID.IsNull() {
-			*appID = appEntitlementsItem.AppID.ValueString()
-		} else {
-			appID = nil
+func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceAddAppEntitlementsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appEntitlements []shared.AppEntitlementRef
+	if r.AppEntitlements != nil {
+		appEntitlements = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlements))
+		for _, appEntitlementsItem := range r.AppEntitlements {
+			appID := new(string)
+			if !appEntitlementsItem.AppID.IsUnknown() && !appEntitlementsItem.AppID.IsNull() {
+				*appID = appEntitlementsItem.AppID.ValueString()
+			} else {
+				appID = nil
+			}
+			id := new(string)
+			if !appEntitlementsItem.ID.IsUnknown() && !appEntitlementsItem.ID.IsNull() {
+				*id = appEntitlementsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			appEntitlements = append(appEntitlements, shared.AppEntitlementRef{
+				AppID: appID,
+				ID:    id,
+			})
 		}
-		id := new(string)
-		if !appEntitlementsItem.ID.IsUnknown() && !appEntitlementsItem.ID.IsNull() {
-			*id = appEntitlementsItem.ID.ValueString()
-		} else {
-			id = nil
-		}
-		appEntitlements = append(appEntitlements, shared.AppEntitlementRef{
-			AppID: appID,
-			ID:    id,
-		})
 	}
 	createRequests := new(bool)
 	if !r.CreateRequests.IsUnknown() && !r.CreateRequests.IsNull() {
@@ -38,7 +44,82 @@ func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogMan
 		AppEntitlements: appEntitlements,
 		CreateRequests:  createRequests,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var catalogID string
+	catalogID = r.CatalogID.ValueString()
+
+	requestCatalogManagementServiceAddAppEntitlementsRequest, requestCatalogManagementServiceAddAppEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest(ctx)
+	diags.Append(requestCatalogManagementServiceAddAppEntitlementsRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceAddAppEntitlementsRequest: requestCatalogManagementServiceAddAppEntitlementsRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appEntitlements []shared.AppEntitlementRef
+	if r.AppEntitlements != nil {
+		appEntitlements = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlements))
+		for _, appEntitlementsItem := range r.AppEntitlements {
+			appID := new(string)
+			if !appEntitlementsItem.AppID.IsUnknown() && !appEntitlementsItem.AppID.IsNull() {
+				*appID = appEntitlementsItem.AppID.ValueString()
+			} else {
+				appID = nil
+			}
+			id := new(string)
+			if !appEntitlementsItem.ID.IsUnknown() && !appEntitlementsItem.ID.IsNull() {
+				*id = appEntitlementsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			appEntitlements = append(appEntitlements, shared.AppEntitlementRef{
+				AppID: appID,
+				ID:    id,
+			})
+		}
+	}
+	out := shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest{
+		AppEntitlements: appEntitlements,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var catalogID string
+	catalogID = r.CatalogID.ValueString()
+
+	requestCatalogManagementServiceRemoveAppEntitlementsRequest, requestCatalogManagementServiceRemoveAppEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx)
+	diags.Append(requestCatalogManagementServiceRemoveAppEntitlementsRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceRemoveAppEntitlementsRequest: requestCatalogManagementServiceRemoveAppEntitlementsRequest,
+	}
+
+	return &out, diags
 }
 
 func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceAddAppEntitlementsResponse) diag.Diagnostics {
@@ -48,30 +129,4 @@ func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestC
 	}
 
 	return diags
-}
-
-func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest {
-	var appEntitlements []shared.AppEntitlementRef = []shared.AppEntitlementRef{}
-	for _, appEntitlementsItem := range r.AppEntitlements {
-		appID := new(string)
-		if !appEntitlementsItem.AppID.IsUnknown() && !appEntitlementsItem.AppID.IsNull() {
-			*appID = appEntitlementsItem.AppID.ValueString()
-		} else {
-			appID = nil
-		}
-		id := new(string)
-		if !appEntitlementsItem.ID.IsUnknown() && !appEntitlementsItem.ID.IsNull() {
-			*id = appEntitlementsItem.ID.ValueString()
-		} else {
-			id = nil
-		}
-		appEntitlements = append(appEntitlements, shared.AppEntitlementRef{
-			AppID: appID,
-			ID:    id,
-		})
-	}
-	out := shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest{
-		AppEntitlements: appEntitlements,
-	}
-	return &out
 }

@@ -94,6 +94,7 @@ data "conductorone_user" "my_user" {
 - `profile` (Attributes) (see [below for nested schema](#nestedatt--profile))
 - `roles_path` (String) JSONPATH expression indicating the location of the roles of the current user in the expanded array.
 - `status` (String) The status of the user in the system.
+- `type` (String) The type of the user.
 - `updated_at` (String)
 - `username` (String) This is the user's primary username. Typically sourced from the primary directory.
 - `username_sources` (Attributes List) A list of source data for the usernames attribute. (see [below for nested schema](#nestedatt--username_sources))

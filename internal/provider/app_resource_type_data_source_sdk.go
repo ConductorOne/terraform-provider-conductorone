@@ -10,14 +10,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest() *shared.SearchAppResourceTypesRequest {
-	var appIds []string = []string{}
-	for _, appIdsItem := range r.AppIds {
-		appIds = append(appIds, appIdsItem.ValueString())
+func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest(ctx context.Context) (*shared.SearchAppResourceTypesRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appIds []string
+	if r.AppIds != nil {
+		appIds = make([]string, 0, len(r.AppIds))
+		for _, appIdsItem := range r.AppIds {
+			appIds = append(appIds, appIdsItem.ValueString())
+		}
 	}
-	var appUserIds []string = []string{}
-	for _, appUserIdsItem := range r.AppUserIds {
-		appUserIds = append(appUserIds, appUserIdsItem.ValueString())
+	var appUserIds []string
+	if r.AppUserIds != nil {
+		appUserIds = make([]string, 0, len(r.AppUserIds))
+		for _, appUserIdsItem := range r.AppUserIds {
+			appUserIds = append(appUserIds, appUserIdsItem.ValueString())
+		}
 	}
 	displayName := new(string)
 	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
@@ -25,13 +33,19 @@ func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest()
 	} else {
 		displayName = nil
 	}
-	var excludeResourceTypeIds []string = []string{}
-	for _, excludeResourceTypeIdsItem := range r.ExcludeResourceTypeIds {
-		excludeResourceTypeIds = append(excludeResourceTypeIds, excludeResourceTypeIdsItem.ValueString())
+	var excludeResourceTypeIds []string
+	if r.ExcludeResourceTypeIds != nil {
+		excludeResourceTypeIds = make([]string, 0, len(r.ExcludeResourceTypeIds))
+		for _, excludeResourceTypeIdsItem := range r.ExcludeResourceTypeIds {
+			excludeResourceTypeIds = append(excludeResourceTypeIds, excludeResourceTypeIdsItem.ValueString())
+		}
 	}
-	var excludeResourceTypeTraitIds []string = []string{}
-	for _, excludeResourceTypeTraitIdsItem := range r.ExcludeResourceTypeTraitIds {
-		excludeResourceTypeTraitIds = append(excludeResourceTypeTraitIds, excludeResourceTypeTraitIdsItem.ValueString())
+	var excludeResourceTypeTraitIds []string
+	if r.ExcludeResourceTypeTraitIds != nil {
+		excludeResourceTypeTraitIds = make([]string, 0, len(r.ExcludeResourceTypeTraitIds))
+		for _, excludeResourceTypeTraitIdsItem := range r.ExcludeResourceTypeTraitIds {
+			excludeResourceTypeTraitIds = append(excludeResourceTypeTraitIds, excludeResourceTypeTraitIdsItem.ValueString())
+		}
 	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
@@ -39,13 +53,19 @@ func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest()
 	} else {
 		query = nil
 	}
-	var resourceTypeIds []string = []string{}
-	for _, resourceTypeIdsItem := range r.ResourceTypeIds {
-		resourceTypeIds = append(resourceTypeIds, resourceTypeIdsItem.ValueString())
+	var resourceTypeIds []string
+	if r.ResourceTypeIds != nil {
+		resourceTypeIds = make([]string, 0, len(r.ResourceTypeIds))
+		for _, resourceTypeIdsItem := range r.ResourceTypeIds {
+			resourceTypeIds = append(resourceTypeIds, resourceTypeIdsItem.ValueString())
+		}
 	}
-	var resourceTypeTraitIds []string = []string{}
-	for _, resourceTypeTraitIdsItem := range r.ResourceTypeTraitIds {
-		resourceTypeTraitIds = append(resourceTypeTraitIds, resourceTypeTraitIdsItem.ValueString())
+	var resourceTypeTraitIds []string
+	if r.ResourceTypeTraitIds != nil {
+		resourceTypeTraitIds = make([]string, 0, len(r.ResourceTypeTraitIds))
+		for _, resourceTypeTraitIdsItem := range r.ResourceTypeTraitIds {
+			resourceTypeTraitIds = append(resourceTypeTraitIds, resourceTypeTraitIdsItem.ValueString())
+		}
 	}
 	out := shared.SearchAppResourceTypesRequest{
 		AppIds:                      appIds,
@@ -57,7 +77,8 @@ func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest()
 		ResourceTypeIds:             resourceTypeIds,
 		ResourceTypeTraitIds:        resourceTypeTraitIds,
 	}
-	return &out
+
+	return &out, diags
 }
 
 func (r *AppResourceTypeDataSourceModel) RefreshFromSharedAppResourceType(ctx context.Context, resp *shared.AppResourceType) diag.Diagnostics {

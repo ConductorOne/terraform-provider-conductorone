@@ -93,6 +93,11 @@ components:
                     description: The ID of the Certify Policy associated with this App.
                     readOnly: false
                     type: string
+                connectorVersion:
+                    description: The connectorVersion field.
+                    format: uint32
+                    readOnly: false
+                    type: integer
                 createdAt:
                     format: date-time
                     readOnly: true
@@ -695,6 +700,93 @@ components:
             title: App Entitlement Ref
             type: object
             x-speakeasy-name-override: AppEntitlementRef
+        c1.api.app.v1.AppEntitlementSearchServiceSearchGrantsRequest:
+            description: The AppEntitlementSearchServiceSearchGrantsRequest message.
+            properties:
+                appIds:
+                    description: Search for grants contained in any of these apps.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                appUserIds:
+                    description: Search for grants that are granted to any of these app user ids.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                entitlementRefs:
+                    description: Search for grants of an entitlement
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementExpandMask'
+                pageSize:
+                    description: The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                resourceIds:
+                    description: Search for grants within a resource.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                resourceTypeIds:
+                    description: Search grants for given resource types.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                userId:
+                    description: Search for grants of a user
+                    readOnly: false
+                    type: string
+            title: App Entitlement Search Service Search Grants Request
+            type: object
+            x-speakeasy-name-override: AppEntitlementSearchServiceSearchGrantsRequest
+        c1.api.app.v1.AppEntitlementSearchServiceSearchGrantsResponse:
+            description: The AppEntitlementSearchServiceSearchGrantsResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties: true
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        readOnly: false
+                        type: object
+                    nullable: true
+                    readOnly: false
+                    type: array
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementWithUserBinding'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: App Entitlement Search Service Search Grants Response
+            type: object
+            x-speakeasy-name-override: AppEntitlementSearchServiceSearchGrantsResponse
         c1.api.app.v1.AppEntitlementSearchServiceSearchRequest:
             description: Search app entitlements by a variety of filters.
             properties:
@@ -1154,6 +1246,16 @@ components:
             title: App Entitlement With Expired
             type: object
             x-speakeasy-name-override: AppEntitlementWithExpired
+        c1.api.app.v1.AppEntitlementWithUserBinding:
+            description: The AppEntitlementWithUserBinding message.
+            properties:
+                appEntitlementUserBinding:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementUserView'
+                entitlement:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementView'
+            title: App Entitlement With User Binding
+            type: object
+            x-speakeasy-name-override: AppEntitlementWithUserBinding
         c1.api.app.v1.AppManagedStateBindingRef:
             description: The AppManagedStateBindingRef message.
             properties:
@@ -1776,6 +1878,17 @@ components:
                     description: The app ID to restrict the search to.
                     readOnly: false
                     type: string
+                appUserDomains:
+                    description: A list of account domains to restrict the search to.
+                    items:
+                        enum:
+                            - APP_USER_DOMAIN_UNSPECIFIED
+                            - APP_USER_DOMAIN_EXTERNAL
+                            - APP_USER_DOMAIN_TRUSTED
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
                 appUserIds:
                     description: A list of app user IDs to restrict the search to.
                     items:
@@ -1823,10 +1936,6 @@ components:
                     type: array
                 expandMask:
                     $ref: '#/components/schemas/c1.api.app.v1.AppUserExpandMask'
-                isExternal:
-                    nullable: true
-                    readOnly: false
-                    type: boolean
                 pageSize:
                     description: The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
                     format: int32
@@ -3244,6 +3353,19 @@ components:
             title: Remove Entitlement Membership Response
             type: object
             x-speakeasy-name-override: RemoveEntitlementMembershipResponse
+        c1.api.app.v1.RemoveGrantDurationRequestInput:
+            description: The RemoveGrantDurationRequest message.
+            title: Remove Grant Duration Request
+            type: object
+            x-speakeasy-name-override: RemoveGrantDurationRequest
+        c1.api.app.v1.RemoveGrantDurationResponse:
+            description: The RemoveGrantDurationResponse message.
+            properties:
+                binding:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementUserBinding'
+            title: Remove Grant Duration Response
+            type: object
+            x-speakeasy-name-override: RemoveGrantDurationResponse
         c1.api.app.v1.SearchAppEntitlementsWithExpiredResponse:
             description: The SearchAppEntitlementsWithExpiredResponse message contains a list of results and a nextPageToken if applicable.
             properties:
@@ -3743,6 +3865,24 @@ components:
             title: Update App Usage Controls Response
             type: object
             x-speakeasy-name-override: UpdateAppUsageControlsResponse
+        c1.api.app.v1.UpdateGrantDurationRequestInput:
+            description: The UpdateGrantDurationRequest message.
+            properties:
+                newDeprovisionAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Update Grant Duration Request
+            type: object
+            x-speakeasy-name-override: UpdateGrantDurationRequest
+        c1.api.app.v1.UpdateGrantDurationResponse:
+            description: The UpdateGrantDurationResponse message.
+            properties:
+                binding:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementUserBinding'
+            title: Update Grant Duration Response
+            type: object
+            x-speakeasy-name-override: UpdateGrantDurationResponse
         c1.api.app.v1.UpdateManuallyManagedResourceTypeRequestInput:
             description: The UpdateManuallyManagedResourceTypeRequest message.
             properties:
@@ -4663,6 +4803,13 @@ components:
                     description: Configuration to allow reassignment by reviewers during this step.
                     readOnly: false
                     type: boolean
+                allowedReassignees:
+                    description: List of users for whom this step can be reassigned.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
                 appOwners:
                     $ref: '#/components/schemas/c1.api.policy.v1.AppOwnerApproval'
                 assigned:
@@ -4827,7 +4974,12 @@ components:
             type: object
             x-speakeasy-name-override: ConnectorProvision
         c1.api.policy.v1.ConnectorProvision.AccountProvision:
-            description: The AccountProvision message.
+            description: |
+                The AccountProvision message.
+
+                This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:
+                  - saveToVault
+                  - doNotSave
             nullable: true
             properties:
                 config:
@@ -4838,6 +4990,10 @@ components:
                     description: The connectorId field.
                     readOnly: false
                     type: string
+                doNotSave:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ConnectorProvision.DoNotSave'
+                saveToVault:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ConnectorProvision.SaveToVault'
                 schemaId:
                     description: The schemaId field.
                     readOnly: false
@@ -4858,6 +5014,26 @@ components:
             title: Default Behavior
             type: object
             x-speakeasy-name-override: DefaultBehavior
+        c1.api.policy.v1.ConnectorProvision.DoNotSave:
+            description: The DoNotSave message.
+            nullable: true
+            title: Do Not Save
+            type: object
+            x-speakeasy-name-override: DoNotSave
+        c1.api.policy.v1.ConnectorProvision.SaveToVault:
+            description: The SaveToVault message.
+            nullable: true
+            properties:
+                vaultIds:
+                    description: The vaultIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Save To Vault
+            type: object
+            x-speakeasy-name-override: SaveToVault
         c1.api.policy.v1.CreatePolicyRequest:
             description: The CreatePolicyRequest message is used to create a new policy.
             properties:
@@ -5426,6 +5602,14 @@ components:
                     $ref: '#/components/schemas/c1.api.policy.v1.CompletedAction'
                 errored:
                     $ref: '#/components/schemas/c1.api.policy.v1.ErroredAction'
+                externalTicketId:
+                    description: This indicates the external ticket id for this step.
+                    readOnly: false
+                    type: string
+                externalTicketProvisionerConfigId:
+                    description: This indicates the external ticket provisioner config id for this step.
+                    readOnly: false
+                    type: string
                 notificationId:
                     description: This indicates the notification id for this step.
                     readOnly: false
@@ -5452,6 +5636,14 @@ components:
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
+                webhookId:
+                    description: This indicates the webhook id for this step.
+                    readOnly: false
+                    type: string
+                webhookInstanceId:
+                    description: This indicates the webhook instance id for this step.
+                    readOnly: false
+                    type: string
             title: Provision Instance
             type: object
             x-speakeasy-name-override: ProvisionInstance
@@ -5466,6 +5658,7 @@ components:
                   - webhook
                   - multiStep
                   - externalTicket
+                  - unconfigured
             properties:
                 connector:
                     $ref: '#/components/schemas/c1.api.policy.v1.ConnectorProvision'
@@ -5477,6 +5670,8 @@ components:
                     $ref: '#/components/schemas/c1.api.policy.v1.ManualProvision'
                 multiStep:
                     $ref: '#/components/schemas/c1.api.policy.v1.MultiStep'
+                unconfigured:
+                    $ref: '#/components/schemas/c1.api.policy.v1.UnconfiguredProvision'
                 webhook:
                     $ref: '#/components/schemas/c1.api.policy.v1.WebhookProvision'
             title: Provision Policy
@@ -5756,6 +5951,12 @@ components:
             title: Test Account Provision Policy Response
             type: object
             x-speakeasy-name-override: TestAccountProvisionPolicyResponse
+        c1.api.policy.v1.UnconfiguredProvision:
+            description: The UnconfiguredProvision message.
+            nullable: true
+            title: Unconfigured Provision
+            type: object
+            x-speakeasy-name-override: UnconfiguredProvision
         c1.api.policy.v1.UpdatePolicyRequestInput:
             description: The UpdatePolicyRequest message contains the policy object to update and a field mask to indicate which fields to update. It uses URL value for input.
             properties:
@@ -8779,6 +8980,17 @@ components:
             title: Task Audit Reassigned To Delegate
             type: object
             x-speakeasy-name-override: TaskAuditReassignedToDelegate
+        c1.api.task.v1.TaskAuditReassignmentListError:
+            description: The TaskAuditReassignmentListError message.
+            nullable: true
+            properties:
+                errorMessage:
+                    description: The errorMessage field.
+                    readOnly: false
+                    type: string
+            title: Task Audit Reassignment List Error
+            type: object
+            x-speakeasy-name-override: TaskAuditReassignmentListError
         c1.api.task.v1.TaskAuditRestart:
             description: The TaskAuditRestart message.
             nullable: true
@@ -8908,6 +9120,7 @@ components:
                   - stepUpApproval
                   - externalTicketProvisionStepResolved
                   - stepSkipped
+                  - reassignmentListError
             properties:
                 accessRequestOutcome:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditAccessRequestOutcome'
@@ -8987,8 +9200,21 @@ components:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditPolicyProvisionReassigned'
                 reassignedToDelegate:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditReassignedToDelegate'
+                reassignmentListError:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskAuditReassignmentListError'
                 revokeOutcome:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditRevokeOutcome'
+                source:
+                    description: The source field.
+                    enum:
+                        - SOURCE_UNSPECIFIED
+                        - SOURCE_C1
+                        - SOURCE_JIRA
+                        - SOURCE_SLACK
+                        - SOURCE_COPILOT_AGENTS
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 stateChange:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditStateChange'
                 stepSkipped:
@@ -10391,6 +10617,17 @@ components:
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
+                type:
+                    description: The type of the user.
+                    enum:
+                        - USER_TYPE_UNSPECIFIED
+                        - USER_TYPE_SYSTEM
+                        - USER_TYPE_HUMAN
+                        - USER_TYPE_SERVICE
+                        - USER_TYPE_AGENT
+                    readOnly: true
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 updatedAt:
                     format: date-time
                     readOnly: true
@@ -11510,6 +11747,10 @@ components:
             description: The UserProfileChangeTrigger message.
             nullable: true
             properties:
+                profileAttributeCel:
+                    description: The profileAttributeCel field.
+                    readOnly: false
+                    type: string
                 profileAttributeKey:
                     description: The profileAttributeKey field.
                     readOnly: false
@@ -11599,6 +11840,10 @@ components:
                     description: The id field.
                     readOnly: true
                     type: string
+                isDraft:
+                    description: The isDraft field.
+                    readOnly: false
+                    type: boolean
                 lastExecutedAt:
                     format: date-time
                     readOnly: false
@@ -13497,6 +13742,92 @@ paths:
                 - App Entitlement
             x-speakeasy-group: AppEntitlements
             x-speakeasy-name-override: ListUsers
+    /api/v1/apps/{app_id}/entitlements/{app_entitlement_id}/users/{app_user_id}/remove-grant-duration:
+        post:
+            description: Invokes the c1.api.app.v1.AppEntitlementUserBindingService.RemoveGrantDuration method.
+            operationId: c1.api.app.v1.AppEntitlementUserBindingService.RemoveGrantDuration
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_id
+                  required: true
+                  schema:
+                    description: The appEntitlementId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_user_id
+                  required: true
+                  schema:
+                    description: The appUserId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.RemoveGrantDurationRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.RemoveGrantDurationResponse'
+                    description: Successful response
+            summary: Remove Grant Duration
+            tags:
+                - App Entitlement User Binding
+            x-speakeasy-group: AppEntitlementUserBinding
+            x-speakeasy-name-override: RemoveGrantDuration
+    /api/v1/apps/{app_id}/entitlements/{app_entitlement_id}/users/{app_user_id}/update-grant-duration:
+        post:
+            description: Invokes the c1.api.app.v1.AppEntitlementUserBindingService.UpdateGrantDuration method.
+            operationId: c1.api.app.v1.AppEntitlementUserBindingService.UpdateGrantDuration
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_id
+                  required: true
+                  schema:
+                    description: The appEntitlementId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_user_id
+                  required: true
+                  schema:
+                    description: The appUserId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.UpdateGrantDurationRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.UpdateGrantDurationResponse'
+                    description: Successful response
+            summary: Update Grant Duration
+            tags:
+                - App Entitlement User Binding
+            x-speakeasy-group: AppEntitlementUserBinding
+            x-speakeasy-name-override: UpdateGrantDuration
     /api/v1/apps/{app_id}/entitlements/{app_entitlement_id}/users/{identity_user_id}/grants:
         get:
             description: Returns a list of app users for the identity in the app. If that app user also has a grant to the entitlement from the request, data about the grant is also returned. It will always return ALL app users for this identity, but only SOME may have grant data.
@@ -16486,10 +16817,33 @@ paths:
             tags:
                 - App Entitlement
             x-speakeasy-entity-operation:
-                terraform-datasource: App Entitlement#read
+                terraform-datasource:
+                    - App Entitlement#read
+                    - App Entitlements#read
                 terraform-resource: null
             x-speakeasy-group: AppEntitlementSearch
             x-speakeasy-name-override: Search
+    /api/v1/search/grants:
+        post:
+            description: Invokes the c1.api.app.v1.AppEntitlementSearchService.SearchGrants method.
+            operationId: c1.api.app.v1.AppEntitlementSearchService.SearchGrants
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementSearchServiceSearchGrantsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementSearchServiceSearchGrantsResponse'
+                    description: Successful response
+            summary: Search Grants
+            tags:
+                - App Entitlement
+            x-speakeasy-group: AppEntitlementSearch
+            x-speakeasy-name-override: SearchGrants
     /api/v1/search/iam/personal_clients:
         post:
             description: Invokes the c1.api.iam.v1.PersonalClientSearchService.Search method.

@@ -5,12 +5,15 @@ package provider
 import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCreateRequest() *shared.RequestCatalogManagementServiceCreateRequest {
+func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCreateRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceCreateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -66,44 +69,13 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 		UnenrollmentEntitlementBehavior: unenrollmentEntitlementBehavior,
 		VisibleToEveryone:               visibleToEveryone,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context.Context, resp *shared.RequestCatalog) diag.Diagnostics {
+func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Context) (*shared.RequestCatalogInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.CreatedByUserID = types.StringPointerValue(resp.CreatedByUserID)
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		if resp.EnrollmentBehavior != nil {
-			r.EnrollmentBehavior = types.StringValue(string(*resp.EnrollmentBehavior))
-		} else {
-			r.EnrollmentBehavior = types.StringNull()
-		}
-		r.ID = types.StringPointerValue(resp.ID)
-		r.Published = types.BoolPointerValue(resp.Published)
-		r.RequestBundle = types.BoolPointerValue(resp.RequestBundle)
-		if resp.UnenrollmentBehavior != nil {
-			r.UnenrollmentBehavior = types.StringValue(string(*resp.UnenrollmentBehavior))
-		} else {
-			r.UnenrollmentBehavior = types.StringNull()
-		}
-		if resp.UnenrollmentEntitlementBehavior != nil {
-			r.UnenrollmentEntitlementBehavior = types.StringValue(string(*resp.UnenrollmentEntitlementBehavior))
-		} else {
-			r.UnenrollmentEntitlementBehavior = types.StringNull()
-		}
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-		r.VisibleToEveryone = types.BoolPointerValue(resp.VisibleToEveryone)
-	}
-
-	return diags
-}
-
-func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput() *shared.RequestCatalogInput {
 	createdByUserID := new(string)
 	if !r.CreatedByUserID.IsUnknown() && !r.CreatedByUserID.IsNull() {
 		*createdByUserID = r.CreatedByUserID.ValueString()
@@ -176,5 +148,104 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput() *shared.Reque
 		UnenrollmentEntitlementBehavior: unenrollmentEntitlementBehavior,
 		VisibleToEveryone:               visibleToEveryone,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceUpdateRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceUpdateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	requestCatalog, requestCatalogDiags := r.ToSharedRequestCatalogInput(ctx)
+	diags.Append(requestCatalogDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := shared.RequestCatalogManagementServiceUpdateRequest{
+		RequestCatalog: requestCatalog,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	requestCatalogManagementServiceUpdateRequest, requestCatalogManagementServiceUpdateRequestDiags := r.ToSharedRequestCatalogManagementServiceUpdateRequest(ctx)
+	diags.Append(requestCatalogManagementServiceUpdateRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest{
+		ID: id,
+		RequestCatalogManagementServiceUpdateRequest: requestCatalogManagementServiceUpdateRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context.Context, resp *shared.RequestCatalog) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.CreatedByUserID = types.StringPointerValue(resp.CreatedByUserID)
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		if resp.EnrollmentBehavior != nil {
+			r.EnrollmentBehavior = types.StringValue(string(*resp.EnrollmentBehavior))
+		} else {
+			r.EnrollmentBehavior = types.StringNull()
+		}
+		r.ID = types.StringPointerValue(resp.ID)
+		r.Published = types.BoolPointerValue(resp.Published)
+		r.RequestBundle = types.BoolPointerValue(resp.RequestBundle)
+		if resp.UnenrollmentBehavior != nil {
+			r.UnenrollmentBehavior = types.StringValue(string(*resp.UnenrollmentBehavior))
+		} else {
+			r.UnenrollmentBehavior = types.StringNull()
+		}
+		if resp.UnenrollmentEntitlementBehavior != nil {
+			r.UnenrollmentEntitlementBehavior = types.StringValue(string(*resp.UnenrollmentEntitlementBehavior))
+		} else {
+			r.UnenrollmentEntitlementBehavior = types.StringNull()
+		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		r.VisibleToEveryone = types.BoolPointerValue(resp.VisibleToEveryone)
+	}
+
+	return diags
 }

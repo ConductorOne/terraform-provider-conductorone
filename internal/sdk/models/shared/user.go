@@ -78,6 +78,42 @@ func (e *UserStatus) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// Type - The type of the user.
+type Type string
+
+const (
+	TypeUserTypeUnspecified Type = "USER_TYPE_UNSPECIFIED"
+	TypeUserTypeSystem      Type = "USER_TYPE_SYSTEM"
+	TypeUserTypeHuman       Type = "USER_TYPE_HUMAN"
+	TypeUserTypeService     Type = "USER_TYPE_SERVICE"
+	TypeUserTypeAgent       Type = "USER_TYPE_AGENT"
+)
+
+func (e Type) ToPointer() *Type {
+	return &e
+}
+func (e *Type) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "USER_TYPE_UNSPECIFIED":
+		fallthrough
+	case "USER_TYPE_SYSTEM":
+		fallthrough
+	case "USER_TYPE_HUMAN":
+		fallthrough
+	case "USER_TYPE_SERVICE":
+		fallthrough
+	case "USER_TYPE_AGENT":
+		*e = Type(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Type: %v", v)
+	}
+}
+
 // The User object provides all of the details for an user, as well as some configuration.
 type User struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
@@ -128,8 +164,10 @@ type User struct {
 	// A list of unique identifiers that maps to ConductorOne's user roles let you assign users permissions tailored to the work they do in the software.
 	RoleIds []string `json:"roleIds,omitempty"`
 	// The status of the user in the system.
-	Status    *UserStatus `json:"status,omitempty"`
-	UpdatedAt *time.Time  `json:"updatedAt,omitempty"`
+	Status *UserStatus `json:"status,omitempty"`
+	// The type of the user.
+	Type      *Type      `json:"type,omitempty"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 	// This is the user's primary username. Typically sourced from the primary directory.
 	Username *string `json:"username,omitempty"`
 	// A list of source data for the usernames attribute.
@@ -329,6 +367,13 @@ func (o *User) GetStatus() *UserStatus {
 		return nil
 	}
 	return o.Status
+}
+
+func (o *User) GetType() *Type {
+	if o == nil {
+		return nil
+	}
+	return o.Type
 }
 
 func (o *User) GetUpdatedAt() *time.Time {

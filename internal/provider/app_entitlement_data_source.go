@@ -162,12 +162,31 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 										Computed:    true,
 										Description: `The connectorId field.`,
 									},
+									"do_not_save": schema.SingleNestedAttribute{
+										Computed:    true,
+										Description: `The DoNotSave message.`,
+									},
+									"save_to_vault": schema.SingleNestedAttribute{
+										Computed: true,
+										Attributes: map[string]schema.Attribute{
+											"vault_ids": schema.ListAttribute{
+												Computed:    true,
+												ElementType: types.StringType,
+												Description: `The vaultIds field.`,
+											},
+										},
+										Description: `The SaveToVault message.`,
+									},
 									"schema_id": schema.StringAttribute{
 										Computed:    true,
 										Description: `The schemaId field.`,
 									},
 								},
-								Description: `The AccountProvision message.`,
+								MarkdownDescription: `The AccountProvision message.` + "\n" +
+									`` + "\n" +
+									`This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:` + "\n" +
+									`  - saveToVault` + "\n" +
+									`  - doNotSave`,
 							},
 							"default_behavior": schema.SingleNestedAttribute{
 								Computed: true,
@@ -242,6 +261,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						Computed:    true,
 						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
 					},
+					"unconfigured_provision": schema.SingleNestedAttribute{
+						Computed:    true,
+						Description: `The UnconfiguredProvision message.`,
+					},
 					"webhook_provision": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -261,7 +284,8 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 					`  - delegated` + "\n" +
 					`  - webhook` + "\n" +
 					`  - multiStep` + "\n" +
-					`  - externalTicket`,
+					`  - externalTicket` + "\n" +
+					`  - unconfigured`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -365,12 +389,31 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 										Computed:    true,
 										Description: `The connectorId field.`,
 									},
+									"do_not_save": schema.SingleNestedAttribute{
+										Computed:    true,
+										Description: `The DoNotSave message.`,
+									},
+									"save_to_vault": schema.SingleNestedAttribute{
+										Computed: true,
+										Attributes: map[string]schema.Attribute{
+											"vault_ids": schema.ListAttribute{
+												Computed:    true,
+												ElementType: types.StringType,
+												Description: `The vaultIds field.`,
+											},
+										},
+										Description: `The SaveToVault message.`,
+									},
 									"schema_id": schema.StringAttribute{
 										Computed:    true,
 										Description: `The schemaId field.`,
 									},
 								},
-								Description: `The AccountProvision message.`,
+								MarkdownDescription: `The AccountProvision message.` + "\n" +
+									`` + "\n" +
+									`This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:` + "\n" +
+									`  - saveToVault` + "\n" +
+									`  - doNotSave`,
 							},
 							"default_behavior": schema.SingleNestedAttribute{
 								Computed: true,
@@ -445,6 +488,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						Computed:    true,
 						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
 					},
+					"unconfigured_provision": schema.SingleNestedAttribute{
+						Computed:    true,
+						Description: `The UnconfiguredProvision message.`,
+					},
 					"webhook_provision": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -464,7 +511,8 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 					`  - delegated` + "\n" +
 					`  - webhook` + "\n" +
 					`  - multiStep` + "\n" +
-					`  - externalTicket`,
+					`  - externalTicket` + "\n" +
+					`  - unconfigured`,
 			},
 			"purpose": schema.StringAttribute{
 				Computed:    true,
@@ -580,7 +628,12 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 		return
 	}
 
-	request := data.ToSharedAppEntitlementSearchServiceSearchRequest()
+	request, requestDiags := data.ToSharedAppEntitlementSearchServiceSearchRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.AppEntitlementSearch.Search(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -591,10 +644,6 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

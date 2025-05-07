@@ -52,93 +52,6 @@ func (e *AppAccessRequestDefaultsState) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// AppAccessRequestDefaults1 - The AppAccessRequestDefaults message.
-//
-// This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
-//   - durationUnset
-//   - durationGrant
-type AppAccessRequestDefaults1 struct {
-	// The request catalog ids for the app access request rule.
-	CatalogIds []string `json:"catalogIds,omitempty"`
-	// If true the app level request configuration will be applied to specified resource types.
-	DefaultsEnabled *bool          `json:"defaultsEnabled,omitempty"`
-	DurationGrant   *string        `json:"durationGrant,omitempty"`
-	DurationUnset   *DurationUnset `json:"durationUnset,omitempty"`
-	// If emergency grants are enabled for this app access request rule.
-	EmergencyGrantEnabled *bool `json:"emergencyGrantEnabled,omitempty"`
-	// The policy id for the emergency grant policy.
-	EmergencyGrantPolicyID *string `json:"emergencyGrantPolicyId,omitempty"`
-	// The requestPolicyId field.
-	RequestPolicyID *string `json:"requestPolicyId,omitempty"`
-	// The app resource type ids for which the app access request defaults are applied.
-	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
-	// The last applied state of the app access request defaults.
-	State *AppAccessRequestDefaultsState `json:"state,omitempty"`
-}
-
-func (o *AppAccessRequestDefaults1) GetCatalogIds() []string {
-	if o == nil {
-		return nil
-	}
-	return o.CatalogIds
-}
-
-func (o *AppAccessRequestDefaults1) GetDefaultsEnabled() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.DefaultsEnabled
-}
-
-func (o *AppAccessRequestDefaults1) GetDurationGrant() *string {
-	if o == nil {
-		return nil
-	}
-	return o.DurationGrant
-}
-
-func (o *AppAccessRequestDefaults1) GetDurationUnset() *DurationUnset {
-	if o == nil {
-		return nil
-	}
-	return o.DurationUnset
-}
-
-func (o *AppAccessRequestDefaults1) GetEmergencyGrantEnabled() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.EmergencyGrantEnabled
-}
-
-func (o *AppAccessRequestDefaults1) GetEmergencyGrantPolicyID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.EmergencyGrantPolicyID
-}
-
-func (o *AppAccessRequestDefaults1) GetRequestPolicyID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.RequestPolicyID
-}
-
-func (o *AppAccessRequestDefaults1) GetResourceTypeIds() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ResourceTypeIds
-}
-
-func (o *AppAccessRequestDefaults1) GetState() *AppAccessRequestDefaultsState {
-	if o == nil {
-		return nil
-	}
-	return o.State
-}
-
 // The AppAccessRequestDefaults message.
 //
 // This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
@@ -229,6 +142,93 @@ func (o *AppAccessRequestDefaults) GetResourceTypeIds() []string {
 }
 
 func (o *AppAccessRequestDefaults) GetState() *AppAccessRequestDefaultsState {
+	if o == nil {
+		return nil
+	}
+	return o.State
+}
+
+// AppAccessRequestDefaults1 - The AppAccessRequestDefaults message.
+//
+// This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
+//   - durationUnset
+//   - durationGrant
+type AppAccessRequestDefaults1 struct {
+	// The request catalog ids for the app access request rule.
+	CatalogIds []string `json:"catalogIds,omitempty"`
+	// If true the app level request configuration will be applied to specified resource types.
+	DefaultsEnabled *bool          `json:"defaultsEnabled,omitempty"`
+	DurationGrant   *string        `json:"durationGrant,omitempty"`
+	DurationUnset   *DurationUnset `json:"durationUnset,omitempty"`
+	// If emergency grants are enabled for this app access request rule.
+	EmergencyGrantEnabled *bool `json:"emergencyGrantEnabled,omitempty"`
+	// The policy id for the emergency grant policy.
+	EmergencyGrantPolicyID *string `json:"emergencyGrantPolicyId,omitempty"`
+	// The requestPolicyId field.
+	RequestPolicyID *string `json:"requestPolicyId,omitempty"`
+	// The app resource type ids for which the app access request defaults are applied.
+	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
+	// The last applied state of the app access request defaults.
+	State *AppAccessRequestDefaultsState `json:"state,omitempty"`
+}
+
+func (o *AppAccessRequestDefaults1) GetCatalogIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.CatalogIds
+}
+
+func (o *AppAccessRequestDefaults1) GetDefaultsEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DefaultsEnabled
+}
+
+func (o *AppAccessRequestDefaults1) GetDurationGrant() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DurationGrant
+}
+
+func (o *AppAccessRequestDefaults1) GetDurationUnset() *DurationUnset {
+	if o == nil {
+		return nil
+	}
+	return o.DurationUnset
+}
+
+func (o *AppAccessRequestDefaults1) GetEmergencyGrantEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmergencyGrantEnabled
+}
+
+func (o *AppAccessRequestDefaults1) GetEmergencyGrantPolicyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.EmergencyGrantPolicyID
+}
+
+func (o *AppAccessRequestDefaults1) GetRequestPolicyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.RequestPolicyID
+}
+
+func (o *AppAccessRequestDefaults1) GetResourceTypeIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ResourceTypeIds
+}
+
+func (o *AppAccessRequestDefaults1) GetState() *AppAccessRequestDefaultsState {
 	if o == nil {
 		return nil
 	}

@@ -69,6 +69,42 @@ func (e *TaskAuditViewEventType) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// Source - The source field.
+type Source string
+
+const (
+	SourceSourceUnspecified   Source = "SOURCE_UNSPECIFIED"
+	SourceSourceC1            Source = "SOURCE_C1"
+	SourceSourceJira          Source = "SOURCE_JIRA"
+	SourceSourceSlack         Source = "SOURCE_SLACK"
+	SourceSourceCopilotAgents Source = "SOURCE_COPILOT_AGENTS"
+)
+
+func (e Source) ToPointer() *Source {
+	return &e
+}
+func (e *Source) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "SOURCE_UNSPECIFIED":
+		fallthrough
+	case "SOURCE_C1":
+		fallthrough
+	case "SOURCE_JIRA":
+		fallthrough
+	case "SOURCE_SLACK":
+		fallthrough
+	case "SOURCE_COPILOT_AGENTS":
+		*e = Source(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Source: %v", v)
+	}
+}
+
 // The TaskAuditView message.
 //
 // This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -117,6 +153,7 @@ func (e *TaskAuditViewEventType) UnmarshalJSON(data []byte) error {
 //   - stepUpApproval
 //   - externalTicketProvisionStepResolved
 //   - stepSkipped
+//   - reassignmentListError
 type TaskAuditView struct {
 	// The TaskAuditAccessRequestOutcome message.
 	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
@@ -183,8 +220,12 @@ type TaskAuditView struct {
 	TaskAuditPolicyProvisionReassigned *TaskAuditPolicyProvisionReassigned `json:"provisionReassigned,omitempty"`
 	// The TaskAuditReassignedToDelegate message.
 	TaskAuditReassignedToDelegate *TaskAuditReassignedToDelegate `json:"reassignedToDelegate,omitempty"`
+	// The TaskAuditReassignmentListError message.
+	TaskAuditReassignmentListError *TaskAuditReassignmentListError `json:"reassignmentListError,omitempty"`
 	// The TaskAuditRevokeOutcome message.
 	TaskAuditRevokeOutcome *TaskAuditRevokeOutcome `json:"revokeOutcome,omitempty"`
+	// The source field.
+	Source *Source `json:"source,omitempty"`
 	// The TaskAuditStateChange message.
 	TaskAuditStateChange *TaskAuditStateChange `json:"stateChange,omitempty"`
 	// The TaskAuditStepSkipped message.
@@ -450,11 +491,25 @@ func (o *TaskAuditView) GetTaskAuditReassignedToDelegate() *TaskAuditReassignedT
 	return o.TaskAuditReassignedToDelegate
 }
 
+func (o *TaskAuditView) GetTaskAuditReassignmentListError() *TaskAuditReassignmentListError {
+	if o == nil {
+		return nil
+	}
+	return o.TaskAuditReassignmentListError
+}
+
 func (o *TaskAuditView) GetTaskAuditRevokeOutcome() *TaskAuditRevokeOutcome {
 	if o == nil {
 		return nil
 	}
 	return o.TaskAuditRevokeOutcome
+}
+
+func (o *TaskAuditView) GetSource() *Source {
+	if o == nil {
+		return nil
+	}
+	return o.Source
 }
 
 func (o *TaskAuditView) GetTaskAuditStateChange() *TaskAuditStateChange {

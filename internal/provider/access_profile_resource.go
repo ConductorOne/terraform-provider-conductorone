@@ -7,8 +7,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -188,7 +186,12 @@ func (r *AccessProfileResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	request := data.ToSharedRequestCatalogManagementServiceCreateRequest()
+	request, requestDiags := data.ToSharedRequestCatalogManagementServiceCreateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.RequestCatalogManagement.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -243,13 +246,13 @@ func (r *AccessProfileResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.Get(ctx, request)
+	res, err := r.client.RequestCatalogManagement.Get(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -302,19 +305,13 @@ func (r *AccessProfileResource) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var requestCatalogManagementServiceUpdateRequest *shared.RequestCatalogManagementServiceUpdateRequest
-	requestCatalog := data.ToSharedRequestCatalogInput()
-	requestCatalogManagementServiceUpdateRequest = &shared.RequestCatalogManagementServiceUpdateRequest{
-		RequestCatalog: requestCatalog,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest{
-		ID: id,
-		RequestCatalogManagementServiceUpdateRequest: requestCatalogManagementServiceUpdateRequest,
-	}
-	res, err := r.client.RequestCatalogManagement.Update(ctx, request)
+	res, err := r.client.RequestCatalogManagement.Update(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -345,13 +342,13 @@ func (r *AccessProfileResource) Update(ctx context.Context, req resource.UpdateR
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var id1 string
-	id1 = data.ID.ValueString()
+	request1, request1Diags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	request1 := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest{
-		ID: id1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.RequestCatalogManagement.Get(ctx, request1)
+	res1, err := r.client.RequestCatalogManagement.Get(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -405,13 +402,13 @@ func (r *AccessProfileResource) Delete(ctx context.Context, req resource.DeleteR
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.Delete(ctx, request)
+	res, err := r.client.RequestCatalogManagement.Delete(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

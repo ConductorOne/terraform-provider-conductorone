@@ -7,7 +7,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
@@ -133,15 +132,13 @@ func (r *AccessProfileRequestableEntriesResource) Create(ctx context.Context, re
 		return
 	}
 
-	var catalogID string
-	catalogID = data.CatalogID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	requestCatalogManagementServiceAddAppEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest()
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest{
-		CatalogID: catalogID,
-		RequestCatalogManagementServiceAddAppEntitlementsRequest: requestCatalogManagementServiceAddAppEntitlementsRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.AddAppEntitlements(ctx, request)
+	res, err := r.client.RequestCatalogManagement.AddAppEntitlements(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -239,15 +236,13 @@ func (r *AccessProfileRequestableEntriesResource) Delete(ctx context.Context, re
 		return
 	}
 
-	var catalogID string
-	catalogID = data.CatalogID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	requestCatalogManagementServiceRemoveAppEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest()
-	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest{
-		CatalogID: catalogID,
-		RequestCatalogManagementServiceRemoveAppEntitlementsRequest: requestCatalogManagementServiceRemoveAppEntitlementsRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.RequestCatalogManagement.RemoveAppEntitlements(ctx, request)
+	res, err := r.client.RequestCatalogManagement.RemoveAppEntitlements(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

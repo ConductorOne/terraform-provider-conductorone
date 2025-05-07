@@ -135,6 +135,11 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 												Computed:    true,
 												Description: `Configuration to allow reassignment by reviewers during this step.`,
 											},
+											"allowed_reassignees": schema.ListAttribute{
+												Computed:    true,
+												ElementType: types.StringType,
+												Description: `List of users for whom this step can be reassigned.`,
+											},
 											"app_group_approval": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
@@ -367,12 +372,31 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 																		Computed:    true,
 																		Description: `The connectorId field.`,
 																	},
+																	"do_not_save": schema.SingleNestedAttribute{
+																		Computed:    true,
+																		Description: `The DoNotSave message.`,
+																	},
+																	"save_to_vault": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Attributes: map[string]schema.Attribute{
+																			"vault_ids": schema.ListAttribute{
+																				Computed:    true,
+																				ElementType: types.StringType,
+																				Description: `The vaultIds field.`,
+																			},
+																		},
+																		Description: `The SaveToVault message.`,
+																	},
 																	"schema_id": schema.StringAttribute{
 																		Computed:    true,
 																		Description: `The schemaId field.`,
 																	},
 																},
-																Description: `The AccountProvision message.`,
+																MarkdownDescription: `The AccountProvision message.` + "\n" +
+																	`` + "\n" +
+																	`This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:` + "\n" +
+																	`  - saveToVault` + "\n" +
+																	`  - doNotSave`,
 															},
 															"default_behavior": schema.SingleNestedAttribute{
 																Computed: true,
@@ -447,6 +471,10 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 														Computed:    true,
 														Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
 													},
+													"unconfigured_provision": schema.SingleNestedAttribute{
+														Computed:    true,
+														Description: `The UnconfiguredProvision message.`,
+													},
 													"webhook_provision": schema.SingleNestedAttribute{
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
@@ -466,7 +494,8 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													`  - delegated` + "\n" +
 													`  - webhook` + "\n" +
 													`  - multiStep` + "\n" +
-													`  - externalTicket`,
+													`  - externalTicket` + "\n" +
+													`  - unconfigured`,
 											},
 											"provision_target": schema.SingleNestedAttribute{
 												Computed: true,
@@ -653,7 +682,12 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		return
 	}
 
-	request := data.ToSharedSearchPoliciesRequest()
+	request, requestDiags := data.ToSharedSearchPoliciesRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.PolicySearch.Search(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -664,10 +698,6 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

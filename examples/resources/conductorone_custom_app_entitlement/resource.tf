@@ -25,7 +25,15 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
           # ...
         }
         connector_id = "...my_connector_id..."
-        schema_id    = "...my_schema_id..."
+        do_not_save = {
+          # ...
+        }
+        save_to_vault = {
+          vault_ids = [
+            "..."
+          ]
+        }
+        schema_id = "...my_schema_id..."
       }
       default_behavior = {
         connector_id = "...my_connector_id..."
@@ -48,6 +56,9 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
       ]
     }
     multi_step = "{ \"see\": \"documentation\" }"
+    unconfigured_provision = {
+      # ...
+    }
     webhook_provision = {
       webhook_id = "...my_webhook_id..."
     }

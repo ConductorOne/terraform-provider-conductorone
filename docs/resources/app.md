@@ -50,6 +50,7 @@ resource "conductorone_app" "my_app" {
 
 - `app_account_id` (String) The ID of the Account named by AccountName.
 - `app_account_name` (String) The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
+- `connector_version` (Number) The connectorVersion field.
 - `created_at` (String)
 - `id` (String) The ID of the app.
 - `is_directory` (Boolean) Specifies if the app is a directory.

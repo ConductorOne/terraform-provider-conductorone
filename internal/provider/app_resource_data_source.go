@@ -7,7 +7,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -166,21 +165,13 @@ func (r *AppResourceDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	var appID string
-	appID = data.AppID.ValueString()
+	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceServiceGetRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var appResourceTypeID string
-	appResourceTypeID = data.AppResourceTypeID.ValueString()
-
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.C1APIAppV1AppResourceServiceGetRequest{
-		AppID:             appID,
-		AppResourceTypeID: appResourceTypeID,
-		ID:                id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.AppResource.Get(ctx, request)
+	res, err := r.client.AppResource.Get(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -190,10 +181,6 @@ func (r *AppResourceDataSource) Read(ctx context.Context, req datasource.ReadReq
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

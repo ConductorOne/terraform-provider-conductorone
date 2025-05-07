@@ -65,6 +65,7 @@ type UserDataSourceModel struct {
 	RoleIds                 []types.String                        `tfsdk:"role_ids"`
 	RolesPath               types.String                          `tfsdk:"roles_path"`
 	Status                  types.String                          `tfsdk:"status"`
+	Type                    types.String                          `tfsdk:"type"`
 	UpdatedAt               types.String                          `tfsdk:"updated_at"`
 	UserStatuses            []types.String                        `tfsdk:"user_statuses"`
 	Username                types.String                          `tfsdk:"username"`
@@ -441,6 +442,10 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Computed:    true,
 				Description: `The status of the user in the system.`,
 			},
+			"type": schema.StringAttribute{
+				Computed:    true,
+				Description: `The type of the user.`,
+			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 			},
@@ -528,7 +533,12 @@ func (r *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	request := data.ToSharedSearchUsersRequest()
+	request, requestDiags := data.ToSharedSearchUsersRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.UserSearch.Search(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -539,10 +549,6 @@ func (r *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {
