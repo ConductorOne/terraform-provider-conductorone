@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-	"strconv"
+
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -12,24 +12,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const asanaCatalogID = "2OI6x9nAxwHJeJJu1q5q2g6w3CP"
+const trayAiCatalogID = "2vp8xXCrvCha9ylnBaWUi6gi6or"
 
-func (r *IntegrationAsanaResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := sdk.String(asanaCatalogID)
+func (r *IntegrationTrayAiResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+	catalogID := sdk.String(trayAiCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("Asana"),
+		DisplayName: sdk.String("Tray.AI"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationAsanaResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
-	catalogID := sdk.String(asanaCatalogID)
+func (r *IntegrationTrayAiResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
+	catalogID := sdk.String(trayAiCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -53,7 +53,7 @@ func (r *IntegrationAsanaResourceModel) ToCreateSDKType() (*shared.ConnectorServ
 	return &out, nil
 }
 
-func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
+func (r *IntegrationTrayAiResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -75,9 +75,9 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Asana"),
+		DisplayName: sdk.String("Tray.AI"),
 		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(asanaCatalogID),
+		CatalogID:   sdk.String(trayAiCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
 		UserIds:     userIds,
 		Config:      makeConnectorConfig(configOut),
@@ -86,31 +86,19 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	return &out, configSet
 }
 
-func (r *IntegrationAsanaResourceModel) populateConfig() map[string]interface{} {
+func (r *IntegrationTrayAiResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
-	asanaApiKey := new(string)
-	if !r.AsanaApiKey.IsUnknown() && !r.AsanaApiKey.IsNull() {
-		*asanaApiKey = r.AsanaApiKey.ValueString()
-		configValues["asana_api_key"] = asanaApiKey
-	}
-
-	asanaIsServiceAccount := new(string)
-	if !r.AsanaIsServiceAccount.IsUnknown() && !r.AsanaIsServiceAccount.IsNull() {
-		*asanaIsServiceAccount = strconv.FormatBool(r.AsanaIsServiceAccount.ValueBool())
-		configValues["asana_is_service_account"] = asanaIsServiceAccount
-	}
-
-	asanaDefaultWorkspace := new(string)
-	if !r.AsanaDefaultWorkspace.IsUnknown() && !r.AsanaDefaultWorkspace.IsNull() {
-		*asanaDefaultWorkspace = r.AsanaDefaultWorkspace.ValueString()
-		configValues["asana_default_workspace"] = asanaDefaultWorkspace
+	trayaiAuthorizationToken := new(string)
+	if !r.TrayaiAuthorizationToken.IsUnknown() && !r.TrayaiAuthorizationToken.IsNull() {
+		*trayaiAuthorizationToken = r.TrayaiAuthorizationToken.ValueString()
+		configValues["trayai-authorization-token"] = trayaiAuthorizationToken
 	}
 
 	return configValues
 }
 
-func (r *IntegrationAsanaResourceModel) getConfig() (map[string]interface{}, bool) {
+func (r *IntegrationTrayAiResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
@@ -127,17 +115,17 @@ func (r *IntegrationAsanaResourceModel) getConfig() (map[string]interface{}, boo
 	return configOut, configSet
 }
 
-func (r *IntegrationAsanaResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationTrayAiResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationAsanaResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationTrayAiResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationAsanaResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
+func (r *IntegrationTrayAiResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
 	if resp == nil {
 		return
 	}
@@ -172,40 +160,13 @@ func (r *IntegrationAsanaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if localV, ok := configValues["asana_is_service_account"]; ok {
-					if v, ok := values["asana_is_service_account"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.AsanaIsServiceAccount = types.BoolValue(bv)
-								}
-							}
-						}
-					}
-				}
-
-				if v, ok := values["asana_default_workspace"]; ok {
-					if val, ok := v.(string); ok {
-						r.AsanaDefaultWorkspace = types.StringValue(val)
-					}
-				}
-
-			}
-		}
-	}
 }
 
-func (r *IntegrationAsanaResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
+func (r *IntegrationTrayAiResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
 	r.RefreshFromGetResponse(resp)
 }
 
-func (r *IntegrationAsanaResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
+func (r *IntegrationTrayAiResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
 	if resp.AppID != nil {
 		r.AppID = types.StringValue(*resp.AppID)
 	} else {
@@ -236,31 +197,4 @@ func (r *IntegrationAsanaResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if localV, ok := configValues["asana_is_service_account"]; ok {
-					if v, ok := values["asana_is_service_account"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.AsanaIsServiceAccount = types.BoolValue(bv)
-								}
-							}
-						}
-					}
-				}
-
-				if v, ok := values["asana_default_workspace"]; ok {
-					if val, ok := v.(string); ok {
-						r.AsanaDefaultWorkspace = types.StringValue(val)
-					}
-				}
-
-			}
-		}
-	}
 }

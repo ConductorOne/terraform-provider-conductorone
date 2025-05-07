@@ -29,6 +29,7 @@ resource "conductorone_integration_aws_v2" "aws_v2" {
   aws_sso_scim_enable       = false
   aws_sso_scim_endpoint     = "..."
   aws_sso_scim_access_token = "..."
+  aws_sync_secrets          = false
 }
 ```
 
@@ -48,6 +49,7 @@ resource "conductorone_integration_aws_v2" "aws_v2" {
 - `aws_sso_scim_access_token` (String, Sensitive) SCIM access token for AWS IAM Identity Center (successor to AWS Single Sign-On)
 - `aws_sso_scim_enable` (Boolean) Enable usage of the AWS IAM Identity Center SCIM API (successor to AWS Single Sign-On)
 - `aws_sso_scim_endpoint` (String) SCIM endpoint for AWS IAM Identity Center (successor to AWS Single Sign-On)
+- `aws_sync_secrets` (Boolean) Sync secrets
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

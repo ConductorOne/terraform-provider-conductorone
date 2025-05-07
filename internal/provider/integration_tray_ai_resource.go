@@ -21,44 +21,36 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &IntegrationAwsResource{}
-var _ resource.ResourceWithImportState = &IntegrationAwsResource{}
+var _ resource.Resource = &IntegrationTrayAiResource{}
+var _ resource.ResourceWithImportState = &IntegrationTrayAiResource{}
 
-func NewIntegrationAwsResource() resource.Resource {
-	return &IntegrationAwsResource{}
+func NewIntegrationTrayAiResource() resource.Resource {
+	return &IntegrationTrayAiResource{}
 }
 
-// IntegrationAwsResource defines the resource implementation.
-type IntegrationAwsResource struct {
+// IntegrationTrayAiResource defines the resource implementation.
+type IntegrationTrayAiResource struct {
 	client *sdk.ConductoroneAPI
 }
 
-// IntegrationAwsResourceModel describes the resource data model.
-type IntegrationAwsResourceModel struct {
-	AppID                 types.String   `tfsdk:"app_id"`
-	CreatedAt             types.String   `tfsdk:"created_at"`
-	DeletedAt             types.String   `tfsdk:"deleted_at"`
-	ID                    types.String   `tfsdk:"id"`
-	UpdatedAt             types.String   `tfsdk:"updated_at"`
-	UserIds               []types.String `tfsdk:"user_ids"`
-	AwsExternalId         types.String   `tfsdk:"aws_external_id"`
-	AwsRoleArn            types.String   `tfsdk:"aws_role_arn"`
-	AwsOrgsEnable         types.Bool     `tfsdk:"aws_orgs_enable"`
-	AwsSsoEnable          types.Bool     `tfsdk:"aws_sso_enable"`
-	AwsSsoRegion          types.String   `tfsdk:"aws_sso_region"`
-	AwsSsoScimEnable      types.Bool     `tfsdk:"aws_sso_scim_enable"`
-	AwsSsoScimEndpoint    types.String   `tfsdk:"aws_sso_scim_endpoint"`
-	AwsSsoScimAccessToken types.String   `tfsdk:"aws_sso_scim_access_token"`
-	AwsSyncSecrets        types.Bool     `tfsdk:"aws_sync_secrets"`
+// IntegrationTrayAiResourceModel describes the resource data model.
+type IntegrationTrayAiResourceModel struct {
+	AppID                    types.String   `tfsdk:"app_id"`
+	CreatedAt                types.String   `tfsdk:"created_at"`
+	DeletedAt                types.String   `tfsdk:"deleted_at"`
+	ID                       types.String   `tfsdk:"id"`
+	UpdatedAt                types.String   `tfsdk:"updated_at"`
+	UserIds                  []types.String `tfsdk:"user_ids"`
+	TrayaiAuthorizationToken types.String   `tfsdk:"trayai_authorization_token"`
 }
 
-func (r *IntegrationAwsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_integration_aws"
+func (r *IntegrationTrayAiResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_integration_tray_ai"
 }
 
-func (r *IntegrationAwsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *IntegrationTrayAiResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Aws Integration Resource",
+		MarkdownDescription: "Tray_ai Integration Resource",
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
@@ -99,48 +91,16 @@ func (r *IntegrationAwsResource) Schema(ctx context.Context, req resource.Schema
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"aws_external_id": &schema.StringAttribute{
-				Computed:    true,
-				Description: `External ID`,
-			},
-			"aws_role_arn": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Role ARN`,
-			},
-			"aws_orgs_enable": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Enable support for AWS Organizations`,
-			},
-			"aws_sso_enable": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Enable support for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
-			},
-			"aws_sso_region": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Region for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
-			},
-			"aws_sso_scim_enable": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Enable usage of the AWS IAM Identity Center SCIM API (successor to AWS Single Sign-On)`,
-			},
-			"aws_sso_scim_endpoint": &schema.StringAttribute{
-				Optional:    true,
-				Description: `SCIM endpoint for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
-			},
-			"aws_sso_scim_access_token": &schema.StringAttribute{
+			"trayai_authorization_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `SCIM access token for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
-			},
-			"aws_sync_secrets": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Sync secrets`,
+				Description: `authentication token`,
 			},
 		},
 	}
 }
 
-func (r *IntegrationAwsResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *IntegrationTrayAiResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -160,8 +120,8 @@ func (r *IntegrationAwsResource) Configure(ctx context.Context, req resource.Con
 	r.client = client
 }
 
-func (r *IntegrationAwsResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationAwsResourceModel
+func (r *IntegrationTrayAiResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *IntegrationTrayAiResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -243,8 +203,8 @@ func (r *IntegrationAwsResource) Create(ctx context.Context, req resource.Create
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationAwsResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationAwsResourceModel
+func (r *IntegrationTrayAiResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *IntegrationTrayAiResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -278,7 +238,7 @@ func (r *IntegrationAwsResource) Read(ctx context.Context, req resource.ReadRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationAwsResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
+func (r *IntegrationTrayAiResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
 	request := operations.C1APIAppV1ConnectorServiceGetRequest{
 		AppID: appID,
 		ID:    id,
@@ -299,8 +259,8 @@ func (r *IntegrationAwsResource) get(ctx context.Context, appID string, id strin
 	return res.ConnectorServiceGetResponse, nil
 }
 
-func (r *IntegrationAwsResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationAwsResourceModel
+func (r *IntegrationTrayAiResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *IntegrationTrayAiResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
@@ -360,8 +320,8 @@ func (r *IntegrationAwsResource) Update(ctx context.Context, req resource.Update
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationAwsResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *IntegrationAwsResourceModel
+func (r *IntegrationTrayAiResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *IntegrationTrayAiResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -401,6 +361,6 @@ func (r *IntegrationAwsResource) Delete(ctx context.Context, req resource.Delete
 	}
 }
 
-func (r *IntegrationAwsResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *IntegrationTrayAiResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource connector.")
 }

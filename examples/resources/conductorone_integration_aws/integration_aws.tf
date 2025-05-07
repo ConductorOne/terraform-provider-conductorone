@@ -11,4 +11,5 @@ resource "conductorone_integration_aws" "aws" {
   aws_sso_scim_enable       = false
   aws_sso_scim_endpoint     = "..."
   aws_sso_scim_access_token = "..."
+  aws_sync_secrets          = false
 }

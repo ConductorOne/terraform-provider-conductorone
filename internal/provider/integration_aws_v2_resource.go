@@ -49,6 +49,7 @@ type IntegrationAwsV2ResourceModel struct {
 	AwsSsoScimEnable      types.Bool     `tfsdk:"aws_sso_scim_enable"`
 	AwsSsoScimEndpoint    types.String   `tfsdk:"aws_sso_scim_endpoint"`
 	AwsSsoScimAccessToken types.String   `tfsdk:"aws_sso_scim_access_token"`
+	AwsSyncSecrets        types.Bool     `tfsdk:"aws_sync_secrets"`
 }
 
 func (r *IntegrationAwsV2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -130,6 +131,10 @@ func (r *IntegrationAwsV2Resource) Schema(ctx context.Context, req resource.Sche
 				Optional:    true,
 				Sensitive:   true,
 				Description: `SCIM access token for AWS IAM Identity Center (successor to AWS Single Sign-On)`,
+			},
+			"aws_sync_secrets": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Sync secrets`,
 			},
 		},
 	}
