@@ -6,6 +6,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -118,12 +120,7 @@ func (r *WebhookResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	request, requestDiags := data.ToSharedWebhooksServiceCreateRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	request := data.ToSharedWebhooksServiceCreateRequest()
 	res, err := r.client.Webhooks.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -144,17 +141,8 @@ func (r *WebhookResource) Create(ctx context.Context, req resource.CreateRequest
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedWebhook1(ctx, res.WebhooksServiceCreateResponse.Webhook)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedWebhook1(res.WebhooksServiceCreateResponse.Webhook)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -178,13 +166,13 @@ func (r *WebhookResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIWebhooksV1WebhooksServiceGetRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIWebhooksV1WebhooksServiceGetRequest{
+		ID: id,
 	}
-	res, err := r.client.Webhooks.Get(ctx, *request)
+	res, err := r.client.Webhooks.Get(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -208,11 +196,7 @@ func (r *WebhookResource) Read(ctx context.Context, req resource.ReadRequest, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedWebhook1(ctx, res.WebhooksServiceGetResponse.Webhook)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedWebhook1(res.WebhooksServiceGetResponse.Webhook)
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -237,13 +221,19 @@ func (r *WebhookResource) Update(ctx context.Context, req resource.UpdateRequest
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIWebhooksV1WebhooksServiceUpdateRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var webhooksServiceUpdateRequest *shared.WebhooksServiceUpdateRequest
+	webhook := data.ToSharedWebhookInput()
+	webhooksServiceUpdateRequest = &shared.WebhooksServiceUpdateRequest{
+		Webhook: webhook,
 	}
-	res, err := r.client.Webhooks.Update(ctx, *request)
+	request := operations.C1APIWebhooksV1WebhooksServiceUpdateRequest{
+		ID:                           id,
+		WebhooksServiceUpdateRequest: webhooksServiceUpdateRequest,
+	}
+	res, err := r.client.Webhooks.Update(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -263,24 +253,15 @@ func (r *WebhookResource) Update(ctx context.Context, req resource.UpdateRequest
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedWebhook1(ctx, res.WebhooksServiceUpdateResponse.Webhook)...)
+	data.RefreshFromSharedWebhook1(res.WebhooksServiceUpdateResponse.Webhook)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var id1 string
+	id1 = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request1 := operations.C1APIWebhooksV1WebhooksServiceGetRequest{
+		ID: id1,
 	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIWebhooksV1WebhooksServiceGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Webhooks.Get(ctx, *request1)
+	res1, err := r.client.Webhooks.Get(ctx, request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -300,17 +281,8 @@ func (r *WebhookResource) Update(ctx context.Context, req resource.UpdateRequest
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedWebhook1(ctx, res1.WebhooksServiceGetResponse.Webhook)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedWebhook1(res1.WebhooksServiceGetResponse.Webhook)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -334,13 +306,13 @@ func (r *WebhookResource) Delete(ctx context.Context, req resource.DeleteRequest
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIWebhooksV1WebhooksServiceDeleteRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIWebhooksV1WebhooksServiceDeleteRequest{
+		ID: id,
 	}
-	res, err := r.client.Webhooks.Delete(ctx, *request)
+	res, err := r.client.Webhooks.Delete(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

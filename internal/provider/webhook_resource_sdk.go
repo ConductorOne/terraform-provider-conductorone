@@ -3,17 +3,12 @@
 package provider
 
 import (
-	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
-func (r *WebhookResourceModel) ToSharedWebhooksServiceCreateRequest(ctx context.Context) (*shared.WebhooksServiceCreateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
+func (r *WebhookResourceModel) ToSharedWebhooksServiceCreateRequest() *shared.WebhooksServiceCreateRequest {
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -31,13 +26,34 @@ func (r *WebhookResourceModel) ToSharedWebhooksServiceCreateRequest(ctx context.
 		DisplayName: displayName,
 		URL:         url,
 	}
-
-	return &out, diags
+	return &out
 }
 
-func (r *WebhookResourceModel) ToSharedWebhookInput(ctx context.Context) (*shared.WebhookInput, diag.Diagnostics) {
-	var diags diag.Diagnostics
+func (r *WebhookResourceModel) RefreshFromSharedWebhook1(resp *shared.Webhook1) {
+	if resp != nil {
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.CreatedAt = types.StringNull()
+		}
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+		} else {
+			r.DeletedAt = types.StringNull()
+		}
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.ID = types.StringPointerValue(resp.ID)
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.UpdatedAt = types.StringNull()
+		}
+		r.URL = types.StringPointerValue(resp.URL)
+	}
+}
 
+func (r *WebhookResourceModel) ToSharedWebhookInput() *shared.WebhookInput {
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -68,86 +84,5 @@ func (r *WebhookResourceModel) ToSharedWebhookInput(ctx context.Context) (*share
 		ID:          id,
 		URL:         url,
 	}
-
-	return &out, diags
-}
-
-func (r *WebhookResourceModel) ToSharedWebhooksServiceUpdateRequest(ctx context.Context) (*shared.WebhooksServiceUpdateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	webhook, webhookDiags := r.ToSharedWebhookInput(ctx)
-	diags.Append(webhookDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := shared.WebhooksServiceUpdateRequest{
-		Webhook: webhook,
-	}
-
-	return &out, diags
-}
-
-func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceUpdateRequest(ctx context.Context) (*operations.C1APIWebhooksV1WebhooksServiceUpdateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	webhooksServiceUpdateRequest, webhooksServiceUpdateRequestDiags := r.ToSharedWebhooksServiceUpdateRequest(ctx)
-	diags.Append(webhooksServiceUpdateRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIWebhooksV1WebhooksServiceUpdateRequest{
-		ID:                           id,
-		WebhooksServiceUpdateRequest: webhooksServiceUpdateRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceGetRequest(ctx context.Context) (*operations.C1APIWebhooksV1WebhooksServiceGetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIWebhooksV1WebhooksServiceGetRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceDeleteRequest(ctx context.Context) (*operations.C1APIWebhooksV1WebhooksServiceDeleteRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIWebhooksV1WebhooksServiceDeleteRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *WebhookResourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-		r.URL = types.StringPointerValue(resp.URL)
-	}
-
-	return diags
+	return &out
 }

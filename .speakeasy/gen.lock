@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 5798417a6db07f9511c818d2166bdf8b
+  docChecksum: 3063c76463c211552d5f135cea9a3dd3
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.541.2
-  generationVersion: 2.595.4
-  releaseVersion: 1.2.0
-  configChecksum: 8660d782d224bd4ba8f9d086bdb4e001
+  speakeasyVersion: 1.513.7
+  generationVersion: 2.545.7
+  releaseVersion: 1.2.1
+  configChecksum: 89adc26388fd2ce4398c3e351a19db65
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
-    core: 3.41.6
+    core: 3.36.1
     deprecations: 2.82.0
     devContainers: 0.0.0
     envVarSecurityUsage: 0.1.0
@@ -21,7 +21,7 @@ features:
     ignores: 2.81.1
     includes: 2.81.1
     inputOutputModels: 2.83.0
-    nameOverrides: 2.81.3
+    nameOverrides: 2.81.2
     nullables: 0.0.0
     typeOverrides: 2.81.1
 generatedFiles:
@@ -33,7 +33,6 @@ generatedFiles:
   - examples/data-sources/conductorone_app_entitlement/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_automation/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_proxy_binding/data-source.tf
-  - examples/data-sources/conductorone_app_entitlements/data-source.tf
   - examples/data-sources/conductorone_app_resource/data-source.tf
   - examples/data-sources/conductorone_app_resource_type/data-source.tf
   - examples/data-sources/conductorone_aws_external_id/data-source.tf
@@ -111,8 +110,6 @@ generatedFiles:
   - internal/provider/app_entitlement_proxy_binding_data_source_sdk.go
   - internal/provider/app_entitlement_proxy_binding_resource.go
   - internal/provider/app_entitlement_proxy_binding_resource_sdk.go
-  - internal/provider/app_entitlements_data_source.go
-  - internal/provider/app_entitlements_data_source_sdk.go
   - internal/provider/app_owner_resource.go
   - internal/provider/app_owner_resource_sdk.go
   - internal/provider/app_resource.go
@@ -163,14 +160,10 @@ generatedFiles:
   - internal/provider/risk_level_data_source_sdk.go
   - internal/provider/risk_level_resource.go
   - internal/provider/risk_level_resource_sdk.go
-  - internal/provider/typeconvert/date.go
-  - internal/provider/typeconvert/datetime.go
-  - internal/provider/typeconvert/int32.go
   - internal/provider/types/accept.go
   - internal/provider/types/account_provision.go
   - internal/provider/types/account_provision_config.go
   - internal/provider/types/agent_approval.go
-  - internal/provider/types/app_entitlement.go
   - internal/provider/types/app_entitlement_automation_last_run_status.go
   - internal/provider/types/app_entitlement_automation_rule_basic.go
   - internal/provider/types/app_entitlement_automation_rule_cel.go
@@ -178,7 +171,6 @@ generatedFiles:
   - internal/provider/types/app_entitlement_automation_rule_none.go
   - internal/provider/types/app_entitlement_duration_unset.go
   - internal/provider/types/app_entitlement_ref.go
-  - internal/provider/types/app_entitlement_view.go
   - internal/provider/types/app_group_approval.go
   - internal/provider/types/app_owner_approval.go
   - internal/provider/types/app_resource_service_get_response_expanded.go
@@ -459,6 +451,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowexecutionservicegetworkflowexecution.go
   - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowexecutionservicelistworkflowexecutions.go
   - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowsearchservicesearchworkflows.go
+  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowsearchservicesearchworkflowtemplateversions.go
   - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowservicecreateworkflow.go
   - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowservicedeleteworkflow.go
   - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowserviceexecuteworkflow.go
@@ -568,6 +561,7 @@ generatedFiles:
   - internal/sdk/models/shared/conditiontimedout.go
   - internal/sdk/models/shared/connector.go
   - internal/sdk/models/shared/connectoraction.go
+  - internal/sdk/models/shared/connectorcreateaccount.go
   - internal/sdk/models/shared/connectorcredential.go
   - internal/sdk/models/shared/connectorprovision.go
   - internal/sdk/models/shared/connectorref.go
@@ -832,6 +826,8 @@ generatedFiles:
   - internal/sdk/models/shared/searchworkflowexecutionsresponse.go
   - internal/sdk/models/shared/searchworkflowsrequest.go
   - internal/sdk/models/shared/searchworkflowsresponse.go
+  - internal/sdk/models/shared/searchworkflowtemplateversionsrequest.go
+  - internal/sdk/models/shared/searchworkflowtemplateversionsresponse.go
   - internal/sdk/models/shared/secrettrait.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/models/shared/selfapproval.go
@@ -997,6 +993,7 @@ generatedFiles:
   - internal/sdk/models/shared/userapproval.go
   - internal/sdk/models/shared/userattributemappingsource.go
   - internal/sdk/models/shared/userprofilechangetrigger.go
+  - internal/sdk/models/shared/userproperties.go
   - internal/sdk/models/shared/userref.go
   - internal/sdk/models/shared/userservicegetresponse.go
   - internal/sdk/models/shared/userservicelistresponse.go
@@ -1044,6 +1041,7 @@ generatedFiles:
   - internal/sdk/models/shared/workflowinput.go
   - internal/sdk/models/shared/workflowstep.go
   - internal/sdk/models/shared/workflowtemplateref.go
+  - internal/sdk/models/shared/workflowtemplateversion.go
   - internal/sdk/models/shared/workflowtrigger.go
   - internal/sdk/orgdomain.go
   - internal/sdk/personalclient.go
@@ -1122,6 +1120,16 @@ examples:
       responses:
         "200":
           application/json: {}
+  c1.api.workflows.v1beta.WorkflowSearchService.SearchWorkflowTemplateVersions:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-search-service-search-workflow-template-versions:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.workflows.v1beta.WorkflowSearchService.SearchWorkflows:
+    speakeasy-default-c1-api-workflows-v1beta-workflow-search-service-search-workflows:
+      responses:
+        "200":
+          application/json: {}
   c1.api.workflows.v1beta.WorkflowService.ListWorkflows:
     speakeasy-default-c1-api-workflows-v1beta-workflow-service-list-workflows:
       responses:
@@ -1161,11 +1169,6 @@ examples:
       parameters:
         path:
           id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.workflows.v1beta.WorkflowSearchService.SearchWorkflows:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-search-service-search-workflows:
       responses:
         "200":
           application/json: {}
@@ -1547,6 +1550,31 @@ examples:
           application/json: {}
   c1.api.app.v1.AppEntitlementSearchService.Search:
     speakeasy-default-c1-api-app-v1-app-entitlement-search-service-search:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementSearchService.SearchGrants:
+    speakeasy-default-c1-api-app-v1-app-entitlement-search-service-search-grants:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementUserBindingService.RemoveGrantDuration:
+    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-remove-grant-duration:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+          app_user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementUserBindingService.UpdateGrantDuration:
+    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-update-grant-duration:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+          app_user_id: "<id>"
       responses:
         "200":
           application/json: {}
@@ -1999,6 +2027,14 @@ examples:
       responses:
         "200":
           application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.DeleteBundleAutomation:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-delete-bundle-automation:
+      parameters:
+        path:
+          request_catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
   c1.api.requestcatalog.v1.RequestCatalogManagementService.GetBundleAutomation:
     speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-get-bundle-automation:
       parameters:
@@ -2009,6 +2045,14 @@ examples:
           application/json: {}
   c1.api.requestcatalog.v1.RequestCatalogManagementService.SetBundleAutomation:
     speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-set-bundle-automation:
+      parameters:
+        path:
+          request_catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.CreateBundleAutomation:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-create-bundle-automation:
       parameters:
         path:
           request_catalog_id: "<id>"
@@ -2443,6 +2487,14 @@ examples:
       responses:
         "200":
           application/json: {}
+  c1.api.task.v1.TaskActionsService.SkipStep:
+    speakeasy-default-c1-api-task-v1-task-actions-service-skip-step:
+      parameters:
+        path:
+          task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
   c1.api.user.v1.UserService.List:
     speakeasy-default-c1-api-user-v1-user-service-list:
       responses:
@@ -2498,54 +2550,5 @@ examples:
       responses:
         "200":
           application/json: {}
-  c1.api.requestcatalog.v1.RequestCatalogManagementService.DeleteBundleAutomation:
-    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-delete-bundle-automation:
-      parameters:
-        path:
-          request_catalog_id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.requestcatalog.v1.RequestCatalogManagementService.CreateBundleAutomation:
-    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-create-bundle-automation:
-      parameters:
-        path:
-          request_catalog_id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.task.v1.TaskActionsService.SkipStep:
-    speakeasy-default-c1-api-task-v1-task-actions-service-skip-step:
-      parameters:
-        path:
-          task_id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.app.v1.AppEntitlementSearchService.SearchGrants:
-    speakeasy-default-c1-api-app-v1-app-entitlement-search-service-search-grants:
-      responses:
-        "200":
-          application/json: {}
-  c1.api.app.v1.AppEntitlementUserBindingService.RemoveGrantDuration:
-    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-remove-grant-duration:
-      parameters:
-        path:
-          app_id: "<id>"
-          app_entitlement_id: "<id>"
-          app_user_id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.app.v1.AppEntitlementUserBindingService.UpdateGrantDuration:
-    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-update-grant-duration:
-      parameters:
-        path:
-          app_id: "<id>"
-          app_entitlement_id: "<id>"
-          app_user_id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-examplesVersion: 1.0.1
+examplesVersion: 1.0.0
 generatedTests: {}

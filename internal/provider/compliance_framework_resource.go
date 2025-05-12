@@ -7,6 +7,7 @@ import (
 	"fmt"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -120,12 +121,7 @@ func (r *ComplianceFrameworkResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreateComplianceFrameworkAttributeValueRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	request := data.ToSharedCreateComplianceFrameworkAttributeValueRequest()
 	res, err := r.client.Attributes.CreateComplianceFrameworkAttributeValue(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -146,17 +142,8 @@ func (r *ComplianceFrameworkResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.CreateComplianceFrameworkAttributeValueResponse.AttributeValue)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAttributeValue(res.CreateComplianceFrameworkAttributeValueResponse.AttributeValue)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -180,13 +167,13 @@ func (r *ComplianceFrameworkResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest{
+		ID: id,
 	}
-	res, err := r.client.Attributes.GetComplianceFrameworkAttributeValue(ctx, *request)
+	res, err := r.client.Attributes.GetComplianceFrameworkAttributeValue(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -210,11 +197,7 @@ func (r *ComplianceFrameworkResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetComplianceFrameworkAttributeValueResponse.AttributeValue)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAttributeValue(res.GetComplianceFrameworkAttributeValueResponse.AttributeValue)
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -263,13 +246,13 @@ func (r *ComplianceFrameworkResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest{
+		ID: id,
 	}
-	res, err := r.client.Attributes.DeleteComplianceFrameworkAttributeValue(ctx, *request)
+	res, err := r.client.Attributes.DeleteComplianceFrameworkAttributeValue(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

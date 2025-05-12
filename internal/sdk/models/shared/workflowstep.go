@@ -16,6 +16,7 @@ package shared
 //   - taskAction
 //   - webhook
 //   - connectorAction
+//   - connectorCreateAccount
 type WorkflowStep struct {
 	// The ConnectorAction message.
 	//
@@ -23,6 +24,13 @@ type WorkflowStep struct {
 	//   - connectorRef
 	//
 	ConnectorAction *ConnectorAction `json:"connectorAction,omitempty"`
+	// The ConnectorCreateAccount message.
+	//
+	// This message contains a oneof named create_account_arguments. Only a single field of the following list may be set at a time:
+	//   - userIdCel
+	//   - userProperties
+	//
+	ConnectorCreateAccount *ConnectorCreateAccount `json:"connectorCreateAccount,omitempty"`
 	// The CreateAccessReview message.
 	CreateAccessReview *CreateAccessReview `json:"createAccessReview,omitempty"`
 	// The CreateRevokeTasks message.
@@ -79,6 +87,13 @@ func (o *WorkflowStep) GetConnectorAction() *ConnectorAction {
 		return nil
 	}
 	return o.ConnectorAction
+}
+
+func (o *WorkflowStep) GetConnectorCreateAccount() *ConnectorCreateAccount {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorCreateAccount
 }
 
 func (o *WorkflowStep) GetCreateAccessReview() *CreateAccessReview {

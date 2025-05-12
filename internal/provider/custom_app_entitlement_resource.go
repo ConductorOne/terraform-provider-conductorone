@@ -10,6 +10,8 @@ import (
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -704,13 +706,15 @@ func (r *CustomAppEntitlementResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsCreateRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	createAppEntitlementRequest := data.ToSharedCreateAppEntitlementRequest()
+	request := operations.C1APIAppV1AppEntitlementsCreateRequest{
+		AppID:                       appID,
+		CreateAppEntitlementRequest: createAppEntitlementRequest,
 	}
-	res, err := r.client.AppEntitlements.Create(ctx, *request)
+	res, err := r.client.AppEntitlements.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -730,17 +734,8 @@ func (r *CustomAppEntitlementResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.CreateAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAppEntitlement(res.CreateAppEntitlementResponse.AppEntitlementView.AppEntitlement)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -764,13 +759,17 @@ func (r *CustomAppEntitlementResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsGetRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var id string
+	id = data.ID.ValueString()
+
+	request := operations.C1APIAppV1AppEntitlementsGetRequest{
+		AppID: appID,
+		ID:    id,
 	}
-	res, err := r.client.AppEntitlements.Get(ctx, *request)
+	res, err := r.client.AppEntitlements.Get(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -794,11 +793,7 @@ func (r *CustomAppEntitlementResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAppEntitlement(res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -823,13 +818,30 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsUpdateRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var id string
+	id = data.ID.ValueString()
+
+	var updateAppEntitlementRequest *shared.UpdateAppEntitlementRequest
+	appEntitlement := data.ToSharedAppEntitlementInput()
+	overrideAccessRequestsDefaults := new(bool)
+	if !data.OverrideAccessRequestsDefaults.IsUnknown() && !data.OverrideAccessRequestsDefaults.IsNull() {
+		*overrideAccessRequestsDefaults = data.OverrideAccessRequestsDefaults.ValueBool()
+	} else {
+		overrideAccessRequestsDefaults = nil
 	}
-	res, err := r.client.AppEntitlements.Update(ctx, *request)
+	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
+		AppEntitlement:                 appEntitlement,
+		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
+	}
+	request := operations.C1APIAppV1AppEntitlementsUpdateRequest{
+		AppID:                       appID,
+		ID:                          id,
+		UpdateAppEntitlementRequest: updateAppEntitlementRequest,
+	}
+	res, err := r.client.AppEntitlements.Update(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -849,24 +861,19 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.UpdateAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
+	data.RefreshFromSharedAppEntitlement(res.UpdateAppEntitlementResponse.AppEntitlementView.AppEntitlement)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var appId1 string
+	appId1 = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var id1 string
+	id1 = data.ID.ValueString()
+
+	request1 := operations.C1APIAppV1AppEntitlementsGetRequest{
+		AppID: appId1,
+		ID:    id1,
 	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppEntitlementsGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AppEntitlements.Get(ctx, *request1)
+	res1, err := r.client.AppEntitlements.Get(ctx, request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -886,17 +893,8 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res1.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAppEntitlement(res1.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -920,13 +918,17 @@ func (r *CustomAppEntitlementResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsDeleteRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var id string
+	id = data.ID.ValueString()
+
+	request := operations.C1APIAppV1AppEntitlementsDeleteRequest{
+		AppID: appID,
+		ID:    id,
 	}
-	res, err := r.client.AppEntitlements.Delete(ctx, *request)
+	res, err := r.client.AppEntitlements.Delete(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -954,7 +956,7 @@ func (r *CustomAppEntitlementResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "app_id": "",  "id": ""}': `+err.Error())
 		return
 	}
 

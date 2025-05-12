@@ -7,32 +7,32 @@ import (
 	"time"
 )
 
-// Config - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type Config struct {
+// ConnectorConfig - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+type ConnectorConfig struct {
 	// The type of the serialized message.
 	AtType               *string `json:"@type,omitempty"`
 	AdditionalProperties any     `additionalProperties:"true" json:"-"`
 }
 
-func (c Config) MarshalJSON() ([]byte, error) {
+func (c ConnectorConfig) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(c, "", false)
 }
 
-func (c *Config) UnmarshalJSON(data []byte) error {
+func (c *ConnectorConfig) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Config) GetAtType() *string {
+func (o *ConnectorConfig) GetAtType() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AtType
 }
 
-func (o *Config) GetAdditionalProperties() any {
+func (o *ConnectorConfig) GetAdditionalProperties() any {
 	if o == nil {
 		return nil
 	}
@@ -46,9 +46,9 @@ type Connector struct {
 	// The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-	Config    *Config    `json:"config,omitempty"`
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	Config    *ConnectorConfig `json:"config,omitempty"`
+	CreatedAt *time.Time       `json:"createdAt,omitempty"`
+	DeletedAt *time.Time       `json:"deletedAt,omitempty"`
 	// The description of the connector.
 	Description *string `json:"description,omitempty"`
 	// The display name of the connector.
@@ -96,7 +96,7 @@ func (o *Connector) GetCatalogID() *string {
 	return o.CatalogID
 }
 
-func (o *Connector) GetConfig() *Config {
+func (o *Connector) GetConfig() *ConnectorConfig {
 	if o == nil {
 		return nil
 	}
@@ -201,7 +201,7 @@ type ConnectorInput struct {
 	// The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-	Config *Config `json:"config,omitempty"`
+	Config *ConnectorConfig `json:"config,omitempty"`
 	// The description of the connector.
 	Description *string `json:"description,omitempty"`
 	// The display name of the connector.
@@ -234,7 +234,7 @@ func (o *ConnectorInput) GetCatalogID() *string {
 	return o.CatalogID
 }
 
-func (o *ConnectorInput) GetConfig() *Config {
+func (o *ConnectorInput) GetConfig() *ConnectorConfig {
 	if o == nil {
 		return nil
 	}

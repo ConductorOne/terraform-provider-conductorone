@@ -10,6 +10,7 @@ import (
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -152,13 +153,25 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsProxyCreateRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var srcAppID string
+	srcAppID = data.SrcAppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var srcAppEntitlementID string
+	srcAppEntitlementID = data.SrcAppEntitlementID.ValueString()
+
+	var dstAppID string
+	dstAppID = data.DstAppID.ValueString()
+
+	var dstAppEntitlementID string
+	dstAppEntitlementID = data.DstAppEntitlementID.ValueString()
+
+	request := operations.C1APIAppV1AppEntitlementsProxyCreateRequest{
+		SrcAppID:            srcAppID,
+		SrcAppEntitlementID: srcAppEntitlementID,
+		DstAppID:            dstAppID,
+		DstAppEntitlementID: dstAppEntitlementID,
 	}
-	res, err := r.client.AppEntitlementsProxy.Create(ctx, *request)
+	res, err := r.client.AppEntitlementsProxy.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -178,24 +191,27 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.CreateAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+	data.RefreshFromSharedAppEntitlementProxy(res.CreateAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var srcAppId1 string
+	srcAppId1 = data.SrcAppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var srcAppEntitlementId1 string
+	srcAppEntitlementId1 = data.SrcAppEntitlementID.ValueString()
+
+	var dstAppId1 string
+	dstAppId1 = data.DstAppID.ValueString()
+
+	var dstAppEntitlementId1 string
+	dstAppEntitlementId1 = data.DstAppEntitlementID.ValueString()
+
+	request1 := operations.C1APIAppV1AppEntitlementsProxyGetRequest{
+		SrcAppID:            srcAppId1,
+		SrcAppEntitlementID: srcAppEntitlementId1,
+		DstAppID:            dstAppId1,
+		DstAppEntitlementID: dstAppEntitlementId1,
 	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AppEntitlementsProxy.Get(ctx, *request1)
+	res1, err := r.client.AppEntitlementsProxy.Get(ctx, request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -215,17 +231,8 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res1.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAppEntitlementProxy(res1.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -249,13 +256,25 @@ func (r *AppEntitlementProxyBindingResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var srcAppID string
+	srcAppID = data.SrcAppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var srcAppEntitlementID string
+	srcAppEntitlementID = data.SrcAppEntitlementID.ValueString()
+
+	var dstAppID string
+	dstAppID = data.DstAppID.ValueString()
+
+	var dstAppEntitlementID string
+	dstAppEntitlementID = data.DstAppEntitlementID.ValueString()
+
+	request := operations.C1APIAppV1AppEntitlementsProxyGetRequest{
+		SrcAppID:            srcAppID,
+		SrcAppEntitlementID: srcAppEntitlementID,
+		DstAppID:            dstAppID,
+		DstAppEntitlementID: dstAppEntitlementID,
 	}
-	res, err := r.client.AppEntitlementsProxy.Get(ctx, *request)
+	res, err := r.client.AppEntitlementsProxy.Get(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -279,11 +298,7 @@ func (r *AppEntitlementProxyBindingResource) Read(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAppEntitlementProxy(res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -332,13 +347,25 @@ func (r *AppEntitlementProxyBindingResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsProxyDeleteRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var srcAppID string
+	srcAppID = data.SrcAppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var srcAppEntitlementID string
+	srcAppEntitlementID = data.SrcAppEntitlementID.ValueString()
+
+	var dstAppID string
+	dstAppID = data.DstAppID.ValueString()
+
+	var dstAppEntitlementID string
+	dstAppEntitlementID = data.DstAppEntitlementID.ValueString()
+
+	request := operations.C1APIAppV1AppEntitlementsProxyDeleteRequest{
+		SrcAppID:            srcAppID,
+		SrcAppEntitlementID: srcAppEntitlementID,
+		DstAppID:            dstAppID,
+		DstAppEntitlementID: dstAppEntitlementID,
 	}
-	res, err := r.client.AppEntitlementsProxy.Delete(ctx, *request)
+	res, err := r.client.AppEntitlementsProxy.Delete(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -368,7 +395,7 @@ func (r *AppEntitlementProxyBindingResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "dst_app_entitlement_id": "",  "dst_app_id": "",  "src_app_entitlement_id": "",  "src_app_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "dst_app_entitlement_id": "",  "dst_app_id": "",  "src_app_entitlement_id": "",  "src_app_id": ""}': `+err.Error())
 		return
 	}
 

@@ -628,12 +628,7 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 		return
 	}
 
-	request, requestDiags := data.ToSharedAppEntitlementSearchServiceSearchRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	request := data.ToSharedAppEntitlementSearchServiceSearchRequest()
 	res, err := r.client.AppEntitlementSearch.Search(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -646,6 +641,10 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
+	if res.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -654,11 +653,7 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.AppEntitlementSearchServiceSearchResponse.List[0].AppEntitlement)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAppEntitlement(res.AppEntitlementSearchServiceSearchResponse.List[0].AppEntitlement)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

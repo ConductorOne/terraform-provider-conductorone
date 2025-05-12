@@ -3,34 +3,24 @@
 package provider
 
 import (
-	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
-func (r *AccessProfileDataSourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalog(ctx context.Context, resp *shared.RequestCatalog) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalog(resp *shared.RequestCatalog) {
 	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.CreatedAt = types.StringNull()
+		}
 		r.CreatedByUserID = types.StringPointerValue(resp.CreatedByUserID)
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+		} else {
+			r.DeletedAt = types.StringNull()
+		}
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		if resp.EnrollmentBehavior != nil {
@@ -51,9 +41,11 @@ func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalog(ctx conte
 		} else {
 			r.UnenrollmentEntitlementBehavior = types.StringNull()
 		}
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.UpdatedAt = types.StringNull()
+		}
 		r.VisibleToEveryone = types.BoolPointerValue(resp.VisibleToEveryone)
 	}
-
-	return diags
 }

@@ -10,6 +10,7 @@ resource "conductorone_policy" "my_policy" {
           }
           approval = {
             agent_approval = {
+              agent_mode    = "APPROVAL_AGENT_MODE_FULL_CONTROL"
               agent_user_id = "...my_agent_user_id..."
               instructions  = "...my_instructions..."
               policy_ids = [

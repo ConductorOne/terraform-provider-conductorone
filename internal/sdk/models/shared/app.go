@@ -9,19 +9,19 @@ import (
 	"time"
 )
 
-// IdentityMatching - The identityMatching field.
-type IdentityMatching string
+// AppIdentityMatching - The identityMatching field.
+type AppIdentityMatching string
 
 const (
-	IdentityMatchingAppUserIdentityMatchingUnspecified IdentityMatching = "APP_USER_IDENTITY_MATCHING_UNSPECIFIED"
-	IdentityMatchingAppUserIdentityMatchingStrict      IdentityMatching = "APP_USER_IDENTITY_MATCHING_STRICT"
-	IdentityMatchingAppUserIdentityMatchingDisplayName IdentityMatching = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
+	AppIdentityMatchingAppUserIdentityMatchingUnspecified AppIdentityMatching = "APP_USER_IDENTITY_MATCHING_UNSPECIFIED"
+	AppIdentityMatchingAppUserIdentityMatchingStrict      AppIdentityMatching = "APP_USER_IDENTITY_MATCHING_STRICT"
+	AppIdentityMatchingAppUserIdentityMatchingDisplayName AppIdentityMatching = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
 )
 
-func (e IdentityMatching) ToPointer() *IdentityMatching {
+func (e AppIdentityMatching) ToPointer() *AppIdentityMatching {
 	return &e
 }
-func (e *IdentityMatching) UnmarshalJSON(data []byte) error {
+func (e *AppIdentityMatching) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -32,10 +32,10 @@ func (e *IdentityMatching) UnmarshalJSON(data []byte) error {
 	case "APP_USER_IDENTITY_MATCHING_STRICT":
 		fallthrough
 	case "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME":
-		*e = IdentityMatching(v)
+		*e = AppIdentityMatching(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for IdentityMatching: %v", v)
+		return fmt.Errorf("invalid value for AppIdentityMatching: %v", v)
 	}
 }
 
@@ -65,7 +65,7 @@ type App struct {
 	// The ID of the app.
 	ID *string `json:"id,omitempty"`
 	// The identityMatching field.
-	IdentityMatching *IdentityMatching `json:"identityMatching,omitempty"`
+	IdentityMatching *AppIdentityMatching `json:"identityMatching,omitempty"`
 	// Specifies if the app is a directory.
 	IsDirectory *bool `json:"isDirectory,omitempty"`
 	// The isManuallyManaged field.
@@ -187,7 +187,7 @@ func (o *App) GetID() *string {
 	return o.ID
 }
 
-func (o *App) GetIdentityMatching() *IdentityMatching {
+func (o *App) GetIdentityMatching() *AppIdentityMatching {
 	if o == nil {
 		return nil
 	}
@@ -272,7 +272,7 @@ type AppInput struct {
 	// The URL of an icon to display for the app.
 	IconURL *string `json:"iconUrl,omitempty"`
 	// The identityMatching field.
-	IdentityMatching *IdentityMatching `json:"identityMatching,omitempty"`
+	IdentityMatching *AppIdentityMatching `json:"identityMatching,omitempty"`
 	// The isManuallyManaged field.
 	IsManuallyManaged *bool `json:"isManuallyManaged,omitempty"`
 	// The cost of an app per-seat, so that total cost can be calculated by the grant count.
@@ -325,7 +325,7 @@ func (o *AppInput) GetIconURL() *string {
 	return o.IconURL
 }
 
-func (o *AppInput) GetIdentityMatching() *IdentityMatching {
+func (o *AppInput) GetIdentityMatching() *AppIdentityMatching {
 	if o == nil {
 		return nil
 	}

@@ -6,22 +6,22 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
-	"net/http"
-	"net/http/httputil"
-	"net/textproto"
-	"strings"
-
+	tfReflect "github.com/conductorone/terraform-provider-conductorone/internal/provider/reflect"
 	"github.com/hashicorp/go-uuid"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-
-	tfReflect "github.com/conductorone/terraform-provider-conductorone/internal/provider/reflect"
+	"io"
+	"net/http"
+	"net/http/httputil"
+	"net/textproto"
+	"reflect"
+	"strings"
 )
 
 func debugResponse(response *http.Response) string {
@@ -43,6 +43,19 @@ func debugResponse(response *http.Response) string {
 		}
 	}
 	return fmt.Sprintf("**Request**:\n%s\n**Response**:\n%s", string(dumpReq), string(dumpRes))
+}
+
+func reflectJSONKey(data any, key string) reflect.Value {
+	jsonIfied, err := json.Marshal(data)
+	if err != nil {
+		panic(fmt.Errorf("failed to marshal data: %w", err))
+	}
+	var jsonMap map[string]interface{}
+	err = json.Unmarshal(jsonIfied, &jsonMap)
+	if err != nil {
+		panic(fmt.Errorf("failed to unmarshal data: %w", err))
+	}
+	return reflect.ValueOf(jsonMap[key])
 }
 
 func merge(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse, target interface{}) {
@@ -70,29 +83,21 @@ func merge(ctx context.Context, req resource.UpdateRequest, resp *resource.Updat
 		return
 	}
 
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, target)...)
+	refreshPlan(ctx, plan, target, resp.Diagnostics)
 }
 
-func refreshPlan(ctx context.Context, plan types.Object, target any) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func refreshPlan(ctx context.Context, plan types.Object, target interface{}, diagnostics diag.Diagnostics) {
 	obj := types.ObjectType{AttrTypes: plan.AttributeTypes(ctx)}
 	val, err := plan.ToTerraformValue(ctx)
 	if err != nil {
-		diags.AddError(
-			"Object Conversion Error",
-			"An unexpected error was encountered trying to convert object. This is always an error in the provider. Please report the following to the provider developer:\n\n"+err.Error(),
-		)
-		return diags
+		diagnostics.Append(diag.NewErrorDiagnostic("Object Conversion Error", "An unexpected error was encountered trying to convert object. This is always an error in the provider. Please report the following to the provider developer:\n\n"+err.Error()))
+		return
 	}
-
-	diags.Append(tfReflect.Into(ctx, obj, val, target, tfReflect.Options{
+	diagnostics.Append(tfReflect.Into(ctx, obj, val, target, tfReflect.Options{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 		SourceType:              tfReflect.SourceTypePlan,
 	}, path.Empty())...)
-
-	return diags
 }
 
 // Configurable options for the provider HTTP transport.
@@ -142,7 +147,7 @@ func (t *providerHttpTransport) RoundTrip(req *http.Request) (*http.Response, er
 	// Decompose the request bytes in a message (HTTP body) and fields (HTTP headers), then log it
 	fields, err := decomposeRequestForLogging(req)
 	if err != nil {
-		tflog.Error(ctx, "Failed to parse request bytes for logging", []map[string]interface{}{{
+		tflog.Error(ctx, "Failed to parse request bytes for logging", []map[string]interface{}{map[string]interface{}{
 			"error": err,
 		}}...)
 	} else {
@@ -158,7 +163,7 @@ func (t *providerHttpTransport) RoundTrip(req *http.Request) (*http.Response, er
 	// Decompose the response bytes in a message (HTTP body) and fields (HTTP headers), then log it
 	fields, err = decomposeResponseForLogging(res)
 	if err != nil {
-		tflog.Error(ctx, "Failed to parse response bytes for logging", []map[string]interface{}{{
+		tflog.Error(ctx, "Failed to parse response bytes for logging", []map[string]interface{}{map[string]interface{}{
 			"error": err,
 		}}...)
 	} else {

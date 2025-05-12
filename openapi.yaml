@@ -3626,6 +3626,13 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                appIds:
+                    description: The appIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
                 appUserRefs:
                     description: The appUserRefs field.
                     items:
@@ -4707,6 +4714,16 @@ components:
             description: The agent to assign the task to.
             nullable: true
             properties:
+                agentMode:
+                    description: The mode of the agent, full control, change policy only, or comment only.
+                    enum:
+                        - APPROVAL_AGENT_MODE_UNSPECIFIED
+                        - APPROVAL_AGENT_MODE_FULL_CONTROL
+                        - APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY
+                        - APPROVAL_AGENT_MODE_COMMENT_ONLY
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 agentUserId:
                     description: The agent user ID to assign the task to.
                     readOnly: false
@@ -4716,7 +4733,7 @@ components:
                     readOnly: false
                     type: string
                 policyIds:
-                    description: The policyIds field.
+                    description: The allow list of policy IDs to re-route the task to.
                     items:
                         type: string
                     nullable: true
@@ -9716,6 +9733,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                assignedOrStepApproverUserId:
+                    description: Search tasks that are currently assigned to this user, or that are closed and were previously approved by this user.
+                    readOnly: false
+                    type: string
                 assigneesInIds:
                     description: Search tasks by  List of UserIDs which are currently assigned these Tasks
                     items:
@@ -9795,6 +9816,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                openerOrSubjectUserId:
+                    description: Search tasks that were opened by this user, or that the user is the subject of.
+                    readOnly: false
+                    type: string
                 pageSize:
                     description: The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
                     format: int32
@@ -11214,6 +11239,30 @@ components:
             title: Connector Action
             type: object
             x-speakeasy-name-override: ConnectorAction
+        c1.api.workflows.v1beta.ConnectorCreateAccount:
+            description: |
+                The ConnectorCreateAccount message.
+
+                This message contains a oneof named create_account_arguments. Only a single field of the following list may be set at a time:
+                  - userIdCel
+                  - userProperties
+            nullable: true
+            properties:
+                connectorRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.ConnectorRef'
+                userIdCel:
+                    description: |-
+                        The userIdCel field.
+                        This field is part of the `create_account_arguments` oneof.
+                        See the documentation for `c1.api.workflows.v1beta.ConnectorCreateAccount` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                userProperties:
+                    $ref: '#/components/schemas/c1.api.workflows.v1beta.UserProperties'
+            title: Connector Create Account
+            type: object
+            x-speakeasy-name-override: ConnectorCreateAccount
         c1.api.workflows.v1beta.CreateAccessReview:
             description: The CreateAccessReview message.
             nullable: true
@@ -11550,6 +11599,42 @@ components:
             title: Search Workflow Executions Response
             type: object
             x-speakeasy-name-override: SearchWorkflowExecutionsResponse
+        c1.api.workflows.v1beta.SearchWorkflowTemplateVersionsRequest:
+            description: The SearchWorkflowTemplateVersionsRequest message.
+            properties:
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                workflowTemplateId:
+                    description: The workflowTemplateId field.
+                    readOnly: false
+                    type: string
+            title: Search Workflow Template Versions Request
+            type: object
+            x-speakeasy-name-override: SearchWorkflowTemplateVersionsRequest
+        c1.api.workflows.v1beta.SearchWorkflowTemplateVersionsResponse:
+            description: The SearchWorkflowTemplateVersionsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowTemplateVersion'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Search Workflow Template Versions Response
+            type: object
+            x-speakeasy-name-override: SearchWorkflowTemplateVersionsResponse
         c1.api.workflows.v1beta.SearchWorkflowsRequest:
             description: The SearchWorkflowsRequest message.
             properties:
@@ -11758,6 +11843,29 @@ components:
             title: User Profile Change Trigger
             type: object
             x-speakeasy-name-override: UserProfileChangeTrigger
+        c1.api.workflows.v1beta.UserProperties:
+            description: The UserProperties message.
+            nullable: true
+            properties:
+                displayNameCel:
+                    description: The displayNameCel field.
+                    readOnly: false
+                    type: string
+                emailCel:
+                    description: The emailCel field.
+                    readOnly: false
+                    type: string
+                profileAttributeCel:
+                    description: The profileAttributeCel field.
+                    readOnly: false
+                    type: string
+                usernameCel:
+                    description: The usernameCel field.
+                    readOnly: false
+                    type: string
+            title: User Properties
+            type: object
+            x-speakeasy-name-override: UserProperties
         c1.api.workflows.v1beta.WaitForDuration:
             description: The WaitForDuration message.
             nullable: true
@@ -11808,6 +11916,11 @@ components:
                     $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowContext'
                 createdAt:
                     format: date-time
+                    readOnly: false
+                    type: string
+                currentVersion:
+                    description: The currentVersion field.
+                    format: int64
                     readOnly: false
                     type: string
                 description:
@@ -11888,6 +12001,11 @@ components:
                     format: date-time
                     readOnly: false
                     type: string
+                currentVersion:
+                    description: The currentVersion field.
+                    format: int32
+                    readOnly: false
+                    type: integer
                 deletedAt:
                     format: date-time
                     readOnly: false
@@ -11901,6 +12019,10 @@ components:
                     format: int64
                     readOnly: false
                     type: string
+                isDraft:
+                    description: The isDraft field.
+                    readOnly: false
+                    type: boolean
                 state:
                     description: The state field.
                     enum:
@@ -11984,9 +12106,12 @@ components:
                   - taskAction
                   - webhook
                   - connectorAction
+                  - connectorCreateAccount
             properties:
                 connectorAction:
                     $ref: '#/components/schemas/c1.api.workflows.v1beta.ConnectorAction'
+                connectorCreateAccount:
+                    $ref: '#/components/schemas/c1.api.workflows.v1beta.ConnectorCreateAccount'
                 createAccessReview:
                     $ref: '#/components/schemas/c1.api.workflows.v1beta.CreateAccessReview'
                 createRevokeTasks:
@@ -12029,6 +12154,47 @@ components:
             title: Workflow Template Ref
             type: object
             x-speakeasy-name-override: WorkflowTemplateRef
+        c1.api.workflows.v1beta.WorkflowTemplateVersion:
+            description: The WorkflowTemplateVersion message.
+            properties:
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                deletedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                triggers:
+                    description: The triggers field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowTrigger'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                updatedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                version:
+                    description: The version field.
+                    format: int64
+                    readOnly: false
+                    type: string
+                workflowSteps:
+                    description: The workflowSteps field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowStep'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                workflowTemplateId:
+                    description: The workflowTemplateId field.
+                    readOnly: false
+                    type: string
+            title: Workflow Template Version
+            type: object
+            x-speakeasy-name-override: WorkflowTemplateVersion
         c1.api.workflows.v1beta.WorkflowTrigger:
             description: |
                 Workflow Triggers
@@ -12532,6 +12698,27 @@ paths:
                 - Workflows
             x-speakeasy-group: WorkflowExecutionSearch
             x-speakeasy-name-override: SearchWorkflowExecutions
+    /api/v1beta/workflow_versions/search:
+        post:
+            description: Invokes the c1.api.workflows.v1beta.WorkflowSearchService.SearchWorkflowTemplateVersions method.
+            operationId: c1.api.workflows.v1beta.WorkflowSearchService.SearchWorkflowTemplateVersions
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.workflows.v1beta.SearchWorkflowTemplateVersionsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.workflows.v1beta.SearchWorkflowTemplateVersionsResponse'
+                    description: Successful response
+            summary: Search Workflow Template Versions
+            tags:
+                - Workflows
+            x-speakeasy-group: WorkflowSearch
+            x-speakeasy-name-override: SearchWorkflowTemplateVersions
     /api/v1beta/workflows:
         get:
             description: Invokes the c1.api.workflows.v1beta.WorkflowService.ListWorkflows method.
@@ -16817,9 +17004,7 @@ paths:
             tags:
                 - App Entitlement
             x-speakeasy-entity-operation:
-                terraform-datasource:
-                    - App Entitlement#read
-                    - App Entitlements#read
+                terraform-datasource: App Entitlement#read
                 terraform-resource: null
             x-speakeasy-group: AppEntitlementSearch
             x-speakeasy-name-override: Search

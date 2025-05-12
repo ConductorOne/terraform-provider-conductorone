@@ -3,38 +3,30 @@
 package provider
 
 import (
-	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
-func (r *ComplianceFrameworkDataSourceModel) ToOperationsC1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *ComplianceFrameworkDataSourceModel) RefreshFromSharedAttributeValue(ctx context.Context, resp *shared.AttributeValue) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func (r *ComplianceFrameworkDataSourceModel) RefreshFromSharedAttributeValue(resp *shared.AttributeValue) {
 	if resp != nil {
 		r.AttributeTypeID = types.StringPointerValue(resp.AttributeTypeID)
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.CreatedAt = types.StringNull()
+		}
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+		} else {
+			r.DeletedAt = types.StringNull()
+		}
 		r.ID = types.StringPointerValue(resp.ID)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.UpdatedAt = types.StringNull()
+		}
 		r.Value = types.StringPointerValue(resp.Value)
 	}
-
-	return diags
 }

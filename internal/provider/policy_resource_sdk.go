@@ -3,19 +3,14 @@
 package provider
 
 import (
-	"context"
 	"encoding/json"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
-func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (*shared.CreatePolicyRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
+func (r *PolicyResourceModel) ToSharedCreatePolicyRequest() *shared.CreatePolicyRequest {
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -27,1293 +22,575 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 
 	policySteps := make(map[string]shared.PolicyStepsInput)
 	for policyStepsKey, policyStepsValue := range r.PolicySteps {
-		var steps []shared.PolicyStepInput
-		if policyStepsValue.Steps != nil {
-			steps = make([]shared.PolicyStepInput, 0, len(policyStepsValue.Steps))
-			for _, stepsItem := range policyStepsValue.Steps {
-				var accept *shared.Accept
-				if stepsItem.Accept != nil {
-					acceptMessage := new(string)
-					if !stepsItem.Accept.AcceptMessage.IsUnknown() && !stepsItem.Accept.AcceptMessage.IsNull() {
-						*acceptMessage = stepsItem.Accept.AcceptMessage.ValueString()
-					} else {
-						acceptMessage = nil
-					}
-					accept = &shared.Accept{
-						AcceptMessage: acceptMessage,
-					}
+		var steps []shared.PolicyStepInput = []shared.PolicyStepInput{}
+		for _, stepsItem := range policyStepsValue.Steps {
+			var accept *shared.Accept
+			if stepsItem.Accept != nil {
+				acceptMessage := new(string)
+				if !stepsItem.Accept.AcceptMessage.IsUnknown() && !stepsItem.Accept.AcceptMessage.IsNull() {
+					*acceptMessage = stepsItem.Accept.AcceptMessage.ValueString()
+				} else {
+					acceptMessage = nil
 				}
-				var approval *shared.ApprovalInput
-				if stepsItem.Approval != nil {
-					var agentApproval *shared.AgentApproval
-					if stepsItem.Approval.AgentApproval != nil {
-						agentUserID := new(string)
-						if !stepsItem.Approval.AgentApproval.AgentUserID.IsUnknown() && !stepsItem.Approval.AgentApproval.AgentUserID.IsNull() {
-							*agentUserID = stepsItem.Approval.AgentApproval.AgentUserID.ValueString()
-						} else {
-							agentUserID = nil
-						}
-						instructions := new(string)
-						if !stepsItem.Approval.AgentApproval.Instructions.IsUnknown() && !stepsItem.Approval.AgentApproval.Instructions.IsNull() {
-							*instructions = stepsItem.Approval.AgentApproval.Instructions.ValueString()
-						} else {
-							instructions = nil
-						}
-						var policyIds []string
-						if stepsItem.Approval.AgentApproval.PolicyIds != nil {
-							policyIds = make([]string, 0, len(stepsItem.Approval.AgentApproval.PolicyIds))
-							for _, policyIdsItem := range stepsItem.Approval.AgentApproval.PolicyIds {
-								policyIds = append(policyIds, policyIdsItem.ValueString())
-							}
-						}
-						agentApproval = &shared.AgentApproval{
-							AgentUserID:  agentUserID,
-							Instructions: instructions,
-							PolicyIds:    policyIds,
-						}
-					}
-					allowReassignment := new(bool)
-					if !stepsItem.Approval.AllowReassignment.IsUnknown() && !stepsItem.Approval.AllowReassignment.IsNull() {
-						*allowReassignment = stepsItem.Approval.AllowReassignment.ValueBool()
-					} else {
-						allowReassignment = nil
-					}
-					var allowedReassignees []string
-					if stepsItem.Approval.AllowedReassignees != nil {
-						allowedReassignees = make([]string, 0, len(stepsItem.Approval.AllowedReassignees))
-						for _, allowedReassigneesItem := range stepsItem.Approval.AllowedReassignees {
-							allowedReassignees = append(allowedReassignees, allowedReassigneesItem.ValueString())
-						}
-					}
-					var appOwnerApproval *shared.AppOwnerApproval
-					if stepsItem.Approval.AppOwnerApproval != nil {
-						allowSelfApproval := new(bool)
-						if !stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval = stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval = nil
-						}
-						appOwnerApproval = &shared.AppOwnerApproval{
-							AllowSelfApproval: allowSelfApproval,
-						}
-					}
-					var entitlementOwnerApproval *shared.EntitlementOwnerApproval
-					if stepsItem.Approval.EntitlementOwnerApproval != nil {
-						allowSelfApproval1 := new(bool)
-						if !stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval1 = stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval1 = nil
-						}
-						fallback := new(bool)
-						if !stepsItem.Approval.EntitlementOwnerApproval.Fallback.IsUnknown() && !stepsItem.Approval.EntitlementOwnerApproval.Fallback.IsNull() {
-							*fallback = stepsItem.Approval.EntitlementOwnerApproval.Fallback.ValueBool()
-						} else {
-							fallback = nil
-						}
-						var fallbackUserIds []string
-						if stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
-							fallbackUserIds = make([]string, 0, len(stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
-								fallbackUserIds = append(fallbackUserIds, fallbackUserIdsItem.ValueString())
-							}
-						}
-						entitlementOwnerApproval = &shared.EntitlementOwnerApproval{
-							AllowSelfApproval: allowSelfApproval1,
-							Fallback:          fallback,
-							FallbackUserIds:   fallbackUserIds,
-						}
-					}
-					var expressionApproval *shared.ExpressionApprovalInput
-					if stepsItem.Approval.ExpressionApproval != nil {
-						allowSelfApproval2 := new(bool)
-						if !stepsItem.Approval.ExpressionApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ExpressionApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval2 = stepsItem.Approval.ExpressionApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval2 = nil
-						}
-						var expressions []string
-						if stepsItem.Approval.ExpressionApproval.Expressions != nil {
-							expressions = make([]string, 0, len(stepsItem.Approval.ExpressionApproval.Expressions))
-							for _, expressionsItem := range stepsItem.Approval.ExpressionApproval.Expressions {
-								expressions = append(expressions, expressionsItem.ValueString())
-							}
-						}
-						fallback1 := new(bool)
-						if !stepsItem.Approval.ExpressionApproval.Fallback.IsUnknown() && !stepsItem.Approval.ExpressionApproval.Fallback.IsNull() {
-							*fallback1 = stepsItem.Approval.ExpressionApproval.Fallback.ValueBool()
-						} else {
-							fallback1 = nil
-						}
-						var fallbackUserIds1 []string
-						if stepsItem.Approval.ExpressionApproval.FallbackUserIds != nil {
-							fallbackUserIds1 = make([]string, 0, len(stepsItem.Approval.ExpressionApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem1 := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
-								fallbackUserIds1 = append(fallbackUserIds1, fallbackUserIdsItem1.ValueString())
-							}
-						}
-						expressionApproval = &shared.ExpressionApprovalInput{
-							AllowSelfApproval: allowSelfApproval2,
-							Expressions:       expressions,
-							Fallback:          fallback1,
-							FallbackUserIds:   fallbackUserIds1,
-						}
-					}
-					var appGroupApproval *shared.AppGroupApproval
-					if stepsItem.Approval.AppGroupApproval != nil {
-						allowSelfApproval3 := new(bool)
-						if !stepsItem.Approval.AppGroupApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval3 = stepsItem.Approval.AppGroupApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval3 = nil
-						}
-						appGroupID := new(string)
-						if !stepsItem.Approval.AppGroupApproval.AppGroupID.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AppGroupID.IsNull() {
-							*appGroupID = stepsItem.Approval.AppGroupApproval.AppGroupID.ValueString()
-						} else {
-							appGroupID = nil
-						}
-						appID := new(string)
-						if !stepsItem.Approval.AppGroupApproval.AppID.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AppID.IsNull() {
-							*appID = stepsItem.Approval.AppGroupApproval.AppID.ValueString()
-						} else {
-							appID = nil
-						}
-						fallback2 := new(bool)
-						if !stepsItem.Approval.AppGroupApproval.Fallback.IsUnknown() && !stepsItem.Approval.AppGroupApproval.Fallback.IsNull() {
-							*fallback2 = stepsItem.Approval.AppGroupApproval.Fallback.ValueBool()
-						} else {
-							fallback2 = nil
-						}
-						var fallbackUserIds2 []string
-						if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
-							fallbackUserIds2 = make([]string, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem2 := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
-								fallbackUserIds2 = append(fallbackUserIds2, fallbackUserIdsItem2.ValueString())
-							}
-						}
-						appGroupApproval = &shared.AppGroupApproval{
-							AllowSelfApproval: allowSelfApproval3,
-							AppGroupID:        appGroupID,
-							AppID:             appID,
-							Fallback:          fallback2,
-							FallbackUserIds:   fallbackUserIds2,
-						}
-					}
-					var managerApproval *shared.ManagerApprovalInput
-					if stepsItem.Approval.ManagerApproval != nil {
-						allowSelfApproval4 := new(bool)
-						if !stepsItem.Approval.ManagerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ManagerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval4 = stepsItem.Approval.ManagerApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval4 = nil
-						}
-						fallback3 := new(bool)
-						if !stepsItem.Approval.ManagerApproval.Fallback.IsUnknown() && !stepsItem.Approval.ManagerApproval.Fallback.IsNull() {
-							*fallback3 = stepsItem.Approval.ManagerApproval.Fallback.ValueBool()
-						} else {
-							fallback3 = nil
-						}
-						var fallbackUserIds3 []string
-						if stepsItem.Approval.ManagerApproval.FallbackUserIds != nil {
-							fallbackUserIds3 = make([]string, 0, len(stepsItem.Approval.ManagerApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem3 := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
-								fallbackUserIds3 = append(fallbackUserIds3, fallbackUserIdsItem3.ValueString())
-							}
-						}
-						managerApproval = &shared.ManagerApprovalInput{
-							AllowSelfApproval: allowSelfApproval4,
-							Fallback:          fallback3,
-							FallbackUserIds:   fallbackUserIds3,
-						}
-					}
-					requireApprovalReason := new(bool)
-					if !stepsItem.Approval.RequireApprovalReason.IsUnknown() && !stepsItem.Approval.RequireApprovalReason.IsNull() {
-						*requireApprovalReason = stepsItem.Approval.RequireApprovalReason.ValueBool()
-					} else {
-						requireApprovalReason = nil
-					}
-					requireDenialReason := new(bool)
-					if !stepsItem.Approval.RequireDenialReason.IsUnknown() && !stepsItem.Approval.RequireDenialReason.IsNull() {
-						*requireDenialReason = stepsItem.Approval.RequireDenialReason.ValueBool()
-					} else {
-						requireDenialReason = nil
-					}
-					requireReassignmentReason := new(bool)
-					if !stepsItem.Approval.RequireReassignmentReason.IsUnknown() && !stepsItem.Approval.RequireReassignmentReason.IsNull() {
-						*requireReassignmentReason = stepsItem.Approval.RequireReassignmentReason.ValueBool()
-					} else {
-						requireReassignmentReason = nil
-					}
-					requiresStepUpProviderID := new(string)
-					if !stepsItem.Approval.RequiresStepUpProviderID.IsUnknown() && !stepsItem.Approval.RequiresStepUpProviderID.IsNull() {
-						*requiresStepUpProviderID = stepsItem.Approval.RequiresStepUpProviderID.ValueString()
-					} else {
-						requiresStepUpProviderID = nil
-					}
-					var resourceOwnerApproval *shared.ResourceOwnerApproval
-					if stepsItem.Approval.ResourceOwnerApproval != nil {
-						allowSelfApproval5 := new(bool)
-						if !stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval5 = stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval5 = nil
-						}
-						fallback4 := new(bool)
-						if !stepsItem.Approval.ResourceOwnerApproval.Fallback.IsUnknown() && !stepsItem.Approval.ResourceOwnerApproval.Fallback.IsNull() {
-							*fallback4 = stepsItem.Approval.ResourceOwnerApproval.Fallback.ValueBool()
-						} else {
-							fallback4 = nil
-						}
-						var fallbackUserIds4 []string
-						if stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
-							fallbackUserIds4 = make([]string, 0, len(stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem4 := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
-								fallbackUserIds4 = append(fallbackUserIds4, fallbackUserIdsItem4.ValueString())
-							}
-						}
-						resourceOwnerApproval = &shared.ResourceOwnerApproval{
-							AllowSelfApproval: allowSelfApproval5,
-							Fallback:          fallback4,
-							FallbackUserIds:   fallbackUserIds4,
-						}
-					}
-					var selfApproval *shared.SelfApprovalInput
-					if stepsItem.Approval.SelfApproval != nil {
-						fallback5 := new(bool)
-						if !stepsItem.Approval.SelfApproval.Fallback.IsUnknown() && !stepsItem.Approval.SelfApproval.Fallback.IsNull() {
-							*fallback5 = stepsItem.Approval.SelfApproval.Fallback.ValueBool()
-						} else {
-							fallback5 = nil
-						}
-						var fallbackUserIds5 []string
-						if stepsItem.Approval.SelfApproval.FallbackUserIds != nil {
-							fallbackUserIds5 = make([]string, 0, len(stepsItem.Approval.SelfApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem5 := range stepsItem.Approval.SelfApproval.FallbackUserIds {
-								fallbackUserIds5 = append(fallbackUserIds5, fallbackUserIdsItem5.ValueString())
-							}
-						}
-						selfApproval = &shared.SelfApprovalInput{
-							Fallback:        fallback5,
-							FallbackUserIds: fallbackUserIds5,
-						}
-					}
-					var userApproval *shared.UserApproval
-					if stepsItem.Approval.UserApproval != nil {
-						allowSelfApproval6 := new(bool)
-						if !stepsItem.Approval.UserApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.UserApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval6 = stepsItem.Approval.UserApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval6 = nil
-						}
-						var userIds []string
-						if stepsItem.Approval.UserApproval.UserIds != nil {
-							userIds = make([]string, 0, len(stepsItem.Approval.UserApproval.UserIds))
-							for _, userIdsItem := range stepsItem.Approval.UserApproval.UserIds {
-								userIds = append(userIds, userIdsItem.ValueString())
-							}
-						}
-						userApproval = &shared.UserApproval{
-							AllowSelfApproval: allowSelfApproval6,
-							UserIds:           userIds,
-						}
-					}
-					var webhookApproval *shared.WebhookApproval
-					if stepsItem.Approval.WebhookApproval != nil {
-						webhookID := new(string)
-						if !stepsItem.Approval.WebhookApproval.WebhookID.IsUnknown() && !stepsItem.Approval.WebhookApproval.WebhookID.IsNull() {
-							*webhookID = stepsItem.Approval.WebhookApproval.WebhookID.ValueString()
-						} else {
-							webhookID = nil
-						}
-						webhookApproval = &shared.WebhookApproval{
-							WebhookID: webhookID,
-						}
-					}
-					approval = &shared.ApprovalInput{
-						AgentApproval:             agentApproval,
-						AllowReassignment:         allowReassignment,
-						AllowedReassignees:        allowedReassignees,
-						AppOwnerApproval:          appOwnerApproval,
-						EntitlementOwnerApproval:  entitlementOwnerApproval,
-						ExpressionApproval:        expressionApproval,
-						AppGroupApproval:          appGroupApproval,
-						ManagerApproval:           managerApproval,
-						RequireApprovalReason:     requireApprovalReason,
-						RequireDenialReason:       requireDenialReason,
-						RequireReassignmentReason: requireReassignmentReason,
-						RequiresStepUpProviderID:  requiresStepUpProviderID,
-						ResourceOwnerApproval:     resourceOwnerApproval,
-						SelfApproval:              selfApproval,
-						UserApproval:              userApproval,
-						WebhookApproval:           webhookApproval,
-					}
+				accept = &shared.Accept{
+					AcceptMessage: acceptMessage,
 				}
-				var provision *shared.Provision
-				if stepsItem.Provision != nil {
-					assigned := new(bool)
-					if !stepsItem.Provision.Assigned.IsUnknown() && !stepsItem.Provision.Assigned.IsNull() {
-						*assigned = stepsItem.Provision.Assigned.ValueBool()
-					} else {
-						assigned = nil
-					}
-					var provisionPolicy *shared.ProvisionPolicy
-					if stepsItem.Provision.ProvisionPolicy != nil {
-						var connectorProvision *shared.ConnectorProvision
-						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision != nil {
-							var accountProvision *shared.AccountProvision
-							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision != nil {
-								var config *shared.AccountProvisionConfig
-								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config != nil {
-									config = &shared.AccountProvisionConfig{}
-								}
-								connectorID := new(string)
-								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
-									*connectorID = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
-								} else {
-									connectorID = nil
-								}
-								var doNotSave *shared.DoNotSave
-								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave != nil {
-									doNotSave = &shared.DoNotSave{}
-								}
-								var saveToVault *shared.SaveToVault
-								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault != nil {
-									var vaultIds []string
-									if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-										vaultIds = make([]string, 0, len(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-										for _, vaultIdsItem := range stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-											vaultIds = append(vaultIds, vaultIdsItem.ValueString())
-										}
-									}
-									saveToVault = &shared.SaveToVault{
-										VaultIds: vaultIds,
-									}
-								}
-								schemaID := new(string)
-								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsNull() {
-									*schemaID = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.ValueString()
-								} else {
-									schemaID = nil
-								}
-								accountProvision = &shared.AccountProvision{
-									Config:      config,
-									ConnectorID: connectorID,
-									DoNotSave:   doNotSave,
-									SaveToVault: saveToVault,
-									SchemaID:    schemaID,
-								}
-							}
-							var defaultBehavior *shared.DefaultBehavior
-							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior != nil {
-								connectorId1 := new(string)
-								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
-									*connectorId1 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
-								} else {
-									connectorId1 = nil
-								}
-								defaultBehavior = &shared.DefaultBehavior{
-									ConnectorID: connectorId1,
-								}
-							}
-							connectorProvision = &shared.ConnectorProvision{
-								AccountProvision: accountProvision,
-								DefaultBehavior:  defaultBehavior,
-							}
-						}
-						var delegatedProvision *shared.DelegatedProvision
-						if stepsItem.Provision.ProvisionPolicy.DelegatedProvision != nil {
-							appId1 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-								*appId1 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
-							} else {
-								appId1 = nil
-							}
-							entitlementID := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
-								*entitlementID = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueString()
-							} else {
-								entitlementID = nil
-							}
-							delegatedProvision = &shared.DelegatedProvision{
-								AppID:         appId1,
-								EntitlementID: entitlementID,
-							}
-						}
-						var externalTicketProvision *shared.ExternalTicketProvision
-						if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision != nil {
-							appId2 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
-								*appId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
-							} else {
-								appId2 = nil
-							}
-							connectorId2 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-								*connectorId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
-							} else {
-								connectorId2 = nil
-							}
-							externalTicketProvisionerConfigID := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
-								*externalTicketProvisionerConfigID = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.ValueString()
-							} else {
-								externalTicketProvisionerConfigID = nil
-							}
-							instructions1 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsNull() {
-								*instructions1 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.ValueString()
-							} else {
-								instructions1 = nil
-							}
-							externalTicketProvision = &shared.ExternalTicketProvision{
-								AppID:                             appId2,
-								ConnectorID:                       connectorId2,
-								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
-								Instructions:                      instructions1,
-							}
-						}
-						var manualProvision *shared.ManualProvision
-						if stepsItem.Provision.ProvisionPolicy.ManualProvision != nil {
-							instructions2 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsNull() {
-								*instructions2 = stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.ValueString()
-							} else {
-								instructions2 = nil
-							}
-							var userIds1 []string
-							if stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds != nil {
-								userIds1 = make([]string, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds))
-								for _, userIdsItem1 := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
-									userIds1 = append(userIds1, userIdsItem1.ValueString())
-								}
-							}
-							manualProvision = &shared.ManualProvision{
-								Instructions: instructions2,
-								UserIds:      userIds1,
-							}
-						}
-						var multiStep interface{}
-						if !stepsItem.Provision.ProvisionPolicy.MultiStep.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.MultiStep.IsNull() {
-							_ = json.Unmarshal([]byte(stepsItem.Provision.ProvisionPolicy.MultiStep.ValueString()), &multiStep)
-						}
-						var unconfiguredProvision *shared.UnconfiguredProvision
-						if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision != nil {
-							unconfiguredProvision = &shared.UnconfiguredProvision{}
-						}
-						var webhookProvision *shared.WebhookProvision
-						if stepsItem.Provision.ProvisionPolicy.WebhookProvision != nil {
-							webhookId1 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsNull() {
-								*webhookId1 = stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.ValueString()
-							} else {
-								webhookId1 = nil
-							}
-							webhookProvision = &shared.WebhookProvision{
-								WebhookID: webhookId1,
-							}
-						}
-						provisionPolicy = &shared.ProvisionPolicy{
-							ConnectorProvision:      connectorProvision,
-							DelegatedProvision:      delegatedProvision,
-							ExternalTicketProvision: externalTicketProvision,
-							ManualProvision:         manualProvision,
-							MultiStep:               multiStep,
-							UnconfiguredProvision:   unconfiguredProvision,
-							WebhookProvision:        webhookProvision,
-						}
-					}
-					var provisionTarget *shared.ProvisionTarget
-					if stepsItem.Provision.ProvisionTarget != nil {
-						appEntitlementID := new(string)
-						if !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsNull() {
-							*appEntitlementID = stepsItem.Provision.ProvisionTarget.AppEntitlementID.ValueString()
-						} else {
-							appEntitlementID = nil
-						}
-						appId3 := new(string)
-						if !stepsItem.Provision.ProvisionTarget.AppID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppID.IsNull() {
-							*appId3 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
-						} else {
-							appId3 = nil
-						}
-						appUserID := new(string)
-						if !stepsItem.Provision.ProvisionTarget.AppUserID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppUserID.IsNull() {
-							*appUserID = stepsItem.Provision.ProvisionTarget.AppUserID.ValueString()
-						} else {
-							appUserID = nil
-						}
-						grantDuration := new(string)
-						if !stepsItem.Provision.ProvisionTarget.GrantDuration.IsUnknown() && !stepsItem.Provision.ProvisionTarget.GrantDuration.IsNull() {
-							*grantDuration = stepsItem.Provision.ProvisionTarget.GrantDuration.ValueString()
-						} else {
-							grantDuration = nil
-						}
-						provisionTarget = &shared.ProvisionTarget{
-							AppEntitlementID: appEntitlementID,
-							AppID:            appId3,
-							AppUserID:        appUserID,
-							GrantDuration:    grantDuration,
-						}
-					}
-					provision = &shared.Provision{
-						Assigned:        assigned,
-						ProvisionPolicy: provisionPolicy,
-						ProvisionTarget: provisionTarget,
-					}
-				}
-				var reject *shared.Reject
-				if stepsItem.Reject != nil {
-					rejectMessage := new(string)
-					if !stepsItem.Reject.RejectMessage.IsUnknown() && !stepsItem.Reject.RejectMessage.IsNull() {
-						*rejectMessage = stepsItem.Reject.RejectMessage.ValueString()
-					} else {
-						rejectMessage = nil
-					}
-					reject = &shared.Reject{
-						RejectMessage: rejectMessage,
-					}
-				}
-				var wait *shared.Wait
-				if stepsItem.Wait != nil {
-					commentOnFirstWait := new(string)
-					if !stepsItem.Wait.CommentOnFirstWait.IsUnknown() && !stepsItem.Wait.CommentOnFirstWait.IsNull() {
-						*commentOnFirstWait = stepsItem.Wait.CommentOnFirstWait.ValueString()
-					} else {
-						commentOnFirstWait = nil
-					}
-					commentOnTimeout := new(string)
-					if !stepsItem.Wait.CommentOnTimeout.IsUnknown() && !stepsItem.Wait.CommentOnTimeout.IsNull() {
-						*commentOnTimeout = stepsItem.Wait.CommentOnTimeout.ValueString()
-					} else {
-						commentOnTimeout = nil
-					}
-					var waitCondition *shared.WaitCondition
-					if stepsItem.Wait.WaitCondition != nil {
-						condition := new(string)
-						if !stepsItem.Wait.WaitCondition.Condition.IsUnknown() && !stepsItem.Wait.WaitCondition.Condition.IsNull() {
-							*condition = stepsItem.Wait.WaitCondition.Condition.ValueString()
-						} else {
-							condition = nil
-						}
-						waitCondition = &shared.WaitCondition{
-							Condition: condition,
-						}
-					}
-					name := new(string)
-					if !stepsItem.Wait.Name.IsUnknown() && !stepsItem.Wait.Name.IsNull() {
-						*name = stepsItem.Wait.Name.ValueString()
-					} else {
-						name = nil
-					}
-					timeoutDuration := new(string)
-					if !stepsItem.Wait.TimeoutDuration.IsUnknown() && !stepsItem.Wait.TimeoutDuration.IsNull() {
-						*timeoutDuration = stepsItem.Wait.TimeoutDuration.ValueString()
-					} else {
-						timeoutDuration = nil
-					}
-					wait = &shared.Wait{
-						CommentOnFirstWait: commentOnFirstWait,
-						CommentOnTimeout:   commentOnTimeout,
-						WaitCondition:      waitCondition,
-						Name:               name,
-						TimeoutDuration:    timeoutDuration,
-					}
-				}
-				steps = append(steps, shared.PolicyStepInput{
-					Accept:    accept,
-					Approval:  approval,
-					Provision: provision,
-					Reject:    reject,
-					Wait:      wait,
-				})
 			}
-		}
-		policyStepsInst := shared.PolicyStepsInput{
-			Steps: steps,
-		}
-		policySteps[policyStepsKey] = policyStepsInst
-	}
-	policyType := new(shared.CreatePolicyRequestPolicyType)
-	if !r.PolicyType.IsUnknown() && !r.PolicyType.IsNull() {
-		*policyType = shared.CreatePolicyRequestPolicyType(r.PolicyType.ValueString())
-	} else {
-		policyType = nil
-	}
-	var postActions []shared.PolicyPostActions
-	if r.PostActions != nil {
-		postActions = make([]shared.PolicyPostActions, 0, len(r.PostActions))
-		for _, postActionsItem := range r.PostActions {
-			certifyRemediateImmediately := new(bool)
-			if !postActionsItem.CertifyRemediateImmediately.IsUnknown() && !postActionsItem.CertifyRemediateImmediately.IsNull() {
-				*certifyRemediateImmediately = postActionsItem.CertifyRemediateImmediately.ValueBool()
-			} else {
-				certifyRemediateImmediately = nil
+			var approval *shared.ApprovalInput
+			if stepsItem.Approval != nil {
+				var agentApproval *shared.AgentApproval
+				if stepsItem.Approval.AgentApproval != nil {
+					agentMode := new(shared.AgentMode)
+					if !stepsItem.Approval.AgentApproval.AgentMode.IsUnknown() && !stepsItem.Approval.AgentApproval.AgentMode.IsNull() {
+						*agentMode = shared.AgentMode(stepsItem.Approval.AgentApproval.AgentMode.ValueString())
+					} else {
+						agentMode = nil
+					}
+					agentUserID := new(string)
+					if !stepsItem.Approval.AgentApproval.AgentUserID.IsUnknown() && !stepsItem.Approval.AgentApproval.AgentUserID.IsNull() {
+						*agentUserID = stepsItem.Approval.AgentApproval.AgentUserID.ValueString()
+					} else {
+						agentUserID = nil
+					}
+					instructions := new(string)
+					if !stepsItem.Approval.AgentApproval.Instructions.IsUnknown() && !stepsItem.Approval.AgentApproval.Instructions.IsNull() {
+						*instructions = stepsItem.Approval.AgentApproval.Instructions.ValueString()
+					} else {
+						instructions = nil
+					}
+					var policyIds []string = []string{}
+					for _, policyIdsItem := range stepsItem.Approval.AgentApproval.PolicyIds {
+						policyIds = append(policyIds, policyIdsItem.ValueString())
+					}
+					agentApproval = &shared.AgentApproval{
+						AgentMode:    agentMode,
+						AgentUserID:  agentUserID,
+						Instructions: instructions,
+						PolicyIds:    policyIds,
+					}
+				}
+				allowReassignment := new(bool)
+				if !stepsItem.Approval.AllowReassignment.IsUnknown() && !stepsItem.Approval.AllowReassignment.IsNull() {
+					*allowReassignment = stepsItem.Approval.AllowReassignment.ValueBool()
+				} else {
+					allowReassignment = nil
+				}
+				var allowedReassignees []string = []string{}
+				for _, allowedReassigneesItem := range stepsItem.Approval.AllowedReassignees {
+					allowedReassignees = append(allowedReassignees, allowedReassigneesItem.ValueString())
+				}
+				var appOwnerApproval *shared.AppOwnerApproval
+				if stepsItem.Approval.AppOwnerApproval != nil {
+					allowSelfApproval := new(bool)
+					if !stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval = stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval = nil
+					}
+					appOwnerApproval = &shared.AppOwnerApproval{
+						AllowSelfApproval: allowSelfApproval,
+					}
+				}
+				var entitlementOwnerApproval *shared.EntitlementOwnerApproval
+				if stepsItem.Approval.EntitlementOwnerApproval != nil {
+					allowSelfApproval1 := new(bool)
+					if !stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval1 = stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval1 = nil
+					}
+					fallback := new(bool)
+					if !stepsItem.Approval.EntitlementOwnerApproval.Fallback.IsUnknown() && !stepsItem.Approval.EntitlementOwnerApproval.Fallback.IsNull() {
+						*fallback = stepsItem.Approval.EntitlementOwnerApproval.Fallback.ValueBool()
+					} else {
+						fallback = nil
+					}
+					var fallbackUserIds []string = []string{}
+					for _, fallbackUserIdsItem := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
+						fallbackUserIds = append(fallbackUserIds, fallbackUserIdsItem.ValueString())
+					}
+					entitlementOwnerApproval = &shared.EntitlementOwnerApproval{
+						AllowSelfApproval: allowSelfApproval1,
+						Fallback:          fallback,
+						FallbackUserIds:   fallbackUserIds,
+					}
+				}
+				var expressionApproval *shared.ExpressionApprovalInput
+				if stepsItem.Approval.ExpressionApproval != nil {
+					allowSelfApproval2 := new(bool)
+					if !stepsItem.Approval.ExpressionApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ExpressionApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval2 = stepsItem.Approval.ExpressionApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval2 = nil
+					}
+					var expressions []string = []string{}
+					for _, expressionsItem := range stepsItem.Approval.ExpressionApproval.Expressions {
+						expressions = append(expressions, expressionsItem.ValueString())
+					}
+					fallback1 := new(bool)
+					if !stepsItem.Approval.ExpressionApproval.Fallback.IsUnknown() && !stepsItem.Approval.ExpressionApproval.Fallback.IsNull() {
+						*fallback1 = stepsItem.Approval.ExpressionApproval.Fallback.ValueBool()
+					} else {
+						fallback1 = nil
+					}
+					var fallbackUserIds1 []string = []string{}
+					for _, fallbackUserIdsItem1 := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
+						fallbackUserIds1 = append(fallbackUserIds1, fallbackUserIdsItem1.ValueString())
+					}
+					expressionApproval = &shared.ExpressionApprovalInput{
+						AllowSelfApproval: allowSelfApproval2,
+						Expressions:       expressions,
+						Fallback:          fallback1,
+						FallbackUserIds:   fallbackUserIds1,
+					}
+				}
+				var appGroupApproval *shared.AppGroupApproval
+				if stepsItem.Approval.AppGroupApproval != nil {
+					allowSelfApproval3 := new(bool)
+					if !stepsItem.Approval.AppGroupApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval3 = stepsItem.Approval.AppGroupApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval3 = nil
+					}
+					appGroupID := new(string)
+					if !stepsItem.Approval.AppGroupApproval.AppGroupID.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AppGroupID.IsNull() {
+						*appGroupID = stepsItem.Approval.AppGroupApproval.AppGroupID.ValueString()
+					} else {
+						appGroupID = nil
+					}
+					appID := new(string)
+					if !stepsItem.Approval.AppGroupApproval.AppID.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AppID.IsNull() {
+						*appID = stepsItem.Approval.AppGroupApproval.AppID.ValueString()
+					} else {
+						appID = nil
+					}
+					fallback2 := new(bool)
+					if !stepsItem.Approval.AppGroupApproval.Fallback.IsUnknown() && !stepsItem.Approval.AppGroupApproval.Fallback.IsNull() {
+						*fallback2 = stepsItem.Approval.AppGroupApproval.Fallback.ValueBool()
+					} else {
+						fallback2 = nil
+					}
+					var fallbackUserIds2 []string = []string{}
+					for _, fallbackUserIdsItem2 := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
+						fallbackUserIds2 = append(fallbackUserIds2, fallbackUserIdsItem2.ValueString())
+					}
+					appGroupApproval = &shared.AppGroupApproval{
+						AllowSelfApproval: allowSelfApproval3,
+						AppGroupID:        appGroupID,
+						AppID:             appID,
+						Fallback:          fallback2,
+						FallbackUserIds:   fallbackUserIds2,
+					}
+				}
+				var managerApproval *shared.ManagerApprovalInput
+				if stepsItem.Approval.ManagerApproval != nil {
+					allowSelfApproval4 := new(bool)
+					if !stepsItem.Approval.ManagerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ManagerApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval4 = stepsItem.Approval.ManagerApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval4 = nil
+					}
+					fallback3 := new(bool)
+					if !stepsItem.Approval.ManagerApproval.Fallback.IsUnknown() && !stepsItem.Approval.ManagerApproval.Fallback.IsNull() {
+						*fallback3 = stepsItem.Approval.ManagerApproval.Fallback.ValueBool()
+					} else {
+						fallback3 = nil
+					}
+					var fallbackUserIds3 []string = []string{}
+					for _, fallbackUserIdsItem3 := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
+						fallbackUserIds3 = append(fallbackUserIds3, fallbackUserIdsItem3.ValueString())
+					}
+					managerApproval = &shared.ManagerApprovalInput{
+						AllowSelfApproval: allowSelfApproval4,
+						Fallback:          fallback3,
+						FallbackUserIds:   fallbackUserIds3,
+					}
+				}
+				requireApprovalReason := new(bool)
+				if !stepsItem.Approval.RequireApprovalReason.IsUnknown() && !stepsItem.Approval.RequireApprovalReason.IsNull() {
+					*requireApprovalReason = stepsItem.Approval.RequireApprovalReason.ValueBool()
+				} else {
+					requireApprovalReason = nil
+				}
+				requireDenialReason := new(bool)
+				if !stepsItem.Approval.RequireDenialReason.IsUnknown() && !stepsItem.Approval.RequireDenialReason.IsNull() {
+					*requireDenialReason = stepsItem.Approval.RequireDenialReason.ValueBool()
+				} else {
+					requireDenialReason = nil
+				}
+				requireReassignmentReason := new(bool)
+				if !stepsItem.Approval.RequireReassignmentReason.IsUnknown() && !stepsItem.Approval.RequireReassignmentReason.IsNull() {
+					*requireReassignmentReason = stepsItem.Approval.RequireReassignmentReason.ValueBool()
+				} else {
+					requireReassignmentReason = nil
+				}
+				requiresStepUpProviderID := new(string)
+				if !stepsItem.Approval.RequiresStepUpProviderID.IsUnknown() && !stepsItem.Approval.RequiresStepUpProviderID.IsNull() {
+					*requiresStepUpProviderID = stepsItem.Approval.RequiresStepUpProviderID.ValueString()
+				} else {
+					requiresStepUpProviderID = nil
+				}
+				var resourceOwnerApproval *shared.ResourceOwnerApproval
+				if stepsItem.Approval.ResourceOwnerApproval != nil {
+					allowSelfApproval5 := new(bool)
+					if !stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval5 = stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval5 = nil
+					}
+					fallback4 := new(bool)
+					if !stepsItem.Approval.ResourceOwnerApproval.Fallback.IsUnknown() && !stepsItem.Approval.ResourceOwnerApproval.Fallback.IsNull() {
+						*fallback4 = stepsItem.Approval.ResourceOwnerApproval.Fallback.ValueBool()
+					} else {
+						fallback4 = nil
+					}
+					var fallbackUserIds4 []string = []string{}
+					for _, fallbackUserIdsItem4 := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
+						fallbackUserIds4 = append(fallbackUserIds4, fallbackUserIdsItem4.ValueString())
+					}
+					resourceOwnerApproval = &shared.ResourceOwnerApproval{
+						AllowSelfApproval: allowSelfApproval5,
+						Fallback:          fallback4,
+						FallbackUserIds:   fallbackUserIds4,
+					}
+				}
+				var selfApproval *shared.SelfApprovalInput
+				if stepsItem.Approval.SelfApproval != nil {
+					fallback5 := new(bool)
+					if !stepsItem.Approval.SelfApproval.Fallback.IsUnknown() && !stepsItem.Approval.SelfApproval.Fallback.IsNull() {
+						*fallback5 = stepsItem.Approval.SelfApproval.Fallback.ValueBool()
+					} else {
+						fallback5 = nil
+					}
+					var fallbackUserIds5 []string = []string{}
+					for _, fallbackUserIdsItem5 := range stepsItem.Approval.SelfApproval.FallbackUserIds {
+						fallbackUserIds5 = append(fallbackUserIds5, fallbackUserIdsItem5.ValueString())
+					}
+					selfApproval = &shared.SelfApprovalInput{
+						Fallback:        fallback5,
+						FallbackUserIds: fallbackUserIds5,
+					}
+				}
+				var userApproval *shared.UserApproval
+				if stepsItem.Approval.UserApproval != nil {
+					allowSelfApproval6 := new(bool)
+					if !stepsItem.Approval.UserApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.UserApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval6 = stepsItem.Approval.UserApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval6 = nil
+					}
+					var userIds []string = []string{}
+					for _, userIdsItem := range stepsItem.Approval.UserApproval.UserIds {
+						userIds = append(userIds, userIdsItem.ValueString())
+					}
+					userApproval = &shared.UserApproval{
+						AllowSelfApproval: allowSelfApproval6,
+						UserIds:           userIds,
+					}
+				}
+				var webhookApproval *shared.WebhookApproval
+				if stepsItem.Approval.WebhookApproval != nil {
+					webhookID := new(string)
+					if !stepsItem.Approval.WebhookApproval.WebhookID.IsUnknown() && !stepsItem.Approval.WebhookApproval.WebhookID.IsNull() {
+						*webhookID = stepsItem.Approval.WebhookApproval.WebhookID.ValueString()
+					} else {
+						webhookID = nil
+					}
+					webhookApproval = &shared.WebhookApproval{
+						WebhookID: webhookID,
+					}
+				}
+				approval = &shared.ApprovalInput{
+					AgentApproval:             agentApproval,
+					AllowReassignment:         allowReassignment,
+					AllowedReassignees:        allowedReassignees,
+					AppOwnerApproval:          appOwnerApproval,
+					EntitlementOwnerApproval:  entitlementOwnerApproval,
+					ExpressionApproval:        expressionApproval,
+					AppGroupApproval:          appGroupApproval,
+					ManagerApproval:           managerApproval,
+					RequireApprovalReason:     requireApprovalReason,
+					RequireDenialReason:       requireDenialReason,
+					RequireReassignmentReason: requireReassignmentReason,
+					RequiresStepUpProviderID:  requiresStepUpProviderID,
+					ResourceOwnerApproval:     resourceOwnerApproval,
+					SelfApproval:              selfApproval,
+					UserApproval:              userApproval,
+					WebhookApproval:           webhookApproval,
+				}
 			}
-			postActions = append(postActions, shared.PolicyPostActions{
-				CertifyRemediateImmediately: certifyRemediateImmediately,
+			var provision *shared.Provision
+			if stepsItem.Provision != nil {
+				assigned := new(bool)
+				if !stepsItem.Provision.Assigned.IsUnknown() && !stepsItem.Provision.Assigned.IsNull() {
+					*assigned = stepsItem.Provision.Assigned.ValueBool()
+				} else {
+					assigned = nil
+				}
+				var provisionPolicy *shared.ProvisionPolicy
+				if stepsItem.Provision.ProvisionPolicy != nil {
+					var connectorProvision *shared.ConnectorProvision
+					if stepsItem.Provision.ProvisionPolicy.ConnectorProvision != nil {
+						var accountProvision *shared.AccountProvision
+						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision != nil {
+							var config *shared.AccountProvisionConfig
+							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config != nil {
+								config = &shared.AccountProvisionConfig{}
+							}
+							connectorID := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
+								*connectorID = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
+							} else {
+								connectorID = nil
+							}
+							var doNotSave *shared.DoNotSave
+							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave != nil {
+								doNotSave = &shared.DoNotSave{}
+							}
+							var saveToVault *shared.SaveToVault
+							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault != nil {
+								var vaultIds []string = []string{}
+								for _, vaultIdsItem := range stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+									vaultIds = append(vaultIds, vaultIdsItem.ValueString())
+								}
+								saveToVault = &shared.SaveToVault{
+									VaultIds: vaultIds,
+								}
+							}
+							schemaID := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsNull() {
+								*schemaID = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.ValueString()
+							} else {
+								schemaID = nil
+							}
+							accountProvision = &shared.AccountProvision{
+								Config:      config,
+								ConnectorID: connectorID,
+								DoNotSave:   doNotSave,
+								SaveToVault: saveToVault,
+								SchemaID:    schemaID,
+							}
+						}
+						var defaultBehavior *shared.DefaultBehavior
+						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior != nil {
+							connectorId1 := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
+								*connectorId1 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
+							} else {
+								connectorId1 = nil
+							}
+							defaultBehavior = &shared.DefaultBehavior{
+								ConnectorID: connectorId1,
+							}
+						}
+						connectorProvision = &shared.ConnectorProvision{
+							AccountProvision: accountProvision,
+							DefaultBehavior:  defaultBehavior,
+						}
+					}
+					var delegatedProvision *shared.DelegatedProvision
+					if stepsItem.Provision.ProvisionPolicy.DelegatedProvision != nil {
+						appId1 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
+							*appId1 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+						} else {
+							appId1 = nil
+						}
+						entitlementID := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
+							*entitlementID = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueString()
+						} else {
+							entitlementID = nil
+						}
+						delegatedProvision = &shared.DelegatedProvision{
+							AppID:         appId1,
+							EntitlementID: entitlementID,
+						}
+					}
+					var externalTicketProvision *shared.ExternalTicketProvision
+					if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision != nil {
+						appId2 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
+							*appId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
+						} else {
+							appId2 = nil
+						}
+						connectorId2 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
+							*connectorId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+						} else {
+							connectorId2 = nil
+						}
+						externalTicketProvisionerConfigID := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
+							*externalTicketProvisionerConfigID = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.ValueString()
+						} else {
+							externalTicketProvisionerConfigID = nil
+						}
+						instructions1 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsNull() {
+							*instructions1 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.ValueString()
+						} else {
+							instructions1 = nil
+						}
+						externalTicketProvision = &shared.ExternalTicketProvision{
+							AppID:                             appId2,
+							ConnectorID:                       connectorId2,
+							ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
+							Instructions:                      instructions1,
+						}
+					}
+					var manualProvision *shared.ManualProvision
+					if stepsItem.Provision.ProvisionPolicy.ManualProvision != nil {
+						instructions2 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsNull() {
+							*instructions2 = stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.ValueString()
+						} else {
+							instructions2 = nil
+						}
+						var userIds1 []string = []string{}
+						for _, userIdsItem1 := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
+							userIds1 = append(userIds1, userIdsItem1.ValueString())
+						}
+						manualProvision = &shared.ManualProvision{
+							Instructions: instructions2,
+							UserIds:      userIds1,
+						}
+					}
+					var multiStep interface{}
+					if !stepsItem.Provision.ProvisionPolicy.MultiStep.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.MultiStep.IsNull() {
+						_ = json.Unmarshal([]byte(stepsItem.Provision.ProvisionPolicy.MultiStep.ValueString()), &multiStep)
+					}
+					var unconfiguredProvision *shared.UnconfiguredProvision
+					if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision != nil {
+						unconfiguredProvision = &shared.UnconfiguredProvision{}
+					}
+					var webhookProvision *shared.WebhookProvision
+					if stepsItem.Provision.ProvisionPolicy.WebhookProvision != nil {
+						webhookId1 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsNull() {
+							*webhookId1 = stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.ValueString()
+						} else {
+							webhookId1 = nil
+						}
+						webhookProvision = &shared.WebhookProvision{
+							WebhookID: webhookId1,
+						}
+					}
+					provisionPolicy = &shared.ProvisionPolicy{
+						ConnectorProvision:      connectorProvision,
+						DelegatedProvision:      delegatedProvision,
+						ExternalTicketProvision: externalTicketProvision,
+						ManualProvision:         manualProvision,
+						MultiStep:               multiStep,
+						UnconfiguredProvision:   unconfiguredProvision,
+						WebhookProvision:        webhookProvision,
+					}
+				}
+				var provisionTarget *shared.ProvisionTarget
+				if stepsItem.Provision.ProvisionTarget != nil {
+					appEntitlementID := new(string)
+					if !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsNull() {
+						*appEntitlementID = stepsItem.Provision.ProvisionTarget.AppEntitlementID.ValueString()
+					} else {
+						appEntitlementID = nil
+					}
+					appId3 := new(string)
+					if !stepsItem.Provision.ProvisionTarget.AppID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppID.IsNull() {
+						*appId3 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
+					} else {
+						appId3 = nil
+					}
+					appUserID := new(string)
+					if !stepsItem.Provision.ProvisionTarget.AppUserID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppUserID.IsNull() {
+						*appUserID = stepsItem.Provision.ProvisionTarget.AppUserID.ValueString()
+					} else {
+						appUserID = nil
+					}
+					grantDuration := new(string)
+					if !stepsItem.Provision.ProvisionTarget.GrantDuration.IsUnknown() && !stepsItem.Provision.ProvisionTarget.GrantDuration.IsNull() {
+						*grantDuration = stepsItem.Provision.ProvisionTarget.GrantDuration.ValueString()
+					} else {
+						grantDuration = nil
+					}
+					provisionTarget = &shared.ProvisionTarget{
+						AppEntitlementID: appEntitlementID,
+						AppID:            appId3,
+						AppUserID:        appUserID,
+						GrantDuration:    grantDuration,
+					}
+				}
+				provision = &shared.Provision{
+					Assigned:        assigned,
+					ProvisionPolicy: provisionPolicy,
+					ProvisionTarget: provisionTarget,
+				}
+			}
+			var reject *shared.Reject
+			if stepsItem.Reject != nil {
+				rejectMessage := new(string)
+				if !stepsItem.Reject.RejectMessage.IsUnknown() && !stepsItem.Reject.RejectMessage.IsNull() {
+					*rejectMessage = stepsItem.Reject.RejectMessage.ValueString()
+				} else {
+					rejectMessage = nil
+				}
+				reject = &shared.Reject{
+					RejectMessage: rejectMessage,
+				}
+			}
+			var wait *shared.Wait
+			if stepsItem.Wait != nil {
+				commentOnFirstWait := new(string)
+				if !stepsItem.Wait.CommentOnFirstWait.IsUnknown() && !stepsItem.Wait.CommentOnFirstWait.IsNull() {
+					*commentOnFirstWait = stepsItem.Wait.CommentOnFirstWait.ValueString()
+				} else {
+					commentOnFirstWait = nil
+				}
+				commentOnTimeout := new(string)
+				if !stepsItem.Wait.CommentOnTimeout.IsUnknown() && !stepsItem.Wait.CommentOnTimeout.IsNull() {
+					*commentOnTimeout = stepsItem.Wait.CommentOnTimeout.ValueString()
+				} else {
+					commentOnTimeout = nil
+				}
+				var waitCondition *shared.WaitCondition
+				if stepsItem.Wait.WaitCondition != nil {
+					condition := new(string)
+					if !stepsItem.Wait.WaitCondition.Condition.IsUnknown() && !stepsItem.Wait.WaitCondition.Condition.IsNull() {
+						*condition = stepsItem.Wait.WaitCondition.Condition.ValueString()
+					} else {
+						condition = nil
+					}
+					waitCondition = &shared.WaitCondition{
+						Condition: condition,
+					}
+				}
+				name := new(string)
+				if !stepsItem.Wait.Name.IsUnknown() && !stepsItem.Wait.Name.IsNull() {
+					*name = stepsItem.Wait.Name.ValueString()
+				} else {
+					name = nil
+				}
+				timeoutDuration := new(string)
+				if !stepsItem.Wait.TimeoutDuration.IsUnknown() && !stepsItem.Wait.TimeoutDuration.IsNull() {
+					*timeoutDuration = stepsItem.Wait.TimeoutDuration.ValueString()
+				} else {
+					timeoutDuration = nil
+				}
+				wait = &shared.Wait{
+					CommentOnFirstWait: commentOnFirstWait,
+					CommentOnTimeout:   commentOnTimeout,
+					WaitCondition:      waitCondition,
+					Name:               name,
+					TimeoutDuration:    timeoutDuration,
+				}
+			}
+			steps = append(steps, shared.PolicyStepInput{
+				Accept:    accept,
+				Approval:  approval,
+				Provision: provision,
+				Reject:    reject,
+				Wait:      wait,
 			})
-		}
-	}
-	reassignTasksToDelegates := new(bool)
-	if !r.ReassignTasksToDelegates.IsUnknown() && !r.ReassignTasksToDelegates.IsNull() {
-		*reassignTasksToDelegates = r.ReassignTasksToDelegates.ValueBool()
-	} else {
-		reassignTasksToDelegates = nil
-	}
-	var rules []shared.Rule
-	if r.Rules != nil {
-		rules = make([]shared.Rule, 0, len(r.Rules))
-		for _, rulesItem := range r.Rules {
-			condition1 := new(string)
-			if !rulesItem.Condition.IsUnknown() && !rulesItem.Condition.IsNull() {
-				*condition1 = rulesItem.Condition.ValueString()
-			} else {
-				condition1 = nil
-			}
-			policyKey := new(string)
-			if !rulesItem.PolicyKey.IsUnknown() && !rulesItem.PolicyKey.IsNull() {
-				*policyKey = rulesItem.PolicyKey.ValueString()
-			} else {
-				policyKey = nil
-			}
-			rules = append(rules, shared.Rule{
-				Condition: condition1,
-				PolicyKey: policyKey,
-			})
-		}
-	}
-	out := shared.CreatePolicyRequest{
-		Description:              description,
-		DisplayName:              displayName,
-		PolicySteps:              policySteps,
-		PolicyType:               policyType,
-		PostActions:              postActions,
-		ReassignTasksToDelegates: reassignTasksToDelegates,
-		Rules:                    rules,
-	}
-
-	return &out, diags
-}
-
-func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.PolicyInput, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
-	policySteps := make(map[string]shared.PolicyStepsInput)
-	for policyStepsKey, policyStepsValue := range r.PolicySteps {
-		var steps []shared.PolicyStepInput
-		if policyStepsValue.Steps != nil {
-			steps = make([]shared.PolicyStepInput, 0, len(policyStepsValue.Steps))
-			for _, stepsItem := range policyStepsValue.Steps {
-				var accept *shared.Accept
-				if stepsItem.Accept != nil {
-					acceptMessage := new(string)
-					if !stepsItem.Accept.AcceptMessage.IsUnknown() && !stepsItem.Accept.AcceptMessage.IsNull() {
-						*acceptMessage = stepsItem.Accept.AcceptMessage.ValueString()
-					} else {
-						acceptMessage = nil
-					}
-					accept = &shared.Accept{
-						AcceptMessage: acceptMessage,
-					}
-				}
-				var approval *shared.ApprovalInput
-				if stepsItem.Approval != nil {
-					var agentApproval *shared.AgentApproval
-					if stepsItem.Approval.AgentApproval != nil {
-						agentUserID := new(string)
-						if !stepsItem.Approval.AgentApproval.AgentUserID.IsUnknown() && !stepsItem.Approval.AgentApproval.AgentUserID.IsNull() {
-							*agentUserID = stepsItem.Approval.AgentApproval.AgentUserID.ValueString()
-						} else {
-							agentUserID = nil
-						}
-						instructions := new(string)
-						if !stepsItem.Approval.AgentApproval.Instructions.IsUnknown() && !stepsItem.Approval.AgentApproval.Instructions.IsNull() {
-							*instructions = stepsItem.Approval.AgentApproval.Instructions.ValueString()
-						} else {
-							instructions = nil
-						}
-						var policyIds []string
-						if stepsItem.Approval.AgentApproval.PolicyIds != nil {
-							policyIds = make([]string, 0, len(stepsItem.Approval.AgentApproval.PolicyIds))
-							for _, policyIdsItem := range stepsItem.Approval.AgentApproval.PolicyIds {
-								policyIds = append(policyIds, policyIdsItem.ValueString())
-							}
-						}
-						agentApproval = &shared.AgentApproval{
-							AgentUserID:  agentUserID,
-							Instructions: instructions,
-							PolicyIds:    policyIds,
-						}
-					}
-					allowReassignment := new(bool)
-					if !stepsItem.Approval.AllowReassignment.IsUnknown() && !stepsItem.Approval.AllowReassignment.IsNull() {
-						*allowReassignment = stepsItem.Approval.AllowReassignment.ValueBool()
-					} else {
-						allowReassignment = nil
-					}
-					var allowedReassignees []string
-					if stepsItem.Approval.AllowedReassignees != nil {
-						allowedReassignees = make([]string, 0, len(stepsItem.Approval.AllowedReassignees))
-						for _, allowedReassigneesItem := range stepsItem.Approval.AllowedReassignees {
-							allowedReassignees = append(allowedReassignees, allowedReassigneesItem.ValueString())
-						}
-					}
-					var appOwnerApproval *shared.AppOwnerApproval
-					if stepsItem.Approval.AppOwnerApproval != nil {
-						allowSelfApproval := new(bool)
-						if !stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval = stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval = nil
-						}
-						appOwnerApproval = &shared.AppOwnerApproval{
-							AllowSelfApproval: allowSelfApproval,
-						}
-					}
-					var entitlementOwnerApproval *shared.EntitlementOwnerApproval
-					if stepsItem.Approval.EntitlementOwnerApproval != nil {
-						allowSelfApproval1 := new(bool)
-						if !stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval1 = stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval1 = nil
-						}
-						fallback := new(bool)
-						if !stepsItem.Approval.EntitlementOwnerApproval.Fallback.IsUnknown() && !stepsItem.Approval.EntitlementOwnerApproval.Fallback.IsNull() {
-							*fallback = stepsItem.Approval.EntitlementOwnerApproval.Fallback.ValueBool()
-						} else {
-							fallback = nil
-						}
-						var fallbackUserIds []string
-						if stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
-							fallbackUserIds = make([]string, 0, len(stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
-								fallbackUserIds = append(fallbackUserIds, fallbackUserIdsItem.ValueString())
-							}
-						}
-						entitlementOwnerApproval = &shared.EntitlementOwnerApproval{
-							AllowSelfApproval: allowSelfApproval1,
-							Fallback:          fallback,
-							FallbackUserIds:   fallbackUserIds,
-						}
-					}
-					var expressionApproval *shared.ExpressionApprovalInput
-					if stepsItem.Approval.ExpressionApproval != nil {
-						allowSelfApproval2 := new(bool)
-						if !stepsItem.Approval.ExpressionApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ExpressionApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval2 = stepsItem.Approval.ExpressionApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval2 = nil
-						}
-						var expressions []string
-						if stepsItem.Approval.ExpressionApproval.Expressions != nil {
-							expressions = make([]string, 0, len(stepsItem.Approval.ExpressionApproval.Expressions))
-							for _, expressionsItem := range stepsItem.Approval.ExpressionApproval.Expressions {
-								expressions = append(expressions, expressionsItem.ValueString())
-							}
-						}
-						fallback1 := new(bool)
-						if !stepsItem.Approval.ExpressionApproval.Fallback.IsUnknown() && !stepsItem.Approval.ExpressionApproval.Fallback.IsNull() {
-							*fallback1 = stepsItem.Approval.ExpressionApproval.Fallback.ValueBool()
-						} else {
-							fallback1 = nil
-						}
-						var fallbackUserIds1 []string
-						if stepsItem.Approval.ExpressionApproval.FallbackUserIds != nil {
-							fallbackUserIds1 = make([]string, 0, len(stepsItem.Approval.ExpressionApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem1 := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
-								fallbackUserIds1 = append(fallbackUserIds1, fallbackUserIdsItem1.ValueString())
-							}
-						}
-						expressionApproval = &shared.ExpressionApprovalInput{
-							AllowSelfApproval: allowSelfApproval2,
-							Expressions:       expressions,
-							Fallback:          fallback1,
-							FallbackUserIds:   fallbackUserIds1,
-						}
-					}
-					var appGroupApproval *shared.AppGroupApproval
-					if stepsItem.Approval.AppGroupApproval != nil {
-						allowSelfApproval3 := new(bool)
-						if !stepsItem.Approval.AppGroupApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval3 = stepsItem.Approval.AppGroupApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval3 = nil
-						}
-						appGroupID := new(string)
-						if !stepsItem.Approval.AppGroupApproval.AppGroupID.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AppGroupID.IsNull() {
-							*appGroupID = stepsItem.Approval.AppGroupApproval.AppGroupID.ValueString()
-						} else {
-							appGroupID = nil
-						}
-						appID := new(string)
-						if !stepsItem.Approval.AppGroupApproval.AppID.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AppID.IsNull() {
-							*appID = stepsItem.Approval.AppGroupApproval.AppID.ValueString()
-						} else {
-							appID = nil
-						}
-						fallback2 := new(bool)
-						if !stepsItem.Approval.AppGroupApproval.Fallback.IsUnknown() && !stepsItem.Approval.AppGroupApproval.Fallback.IsNull() {
-							*fallback2 = stepsItem.Approval.AppGroupApproval.Fallback.ValueBool()
-						} else {
-							fallback2 = nil
-						}
-						var fallbackUserIds2 []string
-						if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
-							fallbackUserIds2 = make([]string, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem2 := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
-								fallbackUserIds2 = append(fallbackUserIds2, fallbackUserIdsItem2.ValueString())
-							}
-						}
-						appGroupApproval = &shared.AppGroupApproval{
-							AllowSelfApproval: allowSelfApproval3,
-							AppGroupID:        appGroupID,
-							AppID:             appID,
-							Fallback:          fallback2,
-							FallbackUserIds:   fallbackUserIds2,
-						}
-					}
-					var managerApproval *shared.ManagerApprovalInput
-					if stepsItem.Approval.ManagerApproval != nil {
-						allowSelfApproval4 := new(bool)
-						if !stepsItem.Approval.ManagerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ManagerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval4 = stepsItem.Approval.ManagerApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval4 = nil
-						}
-						fallback3 := new(bool)
-						if !stepsItem.Approval.ManagerApproval.Fallback.IsUnknown() && !stepsItem.Approval.ManagerApproval.Fallback.IsNull() {
-							*fallback3 = stepsItem.Approval.ManagerApproval.Fallback.ValueBool()
-						} else {
-							fallback3 = nil
-						}
-						var fallbackUserIds3 []string
-						if stepsItem.Approval.ManagerApproval.FallbackUserIds != nil {
-							fallbackUserIds3 = make([]string, 0, len(stepsItem.Approval.ManagerApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem3 := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
-								fallbackUserIds3 = append(fallbackUserIds3, fallbackUserIdsItem3.ValueString())
-							}
-						}
-						managerApproval = &shared.ManagerApprovalInput{
-							AllowSelfApproval: allowSelfApproval4,
-							Fallback:          fallback3,
-							FallbackUserIds:   fallbackUserIds3,
-						}
-					}
-					requireApprovalReason := new(bool)
-					if !stepsItem.Approval.RequireApprovalReason.IsUnknown() && !stepsItem.Approval.RequireApprovalReason.IsNull() {
-						*requireApprovalReason = stepsItem.Approval.RequireApprovalReason.ValueBool()
-					} else {
-						requireApprovalReason = nil
-					}
-					requireDenialReason := new(bool)
-					if !stepsItem.Approval.RequireDenialReason.IsUnknown() && !stepsItem.Approval.RequireDenialReason.IsNull() {
-						*requireDenialReason = stepsItem.Approval.RequireDenialReason.ValueBool()
-					} else {
-						requireDenialReason = nil
-					}
-					requireReassignmentReason := new(bool)
-					if !stepsItem.Approval.RequireReassignmentReason.IsUnknown() && !stepsItem.Approval.RequireReassignmentReason.IsNull() {
-						*requireReassignmentReason = stepsItem.Approval.RequireReassignmentReason.ValueBool()
-					} else {
-						requireReassignmentReason = nil
-					}
-					requiresStepUpProviderID := new(string)
-					if !stepsItem.Approval.RequiresStepUpProviderID.IsUnknown() && !stepsItem.Approval.RequiresStepUpProviderID.IsNull() {
-						*requiresStepUpProviderID = stepsItem.Approval.RequiresStepUpProviderID.ValueString()
-					} else {
-						requiresStepUpProviderID = nil
-					}
-					var resourceOwnerApproval *shared.ResourceOwnerApproval
-					if stepsItem.Approval.ResourceOwnerApproval != nil {
-						allowSelfApproval5 := new(bool)
-						if !stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval5 = stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval5 = nil
-						}
-						fallback4 := new(bool)
-						if !stepsItem.Approval.ResourceOwnerApproval.Fallback.IsUnknown() && !stepsItem.Approval.ResourceOwnerApproval.Fallback.IsNull() {
-							*fallback4 = stepsItem.Approval.ResourceOwnerApproval.Fallback.ValueBool()
-						} else {
-							fallback4 = nil
-						}
-						var fallbackUserIds4 []string
-						if stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
-							fallbackUserIds4 = make([]string, 0, len(stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem4 := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
-								fallbackUserIds4 = append(fallbackUserIds4, fallbackUserIdsItem4.ValueString())
-							}
-						}
-						resourceOwnerApproval = &shared.ResourceOwnerApproval{
-							AllowSelfApproval: allowSelfApproval5,
-							Fallback:          fallback4,
-							FallbackUserIds:   fallbackUserIds4,
-						}
-					}
-					var selfApproval *shared.SelfApprovalInput
-					if stepsItem.Approval.SelfApproval != nil {
-						fallback5 := new(bool)
-						if !stepsItem.Approval.SelfApproval.Fallback.IsUnknown() && !stepsItem.Approval.SelfApproval.Fallback.IsNull() {
-							*fallback5 = stepsItem.Approval.SelfApproval.Fallback.ValueBool()
-						} else {
-							fallback5 = nil
-						}
-						var fallbackUserIds5 []string
-						if stepsItem.Approval.SelfApproval.FallbackUserIds != nil {
-							fallbackUserIds5 = make([]string, 0, len(stepsItem.Approval.SelfApproval.FallbackUserIds))
-							for _, fallbackUserIdsItem5 := range stepsItem.Approval.SelfApproval.FallbackUserIds {
-								fallbackUserIds5 = append(fallbackUserIds5, fallbackUserIdsItem5.ValueString())
-							}
-						}
-						selfApproval = &shared.SelfApprovalInput{
-							Fallback:        fallback5,
-							FallbackUserIds: fallbackUserIds5,
-						}
-					}
-					var userApproval *shared.UserApproval
-					if stepsItem.Approval.UserApproval != nil {
-						allowSelfApproval6 := new(bool)
-						if !stepsItem.Approval.UserApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.UserApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval6 = stepsItem.Approval.UserApproval.AllowSelfApproval.ValueBool()
-						} else {
-							allowSelfApproval6 = nil
-						}
-						var userIds []string
-						if stepsItem.Approval.UserApproval.UserIds != nil {
-							userIds = make([]string, 0, len(stepsItem.Approval.UserApproval.UserIds))
-							for _, userIdsItem := range stepsItem.Approval.UserApproval.UserIds {
-								userIds = append(userIds, userIdsItem.ValueString())
-							}
-						}
-						userApproval = &shared.UserApproval{
-							AllowSelfApproval: allowSelfApproval6,
-							UserIds:           userIds,
-						}
-					}
-					var webhookApproval *shared.WebhookApproval
-					if stepsItem.Approval.WebhookApproval != nil {
-						webhookID := new(string)
-						if !stepsItem.Approval.WebhookApproval.WebhookID.IsUnknown() && !stepsItem.Approval.WebhookApproval.WebhookID.IsNull() {
-							*webhookID = stepsItem.Approval.WebhookApproval.WebhookID.ValueString()
-						} else {
-							webhookID = nil
-						}
-						webhookApproval = &shared.WebhookApproval{
-							WebhookID: webhookID,
-						}
-					}
-					approval = &shared.ApprovalInput{
-						AgentApproval:             agentApproval,
-						AllowReassignment:         allowReassignment,
-						AllowedReassignees:        allowedReassignees,
-						AppOwnerApproval:          appOwnerApproval,
-						EntitlementOwnerApproval:  entitlementOwnerApproval,
-						ExpressionApproval:        expressionApproval,
-						AppGroupApproval:          appGroupApproval,
-						ManagerApproval:           managerApproval,
-						RequireApprovalReason:     requireApprovalReason,
-						RequireDenialReason:       requireDenialReason,
-						RequireReassignmentReason: requireReassignmentReason,
-						RequiresStepUpProviderID:  requiresStepUpProviderID,
-						ResourceOwnerApproval:     resourceOwnerApproval,
-						SelfApproval:              selfApproval,
-						UserApproval:              userApproval,
-						WebhookApproval:           webhookApproval,
-					}
-				}
-				var provision *shared.Provision
-				if stepsItem.Provision != nil {
-					assigned := new(bool)
-					if !stepsItem.Provision.Assigned.IsUnknown() && !stepsItem.Provision.Assigned.IsNull() {
-						*assigned = stepsItem.Provision.Assigned.ValueBool()
-					} else {
-						assigned = nil
-					}
-					var provisionPolicy *shared.ProvisionPolicy
-					if stepsItem.Provision.ProvisionPolicy != nil {
-						var connectorProvision *shared.ConnectorProvision
-						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision != nil {
-							var accountProvision *shared.AccountProvision
-							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision != nil {
-								var config *shared.AccountProvisionConfig
-								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config != nil {
-									config = &shared.AccountProvisionConfig{}
-								}
-								connectorID := new(string)
-								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
-									*connectorID = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
-								} else {
-									connectorID = nil
-								}
-								var doNotSave *shared.DoNotSave
-								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave != nil {
-									doNotSave = &shared.DoNotSave{}
-								}
-								var saveToVault *shared.SaveToVault
-								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault != nil {
-									var vaultIds []string
-									if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-										vaultIds = make([]string, 0, len(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-										for _, vaultIdsItem := range stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-											vaultIds = append(vaultIds, vaultIdsItem.ValueString())
-										}
-									}
-									saveToVault = &shared.SaveToVault{
-										VaultIds: vaultIds,
-									}
-								}
-								schemaID := new(string)
-								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsNull() {
-									*schemaID = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.ValueString()
-								} else {
-									schemaID = nil
-								}
-								accountProvision = &shared.AccountProvision{
-									Config:      config,
-									ConnectorID: connectorID,
-									DoNotSave:   doNotSave,
-									SaveToVault: saveToVault,
-									SchemaID:    schemaID,
-								}
-							}
-							var defaultBehavior *shared.DefaultBehavior
-							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior != nil {
-								connectorId1 := new(string)
-								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
-									*connectorId1 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
-								} else {
-									connectorId1 = nil
-								}
-								defaultBehavior = &shared.DefaultBehavior{
-									ConnectorID: connectorId1,
-								}
-							}
-							connectorProvision = &shared.ConnectorProvision{
-								AccountProvision: accountProvision,
-								DefaultBehavior:  defaultBehavior,
-							}
-						}
-						var delegatedProvision *shared.DelegatedProvision
-						if stepsItem.Provision.ProvisionPolicy.DelegatedProvision != nil {
-							appId1 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-								*appId1 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
-							} else {
-								appId1 = nil
-							}
-							entitlementID := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
-								*entitlementID = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueString()
-							} else {
-								entitlementID = nil
-							}
-							delegatedProvision = &shared.DelegatedProvision{
-								AppID:         appId1,
-								EntitlementID: entitlementID,
-							}
-						}
-						var externalTicketProvision *shared.ExternalTicketProvision
-						if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision != nil {
-							appId2 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
-								*appId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
-							} else {
-								appId2 = nil
-							}
-							connectorId2 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-								*connectorId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
-							} else {
-								connectorId2 = nil
-							}
-							externalTicketProvisionerConfigID := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
-								*externalTicketProvisionerConfigID = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.ValueString()
-							} else {
-								externalTicketProvisionerConfigID = nil
-							}
-							instructions1 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsNull() {
-								*instructions1 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.ValueString()
-							} else {
-								instructions1 = nil
-							}
-							externalTicketProvision = &shared.ExternalTicketProvision{
-								AppID:                             appId2,
-								ConnectorID:                       connectorId2,
-								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
-								Instructions:                      instructions1,
-							}
-						}
-						var manualProvision *shared.ManualProvision
-						if stepsItem.Provision.ProvisionPolicy.ManualProvision != nil {
-							instructions2 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsNull() {
-								*instructions2 = stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.ValueString()
-							} else {
-								instructions2 = nil
-							}
-							var userIds1 []string
-							if stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds != nil {
-								userIds1 = make([]string, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds))
-								for _, userIdsItem1 := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
-									userIds1 = append(userIds1, userIdsItem1.ValueString())
-								}
-							}
-							manualProvision = &shared.ManualProvision{
-								Instructions: instructions2,
-								UserIds:      userIds1,
-							}
-						}
-						var multiStep interface{}
-						if !stepsItem.Provision.ProvisionPolicy.MultiStep.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.MultiStep.IsNull() {
-							_ = json.Unmarshal([]byte(stepsItem.Provision.ProvisionPolicy.MultiStep.ValueString()), &multiStep)
-						}
-						var unconfiguredProvision *shared.UnconfiguredProvision
-						if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision != nil {
-							unconfiguredProvision = &shared.UnconfiguredProvision{}
-						}
-						var webhookProvision *shared.WebhookProvision
-						if stepsItem.Provision.ProvisionPolicy.WebhookProvision != nil {
-							webhookId1 := new(string)
-							if !stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsNull() {
-								*webhookId1 = stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.ValueString()
-							} else {
-								webhookId1 = nil
-							}
-							webhookProvision = &shared.WebhookProvision{
-								WebhookID: webhookId1,
-							}
-						}
-						provisionPolicy = &shared.ProvisionPolicy{
-							ConnectorProvision:      connectorProvision,
-							DelegatedProvision:      delegatedProvision,
-							ExternalTicketProvision: externalTicketProvision,
-							ManualProvision:         manualProvision,
-							MultiStep:               multiStep,
-							UnconfiguredProvision:   unconfiguredProvision,
-							WebhookProvision:        webhookProvision,
-						}
-					}
-					var provisionTarget *shared.ProvisionTarget
-					if stepsItem.Provision.ProvisionTarget != nil {
-						appEntitlementID := new(string)
-						if !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsNull() {
-							*appEntitlementID = stepsItem.Provision.ProvisionTarget.AppEntitlementID.ValueString()
-						} else {
-							appEntitlementID = nil
-						}
-						appId3 := new(string)
-						if !stepsItem.Provision.ProvisionTarget.AppID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppID.IsNull() {
-							*appId3 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
-						} else {
-							appId3 = nil
-						}
-						appUserID := new(string)
-						if !stepsItem.Provision.ProvisionTarget.AppUserID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppUserID.IsNull() {
-							*appUserID = stepsItem.Provision.ProvisionTarget.AppUserID.ValueString()
-						} else {
-							appUserID = nil
-						}
-						grantDuration := new(string)
-						if !stepsItem.Provision.ProvisionTarget.GrantDuration.IsUnknown() && !stepsItem.Provision.ProvisionTarget.GrantDuration.IsNull() {
-							*grantDuration = stepsItem.Provision.ProvisionTarget.GrantDuration.ValueString()
-						} else {
-							grantDuration = nil
-						}
-						provisionTarget = &shared.ProvisionTarget{
-							AppEntitlementID: appEntitlementID,
-							AppID:            appId3,
-							AppUserID:        appUserID,
-							GrantDuration:    grantDuration,
-						}
-					}
-					provision = &shared.Provision{
-						Assigned:        assigned,
-						ProvisionPolicy: provisionPolicy,
-						ProvisionTarget: provisionTarget,
-					}
-				}
-				var reject *shared.Reject
-				if stepsItem.Reject != nil {
-					rejectMessage := new(string)
-					if !stepsItem.Reject.RejectMessage.IsUnknown() && !stepsItem.Reject.RejectMessage.IsNull() {
-						*rejectMessage = stepsItem.Reject.RejectMessage.ValueString()
-					} else {
-						rejectMessage = nil
-					}
-					reject = &shared.Reject{
-						RejectMessage: rejectMessage,
-					}
-				}
-				var wait *shared.Wait
-				if stepsItem.Wait != nil {
-					commentOnFirstWait := new(string)
-					if !stepsItem.Wait.CommentOnFirstWait.IsUnknown() && !stepsItem.Wait.CommentOnFirstWait.IsNull() {
-						*commentOnFirstWait = stepsItem.Wait.CommentOnFirstWait.ValueString()
-					} else {
-						commentOnFirstWait = nil
-					}
-					commentOnTimeout := new(string)
-					if !stepsItem.Wait.CommentOnTimeout.IsUnknown() && !stepsItem.Wait.CommentOnTimeout.IsNull() {
-						*commentOnTimeout = stepsItem.Wait.CommentOnTimeout.ValueString()
-					} else {
-						commentOnTimeout = nil
-					}
-					var waitCondition *shared.WaitCondition
-					if stepsItem.Wait.WaitCondition != nil {
-						condition := new(string)
-						if !stepsItem.Wait.WaitCondition.Condition.IsUnknown() && !stepsItem.Wait.WaitCondition.Condition.IsNull() {
-							*condition = stepsItem.Wait.WaitCondition.Condition.ValueString()
-						} else {
-							condition = nil
-						}
-						waitCondition = &shared.WaitCondition{
-							Condition: condition,
-						}
-					}
-					name := new(string)
-					if !stepsItem.Wait.Name.IsUnknown() && !stepsItem.Wait.Name.IsNull() {
-						*name = stepsItem.Wait.Name.ValueString()
-					} else {
-						name = nil
-					}
-					timeoutDuration := new(string)
-					if !stepsItem.Wait.TimeoutDuration.IsUnknown() && !stepsItem.Wait.TimeoutDuration.IsNull() {
-						*timeoutDuration = stepsItem.Wait.TimeoutDuration.ValueString()
-					} else {
-						timeoutDuration = nil
-					}
-					wait = &shared.Wait{
-						CommentOnFirstWait: commentOnFirstWait,
-						CommentOnTimeout:   commentOnTimeout,
-						WaitCondition:      waitCondition,
-						Name:               name,
-						TimeoutDuration:    timeoutDuration,
-					}
-				}
-				steps = append(steps, shared.PolicyStepInput{
-					Accept:    accept,
-					Approval:  approval,
-					Provision: provision,
-					Reject:    reject,
-					Wait:      wait,
-				})
-			}
 		}
 		policyStepsInst := shared.PolicyStepsInput{
 			Steps: steps,
@@ -1326,20 +603,17 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 	} else {
 		policyType = nil
 	}
-	var postActions []shared.PolicyPostActions
-	if r.PostActions != nil {
-		postActions = make([]shared.PolicyPostActions, 0, len(r.PostActions))
-		for _, postActionsItem := range r.PostActions {
-			certifyRemediateImmediately := new(bool)
-			if !postActionsItem.CertifyRemediateImmediately.IsUnknown() && !postActionsItem.CertifyRemediateImmediately.IsNull() {
-				*certifyRemediateImmediately = postActionsItem.CertifyRemediateImmediately.ValueBool()
-			} else {
-				certifyRemediateImmediately = nil
-			}
-			postActions = append(postActions, shared.PolicyPostActions{
-				CertifyRemediateImmediately: certifyRemediateImmediately,
-			})
+	var postActions []shared.PolicyPostActions = []shared.PolicyPostActions{}
+	for _, postActionsItem := range r.PostActions {
+		certifyRemediateImmediately := new(bool)
+		if !postActionsItem.CertifyRemediateImmediately.IsUnknown() && !postActionsItem.CertifyRemediateImmediately.IsNull() {
+			*certifyRemediateImmediately = postActionsItem.CertifyRemediateImmediately.ValueBool()
+		} else {
+			certifyRemediateImmediately = nil
 		}
+		postActions = append(postActions, shared.PolicyPostActions{
+			CertifyRemediateImmediately: certifyRemediateImmediately,
+		})
 	}
 	reassignTasksToDelegates := new(bool)
 	if !r.ReassignTasksToDelegates.IsUnknown() && !r.ReassignTasksToDelegates.IsNull() {
@@ -1347,29 +621,26 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 	} else {
 		reassignTasksToDelegates = nil
 	}
-	var rules []shared.Rule
-	if r.Rules != nil {
-		rules = make([]shared.Rule, 0, len(r.Rules))
-		for _, rulesItem := range r.Rules {
-			condition1 := new(string)
-			if !rulesItem.Condition.IsUnknown() && !rulesItem.Condition.IsNull() {
-				*condition1 = rulesItem.Condition.ValueString()
-			} else {
-				condition1 = nil
-			}
-			policyKey := new(string)
-			if !rulesItem.PolicyKey.IsUnknown() && !rulesItem.PolicyKey.IsNull() {
-				*policyKey = rulesItem.PolicyKey.ValueString()
-			} else {
-				policyKey = nil
-			}
-			rules = append(rules, shared.Rule{
-				Condition: condition1,
-				PolicyKey: policyKey,
-			})
+	var rules []shared.Rule = []shared.Rule{}
+	for _, rulesItem := range r.Rules {
+		condition1 := new(string)
+		if !rulesItem.Condition.IsUnknown() && !rulesItem.Condition.IsNull() {
+			*condition1 = rulesItem.Condition.ValueString()
+		} else {
+			condition1 = nil
 		}
+		policyKey := new(string)
+		if !rulesItem.PolicyKey.IsUnknown() && !rulesItem.PolicyKey.IsNull() {
+			*policyKey = rulesItem.PolicyKey.ValueString()
+		} else {
+			policyKey = nil
+		}
+		rules = append(rules, shared.Rule{
+			Condition: condition1,
+			PolicyKey: policyKey,
+		})
 	}
-	out := shared.PolicyInput{
+	out := shared.CreatePolicyRequest{
 		Description:              description,
 		DisplayName:              displayName,
 		PolicySteps:              policySteps,
@@ -1378,80 +649,21 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 		ReassignTasksToDelegates: reassignTasksToDelegates,
 		Rules:                    rules,
 	}
-
-	return &out, diags
+	return &out
 }
 
-func (r *PolicyResourceModel) ToSharedUpdatePolicyRequest(ctx context.Context) (*shared.UpdatePolicyRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	policy, policyDiags := r.ToSharedPolicyInput(ctx)
-	diags.Append(policyDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := shared.UpdatePolicyRequest{
-		Policy: policy,
-	}
-
-	return &out, diags
-}
-
-func (r *PolicyResourceModel) ToOperationsC1APIPolicyV1PoliciesUpdateRequest(ctx context.Context) (*operations.C1APIPolicyV1PoliciesUpdateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	updatePolicyRequest, updatePolicyRequestDiags := r.ToSharedUpdatePolicyRequest(ctx)
-	diags.Append(updatePolicyRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIPolicyV1PoliciesUpdateRequest{
-		ID:                  id,
-		UpdatePolicyRequest: updatePolicyRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *PolicyResourceModel) ToOperationsC1APIPolicyV1PoliciesGetRequest(ctx context.Context) (*operations.C1APIPolicyV1PoliciesGetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIPolicyV1PoliciesGetRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *PolicyResourceModel) ToOperationsC1APIPolicyV1PoliciesDeleteRequest(ctx context.Context) (*operations.C1APIPolicyV1PoliciesDeleteRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIPolicyV1PoliciesDeleteRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp *shared.Policy) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func (r *PolicyResourceModel) RefreshFromSharedPolicy(resp *shared.Policy) {
 	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.CreatedAt = types.StringNull()
+		}
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+		} else {
+			r.DeletedAt = types.StringNull()
+		}
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -1462,303 +674,308 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 				if policyStepsValue.Steps != nil {
 					policyStepsResult.Steps = []tfTypes.PolicyStep{}
 					for stepsCount, stepsItem := range policyStepsValue.Steps {
-						var steps tfTypes.PolicyStep
+						var steps1 tfTypes.PolicyStep
 						if stepsItem.Accept == nil {
-							steps.Accept = nil
+							steps1.Accept = nil
 						} else {
-							steps.Accept = &tfTypes.Accept{}
-							steps.Accept.AcceptMessage = types.StringPointerValue(stepsItem.Accept.AcceptMessage)
+							steps1.Accept = &tfTypes.Accept{}
+							steps1.Accept.AcceptMessage = types.StringPointerValue(stepsItem.Accept.AcceptMessage)
 						}
 						if stepsItem.Approval == nil {
-							steps.Approval = nil
+							steps1.Approval = nil
 						} else {
-							steps.Approval = &tfTypes.Approval{}
+							steps1.Approval = &tfTypes.Approval{}
 							if stepsItem.Approval.AgentApproval == nil {
-								steps.Approval.AgentApproval = nil
+								steps1.Approval.AgentApproval = nil
 							} else {
-								steps.Approval.AgentApproval = &tfTypes.AgentApproval{}
-								steps.Approval.AgentApproval.AgentUserID = types.StringPointerValue(stepsItem.Approval.AgentApproval.AgentUserID)
-								steps.Approval.AgentApproval.Instructions = types.StringPointerValue(stepsItem.Approval.AgentApproval.Instructions)
+								steps1.Approval.AgentApproval = &tfTypes.AgentApproval{}
+								if stepsItem.Approval.AgentApproval.AgentMode != nil {
+									steps1.Approval.AgentApproval.AgentMode = types.StringValue(string(*stepsItem.Approval.AgentApproval.AgentMode))
+								} else {
+									steps1.Approval.AgentApproval.AgentMode = types.StringNull()
+								}
+								steps1.Approval.AgentApproval.AgentUserID = types.StringPointerValue(stepsItem.Approval.AgentApproval.AgentUserID)
+								steps1.Approval.AgentApproval.Instructions = types.StringPointerValue(stepsItem.Approval.AgentApproval.Instructions)
 								if stepsItem.Approval.AgentApproval.PolicyIds != nil {
-									steps.Approval.AgentApproval.PolicyIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.PolicyIds))
+									steps1.Approval.AgentApproval.PolicyIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.PolicyIds))
 									for _, v := range stepsItem.Approval.AgentApproval.PolicyIds {
-										steps.Approval.AgentApproval.PolicyIds = append(steps.Approval.AgentApproval.PolicyIds, types.StringValue(v))
+										steps1.Approval.AgentApproval.PolicyIds = append(steps1.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 									}
 								}
 							}
 							if stepsItem.Approval.AllowedReassignees != nil {
-								steps.Approval.AllowedReassignees = make([]types.String, 0, len(stepsItem.Approval.AllowedReassignees))
+								steps1.Approval.AllowedReassignees = make([]types.String, 0, len(stepsItem.Approval.AllowedReassignees))
 								for _, v := range stepsItem.Approval.AllowedReassignees {
-									steps.Approval.AllowedReassignees = append(steps.Approval.AllowedReassignees, types.StringValue(v))
+									steps1.Approval.AllowedReassignees = append(steps1.Approval.AllowedReassignees, types.StringValue(v))
 								}
 							}
-							steps.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
+							steps1.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
 							if stepsItem.Approval.AppGroupApproval == nil {
-								steps.Approval.AppGroupApproval = nil
+								steps1.Approval.AppGroupApproval = nil
 							} else {
-								steps.Approval.AppGroupApproval = &tfTypes.AppGroupApproval{}
-								steps.Approval.AppGroupApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.AllowSelfApproval)
-								steps.Approval.AppGroupApproval.AppGroupID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppGroupID)
-								steps.Approval.AppGroupApproval.AppID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppID)
-								steps.Approval.AppGroupApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.Fallback)
+								steps1.Approval.AppGroupApproval = &tfTypes.AppGroupApproval{}
+								steps1.Approval.AppGroupApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.AllowSelfApproval)
+								steps1.Approval.AppGroupApproval.AppGroupID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppGroupID)
+								steps1.Approval.AppGroupApproval.AppID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppID)
+								steps1.Approval.AppGroupApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.Fallback)
 								if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
-									steps.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
+									steps1.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
-										steps.Approval.AppGroupApproval.FallbackUserIds = append(steps.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
+										steps1.Approval.AppGroupApproval.FallbackUserIds = append(steps1.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
 							}
 							if stepsItem.Approval.AppOwnerApproval == nil {
-								steps.Approval.AppOwnerApproval = nil
+								steps1.Approval.AppOwnerApproval = nil
 							} else {
-								steps.Approval.AppOwnerApproval = &tfTypes.AppOwnerApproval{}
-								steps.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.AllowSelfApproval)
+								steps1.Approval.AppOwnerApproval = &tfTypes.AppOwnerApproval{}
+								steps1.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.AllowSelfApproval)
 							}
-							steps.Approval.Assigned = types.BoolPointerValue(stepsItem.Approval.Assigned)
+							steps1.Approval.Assigned = types.BoolPointerValue(stepsItem.Approval.Assigned)
 							if stepsItem.Approval.EntitlementOwnerApproval == nil {
-								steps.Approval.EntitlementOwnerApproval = nil
+								steps1.Approval.EntitlementOwnerApproval = nil
 							} else {
-								steps.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
-								steps.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
-								steps.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.Fallback)
+								steps1.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
+								steps1.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
+								steps1.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.Fallback)
 								if stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
-									steps.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
+									steps1.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
-										steps.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
+										steps1.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps1.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
 							}
 							if stepsItem.Approval.ExpressionApproval == nil {
-								steps.Approval.ExpressionApproval = nil
+								steps1.Approval.ExpressionApproval = nil
 							} else {
-								steps.Approval.ExpressionApproval = &tfTypes.ExpressionApproval{}
-								steps.Approval.ExpressionApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.AllowSelfApproval)
+								steps1.Approval.ExpressionApproval = &tfTypes.ExpressionApproval{}
+								steps1.Approval.ExpressionApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.AllowSelfApproval)
 								if stepsItem.Approval.ExpressionApproval.AssignedUserIds != nil {
-									steps.Approval.ExpressionApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.AssignedUserIds))
+									steps1.Approval.ExpressionApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.AssignedUserIds))
 									for _, v := range stepsItem.Approval.ExpressionApproval.AssignedUserIds {
-										steps.Approval.ExpressionApproval.AssignedUserIds = append(steps.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
+										steps1.Approval.ExpressionApproval.AssignedUserIds = append(steps1.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
 									}
 								}
 								if stepsItem.Approval.ExpressionApproval.Expressions != nil {
-									steps.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.Expressions))
+									steps1.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.Expressions))
 									for _, v := range stepsItem.Approval.ExpressionApproval.Expressions {
-										steps.Approval.ExpressionApproval.Expressions = append(steps.Approval.ExpressionApproval.Expressions, types.StringValue(v))
+										steps1.Approval.ExpressionApproval.Expressions = append(steps1.Approval.ExpressionApproval.Expressions, types.StringValue(v))
 									}
 								}
-								steps.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.Fallback)
+								steps1.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.Fallback)
 								if stepsItem.Approval.ExpressionApproval.FallbackUserIds != nil {
-									steps.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.FallbackUserIds))
+									steps1.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
-										steps.Approval.ExpressionApproval.FallbackUserIds = append(steps.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
+										steps1.Approval.ExpressionApproval.FallbackUserIds = append(steps1.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
 							}
 							if stepsItem.Approval.ManagerApproval == nil {
-								steps.Approval.ManagerApproval = nil
+								steps1.Approval.ManagerApproval = nil
 							} else {
-								steps.Approval.ManagerApproval = &tfTypes.ManagerApproval{}
-								steps.Approval.ManagerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.AllowSelfApproval)
+								steps1.Approval.ManagerApproval = &tfTypes.ManagerApproval{}
+								steps1.Approval.ManagerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.AllowSelfApproval)
 								if stepsItem.Approval.ManagerApproval.AssignedUserIds != nil {
-									steps.Approval.ManagerApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.AssignedUserIds))
+									steps1.Approval.ManagerApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.AssignedUserIds))
 									for _, v := range stepsItem.Approval.ManagerApproval.AssignedUserIds {
-										steps.Approval.ManagerApproval.AssignedUserIds = append(steps.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
+										steps1.Approval.ManagerApproval.AssignedUserIds = append(steps1.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
 									}
 								}
-								steps.Approval.ManagerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.Fallback)
+								steps1.Approval.ManagerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.Fallback)
 								if stepsItem.Approval.ManagerApproval.FallbackUserIds != nil {
-									steps.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.FallbackUserIds))
+									steps1.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
-										steps.Approval.ManagerApproval.FallbackUserIds = append(steps.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
+										steps1.Approval.ManagerApproval.FallbackUserIds = append(steps1.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
 							}
-							steps.Approval.RequireApprovalReason = types.BoolPointerValue(stepsItem.Approval.RequireApprovalReason)
-							steps.Approval.RequireDenialReason = types.BoolPointerValue(stepsItem.Approval.RequireDenialReason)
-							steps.Approval.RequireReassignmentReason = types.BoolPointerValue(stepsItem.Approval.RequireReassignmentReason)
-							steps.Approval.RequiresStepUpProviderID = types.StringPointerValue(stepsItem.Approval.RequiresStepUpProviderID)
+							steps1.Approval.RequireApprovalReason = types.BoolPointerValue(stepsItem.Approval.RequireApprovalReason)
+							steps1.Approval.RequireDenialReason = types.BoolPointerValue(stepsItem.Approval.RequireDenialReason)
+							steps1.Approval.RequireReassignmentReason = types.BoolPointerValue(stepsItem.Approval.RequireReassignmentReason)
+							steps1.Approval.RequiresStepUpProviderID = types.StringPointerValue(stepsItem.Approval.RequiresStepUpProviderID)
 							if stepsItem.Approval.ResourceOwnerApproval == nil {
-								steps.Approval.ResourceOwnerApproval = nil
+								steps1.Approval.ResourceOwnerApproval = nil
 							} else {
-								steps.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
-								steps.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval)
-								steps.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.Fallback)
+								steps1.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
+								steps1.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval)
+								steps1.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.Fallback)
 								if stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
-									steps.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds))
+									steps1.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
-										steps.Approval.ResourceOwnerApproval.FallbackUserIds = append(steps.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
+										steps1.Approval.ResourceOwnerApproval.FallbackUserIds = append(steps1.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
 							}
 							if stepsItem.Approval.SelfApproval == nil {
-								steps.Approval.SelfApproval = nil
+								steps1.Approval.SelfApproval = nil
 							} else {
-								steps.Approval.SelfApproval = &tfTypes.SelfApproval{}
+								steps1.Approval.SelfApproval = &tfTypes.SelfApproval{}
 								if stepsItem.Approval.SelfApproval.AssignedUserIds != nil {
-									steps.Approval.SelfApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.AssignedUserIds))
+									steps1.Approval.SelfApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.AssignedUserIds))
 									for _, v := range stepsItem.Approval.SelfApproval.AssignedUserIds {
-										steps.Approval.SelfApproval.AssignedUserIds = append(steps.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
+										steps1.Approval.SelfApproval.AssignedUserIds = append(steps1.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
 									}
 								}
-								steps.Approval.SelfApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.SelfApproval.Fallback)
+								steps1.Approval.SelfApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.SelfApproval.Fallback)
 								if stepsItem.Approval.SelfApproval.FallbackUserIds != nil {
-									steps.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.FallbackUserIds))
+									steps1.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.SelfApproval.FallbackUserIds {
-										steps.Approval.SelfApproval.FallbackUserIds = append(steps.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
+										steps1.Approval.SelfApproval.FallbackUserIds = append(steps1.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
 							}
 							if stepsItem.Approval.UserApproval == nil {
-								steps.Approval.UserApproval = nil
+								steps1.Approval.UserApproval = nil
 							} else {
-								steps.Approval.UserApproval = &tfTypes.UserApproval{}
-								steps.Approval.UserApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.UserApproval.AllowSelfApproval)
+								steps1.Approval.UserApproval = &tfTypes.UserApproval{}
+								steps1.Approval.UserApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.UserApproval.AllowSelfApproval)
 								if stepsItem.Approval.UserApproval.UserIds != nil {
-									steps.Approval.UserApproval.UserIds = make([]types.String, 0, len(stepsItem.Approval.UserApproval.UserIds))
+									steps1.Approval.UserApproval.UserIds = make([]types.String, 0, len(stepsItem.Approval.UserApproval.UserIds))
 									for _, v := range stepsItem.Approval.UserApproval.UserIds {
-										steps.Approval.UserApproval.UserIds = append(steps.Approval.UserApproval.UserIds, types.StringValue(v))
+										steps1.Approval.UserApproval.UserIds = append(steps1.Approval.UserApproval.UserIds, types.StringValue(v))
 									}
 								}
 							}
 							if stepsItem.Approval.WebhookApproval == nil {
-								steps.Approval.WebhookApproval = nil
+								steps1.Approval.WebhookApproval = nil
 							} else {
-								steps.Approval.WebhookApproval = &tfTypes.WebhookApproval{}
-								steps.Approval.WebhookApproval.WebhookID = types.StringPointerValue(stepsItem.Approval.WebhookApproval.WebhookID)
+								steps1.Approval.WebhookApproval = &tfTypes.WebhookApproval{}
+								steps1.Approval.WebhookApproval.WebhookID = types.StringPointerValue(stepsItem.Approval.WebhookApproval.WebhookID)
 							}
 						}
 						if stepsItem.Provision == nil {
-							steps.Provision = nil
+							steps1.Provision = nil
 						} else {
-							steps.Provision = &tfTypes.Provision{}
-							steps.Provision.Assigned = types.BoolPointerValue(stepsItem.Provision.Assigned)
+							steps1.Provision = &tfTypes.Provision{}
+							steps1.Provision.Assigned = types.BoolPointerValue(stepsItem.Provision.Assigned)
 							if stepsItem.Provision.ProvisionPolicy == nil {
-								steps.Provision.ProvisionPolicy = nil
+								steps1.Provision.ProvisionPolicy = nil
 							} else {
-								steps.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
+								steps1.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
 								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision == nil {
-									steps.Provision.ProvisionPolicy.ConnectorProvision = nil
+									steps1.Provision.ProvisionPolicy.ConnectorProvision = nil
 								} else {
-									steps.Provision.ProvisionPolicy.ConnectorProvision = &tfTypes.ConnectorProvision{}
+									steps1.Provision.ProvisionPolicy.ConnectorProvision = &tfTypes.ConnectorProvision{}
 									if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision == nil {
-										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = nil
+										steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = nil
 									} else {
-										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
+										steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
 										if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = nil
+											steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = nil
 										} else {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+											steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
 										}
-										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
+										steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
 										if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
+											steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
 										} else {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
+											steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
 										}
 										if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
+											steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
 										} else {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
+											steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
 											if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-												steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+												steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
 												for _, v := range stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-													steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
+													steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 												}
 											}
 										}
-										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
+										steps1.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
 									}
 									if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
-										steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = nil
+										steps1.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = nil
 									} else {
-										steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
-										steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+										steps1.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
+										steps1.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
 									}
 								}
 								if stepsItem.Provision.ProvisionPolicy.DelegatedProvision == nil {
-									steps.Provision.ProvisionPolicy.DelegatedProvision = nil
+									steps1.Provision.ProvisionPolicy.DelegatedProvision = nil
 								} else {
-									steps.Provision.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
-									steps.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
-									steps.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
+									steps1.Provision.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
+									steps1.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
+									steps1.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
 								}
 								if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision = nil
+									steps1.Provision.ProvisionPolicy.ExternalTicketProvision = nil
 								} else {
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID)
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions)
+									steps1.Provision.ProvisionPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
+									steps1.Provision.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID)
+									steps1.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
+									steps1.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
+									steps1.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions)
 								}
 								if stepsItem.Provision.ProvisionPolicy.ManualProvision == nil {
-									steps.Provision.ProvisionPolicy.ManualProvision = nil
+									steps1.Provision.ProvisionPolicy.ManualProvision = nil
 								} else {
-									steps.Provision.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
-									steps.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions)
+									steps1.Provision.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
+									steps1.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions)
 									if stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds != nil {
-										steps.Provision.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds))
+										steps1.Provision.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds))
 										for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
-											steps.Provision.ProvisionPolicy.ManualProvision.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
+											steps1.Provision.ProvisionPolicy.ManualProvision.UserIds = append(steps1.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 										}
 									}
 								}
 								if stepsItem.Provision.ProvisionPolicy.MultiStep == nil {
-									steps.Provision.ProvisionPolicy.MultiStep = types.StringNull()
+									steps1.Provision.ProvisionPolicy.MultiStep = types.StringNull()
 								} else {
 									multiStepResult, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.MultiStep)
-									steps.Provision.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult))
+									steps1.Provision.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult))
 								}
 								if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
-									steps.Provision.ProvisionPolicy.UnconfiguredProvision = nil
+									steps1.Provision.ProvisionPolicy.UnconfiguredProvision = nil
 								} else {
-									steps.Provision.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
+									steps1.Provision.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
 								}
 								if stepsItem.Provision.ProvisionPolicy.WebhookProvision == nil {
-									steps.Provision.ProvisionPolicy.WebhookProvision = nil
+									steps1.Provision.ProvisionPolicy.WebhookProvision = nil
 								} else {
-									steps.Provision.ProvisionPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
-									steps.Provision.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID)
+									steps1.Provision.ProvisionPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
+									steps1.Provision.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID)
 								}
 							}
 							if stepsItem.Provision.ProvisionTarget == nil {
-								steps.Provision.ProvisionTarget = nil
+								steps1.Provision.ProvisionTarget = nil
 							} else {
-								steps.Provision.ProvisionTarget = &tfTypes.ProvisionTarget{}
-								steps.Provision.ProvisionTarget.AppEntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppEntitlementID)
-								steps.Provision.ProvisionTarget.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppID)
-								steps.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppUserID)
-								steps.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.GrantDuration)
+								steps1.Provision.ProvisionTarget = &tfTypes.ProvisionTarget{}
+								steps1.Provision.ProvisionTarget.AppEntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppEntitlementID)
+								steps1.Provision.ProvisionTarget.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppID)
+								steps1.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppUserID)
+								steps1.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.GrantDuration)
 							}
 						}
 						if stepsItem.Reject == nil {
-							steps.Reject = nil
+							steps1.Reject = nil
 						} else {
-							steps.Reject = &tfTypes.Reject{}
-							steps.Reject.RejectMessage = types.StringPointerValue(stepsItem.Reject.RejectMessage)
+							steps1.Reject = &tfTypes.Reject{}
+							steps1.Reject.RejectMessage = types.StringPointerValue(stepsItem.Reject.RejectMessage)
 						}
 						if stepsItem.Wait == nil {
-							steps.Wait = nil
+							steps1.Wait = nil
 						} else {
-							steps.Wait = &tfTypes.Wait{}
-							steps.Wait.CommentOnFirstWait = types.StringPointerValue(stepsItem.Wait.CommentOnFirstWait)
-							steps.Wait.CommentOnTimeout = types.StringPointerValue(stepsItem.Wait.CommentOnTimeout)
-							steps.Wait.Name = types.StringPointerValue(stepsItem.Wait.Name)
-							steps.Wait.TimeoutDuration = types.StringPointerValue(stepsItem.Wait.TimeoutDuration)
+							steps1.Wait = &tfTypes.Wait{}
+							steps1.Wait.CommentOnFirstWait = types.StringPointerValue(stepsItem.Wait.CommentOnFirstWait)
+							steps1.Wait.CommentOnTimeout = types.StringPointerValue(stepsItem.Wait.CommentOnTimeout)
+							steps1.Wait.Name = types.StringPointerValue(stepsItem.Wait.Name)
+							steps1.Wait.TimeoutDuration = types.StringPointerValue(stepsItem.Wait.TimeoutDuration)
 							if stepsItem.Wait.WaitCondition == nil {
-								steps.Wait.WaitCondition = nil
+								steps1.Wait.WaitCondition = nil
 							} else {
-								steps.Wait.WaitCondition = &tfTypes.WaitCondition{}
-								steps.Wait.WaitCondition.Condition = types.StringPointerValue(stepsItem.Wait.WaitCondition.Condition)
+								steps1.Wait.WaitCondition = &tfTypes.WaitCondition{}
+								steps1.Wait.WaitCondition.Condition = types.StringPointerValue(stepsItem.Wait.WaitCondition.Condition)
 							}
 						}
 						if stepsCount+1 > len(policyStepsResult.Steps) {
-							policyStepsResult.Steps = append(policyStepsResult.Steps, steps)
+							policyStepsResult.Steps = append(policyStepsResult.Steps, steps1)
 						} else {
-							policyStepsResult.Steps[stepsCount].Accept = steps.Accept
-							policyStepsResult.Steps[stepsCount].Approval = steps.Approval
-							policyStepsResult.Steps[stepsCount].Provision = steps.Provision
-							policyStepsResult.Steps[stepsCount].Reject = steps.Reject
-							policyStepsResult.Steps[stepsCount].Wait = steps.Wait
+							policyStepsResult.Steps[stepsCount].Accept = steps1.Accept
+							policyStepsResult.Steps[stepsCount].Approval = steps1.Approval
+							policyStepsResult.Steps[stepsCount].Provision = steps1.Provision
+							policyStepsResult.Steps[stepsCount].Reject = steps1.Reject
+							policyStepsResult.Steps[stepsCount].Wait = steps1.Wait
 						}
 					}
 				}
@@ -1777,12 +994,12 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 				r.PostActions = r.PostActions[:len(resp.PostActions)]
 			}
 			for postActionsCount, postActionsItem := range resp.PostActions {
-				var postActions tfTypes.PolicyPostActions
-				postActions.CertifyRemediateImmediately = types.BoolPointerValue(postActionsItem.CertifyRemediateImmediately)
+				var postActions1 tfTypes.PolicyPostActions
+				postActions1.CertifyRemediateImmediately = types.BoolPointerValue(postActionsItem.CertifyRemediateImmediately)
 				if postActionsCount+1 > len(r.PostActions) {
-					r.PostActions = append(r.PostActions, postActions)
+					r.PostActions = append(r.PostActions, postActions1)
 				} else {
-					r.PostActions[postActionsCount].CertifyRemediateImmediately = postActions.CertifyRemediateImmediately
+					r.PostActions[postActionsCount].CertifyRemediateImmediately = postActions1.CertifyRemediateImmediately
 				}
 			}
 		}
@@ -1793,20 +1010,667 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 				r.Rules = r.Rules[:len(resp.Rules)]
 			}
 			for rulesCount, rulesItem := range resp.Rules {
-				var rules tfTypes.Rule
-				rules.Condition = types.StringPointerValue(rulesItem.Condition)
-				rules.PolicyKey = types.StringPointerValue(rulesItem.PolicyKey)
+				var rules1 tfTypes.Rule
+				rules1.Condition = types.StringPointerValue(rulesItem.Condition)
+				rules1.PolicyKey = types.StringPointerValue(rulesItem.PolicyKey)
 				if rulesCount+1 > len(r.Rules) {
-					r.Rules = append(r.Rules, rules)
+					r.Rules = append(r.Rules, rules1)
 				} else {
-					r.Rules[rulesCount].Condition = rules.Condition
-					r.Rules[rulesCount].PolicyKey = rules.PolicyKey
+					r.Rules[rulesCount].Condition = rules1.Condition
+					r.Rules[rulesCount].PolicyKey = rules1.PolicyKey
 				}
 			}
 		}
 		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.UpdatedAt = types.StringNull()
+		}
 	}
+}
 
-	return diags
+func (r *PolicyResourceModel) ToSharedPolicyInput() *shared.PolicyInput {
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
+	policySteps := make(map[string]shared.PolicyStepsInput)
+	for policyStepsKey, policyStepsValue := range r.PolicySteps {
+		var steps []shared.PolicyStepInput = []shared.PolicyStepInput{}
+		for _, stepsItem := range policyStepsValue.Steps {
+			var accept *shared.Accept
+			if stepsItem.Accept != nil {
+				acceptMessage := new(string)
+				if !stepsItem.Accept.AcceptMessage.IsUnknown() && !stepsItem.Accept.AcceptMessage.IsNull() {
+					*acceptMessage = stepsItem.Accept.AcceptMessage.ValueString()
+				} else {
+					acceptMessage = nil
+				}
+				accept = &shared.Accept{
+					AcceptMessage: acceptMessage,
+				}
+			}
+			var approval *shared.ApprovalInput
+			if stepsItem.Approval != nil {
+				var agentApproval *shared.AgentApproval
+				if stepsItem.Approval.AgentApproval != nil {
+					agentMode := new(shared.AgentMode)
+					if !stepsItem.Approval.AgentApproval.AgentMode.IsUnknown() && !stepsItem.Approval.AgentApproval.AgentMode.IsNull() {
+						*agentMode = shared.AgentMode(stepsItem.Approval.AgentApproval.AgentMode.ValueString())
+					} else {
+						agentMode = nil
+					}
+					agentUserID := new(string)
+					if !stepsItem.Approval.AgentApproval.AgentUserID.IsUnknown() && !stepsItem.Approval.AgentApproval.AgentUserID.IsNull() {
+						*agentUserID = stepsItem.Approval.AgentApproval.AgentUserID.ValueString()
+					} else {
+						agentUserID = nil
+					}
+					instructions := new(string)
+					if !stepsItem.Approval.AgentApproval.Instructions.IsUnknown() && !stepsItem.Approval.AgentApproval.Instructions.IsNull() {
+						*instructions = stepsItem.Approval.AgentApproval.Instructions.ValueString()
+					} else {
+						instructions = nil
+					}
+					var policyIds []string = []string{}
+					for _, policyIdsItem := range stepsItem.Approval.AgentApproval.PolicyIds {
+						policyIds = append(policyIds, policyIdsItem.ValueString())
+					}
+					agentApproval = &shared.AgentApproval{
+						AgentMode:    agentMode,
+						AgentUserID:  agentUserID,
+						Instructions: instructions,
+						PolicyIds:    policyIds,
+					}
+				}
+				allowReassignment := new(bool)
+				if !stepsItem.Approval.AllowReassignment.IsUnknown() && !stepsItem.Approval.AllowReassignment.IsNull() {
+					*allowReassignment = stepsItem.Approval.AllowReassignment.ValueBool()
+				} else {
+					allowReassignment = nil
+				}
+				var allowedReassignees []string = []string{}
+				for _, allowedReassigneesItem := range stepsItem.Approval.AllowedReassignees {
+					allowedReassignees = append(allowedReassignees, allowedReassigneesItem.ValueString())
+				}
+				var appOwnerApproval *shared.AppOwnerApproval
+				if stepsItem.Approval.AppOwnerApproval != nil {
+					allowSelfApproval := new(bool)
+					if !stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval = stepsItem.Approval.AppOwnerApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval = nil
+					}
+					appOwnerApproval = &shared.AppOwnerApproval{
+						AllowSelfApproval: allowSelfApproval,
+					}
+				}
+				var entitlementOwnerApproval *shared.EntitlementOwnerApproval
+				if stepsItem.Approval.EntitlementOwnerApproval != nil {
+					allowSelfApproval1 := new(bool)
+					if !stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval1 = stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval1 = nil
+					}
+					fallback := new(bool)
+					if !stepsItem.Approval.EntitlementOwnerApproval.Fallback.IsUnknown() && !stepsItem.Approval.EntitlementOwnerApproval.Fallback.IsNull() {
+						*fallback = stepsItem.Approval.EntitlementOwnerApproval.Fallback.ValueBool()
+					} else {
+						fallback = nil
+					}
+					var fallbackUserIds []string = []string{}
+					for _, fallbackUserIdsItem := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
+						fallbackUserIds = append(fallbackUserIds, fallbackUserIdsItem.ValueString())
+					}
+					entitlementOwnerApproval = &shared.EntitlementOwnerApproval{
+						AllowSelfApproval: allowSelfApproval1,
+						Fallback:          fallback,
+						FallbackUserIds:   fallbackUserIds,
+					}
+				}
+				var expressionApproval *shared.ExpressionApprovalInput
+				if stepsItem.Approval.ExpressionApproval != nil {
+					allowSelfApproval2 := new(bool)
+					if !stepsItem.Approval.ExpressionApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ExpressionApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval2 = stepsItem.Approval.ExpressionApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval2 = nil
+					}
+					var expressions []string = []string{}
+					for _, expressionsItem := range stepsItem.Approval.ExpressionApproval.Expressions {
+						expressions = append(expressions, expressionsItem.ValueString())
+					}
+					fallback1 := new(bool)
+					if !stepsItem.Approval.ExpressionApproval.Fallback.IsUnknown() && !stepsItem.Approval.ExpressionApproval.Fallback.IsNull() {
+						*fallback1 = stepsItem.Approval.ExpressionApproval.Fallback.ValueBool()
+					} else {
+						fallback1 = nil
+					}
+					var fallbackUserIds1 []string = []string{}
+					for _, fallbackUserIdsItem1 := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
+						fallbackUserIds1 = append(fallbackUserIds1, fallbackUserIdsItem1.ValueString())
+					}
+					expressionApproval = &shared.ExpressionApprovalInput{
+						AllowSelfApproval: allowSelfApproval2,
+						Expressions:       expressions,
+						Fallback:          fallback1,
+						FallbackUserIds:   fallbackUserIds1,
+					}
+				}
+				var appGroupApproval *shared.AppGroupApproval
+				if stepsItem.Approval.AppGroupApproval != nil {
+					allowSelfApproval3 := new(bool)
+					if !stepsItem.Approval.AppGroupApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval3 = stepsItem.Approval.AppGroupApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval3 = nil
+					}
+					appGroupID := new(string)
+					if !stepsItem.Approval.AppGroupApproval.AppGroupID.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AppGroupID.IsNull() {
+						*appGroupID = stepsItem.Approval.AppGroupApproval.AppGroupID.ValueString()
+					} else {
+						appGroupID = nil
+					}
+					appID := new(string)
+					if !stepsItem.Approval.AppGroupApproval.AppID.IsUnknown() && !stepsItem.Approval.AppGroupApproval.AppID.IsNull() {
+						*appID = stepsItem.Approval.AppGroupApproval.AppID.ValueString()
+					} else {
+						appID = nil
+					}
+					fallback2 := new(bool)
+					if !stepsItem.Approval.AppGroupApproval.Fallback.IsUnknown() && !stepsItem.Approval.AppGroupApproval.Fallback.IsNull() {
+						*fallback2 = stepsItem.Approval.AppGroupApproval.Fallback.ValueBool()
+					} else {
+						fallback2 = nil
+					}
+					var fallbackUserIds2 []string = []string{}
+					for _, fallbackUserIdsItem2 := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
+						fallbackUserIds2 = append(fallbackUserIds2, fallbackUserIdsItem2.ValueString())
+					}
+					appGroupApproval = &shared.AppGroupApproval{
+						AllowSelfApproval: allowSelfApproval3,
+						AppGroupID:        appGroupID,
+						AppID:             appID,
+						Fallback:          fallback2,
+						FallbackUserIds:   fallbackUserIds2,
+					}
+				}
+				var managerApproval *shared.ManagerApprovalInput
+				if stepsItem.Approval.ManagerApproval != nil {
+					allowSelfApproval4 := new(bool)
+					if !stepsItem.Approval.ManagerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ManagerApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval4 = stepsItem.Approval.ManagerApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval4 = nil
+					}
+					fallback3 := new(bool)
+					if !stepsItem.Approval.ManagerApproval.Fallback.IsUnknown() && !stepsItem.Approval.ManagerApproval.Fallback.IsNull() {
+						*fallback3 = stepsItem.Approval.ManagerApproval.Fallback.ValueBool()
+					} else {
+						fallback3 = nil
+					}
+					var fallbackUserIds3 []string = []string{}
+					for _, fallbackUserIdsItem3 := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
+						fallbackUserIds3 = append(fallbackUserIds3, fallbackUserIdsItem3.ValueString())
+					}
+					managerApproval = &shared.ManagerApprovalInput{
+						AllowSelfApproval: allowSelfApproval4,
+						Fallback:          fallback3,
+						FallbackUserIds:   fallbackUserIds3,
+					}
+				}
+				requireApprovalReason := new(bool)
+				if !stepsItem.Approval.RequireApprovalReason.IsUnknown() && !stepsItem.Approval.RequireApprovalReason.IsNull() {
+					*requireApprovalReason = stepsItem.Approval.RequireApprovalReason.ValueBool()
+				} else {
+					requireApprovalReason = nil
+				}
+				requireDenialReason := new(bool)
+				if !stepsItem.Approval.RequireDenialReason.IsUnknown() && !stepsItem.Approval.RequireDenialReason.IsNull() {
+					*requireDenialReason = stepsItem.Approval.RequireDenialReason.ValueBool()
+				} else {
+					requireDenialReason = nil
+				}
+				requireReassignmentReason := new(bool)
+				if !stepsItem.Approval.RequireReassignmentReason.IsUnknown() && !stepsItem.Approval.RequireReassignmentReason.IsNull() {
+					*requireReassignmentReason = stepsItem.Approval.RequireReassignmentReason.ValueBool()
+				} else {
+					requireReassignmentReason = nil
+				}
+				requiresStepUpProviderID := new(string)
+				if !stepsItem.Approval.RequiresStepUpProviderID.IsUnknown() && !stepsItem.Approval.RequiresStepUpProviderID.IsNull() {
+					*requiresStepUpProviderID = stepsItem.Approval.RequiresStepUpProviderID.ValueString()
+				} else {
+					requiresStepUpProviderID = nil
+				}
+				var resourceOwnerApproval *shared.ResourceOwnerApproval
+				if stepsItem.Approval.ResourceOwnerApproval != nil {
+					allowSelfApproval5 := new(bool)
+					if !stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval5 = stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval5 = nil
+					}
+					fallback4 := new(bool)
+					if !stepsItem.Approval.ResourceOwnerApproval.Fallback.IsUnknown() && !stepsItem.Approval.ResourceOwnerApproval.Fallback.IsNull() {
+						*fallback4 = stepsItem.Approval.ResourceOwnerApproval.Fallback.ValueBool()
+					} else {
+						fallback4 = nil
+					}
+					var fallbackUserIds4 []string = []string{}
+					for _, fallbackUserIdsItem4 := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
+						fallbackUserIds4 = append(fallbackUserIds4, fallbackUserIdsItem4.ValueString())
+					}
+					resourceOwnerApproval = &shared.ResourceOwnerApproval{
+						AllowSelfApproval: allowSelfApproval5,
+						Fallback:          fallback4,
+						FallbackUserIds:   fallbackUserIds4,
+					}
+				}
+				var selfApproval *shared.SelfApprovalInput
+				if stepsItem.Approval.SelfApproval != nil {
+					fallback5 := new(bool)
+					if !stepsItem.Approval.SelfApproval.Fallback.IsUnknown() && !stepsItem.Approval.SelfApproval.Fallback.IsNull() {
+						*fallback5 = stepsItem.Approval.SelfApproval.Fallback.ValueBool()
+					} else {
+						fallback5 = nil
+					}
+					var fallbackUserIds5 []string = []string{}
+					for _, fallbackUserIdsItem5 := range stepsItem.Approval.SelfApproval.FallbackUserIds {
+						fallbackUserIds5 = append(fallbackUserIds5, fallbackUserIdsItem5.ValueString())
+					}
+					selfApproval = &shared.SelfApprovalInput{
+						Fallback:        fallback5,
+						FallbackUserIds: fallbackUserIds5,
+					}
+				}
+				var userApproval *shared.UserApproval
+				if stepsItem.Approval.UserApproval != nil {
+					allowSelfApproval6 := new(bool)
+					if !stepsItem.Approval.UserApproval.AllowSelfApproval.IsUnknown() && !stepsItem.Approval.UserApproval.AllowSelfApproval.IsNull() {
+						*allowSelfApproval6 = stepsItem.Approval.UserApproval.AllowSelfApproval.ValueBool()
+					} else {
+						allowSelfApproval6 = nil
+					}
+					var userIds []string = []string{}
+					for _, userIdsItem := range stepsItem.Approval.UserApproval.UserIds {
+						userIds = append(userIds, userIdsItem.ValueString())
+					}
+					userApproval = &shared.UserApproval{
+						AllowSelfApproval: allowSelfApproval6,
+						UserIds:           userIds,
+					}
+				}
+				var webhookApproval *shared.WebhookApproval
+				if stepsItem.Approval.WebhookApproval != nil {
+					webhookID := new(string)
+					if !stepsItem.Approval.WebhookApproval.WebhookID.IsUnknown() && !stepsItem.Approval.WebhookApproval.WebhookID.IsNull() {
+						*webhookID = stepsItem.Approval.WebhookApproval.WebhookID.ValueString()
+					} else {
+						webhookID = nil
+					}
+					webhookApproval = &shared.WebhookApproval{
+						WebhookID: webhookID,
+					}
+				}
+				approval = &shared.ApprovalInput{
+					AgentApproval:             agentApproval,
+					AllowReassignment:         allowReassignment,
+					AllowedReassignees:        allowedReassignees,
+					AppOwnerApproval:          appOwnerApproval,
+					EntitlementOwnerApproval:  entitlementOwnerApproval,
+					ExpressionApproval:        expressionApproval,
+					AppGroupApproval:          appGroupApproval,
+					ManagerApproval:           managerApproval,
+					RequireApprovalReason:     requireApprovalReason,
+					RequireDenialReason:       requireDenialReason,
+					RequireReassignmentReason: requireReassignmentReason,
+					RequiresStepUpProviderID:  requiresStepUpProviderID,
+					ResourceOwnerApproval:     resourceOwnerApproval,
+					SelfApproval:              selfApproval,
+					UserApproval:              userApproval,
+					WebhookApproval:           webhookApproval,
+				}
+			}
+			var provision *shared.Provision
+			if stepsItem.Provision != nil {
+				assigned := new(bool)
+				if !stepsItem.Provision.Assigned.IsUnknown() && !stepsItem.Provision.Assigned.IsNull() {
+					*assigned = stepsItem.Provision.Assigned.ValueBool()
+				} else {
+					assigned = nil
+				}
+				var provisionPolicy *shared.ProvisionPolicy
+				if stepsItem.Provision.ProvisionPolicy != nil {
+					var connectorProvision *shared.ConnectorProvision
+					if stepsItem.Provision.ProvisionPolicy.ConnectorProvision != nil {
+						var accountProvision *shared.AccountProvision
+						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision != nil {
+							var config *shared.AccountProvisionConfig
+							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config != nil {
+								config = &shared.AccountProvisionConfig{}
+							}
+							connectorID := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
+								*connectorID = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
+							} else {
+								connectorID = nil
+							}
+							var doNotSave *shared.DoNotSave
+							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave != nil {
+								doNotSave = &shared.DoNotSave{}
+							}
+							var saveToVault *shared.SaveToVault
+							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault != nil {
+								var vaultIds []string = []string{}
+								for _, vaultIdsItem := range stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+									vaultIds = append(vaultIds, vaultIdsItem.ValueString())
+								}
+								saveToVault = &shared.SaveToVault{
+									VaultIds: vaultIds,
+								}
+							}
+							schemaID := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsNull() {
+								*schemaID = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.ValueString()
+							} else {
+								schemaID = nil
+							}
+							accountProvision = &shared.AccountProvision{
+								Config:      config,
+								ConnectorID: connectorID,
+								DoNotSave:   doNotSave,
+								SaveToVault: saveToVault,
+								SchemaID:    schemaID,
+							}
+						}
+						var defaultBehavior *shared.DefaultBehavior
+						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior != nil {
+							connectorId1 := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
+								*connectorId1 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
+							} else {
+								connectorId1 = nil
+							}
+							defaultBehavior = &shared.DefaultBehavior{
+								ConnectorID: connectorId1,
+							}
+						}
+						connectorProvision = &shared.ConnectorProvision{
+							AccountProvision: accountProvision,
+							DefaultBehavior:  defaultBehavior,
+						}
+					}
+					var delegatedProvision *shared.DelegatedProvision
+					if stepsItem.Provision.ProvisionPolicy.DelegatedProvision != nil {
+						appId1 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
+							*appId1 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+						} else {
+							appId1 = nil
+						}
+						entitlementID := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
+							*entitlementID = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueString()
+						} else {
+							entitlementID = nil
+						}
+						delegatedProvision = &shared.DelegatedProvision{
+							AppID:         appId1,
+							EntitlementID: entitlementID,
+						}
+					}
+					var externalTicketProvision *shared.ExternalTicketProvision
+					if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision != nil {
+						appId2 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
+							*appId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
+						} else {
+							appId2 = nil
+						}
+						connectorId2 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
+							*connectorId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+						} else {
+							connectorId2 = nil
+						}
+						externalTicketProvisionerConfigID := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
+							*externalTicketProvisionerConfigID = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.ValueString()
+						} else {
+							externalTicketProvisionerConfigID = nil
+						}
+						instructions1 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsNull() {
+							*instructions1 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.ValueString()
+						} else {
+							instructions1 = nil
+						}
+						externalTicketProvision = &shared.ExternalTicketProvision{
+							AppID:                             appId2,
+							ConnectorID:                       connectorId2,
+							ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
+							Instructions:                      instructions1,
+						}
+					}
+					var manualProvision *shared.ManualProvision
+					if stepsItem.Provision.ProvisionPolicy.ManualProvision != nil {
+						instructions2 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.IsNull() {
+							*instructions2 = stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions.ValueString()
+						} else {
+							instructions2 = nil
+						}
+						var userIds1 []string = []string{}
+						for _, userIdsItem1 := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
+							userIds1 = append(userIds1, userIdsItem1.ValueString())
+						}
+						manualProvision = &shared.ManualProvision{
+							Instructions: instructions2,
+							UserIds:      userIds1,
+						}
+					}
+					var multiStep interface{}
+					if !stepsItem.Provision.ProvisionPolicy.MultiStep.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.MultiStep.IsNull() {
+						_ = json.Unmarshal([]byte(stepsItem.Provision.ProvisionPolicy.MultiStep.ValueString()), &multiStep)
+					}
+					var unconfiguredProvision *shared.UnconfiguredProvision
+					if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision != nil {
+						unconfiguredProvision = &shared.UnconfiguredProvision{}
+					}
+					var webhookProvision *shared.WebhookProvision
+					if stepsItem.Provision.ProvisionPolicy.WebhookProvision != nil {
+						webhookId1 := new(string)
+						if !stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsNull() {
+							*webhookId1 = stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID.ValueString()
+						} else {
+							webhookId1 = nil
+						}
+						webhookProvision = &shared.WebhookProvision{
+							WebhookID: webhookId1,
+						}
+					}
+					provisionPolicy = &shared.ProvisionPolicy{
+						ConnectorProvision:      connectorProvision,
+						DelegatedProvision:      delegatedProvision,
+						ExternalTicketProvision: externalTicketProvision,
+						ManualProvision:         manualProvision,
+						MultiStep:               multiStep,
+						UnconfiguredProvision:   unconfiguredProvision,
+						WebhookProvision:        webhookProvision,
+					}
+				}
+				var provisionTarget *shared.ProvisionTarget
+				if stepsItem.Provision.ProvisionTarget != nil {
+					appEntitlementID := new(string)
+					if !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsNull() {
+						*appEntitlementID = stepsItem.Provision.ProvisionTarget.AppEntitlementID.ValueString()
+					} else {
+						appEntitlementID = nil
+					}
+					appId3 := new(string)
+					if !stepsItem.Provision.ProvisionTarget.AppID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppID.IsNull() {
+						*appId3 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
+					} else {
+						appId3 = nil
+					}
+					appUserID := new(string)
+					if !stepsItem.Provision.ProvisionTarget.AppUserID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppUserID.IsNull() {
+						*appUserID = stepsItem.Provision.ProvisionTarget.AppUserID.ValueString()
+					} else {
+						appUserID = nil
+					}
+					grantDuration := new(string)
+					if !stepsItem.Provision.ProvisionTarget.GrantDuration.IsUnknown() && !stepsItem.Provision.ProvisionTarget.GrantDuration.IsNull() {
+						*grantDuration = stepsItem.Provision.ProvisionTarget.GrantDuration.ValueString()
+					} else {
+						grantDuration = nil
+					}
+					provisionTarget = &shared.ProvisionTarget{
+						AppEntitlementID: appEntitlementID,
+						AppID:            appId3,
+						AppUserID:        appUserID,
+						GrantDuration:    grantDuration,
+					}
+				}
+				provision = &shared.Provision{
+					Assigned:        assigned,
+					ProvisionPolicy: provisionPolicy,
+					ProvisionTarget: provisionTarget,
+				}
+			}
+			var reject *shared.Reject
+			if stepsItem.Reject != nil {
+				rejectMessage := new(string)
+				if !stepsItem.Reject.RejectMessage.IsUnknown() && !stepsItem.Reject.RejectMessage.IsNull() {
+					*rejectMessage = stepsItem.Reject.RejectMessage.ValueString()
+				} else {
+					rejectMessage = nil
+				}
+				reject = &shared.Reject{
+					RejectMessage: rejectMessage,
+				}
+			}
+			var wait *shared.Wait
+			if stepsItem.Wait != nil {
+				commentOnFirstWait := new(string)
+				if !stepsItem.Wait.CommentOnFirstWait.IsUnknown() && !stepsItem.Wait.CommentOnFirstWait.IsNull() {
+					*commentOnFirstWait = stepsItem.Wait.CommentOnFirstWait.ValueString()
+				} else {
+					commentOnFirstWait = nil
+				}
+				commentOnTimeout := new(string)
+				if !stepsItem.Wait.CommentOnTimeout.IsUnknown() && !stepsItem.Wait.CommentOnTimeout.IsNull() {
+					*commentOnTimeout = stepsItem.Wait.CommentOnTimeout.ValueString()
+				} else {
+					commentOnTimeout = nil
+				}
+				var waitCondition *shared.WaitCondition
+				if stepsItem.Wait.WaitCondition != nil {
+					condition := new(string)
+					if !stepsItem.Wait.WaitCondition.Condition.IsUnknown() && !stepsItem.Wait.WaitCondition.Condition.IsNull() {
+						*condition = stepsItem.Wait.WaitCondition.Condition.ValueString()
+					} else {
+						condition = nil
+					}
+					waitCondition = &shared.WaitCondition{
+						Condition: condition,
+					}
+				}
+				name := new(string)
+				if !stepsItem.Wait.Name.IsUnknown() && !stepsItem.Wait.Name.IsNull() {
+					*name = stepsItem.Wait.Name.ValueString()
+				} else {
+					name = nil
+				}
+				timeoutDuration := new(string)
+				if !stepsItem.Wait.TimeoutDuration.IsUnknown() && !stepsItem.Wait.TimeoutDuration.IsNull() {
+					*timeoutDuration = stepsItem.Wait.TimeoutDuration.ValueString()
+				} else {
+					timeoutDuration = nil
+				}
+				wait = &shared.Wait{
+					CommentOnFirstWait: commentOnFirstWait,
+					CommentOnTimeout:   commentOnTimeout,
+					WaitCondition:      waitCondition,
+					Name:               name,
+					TimeoutDuration:    timeoutDuration,
+				}
+			}
+			steps = append(steps, shared.PolicyStepInput{
+				Accept:    accept,
+				Approval:  approval,
+				Provision: provision,
+				Reject:    reject,
+				Wait:      wait,
+			})
+		}
+		policyStepsInst := shared.PolicyStepsInput{
+			Steps: steps,
+		}
+		policySteps[policyStepsKey] = policyStepsInst
+	}
+	policyType := new(shared.PolicyPolicyType)
+	if !r.PolicyType.IsUnknown() && !r.PolicyType.IsNull() {
+		*policyType = shared.PolicyPolicyType(r.PolicyType.ValueString())
+	} else {
+		policyType = nil
+	}
+	var postActions []shared.PolicyPostActions = []shared.PolicyPostActions{}
+	for _, postActionsItem := range r.PostActions {
+		certifyRemediateImmediately := new(bool)
+		if !postActionsItem.CertifyRemediateImmediately.IsUnknown() && !postActionsItem.CertifyRemediateImmediately.IsNull() {
+			*certifyRemediateImmediately = postActionsItem.CertifyRemediateImmediately.ValueBool()
+		} else {
+			certifyRemediateImmediately = nil
+		}
+		postActions = append(postActions, shared.PolicyPostActions{
+			CertifyRemediateImmediately: certifyRemediateImmediately,
+		})
+	}
+	reassignTasksToDelegates := new(bool)
+	if !r.ReassignTasksToDelegates.IsUnknown() && !r.ReassignTasksToDelegates.IsNull() {
+		*reassignTasksToDelegates = r.ReassignTasksToDelegates.ValueBool()
+	} else {
+		reassignTasksToDelegates = nil
+	}
+	var rules []shared.Rule = []shared.Rule{}
+	for _, rulesItem := range r.Rules {
+		condition1 := new(string)
+		if !rulesItem.Condition.IsUnknown() && !rulesItem.Condition.IsNull() {
+			*condition1 = rulesItem.Condition.ValueString()
+		} else {
+			condition1 = nil
+		}
+		policyKey := new(string)
+		if !rulesItem.PolicyKey.IsUnknown() && !rulesItem.PolicyKey.IsNull() {
+			*policyKey = rulesItem.PolicyKey.ValueString()
+		} else {
+			policyKey = nil
+		}
+		rules = append(rules, shared.Rule{
+			Condition: condition1,
+			PolicyKey: policyKey,
+		})
+	}
+	out := shared.PolicyInput{
+		Description:              description,
+		DisplayName:              displayName,
+		PolicySteps:              policySteps,
+		PolicyType:               policyType,
+		PostActions:              postActions,
+		ReassignTasksToDelegates: reassignTasksToDelegates,
+		Rules:                    rules,
+	}
+	return &out
 }

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
@@ -132,13 +133,15 @@ func (r *AccessProfileRequestableEntriesResource) Create(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var catalogID string
+	catalogID = data.CatalogID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	requestCatalogManagementServiceAddAppEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest()
+	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceAddAppEntitlementsRequest: requestCatalogManagementServiceAddAppEntitlementsRequest,
 	}
-	res, err := r.client.RequestCatalogManagement.AddAppEntitlements(ctx, *request)
+	res, err := r.client.RequestCatalogManagement.AddAppEntitlements(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -158,17 +161,8 @@ func (r *AccessProfileRequestableEntriesResource) Create(ctx context.Context, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(ctx, res.RequestCatalogManagementServiceAddAppEntitlementsResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(res.RequestCatalogManagementServiceAddAppEntitlementsResponse)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -236,13 +230,15 @@ func (r *AccessProfileRequestableEntriesResource) Delete(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var catalogID string
+	catalogID = data.CatalogID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	requestCatalogManagementServiceRemoveAppEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest()
+	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceRemoveAppEntitlementsRequest: requestCatalogManagementServiceRemoveAppEntitlementsRequest,
 	}
-	res, err := r.client.RequestCatalogManagement.RemoveAppEntitlements(ctx, *request)
+	res, err := r.client.RequestCatalogManagement.RemoveAppEntitlements(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

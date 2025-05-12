@@ -3,17 +3,12 @@
 package provider
 
 import (
-	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
-func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*shared.CreateAppRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
+func (r *AppResourceModel) ToSharedCreateAppRequest() *shared.CreateAppRequest {
 	certifyPolicyID := new(string)
 	if !r.CertifyPolicyID.IsUnknown() && !r.CertifyPolicyID.IsNull() {
 		*certifyPolicyID = r.CertifyPolicyID.ValueString()
@@ -35,9 +30,9 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 	} else {
 		grantPolicyID = nil
 	}
-	identityMatching := new(shared.CreateAppRequestIdentityMatching)
+	identityMatching := new(shared.IdentityMatching)
 	if !r.IdentityMatching.IsUnknown() && !r.IdentityMatching.IsNull() {
-		*identityMatching = shared.CreateAppRequestIdentityMatching(r.IdentityMatching.ValueString())
+		*identityMatching = shared.IdentityMatching(r.IdentityMatching.ValueString())
 	} else {
 		identityMatching = nil
 	}
@@ -69,13 +64,54 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 		RevokePolicyID:                      revokePolicyID,
 		StrictAccessEntitlementProvisioning: strictAccessEntitlementProvisioning,
 	}
-
-	return &out, diags
+	return &out
 }
 
-func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInput, diag.Diagnostics) {
-	var diags diag.Diagnostics
+func (r *AppResourceModel) RefreshFromSharedApp(resp *shared.App) {
+	if resp != nil {
+		r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
+		r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
+		r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
+		r.ConnectorVersion = types.Int64PointerValue(resp.ConnectorVersion)
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.CreatedAt = types.StringNull()
+		}
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+		} else {
+			r.DeletedAt = types.StringNull()
+		}
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
+		r.ID = types.StringPointerValue(resp.ID)
+		if resp.IdentityMatching != nil {
+			r.IdentityMatching = types.StringValue(string(*resp.IdentityMatching))
+		} else {
+			r.IdentityMatching = types.StringNull()
+		}
+		r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
+		r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
+		if resp.MonthlyCostUsd != nil {
+			r.MonthlyCostUsd = types.Int32Value(int32(*resp.MonthlyCostUsd))
+		} else {
+			r.MonthlyCostUsd = types.Int32Null()
+		}
+		r.ParentAppID = types.StringPointerValue(resp.ParentAppID)
+		r.RevokePolicyID = types.StringPointerValue(resp.RevokePolicyID)
+		r.StrictAccessEntitlementProvisioning = types.BoolPointerValue(resp.StrictAccessEntitlementProvisioning)
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.UpdatedAt = types.StringNull()
+		}
+		r.UserCount = types.StringPointerValue(resp.UserCount)
+	}
+}
 
+func (r *AppResourceModel) ToSharedAppInput() *shared.AppInput {
 	certifyPolicyID := new(string)
 	if !r.CertifyPolicyID.IsUnknown() && !r.CertifyPolicyID.IsNull() {
 		*certifyPolicyID = r.CertifyPolicyID.ValueString()
@@ -106,9 +142,9 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 	} else {
 		grantPolicyID = nil
 	}
-	identityMatching := new(shared.IdentityMatching)
+	identityMatching := new(shared.AppIdentityMatching)
 	if !r.IdentityMatching.IsUnknown() && !r.IdentityMatching.IsNull() {
-		*identityMatching = shared.IdentityMatching(r.IdentityMatching.ValueString())
+		*identityMatching = shared.AppIdentityMatching(r.IdentityMatching.ValueString())
 	} else {
 		identityMatching = nil
 	}
@@ -148,102 +184,5 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 		RevokePolicyID:                      revokePolicyID,
 		StrictAccessEntitlementProvisioning: strictAccessEntitlementProvisioning,
 	}
-
-	return &out, diags
-}
-
-func (r *AppResourceModel) ToSharedUpdateAppRequest(ctx context.Context) (*shared.UpdateAppRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	app, appDiags := r.ToSharedAppInput(ctx)
-	diags.Append(appDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := shared.UpdateAppRequest{
-		App: app,
-	}
-
-	return &out, diags
-}
-
-func (r *AppResourceModel) ToOperationsC1APIAppV1AppsUpdateRequest(ctx context.Context) (*operations.C1APIAppV1AppsUpdateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	updateAppRequest, updateAppRequestDiags := r.ToSharedUpdateAppRequest(ctx)
-	diags.Append(updateAppRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIAppV1AppsUpdateRequest{
-		ID:               id,
-		UpdateAppRequest: updateAppRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *AppResourceModel) ToOperationsC1APIAppV1AppsGetRequest(ctx context.Context) (*operations.C1APIAppV1AppsGetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAppV1AppsGetRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *AppResourceModel) ToOperationsC1APIAppV1AppsDeleteRequest(ctx context.Context) (*operations.C1APIAppV1AppsDeleteRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAppV1AppsDeleteRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *shared.App) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
-		r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
-		r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
-		r.ConnectorVersion = types.Int64PointerValue(resp.ConnectorVersion)
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
-		r.ID = types.StringPointerValue(resp.ID)
-		if resp.IdentityMatching != nil {
-			r.IdentityMatching = types.StringValue(string(*resp.IdentityMatching))
-		} else {
-			r.IdentityMatching = types.StringNull()
-		}
-		r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
-		r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
-		r.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.MonthlyCostUsd))
-		r.ParentAppID = types.StringPointerValue(resp.ParentAppID)
-		r.RevokePolicyID = types.StringPointerValue(resp.RevokePolicyID)
-		r.StrictAccessEntitlementProvisioning = types.BoolPointerValue(resp.StrictAccessEntitlementProvisioning)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-		r.UserCount = types.StringPointerValue(resp.UserCount)
-	}
-
-	return diags
+	return &out
 }

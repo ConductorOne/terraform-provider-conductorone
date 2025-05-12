@@ -6,6 +6,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -192,12 +194,7 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreateAppRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	request := data.ToSharedCreateAppRequest()
 	res, err := r.client.Apps.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -218,24 +215,15 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, res.CreateAppResponse.App)...)
+	data.RefreshFromSharedApp(res.CreateAppResponse.App)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request1 := operations.C1APIAppV1AppsGetRequest{
+		ID: id,
 	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppsGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Apps.Get(ctx, *request1)
+	res1, err := r.client.Apps.Get(ctx, request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -255,17 +243,8 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, res1.GetAppResponse.App)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedApp(res1.GetAppResponse.App)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -289,13 +268,13 @@ func (r *AppResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppsGetRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIAppV1AppsGetRequest{
+		ID: id,
 	}
-	res, err := r.client.Apps.Get(ctx, *request)
+	res, err := r.client.Apps.Get(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -319,11 +298,7 @@ func (r *AppResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, res.GetAppResponse.App)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedApp(res.GetAppResponse.App)
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -348,13 +323,19 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppsUpdateRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var updateAppRequest *shared.UpdateAppRequest
+	app := data.ToSharedAppInput()
+	updateAppRequest = &shared.UpdateAppRequest{
+		App: app,
 	}
-	res, err := r.client.Apps.Update(ctx, *request)
+	request := operations.C1APIAppV1AppsUpdateRequest{
+		ID:               id,
+		UpdateAppRequest: updateAppRequest,
+	}
+	res, err := r.client.Apps.Update(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -374,24 +355,15 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, res.UpdateAppResponse.App)...)
+	data.RefreshFromSharedApp(res.UpdateAppResponse.App)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var id1 string
+	id1 = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request1 := operations.C1APIAppV1AppsGetRequest{
+		ID: id1,
 	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppsGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Apps.Get(ctx, *request1)
+	res1, err := r.client.Apps.Get(ctx, request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -411,17 +383,8 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, res1.GetAppResponse.App)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedApp(res1.GetAppResponse.App)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -445,13 +408,13 @@ func (r *AppResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppsDeleteRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIAppV1AppsDeleteRequest{
+		ID: id,
 	}
-	res, err := r.client.Apps.Delete(ctx, *request)
+	res, err := r.client.Apps.Delete(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

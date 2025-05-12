@@ -10,19 +10,19 @@ import (
 type CreateAppEntitlementRequestDurationUnset struct {
 }
 
-// CreateAppEntitlementRequestPurpose - The purpose field.
-type CreateAppEntitlementRequestPurpose string
+// Purpose - The purpose field.
+type Purpose string
 
 const (
-	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValueUnspecified CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED"
-	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValueAssignment  CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
-	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValuePermission  CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"
+	PurposeAppEntitlementPurposeValueUnspecified Purpose = "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED"
+	PurposeAppEntitlementPurposeValueAssignment  Purpose = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
+	PurposeAppEntitlementPurposeValuePermission  Purpose = "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"
 )
 
-func (e CreateAppEntitlementRequestPurpose) ToPointer() *CreateAppEntitlementRequestPurpose {
+func (e Purpose) ToPointer() *Purpose {
 	return &e
 }
-func (e *CreateAppEntitlementRequestPurpose) UnmarshalJSON(data []byte) error {
+func (e *Purpose) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -33,10 +33,10 @@ func (e *CreateAppEntitlementRequestPurpose) UnmarshalJSON(data []byte) error {
 	case "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT":
 		fallthrough
 	case "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION":
-		*e = CreateAppEntitlementRequestPurpose(v)
+		*e = Purpose(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateAppEntitlementRequestPurpose: %v", v)
+		return fmt.Errorf("invalid value for Purpose: %v", v)
 	}
 }
 
@@ -85,7 +85,7 @@ type CreateAppEntitlementRequest struct {
 	//
 	ProvisionPolicy *ProvisionPolicy `json:"provisionPolicy,omitempty"`
 	// The purpose field.
-	Purpose *CreateAppEntitlementRequestPurpose `json:"purpose,omitempty"`
+	Purpose *Purpose `json:"purpose,omitempty"`
 	// The revokePolicyId field.
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
 	// The riskLevelValueId field.
@@ -199,7 +199,7 @@ func (o *CreateAppEntitlementRequest) GetProvisionPolicy() *ProvisionPolicy {
 	return o.ProvisionPolicy
 }
 
-func (o *CreateAppEntitlementRequest) GetPurpose() *CreateAppEntitlementRequestPurpose {
+func (o *CreateAppEntitlementRequest) GetPurpose() *Purpose {
 	if o == nil {
 		return nil
 	}

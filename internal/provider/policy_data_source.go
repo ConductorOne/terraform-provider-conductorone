@@ -115,6 +115,10 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											"agent_approval": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
+													"agent_mode": schema.StringAttribute{
+														Computed:    true,
+														Description: `The mode of the agent, full control, change policy only, or comment only.`,
+													},
 													"agent_user_id": schema.StringAttribute{
 														Computed:    true,
 														Description: `The agent user ID to assign the task to.`,
@@ -126,7 +130,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													"policy_ids": schema.ListAttribute{
 														Computed:    true,
 														ElementType: types.StringType,
-														Description: `The policyIds field.`,
+														Description: `The allow list of policy IDs to re-route the task to.`,
 													},
 												},
 												Description: `The agent to assign the task to.`,
@@ -682,12 +686,7 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		return
 	}
 
-	request, requestDiags := data.ToSharedSearchPoliciesRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	request := data.ToSharedSearchPoliciesRequest()
 	res, err := r.client.PolicySearch.Search(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -700,6 +699,10 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
+	if res.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -708,11 +711,7 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, &res.ListPolicyResponse.List[0])...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedPolicy(&res.ListPolicyResponse.List[0])
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

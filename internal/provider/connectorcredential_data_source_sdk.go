@@ -3,50 +3,42 @@
 package provider
 
 import (
-	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
-func (r *ConnectorCredentialDataSourceModel) ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceGetCredentialsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var connectorID string
-	connectorID = r.ConnectorID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAppV1ConnectorServiceGetCredentialsRequest{
-		AppID:       appID,
-		ConnectorID: connectorID,
-		ID:          id,
-	}
-
-	return &out, diags
-}
-
-func (r *ConnectorCredentialDataSourceModel) RefreshFromSharedConnectorCredential(ctx context.Context, resp *shared.ConnectorCredential) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func (r *ConnectorCredentialDataSourceModel) RefreshFromSharedConnectorCredential(resp *shared.ConnectorCredential) {
 	if resp != nil {
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.ClientID = types.StringPointerValue(resp.ClientID)
 		r.ConnectorID = types.StringPointerValue(resp.ConnectorID)
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.CreatedAt = types.StringNull()
+		}
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+		} else {
+			r.DeletedAt = types.StringNull()
+		}
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		r.ExpiresTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresTime))
+		if resp.ExpiresTime != nil {
+			r.ExpiresTime = types.StringValue(resp.ExpiresTime.Format(time.RFC3339Nano))
+		} else {
+			r.ExpiresTime = types.StringNull()
+		}
 		r.ID = types.StringPointerValue(resp.ID)
-		r.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.LastUsedAt))
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		if resp.LastUsedAt != nil {
+			r.LastUsedAt = types.StringValue(resp.LastUsedAt.Format(time.RFC3339Nano))
+		} else {
+			r.LastUsedAt = types.StringNull()
+		}
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.UpdatedAt = types.StringNull()
+		}
 	}
-
-	return diags
 }

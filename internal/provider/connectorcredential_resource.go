@@ -9,6 +9,7 @@ import (
 	"fmt"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -155,13 +156,17 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1ConnectorServiceRotateCredentialRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var connectorID string
+	connectorID = data.ConnectorID.ValueString()
+
+	request := operations.C1APIAppV1ConnectorServiceRotateCredentialRequest{
+		AppID:       appID,
+		ConnectorID: connectorID,
 	}
-	res, err := r.client.Connector.RotateCredential(ctx, *request)
+	res, err := r.client.Connector.RotateCredential(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -181,24 +186,23 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res.ConnectorServiceRotateCredentialResponse.ConnectorCredential)...)
+	data.RefreshFromSharedConnectorCredential(res.ConnectorServiceRotateCredentialResponse.ConnectorCredential)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var appId1 string
+	appId1 = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var connectorId1 string
+	connectorId1 = data.ConnectorID.ValueString()
+
+	var id string
+	id = data.ID.ValueString()
+
+	request1 := operations.C1APIAppV1ConnectorServiceGetCredentialsRequest{
+		AppID:       appId1,
+		ConnectorID: connectorId1,
+		ID:          id,
 	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Connector.GetCredentials(ctx, *request1)
+	res1, err := r.client.Connector.GetCredentials(ctx, request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -218,17 +222,8 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res1.ConnectorServiceGetCredentialsResponse.ConnectorCredential)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedConnectorCredential(res1.ConnectorServiceGetCredentialsResponse.ConnectorCredential)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -252,13 +247,21 @@ func (r *ConnectorCredentialResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var connectorID string
+	connectorID = data.ConnectorID.ValueString()
+
+	var id string
+	id = data.ID.ValueString()
+
+	request := operations.C1APIAppV1ConnectorServiceGetCredentialsRequest{
+		AppID:       appID,
+		ConnectorID: connectorID,
+		ID:          id,
 	}
-	res, err := r.client.Connector.GetCredentials(ctx, *request)
+	res, err := r.client.Connector.GetCredentials(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -282,11 +285,7 @@ func (r *ConnectorCredentialResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedConnectorCredential(res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -335,13 +334,21 @@ func (r *ConnectorCredentialResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1ConnectorServiceRevokeCredentialRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var connectorID string
+	connectorID = data.ConnectorID.ValueString()
+
+	var id string
+	id = data.ID.ValueString()
+
+	request := operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest{
+		AppID:       appID,
+		ConnectorID: connectorID,
+		ID:          id,
 	}
-	res, err := r.client.Connector.RevokeCredential(ctx, *request)
+	res, err := r.client.Connector.RevokeCredential(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -370,7 +377,7 @@ func (r *ConnectorCredentialResource) ImportState(ctx context.Context, req resou
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_id": "",  "connector_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "app_id": "",  "connector_id": "",  "id": ""}': `+err.Error())
 		return
 	}
 

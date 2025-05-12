@@ -7,6 +7,7 @@ import (
 	"fmt"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -120,12 +121,7 @@ func (r *RiskLevelResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreateRiskLevelAttributeValueRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	request := data.ToSharedCreateRiskLevelAttributeValueRequest()
 	res, err := r.client.Attributes.CreateRiskLevelAttributeValue(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -146,17 +142,8 @@ func (r *RiskLevelResource) Create(ctx context.Context, req resource.CreateReque
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.CreateRiskLevelAttributeValueResponse.AttributeValue)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAttributeValue(res.CreateRiskLevelAttributeValueResponse.AttributeValue)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -180,13 +167,13 @@ func (r *RiskLevelResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest{
+		ID: id,
 	}
-	res, err := r.client.Attributes.GetRiskLevelAttributeValue(ctx, *request)
+	res, err := r.client.Attributes.GetRiskLevelAttributeValue(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -210,11 +197,7 @@ func (r *RiskLevelResource) Read(ctx context.Context, req resource.ReadRequest, 
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetRiskLevelAttributeValueResponse.AttributeValue)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAttributeValue(res.GetRiskLevelAttributeValueResponse.AttributeValue)
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -263,13 +246,13 @@ func (r *RiskLevelResource) Delete(ctx context.Context, req resource.DeleteReque
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest{
+		ID: id,
 	}
-	res, err := r.client.Attributes.DeleteRiskLevelAttributeValue(ctx, *request)
+	res, err := r.client.Attributes.DeleteRiskLevelAttributeValue(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -3,38 +3,24 @@
 package provider
 
 import (
-	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
-func (r *BundleAutomationDataSourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var requestCatalogID string
-	requestCatalogID = r.RequestCatalogID.ValueString()
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest{
-		RequestCatalogID: requestCatalogID,
-	}
-
-	return &out, diags
-}
-
-func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(ctx context.Context, resp *shared.BundleAutomation) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(resp *shared.BundleAutomation) {
 	if resp != nil {
 		if resp.BundleAutomationLastRunState == nil {
 			r.BundleAutomationLastRunState = nil
 		} else {
 			r.BundleAutomationLastRunState = &tfTypes.BundleAutomationLastRunState{}
 			r.BundleAutomationLastRunState.ErrorMessage = types.StringPointerValue(resp.BundleAutomationLastRunState.ErrorMessage)
-			r.BundleAutomationLastRunState.LastRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationLastRunState.LastRunAt))
+			if resp.BundleAutomationLastRunState.LastRunAt != nil {
+				r.BundleAutomationLastRunState.LastRunAt = types.StringValue(resp.BundleAutomationLastRunState.LastRunAt.Format(time.RFC3339Nano))
+			} else {
+				r.BundleAutomationLastRunState.LastRunAt = types.StringNull()
+			}
 			if resp.BundleAutomationLastRunState.Status != nil {
 				r.BundleAutomationLastRunState.Status = types.StringValue(string(*resp.BundleAutomationLastRunState.Status))
 			} else {
@@ -51,26 +37,36 @@ func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(ctx 
 					r.BundleAutomationRuleEntitlement.EntitlementRefs = r.BundleAutomationRuleEntitlement.EntitlementRefs[:len(resp.BundleAutomationRuleEntitlement.EntitlementRefs)]
 				}
 				for entitlementRefsCount, entitlementRefsItem := range resp.BundleAutomationRuleEntitlement.EntitlementRefs {
-					var entitlementRefs tfTypes.AppEntitlementRef
-					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
-					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
+					var entitlementRefs1 tfTypes.AppEntitlementRef
+					entitlementRefs1.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
+					entitlementRefs1.ID = types.StringPointerValue(entitlementRefsItem.ID)
 					if entitlementRefsCount+1 > len(r.BundleAutomationRuleEntitlement.EntitlementRefs) {
-						r.BundleAutomationRuleEntitlement.EntitlementRefs = append(r.BundleAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
+						r.BundleAutomationRuleEntitlement.EntitlementRefs = append(r.BundleAutomationRuleEntitlement.EntitlementRefs, entitlementRefs1)
 					} else {
-						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].AppID = entitlementRefs.AppID
-						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].ID = entitlementRefs.ID
+						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].AppID = entitlementRefs1.AppID
+						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].ID = entitlementRefs1.ID
 					}
 				}
 			}
 		}
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.CreatedAt = types.StringNull()
+		}
 		r.CreateTasks = types.BoolPointerValue(resp.CreateTasks)
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+		} else {
+			r.DeletedAt = types.StringNull()
+		}
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.RequestCatalogID = types.StringPointerValue(resp.RequestCatalogID)
 		r.TenantID = types.StringPointerValue(resp.TenantID)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.UpdatedAt = types.StringNull()
+		}
 	}
-
-	return diags
 }

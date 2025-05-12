@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
@@ -99,13 +100,15 @@ func (r *AppOwnerResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppOwnersSetRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	setAppOwnersRequest := data.ToSharedSetAppOwnersRequest()
+	request := operations.C1APIAppV1AppOwnersSetRequest{
+		AppID:               appID,
+		SetAppOwnersRequest: setAppOwnersRequest,
 	}
-	res, err := r.client.AppOwners.Set(ctx, *request)
+	res, err := r.client.AppOwners.Set(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -125,17 +128,8 @@ func (r *AppOwnerResource) Create(ctx context.Context, req resource.CreateReques
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedSetAppOwnersResponse(ctx, res.SetAppOwnersResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedSetAppOwnersResponse(res.SetAppOwnersResponse)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

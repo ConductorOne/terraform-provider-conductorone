@@ -3,17 +3,12 @@
 package provider
 
 import (
-	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
-func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCreateRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceCreateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
+func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCreateRequest() *shared.RequestCatalogManagementServiceCreateRequest {
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -23,88 +18,11 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 	var displayName string
 	displayName = r.DisplayName.ValueString()
 
-	enrollmentBehavior := new(shared.RequestCatalogManagementServiceCreateRequestEnrollmentBehavior)
-	if !r.EnrollmentBehavior.IsUnknown() && !r.EnrollmentBehavior.IsNull() {
-		*enrollmentBehavior = shared.RequestCatalogManagementServiceCreateRequestEnrollmentBehavior(r.EnrollmentBehavior.ValueString())
-	} else {
-		enrollmentBehavior = nil
-	}
-	published := new(bool)
-	if !r.Published.IsUnknown() && !r.Published.IsNull() {
-		*published = r.Published.ValueBool()
-	} else {
-		published = nil
-	}
-	requestBundle := new(bool)
-	if !r.RequestBundle.IsUnknown() && !r.RequestBundle.IsNull() {
-		*requestBundle = r.RequestBundle.ValueBool()
-	} else {
-		requestBundle = nil
-	}
-	unenrollmentBehavior := new(shared.RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior)
-	if !r.UnenrollmentBehavior.IsUnknown() && !r.UnenrollmentBehavior.IsNull() {
-		*unenrollmentBehavior = shared.RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior(r.UnenrollmentBehavior.ValueString())
-	} else {
-		unenrollmentBehavior = nil
-	}
-	unenrollmentEntitlementBehavior := new(shared.RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior)
-	if !r.UnenrollmentEntitlementBehavior.IsUnknown() && !r.UnenrollmentEntitlementBehavior.IsNull() {
-		*unenrollmentEntitlementBehavior = shared.RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior(r.UnenrollmentEntitlementBehavior.ValueString())
-	} else {
-		unenrollmentEntitlementBehavior = nil
-	}
-	visibleToEveryone := new(bool)
-	if !r.VisibleToEveryone.IsUnknown() && !r.VisibleToEveryone.IsNull() {
-		*visibleToEveryone = r.VisibleToEveryone.ValueBool()
-	} else {
-		visibleToEveryone = nil
-	}
-	out := shared.RequestCatalogManagementServiceCreateRequest{
-		Description:                     description,
-		DisplayName:                     displayName,
-		EnrollmentBehavior:              enrollmentBehavior,
-		Published:                       published,
-		RequestBundle:                   requestBundle,
-		UnenrollmentBehavior:            unenrollmentBehavior,
-		UnenrollmentEntitlementBehavior: unenrollmentEntitlementBehavior,
-		VisibleToEveryone:               visibleToEveryone,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Context) (*shared.RequestCatalogInput, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	createdByUserID := new(string)
-	if !r.CreatedByUserID.IsUnknown() && !r.CreatedByUserID.IsNull() {
-		*createdByUserID = r.CreatedByUserID.ValueString()
-	} else {
-		createdByUserID = nil
-	}
-	description := new(string)
-	if !r.Description.IsUnknown() && !r.Description.IsNull() {
-		*description = r.Description.ValueString()
-	} else {
-		description = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
 	enrollmentBehavior := new(shared.EnrollmentBehavior)
 	if !r.EnrollmentBehavior.IsUnknown() && !r.EnrollmentBehavior.IsNull() {
 		*enrollmentBehavior = shared.EnrollmentBehavior(r.EnrollmentBehavior.ValueString())
 	} else {
 		enrollmentBehavior = nil
-	}
-	id := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id = r.ID.ValueString()
-	} else {
-		id = nil
 	}
 	published := new(bool)
 	if !r.Published.IsUnknown() && !r.Published.IsNull() {
@@ -136,93 +54,32 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 	} else {
 		visibleToEveryone = nil
 	}
-	out := shared.RequestCatalogInput{
-		CreatedByUserID:                 createdByUserID,
+	out := shared.RequestCatalogManagementServiceCreateRequest{
 		Description:                     description,
 		DisplayName:                     displayName,
 		EnrollmentBehavior:              enrollmentBehavior,
-		ID:                              id,
 		Published:                       published,
 		RequestBundle:                   requestBundle,
 		UnenrollmentBehavior:            unenrollmentBehavior,
 		UnenrollmentEntitlementBehavior: unenrollmentEntitlementBehavior,
 		VisibleToEveryone:               visibleToEveryone,
 	}
-
-	return &out, diags
+	return &out
 }
 
-func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceUpdateRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceUpdateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	requestCatalog, requestCatalogDiags := r.ToSharedRequestCatalogInput(ctx)
-	diags.Append(requestCatalogDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := shared.RequestCatalogManagementServiceUpdateRequest{
-		RequestCatalog: requestCatalog,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	requestCatalogManagementServiceUpdateRequest, requestCatalogManagementServiceUpdateRequestDiags := r.ToSharedRequestCatalogManagementServiceUpdateRequest(ctx)
-	diags.Append(requestCatalogManagementServiceUpdateRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest{
-		ID: id,
-		RequestCatalogManagementServiceUpdateRequest: requestCatalogManagementServiceUpdateRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context.Context, resp *shared.RequestCatalog) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(resp *shared.RequestCatalog) {
 	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.CreatedAt = types.StringNull()
+		}
 		r.CreatedByUserID = types.StringPointerValue(resp.CreatedByUserID)
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+		} else {
+			r.DeletedAt = types.StringNull()
+		}
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		if resp.EnrollmentBehavior != nil {
@@ -243,9 +100,87 @@ func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context
 		} else {
 			r.UnenrollmentEntitlementBehavior = types.StringNull()
 		}
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.UpdatedAt = types.StringNull()
+		}
 		r.VisibleToEveryone = types.BoolPointerValue(resp.VisibleToEveryone)
 	}
+}
 
-	return diags
+func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput() *shared.RequestCatalogInput {
+	createdByUserID := new(string)
+	if !r.CreatedByUserID.IsUnknown() && !r.CreatedByUserID.IsNull() {
+		*createdByUserID = r.CreatedByUserID.ValueString()
+	} else {
+		createdByUserID = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
+	enrollmentBehavior := new(shared.RequestCatalogEnrollmentBehavior)
+	if !r.EnrollmentBehavior.IsUnknown() && !r.EnrollmentBehavior.IsNull() {
+		*enrollmentBehavior = shared.RequestCatalogEnrollmentBehavior(r.EnrollmentBehavior.ValueString())
+	} else {
+		enrollmentBehavior = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	published := new(bool)
+	if !r.Published.IsUnknown() && !r.Published.IsNull() {
+		*published = r.Published.ValueBool()
+	} else {
+		published = nil
+	}
+	requestBundle := new(bool)
+	if !r.RequestBundle.IsUnknown() && !r.RequestBundle.IsNull() {
+		*requestBundle = r.RequestBundle.ValueBool()
+	} else {
+		requestBundle = nil
+	}
+	unenrollmentBehavior := new(shared.RequestCatalogUnenrollmentBehavior)
+	if !r.UnenrollmentBehavior.IsUnknown() && !r.UnenrollmentBehavior.IsNull() {
+		*unenrollmentBehavior = shared.RequestCatalogUnenrollmentBehavior(r.UnenrollmentBehavior.ValueString())
+	} else {
+		unenrollmentBehavior = nil
+	}
+	unenrollmentEntitlementBehavior := new(shared.RequestCatalogUnenrollmentEntitlementBehavior)
+	if !r.UnenrollmentEntitlementBehavior.IsUnknown() && !r.UnenrollmentEntitlementBehavior.IsNull() {
+		*unenrollmentEntitlementBehavior = shared.RequestCatalogUnenrollmentEntitlementBehavior(r.UnenrollmentEntitlementBehavior.ValueString())
+	} else {
+		unenrollmentEntitlementBehavior = nil
+	}
+	visibleToEveryone := new(bool)
+	if !r.VisibleToEveryone.IsUnknown() && !r.VisibleToEveryone.IsNull() {
+		*visibleToEveryone = r.VisibleToEveryone.ValueBool()
+	} else {
+		visibleToEveryone = nil
+	}
+	out := shared.RequestCatalogInput{
+		CreatedByUserID:                 createdByUserID,
+		Description:                     description,
+		DisplayName:                     displayName,
+		EnrollmentBehavior:              enrollmentBehavior,
+		ID:                              id,
+		Published:                       published,
+		RequestBundle:                   requestBundle,
+		UnenrollmentBehavior:            unenrollmentBehavior,
+		UnenrollmentEntitlementBehavior: unenrollmentEntitlementBehavior,
+		VisibleToEveryone:               visibleToEveryone,
+	}
+	return &out
 }

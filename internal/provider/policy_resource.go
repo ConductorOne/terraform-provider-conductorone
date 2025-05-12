@@ -7,6 +7,8 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
@@ -119,6 +121,19 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
+													"agent_mode": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The mode of the agent, full control, change policy only, or comment only. must be one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]`,
+														Validators: []validator.String{
+															stringvalidator.OneOf(
+																"APPROVAL_AGENT_MODE_UNSPECIFIED",
+																"APPROVAL_AGENT_MODE_FULL_CONTROL",
+																"APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY",
+																"APPROVAL_AGENT_MODE_COMMENT_ONLY",
+															),
+														},
+													},
 													"agent_user_id": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
@@ -133,7 +148,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Computed:    true,
 														Optional:    true,
 														ElementType: types.StringType,
-														Description: `The policyIds field.`,
+														Description: `The allow list of policy IDs to re-route the task to.`,
 													},
 												},
 												Description: `The agent to assign the task to.`,
@@ -970,12 +985,7 @@ func (r *PolicyResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreatePolicyRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	request := data.ToSharedCreatePolicyRequest()
 	res, err := r.client.Policies.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -996,17 +1006,8 @@ func (r *PolicyResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res.CreatePolicyResponse.Policy)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedPolicy(res.CreatePolicyResponse.Policy)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -1030,13 +1031,13 @@ func (r *PolicyResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIPolicyV1PoliciesGetRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIPolicyV1PoliciesGetRequest{
+		ID: id,
 	}
-	res, err := r.client.Policies.Get(ctx, *request)
+	res, err := r.client.Policies.Get(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1060,11 +1061,7 @@ func (r *PolicyResource) Read(ctx context.Context, req resource.ReadRequest, res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res.GetPolicyResponse.Policy)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedPolicy(res.GetPolicyResponse.Policy)
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -1089,13 +1086,19 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIPolicyV1PoliciesUpdateRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var updatePolicyRequest *shared.UpdatePolicyRequest
+	policy := data.ToSharedPolicyInput()
+	updatePolicyRequest = &shared.UpdatePolicyRequest{
+		Policy: policy,
 	}
-	res, err := r.client.Policies.Update(ctx, *request)
+	request := operations.C1APIPolicyV1PoliciesUpdateRequest{
+		ID:                  id,
+		UpdatePolicyRequest: updatePolicyRequest,
+	}
+	res, err := r.client.Policies.Update(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1115,24 +1118,15 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res.UpdatePolicyResponse.Policy)...)
+	data.RefreshFromSharedPolicy(res.UpdatePolicyResponse.Policy)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var id1 string
+	id1 = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request1 := operations.C1APIPolicyV1PoliciesGetRequest{
+		ID: id1,
 	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIPolicyV1PoliciesGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Policies.Get(ctx, *request1)
+	res1, err := r.client.Policies.Get(ctx, request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -1152,17 +1146,8 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res1.GetPolicyResponse.Policy)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedPolicy(res1.GetPolicyResponse.Policy)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -1186,13 +1171,13 @@ func (r *PolicyResource) Delete(ctx context.Context, req resource.DeleteRequest,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIPolicyV1PoliciesDeleteRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIPolicyV1PoliciesDeleteRequest{
+		ID: id,
 	}
-	res, err := r.client.Policies.Delete(ctx, *request)
+	res, err := r.client.Policies.Delete(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

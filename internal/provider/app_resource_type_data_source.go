@@ -164,12 +164,7 @@ func (r *AppResourceTypeDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
-	request, requestDiags := data.ToSharedSearchAppResourceTypesRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	request := data.ToSharedSearchAppResourceTypesRequest()
 	res, err := r.client.AppResourceSearch.SearchAppResourceTypes(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -182,6 +177,10 @@ func (r *AppResourceTypeDataSource) Read(ctx context.Context, req datasource.Rea
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
+	if res.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -190,11 +189,7 @@ func (r *AppResourceTypeDataSource) Read(ctx context.Context, req datasource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, &res.SearchAppResourceTypesResponse.List[0])...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAppResourceType(&res.SearchAppResourceTypesResponse.List[0])
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

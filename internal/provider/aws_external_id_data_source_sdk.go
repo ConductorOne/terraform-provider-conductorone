@@ -3,18 +3,12 @@
 package provider
 
 import (
-	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AwsExternalIDDataSourceModel) RefreshFromSharedAWSExternalID(ctx context.Context, resp *shared.AWSExternalID) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func (r *AwsExternalIDDataSourceModel) RefreshFromSharedAWSExternalID(resp *shared.AWSExternalID) {
 	if resp != nil {
 		r.ExternalID = types.StringPointerValue(resp.ExternalID)
 	}
-
-	return diags
 }

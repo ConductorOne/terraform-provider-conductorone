@@ -66,10 +66,14 @@ type WorkflowExecution struct {
 	// The WorkflowContext message.
 	WorkflowContext *WorkflowContext `json:"context,omitempty"`
 	CreatedAt       *time.Time       `json:"createdAt,omitempty"`
-	DeletedAt       *time.Time       `json:"deletedAt,omitempty"`
-	Duration        *string          `json:"duration,omitempty"`
+	// The currentVersion field.
+	CurrentVersion *int       `json:"currentVersion,omitempty"`
+	DeletedAt      *time.Time `json:"deletedAt,omitempty"`
+	Duration       *string    `json:"duration,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
+	// The isDraft field.
+	IsDraft *bool `json:"isDraft,omitempty"`
 	// The state field.
 	State     *State     `json:"state,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -109,6 +113,13 @@ func (o *WorkflowExecution) GetCreatedAt() *time.Time {
 	return o.CreatedAt
 }
 
+func (o *WorkflowExecution) GetCurrentVersion() *int {
+	if o == nil {
+		return nil
+	}
+	return o.CurrentVersion
+}
+
 func (o *WorkflowExecution) GetDeletedAt() *time.Time {
 	if o == nil {
 		return nil
@@ -128,6 +139,13 @@ func (o *WorkflowExecution) GetID() *string {
 		return nil
 	}
 	return o.ID
+}
+
+func (o *WorkflowExecution) GetIsDraft() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IsDraft
 }
 
 func (o *WorkflowExecution) GetState() *State {

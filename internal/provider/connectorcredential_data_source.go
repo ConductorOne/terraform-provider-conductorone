@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -124,13 +125,21 @@ func (r *ConnectorCredentialDataSource) Read(ctx context.Context, req datasource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var connectorID string
+	connectorID = data.ConnectorID.ValueString()
+
+	var id string
+	id = data.ID.ValueString()
+
+	request := operations.C1APIAppV1ConnectorServiceGetCredentialsRequest{
+		AppID:       appID,
+		ConnectorID: connectorID,
+		ID:          id,
 	}
-	res, err := r.client.Connector.GetCredentials(ctx, *request)
+	res, err := r.client.Connector.GetCredentials(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -142,6 +151,10 @@ func (r *ConnectorCredentialDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
+	if res.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -150,11 +163,7 @@ func (r *ConnectorCredentialDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedConnectorCredential(res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -9,6 +9,8 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -150,13 +152,15 @@ func (r *AppResourceTypeResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	createManuallyManagedResourceTypeRequest := data.ToSharedCreateManuallyManagedResourceTypeRequest()
+	request := operations.C1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeRequest{
+		AppID:                                    appID,
+		CreateManuallyManagedResourceTypeRequest: createManuallyManagedResourceTypeRequest,
 	}
-	res, err := r.client.AppResourceType.CreateManuallyManagedResourceType(ctx, *request)
+	res, err := r.client.AppResourceType.CreateManuallyManagedResourceType(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -176,24 +180,19 @@ func (r *AppResourceTypeResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res.CreateManuallyManagedResourceTypeResponse.AppResourceType)...)
+	data.RefreshFromSharedAppResourceType(res.CreateManuallyManagedResourceTypeResponse.AppResourceType)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var appId1 string
+	appId1 = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var id string
+	id = data.ID.ValueString()
+
+	request1 := operations.C1APIAppV1AppResourceTypeServiceGetRequest{
+		AppID: appId1,
+		ID:    id,
 	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppResourceTypeServiceGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AppResourceType.Get(ctx, *request1)
+	res1, err := r.client.AppResourceType.Get(ctx, request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -213,17 +212,8 @@ func (r *AppResourceTypeResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAppResourceType(res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -247,13 +237,17 @@ func (r *AppResourceTypeResource) Read(ctx context.Context, req resource.ReadReq
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceTypeServiceGetRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var id string
+	id = data.ID.ValueString()
+
+	request := operations.C1APIAppV1AppResourceTypeServiceGetRequest{
+		AppID: appID,
+		ID:    id,
 	}
-	res, err := r.client.AppResourceType.Get(ctx, *request)
+	res, err := r.client.AppResourceType.Get(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -277,11 +271,7 @@ func (r *AppResourceTypeResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAppResourceType(res.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -306,13 +296,23 @@ func (r *AppResourceTypeResource) Update(ctx context.Context, req resource.Updat
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var id string
+	id = data.ID.ValueString()
+
+	var updateManuallyManagedResourceTypeRequest *shared.UpdateManuallyManagedResourceTypeRequest
+	appResourceType := data.ToSharedAppResourceTypeInput()
+	updateManuallyManagedResourceTypeRequest = &shared.UpdateManuallyManagedResourceTypeRequest{
+		AppResourceType: appResourceType,
 	}
-	res, err := r.client.AppResourceType.UpdateManuallyManagedResourceType(ctx, *request)
+	request := operations.C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest{
+		AppID:                                    appID,
+		ID:                                       id,
+		UpdateManuallyManagedResourceTypeRequest: updateManuallyManagedResourceTypeRequest,
+	}
+	res, err := r.client.AppResourceType.UpdateManuallyManagedResourceType(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -332,24 +332,19 @@ func (r *AppResourceTypeResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res.UpdateManuallyManagedResourceTypeResponse.AppResourceType)...)
+	data.RefreshFromSharedAppResourceType(res.UpdateManuallyManagedResourceTypeResponse.AppResourceType)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var appId1 string
+	appId1 = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var id1 string
+	id1 = data.ID.ValueString()
+
+	request1 := operations.C1APIAppV1AppResourceTypeServiceGetRequest{
+		AppID: appId1,
+		ID:    id1,
 	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppResourceTypeServiceGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AppResourceType.Get(ctx, *request1)
+	res1, err := r.client.AppResourceType.Get(ctx, request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -369,17 +364,8 @@ func (r *AppResourceTypeResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAppResourceType(res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -403,13 +389,17 @@ func (r *AppResourceTypeResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var appID string
+	appID = data.AppID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	var id string
+	id = data.ID.ValueString()
+
+	request := operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest{
+		AppID: appID,
+		ID:    id,
 	}
-	res, err := r.client.AppResourceType.DeleteManuallyManagedResourceType(ctx, *request)
+	res, err := r.client.AppResourceType.DeleteManuallyManagedResourceType(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -437,7 +427,7 @@ func (r *AppResourceTypeResource) ImportState(ctx context.Context, req resource.
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "app_id": "",  "id": ""}': `+err.Error())
 		return
 	}
 

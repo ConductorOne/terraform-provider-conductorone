@@ -7,6 +7,7 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
@@ -121,13 +122,15 @@ func (r *AccessProfileVisibilityBindingsResource) Create(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var catalogID string
+	catalogID = data.CatalogID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	requestCatalogManagementServiceAddAccessEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceAddAccessEntitlementsRequest()
+	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceAddAccessEntitlementsRequest: requestCatalogManagementServiceAddAccessEntitlementsRequest,
 	}
-	res, err := r.client.RequestCatalogManagement.AddAccessEntitlements(ctx, *request)
+	res, err := r.client.RequestCatalogManagement.AddAccessEntitlements(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -147,17 +150,8 @@ func (r *AccessProfileVisibilityBindingsResource) Create(ctx context.Context, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceAddAccessEntitlementsResponse(ctx, res.RequestCatalogManagementServiceAddAccessEntitlementsResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedRequestCatalogManagementServiceAddAccessEntitlementsResponse(res.RequestCatalogManagementServiceAddAccessEntitlementsResponse)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -225,13 +219,15 @@ func (r *AccessProfileVisibilityBindingsResource) Delete(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var catalogID string
+	catalogID = data.CatalogID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	requestCatalogManagementServiceRemoveAccessEntitlementsRequest := data.ToSharedRequestCatalogManagementServiceRemoveAccessEntitlementsRequest()
+	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceRemoveAccessEntitlementsRequest: requestCatalogManagementServiceRemoveAccessEntitlementsRequest,
 	}
-	res, err := r.client.RequestCatalogManagement.RemoveAccessEntitlements(ctx, *request)
+	res, err := r.client.RequestCatalogManagement.RemoveAccessEntitlements(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

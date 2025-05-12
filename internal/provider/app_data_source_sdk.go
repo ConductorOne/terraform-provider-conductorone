@@ -3,22 +3,15 @@
 package provider
 
 import (
-	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
-func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*shared.SearchAppsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var appIds []string
-	if r.AppIds != nil {
-		appIds = make([]string, 0, len(r.AppIds))
-		for _, appIdsItem := range r.AppIds {
-			appIds = append(appIds, appIdsItem.ValueString())
-		}
+func (r *AppDataSourceModel) ToSharedSearchAppsRequest() *shared.SearchAppsRequest {
+	var appIds []string = []string{}
+	for _, appIdsItem := range r.AppIds {
+		appIds = append(appIds, appIdsItem.ValueString())
 	}
 	displayName := new(string)
 	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
@@ -26,12 +19,9 @@ func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*sh
 	} else {
 		displayName = nil
 	}
-	var excludeAppIds []string
-	if r.ExcludeAppIds != nil {
-		excludeAppIds = make([]string, 0, len(r.ExcludeAppIds))
-		for _, excludeAppIdsItem := range r.ExcludeAppIds {
-			excludeAppIds = append(excludeAppIds, excludeAppIdsItem.ValueString())
-		}
+	var excludeAppIds []string = []string{}
+	for _, excludeAppIdsItem := range r.ExcludeAppIds {
+		excludeAppIds = append(excludeAppIds, excludeAppIdsItem.ValueString())
 	}
 	onlyDirectories := new(bool)
 	if !r.OnlyDirectories.IsUnknown() && !r.OnlyDirectories.IsNull() {
@@ -52,19 +42,24 @@ func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*sh
 		OnlyDirectories: onlyDirectories,
 		Query:           query,
 	}
-
-	return &out, diags
+	return &out
 }
 
-func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *shared.App) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func (r *AppDataSourceModel) RefreshFromSharedApp(resp *shared.App) {
 	r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
 	r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
 	r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
 	r.ConnectorVersion = types.Int64PointerValue(resp.ConnectorVersion)
-	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+	if resp.CreatedAt != nil {
+		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+	} else {
+		r.CreatedAt = types.StringNull()
+	}
+	if resp.DeletedAt != nil {
+		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+	} else {
+		r.DeletedAt = types.StringNull()
+	}
 	r.Description = types.StringPointerValue(resp.Description)
 	r.DisplayName = types.StringPointerValue(resp.DisplayName)
 	r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
@@ -76,12 +71,18 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 	}
 	r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
 	r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
-	r.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.MonthlyCostUsd))
+	if resp.MonthlyCostUsd != nil {
+		r.MonthlyCostUsd = types.Int32Value(int32(*resp.MonthlyCostUsd))
+	} else {
+		r.MonthlyCostUsd = types.Int32Null()
+	}
 	r.ParentAppID = types.StringPointerValue(resp.ParentAppID)
 	r.RevokePolicyID = types.StringPointerValue(resp.RevokePolicyID)
 	r.StrictAccessEntitlementProvisioning = types.BoolPointerValue(resp.StrictAccessEntitlementProvisioning)
-	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	if resp.UpdatedAt != nil {
+		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+	} else {
+		r.UpdatedAt = types.StringNull()
+	}
 	r.UserCount = types.StringPointerValue(resp.UserCount)
-
-	return diags
 }

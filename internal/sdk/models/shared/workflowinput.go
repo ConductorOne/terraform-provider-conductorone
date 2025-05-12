@@ -12,6 +12,8 @@ type WorkflowInput struct {
 	// The WorkflowContext message.
 	WorkflowContext *WorkflowContext `json:"context,omitempty"`
 	CreatedAt       *time.Time       `json:"createdAt,omitempty"`
+	// The currentVersion field.
+	CurrentVersion *string `json:"currentVersion,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
@@ -54,6 +56,13 @@ func (o *WorkflowInput) GetCreatedAt() *time.Time {
 		return nil
 	}
 	return o.CreatedAt
+}
+
+func (o *WorkflowInput) GetCurrentVersion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CurrentVersion
 }
 
 func (o *WorkflowInput) GetDescription() *string {

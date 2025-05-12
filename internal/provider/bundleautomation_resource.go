@@ -7,6 +7,7 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -185,13 +186,15 @@ func (r *BundleAutomationResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var requestCatalogID string
+	requestCatalogID = data.RequestCatalogID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	createBundleAutomationRequest := data.ToSharedCreateBundleAutomationRequest()
+	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest{
+		RequestCatalogID:              requestCatalogID,
+		CreateBundleAutomationRequest: createBundleAutomationRequest,
 	}
-	res, err := r.client.RequestCatalogManagement.CreateBundleAutomation(ctx, *request)
+	res, err := r.client.RequestCatalogManagement.CreateBundleAutomation(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -211,17 +214,8 @@ func (r *BundleAutomationResource) Create(ctx context.Context, req resource.Crea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedBundleAutomation(ctx, res.BundleAutomation)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedBundleAutomation(res.BundleAutomation)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -245,13 +239,13 @@ func (r *BundleAutomationResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var requestCatalogID string
+	requestCatalogID = data.RequestCatalogID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest{
+		RequestCatalogID: requestCatalogID,
 	}
-	res, err := r.client.RequestCatalogManagement.GetBundleAutomation(ctx, *request)
+	res, err := r.client.RequestCatalogManagement.GetBundleAutomation(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -275,11 +269,7 @@ func (r *BundleAutomationResource) Read(ctx context.Context, req resource.ReadRe
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedBundleAutomation(ctx, res.BundleAutomation)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedBundleAutomation(res.BundleAutomation)
 
 	if !data.DeletedAt.IsNull() {
 		resp.State.RemoveResource(ctx)
@@ -304,13 +294,15 @@ func (r *BundleAutomationResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var requestCatalogID string
+	requestCatalogID = data.RequestCatalogID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	setBundleAutomationRequest := data.ToSharedSetBundleAutomationRequest()
+	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest{
+		RequestCatalogID:           requestCatalogID,
+		SetBundleAutomationRequest: setBundleAutomationRequest,
 	}
-	res, err := r.client.RequestCatalogManagement.SetBundleAutomation(ctx, *request)
+	res, err := r.client.RequestCatalogManagement.SetBundleAutomation(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -330,17 +322,8 @@ func (r *BundleAutomationResource) Update(ctx context.Context, req resource.Upda
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedBundleAutomation(ctx, res.BundleAutomation)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedBundleAutomation(res.BundleAutomation)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -364,13 +347,15 @@ func (r *BundleAutomationResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var requestCatalogID string
+	requestCatalogID = data.RequestCatalogID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	deleteBundleAutomationRequest := data.ToSharedDeleteBundleAutomationRequest()
+	request := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest{
+		RequestCatalogID:              requestCatalogID,
+		DeleteBundleAutomationRequest: deleteBundleAutomationRequest,
 	}
-	res, err := r.client.RequestCatalogManagement.DeleteBundleAutomation(ctx, *request)
+	res, err := r.client.RequestCatalogManagement.DeleteBundleAutomation(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

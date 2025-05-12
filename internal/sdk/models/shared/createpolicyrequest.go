@@ -7,22 +7,22 @@ import (
 	"fmt"
 )
 
-// CreatePolicyRequestPolicyType - The enum of the policy type.
-type CreatePolicyRequestPolicyType string
+// PolicyType - The enum of the policy type.
+type PolicyType string
 
 const (
-	CreatePolicyRequestPolicyTypePolicyTypeUnspecified   CreatePolicyRequestPolicyType = "POLICY_TYPE_UNSPECIFIED"
-	CreatePolicyRequestPolicyTypePolicyTypeGrant         CreatePolicyRequestPolicyType = "POLICY_TYPE_GRANT"
-	CreatePolicyRequestPolicyTypePolicyTypeRevoke        CreatePolicyRequestPolicyType = "POLICY_TYPE_REVOKE"
-	CreatePolicyRequestPolicyTypePolicyTypeCertify       CreatePolicyRequestPolicyType = "POLICY_TYPE_CERTIFY"
-	CreatePolicyRequestPolicyTypePolicyTypeAccessRequest CreatePolicyRequestPolicyType = "POLICY_TYPE_ACCESS_REQUEST"
-	CreatePolicyRequestPolicyTypePolicyTypeProvision     CreatePolicyRequestPolicyType = "POLICY_TYPE_PROVISION"
+	PolicyTypePolicyTypeUnspecified   PolicyType = "POLICY_TYPE_UNSPECIFIED"
+	PolicyTypePolicyTypeGrant         PolicyType = "POLICY_TYPE_GRANT"
+	PolicyTypePolicyTypeRevoke        PolicyType = "POLICY_TYPE_REVOKE"
+	PolicyTypePolicyTypeCertify       PolicyType = "POLICY_TYPE_CERTIFY"
+	PolicyTypePolicyTypeAccessRequest PolicyType = "POLICY_TYPE_ACCESS_REQUEST"
+	PolicyTypePolicyTypeProvision     PolicyType = "POLICY_TYPE_PROVISION"
 )
 
-func (e CreatePolicyRequestPolicyType) ToPointer() *CreatePolicyRequestPolicyType {
+func (e PolicyType) ToPointer() *PolicyType {
 	return &e
 }
-func (e *CreatePolicyRequestPolicyType) UnmarshalJSON(data []byte) error {
+func (e *PolicyType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -39,10 +39,10 @@ func (e *CreatePolicyRequestPolicyType) UnmarshalJSON(data []byte) error {
 	case "POLICY_TYPE_ACCESS_REQUEST":
 		fallthrough
 	case "POLICY_TYPE_PROVISION":
-		*e = CreatePolicyRequestPolicyType(v)
+		*e = PolicyType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreatePolicyRequestPolicyType: %v", v)
+		return fmt.Errorf("invalid value for PolicyType: %v", v)
 	}
 }
 
@@ -55,7 +55,7 @@ type CreatePolicyRequest struct {
 	// The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples.
 	PolicySteps map[string]PolicyStepsInput `json:"policySteps,omitempty"`
 	// The enum of the policy type.
-	PolicyType *CreatePolicyRequestPolicyType `json:"policyType,omitempty"`
+	PolicyType *PolicyType `json:"policyType,omitempty"`
 	// Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately.
 	PostActions []PolicyPostActions `json:"postActions,omitempty"`
 	// Allows reassigning tasks to delegates.
@@ -85,7 +85,7 @@ func (o *CreatePolicyRequest) GetPolicySteps() map[string]PolicyStepsInput {
 	return o.PolicySteps
 }
 
-func (o *CreatePolicyRequest) GetPolicyType() *CreatePolicyRequestPolicyType {
+func (o *CreatePolicyRequest) GetPolicyType() *PolicyType {
 	if o == nil {
 		return nil
 	}

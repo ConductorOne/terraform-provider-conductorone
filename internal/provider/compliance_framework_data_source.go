@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -108,13 +109,13 @@ func (r *ComplianceFrameworkDataSource) Read(ctx context.Context, req datasource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var id string
+	id = data.ID.ValueString()
 
-	if resp.Diagnostics.HasError() {
-		return
+	request := operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest{
+		ID: id,
 	}
-	res, err := r.client.Attributes.GetComplianceFrameworkAttributeValue(ctx, *request)
+	res, err := r.client.Attributes.GetComplianceFrameworkAttributeValue(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -126,6 +127,10 @@ func (r *ComplianceFrameworkDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
+	if res.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -134,11 +139,7 @@ func (r *ComplianceFrameworkDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetComplianceFrameworkAttributeValueResponse.AttributeValue)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	data.RefreshFromSharedAttributeValue(res.GetComplianceFrameworkAttributeValueResponse.AttributeValue)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

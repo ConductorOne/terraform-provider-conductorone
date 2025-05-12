@@ -74,8 +74,8 @@ type ConductoroneAPI struct {
 	WorkflowExecution          *WorkflowExecution
 	WorkflowExecutionActions   *WorkflowExecutionActions
 	WorkflowExecutionSearch    *WorkflowExecutionSearch
-	Workflow                   *Workflow
 	WorkflowSearch             *WorkflowSearch
+	Workflow                   *Workflow
 	Apps                       *Apps
 	AppAccessRequestsDefaults  *AppAccessRequestsDefaults
 	AppUser                    *AppUser
@@ -213,9 +213,9 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "0.1.0-alpha",
-			SDKVersion:        "1.2.0",
-			GenVersion:        "2.595.4",
-			UserAgent:         "speakeasy-sdk/terraform 1.2.0 2.595.4 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			SDKVersion:        "1.2.1",
+			GenVersion:        "2.545.7",
+			UserAgent:         "speakeasy-sdk/terraform 1.2.1 2.545.7 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "example",
@@ -246,9 +246,9 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 
 	sdk.WorkflowExecutionSearch = newWorkflowExecutionSearch(sdk.sdkConfiguration)
 
-	sdk.Workflow = newWorkflow(sdk.sdkConfiguration)
-
 	sdk.WorkflowSearch = newWorkflowSearch(sdk.sdkConfiguration)
+
+	sdk.Workflow = newWorkflow(sdk.sdkConfiguration)
 
 	sdk.Apps = newApps(sdk.sdkConfiguration)
 

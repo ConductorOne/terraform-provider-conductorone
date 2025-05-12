@@ -3,44 +3,26 @@
 package provider
 
 import (
-	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
-func (r *AppResourceDataSourceModel) ToOperationsC1APIAppV1AppResourceServiceGetRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceGetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var appResourceTypeID string
-	appResourceTypeID = r.AppResourceTypeID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAppV1AppResourceServiceGetRequest{
-		AppID:             appID,
-		AppResourceTypeID: appResourceTypeID,
-		ID:                id,
-	}
-
-	return &out, diags
-}
-
-func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Context, resp *shared.AppResource) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(resp *shared.AppResource) {
 	if resp != nil {
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.CreatedAt = types.StringNull()
+		}
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+		} else {
+			r.DeletedAt = types.StringNull()
+		}
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.GrantCount = types.StringPointerValue(resp.GrantCount)
@@ -53,12 +35,26 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 		} else {
 			r.SecretTrait = &tfTypes.SecretTrait{}
 			r.SecretTrait.IdentityAppUserID = types.StringPointerValue(resp.SecretTrait.IdentityAppUserID)
-			r.SecretTrait.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.LastUsedAt))
-			r.SecretTrait.SecretCreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.SecretCreatedAt))
-			r.SecretTrait.SecretExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.SecretExpiresAt))
+			if resp.SecretTrait.LastUsedAt != nil {
+				r.SecretTrait.LastUsedAt = types.StringValue(resp.SecretTrait.LastUsedAt.Format(time.RFC3339Nano))
+			} else {
+				r.SecretTrait.LastUsedAt = types.StringNull()
+			}
+			if resp.SecretTrait.SecretCreatedAt != nil {
+				r.SecretTrait.SecretCreatedAt = types.StringValue(resp.SecretTrait.SecretCreatedAt.Format(time.RFC3339Nano))
+			} else {
+				r.SecretTrait.SecretCreatedAt = types.StringNull()
+			}
+			if resp.SecretTrait.SecretExpiresAt != nil {
+				r.SecretTrait.SecretExpiresAt = types.StringValue(resp.SecretTrait.SecretExpiresAt.Format(time.RFC3339Nano))
+			} else {
+				r.SecretTrait.SecretExpiresAt = types.StringNull()
+			}
 		}
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.UpdatedAt = types.StringNull()
+		}
 	}
-
-	return diags
 }

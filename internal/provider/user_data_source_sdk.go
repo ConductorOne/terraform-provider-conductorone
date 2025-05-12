@@ -3,43 +3,30 @@
 package provider
 
 import (
-	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
-func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*shared.SearchUsersRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
+func (r *UserDataSourceModel) ToSharedSearchUsersRequest() *shared.SearchUsersRequest {
 	email := new(string)
 	if !r.Email.IsUnknown() && !r.Email.IsNull() {
 		*email = r.Email.ValueString()
 	} else {
 		email = nil
 	}
-	var excludeIds []string
-	if r.ExcludeIds != nil {
-		excludeIds = make([]string, 0, len(r.ExcludeIds))
-		for _, excludeIdsItem := range r.ExcludeIds {
-			excludeIds = append(excludeIds, excludeIdsItem.ValueString())
-		}
+	var excludeIds []string = []string{}
+	for _, excludeIdsItem := range r.ExcludeIds {
+		excludeIds = append(excludeIds, excludeIdsItem.ValueString())
 	}
-	var excludeTypes []shared.ExcludeTypes
-	if r.ExcludeTypes != nil {
-		excludeTypes = make([]shared.ExcludeTypes, 0, len(r.ExcludeTypes))
-		for _, excludeTypesItem := range r.ExcludeTypes {
-			excludeTypes = append(excludeTypes, shared.ExcludeTypes(excludeTypesItem.ValueString()))
-		}
+	var excludeTypes []shared.ExcludeTypes = []shared.ExcludeTypes{}
+	for _, excludeTypesItem := range r.ExcludeTypes {
+		excludeTypes = append(excludeTypes, shared.ExcludeTypes(excludeTypesItem.ValueString()))
 	}
-	var ids []string
-	if r.Ids != nil {
-		ids = make([]string, 0, len(r.Ids))
-		for _, idsItem := range r.Ids {
-			ids = append(ids, idsItem.ValueString())
-		}
+	var ids []string = []string{}
+	for _, idsItem := range r.Ids {
+		ids = append(ids, idsItem.ValueString())
 	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
@@ -47,34 +34,25 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 	} else {
 		query = nil
 	}
-	var refs []shared.UserRef
-	if r.Refs != nil {
-		refs = make([]shared.UserRef, 0, len(r.Refs))
-		for _, refsItem := range r.Refs {
-			id := new(string)
-			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-				*id = refsItem.ID.ValueString()
-			} else {
-				id = nil
-			}
-			refs = append(refs, shared.UserRef{
-				ID: id,
-			})
+	var refs []shared.UserRef = []shared.UserRef{}
+	for _, refsItem := range r.Refs {
+		id := new(string)
+		if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
+			*id = refsItem.ID.ValueString()
+		} else {
+			id = nil
 		}
+		refs = append(refs, shared.UserRef{
+			ID: id,
+		})
 	}
-	var roleIds []string
-	if r.RoleIds != nil {
-		roleIds = make([]string, 0, len(r.RoleIds))
-		for _, roleIdsItem := range r.RoleIds {
-			roleIds = append(roleIds, roleIdsItem.ValueString())
-		}
+	var roleIds []string = []string{}
+	for _, roleIdsItem := range r.RoleIds {
+		roleIds = append(roleIds, roleIdsItem.ValueString())
 	}
-	var userStatuses []shared.UserStatuses
-	if r.UserStatuses != nil {
-		userStatuses = make([]shared.UserStatuses, 0, len(r.UserStatuses))
-		for _, userStatusesItem := range r.UserStatuses {
-			userStatuses = append(userStatuses, shared.UserStatuses(userStatusesItem.ValueString()))
-		}
+	var userStatuses []shared.UserStatuses = []shared.UserStatuses{}
+	for _, userStatusesItem := range r.UserStatuses {
+		userStatuses = append(userStatuses, shared.UserStatuses(userStatusesItem.ValueString()))
 	}
 	out := shared.SearchUsersRequest{
 		Email:        email,
@@ -86,17 +64,22 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 		RoleIds:      roleIds,
 		UserStatuses: userStatuses,
 	}
-
-	return &out, diags
+	return &out
 }
 
-func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *shared.User) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func (r *UserDataSourceModel) RefreshFromSharedUser(resp *shared.User) {
 	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		if resp.CreatedAt != nil {
+			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.CreatedAt = types.StringNull()
+		}
 		r.DelegatedUserID = types.StringPointerValue(resp.DelegatedUserID)
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		if resp.DeletedAt != nil {
+			r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339Nano))
+		} else {
+			r.DeletedAt = types.StringNull()
+		}
 		r.Department = types.StringPointerValue(resp.Department)
 		if resp.DepartmentSources != nil {
 			r.DepartmentSources = []tfTypes.UserAttributeMappingSource{}
@@ -104,20 +87,20 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.DepartmentSources = r.DepartmentSources[:len(resp.DepartmentSources)]
 			}
 			for departmentSourcesCount, departmentSourcesItem := range resp.DepartmentSources {
-				var departmentSources tfTypes.UserAttributeMappingSource
-				departmentSources.AppID = types.StringPointerValue(departmentSourcesItem.AppID)
-				departmentSources.AppUserID = types.StringPointerValue(departmentSourcesItem.AppUserID)
-				departmentSources.AppUserProfileAttributeKey = types.StringPointerValue(departmentSourcesItem.AppUserProfileAttributeKey)
-				departmentSources.UserAttributeMappingID = types.StringPointerValue(departmentSourcesItem.UserAttributeMappingID)
-				departmentSources.Value = types.StringPointerValue(departmentSourcesItem.Value)
+				var departmentSources1 tfTypes.UserAttributeMappingSource
+				departmentSources1.AppID = types.StringPointerValue(departmentSourcesItem.AppID)
+				departmentSources1.AppUserID = types.StringPointerValue(departmentSourcesItem.AppUserID)
+				departmentSources1.AppUserProfileAttributeKey = types.StringPointerValue(departmentSourcesItem.AppUserProfileAttributeKey)
+				departmentSources1.UserAttributeMappingID = types.StringPointerValue(departmentSourcesItem.UserAttributeMappingID)
+				departmentSources1.Value = types.StringPointerValue(departmentSourcesItem.Value)
 				if departmentSourcesCount+1 > len(r.DepartmentSources) {
-					r.DepartmentSources = append(r.DepartmentSources, departmentSources)
+					r.DepartmentSources = append(r.DepartmentSources, departmentSources1)
 				} else {
-					r.DepartmentSources[departmentSourcesCount].AppID = departmentSources.AppID
-					r.DepartmentSources[departmentSourcesCount].AppUserID = departmentSources.AppUserID
-					r.DepartmentSources[departmentSourcesCount].AppUserProfileAttributeKey = departmentSources.AppUserProfileAttributeKey
-					r.DepartmentSources[departmentSourcesCount].UserAttributeMappingID = departmentSources.UserAttributeMappingID
-					r.DepartmentSources[departmentSourcesCount].Value = departmentSources.Value
+					r.DepartmentSources[departmentSourcesCount].AppID = departmentSources1.AppID
+					r.DepartmentSources[departmentSourcesCount].AppUserID = departmentSources1.AppUserID
+					r.DepartmentSources[departmentSourcesCount].AppUserProfileAttributeKey = departmentSources1.AppUserProfileAttributeKey
+					r.DepartmentSources[departmentSourcesCount].UserAttributeMappingID = departmentSources1.UserAttributeMappingID
+					r.DepartmentSources[departmentSourcesCount].Value = departmentSources1.Value
 				}
 			}
 		}
@@ -138,20 +121,20 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.DirectoryStatusSources = r.DirectoryStatusSources[:len(resp.DirectoryStatusSources)]
 			}
 			for directoryStatusSourcesCount, directoryStatusSourcesItem := range resp.DirectoryStatusSources {
-				var directoryStatusSources tfTypes.UserAttributeMappingSource
-				directoryStatusSources.AppID = types.StringPointerValue(directoryStatusSourcesItem.AppID)
-				directoryStatusSources.AppUserID = types.StringPointerValue(directoryStatusSourcesItem.AppUserID)
-				directoryStatusSources.AppUserProfileAttributeKey = types.StringPointerValue(directoryStatusSourcesItem.AppUserProfileAttributeKey)
-				directoryStatusSources.UserAttributeMappingID = types.StringPointerValue(directoryStatusSourcesItem.UserAttributeMappingID)
-				directoryStatusSources.Value = types.StringPointerValue(directoryStatusSourcesItem.Value)
+				var directoryStatusSources1 tfTypes.UserAttributeMappingSource
+				directoryStatusSources1.AppID = types.StringPointerValue(directoryStatusSourcesItem.AppID)
+				directoryStatusSources1.AppUserID = types.StringPointerValue(directoryStatusSourcesItem.AppUserID)
+				directoryStatusSources1.AppUserProfileAttributeKey = types.StringPointerValue(directoryStatusSourcesItem.AppUserProfileAttributeKey)
+				directoryStatusSources1.UserAttributeMappingID = types.StringPointerValue(directoryStatusSourcesItem.UserAttributeMappingID)
+				directoryStatusSources1.Value = types.StringPointerValue(directoryStatusSourcesItem.Value)
 				if directoryStatusSourcesCount+1 > len(r.DirectoryStatusSources) {
-					r.DirectoryStatusSources = append(r.DirectoryStatusSources, directoryStatusSources)
+					r.DirectoryStatusSources = append(r.DirectoryStatusSources, directoryStatusSources1)
 				} else {
-					r.DirectoryStatusSources[directoryStatusSourcesCount].AppID = directoryStatusSources.AppID
-					r.DirectoryStatusSources[directoryStatusSourcesCount].AppUserID = directoryStatusSources.AppUserID
-					r.DirectoryStatusSources[directoryStatusSourcesCount].AppUserProfileAttributeKey = directoryStatusSources.AppUserProfileAttributeKey
-					r.DirectoryStatusSources[directoryStatusSourcesCount].UserAttributeMappingID = directoryStatusSources.UserAttributeMappingID
-					r.DirectoryStatusSources[directoryStatusSourcesCount].Value = directoryStatusSources.Value
+					r.DirectoryStatusSources[directoryStatusSourcesCount].AppID = directoryStatusSources1.AppID
+					r.DirectoryStatusSources[directoryStatusSourcesCount].AppUserID = directoryStatusSources1.AppUserID
+					r.DirectoryStatusSources[directoryStatusSourcesCount].AppUserProfileAttributeKey = directoryStatusSources1.AppUserProfileAttributeKey
+					r.DirectoryStatusSources[directoryStatusSourcesCount].UserAttributeMappingID = directoryStatusSources1.UserAttributeMappingID
+					r.DirectoryStatusSources[directoryStatusSourcesCount].Value = directoryStatusSources1.Value
 				}
 			}
 		}
@@ -169,20 +152,20 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.EmailSources = r.EmailSources[:len(resp.EmailSources)]
 			}
 			for emailSourcesCount, emailSourcesItem := range resp.EmailSources {
-				var emailSources tfTypes.UserAttributeMappingSource
-				emailSources.AppID = types.StringPointerValue(emailSourcesItem.AppID)
-				emailSources.AppUserID = types.StringPointerValue(emailSourcesItem.AppUserID)
-				emailSources.AppUserProfileAttributeKey = types.StringPointerValue(emailSourcesItem.AppUserProfileAttributeKey)
-				emailSources.UserAttributeMappingID = types.StringPointerValue(emailSourcesItem.UserAttributeMappingID)
-				emailSources.Value = types.StringPointerValue(emailSourcesItem.Value)
+				var emailSources1 tfTypes.UserAttributeMappingSource
+				emailSources1.AppID = types.StringPointerValue(emailSourcesItem.AppID)
+				emailSources1.AppUserID = types.StringPointerValue(emailSourcesItem.AppUserID)
+				emailSources1.AppUserProfileAttributeKey = types.StringPointerValue(emailSourcesItem.AppUserProfileAttributeKey)
+				emailSources1.UserAttributeMappingID = types.StringPointerValue(emailSourcesItem.UserAttributeMappingID)
+				emailSources1.Value = types.StringPointerValue(emailSourcesItem.Value)
 				if emailSourcesCount+1 > len(r.EmailSources) {
-					r.EmailSources = append(r.EmailSources, emailSources)
+					r.EmailSources = append(r.EmailSources, emailSources1)
 				} else {
-					r.EmailSources[emailSourcesCount].AppID = emailSources.AppID
-					r.EmailSources[emailSourcesCount].AppUserID = emailSources.AppUserID
-					r.EmailSources[emailSourcesCount].AppUserProfileAttributeKey = emailSources.AppUserProfileAttributeKey
-					r.EmailSources[emailSourcesCount].UserAttributeMappingID = emailSources.UserAttributeMappingID
-					r.EmailSources[emailSourcesCount].Value = emailSources.Value
+					r.EmailSources[emailSourcesCount].AppID = emailSources1.AppID
+					r.EmailSources[emailSourcesCount].AppUserID = emailSources1.AppUserID
+					r.EmailSources[emailSourcesCount].AppUserProfileAttributeKey = emailSources1.AppUserProfileAttributeKey
+					r.EmailSources[emailSourcesCount].UserAttributeMappingID = emailSources1.UserAttributeMappingID
+					r.EmailSources[emailSourcesCount].Value = emailSources1.Value
 				}
 			}
 		}
@@ -198,20 +181,20 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.EmployeeIDSources = r.EmployeeIDSources[:len(resp.EmployeeIDSources)]
 			}
 			for employeeIDSourcesCount, employeeIDSourcesItem := range resp.EmployeeIDSources {
-				var employeeIDSources tfTypes.UserAttributeMappingSource
-				employeeIDSources.AppID = types.StringPointerValue(employeeIDSourcesItem.AppID)
-				employeeIDSources.AppUserID = types.StringPointerValue(employeeIDSourcesItem.AppUserID)
-				employeeIDSources.AppUserProfileAttributeKey = types.StringPointerValue(employeeIDSourcesItem.AppUserProfileAttributeKey)
-				employeeIDSources.UserAttributeMappingID = types.StringPointerValue(employeeIDSourcesItem.UserAttributeMappingID)
-				employeeIDSources.Value = types.StringPointerValue(employeeIDSourcesItem.Value)
+				var employeeIDSources1 tfTypes.UserAttributeMappingSource
+				employeeIDSources1.AppID = types.StringPointerValue(employeeIDSourcesItem.AppID)
+				employeeIDSources1.AppUserID = types.StringPointerValue(employeeIDSourcesItem.AppUserID)
+				employeeIDSources1.AppUserProfileAttributeKey = types.StringPointerValue(employeeIDSourcesItem.AppUserProfileAttributeKey)
+				employeeIDSources1.UserAttributeMappingID = types.StringPointerValue(employeeIDSourcesItem.UserAttributeMappingID)
+				employeeIDSources1.Value = types.StringPointerValue(employeeIDSourcesItem.Value)
 				if employeeIDSourcesCount+1 > len(r.EmployeeIDSources) {
-					r.EmployeeIDSources = append(r.EmployeeIDSources, employeeIDSources)
+					r.EmployeeIDSources = append(r.EmployeeIDSources, employeeIDSources1)
 				} else {
-					r.EmployeeIDSources[employeeIDSourcesCount].AppID = employeeIDSources.AppID
-					r.EmployeeIDSources[employeeIDSourcesCount].AppUserID = employeeIDSources.AppUserID
-					r.EmployeeIDSources[employeeIDSourcesCount].AppUserProfileAttributeKey = employeeIDSources.AppUserProfileAttributeKey
-					r.EmployeeIDSources[employeeIDSourcesCount].UserAttributeMappingID = employeeIDSources.UserAttributeMappingID
-					r.EmployeeIDSources[employeeIDSourcesCount].Value = employeeIDSources.Value
+					r.EmployeeIDSources[employeeIDSourcesCount].AppID = employeeIDSources1.AppID
+					r.EmployeeIDSources[employeeIDSourcesCount].AppUserID = employeeIDSources1.AppUserID
+					r.EmployeeIDSources[employeeIDSourcesCount].AppUserProfileAttributeKey = employeeIDSources1.AppUserProfileAttributeKey
+					r.EmployeeIDSources[employeeIDSourcesCount].UserAttributeMappingID = employeeIDSources1.UserAttributeMappingID
+					r.EmployeeIDSources[employeeIDSourcesCount].Value = employeeIDSources1.Value
 				}
 			}
 		}
@@ -222,20 +205,20 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.EmploymentStatusSources = r.EmploymentStatusSources[:len(resp.EmploymentStatusSources)]
 			}
 			for employmentStatusSourcesCount, employmentStatusSourcesItem := range resp.EmploymentStatusSources {
-				var employmentStatusSources tfTypes.UserAttributeMappingSource
-				employmentStatusSources.AppID = types.StringPointerValue(employmentStatusSourcesItem.AppID)
-				employmentStatusSources.AppUserID = types.StringPointerValue(employmentStatusSourcesItem.AppUserID)
-				employmentStatusSources.AppUserProfileAttributeKey = types.StringPointerValue(employmentStatusSourcesItem.AppUserProfileAttributeKey)
-				employmentStatusSources.UserAttributeMappingID = types.StringPointerValue(employmentStatusSourcesItem.UserAttributeMappingID)
-				employmentStatusSources.Value = types.StringPointerValue(employmentStatusSourcesItem.Value)
+				var employmentStatusSources1 tfTypes.UserAttributeMappingSource
+				employmentStatusSources1.AppID = types.StringPointerValue(employmentStatusSourcesItem.AppID)
+				employmentStatusSources1.AppUserID = types.StringPointerValue(employmentStatusSourcesItem.AppUserID)
+				employmentStatusSources1.AppUserProfileAttributeKey = types.StringPointerValue(employmentStatusSourcesItem.AppUserProfileAttributeKey)
+				employmentStatusSources1.UserAttributeMappingID = types.StringPointerValue(employmentStatusSourcesItem.UserAttributeMappingID)
+				employmentStatusSources1.Value = types.StringPointerValue(employmentStatusSourcesItem.Value)
 				if employmentStatusSourcesCount+1 > len(r.EmploymentStatusSources) {
-					r.EmploymentStatusSources = append(r.EmploymentStatusSources, employmentStatusSources)
+					r.EmploymentStatusSources = append(r.EmploymentStatusSources, employmentStatusSources1)
 				} else {
-					r.EmploymentStatusSources[employmentStatusSourcesCount].AppID = employmentStatusSources.AppID
-					r.EmploymentStatusSources[employmentStatusSourcesCount].AppUserID = employmentStatusSources.AppUserID
-					r.EmploymentStatusSources[employmentStatusSourcesCount].AppUserProfileAttributeKey = employmentStatusSources.AppUserProfileAttributeKey
-					r.EmploymentStatusSources[employmentStatusSourcesCount].UserAttributeMappingID = employmentStatusSources.UserAttributeMappingID
-					r.EmploymentStatusSources[employmentStatusSourcesCount].Value = employmentStatusSources.Value
+					r.EmploymentStatusSources[employmentStatusSourcesCount].AppID = employmentStatusSources1.AppID
+					r.EmploymentStatusSources[employmentStatusSourcesCount].AppUserID = employmentStatusSources1.AppUserID
+					r.EmploymentStatusSources[employmentStatusSourcesCount].AppUserProfileAttributeKey = employmentStatusSources1.AppUserProfileAttributeKey
+					r.EmploymentStatusSources[employmentStatusSourcesCount].UserAttributeMappingID = employmentStatusSources1.UserAttributeMappingID
+					r.EmploymentStatusSources[employmentStatusSourcesCount].Value = employmentStatusSources1.Value
 				}
 			}
 		}
@@ -246,20 +229,20 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.EmploymentTypeSources = r.EmploymentTypeSources[:len(resp.EmploymentTypeSources)]
 			}
 			for employmentTypeSourcesCount, employmentTypeSourcesItem := range resp.EmploymentTypeSources {
-				var employmentTypeSources tfTypes.UserAttributeMappingSource
-				employmentTypeSources.AppID = types.StringPointerValue(employmentTypeSourcesItem.AppID)
-				employmentTypeSources.AppUserID = types.StringPointerValue(employmentTypeSourcesItem.AppUserID)
-				employmentTypeSources.AppUserProfileAttributeKey = types.StringPointerValue(employmentTypeSourcesItem.AppUserProfileAttributeKey)
-				employmentTypeSources.UserAttributeMappingID = types.StringPointerValue(employmentTypeSourcesItem.UserAttributeMappingID)
-				employmentTypeSources.Value = types.StringPointerValue(employmentTypeSourcesItem.Value)
+				var employmentTypeSources1 tfTypes.UserAttributeMappingSource
+				employmentTypeSources1.AppID = types.StringPointerValue(employmentTypeSourcesItem.AppID)
+				employmentTypeSources1.AppUserID = types.StringPointerValue(employmentTypeSourcesItem.AppUserID)
+				employmentTypeSources1.AppUserProfileAttributeKey = types.StringPointerValue(employmentTypeSourcesItem.AppUserProfileAttributeKey)
+				employmentTypeSources1.UserAttributeMappingID = types.StringPointerValue(employmentTypeSourcesItem.UserAttributeMappingID)
+				employmentTypeSources1.Value = types.StringPointerValue(employmentTypeSourcesItem.Value)
 				if employmentTypeSourcesCount+1 > len(r.EmploymentTypeSources) {
-					r.EmploymentTypeSources = append(r.EmploymentTypeSources, employmentTypeSources)
+					r.EmploymentTypeSources = append(r.EmploymentTypeSources, employmentTypeSources1)
 				} else {
-					r.EmploymentTypeSources[employmentTypeSourcesCount].AppID = employmentTypeSources.AppID
-					r.EmploymentTypeSources[employmentTypeSourcesCount].AppUserID = employmentTypeSources.AppUserID
-					r.EmploymentTypeSources[employmentTypeSourcesCount].AppUserProfileAttributeKey = employmentTypeSources.AppUserProfileAttributeKey
-					r.EmploymentTypeSources[employmentTypeSourcesCount].UserAttributeMappingID = employmentTypeSources.UserAttributeMappingID
-					r.EmploymentTypeSources[employmentTypeSourcesCount].Value = employmentTypeSources.Value
+					r.EmploymentTypeSources[employmentTypeSourcesCount].AppID = employmentTypeSources1.AppID
+					r.EmploymentTypeSources[employmentTypeSourcesCount].AppUserID = employmentTypeSources1.AppUserID
+					r.EmploymentTypeSources[employmentTypeSourcesCount].AppUserProfileAttributeKey = employmentTypeSources1.AppUserProfileAttributeKey
+					r.EmploymentTypeSources[employmentTypeSourcesCount].UserAttributeMappingID = employmentTypeSources1.UserAttributeMappingID
+					r.EmploymentTypeSources[employmentTypeSourcesCount].Value = employmentTypeSources1.Value
 				}
 			}
 		}
@@ -271,20 +254,20 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.JobTitleSources = r.JobTitleSources[:len(resp.JobTitleSources)]
 			}
 			for jobTitleSourcesCount, jobTitleSourcesItem := range resp.JobTitleSources {
-				var jobTitleSources tfTypes.UserAttributeMappingSource
-				jobTitleSources.AppID = types.StringPointerValue(jobTitleSourcesItem.AppID)
-				jobTitleSources.AppUserID = types.StringPointerValue(jobTitleSourcesItem.AppUserID)
-				jobTitleSources.AppUserProfileAttributeKey = types.StringPointerValue(jobTitleSourcesItem.AppUserProfileAttributeKey)
-				jobTitleSources.UserAttributeMappingID = types.StringPointerValue(jobTitleSourcesItem.UserAttributeMappingID)
-				jobTitleSources.Value = types.StringPointerValue(jobTitleSourcesItem.Value)
+				var jobTitleSources1 tfTypes.UserAttributeMappingSource
+				jobTitleSources1.AppID = types.StringPointerValue(jobTitleSourcesItem.AppID)
+				jobTitleSources1.AppUserID = types.StringPointerValue(jobTitleSourcesItem.AppUserID)
+				jobTitleSources1.AppUserProfileAttributeKey = types.StringPointerValue(jobTitleSourcesItem.AppUserProfileAttributeKey)
+				jobTitleSources1.UserAttributeMappingID = types.StringPointerValue(jobTitleSourcesItem.UserAttributeMappingID)
+				jobTitleSources1.Value = types.StringPointerValue(jobTitleSourcesItem.Value)
 				if jobTitleSourcesCount+1 > len(r.JobTitleSources) {
-					r.JobTitleSources = append(r.JobTitleSources, jobTitleSources)
+					r.JobTitleSources = append(r.JobTitleSources, jobTitleSources1)
 				} else {
-					r.JobTitleSources[jobTitleSourcesCount].AppID = jobTitleSources.AppID
-					r.JobTitleSources[jobTitleSourcesCount].AppUserID = jobTitleSources.AppUserID
-					r.JobTitleSources[jobTitleSourcesCount].AppUserProfileAttributeKey = jobTitleSources.AppUserProfileAttributeKey
-					r.JobTitleSources[jobTitleSourcesCount].UserAttributeMappingID = jobTitleSources.UserAttributeMappingID
-					r.JobTitleSources[jobTitleSourcesCount].Value = jobTitleSources.Value
+					r.JobTitleSources[jobTitleSourcesCount].AppID = jobTitleSources1.AppID
+					r.JobTitleSources[jobTitleSourcesCount].AppUserID = jobTitleSources1.AppUserID
+					r.JobTitleSources[jobTitleSourcesCount].AppUserProfileAttributeKey = jobTitleSources1.AppUserProfileAttributeKey
+					r.JobTitleSources[jobTitleSourcesCount].UserAttributeMappingID = jobTitleSources1.UserAttributeMappingID
+					r.JobTitleSources[jobTitleSourcesCount].Value = jobTitleSources1.Value
 				}
 			}
 		}
@@ -300,20 +283,20 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.ManagerSources = r.ManagerSources[:len(resp.ManagerSources)]
 			}
 			for managerSourcesCount, managerSourcesItem := range resp.ManagerSources {
-				var managerSources tfTypes.UserAttributeMappingSource
-				managerSources.AppID = types.StringPointerValue(managerSourcesItem.AppID)
-				managerSources.AppUserID = types.StringPointerValue(managerSourcesItem.AppUserID)
-				managerSources.AppUserProfileAttributeKey = types.StringPointerValue(managerSourcesItem.AppUserProfileAttributeKey)
-				managerSources.UserAttributeMappingID = types.StringPointerValue(managerSourcesItem.UserAttributeMappingID)
-				managerSources.Value = types.StringPointerValue(managerSourcesItem.Value)
+				var managerSources1 tfTypes.UserAttributeMappingSource
+				managerSources1.AppID = types.StringPointerValue(managerSourcesItem.AppID)
+				managerSources1.AppUserID = types.StringPointerValue(managerSourcesItem.AppUserID)
+				managerSources1.AppUserProfileAttributeKey = types.StringPointerValue(managerSourcesItem.AppUserProfileAttributeKey)
+				managerSources1.UserAttributeMappingID = types.StringPointerValue(managerSourcesItem.UserAttributeMappingID)
+				managerSources1.Value = types.StringPointerValue(managerSourcesItem.Value)
 				if managerSourcesCount+1 > len(r.ManagerSources) {
-					r.ManagerSources = append(r.ManagerSources, managerSources)
+					r.ManagerSources = append(r.ManagerSources, managerSources1)
 				} else {
-					r.ManagerSources[managerSourcesCount].AppID = managerSources.AppID
-					r.ManagerSources[managerSourcesCount].AppUserID = managerSources.AppUserID
-					r.ManagerSources[managerSourcesCount].AppUserProfileAttributeKey = managerSources.AppUserProfileAttributeKey
-					r.ManagerSources[managerSourcesCount].UserAttributeMappingID = managerSources.UserAttributeMappingID
-					r.ManagerSources[managerSourcesCount].Value = managerSources.Value
+					r.ManagerSources[managerSourcesCount].AppID = managerSources1.AppID
+					r.ManagerSources[managerSourcesCount].AppUserID = managerSources1.AppUserID
+					r.ManagerSources[managerSourcesCount].AppUserProfileAttributeKey = managerSources1.AppUserProfileAttributeKey
+					r.ManagerSources[managerSourcesCount].UserAttributeMappingID = managerSources1.UserAttributeMappingID
+					r.ManagerSources[managerSourcesCount].Value = managerSources1.Value
 				}
 			}
 		}
@@ -338,7 +321,11 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 		} else {
 			r.Type = types.StringNull()
 		}
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		if resp.UpdatedAt != nil {
+			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		} else {
+			r.UpdatedAt = types.StringNull()
+		}
 		r.Username = types.StringPointerValue(resp.Username)
 		if resp.Usernames != nil {
 			r.Usernames = make([]types.String, 0, len(resp.Usernames))
@@ -352,24 +339,22 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.UsernameSources = r.UsernameSources[:len(resp.UsernameSources)]
 			}
 			for usernameSourcesCount, usernameSourcesItem := range resp.UsernameSources {
-				var usernameSources tfTypes.UserAttributeMappingSource
-				usernameSources.AppID = types.StringPointerValue(usernameSourcesItem.AppID)
-				usernameSources.AppUserID = types.StringPointerValue(usernameSourcesItem.AppUserID)
-				usernameSources.AppUserProfileAttributeKey = types.StringPointerValue(usernameSourcesItem.AppUserProfileAttributeKey)
-				usernameSources.UserAttributeMappingID = types.StringPointerValue(usernameSourcesItem.UserAttributeMappingID)
-				usernameSources.Value = types.StringPointerValue(usernameSourcesItem.Value)
+				var usernameSources1 tfTypes.UserAttributeMappingSource
+				usernameSources1.AppID = types.StringPointerValue(usernameSourcesItem.AppID)
+				usernameSources1.AppUserID = types.StringPointerValue(usernameSourcesItem.AppUserID)
+				usernameSources1.AppUserProfileAttributeKey = types.StringPointerValue(usernameSourcesItem.AppUserProfileAttributeKey)
+				usernameSources1.UserAttributeMappingID = types.StringPointerValue(usernameSourcesItem.UserAttributeMappingID)
+				usernameSources1.Value = types.StringPointerValue(usernameSourcesItem.Value)
 				if usernameSourcesCount+1 > len(r.UsernameSources) {
-					r.UsernameSources = append(r.UsernameSources, usernameSources)
+					r.UsernameSources = append(r.UsernameSources, usernameSources1)
 				} else {
-					r.UsernameSources[usernameSourcesCount].AppID = usernameSources.AppID
-					r.UsernameSources[usernameSourcesCount].AppUserID = usernameSources.AppUserID
-					r.UsernameSources[usernameSourcesCount].AppUserProfileAttributeKey = usernameSources.AppUserProfileAttributeKey
-					r.UsernameSources[usernameSourcesCount].UserAttributeMappingID = usernameSources.UserAttributeMappingID
-					r.UsernameSources[usernameSourcesCount].Value = usernameSources.Value
+					r.UsernameSources[usernameSourcesCount].AppID = usernameSources1.AppID
+					r.UsernameSources[usernameSourcesCount].AppUserID = usernameSources1.AppUserID
+					r.UsernameSources[usernameSourcesCount].AppUserProfileAttributeKey = usernameSources1.AppUserProfileAttributeKey
+					r.UsernameSources[usernameSourcesCount].UserAttributeMappingID = usernameSources1.UserAttributeMappingID
+					r.UsernameSources[usernameSourcesCount].Value = usernameSources1.Value
 				}
 			}
 		}
 	}
-
-	return diags
 }

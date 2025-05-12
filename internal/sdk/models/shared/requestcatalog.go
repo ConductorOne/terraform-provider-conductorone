@@ -9,19 +9,19 @@ import (
 	"time"
 )
 
-// EnrollmentBehavior - Defines how to handle the request policies of the entitlements in the catalog during enrollment.
-type EnrollmentBehavior string
+// RequestCatalogEnrollmentBehavior - Defines how to handle the request policies of the entitlements in the catalog during enrollment.
+type RequestCatalogEnrollmentBehavior string
 
 const (
-	EnrollmentBehaviorRequestCatalogEnrollmentBehaviorUnspecified                     EnrollmentBehavior = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED"
-	EnrollmentBehaviorRequestCatalogEnrollmentBehaviorBypassEntitlementRequestPolicy  EnrollmentBehavior = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY"
-	EnrollmentBehaviorRequestCatalogEnrollmentBehaviorEnforceEntitlementRequestPolicy EnrollmentBehavior = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY"
+	RequestCatalogEnrollmentBehaviorRequestCatalogEnrollmentBehaviorUnspecified                     RequestCatalogEnrollmentBehavior = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED"
+	RequestCatalogEnrollmentBehaviorRequestCatalogEnrollmentBehaviorBypassEntitlementRequestPolicy  RequestCatalogEnrollmentBehavior = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY"
+	RequestCatalogEnrollmentBehaviorRequestCatalogEnrollmentBehaviorEnforceEntitlementRequestPolicy RequestCatalogEnrollmentBehavior = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY"
 )
 
-func (e EnrollmentBehavior) ToPointer() *EnrollmentBehavior {
+func (e RequestCatalogEnrollmentBehavior) ToPointer() *RequestCatalogEnrollmentBehavior {
 	return &e
 }
-func (e *EnrollmentBehavior) UnmarshalJSON(data []byte) error {
+func (e *RequestCatalogEnrollmentBehavior) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -32,27 +32,27 @@ func (e *EnrollmentBehavior) UnmarshalJSON(data []byte) error {
 	case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY":
 		fallthrough
 	case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY":
-		*e = EnrollmentBehavior(v)
+		*e = RequestCatalogEnrollmentBehavior(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for EnrollmentBehavior: %v", v)
+		return fmt.Errorf("invalid value for RequestCatalogEnrollmentBehavior: %v", v)
 	}
 }
 
-// UnenrollmentBehavior - Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
-type UnenrollmentBehavior string
+// RequestCatalogUnenrollmentBehavior - Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
+type RequestCatalogUnenrollmentBehavior string
 
 const (
-	UnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorUnspecified       UnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED"
-	UnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorLeaveAccessAsIs   UnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS"
-	UnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorRevokeAll         UnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL"
-	UnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorRevokeUnjustified UnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED"
+	RequestCatalogUnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorUnspecified       RequestCatalogUnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED"
+	RequestCatalogUnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorLeaveAccessAsIs   RequestCatalogUnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS"
+	RequestCatalogUnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorRevokeAll         RequestCatalogUnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL"
+	RequestCatalogUnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorRevokeUnjustified RequestCatalogUnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED"
 )
 
-func (e UnenrollmentBehavior) ToPointer() *UnenrollmentBehavior {
+func (e RequestCatalogUnenrollmentBehavior) ToPointer() *RequestCatalogUnenrollmentBehavior {
 	return &e
 }
-func (e *UnenrollmentBehavior) UnmarshalJSON(data []byte) error {
+func (e *RequestCatalogUnenrollmentBehavior) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -65,26 +65,26 @@ func (e *UnenrollmentBehavior) UnmarshalJSON(data []byte) error {
 	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL":
 		fallthrough
 	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED":
-		*e = UnenrollmentBehavior(v)
+		*e = RequestCatalogUnenrollmentBehavior(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for UnenrollmentBehavior: %v", v)
+		return fmt.Errorf("invalid value for RequestCatalogUnenrollmentBehavior: %v", v)
 	}
 }
 
-// UnenrollmentEntitlementBehavior - Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
-type UnenrollmentEntitlementBehavior string
+// RequestCatalogUnenrollmentEntitlementBehavior - Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
+type RequestCatalogUnenrollmentEntitlementBehavior string
 
 const (
-	UnenrollmentEntitlementBehaviorRequestCatalogUnenrollmentEntitlementBehaviorUnspecified UnenrollmentEntitlementBehavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED"
-	UnenrollmentEntitlementBehaviorRequestCatalogUnenrollmentEntitlementBehaviorBypass      UnenrollmentEntitlementBehavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS"
-	UnenrollmentEntitlementBehaviorRequestCatalogUnenrollmentEntitlementBehaviorEnforce     UnenrollmentEntitlementBehavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE"
+	RequestCatalogUnenrollmentEntitlementBehaviorRequestCatalogUnenrollmentEntitlementBehaviorUnspecified RequestCatalogUnenrollmentEntitlementBehavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED"
+	RequestCatalogUnenrollmentEntitlementBehaviorRequestCatalogUnenrollmentEntitlementBehaviorBypass      RequestCatalogUnenrollmentEntitlementBehavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS"
+	RequestCatalogUnenrollmentEntitlementBehaviorRequestCatalogUnenrollmentEntitlementBehaviorEnforce     RequestCatalogUnenrollmentEntitlementBehavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE"
 )
 
-func (e UnenrollmentEntitlementBehavior) ToPointer() *UnenrollmentEntitlementBehavior {
+func (e RequestCatalogUnenrollmentEntitlementBehavior) ToPointer() *RequestCatalogUnenrollmentEntitlementBehavior {
 	return &e
 }
-func (e *UnenrollmentEntitlementBehavior) UnmarshalJSON(data []byte) error {
+func (e *RequestCatalogUnenrollmentEntitlementBehavior) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -95,10 +95,10 @@ func (e *UnenrollmentEntitlementBehavior) UnmarshalJSON(data []byte) error {
 	case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS":
 		fallthrough
 	case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE":
-		*e = UnenrollmentEntitlementBehavior(v)
+		*e = RequestCatalogUnenrollmentEntitlementBehavior(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for UnenrollmentEntitlementBehavior: %v", v)
+		return fmt.Errorf("invalid value for RequestCatalogUnenrollmentEntitlementBehavior: %v", v)
 	}
 }
 
@@ -113,7 +113,7 @@ type RequestCatalog struct {
 	// The display name of the request catalog.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Defines how to handle the request policies of the entitlements in the catalog during enrollment.
-	EnrollmentBehavior *EnrollmentBehavior `json:"enrollmentBehavior,omitempty"`
+	EnrollmentBehavior *RequestCatalogEnrollmentBehavior `json:"enrollmentBehavior,omitempty"`
 	// The id of the request catalog.
 	ID *string `json:"id,omitempty"`
 	// Whether or not this catalog is published.
@@ -121,10 +121,10 @@ type RequestCatalog struct {
 	// Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
 	RequestBundle *bool `json:"requestBundle,omitempty"`
 	// Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
-	UnenrollmentBehavior *UnenrollmentBehavior `json:"unenrollmentBehavior,omitempty"`
+	UnenrollmentBehavior *RequestCatalogUnenrollmentBehavior `json:"unenrollmentBehavior,omitempty"`
 	// Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
-	UnenrollmentEntitlementBehavior *UnenrollmentEntitlementBehavior `json:"unenrollmentEntitlementBehavior,omitempty"`
-	UpdatedAt                       *time.Time                       `json:"updatedAt,omitempty"`
+	UnenrollmentEntitlementBehavior *RequestCatalogUnenrollmentEntitlementBehavior `json:"unenrollmentEntitlementBehavior,omitempty"`
+	UpdatedAt                       *time.Time                                     `json:"updatedAt,omitempty"`
 	// If this is true, the access entitlement requirement is ignored.
 	VisibleToEveryone *bool `json:"visibleToEveryone,omitempty"`
 }
@@ -175,7 +175,7 @@ func (o *RequestCatalog) GetDisplayName() *string {
 	return o.DisplayName
 }
 
-func (o *RequestCatalog) GetEnrollmentBehavior() *EnrollmentBehavior {
+func (o *RequestCatalog) GetEnrollmentBehavior() *RequestCatalogEnrollmentBehavior {
 	if o == nil {
 		return nil
 	}
@@ -203,14 +203,14 @@ func (o *RequestCatalog) GetRequestBundle() *bool {
 	return o.RequestBundle
 }
 
-func (o *RequestCatalog) GetUnenrollmentBehavior() *UnenrollmentBehavior {
+func (o *RequestCatalog) GetUnenrollmentBehavior() *RequestCatalogUnenrollmentBehavior {
 	if o == nil {
 		return nil
 	}
 	return o.UnenrollmentBehavior
 }
 
-func (o *RequestCatalog) GetUnenrollmentEntitlementBehavior() *UnenrollmentEntitlementBehavior {
+func (o *RequestCatalog) GetUnenrollmentEntitlementBehavior() *RequestCatalogUnenrollmentEntitlementBehavior {
 	if o == nil {
 		return nil
 	}
@@ -240,7 +240,7 @@ type RequestCatalogInput struct {
 	// The display name of the request catalog.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Defines how to handle the request policies of the entitlements in the catalog during enrollment.
-	EnrollmentBehavior *EnrollmentBehavior `json:"enrollmentBehavior,omitempty"`
+	EnrollmentBehavior *RequestCatalogEnrollmentBehavior `json:"enrollmentBehavior,omitempty"`
 	// The id of the request catalog.
 	ID *string `json:"id,omitempty"`
 	// Whether or not this catalog is published.
@@ -248,9 +248,9 @@ type RequestCatalogInput struct {
 	// Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
 	RequestBundle *bool `json:"requestBundle,omitempty"`
 	// Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
-	UnenrollmentBehavior *UnenrollmentBehavior `json:"unenrollmentBehavior,omitempty"`
+	UnenrollmentBehavior *RequestCatalogUnenrollmentBehavior `json:"unenrollmentBehavior,omitempty"`
 	// Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
-	UnenrollmentEntitlementBehavior *UnenrollmentEntitlementBehavior `json:"unenrollmentEntitlementBehavior,omitempty"`
+	UnenrollmentEntitlementBehavior *RequestCatalogUnenrollmentEntitlementBehavior `json:"unenrollmentEntitlementBehavior,omitempty"`
 	// If this is true, the access entitlement requirement is ignored.
 	VisibleToEveryone *bool `json:"visibleToEveryone,omitempty"`
 }
@@ -276,7 +276,7 @@ func (o *RequestCatalogInput) GetDisplayName() *string {
 	return o.DisplayName
 }
 
-func (o *RequestCatalogInput) GetEnrollmentBehavior() *EnrollmentBehavior {
+func (o *RequestCatalogInput) GetEnrollmentBehavior() *RequestCatalogEnrollmentBehavior {
 	if o == nil {
 		return nil
 	}
@@ -304,14 +304,14 @@ func (o *RequestCatalogInput) GetRequestBundle() *bool {
 	return o.RequestBundle
 }
 
-func (o *RequestCatalogInput) GetUnenrollmentBehavior() *UnenrollmentBehavior {
+func (o *RequestCatalogInput) GetUnenrollmentBehavior() *RequestCatalogUnenrollmentBehavior {
 	if o == nil {
 		return nil
 	}
 	return o.UnenrollmentBehavior
 }
 
-func (o *RequestCatalogInput) GetUnenrollmentEntitlementBehavior() *UnenrollmentEntitlementBehavior {
+func (o *RequestCatalogInput) GetUnenrollmentEntitlementBehavior() *RequestCatalogUnenrollmentEntitlementBehavior {
 	if o == nil {
 		return nil
 	}

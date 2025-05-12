@@ -3,55 +3,21 @@
 package provider
 
 import (
-	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
-func (r *AppOwnerResourceModel) ToSharedSetAppOwnersRequest(ctx context.Context) (*shared.SetAppOwnersRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var userIds []string
-	if r.UserIds != nil {
-		userIds = make([]string, 0, len(r.UserIds))
-		for _, userIdsItem := range r.UserIds {
-			userIds = append(userIds, userIdsItem.ValueString())
-		}
+func (r *AppOwnerResourceModel) ToSharedSetAppOwnersRequest() *shared.SetAppOwnersRequest {
+	var userIds []string = []string{}
+	for _, userIdsItem := range r.UserIds {
+		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.SetAppOwnersRequest{
 		UserIds: userIds,
 	}
-
-	return &out, diags
+	return &out
 }
 
-func (r *AppOwnerResourceModel) ToOperationsC1APIAppV1AppOwnersSetRequest(ctx context.Context) (*operations.C1APIAppV1AppOwnersSetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var appID string
-	appID = r.AppID.ValueString()
-
-	setAppOwnersRequest, setAppOwnersRequestDiags := r.ToSharedSetAppOwnersRequest(ctx)
-	diags.Append(setAppOwnersRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIAppV1AppOwnersSetRequest{
-		AppID:               appID,
-		SetAppOwnersRequest: setAppOwnersRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *AppOwnerResourceModel) RefreshFromSharedSetAppOwnersResponse(ctx context.Context, resp *shared.SetAppOwnersResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func (r *AppOwnerResourceModel) RefreshFromSharedSetAppOwnersResponse(resp *shared.SetAppOwnersResponse) {
 	if resp != nil {
 	}
-
-	return diags
 }
