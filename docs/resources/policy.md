@@ -27,6 +27,7 @@ resource "conductorone_policy" "my_policy" {
           }
           approval = {
             agent_approval = {
+              agent_mode    = "APPROVAL_AGENT_MODE_FULL_CONTROL"
               agent_user_id = "...my_agent_user_id..."
               instructions  = "...my_instructions..."
               policy_ids = [
@@ -282,9 +283,10 @@ Read-Only:
 
 Optional:
 
+- `agent_mode` (String) The mode of the agent, full control, change policy only, or comment only. must be one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]
 - `agent_user_id` (String) The agent user ID to assign the task to.
 - `instructions` (String) Instructions for the agent.
-- `policy_ids` (List of String) The policyIds field.
+- `policy_ids` (List of String) The allow list of policy IDs to re-route the task to.
 
 
 <a id="nestedatt--policy_steps--steps--approval--app_group_approval"></a>

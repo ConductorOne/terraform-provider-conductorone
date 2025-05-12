@@ -105,6 +105,7 @@ func (r *IntegrationTrelloResource) Schema(ctx context.Context, req resource.Sch
 			"organizations": &schema.ListAttribute{
 				Description: `Organizations`,
 				ElementType: types.StringType,
+				Required:    true,
 			},
 		},
 	}

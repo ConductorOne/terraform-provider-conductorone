@@ -142,9 +142,10 @@ Read-Only:
 
 Read-Only:
 
+- `agent_mode` (String) The mode of the agent, full control, change policy only, or comment only.
 - `agent_user_id` (String) The agent user ID to assign the task to.
 - `instructions` (String) Instructions for the agent.
-- `policy_ids` (List of String) The policyIds field.
+- `policy_ids` (List of String) The allow list of policy IDs to re-route the task to.
 
 
 <a id="nestedatt--policy_steps--steps--approval--app_group_approval"></a>
