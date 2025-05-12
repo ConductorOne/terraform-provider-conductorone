@@ -43,7 +43,7 @@ func (r *IntegrationCloudflareZeroTrustV2ResourceModel) ToCreateSDKType() (*shar
 	out := shared.ConnectorServiceCreateRequest{
 		CatalogID: catalogID,
 		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
+		Config: &shared.Config{
 			AtType: sdk.String(envConfigType),
 			AdditionalProperties: map[string]interface{}{
 				"configuration": configOut,
