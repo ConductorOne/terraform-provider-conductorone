@@ -128,6 +128,10 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 		if !r.ProvisionPolicy.MultiStep.IsUnknown() && !r.ProvisionPolicy.MultiStep.IsNull() {
 			_ = json.Unmarshal([]byte(r.ProvisionPolicy.MultiStep.ValueString()), &multiStep)
 		}
+		var unconfiguredProvision *shared.UnconfiguredProvision
+		if r.ProvisionPolicy.UnconfiguredProvision != nil {
+			unconfiguredProvision = (*shared.UnconfiguredProvision)(r.ProvisionPolicy.UnconfiguredProvision)
+		}
 		var webhookProvision *shared.WebhookProvision
 		if r.ProvisionPolicy.WebhookProvision != nil {
 			webhookID := new(string)
@@ -146,6 +150,7 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 			ExternalTicketProvision: externalTicketProvision,
 			ManualProvision:         manualProvision,
 			MultiStep:               multiStep,
+			UnconfiguredProvision:   unconfiguredProvision,
 			WebhookProvision:        webhookProvision,
 		}
 	}
@@ -412,6 +417,11 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 		} else {
 			multiStepResult1, _ := json.Marshal(resp.ProvisionPolicy.MultiStep)
 			r.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult1))
+		}
+		if resp.ProvisionPolicy.UnconfiguredProvision == nil {
+			r.ProvisionPolicy.UnconfiguredProvision = nil
+		} else {
+			r.ProvisionPolicy.UnconfiguredProvision = (*tfTypes.UnconfiguredProvision)(resp.ProvisionPolicy.UnconfiguredProvision)
 		}
 		if resp.ProvisionPolicy.WebhookProvision == nil {
 			r.ProvisionPolicy.WebhookProvision = nil
