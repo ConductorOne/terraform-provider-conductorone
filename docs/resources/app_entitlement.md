@@ -74,6 +74,7 @@ This message contains a oneof named provision_type. Only a single field of the f
 - `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--provision_policy--external_ticket_provision))
 - `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--provision_policy--manual_provision))
 - `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
+- `unconfigured_provision` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--provision_policy--unconfigured_provision))
 - `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--provision_policy--webhook_provision))
 
 <a id="nestedatt--provision_policy--connector_provision"></a>
@@ -135,6 +136,10 @@ Optional:
 
 - `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
 - `user_ids` (List of String) An array of users that are required to provision during this step.
+
+
+<a id="nestedatt--provision_policy--unconfigured_provision"></a>
+### Nested Schema for `provision_policy.unconfigured_provision`
 
 
 <a id="nestedatt--provision_policy--webhook_provision"></a>

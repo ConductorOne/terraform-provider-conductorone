@@ -317,6 +317,11 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 							validators.IsValidJSON(),
 						},
 					},
+					"unconfigured_provision": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The UnconfiguredProvision message.`,
+					},
 					"webhook_provision": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
