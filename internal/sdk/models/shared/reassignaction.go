@@ -14,13 +14,13 @@ package shared
 type ReassignAction struct {
 	// The assigneeUserIdCel field.
 	// This field is part of the `assignee_user_identifier` oneof.
-	// See the documentation for `c1.api.workflows.v1beta.ReassignAction` for more details.
+	// See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
 	AssigneeUserIDCel *string `json:"assigneeUserIdCel,omitempty"`
 	// A reference to a user.
 	UserRef *UserRef `json:"assigneeUserRef,omitempty"`
 	// The subjectUserIdCel field.
 	// This field is part of the `subject_user_identifier` oneof.
-	// See the documentation for `c1.api.workflows.v1beta.ReassignAction` for more details.
+	// See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
 	SubjectUserIDCel *string `json:"subjectUserIdCel,omitempty"`
 	// A reference to a user.
 	UserRef1 *UserRef `json:"subjectUserRef,omitempty"`

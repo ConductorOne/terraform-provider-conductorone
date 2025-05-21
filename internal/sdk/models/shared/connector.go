@@ -59,6 +59,10 @@ type Connector struct {
 	ID *string `json:"id,omitempty"`
 	// OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
 	OAuth2AuthorizedAs *OAuth2AuthorizedAs `json:"oauthAuthorizedAs,omitempty"`
+	// List of profile attributes to sync, when set only these attributes will be synced
+	ProfileAllowList []string `json:"profileAllowList,omitempty"`
+	// List of profile attributes to ignore (not sync), when set other attributes will be synced, but these will not.
+	ProfileIgnoreList []string `json:"profileIgnoreList,omitempty"`
 	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
 	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
 	SyncDisabledAt  *time.Time       `json:"syncDisabledAt,omitempty"`
@@ -152,6 +156,20 @@ func (o *Connector) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAs {
 	return o.OAuth2AuthorizedAs
 }
 
+func (o *Connector) GetProfileAllowList() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ProfileAllowList
+}
+
+func (o *Connector) GetProfileIgnoreList() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ProfileIgnoreList
+}
+
 func (o *Connector) GetConnectorStatus() *ConnectorStatus {
 	if o == nil {
 		return nil
@@ -210,6 +228,10 @@ type ConnectorInput struct {
 	ID *string `json:"id,omitempty"`
 	// OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
 	OAuth2AuthorizedAs *OAuth2AuthorizedAsInput `json:"oauthAuthorizedAs,omitempty"`
+	// List of profile attributes to sync, when set only these attributes will be synced
+	ProfileAllowList []string `json:"profileAllowList,omitempty"`
+	// List of profile attributes to ignore (not sync), when set other attributes will be synced, but these will not.
+	ProfileIgnoreList []string `json:"profileIgnoreList,omitempty"`
 	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
 	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
 	// The category of the connector sync that was disabled.
@@ -267,6 +289,20 @@ func (o *ConnectorInput) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAsInput {
 		return nil
 	}
 	return o.OAuth2AuthorizedAs
+}
+
+func (o *ConnectorInput) GetProfileAllowList() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ProfileAllowList
+}
+
+func (o *ConnectorInput) GetProfileIgnoreList() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ProfileIgnoreList
 }
 
 func (o *ConnectorInput) GetConnectorStatus() *ConnectorStatus {

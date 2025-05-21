@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type ProvisionTarget struct {
 	AppEntitlementID types.String `tfsdk:"app_entitlement_id"`

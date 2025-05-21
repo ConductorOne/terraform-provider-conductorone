@@ -4,20 +4,58 @@ package shared
 
 // The CreateAutomationRequest message.
 type CreateAutomationRequest struct {
-	// The AppEntitlementAutomation message.
-	//
-	// This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
-	//   - none
-	//   - entitlements
-	//   - cel
-	//   - basic
-	//
-	AppEntitlementAutomation *AppEntitlementAutomationInput `json:"automation,omitempty"`
+	// The automationSteps field.
+	AutomationSteps []AutomationStep `json:"automationSteps,omitempty"`
+	// The AutomationContext message.
+	AutomationContext *AutomationContext `json:"context,omitempty"`
+	// The description field.
+	Description *string `json:"description,omitempty"`
+	// The displayName field.
+	DisplayName *string `json:"displayName,omitempty"`
+	// The enabled field.
+	Enabled *bool `json:"enabled,omitempty"`
+	// The triggers field.
+	Triggers []AutomationTrigger `json:"triggers,omitempty"`
 }
 
-func (o *CreateAutomationRequest) GetAppEntitlementAutomation() *AppEntitlementAutomationInput {
+func (o *CreateAutomationRequest) GetAutomationSteps() []AutomationStep {
 	if o == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomation
+	return o.AutomationSteps
+}
+
+func (o *CreateAutomationRequest) GetAutomationContext() *AutomationContext {
+	if o == nil {
+		return nil
+	}
+	return o.AutomationContext
+}
+
+func (o *CreateAutomationRequest) GetDescription() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Description
+}
+
+func (o *CreateAutomationRequest) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *CreateAutomationRequest) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *CreateAutomationRequest) GetTriggers() []AutomationTrigger {
+	if o == nil {
+		return nil
+	}
+	return o.Triggers
 }

@@ -115,6 +115,10 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											"agent_approval": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
+													"agent_mode": schema.StringAttribute{
+														Computed:    true,
+														Description: `The mode of the agent, full control, change policy only, or comment only.`,
+													},
 													"agent_user_id": schema.StringAttribute{
 														Computed:    true,
 														Description: `The agent user ID to assign the task to.`,
@@ -126,7 +130,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													"policy_ids": schema.ListAttribute{
 														Computed:    true,
 														ElementType: types.StringType,
-														Description: `The policyIds field.`,
+														Description: `The allow list of policy IDs to re-route the task to.`,
 													},
 												},
 												Description: `The agent to assign the task to.`,
@@ -199,6 +203,49 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													},
 												},
 												Description: `The entitlement owner approval allows configuration of the approval step when the target approvers are the entitlement owners.`,
+											},
+											"escalation": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"escalation_comment": schema.StringAttribute{
+														Computed:    true,
+														Description: `The escalationComment field.`,
+													},
+													"expiration": schema.StringAttribute{
+														Computed:    true,
+														Description: `The expiration field.`,
+													},
+													"reassign_to_approvers": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"approver_ids": schema.ListAttribute{
+																Computed:    true,
+																ElementType: types.StringType,
+																Description: `The approverIds field.`,
+															},
+														},
+														Description: `The ReassignToApprovers message.`,
+													},
+													"replace_policy": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"policy_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The policyId field.`,
+															},
+														},
+														Description: `The ReplacePolicy message.`,
+													},
+												},
+												MarkdownDescription: `The Escalation message.` + "\n" +
+													`` + "\n" +
+													`This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:` + "\n" +
+													`  - replacePolicy` + "\n" +
+													`  - reassignToApprovers`,
+											},
+											"escalation_enabled": schema.BoolAttribute{
+												Computed:    true,
+												Description: `Whether escalation is enabled for this step.`,
 											},
 											"expression_approval": schema.SingleNestedAttribute{
 												Computed: true,

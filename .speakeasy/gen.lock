@@ -1,22 +1,21 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 5798417a6db07f9511c818d2166bdf8b
+  docChecksum: 57d70d3862dc776faea9f7f943b056de
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.541.2
-  generationVersion: 2.595.4
-  releaseVersion: 1.2.0
-  configChecksum: 8660d782d224bd4ba8f9d086bdb4e001
+  speakeasyVersion: 1.548.2
+  generationVersion: 2.605.0
+  releaseVersion: 1.3.0
+  configChecksum: 7b0f63b05e512f6baa2da0466a129946
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
-    core: 3.41.6
+    core: 3.41.9
     deprecations: 2.82.0
     devContainers: 0.0.0
-    envVarSecurityUsage: 0.1.0
-    globalSecurity: 2.81.10
-    globalServerURLs: 2.82.1
+    globalSecurity: 2.81.11
+    globalServerURLs: 2.82.2
     groups: 2.81.2
     ignores: 2.81.1
     includes: 2.81.1
@@ -194,6 +193,7 @@ generatedFiles:
   - internal/provider/types/deprovisioner_policy.go
   - internal/provider/types/do_not_save.go
   - internal/provider/types/entitlement_owner_approval.go
+  - internal/provider/types/escalation.go
   - internal/provider/types/expression_approval.go
   - internal/provider/types/external_ticket_provision.go
   - internal/provider/types/get_app_entitlement_proxy_response_expanded.go
@@ -208,7 +208,9 @@ generatedFiles:
   - internal/provider/types/provision.go
   - internal/provider/types/provision_policy.go
   - internal/provider/types/provision_target.go
+  - internal/provider/types/reassign_to_approvers.go
   - internal/provider/types/reject.go
+  - internal/provider/types/replace_policy.go
   - internal/provider/types/request_catalog_management_service_get_response_expanded.go
   - internal/provider/types/resource_owner_approval.go
   - internal/provider/types/rule.go
@@ -254,6 +256,11 @@ generatedFiles:
   - internal/sdk/attributes.go
   - internal/sdk/attributesearch.go
   - internal/sdk/auth.go
+  - internal/sdk/automation.go
+  - internal/sdk/automationexecution.go
+  - internal/sdk/automationexecutionactions.go
+  - internal/sdk/automationexecutionsearch.go
+  - internal/sdk/automationsearch.go
   - internal/sdk/awsexternalidsettings.go
   - internal/sdk/conductoroneapi.go
   - internal/sdk/connector.go
@@ -366,6 +373,18 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiattributev1attributeslistattributetypes.go
   - internal/sdk/models/operations/c1apiattributev1attributeslistattributevalues.go
   - internal/sdk/models/operations/c1apiauthv1authintrospect.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationexecutionactionsserviceterminateautomation.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationexecutionsearchservicesearchautomationexecutions.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationexecutionservicegetautomationexecution.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationexecutionservicelistautomationexecutions.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationsearchservicesearchautomations.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationsearchservicesearchautomationtemplateversions.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationservicecreateautomation.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationservicedeleteautomation.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationserviceexecuteautomation.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationservicegetautomation.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationservicelistautomations.go
+  - internal/sdk/models/operations/c1apiautomationsv1automationserviceupdateautomation.go
   - internal/sdk/models/operations/c1apidirectoryv1directoryservicecreate.go
   - internal/sdk/models/operations/c1apidirectoryv1directoryservicedelete.go
   - internal/sdk/models/operations/c1apidirectoryv1directoryserviceget.go
@@ -454,17 +473,6 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiwebhooksv1webhooksservicelist.go
   - internal/sdk/models/operations/c1apiwebhooksv1webhooksservicetest.go
   - internal/sdk/models/operations/c1apiwebhooksv1webhooksserviceupdate.go
-  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowexecutionactionsserviceterminateworkflow.go
-  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowexecutionsearchservicesearchworkflowexecutions.go
-  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowexecutionservicegetworkflowexecution.go
-  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowexecutionservicelistworkflowexecutions.go
-  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowsearchservicesearchworkflows.go
-  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowservicecreateworkflow.go
-  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowservicedeleteworkflow.go
-  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowserviceexecuteworkflow.go
-  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowservicegetworkflow.go
-  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowservicelistworkflows.go
-  - internal/sdk/models/operations/c1apiworkflowsv1betaworkflowserviceupdateworkflow.go
   - internal/sdk/models/operations/options.go
   - internal/sdk/models/shared/accept.go
   - internal/sdk/models/shared/acceptinstance.go
@@ -554,6 +562,17 @@ generatedFiles:
   - internal/sdk/models/shared/appuserview.go
   - internal/sdk/models/shared/attributetype.go
   - internal/sdk/models/shared/attributevalue.go
+  - internal/sdk/models/shared/automation.go
+  - internal/sdk/models/shared/automationcontext.go
+  - internal/sdk/models/shared/automationexecution.go
+  - internal/sdk/models/shared/automationexecutionexpandmask.go
+  - internal/sdk/models/shared/automationexecutionref.go
+  - internal/sdk/models/shared/automationexecutionview.go
+  - internal/sdk/models/shared/automationinput.go
+  - internal/sdk/models/shared/automationstep.go
+  - internal/sdk/models/shared/automationtemplateref.go
+  - internal/sdk/models/shared/automationtemplateversion.go
+  - internal/sdk/models/shared/automationtrigger.go
   - internal/sdk/models/shared/awsexternalid.go
   - internal/sdk/models/shared/body.go
   - internal/sdk/models/shared/bundleautomation.go
@@ -568,6 +587,7 @@ generatedFiles:
   - internal/sdk/models/shared/conditiontimedout.go
   - internal/sdk/models/shared/connector.go
   - internal/sdk/models/shared/connectoraction.go
+  - internal/sdk/models/shared/connectorcreateaccount.go
   - internal/sdk/models/shared/connectorcredential.go
   - internal/sdk/models/shared/connectorprovision.go
   - internal/sdk/models/shared/connectorref.go
@@ -598,7 +618,9 @@ generatedFiles:
   - internal/sdk/models/shared/createattributevaluerequest.go
   - internal/sdk/models/shared/createattributevalueresponse.go
   - internal/sdk/models/shared/createautomationrequest.go
+  - internal/sdk/models/shared/createautomationrequestinput.go
   - internal/sdk/models/shared/createautomationresponse.go
+  - internal/sdk/models/shared/createautomationresponse1.go
   - internal/sdk/models/shared/createbundleautomationrequest.go
   - internal/sdk/models/shared/createcomplianceframeworkattributevaluerequest.go
   - internal/sdk/models/shared/createcomplianceframeworkattributevalueresponse.go
@@ -613,8 +635,6 @@ generatedFiles:
   - internal/sdk/models/shared/createrisklevelattributevalueresponse.go
   - internal/sdk/models/shared/createstepupproviderrequest.go
   - internal/sdk/models/shared/createstepupproviderresponse.go
-  - internal/sdk/models/shared/createworkflowrequest.go
-  - internal/sdk/models/shared/createworkflowresponse.go
   - internal/sdk/models/shared/defaultbehavior.go
   - internal/sdk/models/shared/delegatedprovision.go
   - internal/sdk/models/shared/deleteappentitlementproxyrequest.go
@@ -641,8 +661,6 @@ generatedFiles:
   - internal/sdk/models/shared/deleterisklevelattributevalueresponse.go
   - internal/sdk/models/shared/deletestepupproviderrequest.go
   - internal/sdk/models/shared/deletestepupproviderresponse.go
-  - internal/sdk/models/shared/deleteworkflowrequest.go
-  - internal/sdk/models/shared/deleteworkflowresponse.go
   - internal/sdk/models/shared/deniedaction.go
   - internal/sdk/models/shared/directory.go
   - internal/sdk/models/shared/directoryservicecreaterequest.go
@@ -656,8 +674,9 @@ generatedFiles:
   - internal/sdk/models/shared/encrypteddata.go
   - internal/sdk/models/shared/entitlementownerapproval.go
   - internal/sdk/models/shared/erroredaction.go
-  - internal/sdk/models/shared/executeworkflowrequest.go
-  - internal/sdk/models/shared/executeworkflowresponse.go
+  - internal/sdk/models/shared/escalation.go
+  - internal/sdk/models/shared/executeautomationrequest.go
+  - internal/sdk/models/shared/executeautomationresponse.go
   - internal/sdk/models/shared/exporter.go
   - internal/sdk/models/shared/exporterinput.go
   - internal/sdk/models/shared/exporterref.go
@@ -687,6 +706,8 @@ generatedFiles:
   - internal/sdk/models/shared/getappresponse.go
   - internal/sdk/models/shared/getappusagecontrolsresponse.go
   - internal/sdk/models/shared/getattributevalueresponse.go
+  - internal/sdk/models/shared/getautomationexecutionresponse.go
+  - internal/sdk/models/shared/getautomationresponse.go
   - internal/sdk/models/shared/getawsexternalidresponse.go
   - internal/sdk/models/shared/getcomplianceframeworkattributevalueresponse.go
   - internal/sdk/models/shared/getpolicyresponse.go
@@ -695,8 +716,6 @@ generatedFiles:
   - internal/sdk/models/shared/getsessionsettingsresponse.go
   - internal/sdk/models/shared/getstepupproviderresponse.go
   - internal/sdk/models/shared/getstepuptransactionresponse.go
-  - internal/sdk/models/shared/getworkflowexecutionresponse.go
-  - internal/sdk/models/shared/getworkflowresponse.go
   - internal/sdk/models/shared/grantreason.go
   - internal/sdk/models/shared/introspectresponse.go
   - internal/sdk/models/shared/listappentitlementownersresponse.go
@@ -709,17 +728,17 @@ generatedFiles:
   - internal/sdk/models/shared/listattributetypesresponse.go
   - internal/sdk/models/shared/listattributevaluesresponse.go
   - internal/sdk/models/shared/listautomationexclusionsresponse.go
+  - internal/sdk/models/shared/listautomationexecutionsresponse.go
+  - internal/sdk/models/shared/listautomationsresponse.go
   - internal/sdk/models/shared/listorgdomainsresponse.go
   - internal/sdk/models/shared/listpolicyresponse.go
   - internal/sdk/models/shared/listrolesresponse.go
   - internal/sdk/models/shared/liststepupprovidersresponse.go
-  - internal/sdk/models/shared/listworkflowexecutionsresponse.go
-  - internal/sdk/models/shared/listworkflowsresponse.go
   - internal/sdk/models/shared/managerapproval.go
   - internal/sdk/models/shared/managerapprovalinput.go
+  - internal/sdk/models/shared/manualautomationtrigger.go
   - internal/sdk/models/shared/manuallymanagedusersresponse.go
   - internal/sdk/models/shared/manualprovision.go
-  - internal/sdk/models/shared/manualworkflowtrigger.go
   - internal/sdk/models/shared/marker.go
   - internal/sdk/models/shared/oauth2authorizedas.go
   - internal/sdk/models/shared/oauth2authorizedasinput.go
@@ -757,6 +776,7 @@ generatedFiles:
   - internal/sdk/models/shared/reassignaction.go
   - internal/sdk/models/shared/reassignedaction.go
   - internal/sdk/models/shared/reassignedbyerroraction.go
+  - internal/sdk/models/shared/reassigntoapprovers.go
   - internal/sdk/models/shared/reject.go
   - internal/sdk/models/shared/rejectinstance.go
   - internal/sdk/models/shared/removeappentitlementownerrequest.go
@@ -772,6 +792,7 @@ generatedFiles:
   - internal/sdk/models/shared/removefromdelegation.go
   - internal/sdk/models/shared/removegrantdurationrequest.go
   - internal/sdk/models/shared/removegrantdurationresponse.go
+  - internal/sdk/models/shared/replacepolicy.go
   - internal/sdk/models/shared/requestcatalog.go
   - internal/sdk/models/shared/requestcatalogmanagementserviceaddaccessentitlementsrequest.go
   - internal/sdk/models/shared/requestcatalogmanagementserviceaddaccessentitlementsresponse.go
@@ -808,7 +829,7 @@ generatedFiles:
   - internal/sdk/models/shared/role.go
   - internal/sdk/models/shared/roleinput.go
   - internal/sdk/models/shared/rule.go
-  - internal/sdk/models/shared/runworkflow.go
+  - internal/sdk/models/shared/runautomation.go
   - internal/sdk/models/shared/savetovault.go
   - internal/sdk/models/shared/searchappentitlementswithexpiredresponse.go
   - internal/sdk/models/shared/searchappresourcetypesrequest.go
@@ -817,6 +838,12 @@ generatedFiles:
   - internal/sdk/models/shared/searchappsresponse.go
   - internal/sdk/models/shared/searchattributevaluesrequest.go
   - internal/sdk/models/shared/searchattributevaluesresponse.go
+  - internal/sdk/models/shared/searchautomationexecutionsrequest.go
+  - internal/sdk/models/shared/searchautomationexecutionsresponse.go
+  - internal/sdk/models/shared/searchautomationsrequest.go
+  - internal/sdk/models/shared/searchautomationsresponse.go
+  - internal/sdk/models/shared/searchautomationtemplateversionsrequest.go
+  - internal/sdk/models/shared/searchautomationtemplateversionsresponse.go
   - internal/sdk/models/shared/searchgrantfeedrequest.go
   - internal/sdk/models/shared/searchgrantfeedresponse.go
   - internal/sdk/models/shared/searchpastgrantsrequest.go
@@ -828,10 +855,6 @@ generatedFiles:
   - internal/sdk/models/shared/searchstepuptransactionsresponse.go
   - internal/sdk/models/shared/searchusersrequest.go
   - internal/sdk/models/shared/searchusersresponse.go
-  - internal/sdk/models/shared/searchworkflowexecutionsrequest.go
-  - internal/sdk/models/shared/searchworkflowexecutionsresponse.go
-  - internal/sdk/models/shared/searchworkflowsrequest.go
-  - internal/sdk/models/shared/searchworkflowsresponse.go
   - internal/sdk/models/shared/secrettrait.go
   - internal/sdk/models/shared/security.go
   - internal/sdk/models/shared/selfapproval.go
@@ -958,8 +981,8 @@ generatedFiles:
   - internal/sdk/models/shared/tasktyperevoke.go
   - internal/sdk/models/shared/tasktyperevokeinput.go
   - internal/sdk/models/shared/taskview.go
-  - internal/sdk/models/shared/terminateworkflowrequest.go
-  - internal/sdk/models/shared/terminateworkflowresponse.go
+  - internal/sdk/models/shared/terminateautomationrequest.go
+  - internal/sdk/models/shared/terminateautomationresponse.go
   - internal/sdk/models/shared/testaccountprovisionpolicyrequest.go
   - internal/sdk/models/shared/testaccountprovisionpolicyresponse.go
   - internal/sdk/models/shared/testsourceiprequest.go
@@ -974,6 +997,8 @@ generatedFiles:
   - internal/sdk/models/shared/updateappresponse.go
   - internal/sdk/models/shared/updateappusagecontrolsrequest.go
   - internal/sdk/models/shared/updateappusagecontrolsresponse.go
+  - internal/sdk/models/shared/updateautomationrequest.go
+  - internal/sdk/models/shared/updateautomationresponse.go
   - internal/sdk/models/shared/updategrantdurationrequest.go
   - internal/sdk/models/shared/updategrantdurationresponse.go
   - internal/sdk/models/shared/updatemanuallymanagedresourcetyperequest.go
@@ -991,12 +1016,11 @@ generatedFiles:
   - internal/sdk/models/shared/updatestepupprovidersecretrequest.go
   - internal/sdk/models/shared/updatestepupprovidersecretresponse.go
   - internal/sdk/models/shared/updateuser.go
-  - internal/sdk/models/shared/updateworkflowrequest.go
-  - internal/sdk/models/shared/updateworkflowresponse.go
   - internal/sdk/models/shared/user.go
   - internal/sdk/models/shared/userapproval.go
   - internal/sdk/models/shared/userattributemappingsource.go
   - internal/sdk/models/shared/userprofilechangetrigger.go
+  - internal/sdk/models/shared/userproperties.go
   - internal/sdk/models/shared/userref.go
   - internal/sdk/models/shared/userservicegetresponse.go
   - internal/sdk/models/shared/userservicelistresponse.go
@@ -1035,16 +1059,6 @@ generatedFiles:
   - internal/sdk/models/shared/webhooksservicetestresponse.go
   - internal/sdk/models/shared/webhooksserviceupdaterequest.go
   - internal/sdk/models/shared/webhooksserviceupdateresponse.go
-  - internal/sdk/models/shared/workflow.go
-  - internal/sdk/models/shared/workflowcontext.go
-  - internal/sdk/models/shared/workflowexecution.go
-  - internal/sdk/models/shared/workflowexecutionexpandmask.go
-  - internal/sdk/models/shared/workflowexecutionref.go
-  - internal/sdk/models/shared/workflowexecutionview.go
-  - internal/sdk/models/shared/workflowinput.go
-  - internal/sdk/models/shared/workflowstep.go
-  - internal/sdk/models/shared/workflowtemplateref.go
-  - internal/sdk/models/shared/workflowtrigger.go
   - internal/sdk/orgdomain.go
   - internal/sdk/personalclient.go
   - internal/sdk/personalclientsearch.go
@@ -1072,11 +1086,6 @@ generatedFiles:
   - internal/sdk/usersearch.go
   - internal/sdk/webhooks.go
   - internal/sdk/webhookssearch.go
-  - internal/sdk/workflow.go
-  - internal/sdk/workflowexecution.go
-  - internal/sdk/workflowexecutionactions.go
-  - internal/sdk/workflowexecutionsearch.go
-  - internal/sdk/workflowsearch.go
   - internal/validators/DateValidator.go
   - internal/validators/ExactlyOneChild.go
   - internal/validators/JSONParseValidator.go
@@ -1096,79 +1105,6 @@ generatedFiles:
   - terraform-registry-manifest.json
   - tools/tools.go
 examples:
-  c1.api.workflows.v1beta.WorkflowExecutionService.ListWorkflowExecutions:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-execution-service-list-workflow-executions:
-      responses:
-        "200":
-          application/json: {}
-  c1.api.workflows.v1beta.WorkflowExecutionService.GetWorkflowExecution:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-execution-service-get-workflow-execution:
-      parameters:
-        path:
-          id: "<value>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.workflows.v1beta.WorkflowExecutionActionsService.TerminateWorkflow:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-execution-actions-service-terminate-workflow:
-      parameters:
-        path:
-          id: "<value>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.workflows.v1beta.WorkflowExecutionSearchService.SearchWorkflowExecutions:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-execution-search-service-search-workflow-executions:
-      responses:
-        "200":
-          application/json: {}
-  c1.api.workflows.v1beta.WorkflowService.ListWorkflows:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-service-list-workflows:
-      responses:
-        "200":
-          application/json: {}
-  c1.api.workflows.v1beta.WorkflowService.CreateWorkflow:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-service-create-workflow:
-      responses:
-        "200":
-          application/json: {}
-  c1.api.workflows.v1beta.WorkflowService.DeleteWorkflow:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-service-delete-workflow:
-      parameters:
-        path:
-          id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.workflows.v1beta.WorkflowService.GetWorkflow:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-service-get-workflow:
-      parameters:
-        path:
-          id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.workflows.v1beta.WorkflowService.UpdateWorkflow:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-service-update-workflow:
-      parameters:
-        path:
-          id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.workflows.v1beta.WorkflowService.ExecuteWorkflow:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-service-execute-workflow:
-      parameters:
-        path:
-          id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.workflows.v1beta.WorkflowSearchService.SearchWorkflows:
-    speakeasy-default-c1-api-workflows-v1beta-workflow-search-service-search-workflows:
-      responses:
-        "200":
-          application/json: {}
   c1.api.app.v1.Apps.List:
     speakeasy-default-c1-api-app-v1-apps-list:
       responses:
@@ -1550,6 +1486,31 @@ examples:
       responses:
         "200":
           application/json: {}
+  c1.api.app.v1.AppEntitlementSearchService.SearchGrants:
+    speakeasy-default-c1-api-app-v1-app-entitlement-search-service-search-grants:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementUserBindingService.RemoveGrantDuration:
+    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-remove-grant-duration:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+          app_user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementUserBindingService.UpdateGrantDuration:
+    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-update-grant-duration:
+      parameters:
+        path:
+          app_id: "<id>"
+          app_entitlement_id: "<id>"
+          app_user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
   c1.api.app.v1.AppEntitlementUserBindingService.ListAppUsersForIdentityWithGrant:
     speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-list-app-users-for-identity-with-grant:
       parameters:
@@ -1915,6 +1876,84 @@ examples:
       responses:
         "200":
           application/json: {}
+  c1.api.automations.v1.AutomationExecutionService.ListAutomationExecutions:
+    speakeasy-default-c1-api-automations-v1-automation-execution-service-list-automation-executions:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.automations.v1.AutomationExecutionService.GetAutomationExecution:
+    speakeasy-default-c1-api-automations-v1-automation-execution-service-get-automation-execution:
+      parameters:
+        path:
+          id: "<value>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.automations.v1.AutomationExecutionActionsService.TerminateAutomation:
+    speakeasy-default-c1-api-automations-v1-automation-execution-actions-service-terminate-automation:
+      parameters:
+        path:
+          id: "<value>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.automations.v1.AutomationExecutionSearchService.SearchAutomationExecutions:
+    speakeasy-default-c1-api-automations-v1-automation-execution-search-service-search-automation-executions:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.automations.v1.AutomationSearchService.SearchAutomationTemplateVersions:
+    speakeasy-default-c1-api-automations-v1-automation-search-service-search-automation-template-versions:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.automations.v1.AutomationSearchService.SearchAutomations:
+    speakeasy-default-c1-api-automations-v1-automation-search-service-search-automations:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.automations.v1.AutomationService.ListAutomations:
+    speakeasy-default-c1-api-automations-v1-automation-service-list-automations:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.automations.v1.AutomationService.CreateAutomation:
+    speakeasy-default-c1-api-automations-v1-automation-service-create-automation:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.automations.v1.AutomationService.DeleteAutomation:
+    speakeasy-default-c1-api-automations-v1-automation-service-delete-automation:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.automations.v1.AutomationService.GetAutomation:
+    speakeasy-default-c1-api-automations-v1-automation-service-get-automation:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.automations.v1.AutomationService.UpdateAutomation:
+    speakeasy-default-c1-api-automations-v1-automation-service-update-automation:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.automations.v1.AutomationService.ExecuteAutomation:
+    speakeasy-default-c1-api-automations-v1-automation-service-execute-automation:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
   c1.api.requestcatalog.v1.RequestCatalogManagementService.List:
     speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-list:
       responses:
@@ -1999,6 +2038,14 @@ examples:
       responses:
         "200":
           application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.DeleteBundleAutomation:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-delete-bundle-automation:
+      parameters:
+        path:
+          request_catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
   c1.api.requestcatalog.v1.RequestCatalogManagementService.GetBundleAutomation:
     speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-get-bundle-automation:
       parameters:
@@ -2009,6 +2056,14 @@ examples:
           application/json: {}
   c1.api.requestcatalog.v1.RequestCatalogManagementService.SetBundleAutomation:
     speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-set-bundle-automation:
+      parameters:
+        path:
+          request_catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.CreateBundleAutomation:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-create-bundle-automation:
       parameters:
         path:
           request_catalog_id: "<id>"
@@ -2443,6 +2498,14 @@ examples:
       responses:
         "200":
           application/json: {}
+  c1.api.task.v1.TaskActionsService.SkipStep:
+    speakeasy-default-c1-api-task-v1-task-actions-service-skip-step:
+      parameters:
+        path:
+          task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
   c1.api.user.v1.UserService.List:
     speakeasy-default-c1-api-user-v1-user-service-list:
       responses:
@@ -2498,54 +2561,5 @@ examples:
       responses:
         "200":
           application/json: {}
-  c1.api.requestcatalog.v1.RequestCatalogManagementService.DeleteBundleAutomation:
-    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-delete-bundle-automation:
-      parameters:
-        path:
-          request_catalog_id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.requestcatalog.v1.RequestCatalogManagementService.CreateBundleAutomation:
-    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-create-bundle-automation:
-      parameters:
-        path:
-          request_catalog_id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.task.v1.TaskActionsService.SkipStep:
-    speakeasy-default-c1-api-task-v1-task-actions-service-skip-step:
-      parameters:
-        path:
-          task_id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.app.v1.AppEntitlementSearchService.SearchGrants:
-    speakeasy-default-c1-api-app-v1-app-entitlement-search-service-search-grants:
-      responses:
-        "200":
-          application/json: {}
-  c1.api.app.v1.AppEntitlementUserBindingService.RemoveGrantDuration:
-    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-remove-grant-duration:
-      parameters:
-        path:
-          app_id: "<id>"
-          app_entitlement_id: "<id>"
-          app_user_id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-  c1.api.app.v1.AppEntitlementUserBindingService.UpdateGrantDuration:
-    speakeasy-default-c1-api-app-v1-app-entitlement-user-binding-service-update-grant-duration:
-      parameters:
-        path:
-          app_id: "<id>"
-          app_entitlement_id: "<id>"
-          app_user_id: "<id>"
-      responses:
-        "200":
-          application/json: {}
-examplesVersion: 1.0.1
+examplesVersion: 1.0.2
 generatedTests: {}

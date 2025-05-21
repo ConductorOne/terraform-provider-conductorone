@@ -8,9 +8,9 @@ import (
 )
 
 type C1APIAppV1AppEntitlementsCreateAutomationRequest struct {
-	AppID                   string                          `pathParam:"style=simple,explode=false,name=app_id"`
-	AppEntitlementID        string                          `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
-	CreateAutomationRequest *shared.CreateAutomationRequest `request:"mediaType=application/json"`
+	AppID                   string                               `pathParam:"style=simple,explode=false,name=app_id"`
+	AppEntitlementID        string                               `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
+	CreateAutomationRequest *shared.CreateAutomationRequestInput `request:"mediaType=application/json"`
 }
 
 func (o *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetAppID() string {
@@ -27,7 +27,7 @@ func (o *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetAppEntitlementID()
 	return o.AppEntitlementID
 }
 
-func (o *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetCreateAutomationRequest() *shared.CreateAutomationRequest {
+func (o *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetCreateAutomationRequest() *shared.CreateAutomationRequestInput {
 	if o == nil {
 		return nil
 	}

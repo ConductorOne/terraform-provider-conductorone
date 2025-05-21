@@ -102,6 +102,10 @@ components:
                     format: date-time
                     readOnly: true
                     type: string
+                defaultRequestCatalogId:
+                    description: The ID for the default request catalog for this app.
+                    readOnly: false
+                    type: string
                 deletedAt:
                     format: date-time
                     readOnly: true
@@ -2158,6 +2162,20 @@ components:
                     type: string
                 oauthAuthorizedAs:
                     $ref: '#/components/schemas/c1.api.app.v1.OAuth2AuthorizedAs'
+                profileAllowList:
+                    description: List of profile attributes to sync, when set only these attributes will be synced
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                profileIgnoreList:
+                    description: List of profile attributes to ignore (not sync), when set other attributes will be synced, but these will not.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
                 status:
                     $ref: '#/components/schemas/c1.api.app.v1.ConnectorStatus'
                 syncDisabledAt:
@@ -3626,6 +3644,13 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                appIds:
+                    description: The appIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
                 appUserRefs:
                     description: The appUserRefs field.
                     items:
@@ -4232,6 +4257,1086 @@ components:
             title: Introspect Response
             type: object
             x-speakeasy-name-override: IntrospectResponse
+        c1.api.automations.v1.AppUserCreatedTrigger:
+            description: |
+                The AppUserCreatedTrigger message.
+
+                This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
+                  - appId
+                  - appIdCel
+            nullable: true
+            properties:
+                appId:
+                    description: |-
+                        The appId field.
+                        This field is part of the `app_identifier` oneof.
+                        See the documentation for `c1.api.automations.v1.AppUserCreatedTrigger` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                appIdCel:
+                    description: |-
+                        The appIdCel field.
+                        This field is part of the `app_identifier` oneof.
+                        See the documentation for `c1.api.automations.v1.AppUserCreatedTrigger` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+            title: App User Created Trigger
+            type: object
+            x-speakeasy-name-override: AppUserCreatedTrigger
+        c1.api.automations.v1.AppUserUpdatedTrigger:
+            description: |
+                The AppUserUpdatedTrigger message.
+
+                This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
+                  - appId
+                  - appIdCel
+            nullable: true
+            properties:
+                appId:
+                    description: |-
+                        The appId field.
+                        This field is part of the `app_identifier` oneof.
+                        See the documentation for `c1.api.automations.v1.AppUserUpdatedTrigger` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                appIdCel:
+                    description: |-
+                        The appIdCel field.
+                        This field is part of the `app_identifier` oneof.
+                        See the documentation for `c1.api.automations.v1.AppUserUpdatedTrigger` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+            title: App User Updated Trigger
+            type: object
+            x-speakeasy-name-override: AppUserUpdatedTrigger
+        c1.api.automations.v1.Automation:
+            description: The Automation message.
+            properties:
+                automationSteps:
+                    description: The automationSteps field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationStep'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                context:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AutomationContext'
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                currentVersion:
+                    description: The currentVersion field.
+                    format: int64
+                    readOnly: false
+                    type: string
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                draftAutomationSteps:
+                    description: The draftAutomationSteps field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationStep'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                draftTriggers:
+                    description: The draftTriggers field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationTrigger'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+                id:
+                    description: The id field.
+                    readOnly: true
+                    type: string
+                isDraft:
+                    description: The isDraft field.
+                    readOnly: false
+                    type: boolean
+                lastExecutedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                triggers:
+                    description: The triggers field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationTrigger'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Automation
+            type: object
+            x-speakeasy-name-override: Automation
+        c1.api.automations.v1.AutomationContext:
+            description: The AutomationContext message.
+            properties:
+                context:
+                    additionalProperties: true
+                    readOnly: false
+                    type: object
+            title: Automation Context
+            type: object
+            x-speakeasy-name-override: AutomationContext
+        c1.api.automations.v1.AutomationExecution:
+            description: The AutomationExecution message.
+            properties:
+                automationTemplateId:
+                    description: The automationTemplateId field.
+                    readOnly: false
+                    type: string
+                completedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                context:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AutomationContext'
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                currentVersion:
+                    description: The currentVersion field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                deletedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                duration:
+                    format: duration
+                    readOnly: false
+                    type: string
+                id:
+                    description: The id field.
+                    format: int64
+                    readOnly: false
+                    type: string
+                isDraft:
+                    description: The isDraft field.
+                    readOnly: false
+                    type: boolean
+                state:
+                    description: The state field.
+                    enum:
+                        - AUTOMATION_EXECUTION_STATE_UNSPECIFIED
+                        - AUTOMATION_EXECUTION_STATE_PENDING
+                        - AUTOMATION_EXECUTION_STATE_CREATING
+                        - AUTOMATION_EXECUTION_STATE_GET_STEP
+                        - AUTOMATION_EXECUTION_STATE_PROCESS_STEP
+                        - AUTOMATION_EXECUTION_STATE_COMPLETE_STEP
+                        - AUTOMATION_EXECUTION_STATE_DONE
+                        - AUTOMATION_EXECUTION_STATE_ERROR
+                        - AUTOMATION_EXECUTION_STATE_TERMINATE
+                        - AUTOMATION_EXECUTION_STATE_WAITING
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                updatedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Automation Execution
+            type: object
+            x-speakeasy-name-override: AutomationExecution
+        c1.api.automations.v1.AutomationExecutionExpandMask:
+            description: The AutomationExecutionExpandMask message.
+            properties:
+                paths:
+                    description: The paths field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Automation Execution Expand Mask
+            type: object
+            x-speakeasy-name-override: AutomationExecutionExpandMask
+        c1.api.automations.v1.AutomationExecutionRef:
+            description: The AutomationExecutionRef message.
+            properties:
+                id:
+                    description: The id field.
+                    format: int64
+                    readOnly: false
+                    type: string
+            title: Automation Execution Ref
+            type: object
+            x-speakeasy-name-override: AutomationExecutionRef
+        c1.api.automations.v1.AutomationExecutionView:
+            description: The AutomationExecutionView message.
+            properties:
+                automationExecution:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AutomationExecution'
+                automationExecutionTriggerPath:
+                    description: The automationExecutionTriggerPath field.
+                    readOnly: false
+                    type: string
+                automationPath:
+                    description: The automationPath field.
+                    readOnly: false
+                    type: string
+            title: Automation Execution View
+            type: object
+            x-speakeasy-name-override: AutomationExecutionView
+        c1.api.automations.v1.AutomationStep:
+            description: |
+                The AutomationStep message.
+
+                This message contains a oneof named kind. Only a single field of the following list may be set at a time:
+                  - createAccessReview
+                  - waitForDuration
+                  - unenrollFromAllAccessProfiles
+                  - createRevokeTasks
+                  - sendEmail
+                  - removeFromDelegation
+                  - runAutomation
+                  - updateUser
+                  - taskAction
+                  - webhook
+                  - connectorAction
+                  - connectorCreateAccount
+            properties:
+                connectorAction:
+                    $ref: '#/components/schemas/c1.api.automations.v1.ConnectorAction'
+                connectorCreateAccount:
+                    $ref: '#/components/schemas/c1.api.automations.v1.ConnectorCreateAccount'
+                createAccessReview:
+                    $ref: '#/components/schemas/c1.api.automations.v1.CreateAccessReview'
+                createRevokeTasks:
+                    $ref: '#/components/schemas/c1.api.automations.v1.CreateRevokeTasks'
+                removeFromDelegation:
+                    $ref: '#/components/schemas/c1.api.automations.v1.RemoveFromDelegation'
+                runAutomation:
+                    $ref: '#/components/schemas/c1.api.automations.v1.RunAutomation'
+                sendEmail:
+                    $ref: '#/components/schemas/c1.api.automations.v1.SendEmail'
+                skipIfTrueCel:
+                    description: The skipIfTrueCel field.
+                    readOnly: false
+                    type: string
+                stepName:
+                    description: The stepName field.
+                    readOnly: false
+                    type: string
+                taskAction:
+                    $ref: '#/components/schemas/c1.api.automations.v1.TaskAction'
+                unenrollFromAllAccessProfiles:
+                    $ref: '#/components/schemas/c1.api.automations.v1.UnenrollFromAllAccessProfiles'
+                updateUser:
+                    $ref: '#/components/schemas/c1.api.automations.v1.UpdateUser'
+                waitForDuration:
+                    $ref: '#/components/schemas/c1.api.automations.v1.WaitForDuration'
+                webhook:
+                    $ref: '#/components/schemas/c1.api.automations.v1.Webhook'
+            title: Automation Step
+            type: object
+            x-speakeasy-name-override: AutomationStep
+        c1.api.automations.v1.AutomationTemplateRef:
+            description: The AutomationTemplateRef message.
+            nullable: true
+            properties:
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            title: Automation Template Ref
+            type: object
+            x-speakeasy-name-override: AutomationTemplateRef
+        c1.api.automations.v1.AutomationTemplateVersion:
+            description: The AutomationTemplateVersion message.
+            properties:
+                automationSteps:
+                    description: The automationSteps field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationStep'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                automationTemplateId:
+                    description: The automationTemplateId field.
+                    readOnly: false
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                deletedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                triggers:
+                    description: The triggers field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationTrigger'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                updatedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                version:
+                    description: The version field.
+                    format: int64
+                    readOnly: false
+                    type: string
+            title: Automation Template Version
+            type: object
+            x-speakeasy-name-override: AutomationTemplateVersion
+        c1.api.automations.v1.AutomationTrigger:
+            description: |
+                Automation Triggers
+
+                This message contains a oneof named kind. Only a single field of the following list may be set at a time:
+                  - manual
+                  - userProfileChange
+                  - appUserCreated
+                  - appUserUpdated
+            properties:
+                appUserCreated:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AppUserCreatedTrigger'
+                appUserUpdated:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AppUserUpdatedTrigger'
+                condition:
+                    description: The condition field.
+                    readOnly: false
+                    type: string
+                manual:
+                    $ref: '#/components/schemas/c1.api.automations.v1.ManualAutomationTrigger'
+                userProfileChange:
+                    $ref: '#/components/schemas/c1.api.automations.v1.UserProfileChangeTrigger'
+            title: Automation Trigger
+            type: object
+            x-speakeasy-name-override: AutomationTrigger
+        c1.api.automations.v1.CloseAction:
+            description: |
+                The CloseAction message.
+
+                This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:
+                  - userIdCel
+                  - userRef
+            nullable: true
+            properties:
+                userIdCel:
+                    description: |-
+                        The userIdCel field.
+                        This field is part of the `user_identifier` oneof.
+                        See the documentation for `c1.api.automations.v1.CloseAction` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Close Action
+            type: object
+            x-speakeasy-name-override: CloseAction
+        c1.api.automations.v1.ConnectorAction:
+            description: |
+                The ConnectorAction message.
+
+                This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:
+                  - connectorRef
+            nullable: true
+            properties:
+                actionName:
+                    description: The actionName field.
+                    readOnly: false
+                    type: string
+                argsTemplate:
+                    additionalProperties: true
+                    readOnly: false
+                    type: object
+                connectorRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.ConnectorRef'
+            title: Connector Action
+            type: object
+            x-speakeasy-name-override: ConnectorAction
+        c1.api.automations.v1.ConnectorCreateAccount:
+            description: |
+                The ConnectorCreateAccount message.
+
+                This message contains a oneof named create_account_arguments. Only a single field of the following list may be set at a time:
+                  - userIdCel
+                  - userProperties
+            nullable: true
+            properties:
+                connectorRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.ConnectorRef'
+                userIdCel:
+                    description: |-
+                        The userIdCel field.
+                        This field is part of the `create_account_arguments` oneof.
+                        See the documentation for `c1.api.automations.v1.ConnectorCreateAccount` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                userProperties:
+                    $ref: '#/components/schemas/c1.api.automations.v1.UserProperties'
+            title: Connector Create Account
+            type: object
+            x-speakeasy-name-override: ConnectorCreateAccount
+        c1.api.automations.v1.CreateAccessReview:
+            description: The CreateAccessReview message.
+            nullable: true
+            properties:
+                accessReviewTemplateCel:
+                    description: The accessReviewTemplateCel field.
+                    readOnly: false
+                    type: string
+                accessReviewTemplateId:
+                    description: The accessReviewTemplateId field.
+                    readOnly: false
+                    type: string
+                userIdsCel:
+                    description: The userIdsCel field.
+                    readOnly: false
+                    type: string
+                userRefs:
+                    description: The userRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Create Access Review
+            type: object
+            x-speakeasy-name-override: CreateAccessReview
+        c1.api.automations.v1.CreateAutomationRequest:
+            description: The CreateAutomationRequest message.
+            properties:
+                automationSteps:
+                    description: The automationSteps field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationStep'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                context:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AutomationContext'
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+                triggers:
+                    description: The triggers field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationTrigger'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Create Automation Request
+            type: object
+            x-speakeasy-name-override: CreateAutomationRequest
+        c1.api.automations.v1.CreateAutomationResponse:
+            description: The CreateAutomationResponse message.
+            properties:
+                automation:
+                    $ref: '#/components/schemas/c1.api.automations.v1.Automation'
+            title: Create Automation Response
+            type: object
+            x-speakeasy-name-override: CreateAutomationResponse
+        c1.api.automations.v1.CreateRevokeTasks:
+            description: The CreateRevokeTasks message.
+            nullable: true
+            properties:
+                appEntitlementRefs:
+                    description: The appEntitlementRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                appEntitlementRefsCel:
+                    description: The appEntitlementRefsCel field.
+                    readOnly: false
+                    type: string
+                revokeAll:
+                    description: The revokeAll field.
+                    readOnly: false
+                    type: boolean
+                userIdCel:
+                    description: The userIdCel field.
+                    readOnly: false
+                    type: string
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Create Revoke Tasks
+            type: object
+            x-speakeasy-name-override: CreateRevokeTasks
+        c1.api.automations.v1.DeleteAutomationRequestInput:
+            description: The DeleteAutomationRequest message.
+            title: Delete Automation Request
+            type: object
+            x-speakeasy-name-override: DeleteAutomationRequest
+        c1.api.automations.v1.DeleteAutomationResponse:
+            description: The DeleteAutomationResponse message.
+            title: Delete Automation Response
+            type: object
+            x-speakeasy-name-override: DeleteAutomationResponse
+        c1.api.automations.v1.ExecuteAutomationRequestInput:
+            description: The ExecuteAutomationRequest message.
+            properties:
+                context:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AutomationContext'
+            title: Execute Automation Request
+            type: object
+            x-speakeasy-name-override: ExecuteAutomationRequest
+        c1.api.automations.v1.ExecuteAutomationResponse:
+            description: The ExecuteAutomationResponse message.
+            properties:
+                executionId:
+                    description: The executionId field.
+                    format: int64
+                    readOnly: false
+                    type: string
+            title: Execute Automation Response
+            type: object
+            x-speakeasy-name-override: ExecuteAutomationResponse
+        c1.api.automations.v1.GetAutomationExecutionResponse:
+            description: The GetAutomationExecutionResponse message.
+            properties:
+                automationExecution:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AutomationExecution'
+            title: Get Automation Execution Response
+            type: object
+            x-speakeasy-name-override: GetAutomationExecutionResponse
+        c1.api.automations.v1.GetAutomationResponse:
+            description: The GetAutomationResponse message.
+            properties:
+                automation:
+                    $ref: '#/components/schemas/c1.api.automations.v1.Automation'
+            title: Get Automation Response
+            type: object
+            x-speakeasy-name-override: GetAutomationResponse
+        c1.api.automations.v1.ListAutomationExecutionsResponse:
+            description: The ListAutomationExecutionsResponse message.
+            properties:
+                automationExecutions:
+                    description: The automationExecutions field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationExecution'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: List Automation Executions Response
+            type: object
+            x-speakeasy-name-override: ListAutomationExecutionsResponse
+        c1.api.automations.v1.ListAutomationsResponse:
+            description: The ListAutomationsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.Automation'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: List Automations Response
+            type: object
+            x-speakeasy-name-override: ListAutomationsResponse
+        c1.api.automations.v1.ManualAutomationTrigger:
+            description: The ManualAutomationTrigger message.
+            nullable: true
+            title: Manual Automation Trigger
+            type: object
+            x-speakeasy-name-override: ManualAutomationTrigger
+        c1.api.automations.v1.ReassignAction:
+            description: |
+                The ReassignAction message.
+
+                This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:
+                  - assigneeUserIdCel
+                  - assigneeUserRef
+
+
+                This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:
+                  - subjectUserIdCel
+                  - subjectUserRef
+            nullable: true
+            properties:
+                assigneeUserIdCel:
+                    description: |-
+                        The assigneeUserIdCel field.
+                        This field is part of the `assignee_user_identifier` oneof.
+                        See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                assigneeUserRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+                subjectUserIdCel:
+                    description: |-
+                        The subjectUserIdCel field.
+                        This field is part of the `subject_user_identifier` oneof.
+                        See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                subjectUserRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Reassign Action
+            type: object
+            x-speakeasy-name-override: ReassignAction
+        c1.api.automations.v1.RemoveFromDelegation:
+            description: 'RemoveFromDelegation: find all users that have the target user as their delegated user, and clear the delegation.'
+            nullable: true
+            properties:
+                userIdCel:
+                    description: The userIdCel field.
+                    readOnly: false
+                    type: string
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Remove From Delegation
+            type: object
+            x-speakeasy-name-override: RemoveFromDelegation
+        c1.api.automations.v1.RunAutomation:
+            description: |
+                RunAutomation: kick off the execution of an automation template.
+
+                This message contains a oneof named automation_template. Only a single field of the following list may be set at a time:
+                  - automationTemplateRef
+                  - automationTemplateIdCel
+            nullable: true
+            properties:
+                automationTemplateIdCel:
+                    description: |-
+                        The automationTemplateIdCel field.
+                        This field is part of the `automation_template` oneof.
+                        See the documentation for `c1.api.automations.v1.RunAutomation` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                automationTemplateRef:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AutomationTemplateRef'
+                context:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AutomationContext'
+            title: Run Automation
+            type: object
+            x-speakeasy-name-override: RunAutomation
+        c1.api.automations.v1.SearchAutomationExecutionsRequest:
+            description: The SearchAutomationExecutionsRequest message.
+            properties:
+                automationTemplateId:
+                    description: The automationTemplateId field.
+                    readOnly: false
+                    type: string
+                executionStepStates:
+                    description: The executionStepStates field.
+                    items:
+                        enum:
+                            - AUTOMATION_EXECUTION_STATE_UNSPECIFIED
+                            - AUTOMATION_EXECUTION_STATE_PENDING
+                            - AUTOMATION_EXECUTION_STATE_CREATING
+                            - AUTOMATION_EXECUTION_STATE_GET_STEP
+                            - AUTOMATION_EXECUTION_STATE_PROCESS_STEP
+                            - AUTOMATION_EXECUTION_STATE_COMPLETE_STEP
+                            - AUTOMATION_EXECUTION_STATE_DONE
+                            - AUTOMATION_EXECUTION_STATE_ERROR
+                            - AUTOMATION_EXECUTION_STATE_TERMINATE
+                            - AUTOMATION_EXECUTION_STATE_WAITING
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AutomationExecutionExpandMask'
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                query:
+                    description: The query field.
+                    readOnly: false
+                    type: string
+                refs:
+                    description: The refs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationExecutionRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Search Automation Executions Request
+            type: object
+            x-speakeasy-name-override: SearchAutomationExecutionsRequest
+        c1.api.automations.v1.SearchAutomationExecutionsResponse:
+            description: The SearchAutomationExecutionsResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties: true
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        readOnly: false
+                        type: object
+                    nullable: true
+                    readOnly: false
+                    type: array
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationExecutionView'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Search Automation Executions Response
+            type: object
+            x-speakeasy-name-override: SearchAutomationExecutionsResponse
+        c1.api.automations.v1.SearchAutomationTemplateVersionsRequest:
+            description: The SearchAutomationTemplateVersionsRequest message.
+            properties:
+                automationTemplateId:
+                    description: The automationTemplateId field.
+                    readOnly: false
+                    type: string
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+            title: Search Automation Template Versions Request
+            type: object
+            x-speakeasy-name-override: SearchAutomationTemplateVersionsRequest
+        c1.api.automations.v1.SearchAutomationTemplateVersionsResponse:
+            description: The SearchAutomationTemplateVersionsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationTemplateVersion'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Search Automation Template Versions Response
+            type: object
+            x-speakeasy-name-override: SearchAutomationTemplateVersionsResponse
+        c1.api.automations.v1.SearchAutomationsRequest:
+            description: The SearchAutomationsRequest message.
+            properties:
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                query:
+                    description: The query field.
+                    readOnly: false
+                    type: string
+                refs:
+                    description: The refs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationTemplateRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Search Automations Request
+            type: object
+            x-speakeasy-name-override: SearchAutomationsRequest
+        c1.api.automations.v1.SearchAutomationsResponse:
+            description: The SearchAutomationsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.Automation'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Search Automations Response
+            type: object
+            x-speakeasy-name-override: SearchAutomationsResponse
+        c1.api.automations.v1.SendEmail:
+            description: The SendEmail message.
+            nullable: true
+            properties:
+                body:
+                    description: The body field.
+                    readOnly: false
+                    type: string
+                subject:
+                    description: The subject field.
+                    readOnly: false
+                    type: string
+                title:
+                    description: The title field.
+                    readOnly: false
+                    type: string
+                userIdsCel:
+                    description: The userIdsCel field.
+                    readOnly: false
+                    type: string
+                userRefs:
+                    description: The userRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Send Email
+            type: object
+            x-speakeasy-name-override: SendEmail
+        c1.api.automations.v1.TaskAction:
+            description: |
+                The TaskAction message.
+
+                This message contains a oneof named action. Only a single field of the following list may be set at a time:
+                  - close
+                  - reassign
+            nullable: true
+            properties:
+                close:
+                    $ref: '#/components/schemas/c1.api.automations.v1.CloseAction'
+                reassign:
+                    $ref: '#/components/schemas/c1.api.automations.v1.ReassignAction'
+            title: Task Action
+            type: object
+            x-speakeasy-name-override: TaskAction
+        c1.api.automations.v1.TerminateAutomationRequestInput:
+            description: The TerminateAutomationRequest message.
+            title: Terminate Automation Request
+            type: object
+            x-speakeasy-name-override: TerminateAutomationRequest
+        c1.api.automations.v1.TerminateAutomationResponse:
+            description: The TerminateAutomationResponse message.
+            title: Terminate Automation Response
+            type: object
+            x-speakeasy-name-override: TerminateAutomationResponse
+        c1.api.automations.v1.UnenrollFromAllAccessProfiles:
+            description: The UnenrollFromAllAccessProfiles message.
+            nullable: true
+            properties:
+                catalogIds:
+                    description: Optional list of catalog IDs to unenroll from. If empty, unenroll from all catalogs.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                userIdsCel:
+                    description: The userIdsCel field.
+                    readOnly: false
+                    type: string
+                userRefs:
+                    description: The userRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Unenroll From All Access Profiles
+            type: object
+            x-speakeasy-name-override: UnenrollFromAllAccessProfiles
+        c1.api.automations.v1.UpdateAutomationRequestInput:
+            description: The UpdateAutomationRequest message.
+            properties:
+                automation:
+                    $ref: '#/components/schemas/c1.api.automations.v1.Automation'
+                updateMask:
+                    nullable: true
+                    readOnly: false
+                    type: string
+            title: Update Automation Request
+            type: object
+            x-speakeasy-name-override: UpdateAutomationRequest
+        c1.api.automations.v1.UpdateAutomationResponse:
+            description: The UpdateAutomationResponse message.
+            properties:
+                automation:
+                    $ref: '#/components/schemas/c1.api.automations.v1.Automation'
+            title: Update Automation Response
+            type: object
+            x-speakeasy-name-override: UpdateAutomationResponse
+        c1.api.automations.v1.UpdateUser:
+            description: |
+                The UpdateUser message.
+
+                This message contains a oneof named user. Only a single field of the following list may be set at a time:
+                  - userIdCel
+                  - userRef
+
+
+                This message contains a oneof named user_status. Only a single field of the following list may be set at a time:
+                  - userStatusEnum
+                  - userStatusCel
+            nullable: true
+            properties:
+                userIdCel:
+                    description: |-
+                        The userIdCel field.
+                        This field is part of the `user` oneof.
+                        See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+                userStatusCel:
+                    description: |-
+                        The userStatusCel field.
+                        This field is part of the `user_status` oneof.
+                        See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                userStatusEnum:
+                    description: |-
+                        The userStatusEnum field.
+                        This field is part of the `user_status` oneof.
+                        See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
+                    enum:
+                        - UNKNOWN
+                        - ENABLED
+                        - DISABLED
+                        - DELETED
+                    nullable: true
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Update User
+            type: object
+            x-speakeasy-name-override: UpdateUser
+        c1.api.automations.v1.UserProfileChangeTrigger:
+            description: The UserProfileChangeTrigger message.
+            nullable: true
+            properties:
+                profileAttributeCel:
+                    description: The profileAttributeCel field.
+                    readOnly: false
+                    type: string
+                profileAttributeKey:
+                    description: The profileAttributeKey field.
+                    readOnly: false
+                    type: string
+            title: User Profile Change Trigger
+            type: object
+            x-speakeasy-name-override: UserProfileChangeTrigger
+        c1.api.automations.v1.UserProperties:
+            description: The UserProperties message.
+            nullable: true
+            properties:
+                displayNameCel:
+                    description: The displayNameCel field.
+                    readOnly: false
+                    type: string
+                emailCel:
+                    description: The emailCel field.
+                    readOnly: false
+                    type: string
+                profileAttributeCel:
+                    description: The profileAttributeCel field.
+                    readOnly: false
+                    type: string
+                usernameCel:
+                    description: The usernameCel field.
+                    readOnly: false
+                    type: string
+            title: User Properties
+            type: object
+            x-speakeasy-name-override: UserProperties
+        c1.api.automations.v1.WaitForDuration:
+            description: The WaitForDuration message.
+            nullable: true
+            properties:
+                duration:
+                    format: duration
+                    readOnly: false
+                    type: string
+            title: Wait For Duration
+            type: object
+            x-speakeasy-name-override: WaitForDuration
+        c1.api.automations.v1.Webhook:
+            description: |
+                The Webhook message.
+
+                This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
+                  - webhookId
+                  - webhookIdCel
+            nullable: true
+            properties:
+                payload:
+                    additionalProperties: true
+                    readOnly: false
+                    type: object
+                webhookId:
+                    description: |-
+                        The webhookId field.
+                        This field is part of the `webhook_identifier` oneof.
+                        See the documentation for `c1.api.automations.v1.Webhook` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                webhookIdCel:
+                    description: |-
+                        The webhookIdCel field.
+                        This field is part of the `webhook_identifier` oneof.
+                        See the documentation for `c1.api.automations.v1.Webhook` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+            title: Webhook
+            type: object
+            x-speakeasy-name-override: Webhook
         c1.api.directory.v1.Directory:
             description: This object indicates that an app is also a directory.
             properties:
@@ -4707,6 +5812,16 @@ components:
             description: The agent to assign the task to.
             nullable: true
             properties:
+                agentMode:
+                    description: The mode of the agent, full control, change policy only, or comment only.
+                    enum:
+                        - APPROVAL_AGENT_MODE_UNSPECIFIED
+                        - APPROVAL_AGENT_MODE_FULL_CONTROL
+                        - APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY
+                        - APPROVAL_AGENT_MODE_COMMENT_ONLY
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 agentUserId:
                     description: The agent user ID to assign the task to.
                     readOnly: false
@@ -4716,7 +5831,7 @@ components:
                     readOnly: false
                     type: string
                 policyIds:
-                    description: The policyIds field.
+                    description: The allow list of policy IDs to re-route the task to.
                     items:
                         type: string
                     nullable: true
@@ -4818,6 +5933,12 @@ components:
                     type: boolean
                 entitlementOwners:
                     $ref: '#/components/schemas/c1.api.policy.v1.EntitlementOwnerApproval'
+                escalation:
+                    $ref: '#/components/schemas/c1.api.policy.v1.Escalation'
+                escalationEnabled:
+                    description: Whether escalation is enabled for this step.
+                    readOnly: false
+                    type: boolean
                 expression:
                     $ref: '#/components/schemas/c1.api.policy.v1.ExpressionApproval'
                 group:
@@ -5181,6 +6302,55 @@ components:
             title: Errored Action
             type: object
             x-speakeasy-name-override: ErroredAction
+        c1.api.policy.v1.Escalation:
+            description: |
+                The Escalation message.
+
+                This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:
+                  - replacePolicy
+                  - reassignToApprovers
+            properties:
+                escalationComment:
+                    description: The escalationComment field.
+                    readOnly: false
+                    type: string
+                expiration:
+                    description: The expiration field.
+                    format: int64
+                    readOnly: false
+                    type: string
+                reassignToApprovers:
+                    $ref: '#/components/schemas/c1.api.policy.v1.Escalation.ReassignToApprovers'
+                replacePolicy:
+                    $ref: '#/components/schemas/c1.api.policy.v1.Escalation.ReplacePolicy'
+            title: Escalation
+            type: object
+            x-speakeasy-name-override: Escalation
+        c1.api.policy.v1.Escalation.ReassignToApprovers:
+            description: The ReassignToApprovers message.
+            nullable: true
+            properties:
+                approverIds:
+                    description: The approverIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Reassign To Approvers
+            type: object
+            x-speakeasy-name-override: ReassignToApprovers
+        c1.api.policy.v1.Escalation.ReplacePolicy:
+            description: The ReplacePolicy message.
+            nullable: true
+            properties:
+                policyId:
+                    description: The policyId field.
+                    readOnly: false
+                    type: string
+            title: Replace Policy
+            type: object
+            x-speakeasy-name-override: ReplacePolicy
         c1.api.policy.v1.ExpressionApproval:
             description: The ExpressionApproval message.
             nullable: true
@@ -9716,6 +10886,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                assignedOrStepApproverUserId:
+                    description: Search tasks that are currently assigned to this user, or that are closed and were previously approved by this user.
+                    readOnly: false
+                    type: string
                 assigneesInIds:
                     description: Search tasks by  List of UserIDs which are currently assigned these Tasks
                     items:
@@ -9795,6 +10969,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                openerOrSubjectUserId:
+                    description: Search tasks that were opened by this user, or that the user is the subject of.
+                    readOnly: false
+                    type: string
                 pageSize:
                     description: The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
                     format: int32
@@ -11115,945 +12293,6 @@ components:
             title: Webhooks Service Update Response
             type: object
             x-speakeasy-name-override: WebhooksServiceUpdateResponse
-        c1.api.workflows.v1beta.AppUserCreatedTrigger:
-            description: |
-                The AppUserCreatedTrigger message.
-
-                This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
-                  - appId
-                  - appIdCel
-            nullable: true
-            properties:
-                appId:
-                    description: |-
-                        The appId field.
-                        This field is part of the `app_identifier` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.AppUserCreatedTrigger` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-                appIdCel:
-                    description: |-
-                        The appIdCel field.
-                        This field is part of the `app_identifier` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.AppUserCreatedTrigger` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-            title: App User Created Trigger
-            type: object
-            x-speakeasy-name-override: AppUserCreatedTrigger
-        c1.api.workflows.v1beta.AppUserUpdatedTrigger:
-            description: |
-                The AppUserUpdatedTrigger message.
-
-                This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
-                  - appId
-                  - appIdCel
-            nullable: true
-            properties:
-                appId:
-                    description: |-
-                        The appId field.
-                        This field is part of the `app_identifier` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.AppUserUpdatedTrigger` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-                appIdCel:
-                    description: |-
-                        The appIdCel field.
-                        This field is part of the `app_identifier` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.AppUserUpdatedTrigger` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-            title: App User Updated Trigger
-            type: object
-            x-speakeasy-name-override: AppUserUpdatedTrigger
-        c1.api.workflows.v1beta.CloseAction:
-            description: |
-                The CloseAction message.
-
-                This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:
-                  - userIdCel
-                  - userRef
-            nullable: true
-            properties:
-                userIdCel:
-                    description: |-
-                        The userIdCel field.
-                        This field is part of the `user_identifier` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.CloseAction` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-                userRef:
-                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
-            title: Close Action
-            type: object
-            x-speakeasy-name-override: CloseAction
-        c1.api.workflows.v1beta.ConnectorAction:
-            description: |
-                The ConnectorAction message.
-
-                This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:
-                  - connectorRef
-            nullable: true
-            properties:
-                actionName:
-                    description: The actionName field.
-                    readOnly: false
-                    type: string
-                argsTemplate:
-                    additionalProperties: true
-                    readOnly: false
-                    type: object
-                connectorRef:
-                    $ref: '#/components/schemas/c1.api.app.v1.ConnectorRef'
-            title: Connector Action
-            type: object
-            x-speakeasy-name-override: ConnectorAction
-        c1.api.workflows.v1beta.CreateAccessReview:
-            description: The CreateAccessReview message.
-            nullable: true
-            properties:
-                accessReviewTemplateCel:
-                    description: The accessReviewTemplateCel field.
-                    readOnly: false
-                    type: string
-                accessReviewTemplateId:
-                    description: The accessReviewTemplateId field.
-                    readOnly: false
-                    type: string
-                userIdsCel:
-                    description: The userIdsCel field.
-                    readOnly: false
-                    type: string
-                userRefs:
-                    description: The userRefs field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.user.v1.UserRef'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Create Access Review
-            type: object
-            x-speakeasy-name-override: CreateAccessReview
-        c1.api.workflows.v1beta.CreateRevokeTasks:
-            description: The CreateRevokeTasks message.
-            nullable: true
-            properties:
-                appEntitlementRefs:
-                    description: The appEntitlementRefs field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
-                    nullable: true
-                    readOnly: false
-                    type: array
-                appEntitlementRefsCel:
-                    description: The appEntitlementRefsCel field.
-                    readOnly: false
-                    type: string
-                revokeAll:
-                    description: The revokeAll field.
-                    readOnly: false
-                    type: boolean
-                userIdCel:
-                    description: The userIdCel field.
-                    readOnly: false
-                    type: string
-                userRef:
-                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
-            title: Create Revoke Tasks
-            type: object
-            x-speakeasy-name-override: CreateRevokeTasks
-        c1.api.workflows.v1beta.CreateWorkflowRequest:
-            description: The CreateWorkflowRequest message.
-            properties:
-                context:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowContext'
-                description:
-                    description: The description field.
-                    readOnly: false
-                    type: string
-                displayName:
-                    description: The displayName field.
-                    readOnly: false
-                    type: string
-                enabled:
-                    description: The enabled field.
-                    readOnly: false
-                    type: boolean
-                triggers:
-                    description: The triggers field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowTrigger'
-                    nullable: true
-                    readOnly: false
-                    type: array
-                workflowSteps:
-                    description: The workflowSteps field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowStep'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Create Workflow Request
-            type: object
-            x-speakeasy-name-override: CreateWorkflowRequest
-        c1.api.workflows.v1beta.CreateWorkflowResponse:
-            description: The CreateWorkflowResponse message.
-            properties:
-                workflow:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.Workflow'
-            title: Create Workflow Response
-            type: object
-            x-speakeasy-name-override: CreateWorkflowResponse
-        c1.api.workflows.v1beta.DeleteWorkflowRequestInput:
-            description: The DeleteWorkflowRequest message.
-            title: Delete Workflow Request
-            type: object
-            x-speakeasy-name-override: DeleteWorkflowRequest
-        c1.api.workflows.v1beta.DeleteWorkflowResponse:
-            description: The DeleteWorkflowResponse message.
-            title: Delete Workflow Response
-            type: object
-            x-speakeasy-name-override: DeleteWorkflowResponse
-        c1.api.workflows.v1beta.ExecuteWorkflowRequestInput:
-            description: The ExecuteWorkflowRequest message.
-            properties:
-                context:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowContext'
-            title: Execute Workflow Request
-            type: object
-            x-speakeasy-name-override: ExecuteWorkflowRequest
-        c1.api.workflows.v1beta.ExecuteWorkflowResponse:
-            description: The ExecuteWorkflowResponse message.
-            properties:
-                executionId:
-                    description: The executionId field.
-                    format: int64
-                    readOnly: false
-                    type: string
-            title: Execute Workflow Response
-            type: object
-            x-speakeasy-name-override: ExecuteWorkflowResponse
-        c1.api.workflows.v1beta.GetWorkflowExecutionResponse:
-            description: The GetWorkflowExecutionResponse message.
-            properties:
-                workflowExecution:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowExecution'
-            title: Get Workflow Execution Response
-            type: object
-            x-speakeasy-name-override: GetWorkflowExecutionResponse
-        c1.api.workflows.v1beta.GetWorkflowResponse:
-            description: The GetWorkflowResponse message.
-            properties:
-                workflow:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.Workflow'
-            title: Get Workflow Response
-            type: object
-            x-speakeasy-name-override: GetWorkflowResponse
-        c1.api.workflows.v1beta.ListWorkflowExecutionsResponse:
-            description: The ListWorkflowExecutionsResponse message.
-            properties:
-                nextPageToken:
-                    description: The nextPageToken field.
-                    readOnly: false
-                    type: string
-                workflowExecutions:
-                    description: The workflowExecutions field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowExecution'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: List Workflow Executions Response
-            type: object
-            x-speakeasy-name-override: ListWorkflowExecutionsResponse
-        c1.api.workflows.v1beta.ListWorkflowsResponse:
-            description: The ListWorkflowsResponse message.
-            properties:
-                list:
-                    description: The list field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.Workflow'
-                    nullable: true
-                    readOnly: false
-                    type: array
-                nextPageToken:
-                    description: The nextPageToken field.
-                    readOnly: false
-                    type: string
-            title: List Workflows Response
-            type: object
-            x-speakeasy-name-override: ListWorkflowsResponse
-        c1.api.workflows.v1beta.ManualWorkflowTrigger:
-            description: The ManualWorkflowTrigger message.
-            nullable: true
-            title: Manual Workflow Trigger
-            type: object
-            x-speakeasy-name-override: ManualWorkflowTrigger
-        c1.api.workflows.v1beta.ReassignAction:
-            description: |
-                The ReassignAction message.
-
-                This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:
-                  - assigneeUserIdCel
-                  - assigneeUserRef
-
-
-                This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:
-                  - subjectUserIdCel
-                  - subjectUserRef
-            nullable: true
-            properties:
-                assigneeUserIdCel:
-                    description: |-
-                        The assigneeUserIdCel field.
-                        This field is part of the `assignee_user_identifier` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.ReassignAction` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-                assigneeUserRef:
-                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
-                subjectUserIdCel:
-                    description: |-
-                        The subjectUserIdCel field.
-                        This field is part of the `subject_user_identifier` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.ReassignAction` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-                subjectUserRef:
-                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
-            title: Reassign Action
-            type: object
-            x-speakeasy-name-override: ReassignAction
-        c1.api.workflows.v1beta.RemoveFromDelegation:
-            description: 'RemoveFromDelegation: find all users that have the target user as their delegated user, and clear the delegation.'
-            nullable: true
-            properties:
-                userIdCel:
-                    description: The userIdCel field.
-                    readOnly: false
-                    type: string
-                userRef:
-                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
-            title: Remove From Delegation
-            type: object
-            x-speakeasy-name-override: RemoveFromDelegation
-        c1.api.workflows.v1beta.RunWorkflow:
-            description: |
-                RunWorkflow: kick off the execution of a workflow template.
-
-                This message contains a oneof named workflow_template. Only a single field of the following list may be set at a time:
-                  - workflowTemplateRef
-                  - workflowTemplateIdCel
-            nullable: true
-            properties:
-                context:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowContext'
-                workflowTemplateIdCel:
-                    description: |-
-                        The workflowTemplateIdCel field.
-                        This field is part of the `workflow_template` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.RunWorkflow` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-                workflowTemplateRef:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowTemplateRef'
-            title: Run Workflow
-            type: object
-            x-speakeasy-name-override: RunWorkflow
-        c1.api.workflows.v1beta.SearchWorkflowExecutionsRequest:
-            description: The SearchWorkflowExecutionsRequest message.
-            properties:
-                executionStepStates:
-                    description: The executionStepStates field.
-                    items:
-                        enum:
-                            - WORKFLOW_EXECUTION_STATE_UNSPECIFIED
-                            - WORKFLOW_EXECUTION_STATE_PENDING
-                            - WORKFLOW_EXECUTION_STATE_CREATING
-                            - WORKFLOW_EXECUTION_STATE_GET_STEP
-                            - WORKFLOW_EXECUTION_STATE_PROCESS_STEP
-                            - WORKFLOW_EXECUTION_STATE_COMPLETE_STEP
-                            - WORKFLOW_EXECUTION_STATE_DONE
-                            - WORKFLOW_EXECUTION_STATE_ERROR
-                            - WORKFLOW_EXECUTION_STATE_TERMINATE
-                            - WORKFLOW_EXECUTION_STATE_WAITING
-                        type: string
-                    nullable: true
-                    readOnly: false
-                    type: array
-                expandMask:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowExecutionExpandMask'
-                pageSize:
-                    description: The pageSize field.
-                    format: int32
-                    readOnly: false
-                    type: integer
-                pageToken:
-                    description: The pageToken field.
-                    readOnly: false
-                    type: string
-                query:
-                    description: The query field.
-                    readOnly: false
-                    type: string
-                refs:
-                    description: The refs field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowExecutionRef'
-                    nullable: true
-                    readOnly: false
-                    type: array
-                workflowTemplateId:
-                    description: The workflowTemplateId field.
-                    readOnly: false
-                    type: string
-            title: Search Workflow Executions Request
-            type: object
-            x-speakeasy-name-override: SearchWorkflowExecutionsRequest
-        c1.api.workflows.v1beta.SearchWorkflowExecutionsResponse:
-            description: The SearchWorkflowExecutionsResponse message.
-            properties:
-                expanded:
-                    description: The expanded field.
-                    items:
-                        additionalProperties: true
-                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-                        properties:
-                            '@type':
-                                description: The type of the serialized message.
-                                type: string
-                        readOnly: false
-                        type: object
-                    nullable: true
-                    readOnly: false
-                    type: array
-                list:
-                    description: The list field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowExecutionView'
-                    nullable: true
-                    readOnly: false
-                    type: array
-                nextPageToken:
-                    description: The nextPageToken field.
-                    readOnly: false
-                    type: string
-            title: Search Workflow Executions Response
-            type: object
-            x-speakeasy-name-override: SearchWorkflowExecutionsResponse
-        c1.api.workflows.v1beta.SearchWorkflowsRequest:
-            description: The SearchWorkflowsRequest message.
-            properties:
-                pageSize:
-                    description: The pageSize field.
-                    format: int32
-                    readOnly: false
-                    type: integer
-                pageToken:
-                    description: The pageToken field.
-                    readOnly: false
-                    type: string
-                query:
-                    description: The query field.
-                    readOnly: false
-                    type: string
-                refs:
-                    description: The refs field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowTemplateRef'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Search Workflows Request
-            type: object
-            x-speakeasy-name-override: SearchWorkflowsRequest
-        c1.api.workflows.v1beta.SearchWorkflowsResponse:
-            description: The SearchWorkflowsResponse message.
-            properties:
-                list:
-                    description: The list field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.Workflow'
-                    nullable: true
-                    readOnly: false
-                    type: array
-                nextPageToken:
-                    description: The nextPageToken field.
-                    readOnly: false
-                    type: string
-            title: Search Workflows Response
-            type: object
-            x-speakeasy-name-override: SearchWorkflowsResponse
-        c1.api.workflows.v1beta.SendEmail:
-            description: The SendEmail message.
-            nullable: true
-            properties:
-                body:
-                    description: The body field.
-                    readOnly: false
-                    type: string
-                subject:
-                    description: The subject field.
-                    readOnly: false
-                    type: string
-                title:
-                    description: The title field.
-                    readOnly: false
-                    type: string
-                userIdsCel:
-                    description: The userIdsCel field.
-                    readOnly: false
-                    type: string
-                userRefs:
-                    description: The userRefs field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.user.v1.UserRef'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Send Email
-            type: object
-            x-speakeasy-name-override: SendEmail
-        c1.api.workflows.v1beta.TaskAction:
-            description: |
-                The TaskAction message.
-
-                This message contains a oneof named action. Only a single field of the following list may be set at a time:
-                  - close
-                  - reassign
-            nullable: true
-            properties:
-                close:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.CloseAction'
-                reassign:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.ReassignAction'
-            title: Task Action
-            type: object
-            x-speakeasy-name-override: TaskAction
-        c1.api.workflows.v1beta.TerminateWorkflowRequestInput:
-            description: The TerminateWorkflowRequest message.
-            title: Terminate Workflow Request
-            type: object
-            x-speakeasy-name-override: TerminateWorkflowRequest
-        c1.api.workflows.v1beta.TerminateWorkflowResponse:
-            description: The TerminateWorkflowResponse message.
-            title: Terminate Workflow Response
-            type: object
-            x-speakeasy-name-override: TerminateWorkflowResponse
-        c1.api.workflows.v1beta.UnenrollFromAllAccessProfiles:
-            description: The UnenrollFromAllAccessProfiles message.
-            nullable: true
-            properties:
-                catalogIds:
-                    description: Optional list of catalog IDs to unenroll from. If empty, unenroll from all catalogs.
-                    items:
-                        type: string
-                    nullable: true
-                    readOnly: false
-                    type: array
-                userIdsCel:
-                    description: The userIdsCel field.
-                    readOnly: false
-                    type: string
-                userRefs:
-                    description: The userRefs field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.user.v1.UserRef'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Unenroll From All Access Profiles
-            type: object
-            x-speakeasy-name-override: UnenrollFromAllAccessProfiles
-        c1.api.workflows.v1beta.UpdateUser:
-            description: |
-                The UpdateUser message.
-
-                This message contains a oneof named user. Only a single field of the following list may be set at a time:
-                  - userIdCel
-                  - userRef
-
-
-                This message contains a oneof named user_status. Only a single field of the following list may be set at a time:
-                  - userStatusEnum
-                  - userStatusCel
-            nullable: true
-            properties:
-                userIdCel:
-                    description: |-
-                        The userIdCel field.
-                        This field is part of the `user` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.UpdateUser` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-                userRef:
-                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
-                userStatusCel:
-                    description: |-
-                        The userStatusCel field.
-                        This field is part of the `user_status` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.UpdateUser` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-                userStatusEnum:
-                    description: |-
-                        The userStatusEnum field.
-                        This field is part of the `user_status` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.UpdateUser` for more details.
-                    enum:
-                        - UNKNOWN
-                        - ENABLED
-                        - DISABLED
-                        - DELETED
-                    nullable: true
-                    readOnly: false
-                    type: string
-                    x-speakeasy-unknown-values: allow
-            title: Update User
-            type: object
-            x-speakeasy-name-override: UpdateUser
-        c1.api.workflows.v1beta.UpdateWorkflowRequestInput:
-            description: The UpdateWorkflowRequest message.
-            properties:
-                updateMask:
-                    nullable: true
-                    readOnly: false
-                    type: string
-                workflow:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.Workflow'
-            title: Update Workflow Request
-            type: object
-            x-speakeasy-name-override: UpdateWorkflowRequest
-        c1.api.workflows.v1beta.UpdateWorkflowResponse:
-            description: The UpdateWorkflowResponse message.
-            properties:
-                workflow:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.Workflow'
-            title: Update Workflow Response
-            type: object
-            x-speakeasy-name-override: UpdateWorkflowResponse
-        c1.api.workflows.v1beta.UserProfileChangeTrigger:
-            description: The UserProfileChangeTrigger message.
-            nullable: true
-            properties:
-                profileAttributeCel:
-                    description: The profileAttributeCel field.
-                    readOnly: false
-                    type: string
-                profileAttributeKey:
-                    description: The profileAttributeKey field.
-                    readOnly: false
-                    type: string
-            title: User Profile Change Trigger
-            type: object
-            x-speakeasy-name-override: UserProfileChangeTrigger
-        c1.api.workflows.v1beta.WaitForDuration:
-            description: The WaitForDuration message.
-            nullable: true
-            properties:
-                duration:
-                    format: duration
-                    readOnly: false
-                    type: string
-            title: Wait For Duration
-            type: object
-            x-speakeasy-name-override: WaitForDuration
-        c1.api.workflows.v1beta.Webhook:
-            description: |
-                The Webhook message.
-
-                This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
-                  - webhookId
-                  - webhookIdCel
-            nullable: true
-            properties:
-                payload:
-                    additionalProperties: true
-                    readOnly: false
-                    type: object
-                webhookId:
-                    description: |-
-                        The webhookId field.
-                        This field is part of the `webhook_identifier` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.Webhook` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-                webhookIdCel:
-                    description: |-
-                        The webhookIdCel field.
-                        This field is part of the `webhook_identifier` oneof.
-                        See the documentation for `c1.api.workflows.v1beta.Webhook` for more details.
-                    nullable: true
-                    readOnly: false
-                    type: string
-            title: Webhook
-            type: object
-            x-speakeasy-name-override: Webhook
-        c1.api.workflows.v1beta.Workflow:
-            description: The Workflow message.
-            properties:
-                context:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowContext'
-                createdAt:
-                    format: date-time
-                    readOnly: false
-                    type: string
-                description:
-                    description: The description field.
-                    readOnly: false
-                    type: string
-                displayName:
-                    description: The displayName field.
-                    readOnly: false
-                    type: string
-                draftTriggers:
-                    description: The draftTriggers field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowTrigger'
-                    nullable: true
-                    readOnly: false
-                    type: array
-                draftWorkflowSteps:
-                    description: The draftWorkflowSteps field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowStep'
-                    nullable: true
-                    readOnly: false
-                    type: array
-                enabled:
-                    description: The enabled field.
-                    readOnly: false
-                    type: boolean
-                id:
-                    description: The id field.
-                    readOnly: true
-                    type: string
-                isDraft:
-                    description: The isDraft field.
-                    readOnly: false
-                    type: boolean
-                lastExecutedAt:
-                    format: date-time
-                    readOnly: false
-                    type: string
-                triggers:
-                    description: The triggers field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowTrigger'
-                    nullable: true
-                    readOnly: false
-                    type: array
-                workflowSteps:
-                    description: The workflowSteps field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowStep'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Workflow
-            type: object
-            x-speakeasy-name-override: Workflow
-        c1.api.workflows.v1beta.WorkflowContext:
-            description: The WorkflowContext message.
-            properties:
-                context:
-                    additionalProperties: true
-                    readOnly: false
-                    type: object
-            title: Workflow Context
-            type: object
-            x-speakeasy-name-override: WorkflowContext
-        c1.api.workflows.v1beta.WorkflowExecution:
-            description: The WorkflowExecution message.
-            properties:
-                completedAt:
-                    format: date-time
-                    readOnly: false
-                    type: string
-                context:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowContext'
-                createdAt:
-                    format: date-time
-                    readOnly: false
-                    type: string
-                deletedAt:
-                    format: date-time
-                    readOnly: false
-                    type: string
-                duration:
-                    format: duration
-                    readOnly: false
-                    type: string
-                id:
-                    description: The id field.
-                    format: int64
-                    readOnly: false
-                    type: string
-                state:
-                    description: The state field.
-                    enum:
-                        - WORKFLOW_EXECUTION_STATE_UNSPECIFIED
-                        - WORKFLOW_EXECUTION_STATE_PENDING
-                        - WORKFLOW_EXECUTION_STATE_CREATING
-                        - WORKFLOW_EXECUTION_STATE_GET_STEP
-                        - WORKFLOW_EXECUTION_STATE_PROCESS_STEP
-                        - WORKFLOW_EXECUTION_STATE_COMPLETE_STEP
-                        - WORKFLOW_EXECUTION_STATE_DONE
-                        - WORKFLOW_EXECUTION_STATE_ERROR
-                        - WORKFLOW_EXECUTION_STATE_TERMINATE
-                        - WORKFLOW_EXECUTION_STATE_WAITING
-                    readOnly: false
-                    type: string
-                    x-speakeasy-unknown-values: allow
-                updatedAt:
-                    format: date-time
-                    readOnly: false
-                    type: string
-                workflowTemplateId:
-                    description: The workflowTemplateId field.
-                    readOnly: false
-                    type: string
-            title: Workflow Execution
-            type: object
-            x-speakeasy-name-override: WorkflowExecution
-        c1.api.workflows.v1beta.WorkflowExecutionExpandMask:
-            description: The WorkflowExecutionExpandMask message.
-            properties:
-                paths:
-                    description: The paths field.
-                    items:
-                        type: string
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Workflow Execution Expand Mask
-            type: object
-            x-speakeasy-name-override: WorkflowExecutionExpandMask
-        c1.api.workflows.v1beta.WorkflowExecutionRef:
-            description: The WorkflowExecutionRef message.
-            properties:
-                id:
-                    description: The id field.
-                    format: int64
-                    readOnly: false
-                    type: string
-            title: Workflow Execution Ref
-            type: object
-            x-speakeasy-name-override: WorkflowExecutionRef
-        c1.api.workflows.v1beta.WorkflowExecutionView:
-            description: The WorkflowExecutionView message.
-            properties:
-                workflowExecution:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.WorkflowExecution'
-                workflowExecutionTriggerPath:
-                    description: The workflowExecutionTriggerPath field.
-                    readOnly: false
-                    type: string
-                workflowPath:
-                    description: The workflowPath field.
-                    readOnly: false
-                    type: string
-            title: Workflow Execution View
-            type: object
-            x-speakeasy-name-override: WorkflowExecutionView
-        c1.api.workflows.v1beta.WorkflowStep:
-            description: |
-                The WorkflowStep message.
-
-                This message contains a oneof named kind. Only a single field of the following list may be set at a time:
-                  - createAccessReview
-                  - waitForDuration
-                  - unenrollFromAllAccessProfiles
-                  - createRevokeTasks
-                  - sendEmail
-                  - removeFromDelegation
-                  - runWorkflow
-                  - updateUser
-                  - taskAction
-                  - webhook
-                  - connectorAction
-            properties:
-                connectorAction:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.ConnectorAction'
-                createAccessReview:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.CreateAccessReview'
-                createRevokeTasks:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.CreateRevokeTasks'
-                removeFromDelegation:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.RemoveFromDelegation'
-                runWorkflow:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.RunWorkflow'
-                sendEmail:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.SendEmail'
-                skipIfTrueCel:
-                    description: The skipIfTrueCel field.
-                    readOnly: false
-                    type: string
-                stepName:
-                    description: The stepName field.
-                    readOnly: false
-                    type: string
-                taskAction:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.TaskAction'
-                unenrollFromAllAccessProfiles:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.UnenrollFromAllAccessProfiles'
-                updateUser:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.UpdateUser'
-                waitForDuration:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.WaitForDuration'
-                webhook:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.Webhook'
-            title: Workflow Step
-            type: object
-            x-speakeasy-name-override: WorkflowStep
-        c1.api.workflows.v1beta.WorkflowTemplateRef:
-            description: The WorkflowTemplateRef message.
-            nullable: true
-            properties:
-                id:
-                    description: The id field.
-                    readOnly: false
-                    type: string
-            title: Workflow Template Ref
-            type: object
-            x-speakeasy-name-override: WorkflowTemplateRef
-        c1.api.workflows.v1beta.WorkflowTrigger:
-            description: |
-                Workflow Triggers
-
-                This message contains a oneof named kind. Only a single field of the following list may be set at a time:
-                  - manual
-                  - userProfileChange
-                  - appUserCreated
-                  - appUserUpdated
-            properties:
-                appUserCreated:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.AppUserCreatedTrigger'
-                appUserUpdated:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.AppUserUpdatedTrigger'
-                condition:
-                    description: The condition field.
-                    readOnly: false
-                    type: string
-                manual:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.ManualWorkflowTrigger'
-                userProfileChange:
-                    $ref: '#/components/schemas/c1.api.workflows.v1beta.UserProfileChangeTrigger'
-            title: Workflow Trigger
-            type: object
-            x-speakeasy-name-override: WorkflowTrigger
         c1.webhooks.v1.Body:
             description: The Body message.
             properties:
@@ -12440,264 +12679,6 @@ info:
     version: 0.1.0-alpha
 openapi: 3.1.0
 paths:
-    /api/v1beta/workflow_executions:
-        get:
-            description: Invokes the c1.api.workflows.v1beta.WorkflowExecutionService.ListWorkflowExecutions method.
-            operationId: c1.api.workflows.v1beta.WorkflowExecutionService.ListWorkflowExecutions
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.workflows.v1beta.ListWorkflowExecutionsResponse'
-                    description: Successful response
-            summary: List Workflow Executions
-            tags:
-                - Workflows
-            x-speakeasy-group: WorkflowExecution
-            x-speakeasy-name-override: ListWorkflowExecutions
-    /api/v1beta/workflow_executions/{id}:
-        get:
-            description: Invokes the c1.api.workflows.v1beta.WorkflowExecutionService.GetWorkflowExecution method.
-            operationId: c1.api.workflows.v1beta.WorkflowExecutionService.GetWorkflowExecution
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    description: The id field.
-                    format: int64
-                    readOnly: false
-                    type: string
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.workflows.v1beta.GetWorkflowExecutionResponse'
-                    description: Successful response
-            summary: Get Workflow Execution
-            tags:
-                - Workflows
-            x-speakeasy-group: WorkflowExecution
-            x-speakeasy-name-override: GetWorkflowExecution
-    /api/v1beta/workflow_executions/{id}/actions/terminate:
-        post:
-            description: Invokes the c1.api.workflows.v1beta.WorkflowExecutionActionsService.TerminateWorkflow method.
-            operationId: c1.api.workflows.v1beta.WorkflowExecutionActionsService.TerminateWorkflow
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    description: The id field.
-                    format: int64
-                    readOnly: false
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.workflows.v1beta.TerminateWorkflowRequestInput'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.workflows.v1beta.TerminateWorkflowResponse'
-                    description: Successful response
-            summary: Terminate Workflow
-            tags:
-                - Workflows
-            x-speakeasy-group: WorkflowExecutionActions
-            x-speakeasy-name-override: TerminateWorkflow
-    /api/v1beta/workflow_executions/search:
-        post:
-            description: Invokes the c1.api.workflows.v1beta.WorkflowExecutionSearchService.SearchWorkflowExecutions method.
-            operationId: c1.api.workflows.v1beta.WorkflowExecutionSearchService.SearchWorkflowExecutions
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.workflows.v1beta.SearchWorkflowExecutionsRequest'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.workflows.v1beta.SearchWorkflowExecutionsResponse'
-                    description: Successful response
-            summary: Search Workflow Executions
-            tags:
-                - Workflows
-            x-speakeasy-group: WorkflowExecutionSearch
-            x-speakeasy-name-override: SearchWorkflowExecutions
-    /api/v1beta/workflows:
-        get:
-            description: Invokes the c1.api.workflows.v1beta.WorkflowService.ListWorkflows method.
-            operationId: c1.api.workflows.v1beta.WorkflowService.ListWorkflows
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.workflows.v1beta.ListWorkflowsResponse'
-                    description: Successful response
-            summary: List Workflows
-            tags:
-                - Workflows
-            x-speakeasy-group: Workflow
-            x-speakeasy-name-override: ListWorkflows
-        post:
-            description: Invokes the c1.api.workflows.v1beta.WorkflowService.CreateWorkflow method.
-            operationId: c1.api.workflows.v1beta.WorkflowService.CreateWorkflow
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.workflows.v1beta.CreateWorkflowRequest'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.workflows.v1beta.CreateWorkflowResponse'
-                    description: Successful response
-            summary: Create Workflow
-            tags:
-                - Workflows
-            x-speakeasy-group: Workflow
-            x-speakeasy-name-override: CreateWorkflow
-    /api/v1beta/workflows/{id}:
-        delete:
-            description: Invokes the c1.api.workflows.v1beta.WorkflowService.DeleteWorkflow method.
-            operationId: c1.api.workflows.v1beta.WorkflowService.DeleteWorkflow
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    description: The id field.
-                    readOnly: false
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.workflows.v1beta.DeleteWorkflowRequestInput'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.workflows.v1beta.DeleteWorkflowResponse'
-                    description: Successful response
-            summary: Delete Workflow
-            tags:
-                - Workflows
-            x-speakeasy-group: Workflow
-            x-speakeasy-name-override: DeleteWorkflow
-        get:
-            description: Invokes the c1.api.workflows.v1beta.WorkflowService.GetWorkflow method.
-            operationId: c1.api.workflows.v1beta.WorkflowService.GetWorkflow
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    description: The id field.
-                    readOnly: false
-                    type: string
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.workflows.v1beta.GetWorkflowResponse'
-                    description: Successful response
-            summary: Get Workflow
-            tags:
-                - Workflows
-            x-speakeasy-group: Workflow
-            x-speakeasy-name-override: GetWorkflow
-        post:
-            description: Invokes the c1.api.workflows.v1beta.WorkflowService.UpdateWorkflow method.
-            operationId: c1.api.workflows.v1beta.WorkflowService.UpdateWorkflow
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    description: The id field.
-                    readOnly: true
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.workflows.v1beta.UpdateWorkflowRequestInput'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.workflows.v1beta.UpdateWorkflowResponse'
-                    description: Successful response
-            summary: Update Workflow
-            tags:
-                - Workflows
-            x-speakeasy-group: Workflow
-            x-speakeasy-name-override: UpdateWorkflow
-    /api/v1beta/workflows/{id}/execute:
-        post:
-            description: Invokes the c1.api.workflows.v1beta.WorkflowService.ExecuteWorkflow method.
-            operationId: c1.api.workflows.v1beta.WorkflowService.ExecuteWorkflow
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    description: The id field.
-                    readOnly: false
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.workflows.v1beta.ExecuteWorkflowRequestInput'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.workflows.v1beta.ExecuteWorkflowResponse'
-                    description: Successful response
-            summary: Execute Workflow
-            tags:
-                - Workflows
-            x-speakeasy-group: Workflow
-            x-speakeasy-name-override: ExecuteWorkflow
-    /api/v1beta/workflows/search:
-        post:
-            description: Invokes the c1.api.workflows.v1beta.WorkflowSearchService.SearchWorkflows method.
-            operationId: c1.api.workflows.v1beta.WorkflowSearchService.SearchWorkflows
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.workflows.v1beta.SearchWorkflowsRequest'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.workflows.v1beta.SearchWorkflowsResponse'
-                    description: Successful response
-            summary: Search Workflows
-            tags:
-                - Workflows
-            x-speakeasy-group: WorkflowSearch
-            x-speakeasy-name-override: SearchWorkflows
     /api/v1/apps:
         get:
             description: List all apps.
@@ -15677,6 +15658,285 @@ paths:
                 - Auth
             x-speakeasy-group: Auth
             x-speakeasy-name-override: Introspect
+    /api/v1/automation_executions:
+        get:
+            description: Invokes the c1.api.automations.v1.AutomationExecutionService.ListAutomationExecutions method.
+            operationId: c1.api.automations.v1.AutomationExecutionService.ListAutomationExecutions
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.ListAutomationExecutionsResponse'
+                    description: Successful response
+            summary: List Automation Executions
+            tags:
+                - Automations
+            x-speakeasy-group: AutomationExecution
+            x-speakeasy-name-override: ListAutomationExecutions
+    /api/v1/automation_executions/{id}:
+        get:
+            description: Invokes the c1.api.automations.v1.AutomationExecutionService.GetAutomationExecution method.
+            operationId: c1.api.automations.v1.AutomationExecutionService.GetAutomationExecution
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    format: int64
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.GetAutomationExecutionResponse'
+                    description: Successful response
+            summary: Get Automation Execution
+            tags:
+                - Automations
+            x-speakeasy-group: AutomationExecution
+            x-speakeasy-name-override: GetAutomationExecution
+    /api/v1/automation_executions/{id}/actions/terminate:
+        post:
+            description: Invokes the c1.api.automations.v1.AutomationExecutionActionsService.TerminateAutomation method.
+            operationId: c1.api.automations.v1.AutomationExecutionActionsService.TerminateAutomation
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    format: int64
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.automations.v1.TerminateAutomationRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.TerminateAutomationResponse'
+                    description: Successful response
+            summary: Terminate Automation
+            tags:
+                - Automations
+            x-speakeasy-group: AutomationExecutionActions
+            x-speakeasy-name-override: TerminateAutomation
+    /api/v1/automation_executions/search:
+        post:
+            description: Invokes the c1.api.automations.v1.AutomationExecutionSearchService.SearchAutomationExecutions method.
+            operationId: c1.api.automations.v1.AutomationExecutionSearchService.SearchAutomationExecutions
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationExecutionsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationExecutionsResponse'
+                    description: Successful response
+            summary: Search Automation Executions
+            tags:
+                - Automations
+            x-speakeasy-group: AutomationExecutionSearch
+            x-speakeasy-name-override: SearchAutomationExecutions
+    /api/v1/automation_versions/search:
+        post:
+            description: Invokes the c1.api.automations.v1.AutomationSearchService.SearchAutomationTemplateVersions method.
+            operationId: c1.api.automations.v1.AutomationSearchService.SearchAutomationTemplateVersions
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationTemplateVersionsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationTemplateVersionsResponse'
+                    description: Successful response
+            summary: Search Automation Template Versions
+            tags:
+                - Automations
+            x-speakeasy-group: AutomationSearch
+            x-speakeasy-name-override: SearchAutomationTemplateVersions
+    /api/v1/automations:
+        get:
+            description: Invokes the c1.api.automations.v1.AutomationService.ListAutomations method.
+            operationId: c1.api.automations.v1.AutomationService.ListAutomations
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.ListAutomationsResponse'
+                    description: Successful response
+            summary: List Automations
+            tags:
+                - Automations
+            x-speakeasy-group: Automation
+            x-speakeasy-name-override: ListAutomations
+        post:
+            description: Invokes the c1.api.automations.v1.AutomationService.CreateAutomation method.
+            operationId: c1.api.automations.v1.AutomationService.CreateAutomation
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.automations.v1.CreateAutomationRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.CreateAutomationResponse'
+                    description: Successful response
+            summary: Create Automation
+            tags:
+                - Automations
+            x-speakeasy-group: Automation
+            x-speakeasy-name-override: CreateAutomation
+    /api/v1/automations/{id}:
+        delete:
+            description: Invokes the c1.api.automations.v1.AutomationService.DeleteAutomation method.
+            operationId: c1.api.automations.v1.AutomationService.DeleteAutomation
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.automations.v1.DeleteAutomationRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.DeleteAutomationResponse'
+                    description: Successful response
+            summary: Delete Automation
+            tags:
+                - Automations
+            x-speakeasy-group: Automation
+            x-speakeasy-name-override: DeleteAutomation
+        get:
+            description: Invokes the c1.api.automations.v1.AutomationService.GetAutomation method.
+            operationId: c1.api.automations.v1.AutomationService.GetAutomation
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.GetAutomationResponse'
+                    description: Successful response
+            summary: Get Automation
+            tags:
+                - Automations
+            x-speakeasy-group: Automation
+            x-speakeasy-name-override: GetAutomation
+        post:
+            description: Invokes the c1.api.automations.v1.AutomationService.UpdateAutomation method.
+            operationId: c1.api.automations.v1.AutomationService.UpdateAutomation
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: true
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.automations.v1.UpdateAutomationRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.UpdateAutomationResponse'
+                    description: Successful response
+            summary: Update Automation
+            tags:
+                - Automations
+            x-speakeasy-group: Automation
+            x-speakeasy-name-override: UpdateAutomation
+    /api/v1/automations/{id}/execute:
+        post:
+            description: Invokes the c1.api.automations.v1.AutomationService.ExecuteAutomation method.
+            operationId: c1.api.automations.v1.AutomationService.ExecuteAutomation
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.automations.v1.ExecuteAutomationRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.ExecuteAutomationResponse'
+                    description: Successful response
+            summary: Execute Automation
+            tags:
+                - Automations
+            x-speakeasy-group: Automation
+            x-speakeasy-name-override: ExecuteAutomation
+    /api/v1/automations/search:
+        post:
+            description: Invokes the c1.api.automations.v1.AutomationSearchService.SearchAutomations method.
+            operationId: c1.api.automations.v1.AutomationSearchService.SearchAutomations
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationsResponse'
+                    description: Successful response
+            summary: Search Automations
+            tags:
+                - Automations
+            x-speakeasy-group: AutomationSearch
+            x-speakeasy-name-override: SearchAutomations
     /api/v1/catalogs:
         get:
             description: Get a list of request catalogs.

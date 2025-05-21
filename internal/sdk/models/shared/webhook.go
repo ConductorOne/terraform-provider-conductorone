@@ -14,11 +14,11 @@ type Webhook struct {
 	Payload *Payload `json:"payload,omitempty"`
 	// The webhookId field.
 	// This field is part of the `webhook_identifier` oneof.
-	// See the documentation for `c1.api.workflows.v1beta.Webhook` for more details.
+	// See the documentation for `c1.api.automations.v1.Webhook` for more details.
 	WebhookID *string `json:"webhookId,omitempty"`
 	// The webhookIdCel field.
 	// This field is part of the `webhook_identifier` oneof.
-	// See the documentation for `c1.api.workflows.v1beta.Webhook` for more details.
+	// See the documentation for `c1.api.automations.v1.Webhook` for more details.
 	WebhookIDCel *string `json:"webhookIdCel,omitempty"`
 }
 
