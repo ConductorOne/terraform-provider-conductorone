@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type Approval struct {
 	AgentApproval             *AgentApproval            `tfsdk:"agent_approval"`
@@ -12,6 +14,8 @@ type Approval struct {
 	AppOwnerApproval          *AppOwnerApproval         `tfsdk:"app_owner_approval"`
 	Assigned                  types.Bool                `tfsdk:"assigned"`
 	EntitlementOwnerApproval  *EntitlementOwnerApproval `tfsdk:"entitlement_owner_approval"`
+	Escalation                *Escalation               `tfsdk:"escalation"`
+	EscalationEnabled         types.Bool                `tfsdk:"escalation_enabled"`
 	ExpressionApproval        *ExpressionApproval       `tfsdk:"expression_approval"`
 	ManagerApproval           *ManagerApproval          `tfsdk:"manager_approval"`
 	RequireApprovalReason     types.Bool                `tfsdk:"require_approval_reason"`

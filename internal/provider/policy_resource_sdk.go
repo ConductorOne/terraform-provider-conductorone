@@ -47,6 +47,12 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 				if stepsItem.Approval != nil {
 					var agentApproval *shared.AgentApproval
 					if stepsItem.Approval.AgentApproval != nil {
+						agentMode := new(shared.AgentMode)
+						if !stepsItem.Approval.AgentApproval.AgentMode.IsUnknown() && !stepsItem.Approval.AgentApproval.AgentMode.IsNull() {
+							*agentMode = shared.AgentMode(stepsItem.Approval.AgentApproval.AgentMode.ValueString())
+						} else {
+							agentMode = nil
+						}
 						agentUserID := new(string)
 						if !stepsItem.Approval.AgentApproval.AgentUserID.IsUnknown() && !stepsItem.Approval.AgentApproval.AgentUserID.IsNull() {
 							*agentUserID = stepsItem.Approval.AgentApproval.AgentUserID.ValueString()
@@ -67,6 +73,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 						}
 						agentApproval = &shared.AgentApproval{
+							AgentMode:    agentMode,
 							AgentUserID:  agentUserID,
 							Instructions: instructions,
 							PolicyIds:    policyIds,
@@ -123,6 +130,58 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							Fallback:          fallback,
 							FallbackUserIds:   fallbackUserIds,
 						}
+					}
+					var escalation *shared.Escalation
+					if stepsItem.Approval.Escalation != nil {
+						escalationComment := new(string)
+						if !stepsItem.Approval.Escalation.EscalationComment.IsUnknown() && !stepsItem.Approval.Escalation.EscalationComment.IsNull() {
+							*escalationComment = stepsItem.Approval.Escalation.EscalationComment.ValueString()
+						} else {
+							escalationComment = nil
+						}
+						expiration := new(string)
+						if !stepsItem.Approval.Escalation.Expiration.IsUnknown() && !stepsItem.Approval.Escalation.Expiration.IsNull() {
+							*expiration = stepsItem.Approval.Escalation.Expiration.ValueString()
+						} else {
+							expiration = nil
+						}
+						var reassignToApprovers *shared.ReassignToApprovers
+						if stepsItem.Approval.Escalation.ReassignToApprovers != nil {
+							var approverIds []string
+							if stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
+								approverIds = make([]string, 0, len(stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds))
+								for _, approverIdsItem := range stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
+									approverIds = append(approverIds, approverIdsItem.ValueString())
+								}
+							}
+							reassignToApprovers = &shared.ReassignToApprovers{
+								ApproverIds: approverIds,
+							}
+						}
+						var replacePolicy *shared.ReplacePolicy
+						if stepsItem.Approval.Escalation.ReplacePolicy != nil {
+							policyID := new(string)
+							if !stepsItem.Approval.Escalation.ReplacePolicy.PolicyID.IsUnknown() && !stepsItem.Approval.Escalation.ReplacePolicy.PolicyID.IsNull() {
+								*policyID = stepsItem.Approval.Escalation.ReplacePolicy.PolicyID.ValueString()
+							} else {
+								policyID = nil
+							}
+							replacePolicy = &shared.ReplacePolicy{
+								PolicyID: policyID,
+							}
+						}
+						escalation = &shared.Escalation{
+							EscalationComment:   escalationComment,
+							Expiration:          expiration,
+							ReassignToApprovers: reassignToApprovers,
+							ReplacePolicy:       replacePolicy,
+						}
+					}
+					escalationEnabled := new(bool)
+					if !stepsItem.Approval.EscalationEnabled.IsUnknown() && !stepsItem.Approval.EscalationEnabled.IsNull() {
+						*escalationEnabled = stepsItem.Approval.EscalationEnabled.ValueBool()
+					} else {
+						escalationEnabled = nil
 					}
 					var expressionApproval *shared.ExpressionApprovalInput
 					if stepsItem.Approval.ExpressionApproval != nil {
@@ -336,6 +395,8 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						AllowedReassignees:        allowedReassignees,
 						AppOwnerApproval:          appOwnerApproval,
 						EntitlementOwnerApproval:  entitlementOwnerApproval,
+						Escalation:                escalation,
+						EscalationEnabled:         escalationEnabled,
 						ExpressionApproval:        expressionApproval,
 						AppGroupApproval:          appGroupApproval,
 						ManagerApproval:           managerApproval,
@@ -733,6 +794,12 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 				if stepsItem.Approval != nil {
 					var agentApproval *shared.AgentApproval
 					if stepsItem.Approval.AgentApproval != nil {
+						agentMode := new(shared.AgentMode)
+						if !stepsItem.Approval.AgentApproval.AgentMode.IsUnknown() && !stepsItem.Approval.AgentApproval.AgentMode.IsNull() {
+							*agentMode = shared.AgentMode(stepsItem.Approval.AgentApproval.AgentMode.ValueString())
+						} else {
+							agentMode = nil
+						}
 						agentUserID := new(string)
 						if !stepsItem.Approval.AgentApproval.AgentUserID.IsUnknown() && !stepsItem.Approval.AgentApproval.AgentUserID.IsNull() {
 							*agentUserID = stepsItem.Approval.AgentApproval.AgentUserID.ValueString()
@@ -753,6 +820,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 						}
 						agentApproval = &shared.AgentApproval{
+							AgentMode:    agentMode,
 							AgentUserID:  agentUserID,
 							Instructions: instructions,
 							PolicyIds:    policyIds,
@@ -809,6 +877,58 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							Fallback:          fallback,
 							FallbackUserIds:   fallbackUserIds,
 						}
+					}
+					var escalation *shared.Escalation
+					if stepsItem.Approval.Escalation != nil {
+						escalationComment := new(string)
+						if !stepsItem.Approval.Escalation.EscalationComment.IsUnknown() && !stepsItem.Approval.Escalation.EscalationComment.IsNull() {
+							*escalationComment = stepsItem.Approval.Escalation.EscalationComment.ValueString()
+						} else {
+							escalationComment = nil
+						}
+						expiration := new(string)
+						if !stepsItem.Approval.Escalation.Expiration.IsUnknown() && !stepsItem.Approval.Escalation.Expiration.IsNull() {
+							*expiration = stepsItem.Approval.Escalation.Expiration.ValueString()
+						} else {
+							expiration = nil
+						}
+						var reassignToApprovers *shared.ReassignToApprovers
+						if stepsItem.Approval.Escalation.ReassignToApprovers != nil {
+							var approverIds []string
+							if stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
+								approverIds = make([]string, 0, len(stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds))
+								for _, approverIdsItem := range stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
+									approverIds = append(approverIds, approverIdsItem.ValueString())
+								}
+							}
+							reassignToApprovers = &shared.ReassignToApprovers{
+								ApproverIds: approverIds,
+							}
+						}
+						var replacePolicy *shared.ReplacePolicy
+						if stepsItem.Approval.Escalation.ReplacePolicy != nil {
+							policyID := new(string)
+							if !stepsItem.Approval.Escalation.ReplacePolicy.PolicyID.IsUnknown() && !stepsItem.Approval.Escalation.ReplacePolicy.PolicyID.IsNull() {
+								*policyID = stepsItem.Approval.Escalation.ReplacePolicy.PolicyID.ValueString()
+							} else {
+								policyID = nil
+							}
+							replacePolicy = &shared.ReplacePolicy{
+								PolicyID: policyID,
+							}
+						}
+						escalation = &shared.Escalation{
+							EscalationComment:   escalationComment,
+							Expiration:          expiration,
+							ReassignToApprovers: reassignToApprovers,
+							ReplacePolicy:       replacePolicy,
+						}
+					}
+					escalationEnabled := new(bool)
+					if !stepsItem.Approval.EscalationEnabled.IsUnknown() && !stepsItem.Approval.EscalationEnabled.IsNull() {
+						*escalationEnabled = stepsItem.Approval.EscalationEnabled.ValueBool()
+					} else {
+						escalationEnabled = nil
 					}
 					var expressionApproval *shared.ExpressionApprovalInput
 					if stepsItem.Approval.ExpressionApproval != nil {
@@ -1022,6 +1142,8 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						AllowedReassignees:        allowedReassignees,
 						AppOwnerApproval:          appOwnerApproval,
 						EntitlementOwnerApproval:  entitlementOwnerApproval,
+						Escalation:                escalation,
+						EscalationEnabled:         escalationEnabled,
 						ExpressionApproval:        expressionApproval,
 						AppGroupApproval:          appGroupApproval,
 						ManagerApproval:           managerApproval,
@@ -1477,6 +1599,11 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Approval.AgentApproval = nil
 							} else {
 								steps.Approval.AgentApproval = &tfTypes.AgentApproval{}
+								if stepsItem.Approval.AgentApproval.AgentMode != nil {
+									steps.Approval.AgentApproval.AgentMode = types.StringValue(string(*stepsItem.Approval.AgentApproval.AgentMode))
+								} else {
+									steps.Approval.AgentApproval.AgentMode = types.StringNull()
+								}
 								steps.Approval.AgentApproval.AgentUserID = types.StringPointerValue(stepsItem.Approval.AgentApproval.AgentUserID)
 								steps.Approval.AgentApproval.Instructions = types.StringPointerValue(stepsItem.Approval.AgentApproval.Instructions)
 								if stepsItem.Approval.AgentApproval.PolicyIds != nil {
@@ -1528,6 +1655,31 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									}
 								}
 							}
+							if stepsItem.Approval.Escalation == nil {
+								steps.Approval.Escalation = nil
+							} else {
+								steps.Approval.Escalation = &tfTypes.Escalation{}
+								steps.Approval.Escalation.EscalationComment = types.StringPointerValue(stepsItem.Approval.Escalation.EscalationComment)
+								steps.Approval.Escalation.Expiration = types.StringPointerValue(stepsItem.Approval.Escalation.Expiration)
+								if stepsItem.Approval.Escalation.ReassignToApprovers == nil {
+									steps.Approval.Escalation.ReassignToApprovers = nil
+								} else {
+									steps.Approval.Escalation.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
+									if stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
+										steps.Approval.Escalation.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds))
+										for _, v := range stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
+											steps.Approval.Escalation.ReassignToApprovers.ApproverIds = append(steps.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
+										}
+									}
+								}
+								if stepsItem.Approval.Escalation.ReplacePolicy == nil {
+									steps.Approval.Escalation.ReplacePolicy = nil
+								} else {
+									steps.Approval.Escalation.ReplacePolicy = &tfTypes.ReplacePolicy{}
+									steps.Approval.Escalation.ReplacePolicy.PolicyID = types.StringPointerValue(stepsItem.Approval.Escalation.ReplacePolicy.PolicyID)
+								}
+							}
+							steps.Approval.EscalationEnabled = types.BoolPointerValue(stepsItem.Approval.EscalationEnabled)
 							if stepsItem.Approval.ExpressionApproval == nil {
 								steps.Approval.ExpressionApproval = nil
 							} else {

@@ -72,6 +72,13 @@ type ApprovalInstance struct {
 	ApprovedAction *ApprovedAction `json:"approved,omitempty"`
 	// The denied action indicates that the c1.api.policy.v1.ApprovalInstance had an outcome of denied.
 	DeniedAction *DeniedAction `json:"denied,omitempty"`
+	// The EscalationInstance message.
+	//
+	// This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:
+	//   - replacePolicy
+	//   - reassignToApprovers
+	//
+	EscalationInstance *EscalationInstance `json:"escalationInstance,omitempty"`
 	// The ReassignedAction object describes the outcome of a policy step that has been reassigned.
 	ReassignedAction *ReassignedAction `json:"reassigned,omitempty"`
 	// The ReassignedByErrorAction object describes the outcome of a policy step that has been reassigned because it had an error provisioning.
@@ -103,6 +110,13 @@ func (o *ApprovalInstance) GetDeniedAction() *DeniedAction {
 		return nil
 	}
 	return o.DeniedAction
+}
+
+func (o *ApprovalInstance) GetEscalationInstance() *EscalationInstance {
+	if o == nil {
+		return nil
+	}
+	return o.EscalationInstance
 }
 
 func (o *ApprovalInstance) GetReassignedAction() *ReassignedAction {

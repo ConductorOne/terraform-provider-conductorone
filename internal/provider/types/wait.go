@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type Wait struct {
 	CommentOnFirstWait types.String   `tfsdk:"comment_on_first_wait"`

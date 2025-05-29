@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type AppGroupApproval struct {
 	AllowSelfApproval types.Bool     `tfsdk:"allow_self_approval"`

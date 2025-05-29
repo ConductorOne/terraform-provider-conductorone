@@ -9,7 +9,7 @@ import (
 
 // UserStatusEnum - The userStatusEnum field.
 // This field is part of the `user_status` oneof.
-// See the documentation for `c1.api.workflows.v1beta.UpdateUser` for more details.
+// See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
 type UserStatusEnum string
 
 const (
@@ -54,17 +54,17 @@ func (e *UserStatusEnum) UnmarshalJSON(data []byte) error {
 type UpdateUser struct {
 	// The userIdCel field.
 	// This field is part of the `user` oneof.
-	// See the documentation for `c1.api.workflows.v1beta.UpdateUser` for more details.
+	// See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
 	UserIDCel *string `json:"userIdCel,omitempty"`
 	// A reference to a user.
 	UserRef *UserRef `json:"userRef,omitempty"`
 	// The userStatusCel field.
 	// This field is part of the `user_status` oneof.
-	// See the documentation for `c1.api.workflows.v1beta.UpdateUser` for more details.
+	// See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
 	UserStatusCel *string `json:"userStatusCel,omitempty"`
 	// The userStatusEnum field.
 	// This field is part of the `user_status` oneof.
-	// See the documentation for `c1.api.workflows.v1beta.UpdateUser` for more details.
+	// See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
 	UserStatusEnum *UserStatusEnum `json:"userStatusEnum,omitempty"`
 }
 

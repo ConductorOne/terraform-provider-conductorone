@@ -6,6 +6,8 @@ package shared
 type SearchPastGrantsRequest struct {
 	// The appEntitlementRefs field.
 	AppEntitlementRefs []AppEntitlementRef `json:"appEntitlementRefs,omitempty"`
+	// The appIds field.
+	AppIds []string `json:"appIds,omitempty"`
 	// The appUserRefs field.
 	AppUserRefs []AppUserRef `json:"appUserRefs,omitempty"`
 	// The AppEntitlementUserBindingExpandHistoryMask message.
@@ -17,6 +19,13 @@ func (o *SearchPastGrantsRequest) GetAppEntitlementRefs() []AppEntitlementRef {
 		return nil
 	}
 	return o.AppEntitlementRefs
+}
+
+func (o *SearchPastGrantsRequest) GetAppIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.AppIds
 }
 
 func (o *SearchPastGrantsRequest) GetAppUserRefs() []AppUserRef {

@@ -2,7 +2,9 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type SelfApproval struct {
 	AssignedUserIds []types.String `tfsdk:"assigned_user_ids"`

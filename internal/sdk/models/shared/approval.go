@@ -28,6 +28,15 @@ type Approval struct {
 	Assigned *bool `json:"assigned,omitempty"`
 	// The entitlement owner approval allows configuration of the approval step when the target approvers are the entitlement owners.
 	EntitlementOwnerApproval *EntitlementOwnerApproval `json:"entitlementOwners,omitempty"`
+	// The Escalation message.
+	//
+	// This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:
+	//   - replacePolicy
+	//   - reassignToApprovers
+	//
+	Escalation *Escalation `json:"escalation,omitempty"`
+	// Whether escalation is enabled for this step.
+	EscalationEnabled *bool `json:"escalationEnabled,omitempty"`
 	// The ExpressionApproval message.
 	ExpressionApproval *ExpressionApproval `json:"expression,omitempty"`
 	// The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step.
@@ -93,6 +102,20 @@ func (o *Approval) GetEntitlementOwnerApproval() *EntitlementOwnerApproval {
 		return nil
 	}
 	return o.EntitlementOwnerApproval
+}
+
+func (o *Approval) GetEscalation() *Escalation {
+	if o == nil {
+		return nil
+	}
+	return o.Escalation
+}
+
+func (o *Approval) GetEscalationEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EscalationEnabled
 }
 
 func (o *Approval) GetExpressionApproval() *ExpressionApproval {

@@ -251,6 +251,8 @@ type TaskSearchRequest struct {
 	AppUserSubjectIds []string `json:"appUserSubjectIds,omitempty"`
 	// Search tasks that have any of these apps as targets.
 	ApplicationIds []string `json:"applicationIds,omitempty"`
+	// Search tasks that are currently assigned to this user, or that are closed and were previously approved by this user.
+	AssignedOrStepApproverUserID *string `json:"assignedOrStepApproverUserId,omitempty"`
 	// Search tasks by  List of UserIDs which are currently assigned these Tasks
 	AssigneesInIds []string   `json:"assigneesInIds,omitempty"`
 	CreatedAfter   *time.Time `json:"createdAfter,omitempty"`
@@ -272,6 +274,8 @@ type TaskSearchRequest struct {
 	OlderThanDuration *string  `json:"olderThanDuration,omitempty"`
 	// Search tasks that were created by any of the users in this array.
 	OpenerIds []string `json:"openerIds,omitempty"`
+	// Search tasks that were opened by this user, or that the user is the subject of.
+	OpenerOrSubjectUserID *string `json:"openerOrSubjectUserId,omitempty"`
 	// Search tasks that were acted on by any of these users.
 	PreviouslyActedOnIds []string `json:"previouslyActedOnIds,omitempty"`
 	// Fuzzy search tasks by display name or description. Also can search by numeric ID.
@@ -366,6 +370,13 @@ func (o *TaskSearchRequest) GetApplicationIds() []string {
 	return o.ApplicationIds
 }
 
+func (o *TaskSearchRequest) GetAssignedOrStepApproverUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AssignedOrStepApproverUserID
+}
+
 func (o *TaskSearchRequest) GetAssigneesInIds() []string {
 	if o == nil {
 		return nil
@@ -448,6 +459,13 @@ func (o *TaskSearchRequest) GetOpenerIds() []string {
 		return nil
 	}
 	return o.OpenerIds
+}
+
+func (o *TaskSearchRequest) GetOpenerOrSubjectUserID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.OpenerOrSubjectUserID
 }
 
 func (o *TaskSearchRequest) GetPreviouslyActedOnIds() []string {

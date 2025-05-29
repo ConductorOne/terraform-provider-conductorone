@@ -88,6 +88,12 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 	} else {
 		connectorVersion = nil
 	}
+	defaultRequestCatalogID := new(string)
+	if !r.DefaultRequestCatalogID.IsUnknown() && !r.DefaultRequestCatalogID.IsNull() {
+		*defaultRequestCatalogID = r.DefaultRequestCatalogID.ValueString()
+	} else {
+		defaultRequestCatalogID = nil
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -139,6 +145,7 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 	out := shared.AppInput{
 		CertifyPolicyID:                     certifyPolicyID,
 		ConnectorVersion:                    connectorVersion,
+		DefaultRequestCatalogID:             defaultRequestCatalogID,
 		Description:                         description,
 		DisplayName:                         displayName,
 		GrantPolicyID:                       grantPolicyID,
@@ -225,6 +232,7 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 		r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
 		r.ConnectorVersion = types.Int64PointerValue(resp.ConnectorVersion)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DefaultRequestCatalogID = types.StringPointerValue(resp.DefaultRequestCatalogID)
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
