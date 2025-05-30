@@ -14,8 +14,8 @@ This data source enables you to retrieve ConductorOne app resources using the fo
 * `app_id` - The ID of the app
 * `app_user_ids` - The user IDs of the app
 * `exclude_deleted_resource_bindings` - Exclude deleted resource bindings
-* `exclude_resource_ids` - Exclude resource IDs
-* `exclude_resource_type_trait_ids` - Exclude resource type trait IDs
+* `exclude_resource_ids` - List of excluded resource IDs
+* `exclude_resource_type_trait_ids` - List of Excluded resource type trait IDs
 * `query` - Search query string
 * `refs` - The ref fields
 * `resource_ids` - List of resourceIDs
