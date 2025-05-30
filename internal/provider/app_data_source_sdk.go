@@ -64,6 +64,7 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 	r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
 	r.ConnectorVersion = types.Int64PointerValue(resp.ConnectorVersion)
 	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+	r.DefaultRequestCatalogID = types.StringPointerValue(resp.DefaultRequestCatalogID)
 	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 	r.Description = types.StringPointerValue(resp.Description)
 	r.DisplayName = types.StringPointerValue(resp.DisplayName)

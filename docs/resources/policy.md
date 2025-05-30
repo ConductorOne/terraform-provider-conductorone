@@ -27,6 +27,7 @@ resource "conductorone_policy" "my_policy" {
           }
           approval = {
             agent_approval = {
+              agent_mode    = "APPROVAL_AGENT_MODE_FULL_CONTROL"
               agent_user_id = "...my_agent_user_id..."
               instructions  = "...my_instructions..."
               policy_ids = [
@@ -56,6 +57,19 @@ resource "conductorone_policy" "my_policy" {
                 "..."
               ]
             }
+            escalation = {
+              escalation_comment = "...my_escalation_comment..."
+              expiration         = "...my_expiration..."
+              reassign_to_approvers = {
+                approver_ids = [
+                  "..."
+                ]
+              }
+              replace_policy = {
+                policy_id = "...my_policy_id..."
+              }
+            }
+            escalation_enabled = false
             expression_approval = {
               allow_self_approval = true
               expressions = [
@@ -261,6 +275,12 @@ Optional:
 - `app_group_approval` (Attributes) The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_group_approval))
 - `app_owner_approval` (Attributes) App owner approval provides the configuration for an approval step when the app owner is the target. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_owner_approval))
 - `entitlement_owner_approval` (Attributes) The entitlement owner approval allows configuration of the approval step when the target approvers are the entitlement owners. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--entitlement_owner_approval))
+- `escalation` (Attributes) The Escalation message.
+
+This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:
+  - replacePolicy
+  - reassignToApprovers (see [below for nested schema](#nestedatt--policy_steps--steps--approval--escalation))
+- `escalation_enabled` (Boolean) Whether escalation is enabled for this step.
 - `expression_approval` (Attributes) The ExpressionApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--expression_approval))
 - `manager_approval` (Attributes) The manager approval object provides configuration options for approval when the target of the approval is the manager of the user in the task. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--manager_approval))
 - `require_approval_reason` (Boolean) Configuration to require a reason when approving this step.
@@ -282,9 +302,10 @@ Read-Only:
 
 Optional:
 
+- `agent_mode` (String) The mode of the agent, full control, change policy only, or comment only. must be one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]
 - `agent_user_id` (String) The agent user ID to assign the task to.
 - `instructions` (String) Instructions for the agent.
-- `policy_ids` (List of String) The policyIds field.
+- `policy_ids` (List of String) The allow list of policy IDs to re-route the task to.
 
 
 <a id="nestedatt--policy_steps--steps--approval--app_group_approval"></a>
@@ -315,6 +336,33 @@ Optional:
 - `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is an entitlement owner during this step.
 - `fallback` (Boolean) Configuration to allow a fallback if the entitlement owner cannot be identified.
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.
+
+
+<a id="nestedatt--policy_steps--steps--approval--escalation"></a>
+### Nested Schema for `policy_steps.steps.approval.escalation`
+
+Optional:
+
+- `escalation_comment` (String) The escalationComment field.
+- `expiration` (String) The expiration field.
+- `reassign_to_approvers` (Attributes) The ReassignToApprovers message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--escalation--reassign_to_approvers))
+- `replace_policy` (Attributes) The ReplacePolicy message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--escalation--replace_policy))
+
+<a id="nestedatt--policy_steps--steps--approval--escalation--reassign_to_approvers"></a>
+### Nested Schema for `policy_steps.steps.approval.escalation.reassign_to_approvers`
+
+Optional:
+
+- `approver_ids` (List of String) The approverIds field.
+
+
+<a id="nestedatt--policy_steps--steps--approval--escalation--replace_policy"></a>
+### Nested Schema for `policy_steps.steps.approval.escalation.replace_policy`
+
+Optional:
+
+- `policy_id` (String) The policyId field.
+
 
 
 <a id="nestedatt--policy_steps--steps--approval--expression_approval"></a>

@@ -154,6 +154,7 @@ func (e *Source) UnmarshalJSON(data []byte) error {
 //   - externalTicketProvisionStepResolved
 //   - stepSkipped
 //   - reassignmentListError
+//   - slaEscalation
 type TaskAuditView struct {
 	// The TaskAuditAccessRequestOutcome message.
 	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
@@ -224,6 +225,8 @@ type TaskAuditView struct {
 	TaskAuditReassignmentListError *TaskAuditReassignmentListError `json:"reassignmentListError,omitempty"`
 	// The TaskAuditRevokeOutcome message.
 	TaskAuditRevokeOutcome *TaskAuditRevokeOutcome `json:"revokeOutcome,omitempty"`
+	// The TaskAuditSLAEscalation message.
+	TaskAuditSLAEscalation *TaskAuditSLAEscalation `json:"slaEscalation,omitempty"`
 	// The source field.
 	Source *Source `json:"source,omitempty"`
 	// The TaskAuditStateChange message.
@@ -503,6 +506,13 @@ func (o *TaskAuditView) GetTaskAuditRevokeOutcome() *TaskAuditRevokeOutcome {
 		return nil
 	}
 	return o.TaskAuditRevokeOutcome
+}
+
+func (o *TaskAuditView) GetTaskAuditSLAEscalation() *TaskAuditSLAEscalation {
+	if o == nil {
+		return nil
+	}
+	return o.TaskAuditSLAEscalation
 }
 
 func (o *TaskAuditView) GetSource() *Source {

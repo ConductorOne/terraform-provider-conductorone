@@ -2,9 +2,12 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type AgentApproval struct {
+	AgentMode    types.String   `tfsdk:"agent_mode"`
 	AgentUserID  types.String   `tfsdk:"agent_user_id"`
 	Instructions types.String   `tfsdk:"instructions"`
 	PolicyIds    []types.String `tfsdk:"policy_ids"`

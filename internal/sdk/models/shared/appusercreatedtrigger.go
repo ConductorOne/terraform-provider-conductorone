@@ -10,11 +10,11 @@ package shared
 type AppUserCreatedTrigger struct {
 	// The appId field.
 	// This field is part of the `app_identifier` oneof.
-	// See the documentation for `c1.api.workflows.v1beta.AppUserCreatedTrigger` for more details.
+	// See the documentation for `c1.api.automations.v1.AppUserCreatedTrigger` for more details.
 	AppID *string `json:"appId,omitempty"`
 	// The appIdCel field.
 	// This field is part of the `app_identifier` oneof.
-	// See the documentation for `c1.api.workflows.v1beta.AppUserCreatedTrigger` for more details.
+	// See the documentation for `c1.api.automations.v1.AppUserCreatedTrigger` for more details.
 	AppIDCel *string `json:"appIdCel,omitempty"`
 }
 

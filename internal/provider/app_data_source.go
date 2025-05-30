@@ -33,6 +33,7 @@ type AppDataSourceModel struct {
 	CertifyPolicyID                     types.String   `tfsdk:"certify_policy_id"`
 	ConnectorVersion                    types.Int64    `tfsdk:"connector_version"`
 	CreatedAt                           types.String   `tfsdk:"created_at"`
+	DefaultRequestCatalogID             types.String   `tfsdk:"default_request_catalog_id"`
 	DeletedAt                           types.String   `tfsdk:"deleted_at"`
 	Description                         types.String   `tfsdk:"description"`
 	DisplayName                         types.String   `tfsdk:"display_name"`
@@ -87,6 +88,10 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
+			},
+			"default_request_catalog_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The ID for the default request catalog for this app.`,
 			},
 			"deleted_at": schema.StringAttribute{
 				Computed: true,

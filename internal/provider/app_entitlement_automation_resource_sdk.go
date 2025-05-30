@@ -100,7 +100,7 @@ func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementAutomation
 	return &out, diags
 }
 
-func (r *AppEntitlementAutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Context) (*shared.CreateAutomationRequest, diag.Diagnostics) {
+func (r *AppEntitlementAutomationResourceModel) ToSharedCreateAutomationRequestInput(ctx context.Context) (*shared.CreateAutomationRequestInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	appEntitlementAutomation, appEntitlementAutomationDiags := r.ToSharedAppEntitlementAutomationInput(ctx)
@@ -110,7 +110,7 @@ func (r *AppEntitlementAutomationResourceModel) ToSharedCreateAutomationRequest(
 		return nil, diags
 	}
 
-	out := shared.CreateAutomationRequest{
+	out := shared.CreateAutomationRequestInput{
 		AppEntitlementAutomation: appEntitlementAutomation,
 	}
 
@@ -126,7 +126,7 @@ func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitle
 	var appEntitlementID string
 	appEntitlementID = r.AppEntitlementID.ValueString()
 
-	createAutomationRequest, createAutomationRequestDiags := r.ToSharedCreateAutomationRequest(ctx)
+	createAutomationRequest, createAutomationRequestDiags := r.ToSharedCreateAutomationRequestInput(ctx)
 	diags.Append(createAutomationRequestDiags...)
 
 	if diags.HasError() {

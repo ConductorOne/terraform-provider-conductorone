@@ -10,23 +10,23 @@ import (
 type DurationUnset struct {
 }
 
-// AppAccessRequestDefaultsState - The last applied state of the app access request defaults.
-type AppAccessRequestDefaultsState string
+// State - The last applied state of the app access request defaults.
+type State string
 
 const (
-	AppAccessRequestDefaultsStateAppAccessRequestDefaultsLastApplyStateUnspecified   AppAccessRequestDefaultsState = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_UNSPECIFIED"
-	AppAccessRequestDefaultsStateAppAccessRequestDefaultsLastApplyStateRunning       AppAccessRequestDefaultsState = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_RUNNING"
-	AppAccessRequestDefaultsStateAppAccessRequestDefaultsLastApplyStateSuccess       AppAccessRequestDefaultsState = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_SUCCESS"
-	AppAccessRequestDefaultsStateAppAccessRequestDefaultsLastApplyStateFailed        AppAccessRequestDefaultsState = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_FAILED"
-	AppAccessRequestDefaultsStateAppAccessRequestDefaultsLastApplyStateCanceling     AppAccessRequestDefaultsState = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCELING"
-	AppAccessRequestDefaultsStateAppAccessRequestDefaultsLastApplyStateCancelSuccess AppAccessRequestDefaultsState = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCEL_SUCCESS"
-	AppAccessRequestDefaultsStateAppAccessRequestDefaultsLastApplyStateCancelError   AppAccessRequestDefaultsState = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCEL_ERROR"
+	StateAppAccessRequestDefaultsLastApplyStateUnspecified   State = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_UNSPECIFIED"
+	StateAppAccessRequestDefaultsLastApplyStateRunning       State = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_RUNNING"
+	StateAppAccessRequestDefaultsLastApplyStateSuccess       State = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_SUCCESS"
+	StateAppAccessRequestDefaultsLastApplyStateFailed        State = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_FAILED"
+	StateAppAccessRequestDefaultsLastApplyStateCanceling     State = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCELING"
+	StateAppAccessRequestDefaultsLastApplyStateCancelSuccess State = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCEL_SUCCESS"
+	StateAppAccessRequestDefaultsLastApplyStateCancelError   State = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCEL_ERROR"
 )
 
-func (e AppAccessRequestDefaultsState) ToPointer() *AppAccessRequestDefaultsState {
+func (e State) ToPointer() *State {
 	return &e
 }
-func (e *AppAccessRequestDefaultsState) UnmarshalJSON(data []byte) error {
+func (e *State) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -45,10 +45,10 @@ func (e *AppAccessRequestDefaultsState) UnmarshalJSON(data []byte) error {
 	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCEL_SUCCESS":
 		fallthrough
 	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCEL_ERROR":
-		*e = AppAccessRequestDefaultsState(v)
+		*e = State(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AppAccessRequestDefaultsState: %v", v)
+		return fmt.Errorf("invalid value for State: %v", v)
 	}
 }
 
@@ -75,7 +75,7 @@ type AppAccessRequestDefaults struct {
 	// The app resource type ids for which the app access request defaults are applied.
 	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
 	// The last applied state of the app access request defaults.
-	State *AppAccessRequestDefaultsState `json:"state,omitempty"`
+	State *State `json:"state,omitempty"`
 }
 
 func (o *AppAccessRequestDefaults) GetAppID() *string {
@@ -141,7 +141,7 @@ func (o *AppAccessRequestDefaults) GetResourceTypeIds() []string {
 	return o.ResourceTypeIds
 }
 
-func (o *AppAccessRequestDefaults) GetState() *AppAccessRequestDefaultsState {
+func (o *AppAccessRequestDefaults) GetState() *State {
 	if o == nil {
 		return nil
 	}
@@ -169,7 +169,7 @@ type AppAccessRequestDefaults1 struct {
 	// The app resource type ids for which the app access request defaults are applied.
 	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
 	// The last applied state of the app access request defaults.
-	State *AppAccessRequestDefaultsState `json:"state,omitempty"`
+	State *State `json:"state,omitempty"`
 }
 
 func (o *AppAccessRequestDefaults1) GetCatalogIds() []string {
@@ -228,7 +228,7 @@ func (o *AppAccessRequestDefaults1) GetResourceTypeIds() []string {
 	return o.ResourceTypeIds
 }
 
-func (o *AppAccessRequestDefaults1) GetState() *AppAccessRequestDefaultsState {
+func (o *AppAccessRequestDefaults1) GetState() *State {
 	if o == nil {
 		return nil
 	}

@@ -52,7 +52,9 @@ type App struct {
 	// The connectorVersion field.
 	ConnectorVersion *int64     `json:"connectorVersion,omitempty"`
 	CreatedAt        *time.Time `json:"createdAt,omitempty"`
-	DeletedAt        *time.Time `json:"deletedAt,omitempty"`
+	// The ID for the default request catalog for this app.
+	DefaultRequestCatalogID *string    `json:"defaultRequestCatalogId,omitempty"`
+	DeletedAt               *time.Time `json:"deletedAt,omitempty"`
 	// The app's description.
 	Description *string `json:"description,omitempty"`
 	// The app's display name.
@@ -136,6 +138,13 @@ func (o *App) GetCreatedAt() *time.Time {
 		return nil
 	}
 	return o.CreatedAt
+}
+
+func (o *App) GetDefaultRequestCatalogID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DefaultRequestCatalogID
 }
 
 func (o *App) GetDeletedAt() *time.Time {
@@ -263,6 +272,8 @@ type AppInput struct {
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
 	// The connectorVersion field.
 	ConnectorVersion *int64 `json:"connectorVersion,omitempty"`
+	// The ID for the default request catalog for this app.
+	DefaultRequestCatalogID *string `json:"defaultRequestCatalogId,omitempty"`
 	// The app's description.
 	Description *string `json:"description,omitempty"`
 	// The app's display name.
@@ -295,6 +306,13 @@ func (o *AppInput) GetConnectorVersion() *int64 {
 		return nil
 	}
 	return o.ConnectorVersion
+}
+
+func (o *AppInput) GetDefaultRequestCatalogID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DefaultRequestCatalogID
 }
 
 func (o *AppInput) GetDescription() *string {

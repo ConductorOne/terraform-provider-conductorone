@@ -104,6 +104,11 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							steps.Approval.AgentApproval = nil
 						} else {
 							steps.Approval.AgentApproval = &tfTypes.AgentApproval{}
+							if stepsItem.Approval.AgentApproval.AgentMode != nil {
+								steps.Approval.AgentApproval.AgentMode = types.StringValue(string(*stepsItem.Approval.AgentApproval.AgentMode))
+							} else {
+								steps.Approval.AgentApproval.AgentMode = types.StringNull()
+							}
 							steps.Approval.AgentApproval.AgentUserID = types.StringPointerValue(stepsItem.Approval.AgentApproval.AgentUserID)
 							steps.Approval.AgentApproval.Instructions = types.StringPointerValue(stepsItem.Approval.AgentApproval.Instructions)
 							if stepsItem.Approval.AgentApproval.PolicyIds != nil {
@@ -155,6 +160,31 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 								}
 							}
 						}
+						if stepsItem.Approval.Escalation == nil {
+							steps.Approval.Escalation = nil
+						} else {
+							steps.Approval.Escalation = &tfTypes.Escalation{}
+							steps.Approval.Escalation.EscalationComment = types.StringPointerValue(stepsItem.Approval.Escalation.EscalationComment)
+							steps.Approval.Escalation.Expiration = types.StringPointerValue(stepsItem.Approval.Escalation.Expiration)
+							if stepsItem.Approval.Escalation.ReassignToApprovers == nil {
+								steps.Approval.Escalation.ReassignToApprovers = nil
+							} else {
+								steps.Approval.Escalation.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
+								if stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
+									steps.Approval.Escalation.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds))
+									for _, v := range stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
+										steps.Approval.Escalation.ReassignToApprovers.ApproverIds = append(steps.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
+									}
+								}
+							}
+							if stepsItem.Approval.Escalation.ReplacePolicy == nil {
+								steps.Approval.Escalation.ReplacePolicy = nil
+							} else {
+								steps.Approval.Escalation.ReplacePolicy = &tfTypes.ReplacePolicy{}
+								steps.Approval.Escalation.ReplacePolicy.PolicyID = types.StringPointerValue(stepsItem.Approval.Escalation.ReplacePolicy.PolicyID)
+							}
+						}
+						steps.Approval.EscalationEnabled = types.BoolPointerValue(stepsItem.Approval.EscalationEnabled)
 						if stepsItem.Approval.ExpressionApproval == nil {
 							steps.Approval.ExpressionApproval = nil
 						} else {

@@ -71,11 +71,6 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 
 // ConductoroneAPI - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
 type ConductoroneAPI struct {
-	WorkflowExecution          *WorkflowExecution
-	WorkflowExecutionActions   *WorkflowExecutionActions
-	WorkflowExecutionSearch    *WorkflowExecutionSearch
-	Workflow                   *Workflow
-	WorkflowSearch             *WorkflowSearch
 	Apps                       *Apps
 	AppAccessRequestsDefaults  *AppAccessRequestsDefaults
 	AppUser                    *AppUser
@@ -94,6 +89,11 @@ type ConductoroneAPI struct {
 	AppEntitlementsProxy       *AppEntitlementsProxy
 	Attributes                 *Attributes
 	Auth                       *Auth
+	AutomationExecution        *AutomationExecution
+	AutomationExecutionActions *AutomationExecutionActions
+	AutomationExecutionSearch  *AutomationExecutionSearch
+	AutomationSearch           *AutomationSearch
+	Automation                 *Automation
 	RequestCatalogManagement   *RequestCatalogManagement
 	Directory                  *Directory
 	PersonalClient             *PersonalClient
@@ -213,9 +213,9 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "0.1.0-alpha",
-			SDKVersion:        "1.2.0",
-			GenVersion:        "2.595.4",
-			UserAgent:         "speakeasy-sdk/terraform 1.2.0 2.595.4 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			SDKVersion:        "1.3.0",
+			GenVersion:        "2.610.0",
+			UserAgent:         "speakeasy-sdk/terraform 1.3.0 2.610.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "example",
@@ -239,16 +239,6 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	if serverURL != currentServerURL {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
-
-	sdk.WorkflowExecution = newWorkflowExecution(sdk.sdkConfiguration)
-
-	sdk.WorkflowExecutionActions = newWorkflowExecutionActions(sdk.sdkConfiguration)
-
-	sdk.WorkflowExecutionSearch = newWorkflowExecutionSearch(sdk.sdkConfiguration)
-
-	sdk.Workflow = newWorkflow(sdk.sdkConfiguration)
-
-	sdk.WorkflowSearch = newWorkflowSearch(sdk.sdkConfiguration)
 
 	sdk.Apps = newApps(sdk.sdkConfiguration)
 
@@ -285,6 +275,16 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.Attributes = newAttributes(sdk.sdkConfiguration)
 
 	sdk.Auth = newAuth(sdk.sdkConfiguration)
+
+	sdk.AutomationExecution = newAutomationExecution(sdk.sdkConfiguration)
+
+	sdk.AutomationExecutionActions = newAutomationExecutionActions(sdk.sdkConfiguration)
+
+	sdk.AutomationExecutionSearch = newAutomationExecutionSearch(sdk.sdkConfiguration)
+
+	sdk.AutomationSearch = newAutomationSearch(sdk.sdkConfiguration)
+
+	sdk.Automation = newAutomation(sdk.sdkConfiguration)
 
 	sdk.RequestCatalogManagement = newRequestCatalogManagement(sdk.sdkConfiguration)
 
