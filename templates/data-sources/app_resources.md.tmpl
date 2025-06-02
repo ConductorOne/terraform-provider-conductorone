@@ -9,7 +9,7 @@ description: |-
 
 {{ .Description | trimspace }}
 
-This data source enables you to retrieve ConductorOne app resources using the following search criteria:
+The app resources datasource allows you to retrieve ConductorOne App Resources using the following search criteria:
 
 * `app_id` - The ID of the app
 * `app_user_ids` - The user IDs of the app
@@ -21,3 +21,9 @@ This data source enables you to retrieve ConductorOne app resources using the fo
 * `resource_ids` - List of resourceIDs
 * `resource_type_ids` - List of resource type IDs
 * `resource_type_trait_ids` - List of the resource type trait IDs
+
+## Example Usage
+
+{{ tffile "examples/data-sources/conductorone_app_resources/data-source.tf" }} {{ .SchemaMarkdown | trimspace }}
+
+{{ .SchemaMarkdown | trimspace }}
