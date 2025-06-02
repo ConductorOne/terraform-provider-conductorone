@@ -133,6 +133,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewRiskLevelResource,
 		NewAppEntitlementAutomationResource,
 		NewBundleAutomationResource,
+		NewAccessProfileRequestableEntriesResource,
 	}
 
 	resources = append(resources, getIntegrationResources()...)
@@ -159,6 +160,7 @@ func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasou
 		NewAppEntitlementAutomationDataSource,
 		NewAppEntitlementsDataSource,
 		NewAppResourcesDataSource,
+		NewAccessProfileRequestableEntriesDataSource,
 	}
 }
 

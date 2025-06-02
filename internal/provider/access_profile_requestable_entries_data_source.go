@@ -5,99 +5,48 @@ package provider
 import (
 	"context"
 	"fmt"
-	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
-	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/path"
-	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &AccessProfileRequestableEntriesResource{}
-var _ resource.ResourceWithImportState = &AccessProfileRequestableEntriesResource{}
+var _ datasource.DataSource = &AccessProfileRequestableEntriesDataSource{}
+var _ datasource.DataSourceWithConfigure = &AccessProfileRequestableEntriesDataSource{}
 
-func NewAccessProfileRequestableEntriesResource() resource.Resource {
-	return &AccessProfileRequestableEntriesResource{}
+func NewAccessProfileRequestableEntriesDataSource() datasource.DataSource {
+	return &AccessProfileRequestableEntriesDataSource{}
 }
 
-// AccessProfileRequestableEntriesResource defines the resource implementation.
-type AccessProfileRequestableEntriesResource struct {
+// AccessProfileRequestableEntriesDataSource is the data source implementation.
+type AccessProfileRequestableEntriesDataSource struct {
 	client *sdk.ConductoroneAPI
 }
 
-// AccessProfileRequestableEntriesResourceModel describes the resource data model.
-type AccessProfileRequestableEntriesResourceModel struct {
-	AppEntitlements []tfTypes.AppEntitlementRef                                                     `tfsdk:"app_entitlements"`
-	CatalogID       types.String                                                                    `tfsdk:"catalog_id"`
-	CreateRequests  types.Bool                                                                      `tfsdk:"create_requests"`
-	Expanded        []tfTypes.RequestCatalogManagementServiceListEntitlementsPerAppResponseExpanded `tfsdk:"expanded"`
-	List            []tfTypes.AppEntitlementView                                                    `tfsdk:"list"`
-	NextPageToken   types.String                                                                    `tfsdk:"next_page_token"`
+// AccessProfileRequestableEntriesDataSourceModel describes the data model.
+type AccessProfileRequestableEntriesDataSourceModel struct {
+	CatalogID     types.String                                                                    `tfsdk:"catalog_id"`
+	Expanded      []tfTypes.RequestCatalogManagementServiceListEntitlementsPerAppResponseExpanded `tfsdk:"expanded"`
+	List          []tfTypes.AppEntitlementView                                                    `tfsdk:"list"`
+	NextPageToken types.String                                                                    `tfsdk:"next_page_token"`
 }
 
-func (r *AccessProfileRequestableEntriesResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+// Metadata returns the data source type name.
+func (r *AccessProfileRequestableEntriesDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_access_profile_requestable_entries"
 }
 
-func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+// Schema defines the schema for the data source.
+func (r *AccessProfileRequestableEntriesDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "AccessProfileRequestableEntries Resource",
+		MarkdownDescription: "AccessProfileRequestableEntries DataSource",
+
 		Attributes: map[string]schema.Attribute{
-			"app_entitlements": schema.ListNestedAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				NestedObject: schema.NestedAttributeObject{
-					PlanModifiers: []planmodifier.Object{
-						objectplanmodifier.RequiresReplaceIfConfigured(),
-					},
-					Attributes: map[string]schema.Attribute{
-						"app_id": schema.StringAttribute{
-							Optional: true,
-							PlanModifiers: []planmodifier.String{
-								stringplanmodifier.RequiresReplaceIfConfigured(),
-							},
-							Description: `The appId field. Requires replacement if changed.`,
-						},
-						"id": schema.StringAttribute{
-							Optional: true,
-							PlanModifiers: []planmodifier.String{
-								stringplanmodifier.RequiresReplaceIfConfigured(),
-							},
-							Description: `The id field. Requires replacement if changed.`,
-						},
-					},
-				},
-				Description: `List of entitlements to add to the request catalog. Requires replacement if changed.`,
-			},
 			"catalog_id": schema.StringAttribute{
 				Required: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `Requires replacement if changed.`,
-			},
-			"create_requests": schema.BoolAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				MarkdownDescription: `Whether or not to create requests for newly added entitlements for users in the catalog.` + "\n" +
-					` By default, this is false and no requests are created.` + "\n" +
-					`Requires replacement if changed.`,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
@@ -122,17 +71,11 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 									Description: `The ID of the app that is associated with the app entitlement.`,
 								},
 								"app_resource_id": schema.StringAttribute{
-									Computed: true,
-									PlanModifiers: []planmodifier.String{
-										speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-									},
+									Computed:    true,
 									Description: `The ID of the app resource that is associated with the app entitlement`,
 								},
 								"app_resource_type_id": schema.StringAttribute{
-									Computed: true,
-									PlanModifiers: []planmodifier.String{
-										speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-									},
+									Computed:    true,
 									Description: `The ID of the app resource type that is associated with the app entitlement`,
 								},
 								"certify_policy_id": schema.StringAttribute{
@@ -146,13 +89,13 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 								},
 								"created_at": schema.StringAttribute{
 									Computed: true,
-									Validators: []validator.String{
-										validators.IsRFC3339(),
-									},
 								},
 								"default_values_applied": schema.BoolAttribute{
 									Computed:    true,
 									Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
+								},
+								"deleted_at": schema.StringAttribute{
+									Computed: true,
 								},
 								"deprovisioner_policy": schema.SingleNestedAttribute{
 									Computed: true,
@@ -213,15 +156,6 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 												`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
 												`  - defaultBehavior` + "\n" +
 												`  - account`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("delegated_provision"),
-													path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-													path.MatchRelative().AtParent().AtName("manual_provision"),
-													path.MatchRelative().AtParent().AtName("multi_step"),
-													path.MatchRelative().AtParent().AtName("webhook_provision"),
-												}...),
-											},
 										},
 										"delegated_provision": schema.SingleNestedAttribute{
 											Computed: true,
@@ -236,15 +170,6 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 												},
 											},
 											Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("connector_provision"),
-													path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-													path.MatchRelative().AtParent().AtName("manual_provision"),
-													path.MatchRelative().AtParent().AtName("multi_step"),
-													path.MatchRelative().AtParent().AtName("webhook_provision"),
-												}...),
-											},
 										},
 										"external_ticket_provision": schema.SingleNestedAttribute{
 											Computed: true,
@@ -267,15 +192,6 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 												},
 											},
 											Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("connector_provision"),
-													path.MatchRelative().AtParent().AtName("delegated_provision"),
-													path.MatchRelative().AtParent().AtName("manual_provision"),
-													path.MatchRelative().AtParent().AtName("multi_step"),
-													path.MatchRelative().AtParent().AtName("webhook_provision"),
-												}...),
-											},
 										},
 										"manual_provision": schema.SingleNestedAttribute{
 											Computed: true,
@@ -291,29 +207,10 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 												},
 											},
 											Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("connector_provision"),
-													path.MatchRelative().AtParent().AtName("delegated_provision"),
-													path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-													path.MatchRelative().AtParent().AtName("multi_step"),
-													path.MatchRelative().AtParent().AtName("webhook_provision"),
-												}...),
-											},
 										},
 										"multi_step": schema.StringAttribute{
 											Computed:    true,
 											Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
-											Validators: []validator.String{
-												stringvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("connector_provision"),
-													path.MatchRelative().AtParent().AtName("delegated_provision"),
-													path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-													path.MatchRelative().AtParent().AtName("manual_provision"),
-													path.MatchRelative().AtParent().AtName("webhook_provision"),
-												}...),
-												validators.IsValidJSON(),
-											},
 										},
 										"unconfigured_provision": schema.SingleNestedAttribute{
 											Computed:    true,
@@ -328,15 +225,6 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 												},
 											},
 											Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("connector_provision"),
-													path.MatchRelative().AtParent().AtName("delegated_provision"),
-													path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-													path.MatchRelative().AtParent().AtName("manual_provision"),
-													path.MatchRelative().AtParent().AtName("multi_step"),
-												}...),
-											},
 										},
 									},
 									MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
@@ -360,19 +248,9 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 								},
 								"duration_grant": schema.StringAttribute{
 									Computed: true,
-									Validators: []validator.String{
-										stringvalidator.ConflictsWith(path.Expressions{
-											path.MatchRelative().AtParent().AtName("duration_unset"),
-										}...),
-									},
 								},
 								"duration_unset": schema.SingleNestedAttribute{
 									Computed: true,
-									Validators: []validator.Object{
-										objectvalidator.ConflictsWith(path.Expressions{
-											path.MatchRelative().AtParent().AtName("duration_grant"),
-										}...),
-									},
 								},
 								"emergency_grant_enabled": schema.BoolAttribute{
 									Computed:    true,
@@ -469,15 +347,6 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 												`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
 												`  - defaultBehavior` + "\n" +
 												`  - account`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("delegated_provision"),
-													path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-													path.MatchRelative().AtParent().AtName("manual_provision"),
-													path.MatchRelative().AtParent().AtName("multi_step"),
-													path.MatchRelative().AtParent().AtName("webhook_provision"),
-												}...),
-											},
 										},
 										"delegated_provision": schema.SingleNestedAttribute{
 											Computed: true,
@@ -492,15 +361,6 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 												},
 											},
 											Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("connector_provision"),
-													path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-													path.MatchRelative().AtParent().AtName("manual_provision"),
-													path.MatchRelative().AtParent().AtName("multi_step"),
-													path.MatchRelative().AtParent().AtName("webhook_provision"),
-												}...),
-											},
 										},
 										"external_ticket_provision": schema.SingleNestedAttribute{
 											Computed: true,
@@ -523,15 +383,6 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 												},
 											},
 											Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("connector_provision"),
-													path.MatchRelative().AtParent().AtName("delegated_provision"),
-													path.MatchRelative().AtParent().AtName("manual_provision"),
-													path.MatchRelative().AtParent().AtName("multi_step"),
-													path.MatchRelative().AtParent().AtName("webhook_provision"),
-												}...),
-											},
 										},
 										"manual_provision": schema.SingleNestedAttribute{
 											Computed: true,
@@ -547,29 +398,10 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 												},
 											},
 											Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("connector_provision"),
-													path.MatchRelative().AtParent().AtName("delegated_provision"),
-													path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-													path.MatchRelative().AtParent().AtName("multi_step"),
-													path.MatchRelative().AtParent().AtName("webhook_provision"),
-												}...),
-											},
 										},
 										"multi_step": schema.StringAttribute{
 											Computed:    true,
 											Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
-											Validators: []validator.String{
-												stringvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("connector_provision"),
-													path.MatchRelative().AtParent().AtName("delegated_provision"),
-													path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-													path.MatchRelative().AtParent().AtName("manual_provision"),
-													path.MatchRelative().AtParent().AtName("webhook_provision"),
-												}...),
-												validators.IsValidJSON(),
-											},
 										},
 										"unconfigured_provision": schema.SingleNestedAttribute{
 											Computed:    true,
@@ -584,15 +416,6 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 												},
 											},
 											Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("connector_provision"),
-													path.MatchRelative().AtParent().AtName("delegated_provision"),
-													path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-													path.MatchRelative().AtParent().AtName("manual_provision"),
-													path.MatchRelative().AtParent().AtName("multi_step"),
-												}...),
-											},
 										},
 									},
 									MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
@@ -608,14 +431,7 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 								},
 								"purpose": schema.StringAttribute{
 									Computed:    true,
-									Description: `The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED",
-											"APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT",
-											"APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION",
-										),
-									},
+									Description: `The purpose field.`,
 								},
 								"revoke_policy_id": schema.StringAttribute{
 									Computed:    true,
@@ -640,9 +456,6 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 								},
 								"updated_at": schema.StringAttribute{
 									Computed: true,
-									Validators: []validator.String{
-										validators.IsRFC3339(),
-									},
 								},
 							},
 							MarkdownDescription: `The app entitlement represents one permission in a downstream App (SAAS) that can be granted. For example, GitHub Read vs GitHub Write.` + "\n" +
@@ -663,7 +476,7 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 	}
 }
 
-func (r *AccessProfileRequestableEntriesResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *AccessProfileRequestableEntriesDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -673,7 +486,7 @@ func (r *AccessProfileRequestableEntriesResource) Configure(ctx context.Context,
 
 	if !ok {
 		resp.Diagnostics.AddError(
-			"Unexpected Resource Configure Type",
+			"Unexpected DataSource Configure Type",
 			fmt.Sprintf("Expected *sdk.ConductoroneAPI, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 
@@ -683,108 +496,11 @@ func (r *AccessProfileRequestableEntriesResource) Configure(ctx context.Context,
 	r.client = client
 }
 
-func (r *AccessProfileRequestableEntriesResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *AccessProfileRequestableEntriesResourceModel
-	var plan types.Object
-
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(plan.As(ctx, &data, basetypes.ObjectAsOptions{
-		UnhandledNullAsEmpty:    true,
-		UnhandledUnknownAsEmpty: true,
-	})...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res, err := r.client.RequestCatalogManagement.AddAppEntitlements(ctx, *request)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
-		}
-		return
-	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
-		return
-	}
-	if !(res.RequestCatalogManagementServiceAddAppEntitlementsResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(ctx, res.RequestCatalogManagementServiceAddAppEntitlementsResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerAppRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.RequestCatalogManagement.ListEntitlementsPerApp(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.RequestCatalogManagementServiceListEntitlementsPerAppResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceListEntitlementsPerAppResponse(ctx, res1.RequestCatalogManagementServiceListEntitlementsPerAppResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	// Save updated data into Terraform state
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-}
-
-func (r *AccessProfileRequestableEntriesResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *AccessProfileRequestableEntriesResourceModel
+func (r *AccessProfileRequestableEntriesDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data *AccessProfileRequestableEntriesDataSourceModel
 	var item types.Object
 
-	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
+	resp.Diagnostics.Append(req.Config.Get(ctx, &item)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -816,10 +532,6 @@ func (r *AccessProfileRequestableEntriesResource) Read(ctx context.Context, req 
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
-		return
-	}
 	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -836,71 +548,4 @@ func (r *AccessProfileRequestableEntriesResource) Read(ctx context.Context, req 
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-}
-
-func (r *AccessProfileRequestableEntriesResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *AccessProfileRequestableEntriesResourceModel
-	var plan types.Object
-
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	merge(ctx, req, resp, &data)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	// Not Implemented; all attributes marked as RequiresReplace
-
-	// Save updated data into Terraform state
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-}
-
-func (r *AccessProfileRequestableEntriesResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *AccessProfileRequestableEntriesResourceModel
-	var item types.Object
-
-	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(item.As(ctx, &data, basetypes.ObjectAsOptions{
-		UnhandledNullAsEmpty:    true,
-		UnhandledUnknownAsEmpty: true,
-	})...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res, err := r.client.RequestCatalogManagement.RemoveAppEntitlements(ctx, *request)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
-		}
-		return
-	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
-		return
-	}
-
-}
-
-func (r *AccessProfileRequestableEntriesResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("catalog_id"), req.ID)...)
 }

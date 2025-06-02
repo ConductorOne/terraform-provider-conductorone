@@ -7935,6 +7935,37 @@ components:
             title: Request Catalog Management Service List Entitlements For Access Response
             type: object
             x-speakeasy-name-override: RequestCatalogManagementServiceListEntitlementsForAccessResponse
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceListEntitlementsPerAppResponse:
+            description: The RequestCatalogManagementServiceListEntitlementsPerAppResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties: true
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        readOnly: false
+                        type: object
+                    nullable: true
+                    readOnly: false
+                    type: array
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementView'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Request Catalog Management Service List Entitlements Per App Response
+            type: object
+            x-speakeasy-name-override: RequestCatalogManagementServiceListEntitlementsPerAppResponse
         c1.api.requestcatalog.v1.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse:
             description: The RequestCatalogManagementServiceListEntitlementsPerCatalogResponse message contains a list of results and a nextPageToken if applicable.
             properties:
@@ -16250,6 +16281,32 @@ paths:
                 terraform-resource: Access_Profile_Requestable_Entries#delete
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: RemoveAppEntitlements
+        get:
+            description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ListEntitlementsPerApp method.
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.ListEntitlementsPerApp
+            parameters:
+                - in: path
+                  name: catalog_id
+                  required: true
+                  schema:
+                    description: The catalogId field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceListEntitlementsPerAppResponse'
+                    description: Successful response
+            summary: List Entitlements Per App
+            tags:
+                - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-datasource: Access_Profile_Requestable_Entries#read
+                terraform-resource: Access_Profile_Requestable_Entries#read
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: ListEntitlementsPerApp
         post:
             description: Add requestable entitlements to a catalog.
             operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.AddAppEntitlements
