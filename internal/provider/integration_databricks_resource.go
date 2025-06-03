@@ -101,7 +101,7 @@ func (r *IntegrationDatabricksResource) Schema(ctx context.Context, req resource
 			},
 			"databricks_account_hostname": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Account Hostname (optional)`,
+				Description: `Account hostname (optional)`,
 			},
 			"databricks_hostname": &schema.StringAttribute{
 				Optional:    true,

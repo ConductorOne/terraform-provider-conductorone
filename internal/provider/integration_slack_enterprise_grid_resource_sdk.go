@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -101,6 +101,12 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) populateConfig() map[strin
 		configValues["slack_api_enterprise_key"] = slackApiEnterpriseKey
 	}
 
+	useGovEnv := new(string)
+	if !r.UseGovEnv.IsUnknown() && !r.UseGovEnv.IsNull() {
+		*useGovEnv = strconv.FormatBool(r.UseGovEnv.ValueBool())
+		configValues["use_gov_env"] = useGovEnv
+	}
+
 	return configValues
 }
 
@@ -166,6 +172,27 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) RefreshFromGetResponse(res
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if localV, ok := configValues["use_gov_env"]; ok {
+					if v, ok := values["use_gov_env"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.UseGovEnv = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationSlackEnterpriseGridResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -203,4 +230,25 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) RefreshFromCreateResponse(
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if localV, ok := configValues["use_gov_env"]; ok {
+					if v, ok := values["use_gov_env"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.UseGovEnv = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+			}
+		}
+	}
 }

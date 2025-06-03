@@ -109,7 +109,7 @@ func (r *IntegrationFreshserviceResource) Schema(ctx context.Context, req resour
 			},
 			"category_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Category ID`,
+				Description: `Category ID (optional)`,
 			},
 		},
 	}

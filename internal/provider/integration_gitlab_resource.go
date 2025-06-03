@@ -104,7 +104,7 @@ func (r *IntegrationGitlabResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"gitlab_url": &schema.StringAttribute{
 				Optional:    true,
-				Description: `URL - optional`,
+				Description: `URL (optional)`,
 			},
 		},
 	}

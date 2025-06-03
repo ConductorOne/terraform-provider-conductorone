@@ -3,8 +3,6 @@ resource "conductorone_integration_atlassian" "atlassian" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  atlassian_user_email      = "..."
-  atlassian_api_token       = "..."
-  atlassian_organization_id = "..."
-  atlassian_site_id         = "..."
+  access_token    = "..."
+  organization_id = "..."
 }

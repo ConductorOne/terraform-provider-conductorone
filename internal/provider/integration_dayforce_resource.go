@@ -114,7 +114,7 @@ func (r *IntegrationDayforceResource) Schema(ctx context.Context, req resource.S
 			},
 			"dayforce_client_namespace": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Client Namespace`,
+				Description: `Client namespace`,
 			},
 		},
 	}

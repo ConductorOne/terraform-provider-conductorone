@@ -115,7 +115,7 @@ func (r *IntegrationJiraCloudV2Resource) Schema(ctx context.Context, req resourc
 			},
 			"jiracloud_project_keys": &schema.ListAttribute{
 				Optional:    true,
-				Description: `Project Keys`,
+				Description: `Project keys (optional)`,
 				ElementType: types.StringType,
 			},
 			"jiracloud_skip_project_participants": &schema.BoolAttribute{

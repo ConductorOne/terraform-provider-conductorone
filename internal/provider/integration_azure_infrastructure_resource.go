@@ -104,7 +104,7 @@ func (r *IntegrationAzureInfrastructureResource) Schema(ctx context.Context, req
 			"azure_client_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Client Secret`,
+				Description: `Client secret`,
 			},
 			"azure_tenant_id": &schema.StringAttribute{
 				Optional:    true,
@@ -112,19 +112,19 @@ func (r *IntegrationAzureInfrastructureResource) Schema(ctx context.Context, req
 			},
 			"mailbox_settings": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Mailbox Settings`,
+				Description: `Mailbox settings`,
 			},
 			"skip_ad_groups": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Skip AD Groups`,
+				Description: `Skip AD groups`,
 			},
 			"graph_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Graph Domain`,
+				Description: `Graph domain`,
 			},
 			"skip_unused_roles": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Skip Unused Roles`,
+				Description: `Skip unused roles`,
 			},
 		},
 	}

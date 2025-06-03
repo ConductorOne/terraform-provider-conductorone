@@ -5,4 +5,5 @@ resource "conductorone_integration_slack_enterprise_grid" "slack_enterprise_grid
   ]
   slack_api_key            = "..."
   slack_api_enterprise_key = "..."
+  use_gov_env              = false
 }

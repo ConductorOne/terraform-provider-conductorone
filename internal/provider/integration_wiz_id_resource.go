@@ -101,7 +101,7 @@ func (r *IntegrationWizIdResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"wiz_client_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Wiz Client ID`,
+				Description: `Wiz client ID`,
 			},
 			"wiz_client_secret": &schema.StringAttribute{
 				Optional:    true,
@@ -135,7 +135,7 @@ func (r *IntegrationWizIdResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"resource_types": &schema.ListAttribute{
 				Optional:    true,
-				Description: `Resource types`,
+				Description: `Resource types (optional)`,
 				ElementType: types.StringType,
 			},
 		},

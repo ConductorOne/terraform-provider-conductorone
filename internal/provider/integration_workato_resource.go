@@ -96,11 +96,11 @@ func (r *IntegrationWorkatoResource) Schema(ctx context.Context, req resource.Sc
 			"workato_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Key`,
+				Description: `API key`,
 			},
 			"workato_data_center": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Data Center`,
+				Description: `Data center`,
 			},
 			"workato_env": &schema.StringAttribute{
 				Optional:    true,

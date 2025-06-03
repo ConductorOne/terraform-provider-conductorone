@@ -103,12 +103,12 @@ func (r *IntegrationWizQueryResource) Schema(ctx context.Context, req resource.S
 			},
 			"wiz_client_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Wiz Client ID`,
+				Description: `Wiz client ID`,
 			},
 			"wiz_client_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Wiz Client Secret`,
+				Description: `Wiz client secret`,
 			},
 			"endpoint_url": &schema.StringAttribute{
 				Optional:    true,
@@ -124,7 +124,7 @@ func (r *IntegrationWizQueryResource) Schema(ctx context.Context, req resource.S
 			},
 			"project_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Project ID`,
+				Description: `Project ID (optional)`,
 			},
 			"resource_ids": &schema.ListAttribute{
 				Optional:    true,
@@ -137,7 +137,7 @@ func (r *IntegrationWizQueryResource) Schema(ctx context.Context, req resource.S
 			},
 			"resource_types": &schema.ListAttribute{
 				Optional:    true,
-				Description: `Resource types`,
+				Description: `Resource types (optional)`,
 				ElementType: types.StringType,
 			},
 			"enable_sync_identities": &schema.BoolAttribute{

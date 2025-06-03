@@ -104,7 +104,7 @@ func (r *IntegrationBitbucketResource) Schema(ctx context.Context, req resource.
 			},
 			"bitbucket_workspace_list": &schema.ListAttribute{
 				Optional:    true,
-				Description: `Workspaces - optional`,
+				Description: `Workspaces (optional)`,
 				ElementType: types.StringType,
 			},
 		},

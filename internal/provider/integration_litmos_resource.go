@@ -104,7 +104,7 @@ func (r *IntegrationLitmosResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"litmos_course_ids": &schema.ListAttribute{
 				Optional:    true,
-				Description: `Course IDs`,
+				Description: `Course IDs (optional)`,
 				ElementType: types.StringType,
 			},
 		},

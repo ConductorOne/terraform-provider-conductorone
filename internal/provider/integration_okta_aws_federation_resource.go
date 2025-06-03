@@ -35,15 +35,16 @@ type IntegrationOktaAwsFederationResource struct {
 
 // IntegrationOktaAwsFederationResourceModel describes the resource data model.
 type IntegrationOktaAwsFederationResourceModel struct {
-	AppID                         types.String   `tfsdk:"app_id"`
-	CreatedAt                     types.String   `tfsdk:"created_at"`
-	DeletedAt                     types.String   `tfsdk:"deleted_at"`
-	ID                            types.String   `tfsdk:"id"`
-	UpdatedAt                     types.String   `tfsdk:"updated_at"`
-	UserIds                       []types.String `tfsdk:"user_ids"`
-	OktaAwsFederationDomain       types.String   `tfsdk:"okta_aws_federation_domain"`
-	OktaAwsFederationApiToken     types.String   `tfsdk:"okta_aws_federation_api_token"`
-	OktaAwsFederationAwsOktaAppId types.String   `tfsdk:"okta_aws_federation_aws_okta_app_id"`
+	AppID                                                        types.String   `tfsdk:"app_id"`
+	CreatedAt                                                    types.String   `tfsdk:"created_at"`
+	DeletedAt                                                    types.String   `tfsdk:"deleted_at"`
+	ID                                                           types.String   `tfsdk:"id"`
+	UpdatedAt                                                    types.String   `tfsdk:"updated_at"`
+	UserIds                                                      []types.String `tfsdk:"user_ids"`
+	OktaAwsFederationDomain                                      types.String   `tfsdk:"okta_aws_federation_domain"`
+	OktaAwsFederationApiToken                                    types.String   `tfsdk:"okta_aws_federation_api_token"`
+	OktaAwsFederationAwsOktaAppId                                types.String   `tfsdk:"okta_aws_federation_aws_okta_app_id"`
+	OktaAwsFederationAllowGroupToDirectConversionForProvisioning types.Bool     `tfsdk:"okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"`
 }
 
 func (r *IntegrationOktaAwsFederationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -95,7 +96,7 @@ func (r *IntegrationOktaAwsFederationResource) Schema(ctx context.Context, req r
 			},
 			"okta_aws_federation_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Okta Domain`,
+				Description: `Okta domain`,
 			},
 			"okta_aws_federation_api_token": &schema.StringAttribute{
 				Optional:    true,
@@ -105,6 +106,10 @@ func (r *IntegrationOktaAwsFederationResource) Schema(ctx context.Context, req r
 			"okta_aws_federation_aws_okta_app_id": &schema.StringAttribute{
 				Optional:    true,
 				Description: `AWS Okta App ID`,
+			},
+			"okta_aws_federation_allow_group_to_direct_conversion_for_provisioning": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Allow group to direct assignment conversion for provisioning`,
 			},
 		},
 	}

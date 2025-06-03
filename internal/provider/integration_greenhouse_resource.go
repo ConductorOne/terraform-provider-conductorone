@@ -35,13 +35,14 @@ type IntegrationGreenhouseResource struct {
 
 // IntegrationGreenhouseResourceModel describes the resource data model.
 type IntegrationGreenhouseResourceModel struct {
-	AppID              types.String   `tfsdk:"app_id"`
-	CreatedAt          types.String   `tfsdk:"created_at"`
-	DeletedAt          types.String   `tfsdk:"deleted_at"`
-	ID                 types.String   `tfsdk:"id"`
-	UpdatedAt          types.String   `tfsdk:"updated_at"`
-	UserIds            []types.String `tfsdk:"user_ids"`
-	GreenhouseUsername types.String   `tfsdk:"greenhouse_username"`
+	AppID                types.String   `tfsdk:"app_id"`
+	CreatedAt            types.String   `tfsdk:"created_at"`
+	DeletedAt            types.String   `tfsdk:"deleted_at"`
+	ID                   types.String   `tfsdk:"id"`
+	UpdatedAt            types.String   `tfsdk:"updated_at"`
+	UserIds              []types.String `tfsdk:"user_ids"`
+	GreenhouseUsername   types.String   `tfsdk:"greenhouse_username"`
+	GreenhouseOnBehalfOf types.String   `tfsdk:"greenhouse_on_behalf_of"`
 }
 
 func (r *IntegrationGreenhouseResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -94,7 +95,11 @@ func (r *IntegrationGreenhouseResource) Schema(ctx context.Context, req resource
 			"greenhouse_username": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Greenhouse Username (API Token)`,
+				Description: `Greenhouse username (API token)`,
+			},
+			"greenhouse_on_behalf_of": &schema.StringAttribute{
+				Optional:    true,
+				Description: `On behalf of`,
 			},
 		},
 	}
