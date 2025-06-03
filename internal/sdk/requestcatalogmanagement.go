@@ -419,7 +419,6 @@ func (s *RequestCatalogManagement) ListEntitlementsPerCatalog(ctx context.Contex
 		}
 		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
 	}
-	fmt.Printf("res: %v\n", res)
 
 	return res, nil
 

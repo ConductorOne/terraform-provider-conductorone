@@ -213,9 +213,9 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "0.1.0-alpha",
-			SDKVersion:        "1.3.5",
+			SDKVersion:        "1.3.6",
 			GenVersion:        "2.610.0",
-			UserAgent:         "speakeasy-sdk/terraform 1.3.5 2.610.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:         "speakeasy-sdk/terraform 1.3.6 2.610.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "example",

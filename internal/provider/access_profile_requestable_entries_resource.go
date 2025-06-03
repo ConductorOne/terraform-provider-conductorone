@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -22,6 +23,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -153,6 +155,9 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 								"default_values_applied": schema.BoolAttribute{
 									Computed:    true,
 									Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
+								},
+								"deleted_at": schema.StringAttribute{
+									Computed: true,
 								},
 								"deprovisioner_policy": schema.SingleNestedAttribute{
 									Computed: true,
@@ -836,6 +841,9 @@ func (r *AccessProfileRequestableEntriesResource) Read(ctx context.Context, req 
 		return
 	}
 
+	tflog.Debug(ctx, "after reading state", map[string]interface{}{
+		"state": data.List,
+	})
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

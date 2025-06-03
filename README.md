@@ -46,7 +46,6 @@ TF_REATTACH_PROVIDERS=... terraform apply
 ### Data Sources
 
 * [conductorone_access_profile](docs/data-sources/access_profile.md)
-* [conductorone_access_profile_requestable_entries](docs/data-sources/access_profile_requestable_entries.md)
 * [conductorone_app](docs/data-sources/app.md)
 * [conductorone_app_entitlement](docs/data-sources/app_entitlement.md)
 * [conductorone_app_entitlement_automation](docs/data-sources/app_entitlement_automation.md)
@@ -140,7 +139,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.3.5"
+      version = "1.3.6"
     }
   }
 }

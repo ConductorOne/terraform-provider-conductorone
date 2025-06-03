@@ -16108,7 +16108,6 @@ paths:
       tags:
         - Request Catalog
       x-speakeasy-entity-operation:
-        terraform-datasource: Access_Profile_Requestable_Entries#read
         terraform-resource: Access_Profile_Requestable_Entries#read
       x-speakeasy-group: RequestCatalogManagement
       x-speakeasy-name-override: ListEntitlementsPerCatalog
