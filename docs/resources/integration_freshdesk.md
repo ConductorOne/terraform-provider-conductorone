@@ -35,7 +35,7 @@ resource "conductorone_integration_freshdesk" "freshdesk" {
 
 ### Optional
 
-- `api_key` (String, Sensitive) API Key
+- `api_key` (String, Sensitive) API key
 - `domain` (String) Domain
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

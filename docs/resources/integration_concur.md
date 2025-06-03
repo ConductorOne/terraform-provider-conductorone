@@ -39,8 +39,8 @@ resource "conductorone_integration_concur" "concur" {
 
 - `concur_base_url` (String) Base URL
 - `concur_client_id` (String) Client ID
-- `concur_client_secret` (String, Sensitive) Client Secret
-- `concur_refresh_token` (String, Sensitive) Refresh Token
+- `concur_client_secret` (String, Sensitive) Client secret
+- `concur_refresh_token` (String, Sensitive) Refresh token
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

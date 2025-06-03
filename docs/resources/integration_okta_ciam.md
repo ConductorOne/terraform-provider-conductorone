@@ -37,8 +37,8 @@ resource "conductorone_integration_okta_ciam" "okta_ciam" {
 ### Optional
 
 - `okta_ciam_api_token` (String, Sensitive) API token
-- `okta_ciam_domain` (String) Okta Domain
-- `okta_ciam_email_domains` (String) Okta email domains - optional
+- `okta_ciam_domain` (String) Okta domain
+- `okta_ciam_email_domains` (String) Okta email domains (optional)
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

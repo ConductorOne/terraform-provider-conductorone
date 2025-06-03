@@ -1,28 +1,29 @@
 ---
-page_title: "conductorone_integration_pandadoc Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_teamcity Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Pandadoc Integration Resource
+  Teamcity Integration Resource
 ---
 
-# conductorone_integration_pandadoc (Resource)
+# conductorone_integration_teamcity (Resource)
 
-Pandadoc Integration Resource
+Teamcity Integration Resource
 
-This resource allows you to configure an instance of the pandadoc integration in ConductorOne.
+This resource allows you to configure an instance of the teamcity integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_pandadoc" "pandadoc" {
-  app_id = conductorone_app.pandadoc.id
+resource "conductorone_integration_teamcity" "teamcity" {
+  app_id = conductorone_app.teamcity.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  api_key       = "..."
-  europe_domain = false
+  teamcity_access_token       = "..."
+  teamcity_instance_url       = "..."
+  teamcity_sync_grant_sources = false
 }
 ```
 
@@ -35,8 +36,9 @@ resource "conductorone_integration_pandadoc" "pandadoc" {
 
 ### Optional
 
-- `api_key` (String, Sensitive) PandaDoc API key
-- `europe_domain` (Boolean) Use PandaDoc Europe domain
+- `teamcity_access_token` (String, Sensitive) TeamCity access token
+- `teamcity_instance_url` (String) TeamCity instance URL
+- `teamcity_sync_grant_sources` (Boolean) Sync grant sources
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

@@ -37,7 +37,7 @@ resource "conductorone_integration_litmos" "litmos" {
 ### Optional
 
 - `litmos_api_key` (String, Sensitive) API key
-- `litmos_course_ids` (List of String) Course IDs
+- `litmos_course_ids` (List of String) Course IDs (optional)
 - `litmos_source` (String) Source
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

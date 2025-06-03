@@ -21,8 +21,12 @@ resource "conductorone_integration_github_v2" "github_v2" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  github_access_token = "..."
-  github_org_list     = ["..."]
+  github_access_token    = "..."
+  github_org_list        = ["..."]
+  github_app_org         = "..."
+  github_app_id          = "..."
+  github_app_private_key = "..."
+  github_sync_secrets    = false
 }
 ```
 
@@ -36,7 +40,11 @@ resource "conductorone_integration_github_v2" "github_v2" {
 ### Optional
 
 - `github_access_token` (String, Sensitive) Personal access token
-- `github_org_list` (List of String) Organizations - optional
+- `github_app_id` (String) GitHub app ID
+- `github_app_org` (String) Github App Organization
+- `github_app_private_key` (String, Sensitive) GitHub app private key (.pem)
+- `github_org_list` (List of String) Organizations (optional)
+- `github_sync_secrets` (Boolean) Sync secrets
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

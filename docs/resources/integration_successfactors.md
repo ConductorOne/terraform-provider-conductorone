@@ -45,10 +45,10 @@ resource "conductorone_integration_successfactors" "successfactors" {
 - `company_id` (String) Company ID
 - `instance_url` (String) Instance URL
 - `issuer_url` (String) Issuer URL
-- `private_key` (String, Sensitive) Private Key
-- `public_key` (String, Sensitive) Public Key
-- `saml_api_key` (String, Sensitive) SAML API Key
-- `subject_name_id` (String) Subject Name ID
+- `private_key` (String, Sensitive) Private key
+- `public_key` (String, Sensitive) Public key
+- `saml_api_key` (String, Sensitive) SAML API key
+- `subject_name_id` (String) Subject name ID
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

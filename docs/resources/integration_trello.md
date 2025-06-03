@@ -37,8 +37,8 @@ resource "conductorone_integration_trello" "trello" {
 
 ### Optional
 
-- `api_key` (String) API Key
-- `api_token` (String, Sensitive) API Token
+- `api_key` (String) API key
+- `api_token` (String, Sensitive) API token
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

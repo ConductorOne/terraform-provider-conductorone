@@ -1,28 +1,29 @@
 ---
-page_title: "conductorone_integration_pandadoc Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_azure_devops Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Pandadoc Integration Resource
+  Azure_devops Integration Resource
 ---
 
-# conductorone_integration_pandadoc (Resource)
+# conductorone_integration_azure_devops (Resource)
 
-Pandadoc Integration Resource
+Azure_devops Integration Resource
 
-This resource allows you to configure an instance of the pandadoc integration in ConductorOne.
+This resource allows you to configure an instance of the azure_devops integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_pandadoc" "pandadoc" {
-  app_id = conductorone_app.pandadoc.id
+resource "conductorone_integration_azure_devops" "azure_devops" {
+  app_id = conductorone_app.azure_devops.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  api_key       = "..."
-  europe_domain = false
+  organization_url      = "..."
+  personal_access_token = "..."
+  sync_grant_sources    = false
 }
 ```
 
@@ -35,8 +36,9 @@ resource "conductorone_integration_pandadoc" "pandadoc" {
 
 ### Optional
 
-- `api_key` (String, Sensitive) PandaDoc API key
-- `europe_domain` (Boolean) Use PandaDoc Europe domain
+- `organization_url` (String) Organization URL
+- `personal_access_token` (String, Sensitive) Personal access token
+- `sync_grant_sources` (Boolean) Sync grant sources
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

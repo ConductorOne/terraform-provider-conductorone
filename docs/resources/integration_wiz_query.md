@@ -49,13 +49,13 @@ resource "conductorone_integration_wiz_query" "wiz_query" {
 - `enable_sync_identities` (Boolean) Sync Wiz identities
 - `enable_sync_service_accounts` (Boolean) Sync Wiz service accounts
 - `endpoint_url` (String) Endpoint URL
-- `project_id` (String) Project ID
+- `project_id` (String) Project ID (optional)
 - `resource_ids` (List of String) Resource IDs
 - `resource_tags` (String) Resource tags
-- `resource_types` (List of String) Resource types
+- `resource_types` (List of String) Resource types (optional)
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
-- `wiz_client_id` (String) Wiz Client ID
-- `wiz_client_secret` (String, Sensitive) Wiz Client Secret
+- `wiz_client_id` (String) Wiz client ID
+- `wiz_client_secret` (String, Sensitive) Wiz client secret
 
 ### Read-Only
 

@@ -23,6 +23,7 @@ resource "conductorone_integration_slack_enterprise_grid" "slack_enterprise_grid
   ]
   slack_api_key            = "..."
   slack_api_enterprise_key = "..."
+  use_gov_env              = false
 }
 ```
 
@@ -37,6 +38,7 @@ resource "conductorone_integration_slack_enterprise_grid" "slack_enterprise_grid
 
 - `slack_api_enterprise_key` (String, Sensitive) Bot token
 - `slack_api_key` (String, Sensitive) User token
+- `use_gov_env` (Boolean) Enable GovSlack
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

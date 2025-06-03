@@ -38,7 +38,7 @@ resource "conductorone_integration_dayforce" "dayforce" {
 
 ### Optional
 
-- `dayforce_client_namespace` (String) Client Namespace
+- `dayforce_client_namespace` (String) Client namespace
 - `dayforce_environment` (String) Environment
 - `dayforce_password` (String, Sensitive) Password
 - `dayforce_url` (String) URL

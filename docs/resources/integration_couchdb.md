@@ -36,9 +36,9 @@ resource "conductorone_integration_couchdb" "couchdb" {
 
 ### Optional
 
-- `couchdb_password` (String, Sensitive) CouchDB Password
+- `couchdb_password` (String, Sensitive) CouchDB password
 - `couchdb_url` (String) CouchDB URL
-- `couchdb_username` (String) CouchDB Username
+- `couchdb_username` (String) CouchDB username
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

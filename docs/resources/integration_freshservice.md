@@ -38,7 +38,7 @@ resource "conductorone_integration_freshservice" "freshservice" {
 ### Optional
 
 - `api_key` (String, Sensitive) API key
-- `category_id` (String) Category ID
+- `category_id` (String) Category ID (optional)
 - `domain` (String) Domain
 - `enable_external_ticket_provisioning` (Boolean) Enable external ticket provisioning
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.

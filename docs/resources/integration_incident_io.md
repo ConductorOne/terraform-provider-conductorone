@@ -34,7 +34,7 @@ resource "conductorone_integration_incident_io" "incident_io" {
 
 ### Optional
 
-- `incident_io_token` (String, Sensitive) Incident.io API Token
+- `incident_io_token` (String, Sensitive) Incident.io API token
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

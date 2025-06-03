@@ -48,9 +48,9 @@ resource "conductorone_integration_wiz_id" "wiz_id" {
 - `project_id` (String) Project ID
 - `resource_ids` (List of String) Resource IDs
 - `resource_tags` (String) Resource tags
-- `resource_types` (List of String) Resource types
+- `resource_types` (List of String) Resource types (optional)
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
-- `wiz_client_id` (String) Wiz Client ID
+- `wiz_client_id` (String) Wiz client ID
 - `wiz_client_secret` (String, Sensitive) Wiz Client Secret
 
 ### Read-Only

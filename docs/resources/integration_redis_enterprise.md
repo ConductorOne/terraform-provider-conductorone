@@ -37,8 +37,8 @@ resource "conductorone_integration_redis_enterprise" "redis_enterprise" {
 
 ### Optional
 
-- `api_port` (String) API Port
-- `cluster_host` (String) Cluster Host
+- `api_port` (String) API port (optional)
+- `cluster_host` (String) Cluster host
 - `password` (String, Sensitive) Password
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 - `username` (String) Username

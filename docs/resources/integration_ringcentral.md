@@ -37,7 +37,7 @@ resource "conductorone_integration_ringcentral" "ringcentral" {
 ### Optional
 
 - `ringcentral_client_id` (String) Client ID
-- `ringcentral_client_secret` (String, Sensitive) Client Secret
+- `ringcentral_client_secret` (String, Sensitive) Client secret
 - `ringcentral_jwt` (String, Sensitive) JWT
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

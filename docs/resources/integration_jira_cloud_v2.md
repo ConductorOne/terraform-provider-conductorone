@@ -42,7 +42,7 @@ resource "conductorone_integration_jira_cloud_v2" "jira_cloud_v2" {
 - `enable_external_ticket_provisioning` (Boolean) Enable external ticket provisioning
 - `jiracloud_apikey` (String, Sensitive) API token
 - `jiracloud_domain` (String) Jira site domain
-- `jiracloud_project_keys` (List of String) Project Keys
+- `jiracloud_project_keys` (List of String) Project keys (optional)
 - `jiracloud_skip_project_participants` (Boolean) Skip project participants
 - `jiracloud_username` (String) Your Jira email address
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
