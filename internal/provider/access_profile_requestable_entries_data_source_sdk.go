@@ -13,20 +13,34 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AccessProfileRequestableEntriesDataSourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerAppRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerAppRequest, diag.Diagnostics) {
+func (r *AccessProfileRequestableEntriesDataSourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var catalogID string
 	catalogID = r.CatalogID.ValueString()
 
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerAppRequest{
+	pageSize := new(int)
+	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
+		*pageSize = int(r.PageSize.ValueInt32())
+	} else {
+		pageSize = nil
+	}
+	pageToken := new(string)
+	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
+		*pageToken = r.PageToken.ValueString()
+	} else {
+		pageToken = nil
+	}
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest{
 		CatalogID: catalogID,
+		PageSize:  pageSize,
+		PageToken: pageToken,
 	}
 
 	return &out, diags
 }
 
-func (r *AccessProfileRequestableEntriesDataSourceModel) RefreshFromSharedRequestCatalogManagementServiceListEntitlementsPerAppResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceListEntitlementsPerAppResponse) diag.Diagnostics {
+func (r *AccessProfileRequestableEntriesDataSourceModel) RefreshFromSharedRequestCatalogManagementServiceListEntitlementsPerCatalogResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {

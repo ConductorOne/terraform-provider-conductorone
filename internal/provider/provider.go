@@ -116,7 +116,6 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.Resource {
 	resources := []func() resource.Resource{
 		NewAccessProfileResource,
-		NewAccessProfileRequestableEntriesResource,
 		NewAccessProfileVisibilityBindingsResource,
 		NewAppResource,
 		NewAppEntitlementResource,

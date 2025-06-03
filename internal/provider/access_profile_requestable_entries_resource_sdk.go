@@ -126,13 +126,13 @@ func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestc
 	return &out, diags
 }
 
-func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerAppRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerAppRequest, diag.Diagnostics) {
+func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var catalogID string
 	catalogID = r.CatalogID.ValueString()
 
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerAppRequest{
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest{
 		CatalogID: catalogID,
 	}
 
@@ -148,7 +148,7 @@ func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestC
 	return diags
 }
 
-func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceListEntitlementsPerAppResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceListEntitlementsPerAppResponse) diag.Diagnostics {
+func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceListEntitlementsPerCatalogResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {

@@ -39,12 +39,12 @@ type AccessProfileRequestableEntriesResource struct {
 
 // AccessProfileRequestableEntriesResourceModel describes the resource data model.
 type AccessProfileRequestableEntriesResourceModel struct {
-	AppEntitlements []tfTypes.AppEntitlementRef                                                     `tfsdk:"app_entitlements"`
-	CatalogID       types.String                                                                    `tfsdk:"catalog_id"`
-	CreateRequests  types.Bool                                                                      `tfsdk:"create_requests"`
-	Expanded        []tfTypes.RequestCatalogManagementServiceListEntitlementsPerAppResponseExpanded `tfsdk:"expanded"`
-	List            []tfTypes.AppEntitlementView                                                    `tfsdk:"list"`
-	NextPageToken   types.String                                                                    `tfsdk:"next_page_token"`
+	AppEntitlements []tfTypes.AppEntitlementRef                                                         `tfsdk:"app_entitlements"`
+	CatalogID       types.String                                                                        `tfsdk:"catalog_id"`
+	CreateRequests  types.Bool                                                                          `tfsdk:"create_requests"`
+	Expanded        []tfTypes.RequestCatalogManagementServiceListEntitlementsPerCatalogResponseExpanded `tfsdk:"expanded"`
+	List            []tfTypes.AppEntitlementView                                                        `tfsdk:"list"`
+	NextPageToken   types.String                                                                        `tfsdk:"next_page_token"`
 }
 
 func (r *AccessProfileRequestableEntriesResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -104,7 +104,7 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{},
 				},
-				Description: `The expanded field.`,
+				Description: `List of serialized related objects.`,
 			},
 			"list": schema.ListNestedAttribute{
 				Computed: true,
@@ -653,11 +653,13 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 						},
 					},
 				},
-				Description: `The list field.`,
+				Description: `The list of results containing up to X results, where X is the page size defined in the request.`,
 			},
 			"next_page_token": schema.StringAttribute{
-				Computed:    true,
-				Description: `The nextPageToken field.`,
+				Computed: true,
+				MarkdownDescription: `The nextPageToken is shown for the next page if the number of results is larger than the max page size.` + "\n" +
+					` The server returns one page of results and the nextPageToken until all results are retreived.` + "\n" +
+					` To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
 			},
 		},
 	}
@@ -738,13 +740,13 @@ func (r *AccessProfileRequestableEntriesResource) Create(ctx context.Context, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerAppRequest(ctx)
+	request1, request1Diags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest(ctx)
 	resp.Diagnostics.Append(request1Diags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res1, err := r.client.RequestCatalogManagement.ListEntitlementsPerApp(ctx, *request1)
+	res1, err := r.client.RequestCatalogManagement.ListEntitlementsPerCatalog(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -760,11 +762,11 @@ func (r *AccessProfileRequestableEntriesResource) Create(ctx context.Context, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.RequestCatalogManagementServiceListEntitlementsPerAppResponse != nil) {
+	if !(res1.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceListEntitlementsPerAppResponse(ctx, res1.RequestCatalogManagementServiceListEntitlementsPerAppResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceListEntitlementsPerCatalogResponse(ctx, res1.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -798,13 +800,13 @@ func (r *AccessProfileRequestableEntriesResource) Read(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerAppRequest(ctx)
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.RequestCatalogManagement.ListEntitlementsPerApp(ctx, *request)
+	res, err := r.client.RequestCatalogManagement.ListEntitlementsPerCatalog(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -824,11 +826,11 @@ func (r *AccessProfileRequestableEntriesResource) Read(ctx context.Context, req 
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestCatalogManagementServiceListEntitlementsPerAppResponse != nil) {
+	if !(res.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceListEntitlementsPerAppResponse(ctx, res.RequestCatalogManagementServiceListEntitlementsPerAppResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceListEntitlementsPerCatalogResponse(ctx, res.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
