@@ -476,7 +476,7 @@ actions:
       x-speakeasy-ignore: true
   - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestInput"]
     update:
-      x-speakeasy-ignore: true
+      x-speakeasy-ignore: true 
   - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceUpdateRequestInput"]["properties"]["expandMask"]
     update:
       x-speakeasy-ignore: true

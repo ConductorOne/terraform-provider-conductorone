@@ -5,8 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-
-	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
@@ -23,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -110,10 +107,12 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 			},
 			"list": schema.ListNestedAttribute{
 				Computed: true,
+				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"app_entitlement": schema.SingleNestedAttribute{
 							Computed: true,
+							Optional: true,
 							Attributes: map[string]schema.Attribute{
 								"alias": schema.StringAttribute{
 									Computed:    true,
@@ -124,17 +123,12 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 									Description: `The ID of the app that is associated with the app entitlement.`,
 								},
 								"app_resource_id": schema.StringAttribute{
-									Computed: true,
-									PlanModifiers: []planmodifier.String{
-										speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-									},
+									Computed: true,	
+									Optional: true,
 									Description: `The ID of the app resource that is associated with the app entitlement`,
 								},
 								"app_resource_type_id": schema.StringAttribute{
 									Computed: true,
-									PlanModifiers: []planmodifier.String{
-										speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-									},
 									Description: `The ID of the app resource type that is associated with the app entitlement`,
 								},
 								"certify_policy_id": schema.StringAttribute{
@@ -158,6 +152,9 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 								},
 								"deleted_at": schema.StringAttribute{
 									Computed: true,
+									Validators: []validator.String{
+										validators.IsRFC3339(),
+									},
 								},
 								"deprovisioner_policy": schema.SingleNestedAttribute{
 									Computed: true,
@@ -841,9 +838,6 @@ func (r *AccessProfileRequestableEntriesResource) Read(ctx context.Context, req 
 		return
 	}
 
-	tflog.Debug(ctx, "after reading state", map[string]interface{}{
-		"state": data.List,
-	})
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

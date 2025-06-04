@@ -5,14 +5,12 @@ package provider
 import (
 	"context"
 	"encoding/json"
-
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceAddAppEntitlementsRequest, diag.Diagnostics) {

@@ -139,7 +139,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.3.6"
+      version = "1.3.8"
     }
   }
 }
