@@ -48,6 +48,8 @@ type AutomationStep struct {
 	SendEmail *SendEmail `json:"sendEmail,omitempty"`
 	// The skipIfTrueCel field.
 	SkipIfTrueCel *string `json:"skipIfTrueCel,omitempty"`
+	// The stepDisplayName field.
+	StepDisplayName *string `json:"stepDisplayName,omitempty"`
 	// The stepName field.
 	StepName *string `json:"stepName,omitempty"`
 	// The TaskAction message.
@@ -136,6 +138,13 @@ func (o *AutomationStep) GetSkipIfTrueCel() *string {
 		return nil
 	}
 	return o.SkipIfTrueCel
+}
+
+func (o *AutomationStep) GetStepDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.StepDisplayName
 }
 
 func (o *AutomationStep) GetStepName() *string {

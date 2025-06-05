@@ -71,6 +71,7 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 
 // ConductoroneAPI - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
 type ConductoroneAPI struct {
+	AccessConflict             *AccessConflict
 	Apps                       *Apps
 	AppAccessRequestsDefaults  *AppAccessRequestsDefaults
 	AppUser                    *AppUser
@@ -213,9 +214,9 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "0.1.0-alpha",
-			SDKVersion:        "1.3.1",
+			SDKVersion:        "1.3.6",
 			GenVersion:        "2.610.0",
-			UserAgent:         "speakeasy-sdk/terraform 1.3.1 2.610.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:         "speakeasy-sdk/terraform 1.3.6 2.610.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerDefaults: []map[string]string{
 				{
 					"tenantDomain": "example",
@@ -239,6 +240,8 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	if serverURL != currentServerURL {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
+
+	sdk.AccessConflict = newAccessConflict(sdk.sdkConfiguration)
 
 	sdk.Apps = newApps(sdk.sdkConfiguration)
 

@@ -43,6 +43,7 @@ type AppResourceModel struct {
 	GrantPolicyID                       types.String `tfsdk:"grant_policy_id"`
 	ID                                  types.String `tfsdk:"id"`
 	IdentityMatching                    types.String `tfsdk:"identity_matching"`
+	Instructions                        types.String `tfsdk:"instructions"`
 	IsDirectory                         types.Bool   `tfsdk:"is_directory"`
 	IsManuallyManaged                   types.Bool   `tfsdk:"is_manually_managed"`
 	MonthlyCostUsd                      types.Int32  `tfsdk:"monthly_cost_usd"`
@@ -117,6 +118,10 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						"APP_USER_IDENTITY_MATCHING_DISPLAY_NAME",
 					),
 				},
+			},
+			"instructions": schema.StringAttribute{
+				Computed:    true,
+				Description: `If you add instructions here, they will be shown to users in the access request form when requesting access for this app.`,
 			},
 			"is_directory": schema.BoolAttribute{
 				Computed:    true,

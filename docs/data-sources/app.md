@@ -57,6 +57,7 @@ data "conductorone_app" "my_app" {
 - `grant_policy_id` (String) The ID of the Grant Policy associated with this App.
 - `id` (String) The ID of the app.
 - `identity_matching` (String) The identityMatching field.
+- `instructions` (String) If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
 - `is_directory` (Boolean) Specifies if the app is a directory.
 - `is_manually_managed` (Boolean) The isManuallyManaged field.
 - `monthly_cost_usd` (Number) The cost of an app per-seat, so that total cost can be calculated by the grant count.

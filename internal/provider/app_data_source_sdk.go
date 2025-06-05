@@ -75,6 +75,7 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 	} else {
 		r.IdentityMatching = types.StringNull()
 	}
+	r.Instructions = types.StringPointerValue(resp.Instructions)
 	r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
 	r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
 	r.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.MonthlyCostUsd))
