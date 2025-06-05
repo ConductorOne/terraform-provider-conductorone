@@ -37,7 +37,7 @@ resource "conductorone_integration_percipio" "percipio" {
 ### Optional
 
 - `percipio_api_token` (String, Sensitive) API token
-- `percipio_course_ids` (List of String) Course IDs
+- `percipio_course_ids` (List of String) Course IDs (optional)
 - `percipio_organization_id` (String) Organization ID
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

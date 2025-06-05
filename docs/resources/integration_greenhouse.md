@@ -21,7 +21,8 @@ resource "conductorone_integration_greenhouse" "greenhouse" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  greenhouse_username = "..."
+  greenhouse_username     = "..."
+  greenhouse_on_behalf_of = "..."
 }
 ```
 
@@ -34,7 +35,8 @@ resource "conductorone_integration_greenhouse" "greenhouse" {
 
 ### Optional
 
-- `greenhouse_username` (String, Sensitive) Greenhouse Username (API Token)
+- `greenhouse_on_behalf_of` (String) On behalf of
+- `greenhouse_username` (String, Sensitive) Greenhouse username (API token)
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

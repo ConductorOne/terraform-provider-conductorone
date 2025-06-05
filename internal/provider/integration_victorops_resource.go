@@ -99,7 +99,7 @@ func (r *IntegrationVictoropsResource) Schema(ctx context.Context, req resource.
 			"victorops_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Key`,
+				Description: `API key`,
 			},
 		},
 	}

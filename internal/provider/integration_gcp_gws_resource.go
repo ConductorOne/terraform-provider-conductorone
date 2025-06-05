@@ -100,15 +100,15 @@ func (r *IntegrationGcpGwsResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"customer_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Google Workspace Customer ID`,
+				Description: `Google Workspace customer ID`,
 			},
 			"domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Google Workspace Domain`,
+				Description: `Google Workspace domain`,
 			},
 			"administrator_email": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Google Workspace Administrator Email`,
+				Description: `Google Workspace administrator email`,
 			},
 			"credentials_json": &schema.StringAttribute{
 				Optional:    true,
@@ -129,7 +129,7 @@ func (r *IntegrationGcpGwsResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"project_ids": &schema.ListAttribute{
 				Optional:    true,
-				Description: `Project IDs`,
+				Description: `Project IDs (optional)`,
 				ElementType: types.StringType,
 			},
 		},

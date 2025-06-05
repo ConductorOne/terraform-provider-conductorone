@@ -105,12 +105,12 @@ func (r *IntegrationConcurResource) Schema(ctx context.Context, req resource.Sch
 			"concur_client_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Client Secret`,
+				Description: `Client secret`,
 			},
 			"concur_refresh_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Refresh Token`,
+				Description: `Refresh token`,
 			},
 		},
 	}

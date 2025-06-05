@@ -120,7 +120,7 @@ func (r *IntegrationSalesforceV2Resource) Schema(ctx context.Context, req resour
 			},
 			"salesforce_sync_connected_apps": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Sync Connected Apps`,
+				Description: `Sync connected apps`,
 			},
 		},
 	}

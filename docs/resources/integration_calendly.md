@@ -34,7 +34,7 @@ resource "conductorone_integration_calendly" "calendly" {
 
 ### Optional
 
-- `calendly_token` (String, Sensitive) Personal Access Token
+- `calendly_token` (String, Sensitive) Personal access token
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

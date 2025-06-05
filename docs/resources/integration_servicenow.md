@@ -39,8 +39,8 @@ resource "conductorone_integration_servicenow" "servicenow" {
 
 ### Optional
 
-- `catalog_id` (String) Catalog ID
-- `category_id` (String) Category ID
+- `catalog_id` (String) Catalog ID (optional)
+- `category_id` (String) Category ID (optional)
 - `deployment` (String) Deployment
 - `enable_external_ticket_provisioning` (Boolean) Enable external ticket provisioning
 - `password` (String, Sensitive) Password

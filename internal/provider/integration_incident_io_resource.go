@@ -94,7 +94,7 @@ func (r *IntegrationIncidentIoResource) Schema(ctx context.Context, req resource
 			"incident_io_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Incident.io API Token`,
+				Description: `Incident.io API token`,
 			},
 		},
 	}

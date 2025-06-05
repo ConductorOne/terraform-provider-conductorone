@@ -3,7 +3,8 @@ resource "conductorone_integration_okta_aws_federation" "okta_aws_federation" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  okta_aws_federation_domain          = "..."
-  okta_aws_federation_api_token       = "..."
-  okta_aws_federation_aws_okta_app_id = "..."
+  okta_aws_federation_domain                                            = "..."
+  okta_aws_federation_api_token                                         = "..."
+  okta_aws_federation_aws_okta_app_id                                   = "..."
+  okta_aws_federation_allow_group_to_direct_conversion_for_provisioning = false
 }

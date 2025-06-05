@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -95,10 +95,10 @@ func (r *IntegrationPandadocResourceModel) populateConfig() map[string]interface
 		configValues["api-key"] = apiKey
 	}
 
-	domain := new(string)
-	if !r.Domain.IsUnknown() && !r.Domain.IsNull() {
-		*domain = r.Domain.ValueString()
-		configValues["domain"] = domain
+	europeDomain := new(string)
+	if !r.EuropeDomain.IsUnknown() && !r.EuropeDomain.IsNull() {
+		*europeDomain = strconv.FormatBool(r.EuropeDomain.ValueBool())
+		configValues["europe-domain"] = europeDomain
 	}
 
 	return configValues
@@ -166,13 +166,21 @@ func (r *IntegrationPandadocResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.Domain = types.StringValue(val)
+				if localV, ok := configValues["europe-domain"]; ok {
+					if v, ok := values["europe-domain"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EuropeDomain = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 
@@ -216,13 +224,21 @@ func (r *IntegrationPandadocResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.Domain = types.StringValue(val)
+				if localV, ok := configValues["europe-domain"]; ok {
+					if v, ok := values["europe-domain"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EuropeDomain = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 

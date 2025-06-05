@@ -93,7 +93,7 @@ func (r *IntegrationDocusignResource) Schema(ctx context.Context, req resource.S
 			},
 			"account_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Account ID - optional`,
+				Description: `Account ID (optional)`,
 			},
 		},
 	}

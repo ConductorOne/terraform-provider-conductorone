@@ -37,7 +37,7 @@ resource "conductorone_integration_victorops" "victorops" {
 
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 - `victorops_api_id` (String) API ID
-- `victorops_api_key` (String, Sensitive) API Key
+- `victorops_api_key` (String, Sensitive) API key
 
 ### Read-Only
 

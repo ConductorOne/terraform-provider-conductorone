@@ -34,7 +34,7 @@ resource "conductorone_integration_fullstory" "fullstory" {
 
 ### Optional
 
-- `fullstory_api_key` (String, Sensitive) API Key
+- `fullstory_api_key` (String, Sensitive) API key
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

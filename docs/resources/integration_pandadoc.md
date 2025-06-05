@@ -21,8 +21,8 @@ resource "conductorone_integration_pandadoc" "pandadoc" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  api_key = "..."
-  domain  = "..."
+  api_key       = "..."
+  europe_domain = false
 }
 ```
 
@@ -35,8 +35,8 @@ resource "conductorone_integration_pandadoc" "pandadoc" {
 
 ### Optional
 
-- `api_key` (String, Sensitive) PandaDoc API Key
-- `domain` (String) PandaDoc API Domain
+- `api_key` (String, Sensitive) PandaDoc API key
+- `europe_domain` (Boolean) Use PandaDoc Europe domain
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

@@ -41,11 +41,11 @@ resource "conductorone_integration_gcp_gws" "gcp_gws" {
 
 ### Optional
 
-- `administrator_email` (String) Google Workspace Administrator Email
+- `administrator_email` (String) Google Workspace administrator email
 - `credentials_json` (String, Sensitive) Credentials (JSON)
-- `customer_id` (String) Google Workspace Customer ID
-- `domain` (String) Google Workspace Domain
-- `project_ids` (List of String) Project IDs
+- `customer_id` (String) Google Workspace customer ID
+- `domain` (String) Google Workspace domain
+- `project_ids` (List of String) Project IDs (optional)
 - `skip_default_projects` (Boolean) Skip Google Cloud Platform default projects
 - `skip_system_accounts` (Boolean) Skip Google Cloud Platform system accounts
 - `sync_secrets` (Boolean) Sync secrets

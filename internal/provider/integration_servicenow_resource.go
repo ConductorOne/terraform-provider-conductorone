@@ -115,11 +115,11 @@ func (r *IntegrationServicenowResource) Schema(ctx context.Context, req resource
 			},
 			"catalog_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Catalog ID`,
+				Description: `Catalog ID (optional)`,
 			},
 			"category_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Category ID`,
+				Description: `Category ID (optional)`,
 			},
 		},
 	}

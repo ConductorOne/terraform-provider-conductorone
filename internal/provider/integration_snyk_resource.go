@@ -44,6 +44,7 @@ type IntegrationSnykResourceModel struct {
 	SnykApiToken types.String   `tfsdk:"snyk_api_token"`
 	SnykGroupId  types.String   `tfsdk:"snyk_group_id"`
 	SnykOrgIds   []types.String `tfsdk:"snyk_org_ids"`
+	SnykHostname types.String   `tfsdk:"snyk_hostname"`
 }
 
 func (r *IntegrationSnykResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -104,8 +105,12 @@ func (r *IntegrationSnykResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"snyk_org_ids": &schema.ListAttribute{
 				Optional:    true,
-				Description: `Org IDs`,
+				Description: `Org IDs (optional)`,
 				ElementType: types.StringType,
+			},
+			"snyk_hostname": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Hostname`,
 			},
 		},
 	}

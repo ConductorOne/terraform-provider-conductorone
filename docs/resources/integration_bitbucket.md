@@ -38,7 +38,7 @@ resource "conductorone_integration_bitbucket" "bitbucket" {
 
 - `bitbucket_app_password` (String, Sensitive) App password
 - `bitbucket_username` (String) Username
-- `bitbucket_workspace_list` (List of String) Workspaces - optional
+- `bitbucket_workspace_list` (List of String) Workspaces (optional)
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

@@ -95,17 +95,17 @@ func (r *IntegrationAirbyteResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"airbyte_hostname": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Airbyte Hostname`,
+				Description: `Airbyte hostname`,
 			},
 			"airbyte_client_id": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Airbyte Client ID`,
+				Description: `Airbyte client ID`,
 			},
 			"airbyte_client_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Airbyte Client Secret`,
+				Description: `Airbyte client secret`,
 			},
 		},
 	}

@@ -36,9 +36,9 @@ resource "conductorone_integration_airbyte" "airbyte" {
 
 ### Optional
 
-- `airbyte_client_id` (String, Sensitive) Airbyte Client ID
-- `airbyte_client_secret` (String, Sensitive) Airbyte Client Secret
-- `airbyte_hostname` (String) Airbyte Hostname
+- `airbyte_client_id` (String, Sensitive) Airbyte client ID
+- `airbyte_client_secret` (String, Sensitive) Airbyte client secret
+- `airbyte_hostname` (String) Airbyte hostname
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

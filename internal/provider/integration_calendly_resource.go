@@ -94,7 +94,7 @@ func (r *IntegrationCalendlyResource) Schema(ctx context.Context, req resource.S
 			"calendly_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Personal Access Token`,
+				Description: `Personal access token`,
 			},
 		},
 	}

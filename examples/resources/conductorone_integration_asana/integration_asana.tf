@@ -6,4 +6,5 @@ resource "conductorone_integration_asana" "asana" {
   asana_api_key            = "..."
   asana_is_service_account = false
   asana_default_workspace  = "..."
+  asana_use_scim_api       = false
 }

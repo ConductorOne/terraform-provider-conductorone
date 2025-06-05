@@ -89,28 +89,16 @@ func (r *IntegrationAtlassianResourceModel) ToUpdateSDKType() (*shared.Connector
 func (r *IntegrationAtlassianResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
-	atlassianUserEmail := new(string)
-	if !r.AtlassianUserEmail.IsUnknown() && !r.AtlassianUserEmail.IsNull() {
-		*atlassianUserEmail = r.AtlassianUserEmail.ValueString()
-		configValues["atlassian-user-email"] = atlassianUserEmail
+	accessToken := new(string)
+	if !r.AccessToken.IsUnknown() && !r.AccessToken.IsNull() {
+		*accessToken = r.AccessToken.ValueString()
+		configValues["access-token"] = accessToken
 	}
 
-	atlassianApiToken := new(string)
-	if !r.AtlassianApiToken.IsUnknown() && !r.AtlassianApiToken.IsNull() {
-		*atlassianApiToken = r.AtlassianApiToken.ValueString()
-		configValues["atlassian-api-token"] = atlassianApiToken
-	}
-
-	atlassianOrganizationId := new(string)
-	if !r.AtlassianOrganizationId.IsUnknown() && !r.AtlassianOrganizationId.IsNull() {
-		*atlassianOrganizationId = r.AtlassianOrganizationId.ValueString()
-		configValues["atlassian-organization-id"] = atlassianOrganizationId
-	}
-
-	atlassianSiteId := new(string)
-	if !r.AtlassianSiteId.IsUnknown() && !r.AtlassianSiteId.IsNull() {
-		*atlassianSiteId = r.AtlassianSiteId.ValueString()
-		configValues["atlassian-site-id"] = atlassianSiteId
+	organizationId := new(string)
+	if !r.OrganizationId.IsUnknown() && !r.OrganizationId.IsNull() {
+		*organizationId = r.OrganizationId.ValueString()
+		configValues["organization-id"] = organizationId
 	}
 
 	return configValues
@@ -181,21 +169,10 @@ func (r *IntegrationAtlassianResourceModel) RefreshFromGetResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["atlassian-user-email"]; ok {
-					if val, ok := v.(string); ok {
-						r.AtlassianUserEmail = types.StringValue(val)
-					}
-				}
 
-				if v, ok := values["atlassian-organization-id"]; ok {
+				if v, ok := values["organization-id"]; ok {
 					if val, ok := v.(string); ok {
-						r.AtlassianOrganizationId = types.StringValue(val)
-					}
-				}
-
-				if v, ok := values["atlassian-site-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.AtlassianSiteId = types.StringValue(val)
+						r.OrganizationId = types.StringValue(val)
 					}
 				}
 
@@ -242,21 +219,10 @@ func (r *IntegrationAtlassianResourceModel) RefreshFromCreateResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["atlassian-user-email"]; ok {
-					if val, ok := v.(string); ok {
-						r.AtlassianUserEmail = types.StringValue(val)
-					}
-				}
 
-				if v, ok := values["atlassian-organization-id"]; ok {
+				if v, ok := values["organization-id"]; ok {
 					if val, ok := v.(string); ok {
-						r.AtlassianOrganizationId = types.StringValue(val)
-					}
-				}
-
-				if v, ok := values["atlassian-site-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.AtlassianSiteId = types.StringValue(val)
+						r.OrganizationId = types.StringValue(val)
 					}
 				}
 

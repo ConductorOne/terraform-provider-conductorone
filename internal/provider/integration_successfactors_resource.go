@@ -109,12 +109,12 @@ func (r *IntegrationSuccessfactorsResource) Schema(ctx context.Context, req reso
 			"public_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Public Key`,
+				Description: `Public key`,
 			},
 			"private_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Private Key`,
+				Description: `Private key`,
 			},
 			"instance_url": &schema.StringAttribute{
 				Optional:    true,
@@ -126,12 +126,12 @@ func (r *IntegrationSuccessfactorsResource) Schema(ctx context.Context, req reso
 			},
 			"subject_name_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Subject Name ID`,
+				Description: `Subject name ID`,
 			},
 			"saml_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `SAML API Key`,
+				Description: `SAML API key`,
 			},
 		},
 	}

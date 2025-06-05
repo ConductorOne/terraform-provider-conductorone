@@ -110,6 +110,12 @@ func (r *IntegrationSnykResourceModel) populateConfig() map[string]interface{} {
 		configValues["snyk_org_ids"] = strings.Join(snykOrgIds, ",")
 	}
 
+	snykHostname := new(string)
+	if !r.SnykHostname.IsUnknown() && !r.SnykHostname.IsNull() {
+		*snykHostname = r.SnykHostname.ValueString()
+		configValues["snyk_hostname"] = snykHostname
+	}
+
 	return configValues
 }
 
@@ -195,6 +201,12 @@ func (r *IntegrationSnykResourceModel) RefreshFromGetResponse(resp *shared.Conne
 					}
 				}
 
+				if v, ok := values["snyk_hostname"]; ok {
+					if val, ok := v.(string); ok {
+						r.SnykHostname = types.StringValue(val)
+					}
+				}
+
 			}
 		}
 	}
@@ -252,6 +264,12 @@ func (r *IntegrationSnykResourceModel) RefreshFromCreateResponse(resp *shared.Co
 						for _, item := range tmpList {
 							r.SnykOrgIds = append(r.SnykOrgIds, types.StringValue(item))
 						}
+					}
+				}
+
+				if v, ok := values["snyk_hostname"]; ok {
+					if val, ok := v.(string); ok {
+						r.SnykHostname = types.StringValue(val)
 					}
 				}
 

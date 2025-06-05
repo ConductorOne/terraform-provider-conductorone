@@ -43,6 +43,7 @@ type IntegrationSlackEnterpriseGridResourceModel struct {
 	UserIds               []types.String `tfsdk:"user_ids"`
 	SlackApiKey           types.String   `tfsdk:"slack_api_key"`
 	SlackApiEnterpriseKey types.String   `tfsdk:"slack_api_enterprise_key"`
+	UseGovEnv             types.Bool     `tfsdk:"use_gov_env"`
 }
 
 func (r *IntegrationSlackEnterpriseGridResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -101,6 +102,10 @@ func (r *IntegrationSlackEnterpriseGridResource) Schema(ctx context.Context, req
 				Optional:    true,
 				Sensitive:   true,
 				Description: `Bot token`,
+			},
+			"use_gov_env": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Enable GovSlack`,
 			},
 		},
 	}

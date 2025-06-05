@@ -99,7 +99,7 @@ func (r *IntegrationFreshdeskResource) Schema(ctx context.Context, req resource.
 			"api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Key`,
+				Description: `API key`,
 			},
 		},
 	}

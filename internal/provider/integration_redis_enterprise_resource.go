@@ -96,11 +96,11 @@ func (r *IntegrationRedisEnterpriseResource) Schema(ctx context.Context, req res
 			},
 			"cluster_host": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Cluster Host`,
+				Description: `Cluster host`,
 			},
 			"api_port": &schema.StringAttribute{
 				Optional:    true,
-				Description: `API Port`,
+				Description: `API port (optional)`,
 			},
 			"username": &schema.StringAttribute{
 				Optional:    true,

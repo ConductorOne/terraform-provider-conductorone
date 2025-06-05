@@ -94,7 +94,7 @@ func (r *IntegrationTrayAiResource) Schema(ctx context.Context, req resource.Sch
 			"trayai_authorization_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `authentication token`,
+				Description: `Authentication token`,
 			},
 		},
 	}

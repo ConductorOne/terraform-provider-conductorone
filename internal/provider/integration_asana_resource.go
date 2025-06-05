@@ -44,6 +44,7 @@ type IntegrationAsanaResourceModel struct {
 	AsanaApiKey           types.String   `tfsdk:"asana_api_key"`
 	AsanaIsServiceAccount types.Bool     `tfsdk:"asana_is_service_account"`
 	AsanaDefaultWorkspace types.String   `tfsdk:"asana_default_workspace"`
+	AsanaUseScimApi       types.Bool     `tfsdk:"asana_use_scim_api"`
 }
 
 func (r *IntegrationAsanaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -105,6 +106,10 @@ func (r *IntegrationAsanaResource) Schema(ctx context.Context, req resource.Sche
 			"asana_default_workspace": &schema.StringAttribute{
 				Optional:    true,
 				Description: `Default workspace`,
+			},
+			"asana_use_scim_api": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Use SCIM API`,
 			},
 		},
 	}

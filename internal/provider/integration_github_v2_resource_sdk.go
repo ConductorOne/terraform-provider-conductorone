@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"strings"
 	"time"
 
@@ -104,6 +104,30 @@ func (r *IntegrationGithubV2ResourceModel) populateConfig() map[string]interface
 		configValues["github_org_list"] = strings.Join(githubOrgList, ",")
 	}
 
+	githubAppOrg := new(string)
+	if !r.GithubAppOrg.IsUnknown() && !r.GithubAppOrg.IsNull() {
+		*githubAppOrg = r.GithubAppOrg.ValueString()
+		configValues["github_app_org"] = githubAppOrg
+	}
+
+	githubAppId := new(string)
+	if !r.GithubAppId.IsUnknown() && !r.GithubAppId.IsNull() {
+		*githubAppId = r.GithubAppId.ValueString()
+		configValues["github_app_id"] = githubAppId
+	}
+
+	githubAppPrivateKey := new(string)
+	if !r.GithubAppPrivateKey.IsUnknown() && !r.GithubAppPrivateKey.IsNull() {
+		*githubAppPrivateKey = r.GithubAppPrivateKey.ValueString()
+		configValues["github_app_private_key"] = githubAppPrivateKey
+	}
+
+	githubSyncSecrets := new(string)
+	if !r.GithubSyncSecrets.IsUnknown() && !r.GithubSyncSecrets.IsNull() {
+		*githubSyncSecrets = strconv.FormatBool(r.GithubSyncSecrets.ValueBool())
+		configValues["github_sync_secrets"] = githubSyncSecrets
+	}
+
 	return configValues
 }
 
@@ -169,6 +193,7 @@ func (r *IntegrationGithubV2ResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -179,6 +204,31 @@ func (r *IntegrationGithubV2ResourceModel) RefreshFromGetResponse(resp *shared.C
 						tmpList := strings.Split(val, ",")
 						for _, item := range tmpList {
 							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
+						}
+					}
+				}
+
+				if v, ok := values["github_app_org"]; ok {
+					if val, ok := v.(string); ok {
+						r.GithubAppOrg = types.StringValue(val)
+					}
+				}
+
+				if v, ok := values["github_app_id"]; ok {
+					if val, ok := v.(string); ok {
+						r.GithubAppId = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["github_sync_secrets"]; ok {
+					if v, ok := values["github_sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.GithubSyncSecrets = types.BoolValue(bv)
+								}
+							}
 						}
 					}
 				}
@@ -223,6 +273,7 @@ func (r *IntegrationGithubV2ResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -233,6 +284,31 @@ func (r *IntegrationGithubV2ResourceModel) RefreshFromCreateResponse(resp *share
 						tmpList := strings.Split(val, ",")
 						for _, item := range tmpList {
 							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
+						}
+					}
+				}
+
+				if v, ok := values["github_app_org"]; ok {
+					if val, ok := v.(string); ok {
+						r.GithubAppOrg = types.StringValue(val)
+					}
+				}
+
+				if v, ok := values["github_app_id"]; ok {
+					if val, ok := v.(string); ok {
+						r.GithubAppId = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["github_sync_secrets"]; ok {
+					if v, ok := values["github_sync_secrets"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.GithubSyncSecrets = types.BoolValue(bv)
+								}
+							}
 						}
 					}
 				}

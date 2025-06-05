@@ -21,10 +21,8 @@ resource "conductorone_integration_atlassian" "atlassian" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  atlassian_user_email      = "..."
-  atlassian_api_token       = "..."
-  atlassian_organization_id = "..."
-  atlassian_site_id         = "..."
+  access_token    = "..."
+  organization_id = "..."
 }
 ```
 
@@ -37,10 +35,8 @@ resource "conductorone_integration_atlassian" "atlassian" {
 
 ### Optional
 
-- `atlassian_api_token` (String, Sensitive) API Token
-- `atlassian_organization_id` (String) Organization ID
-- `atlassian_site_id` (String) Site ID (optional)
-- `atlassian_user_email` (String) User Email
+- `access_token` (String, Sensitive) Access Token
+- `organization_id` (String) Organization ID
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

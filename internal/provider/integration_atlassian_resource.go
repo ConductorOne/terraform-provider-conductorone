@@ -35,16 +35,14 @@ type IntegrationAtlassianResource struct {
 
 // IntegrationAtlassianResourceModel describes the resource data model.
 type IntegrationAtlassianResourceModel struct {
-	AppID                   types.String   `tfsdk:"app_id"`
-	CreatedAt               types.String   `tfsdk:"created_at"`
-	DeletedAt               types.String   `tfsdk:"deleted_at"`
-	ID                      types.String   `tfsdk:"id"`
-	UpdatedAt               types.String   `tfsdk:"updated_at"`
-	UserIds                 []types.String `tfsdk:"user_ids"`
-	AtlassianUserEmail      types.String   `tfsdk:"atlassian_user_email"`
-	AtlassianApiToken       types.String   `tfsdk:"atlassian_api_token"`
-	AtlassianOrganizationId types.String   `tfsdk:"atlassian_organization_id"`
-	AtlassianSiteId         types.String   `tfsdk:"atlassian_site_id"`
+	AppID          types.String   `tfsdk:"app_id"`
+	CreatedAt      types.String   `tfsdk:"created_at"`
+	DeletedAt      types.String   `tfsdk:"deleted_at"`
+	ID             types.String   `tfsdk:"id"`
+	UpdatedAt      types.String   `tfsdk:"updated_at"`
+	UserIds        []types.String `tfsdk:"user_ids"`
+	AccessToken    types.String   `tfsdk:"access_token"`
+	OrganizationId types.String   `tfsdk:"organization_id"`
 }
 
 func (r *IntegrationAtlassianResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -94,22 +92,14 @@ func (r *IntegrationAtlassianResource) Schema(ctx context.Context, req resource.
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"atlassian_user_email": &schema.StringAttribute{
-				Optional:    true,
-				Description: `User Email`,
-			},
-			"atlassian_api_token": &schema.StringAttribute{
+			"access_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Token`,
+				Description: `Access Token`,
 			},
-			"atlassian_organization_id": &schema.StringAttribute{
+			"organization_id": &schema.StringAttribute{
 				Optional:    true,
 				Description: `Organization ID`,
-			},
-			"atlassian_site_id": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Site ID (optional)`,
 			},
 		},
 	}

@@ -104,7 +104,7 @@ func (r *IntegrationGithubEnterpriseResource) Schema(ctx context.Context, req re
 			},
 			"github_org_list": &schema.ListAttribute{
 				Optional:    true,
-				Description: `Organizations - optional`,
+				Description: `Organizations (optional)`,
 				ElementType: types.StringType,
 			},
 		},

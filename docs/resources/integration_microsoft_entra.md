@@ -42,10 +42,10 @@ resource "conductorone_integration_microsoft_entra" "microsoft_entra" {
 
 - `entra_client_id` (String) Entra client ID
 - `entra_client_secret` (String, Sensitive) Entra client secret
-- `entra_graph_domain` (String) Entra Graph Domain
-- `entra_schedule_scim_provisioning` (Boolean) Schedule SCIM Provisioning
-- `entra_sign_in_activity` (Boolean) Fetch User Sign-in Activity
-- `entra_skip_ad_groups` (Boolean) Skip syncing Active Directory Server groups
+- `entra_graph_domain` (String) Entra Graph domain
+- `entra_schedule_scim_provisioning` (Boolean) Schedule SCIM provisioning
+- `entra_sign_in_activity` (Boolean) Fetch user sign-in activity
+- `entra_skip_ad_groups` (Boolean) Skip Active Directory groups and members
 - `entra_tenant_id` (String) Entra tenant ID
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

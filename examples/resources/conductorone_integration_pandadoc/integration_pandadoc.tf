@@ -3,6 +3,6 @@ resource "conductorone_integration_pandadoc" "pandadoc" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  api_key = "..."
-  domain  = "..."
+  api_key       = "..."
+  europe_domain = false
 }

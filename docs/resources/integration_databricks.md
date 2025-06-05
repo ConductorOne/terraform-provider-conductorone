@@ -43,7 +43,7 @@ resource "conductorone_integration_databricks" "databricks" {
 ### Optional
 
 - `databricks_access_token` (String, Sensitive) Personal access token
-- `databricks_account_hostname` (String) Account Hostname (optional)
+- `databricks_account_hostname` (String) Account hostname (optional)
 - `databricks_account_id` (String) Account ID
 - `databricks_client_id` (String) OAuth2 client ID
 - `databricks_client_secret` (String, Sensitive) OAuth2 client secret

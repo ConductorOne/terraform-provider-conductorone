@@ -21,7 +21,7 @@ func (r *IntegrationTrayAiResourceModel) ToCreateDelegatedSDKType() *shared.Conn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("Tray.AI"),
+		DisplayName: sdk.String("Tray.ai"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -75,7 +75,7 @@ func (r *IntegrationTrayAiResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Tray.AI"),
+		DisplayName: sdk.String("Tray.ai"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(trayAiCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),

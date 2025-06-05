@@ -41,12 +41,12 @@ resource "conductorone_integration_azure_infrastructure" "azure_infrastructure" 
 ### Optional
 
 - `azure_client_id` (String) Client ID
-- `azure_client_secret` (String, Sensitive) Client Secret
+- `azure_client_secret` (String, Sensitive) Client secret
 - `azure_tenant_id` (String) Tenant ID
-- `graph_domain` (String) Graph Domain
-- `mailbox_settings` (Boolean) Mailbox Settings
-- `skip_ad_groups` (Boolean) Skip AD Groups
-- `skip_unused_roles` (Boolean) Skip Unused Roles
+- `graph_domain` (String) Graph domain
+- `mailbox_settings` (Boolean) Mailbox settings
+- `skip_ad_groups` (Boolean) Skip AD groups
+- `skip_unused_roles` (Boolean) Skip unused roles
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

@@ -99,12 +99,12 @@ func (r *IntegrationCouchdbResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"couchdb_username": &schema.StringAttribute{
 				Optional:    true,
-				Description: `CouchDB Username`,
+				Description: `CouchDB username`,
 			},
 			"couchdb_password": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `CouchDB Password`,
+				Description: `CouchDB password`,
 			},
 		},
 	}

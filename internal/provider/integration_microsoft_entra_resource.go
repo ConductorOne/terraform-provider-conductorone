@@ -112,19 +112,19 @@ func (r *IntegrationMicrosoftEntraResource) Schema(ctx context.Context, req reso
 			},
 			"entra_skip_ad_groups": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Skip syncing Active Directory Server groups`,
+				Description: `Skip Active Directory groups and members`,
 			},
 			"entra_graph_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Entra Graph Domain`,
+				Description: `Entra Graph domain`,
 			},
 			"entra_sign_in_activity": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Fetch User Sign-in Activity`,
+				Description: `Fetch user sign-in activity`,
 			},
 			"entra_schedule_scim_provisioning": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Schedule SCIM Provisioning`,
+				Description: `Schedule SCIM provisioning`,
 			},
 		},
 	}

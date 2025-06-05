@@ -35,14 +35,14 @@ type IntegrationPandadocResource struct {
 
 // IntegrationPandadocResourceModel describes the resource data model.
 type IntegrationPandadocResourceModel struct {
-	AppID     types.String   `tfsdk:"app_id"`
-	CreatedAt types.String   `tfsdk:"created_at"`
-	DeletedAt types.String   `tfsdk:"deleted_at"`
-	ID        types.String   `tfsdk:"id"`
-	UpdatedAt types.String   `tfsdk:"updated_at"`
-	UserIds   []types.String `tfsdk:"user_ids"`
-	ApiKey    types.String   `tfsdk:"api_key"`
-	Domain    types.String   `tfsdk:"domain"`
+	AppID        types.String   `tfsdk:"app_id"`
+	CreatedAt    types.String   `tfsdk:"created_at"`
+	DeletedAt    types.String   `tfsdk:"deleted_at"`
+	ID           types.String   `tfsdk:"id"`
+	UpdatedAt    types.String   `tfsdk:"updated_at"`
+	UserIds      []types.String `tfsdk:"user_ids"`
+	ApiKey       types.String   `tfsdk:"api_key"`
+	EuropeDomain types.Bool     `tfsdk:"europe_domain"`
 }
 
 func (r *IntegrationPandadocResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -95,11 +95,11 @@ func (r *IntegrationPandadocResource) Schema(ctx context.Context, req resource.S
 			"api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `PandaDoc API Key`,
+				Description: `PandaDoc API key`,
 			},
-			"domain": &schema.StringAttribute{
+			"europe_domain": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `PandaDoc API Domain`,
+				Description: `Use PandaDoc Europe domain`,
 			},
 		},
 	}

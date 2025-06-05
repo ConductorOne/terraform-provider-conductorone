@@ -118,7 +118,7 @@ func (r *IntegrationWorkdayResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"tenant_name": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Tenant Name`,
+				Description: `Tenant name`,
 			},
 			"workday_report_url": &schema.StringAttribute{
 				Optional:    true,
@@ -126,12 +126,12 @@ func (r *IntegrationWorkdayResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"workday_report_username": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Report Username`,
+				Description: `Report username`,
 			},
 			"workday_report_user_password": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Report User Password`,
+				Description: `Report user password`,
 			},
 		},
 	}

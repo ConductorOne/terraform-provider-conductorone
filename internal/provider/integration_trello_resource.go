@@ -95,12 +95,12 @@ func (r *IntegrationTrelloResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"api_key": &schema.StringAttribute{
 				Optional:    true,
-				Description: `API Key`,
+				Description: `API key`,
 			},
 			"api_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `API Token`,
+				Description: `API token`,
 			},
 			"organizations": &schema.ListAttribute{
 				Description: `Organizations`,
