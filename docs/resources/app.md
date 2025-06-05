@@ -54,6 +54,7 @@ resource "conductorone_app" "my_app" {
 - `created_at` (String)
 - `default_request_catalog_id` (String) The ID for the default request catalog for this app.
 - `id` (String) The ID of the app.
+- `instructions` (String) If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
 - `is_directory` (Boolean) Specifies if the app is a directory.
 - `is_manually_managed` (Boolean) The isManuallyManaged field.
 - `parent_app_id` (String) The ID of the app that created this app, if any.

@@ -143,6 +143,10 @@ components:
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
+                instructions:
+                    description: If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
+                    readOnly: false
+                    type: string
                 isDirectory:
                     description: Specifies if the app is a directory.
                     readOnly: true
@@ -4653,6 +4657,10 @@ components:
                     $ref: '#/components/schemas/c1.api.automations.v1.SendEmail'
                 skipIfTrueCel:
                     description: The skipIfTrueCel field.
+                    readOnly: false
+                    type: string
+                stepDisplayName:
+                    description: The stepDisplayName field.
                     readOnly: false
                     type: string
                 stepName:
@@ -16218,6 +16226,7 @@ paths:
             tags:
                 - Request Catalog
             x-speakeasy-entity-operation:
+                terraform-datasource: Access_Profile_Requestable_Entries#read
                 terraform-resource: Access_Profile_Requestable_Entries#read
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: ListEntitlementsPerCatalog

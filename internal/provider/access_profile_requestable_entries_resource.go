@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
@@ -107,12 +108,10 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 			},
 			"list": schema.ListNestedAttribute{
 				Computed: true,
-				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"app_entitlement": schema.SingleNestedAttribute{
 							Computed: true,
-							Optional: true,
 							Attributes: map[string]schema.Attribute{
 								"alias": schema.StringAttribute{
 									Computed:    true,
@@ -123,12 +122,17 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 									Description: `The ID of the app that is associated with the app entitlement.`,
 								},
 								"app_resource_id": schema.StringAttribute{
-									Computed: true,	
-									Optional: true,
+									Computed: true,
+									PlanModifiers: []planmodifier.String{
+										speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+									},
 									Description: `The ID of the app resource that is associated with the app entitlement`,
 								},
 								"app_resource_type_id": schema.StringAttribute{
 									Computed: true,
+									PlanModifiers: []planmodifier.String{
+										speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+									},
 									Description: `The ID of the app resource type that is associated with the app entitlement`,
 								},
 								"certify_policy_id": schema.StringAttribute{
@@ -149,12 +153,6 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 								"default_values_applied": schema.BoolAttribute{
 									Computed:    true,
 									Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
-								},
-								"deleted_at": schema.StringAttribute{
-									Computed: true,
-									Validators: []validator.String{
-										validators.IsRFC3339(),
-									},
 								},
 								"deprovisioner_policy": schema.SingleNestedAttribute{
 									Computed: true,

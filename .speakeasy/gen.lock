@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 2914e43e434eaad2465adfe7864feb2f
+  docChecksum: 5e9ca777d83ee6e5d76133ea5088ed62
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.550.0
   generationVersion: 2.610.0
-  releaseVersion: 1.3.8
-  configChecksum: f776fad2a314cc31014e1f689cf22e1e
+  releaseVersion: 1.3.9
+  configChecksum: 8fd55f0d562cf4ce27b99232706ef7f0
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -28,6 +28,7 @@ generatedFiles:
   - USAGE.md
   - examples/README.md
   - examples/data-sources/conductorone_access_profile/data-source.tf
+  - examples/data-sources/conductorone_access_profile_requestable_entries/data-source.tf
   - examples/data-sources/conductorone_app/data-source.tf
   - examples/data-sources/conductorone_app_entitlement/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_automation/data-source.tf
@@ -92,6 +93,8 @@ generatedFiles:
   - internal/planmodifiers/utils/state_check.go
   - internal/provider/access_profile_data_source.go
   - internal/provider/access_profile_data_source_sdk.go
+  - internal/provider/access_profile_requestable_entries_data_source.go
+  - internal/provider/access_profile_requestable_entries_data_source_sdk.go
   - internal/provider/access_profile_requestable_entries_resource.go
   - internal/provider/access_profile_requestable_entries_resource_sdk.go
   - internal/provider/access_profile_resource.go
