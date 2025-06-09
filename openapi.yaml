@@ -1,5 +1,138 @@
 components:
     schemas:
+        c1.api.accessconflict.v1.ConflictMonitor:
+            description: The ConflictMonitor message.
+            properties:
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                deletedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+                entitlementSetAId:
+                    description: The entitlementSetAId field.
+                    readOnly: false
+                    type: string
+                entitlementSetBId:
+                    description: The entitlementSetBId field.
+                    readOnly: false
+                    type: string
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+                notificationConfig:
+                    $ref: '#/components/schemas/c1.api.accessconflict.v1.NotificationConfig'
+                updatedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Conflict Monitor
+            type: object
+            x-speakeasy-name-override: ConflictMonitor
+        c1.api.accessconflict.v1.ConflictMonitorCreateRequest:
+            description: The ConflictMonitorCreateRequest message.
+            properties:
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                notificationConfig:
+                    $ref: '#/components/schemas/c1.api.accessconflict.v1.NotificationConfig'
+            required:
+                - displayName
+            title: Conflict Monitor Create Request
+            type: object
+            x-speakeasy-name-override: ConflictMonitorCreateRequest
+        c1.api.accessconflict.v1.ConflictMonitorDeleteRequestInput:
+            description: The ConflictMonitorDeleteRequest message.
+            title: Conflict Monitor Delete Request
+            type: object
+            x-speakeasy-name-override: ConflictMonitorDeleteRequest
+        c1.api.accessconflict.v1.ConflictMonitorDeleteResponse:
+            description: The ConflictMonitorDeleteResponse message.
+            title: Conflict Monitor Delete Response
+            type: object
+            x-speakeasy-name-override: ConflictMonitorDeleteResponse
+        c1.api.accessconflict.v1.ConflictMonitorUpdateRequestInput:
+            description: The ConflictMonitorUpdateRequest message.
+            properties:
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                notificationConfig:
+                    $ref: '#/components/schemas/c1.api.accessconflict.v1.NotificationConfig'
+            title: Conflict Monitor Update Request
+            type: object
+            x-speakeasy-name-override: ConflictMonitorUpdateRequest
+        c1.api.accessconflict.v1.EmailNotifications:
+            description: The EmailNotifications message.
+            properties:
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+                identityUserIds:
+                    description: The identityUserIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Email Notifications
+            type: object
+            x-speakeasy-name-override: EmailNotifications
+        c1.api.accessconflict.v1.NotificationConfig:
+            description: The NotificationConfig message.
+            properties:
+                emailNotifications:
+                    $ref: '#/components/schemas/c1.api.accessconflict.v1.EmailNotifications'
+                slackNotifications:
+                    $ref: '#/components/schemas/c1.api.accessconflict.v1.SlackNotifications'
+            title: Notification Config
+            type: object
+            x-speakeasy-name-override: NotificationConfig
+        c1.api.accessconflict.v1.SlackNotifications:
+            description: The SlackNotifications message.
+            properties:
+                channelId:
+                    description: The channelId field.
+                    readOnly: false
+                    type: string
+                channelName:
+                    description: The channelName field.
+                    readOnly: false
+                    type: string
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+            title: Slack Notifications
+            type: object
+            x-speakeasy-name-override: SlackNotifications
         c1.api.app.v1.AddAppEntitlementOwnerRequestInput:
             description: The request message for adding an app entitlement owner.
             properties:
@@ -143,6 +276,10 @@ components:
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
+                instructions:
+                    description: If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
+                    readOnly: false
+                    type: string
                 isDirectory:
                     description: Specifies if the app is a directory.
                     readOnly: true
@@ -4653,6 +4790,10 @@ components:
                     $ref: '#/components/schemas/c1.api.automations.v1.SendEmail'
                 skipIfTrueCel:
                     description: The skipIfTrueCel field.
+                    readOnly: false
+                    type: string
+                stepDisplayName:
+                    description: The stepDisplayName field.
                     readOnly: false
                     type: string
                 stepName:
@@ -12872,6 +13013,116 @@ info:
     version: 0.1.0-alpha
 openapi: 3.1.0
 paths:
+    /api/v1/accessconflict:
+        post:
+            description: Invokes the c1.api.accessconflict.v1.AccessConflictService.CreateMonitor method.
+            operationId: c1.api.accessconflict.v1.AccessConflictService.CreateMonitor
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessconflict.v1.ConflictMonitorCreateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessconflict.v1.ConflictMonitor'
+                    description: Successful response
+            summary: Create Monitor
+            tags:
+                - Access Conflict
+            x-speakeasy-entity-operation:
+                terraform-resource: Access_Conflict#create
+            x-speakeasy-group: AccessConflict
+            x-speakeasy-name-override: CreateMonitor
+    /api/v1/accessconflict/{id}:
+        delete:
+            description: Invokes the c1.api.accessconflict.v1.AccessConflictService.DeleteMonitor method.
+            operationId: c1.api.accessconflict.v1.AccessConflictService.DeleteMonitor
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessconflict.v1.ConflictMonitorDeleteRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessconflict.v1.ConflictMonitorDeleteResponse'
+                    description: Successful response
+            summary: Delete Monitor
+            tags:
+                - Access Conflict
+            x-speakeasy-entity-operation:
+                terraform-resource: Access_Conflict#delete
+            x-speakeasy-group: AccessConflict
+            x-speakeasy-name-override: DeleteMonitor
+        get:
+            description: Invokes the c1.api.accessconflict.v1.AccessConflictService.GetMonitor method.
+            operationId: c1.api.accessconflict.v1.AccessConflictService.GetMonitor
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessconflict.v1.ConflictMonitor'
+                    description: Successful response
+            summary: Get Monitor
+            tags:
+                - Access Conflict
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: Access_Conflict#read
+            x-speakeasy-group: AccessConflict
+            x-speakeasy-name-override: GetMonitor
+        post:
+            description: Invokes the c1.api.accessconflict.v1.AccessConflictService.UpdateMonitor method.
+            operationId: c1.api.accessconflict.v1.AccessConflictService.UpdateMonitor
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessconflict.v1.ConflictMonitorUpdateRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessconflict.v1.ConflictMonitor'
+                    description: Successful response
+            summary: Update Monitor
+            tags:
+                - Access Conflict
+            x-speakeasy-entity-operation:
+                terraform-resource: Access_Conflict#update
+            x-speakeasy-group: AccessConflict
+            x-speakeasy-name-override: UpdateMonitor
     /api/v1/apps:
         get:
             description: List all apps.

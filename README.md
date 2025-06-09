@@ -26,6 +26,7 @@ TF_REATTACH_PROVIDERS=... terraform apply
 
 ### Resources
 
+* [conductorone_access_conflict](docs/resources/access_conflict.md)
 * [conductorone_access_profile](docs/resources/access_profile.md)
 * [conductorone_access_profile_requestable_entries](docs/resources/access_profile_requestable_entries.md)
 * [conductorone_access_profile_visibility_bindings](docs/resources/access_profile_visibility_bindings.md)
@@ -139,7 +140,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.3.1"
+      version = "1.3.6"
     }
   }
 }

@@ -118,6 +118,12 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 	} else {
 		identityMatching = nil
 	}
+	instructions := new(string)
+	if !r.Instructions.IsUnknown() && !r.Instructions.IsNull() {
+		*instructions = r.Instructions.ValueString()
+	} else {
+		instructions = nil
+	}
 	isManuallyManaged := new(bool)
 	if !r.IsManuallyManaged.IsUnknown() && !r.IsManuallyManaged.IsNull() {
 		*isManuallyManaged = r.IsManuallyManaged.ValueBool()
@@ -150,6 +156,7 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 		DisplayName:                         displayName,
 		GrantPolicyID:                       grantPolicyID,
 		IdentityMatching:                    identityMatching,
+		Instructions:                        instructions,
 		IsManuallyManaged:                   isManuallyManaged,
 		MonthlyCostUsd:                      monthlyCostUsd,
 		RevokePolicyID:                      revokePolicyID,
@@ -243,6 +250,7 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 		} else {
 			r.IdentityMatching = types.StringNull()
 		}
+		r.Instructions = types.StringPointerValue(resp.Instructions)
 		r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
 		r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
 		r.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.MonthlyCostUsd))

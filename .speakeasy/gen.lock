@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 5bc40a65e175125766ad1963c4843a03
+  docChecksum: dc58e71fba73e5d299d542eb594a9be3
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.550.0
   generationVersion: 2.610.0
-  releaseVersion: 1.3.1
-  configChecksum: 75e4062c4e083c4c2d8dd421934bbfd5
+  releaseVersion: 1.3.6
+  configChecksum: 672d5b2df3c6f30a004231912dd78a48
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -45,6 +45,8 @@ generatedFiles:
   - examples/data-sources/conductorone_user/data-source.tf
   - examples/data-sources/conductorone_webhook/data-source.tf
   - examples/provider/provider.tf
+  - examples/resources/conductorone_access_conflict/import.sh
+  - examples/resources/conductorone_access_conflict/resource.tf
   - examples/resources/conductorone_access_profile/import.sh
   - examples/resources/conductorone_access_profile/resource.tf
   - examples/resources/conductorone_access_profile_requestable_entries/resource.tf
@@ -89,6 +91,8 @@ generatedFiles:
   - internal/planmodifiers/setplanmodifier/suppress_diff.go
   - internal/planmodifiers/stringplanmodifier/suppress_diff.go
   - internal/planmodifiers/utils/state_check.go
+  - internal/provider/access_conflict_resource.go
+  - internal/provider/access_conflict_resource_sdk.go
   - internal/provider/access_profile_data_source.go
   - internal/provider/access_profile_data_source_sdk.go
   - internal/provider/access_profile_requestable_entries_resource.go
@@ -191,6 +195,7 @@ generatedFiles:
   - internal/provider/types/approval.go
   - internal/provider/types/bundle_automation_last_run_state.go
   - internal/provider/types/bundle_automation_rule_entitlement.go
+  - internal/provider/types/conflict_monitor_delete_request.go
   - internal/provider/types/connector_provision.go
   - internal/provider/types/create_app_entitlement_request_duration_unset.go
   - internal/provider/types/default_behavior.go
@@ -198,6 +203,7 @@ generatedFiles:
   - internal/provider/types/delete_bundle_automation_request.go
   - internal/provider/types/deprovisioner_policy.go
   - internal/provider/types/do_not_save.go
+  - internal/provider/types/email_notifications.go
   - internal/provider/types/entitlement_owner_approval.go
   - internal/provider/types/escalation.go
   - internal/provider/types/expression_approval.go
@@ -206,6 +212,7 @@ generatedFiles:
   - internal/provider/types/get_app_entitlement_response_expanded.go
   - internal/provider/types/manager_approval.go
   - internal/provider/types/manual_provision.go
+  - internal/provider/types/notification_config.go
   - internal/provider/types/policy_post_actions.go
   - internal/provider/types/policy_ref.go
   - internal/provider/types/policy_step.go
@@ -225,6 +232,7 @@ generatedFiles:
   - internal/provider/types/search_users_response_expanded.go
   - internal/provider/types/secret_trait.go
   - internal/provider/types/self_approval.go
+  - internal/provider/types/slack_notifications.go
   - internal/provider/types/unconfigured_provision.go
   - internal/provider/types/user_approval.go
   - internal/provider/types/user_attribute_mapping_source.go
@@ -242,6 +250,7 @@ generatedFiles:
   - internal/provider/webhook_resource.go
   - internal/provider/webhook_resource_sdk.go
   - internal/sdk/.gitattributes
+  - internal/sdk/accessconflict.go
   - internal/sdk/accountprovisionpolicytest.go
   - internal/sdk/appaccessrequestsdefaults.go
   - internal/sdk/appentitlementowners.go
@@ -287,6 +296,10 @@ generatedFiles:
   - internal/sdk/internal/utils/security.go
   - internal/sdk/internal/utils/utils.go
   - internal/sdk/models/errors/sdkerror.go
+  - internal/sdk/models/operations/c1apiaccessconflictv1accessconflictservicecreatemonitor.go
+  - internal/sdk/models/operations/c1apiaccessconflictv1accessconflictservicedeletemonitor.go
+  - internal/sdk/models/operations/c1apiaccessconflictv1accessconflictservicegetmonitor.go
+  - internal/sdk/models/operations/c1apiaccessconflictv1accessconflictserviceupdatemonitor.go
   - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicecancelappaccessrequestsdefaults.go
   - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicecreateappaccessrequestsdefaults.go
   - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicegetappaccessrequestsdefaults.go
@@ -594,6 +607,11 @@ generatedFiles:
   - internal/sdk/models/shared/completedaction.go
   - internal/sdk/models/shared/conditionsucceeded.go
   - internal/sdk/models/shared/conditiontimedout.go
+  - internal/sdk/models/shared/conflictmonitor.go
+  - internal/sdk/models/shared/conflictmonitorcreaterequest.go
+  - internal/sdk/models/shared/conflictmonitordeleterequest.go
+  - internal/sdk/models/shared/conflictmonitordeleteresponse.go
+  - internal/sdk/models/shared/conflictmonitorupdaterequest.go
   - internal/sdk/models/shared/connector.go
   - internal/sdk/models/shared/connectoraction.go
   - internal/sdk/models/shared/connectorcreateaccount.go
@@ -680,6 +698,7 @@ generatedFiles:
   - internal/sdk/models/shared/directoryservicelistresponse.go
   - internal/sdk/models/shared/directoryview.go
   - internal/sdk/models/shared/donotsave.go
+  - internal/sdk/models/shared/emailnotifications.go
   - internal/sdk/models/shared/encrypteddata.go
   - internal/sdk/models/shared/entitlementownerapproval.go
   - internal/sdk/models/shared/erroredaction.go
@@ -750,6 +769,7 @@ generatedFiles:
   - internal/sdk/models/shared/manuallymanagedusersresponse.go
   - internal/sdk/models/shared/manualprovision.go
   - internal/sdk/models/shared/marker.go
+  - internal/sdk/models/shared/notificationconfig.go
   - internal/sdk/models/shared/oauth2authorizedas.go
   - internal/sdk/models/shared/oauth2authorizedasinput.go
   - internal/sdk/models/shared/orgdomain.go
@@ -879,6 +899,7 @@ generatedFiles:
   - internal/sdk/models/shared/setappownersresponse.go
   - internal/sdk/models/shared/setbundleautomationrequest.go
   - internal/sdk/models/shared/skippedaction.go
+  - internal/sdk/models/shared/slacknotifications.go
   - internal/sdk/models/shared/status.go
   - internal/sdk/models/shared/stepupmicrosoftsettings.go
   - internal/sdk/models/shared/stepupoauth2settings.go
@@ -2554,6 +2575,40 @@ examples:
           application/json: {}
   c1.api.webhooks.v1.WebhooksService.Test:
     speakeasy-default-c1-api-webhooks-v1-webhooks-service-test:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.accessconflict.v1.AccessConflictService.ListMonitor:
+    speakeasy-default-c1-api-accessconflict-v1-access-conflict-service-list-monitor:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.accessconflict.v1.AccessConflictService.CreateMonitor:
+    speakeasy-default-c1-api-accessconflict-v1-access-conflict-service-create-monitor:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.accessconflict.v1.AccessConflictService.DeleteMonitor:
+    speakeasy-default-c1-api-accessconflict-v1-access-conflict-service-delete-monitor:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.accessconflict.v1.AccessConflictService.GetMonitor:
+    speakeasy-default-c1-api-accessconflict-v1-access-conflict-service-get-monitor:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.accessconflict.v1.AccessConflictService.UpdateMonitor:
+    speakeasy-default-c1-api-accessconflict-v1-access-conflict-service-update-monitor:
       parameters:
         path:
           id: "<id>"

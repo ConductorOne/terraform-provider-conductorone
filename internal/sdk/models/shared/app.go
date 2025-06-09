@@ -68,6 +68,8 @@ type App struct {
 	ID *string `json:"id,omitempty"`
 	// The identityMatching field.
 	IdentityMatching *IdentityMatching `json:"identityMatching,omitempty"`
+	// If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
+	Instructions *string `json:"instructions,omitempty"`
 	// Specifies if the app is a directory.
 	IsDirectory *bool `json:"isDirectory,omitempty"`
 	// The isManuallyManaged field.
@@ -203,6 +205,13 @@ func (o *App) GetIdentityMatching() *IdentityMatching {
 	return o.IdentityMatching
 }
 
+func (o *App) GetInstructions() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Instructions
+}
+
 func (o *App) GetIsDirectory() *bool {
 	if o == nil {
 		return nil
@@ -284,6 +293,8 @@ type AppInput struct {
 	IconURL *string `json:"iconUrl,omitempty"`
 	// The identityMatching field.
 	IdentityMatching *IdentityMatching `json:"identityMatching,omitempty"`
+	// If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
+	Instructions *string `json:"instructions,omitempty"`
 	// The isManuallyManaged field.
 	IsManuallyManaged *bool `json:"isManuallyManaged,omitempty"`
 	// The cost of an app per-seat, so that total cost can be calculated by the grant count.
@@ -348,6 +359,13 @@ func (o *AppInput) GetIdentityMatching() *IdentityMatching {
 		return nil
 	}
 	return o.IdentityMatching
+}
+
+func (o *AppInput) GetInstructions() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Instructions
 }
 
 func (o *AppInput) GetIsManuallyManaged() *bool {
