@@ -5,6 +5,10 @@ package shared
 // The UpdateAutomationResponse message.
 type UpdateAutomationResponse struct {
 	// The Automation message.
+	//
+	// This message contains a oneof named _app_id. Only a single field of the following list may be set at a time:
+	//   - appId
+	//
 	Automation *Automation `json:"automation,omitempty"`
 }
 

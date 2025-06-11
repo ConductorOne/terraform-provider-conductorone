@@ -4576,8 +4576,20 @@ components:
             type: object
             x-speakeasy-name-override: AppUserUpdatedTrigger
         c1.api.automations.v1.Automation:
-            description: The Automation message.
+            description: |
+                The Automation message.
+
+                This message contains a oneof named _app_id. Only a single field of the following list may be set at a time:
+                  - appId
             properties:
+                appId:
+                    description: |-
+                        the app id this workflow_template belongs to
+                        This field is part of the `_app_id` oneof.
+                        See the documentation for `c1.api.automations.v1.Automation` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
                 automationSteps:
                     description: The automationSteps field.
                     items:
@@ -4984,8 +4996,20 @@ components:
             type: object
             x-speakeasy-name-override: CreateAccessReview
         c1.api.automations.v1.CreateAutomationRequest:
-            description: The CreateAutomationRequest message.
+            description: |
+                The CreateAutomationRequest message.
+
+                This message contains a oneof named _app_id. Only a single field of the following list may be set at a time:
+                  - appId
             properties:
+                appId:
+                    description: |-
+                        the app id this workflow_template belongs to
+                        This field is part of the `_app_id` oneof.
+                        See the documentation for `c1.api.automations.v1.CreateAutomationRequest` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
                 automationSteps:
                     description: The automationSteps field.
                     items:

@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: dc58e71fba73e5d299d542eb594a9be3
+  docChecksum: 0db654dc2bf4364294934363344e58da
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.550.0
-  generationVersion: 2.610.0
-  releaseVersion: 1.3.6
-  configChecksum: 672d5b2df3c6f30a004231912dd78a48
+  speakeasyVersion: 1.556.2
+  generationVersion: 2.621.3
+  releaseVersion: 1.3.7
+  configChecksum: 59f679fb2f46e566787f6af6401ffdbd
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -171,7 +171,7 @@ generatedFiles:
   - internal/provider/risk_level_resource_sdk.go
   - internal/provider/typeconvert/date.go
   - internal/provider/typeconvert/datetime.go
-  - internal/provider/typeconvert/int32.go
+  - internal/provider/typeconvert/int.go
   - internal/provider/types/accept.go
   - internal/provider/types/account_provision.go
   - internal/provider/types/account_provision_config.go
@@ -283,6 +283,7 @@ generatedFiles:
   - internal/sdk/directory.go
   - internal/sdk/export.go
   - internal/sdk/exportssearch.go
+  - internal/sdk/internal/config/sdkconfiguration.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/internal/utils/contenttype.go
   - internal/sdk/internal/utils/env.go
