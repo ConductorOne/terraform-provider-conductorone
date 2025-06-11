@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 0db654dc2bf4364294934363344e58da
+  docChecksum: da429b0d8c2988ae098562408245632c
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.556.2
   generationVersion: 2.621.3
-  releaseVersion: 1.3.7
-  configChecksum: 59f679fb2f46e566787f6af6401ffdbd
+  releaseVersion: 1.3.9
+  configChecksum: e45041666dcfa25641a1302bcbc83150
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -49,6 +49,7 @@ generatedFiles:
   - examples/resources/conductorone_access_conflict/resource.tf
   - examples/resources/conductorone_access_profile/import.sh
   - examples/resources/conductorone_access_profile/resource.tf
+  - examples/resources/conductorone_access_profile_requestable_entries/import.sh
   - examples/resources/conductorone_access_profile_requestable_entries/resource.tf
   - examples/resources/conductorone_access_profile_visibility_bindings/resource.tf
   - examples/resources/conductorone_app/import.sh
@@ -438,6 +439,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceget.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicegetbundleautomation.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelist.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelistallentitlementidsperapp.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementsforaccess.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementspercatalog.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceremoveaccessentitlements.go
@@ -833,6 +835,7 @@ generatedFiles:
   - internal/sdk/models/shared/requestcatalogmanagementservicedeleterequest.go
   - internal/sdk/models/shared/requestcatalogmanagementservicedeleteresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicegetresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicelistallentitlementidspercatalogresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicelistentitlementsforaccessresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicelistentitlementspercatalogresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicelistresponse.go
@@ -2613,6 +2616,14 @@ examples:
       parameters:
         path:
           id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.ListAllEntitlementIdsPerApp:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-list-all-entitlement-ids-per-app:
+      parameters:
+        path:
+          catalog_id: "<id>"
       responses:
         "200":
           application/json: {}
