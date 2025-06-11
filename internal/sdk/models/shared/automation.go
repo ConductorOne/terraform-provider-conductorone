@@ -8,7 +8,14 @@ import (
 )
 
 // The Automation message.
+//
+// This message contains a oneof named _app_id. Only a single field of the following list may be set at a time:
+//   - appId
 type Automation struct {
+	// the app id this workflow_template belongs to
+	// This field is part of the `_app_id` oneof.
+	// See the documentation for `c1.api.automations.v1.Automation` for more details.
+	AppID *string `json:"appId,omitempty"`
 	// The automationSteps field.
 	AutomationSteps []AutomationStep `json:"automationSteps,omitempty"`
 	// The AutomationContext message.
@@ -44,6 +51,13 @@ func (a *Automation) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *Automation) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
 }
 
 func (o *Automation) GetAutomationSteps() []AutomationStep {

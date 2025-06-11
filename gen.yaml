@@ -8,6 +8,7 @@ generation:
   maintainOpenAPIOrder: true
   usageSnippets:
     optionalPropertyRendering: withExample
+    sdkInitStyle: constructor
   useClassNamesForArrayFields: true
   fixes:
     nameResolutionDec2023: true
@@ -22,7 +23,7 @@ generation:
   mockServer:
     disabled: true
 terraform:
-  version: 1.3.6
+  version: 1.3.7
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []

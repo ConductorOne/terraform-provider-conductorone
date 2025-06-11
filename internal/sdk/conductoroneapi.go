@@ -2,9 +2,12 @@
 
 package sdk
 
+// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.621.3
+
 import (
 	"context"
 	"fmt"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/config"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/hooks"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
@@ -19,7 +22,7 @@ var ServerList = []string{
 	"https://{tenantDomain}.conductor.one",
 }
 
-// HTTPClient provides an interface for suplying the SDK with a custom HTTP client
+// HTTPClient provides an interface for supplying the SDK with a custom HTTP client
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
@@ -45,32 +48,9 @@ func Float64(f float64) *float64 { return &f }
 // Pointer provides a helper function to return a pointer to a type
 func Pointer[T any](v T) *T { return &v }
 
-type sdkConfiguration struct {
-	Client            HTTPClient
-	Security          func(context.Context) (interface{}, error)
-	ServerURL         string
-	ServerIndex       int
-	ServerDefaults    []map[string]string
-	Language          string
-	OpenAPIDocVersion string
-	SDKVersion        string
-	GenVersion        string
-	UserAgent         string
-	RetryConfig       *retry.Config
-	Hooks             *hooks.Hooks
-	Timeout           *time.Duration
-}
-
-func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
-	if c.ServerURL != "" {
-		return c.ServerURL, nil
-	}
-
-	return ServerList[c.ServerIndex], c.ServerDefaults[c.ServerIndex]
-}
-
 // ConductoroneAPI - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
 type ConductoroneAPI struct {
+	SDKVersion                 string
 	AccessConflict             *AccessConflict
 	Apps                       *Apps
 	AppAccessRequestsDefaults  *AppAccessRequestsDefaults
@@ -125,7 +105,8 @@ type ConductoroneAPI struct {
 	User                       *User
 	Webhooks                   *Webhooks
 
-	sdkConfiguration sdkConfiguration
+	sdkConfiguration config.SDKConfiguration
+	hooks            *hooks.Hooks
 }
 
 type SDKOption func(*ConductoroneAPI)
@@ -162,12 +143,12 @@ func WithServerIndex(serverIndex int) SDKOption {
 // WithTenantDomain allows setting the tenantDomain variable for url substitution
 func WithTenantDomain(tenantDomain string) SDKOption {
 	return func(sdk *ConductoroneAPI) {
-		for idx := range sdk.sdkConfiguration.ServerDefaults {
-			if _, ok := sdk.sdkConfiguration.ServerDefaults[idx]["tenantDomain"]; !ok {
+		for idx := range sdk.sdkConfiguration.ServerVariables {
+			if _, ok := sdk.sdkConfiguration.ServerVariables[idx]["tenantDomain"]; !ok {
 				continue
 			}
 
-			sdk.sdkConfiguration.ServerDefaults[idx]["tenantDomain"] = fmt.Sprintf("%v", tenantDomain)
+			sdk.sdkConfiguration.ServerVariables[idx]["tenantDomain"] = fmt.Sprintf("%v", tenantDomain)
 		}
 	}
 }
@@ -211,19 +192,17 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		sdkConfiguration: sdkConfiguration{
-			Language:          "go",
-			OpenAPIDocVersion: "0.1.0-alpha",
-			SDKVersion:        "1.3.6",
-			GenVersion:        "2.610.0",
-			UserAgent:         "speakeasy-sdk/terraform 1.3.6 2.610.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
-			ServerDefaults: []map[string]string{
+		SDKVersion: "1.3.7",
+		sdkConfiguration: config.SDKConfiguration{
+			UserAgent:  "speakeasy-sdk/terraform 1.3.7 2.621.3 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			ServerList: ServerList,
+			ServerVariables: []map[string]string{
 				{
 					"tenantDomain": "example",
 				},
 			},
-			Hooks: hooks.New(),
 		},
+		hooks: hooks.New(),
 	}
 	for _, opt := range opts {
 		opt(sdk)
@@ -236,116 +215,64 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 
 	currentServerURL, _ := sdk.sdkConfiguration.GetServerDetails()
 	serverURL := currentServerURL
-	serverURL, sdk.sdkConfiguration.Client = sdk.sdkConfiguration.Hooks.SDKInit(currentServerURL, sdk.sdkConfiguration.Client)
-	if serverURL != currentServerURL {
+	serverURL, sdk.sdkConfiguration.Client = sdk.hooks.SDKInit(currentServerURL, sdk.sdkConfiguration.Client)
+	if currentServerURL != serverURL {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
-	sdk.AccessConflict = newAccessConflict(sdk.sdkConfiguration)
-
-	sdk.Apps = newApps(sdk.sdkConfiguration)
-
-	sdk.AppAccessRequestsDefaults = newAppAccessRequestsDefaults(sdk.sdkConfiguration)
-
-	sdk.AppUser = newAppUser(sdk.sdkConfiguration)
-
-	sdk.Connector = newConnector(sdk.sdkConfiguration)
-
-	sdk.AppEntitlements = newAppEntitlements(sdk.sdkConfiguration)
-
-	sdk.AppEntitlementSearch = newAppEntitlementSearch(sdk.sdkConfiguration)
-
-	sdk.AppEntitlementUserBinding = newAppEntitlementUserBinding(sdk.sdkConfiguration)
-
-	sdk.AppEntitlementOwners = newAppEntitlementOwners(sdk.sdkConfiguration)
-
-	sdk.AppOwners = newAppOwners(sdk.sdkConfiguration)
-
-	sdk.AppReport = newAppReport(sdk.sdkConfiguration)
-
-	sdk.AppReportAction = newAppReportAction(sdk.sdkConfiguration)
-
-	sdk.AppResourceType = newAppResourceType(sdk.sdkConfiguration)
-
-	sdk.AppResource = newAppResource(sdk.sdkConfiguration)
-
-	sdk.AppResourceOwners = newAppResourceOwners(sdk.sdkConfiguration)
-
-	sdk.AppUsageControls = newAppUsageControls(sdk.sdkConfiguration)
-
-	sdk.AppEntitlementsProxy = newAppEntitlementsProxy(sdk.sdkConfiguration)
-
-	sdk.Attributes = newAttributes(sdk.sdkConfiguration)
-
-	sdk.Auth = newAuth(sdk.sdkConfiguration)
-
-	sdk.AutomationExecution = newAutomationExecution(sdk.sdkConfiguration)
-
-	sdk.AutomationExecutionActions = newAutomationExecutionActions(sdk.sdkConfiguration)
-
-	sdk.AutomationExecutionSearch = newAutomationExecutionSearch(sdk.sdkConfiguration)
-
-	sdk.AutomationSearch = newAutomationSearch(sdk.sdkConfiguration)
-
-	sdk.Automation = newAutomation(sdk.sdkConfiguration)
-
-	sdk.RequestCatalogManagement = newRequestCatalogManagement(sdk.sdkConfiguration)
-
-	sdk.Directory = newDirectory(sdk.sdkConfiguration)
-
-	sdk.PersonalClient = newPersonalClient(sdk.sdkConfiguration)
-
-	sdk.Roles = newRoles(sdk.sdkConfiguration)
-
-	sdk.Policies = newPolicies(sdk.sdkConfiguration)
-
-	sdk.AccountProvisionPolicyTest = newAccountProvisionPolicyTest(sdk.sdkConfiguration)
-
-	sdk.PolicyValidate = newPolicyValidate(sdk.sdkConfiguration)
-
-	sdk.AppResourceSearch = newAppResourceSearch(sdk.sdkConfiguration)
-
-	sdk.AppSearch = newAppSearch(sdk.sdkConfiguration)
-
-	sdk.AttributeSearch = newAttributeSearch(sdk.sdkConfiguration)
-
-	sdk.PersonalClientSearch = newPersonalClientSearch(sdk.sdkConfiguration)
-
-	sdk.PolicySearch = newPolicySearch(sdk.sdkConfiguration)
-
-	sdk.RequestCatalogSearch = newRequestCatalogSearch(sdk.sdkConfiguration)
-
-	sdk.StepUpProvider = newStepUpProvider(sdk.sdkConfiguration)
-
-	sdk.StepUpTransaction = newStepUpTransaction(sdk.sdkConfiguration)
-
-	sdk.ExportsSearch = newExportsSearch(sdk.sdkConfiguration)
-
-	sdk.TaskSearch = newTaskSearch(sdk.sdkConfiguration)
-
-	sdk.UserSearch = newUserSearch(sdk.sdkConfiguration)
-
-	sdk.WebhooksSearch = newWebhooksSearch(sdk.sdkConfiguration)
-
-	sdk.AWSExternalIDSettings = newAWSExternalIDSettings(sdk.sdkConfiguration)
-
-	sdk.OrgDomain = newOrgDomain(sdk.sdkConfiguration)
-
-	sdk.SessionSettings = newSessionSettings(sdk.sdkConfiguration)
-
-	sdk.SystemLog = newSystemLog(sdk.sdkConfiguration)
-
-	sdk.Export = newExport(sdk.sdkConfiguration)
-
-	sdk.TaskAudit = newTaskAudit(sdk.sdkConfiguration)
-
-	sdk.Task = newTask(sdk.sdkConfiguration)
-
-	sdk.TaskActions = newTaskActions(sdk.sdkConfiguration)
-
-	sdk.User = newUser(sdk.sdkConfiguration)
-
-	sdk.Webhooks = newWebhooks(sdk.sdkConfiguration)
+	sdk.AccessConflict = newAccessConflict(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Apps = newApps(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppAccessRequestsDefaults = newAppAccessRequestsDefaults(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppUser = newAppUser(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Connector = newConnector(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppEntitlements = newAppEntitlements(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppEntitlementSearch = newAppEntitlementSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppEntitlementUserBinding = newAppEntitlementUserBinding(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppEntitlementOwners = newAppEntitlementOwners(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppOwners = newAppOwners(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppReport = newAppReport(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppReportAction = newAppReportAction(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppResourceType = newAppResourceType(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppResource = newAppResource(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppResourceOwners = newAppResourceOwners(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppUsageControls = newAppUsageControls(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppEntitlementsProxy = newAppEntitlementsProxy(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Attributes = newAttributes(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Auth = newAuth(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AutomationExecution = newAutomationExecution(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AutomationExecutionActions = newAutomationExecutionActions(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AutomationExecutionSearch = newAutomationExecutionSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AutomationSearch = newAutomationSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Automation = newAutomation(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.RequestCatalogManagement = newRequestCatalogManagement(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Directory = newDirectory(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PersonalClient = newPersonalClient(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Roles = newRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Policies = newPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AccountProvisionPolicyTest = newAccountProvisionPolicyTest(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PolicyValidate = newPolicyValidate(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppResourceSearch = newAppResourceSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppSearch = newAppSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AttributeSearch = newAttributeSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PersonalClientSearch = newPersonalClientSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PolicySearch = newPolicySearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.RequestCatalogSearch = newRequestCatalogSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.StepUpProvider = newStepUpProvider(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.StepUpTransaction = newStepUpTransaction(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ExportsSearch = newExportsSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.TaskSearch = newTaskSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.UserSearch = newUserSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.WebhooksSearch = newWebhooksSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AWSExternalIDSettings = newAWSExternalIDSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.OrgDomain = newOrgDomain(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.SessionSettings = newSessionSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.SystemLog = newSystemLog(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Export = newExport(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.TaskAudit = newTaskAudit(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Task = newTask(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.TaskActions = newTaskActions(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.User = newUser(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Webhooks = newWebhooks(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }
