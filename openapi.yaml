@@ -8066,6 +8066,19 @@ components:
             title: Request Catalog Management Service Get Response
             type: object
             x-speakeasy-name-override: RequestCatalogManagementServiceGetResponse
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse:
+            description: The RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse message.
+            properties:
+                refs:
+                    description: The refs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Request Catalog Management Service List All Entitlement Ids Per Catalog Response
+            type: object
+            x-speakeasy-name-override: RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse
         c1.api.requestcatalog.v1.RequestCatalogManagementServiceListEntitlementsForAccessResponse:
             description: The RequestCatalogManagementServiceListEntitlementsForAccessResponse message contains a list of results and a nextPageToken if applicable.
             properties:
@@ -16457,6 +16470,33 @@ paths:
                 terraform-resource: Access_Profile#create
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: Create
+    /api/v1/catalogs/{catalog_id}/requestable_entitlementIDs:
+        get:
+            description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ListAllEntitlementIdsPerApp method.
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.ListAllEntitlementIdsPerApp
+            parameters:
+                - in: path
+                  name: catalog_id
+                  required: true
+                  schema:
+                    description: The catalogId field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse'
+                    description: Successful response
+            summary: List All Entitlement Ids Per App
+            tags:
+                - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: Access_Profile_Requestable_Entries#read
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: ListAllEntitlementIdsPerApp
     /api/v1/catalogs/{catalog_id}/requestable_entitlements:
         get:
             description: List entitlements in a catalog that are requestable.
