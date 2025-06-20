@@ -10,6 +10,8 @@ type CreateRevokeTasks struct {
 	AppEntitlementRefsCel *string `json:"appEntitlementRefsCel,omitempty"`
 	// The revokeAll field.
 	RevokeAll *bool `json:"revokeAll,omitempty"`
+	// If true, the step will use the subject user of the automation as the subject.
+	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 	// The userIdCel field.
 	UserIDCel *string `json:"userIdCel,omitempty"`
 	// A reference to a user.
@@ -35,6 +37,13 @@ func (o *CreateRevokeTasks) GetRevokeAll() *bool {
 		return nil
 	}
 	return o.RevokeAll
+}
+
+func (o *CreateRevokeTasks) GetUseSubjectUser() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseSubjectUser
 }
 
 func (o *CreateRevokeTasks) GetUserIDCel() *string {

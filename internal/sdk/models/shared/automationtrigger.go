@@ -9,6 +9,7 @@ package shared
 //   - userProfileChange
 //   - appUserCreated
 //   - appUserUpdated
+//   - usageBasedRevocation
 type AutomationTrigger struct {
 	// The AppUserCreatedTrigger message.
 	//
@@ -28,6 +29,8 @@ type AutomationTrigger struct {
 	Condition *string `json:"condition,omitempty"`
 	// The ManualAutomationTrigger message.
 	ManualAutomationTrigger *ManualAutomationTrigger `json:"manual,omitempty"`
+	// The UsageBasedRevocationTrigger message.
+	UsageBasedRevocationTrigger *UsageBasedRevocationTrigger `json:"usageBasedRevocation,omitempty"`
 	// The UserProfileChangeTrigger message.
 	UserProfileChangeTrigger *UserProfileChangeTrigger `json:"userProfileChange,omitempty"`
 }
@@ -58,6 +61,13 @@ func (o *AutomationTrigger) GetManualAutomationTrigger() *ManualAutomationTrigge
 		return nil
 	}
 	return o.ManualAutomationTrigger
+}
+
+func (o *AutomationTrigger) GetUsageBasedRevocationTrigger() *UsageBasedRevocationTrigger {
+	if o == nil {
+		return nil
+	}
+	return o.UsageBasedRevocationTrigger
 }
 
 func (o *AutomationTrigger) GetUserProfileChangeTrigger() *UserProfileChangeTrigger {

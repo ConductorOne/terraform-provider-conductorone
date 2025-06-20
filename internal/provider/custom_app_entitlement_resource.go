@@ -180,12 +180,23 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 								},
 								Description: `The DefaultBehavior message.`,
 							},
+							"delete_account": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The connectorId field.`,
+									},
+								},
+								Description: `The DeleteAccount message.`,
+							},
 						},
 						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
 							`` + "\n" +
 							`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
 							`  - defaultBehavior` + "\n" +
-							`  - account`,
+							`  - account` + "\n" +
+							`  - deleteAccount`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("delegated_provision"),
@@ -462,12 +473,25 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 								},
 								Description: `The DefaultBehavior message.`,
 							},
+							"delete_account": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The connectorId field.`,
+									},
+								},
+								Description: `The DeleteAccount message.`,
+							},
 						},
 						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
 							`` + "\n" +
 							`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
 							`  - defaultBehavior` + "\n" +
-							`  - account`,
+							`  - account` + "\n" +
+							`  - deleteAccount`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("delegated_provision"),

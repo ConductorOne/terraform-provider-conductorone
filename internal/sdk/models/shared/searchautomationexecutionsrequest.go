@@ -61,6 +61,8 @@ func (e *ExecutionStepStates) UnmarshalJSON(data []byte) error {
 type SearchAutomationExecutionsRequest struct {
 	// The automationTemplateId field.
 	AutomationTemplateID *string `json:"automationTemplateId,omitempty"`
+	// The executionId field.
+	ExecutionID *string `json:"executionId,omitempty"`
 	// The executionStepStates field.
 	ExecutionStepStates []ExecutionStepStates `json:"executionStepStates,omitempty"`
 	// The AutomationExecutionExpandMask message.
@@ -76,6 +78,13 @@ func (o *SearchAutomationExecutionsRequest) GetAutomationTemplateID() *string {
 		return nil
 	}
 	return o.AutomationTemplateID
+}
+
+func (o *SearchAutomationExecutionsRequest) GetExecutionID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ExecutionID
 }
 
 func (o *SearchAutomationExecutionsRequest) GetExecutionStepStates() []ExecutionStepStates {

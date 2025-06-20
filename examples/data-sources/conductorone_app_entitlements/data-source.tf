@@ -10,6 +10,7 @@ data "conductorone_app_entitlements" "my_app_entitlements" {
   compliance_framework_ids = [
     "..."
   ]
+  display_name = "...my_display_name..."
   exclude_app_ids = [
     "..."
   ]

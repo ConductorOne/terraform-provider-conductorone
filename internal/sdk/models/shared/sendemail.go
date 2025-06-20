@@ -10,6 +10,8 @@ type SendEmail struct {
 	Subject *string `json:"subject,omitempty"`
 	// The title field.
 	Title *string `json:"title,omitempty"`
+	// If true, the step will use the subject user of the automation as the subject.
+	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 	// The userIdsCel field.
 	UserIdsCel *string `json:"userIdsCel,omitempty"`
 	// The userRefs field.
@@ -35,6 +37,13 @@ func (o *SendEmail) GetTitle() *string {
 		return nil
 	}
 	return o.Title
+}
+
+func (o *SendEmail) GetUseSubjectUser() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseSubjectUser
 }
 
 func (o *SendEmail) GetUserIdsCel() *string {

@@ -4,10 +4,19 @@ package shared
 
 // RemoveFromDelegation - RemoveFromDelegation: find all users that have the target user as their delegated user, and clear the delegation.
 type RemoveFromDelegation struct {
+	// If true, the step will use the subject user of the automation as the subject.
+	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 	// The userIdCel field.
 	UserIDCel *string `json:"userIdCel,omitempty"`
 	// A reference to a user.
 	UserRef *UserRef `json:"userRef,omitempty"`
+}
+
+func (o *RemoveFromDelegation) GetUseSubjectUser() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseSubjectUser
 }
 
 func (o *RemoveFromDelegation) GetUserIDCel() *string {

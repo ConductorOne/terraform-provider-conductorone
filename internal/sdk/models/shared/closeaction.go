@@ -8,12 +8,21 @@ package shared
 //   - userIdCel
 //   - userRef
 type CloseAction struct {
+	// If true, the step will use the subject user of the automation as the subject.
+	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 	// The userIdCel field.
 	// This field is part of the `user_identifier` oneof.
 	// See the documentation for `c1.api.automations.v1.CloseAction` for more details.
 	UserIDCel *string `json:"userIdCel,omitempty"`
 	// A reference to a user.
 	UserRef *UserRef `json:"userRef,omitempty"`
+}
+
+func (o *CloseAction) GetUseSubjectUser() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseSubjectUser
 }
 
 func (o *CloseAction) GetUserIDCel() *string {

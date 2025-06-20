@@ -7,6 +7,7 @@ package shared
 // This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
 //   - defaultBehavior
 //   - account
+//   - deleteAccount
 type ConnectorProvision struct {
 	// The AccountProvision message.
 	//
@@ -17,6 +18,8 @@ type ConnectorProvision struct {
 	AccountProvision *AccountProvision `json:"account,omitempty"`
 	// The DefaultBehavior message.
 	DefaultBehavior *DefaultBehavior `json:"defaultBehavior,omitempty"`
+	// The DeleteAccount message.
+	DeleteAccount *DeleteAccount `json:"deleteAccount,omitempty"`
 }
 
 func (o *ConnectorProvision) GetAccountProvision() *AccountProvision {
@@ -31,4 +34,11 @@ func (o *ConnectorProvision) GetDefaultBehavior() *DefaultBehavior {
 		return nil
 	}
 	return o.DefaultBehavior
+}
+
+func (o *ConnectorProvision) GetDeleteAccount() *DeleteAccount {
+	if o == nil {
+		return nil
+	}
+	return o.DeleteAccount
 }

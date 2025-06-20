@@ -4,10 +4,19 @@ package shared
 
 // The SearchAutomationsRequest message.
 type SearchAutomationsRequest struct {
+	// The appId field.
+	AppID *string `json:"appId,omitempty"`
 	// The query field.
 	Query *string `json:"query,omitempty"`
 	// The refs field.
 	Refs []*AutomationTemplateRef `json:"refs,omitempty"`
+}
+
+func (o *SearchAutomationsRequest) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
 }
 
 func (o *SearchAutomationsRequest) GetQuery() *string {
