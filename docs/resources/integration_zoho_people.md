@@ -21,10 +21,10 @@ resource "conductorone_integration_zoho_people" "zoho_people" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  client_id      = "..."
-  client_secret  = "..."
-  refresh_token  = "..."
-  account_domain = "..."
+  zoho_client_id     = "..."
+  zoho_client_secret = "..."
+  zoho_refresh_token = "..."
+  domain_account     = "..."
 }
 ```
 
@@ -37,11 +37,11 @@ resource "conductorone_integration_zoho_people" "zoho_people" {
 
 ### Optional
 
-- `account_domain` (String) Account Domain
-- `client_id` (String) Client ID
-- `client_secret` (String, Sensitive) Client Secret
-- `refresh_token` (String, Sensitive) Refresh Token
+- `domain_account` (String) Account Domain
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
+- `zoho_client_id` (String) Client ID
+- `zoho_client_secret` (String, Sensitive) Client Secret
+- `zoho_refresh_token` (String, Sensitive) Refresh Token
 
 ### Read-Only
 

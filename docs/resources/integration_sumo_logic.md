@@ -1,28 +1,30 @@
 ---
-page_title: "conductorone_integration_hubspot Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_sumo_logic Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Hubspot Integration Resource
+  Sumo_logic Integration Resource
 ---
 
-# conductorone_integration_hubspot (Resource)
+# conductorone_integration_sumo_logic (Resource)
 
-Hubspot Integration Resource
+Sumo_logic Integration Resource
 
-This resource allows you to configure an instance of the hubspot integration in ConductorOne.
+This resource allows you to configure an instance of the sumo_logic integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_integration_hubspot" "hubspot" {
-  app_id = conductorone_app.hubspot.id
+resource "conductorone_integration_sumo_logic" "sumo_logic" {
+  app_id = conductorone_app.sumo_logic.id
   user_ids = [
     conductorone_user.admin.id
   ]
-  hubspot_token       = "..."
-  hubspot_user_status = false
+  api_access_id            = "..."
+  api_access_key           = "..."
+  api_base_url             = "..."
+  include_service_accounts = false
 }
 ```
 
@@ -35,8 +37,10 @@ resource "conductorone_integration_hubspot" "hubspot" {
 
 ### Optional
 
-- `hubspot_token` (String, Sensitive) API client secret
-- `hubspot_user_status` (Boolean) Enable user status (requires additional permissions)
+- `api_access_id` (String) API access ID
+- `api_access_key` (String, Sensitive) API access key
+- `api_base_url` (String) API base URL
+- `include_service_accounts` (Boolean) Include service accounts
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only
