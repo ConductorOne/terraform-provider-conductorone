@@ -48,6 +48,7 @@ type IntegrationMicrosoftEntraResourceModel struct {
 	EntraGraphDomain              types.String   `tfsdk:"entra_graph_domain"`
 	EntraSignInActivity           types.Bool     `tfsdk:"entra_sign_in_activity"`
 	EntraScheduleScimProvisioning types.Bool     `tfsdk:"entra_schedule_scim_provisioning"`
+	EntraDisableAuditLogFeed      types.Bool     `tfsdk:"entra_disable_audit_log_feed"`
 }
 
 func (r *IntegrationMicrosoftEntraResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -125,6 +126,10 @@ func (r *IntegrationMicrosoftEntraResource) Schema(ctx context.Context, req reso
 			"entra_schedule_scim_provisioning": &schema.BoolAttribute{
 				Optional:    true,
 				Description: `Schedule SCIM provisioning`,
+			},
+			"entra_disable_audit_log_feed": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Disable resource changed events feed`,
 			},
 		},
 	}

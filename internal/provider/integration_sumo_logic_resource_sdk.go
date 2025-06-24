@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -12,24 +12,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const teamcityCatalogID = "2xqTzwg6CppaHKSmZVSEHYhx98M"
+const sumoLogicCatalogID = "2y9G9xPUM9K9BMCEhNqbXVKKV03"
 
-func (r *IntegrationTeamcityResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := sdk.String(teamcityCatalogID)
+func (r *IntegrationSumoLogicResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+	catalogID := sdk.String(sumoLogicCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("TeamCity"),
+		DisplayName: sdk.String("Sumo Logic"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationTeamcityResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
-	catalogID := sdk.String(teamcityCatalogID)
+func (r *IntegrationSumoLogicResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
+	catalogID := sdk.String(sumoLogicCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -53,7 +53,7 @@ func (r *IntegrationTeamcityResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	return &out, nil
 }
 
-func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
+func (r *IntegrationSumoLogicResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -75,9 +75,9 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("TeamCity"),
+		DisplayName: sdk.String("Sumo Logic"),
 		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(teamcityCatalogID),
+		CatalogID:   sdk.String(sumoLogicCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
 		UserIds:     userIds,
 		Config:      makeConnectorConfig(configOut),
@@ -86,25 +86,37 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	return &out, configSet
 }
 
-func (r *IntegrationTeamcityResourceModel) populateConfig() map[string]interface{} {
+func (r *IntegrationSumoLogicResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
-	teamcityAccessToken := new(string)
-	if !r.TeamcityAccessToken.IsUnknown() && !r.TeamcityAccessToken.IsNull() {
-		*teamcityAccessToken = r.TeamcityAccessToken.ValueString()
-		configValues["teamcity_access_token"] = teamcityAccessToken
+	apiAccessId := new(string)
+	if !r.ApiAccessId.IsUnknown() && !r.ApiAccessId.IsNull() {
+		*apiAccessId = r.ApiAccessId.ValueString()
+		configValues["api-access-id"] = apiAccessId
 	}
 
-	teamcityInstanceUrl := new(string)
-	if !r.TeamcityInstanceUrl.IsUnknown() && !r.TeamcityInstanceUrl.IsNull() {
-		*teamcityInstanceUrl = r.TeamcityInstanceUrl.ValueString()
-		configValues["teamcity_instance_url"] = teamcityInstanceUrl
+	apiAccessKey := new(string)
+	if !r.ApiAccessKey.IsUnknown() && !r.ApiAccessKey.IsNull() {
+		*apiAccessKey = r.ApiAccessKey.ValueString()
+		configValues["api-access-key"] = apiAccessKey
+	}
+
+	apiBaseUrl := new(string)
+	if !r.ApiBaseUrl.IsUnknown() && !r.ApiBaseUrl.IsNull() {
+		*apiBaseUrl = r.ApiBaseUrl.ValueString()
+		configValues["api-base-url"] = apiBaseUrl
+	}
+
+	includeServiceAccounts := new(string)
+	if !r.IncludeServiceAccounts.IsUnknown() && !r.IncludeServiceAccounts.IsNull() {
+		*includeServiceAccounts = strconv.FormatBool(r.IncludeServiceAccounts.ValueBool())
+		configValues["include-service-accounts"] = includeServiceAccounts
 	}
 
 	return configValues
 }
 
-func (r *IntegrationTeamcityResourceModel) getConfig() (map[string]interface{}, bool) {
+func (r *IntegrationSumoLogicResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
@@ -121,17 +133,17 @@ func (r *IntegrationTeamcityResourceModel) getConfig() (map[string]interface{}, 
 	return configOut, configSet
 }
 
-func (r *IntegrationTeamcityResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationSumoLogicResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationTeamcityResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationSumoLogicResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
+func (r *IntegrationSumoLogicResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
 	if resp == nil {
 		return
 	}
@@ -166,13 +178,32 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if v, ok := values["teamcity_instance_url"]; ok {
+				if v, ok := values["api-access-id"]; ok {
 					if val, ok := v.(string); ok {
-						r.TeamcityInstanceUrl = types.StringValue(val)
+						r.ApiAccessId = types.StringValue(val)
+					}
+				}
+
+				if v, ok := values["api-base-url"]; ok {
+					if val, ok := v.(string); ok {
+						r.ApiBaseUrl = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["include-service-accounts"]; ok {
+					if v, ok := values["include-service-accounts"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.IncludeServiceAccounts = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 
@@ -181,11 +212,11 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.C
 	}
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
+func (r *IntegrationSumoLogicResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
 	r.RefreshFromGetResponse(resp)
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
+func (r *IntegrationSumoLogicResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
 	if resp.AppID != nil {
 		r.AppID = types.StringValue(*resp.AppID)
 	} else {
@@ -216,13 +247,32 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if v, ok := values["teamcity_instance_url"]; ok {
+				if v, ok := values["api-access-id"]; ok {
 					if val, ok := v.(string); ok {
-						r.TeamcityInstanceUrl = types.StringValue(val)
+						r.ApiAccessId = types.StringValue(val)
+					}
+				}
+
+				if v, ok := values["api-base-url"]; ok {
+					if val, ok := v.(string); ok {
+						r.ApiBaseUrl = types.StringValue(val)
+					}
+				}
+
+				if localV, ok := configValues["include-service-accounts"]; ok {
+					if v, ok := values["include-service-accounts"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.IncludeServiceAccounts = types.BoolValue(bv)
+								}
+							}
+						}
 					}
 				}
 

@@ -12,24 +12,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const teamcityCatalogID = "2xqTzwg6CppaHKSmZVSEHYhx98M"
+const dropboxCatalogID = "2qSjF4FdvjqOu91RW7fVWiq6T33"
 
-func (r *IntegrationTeamcityResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := sdk.String(teamcityCatalogID)
+func (r *IntegrationDropboxResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+	catalogID := sdk.String(dropboxCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("TeamCity"),
+		DisplayName: sdk.String("Dropbox"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationTeamcityResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
-	catalogID := sdk.String(teamcityCatalogID)
+func (r *IntegrationDropboxResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
+	catalogID := sdk.String(dropboxCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -53,7 +53,7 @@ func (r *IntegrationTeamcityResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	return &out, nil
 }
 
-func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
+func (r *IntegrationDropboxResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -75,9 +75,9 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("TeamCity"),
+		DisplayName: sdk.String("Dropbox"),
 		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(teamcityCatalogID),
+		CatalogID:   sdk.String(dropboxCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
 		UserIds:     userIds,
 		Config:      makeConnectorConfig(configOut),
@@ -86,25 +86,13 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	return &out, configSet
 }
 
-func (r *IntegrationTeamcityResourceModel) populateConfig() map[string]interface{} {
+func (r *IntegrationDropboxResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-
-	teamcityAccessToken := new(string)
-	if !r.TeamcityAccessToken.IsUnknown() && !r.TeamcityAccessToken.IsNull() {
-		*teamcityAccessToken = r.TeamcityAccessToken.ValueString()
-		configValues["teamcity_access_token"] = teamcityAccessToken
-	}
-
-	teamcityInstanceUrl := new(string)
-	if !r.TeamcityInstanceUrl.IsUnknown() && !r.TeamcityInstanceUrl.IsNull() {
-		*teamcityInstanceUrl = r.TeamcityInstanceUrl.ValueString()
-		configValues["teamcity_instance_url"] = teamcityInstanceUrl
-	}
 
 	return configValues
 }
 
-func (r *IntegrationTeamcityResourceModel) getConfig() (map[string]interface{}, bool) {
+func (r *IntegrationDropboxResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
@@ -121,17 +109,17 @@ func (r *IntegrationTeamcityResourceModel) getConfig() (map[string]interface{}, 
 	return configOut, configSet
 }
 
-func (r *IntegrationTeamcityResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationDropboxResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationTeamcityResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationDropboxResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
+func (r *IntegrationDropboxResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
 	if resp == nil {
 		return
 	}
@@ -166,26 +154,13 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if v, ok := values["teamcity_instance_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.TeamcityInstanceUrl = types.StringValue(val)
-					}
-				}
-
-			}
-		}
-	}
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
+func (r *IntegrationDropboxResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
 	r.RefreshFromGetResponse(resp)
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
+func (r *IntegrationDropboxResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
 	if resp.AppID != nil {
 		r.AppID = types.StringValue(*resp.AppID)
 	} else {
@@ -216,17 +191,4 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if v, ok := values["teamcity_instance_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.TeamcityInstanceUrl = types.StringValue(val)
-					}
-				}
-
-			}
-		}
-	}
 }

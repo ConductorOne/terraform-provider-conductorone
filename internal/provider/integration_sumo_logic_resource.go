@@ -21,39 +21,39 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &IntegrationZohoPeopleResource{}
-var _ resource.ResourceWithImportState = &IntegrationZohoPeopleResource{}
+var _ resource.Resource = &IntegrationSumoLogicResource{}
+var _ resource.ResourceWithImportState = &IntegrationSumoLogicResource{}
 
-func NewIntegrationZohoPeopleResource() resource.Resource {
-	return &IntegrationZohoPeopleResource{}
+func NewIntegrationSumoLogicResource() resource.Resource {
+	return &IntegrationSumoLogicResource{}
 }
 
-// IntegrationZohoPeopleResource defines the resource implementation.
-type IntegrationZohoPeopleResource struct {
+// IntegrationSumoLogicResource defines the resource implementation.
+type IntegrationSumoLogicResource struct {
 	client *sdk.ConductoroneAPI
 }
 
-// IntegrationZohoPeopleResourceModel describes the resource data model.
-type IntegrationZohoPeopleResourceModel struct {
-	AppID            types.String   `tfsdk:"app_id"`
-	CreatedAt        types.String   `tfsdk:"created_at"`
-	DeletedAt        types.String   `tfsdk:"deleted_at"`
-	ID               types.String   `tfsdk:"id"`
-	UpdatedAt        types.String   `tfsdk:"updated_at"`
-	UserIds          []types.String `tfsdk:"user_ids"`
-	ZohoClientId     types.String   `tfsdk:"zoho_client_id"`
-	ZohoClientSecret types.String   `tfsdk:"zoho_client_secret"`
-	ZohoRefreshToken types.String   `tfsdk:"zoho_refresh_token"`
-	DomainAccount    types.String   `tfsdk:"domain_account"`
+// IntegrationSumoLogicResourceModel describes the resource data model.
+type IntegrationSumoLogicResourceModel struct {
+	AppID                  types.String   `tfsdk:"app_id"`
+	CreatedAt              types.String   `tfsdk:"created_at"`
+	DeletedAt              types.String   `tfsdk:"deleted_at"`
+	ID                     types.String   `tfsdk:"id"`
+	UpdatedAt              types.String   `tfsdk:"updated_at"`
+	UserIds                []types.String `tfsdk:"user_ids"`
+	ApiAccessId            types.String   `tfsdk:"api_access_id"`
+	ApiAccessKey           types.String   `tfsdk:"api_access_key"`
+	ApiBaseUrl             types.String   `tfsdk:"api_base_url"`
+	IncludeServiceAccounts types.Bool     `tfsdk:"include_service_accounts"`
 }
 
-func (r *IntegrationZohoPeopleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_integration_zoho_people"
+func (r *IntegrationSumoLogicResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_integration_sumo_logic"
 }
 
-func (r *IntegrationZohoPeopleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *IntegrationSumoLogicResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Zoho_people Integration Resource",
+		MarkdownDescription: "Sumo_logic Integration Resource",
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
@@ -94,29 +94,28 @@ func (r *IntegrationZohoPeopleResource) Schema(ctx context.Context, req resource
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"zoho_client_id": &schema.StringAttribute{
+			"api_access_id": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Client ID`,
+				Description: `API access ID`,
 			},
-			"zoho_client_secret": &schema.StringAttribute{
+			"api_access_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Client Secret`,
+				Description: `API access key`,
 			},
-			"zoho_refresh_token": &schema.StringAttribute{
+			"api_base_url": &schema.StringAttribute{
 				Optional:    true,
-				Sensitive:   true,
-				Description: `Refresh Token`,
+				Description: `API base URL`,
 			},
-			"domain_account": &schema.StringAttribute{
+			"include_service_accounts": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Account Domain`,
+				Description: `Include service accounts`,
 			},
 		},
 	}
 }
 
-func (r *IntegrationZohoPeopleResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *IntegrationSumoLogicResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -136,8 +135,8 @@ func (r *IntegrationZohoPeopleResource) Configure(ctx context.Context, req resou
 	r.client = client
 }
 
-func (r *IntegrationZohoPeopleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationZohoPeopleResourceModel
+func (r *IntegrationSumoLogicResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *IntegrationSumoLogicResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -219,8 +218,8 @@ func (r *IntegrationZohoPeopleResource) Create(ctx context.Context, req resource
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationZohoPeopleResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationZohoPeopleResourceModel
+func (r *IntegrationSumoLogicResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *IntegrationSumoLogicResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -254,7 +253,7 @@ func (r *IntegrationZohoPeopleResource) Read(ctx context.Context, req resource.R
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationZohoPeopleResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
+func (r *IntegrationSumoLogicResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
 	request := operations.C1APIAppV1ConnectorServiceGetRequest{
 		AppID: appID,
 		ID:    id,
@@ -275,8 +274,8 @@ func (r *IntegrationZohoPeopleResource) get(ctx context.Context, appID string, i
 	return res.ConnectorServiceGetResponse, nil
 }
 
-func (r *IntegrationZohoPeopleResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationZohoPeopleResourceModel
+func (r *IntegrationSumoLogicResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *IntegrationSumoLogicResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
@@ -336,8 +335,8 @@ func (r *IntegrationZohoPeopleResource) Update(ctx context.Context, req resource
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationZohoPeopleResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *IntegrationZohoPeopleResourceModel
+func (r *IntegrationSumoLogicResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *IntegrationSumoLogicResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -377,6 +376,6 @@ func (r *IntegrationZohoPeopleResource) Delete(ctx context.Context, req resource
 	}
 }
 
-func (r *IntegrationZohoPeopleResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *IntegrationSumoLogicResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource connector.")
 }

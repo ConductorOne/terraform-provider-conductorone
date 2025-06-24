@@ -12,24 +12,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const teamcityCatalogID = "2xqTzwg6CppaHKSmZVSEHYhx98M"
+const fluidTopicsCatalogID = "2xxtKLlyQ71Fy0TpKKSWwxdmbqU"
 
-func (r *IntegrationTeamcityResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := sdk.String(teamcityCatalogID)
+func (r *IntegrationFluidTopicsResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+	catalogID := sdk.String(fluidTopicsCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("TeamCity"),
+		DisplayName: sdk.String("Fluid Topics"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationTeamcityResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
-	catalogID := sdk.String(teamcityCatalogID)
+func (r *IntegrationFluidTopicsResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
+	catalogID := sdk.String(fluidTopicsCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -53,7 +53,7 @@ func (r *IntegrationTeamcityResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	return &out, nil
 }
 
-func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
+func (r *IntegrationFluidTopicsResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -75,9 +75,9 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("TeamCity"),
+		DisplayName: sdk.String("Fluid Topics"),
 		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(teamcityCatalogID),
+		CatalogID:   sdk.String(fluidTopicsCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
 		UserIds:     userIds,
 		Config:      makeConnectorConfig(configOut),
@@ -86,25 +86,25 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	return &out, configSet
 }
 
-func (r *IntegrationTeamcityResourceModel) populateConfig() map[string]interface{} {
+func (r *IntegrationFluidTopicsResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
-	teamcityAccessToken := new(string)
-	if !r.TeamcityAccessToken.IsUnknown() && !r.TeamcityAccessToken.IsNull() {
-		*teamcityAccessToken = r.TeamcityAccessToken.ValueString()
-		configValues["teamcity_access_token"] = teamcityAccessToken
+	fluidTopicsDomain := new(string)
+	if !r.FluidTopicsDomain.IsUnknown() && !r.FluidTopicsDomain.IsNull() {
+		*fluidTopicsDomain = r.FluidTopicsDomain.ValueString()
+		configValues["fluid-topics-domain"] = fluidTopicsDomain
 	}
 
-	teamcityInstanceUrl := new(string)
-	if !r.TeamcityInstanceUrl.IsUnknown() && !r.TeamcityInstanceUrl.IsNull() {
-		*teamcityInstanceUrl = r.TeamcityInstanceUrl.ValueString()
-		configValues["teamcity_instance_url"] = teamcityInstanceUrl
+	fluidTopicsApiToken := new(string)
+	if !r.FluidTopicsApiToken.IsUnknown() && !r.FluidTopicsApiToken.IsNull() {
+		*fluidTopicsApiToken = r.FluidTopicsApiToken.ValueString()
+		configValues["fluid-topics-api-token"] = fluidTopicsApiToken
 	}
 
 	return configValues
 }
 
-func (r *IntegrationTeamcityResourceModel) getConfig() (map[string]interface{}, bool) {
+func (r *IntegrationFluidTopicsResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
@@ -121,17 +121,17 @@ func (r *IntegrationTeamcityResourceModel) getConfig() (map[string]interface{}, 
 	return configOut, configSet
 }
 
-func (r *IntegrationTeamcityResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationFluidTopicsResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationTeamcityResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationFluidTopicsResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
+func (r *IntegrationFluidTopicsResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
 	if resp == nil {
 		return
 	}
@@ -169,10 +169,9 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if v, ok := values["teamcity_instance_url"]; ok {
+				if v, ok := values["fluid-topics-domain"]; ok {
 					if val, ok := v.(string); ok {
-						r.TeamcityInstanceUrl = types.StringValue(val)
+						r.FluidTopicsDomain = types.StringValue(val)
 					}
 				}
 
@@ -181,11 +180,11 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.C
 	}
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
+func (r *IntegrationFluidTopicsResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
 	r.RefreshFromGetResponse(resp)
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
+func (r *IntegrationFluidTopicsResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
 	if resp.AppID != nil {
 		r.AppID = types.StringValue(*resp.AppID)
 	} else {
@@ -219,10 +218,9 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if v, ok := values["teamcity_instance_url"]; ok {
+				if v, ok := values["fluid-topics-domain"]; ok {
 					if val, ok := v.(string); ok {
-						r.TeamcityInstanceUrl = types.StringValue(val)
+						r.FluidTopicsDomain = types.StringValue(val)
 					}
 				}
 

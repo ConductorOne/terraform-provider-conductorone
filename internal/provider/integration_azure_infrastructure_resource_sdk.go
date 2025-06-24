@@ -131,6 +131,12 @@ func (r *IntegrationAzureInfrastructureResourceModel) populateConfig() map[strin
 		configValues["skip-unused-roles"] = skipUnusedRoles
 	}
 
+	skipSyncStorageContainers := new(string)
+	if !r.SkipSyncStorageContainers.IsUnknown() && !r.SkipSyncStorageContainers.IsNull() {
+		*skipSyncStorageContainers = strconv.FormatBool(r.SkipSyncStorageContainers.ValueBool())
+		configValues["skip-sync-storage-containers"] = skipSyncStorageContainers
+	}
+
 	return configValues
 }
 
@@ -257,6 +263,19 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromGetResponse(res
 					}
 				}
 
+				if localV, ok := configValues["skip-sync-storage-containers"]; ok {
+					if v, ok := values["skip-sync-storage-containers"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SkipSyncStorageContainers = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -352,6 +371,19 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromCreateResponse(
 							if err == nil {
 								if localV != nil || (localV == nil && !bv) {
 									r.SkipUnusedRoles = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+				if localV, ok := configValues["skip-sync-storage-containers"]; ok {
+					if v, ok := values["skip-sync-storage-containers"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.SkipSyncStorageContainers = types.BoolValue(bv)
 								}
 							}
 						}

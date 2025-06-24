@@ -21,39 +21,37 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &IntegrationZohoPeopleResource{}
-var _ resource.ResourceWithImportState = &IntegrationZohoPeopleResource{}
+var _ resource.Resource = &IntegrationHttpResource{}
+var _ resource.ResourceWithImportState = &IntegrationHttpResource{}
 
-func NewIntegrationZohoPeopleResource() resource.Resource {
-	return &IntegrationZohoPeopleResource{}
+func NewIntegrationHttpResource() resource.Resource {
+	return &IntegrationHttpResource{}
 }
 
-// IntegrationZohoPeopleResource defines the resource implementation.
-type IntegrationZohoPeopleResource struct {
+// IntegrationHttpResource defines the resource implementation.
+type IntegrationHttpResource struct {
 	client *sdk.ConductoroneAPI
 }
 
-// IntegrationZohoPeopleResourceModel describes the resource data model.
-type IntegrationZohoPeopleResourceModel struct {
-	AppID            types.String   `tfsdk:"app_id"`
-	CreatedAt        types.String   `tfsdk:"created_at"`
-	DeletedAt        types.String   `tfsdk:"deleted_at"`
-	ID               types.String   `tfsdk:"id"`
-	UpdatedAt        types.String   `tfsdk:"updated_at"`
-	UserIds          []types.String `tfsdk:"user_ids"`
-	ZohoClientId     types.String   `tfsdk:"zoho_client_id"`
-	ZohoClientSecret types.String   `tfsdk:"zoho_client_secret"`
-	ZohoRefreshToken types.String   `tfsdk:"zoho_refresh_token"`
-	DomainAccount    types.String   `tfsdk:"domain_account"`
+// IntegrationHttpResourceModel describes the resource data model.
+type IntegrationHttpResourceModel struct {
+	AppID                   types.String   `tfsdk:"app_id"`
+	CreatedAt               types.String   `tfsdk:"created_at"`
+	DeletedAt               types.String   `tfsdk:"deleted_at"`
+	ID                      types.String   `tfsdk:"id"`
+	UpdatedAt               types.String   `tfsdk:"updated_at"`
+	UserIds                 []types.String `tfsdk:"user_ids"`
+	HttpConnectorMapValues  types.String   `tfsdk:"http_connector_map_values"`
+	HttpConnectorConfigFile types.String   `tfsdk:"http_connector_config_file"`
 }
 
-func (r *IntegrationZohoPeopleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_integration_zoho_people"
+func (r *IntegrationHttpResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_integration_http"
 }
 
-func (r *IntegrationZohoPeopleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *IntegrationHttpResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Zoho_people Integration Resource",
+		MarkdownDescription: "Http Integration Resource",
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
@@ -94,29 +92,20 @@ func (r *IntegrationZohoPeopleResource) Schema(ctx context.Context, req resource
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"zoho_client_id": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Client ID`,
-			},
-			"zoho_client_secret": &schema.StringAttribute{
+			"http_connector_map_values": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Client Secret`,
+				Description: `Map values`,
 			},
-			"zoho_refresh_token": &schema.StringAttribute{
+			"http_connector_config_file": &schema.StringAttribute{
 				Optional:    true,
-				Sensitive:   true,
-				Description: `Refresh Token`,
-			},
-			"domain_account": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Account Domain`,
+				Description: `HTTP config file`,
 			},
 		},
 	}
 }
 
-func (r *IntegrationZohoPeopleResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *IntegrationHttpResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -136,8 +125,8 @@ func (r *IntegrationZohoPeopleResource) Configure(ctx context.Context, req resou
 	r.client = client
 }
 
-func (r *IntegrationZohoPeopleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IntegrationZohoPeopleResourceModel
+func (r *IntegrationHttpResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *IntegrationHttpResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &item)...)
@@ -219,8 +208,8 @@ func (r *IntegrationZohoPeopleResource) Create(ctx context.Context, req resource
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationZohoPeopleResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IntegrationZohoPeopleResourceModel
+func (r *IntegrationHttpResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *IntegrationHttpResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -254,7 +243,7 @@ func (r *IntegrationZohoPeopleResource) Read(ctx context.Context, req resource.R
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationZohoPeopleResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
+func (r *IntegrationHttpResource) get(ctx context.Context, appID string, id string) (*shared.ConnectorServiceGetResponse, error) {
 	request := operations.C1APIAppV1ConnectorServiceGetRequest{
 		AppID: appID,
 		ID:    id,
@@ -275,8 +264,8 @@ func (r *IntegrationZohoPeopleResource) get(ctx context.Context, appID string, i
 	return res.ConnectorServiceGetResponse, nil
 }
 
-func (r *IntegrationZohoPeopleResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IntegrationZohoPeopleResourceModel
+func (r *IntegrationHttpResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *IntegrationHttpResourceModel
 	merge(ctx, req, resp, &data)
 	if resp.Diagnostics.HasError() {
 		return
@@ -336,8 +325,8 @@ func (r *IntegrationZohoPeopleResource) Update(ctx context.Context, req resource
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IntegrationZohoPeopleResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *IntegrationZohoPeopleResourceModel
+func (r *IntegrationHttpResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *IntegrationHttpResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -377,6 +366,6 @@ func (r *IntegrationZohoPeopleResource) Delete(ctx context.Context, req resource
 	}
 }
 
-func (r *IntegrationZohoPeopleResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *IntegrationHttpResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource connector.")
 }

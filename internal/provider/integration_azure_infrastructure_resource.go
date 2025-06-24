@@ -35,19 +35,20 @@ type IntegrationAzureInfrastructureResource struct {
 
 // IntegrationAzureInfrastructureResourceModel describes the resource data model.
 type IntegrationAzureInfrastructureResourceModel struct {
-	AppID             types.String   `tfsdk:"app_id"`
-	CreatedAt         types.String   `tfsdk:"created_at"`
-	DeletedAt         types.String   `tfsdk:"deleted_at"`
-	ID                types.String   `tfsdk:"id"`
-	UpdatedAt         types.String   `tfsdk:"updated_at"`
-	UserIds           []types.String `tfsdk:"user_ids"`
-	AzureClientId     types.String   `tfsdk:"azure_client_id"`
-	AzureClientSecret types.String   `tfsdk:"azure_client_secret"`
-	AzureTenantId     types.String   `tfsdk:"azure_tenant_id"`
-	MailboxSettings   types.Bool     `tfsdk:"mailbox_settings"`
-	SkipAdGroups      types.Bool     `tfsdk:"skip_ad_groups"`
-	GraphDomain       types.String   `tfsdk:"graph_domain"`
-	SkipUnusedRoles   types.Bool     `tfsdk:"skip_unused_roles"`
+	AppID                     types.String   `tfsdk:"app_id"`
+	CreatedAt                 types.String   `tfsdk:"created_at"`
+	DeletedAt                 types.String   `tfsdk:"deleted_at"`
+	ID                        types.String   `tfsdk:"id"`
+	UpdatedAt                 types.String   `tfsdk:"updated_at"`
+	UserIds                   []types.String `tfsdk:"user_ids"`
+	AzureClientId             types.String   `tfsdk:"azure_client_id"`
+	AzureClientSecret         types.String   `tfsdk:"azure_client_secret"`
+	AzureTenantId             types.String   `tfsdk:"azure_tenant_id"`
+	MailboxSettings           types.Bool     `tfsdk:"mailbox_settings"`
+	SkipAdGroups              types.Bool     `tfsdk:"skip_ad_groups"`
+	GraphDomain               types.String   `tfsdk:"graph_domain"`
+	SkipUnusedRoles           types.Bool     `tfsdk:"skip_unused_roles"`
+	SkipSyncStorageContainers types.Bool     `tfsdk:"skip_sync_storage_containers"`
 }
 
 func (r *IntegrationAzureInfrastructureResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -125,6 +126,10 @@ func (r *IntegrationAzureInfrastructureResource) Schema(ctx context.Context, req
 			"skip_unused_roles": &schema.BoolAttribute{
 				Optional:    true,
 				Description: `Skip unused roles`,
+			},
+			"skip_sync_storage_containers": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Skip sync storage containers`,
 			},
 		},
 	}

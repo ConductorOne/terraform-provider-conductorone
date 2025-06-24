@@ -12,24 +12,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const teamcityCatalogID = "2xqTzwg6CppaHKSmZVSEHYhx98M"
+const httpCatalogID = "2xxnvEBt2eOHCHhCS4muTieQcJe"
 
-func (r *IntegrationTeamcityResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
-	catalogID := sdk.String(teamcityCatalogID)
+func (r *IntegrationHttpResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+	catalogID := sdk.String(httpCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("TeamCity"),
+		DisplayName: sdk.String("HTTP"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
 	return &out
 }
 
-func (r *IntegrationTeamcityResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
-	catalogID := sdk.String(teamcityCatalogID)
+func (r *IntegrationHttpResourceModel) ToCreateSDKType() (*shared.ConnectorServiceCreateRequest, error) {
+	catalogID := sdk.String(httpCatalogID)
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -53,7 +53,7 @@ func (r *IntegrationTeamcityResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	return &out, nil
 }
 
-func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
+func (r *IntegrationHttpResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -75,9 +75,9 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("TeamCity"),
+		DisplayName: sdk.String("HTTP"),
 		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(teamcityCatalogID),
+		CatalogID:   sdk.String(httpCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
 		UserIds:     userIds,
 		Config:      makeConnectorConfig(configOut),
@@ -86,25 +86,25 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	return &out, configSet
 }
 
-func (r *IntegrationTeamcityResourceModel) populateConfig() map[string]interface{} {
+func (r *IntegrationHttpResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
-	teamcityAccessToken := new(string)
-	if !r.TeamcityAccessToken.IsUnknown() && !r.TeamcityAccessToken.IsNull() {
-		*teamcityAccessToken = r.TeamcityAccessToken.ValueString()
-		configValues["teamcity_access_token"] = teamcityAccessToken
+	httpConnectorMapValues := new(string)
+	if !r.HttpConnectorMapValues.IsUnknown() && !r.HttpConnectorMapValues.IsNull() {
+		*httpConnectorMapValues = r.HttpConnectorMapValues.ValueString()
+		configValues["http_connector_map_values"] = httpConnectorMapValues
 	}
 
-	teamcityInstanceUrl := new(string)
-	if !r.TeamcityInstanceUrl.IsUnknown() && !r.TeamcityInstanceUrl.IsNull() {
-		*teamcityInstanceUrl = r.TeamcityInstanceUrl.ValueString()
-		configValues["teamcity_instance_url"] = teamcityInstanceUrl
+	httpConnectorConfigFile := new(string)
+	if !r.HttpConnectorConfigFile.IsUnknown() && !r.HttpConnectorConfigFile.IsNull() {
+		*httpConnectorConfigFile = r.HttpConnectorConfigFile.ValueString()
+		configValues["http_connector_config_file"] = httpConnectorConfigFile
 	}
 
 	return configValues
 }
 
-func (r *IntegrationTeamcityResourceModel) getConfig() (map[string]interface{}, bool) {
+func (r *IntegrationHttpResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
@@ -121,17 +121,17 @@ func (r *IntegrationTeamcityResourceModel) getConfig() (map[string]interface{}, 
 	return configOut, configSet
 }
 
-func (r *IntegrationTeamcityResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationHttpResourceModel) ToGetSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationTeamcityResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
+func (r *IntegrationHttpResourceModel) ToDeleteSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	out := r.ToCreateDelegatedSDKType()
 	return out
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
+func (r *IntegrationHttpResourceModel) RefreshFromGetResponse(resp *shared.Connector) {
 	if resp == nil {
 		return
 	}
@@ -170,9 +170,9 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["teamcity_instance_url"]; ok {
+				if v, ok := values["http_connector_config_file"]; ok {
 					if val, ok := v.(string); ok {
-						r.TeamcityInstanceUrl = types.StringValue(val)
+						r.HttpConnectorConfigFile = types.StringValue(val)
 					}
 				}
 
@@ -181,11 +181,11 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.C
 	}
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
+func (r *IntegrationHttpResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
 	r.RefreshFromGetResponse(resp)
 }
 
-func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
+func (r *IntegrationHttpResourceModel) RefreshFromCreateResponse(resp *shared.Connector) {
 	if resp.AppID != nil {
 		r.AppID = types.StringValue(*resp.AppID)
 	} else {
@@ -220,9 +220,9 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["teamcity_instance_url"]; ok {
+				if v, ok := values["http_connector_config_file"]; ok {
 					if val, ok := v.(string); ok {
-						r.TeamcityInstanceUrl = types.StringValue(val)
+						r.HttpConnectorConfigFile = types.StringValue(val)
 					}
 				}
 

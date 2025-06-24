@@ -35,13 +35,14 @@ type IntegrationHubspotResource struct {
 
 // IntegrationHubspotResourceModel describes the resource data model.
 type IntegrationHubspotResourceModel struct {
-	AppID        types.String   `tfsdk:"app_id"`
-	CreatedAt    types.String   `tfsdk:"created_at"`
-	DeletedAt    types.String   `tfsdk:"deleted_at"`
-	ID           types.String   `tfsdk:"id"`
-	UpdatedAt    types.String   `tfsdk:"updated_at"`
-	UserIds      []types.String `tfsdk:"user_ids"`
-	HubspotToken types.String   `tfsdk:"hubspot_token"`
+	AppID             types.String   `tfsdk:"app_id"`
+	CreatedAt         types.String   `tfsdk:"created_at"`
+	DeletedAt         types.String   `tfsdk:"deleted_at"`
+	ID                types.String   `tfsdk:"id"`
+	UpdatedAt         types.String   `tfsdk:"updated_at"`
+	UserIds           []types.String `tfsdk:"user_ids"`
+	HubspotToken      types.String   `tfsdk:"hubspot_token"`
+	HubspotUserStatus types.Bool     `tfsdk:"hubspot_user_status"`
 }
 
 func (r *IntegrationHubspotResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -95,6 +96,10 @@ func (r *IntegrationHubspotResource) Schema(ctx context.Context, req resource.Sc
 				Optional:    true,
 				Sensitive:   true,
 				Description: `API client secret`,
+			},
+			"hubspot_user_status": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Enable user status (requires additional permissions)`,
 			},
 		},
 	}
