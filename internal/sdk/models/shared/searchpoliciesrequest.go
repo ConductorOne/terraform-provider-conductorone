@@ -53,6 +53,10 @@ type SearchPoliciesRequest struct {
 	ExcludePolicyIds []string `json:"excludePolicyIds,omitempty"`
 	// The includeDeleted field.
 	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 	// The policy type to search on. This can be POLICY_TYPE_GRANT, POLICY_TYPE_REVOKE, POLICY_TYPE_CERTIFY, POLICY_TYPE_ACCESS_REQUEST, or POLICY_TYPE_PROVISION.
 	PolicyTypes []PolicyTypes `json:"policyTypes,omitempty"`
 	// Query the policies with a fuzzy search on display name and description.
@@ -80,6 +84,20 @@ func (o *SearchPoliciesRequest) GetIncludeDeleted() *bool {
 		return nil
 	}
 	return o.IncludeDeleted
+}
+
+func (o *SearchPoliciesRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchPoliciesRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *SearchPoliciesRequest) GetPolicyTypes() []PolicyTypes {

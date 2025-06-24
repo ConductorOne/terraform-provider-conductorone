@@ -36,6 +36,8 @@ type AppResourcesDataSourceModel struct {
 	Expanded                       []tfTypes.SearchAppResourcesResponseExpanded `tfsdk:"expanded"`
 	List                           []tfTypes.AppResourceView                    `tfsdk:"list"`
 	NextPageToken                  types.String                                 `tfsdk:"next_page_token"`
+	PageSize                       types.Int32                                  `tfsdk:"page_size"`
+	PageToken                      types.String                                 `tfsdk:"page_token"`
 	Query                          types.String                                 `tfsdk:"query"`
 	Refs                           []tfTypes.AppResourceRef                     `tfsdk:"refs"`
 	ResourceIds                    []types.String                               `tfsdk:"resource_ids"`
@@ -168,6 +170,14 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
 				Description: `The nextPageToken field.`,
+			},
+			"page_size": schema.Int32Attribute{
+				Optional:    true,
+				Description: `The pageSize field.`,
+			},
+			"page_token": schema.StringAttribute{
+				Optional:    true,
+				Description: `The pageToken field.`,
 			},
 			"query": schema.StringAttribute{
 				Optional:    true,

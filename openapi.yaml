@@ -17749,6 +17749,14 @@ paths:
                     - App Entitlement#read
                     - App Entitlements#read
                 terraform-resource: null
+            x-speakeasy-pagination:
+                type: cursor
+                inputs:
+                    - name: pageToken
+                      in: requestBody
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
             x-speakeasy-group: AppEntitlementSearch
             x-speakeasy-name-override: Search
     /api/v1/search/grants:

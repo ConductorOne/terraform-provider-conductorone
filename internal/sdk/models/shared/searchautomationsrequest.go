@@ -4,19 +4,28 @@ package shared
 
 // The SearchAutomationsRequest message.
 type SearchAutomationsRequest struct {
-	// The appId field.
-	AppID *string `json:"appId,omitempty"`
+	// The pageSize field.
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 	// The query field.
 	Query *string `json:"query,omitempty"`
 	// The refs field.
 	Refs []*AutomationTemplateRef `json:"refs,omitempty"`
 }
 
-func (o *SearchAutomationsRequest) GetAppID() *string {
+func (o *SearchAutomationsRequest) GetPageSize() *int {
 	if o == nil {
 		return nil
 	}
-	return o.AppID
+	return o.PageSize
+}
+
+func (o *SearchAutomationsRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *SearchAutomationsRequest) GetQuery() *string {

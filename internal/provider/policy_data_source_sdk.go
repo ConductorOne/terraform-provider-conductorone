@@ -34,6 +34,18 @@ func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Contex
 	} else {
 		includeDeleted = nil
 	}
+	pageSize := new(int)
+	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
+		*pageSize = int(r.PageSize.ValueInt32())
+	} else {
+		pageSize = nil
+	}
+	pageToken := new(string)
+	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
+		*pageToken = r.PageToken.ValueString()
+	} else {
+		pageToken = nil
+	}
 	var policyTypes []shared.PolicyTypes
 	if r.PolicyTypes != nil {
 		policyTypes = make([]shared.PolicyTypes, 0, len(r.PolicyTypes))
@@ -66,6 +78,8 @@ func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Contex
 		DisplayName:      displayName,
 		ExcludePolicyIds: excludePolicyIds,
 		IncludeDeleted:   includeDeleted,
+		PageSize:         pageSize,
+		PageToken:        pageToken,
 		PolicyTypes:      policyTypes,
 		Query:            query,
 		Refs:             refs,

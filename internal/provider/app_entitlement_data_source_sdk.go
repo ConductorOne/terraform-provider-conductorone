@@ -100,6 +100,18 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 	} else {
 		onlyGetExpiring = nil
 	}
+	pageSize := new(int)
+	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
+		*pageSize = int(r.PageSize.ValueInt32())
+	} else {
+		pageSize = nil
+	}
+	pageToken := new(string)
+	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
+		*pageToken = r.PageToken.ValueString()
+	} else {
+		pageToken = nil
+	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -176,6 +188,8 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 		IsAutomated:            isAutomated,
 		MembershipType:         membershipType,
 		OnlyGetExpiring:        onlyGetExpiring,
+		PageSize:               pageSize,
+		PageToken:              pageToken,
 		Query:                  query,
 		Refs:                   refs,
 		ResourceIds:            resourceIds,

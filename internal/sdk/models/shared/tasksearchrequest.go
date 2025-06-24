@@ -276,6 +276,10 @@ type TaskSearchRequest struct {
 	OpenerIds []string `json:"openerIds,omitempty"`
 	// Search tasks that were opened by this user, or that the user is the subject of.
 	OpenerOrSubjectUserID *string `json:"openerOrSubjectUserId,omitempty"`
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 	// Search tasks that were acted on by any of these users.
 	PreviouslyActedOnIds []string `json:"previouslyActedOnIds,omitempty"`
 	// Fuzzy search tasks by display name or description. Also can search by numeric ID.
@@ -466,6 +470,20 @@ func (o *TaskSearchRequest) GetOpenerOrSubjectUserID() *string {
 		return nil
 	}
 	return o.OpenerOrSubjectUserID
+}
+
+func (o *TaskSearchRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *TaskSearchRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *TaskSearchRequest) GetPreviouslyActedOnIds() []string {

@@ -14,6 +14,10 @@ type SearchAppResourcesRequest struct {
 	ExcludeResourceIds []string `json:"excludeResourceIds,omitempty"`
 	// The excludeResourceTypeTraitIds field.
 	ExcludeResourceTypeTraitIds []string `json:"excludeResourceTypeTraitIds,omitempty"`
+	// The pageSize field.
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 	// The query field.
 	Query *string `json:"query,omitempty"`
 	// The refs field.
@@ -59,6 +63,20 @@ func (o *SearchAppResourcesRequest) GetExcludeResourceTypeTraitIds() []string {
 		return nil
 	}
 	return o.ExcludeResourceTypeTraitIds
+}
+
+func (o *SearchAppResourcesRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchAppResourcesRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *SearchAppResourcesRequest) GetQuery() *string {

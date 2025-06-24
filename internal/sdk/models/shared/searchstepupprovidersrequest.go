@@ -39,12 +39,30 @@ func (e *ProviderType) UnmarshalJSON(data []byte) error {
 
 // SearchStepUpProvidersRequest - Request message for searching step-up providers
 type SearchStepUpProvidersRequest struct {
+	// Maximum number of results to return
+	PageSize *int `json:"pageSize,omitempty"`
+	// Token for pagination
+	PageToken *string `json:"pageToken,omitempty"`
 	// The providerType field.
 	ProviderType *ProviderType `json:"providerType,omitempty"`
 	// Filter by name (partial match)
 	Query *string `json:"query,omitempty"`
 	// The refs field.
 	Refs []StepUpProviderRef `json:"refs,omitempty"`
+}
+
+func (o *SearchStepUpProvidersRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchStepUpProvidersRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *SearchStepUpProvidersRequest) GetProviderType() *ProviderType {
