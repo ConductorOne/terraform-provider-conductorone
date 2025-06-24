@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.621.3
+// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.628.0
 
 import (
 	"context"
@@ -192,9 +192,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.3.8",
+		SDKVersion: "1.3.9",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.3.8 2.621.3 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.3.9 2.628.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{

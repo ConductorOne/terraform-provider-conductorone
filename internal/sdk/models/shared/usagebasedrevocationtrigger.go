@@ -9,36 +9,6 @@ import (
 	"time"
 )
 
-// ColdStartBehavior - The coldStartBehavior field.
-type ColdStartBehavior string
-
-const (
-	ColdStartBehaviorColdStartBehaviorUnspecified    ColdStartBehavior = "COLD_START_BEHAVIOR_UNSPECIFIED"
-	ColdStartBehaviorColdStartBehaviorRunImmediately ColdStartBehavior = "COLD_START_BEHAVIOR_RUN_IMMEDIATELY"
-	ColdStartBehaviorColdStartBehaviorRunDelayed     ColdStartBehavior = "COLD_START_BEHAVIOR_RUN_DELAYED"
-)
-
-func (e ColdStartBehavior) ToPointer() *ColdStartBehavior {
-	return &e
-}
-func (e *ColdStartBehavior) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "COLD_START_BEHAVIOR_UNSPECIFIED":
-		fallthrough
-	case "COLD_START_BEHAVIOR_RUN_IMMEDIATELY":
-		fallthrough
-	case "COLD_START_BEHAVIOR_RUN_DELAYED":
-		*e = ColdStartBehavior(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ColdStartBehavior: %v", v)
-	}
-}
-
 type TargetedAppUserTypes string
 
 const (
@@ -72,20 +42,24 @@ func (e *TargetedAppUserTypes) UnmarshalJSON(data []byte) error {
 }
 
 // The UsageBasedRevocationTrigger message.
+//
+// This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
+//   - runImmediately
+//   - runDelayed
 type UsageBasedRevocationTrigger struct {
 	// The appId field.
-	AppID *string `json:"appId,omitempty"`
-	// The coldStartBehavior field.
-	ColdStartBehavior *ColdStartBehavior `json:"coldStartBehavior,omitempty"`
-	// The coldStartDelayDays field.
-	ColdStartDelayDays *int64     `json:"coldStartDelayDays,omitempty"`
-	EnabledAt          *time.Time `json:"enabledAt,omitempty"`
+	AppID     *string    `json:"appId,omitempty"`
+	EnabledAt *time.Time `json:"enabledAt,omitempty"`
 	// The excludedGroupRefs field.
 	ExcludedGroupRefs []AppEntitlementRef `json:"excludedGroupRefs,omitempty"`
 	// The excludedUserRefs field.
 	ExcludedUserRefs []UserRef `json:"excludedUserRefs,omitempty"`
 	// The includeUsersWithNoActivity field.
 	IncludeUsersWithNoActivity *bool `json:"includeUsersWithNoActivity,omitempty"`
+	// The RunDelayed message.
+	RunDelayed *RunDelayed `json:"runDelayed,omitempty"`
+	// No fields needed; this just indicates the trigger should run immediately
+	RunImmediately *RunImmediately `json:"runImmediately,omitempty"`
 	// The targetedAppUserTypes field.
 	TargetedAppUserTypes []TargetedAppUserTypes `json:"targetedAppUserTypes,omitempty"`
 	// The targetedEntitlementRefs field.
@@ -110,20 +84,6 @@ func (o *UsageBasedRevocationTrigger) GetAppID() *string {
 		return nil
 	}
 	return o.AppID
-}
-
-func (o *UsageBasedRevocationTrigger) GetColdStartBehavior() *ColdStartBehavior {
-	if o == nil {
-		return nil
-	}
-	return o.ColdStartBehavior
-}
-
-func (o *UsageBasedRevocationTrigger) GetColdStartDelayDays() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.ColdStartDelayDays
 }
 
 func (o *UsageBasedRevocationTrigger) GetEnabledAt() *time.Time {
@@ -152,6 +112,20 @@ func (o *UsageBasedRevocationTrigger) GetIncludeUsersWithNoActivity() *bool {
 		return nil
 	}
 	return o.IncludeUsersWithNoActivity
+}
+
+func (o *UsageBasedRevocationTrigger) GetRunDelayed() *RunDelayed {
+	if o == nil {
+		return nil
+	}
+	return o.RunDelayed
+}
+
+func (o *UsageBasedRevocationTrigger) GetRunImmediately() *RunImmediately {
+	if o == nil {
+		return nil
+	}
+	return o.RunImmediately
 }
 
 func (o *UsageBasedRevocationTrigger) GetTargetedAppUserTypes() []TargetedAppUserTypes {

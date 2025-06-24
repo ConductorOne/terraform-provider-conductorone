@@ -23,7 +23,7 @@ generation:
   mockServer:
     disabled: true
 terraform:
-  version: 1.3.8
+  version: 1.3.9
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []
@@ -35,6 +35,7 @@ terraform:
       resource: AppEntitlement
   allowUnknownFieldsInWeakUnions: false
   author: conductorone
+  baseErrorName: ConductoroneAPIError
   defaultErrorName: SDKError
   enableTypeDeduplication: false
   environmentVariables: []

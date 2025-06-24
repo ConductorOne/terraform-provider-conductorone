@@ -99,14 +99,14 @@ func (c Context) add(z, x *Big, xform form, y *Big, yform form) form {
 //
 // For example, given
 //
-//	X = 5 * 10^0      // 5
-//	Y = 3 * 10^-99999 // 3e-99999
+//    X = 5 * 10^0      // 5
+//    Y = 3 * 10^-99999 // 3e-99999
 //
 // X would have to be shifted (multiplied) by
 //
-//	shift = 10 ^ (0 - (-99999)) =
-//	        10 ^ (0 + 99999)    =
-//	        10^99999
+//    shift = 10 ^ (0 - (-99999)) =
+//            10 ^ (0 + 99999)    =
+//            10^99999
 //
 // which is a *large* number.
 //
@@ -114,7 +114,7 @@ func (c Context) add(z, x *Big, xform form, y *Big, yform form) form {
 // result will be
 // rounded down to
 //
-//	5.0000000000000000
+//    5.0000000000000000
 //
 // making the shift entirely useless.
 //
@@ -153,7 +153,7 @@ func (c Context) tryTinyAdd(z *Big, X *Big, Xsign form, Y *Big, Ysign form) (for
 
 // addCompact sets z to X + Y where
 //
-//	X = X0 * 10^shift
+//    X = X0 * 10^shift
 //
 // and returns the resulting signbit.
 func (c Context) addCompact(z *Big, X0 uint64, Xsign form, Y uint64, Ysign form, shift uint64) form {
@@ -233,7 +233,7 @@ func (c Context) addCompact(z *Big, X0 uint64, Xsign form, Y uint64, Ysign form,
 
 // addMixed sets z to X + Y where
 //
-//	X = X * 10^shift
+//    X = X * 10^shift
 //
 // and returns the resulting signbit.
 func (c Context) addMixed(z *Big, X *big.Int, Xform form, xs int, Y uint64, Yform form, ys int) form {
@@ -264,7 +264,7 @@ func (c Context) addMixed(z *Big, X *big.Int, Xform form, xs int, Y uint64, Yfor
 
 // addBig sets z to X + Y where
 //
-//	X = X0 * 10^shift
+//    X = X0 * 10^shift
 //
 // and returns the resulting signbit.
 func (c Context) addBig(z *Big, X *big.Int, Xsign form, Y *big.Int, Ysign form, shift uint64) form {
@@ -307,17 +307,15 @@ func (c Context) addBig(z *Big, X *big.Int, Xsign form, Y *big.Int, Ysign form, 
 // Acos returns the arccosine, in radians, of x.
 //
 // Range:
-//
-//	Input: -1 <= x <= 1
-//	Output: 0 <= Acos(x) <= pi
+//     Input: -1 <= x <= 1
+//     Output: 0 <= Acos(x) <= pi
 //
 // Special cases:
-//
-//	Acos(NaN)  = NaN
-//	Acos(±Inf) = NaN
-//	Acos(x)    = NaN if x < -1 or x > 1
-//	Acos(-1)   = pi
-//	Acos(1)    = 0
+//     Acos(NaN)  = NaN
+//     Acos(±Inf) = NaN
+//     Acos(x)    = NaN if x < -1 or x > 1
+//     Acos(-1)   = pi
+//     Acos(1)    = 0
 func (c Context) Acos(z, x *Big) *Big {
 	if debug {
 		x.validate()
@@ -356,16 +354,14 @@ func (c Context) Acos(z, x *Big) *Big {
 // Asin returns the arcsine, in radians, of x.
 //
 // Range:
-//
-//	Input: -1 <= x <= 1
-//	Output: -pi/2 <= Asin(x) <= pi/2
+//     Input: -1 <= x <= 1
+//     Output: -pi/2 <= Asin(x) <= pi/2
 //
 // Special cases:
-//
-//	Asin(NaN)  = NaN
-//	Asin(±Inf) = NaN
-//	Asin(x)    = NaN if x < -1 or x > 1
-//	Asin(±1)   = ±pi/2
+//		Asin(NaN)  = NaN
+//		Asin(±Inf) = NaN
+//		Asin(x)    = NaN if x < -1 or x > 1
+//		Asin(±1)   = ±pi/2
 func (c Context) Asin(z, x *Big) *Big {
 	if debug {
 		x.validate()
@@ -414,14 +410,12 @@ func (c Context) Asin(z, x *Big) *Big {
 // Atan returns the arctangent, in radians, of x.
 //
 // Range:
-//
-//	Input: all real numbers
-//	Output: -pi/2 <= Atan(x) <= pi/2
+//     Input: all real numbers
+//     Output: -pi/2 <= Atan(x) <= pi/2
 //
 // Special cases:
-//
-//	Atan(NaN)  = NaN
-//	Atan(±Inf) = ±x * pi/2
+//		Atan(NaN)  = NaN
+//		Atan(±Inf) = ±x * pi/2
 func (c Context) Atan(z, x *Big) *Big {
 	if debug {
 		x.validate()
@@ -599,29 +593,27 @@ func (c Context) getAtanQ(x2p1 *Big) SplitFunc {
 // the valid quadrant
 //
 // Range:
-//
-//	y input: all real numbers
-//	x input: all real numbers
-//	Output: -pi < Atan2(y, x) <= pi
+//     y input: all real numbers
+//     x input: all real numbers
+//     Output: -pi < Atan2(y, x) <= pi
 //
 // Special cases:
-//
-//	Atan2(NaN, NaN)      = NaN
-//	Atan2(y, NaN)        = NaN
-//	Atan2(NaN, x)        = NaN
-//	Atan2(±0, x >=0)     = ±0
-//	Atan2(±0, x <= -0)   = ±pi
-//	Atan2(y > 0, 0)      = +pi/2
-//	Atan2(y < 0, 0)      = -pi/2
-//	Atan2(±Inf, +Inf)    = ±pi/4
-//	Atan2(±Inf, -Inf)    = ±3pi/4
-//	Atan2(y, +Inf)       = 0
-//	Atan2(y > 0, -Inf)   = +pi
-//	Atan2(y < 0, -Inf)   = -pi
-//	Atan2(±Inf, x)       = ±pi/2
-//	Atan2(y, x > 0)      = Atan(y/x)
-//	Atan2(y >= 0, x < 0) = Atan(y/x) + pi
-//	Atan2(y < 0, x < 0)  = Atan(y/x) - pi
+//     Atan2(NaN, NaN)      = NaN
+//     Atan2(y, NaN)        = NaN
+//     Atan2(NaN, x)        = NaN
+//     Atan2(±0, x >=0)     = ±0
+//     Atan2(±0, x <= -0)   = ±pi
+//     Atan2(y > 0, 0)      = +pi/2
+//     Atan2(y < 0, 0)      = -pi/2
+//     Atan2(±Inf, +Inf)    = ±pi/4
+//     Atan2(±Inf, -Inf)    = ±3pi/4
+//     Atan2(y, +Inf)       = 0
+//     Atan2(y > 0, -Inf)   = +pi
+//     Atan2(y < 0, -Inf)   = -pi
+//     Atan2(±Inf, x)       = ±pi/2
+//     Atan2(y, x > 0)      = Atan(y/x)
+//     Atan2(y >= 0, x < 0) = Atan(y/x) + pi
+//     Atan2(y < 0, x < 0)  = Atan(y/x) - pi
 func (c Context) Atan2(z, y, x *Big) *Big {
 	if debug {
 		x.validate()
@@ -702,14 +694,12 @@ func (c Context) atan2Specials(z, x, y *Big) *Big {
 // Cos returns the cosine, in radians, of x.
 //
 // Range:
-//
-//	Input: all real numbers
-//	Output: -1 <= Cos(x) <= 1
+//     Input: all real numbers
+//     Output: -1 <= Cos(x) <= 1
 //
 // Special cases:
-//
-//	Cos(NaN)  = NaN
-//	Cos(±Inf) = NaN
+//		Cos(NaN)  = NaN
+//		Cos(±Inf) = NaN
 func (c Context) Cos(z, x *Big) *Big {
 	if debug {
 		x.validate()
@@ -1941,23 +1931,24 @@ func (c Context) getPiQ() func(n uint64) *Big {
 // piChudnovskyBrothers calculates PI using binary splitting on the series
 // definition of the Chudnovsky Brothers' algorithm for computing pi.
 //
-//	               426880*sqrt(10005)
-//	   Pi = --------------------------------
-//			    13591409*aSum + 545140134*bSum
+//                426880*sqrt(10005)
+//    Pi = --------------------------------
+// 		    13591409*aSum + 545140134*bSum
 //
-//	   where
-//			           24(6n-5)(2n-1)(6n-1)
-//				a_n = ----------------------
-//						 (640320^3)*n^3
+//    where
+// 		           24(6n-5)(2n-1)(6n-1)
+// 			a_n = ----------------------
+// 					 (640320^3)*n^3
 //
-//	   and
-//				aSum = sum_(n=0)^n a_n
-//				bSum = sum_(n=0)^n a_n*n
+//    and
+// 			aSum = sum_(n=0)^n a_n
+// 			bSum = sum_(n=0)^n a_n*n
 //
-//	   a(n) = 1,
-//	   b(n) = 1,
-//	   p(0) = 1, p(n) = (13591409 + 545140134n)(5 − 6n)(2n − 1)(6n − 1),
-//	   q(0) = 1, q(n) = (n^3)(640320^3)/24 for n > 0
+//    a(n) = 1,
+//    b(n) = 1,
+//    p(0) = 1, p(n) = (13591409 + 545140134n)(5 − 6n)(2n − 1)(6n − 1),
+//    q(0) = 1, q(n) = (n^3)(640320^3)/24 for n > 0
+//
 func (c Context) piChudnovskyBrothers(z *Big) *Big {
 	// Since this algorithm's rate of convergence is static, calculating the
 	// number of iteration required will always be faster than the dynamic
@@ -3002,14 +2993,12 @@ func (c Context) SetString(z *Big, s string) (*Big, bool) {
 // Sin returns the sine, in radians, of x.
 //
 // Range:
-//
-//	Input: all real numbers
-//	Output: -1 <= Sin(x) <= 1
+//     Input: all real numbers
+//     Output: -1 <= Sin(x) <= 1
 //
 // Special cases:
-//
-//	Sin(NaN) = NaN
-//	Sin(Inf) = NaN
+//     Sin(NaN) = NaN
+//     Sin(Inf) = NaN
 func (c Context) Sin(z, x *Big) *Big {
 	if debug {
 		x.validate()
@@ -3083,14 +3072,12 @@ func (c Context) Sub(z, x, y *Big) *Big {
 // Tan returns the tangent, in radians, of x.
 //
 // Range:
-//
-//	Input: -pi/2 <= x <= pi/2
-//	Output: all real numbers
+//     Input: -pi/2 <= x <= pi/2
+//     Output: all real numbers
 //
 // Special cases:
-//
-//	Tan(NaN) = NaN
-//	Tan(±Inf) = NaN
+//     Tan(NaN) = NaN
+//     Tan(±Inf) = NaN
 func (c Context) Tan(z, x *Big) *Big {
 	if debug {
 		x.validate()

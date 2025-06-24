@@ -5270,6 +5270,26 @@ components:
             title: Run Automation
             type: object
             x-speakeasy-name-override: RunAutomation
+        c1.api.automations.v1.RunDelayed:
+            description: The RunDelayed message.
+            nullable: true
+            properties:
+                coldStartDelayDays:
+                    description: The coldStartDelayDays field.
+                    format: uint32
+                    readOnly: false
+                    type: integer
+            required:
+                - coldStartDelayDays
+            title: Run Delayed
+            type: object
+            x-speakeasy-name-override: RunDelayed
+        c1.api.automations.v1.RunImmediately:
+            description: No fields needed; this just indicates the trigger should run immediately
+            nullable: true
+            title: Run Immediately
+            type: object
+            x-speakeasy-name-override: RunImmediately
         c1.api.automations.v1.SearchAutomationExecutionsRequest:
             description: The SearchAutomationExecutionsRequest message.
             properties:
@@ -5602,27 +5622,18 @@ components:
             type: object
             x-speakeasy-name-override: UpdateUser
         c1.api.automations.v1.UsageBasedRevocationTrigger:
-            description: The UsageBasedRevocationTrigger message.
+            description: |
+                The UsageBasedRevocationTrigger message.
+
+                This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
+                  - runImmediately
+                  - runDelayed
             nullable: true
             properties:
                 appId:
                     description: The appId field.
                     readOnly: false
                     type: string
-                coldStartBehavior:
-                    description: The coldStartBehavior field.
-                    enum:
-                        - COLD_START_BEHAVIOR_UNSPECIFIED
-                        - COLD_START_BEHAVIOR_RUN_IMMEDIATELY
-                        - COLD_START_BEHAVIOR_RUN_DELAYED
-                    readOnly: false
-                    type: string
-                    x-speakeasy-unknown-values: allow
-                coldStartDelayDays:
-                    description: The coldStartDelayDays field.
-                    format: uint32
-                    readOnly: false
-                    type: integer
                 enabledAt:
                     format: date-time
                     readOnly: false
@@ -5645,6 +5656,10 @@ components:
                     description: The includeUsersWithNoActivity field.
                     readOnly: false
                     type: boolean
+                runDelayed:
+                    $ref: '#/components/schemas/c1.api.automations.v1.RunDelayed'
+                runImmediately:
+                    $ref: '#/components/schemas/c1.api.automations.v1.RunImmediately'
                 targetedAppUserTypes:
                     description: The targetedAppUserTypes field.
                     items:

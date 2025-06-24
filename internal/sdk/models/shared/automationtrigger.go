@@ -30,6 +30,11 @@ type AutomationTrigger struct {
 	// The ManualAutomationTrigger message.
 	ManualAutomationTrigger *ManualAutomationTrigger `json:"manual,omitempty"`
 	// The UsageBasedRevocationTrigger message.
+	//
+	// This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
+	//   - runImmediately
+	//   - runDelayed
+	//
 	UsageBasedRevocationTrigger *UsageBasedRevocationTrigger `json:"usageBasedRevocation,omitempty"`
 	// The UserProfileChangeTrigger message.
 	UserProfileChangeTrigger *UserProfileChangeTrigger `json:"userProfileChange,omitempty"`

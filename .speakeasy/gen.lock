@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 1c42470525eee1d257aa2952fb768775
+  docChecksum: 575d97e1d2cf614e3f65226fdaa366dd
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.556.2
-  generationVersion: 2.621.3
-  releaseVersion: 1.3.8
-  configChecksum: 30099a1dbcd9b975fe2e412b01055383
+  speakeasyVersion: 1.561.0
+  generationVersion: 2.628.0
+  releaseVersion: 1.3.9
+  configChecksum: 0a928e4a32eee7b18c9ad3399bae0294
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -866,6 +866,8 @@ generatedFiles:
   - internal/sdk/models/shared/roleinput.go
   - internal/sdk/models/shared/rule.go
   - internal/sdk/models/shared/runautomation.go
+  - internal/sdk/models/shared/rundelayed.go
+  - internal/sdk/models/shared/runimmediately.go
   - internal/sdk/models/shared/savetovault.go
   - internal/sdk/models/shared/searchappentitlementswithexpiredresponse.go
   - internal/sdk/models/shared/searchappresourcesrequest.go
