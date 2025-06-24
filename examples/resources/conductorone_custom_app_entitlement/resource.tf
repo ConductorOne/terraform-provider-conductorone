@@ -38,6 +38,9 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
       default_behavior = {
         connector_id = "...my_connector_id..."
       }
+      delete_account = {
+        connector_id = "...my_connector_id..."
+      }
     }
     delegated_provision = {
       app_id         = "...my_app_id..."

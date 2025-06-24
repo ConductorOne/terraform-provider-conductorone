@@ -155,9 +155,22 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 					ConnectorID: connectorId1,
 				}
 			}
+			var deleteAccount *shared.DeleteAccount
+			if r.ProvisionPolicy.ConnectorProvision.DeleteAccount != nil {
+				connectorId2 := new(string)
+				if !r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsNull() {
+					*connectorId2 = r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
+				} else {
+					connectorId2 = nil
+				}
+				deleteAccount = &shared.DeleteAccount{
+					ConnectorID: connectorId2,
+				}
+			}
 			connectorProvision = &shared.ConnectorProvision{
 				AccountProvision: accountProvision,
 				DefaultBehavior:  defaultBehavior,
+				DeleteAccount:    deleteAccount,
 			}
 		}
 		var delegatedProvision *shared.DelegatedProvision
@@ -187,11 +200,11 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 			} else {
 				appId1 = nil
 			}
-			connectorId2 := new(string)
+			connectorId3 := new(string)
 			if !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-				*connectorId2 = r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+				*connectorId3 = r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
 			} else {
-				connectorId2 = nil
+				connectorId3 = nil
 			}
 			externalTicketProvisionerConfigID := new(string)
 			if !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
@@ -207,7 +220,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 			}
 			externalTicketProvision = &shared.ExternalTicketProvision{
 				AppID:                             appId1,
-				ConnectorID:                       connectorId2,
+				ConnectorID:                       connectorId3,
 				ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 				Instructions:                      instructions,
 			}
@@ -495,9 +508,22 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 					ConnectorID: connectorId1,
 				}
 			}
+			var deleteAccount *shared.DeleteAccount
+			if r.ProvisionPolicy.ConnectorProvision.DeleteAccount != nil {
+				connectorId2 := new(string)
+				if !r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsNull() {
+					*connectorId2 = r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
+				} else {
+					connectorId2 = nil
+				}
+				deleteAccount = &shared.DeleteAccount{
+					ConnectorID: connectorId2,
+				}
+			}
 			connectorProvision = &shared.ConnectorProvision{
 				AccountProvision: accountProvision,
 				DefaultBehavior:  defaultBehavior,
+				DeleteAccount:    deleteAccount,
 			}
 		}
 		var delegatedProvision *shared.DelegatedProvision
@@ -527,11 +553,11 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			} else {
 				appId2 = nil
 			}
-			connectorId2 := new(string)
+			connectorId3 := new(string)
 			if !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-				*connectorId2 = r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+				*connectorId3 = r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
 			} else {
-				connectorId2 = nil
+				connectorId3 = nil
 			}
 			externalTicketProvisionerConfigID := new(string)
 			if !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
@@ -547,7 +573,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			}
 			externalTicketProvision = &shared.ExternalTicketProvision{
 				AppID:                             appId2,
-				ConnectorID:                       connectorId2,
+				ConnectorID:                       connectorId3,
 				ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 				Instructions:                      instructions,
 			}
@@ -643,11 +669,11 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 				if r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config != nil {
 					config1 = &shared.AccountProvisionConfig{}
 				}
-				connectorId3 := new(string)
+				connectorId4 := new(string)
 				if !r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
-					*connectorId3 = r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
+					*connectorId4 = r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
 				} else {
-					connectorId3 = nil
+					connectorId4 = nil
 				}
 				var doNotSave1 *shared.DoNotSave
 				if r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave != nil {
@@ -674,7 +700,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 				}
 				accountProvision1 = &shared.AccountProvision{
 					Config:      config1,
-					ConnectorID: connectorId3,
+					ConnectorID: connectorId4,
 					DoNotSave:   doNotSave1,
 					SaveToVault: saveToVault1,
 					SchemaID:    schemaId1,
@@ -682,19 +708,32 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			}
 			var defaultBehavior1 *shared.DefaultBehavior
 			if r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior != nil {
-				connectorId4 := new(string)
+				connectorId5 := new(string)
 				if !r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
-					*connectorId4 = r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
+					*connectorId5 = r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
 				} else {
-					connectorId4 = nil
+					connectorId5 = nil
 				}
 				defaultBehavior1 = &shared.DefaultBehavior{
-					ConnectorID: connectorId4,
+					ConnectorID: connectorId5,
+				}
+			}
+			var deleteAccount1 *shared.DeleteAccount
+			if r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount != nil {
+				connectorId6 := new(string)
+				if !r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsUnknown() && !r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsNull() {
+					*connectorId6 = r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
+				} else {
+					connectorId6 = nil
+				}
+				deleteAccount1 = &shared.DeleteAccount{
+					ConnectorID: connectorId6,
 				}
 			}
 			connectorProvision1 = &shared.ConnectorProvision{
 				AccountProvision: accountProvision1,
 				DefaultBehavior:  defaultBehavior1,
+				DeleteAccount:    deleteAccount1,
 			}
 		}
 		var delegatedProvision1 *shared.DelegatedProvision
@@ -724,11 +763,11 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			} else {
 				appId4 = nil
 			}
-			connectorId5 := new(string)
+			connectorId7 := new(string)
 			if !r.DeprovisionerPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.DeprovisionerPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-				*connectorId5 = r.DeprovisionerPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+				*connectorId7 = r.DeprovisionerPolicy.ExternalTicketProvision.ConnectorID.ValueString()
 			} else {
-				connectorId5 = nil
+				connectorId7 = nil
 			}
 			externalTicketProvisionerConfigId1 := new(string)
 			if !r.DeprovisionerPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !r.DeprovisionerPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
@@ -744,7 +783,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			}
 			externalTicketProvision1 = &shared.ExternalTicketProvision{
 				AppID:                             appId4,
-				ConnectorID:                       connectorId5,
+				ConnectorID:                       connectorId7,
 				ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigId1,
 				Instructions:                      instructions2,
 			}
@@ -972,6 +1011,12 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 					r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
 					r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
 				}
+				if resp.DeprovisionerPolicy.ConnectorProvision.DeleteAccount == nil {
+					r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount = nil
+				} else {
+					r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
+					r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
+				}
 			}
 			if resp.DeprovisionerPolicy.DelegatedProvision == nil {
 				r.DeprovisionerPolicy.DelegatedProvision = nil
@@ -1077,6 +1122,12 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 				} else {
 					r.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
 					r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+				}
+				if resp.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
+					r.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
+				} else {
+					r.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
+					r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
 				}
 			}
 			if resp.ProvisionPolicy.DelegatedProvision == nil {

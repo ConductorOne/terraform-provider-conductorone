@@ -24,6 +24,8 @@ type ReassignAction struct {
 	SubjectUserIDCel *string `json:"subjectUserIdCel,omitempty"`
 	// A reference to a user.
 	UserRef1 *UserRef `json:"subjectUserRef,omitempty"`
+	// If true, the step will use the subject user of the automation as the subject.
+	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 }
 
 func (o *ReassignAction) GetAssigneeUserIDCel() *string {
@@ -52,4 +54,11 @@ func (o *ReassignAction) GetUserRef1() *UserRef {
 		return nil
 	}
 	return o.UserRef1
+}
+
+func (o *ReassignAction) GetUseSubjectUser() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseSubjectUser
 }

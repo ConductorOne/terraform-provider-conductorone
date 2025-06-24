@@ -56,6 +56,9 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
       default_behavior = {
         connector_id = "...my_connector_id..."
       }
+      delete_account = {
+        connector_id = "...my_connector_id..."
+      }
     }
     delegated_provision = {
       app_id         = "...my_app_id..."
@@ -162,7 +165,8 @@ Optional:
 
 This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
   - defaultBehavior
-  - account (see [below for nested schema](#nestedatt--provision_policy--connector_provision))
+  - account
+  - deleteAccount (see [below for nested schema](#nestedatt--provision_policy--connector_provision))
 - `delegated_provision` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--provision_policy--delegated_provision))
 - `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--provision_policy--external_ticket_provision))
 - `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--provision_policy--manual_provision))
@@ -181,6 +185,7 @@ This message contains a oneof named storage_type. Only a single field of the fol
   - saveToVault
   - doNotSave (see [below for nested schema](#nestedatt--provision_policy--connector_provision--account_provision))
 - `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision--default_behavior))
+- `delete_account` (Attributes) The DeleteAccount message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision--delete_account))
 
 <a id="nestedatt--provision_policy--connector_provision--account_provision"></a>
 ### Nested Schema for `provision_policy.connector_provision.account_provision`
@@ -217,6 +222,14 @@ Optional:
 
 - `connector_id` (String) this checks if the entitlement is enabled by provisioning in a specific connector
  this can happen automatically and doesn't need any extra info
+
+
+<a id="nestedatt--provision_policy--connector_provision--delete_account"></a>
+### Nested Schema for `provision_policy.connector_provision.delete_account`
+
+Optional:
+
+- `connector_id` (String) The connectorId field.
 
 
 
@@ -271,7 +284,8 @@ Read-Only:
 
 This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
   - defaultBehavior
-  - account (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision))
+  - account
+  - deleteAccount (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision))
 - `delegated_provision` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--deprovisioner_policy--delegated_provision))
 - `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--deprovisioner_policy--external_ticket_provision))
 - `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--deprovisioner_policy--manual_provision))
@@ -290,6 +304,7 @@ This message contains a oneof named storage_type. Only a single field of the fol
   - saveToVault
   - doNotSave (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision--account_provision))
 - `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision--default_behavior))
+- `delete_account` (Attributes) The DeleteAccount message. (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision--delete_account))
 
 <a id="nestedatt--deprovisioner_policy--connector_provision--account_provision"></a>
 ### Nested Schema for `deprovisioner_policy.connector_provision.account_provision`
@@ -326,6 +341,14 @@ Read-Only:
 
 - `connector_id` (String) this checks if the entitlement is enabled by provisioning in a specific connector
  this can happen automatically and doesn't need any extra info
+
+
+<a id="nestedatt--deprovisioner_policy--connector_provision--delete_account"></a>
+### Nested Schema for `deprovisioner_policy.connector_provision.delete_account`
+
+Read-Only:
+
+- `connector_id` (String) The connectorId field.
 
 
 

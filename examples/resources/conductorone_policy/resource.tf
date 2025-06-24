@@ -119,6 +119,9 @@ resource "conductorone_policy" "my_policy" {
                 default_behavior = {
                   connector_id = "...my_connector_id..."
                 }
+                delete_account = {
+                  connector_id = "...my_connector_id..."
+                }
               }
               delegated_provision = {
                 app_id         = "...my_app_id..."

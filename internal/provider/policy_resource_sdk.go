@@ -477,9 +477,22 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 									ConnectorID: connectorId1,
 								}
 							}
+							var deleteAccount *shared.DeleteAccount
+							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount != nil {
+								connectorId2 := new(string)
+								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsNull() {
+									*connectorId2 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
+								} else {
+									connectorId2 = nil
+								}
+								deleteAccount = &shared.DeleteAccount{
+									ConnectorID: connectorId2,
+								}
+							}
 							connectorProvision = &shared.ConnectorProvision{
 								AccountProvision: accountProvision,
 								DefaultBehavior:  defaultBehavior,
+								DeleteAccount:    deleteAccount,
 							}
 						}
 						var delegatedProvision *shared.DelegatedProvision
@@ -509,11 +522,11 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							} else {
 								appId2 = nil
 							}
-							connectorId2 := new(string)
+							connectorId3 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-								*connectorId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+								*connectorId3 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
 							} else {
-								connectorId2 = nil
+								connectorId3 = nil
 							}
 							externalTicketProvisionerConfigID := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
@@ -529,7 +542,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 							externalTicketProvision = &shared.ExternalTicketProvision{
 								AppID:                             appId2,
-								ConnectorID:                       connectorId2,
+								ConnectorID:                       connectorId3,
 								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 								Instructions:                      instructions1,
 							}
@@ -1224,9 +1237,22 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 									ConnectorID: connectorId1,
 								}
 							}
+							var deleteAccount *shared.DeleteAccount
+							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount != nil {
+								connectorId2 := new(string)
+								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsNull() {
+									*connectorId2 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
+								} else {
+									connectorId2 = nil
+								}
+								deleteAccount = &shared.DeleteAccount{
+									ConnectorID: connectorId2,
+								}
+							}
 							connectorProvision = &shared.ConnectorProvision{
 								AccountProvision: accountProvision,
 								DefaultBehavior:  defaultBehavior,
+								DeleteAccount:    deleteAccount,
 							}
 						}
 						var delegatedProvision *shared.DelegatedProvision
@@ -1256,11 +1282,11 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							} else {
 								appId2 = nil
 							}
-							connectorId2 := new(string)
+							connectorId3 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-								*connectorId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+								*connectorId3 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
 							} else {
-								connectorId2 = nil
+								connectorId3 = nil
 							}
 							externalTicketProvisionerConfigID := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
@@ -1276,7 +1302,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 							externalTicketProvision = &shared.ExternalTicketProvision{
 								AppID:                             appId2,
-								ConnectorID:                       connectorId2,
+								ConnectorID:                       connectorId3,
 								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 								Instructions:                      instructions1,
 							}
@@ -1824,6 +1850,12 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									} else {
 										steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
 										steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+									}
+									if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
+										steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
+									} else {
+										steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
+										steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
 									}
 								}
 								if stepsItem.Provision.ProvisionPolicy.DelegatedProvision == nil {

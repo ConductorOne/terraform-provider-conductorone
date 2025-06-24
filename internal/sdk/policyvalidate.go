@@ -32,7 +32,7 @@ func newPolicyValidate(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfigurati
 
 // ValidateCEL - Validate Cel
 // Validate policies
-func (s *PolicyValidate) ValidateCEL(ctx context.Context, request *shared.ValidatePolicyCELRequest, opts ...operations.Option) (*operations.C1APIPolicyV1PolicyValidateValidateCELResponse, error) {
+func (s *PolicyValidate) ValidateCEL(ctx context.Context, request *shared.EditorValidateRequest, opts ...operations.Option) (*operations.C1APIPolicyV1PolicyValidateValidateCELResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -142,12 +142,12 @@ func (s *PolicyValidate) ValidateCEL(ctx context.Context, request *shared.Valida
 				return nil, err
 			}
 
-			var out shared.ValidatePolicyCELResponse
+			var out shared.EditorValidateResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ValidatePolicyCELResponse = &out
+			res.EditorValidateResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

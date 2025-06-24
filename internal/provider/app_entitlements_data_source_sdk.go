@@ -48,6 +48,12 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 			complianceFrameworkIds = append(complianceFrameworkIds, complianceFrameworkIdsItem.ValueString())
 		}
 	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
 	var excludeAppIds []string
 	if r.ExcludeAppIds != nil {
 		excludeAppIds = make([]string, 0, len(r.ExcludeAppIds))
@@ -162,6 +168,7 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 		AppIds:                 appIds,
 		AppUserIds:             appUserIds,
 		ComplianceFrameworkIds: complianceFrameworkIds,
+		DisplayName:            displayName,
 		ExcludeAppIds:          excludeAppIds,
 		ExcludeAppUserIds:      excludeAppUserIds,
 		ExcludeResourceTypeIds: excludeResourceTypeIds,
@@ -251,6 +258,12 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							} else {
 								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
 								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+							}
+							if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DeleteAccount == nil {
+								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DeleteAccount = nil
+							} else {
+								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
+								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
 							}
 						}
 						if listItem.AppEntitlement.DeprovisionerPolicy.DelegatedProvision == nil {
@@ -357,6 +370,12 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							} else {
 								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
 								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+							}
+							if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
+								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
+							} else {
+								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
+								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
 							}
 						}
 						if listItem.AppEntitlement.ProvisionPolicy.DelegatedProvision == nil {

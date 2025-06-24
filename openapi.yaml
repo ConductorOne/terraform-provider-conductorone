@@ -960,6 +960,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
                 excludeAppIds:
                     description: Exclude app entitlements from the results that are in these app IDs.
                     items:
@@ -3095,6 +3099,29 @@ components:
             title: Delete Manually Managed Resource Type Response
             type: object
             x-speakeasy-name-override: DeleteManuallyManagedResourceTypeResponse
+        c1.api.app.v1.EditorValidateRequest:
+            description: The EditorValidateRequest message.
+            properties:
+                text:
+                    description: The text field.
+                    readOnly: false
+                    type: string
+            title: Editor Validate Request
+            type: object
+            x-speakeasy-name-override: EditorValidateRequest
+        c1.api.app.v1.EditorValidateResponse:
+            description: The EditorValidateResponse message.
+            properties:
+                markers:
+                    description: The markers field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.editor.v1.EditorMarker'
+                    nullable: true
+                    readOnly: true
+                    type: array
+            title: Editor Validate Response
+            type: object
+            x-speakeasy-name-override: EditorValidateResponse
         c1.api.app.v1.EncryptedData:
             description: EncryptedData is a message that contains encrypted bytes and metadata.
             nullable: true
@@ -4576,18 +4603,10 @@ components:
             type: object
             x-speakeasy-name-override: AppUserUpdatedTrigger
         c1.api.automations.v1.Automation:
-            description: |
-                The Automation message.
-
-                This message contains a oneof named _app_id. Only a single field of the following list may be set at a time:
-                  - appId
+            description: The Automation message.
             properties:
                 appId:
-                    description: |-
-                        the app id this workflow_template belongs to
-                        This field is part of the `_app_id` oneof.
-                        See the documentation for `c1.api.automations.v1.Automation` for more details.
-                    nullable: true
+                    description: the app id this workflow_template belongs to
                     readOnly: false
                     type: string
                 automationSteps:
@@ -4886,6 +4905,7 @@ components:
                   - userProfileChange
                   - appUserCreated
                   - appUserUpdated
+                  - usageBasedRevocation
             properties:
                 appUserCreated:
                     $ref: '#/components/schemas/c1.api.automations.v1.AppUserCreatedTrigger'
@@ -4897,6 +4917,8 @@ components:
                     type: string
                 manual:
                     $ref: '#/components/schemas/c1.api.automations.v1.ManualAutomationTrigger'
+                usageBasedRevocation:
+                    $ref: '#/components/schemas/c1.api.automations.v1.UsageBasedRevocationTrigger'
                 userProfileChange:
                     $ref: '#/components/schemas/c1.api.automations.v1.UserProfileChangeTrigger'
             title: Automation Trigger
@@ -4911,6 +4933,10 @@ components:
                   - userRef
             nullable: true
             properties:
+                useSubjectUser:
+                    description: If true, the step will use the subject user of the automation as the subject.
+                    readOnly: false
+                    type: boolean
                 userIdCel:
                     description: |-
                         The userIdCel field.
@@ -4981,6 +5007,10 @@ components:
                     description: The accessReviewTemplateId field.
                     readOnly: false
                     type: string
+                useSubjectUser:
+                    description: If true, the step will use the subject user of the automation as the subject.
+                    readOnly: false
+                    type: boolean
                 userIdsCel:
                     description: The userIdsCel field.
                     readOnly: false
@@ -4996,18 +5026,10 @@ components:
             type: object
             x-speakeasy-name-override: CreateAccessReview
         c1.api.automations.v1.CreateAutomationRequest:
-            description: |
-                The CreateAutomationRequest message.
-
-                This message contains a oneof named _app_id. Only a single field of the following list may be set at a time:
-                  - appId
+            description: The CreateAutomationRequest message.
             properties:
                 appId:
-                    description: |-
-                        the app id this workflow_template belongs to
-                        This field is part of the `_app_id` oneof.
-                        See the documentation for `c1.api.automations.v1.CreateAutomationRequest` for more details.
-                    nullable: true
+                    description: the app id this workflow_template belongs to
                     readOnly: false
                     type: string
                 automationSteps:
@@ -5066,6 +5088,10 @@ components:
                     type: string
                 revokeAll:
                     description: The revokeAll field.
+                    readOnly: false
+                    type: boolean
+                useSubjectUser:
+                    description: If true, the step will use the subject user of the automation as the subject.
                     readOnly: false
                     type: boolean
                 userIdCel:
@@ -5196,6 +5222,10 @@ components:
                     type: string
                 subjectUserRef:
                     $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+                useSubjectUser:
+                    description: If true, the step will use the subject user of the automation as the subject.
+                    readOnly: false
+                    type: boolean
             title: Reassign Action
             type: object
             x-speakeasy-name-override: ReassignAction
@@ -5203,6 +5233,10 @@ components:
             description: 'RemoveFromDelegation: find all users that have the target user as their delegated user, and clear the delegation.'
             nullable: true
             properties:
+                useSubjectUser:
+                    description: If true, the step will use the subject user of the automation as the subject.
+                    readOnly: false
+                    type: boolean
                 userIdCel:
                     description: The userIdCel field.
                     readOnly: false
@@ -5236,11 +5270,36 @@ components:
             title: Run Automation
             type: object
             x-speakeasy-name-override: RunAutomation
+        c1.api.automations.v1.RunDelayed:
+            description: The RunDelayed message.
+            nullable: true
+            properties:
+                coldStartDelayDays:
+                    description: The coldStartDelayDays field.
+                    format: uint32
+                    readOnly: false
+                    type: integer
+            required:
+                - coldStartDelayDays
+            title: Run Delayed
+            type: object
+            x-speakeasy-name-override: RunDelayed
+        c1.api.automations.v1.RunImmediately:
+            description: No fields needed; this just indicates the trigger should run immediately
+            nullable: true
+            title: Run Immediately
+            type: object
+            x-speakeasy-name-override: RunImmediately
         c1.api.automations.v1.SearchAutomationExecutionsRequest:
             description: The SearchAutomationExecutionsRequest message.
             properties:
                 automationTemplateId:
                     description: The automationTemplateId field.
+                    readOnly: false
+                    type: string
+                executionId:
+                    description: The executionId field.
+                    format: int64
                     readOnly: false
                     type: string
                 executionStepStates:
@@ -5356,6 +5415,10 @@ components:
         c1.api.automations.v1.SearchAutomationsRequest:
             description: The SearchAutomationsRequest message.
             properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
                 pageSize:
                     description: The pageSize field.
                     format: int32
@@ -5412,6 +5475,10 @@ components:
                     description: The title field.
                     readOnly: false
                     type: string
+                useSubjectUser:
+                    description: If true, the step will use the subject user of the automation as the subject.
+                    readOnly: false
+                    type: boolean
                 userIdsCel:
                     description: The userIdsCel field.
                     readOnly: false
@@ -5463,6 +5530,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                useSubjectUser:
+                    description: If true, the step will use the subject user of the automation as the subject.
+                    readOnly: false
+                    type: boolean
                 userIdsCel:
                     description: The userIdsCel field.
                     readOnly: false
@@ -5511,6 +5582,10 @@ components:
                   - userStatusCel
             nullable: true
             properties:
+                useSubjectUser:
+                    description: If true, the step will use the subject user of the automation as the subject.
+                    readOnly: false
+                    type: boolean
                 userIdCel:
                     description: |-
                         The userIdCel field.
@@ -5546,6 +5621,72 @@ components:
             title: Update User
             type: object
             x-speakeasy-name-override: UpdateUser
+        c1.api.automations.v1.UsageBasedRevocationTrigger:
+            description: |
+                The UsageBasedRevocationTrigger message.
+
+                This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
+                  - runImmediately
+                  - runDelayed
+            nullable: true
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                enabledAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                excludedGroupRefs:
+                    description: The excludedGroupRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                excludedUserRefs:
+                    description: The excludedUserRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                includeUsersWithNoActivity:
+                    description: The includeUsersWithNoActivity field.
+                    readOnly: false
+                    type: boolean
+                runDelayed:
+                    $ref: '#/components/schemas/c1.api.automations.v1.RunDelayed'
+                runImmediately:
+                    $ref: '#/components/schemas/c1.api.automations.v1.RunImmediately'
+                targetedAppUserTypes:
+                    description: The targetedAppUserTypes field.
+                    items:
+                        enum:
+                            - APP_USER_TYPE_UNSPECIFIED
+                            - APP_USER_TYPE_USER
+                            - APP_USER_TYPE_SERVICE_ACCOUNT
+                            - APP_USER_TYPE_SYSTEM_ACCOUNT
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                targetedEntitlementRefs:
+                    description: The targetedEntitlementRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                unusedForDays:
+                    description: The unusedForDays field.
+                    format: uint32
+                    readOnly: false
+                    type: integer
+            title: Usage Based Revocation Trigger
+            type: object
+            x-speakeasy-name-override: UsageBasedRevocationTrigger
         c1.api.automations.v1.UserProfileChangeTrigger:
             description: The UserProfileChangeTrigger message.
             nullable: true
@@ -5776,6 +5917,47 @@ components:
             title: Directory View
             type: object
             x-speakeasy-name-override: DirectoryView
+        c1.api.editor.v1.EditorMarker:
+            description: The EditorMarker message.
+            properties:
+                endColumn:
+                    description: The endColumn field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                endLineNumber:
+                    description: The endLineNumber field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                message:
+                    description: The message field.
+                    readOnly: false
+                    type: string
+                severity:
+                    description: The severity field.
+                    enum:
+                        - UNKNOWN
+                        - HINT
+                        - INFO
+                        - WARNING
+                        - ERROR
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                startColumn:
+                    description: The startColumn field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                startLineNumber:
+                    description: The startLineNumber field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+            title: Editor Marker
+            type: object
+            x-speakeasy-name-override: EditorMarker
         c1.api.iam.v1.GetRolesResponse:
             description: The GetRolesResponse message contains the retrieved role.
             properties:
@@ -6377,12 +6559,15 @@ components:
                 This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
                   - defaultBehavior
                   - account
+                  - deleteAccount
             nullable: true
             properties:
                 account:
                     $ref: '#/components/schemas/c1.api.policy.v1.ConnectorProvision.AccountProvision'
                 defaultBehavior:
                     $ref: '#/components/schemas/c1.api.policy.v1.ConnectorProvision.DefaultBehavior'
+                deleteAccount:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ConnectorProvision.DeleteAccount'
             title: Connector Provision
             type: object
             x-speakeasy-name-override: ConnectorProvision
@@ -6427,6 +6612,17 @@ components:
             title: Default Behavior
             type: object
             x-speakeasy-name-override: DefaultBehavior
+        c1.api.policy.v1.ConnectorProvision.DeleteAccount:
+            description: The DeleteAccount message.
+            nullable: true
+            properties:
+                connectorId:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
+            title: Delete Account
+            type: object
+            x-speakeasy-name-override: DeleteAccount
         c1.api.policy.v1.ConnectorProvision.DoNotSave:
             description: The DoNotSave message.
             nullable: true
@@ -6553,6 +6749,29 @@ components:
             title: Denied Action
             type: object
             x-speakeasy-name-override: DeniedAction
+        c1.api.policy.v1.EditorValidateRequest:
+            description: The EditorValidateRequest message.
+            properties:
+                text:
+                    description: The text field.
+                    readOnly: false
+                    type: string
+            title: Editor Validate Request
+            type: object
+            x-speakeasy-name-override: EditorValidateRequest
+        c1.api.policy.v1.EditorValidateResponse:
+            description: The EditorValidateResponse message.
+            properties:
+                markers:
+                    description: The markers field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.editor.v1.EditorMarker'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Editor Validate Response
+            type: object
+            x-speakeasy-name-override: EditorValidateResponse
         c1.api.policy.v1.EntitlementOwnerApproval:
             description: The entitlement owner approval allows configuration of the approval step when the target approvers are the entitlement owners.
             nullable: true
@@ -6826,47 +7045,6 @@ components:
             title: Manual Provision
             type: object
             x-speakeasy-name-override: ManualProvision
-        c1.api.policy.v1.Marker:
-            description: The Marker message.
-            properties:
-                endColumn:
-                    description: The endColumn field.
-                    format: int32
-                    readOnly: false
-                    type: integer
-                endLineNumber:
-                    description: The endLineNumber field.
-                    format: int32
-                    readOnly: false
-                    type: integer
-                message:
-                    description: The message field.
-                    readOnly: false
-                    type: string
-                severity:
-                    description: The severity field.
-                    enum:
-                        - UNKNOWN
-                        - HINT
-                        - INFO
-                        - WARNING
-                        - ERROR
-                    readOnly: false
-                    type: string
-                    x-speakeasy-unknown-values: allow
-                startColumn:
-                    description: The startColumn field.
-                    format: int32
-                    readOnly: false
-                    type: integer
-                startLineNumber:
-                    description: The startLineNumber field.
-                    format: int32
-                    readOnly: false
-                    type: integer
-            title: Marker
-            type: object
-            x-speakeasy-name-override: Marker
         c1.api.policy.v1.MultiStep:
             description: MultiStep indicates that this provision step has multiple steps to process.
             nullable: true
@@ -7509,29 +7687,6 @@ components:
             title: User Approval
             type: object
             x-speakeasy-name-override: UserApproval
-        c1.api.policy.v1.ValidatePolicyCELRequest:
-            description: The ValidatePolicyCELRequest message.
-            properties:
-                cel:
-                    description: The cel field.
-                    readOnly: false
-                    type: string
-            title: Validate Policy Cel Request
-            type: object
-            x-speakeasy-name-override: ValidatePolicyCELRequest
-        c1.api.policy.v1.ValidatePolicyCELResponse:
-            description: The ValidatePolicyCELResponse message.
-            properties:
-                markers:
-                    description: The markers field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.policy.v1.Marker'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Validate Policy Cel Response
-            type: object
-            x-speakeasy-name-override: ValidatePolicyCELResponse
         c1.api.policy.v1.Wait:
             description: |
                 Define a Wait step for a policy to wait on a condition to be met.
@@ -15809,6 +15964,27 @@ paths:
                 terraform-resource: App Entitlement Proxy Binding#create
             x-speakeasy-group: AppEntitlementsProxy
             x-speakeasy-name-override: Create
+    /api/v1/apps/connectors/validate_config/http:
+        post:
+            description: Invokes the c1.api.app.v1.ConnectorService.ValidateHTTPConnectorConfig method.
+            operationId: c1.api.app.v1.ConnectorService.ValidateHTTPConnectorConfig
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.EditorValidateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.EditorValidateResponse'
+                    description: Successful response
+            summary: Validate Http Connector Config
+            tags:
+                - Connector
+            x-speakeasy-group: Connector
+            x-speakeasy-name-override: ValidateHTTPConnectorConfig
     /api/v1/attribute/{id}:
         delete:
             description: Delete an attribute value by id.
@@ -17378,13 +17554,13 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/c1.api.policy.v1.ValidatePolicyCELRequest'
+                            $ref: '#/components/schemas/c1.api.policy.v1.EditorValidateRequest'
             responses:
                 "200":
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.policy.v1.ValidatePolicyCELResponse'
+                                $ref: '#/components/schemas/c1.api.policy.v1.EditorValidateResponse'
                     description: Successful response
             summary: Validate Cel
             tags:

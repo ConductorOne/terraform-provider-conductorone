@@ -199,12 +199,23 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 								},
 								Description: `The DefaultBehavior message.`,
 							},
+							"delete_account": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The connectorId field.`,
+									},
+								},
+								Description: `The DeleteAccount message.`,
+							},
 						},
 						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
 							`` + "\n" +
 							`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
 							`  - defaultBehavior` + "\n" +
-							`  - account`,
+							`  - account` + "\n" +
+							`  - deleteAccount`,
 					},
 					"delegated_provision": schema.SingleNestedAttribute{
 						Computed: true,
@@ -293,7 +304,8 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
-				Description: `The display name of the app entitlement.`,
+				Optional:    true,
+				Description: `The displayName field.`,
 			},
 			"duration_grant": schema.StringAttribute{
 				Computed: true,
@@ -426,12 +438,23 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 								},
 								Description: `The DefaultBehavior message.`,
 							},
+							"delete_account": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The connectorId field.`,
+									},
+								},
+								Description: `The DeleteAccount message.`,
+							},
 						},
 						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
 							`` + "\n" +
 							`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
 							`  - defaultBehavior` + "\n" +
-							`  - account`,
+							`  - account` + "\n" +
+							`  - deleteAccount`,
 					},
 					"delegated_provision": schema.SingleNestedAttribute{
 						Computed: true,

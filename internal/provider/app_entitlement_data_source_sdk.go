@@ -48,6 +48,12 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 			complianceFrameworkIds = append(complianceFrameworkIds, complianceFrameworkIdsItem.ValueString())
 		}
 	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
 	var excludeAppIds []string
 	if r.ExcludeAppIds != nil {
 		excludeAppIds = make([]string, 0, len(r.ExcludeAppIds))
@@ -162,6 +168,7 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 		AppIds:                 appIds,
 		AppUserIds:             appUserIds,
 		ComplianceFrameworkIds: complianceFrameworkIds,
+		DisplayName:            displayName,
 		ExcludeAppIds:          excludeAppIds,
 		ExcludeAppUserIds:      excludeAppUserIds,
 		ExcludeResourceTypeIds: excludeResourceTypeIds,
@@ -240,6 +247,12 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 				} else {
 					r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
 					r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+				}
+				if resp.DeprovisionerPolicy.ConnectorProvision.DeleteAccount == nil {
+					r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount = nil
+				} else {
+					r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
+					r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
 				}
 			}
 			if resp.DeprovisionerPolicy.DelegatedProvision == nil {
@@ -346,6 +359,12 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 				} else {
 					r.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
 					r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+				}
+				if resp.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
+					r.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
+				} else {
+					r.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
+					r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
 				}
 			}
 			if resp.ProvisionPolicy.DelegatedProvision == nil {

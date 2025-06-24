@@ -33,6 +33,7 @@ type AppEntitlementsDataSourceModel struct {
 	AppIds                 []types.String               `tfsdk:"app_ids"`
 	AppUserIds             []types.String               `tfsdk:"app_user_ids"`
 	ComplianceFrameworkIds []types.String               `tfsdk:"compliance_framework_ids"`
+	DisplayName            types.String                 `tfsdk:"display_name"`
 	ExcludeAppIds          []types.String               `tfsdk:"exclude_app_ids"`
 	ExcludeAppUserIds      []types.String               `tfsdk:"exclude_app_user_ids"`
 	ExcludeResourceTypeIds []types.String               `tfsdk:"exclude_resource_type_ids"`
@@ -84,6 +85,10 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Search for app entitlements that are part of these compliace frameworks.`,
+			},
+			"display_name": schema.StringAttribute{
+				Optional:    true,
+				Description: `The displayName field.`,
 			},
 			"exclude_app_ids": schema.ListAttribute{
 				Optional:    true,
@@ -203,12 +208,23 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 													},
 													Description: `The DefaultBehavior message.`,
 												},
+												"delete_account": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"connector_id": schema.StringAttribute{
+															Computed:    true,
+															Description: `The connectorId field.`,
+														},
+													},
+													Description: `The DeleteAccount message.`,
+												},
 											},
 											MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
 												`` + "\n" +
 												`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
 												`  - defaultBehavior` + "\n" +
-												`  - account`,
+												`  - account` + "\n" +
+												`  - deleteAccount`,
 										},
 										"delegated_provision": schema.SingleNestedAttribute{
 											Computed: true,
@@ -394,12 +410,23 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 													},
 													Description: `The DefaultBehavior message.`,
 												},
+												"delete_account": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"connector_id": schema.StringAttribute{
+															Computed:    true,
+															Description: `The connectorId field.`,
+														},
+													},
+													Description: `The DeleteAccount message.`,
+												},
 											},
 											MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
 												`` + "\n" +
 												`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
 												`  - defaultBehavior` + "\n" +
-												`  - account`,
+												`  - account` + "\n" +
+												`  - deleteAccount`,
 										},
 										"delegated_provision": schema.SingleNestedAttribute{
 											Computed: true,

@@ -43,8 +43,8 @@ func (e *Severity) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// The Marker message.
-type Marker struct {
+// The EditorMarker message.
+type EditorMarker struct {
 	// The endColumn field.
 	EndColumn *int `json:"endColumn,omitempty"`
 	// The endLineNumber field.
@@ -59,42 +59,42 @@ type Marker struct {
 	StartLineNumber *int `json:"startLineNumber,omitempty"`
 }
 
-func (o *Marker) GetEndColumn() *int {
+func (o *EditorMarker) GetEndColumn() *int {
 	if o == nil {
 		return nil
 	}
 	return o.EndColumn
 }
 
-func (o *Marker) GetEndLineNumber() *int {
+func (o *EditorMarker) GetEndLineNumber() *int {
 	if o == nil {
 		return nil
 	}
 	return o.EndLineNumber
 }
 
-func (o *Marker) GetMessage() *string {
+func (o *EditorMarker) GetMessage() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Message
 }
 
-func (o *Marker) GetSeverity() *Severity {
+func (o *EditorMarker) GetSeverity() *Severity {
 	if o == nil {
 		return nil
 	}
 	return o.Severity
 }
 
-func (o *Marker) GetStartColumn() *int {
+func (o *EditorMarker) GetStartColumn() *int {
 	if o == nil {
 		return nil
 	}
 	return o.StartColumn
 }
 
-func (o *Marker) GetStartLineNumber() *int {
+func (o *EditorMarker) GetStartLineNumber() *int {
 	if o == nil {
 		return nil
 	}

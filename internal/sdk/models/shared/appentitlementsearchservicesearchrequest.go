@@ -54,6 +54,8 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	AppUserIds []string `json:"appUserIds,omitempty"`
 	// Search for app entitlements that are part of these compliace frameworks.
 	ComplianceFrameworkIds []string `json:"complianceFrameworkIds,omitempty"`
+	// The displayName field.
+	DisplayName *string `json:"displayName,omitempty"`
 	// Exclude app entitlements from the results that are in these app IDs.
 	ExcludeAppIds []string `json:"excludeAppIds,omitempty"`
 	// Exclude app entitlements from the results that these app users have granted.
@@ -117,6 +119,13 @@ func (o *AppEntitlementSearchServiceSearchRequest) GetComplianceFrameworkIds() [
 		return nil
 	}
 	return o.ComplianceFrameworkIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
 }
 
 func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeAppIds() []string {

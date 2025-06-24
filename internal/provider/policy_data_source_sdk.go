@@ -330,6 +330,12 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 									steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
 									steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
 								}
+								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
+									steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
+								} else {
+									steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
+									steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
+								}
 							}
 							if stepsItem.Provision.ProvisionPolicy.DelegatedProvision == nil {
 								steps.Provision.ProvisionPolicy.DelegatedProvision = nil
