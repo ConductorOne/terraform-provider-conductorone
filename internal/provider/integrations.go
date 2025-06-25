@@ -69,7 +69,6 @@ func getIntegrationResources() []func() resource.Resource {
 		NewIntegrationGrafanaResource,
 		NewIntegrationGreenhouseResource,
 		NewIntegrationGustoResource,
-		NewIntegrationHttpResource,
 		NewIntegrationHubspotResource,
 		NewIntegrationIncidentIoResource,
 		NewIntegrationJamfResource,
