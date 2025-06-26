@@ -9896,6 +9896,44 @@ components:
             title: Task Actions Service Approve With Step Up Response
             type: object
             x-speakeasy-name-override: TaskActionsServiceApproveWithStepUpResponse
+        c1.api.task.v1.TaskActionsServiceCloseRequestInput:
+            description: The TaskActionsServiceCloseRequest object lets you close or cancel a task.
+            properties:
+                comment:
+                    description: The comment field.
+                    readOnly: false
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskExpandMask'
+            title: Task Actions Service Close Request
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceCloseRequest
+        c1.api.task.v1.TaskActionsServiceCloseResponse:
+            description: The TaskActionsServiceCloseResponse returns a task view with paths indicating the location of expanded items in the array.
+            properties:
+                expanded:
+                    description: List of serialized related objects.
+                    items:
+                        additionalProperties: true
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        readOnly: true
+                        type: object
+                    nullable: true
+                    readOnly: true
+                    type: array
+                taskActionId:
+                    description: The ID of the task close action created by this request.
+                    readOnly: true
+                    type: string
+                taskView:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskView'
+            title: Task Actions Service Close Response
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceCloseResponse
         c1.api.task.v1.TaskActionsServiceCommentRequestInput:
             description: The TaskActionsServiceCommentRequest object lets you create a new comment on a task.
             properties:
@@ -18665,6 +18703,35 @@ paths:
                 - Task
             x-speakeasy-group: TaskActions
             x-speakeasy-name-override: ApproveWithStepUp
+    /api/v1/tasks/{task_id}/action/close:
+        post:
+            description: Invokes the c1.api.task.v1.TaskActionsService.Close method.
+            operationId: c1.api.task.v1.TaskActionsService.Close
+            parameters:
+                - in: path
+                  name: task_id
+                  required: true
+                  schema:
+                    description: The taskId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceCloseRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceCloseResponse'
+                    description: The TaskActionsServiceCloseResponse returns a task view with paths indicating the location of expanded items in the array.
+            summary: Close
+            tags:
+                - Task
+            x-speakeasy-group: TaskActions
+            x-speakeasy-name-override: Close
     /api/v1/tasks/{task_id}/action/comment:
         post:
             description: Invokes the c1.api.task.v1.TaskActionsService.Comment method.
