@@ -66,7 +66,7 @@ func (r *IntegrationAzureAdResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -99,7 +99,7 @@ func (r *IntegrationAzureAdResourceModel) getConfig() (map[string]interface{}, b
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

@@ -66,7 +66,7 @@ func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -129,7 +129,7 @@ func (r *IntegrationNetsuiteResourceModel) getConfig() (map[string]interface{}, 
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

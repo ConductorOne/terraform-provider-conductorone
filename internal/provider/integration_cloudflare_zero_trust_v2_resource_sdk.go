@@ -66,7 +66,7 @@ func (r *IntegrationCloudflareZeroTrustV2ResourceModel) ToUpdateSDKType() (*shar
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -123,7 +123,7 @@ func (r *IntegrationCloudflareZeroTrustV2ResourceModel) getConfig() (map[string]
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

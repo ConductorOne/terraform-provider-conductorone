@@ -66,7 +66,7 @@ func (r *IntegrationOktaAwsFederationResourceModel) ToUpdateSDKType() (*shared.C
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -123,7 +123,7 @@ func (r *IntegrationOktaAwsFederationResourceModel) getConfig() (map[string]inte
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

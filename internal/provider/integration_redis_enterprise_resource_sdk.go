@@ -66,7 +66,7 @@ func (r *IntegrationRedisEnterpriseResourceModel) ToUpdateSDKType() (*shared.Con
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -123,7 +123,7 @@ func (r *IntegrationRedisEnterpriseResourceModel) getConfig() (map[string]interf
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

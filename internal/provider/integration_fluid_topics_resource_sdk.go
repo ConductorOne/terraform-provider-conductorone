@@ -66,7 +66,7 @@ func (r *IntegrationFluidTopicsResourceModel) ToUpdateSDKType() (*shared.Connect
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -111,7 +111,7 @@ func (r *IntegrationFluidTopicsResourceModel) getConfig() (map[string]interface{
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

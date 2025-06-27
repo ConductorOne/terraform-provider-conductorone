@@ -66,7 +66,7 @@ func (r *IntegrationAzureInfrastructureResourceModel) ToUpdateSDKType() (*shared
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -147,7 +147,7 @@ func (r *IntegrationAzureInfrastructureResourceModel) getConfig() (map[string]in
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
