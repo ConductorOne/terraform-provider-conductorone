@@ -66,7 +66,7 @@ func (r *IntegrationTorqResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -111,7 +111,7 @@ func (r *IntegrationTorqResourceModel) getConfig() (map[string]interface{}, bool
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

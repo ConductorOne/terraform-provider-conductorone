@@ -66,7 +66,7 @@ func (r *IntegrationSlackResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -105,7 +105,7 @@ func (r *IntegrationSlackResourceModel) getConfig() (map[string]interface{}, boo
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

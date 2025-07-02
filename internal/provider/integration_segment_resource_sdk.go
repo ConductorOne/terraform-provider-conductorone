@@ -66,7 +66,7 @@ func (r *IntegrationSegmentResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -105,7 +105,7 @@ func (r *IntegrationSegmentResourceModel) getConfig() (map[string]interface{}, b
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

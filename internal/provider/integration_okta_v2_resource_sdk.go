@@ -66,7 +66,7 @@ func (r *IntegrationOktaV2ResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -129,7 +129,7 @@ func (r *IntegrationOktaV2ResourceModel) getConfig() (map[string]interface{}, bo
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

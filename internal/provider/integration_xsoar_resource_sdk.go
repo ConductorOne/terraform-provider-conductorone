@@ -66,7 +66,7 @@ func (r *IntegrationXsoarResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -111,7 +111,7 @@ func (r *IntegrationXsoarResourceModel) getConfig() (map[string]interface{}, boo
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

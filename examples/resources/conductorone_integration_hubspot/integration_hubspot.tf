@@ -3,5 +3,6 @@ resource "conductorone_integration_hubspot" "hubspot" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  hubspot_token = "..."
+  hubspot_token       = "..."
+  hubspot_user_status = false
 }

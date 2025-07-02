@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-	"strconv"
+
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -66,7 +66,7 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -101,12 +101,6 @@ func (r *IntegrationTeamcityResourceModel) populateConfig() map[string]interface
 		configValues["teamcity_instance_url"] = teamcityInstanceUrl
 	}
 
-	teamcitySyncGrantSources := new(string)
-	if !r.TeamcitySyncGrantSources.IsUnknown() && !r.TeamcitySyncGrantSources.IsNull() {
-		*teamcitySyncGrantSources = strconv.FormatBool(r.TeamcitySyncGrantSources.ValueBool())
-		configValues["teamcity_sync_grant_sources"] = teamcitySyncGrantSources
-	}
-
 	return configValues
 }
 
@@ -117,7 +111,7 @@ func (r *IntegrationTeamcityResourceModel) getConfig() (map[string]interface{}, 
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -172,7 +166,6 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -180,19 +173,6 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.C
 				if v, ok := values["teamcity_instance_url"]; ok {
 					if val, ok := v.(string); ok {
 						r.TeamcityInstanceUrl = types.StringValue(val)
-					}
-				}
-
-				if localV, ok := configValues["teamcity_sync_grant_sources"]; ok {
-					if v, ok := values["teamcity_sync_grant_sources"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.TeamcitySyncGrantSources = types.BoolValue(bv)
-								}
-							}
-						}
 					}
 				}
 
@@ -236,7 +216,6 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -244,19 +223,6 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *share
 				if v, ok := values["teamcity_instance_url"]; ok {
 					if val, ok := v.(string); ok {
 						r.TeamcityInstanceUrl = types.StringValue(val)
-					}
-				}
-
-				if localV, ok := configValues["teamcity_sync_grant_sources"]; ok {
-					if v, ok := values["teamcity_sync_grant_sources"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.TeamcitySyncGrantSources = types.BoolValue(bv)
-								}
-							}
-						}
 					}
 				}
 

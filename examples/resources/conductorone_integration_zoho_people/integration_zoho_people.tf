@@ -3,8 +3,8 @@ resource "conductorone_integration_zoho_people" "zoho_people" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  client_id      = "..."
-  client_secret  = "..."
-  refresh_token  = "..."
-  account_domain = "..."
+  zoho_client_id     = "..."
+  zoho_client_secret = "..."
+  zoho_refresh_token = "..."
+  domain_account     = "..."
 }

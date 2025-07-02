@@ -35,16 +35,16 @@ type IntegrationZohoPeopleResource struct {
 
 // IntegrationZohoPeopleResourceModel describes the resource data model.
 type IntegrationZohoPeopleResourceModel struct {
-	AppID         types.String   `tfsdk:"app_id"`
-	CreatedAt     types.String   `tfsdk:"created_at"`
-	DeletedAt     types.String   `tfsdk:"deleted_at"`
-	ID            types.String   `tfsdk:"id"`
-	UpdatedAt     types.String   `tfsdk:"updated_at"`
-	UserIds       []types.String `tfsdk:"user_ids"`
-	ClientId      types.String   `tfsdk:"client_id"`
-	ClientSecret  types.String   `tfsdk:"client_secret"`
-	RefreshToken  types.String   `tfsdk:"refresh_token"`
-	AccountDomain types.String   `tfsdk:"account_domain"`
+	AppID            types.String   `tfsdk:"app_id"`
+	CreatedAt        types.String   `tfsdk:"created_at"`
+	DeletedAt        types.String   `tfsdk:"deleted_at"`
+	ID               types.String   `tfsdk:"id"`
+	UpdatedAt        types.String   `tfsdk:"updated_at"`
+	UserIds          []types.String `tfsdk:"user_ids"`
+	ZohoClientId     types.String   `tfsdk:"zoho_client_id"`
+	ZohoClientSecret types.String   `tfsdk:"zoho_client_secret"`
+	ZohoRefreshToken types.String   `tfsdk:"zoho_refresh_token"`
+	DomainAccount    types.String   `tfsdk:"domain_account"`
 }
 
 func (r *IntegrationZohoPeopleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -94,21 +94,21 @@ func (r *IntegrationZohoPeopleResource) Schema(ctx context.Context, req resource
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"client_id": &schema.StringAttribute{
+			"zoho_client_id": &schema.StringAttribute{
 				Optional:    true,
 				Description: `Client ID`,
 			},
-			"client_secret": &schema.StringAttribute{
+			"zoho_client_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
 				Description: `Client Secret`,
 			},
-			"refresh_token": &schema.StringAttribute{
+			"zoho_refresh_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
 				Description: `Refresh Token`,
 			},
-			"account_domain": &schema.StringAttribute{
+			"domain_account": &schema.StringAttribute{
 				Optional:    true,
 				Description: `Account Domain`,
 			},

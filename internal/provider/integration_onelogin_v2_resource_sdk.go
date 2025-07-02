@@ -66,7 +66,7 @@ func (r *IntegrationOneloginV2ResourceModel) ToUpdateSDKType() (*shared.Connecto
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -117,7 +117,7 @@ func (r *IntegrationOneloginV2ResourceModel) getConfig() (map[string]interface{}
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

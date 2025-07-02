@@ -9,6 +9,10 @@ const (
 	envConfigType = "type.googleapis.com/c1.api.app.v1.EnvConfig"
 )
 
+type StringValue struct {
+	StringValue interface{} `json:"stringValue"`
+}
+
 func makeConnectorConfig(config map[string]interface{}) *shared.Config {
 	if config == nil {
 		config = make(map[string]interface{})
@@ -19,5 +23,11 @@ func makeConnectorConfig(config map[string]interface{}) *shared.Config {
 		AdditionalProperties: map[string]interface{}{
 			"configuration": config,
 		},
+	}
+}
+
+func makeStringValue(value interface{}) *StringValue {
+	return &StringValue{
+		StringValue: value,
 	}
 }
