@@ -402,7 +402,6 @@ func (s *AppEntitlementSearch) Search(ctx context.Context, request *shared.AppEn
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
 	}
-
 	res.Next = func() (*operations.C1APIAppV1AppEntitlementSearchServiceSearchResponse, error) {
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -445,6 +444,7 @@ func (s *AppEntitlementSearch) Search(ctx context.Context, request *shared.AppEn
 				AppIds:                 request.AppIds,
 				AppUserIds:             request.AppUserIds,
 				ComplianceFrameworkIds: request.ComplianceFrameworkIds,
+				DisplayName:            request.DisplayName,
 				ExcludeAppIds:          request.ExcludeAppIds,
 				ExcludeAppUserIds:      request.ExcludeAppUserIds,
 				ExcludeResourceTypeIds: request.ExcludeResourceTypeIds,

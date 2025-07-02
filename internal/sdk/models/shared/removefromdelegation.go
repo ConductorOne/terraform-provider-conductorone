@@ -2,14 +2,38 @@
 
 package shared
 
-// RemoveFromDelegation - RemoveFromDelegation: find all users that have the target user as their delegated user, and clear the delegation.
+// RemoveFromDelegation - RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
+//
+// This message contains a oneof named replacement_user. Only a single field of the following list may be set at a time:
+//   - replacementUserIdCel
+//   - replacementUserRef
 type RemoveFromDelegation struct {
+	// The user who will replace the target user's delegation
+	// This field is part of the `replacement_user` oneof.
+	// See the documentation for `c1.api.automations.v1.RemoveFromDelegation` for more details.
+	ReplacementUserIDCel *string `json:"replacementUserIdCel,omitempty"`
+	// A reference to a user.
+	UserRef *UserRef `json:"replacementUserRef,omitempty"`
 	// If true, the step will use the subject user of the automation as the subject.
 	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 	// The userIdCel field.
 	UserIDCel *string `json:"userIdCel,omitempty"`
 	// A reference to a user.
-	UserRef *UserRef `json:"userRef,omitempty"`
+	UserRef1 *UserRef `json:"userRef,omitempty"`
+}
+
+func (o *RemoveFromDelegation) GetReplacementUserIDCel() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ReplacementUserIDCel
+}
+
+func (o *RemoveFromDelegation) GetUserRef() *UserRef {
+	if o == nil {
+		return nil
+	}
+	return o.UserRef
 }
 
 func (o *RemoveFromDelegation) GetUseSubjectUser() *bool {
@@ -26,9 +50,9 @@ func (o *RemoveFromDelegation) GetUserIDCel() *string {
 	return o.UserIDCel
 }
 
-func (o *RemoveFromDelegation) GetUserRef() *UserRef {
+func (o *RemoveFromDelegation) GetUserRef1() *UserRef {
 	if o == nil {
 		return nil
 	}
-	return o.UserRef
+	return o.UserRef1
 }

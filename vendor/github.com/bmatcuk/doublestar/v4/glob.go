@@ -29,7 +29,6 @@ import (
 //
 // Note: users should _not_ count on the returned error,
 // doublestar.ErrBadPattern, being equal to path.ErrBadPattern.
-//
 func Glob(fsys fs.FS, pattern string, opts ...GlobOption) ([]string, error) {
 	if !ValidatePattern(pattern) {
 		return nil, ErrBadPattern

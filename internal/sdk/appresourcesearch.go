@@ -12,8 +12,10 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/errors"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/spyzhov/ajson"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 type AppResourceSearch struct {
@@ -268,6 +270,58 @@ func (s *AppResourceSearch) SearchAppResources(ctx context.Context, request *sha
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
+	}
+	res.Next = func() (*operations.C1APIAppV1AppResourceSearchSearchAppResourcesResponse, error) {
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+
+		b, err := ajson.Unmarshal(rawBody)
+		if err != nil {
+			return nil, err
+		}
+		nC, err := ajson.Eval(b, "$.nextPageToken")
+		if err != nil {
+			return nil, err
+		}
+		var nCVal string
+
+		if nC.IsNumeric() {
+			numVal, err := nC.GetNumeric()
+			if err != nil {
+				return nil, err
+			}
+			// GetNumeric returns as float64 so convert to the appropriate type.
+			nCVal = strconv.FormatFloat(numVal, 'f', 0, 64)
+		} else {
+			val, err := nC.Value()
+			if err != nil {
+				return nil, err
+			}
+			if val == nil || val == "" {
+				return nil, nil
+			}
+			nCVal = val.(string)
+		}
+
+		return s.SearchAppResources(
+			ctx,
+			&shared.SearchAppResourcesRequest{
+				AppID:                          request.AppID,
+				AppUserIds:                     request.AppUserIds,
+				ExcludeDeletedResourceBindings: request.ExcludeDeletedResourceBindings,
+				ExcludeResourceIds:             request.ExcludeResourceIds,
+				ExcludeResourceTypeTraitIds:    request.ExcludeResourceTypeTraitIds,
+				PageSize:                       request.PageSize,
+				PageToken:                      &nCVal,
+				Query:                          request.Query,
+				Refs:                           request.Refs,
+				ResourceIds:                    request.ResourceIds,
+				ResourceTypeIds:                request.ResourceTypeIds,
+				ResourceTypeTraitIds:           request.ResourceTypeTraitIds,
+			},
+		)
 	}
 
 	switch {

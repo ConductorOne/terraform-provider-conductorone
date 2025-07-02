@@ -140,11 +140,15 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 		if resp.Expanded != nil {
 		}
 		if resp.List != nil {
-			r.List = []tfTypes.AppResourceView{}
-			if len(r.List) > len(resp.List) {
-				r.List = r.List[:len(resp.List)]
+			if r.List == nil {
+				r.List = []tfTypes.AppResourceView{}
+				if len(r.List) > len(resp.List) {
+					r.List = r.List[:len(resp.List)]
+				}
 			}
+			initListCount := len(r.List)
 			for listCount, listItem := range resp.List {
+				listCount = initListCount + listCount
 				var list tfTypes.AppResourceView
 				if listItem.AppResource == nil {
 					list.AppResource = nil

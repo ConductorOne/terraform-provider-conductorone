@@ -2,8 +2,53 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type TriggerTypes string
+
+const (
+	TriggerTypesTriggerTypeUnspecified       TriggerTypes = "TRIGGER_TYPE_UNSPECIFIED"
+	TriggerTypesTriggerTypeManual            TriggerTypes = "TRIGGER_TYPE_MANUAL"
+	TriggerTypesTriggerTypeUserProfileChange TriggerTypes = "TRIGGER_TYPE_USER_PROFILE_CHANGE"
+	TriggerTypesTriggerTypeAppUserCreate     TriggerTypes = "TRIGGER_TYPE_APP_USER_CREATE"
+	TriggerTypesTriggerTypeAppUserUpdate     TriggerTypes = "TRIGGER_TYPE_APP_USER_UPDATE"
+	TriggerTypesTriggerTypeUnusedAccess      TriggerTypes = "TRIGGER_TYPE_UNUSED_ACCESS"
+)
+
+func (e TriggerTypes) ToPointer() *TriggerTypes {
+	return &e
+}
+func (e *TriggerTypes) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "TRIGGER_TYPE_UNSPECIFIED":
+		fallthrough
+	case "TRIGGER_TYPE_MANUAL":
+		fallthrough
+	case "TRIGGER_TYPE_USER_PROFILE_CHANGE":
+		fallthrough
+	case "TRIGGER_TYPE_APP_USER_CREATE":
+		fallthrough
+	case "TRIGGER_TYPE_APP_USER_UPDATE":
+		fallthrough
+	case "TRIGGER_TYPE_UNUSED_ACCESS":
+		*e = TriggerTypes(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for TriggerTypes: %v", v)
+	}
+}
+
 // The SearchAutomationsRequest message.
 type SearchAutomationsRequest struct {
+	// The appId field.
+	AppID *string `json:"appId,omitempty"`
 	// The pageSize field.
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
@@ -12,6 +57,15 @@ type SearchAutomationsRequest struct {
 	Query *string `json:"query,omitempty"`
 	// The refs field.
 	Refs []*AutomationTemplateRef `json:"refs,omitempty"`
+	// The triggerTypes field.
+	TriggerTypes []TriggerTypes `json:"triggerTypes,omitempty"`
+}
+
+func (o *SearchAutomationsRequest) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
 }
 
 func (o *SearchAutomationsRequest) GetPageSize() *int {
@@ -40,4 +94,11 @@ func (o *SearchAutomationsRequest) GetRefs() []*AutomationTemplateRef {
 		return nil
 	}
 	return o.Refs
+}
+
+func (o *SearchAutomationsRequest) GetTriggerTypes() []TriggerTypes {
+	if o == nil {
+		return nil
+	}
+	return o.TriggerTypes
 }

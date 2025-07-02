@@ -292,6 +292,24 @@ func (r *AppResourcesDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
+	response, err := res.Next()
+	for {
+		if err != nil {
+			resp.Diagnostics.AddError("reading next results failed", debugResponse(response.RawResponse))
+			return
+		}
+		if response == nil {
+			break
+		}
+		resp.Diagnostics.Append(data.RefreshFromSharedSearchAppResourcesResponse(ctx, response.SearchAppResourcesResponse)...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
+
+		response, err = response.Next()
+	}
+
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

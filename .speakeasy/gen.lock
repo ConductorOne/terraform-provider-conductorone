@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 6f0cd023ab76f7f77e5e7c9efd633f3c
+  docChecksum: 9933ef584ff3034b8b80e8223c9544f9
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.561.0
   generationVersion: 2.628.0
-  releaseVersion: 1.4.0
-  configChecksum: 7621c3f1d5a334d59dd24c7cac603eee
+  releaseVersion: 1.4.1
+  configChecksum: a77da726dd50c5434829bfb7f766d2ba
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -474,6 +474,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apisystemlogv1systemlogservicelistevents.go
   - internal/sdk/models/operations/c1apitaskv1taskactionsserviceapprove.go
   - internal/sdk/models/operations/c1apitaskv1taskactionsserviceapprovewithstepup.go
+  - internal/sdk/models/operations/c1apitaskv1taskactionsserviceclose.go
   - internal/sdk/models/operations/c1apitaskv1taskactionsservicecomment.go
   - internal/sdk/models/operations/c1apitaskv1taskactionsservicedeny.go
   - internal/sdk/models/operations/c1apitaskv1taskactionsserviceescalatetoemergencyaccess.go
@@ -927,6 +928,8 @@ generatedFiles:
   - internal/sdk/models/shared/taskactionsserviceapproveresponse.go
   - internal/sdk/models/shared/taskactionsserviceapprovewithstepuprequest.go
   - internal/sdk/models/shared/taskactionsserviceapprovewithstepupresponse.go
+  - internal/sdk/models/shared/taskactionsservicecloserequest.go
+  - internal/sdk/models/shared/taskactionsservicecloseresponse.go
   - internal/sdk/models/shared/taskactionsservicecommentrequest.go
   - internal/sdk/models/shared/taskactionsservicecommentresponse.go
   - internal/sdk/models/shared/taskactionsservicedenyrequest.go
@@ -2625,6 +2628,14 @@ examples:
           application/json: {}
   c1.api.app.v1.ConnectorService.ValidateHTTPConnectorConfig:
     speakeasy-default-c1-api-app-v1-connector-service-validate-HTTP-connector-config:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.task.v1.TaskActionsService.Close:
+    speakeasy-default-c1-api-task-v1-task-actions-service-close:
+      parameters:
+        path:
+          task_id: "<id>"
       responses:
         "200":
           application/json: {}
