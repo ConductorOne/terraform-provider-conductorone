@@ -35,7 +35,7 @@ resource "conductorone_integration_vultr" "vultr" {
 ### Optional
 
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
-- `vultr_api_key` (String, Sensitive) API Key
+- `vultr_api_key` (String, Sensitive) API key
 
 ### Read-Only
 

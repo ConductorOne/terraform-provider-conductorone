@@ -66,7 +66,7 @@ func (r *IntegrationPantherResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -111,7 +111,7 @@ func (r *IntegrationPantherResourceModel) getConfig() (map[string]interface{}, b
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

@@ -21,7 +21,8 @@ resource "conductorone_integration_hubspot" "hubspot" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  hubspot_token = "..."
+  hubspot_token       = "..."
+  hubspot_user_status = false
 }
 ```
 
@@ -35,6 +36,7 @@ resource "conductorone_integration_hubspot" "hubspot" {
 ### Optional
 
 - `hubspot_token` (String, Sensitive) API client secret
+- `hubspot_user_status` (Boolean) Enable user status (requires additional permissions)
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

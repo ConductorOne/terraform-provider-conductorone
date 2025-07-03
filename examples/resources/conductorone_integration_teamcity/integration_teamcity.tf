@@ -3,7 +3,6 @@ resource "conductorone_integration_teamcity" "teamcity" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  teamcity_access_token       = "..."
-  teamcity_instance_url       = "..."
-  teamcity_sync_grant_sources = false
+  teamcity_access_token = "..."
+  teamcity_instance_url = "..."
 }

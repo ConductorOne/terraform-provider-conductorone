@@ -35,15 +35,14 @@ type IntegrationTeamcityResource struct {
 
 // IntegrationTeamcityResourceModel describes the resource data model.
 type IntegrationTeamcityResourceModel struct {
-	AppID                    types.String   `tfsdk:"app_id"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	DeletedAt                types.String   `tfsdk:"deleted_at"`
-	ID                       types.String   `tfsdk:"id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	UserIds                  []types.String `tfsdk:"user_ids"`
-	TeamcityAccessToken      types.String   `tfsdk:"teamcity_access_token"`
-	TeamcityInstanceUrl      types.String   `tfsdk:"teamcity_instance_url"`
-	TeamcitySyncGrantSources types.Bool     `tfsdk:"teamcity_sync_grant_sources"`
+	AppID               types.String   `tfsdk:"app_id"`
+	CreatedAt           types.String   `tfsdk:"created_at"`
+	DeletedAt           types.String   `tfsdk:"deleted_at"`
+	ID                  types.String   `tfsdk:"id"`
+	UpdatedAt           types.String   `tfsdk:"updated_at"`
+	UserIds             []types.String `tfsdk:"user_ids"`
+	TeamcityAccessToken types.String   `tfsdk:"teamcity_access_token"`
+	TeamcityInstanceUrl types.String   `tfsdk:"teamcity_instance_url"`
 }
 
 func (r *IntegrationTeamcityResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -101,10 +100,6 @@ func (r *IntegrationTeamcityResource) Schema(ctx context.Context, req resource.S
 			"teamcity_instance_url": &schema.StringAttribute{
 				Optional:    true,
 				Description: `TeamCity instance URL`,
-			},
-			"teamcity_sync_grant_sources": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Sync grant sources`,
 			},
 		},
 	}

@@ -66,7 +66,7 @@ func (r *IntegrationMicrosoftEntraResourceModel) ToUpdateSDKType() (*shared.Conn
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -131,6 +131,12 @@ func (r *IntegrationMicrosoftEntraResourceModel) populateConfig() map[string]int
 		configValues["entra_schedule_scim_provisioning"] = entraScheduleScimProvisioning
 	}
 
+	entraDisableAuditLogFeed := new(string)
+	if !r.EntraDisableAuditLogFeed.IsUnknown() && !r.EntraDisableAuditLogFeed.IsNull() {
+		*entraDisableAuditLogFeed = strconv.FormatBool(r.EntraDisableAuditLogFeed.ValueBool())
+		configValues["entra_disable_audit_log_feed"] = entraDisableAuditLogFeed
+	}
+
 	return configValues
 }
 
@@ -141,7 +147,7 @@ func (r *IntegrationMicrosoftEntraResourceModel) getConfig() (map[string]interfa
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -257,6 +263,19 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromGetResponse(resp *sh
 					}
 				}
 
+				if localV, ok := configValues["entra_disable_audit_log_feed"]; ok {
+					if v, ok := values["entra_disable_audit_log_feed"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EntraDisableAuditLogFeed = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
 			}
 		}
 	}
@@ -352,6 +371,19 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromCreateResponse(resp 
 							if err == nil {
 								if localV != nil || (localV == nil && !bv) {
 									r.EntraScheduleScimProvisioning = types.BoolValue(bv)
+								}
+							}
+						}
+					}
+				}
+
+				if localV, ok := configValues["entra_disable_audit_log_feed"]; ok {
+					if v, ok := values["entra_disable_audit_log_feed"]; ok {
+						if val, ok := v.(string); ok {
+							bv, err := strconv.ParseBool(val)
+							if err == nil {
+								if localV != nil || (localV == nil && !bv) {
+									r.EntraDisableAuditLogFeed = types.BoolValue(bv)
 								}
 							}
 						}

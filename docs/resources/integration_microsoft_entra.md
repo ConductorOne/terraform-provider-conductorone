@@ -28,6 +28,7 @@ resource "conductorone_integration_microsoft_entra" "microsoft_entra" {
   entra_graph_domain               = "..."
   entra_sign_in_activity           = false
   entra_schedule_scim_provisioning = false
+  entra_disable_audit_log_feed     = false
 }
 ```
 
@@ -42,6 +43,7 @@ resource "conductorone_integration_microsoft_entra" "microsoft_entra" {
 
 - `entra_client_id` (String) Entra client ID
 - `entra_client_secret` (String, Sensitive) Entra client secret
+- `entra_disable_audit_log_feed` (Boolean) Disable resource changed events feed
 - `entra_graph_domain` (String) Entra Graph domain
 - `entra_schedule_scim_provisioning` (Boolean) Schedule SCIM provisioning
 - `entra_sign_in_activity` (Boolean) Fetch user sign-in activity

@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const coupaCatalogID = "2rSHEoPoq5CS89JAUevDbYBS3uA"
+const coupaCatalogID = "2DEn2tGMGD2KR6uKAAAWS3VVJV6"
 
 func (r *IntegrationCoupaResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(coupaCatalogID)
@@ -21,7 +21,7 @@ func (r *IntegrationCoupaResourceModel) ToCreateDelegatedSDKType() *shared.Conne
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("Coupa v2"),
+		DisplayName: sdk.String("Coupa"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -66,7 +66,7 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -75,7 +75,7 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Coupa v2"),
+		DisplayName: sdk.String("Coupa"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(coupaCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
@@ -117,7 +117,7 @@ func (r *IntegrationCoupaResourceModel) getConfig() (map[string]interface{}, boo
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
