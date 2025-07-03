@@ -70,6 +70,10 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	MembershipType []MembershipType `json:"membershipType,omitempty"`
 	// Restrict results to only those who have expiring app entitlement user bindings.
 	OnlyGetExpiring *bool `json:"onlyGetExpiring,omitempty"`
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 	// Query the app entitlements with a fuzzy search on display name and description.
 	Query *string `json:"query,omitempty"`
 	// The refs field.
@@ -175,6 +179,20 @@ func (o *AppEntitlementSearchServiceSearchRequest) GetOnlyGetExpiring() *bool {
 		return nil
 	}
 	return o.OnlyGetExpiring
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *AppEntitlementSearchServiceSearchRequest) GetQuery() *string {

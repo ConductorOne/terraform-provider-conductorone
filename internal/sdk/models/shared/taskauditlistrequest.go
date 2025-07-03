@@ -4,10 +4,28 @@ package shared
 
 // The TaskAuditListRequest message.
 type TaskAuditListRequest struct {
+	// The pageSize field.
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 	// The refs field.
 	Refs []TaskAuditViewRef `json:"refs,omitempty"`
 	// The taskId field.
 	TaskID *string `json:"taskId,omitempty"`
+}
+
+func (o *TaskAuditListRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *TaskAuditListRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *TaskAuditListRequest) GetRefs() []TaskAuditViewRef {

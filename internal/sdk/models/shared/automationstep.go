@@ -35,7 +35,12 @@ type AutomationStep struct {
 	CreateAccessReview *CreateAccessReview `json:"createAccessReview,omitempty"`
 	// The CreateRevokeTasks message.
 	CreateRevokeTasks *CreateRevokeTasks `json:"createRevokeTasks,omitempty"`
-	// RemoveFromDelegation: find all users that have the target user as their delegated user, and clear the delegation.
+	// RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
+	//
+	// This message contains a oneof named replacement_user. Only a single field of the following list may be set at a time:
+	//   - replacementUserIdCel
+	//   - replacementUserRef
+	//
 	RemoveFromDelegation *RemoveFromDelegation `json:"removeFromDelegation,omitempty"`
 	// RunAutomation: kick off the execution of an automation template.
 	//

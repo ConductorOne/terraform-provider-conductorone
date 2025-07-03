@@ -100,6 +100,18 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	} else {
 		onlyGetExpiring = nil
 	}
+	pageSize := new(int)
+	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
+		*pageSize = int(r.PageSize.ValueInt32())
+	} else {
+		pageSize = nil
+	}
+	pageToken := new(string)
+	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
+		*pageToken = r.PageToken.ValueString()
+	} else {
+		pageToken = nil
+	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -176,6 +188,8 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 		IsAutomated:            isAutomated,
 		MembershipType:         membershipType,
 		OnlyGetExpiring:        onlyGetExpiring,
+		PageSize:               pageSize,
+		PageToken:              pageToken,
 		Query:                  query,
 		Refs:                   refs,
 		ResourceIds:            resourceIds,
@@ -193,11 +207,15 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 
 	if resp != nil {
 		if resp.List != nil {
-			r.List = []tfTypes.AppEntitlementView{}
-			if len(r.List) > len(resp.List) {
-				r.List = r.List[:len(resp.List)]
+			if r.List == nil {
+				r.List = []tfTypes.AppEntitlementView{}
+				if len(r.List) > len(resp.List) {
+					r.List = r.List[:len(resp.List)]
+				}
 			}
+			initListCount := len(r.List)
 			for listCount, listItem := range resp.List {
+				listCount = initListCount + listCount
 				var list tfTypes.AppEntitlementView
 				if listItem.AppEntitlement == nil {
 					list.AppEntitlement = nil

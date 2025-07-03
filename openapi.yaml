@@ -5049,8 +5049,26 @@ components:
                     description: The displayName field.
                     readOnly: false
                     type: string
+                draftAutomationSteps:
+                    description: The draftAutomationSteps field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationStep'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                draftTriggers:
+                    description: The draftTriggers field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.AutomationTrigger'
+                    nullable: true
+                    readOnly: false
+                    type: array
                 enabled:
                     description: The enabled field.
+                    readOnly: false
+                    type: boolean
+                isDraft:
+                    description: The isDraft field.
                     readOnly: false
                     type: boolean
                 triggers:
@@ -5230,9 +5248,24 @@ components:
             type: object
             x-speakeasy-name-override: ReassignAction
         c1.api.automations.v1.RemoveFromDelegation:
-            description: 'RemoveFromDelegation: find all users that have the target user as their delegated user, and clear the delegation.'
+            description: |
+                RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
+
+                This message contains a oneof named replacement_user. Only a single field of the following list may be set at a time:
+                  - replacementUserIdCel
+                  - replacementUserRef
             nullable: true
             properties:
+                replacementUserIdCel:
+                    description: |-
+                        The user who will replace the target user's delegation
+                        This field is part of the `replacement_user` oneof.
+                        See the documentation for `c1.api.automations.v1.RemoveFromDelegation` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                replacementUserRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
                 useSubjectUser:
                     description: If true, the step will use the subject user of the automation as the subject.
                     readOnly: false
@@ -5439,6 +5472,20 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                triggerTypes:
+                    description: The triggerTypes field.
+                    items:
+                        enum:
+                            - TRIGGER_TYPE_UNSPECIFIED
+                            - TRIGGER_TYPE_MANUAL
+                            - TRIGGER_TYPE_USER_PROFILE_CHANGE
+                            - TRIGGER_TYPE_APP_USER_CREATE
+                            - TRIGGER_TYPE_APP_USER_UPDATE
+                            - TRIGGER_TYPE_UNUSED_ACCESS
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
             title: Search Automations Request
             type: object
             x-speakeasy-name-override: SearchAutomationsRequest
@@ -5506,6 +5553,18 @@ components:
                     $ref: '#/components/schemas/c1.api.automations.v1.CloseAction'
                 reassign:
                     $ref: '#/components/schemas/c1.api.automations.v1.ReassignAction'
+                taskTypes:
+                    description: The taskTypes field.
+                    items:
+                        enum:
+                            - TASK_TYPE_UNSPECIFIED
+                            - TASK_TYPE_REQUEST
+                            - TASK_TYPE_REVOKE
+                            - TASK_TYPE_REVIEW
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
             title: Task Action
             type: object
             x-speakeasy-name-override: TaskAction
@@ -5530,6 +5589,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                catalogIdsCel:
+                    description: CEL expression to dynamically select catalog IDs. If provided, overrides catalog_ids.
+                    readOnly: false
+                    type: string
                 useSubjectUser:
                     description: If true, the step will use the subject user of the automation as the subject.
                     readOnly: false
@@ -9896,6 +9959,44 @@ components:
             title: Task Actions Service Approve With Step Up Response
             type: object
             x-speakeasy-name-override: TaskActionsServiceApproveWithStepUpResponse
+        c1.api.task.v1.TaskActionsServiceCloseRequestInput:
+            description: The TaskActionsServiceCloseRequest object lets you close or cancel a task.
+            properties:
+                comment:
+                    description: The comment field.
+                    readOnly: false
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskExpandMask'
+            title: Task Actions Service Close Request
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceCloseRequest
+        c1.api.task.v1.TaskActionsServiceCloseResponse:
+            description: The TaskActionsServiceCloseResponse returns a task view with paths indicating the location of expanded items in the array.
+            properties:
+                expanded:
+                    description: List of serialized related objects.
+                    items:
+                        additionalProperties: true
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        readOnly: true
+                        type: object
+                    nullable: true
+                    readOnly: true
+                    type: array
+                taskActionId:
+                    description: The ID of the task close action created by this request.
+                    readOnly: true
+                    type: string
+                taskView:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskView'
+            title: Task Actions Service Close Response
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceCloseResponse
         c1.api.task.v1.TaskActionsServiceCommentRequestInput:
             description: The TaskActionsServiceCommentRequest object lets you create a new comment on a task.
             properties:
@@ -17615,6 +17716,14 @@ paths:
                 terraform-resource: null
             x-speakeasy-group: AppResourceSearch
             x-speakeasy-name-override: SearchAppResources
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/app_users:
         post:
             description: Search app users based on filters specified in the request body.
@@ -17751,6 +17860,14 @@ paths:
                 terraform-resource: null
             x-speakeasy-group: AppEntitlementSearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/grants:
         post:
             description: Invokes the c1.api.app.v1.AppEntitlementSearchService.SearchGrants method.
@@ -18665,6 +18782,35 @@ paths:
                 - Task
             x-speakeasy-group: TaskActions
             x-speakeasy-name-override: ApproveWithStepUp
+    /api/v1/tasks/{task_id}/action/close:
+        post:
+            description: Invokes the c1.api.task.v1.TaskActionsService.Close method.
+            operationId: c1.api.task.v1.TaskActionsService.Close
+            parameters:
+                - in: path
+                  name: task_id
+                  required: true
+                  schema:
+                    description: The taskId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceCloseRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceCloseResponse'
+                    description: The TaskActionsServiceCloseResponse returns a task view with paths indicating the location of expanded items in the array.
+            summary: Close
+            tags:
+                - Task
+            x-speakeasy-group: TaskActions
+            x-speakeasy-name-override: Close
     /api/v1/tasks/{task_id}/action/comment:
         post:
             description: Invokes the c1.api.task.v1.TaskActionsService.Comment method.

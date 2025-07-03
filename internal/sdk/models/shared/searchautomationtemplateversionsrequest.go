@@ -6,6 +6,10 @@ package shared
 type SearchAutomationTemplateVersionsRequest struct {
 	// The automationTemplateId field.
 	AutomationTemplateID *string `json:"automationTemplateId,omitempty"`
+	// The pageSize field.
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 }
 
 func (o *SearchAutomationTemplateVersionsRequest) GetAutomationTemplateID() *string {
@@ -13,4 +17,18 @@ func (o *SearchAutomationTemplateVersionsRequest) GetAutomationTemplateID() *str
 		return nil
 	}
 	return o.AutomationTemplateID
+}
+
+func (o *SearchAutomationTemplateVersionsRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchAutomationTemplateVersionsRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }

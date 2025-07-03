@@ -26,6 +26,8 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
     "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER"
   ]
   only_get_expiring = true
+  page_size         = 5
+  page_token        = "...my_page_token..."
   query             = "...my_query..."
   refs = [
     {

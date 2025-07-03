@@ -36,6 +36,8 @@ type PolicyDataSourceModel struct {
 	ID                       types.String                   `tfsdk:"id"`
 	IncludeDeleted           types.Bool                     `tfsdk:"include_deleted"`
 	NextPageToken            types.String                   `tfsdk:"next_page_token"`
+	PageSize                 types.Int32                    `tfsdk:"page_size"`
+	PageToken                types.String                   `tfsdk:"page_token"`
 	PolicySteps              map[string]tfTypes.PolicySteps `tfsdk:"policy_steps"`
 	PolicyType               types.String                   `tfsdk:"policy_type"`
 	PolicyTypes              []types.String                 `tfsdk:"policy_types"`
@@ -90,6 +92,14 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
 				Description: `The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
+			},
+			"page_size": schema.Int32Attribute{
+				Optional:    true,
+				Description: `The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)`,
+			},
+			"page_token": schema.StringAttribute{
+				Optional:    true,
+				Description: `The pageToken field.`,
 			},
 			"policy_steps": schema.MapNestedAttribute{
 				Computed: true,

@@ -25,6 +25,8 @@ data "conductorone_policy" "my_policy" {
     "..."
   ]
   include_deleted = false
+  page_size       = 7
+  page_token      = "...my_page_token..."
   policy_types = [
     "POLICY_TYPE_ACCESS_REQUEST"
   ]
@@ -45,6 +47,8 @@ data "conductorone_policy" "my_policy" {
 - `display_name` (String) Search for policies with a case insensitive match on the display name.
 - `exclude_policy_ids` (List of String) The policy IDs to exclude from the search.
 - `include_deleted` (Boolean) The includeDeleted field.
+- `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+- `page_token` (String) The pageToken field.
 - `policy_types` (List of String) The policy type to search on. This can be POLICY_TYPE_GRANT, POLICY_TYPE_REVOKE, POLICY_TYPE_CERTIFY, POLICY_TYPE_ACCESS_REQUEST, or POLICY_TYPE_PROVISION.
 - `query` (String) Query the policies with a fuzzy search on display name and description.
 - `refs` (Attributes List) The refs field. (see [below for nested schema](#nestedatt--refs))

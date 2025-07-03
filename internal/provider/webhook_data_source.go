@@ -34,6 +34,8 @@ type WebhookDataSourceModel struct {
 	DisplayName   types.String         `tfsdk:"display_name"`
 	ID            types.String         `tfsdk:"id"`
 	NextPageToken types.String         `tfsdk:"next_page_token"`
+	PageSize      types.Int32          `tfsdk:"page_size"`
+	PageToken     types.String         `tfsdk:"page_token"`
 	Query         types.String         `tfsdk:"query"`
 	Refs          []tfTypes.WebhookRef `tfsdk:"refs"`
 	UpdatedAt     types.String         `tfsdk:"updated_at"`
@@ -72,6 +74,14 @@ func (r *WebhookDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
 				Description: `The nextPageToken field.`,
+			},
+			"page_size": schema.Int32Attribute{
+				Optional:    true,
+				Description: `The pageSize field.`,
+			},
+			"page_token": schema.StringAttribute{
+				Optional:    true,
+				Description: `The pageToken field.`,
 			},
 			"query": schema.StringAttribute{
 				Optional:    true,

@@ -116,6 +116,10 @@ type AppUserServiceSearchRequest struct {
 	AppUserTypes []AppUserTypes `json:"appUserTypes,omitempty"`
 	// A list of app user IDs to remove from the results.
 	ExcludeAppUserIds []string `json:"excludeAppUserIds,omitempty"`
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 	// Query the apps with a fuzzy search on display name and description.
 	Query *string `json:"query,omitempty"`
 	// A list of app users to limit the search to.
@@ -171,6 +175,20 @@ func (o *AppUserServiceSearchRequest) GetExcludeAppUserIds() []string {
 		return nil
 	}
 	return o.ExcludeAppUserIds
+}
+
+func (o *AppUserServiceSearchRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *AppUserServiceSearchRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *AppUserServiceSearchRequest) GetQuery() *string {

@@ -14,6 +14,10 @@ type SearchAppResourceTypesRequest struct {
 	ExcludeResourceTypeIds []string `json:"excludeResourceTypeIds,omitempty"`
 	// A list of resource type trait IDs to exclude from the search.
 	ExcludeResourceTypeTraitIds []string `json:"excludeResourceTypeTraitIds,omitempty"`
+	// The pageSize where 10 <= pageSize <= 100, default 25.
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 	// Fuzzy search the display name of resource types.
 	Query *string `json:"query,omitempty"`
 	// A list of resource type IDs to restrict the search by.
@@ -55,6 +59,20 @@ func (o *SearchAppResourceTypesRequest) GetExcludeResourceTypeTraitIds() []strin
 		return nil
 	}
 	return o.ExcludeResourceTypeTraitIds
+}
+
+func (o *SearchAppResourceTypesRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchAppResourceTypesRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *SearchAppResourceTypesRequest) GetQuery() *string {

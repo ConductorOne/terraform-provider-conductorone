@@ -67,6 +67,10 @@ type SearchAutomationExecutionsRequest struct {
 	ExecutionStepStates []ExecutionStepStates `json:"executionStepStates,omitempty"`
 	// The AutomationExecutionExpandMask message.
 	AutomationExecutionExpandMask *AutomationExecutionExpandMask `json:"expandMask,omitempty"`
+	// The pageSize field.
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 	// The query field.
 	Query *string `json:"query,omitempty"`
 	// The refs field.
@@ -99,6 +103,20 @@ func (o *SearchAutomationExecutionsRequest) GetAutomationExecutionExpandMask() *
 		return nil
 	}
 	return o.AutomationExecutionExpandMask
+}
+
+func (o *SearchAutomationExecutionsRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchAutomationExecutionsRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *SearchAutomationExecutionsRequest) GetQuery() *string {

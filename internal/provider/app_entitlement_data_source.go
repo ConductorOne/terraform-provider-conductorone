@@ -63,6 +63,8 @@ type AppEntitlementDataSourceModel struct {
 	NextPageToken                  types.String                         `tfsdk:"next_page_token"`
 	OnlyGetExpiring                types.Bool                           `tfsdk:"only_get_expiring"`
 	OverrideAccessRequestsDefaults types.Bool                           `tfsdk:"override_access_requests_defaults"`
+	PageSize                       types.Int32                          `tfsdk:"page_size"`
+	PageToken                      types.String                         `tfsdk:"page_token"`
 	ProvisionPolicy                *tfTypes.ProvisionPolicy             `tfsdk:"provision_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                         `tfsdk:"purpose"`
 	Query                          types.String                         `tfsdk:"query"`
@@ -384,6 +386,14 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"override_access_requests_defaults": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Flag to indicate if the app-level access request settings have been overridden for the entitlement`,
+			},
+			"page_size": schema.Int32Attribute{
+				Optional:    true,
+				Description: `The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)`,
+			},
+			"page_token": schema.StringAttribute{
+				Optional:    true,
+				Description: `The pageToken field.`,
 			},
 			"provision_policy": schema.SingleNestedAttribute{
 				Computed: true,

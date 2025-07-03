@@ -37,7 +37,9 @@ data "conductorone_app_resources" "my_app_resources" {
   exclude_resource_type_trait_ids = [
     "..."
   ]
-  query = "...my_query..."
+  page_size  = 7
+  page_token = "...my_page_token..."
+  query      = "...my_query..."
   refs = [
     {
       app_id               = "...my_app_id..."
@@ -67,6 +69,8 @@ data "conductorone_app_resources" "my_app_resources" {
 - `exclude_deleted_resource_bindings` (Boolean) The excludeDeletedResourceBindings field.
 - `exclude_resource_ids` (List of String) The excludeResourceIds field.
 - `exclude_resource_type_trait_ids` (List of String) The excludeResourceTypeTraitIds field.
+- `page_size` (Number) The pageSize field.
+- `page_token` (String) The pageToken field.
 - `query` (String) The query field.
 - `refs` (Attributes List) The refs field. (see [below for nested schema](#nestedatt--refs))
 - `resource_ids` (List of String) The resourceIds field.

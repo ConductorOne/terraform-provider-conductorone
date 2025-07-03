@@ -37,6 +37,8 @@ type AppResourceTypeDataSourceModel struct {
 	ExcludeResourceTypeTraitIds []types.String `tfsdk:"exclude_resource_type_trait_ids"`
 	ID                          types.String   `tfsdk:"id"`
 	NextPageToken               types.String   `tfsdk:"next_page_token"`
+	PageSize                    types.Int32    `tfsdk:"page_size"`
+	PageToken                   types.String   `tfsdk:"page_token"`
 	Query                       types.String   `tfsdk:"query"`
 	ResourceTypeIds             []types.String `tfsdk:"resource_type_ids"`
 	ResourceTypeTraitIds        []types.String `tfsdk:"resource_type_trait_ids"`
@@ -99,6 +101,14 @@ func (r *AppResourceTypeDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: `The nextPageToken is shown for the next page if the number of results is larger than the max page size.` + "\n" +
 					` The server returns one page of results and the nextPageToken until all results are retreived.` + "\n" +
 					` To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
+			},
+			"page_size": schema.Int32Attribute{
+				Optional:    true,
+				Description: `The pageSize where 10 <= pageSize <= 100, default 25.`,
+			},
+			"page_token": schema.StringAttribute{
+				Optional:    true,
+				Description: `The pageToken field.`,
 			},
 			"query": schema.StringAttribute{
 				Optional:    true,

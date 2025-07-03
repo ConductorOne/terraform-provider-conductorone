@@ -17,7 +17,9 @@ This data source enables you to retrieve ConductorOne webhooks using the followi
 
 ```terraform
 data "conductorone_webhook" "my_webhook" {
-  query = "...my_query..."
+  page_size  = 3
+  page_token = "...my_page_token..."
+  query      = "...my_query..."
   refs = [
     {
       id = "...my_id..."
@@ -31,6 +33,8 @@ data "conductorone_webhook" "my_webhook" {
 
 ### Optional
 
+- `page_size` (Number) The pageSize field.
+- `page_token` (String) The pageToken field.
 - `query` (String) The query field.
 - `refs` (Attributes List) The refs field. (see [below for nested schema](#nestedatt--refs))
 
