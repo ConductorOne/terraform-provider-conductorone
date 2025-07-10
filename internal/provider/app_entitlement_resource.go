@@ -520,6 +520,8 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
+	cleanupDurationFields(ctx, req, resp, data)
+
 	var updateAppEntitlementRequest *shared.UpdateAppEntitlementRequest
 	appEntitlement := data.ToUpdateSDKType()
 
@@ -600,4 +602,44 @@ func (r *AppEntitlementResource) ImportState(ctx context.Context, req resource.I
 
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), idParts[0])...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), idParts[1])...)
+}
+
+// cleanupDurationFields ensures that only one of the fields DurationGrant or DurationUnset is present in the final model (data),
+// using the plan as the source of truth.
+func cleanupDurationFields(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse, data *AppEntitlementResourceModel) {
+	var plan types.Object
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	if data == nil {
+		return
+	}
+
+	planHasGrant := false
+	planHasUnset := false
+	planAttributes := plan.Attributes()
+	if planAttributes != nil {
+		if planAttributes["duration_grant"] != nil {
+			if str, ok := planAttributes["duration_grant"].(types.String); ok && !str.IsNull() && !str.IsUnknown() && str.ValueString() != "" {
+				planHasGrant = true
+			}
+		}
+		if planAttributes["duration_unset"] != nil {
+			if obj, ok := planAttributes["duration_unset"].(types.Object); ok && !obj.IsNull() && !obj.IsUnknown() {
+				planHasUnset = true
+			}
+		}
+	}
+
+	switch {
+	case planHasGrant && !planHasUnset:
+		data.DurationUnset = nil
+	case !planHasGrant && planHasUnset:
+		data.DurationGrant = types.StringNull()
+	case !planHasGrant && !planHasUnset:
+		data.DurationGrant = types.StringNull()
+		data.DurationUnset = nil
+	}
 }
