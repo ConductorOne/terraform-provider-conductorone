@@ -33,7 +33,9 @@ data "conductorone_user" "my_user" {
   ids = [
     "..."
   ]
-  query = "...my_query..."
+  page_size  = 10
+  page_token = "...my_page_token..."
+  query      = "...my_query..."
   refs = [
     {
       id = "...my_id..."
@@ -57,6 +59,8 @@ data "conductorone_user" "my_user" {
 - `exclude_ids` (List of String) An array of users IDs to exclude from the results.
 - `exclude_types` (List of String) An array of types to exclude from the results.
 - `ids` (List of String) Deprecated. Use refs array instead.
+- `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+- `page_token` (String) The pageToken field.
 - `query` (String) Query the apps with a fuzzy search on display name and emails.
 - `refs` (Attributes List) An array of user refs to restrict the return values to by ID. (see [below for nested schema](#nestedatt--refs))
 - `role_ids` (List of String) Search for users that have any of the role IDs on this list.

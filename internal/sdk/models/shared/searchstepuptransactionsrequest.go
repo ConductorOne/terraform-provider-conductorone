@@ -76,6 +76,10 @@ func (e *TargetType) UnmarshalJSON(data []byte) error {
 type SearchStepUpTransactionsRequest struct {
 	CreatedAfter  *time.Time `json:"createdAfter,omitempty"`
 	CreatedBefore *time.Time `json:"createdBefore,omitempty"`
+	// Maximum number of results to return
+	PageSize *int `json:"pageSize,omitempty"`
+	// Token for pagination
+	PageToken *string `json:"pageToken,omitempty"`
 	// Filter by provider ID
 	ProviderID *string `json:"providerId,omitempty"`
 	// Filter by transaction state
@@ -111,6 +115,20 @@ func (o *SearchStepUpTransactionsRequest) GetCreatedBefore() *time.Time {
 		return nil
 	}
 	return o.CreatedBefore
+}
+
+func (o *SearchStepUpTransactionsRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchStepUpTransactionsRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *SearchStepUpTransactionsRequest) GetProviderID() *string {

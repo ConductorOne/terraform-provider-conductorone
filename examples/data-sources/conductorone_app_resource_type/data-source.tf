@@ -12,7 +12,9 @@ data "conductorone_app_resource_type" "my_app_resource_type" {
   exclude_resource_type_trait_ids = [
     "..."
   ]
-  query = "...my_query..."
+  page_size  = 4
+  page_token = "...my_page_token..."
+  query      = "...my_query..."
   resource_type_ids = [
     "..."
   ]

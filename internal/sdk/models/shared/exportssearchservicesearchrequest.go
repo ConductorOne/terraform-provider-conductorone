@@ -6,6 +6,10 @@ package shared
 type ExportsSearchServiceSearchRequest struct {
 	// Search for system log exporters with a case insensitive match on the display name.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The pageSize field.
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 	// The query field.
 	Query *string `json:"query,omitempty"`
 	// The refs field.
@@ -17,6 +21,20 @@ func (o *ExportsSearchServiceSearchRequest) GetDisplayName() *string {
 		return nil
 	}
 	return o.DisplayName
+}
+
+func (o *ExportsSearchServiceSearchRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *ExportsSearchServiceSearchRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *ExportsSearchServiceSearchRequest) GetQuery() *string {

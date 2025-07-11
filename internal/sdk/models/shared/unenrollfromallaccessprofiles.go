@@ -6,6 +6,8 @@ package shared
 type UnenrollFromAllAccessProfiles struct {
 	// Optional list of catalog IDs to unenroll from. If empty, unenroll from all catalogs.
 	CatalogIds []string `json:"catalogIds,omitempty"`
+	// CEL expression to dynamically select catalog IDs. If provided, overrides catalog_ids.
+	CatalogIdsCel *string `json:"catalogIdsCel,omitempty"`
 	// If true, the step will use the subject user of the automation as the subject.
 	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 	// The userIdsCel field.
@@ -19,6 +21,13 @@ func (o *UnenrollFromAllAccessProfiles) GetCatalogIds() []string {
 		return nil
 	}
 	return o.CatalogIds
+}
+
+func (o *UnenrollFromAllAccessProfiles) GetCatalogIdsCel() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CatalogIdsCel
 }
 
 func (o *UnenrollFromAllAccessProfiles) GetUseSubjectUser() *bool {

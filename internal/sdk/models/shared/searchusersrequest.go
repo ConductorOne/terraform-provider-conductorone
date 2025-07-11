@@ -84,6 +84,10 @@ type SearchUsersRequest struct {
 	ExcludeTypes []ExcludeTypes `json:"excludeTypes,omitempty"`
 	// Deprecated. Use refs array instead.
 	Ids []string `json:"ids,omitempty"`
+	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 	// Query the apps with a fuzzy search on display name and emails.
 	Query *string `json:"query,omitempty"`
 	// An array of user refs to restrict the return values to by ID.
@@ -120,6 +124,20 @@ func (o *SearchUsersRequest) GetIds() []string {
 		return nil
 	}
 	return o.Ids
+}
+
+func (o *SearchUsersRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchUsersRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *SearchUsersRequest) GetQuery() *string {

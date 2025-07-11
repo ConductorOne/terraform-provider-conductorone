@@ -16,6 +16,8 @@ type C1APIAppV1AppResourceSearchSearchAppResourcesResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	SearchAppResourcesResponse *shared.SearchAppResourcesResponse
+
+	Next func() (*C1APIAppV1AppResourceSearchSearchAppResourcesResponse, error)
 }
 
 func (o *C1APIAppV1AppResourceSearchSearchAppResourcesResponse) GetContentType() string {

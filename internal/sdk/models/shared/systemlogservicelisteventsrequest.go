@@ -41,7 +41,11 @@ func (e *SortDirection) UnmarshalJSON(data []byte) error {
 
 // The SystemLogServiceListEventsRequest message.
 type SystemLogServiceListEventsRequest struct {
-	Since *time.Time `json:"since,omitempty"`
+	// The pageSize field.
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string    `json:"pageToken,omitempty"`
+	Since     *time.Time `json:"since,omitempty"`
 	// The sinceEventUid field.
 	SinceEventUID *string `json:"sinceEventUid,omitempty"`
 	// The sortDirection field.
@@ -58,6 +62,20 @@ func (s *SystemLogServiceListEventsRequest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *SystemLogServiceListEventsRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SystemLogServiceListEventsRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }
 
 func (o *SystemLogServiceListEventsRequest) GetSince() *time.Time {

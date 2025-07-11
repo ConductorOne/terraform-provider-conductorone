@@ -12,8 +12,10 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/errors"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/spyzhov/ajson"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 type AppEntitlementSearch struct {
@@ -399,6 +401,68 @@ func (s *AppEntitlementSearch) Search(ctx context.Context, request *shared.AppEn
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
+	}
+	res.Next = func() (*operations.C1APIAppV1AppEntitlementSearchServiceSearchResponse, error) {
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+
+		b, err := ajson.Unmarshal(rawBody)
+		if err != nil {
+			return nil, err
+		}
+		nC, err := ajson.Eval(b, "$.nextPageToken")
+		if err != nil {
+			return nil, err
+		}
+		var nCVal string
+
+		if nC.IsNumeric() {
+			numVal, err := nC.GetNumeric()
+			if err != nil {
+				return nil, err
+			}
+			// GetNumeric returns as float64 so convert to the appropriate type.
+			nCVal = strconv.FormatFloat(numVal, 'f', 0, 64)
+		} else {
+			val, err := nC.Value()
+			if err != nil {
+				return nil, err
+			}
+			if val == nil || val == "" {
+				return nil, nil
+			}
+			nCVal = val.(string)
+		}
+
+		return s.Search(
+			ctx,
+			&shared.AppEntitlementSearchServiceSearchRequest{
+				AccessReviewID:         request.AccessReviewID,
+				Alias:                  request.Alias,
+				AppIds:                 request.AppIds,
+				AppUserIds:             request.AppUserIds,
+				ComplianceFrameworkIds: request.ComplianceFrameworkIds,
+				DisplayName:            request.DisplayName,
+				ExcludeAppIds:          request.ExcludeAppIds,
+				ExcludeAppUserIds:      request.ExcludeAppUserIds,
+				ExcludeResourceTypeIds: request.ExcludeResourceTypeIds,
+				IncludeDeleted:         request.IncludeDeleted,
+				IsAutomated:            request.IsAutomated,
+				MembershipType:         request.MembershipType,
+				OnlyGetExpiring:        request.OnlyGetExpiring,
+				PageSize:               request.PageSize,
+				PageToken:              &nCVal,
+				Query:                  request.Query,
+				Refs:                   request.Refs,
+				ResourceIds:            request.ResourceIds,
+				ResourceTraitIds:       request.ResourceTraitIds,
+				ResourceTypeIds:        request.ResourceTypeIds,
+				RiskLevelIds:           request.RiskLevelIds,
+				SourceConnectorID:      request.SourceConnectorID,
+			},
+		)
 	}
 
 	switch {

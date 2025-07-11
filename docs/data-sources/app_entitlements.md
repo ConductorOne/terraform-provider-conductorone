@@ -61,6 +61,8 @@ data "conductorone_app_entitlements" "my_app_entitlements" {
     "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER"
   ]
   only_get_expiring = true
+  page_size         = 5
+  page_token        = "...my_page_token..."
   query             = "...my_query..."
   refs = [
     {
@@ -102,6 +104,8 @@ data "conductorone_app_entitlements" "my_app_entitlements" {
 - `is_automated` (Boolean) The isAutomated field.
 - `membership_type` (List of String) The membershipType field.
 - `only_get_expiring` (Boolean) Restrict results to only those who have expiring app entitlement user bindings.
+- `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+- `page_token` (String) The pageToken field.
 - `query` (String) Query the app entitlements with a fuzzy search on display name and description.
 - `refs` (Attributes List) The refs field. (see [below for nested schema](#nestedatt--refs))
 - `resource_ids` (List of String) Search for app entitlements that belongs to these resources.

@@ -14,10 +14,6 @@ actions:
       additionalProperties: true
   - target: $..\@type
     remove: true
-  - target: $..pageToken
-    remove: true
-  - target: $..pageSize
-    remove: true
   - target: $["components"]["schemas"]["c1.api.app.v1.DeleteAutomationRequestInput"]
     update:
       x-speakeasy-terraform-ignore: true

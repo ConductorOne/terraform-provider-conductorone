@@ -12,6 +12,10 @@ type SearchPastGrantsRequest struct {
 	AppUserRefs []AppUserRef `json:"appUserRefs,omitempty"`
 	// The AppEntitlementUserBindingExpandHistoryMask message.
 	AppEntitlementUserBindingExpandHistoryMask *AppEntitlementUserBindingExpandHistoryMask `json:"expandMask,omitempty"`
+	// The pageSize field.
+	PageSize *int `json:"pageSize,omitempty"`
+	// The pageToken field.
+	PageToken *string `json:"pageToken,omitempty"`
 }
 
 func (o *SearchPastGrantsRequest) GetAppEntitlementRefs() []AppEntitlementRef {
@@ -40,4 +44,18 @@ func (o *SearchPastGrantsRequest) GetAppEntitlementUserBindingExpandHistoryMask(
 		return nil
 	}
 	return o.AppEntitlementUserBindingExpandHistoryMask
+}
+
+func (o *SearchPastGrantsRequest) GetPageSize() *int {
+	if o == nil {
+		return nil
+	}
+	return o.PageSize
+}
+
+func (o *SearchPastGrantsRequest) GetPageToken() *string {
+	if o == nil {
+		return nil
+	}
+	return o.PageToken
 }

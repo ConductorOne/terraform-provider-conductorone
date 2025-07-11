@@ -37,7 +37,9 @@ data "conductorone_app_resource_type" "my_app_resource_type" {
   exclude_resource_type_trait_ids = [
     "..."
   ]
-  query = "...my_query..."
+  page_size  = 4
+  page_token = "...my_page_token..."
+  query      = "...my_query..."
   resource_type_ids = [
     "..."
   ]
@@ -57,6 +59,8 @@ data "conductorone_app_resource_type" "my_app_resource_type" {
 - `display_name` (String) Exact match on display name
 - `exclude_resource_type_ids` (List of String) A list of resource type IDs to exclude from the search.
 - `exclude_resource_type_trait_ids` (List of String) A list of resource type trait IDs to exclude from the search.
+- `page_size` (Number) The pageSize where 10 <= pageSize <= 100, default 25.
+- `page_token` (String) The pageToken field.
 - `query` (String) Fuzzy search the display name of resource types.
 - `resource_type_ids` (List of String) A list of resource type IDs to restrict the search by.
 - `resource_type_trait_ids` (List of String) A list of resource type trait IDs to restrict the search by.

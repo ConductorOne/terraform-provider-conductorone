@@ -36,6 +36,8 @@ type AppResourcesDataSourceModel struct {
 	Expanded                       []tfTypes.SearchAppResourcesResponseExpanded `tfsdk:"expanded"`
 	List                           []tfTypes.AppResourceView                    `tfsdk:"list"`
 	NextPageToken                  types.String                                 `tfsdk:"next_page_token"`
+	PageSize                       types.Int32                                  `tfsdk:"page_size"`
+	PageToken                      types.String                                 `tfsdk:"page_token"`
 	Query                          types.String                                 `tfsdk:"query"`
 	Refs                           []tfTypes.AppResourceRef                     `tfsdk:"refs"`
 	ResourceIds                    []types.String                               `tfsdk:"resource_ids"`
@@ -169,6 +171,14 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 				Computed:    true,
 				Description: `The nextPageToken field.`,
 			},
+			"page_size": schema.Int32Attribute{
+				Optional:    true,
+				Description: `The pageSize field.`,
+			},
+			"page_token": schema.StringAttribute{
+				Optional:    true,
+				Description: `The pageToken field.`,
+			},
 			"query": schema.StringAttribute{
 				Optional:    true,
 				Description: `The query field.`,
@@ -280,6 +290,24 @@ func (r *AppResourcesDataSource) Read(ctx context.Context, req datasource.ReadRe
 
 	if resp.Diagnostics.HasError() {
 		return
+	}
+
+	response, err := res.Next()
+	for {
+		if err != nil {
+			resp.Diagnostics.AddError("reading next results failed", debugResponse(response.RawResponse))
+			return
+		}
+		if response == nil {
+			break
+		}
+		resp.Diagnostics.Append(data.RefreshFromSharedSearchAppResourcesResponse(ctx, response.SearchAppResourcesResponse)...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
+
+		response, err = response.Next()
 	}
 
 	// Save updated data into Terraform state

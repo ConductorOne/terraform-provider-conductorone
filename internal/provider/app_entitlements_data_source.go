@@ -43,6 +43,8 @@ type AppEntitlementsDataSourceModel struct {
 	MembershipType         []types.String               `tfsdk:"membership_type"`
 	NextPageToken          types.String                 `tfsdk:"next_page_token"`
 	OnlyGetExpiring        types.Bool                   `tfsdk:"only_get_expiring"`
+	PageSize               types.Int32                  `tfsdk:"page_size"`
+	PageToken              types.String                 `tfsdk:"page_token"`
 	Query                  types.String                 `tfsdk:"query"`
 	Refs                   []tfTypes.AppEntitlementRef  `tfsdk:"refs"`
 	ResourceIds            []types.String               `tfsdk:"resource_ids"`
@@ -561,6 +563,14 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 				Optional:    true,
 				Description: `Restrict results to only those who have expiring app entitlement user bindings.`,
 			},
+			"page_size": schema.Int32Attribute{
+				Optional:    true,
+				Description: `The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)`,
+			},
+			"page_token": schema.StringAttribute{
+				Optional:    true,
+				Description: `The pageToken field.`,
+			},
 			"query": schema.StringAttribute{
 				Optional:    true,
 				Description: `Query the app entitlements with a fuzzy search on display name and description.`,
@@ -679,6 +689,23 @@ func (r *AppEntitlementsDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
+	response, err := res.Next()
+	for {
+		if err != nil {
+			resp.Diagnostics.AddError("reading next results failed", debugResponse(response.RawResponse))
+			return
+		}
+		if response == nil {
+			break
+		}
+		resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx, response.AppEntitlementSearchServiceSearchResponse)...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
+
+		response, err = response.Next()
+	}
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
