@@ -16,6 +16,8 @@ type AppUserCreatedTrigger struct {
 	// This field is part of the `app_identifier` oneof.
 	// See the documentation for `c1.api.automations.v1.AppUserCreatedTrigger` for more details.
 	AppIDCel *string `json:"appIdCel,omitempty"`
+	// The condition field.
+	Condition *string `json:"condition,omitempty"`
 }
 
 func (o *AppUserCreatedTrigger) GetAppID() *string {
@@ -30,4 +32,11 @@ func (o *AppUserCreatedTrigger) GetAppIDCel() *string {
 		return nil
 	}
 	return o.AppIDCel
+}
+
+func (o *AppUserCreatedTrigger) GetCondition() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Condition
 }

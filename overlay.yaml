@@ -545,3 +545,6 @@ actions:
   - target: $["components"]["schemas"]["c1.api.attribute.v1.DeleteRiskLevelAttributeValueRequestInput"]
     update:
       x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse"]["properties"]["refs"]
+    update:
+      x-speakeasy-name-override: app_entitlements

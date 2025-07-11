@@ -4571,6 +4571,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: string
+                condition:
+                    description: The condition field.
+                    readOnly: false
+                    type: string
             title: App User Created Trigger
             type: object
             x-speakeasy-name-override: AppUserCreatedTrigger
@@ -4597,6 +4601,10 @@ components:
                         This field is part of the `app_identifier` oneof.
                         See the documentation for `c1.api.automations.v1.AppUserUpdatedTrigger` for more details.
                     nullable: true
+                    readOnly: false
+                    type: string
+                condition:
+                    description: The condition field.
                     readOnly: false
                     type: string
             title: App User Updated Trigger
@@ -4665,6 +4673,18 @@ components:
                     format: date-time
                     readOnly: false
                     type: string
+                primaryTriggerType:
+                    description: The primaryTriggerType field.
+                    enum:
+                        - TRIGGER_TYPE_UNSPECIFIED
+                        - TRIGGER_TYPE_USER_PROFILE_CHANGE
+                        - TRIGGER_TYPE_APP_USER_CREATE
+                        - TRIGGER_TYPE_APP_USER_UPDATE
+                        - TRIGGER_TYPE_UNUSED_ACCESS
+                        - TRIGGER_TYPE_USER_CREATED
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 triggers:
                     description: The triggers field.
                     items:
@@ -4804,6 +4824,7 @@ components:
                   - webhook
                   - connectorAction
                   - connectorCreateAccount
+                  - grantEntitlements
             properties:
                 connectorAction:
                     $ref: '#/components/schemas/c1.api.automations.v1.ConnectorAction'
@@ -4813,6 +4834,8 @@ components:
                     $ref: '#/components/schemas/c1.api.automations.v1.CreateAccessReview'
                 createRevokeTasks:
                     $ref: '#/components/schemas/c1.api.automations.v1.CreateRevokeTasks'
+                grantEntitlements:
+                    $ref: '#/components/schemas/c1.api.automations.v1.GrantEntitlements'
                 removeFromDelegation:
                     $ref: '#/components/schemas/c1.api.automations.v1.RemoveFromDelegation'
                 runAutomation:
@@ -4906,19 +4929,18 @@ components:
                   - appUserCreated
                   - appUserUpdated
                   - usageBasedRevocation
+                  - userCreated
             properties:
                 appUserCreated:
                     $ref: '#/components/schemas/c1.api.automations.v1.AppUserCreatedTrigger'
                 appUserUpdated:
                     $ref: '#/components/schemas/c1.api.automations.v1.AppUserUpdatedTrigger'
-                condition:
-                    description: The condition field.
-                    readOnly: false
-                    type: string
                 manual:
                     $ref: '#/components/schemas/c1.api.automations.v1.ManualAutomationTrigger'
                 usageBasedRevocation:
                     $ref: '#/components/schemas/c1.api.automations.v1.UsageBasedRevocationTrigger'
+                userCreated:
+                    $ref: '#/components/schemas/c1.api.automations.v1.UserCreatedTrigger'
                 userProfileChange:
                     $ref: '#/components/schemas/c1.api.automations.v1.UserProfileChangeTrigger'
             title: Automation Trigger
@@ -5005,6 +5027,10 @@ components:
                     type: string
                 accessReviewTemplateId:
                     description: The accessReviewTemplateId field.
+                    readOnly: false
+                    type: string
+                campaignName:
+                    description: Optional campaign name. If not provided, the campaign name will be the access review template name.
                     readOnly: false
                     type: string
                 useSubjectUser:
@@ -5105,6 +5131,7 @@ components:
                     readOnly: false
                     type: string
                 revokeAll:
+                    deprecated: true
                     description: The revokeAll field.
                     readOnly: false
                     type: boolean
@@ -5166,6 +5193,34 @@ components:
             title: Get Automation Response
             type: object
             x-speakeasy-name-override: GetAutomationResponse
+        c1.api.automations.v1.GrantEntitlements:
+            description: The GrantEntitlements message.
+            nullable: true
+            properties:
+                appEntitlementRefs:
+                    description: The appEntitlementRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                appEntitlementRefsCel:
+                    description: The appEntitlementRefsCel field.
+                    readOnly: false
+                    type: string
+                useSubjectUser:
+                    description: If true, the step will use the subject user of the automation as the subject.
+                    readOnly: false
+                    type: boolean
+                userIdCel:
+                    description: The userIdCel field.
+                    readOnly: false
+                    type: string
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Grant Entitlements
+            type: object
+            x-speakeasy-name-override: GrantEntitlements
         c1.api.automations.v1.ListAutomationExecutionsResponse:
             description: The ListAutomationExecutionsResponse message.
             properties:
@@ -5477,11 +5532,11 @@ components:
                     items:
                         enum:
                             - TRIGGER_TYPE_UNSPECIFIED
-                            - TRIGGER_TYPE_MANUAL
                             - TRIGGER_TYPE_USER_PROFILE_CHANGE
                             - TRIGGER_TYPE_APP_USER_CREATE
                             - TRIGGER_TYPE_APP_USER_UPDATE
                             - TRIGGER_TYPE_UNUSED_ACCESS
+                            - TRIGGER_TYPE_USER_CREATED
                         type: string
                     nullable: true
                     readOnly: false
@@ -5750,16 +5805,23 @@ components:
             title: Usage Based Revocation Trigger
             type: object
             x-speakeasy-name-override: UsageBasedRevocationTrigger
+        c1.api.automations.v1.UserCreatedTrigger:
+            description: The UserCreatedTrigger message.
+            nullable: true
+            properties:
+                condition:
+                    description: The condition field.
+                    readOnly: false
+                    type: string
+            title: User Created Trigger
+            type: object
+            x-speakeasy-name-override: UserCreatedTrigger
         c1.api.automations.v1.UserProfileChangeTrigger:
             description: The UserProfileChangeTrigger message.
             nullable: true
             properties:
-                profileAttributeCel:
-                    description: The profileAttributeCel field.
-                    readOnly: false
-                    type: string
-                profileAttributeKey:
-                    description: The profileAttributeKey field.
+                condition:
+                    description: The condition field.
                     readOnly: false
                     type: string
             title: User Profile Change Trigger
@@ -8284,6 +8346,19 @@ components:
             title: Request Catalog Management Service Get Response
             type: object
             x-speakeasy-name-override: RequestCatalogManagementServiceGetResponse
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse:
+            description: The RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse message.
+            properties:
+                refs:
+                    description: The refs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Request Catalog Management Service List All Entitlement Ids Per Catalog Response
+            type: object
+            x-speakeasy-name-override: RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse
         c1.api.requestcatalog.v1.RequestCatalogManagementServiceListEntitlementsForAccessResponse:
             description: The RequestCatalogManagementServiceListEntitlementsForAccessResponse message contains a list of results and a nextPageToken if applicable.
             properties:
@@ -10680,6 +10755,21 @@ components:
             title: Task Audit Policy Approval Reassigned
             type: object
             x-speakeasy-name-override: TaskAuditPolicyApprovalReassigned
+        c1.api.task.v1.TaskAuditPolicyChanged:
+            description: The TaskAuditPolicyChanged message.
+            nullable: true
+            properties:
+                newPolicyId:
+                    description: The newPolicyId field.
+                    readOnly: false
+                    type: string
+                oldPolicyId:
+                    description: The oldPolicyId field.
+                    readOnly: false
+                    type: string
+            title: Task Audit Policy Changed
+            type: object
+            x-speakeasy-name-override: TaskAuditPolicyChanged
         c1.api.task.v1.TaskAuditPolicyEvaluationStep:
             description: The TaskAuditPolicyEvaluationStep message.
             nullable: true
@@ -10903,6 +10993,7 @@ components:
                   - stepSkipped
                   - reassignmentListError
                   - slaEscalation
+                  - policyChanged
             properties:
                 accessRequestOutcome:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditAccessRequestOutcome'
@@ -10974,6 +11065,8 @@ components:
                     type: string
                 metadata:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditMetaData'
+                policyChanged:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskAuditPolicyChanged'
                 policyEvaluationStep:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditPolicyEvaluationStep'
                 provisionError:
@@ -11011,6 +11104,10 @@ components:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditEscalateToEmergencyAccess'
                 taskRestarted:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditRestart'
+                ticketId:
+                    description: The ticketId field.
+                    readOnly: false
+                    type: string
                 userId:
                     description: The userId field.
                     readOnly: false
@@ -16734,6 +16831,33 @@ paths:
                 terraform-resource: Access_Profile#create
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: Create
+    /api/v1/catalogs/{catalog_id}/requestable_entitlementIDs:
+        get:
+            description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ListAllEntitlementIdsPerApp method.
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.ListAllEntitlementIdsPerApp
+            parameters:
+                - in: path
+                  name: catalog_id
+                  required: true
+                  schema:
+                    description: The catalogId field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse'
+                    description: Successful response
+            summary: List All Entitlement Ids Per App
+            tags:
+                - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: Access_Profile_Requestable_Entries#read
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: ListAllEntitlementIdsPerApp
     /api/v1/catalogs/{catalog_id}/requestable_entitlements:
         get:
             description: List entitlements in a catalog that are requestable.

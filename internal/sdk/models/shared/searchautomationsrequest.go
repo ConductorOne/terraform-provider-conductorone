@@ -11,11 +11,11 @@ type TriggerTypes string
 
 const (
 	TriggerTypesTriggerTypeUnspecified       TriggerTypes = "TRIGGER_TYPE_UNSPECIFIED"
-	TriggerTypesTriggerTypeManual            TriggerTypes = "TRIGGER_TYPE_MANUAL"
 	TriggerTypesTriggerTypeUserProfileChange TriggerTypes = "TRIGGER_TYPE_USER_PROFILE_CHANGE"
 	TriggerTypesTriggerTypeAppUserCreate     TriggerTypes = "TRIGGER_TYPE_APP_USER_CREATE"
 	TriggerTypesTriggerTypeAppUserUpdate     TriggerTypes = "TRIGGER_TYPE_APP_USER_UPDATE"
 	TriggerTypesTriggerTypeUnusedAccess      TriggerTypes = "TRIGGER_TYPE_UNUSED_ACCESS"
+	TriggerTypesTriggerTypeUserCreated       TriggerTypes = "TRIGGER_TYPE_USER_CREATED"
 )
 
 func (e TriggerTypes) ToPointer() *TriggerTypes {
@@ -29,8 +29,6 @@ func (e *TriggerTypes) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "TRIGGER_TYPE_UNSPECIFIED":
 		fallthrough
-	case "TRIGGER_TYPE_MANUAL":
-		fallthrough
 	case "TRIGGER_TYPE_USER_PROFILE_CHANGE":
 		fallthrough
 	case "TRIGGER_TYPE_APP_USER_CREATE":
@@ -38,6 +36,8 @@ func (e *TriggerTypes) UnmarshalJSON(data []byte) error {
 	case "TRIGGER_TYPE_APP_USER_UPDATE":
 		fallthrough
 	case "TRIGGER_TYPE_UNUSED_ACCESS":
+		fallthrough
+	case "TRIGGER_TYPE_USER_CREATED":
 		*e = TriggerTypes(v)
 		return nil
 	default:

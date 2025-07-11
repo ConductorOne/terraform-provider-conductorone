@@ -23,7 +23,7 @@ generation:
   mockServer:
     disabled: true
 terraform:
-  version: 1.4.1
+  version: 1.4.4
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []

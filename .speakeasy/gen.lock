@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 9933ef584ff3034b8b80e8223c9544f9
+  docChecksum: c8785a6022d96516944b45af66d3de4c
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.561.0
-  generationVersion: 2.628.0
-  releaseVersion: 1.4.1
-  configChecksum: a77da726dd50c5434829bfb7f766d2ba
+  speakeasyVersion: 1.556.2
+  generationVersion: 2.621.3
+  releaseVersion: 1.4.4
+  configChecksum: 237cf0d8ef1bcc4eeb8530918e2ed5b9
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -50,6 +50,7 @@ generatedFiles:
   - examples/resources/conductorone_access_conflict/resource.tf
   - examples/resources/conductorone_access_profile/import.sh
   - examples/resources/conductorone_access_profile/resource.tf
+  - examples/resources/conductorone_access_profile_requestable_entries/import.sh
   - examples/resources/conductorone_access_profile_requestable_entries/resource.tf
   - examples/resources/conductorone_access_profile_visibility_bindings/resource.tf
   - examples/resources/conductorone_app/import.sh
@@ -441,6 +442,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceget.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicegetbundleautomation.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelist.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelistallentitlementidsperapp.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementsforaccess.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementspercatalog.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceremoveaccessentitlements.go
@@ -595,7 +597,6 @@ generatedFiles:
   - internal/sdk/models/shared/automationexecutionexpandmask.go
   - internal/sdk/models/shared/automationexecutionref.go
   - internal/sdk/models/shared/automationexecutionview.go
-  - internal/sdk/models/shared/automationinput.go
   - internal/sdk/models/shared/automationstep.go
   - internal/sdk/models/shared/automationtemplateref.go
   - internal/sdk/models/shared/automationtemplateversion.go
@@ -754,6 +755,7 @@ generatedFiles:
   - internal/sdk/models/shared/getsessionsettingsresponse.go
   - internal/sdk/models/shared/getstepupproviderresponse.go
   - internal/sdk/models/shared/getstepuptransactionresponse.go
+  - internal/sdk/models/shared/grantentitlements.go
   - internal/sdk/models/shared/grantreason.go
   - internal/sdk/models/shared/introspectresponse.go
   - internal/sdk/models/shared/listappentitlementownersresponse.go
@@ -840,6 +842,7 @@ generatedFiles:
   - internal/sdk/models/shared/requestcatalogmanagementservicedeleterequest.go
   - internal/sdk/models/shared/requestcatalogmanagementservicedeleteresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicegetresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicelistallentitlementidspercatalogresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicelistentitlementsforaccessresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicelistentitlementspercatalogresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicelistresponse.go
@@ -971,6 +974,7 @@ generatedFiles:
   - internal/sdk/models/shared/taskauditmetadata.go
   - internal/sdk/models/shared/taskauditnewtask.go
   - internal/sdk/models/shared/taskauditpolicyapprovalreassigned.go
+  - internal/sdk/models/shared/taskauditpolicychanged.go
   - internal/sdk/models/shared/taskauditpolicyevaluationstep.go
   - internal/sdk/models/shared/taskauditpolicyprovisionerror.go
   - internal/sdk/models/shared/taskauditpolicyprovisionreassigned.go
@@ -1066,6 +1070,7 @@ generatedFiles:
   - internal/sdk/models/shared/user.go
   - internal/sdk/models/shared/userapproval.go
   - internal/sdk/models/shared/userattributemappingsource.go
+  - internal/sdk/models/shared/usercreatedtrigger.go
   - internal/sdk/models/shared/userprofilechangetrigger.go
   - internal/sdk/models/shared/userproperties.go
   - internal/sdk/models/shared/userref.go
@@ -2636,6 +2641,14 @@ examples:
       parameters:
         path:
           task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.ListAllEntitlementIdsPerApp:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-list-all-entitlement-ids-per-app:
+      parameters:
+        path:
+          catalog_id: "<id>"
       responses:
         "200":
           application/json: {}
