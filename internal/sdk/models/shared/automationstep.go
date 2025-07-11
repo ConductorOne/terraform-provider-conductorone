@@ -17,6 +17,7 @@ package shared
 //   - webhook
 //   - connectorAction
 //   - connectorCreateAccount
+//   - grantEntitlements
 type AutomationStep struct {
 	// The ConnectorAction message.
 	//
@@ -35,6 +36,8 @@ type AutomationStep struct {
 	CreateAccessReview *CreateAccessReview `json:"createAccessReview,omitempty"`
 	// The CreateRevokeTasks message.
 	CreateRevokeTasks *CreateRevokeTasks `json:"createRevokeTasks,omitempty"`
+	// The GrantEntitlements message.
+	GrantEntitlements *GrantEntitlements `json:"grantEntitlements,omitempty"`
 	// RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
 	//
 	// This message contains a oneof named replacement_user. Only a single field of the following list may be set at a time:
@@ -115,6 +118,13 @@ func (o *AutomationStep) GetCreateRevokeTasks() *CreateRevokeTasks {
 		return nil
 	}
 	return o.CreateRevokeTasks
+}
+
+func (o *AutomationStep) GetGrantEntitlements() *GrantEntitlements {
+	if o == nil {
+		return nil
+	}
+	return o.GrantEntitlements
 }
 
 func (o *AutomationStep) GetRemoveFromDelegation() *RemoveFromDelegation {

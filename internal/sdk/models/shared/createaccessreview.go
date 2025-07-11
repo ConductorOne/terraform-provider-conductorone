@@ -8,6 +8,8 @@ type CreateAccessReview struct {
 	AccessReviewTemplateCel *string `json:"accessReviewTemplateCel,omitempty"`
 	// The accessReviewTemplateId field.
 	AccessReviewTemplateID *string `json:"accessReviewTemplateId,omitempty"`
+	// Optional campaign name. If not provided, the campaign name will be the access review template name.
+	CampaignName *string `json:"campaignName,omitempty"`
 	// If true, the step will use the subject user of the automation as the subject.
 	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 	// The userIdsCel field.
@@ -28,6 +30,13 @@ func (o *CreateAccessReview) GetAccessReviewTemplateID() *string {
 		return nil
 	}
 	return o.AccessReviewTemplateID
+}
+
+func (o *CreateAccessReview) GetCampaignName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CampaignName
 }
 
 func (o *CreateAccessReview) GetUseSubjectUser() *bool {

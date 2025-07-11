@@ -2,16 +2,12 @@
 
 package shared
 
-// The CreateRevokeTasks message.
-type CreateRevokeTasks struct {
+// The GrantEntitlements message.
+type GrantEntitlements struct {
 	// The appEntitlementRefs field.
 	AppEntitlementRefs []AppEntitlementRef `json:"appEntitlementRefs,omitempty"`
 	// The appEntitlementRefsCel field.
 	AppEntitlementRefsCel *string `json:"appEntitlementRefsCel,omitempty"`
-	// The revokeAll field.
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	RevokeAll *bool `json:"revokeAll,omitempty"`
 	// If true, the step will use the subject user of the automation as the subject.
 	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 	// The userIdCel field.
@@ -20,42 +16,35 @@ type CreateRevokeTasks struct {
 	UserRef *UserRef `json:"userRef,omitempty"`
 }
 
-func (o *CreateRevokeTasks) GetAppEntitlementRefs() []AppEntitlementRef {
+func (o *GrantEntitlements) GetAppEntitlementRefs() []AppEntitlementRef {
 	if o == nil {
 		return nil
 	}
 	return o.AppEntitlementRefs
 }
 
-func (o *CreateRevokeTasks) GetAppEntitlementRefsCel() *string {
+func (o *GrantEntitlements) GetAppEntitlementRefsCel() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AppEntitlementRefsCel
 }
 
-func (o *CreateRevokeTasks) GetRevokeAll() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.RevokeAll
-}
-
-func (o *CreateRevokeTasks) GetUseSubjectUser() *bool {
+func (o *GrantEntitlements) GetUseSubjectUser() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.UseSubjectUser
 }
 
-func (o *CreateRevokeTasks) GetUserIDCel() *string {
+func (o *GrantEntitlements) GetUserIDCel() *string {
 	if o == nil {
 		return nil
 	}
 	return o.UserIDCel
 }
 
-func (o *CreateRevokeTasks) GetUserRef() *UserRef {
+func (o *GrantEntitlements) GetUserRef() *UserRef {
 	if o == nil {
 		return nil
 	}

@@ -155,6 +155,7 @@ func (e *Source) UnmarshalJSON(data []byte) error {
 //   - stepSkipped
 //   - reassignmentListError
 //   - slaEscalation
+//   - policyChanged
 type TaskAuditView struct {
 	// The TaskAuditAccessRequestOutcome message.
 	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
@@ -213,6 +214,8 @@ type TaskAuditView struct {
 	ID *string `json:"id,omitempty"`
 	// The TaskAuditMetaData message.
 	TaskAuditMetaData *TaskAuditMetaData `json:"metadata,omitempty"`
+	// The TaskAuditPolicyChanged message.
+	TaskAuditPolicyChanged *TaskAuditPolicyChanged `json:"policyChanged,omitempty"`
 	// The TaskAuditPolicyEvaluationStep message.
 	TaskAuditPolicyEvaluationStep *TaskAuditPolicyEvaluationStep `json:"policyEvaluationStep,omitempty"`
 	// The TaskAuditPolicyProvisionError message.
@@ -241,6 +244,8 @@ type TaskAuditView struct {
 	TaskAuditEscalateToEmergencyAccess *TaskAuditEscalateToEmergencyAccess `json:"taskEscalated,omitempty"`
 	// The TaskAuditRestart message.
 	TaskAuditRestart *TaskAuditRestart `json:"taskRestarted,omitempty"`
+	// The ticketId field.
+	TicketID *string `json:"ticketId,omitempty"`
 	// The userId field.
 	UserID *string `json:"userId,omitempty"`
 	// The TaskAuditWaitForAnalysisStepSuccess message.
@@ -466,6 +471,13 @@ func (o *TaskAuditView) GetTaskAuditMetaData() *TaskAuditMetaData {
 	return o.TaskAuditMetaData
 }
 
+func (o *TaskAuditView) GetTaskAuditPolicyChanged() *TaskAuditPolicyChanged {
+	if o == nil {
+		return nil
+	}
+	return o.TaskAuditPolicyChanged
+}
+
 func (o *TaskAuditView) GetTaskAuditPolicyEvaluationStep() *TaskAuditPolicyEvaluationStep {
 	if o == nil {
 		return nil
@@ -562,6 +574,13 @@ func (o *TaskAuditView) GetTaskAuditRestart() *TaskAuditRestart {
 		return nil
 	}
 	return o.TaskAuditRestart
+}
+
+func (o *TaskAuditView) GetTicketID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TicketID
 }
 
 func (o *TaskAuditView) GetUserID() *string {

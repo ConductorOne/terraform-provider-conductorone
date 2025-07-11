@@ -10,6 +10,7 @@ package shared
 //   - appUserCreated
 //   - appUserUpdated
 //   - usageBasedRevocation
+//   - userCreated
 type AutomationTrigger struct {
 	// The AppUserCreatedTrigger message.
 	//
@@ -25,8 +26,6 @@ type AutomationTrigger struct {
 	//   - appIdCel
 	//
 	AppUserUpdatedTrigger *AppUserUpdatedTrigger `json:"appUserUpdated,omitempty"`
-	// The condition field.
-	Condition *string `json:"condition,omitempty"`
 	// The ManualAutomationTrigger message.
 	ManualAutomationTrigger *ManualAutomationTrigger `json:"manual,omitempty"`
 	// The UsageBasedRevocationTrigger message.
@@ -36,6 +35,8 @@ type AutomationTrigger struct {
 	//   - runDelayed
 	//
 	UsageBasedRevocationTrigger *UsageBasedRevocationTrigger `json:"usageBasedRevocation,omitempty"`
+	// The UserCreatedTrigger message.
+	UserCreatedTrigger *UserCreatedTrigger `json:"userCreated,omitempty"`
 	// The UserProfileChangeTrigger message.
 	UserProfileChangeTrigger *UserProfileChangeTrigger `json:"userProfileChange,omitempty"`
 }
@@ -54,13 +55,6 @@ func (o *AutomationTrigger) GetAppUserUpdatedTrigger() *AppUserUpdatedTrigger {
 	return o.AppUserUpdatedTrigger
 }
 
-func (o *AutomationTrigger) GetCondition() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Condition
-}
-
 func (o *AutomationTrigger) GetManualAutomationTrigger() *ManualAutomationTrigger {
 	if o == nil {
 		return nil
@@ -73,6 +67,13 @@ func (o *AutomationTrigger) GetUsageBasedRevocationTrigger() *UsageBasedRevocati
 		return nil
 	}
 	return o.UsageBasedRevocationTrigger
+}
+
+func (o *AutomationTrigger) GetUserCreatedTrigger() *UserCreatedTrigger {
+	if o == nil {
+		return nil
+	}
+	return o.UserCreatedTrigger
 }
 
 func (o *AutomationTrigger) GetUserProfileChangeTrigger() *UserProfileChangeTrigger {

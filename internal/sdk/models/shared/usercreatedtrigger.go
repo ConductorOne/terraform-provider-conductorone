@@ -2,13 +2,13 @@
 
 package shared
 
-// The UserProfileChangeTrigger message.
-type UserProfileChangeTrigger struct {
+// The UserCreatedTrigger message.
+type UserCreatedTrigger struct {
 	// The condition field.
 	Condition *string `json:"condition,omitempty"`
 }
 
-func (o *UserProfileChangeTrigger) GetCondition() *string {
+func (o *UserCreatedTrigger) GetCondition() *string {
 	if o == nil {
 		return nil
 	}
