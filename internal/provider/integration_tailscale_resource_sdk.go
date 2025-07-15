@@ -170,10 +170,8 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromGetResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["tailnet"]; ok {
-					if val, ok := v.(string); ok {
-						r.Tailnet = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "tailnet"); ok {
+					r.Tailnet = types.StringValue(val)
 				}
 
 			}
@@ -220,10 +218,8 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromCreateResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["tailnet"]; ok {
-					if val, ok := v.(string); ok {
-						r.Tailnet = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "tailnet"); ok {
+					r.Tailnet = types.StringValue(val)
 				}
 
 			}

@@ -181,22 +181,16 @@ func (r *IntegrationGoogleWorkspaceResourceModel) RefreshFromGetResponse(resp *s
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["customer_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.CustomerId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "customer_id"); ok {
+					r.CustomerId = types.StringValue(val)
 				}
 
-				if v, ok := values["domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.Domain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "domain"); ok {
+					r.Domain = types.StringValue(val)
 				}
 
-				if v, ok := values["administrator_email"]; ok {
-					if val, ok := v.(string); ok {
-						r.AdministratorEmail = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "administrator_email"); ok {
+					r.AdministratorEmail = types.StringValue(val)
 				}
 
 			}
@@ -242,22 +236,16 @@ func (r *IntegrationGoogleWorkspaceResourceModel) RefreshFromCreateResponse(resp
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["customer_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.CustomerId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "customer_id"); ok {
+					r.CustomerId = types.StringValue(val)
 				}
 
-				if v, ok := values["domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.Domain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "domain"); ok {
+					r.Domain = types.StringValue(val)
 				}
 
-				if v, ok := values["administrator_email"]; ok {
-					if val, ok := v.(string); ok {
-						r.AdministratorEmail = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "administrator_email"); ok {
+					r.AdministratorEmail = types.StringValue(val)
 				}
 
 			}

@@ -182,16 +182,12 @@ func (r *IntegrationElasticResourceModel) RefreshFromGetResponse(resp *shared.Co
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["elastic_deployment_endpoint"]; ok {
-					if val, ok := v.(string); ok {
-						r.ElasticDeploymentEndpoint = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "elastic_deployment_endpoint"); ok {
+					r.ElasticDeploymentEndpoint = types.StringValue(val)
 				}
 
-				if v, ok := values["elastic_organization_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.ElasticOrganizationId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "elastic_organization_id"); ok {
+					r.ElasticOrganizationId = types.StringValue(val)
 				}
 
 			}
@@ -238,16 +234,12 @@ func (r *IntegrationElasticResourceModel) RefreshFromCreateResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["elastic_deployment_endpoint"]; ok {
-					if val, ok := v.(string); ok {
-						r.ElasticDeploymentEndpoint = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "elastic_deployment_endpoint"); ok {
+					r.ElasticDeploymentEndpoint = types.StringValue(val)
 				}
 
-				if v, ok := values["elastic_organization_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.ElasticOrganizationId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "elastic_organization_id"); ok {
+					r.ElasticOrganizationId = types.StringValue(val)
 				}
 
 			}

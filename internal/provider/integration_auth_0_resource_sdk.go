@@ -175,16 +175,12 @@ func (r *IntegrationAuth0ResourceModel) RefreshFromGetResponse(resp *shared.Conn
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["auth0-base-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.Auth0BaseUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "auth0-base-url"); ok {
+					r.Auth0BaseUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["auth0-client-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.Auth0ClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "auth0-client-id"); ok {
+					r.Auth0ClientId = types.StringValue(val)
 				}
 
 			}
@@ -230,16 +226,12 @@ func (r *IntegrationAuth0ResourceModel) RefreshFromCreateResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["auth0-base-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.Auth0BaseUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "auth0-base-url"); ok {
+					r.Auth0BaseUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["auth0-client-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.Auth0ClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "auth0-client-id"); ok {
+					r.Auth0ClientId = types.StringValue(val)
 				}
 
 			}

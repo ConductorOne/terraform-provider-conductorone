@@ -182,26 +182,20 @@ func (r *IntegrationSumoLogicResourceModel) RefreshFromGetResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["api-access-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.ApiAccessId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "api-access-id"); ok {
+					r.ApiAccessId = types.StringValue(val)
 				}
 
-				if v, ok := values["api-base-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.ApiBaseUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "api-base-url"); ok {
+					r.ApiBaseUrl = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["include-service-accounts"]; ok {
-					if v, ok := values["include-service-accounts"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.IncludeServiceAccounts = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "include-service-accounts"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.IncludeServiceAccounts = types.BoolValue(bv)
 							}
 						}
 					}
@@ -251,26 +245,20 @@ func (r *IntegrationSumoLogicResourceModel) RefreshFromCreateResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["api-access-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.ApiAccessId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "api-access-id"); ok {
+					r.ApiAccessId = types.StringValue(val)
 				}
 
-				if v, ok := values["api-base-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.ApiBaseUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "api-base-url"); ok {
+					r.ApiBaseUrl = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["include-service-accounts"]; ok {
-					if v, ok := values["include-service-accounts"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.IncludeServiceAccounts = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "include-service-accounts"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.IncludeServiceAccounts = types.BoolValue(bv)
 							}
 						}
 					}

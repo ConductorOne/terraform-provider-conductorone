@@ -175,16 +175,12 @@ func (r *IntegrationPingFederateResourceModel) RefreshFromGetResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["pingfed-instance-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.PingfedInstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "pingfed-instance-url"); ok {
+					r.PingfedInstanceUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["pingfed-username"]; ok {
-					if val, ok := v.(string); ok {
-						r.PingfedUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "pingfed-username"); ok {
+					r.PingfedUsername = types.StringValue(val)
 				}
 
 			}
@@ -230,16 +226,12 @@ func (r *IntegrationPingFederateResourceModel) RefreshFromCreateResponse(resp *s
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["pingfed-instance-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.PingfedInstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "pingfed-instance-url"); ok {
+					r.PingfedInstanceUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["pingfed-username"]; ok {
-					if val, ok := v.(string); ok {
-						r.PingfedUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "pingfed-username"); ok {
+					r.PingfedUsername = types.StringValue(val)
 				}
 
 			}

@@ -170,10 +170,8 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["teamcity_instance_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.TeamcityInstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "teamcity_instance_url"); ok {
+					r.TeamcityInstanceUrl = types.StringValue(val)
 				}
 
 			}
@@ -220,10 +218,8 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["teamcity_instance_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.TeamcityInstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "teamcity_instance_url"); ok {
+					r.TeamcityInstanceUrl = types.StringValue(val)
 				}
 
 			}

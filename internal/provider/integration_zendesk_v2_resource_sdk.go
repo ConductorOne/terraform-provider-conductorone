@@ -181,22 +181,16 @@ func (r *IntegrationZendeskV2ResourceModel) RefreshFromGetResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["zendesk_v2_subdomain"]; ok {
-					if val, ok := v.(string); ok {
-						r.ZendeskV2Subdomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "zendesk_v2_subdomain"); ok {
+					r.ZendeskV2Subdomain = types.StringValue(val)
 				}
 
-				if v, ok := values["zendesk_v2_email"]; ok {
-					if val, ok := v.(string); ok {
-						r.ZendeskV2Email = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "zendesk_v2_email"); ok {
+					r.ZendeskV2Email = types.StringValue(val)
 				}
 
-				if v, ok := values["orgs"]; ok {
-					if val, ok := v.(string); ok {
-						r.Orgs = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "orgs"); ok {
+					r.Orgs = types.StringValue(val)
 				}
 
 			}
@@ -242,22 +236,16 @@ func (r *IntegrationZendeskV2ResourceModel) RefreshFromCreateResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["zendesk_v2_subdomain"]; ok {
-					if val, ok := v.(string); ok {
-						r.ZendeskV2Subdomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "zendesk_v2_subdomain"); ok {
+					r.ZendeskV2Subdomain = types.StringValue(val)
 				}
 
-				if v, ok := values["zendesk_v2_email"]; ok {
-					if val, ok := v.(string); ok {
-						r.ZendeskV2Email = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "zendesk_v2_email"); ok {
+					r.ZendeskV2Email = types.StringValue(val)
 				}
 
-				if v, ok := values["orgs"]; ok {
-					if val, ok := v.(string); ok {
-						r.Orgs = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "orgs"); ok {
+					r.Orgs = types.StringValue(val)
 				}
 
 			}

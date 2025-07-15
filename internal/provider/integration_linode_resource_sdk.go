@@ -170,10 +170,8 @@ func (r *IntegrationLinodeResourceModel) RefreshFromGetResponse(resp *shared.Con
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["linode-api-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.LinodeApiUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "linode-api-url"); ok {
+					r.LinodeApiUrl = types.StringValue(val)
 				}
 
 			}
@@ -220,10 +218,8 @@ func (r *IntegrationLinodeResourceModel) RefreshFromCreateResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["linode-api-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.LinodeApiUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "linode-api-url"); ok {
+					r.LinodeApiUrl = types.StringValue(val)
 				}
 
 			}

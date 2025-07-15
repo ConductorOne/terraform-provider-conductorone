@@ -175,16 +175,12 @@ func (r *IntegrationJamfResourceModel) RefreshFromGetResponse(resp *shared.Conne
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["jamf_instance_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.JamfInstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "jamf_instance_url"); ok {
+					r.JamfInstanceUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["jamf_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.JamfUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "jamf_username"); ok {
+					r.JamfUsername = types.StringValue(val)
 				}
 
 			}
@@ -230,16 +226,12 @@ func (r *IntegrationJamfResourceModel) RefreshFromCreateResponse(resp *shared.Co
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["jamf_instance_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.JamfInstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "jamf_instance_url"); ok {
+					r.JamfInstanceUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["jamf_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.JamfUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "jamf_username"); ok {
+					r.JamfUsername = types.StringValue(val)
 				}
 
 			}

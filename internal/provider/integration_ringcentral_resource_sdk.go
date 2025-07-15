@@ -175,10 +175,8 @@ func (r *IntegrationRingcentralResourceModel) RefreshFromGetResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["ringcentral-client-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.RingcentralClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "ringcentral-client-id"); ok {
+					r.RingcentralClientId = types.StringValue(val)
 				}
 
 			}
@@ -224,10 +222,8 @@ func (r *IntegrationRingcentralResourceModel) RefreshFromCreateResponse(resp *sh
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["ringcentral-client-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.RingcentralClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "ringcentral-client-id"); ok {
+					r.RingcentralClientId = types.StringValue(val)
 				}
 
 			}

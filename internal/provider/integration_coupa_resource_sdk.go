@@ -175,16 +175,12 @@ func (r *IntegrationCoupaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["coupa-domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.CoupaDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "coupa-domain"); ok {
+					r.CoupaDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["oauth2_client_cred_grant_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.Oauth2ClientCredGrantClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
+					r.Oauth2ClientCredGrantClientId = types.StringValue(val)
 				}
 
 			}
@@ -230,16 +226,12 @@ func (r *IntegrationCoupaResourceModel) RefreshFromCreateResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["coupa-domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.CoupaDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "coupa-domain"); ok {
+					r.CoupaDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["oauth2_client_cred_grant_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.Oauth2ClientCredGrantClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
+					r.Oauth2ClientCredGrantClientId = types.StringValue(val)
 				}
 
 			}

@@ -169,10 +169,8 @@ func (r *IntegrationSentryResourceModel) RefreshFromGetResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["sentry_org_slug"]; ok {
-					if val, ok := v.(string); ok {
-						r.SentryOrgSlug = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "sentry_org_slug"); ok {
+					r.SentryOrgSlug = types.StringValue(val)
 				}
 
 			}
@@ -218,10 +216,8 @@ func (r *IntegrationSentryResourceModel) RefreshFromCreateResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["sentry_org_slug"]; ok {
-					if val, ok := v.(string); ok {
-						r.SentryOrgSlug = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "sentry_org_slug"); ok {
+					r.SentryOrgSlug = types.StringValue(val)
 				}
 
 			}

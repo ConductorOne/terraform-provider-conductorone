@@ -175,16 +175,12 @@ func (r *IntegrationZendeskResourceModel) RefreshFromGetResponse(resp *shared.Co
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["email"]; ok {
-					if val, ok := v.(string); ok {
-						r.Email = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "email"); ok {
+					r.Email = types.StringValue(val)
 				}
 
-				if v, ok := values["subdomain"]; ok {
-					if val, ok := v.(string); ok {
-						r.Subdomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "subdomain"); ok {
+					r.Subdomain = types.StringValue(val)
 				}
 
 			}
@@ -230,16 +226,12 @@ func (r *IntegrationZendeskResourceModel) RefreshFromCreateResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["email"]; ok {
-					if val, ok := v.(string); ok {
-						r.Email = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "email"); ok {
+					r.Email = types.StringValue(val)
 				}
 
-				if v, ok := values["subdomain"]; ok {
-					if val, ok := v.(string); ok {
-						r.Subdomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "subdomain"); ok {
+					r.Subdomain = types.StringValue(val)
 				}
 
 			}

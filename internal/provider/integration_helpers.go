@@ -31,3 +31,14 @@ func makeStringValue(value interface{}) *StringValue {
 		StringValue: value,
 	}
 }
+
+func getStringValue(values map[string]interface{}, key string) (string, bool) {
+	if v, ok := values[key]; ok {
+		if m, ok := v.(map[string]interface{}); ok {
+			if strVal, ok := m["stringValue"].(string); ok {
+				return strVal, true
+			}
+		}
+	}
+	return "", false
+}

@@ -181,16 +181,12 @@ func (r *IntegrationConcurResourceModel) RefreshFromGetResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["concur_base_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.ConcurBaseUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "concur_base_url"); ok {
+					r.ConcurBaseUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["concur_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.ConcurClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "concur_client_id"); ok {
+					r.ConcurClientId = types.StringValue(val)
 				}
 
 			}
@@ -236,16 +232,12 @@ func (r *IntegrationConcurResourceModel) RefreshFromCreateResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["concur_base_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.ConcurBaseUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "concur_base_url"); ok {
+					r.ConcurBaseUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["concur_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.ConcurClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "concur_client_id"); ok {
+					r.ConcurClientId = types.StringValue(val)
 				}
 
 			}

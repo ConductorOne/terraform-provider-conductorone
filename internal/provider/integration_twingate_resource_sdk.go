@@ -170,10 +170,8 @@ func (r *IntegrationTwingateResourceModel) RefreshFromGetResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["twingate_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.TwingateDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "twingate_domain"); ok {
+					r.TwingateDomain = types.StringValue(val)
 				}
 
 			}
@@ -220,10 +218,8 @@ func (r *IntegrationTwingateResourceModel) RefreshFromCreateResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["twingate_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.TwingateDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "twingate_domain"); ok {
+					r.TwingateDomain = types.StringValue(val)
 				}
 
 			}

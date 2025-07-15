@@ -178,17 +178,16 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromGetResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["bitbucket_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.BitbucketUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "bitbucket_username"); ok {
+					r.BitbucketUsername = types.StringValue(val)
 				}
 
 				r.BitbucketWorkspaceList = nil
-				if v, ok := values["bitbucket_workspace_list"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "bitbucket_workspace_list"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.BitbucketWorkspaceList = append(r.BitbucketWorkspaceList, types.StringValue(item))
 						}
 					}
@@ -237,17 +236,16 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromCreateResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["bitbucket_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.BitbucketUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "bitbucket_username"); ok {
+					r.BitbucketUsername = types.StringValue(val)
 				}
 
 				r.BitbucketWorkspaceList = nil
-				if v, ok := values["bitbucket_workspace_list"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "bitbucket_workspace_list"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.BitbucketWorkspaceList = append(r.BitbucketWorkspaceList, types.StringValue(item))
 						}
 					}

@@ -182,26 +182,20 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromGetResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["domain-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.DomainUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "domain-url"); ok {
+					r.DomainUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["username"]; ok {
-					if val, ok := v.(string); ok {
-						r.Username = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "username"); ok {
+					r.Username = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["skip-personal-spaces"]; ok {
-					if v, ok := values["skip-personal-spaces"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SkipPersonalSpaces = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "skip-personal-spaces"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SkipPersonalSpaces = types.BoolValue(bv)
 							}
 						}
 					}
@@ -251,26 +245,20 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromCreateResponse(resp *s
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["domain-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.DomainUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "domain-url"); ok {
+					r.DomainUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["username"]; ok {
-					if val, ok := v.(string); ok {
-						r.Username = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "username"); ok {
+					r.Username = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["skip-personal-spaces"]; ok {
-					if v, ok := values["skip-personal-spaces"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SkipPersonalSpaces = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "skip-personal-spaces"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SkipPersonalSpaces = types.BoolValue(bv)
 							}
 						}
 					}

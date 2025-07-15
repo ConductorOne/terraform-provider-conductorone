@@ -169,10 +169,8 @@ func (r *IntegrationBambooHrResourceModel) RefreshFromGetResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["company_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.CompanyDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "company_domain"); ok {
+					r.CompanyDomain = types.StringValue(val)
 				}
 
 			}
@@ -218,10 +216,8 @@ func (r *IntegrationBambooHrResourceModel) RefreshFromCreateResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["company_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.CompanyDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "company_domain"); ok {
+					r.CompanyDomain = types.StringValue(val)
 				}
 
 			}

@@ -181,22 +181,16 @@ func (r *IntegrationRedisEnterpriseResourceModel) RefreshFromGetResponse(resp *s
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["cluster-host"]; ok {
-					if val, ok := v.(string); ok {
-						r.ClusterHost = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "cluster-host"); ok {
+					r.ClusterHost = types.StringValue(val)
 				}
 
-				if v, ok := values["api-port"]; ok {
-					if val, ok := v.(string); ok {
-						r.ApiPort = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "api-port"); ok {
+					r.ApiPort = types.StringValue(val)
 				}
 
-				if v, ok := values["username"]; ok {
-					if val, ok := v.(string); ok {
-						r.Username = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "username"); ok {
+					r.Username = types.StringValue(val)
 				}
 
 			}
@@ -242,22 +236,16 @@ func (r *IntegrationRedisEnterpriseResourceModel) RefreshFromCreateResponse(resp
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["cluster-host"]; ok {
-					if val, ok := v.(string); ok {
-						r.ClusterHost = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "cluster-host"); ok {
+					r.ClusterHost = types.StringValue(val)
 				}
 
-				if v, ok := values["api-port"]; ok {
-					if val, ok := v.(string); ok {
-						r.ApiPort = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "api-port"); ok {
+					r.ApiPort = types.StringValue(val)
 				}
 
-				if v, ok := values["username"]; ok {
-					if val, ok := v.(string); ok {
-						r.Username = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "username"); ok {
+					r.Username = types.StringValue(val)
 				}
 
 			}

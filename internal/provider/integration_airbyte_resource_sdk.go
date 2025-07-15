@@ -175,10 +175,8 @@ func (r *IntegrationAirbyteResourceModel) RefreshFromGetResponse(resp *shared.Co
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["airbyte-hostname"]; ok {
-					if val, ok := v.(string); ok {
-						r.AirbyteHostname = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "airbyte-hostname"); ok {
+					r.AirbyteHostname = types.StringValue(val)
 				}
 
 			}
@@ -224,10 +222,8 @@ func (r *IntegrationAirbyteResourceModel) RefreshFromCreateResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["airbyte-hostname"]; ok {
-					if val, ok := v.(string); ok {
-						r.AirbyteHostname = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "airbyte-hostname"); ok {
+					r.AirbyteHostname = types.StringValue(val)
 				}
 
 			}

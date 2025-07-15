@@ -187,28 +187,20 @@ func (r *IntegrationDayforceResourceModel) RefreshFromGetResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["dayforce_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.DayforceUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "dayforce_username"); ok {
+					r.DayforceUsername = types.StringValue(val)
 				}
 
-				if v, ok := values["dayforce_environment"]; ok {
-					if val, ok := v.(string); ok {
-						r.DayforceEnvironment = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "dayforce_environment"); ok {
+					r.DayforceEnvironment = types.StringValue(val)
 				}
 
-				if v, ok := values["dayforce_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.DayforceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "dayforce_url"); ok {
+					r.DayforceUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["dayforce_client_namespace"]; ok {
-					if val, ok := v.(string); ok {
-						r.DayforceClientNamespace = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "dayforce_client_namespace"); ok {
+					r.DayforceClientNamespace = types.StringValue(val)
 				}
 
 			}
@@ -254,28 +246,20 @@ func (r *IntegrationDayforceResourceModel) RefreshFromCreateResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["dayforce_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.DayforceUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "dayforce_username"); ok {
+					r.DayforceUsername = types.StringValue(val)
 				}
 
-				if v, ok := values["dayforce_environment"]; ok {
-					if val, ok := v.(string); ok {
-						r.DayforceEnvironment = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "dayforce_environment"); ok {
+					r.DayforceEnvironment = types.StringValue(val)
 				}
 
-				if v, ok := values["dayforce_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.DayforceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "dayforce_url"); ok {
+					r.DayforceUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["dayforce_client_namespace"]; ok {
-					if val, ok := v.(string); ok {
-						r.DayforceClientNamespace = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "dayforce_client_namespace"); ok {
+					r.DayforceClientNamespace = types.StringValue(val)
 				}
 
 			}

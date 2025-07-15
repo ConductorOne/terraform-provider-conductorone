@@ -172,13 +172,11 @@ func (r *IntegrationHubspotResourceModel) RefreshFromGetResponse(resp *shared.Co
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if localV, ok := configValues["hubspot_user_status"]; ok {
-					if v, ok := values["hubspot_user_status"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.HubspotUserStatus = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "hubspot_user_status"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.HubspotUserStatus = types.BoolValue(bv)
 							}
 						}
 					}
@@ -230,13 +228,11 @@ func (r *IntegrationHubspotResourceModel) RefreshFromCreateResponse(resp *shared
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if localV, ok := configValues["hubspot_user_status"]; ok {
-					if v, ok := values["hubspot_user_status"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.HubspotUserStatus = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "hubspot_user_status"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.HubspotUserStatus = types.BoolValue(bv)
 							}
 						}
 					}

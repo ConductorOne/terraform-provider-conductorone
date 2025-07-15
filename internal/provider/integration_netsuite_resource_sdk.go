@@ -187,22 +187,16 @@ func (r *IntegrationNetsuiteResourceModel) RefreshFromGetResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["netsuite_account_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.NetsuiteAccountId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "netsuite_account_id"); ok {
+					r.NetsuiteAccountId = types.StringValue(val)
 				}
 
-				if v, ok := values["netsuite_consumer_key"]; ok {
-					if val, ok := v.(string); ok {
-						r.NetsuiteConsumerKey = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "netsuite_consumer_key"); ok {
+					r.NetsuiteConsumerKey = types.StringValue(val)
 				}
 
-				if v, ok := values["netsuite_token_key"]; ok {
-					if val, ok := v.(string); ok {
-						r.NetsuiteTokenKey = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "netsuite_token_key"); ok {
+					r.NetsuiteTokenKey = types.StringValue(val)
 				}
 
 			}
@@ -248,22 +242,16 @@ func (r *IntegrationNetsuiteResourceModel) RefreshFromCreateResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["netsuite_account_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.NetsuiteAccountId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "netsuite_account_id"); ok {
+					r.NetsuiteAccountId = types.StringValue(val)
 				}
 
-				if v, ok := values["netsuite_consumer_key"]; ok {
-					if val, ok := v.(string); ok {
-						r.NetsuiteConsumerKey = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "netsuite_consumer_key"); ok {
+					r.NetsuiteConsumerKey = types.StringValue(val)
 				}
 
-				if v, ok := values["netsuite_token_key"]; ok {
-					if val, ok := v.(string); ok {
-						r.NetsuiteTokenKey = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "netsuite_token_key"); ok {
+					r.NetsuiteTokenKey = types.StringValue(val)
 				}
 
 			}

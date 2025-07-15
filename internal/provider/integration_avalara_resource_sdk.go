@@ -175,16 +175,12 @@ func (r *IntegrationAvalaraResourceModel) RefreshFromGetResponse(resp *shared.Co
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["avalara_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.AvalaraUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "avalara_username"); ok {
+					r.AvalaraUsername = types.StringValue(val)
 				}
 
-				if v, ok := values["avalara_environment"]; ok {
-					if val, ok := v.(string); ok {
-						r.AvalaraEnvironment = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "avalara_environment"); ok {
+					r.AvalaraEnvironment = types.StringValue(val)
 				}
 
 			}
@@ -230,16 +226,12 @@ func (r *IntegrationAvalaraResourceModel) RefreshFromCreateResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["avalara_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.AvalaraUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "avalara_username"); ok {
+					r.AvalaraUsername = types.StringValue(val)
 				}
 
-				if v, ok := values["avalara_environment"]; ok {
-					if val, ok := v.(string); ok {
-						r.AvalaraEnvironment = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "avalara_environment"); ok {
+					r.AvalaraEnvironment = types.StringValue(val)
 				}
 
 			}

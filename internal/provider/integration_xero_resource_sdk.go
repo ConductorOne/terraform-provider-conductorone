@@ -169,10 +169,8 @@ func (r *IntegrationXeroResourceModel) RefreshFromGetResponse(resp *shared.Conne
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["xero_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.XeroClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "xero_client_id"); ok {
+					r.XeroClientId = types.StringValue(val)
 				}
 
 			}
@@ -218,10 +216,8 @@ func (r *IntegrationXeroResourceModel) RefreshFromCreateResponse(resp *shared.Co
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["xero_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.XeroClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "xero_client_id"); ok {
+					r.XeroClientId = types.StringValue(val)
 				}
 
 			}

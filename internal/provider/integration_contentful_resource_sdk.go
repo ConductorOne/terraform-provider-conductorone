@@ -170,10 +170,8 @@ func (r *IntegrationContentfulResourceModel) RefreshFromGetResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["contentful_organization_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.ContentfulOrganizationId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "contentful_organization_id"); ok {
+					r.ContentfulOrganizationId = types.StringValue(val)
 				}
 
 			}
@@ -220,10 +218,8 @@ func (r *IntegrationContentfulResourceModel) RefreshFromCreateResponse(resp *sha
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["contentful_organization_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.ContentfulOrganizationId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "contentful_organization_id"); ok {
+					r.ContentfulOrganizationId = types.StringValue(val)
 				}
 
 			}

@@ -206,71 +206,57 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromGetResponse(resp *sh
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["entra_tenant_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.EntraTenantId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "entra_tenant_id"); ok {
+					r.EntraTenantId = types.StringValue(val)
 				}
 
-				if v, ok := values["entra_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.EntraClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "entra_client_id"); ok {
+					r.EntraClientId = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["entra_skip_ad_groups"]; ok {
-					if v, ok := values["entra_skip_ad_groups"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EntraSkipAdGroups = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EntraSkipAdGroups = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
-				if v, ok := values["entra_graph_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.EntraGraphDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "entra_graph_domain"); ok {
+					r.EntraGraphDomain = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["entra_sign_in_activity"]; ok {
-					if v, ok := values["entra_sign_in_activity"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EntraSignInActivity = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EntraSignInActivity = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["entra_schedule_scim_provisioning"]; ok {
-					if v, ok := values["entra_schedule_scim_provisioning"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EntraScheduleScimProvisioning = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "entra_schedule_scim_provisioning"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EntraScheduleScimProvisioning = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["entra_disable_audit_log_feed"]; ok {
-					if v, ok := values["entra_disable_audit_log_feed"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EntraDisableAuditLogFeed = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "entra_disable_audit_log_feed"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EntraDisableAuditLogFeed = types.BoolValue(bv)
 							}
 						}
 					}
@@ -320,71 +306,57 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromCreateResponse(resp 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["entra_tenant_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.EntraTenantId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "entra_tenant_id"); ok {
+					r.EntraTenantId = types.StringValue(val)
 				}
 
-				if v, ok := values["entra_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.EntraClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "entra_client_id"); ok {
+					r.EntraClientId = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["entra_skip_ad_groups"]; ok {
-					if v, ok := values["entra_skip_ad_groups"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EntraSkipAdGroups = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EntraSkipAdGroups = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
-				if v, ok := values["entra_graph_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.EntraGraphDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "entra_graph_domain"); ok {
+					r.EntraGraphDomain = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["entra_sign_in_activity"]; ok {
-					if v, ok := values["entra_sign_in_activity"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EntraSignInActivity = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EntraSignInActivity = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["entra_schedule_scim_provisioning"]; ok {
-					if v, ok := values["entra_schedule_scim_provisioning"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EntraScheduleScimProvisioning = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "entra_schedule_scim_provisioning"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EntraScheduleScimProvisioning = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["entra_disable_audit_log_feed"]; ok {
-					if v, ok := values["entra_disable_audit_log_feed"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EntraDisableAuditLogFeed = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "entra_disable_audit_log_feed"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EntraDisableAuditLogFeed = types.BoolValue(bv)
 							}
 						}
 					}
