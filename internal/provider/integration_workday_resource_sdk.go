@@ -205,34 +205,24 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromGetResponse(resp *shared.Co
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["workday_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.WorkdayClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "workday_client_id"); ok {
+					r.WorkdayClientId = types.StringValue(val)
 				}
 
-				if v, ok := values["workday_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.WorkdayUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "workday_url"); ok {
+					r.WorkdayUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["tenant_name"]; ok {
-					if val, ok := v.(string); ok {
-						r.TenantName = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "tenant_name"); ok {
+					r.TenantName = types.StringValue(val)
 				}
 
-				if v, ok := values["workday_report_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.WorkdayReportUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "workday_report_url"); ok {
+					r.WorkdayReportUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["workday_report_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.WorkdayReportUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "workday_report_username"); ok {
+					r.WorkdayReportUsername = types.StringValue(val)
 				}
 
 			}
@@ -278,34 +268,24 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromCreateResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["workday_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.WorkdayClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "workday_client_id"); ok {
+					r.WorkdayClientId = types.StringValue(val)
 				}
 
-				if v, ok := values["workday_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.WorkdayUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "workday_url"); ok {
+					r.WorkdayUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["tenant_name"]; ok {
-					if val, ok := v.(string); ok {
-						r.TenantName = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "tenant_name"); ok {
+					r.TenantName = types.StringValue(val)
 				}
 
-				if v, ok := values["workday_report_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.WorkdayReportUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "workday_report_url"); ok {
+					r.WorkdayReportUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["workday_report_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.WorkdayReportUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "workday_report_username"); ok {
+					r.WorkdayReportUsername = types.StringValue(val)
 				}
 
 			}

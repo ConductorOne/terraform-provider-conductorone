@@ -178,17 +178,16 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromGetResponse(resp *
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["github_instance_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.GithubInstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "github_instance_url"); ok {
+					r.GithubInstanceUrl = types.StringValue(val)
 				}
 
 				r.GithubOrgList = nil
-				if v, ok := values["github_org_list"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "github_org_list"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
 						}
 					}
@@ -237,17 +236,16 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromCreateResponse(res
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["github_instance_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.GithubInstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "github_instance_url"); ok {
+					r.GithubInstanceUrl = types.StringValue(val)
 				}
 
 				r.GithubOrgList = nil
-				if v, ok := values["github_org_list"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "github_org_list"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
 						}
 					}

@@ -185,26 +185,23 @@ func (r *IntegrationSnykResourceModel) RefreshFromGetResponse(resp *shared.Conne
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["snyk_group_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnykGroupId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snyk_group_id"); ok {
+					r.SnykGroupId = types.StringValue(val)
 				}
 
 				r.SnykOrgIds = nil
-				if v, ok := values["snyk_org_ids"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "snyk_org_ids"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.SnykOrgIds = append(r.SnykOrgIds, types.StringValue(item))
 						}
 					}
 				}
 
-				if v, ok := values["snyk_hostname"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnykHostname = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snyk_hostname"); ok {
+					r.SnykHostname = types.StringValue(val)
 				}
 
 			}
@@ -251,26 +248,23 @@ func (r *IntegrationSnykResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["snyk_group_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnykGroupId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snyk_group_id"); ok {
+					r.SnykGroupId = types.StringValue(val)
 				}
 
 				r.SnykOrgIds = nil
-				if v, ok := values["snyk_org_ids"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "snyk_org_ids"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.SnykOrgIds = append(r.SnykOrgIds, types.StringValue(item))
 						}
 					}
 				}
 
-				if v, ok := values["snyk_hostname"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnykHostname = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snyk_hostname"); ok {
+					r.SnykHostname = types.StringValue(val)
 				}
 
 			}

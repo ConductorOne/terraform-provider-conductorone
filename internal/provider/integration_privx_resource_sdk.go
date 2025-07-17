@@ -187,22 +187,16 @@ func (r *IntegrationPrivxResourceModel) RefreshFromGetResponse(resp *shared.Conn
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["privx_base_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.PrivxBaseUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "privx_base_url"); ok {
+					r.PrivxBaseUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["privx_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.PrivxClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "privx_client_id"); ok {
+					r.PrivxClientId = types.StringValue(val)
 				}
 
-				if v, ok := values["privx_oauth_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.PrivxOauthClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "privx_oauth_client_id"); ok {
+					r.PrivxOauthClientId = types.StringValue(val)
 				}
 
 			}
@@ -248,22 +242,16 @@ func (r *IntegrationPrivxResourceModel) RefreshFromCreateResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["privx_base_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.PrivxBaseUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "privx_base_url"); ok {
+					r.PrivxBaseUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["privx_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.PrivxClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "privx_client_id"); ok {
+					r.PrivxClientId = types.StringValue(val)
 				}
 
-				if v, ok := values["privx_oauth_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.PrivxOauthClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "privx_oauth_client_id"); ok {
+					r.PrivxOauthClientId = types.StringValue(val)
 				}
 
 			}

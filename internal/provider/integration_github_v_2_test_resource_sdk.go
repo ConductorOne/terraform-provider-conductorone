@@ -174,10 +174,11 @@ func (r *IntegrationGithubV2TestResourceModel) RefreshFromGetResponse(resp *shar
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				r.GithubOrgList = nil
-				if v, ok := values["github_org_list"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "github_org_list"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
 						}
 					}
@@ -228,10 +229,11 @@ func (r *IntegrationGithubV2TestResourceModel) RefreshFromCreateResponse(resp *s
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				r.GithubOrgList = nil
-				if v, ok := values["github_org_list"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "github_org_list"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
 						}
 					}

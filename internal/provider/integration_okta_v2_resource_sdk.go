@@ -188,46 +188,38 @@ func (r *IntegrationOktaV2ResourceModel) RefreshFromGetResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["okta_v2_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.OktaV2Domain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "okta_v2_domain"); ok {
+					r.OktaV2Domain = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["okta_sync_custom_roles"]; ok {
-					if v, ok := values["okta_sync_custom_roles"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.OktaSyncCustomRoles = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "okta_sync_custom_roles"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.OktaSyncCustomRoles = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["okta_skip_secondary_emails"]; ok {
-					if v, ok := values["okta_skip_secondary_emails"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.OktaSkipSecondaryEmails = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "okta_skip_secondary_emails"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.OktaSkipSecondaryEmails = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["okta_sync_secrets"]; ok {
-					if v, ok := values["okta_sync_secrets"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.OktaSyncSecrets = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "okta_sync_secrets"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.OktaSyncSecrets = types.BoolValue(bv)
 							}
 						}
 					}
@@ -277,46 +269,38 @@ func (r *IntegrationOktaV2ResourceModel) RefreshFromCreateResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["okta_v2_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.OktaV2Domain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "okta_v2_domain"); ok {
+					r.OktaV2Domain = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["okta_sync_custom_roles"]; ok {
-					if v, ok := values["okta_sync_custom_roles"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.OktaSyncCustomRoles = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "okta_sync_custom_roles"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.OktaSyncCustomRoles = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["okta_skip_secondary_emails"]; ok {
-					if v, ok := values["okta_skip_secondary_emails"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.OktaSkipSecondaryEmails = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "okta_skip_secondary_emails"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.OktaSkipSecondaryEmails = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["okta_sync_secrets"]; ok {
-					if v, ok := values["okta_sync_secrets"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.OktaSyncSecrets = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "okta_sync_secrets"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.OktaSyncSecrets = types.BoolValue(bv)
 							}
 						}
 					}

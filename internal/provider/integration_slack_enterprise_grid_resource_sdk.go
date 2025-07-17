@@ -178,13 +178,11 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) RefreshFromGetResponse(res
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if localV, ok := configValues["use_gov_env"]; ok {
-					if v, ok := values["use_gov_env"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.UseGovEnv = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "use_gov_env"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.UseGovEnv = types.BoolValue(bv)
 							}
 						}
 					}
@@ -236,13 +234,11 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) RefreshFromCreateResponse(
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if localV, ok := configValues["use_gov_env"]; ok {
-					if v, ok := values["use_gov_env"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.UseGovEnv = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "use_gov_env"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.UseGovEnv = types.BoolValue(bv)
 							}
 						}
 					}

@@ -169,10 +169,8 @@ func (r *IntegrationFluidTopicsResourceModel) RefreshFromGetResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["fluid-topics-domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.FluidTopicsDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "fluid-topics-domain"); ok {
+					r.FluidTopicsDomain = types.StringValue(val)
 				}
 
 			}
@@ -218,10 +216,8 @@ func (r *IntegrationFluidTopicsResourceModel) RefreshFromCreateResponse(resp *sh
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["fluid-topics-domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.FluidTopicsDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "fluid-topics-domain"); ok {
+					r.FluidTopicsDomain = types.StringValue(val)
 				}
 
 			}

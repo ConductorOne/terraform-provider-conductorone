@@ -175,16 +175,12 @@ func (r *IntegrationOneloginV2ResourceModel) RefreshFromGetResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["onelogin_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.OneloginDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "onelogin_domain"); ok {
+					r.OneloginDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.OauthClientCredGrantClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "oauth_client_cred_grant_client_id"); ok {
+					r.OauthClientCredGrantClientId = types.StringValue(val)
 				}
 
 			}
@@ -230,16 +226,12 @@ func (r *IntegrationOneloginV2ResourceModel) RefreshFromCreateResponse(resp *sha
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["onelogin_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.OneloginDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "onelogin_domain"); ok {
+					r.OneloginDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["oauth_client_cred_grant_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.OauthClientCredGrantClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "oauth_client_cred_grant_client_id"); ok {
+					r.OauthClientCredGrantClientId = types.StringValue(val)
 				}
 
 			}

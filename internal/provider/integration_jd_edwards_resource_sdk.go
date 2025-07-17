@@ -181,22 +181,16 @@ func (r *IntegrationJdEdwardsResourceModel) RefreshFromGetResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["jdedwards_ais_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.JdedwardsAisUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "jdedwards_ais_url"); ok {
+					r.JdedwardsAisUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["jdedwards_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.JdedwardsUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "jdedwards_username"); ok {
+					r.JdedwardsUsername = types.StringValue(val)
 				}
 
-				if v, ok := values["jdedwards_env"]; ok {
-					if val, ok := v.(string); ok {
-						r.JdedwardsEnv = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "jdedwards_env"); ok {
+					r.JdedwardsEnv = types.StringValue(val)
 				}
 
 			}
@@ -242,22 +236,16 @@ func (r *IntegrationJdEdwardsResourceModel) RefreshFromCreateResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["jdedwards_ais_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.JdedwardsAisUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "jdedwards_ais_url"); ok {
+					r.JdedwardsAisUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["jdedwards_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.JdedwardsUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "jdedwards_username"); ok {
+					r.JdedwardsUsername = types.StringValue(val)
 				}
 
-				if v, ok := values["jdedwards_env"]; ok {
-					if val, ok := v.(string); ok {
-						r.JdedwardsEnv = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "jdedwards_env"); ok {
+					r.JdedwardsEnv = types.StringValue(val)
 				}
 
 			}

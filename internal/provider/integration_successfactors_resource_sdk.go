@@ -205,34 +205,24 @@ func (r *IntegrationSuccessfactorsResourceModel) RefreshFromGetResponse(resp *sh
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["company-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.CompanyId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "company-id"); ok {
+					r.CompanyId = types.StringValue(val)
 				}
 
-				if v, ok := values["cid"]; ok {
-					if val, ok := v.(string); ok {
-						r.Cid = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "cid"); ok {
+					r.Cid = types.StringValue(val)
 				}
 
-				if v, ok := values["instance-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.InstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "instance-url"); ok {
+					r.InstanceUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["issuer-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.IssuerUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "issuer-url"); ok {
+					r.IssuerUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["subject-name-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.SubjectNameId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "subject-name-id"); ok {
+					r.SubjectNameId = types.StringValue(val)
 				}
 
 			}
@@ -278,34 +268,24 @@ func (r *IntegrationSuccessfactorsResourceModel) RefreshFromCreateResponse(resp 
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["company-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.CompanyId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "company-id"); ok {
+					r.CompanyId = types.StringValue(val)
 				}
 
-				if v, ok := values["cid"]; ok {
-					if val, ok := v.(string); ok {
-						r.Cid = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "cid"); ok {
+					r.Cid = types.StringValue(val)
 				}
 
-				if v, ok := values["instance-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.InstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "instance-url"); ok {
+					r.InstanceUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["issuer-url"]; ok {
-					if val, ok := v.(string); ok {
-						r.IssuerUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "issuer-url"); ok {
+					r.IssuerUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["subject-name-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.SubjectNameId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "subject-name-id"); ok {
+					r.SubjectNameId = types.StringValue(val)
 				}
 
 			}

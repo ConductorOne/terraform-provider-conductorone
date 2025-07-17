@@ -175,16 +175,12 @@ func (r *IntegrationGrafanaResourceModel) RefreshFromGetResponse(resp *shared.Co
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["grafana_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.GrafanaUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "grafana_url"); ok {
+					r.GrafanaUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["grafana_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.GrafanaUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "grafana_username"); ok {
+					r.GrafanaUsername = types.StringValue(val)
 				}
 
 			}
@@ -230,16 +226,12 @@ func (r *IntegrationGrafanaResourceModel) RefreshFromCreateResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["grafana_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.GrafanaUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "grafana_url"); ok {
+					r.GrafanaUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["grafana_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.GrafanaUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "grafana_username"); ok {
+					r.GrafanaUsername = types.StringValue(val)
 				}
 
 			}

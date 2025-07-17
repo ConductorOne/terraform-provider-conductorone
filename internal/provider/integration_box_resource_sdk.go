@@ -175,16 +175,12 @@ func (r *IntegrationBoxResourceModel) RefreshFromGetResponse(resp *shared.Connec
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["box_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.BoxClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "box_client_id"); ok {
+					r.BoxClientId = types.StringValue(val)
 				}
 
-				if v, ok := values["box_enterprise_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.BoxEnterpriseId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "box_enterprise_id"); ok {
+					r.BoxEnterpriseId = types.StringValue(val)
 				}
 
 			}
@@ -230,16 +226,12 @@ func (r *IntegrationBoxResourceModel) RefreshFromCreateResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["box_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.BoxClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "box_client_id"); ok {
+					r.BoxClientId = types.StringValue(val)
 				}
 
-				if v, ok := values["box_enterprise_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.BoxEnterpriseId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "box_enterprise_id"); ok {
+					r.BoxEnterpriseId = types.StringValue(val)
 				}
 
 			}

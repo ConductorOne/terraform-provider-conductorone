@@ -169,10 +169,8 @@ func (r *IntegrationXsoarResourceModel) RefreshFromGetResponse(resp *shared.Conn
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["api_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.ApiUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "api_url"); ok {
+					r.ApiUrl = types.StringValue(val)
 				}
 
 			}
@@ -218,10 +216,8 @@ func (r *IntegrationXsoarResourceModel) RefreshFromCreateResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["api_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.ApiUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "api_url"); ok {
+					r.ApiUrl = types.StringValue(val)
 				}
 
 			}

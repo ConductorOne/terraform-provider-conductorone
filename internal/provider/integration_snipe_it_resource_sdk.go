@@ -169,10 +169,8 @@ func (r *IntegrationSnipeItResourceModel) RefreshFromGetResponse(resp *shared.Co
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["snipeit_base_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnipeitBaseUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snipeit_base_url"); ok {
+					r.SnipeitBaseUrl = types.StringValue(val)
 				}
 
 			}
@@ -218,10 +216,8 @@ func (r *IntegrationSnipeItResourceModel) RefreshFromCreateResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["snipeit_base_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnipeitBaseUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snipeit_base_url"); ok {
+					r.SnipeitBaseUrl = types.StringValue(val)
 				}
 
 			}

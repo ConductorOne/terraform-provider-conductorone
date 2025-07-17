@@ -199,35 +199,30 @@ func (r *IntegrationGithubV2ResourceModel) RefreshFromGetResponse(resp *shared.C
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				r.GithubOrgList = nil
-				if v, ok := values["github_org_list"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "github_org_list"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
 						}
 					}
 				}
 
-				if v, ok := values["github_app_org"]; ok {
-					if val, ok := v.(string); ok {
-						r.GithubAppOrg = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "github_app_org"); ok {
+					r.GithubAppOrg = types.StringValue(val)
 				}
 
-				if v, ok := values["github_app_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.GithubAppId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "github_app_id"); ok {
+					r.GithubAppId = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["github_sync_secrets"]; ok {
-					if v, ok := values["github_sync_secrets"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.GithubSyncSecrets = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "github_sync_secrets"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.GithubSyncSecrets = types.BoolValue(bv)
 							}
 						}
 					}
@@ -279,35 +274,30 @@ func (r *IntegrationGithubV2ResourceModel) RefreshFromCreateResponse(resp *share
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				r.GithubOrgList = nil
-				if v, ok := values["github_org_list"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "github_org_list"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
 						}
 					}
 				}
 
-				if v, ok := values["github_app_org"]; ok {
-					if val, ok := v.(string); ok {
-						r.GithubAppOrg = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "github_app_org"); ok {
+					r.GithubAppOrg = types.StringValue(val)
 				}
 
-				if v, ok := values["github_app_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.GithubAppId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "github_app_id"); ok {
+					r.GithubAppId = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["github_sync_secrets"]; ok {
-					if v, ok := values["github_sync_secrets"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.GithubSyncSecrets = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "github_sync_secrets"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.GithubSyncSecrets = types.BoolValue(bv)
 							}
 						}
 					}

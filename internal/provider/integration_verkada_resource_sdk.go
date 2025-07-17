@@ -170,10 +170,8 @@ func (r *IntegrationVerkadaResourceModel) RefreshFromGetResponse(resp *shared.Co
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["verkada_region"]; ok {
-					if val, ok := v.(string); ok {
-						r.VerkadaRegion = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "verkada_region"); ok {
+					r.VerkadaRegion = types.StringValue(val)
 				}
 
 			}
@@ -220,10 +218,8 @@ func (r *IntegrationVerkadaResourceModel) RefreshFromCreateResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["verkada_region"]; ok {
-					if val, ok := v.(string); ok {
-						r.VerkadaRegion = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "verkada_region"); ok {
+					r.VerkadaRegion = types.StringValue(val)
 				}
 
 			}

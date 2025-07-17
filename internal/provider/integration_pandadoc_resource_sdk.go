@@ -172,13 +172,11 @@ func (r *IntegrationPandadocResourceModel) RefreshFromGetResponse(resp *shared.C
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if localV, ok := configValues["europe-domain"]; ok {
-					if v, ok := values["europe-domain"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EuropeDomain = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "europe-domain"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EuropeDomain = types.BoolValue(bv)
 							}
 						}
 					}
@@ -230,13 +228,11 @@ func (r *IntegrationPandadocResourceModel) RefreshFromCreateResponse(resp *share
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
 				if localV, ok := configValues["europe-domain"]; ok {
-					if v, ok := values["europe-domain"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EuropeDomain = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "europe-domain"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EuropeDomain = types.BoolValue(bv)
 							}
 						}
 					}

@@ -175,16 +175,12 @@ func (r *IntegrationConfluenceResourceModel) RefreshFromGetResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["confluence_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.ConfluenceDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "confluence_domain"); ok {
+					r.ConfluenceDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["confluence_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.ConfluenceUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "confluence_username"); ok {
+					r.ConfluenceUsername = types.StringValue(val)
 				}
 
 			}
@@ -230,16 +226,12 @@ func (r *IntegrationConfluenceResourceModel) RefreshFromCreateResponse(resp *sha
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["confluence_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.ConfluenceDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "confluence_domain"); ok {
+					r.ConfluenceDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["confluence_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.ConfluenceUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "confluence_username"); ok {
+					r.ConfluenceUsername = types.StringValue(val)
 				}
 
 			}

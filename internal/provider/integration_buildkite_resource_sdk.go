@@ -170,10 +170,8 @@ func (r *IntegrationBuildkiteResourceModel) RefreshFromGetResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["organization"]; ok {
-					if val, ok := v.(string); ok {
-						r.Organization = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "organization"); ok {
+					r.Organization = types.StringValue(val)
 				}
 
 			}
@@ -220,10 +218,8 @@ func (r *IntegrationBuildkiteResourceModel) RefreshFromCreateResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["organization"]; ok {
-					if val, ok := v.(string); ok {
-						r.Organization = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "organization"); ok {
+					r.Organization = types.StringValue(val)
 				}
 
 			}

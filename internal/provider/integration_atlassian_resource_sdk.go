@@ -170,10 +170,8 @@ func (r *IntegrationAtlassianResourceModel) RefreshFromGetResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["organization-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.OrganizationId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "organization-id"); ok {
+					r.OrganizationId = types.StringValue(val)
 				}
 
 			}
@@ -220,10 +218,8 @@ func (r *IntegrationAtlassianResourceModel) RefreshFromCreateResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["organization-id"]; ok {
-					if val, ok := v.(string); ok {
-						r.OrganizationId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "organization-id"); ok {
+					r.OrganizationId = types.StringValue(val)
 				}
 
 			}

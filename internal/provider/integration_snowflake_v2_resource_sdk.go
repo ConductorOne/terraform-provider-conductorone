@@ -188,32 +188,24 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromGetResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["snowflake_account_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnowflakeAccountUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snowflake_account_url"); ok {
+					r.SnowflakeAccountUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["snowflake_account_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnowflakeAccountId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snowflake_account_id"); ok {
+					r.SnowflakeAccountId = types.StringValue(val)
 				}
 
-				if v, ok := values["snowflake_user_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnowflakeUserId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snowflake_user_id"); ok {
+					r.SnowflakeUserId = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["snowflake_sync_secrets"]; ok {
-					if v, ok := values["snowflake_sync_secrets"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SnowflakeSyncSecrets = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "snowflake_sync_secrets"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SnowflakeSyncSecrets = types.BoolValue(bv)
 							}
 						}
 					}
@@ -263,32 +255,24 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromCreateResponse(resp *sh
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["snowflake_account_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnowflakeAccountUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snowflake_account_url"); ok {
+					r.SnowflakeAccountUrl = types.StringValue(val)
 				}
 
-				if v, ok := values["snowflake_account_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnowflakeAccountId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snowflake_account_id"); ok {
+					r.SnowflakeAccountId = types.StringValue(val)
 				}
 
-				if v, ok := values["snowflake_user_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.SnowflakeUserId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "snowflake_user_id"); ok {
+					r.SnowflakeUserId = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["snowflake_sync_secrets"]; ok {
-					if v, ok := values["snowflake_sync_secrets"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SnowflakeSyncSecrets = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "snowflake_sync_secrets"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SnowflakeSyncSecrets = types.BoolValue(bv)
 							}
 						}
 					}

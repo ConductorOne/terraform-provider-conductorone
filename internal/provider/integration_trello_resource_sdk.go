@@ -178,17 +178,16 @@ func (r *IntegrationTrelloResourceModel) RefreshFromGetResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["api-key"]; ok {
-					if val, ok := v.(string); ok {
-						r.ApiKey = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "api-key"); ok {
+					r.ApiKey = types.StringValue(val)
 				}
 
 				r.Organizations = nil
-				if v, ok := values["organizations"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "organizations"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.Organizations = append(r.Organizations, types.StringValue(item))
 						}
 					}
@@ -237,17 +236,16 @@ func (r *IntegrationTrelloResourceModel) RefreshFromCreateResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["api-key"]; ok {
-					if val, ok := v.(string); ok {
-						r.ApiKey = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "api-key"); ok {
+					r.ApiKey = types.StringValue(val)
 				}
 
 				r.Organizations = nil
-				if v, ok := values["organizations"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "organizations"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.Organizations = append(r.Organizations, types.StringValue(item))
 						}
 					}

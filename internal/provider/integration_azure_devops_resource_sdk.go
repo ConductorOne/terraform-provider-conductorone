@@ -176,20 +176,16 @@ func (r *IntegrationAzureDevopsResourceModel) RefreshFromGetResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["organization_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.OrganizationUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "organization_url"); ok {
+					r.OrganizationUrl = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["sync_grant_sources"]; ok {
-					if v, ok := values["sync_grant_sources"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SyncGrantSources = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "sync_grant_sources"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SyncGrantSources = types.BoolValue(bv)
 							}
 						}
 					}
@@ -239,20 +235,16 @@ func (r *IntegrationAzureDevopsResourceModel) RefreshFromCreateResponse(resp *sh
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["organization_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.OrganizationUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "organization_url"); ok {
+					r.OrganizationUrl = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["sync_grant_sources"]; ok {
-					if v, ok := values["sync_grant_sources"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SyncGrantSources = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "sync_grant_sources"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SyncGrantSources = types.BoolValue(bv)
 							}
 						}
 					}

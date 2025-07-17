@@ -209,68 +209,57 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromGetResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["customer_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.CustomerId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "customer_id"); ok {
+					r.CustomerId = types.StringValue(val)
 				}
 
-				if v, ok := values["domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.Domain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "domain"); ok {
+					r.Domain = types.StringValue(val)
 				}
 
-				if v, ok := values["administrator_email"]; ok {
-					if val, ok := v.(string); ok {
-						r.AdministratorEmail = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "administrator_email"); ok {
+					r.AdministratorEmail = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["skip_system_accounts"]; ok {
-					if v, ok := values["skip_system_accounts"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SkipSystemAccounts = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "skip_system_accounts"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SkipSystemAccounts = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["skip_default_projects"]; ok {
-					if v, ok := values["skip_default_projects"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SkipDefaultProjects = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "skip_default_projects"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SkipDefaultProjects = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["sync_secrets"]; ok {
-					if v, ok := values["sync_secrets"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SyncSecrets = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "sync_secrets"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SyncSecrets = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				r.ProjectIds = nil
-				if v, ok := values["project_ids"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "project_ids"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.ProjectIds = append(r.ProjectIds, types.StringValue(item))
 						}
 					}
@@ -320,68 +309,57 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromCreateResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["customer_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.CustomerId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "customer_id"); ok {
+					r.CustomerId = types.StringValue(val)
 				}
 
-				if v, ok := values["domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.Domain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "domain"); ok {
+					r.Domain = types.StringValue(val)
 				}
 
-				if v, ok := values["administrator_email"]; ok {
-					if val, ok := v.(string); ok {
-						r.AdministratorEmail = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "administrator_email"); ok {
+					r.AdministratorEmail = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["skip_system_accounts"]; ok {
-					if v, ok := values["skip_system_accounts"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SkipSystemAccounts = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "skip_system_accounts"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SkipSystemAccounts = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["skip_default_projects"]; ok {
-					if v, ok := values["skip_default_projects"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SkipDefaultProjects = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "skip_default_projects"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SkipDefaultProjects = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				if localV, ok := configValues["sync_secrets"]; ok {
-					if v, ok := values["sync_secrets"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SyncSecrets = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "sync_secrets"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SyncSecrets = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
 				r.ProjectIds = nil
-				if v, ok := values["project_ids"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "project_ids"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.ProjectIds = append(r.ProjectIds, types.StringValue(item))
 						}
 					}

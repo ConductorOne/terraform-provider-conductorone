@@ -182,29 +182,23 @@ func (r *IntegrationFreshserviceResourceModel) RefreshFromGetResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.Domain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "domain"); ok {
+					r.Domain = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
-					if v, ok := values["enable_external_ticket_provisioning"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EnableExternalTicketProvisioning = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
-				if v, ok := values["category_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.CategoryId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "category_id"); ok {
+					r.CategoryId = types.StringValue(val)
 				}
 
 			}
@@ -251,29 +245,23 @@ func (r *IntegrationFreshserviceResourceModel) RefreshFromCreateResponse(resp *s
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.Domain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "domain"); ok {
+					r.Domain = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
-					if v, ok := values["enable_external_ticket_provisioning"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.EnableExternalTicketProvisioning = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
-				if v, ok := values["category_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.CategoryId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "category_id"); ok {
+					r.CategoryId = types.StringValue(val)
 				}
 
 			}

@@ -194,39 +194,31 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromGetResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["salesforce_instance_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.SalesforceInstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+					r.SalesforceInstanceUrl = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["salesforce_username_for_email"]; ok {
-					if v, ok := values["salesforce_username_for_email"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SalesforceUsernameForEmail = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SalesforceUsernameForEmail = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
-				if v, ok := values["salesforce_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.SalesforceUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "salesforce_username"); ok {
+					r.SalesforceUsername = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["salesforce_sync_connected_apps"]; ok {
-					if v, ok := values["salesforce_sync_connected_apps"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SalesforceSyncConnectedApps = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "salesforce_sync_connected_apps"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SalesforceSyncConnectedApps = types.BoolValue(bv)
 							}
 						}
 					}
@@ -276,39 +268,31 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromCreateResponse(resp *s
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["salesforce_instance_url"]; ok {
-					if val, ok := v.(string); ok {
-						r.SalesforceInstanceUrl = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+					r.SalesforceInstanceUrl = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["salesforce_username_for_email"]; ok {
-					if v, ok := values["salesforce_username_for_email"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SalesforceUsernameForEmail = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SalesforceUsernameForEmail = types.BoolValue(bv)
 							}
 						}
 					}
 				}
 
-				if v, ok := values["salesforce_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.SalesforceUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "salesforce_username"); ok {
+					r.SalesforceUsername = types.StringValue(val)
 				}
 
 				if localV, ok := configValues["salesforce_sync_connected_apps"]; ok {
-					if v, ok := values["salesforce_sync_connected_apps"]; ok {
-						if val, ok := v.(string); ok {
-							bv, err := strconv.ParseBool(val)
-							if err == nil {
-								if localV != nil || (localV == nil && !bv) {
-									r.SalesforceSyncConnectedApps = types.BoolValue(bv)
-								}
+					if val, ok := getStringValue(values, "salesforce_sync_connected_apps"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							if localV != nil || (localV == nil && !bv) {
+								r.SalesforceSyncConnectedApps = types.BoolValue(bv)
 							}
 						}
 					}

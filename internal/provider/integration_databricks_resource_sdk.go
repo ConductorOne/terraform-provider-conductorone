@@ -211,40 +211,28 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromGetResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["databricks_account_hostname"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksAccountHostname = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+					r.DatabricksAccountHostname = types.StringValue(val)
 				}
 
-				if v, ok := values["databricks_hostname"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksHostname = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_hostname"); ok {
+					r.DatabricksHostname = types.StringValue(val)
 				}
 
-				if v, ok := values["databricks_account_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksAccountId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_account_id"); ok {
+					r.DatabricksAccountId = types.StringValue(val)
 				}
 
-				if v, ok := values["databricks_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_client_id"); ok {
+					r.DatabricksClientId = types.StringValue(val)
 				}
 
-				if v, ok := values["databricks_workspace"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksWorkspace = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_workspace"); ok {
+					r.DatabricksWorkspace = types.StringValue(val)
 				}
 
-				if v, ok := values["databricks_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_username"); ok {
+					r.DatabricksUsername = types.StringValue(val)
 				}
 
 			}
@@ -290,40 +278,28 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromCreateResponse(resp *sha
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["databricks_account_hostname"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksAccountHostname = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+					r.DatabricksAccountHostname = types.StringValue(val)
 				}
 
-				if v, ok := values["databricks_hostname"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksHostname = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_hostname"); ok {
+					r.DatabricksHostname = types.StringValue(val)
 				}
 
-				if v, ok := values["databricks_account_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksAccountId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_account_id"); ok {
+					r.DatabricksAccountId = types.StringValue(val)
 				}
 
-				if v, ok := values["databricks_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_client_id"); ok {
+					r.DatabricksClientId = types.StringValue(val)
 				}
 
-				if v, ok := values["databricks_workspace"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksWorkspace = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_workspace"); ok {
+					r.DatabricksWorkspace = types.StringValue(val)
 				}
 
-				if v, ok := values["databricks_username"]; ok {
-					if val, ok := v.(string); ok {
-						r.DatabricksUsername = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "databricks_username"); ok {
+					r.DatabricksUsername = types.StringValue(val)
 				}
 
 			}

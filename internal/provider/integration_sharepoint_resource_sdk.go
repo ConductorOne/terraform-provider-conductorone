@@ -199,28 +199,20 @@ func (r *IntegrationSharepointResourceModel) RefreshFromGetResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["azure_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.AzureClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "azure_client_id"); ok {
+					r.AzureClientId = types.StringValue(val)
 				}
 
-				if v, ok := values["azure_tenant_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.AzureTenantId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "azure_tenant_id"); ok {
+					r.AzureTenantId = types.StringValue(val)
 				}
 
-				if v, ok := values["azure_graph_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.AzureGraphDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "azure_graph_domain"); ok {
+					r.AzureGraphDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["sharepoint_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.SharepointDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "sharepoint_domain"); ok {
+					r.SharepointDomain = types.StringValue(val)
 				}
 
 			}
@@ -266,28 +258,20 @@ func (r *IntegrationSharepointResourceModel) RefreshFromCreateResponse(resp *sha
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["azure_client_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.AzureClientId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "azure_client_id"); ok {
+					r.AzureClientId = types.StringValue(val)
 				}
 
-				if v, ok := values["azure_tenant_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.AzureTenantId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "azure_tenant_id"); ok {
+					r.AzureTenantId = types.StringValue(val)
 				}
 
-				if v, ok := values["azure_graph_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.AzureGraphDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "azure_graph_domain"); ok {
+					r.AzureGraphDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["sharepoint_domain"]; ok {
-					if val, ok := v.(string); ok {
-						r.SharepointDomain = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "sharepoint_domain"); ok {
+					r.SharepointDomain = types.StringValue(val)
 				}
 
 			}

@@ -178,17 +178,16 @@ func (r *IntegrationPercipioResourceModel) RefreshFromGetResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["percipio_organization_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.PercipioOrganizationId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "percipio_organization_id"); ok {
+					r.PercipioOrganizationId = types.StringValue(val)
 				}
 
 				r.PercipioCourseIds = nil
-				if v, ok := values["percipio_course_ids"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "percipio_course_ids"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.PercipioCourseIds = append(r.PercipioCourseIds, types.StringValue(item))
 						}
 					}
@@ -237,17 +236,16 @@ func (r *IntegrationPercipioResourceModel) RefreshFromCreateResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["percipio_organization_id"]; ok {
-					if val, ok := v.(string); ok {
-						r.PercipioOrganizationId = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "percipio_organization_id"); ok {
+					r.PercipioOrganizationId = types.StringValue(val)
 				}
 
 				r.PercipioCourseIds = nil
-				if v, ok := values["percipio_course_ids"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "percipio_course_ids"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.PercipioCourseIds = append(r.PercipioCourseIds, types.StringValue(item))
 						}
 					}

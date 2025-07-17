@@ -178,17 +178,16 @@ func (r *IntegrationLitmosResourceModel) RefreshFromGetResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["litmos_source"]; ok {
-					if val, ok := v.(string); ok {
-						r.LitmosSource = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "litmos_source"); ok {
+					r.LitmosSource = types.StringValue(val)
 				}
 
 				r.LitmosCourseIds = nil
-				if v, ok := values["litmos_course_ids"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "litmos_course_ids"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.LitmosCourseIds = append(r.LitmosCourseIds, types.StringValue(item))
 						}
 					}
@@ -237,17 +236,16 @@ func (r *IntegrationLitmosResourceModel) RefreshFromCreateResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["litmos_source"]; ok {
-					if val, ok := v.(string); ok {
-						r.LitmosSource = types.StringValue(val)
-					}
+				if val, ok := getStringValue(values, "litmos_source"); ok {
+					r.LitmosSource = types.StringValue(val)
 				}
 
 				r.LitmosCourseIds = nil
-				if v, ok := values["litmos_course_ids"]; ok {
-					if val, ok := v.(string); ok {
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
+				if val, ok := getStringValue(values, "litmos_course_ids"); ok {
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
 							r.LitmosCourseIds = append(r.LitmosCourseIds, types.StringValue(item))
 						}
 					}
