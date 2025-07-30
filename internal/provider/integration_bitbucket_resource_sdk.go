@@ -182,15 +182,16 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromGetResponse(resp *shared.
 					r.BitbucketUsername = types.StringValue(val)
 				}
 
-				r.BitbucketWorkspaceList = nil
 				if val, ok := getStringValue(values, "bitbucket_workspace_list"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.BitbucketWorkspaceList = append(r.BitbucketWorkspaceList, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.BitbucketWorkspaceList = valLists
 				}
 
 			}
@@ -240,15 +241,16 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromCreateResponse(resp *shar
 					r.BitbucketUsername = types.StringValue(val)
 				}
 
-				r.BitbucketWorkspaceList = nil
 				if val, ok := getStringValue(values, "bitbucket_workspace_list"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.BitbucketWorkspaceList = append(r.BitbucketWorkspaceList, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.BitbucketWorkspaceList = valLists
 				}
 
 			}

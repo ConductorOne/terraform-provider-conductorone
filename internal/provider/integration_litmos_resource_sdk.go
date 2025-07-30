@@ -182,15 +182,16 @@ func (r *IntegrationLitmosResourceModel) RefreshFromGetResponse(resp *shared.Con
 					r.LitmosSource = types.StringValue(val)
 				}
 
-				r.LitmosCourseIds = nil
 				if val, ok := getStringValue(values, "litmos_course_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.LitmosCourseIds = append(r.LitmosCourseIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.LitmosCourseIds = valLists
 				}
 
 			}
@@ -240,15 +241,16 @@ func (r *IntegrationLitmosResourceModel) RefreshFromCreateResponse(resp *shared.
 					r.LitmosSource = types.StringValue(val)
 				}
 
-				r.LitmosCourseIds = nil
 				if val, ok := getStringValue(values, "litmos_course_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.LitmosCourseIds = append(r.LitmosCourseIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.LitmosCourseIds = valLists
 				}
 
 			}

@@ -35,8 +35,8 @@ resource "conductorone_integration_tenable_vm" "tenable_vm" {
 
 ### Optional
 
-- `tenable_vm_access_key` (String, Sensitive) Access Key
-- `tenable_vm_secret_key` (String, Sensitive) Secret Key
+- `tenable_vm_access_key` (String, Sensitive) Access key
+- `tenable_vm_secret_key` (String, Sensitive) Secret key
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

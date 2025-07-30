@@ -35,18 +35,14 @@ type IntegrationSalesforceV2Resource struct {
 
 // IntegrationSalesforceV2ResourceModel describes the resource data model.
 type IntegrationSalesforceV2ResourceModel struct {
-	AppID                       types.String   `tfsdk:"app_id"`
-	CreatedAt                   types.String   `tfsdk:"created_at"`
-	DeletedAt                   types.String   `tfsdk:"deleted_at"`
-	ID                          types.String   `tfsdk:"id"`
-	UpdatedAt                   types.String   `tfsdk:"updated_at"`
-	UserIds                     []types.String `tfsdk:"user_ids"`
-	SalesforceInstanceUrl       types.String   `tfsdk:"salesforce_instance_url"`
-	SalesforceUsernameForEmail  types.Bool     `tfsdk:"salesforce_username_for_email"`
-	SalesforceUsername          types.String   `tfsdk:"salesforce_username"`
-	SalesforcePassword          types.String   `tfsdk:"salesforce_password"`
-	SalesforceSecurityToken     types.String   `tfsdk:"salesforce_security_token"`
-	SalesforceSyncConnectedApps types.Bool     `tfsdk:"salesforce_sync_connected_apps"`
+	AppID                      types.String   `tfsdk:"app_id"`
+	CreatedAt                  types.String   `tfsdk:"created_at"`
+	DeletedAt                  types.String   `tfsdk:"deleted_at"`
+	ID                         types.String   `tfsdk:"id"`
+	UpdatedAt                  types.String   `tfsdk:"updated_at"`
+	UserIds                    []types.String `tfsdk:"user_ids"`
+	SalesforceGroupOauth       types.Object   `tfsdk:"salesforce_group_oauth"`
+	SalesforceGroupAccessToken types.Object   `tfsdk:"salesforce_group_access_token"`
 }
 
 func (r *IntegrationSalesforceV2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -96,31 +92,55 @@ func (r *IntegrationSalesforceV2Resource) Schema(ctx context.Context, req resour
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"salesforce_instance_url": &schema.StringAttribute{
+			"salesforce_group_oauth": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Domain`,
+				Description: `OAuth`,
+				Attributes: map[string]schema.Attribute{
+					"salesforce_instance_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Domain`,
+					},
+					"salesforce_username_for_email": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Use Salesforce usernames for email`,
+					},
+					"salesforce_sync_connected_apps": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Sync connected apps`,
+					},
+				},
 			},
-			"salesforce_username_for_email": &schema.BoolAttribute{
+			"salesforce_group_access_token": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Use Salesforce usernames for email`,
-			},
-			"salesforce_username": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Your Salesforce username`,
-			},
-			"salesforce_password": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
-				Description: `Your Salesforce password`,
-			},
-			"salesforce_security_token": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
-				Description: `Your Salesforce security token (optional if trusted IP is configured)`,
-			},
-			"salesforce_sync_connected_apps": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Sync connected apps`,
+				Description: `Username and password`,
+				Attributes: map[string]schema.Attribute{
+					"salesforce_username": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Your Salesforce username`,
+					},
+					"salesforce_password": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Your Salesforce password`,
+					},
+					"salesforce_security_token": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Your Salesforce security token (optional if trusted IP is configured)`,
+					},
+					"salesforce_instance_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Domain`,
+					},
+					"salesforce_username_for_email": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Use Salesforce usernames for email`,
+					},
+					"salesforce_sync_connected_apps": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Sync connected apps`,
+					},
+				},
 			},
 		},
 	}

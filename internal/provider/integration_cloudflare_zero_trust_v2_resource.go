@@ -35,16 +35,14 @@ type IntegrationCloudflareZeroTrustV2Resource struct {
 
 // IntegrationCloudflareZeroTrustV2ResourceModel describes the resource data model.
 type IntegrationCloudflareZeroTrustV2ResourceModel struct {
-	AppID     types.String   `tfsdk:"app_id"`
-	CreatedAt types.String   `tfsdk:"created_at"`
-	DeletedAt types.String   `tfsdk:"deleted_at"`
-	ID        types.String   `tfsdk:"id"`
-	UpdatedAt types.String   `tfsdk:"updated_at"`
-	UserIds   []types.String `tfsdk:"user_ids"`
-	AccountId types.String   `tfsdk:"account_id"`
-	ApiToken  types.String   `tfsdk:"api_token"`
-	ApiKey    types.String   `tfsdk:"api_key"`
-	Email     types.String   `tfsdk:"email"`
+	AppID      types.String   `tfsdk:"app_id"`
+	CreatedAt  types.String   `tfsdk:"created_at"`
+	DeletedAt  types.String   `tfsdk:"deleted_at"`
+	ID         types.String   `tfsdk:"id"`
+	UpdatedAt  types.String   `tfsdk:"updated_at"`
+	UserIds    []types.String `tfsdk:"user_ids"`
+	GroupToken types.Object   `tfsdk:"group_token"`
+	GroupKey   types.Object   `tfsdk:"group_key"`
 }
 
 func (r *IntegrationCloudflareZeroTrustV2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -94,23 +92,39 @@ func (r *IntegrationCloudflareZeroTrustV2Resource) Schema(ctx context.Context, r
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"account_id": &schema.StringAttribute{
+			"group_token": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Account ID (required)`,
-			},
-			"api_token": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
 				Description: `API token`,
+				Attributes: map[string]schema.Attribute{
+					"account_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Account ID (required)`,
+					},
+					"api_token": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `API token`,
+					},
+				},
 			},
-			"api_key": &schema.StringAttribute{
+			"group_key": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Sensitive:   true,
-				Description: `API key (required if API token not provided)`,
-			},
-			"email": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Email (required if API token not provided)`,
+				Description: `Email + API key`,
+				Attributes: map[string]schema.Attribute{
+					"account_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Account ID (required)`,
+					},
+					"email": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Email (required if API token not provided)`,
+					},
+					"api_key": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `API key (required if API token not provided)`,
+					},
+				},
 			},
 		},
 	}

@@ -35,18 +35,14 @@ type IntegrationGithubV2Resource struct {
 
 // IntegrationGithubV2ResourceModel describes the resource data model.
 type IntegrationGithubV2ResourceModel struct {
-	AppID               types.String   `tfsdk:"app_id"`
-	CreatedAt           types.String   `tfsdk:"created_at"`
-	DeletedAt           types.String   `tfsdk:"deleted_at"`
-	ID                  types.String   `tfsdk:"id"`
-	UpdatedAt           types.String   `tfsdk:"updated_at"`
-	UserIds             []types.String `tfsdk:"user_ids"`
-	GithubAccessToken   types.String   `tfsdk:"github_access_token"`
-	GithubOrgList       []types.String `tfsdk:"github_org_list"`
-	GithubAppOrg        types.String   `tfsdk:"github_app_org"`
-	GithubAppId         types.String   `tfsdk:"github_app_id"`
-	GithubAppPrivateKey types.String   `tfsdk:"github_app_private_key"`
-	GithubSyncSecrets   types.Bool     `tfsdk:"github_sync_secrets"`
+	AppID                          types.String   `tfsdk:"app_id"`
+	CreatedAt                      types.String   `tfsdk:"created_at"`
+	DeletedAt                      types.String   `tfsdk:"deleted_at"`
+	ID                             types.String   `tfsdk:"id"`
+	UpdatedAt                      types.String   `tfsdk:"updated_at"`
+	UserIds                        []types.String `tfsdk:"user_ids"`
+	GithubPersonalAccessTokenGroup types.Object   `tfsdk:"github_personal_access_token_group"`
+	GithubAppGroup                 types.Object   `tfsdk:"github_app_group"`
 }
 
 func (r *IntegrationGithubV2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -96,32 +92,44 @@ func (r *IntegrationGithubV2Resource) Schema(ctx context.Context, req resource.S
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"github_access_token": &schema.StringAttribute{
+			"github_personal_access_token_group": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Sensitive:   true,
 				Description: `Personal access token`,
+				Attributes: map[string]schema.Attribute{
+					"github_access_token": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Personal access token`,
+					},
+					"github_org_list": &schema.ListAttribute{
+						Optional:    true,
+						Description: `Organizations (optional)`,
+						ElementType: types.StringType,
+					},
+				},
 			},
-			"github_org_list": &schema.ListAttribute{
+			"github_app_group": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Organizations (optional)`,
-				ElementType: types.StringType,
-			},
-			"github_app_org": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Github App Organization`,
-			},
-			"github_app_id": &schema.StringAttribute{
-				Optional:    true,
-				Description: `GitHub app ID`,
-			},
-			"github_app_private_key": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
-				Description: `GitHub app private key (.pem)`,
-			},
-			"github_sync_secrets": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Sync secrets`,
+				Description: `GitHub app`,
+				Attributes: map[string]schema.Attribute{
+					"github_app_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `GitHub app ID`,
+					},
+					"github_app_private_key": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `GitHub app private key (.pem)`,
+					},
+					"github_app_org": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Github App Organization`,
+					},
+					"github_sync_secrets": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Sync secrets`,
+					},
+				},
 			},
 		},
 	}

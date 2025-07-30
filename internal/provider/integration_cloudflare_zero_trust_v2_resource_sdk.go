@@ -3,13 +3,15 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 const cloudflareZeroTrustV2CatalogID = "2bKQFJUbLO9xukxSfZlQIaiYLG5"
@@ -89,28 +91,54 @@ func (r *IntegrationCloudflareZeroTrustV2ResourceModel) ToUpdateSDKType() (*shar
 func (r *IntegrationCloudflareZeroTrustV2ResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
-	accountId := new(string)
-	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
-		*accountId = r.AccountId.ValueString()
-		configValues["account_id"] = accountId
+	if !r.GroupToken.IsUnknown() && !r.GroupToken.IsNull() {
+		configValues["C1_selected_field_group_name"] = "group_token"
+		for k, v := range r.GroupToken.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
 
-	apiToken := new(string)
-	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
-		*apiToken = r.ApiToken.ValueString()
-		configValues["api_token"] = apiToken
-	}
-
-	apiKey := new(string)
-	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
-		*apiKey = r.ApiKey.ValueString()
-		configValues["api_key"] = apiKey
-	}
-
-	email := new(string)
-	if !r.Email.IsUnknown() && !r.Email.IsNull() {
-		*email = r.Email.ValueString()
-		configValues["email"] = email
+	if !r.GroupKey.IsUnknown() && !r.GroupKey.IsNull() {
+		configValues["C1_selected_field_group_name"] = "group_key"
+		for k, v := range r.GroupKey.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
 
 	return configValues
@@ -178,15 +206,53 @@ func (r *IntegrationCloudflareZeroTrustV2ResourceModel) RefreshFromGetResponse(r
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "account_id"); ok {
-					r.AccountId = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "group_token" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "account_id"); ok {
+							attributeTypes["account_id"] = types.StringType
+							attributeValues["account_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["api_token"] = types.StringType
+						if sv, ok := configValues["api_token"].(string); ok {
+							attributeValues["api_token"] = types.StringValue(sv)
+						} else {
+							attributeValues["api_token"] = types.StringNull()
+						}
+						r.GroupToken = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
-				if val, ok := getStringValue(values, "email"); ok {
-					r.Email = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "group_key" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "account_id"); ok {
+							attributeTypes["account_id"] = types.StringType
+							attributeValues["account_id"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "email"); ok {
+							attributeTypes["email"] = types.StringType
+							attributeValues["email"] = types.StringValue(val)
+						}
+
+						attributeTypes["api_key"] = types.StringType
+						if sv, ok := configValues["api_key"].(string); ok {
+							attributeValues["api_key"] = types.StringValue(sv)
+						} else {
+							attributeValues["api_key"] = types.StringNull()
+						}
+						r.GroupKey = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
 			}
@@ -229,15 +295,53 @@ func (r *IntegrationCloudflareZeroTrustV2ResourceModel) RefreshFromCreateRespons
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "account_id"); ok {
-					r.AccountId = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "group_token" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "account_id"); ok {
+							attributeTypes["account_id"] = types.StringType
+							attributeValues["account_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["api_token"] = types.StringType
+						if sv, ok := configValues["api_token"].(string); ok {
+							attributeValues["api_token"] = types.StringValue(sv)
+						} else {
+							attributeValues["api_token"] = types.StringNull()
+						}
+						r.GroupToken = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
-				if val, ok := getStringValue(values, "email"); ok {
-					r.Email = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "group_key" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "account_id"); ok {
+							attributeTypes["account_id"] = types.StringType
+							attributeValues["account_id"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "email"); ok {
+							attributeTypes["email"] = types.StringType
+							attributeValues["email"] = types.StringValue(val)
+						}
+
+						attributeTypes["api_key"] = types.StringType
+						if sv, ok := configValues["api_key"].(string); ok {
+							attributeValues["api_key"] = types.StringValue(sv)
+						} else {
+							attributeValues["api_key"] = types.StringNull()
+						}
+						r.GroupKey = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
 			}

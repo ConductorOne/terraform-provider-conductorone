@@ -171,13 +171,11 @@ func (r *IntegrationLinearResourceModel) RefreshFromGetResponse(resp *shared.Con
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
+				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
 					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
-							}
+							r.EnableExternalTicketProvisioning = types.BoolValue(bv)
 						}
 					}
 				}
@@ -227,13 +225,11 @@ func (r *IntegrationLinearResourceModel) RefreshFromCreateResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
+				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
 					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
-							}
+							r.EnableExternalTicketProvisioning = types.BoolValue(bv)
 						}
 					}
 				}

@@ -173,15 +173,16 @@ func (r *IntegrationGithubV2TestResourceModel) RefreshFromGetResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				r.GithubOrgList = nil
 				if val, ok := getStringValue(values, "github_org_list"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.GithubOrgList = valLists
 				}
 
 			}
@@ -228,15 +229,16 @@ func (r *IntegrationGithubV2TestResourceModel) RefreshFromCreateResponse(resp *s
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				r.GithubOrgList = nil
 				if val, ok := getStringValue(values, "github_org_list"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.GithubOrgList = append(r.GithubOrgList, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.GithubOrgList = valLists
 				}
 
 			}

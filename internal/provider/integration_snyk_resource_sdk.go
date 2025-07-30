@@ -189,15 +189,16 @@ func (r *IntegrationSnykResourceModel) RefreshFromGetResponse(resp *shared.Conne
 					r.SnykGroupId = types.StringValue(val)
 				}
 
-				r.SnykOrgIds = nil
 				if val, ok := getStringValue(values, "snyk_org_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.SnykOrgIds = append(r.SnykOrgIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.SnykOrgIds = valLists
 				}
 
 				if val, ok := getStringValue(values, "snyk_hostname"); ok {
@@ -252,15 +253,16 @@ func (r *IntegrationSnykResourceModel) RefreshFromCreateResponse(resp *shared.Co
 					r.SnykGroupId = types.StringValue(val)
 				}
 
-				r.SnykOrgIds = nil
 				if val, ok := getStringValue(values, "snyk_org_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.SnykOrgIds = append(r.SnykOrgIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.SnykOrgIds = valLists
 				}
 
 				if val, ok := getStringValue(values, "snyk_hostname"); ok {

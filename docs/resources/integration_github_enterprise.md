@@ -21,9 +21,17 @@ resource "conductorone_integration_github_enterprise" "github_enterprise" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  github_instance_url = "..."
-  github_access_token = "..."
-  github_org_list     = ["..."]
+  github_personal_access_token_group = {
+    github_instance_url = "..."
+    github_access_token = "..."
+    github_org_list     = ["..."]
+  }
+  github_app_group = {
+    github_instance_url    = "..."
+    github_app_id          = "..."
+    github_app_private_key = "..."
+    github_app_org         = "..."
+  }
 }
 ```
 
@@ -36,9 +44,8 @@ resource "conductorone_integration_github_enterprise" "github_enterprise" {
 
 ### Optional
 
-- `github_access_token` (String, Sensitive) Personal access token
-- `github_instance_url` (String) Instance URL
-- `github_org_list` (List of String) Organizations (optional)
+- `github_app_group` (Attributes) GitHub app (see [below for nested schema](#nestedatt--github_app_group))
+- `github_personal_access_token_group` (Attributes) Personal access token (see [below for nested schema](#nestedatt--github_personal_access_token_group))
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only
@@ -47,3 +54,23 @@ resource "conductorone_integration_github_enterprise" "github_enterprise" {
 - `deleted_at` (String) The time this integration was deleted.
 - `id` (String) The ID of this integration.
 - `updated_at` (String) The time this integration was last updated.
+
+<a id="nestedatt--github_app_group"></a>
+### Nested Schema for `github_app_group`
+
+Optional:
+
+- `github_app_id` (String) GitHub app ID
+- `github_app_org` (String) Github App Organization
+- `github_app_private_key` (String, Sensitive) GitHub app private key (.pem)
+- `github_instance_url` (String) Instance URL
+
+
+<a id="nestedatt--github_personal_access_token_group"></a>
+### Nested Schema for `github_personal_access_token_group`
+
+Optional:
+
+- `github_access_token` (String, Sensitive) Personal access token
+- `github_instance_url` (String) Instance URL
+- `github_org_list` (List of String) Organizations (optional)

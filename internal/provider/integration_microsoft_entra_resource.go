@@ -35,20 +35,14 @@ type IntegrationMicrosoftEntraResource struct {
 
 // IntegrationMicrosoftEntraResourceModel describes the resource data model.
 type IntegrationMicrosoftEntraResourceModel struct {
-	AppID                         types.String   `tfsdk:"app_id"`
-	CreatedAt                     types.String   `tfsdk:"created_at"`
-	DeletedAt                     types.String   `tfsdk:"deleted_at"`
-	ID                            types.String   `tfsdk:"id"`
-	UpdatedAt                     types.String   `tfsdk:"updated_at"`
-	UserIds                       []types.String `tfsdk:"user_ids"`
-	EntraTenantId                 types.String   `tfsdk:"entra_tenant_id"`
-	EntraClientId                 types.String   `tfsdk:"entra_client_id"`
-	EntraClientSecret             types.String   `tfsdk:"entra_client_secret"`
-	EntraSkipAdGroups             types.Bool     `tfsdk:"entra_skip_ad_groups"`
-	EntraGraphDomain              types.String   `tfsdk:"entra_graph_domain"`
-	EntraSignInActivity           types.Bool     `tfsdk:"entra_sign_in_activity"`
-	EntraScheduleScimProvisioning types.Bool     `tfsdk:"entra_schedule_scim_provisioning"`
-	EntraDisableAuditLogFeed      types.Bool     `tfsdk:"entra_disable_audit_log_feed"`
+	AppID                  types.String   `tfsdk:"app_id"`
+	CreatedAt              types.String   `tfsdk:"created_at"`
+	DeletedAt              types.String   `tfsdk:"deleted_at"`
+	ID                     types.String   `tfsdk:"id"`
+	UpdatedAt              types.String   `tfsdk:"updated_at"`
+	UserIds                []types.String `tfsdk:"user_ids"`
+	EntraGroupOauth        types.Object   `tfsdk:"entra_group_oauth"`
+	EntraGroupClientSecret types.Object   `tfsdk:"entra_group_client_secret"`
 }
 
 func (r *IntegrationMicrosoftEntraResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -98,38 +92,74 @@ func (r *IntegrationMicrosoftEntraResource) Schema(ctx context.Context, req reso
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"entra_tenant_id": &schema.StringAttribute{
+			"entra_group_oauth": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Entra tenant ID`,
+				Description: `OAuth`,
+				Attributes: map[string]schema.Attribute{
+					"entra_tenant_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Entra tenant ID`,
+					},
+					"entra_skip_ad_groups": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Skip Active Directory groups and members`,
+					},
+					"entra_graph_domain": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Entra Graph domain`,
+					},
+					"entra_sign_in_activity": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Fetch user sign-in activity`,
+					},
+					"entra_schedule_scim_provisioning": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Schedule SCIM provisioning`,
+					},
+					"entra_disable_audit_log_feed": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Disable resource changed events feed`,
+					},
+				},
 			},
-			"entra_client_id": &schema.StringAttribute{
+			"entra_group_client_secret": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Entra client ID`,
-			},
-			"entra_client_secret": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
-				Description: `Entra client secret`,
-			},
-			"entra_skip_ad_groups": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Skip Active Directory groups and members`,
-			},
-			"entra_graph_domain": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Entra Graph domain`,
-			},
-			"entra_sign_in_activity": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Fetch user sign-in activity`,
-			},
-			"entra_schedule_scim_provisioning": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Schedule SCIM provisioning`,
-			},
-			"entra_disable_audit_log_feed": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Disable resource changed events feed`,
+				Description: `Client secret`,
+				Attributes: map[string]schema.Attribute{
+					"entra_tenant_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Entra tenant ID`,
+					},
+					"entra_client_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Entra client ID`,
+					},
+					"entra_client_secret": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Entra client secret`,
+					},
+					"entra_skip_ad_groups": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Skip Active Directory groups and members`,
+					},
+					"entra_graph_domain": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Entra Graph domain`,
+					},
+					"entra_sign_in_activity": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Fetch user sign-in activity`,
+					},
+					"entra_schedule_scim_provisioning": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Schedule SCIM provisioning`,
+					},
+					"entra_disable_audit_log_feed": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Disable resource changed events feed`,
+					},
+				},
 			},
 		},
 	}

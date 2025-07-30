@@ -200,13 +200,11 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromGetResponse(resp *share
 					r.SnowflakeUserId = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["snowflake_sync_secrets"]; ok {
+				if _, ok := configValues["snowflake_sync_secrets"]; ok {
 					if val, ok := getStringValue(values, "snowflake_sync_secrets"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SnowflakeSyncSecrets = types.BoolValue(bv)
-							}
+							r.SnowflakeSyncSecrets = types.BoolValue(bv)
 						}
 					}
 				}
@@ -267,13 +265,11 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromCreateResponse(resp *sh
 					r.SnowflakeUserId = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["snowflake_sync_secrets"]; ok {
+				if _, ok := configValues["snowflake_sync_secrets"]; ok {
 					if val, ok := getStringValue(values, "snowflake_sync_secrets"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SnowflakeSyncSecrets = types.BoolValue(bv)
-							}
+							r.SnowflakeSyncSecrets = types.BoolValue(bv)
 						}
 					}
 				}

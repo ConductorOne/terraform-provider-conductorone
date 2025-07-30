@@ -21,14 +21,24 @@ resource "conductorone_integration_microsoft_entra" "microsoft_entra" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  entra_tenant_id                  = "..."
-  entra_client_id                  = "..."
-  entra_client_secret              = "..."
-  entra_skip_ad_groups             = false
-  entra_graph_domain               = "..."
-  entra_sign_in_activity           = false
-  entra_schedule_scim_provisioning = false
-  entra_disable_audit_log_feed     = false
+  entra_group_oauth = {
+    entra_tenant_id                  = "..."
+    entra_skip_ad_groups             = false
+    entra_graph_domain               = "..."
+    entra_sign_in_activity           = false
+    entra_schedule_scim_provisioning = false
+    entra_disable_audit_log_feed     = false
+  }
+  entra_group_client_secret = {
+    entra_tenant_id                  = "..."
+    entra_client_id                  = "..."
+    entra_client_secret              = "..."
+    entra_skip_ad_groups             = false
+    entra_graph_domain               = "..."
+    entra_sign_in_activity           = false
+    entra_schedule_scim_provisioning = false
+    entra_disable_audit_log_feed     = false
+  }
 }
 ```
 
@@ -41,14 +51,8 @@ resource "conductorone_integration_microsoft_entra" "microsoft_entra" {
 
 ### Optional
 
-- `entra_client_id` (String) Entra client ID
-- `entra_client_secret` (String, Sensitive) Entra client secret
-- `entra_disable_audit_log_feed` (Boolean) Disable resource changed events feed
-- `entra_graph_domain` (String) Entra Graph domain
-- `entra_schedule_scim_provisioning` (Boolean) Schedule SCIM provisioning
-- `entra_sign_in_activity` (Boolean) Fetch user sign-in activity
-- `entra_skip_ad_groups` (Boolean) Skip Active Directory groups and members
-- `entra_tenant_id` (String) Entra tenant ID
+- `entra_group_client_secret` (Attributes) Client secret (see [below for nested schema](#nestedatt--entra_group_client_secret))
+- `entra_group_oauth` (Attributes) OAuth (see [below for nested schema](#nestedatt--entra_group_oauth))
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only
@@ -57,3 +61,30 @@ resource "conductorone_integration_microsoft_entra" "microsoft_entra" {
 - `deleted_at` (String) The time this integration was deleted.
 - `id` (String) The ID of this integration.
 - `updated_at` (String) The time this integration was last updated.
+
+<a id="nestedatt--entra_group_client_secret"></a>
+### Nested Schema for `entra_group_client_secret`
+
+Optional:
+
+- `entra_client_id` (String) Entra client ID
+- `entra_client_secret` (String, Sensitive) Entra client secret
+- `entra_disable_audit_log_feed` (Boolean) Disable resource changed events feed
+- `entra_graph_domain` (String) Entra Graph domain
+- `entra_schedule_scim_provisioning` (Boolean) Schedule SCIM provisioning
+- `entra_sign_in_activity` (Boolean) Fetch user sign-in activity
+- `entra_skip_ad_groups` (Boolean) Skip Active Directory groups and members
+- `entra_tenant_id` (String) Entra tenant ID
+
+
+<a id="nestedatt--entra_group_oauth"></a>
+### Nested Schema for `entra_group_oauth`
+
+Optional:
+
+- `entra_disable_audit_log_feed` (Boolean) Disable resource changed events feed
+- `entra_graph_domain` (String) Entra Graph domain
+- `entra_schedule_scim_provisioning` (Boolean) Schedule SCIM provisioning
+- `entra_sign_in_activity` (Boolean) Fetch user sign-in activity
+- `entra_skip_ad_groups` (Boolean) Skip Active Directory groups and members
+- `entra_tenant_id` (String) Entra tenant ID

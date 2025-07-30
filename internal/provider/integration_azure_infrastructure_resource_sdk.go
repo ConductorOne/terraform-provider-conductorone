@@ -214,24 +214,20 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromGetResponse(res
 					r.AzureTenantId = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["mailboxSettings"]; ok {
+				if _, ok := configValues["mailboxSettings"]; ok {
 					if val, ok := getStringValue(values, "mailboxSettings"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.MailboxSettings = types.BoolValue(bv)
-							}
+							r.MailboxSettings = types.BoolValue(bv)
 						}
 					}
 				}
 
-				if localV, ok := configValues["skip-ad-groups"]; ok {
+				if _, ok := configValues["skip-ad-groups"]; ok {
 					if val, ok := getStringValue(values, "skip-ad-groups"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipAdGroups = types.BoolValue(bv)
-							}
+							r.SkipAdGroups = types.BoolValue(bv)
 						}
 					}
 				}
@@ -240,24 +236,20 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromGetResponse(res
 					r.GraphDomain = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["skip-unused-roles"]; ok {
+				if _, ok := configValues["skip-unused-roles"]; ok {
 					if val, ok := getStringValue(values, "skip-unused-roles"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipUnusedRoles = types.BoolValue(bv)
-							}
+							r.SkipUnusedRoles = types.BoolValue(bv)
 						}
 					}
 				}
 
-				if localV, ok := configValues["skip-sync-storage-containers"]; ok {
+				if _, ok := configValues["skip-sync-storage-containers"]; ok {
 					if val, ok := getStringValue(values, "skip-sync-storage-containers"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipSyncStorageContainers = types.BoolValue(bv)
-							}
+							r.SkipSyncStorageContainers = types.BoolValue(bv)
 						}
 					}
 				}
@@ -314,24 +306,20 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromCreateResponse(
 					r.AzureTenantId = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["mailboxSettings"]; ok {
+				if _, ok := configValues["mailboxSettings"]; ok {
 					if val, ok := getStringValue(values, "mailboxSettings"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.MailboxSettings = types.BoolValue(bv)
-							}
+							r.MailboxSettings = types.BoolValue(bv)
 						}
 					}
 				}
 
-				if localV, ok := configValues["skip-ad-groups"]; ok {
+				if _, ok := configValues["skip-ad-groups"]; ok {
 					if val, ok := getStringValue(values, "skip-ad-groups"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipAdGroups = types.BoolValue(bv)
-							}
+							r.SkipAdGroups = types.BoolValue(bv)
 						}
 					}
 				}
@@ -340,24 +328,20 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromCreateResponse(
 					r.GraphDomain = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["skip-unused-roles"]; ok {
+				if _, ok := configValues["skip-unused-roles"]; ok {
 					if val, ok := getStringValue(values, "skip-unused-roles"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipUnusedRoles = types.BoolValue(bv)
-							}
+							r.SkipUnusedRoles = types.BoolValue(bv)
 						}
 					}
 				}
 
-				if localV, ok := configValues["skip-sync-storage-containers"]; ok {
+				if _, ok := configValues["skip-sync-storage-containers"]; ok {
 					if val, ok := getStringValue(values, "skip-sync-storage-containers"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipSyncStorageContainers = types.BoolValue(bv)
-							}
+							r.SkipSyncStorageContainers = types.BoolValue(bv)
 						}
 					}
 				}

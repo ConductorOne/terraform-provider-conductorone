@@ -21,11 +21,16 @@ resource "conductorone_integration_privx" "privx" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  privx_base_url            = "..."
-  privx_client_id           = "..."
-  privx_client_secret       = "..."
-  privx_oauth_client_id     = "..."
-  privx_oauth_client_secret = "..."
+  privx_group_oauth = {
+    privx_base_url            = "..."
+    privx_oauth_client_id     = "..."
+    privx_oauth_client_secret = "..."
+  }
+  privx_group_client_secret = {
+    privx_base_url      = "..."
+    privx_client_id     = "..."
+    privx_client_secret = "..."
+  }
 }
 ```
 
@@ -38,11 +43,8 @@ resource "conductorone_integration_privx" "privx" {
 
 ### Optional
 
-- `privx_base_url` (String) Base URL
-- `privx_client_id` (String) Client ID
-- `privx_client_secret` (String, Sensitive) Client secret
-- `privx_oauth_client_id` (String) OAuth client ID
-- `privx_oauth_client_secret` (String, Sensitive) OAuth client secret
+- `privx_group_client_secret` (Attributes) Client secret (see [below for nested schema](#nestedatt--privx_group_client_secret))
+- `privx_group_oauth` (Attributes) OAuth (see [below for nested schema](#nestedatt--privx_group_oauth))
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only
@@ -51,3 +53,22 @@ resource "conductorone_integration_privx" "privx" {
 - `deleted_at` (String) The time this integration was deleted.
 - `id` (String) The ID of this integration.
 - `updated_at` (String) The time this integration was last updated.
+
+<a id="nestedatt--privx_group_client_secret"></a>
+### Nested Schema for `privx_group_client_secret`
+
+Optional:
+
+- `privx_base_url` (String) Base URL
+- `privx_client_id` (String) Client ID
+- `privx_client_secret` (String, Sensitive) Client secret
+
+
+<a id="nestedatt--privx_group_oauth"></a>
+### Nested Schema for `privx_group_oauth`
+
+Optional:
+
+- `privx_base_url` (String) Base URL
+- `privx_oauth_client_id` (String) OAuth client ID
+- `privx_oauth_client_secret` (String, Sensitive) OAuth client secret

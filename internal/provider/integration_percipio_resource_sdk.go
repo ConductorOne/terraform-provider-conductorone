@@ -182,15 +182,16 @@ func (r *IntegrationPercipioResourceModel) RefreshFromGetResponse(resp *shared.C
 					r.PercipioOrganizationId = types.StringValue(val)
 				}
 
-				r.PercipioCourseIds = nil
 				if val, ok := getStringValue(values, "percipio_course_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.PercipioCourseIds = append(r.PercipioCourseIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.PercipioCourseIds = valLists
 				}
 
 			}
@@ -240,15 +241,16 @@ func (r *IntegrationPercipioResourceModel) RefreshFromCreateResponse(resp *share
 					r.PercipioOrganizationId = types.StringValue(val)
 				}
 
-				r.PercipioCourseIds = nil
 				if val, ok := getStringValue(values, "percipio_course_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.PercipioCourseIds = append(r.PercipioCourseIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.PercipioCourseIds = valLists
 				}
 
 			}

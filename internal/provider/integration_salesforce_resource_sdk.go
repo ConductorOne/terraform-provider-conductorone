@@ -174,13 +174,11 @@ func (r *IntegrationSalesforceResourceModel) RefreshFromGetResponse(resp *shared
 					r.SalesforceInstanceUrl = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["salesforce_username_for_email"]; ok {
+				if _, ok := configValues["salesforce_username_for_email"]; ok {
 					if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SalesforceUsernameForEmail = types.BoolValue(bv)
-							}
+							r.SalesforceUsernameForEmail = types.BoolValue(bv)
 						}
 					}
 				}
@@ -233,13 +231,11 @@ func (r *IntegrationSalesforceResourceModel) RefreshFromCreateResponse(resp *sha
 					r.SalesforceInstanceUrl = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["salesforce_username_for_email"]; ok {
+				if _, ok := configValues["salesforce_username_for_email"]; ok {
 					if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SalesforceUsernameForEmail = types.BoolValue(bv)
-							}
+							r.SalesforceUsernameForEmail = types.BoolValue(bv)
 						}
 					}
 				}

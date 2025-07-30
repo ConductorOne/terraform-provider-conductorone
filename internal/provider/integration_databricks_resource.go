@@ -35,21 +35,15 @@ type IntegrationDatabricksResource struct {
 
 // IntegrationDatabricksResourceModel describes the resource data model.
 type IntegrationDatabricksResourceModel struct {
-	AppID                     types.String   `tfsdk:"app_id"`
-	CreatedAt                 types.String   `tfsdk:"created_at"`
-	DeletedAt                 types.String   `tfsdk:"deleted_at"`
-	ID                        types.String   `tfsdk:"id"`
-	UpdatedAt                 types.String   `tfsdk:"updated_at"`
-	UserIds                   []types.String `tfsdk:"user_ids"`
-	DatabricksAccountHostname types.String   `tfsdk:"databricks_account_hostname"`
-	DatabricksHostname        types.String   `tfsdk:"databricks_hostname"`
-	DatabricksAccountId       types.String   `tfsdk:"databricks_account_id"`
-	DatabricksClientId        types.String   `tfsdk:"databricks_client_id"`
-	DatabricksClientSecret    types.String   `tfsdk:"databricks_client_secret"`
-	DatabricksAccessToken     types.String   `tfsdk:"databricks_access_token"`
-	DatabricksWorkspace       types.String   `tfsdk:"databricks_workspace"`
-	DatabricksUsername        types.String   `tfsdk:"databricks_username"`
-	DatabricksPassword        types.String   `tfsdk:"databricks_password"`
+	AppID                   types.String   `tfsdk:"app_id"`
+	CreatedAt               types.String   `tfsdk:"created_at"`
+	DeletedAt               types.String   `tfsdk:"deleted_at"`
+	ID                      types.String   `tfsdk:"id"`
+	UpdatedAt               types.String   `tfsdk:"updated_at"`
+	UserIds                 []types.String `tfsdk:"user_ids"`
+	DatabricksGroupOauth    types.Object   `tfsdk:"databricks_group_oauth"`
+	DatabricksGroupToken    types.Object   `tfsdk:"databricks_group_token"`
+	DatabricksGroupPassword types.Object   `tfsdk:"databricks_group_password"`
 }
 
 func (r *IntegrationDatabricksResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -99,44 +93,86 @@ func (r *IntegrationDatabricksResource) Schema(ctx context.Context, req resource
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"databricks_account_hostname": &schema.StringAttribute{
+			"databricks_group_oauth": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Account hostname (optional)`,
+				Description: `OAuth`,
+				Attributes: map[string]schema.Attribute{
+					"databricks_account_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Account ID`,
+					},
+					"databricks_client_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `OAuth2 client ID`,
+					},
+					"databricks_client_secret": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `OAuth2 client secret`,
+					},
+					"databricks_account_hostname": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Account hostname (optional)`,
+					},
+					"databricks_hostname": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Hostname (optional)`,
+					},
+				},
 			},
-			"databricks_hostname": &schema.StringAttribute{
+			"databricks_group_token": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Hostname (optional)`,
-			},
-			"databricks_account_id": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Account ID`,
-			},
-			"databricks_client_id": &schema.StringAttribute{
-				Optional:    true,
-				Description: `OAuth2 client ID`,
-			},
-			"databricks_client_secret": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
-				Description: `OAuth2 client secret`,
-			},
-			"databricks_access_token": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
 				Description: `Personal access token`,
+				Attributes: map[string]schema.Attribute{
+					"databricks_account_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Account ID`,
+					},
+					"databricks_access_token": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Personal access token`,
+					},
+					"databricks_workspace": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Workspace ID`,
+					},
+					"databricks_account_hostname": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Account hostname (optional)`,
+					},
+					"databricks_hostname": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Hostname (optional)`,
+					},
+				},
 			},
-			"databricks_workspace": &schema.StringAttribute{
+			"databricks_group_password": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Workspace ID`,
-			},
-			"databricks_username": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Username`,
-			},
-			"databricks_password": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
-				Description: `Password`,
+				Description: `Username and password`,
+				Attributes: map[string]schema.Attribute{
+					"databricks_account_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Account ID`,
+					},
+					"databricks_username": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Username`,
+					},
+					"databricks_password": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Password`,
+					},
+					"databricks_account_hostname": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Account hostname (optional)`,
+					},
+					"databricks_hostname": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Hostname (optional)`,
+					},
+				},
 			},
 		},
 	}

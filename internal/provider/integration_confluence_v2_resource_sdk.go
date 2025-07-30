@@ -190,13 +190,11 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromGetResponse(resp *shar
 					r.Username = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["skip-personal-spaces"]; ok {
+				if _, ok := configValues["skip-personal-spaces"]; ok {
 					if val, ok := getStringValue(values, "skip-personal-spaces"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipPersonalSpaces = types.BoolValue(bv)
-							}
+							r.SkipPersonalSpaces = types.BoolValue(bv)
 						}
 					}
 				}
@@ -253,13 +251,11 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromCreateResponse(resp *s
 					r.Username = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["skip-personal-spaces"]; ok {
+				if _, ok := configValues["skip-personal-spaces"]; ok {
 					if val, ok := getStringValue(values, "skip-personal-spaces"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipPersonalSpaces = types.BoolValue(bv)
-							}
+							r.SkipPersonalSpaces = types.BoolValue(bv)
 						}
 					}
 				}

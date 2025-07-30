@@ -35,7 +35,7 @@ resource "conductorone_integration_atlassian" "atlassian" {
 
 ### Optional
 
-- `access_token` (String, Sensitive) Access Token
+- `access_token` (String, Sensitive) Access token
 - `organization_id` (String) Organization ID
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

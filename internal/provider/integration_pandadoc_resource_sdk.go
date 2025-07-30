@@ -171,13 +171,11 @@ func (r *IntegrationPandadocResourceModel) RefreshFromGetResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if localV, ok := configValues["europe-domain"]; ok {
+				if _, ok := configValues["europe-domain"]; ok {
 					if val, ok := getStringValue(values, "europe-domain"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EuropeDomain = types.BoolValue(bv)
-							}
+							r.EuropeDomain = types.BoolValue(bv)
 						}
 					}
 				}
@@ -227,13 +225,11 @@ func (r *IntegrationPandadocResourceModel) RefreshFromCreateResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if localV, ok := configValues["europe-domain"]; ok {
+				if _, ok := configValues["europe-domain"]; ok {
 					if val, ok := getStringValue(values, "europe-domain"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EuropeDomain = types.BoolValue(bv)
-							}
+							r.EuropeDomain = types.BoolValue(bv)
 						}
 					}
 				}

@@ -3,12 +3,15 @@ resource "conductorone_integration_gcp_gws" "gcp_gws" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  customer_id           = "..."
-  domain                = "..."
-  administrator_email   = "..."
-  credentials_json      = "..."
-  skip_system_accounts  = false
-  skip_default_projects = false
-  sync_secrets          = false
-  project_ids           = ["..."]
+  customer_id                          = "..."
+  domain                               = "..."
+  administrator_email                  = "..."
+  credentials_json                     = "..."
+  skip_system_accounts                 = false
+  skip_default_projects                = false
+  sync_secrets                         = false
+  project_ids                          = ["..."]
+  enable_workforce_identity_federation = false
+  workforce_identity_pool_id           = "..."
+  workforce_identity_pool_provider_id  = "..."
 }

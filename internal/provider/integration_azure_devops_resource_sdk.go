@@ -180,13 +180,11 @@ func (r *IntegrationAzureDevopsResourceModel) RefreshFromGetResponse(resp *share
 					r.OrganizationUrl = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["sync_grant_sources"]; ok {
+				if _, ok := configValues["sync_grant_sources"]; ok {
 					if val, ok := getStringValue(values, "sync_grant_sources"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SyncGrantSources = types.BoolValue(bv)
-							}
+							r.SyncGrantSources = types.BoolValue(bv)
 						}
 					}
 				}
@@ -239,13 +237,11 @@ func (r *IntegrationAzureDevopsResourceModel) RefreshFromCreateResponse(resp *sh
 					r.OrganizationUrl = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["sync_grant_sources"]; ok {
+				if _, ok := configValues["sync_grant_sources"]; ok {
 					if val, ok := getStringValue(values, "sync_grant_sources"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SyncGrantSources = types.BoolValue(bv)
-							}
+							r.SyncGrantSources = types.BoolValue(bv)
 						}
 					}
 				}

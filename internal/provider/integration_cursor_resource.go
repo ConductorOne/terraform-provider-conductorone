@@ -35,13 +35,13 @@ type IntegrationCursorResource struct {
 
 // IntegrationCursorResourceModel describes the resource data model.
 type IntegrationCursorResourceModel struct {
-	AppID     types.String   `tfsdk:"app_id"`
-	CreatedAt types.String   `tfsdk:"created_at"`
-	DeletedAt types.String   `tfsdk:"deleted_at"`
-	ID        types.String   `tfsdk:"id"`
-	UpdatedAt types.String   `tfsdk:"updated_at"`
-	UserIds   []types.String `tfsdk:"user_ids"`
-	ApiKey    types.String   `tfsdk:"api_key"`
+	AppID        types.String   `tfsdk:"app_id"`
+	CreatedAt    types.String   `tfsdk:"created_at"`
+	DeletedAt    types.String   `tfsdk:"deleted_at"`
+	ID           types.String   `tfsdk:"id"`
+	UpdatedAt    types.String   `tfsdk:"updated_at"`
+	UserIds      []types.String `tfsdk:"user_ids"`
+	CursorApiKey types.String   `tfsdk:"cursor_api_key"`
 }
 
 func (r *IntegrationCursorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -91,7 +91,7 @@ func (r *IntegrationCursorResource) Schema(ctx context.Context, req resource.Sch
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"api_key": &schema.StringAttribute{
+			"cursor_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
 				Description: `API Key`,

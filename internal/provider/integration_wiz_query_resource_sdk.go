@@ -249,50 +249,48 @@ func (r *IntegrationWizQueryResourceModel) RefreshFromGetResponse(resp *shared.C
 					r.ProjectId = types.StringValue(val)
 				}
 
-				r.ResourceIds = nil
 				if val, ok := getStringValue(values, "resource_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.ResourceIds = append(r.ResourceIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.ResourceIds = valLists
 				}
 
 				if val, ok := getStringValue(values, "resource_tags"); ok {
 					r.ResourceTags = types.StringValue(val)
 				}
 
-				r.ResourceTypes = nil
 				if val, ok := getStringValue(values, "resource_types"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.ResourceTypes = append(r.ResourceTypes, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.ResourceTypes = valLists
 				}
 
-				if localV, ok := configValues["enable_sync_identities"]; ok {
+				if _, ok := configValues["enable_sync_identities"]; ok {
 					if val, ok := getStringValue(values, "enable_sync_identities"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableSyncIdentities = types.BoolValue(bv)
-							}
+							r.EnableSyncIdentities = types.BoolValue(bv)
 						}
 					}
 				}
 
-				if localV, ok := configValues["enable_sync_service_accounts"]; ok {
+				if _, ok := configValues["enable_sync_service_accounts"]; ok {
 					if val, ok := getStringValue(values, "enable_sync_service_accounts"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableSyncServiceAccounts = types.BoolValue(bv)
-							}
+							r.EnableSyncServiceAccounts = types.BoolValue(bv)
 						}
 					}
 				}
@@ -361,50 +359,48 @@ func (r *IntegrationWizQueryResourceModel) RefreshFromCreateResponse(resp *share
 					r.ProjectId = types.StringValue(val)
 				}
 
-				r.ResourceIds = nil
 				if val, ok := getStringValue(values, "resource_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.ResourceIds = append(r.ResourceIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.ResourceIds = valLists
 				}
 
 				if val, ok := getStringValue(values, "resource_tags"); ok {
 					r.ResourceTags = types.StringValue(val)
 				}
 
-				r.ResourceTypes = nil
 				if val, ok := getStringValue(values, "resource_types"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.ResourceTypes = append(r.ResourceTypes, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.ResourceTypes = valLists
 				}
 
-				if localV, ok := configValues["enable_sync_identities"]; ok {
+				if _, ok := configValues["enable_sync_identities"]; ok {
 					if val, ok := getStringValue(values, "enable_sync_identities"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableSyncIdentities = types.BoolValue(bv)
-							}
+							r.EnableSyncIdentities = types.BoolValue(bv)
 						}
 					}
 				}
 
-				if localV, ok := configValues["enable_sync_service_accounts"]; ok {
+				if _, ok := configValues["enable_sync_service_accounts"]; ok {
 					if val, ok := getStringValue(values, "enable_sync_service_accounts"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableSyncServiceAccounts = types.BoolValue(bv)
-							}
+							r.EnableSyncServiceAccounts = types.BoolValue(bv)
 						}
 					}
 				}

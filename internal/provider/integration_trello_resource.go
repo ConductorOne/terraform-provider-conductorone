@@ -103,9 +103,9 @@ func (r *IntegrationTrelloResource) Schema(ctx context.Context, req resource.Sch
 				Description: `API token`,
 			},
 			"organizations": &schema.ListAttribute{
+				Optional:    true,
 				Description: `Organizations`,
 				ElementType: types.StringType,
-				Required:    true,
 			},
 		},
 	}

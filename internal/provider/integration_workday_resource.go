@@ -35,20 +35,14 @@ type IntegrationWorkdayResource struct {
 
 // IntegrationWorkdayResourceModel describes the resource data model.
 type IntegrationWorkdayResourceModel struct {
-	AppID                     types.String   `tfsdk:"app_id"`
-	CreatedAt                 types.String   `tfsdk:"created_at"`
-	DeletedAt                 types.String   `tfsdk:"deleted_at"`
-	ID                        types.String   `tfsdk:"id"`
-	UpdatedAt                 types.String   `tfsdk:"updated_at"`
-	UserIds                   []types.String `tfsdk:"user_ids"`
-	WorkdayClientId           types.String   `tfsdk:"workday_client_id"`
-	WorkdayClientSecret       types.String   `tfsdk:"workday_client_secret"`
-	RefreshToken              types.String   `tfsdk:"refresh_token"`
-	WorkdayUrl                types.String   `tfsdk:"workday_url"`
-	TenantName                types.String   `tfsdk:"tenant_name"`
-	WorkdayReportUrl          types.String   `tfsdk:"workday_report_url"`
-	WorkdayReportUsername     types.String   `tfsdk:"workday_report_username"`
-	WorkdayReportUserPassword types.String   `tfsdk:"workday_report_user_password"`
+	AppID                 types.String   `tfsdk:"app_id"`
+	CreatedAt             types.String   `tfsdk:"created_at"`
+	DeletedAt             types.String   `tfsdk:"deleted_at"`
+	ID                    types.String   `tfsdk:"id"`
+	UpdatedAt             types.String   `tfsdk:"updated_at"`
+	UserIds               []types.String `tfsdk:"user_ids"`
+	WorkdayGroupApiClient types.Object   `tfsdk:"workday_group_api_client"`
+	WorkdayGroupReport    types.Object   `tfsdk:"workday_group_report"`
 }
 
 func (r *IntegrationWorkdayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -98,40 +92,52 @@ func (r *IntegrationWorkdayResource) Schema(ctx context.Context, req resource.Sc
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"workday_client_id": &schema.StringAttribute{
+			"workday_group_api_client": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Client ID`,
+				Description: `API client`,
+				Attributes: map[string]schema.Attribute{
+					"workday_client_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Client ID`,
+					},
+					"workday_client_secret": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Client secret`,
+					},
+					"refresh_token": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Refresh token`,
+					},
+					"workday_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Workday URL`,
+					},
+					"tenant_name": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Tenant name`,
+					},
+				},
 			},
-			"workday_client_secret": &schema.StringAttribute{
+			"workday_group_report": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Sensitive:   true,
-				Description: `Client secret`,
-			},
-			"refresh_token": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
-				Description: `Refresh token`,
-			},
-			"workday_url": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Workday URL`,
-			},
-			"tenant_name": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Tenant name`,
-			},
-			"workday_report_url": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Report URL`,
-			},
-			"workday_report_username": &schema.StringAttribute{
-				Optional:    true,
-				Description: `Report username`,
-			},
-			"workday_report_user_password": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
-				Description: `Report user password`,
+				Description: `Custom report`,
+				Attributes: map[string]schema.Attribute{
+					"workday_report_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Report URL`,
+					},
+					"workday_report_username": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Report username`,
+					},
+					"workday_report_user_password": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Report user password`,
+					},
+				},
 			},
 		},
 	}
