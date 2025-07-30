@@ -89,10 +89,10 @@ func (r *IntegrationCursorResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 func (r *IntegrationCursorResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
-	apiKey := new(string)
-	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
-		*apiKey = r.ApiKey.ValueString()
-		configValues["api-key"] = apiKey
+	cursorApiKey := new(string)
+	if !r.CursorApiKey.IsUnknown() && !r.CursorApiKey.IsNull() {
+		*cursorApiKey = r.CursorApiKey.ValueString()
+		configValues["cursor-api-key"] = cursorApiKey
 	}
 
 	return configValues

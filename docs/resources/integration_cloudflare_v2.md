@@ -21,10 +21,15 @@ resource "conductorone_integration_cloudflare_v2" "cloudflare_v2" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  account_id_v2 = "..."
-  api_token     = "..."
-  email         = "..."
-  api_key_v2    = "..."
+  group_account_id = {
+    account_id_v2 = "..."
+    api_token     = "..."
+  }
+  group_email = {
+    account_id_v2 = "..."
+    email         = "..."
+    api_key_v2    = "..."
+  }
 }
 ```
 
@@ -37,10 +42,8 @@ resource "conductorone_integration_cloudflare_v2" "cloudflare_v2" {
 
 ### Optional
 
-- `account_id_v2` (String) Account ID
-- `api_key_v2` (String, Sensitive) API key
-- `api_token` (String, Sensitive) API token
-- `email` (String) Email ID
+- `group_account_id` (Attributes) API token (see [below for nested schema](#nestedatt--group_account_id))
+- `group_email` (Attributes) Email + API key (see [below for nested schema](#nestedatt--group_email))
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only
@@ -49,3 +52,21 @@ resource "conductorone_integration_cloudflare_v2" "cloudflare_v2" {
 - `deleted_at` (String) The time this integration was deleted.
 - `id` (String) The ID of this integration.
 - `updated_at` (String) The time this integration was last updated.
+
+<a id="nestedatt--group_account_id"></a>
+### Nested Schema for `group_account_id`
+
+Optional:
+
+- `account_id_v2` (String) Account ID
+- `api_token` (String, Sensitive) API token
+
+
+<a id="nestedatt--group_email"></a>
+### Nested Schema for `group_email`
+
+Optional:
+
+- `account_id_v2` (String) Account ID
+- `api_key_v2` (String, Sensitive) API key
+- `email` (String) Email ID

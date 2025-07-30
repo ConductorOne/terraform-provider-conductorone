@@ -183,13 +183,11 @@ func (r *IntegrationAsanaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if localV, ok := configValues["asana_is_service_account"]; ok {
+				if _, ok := configValues["asana_is_service_account"]; ok {
 					if val, ok := getStringValue(values, "asana_is_service_account"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.AsanaIsServiceAccount = types.BoolValue(bv)
-							}
+							r.AsanaIsServiceAccount = types.BoolValue(bv)
 						}
 					}
 				}
@@ -198,13 +196,11 @@ func (r *IntegrationAsanaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 					r.AsanaDefaultWorkspace = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["asana_use_scim_api"]; ok {
+				if _, ok := configValues["asana_use_scim_api"]; ok {
 					if val, ok := getStringValue(values, "asana_use_scim_api"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.AsanaUseScimApi = types.BoolValue(bv)
-							}
+							r.AsanaUseScimApi = types.BoolValue(bv)
 						}
 					}
 				}
@@ -254,13 +250,11 @@ func (r *IntegrationAsanaResourceModel) RefreshFromCreateResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if localV, ok := configValues["asana_is_service_account"]; ok {
+				if _, ok := configValues["asana_is_service_account"]; ok {
 					if val, ok := getStringValue(values, "asana_is_service_account"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.AsanaIsServiceAccount = types.BoolValue(bv)
-							}
+							r.AsanaIsServiceAccount = types.BoolValue(bv)
 						}
 					}
 				}
@@ -269,13 +263,11 @@ func (r *IntegrationAsanaResourceModel) RefreshFromCreateResponse(resp *shared.C
 					r.AsanaDefaultWorkspace = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["asana_use_scim_api"]; ok {
+				if _, ok := configValues["asana_use_scim_api"]; ok {
 					if val, ok := getStringValue(values, "asana_use_scim_api"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.AsanaUseScimApi = types.BoolValue(bv)
-							}
+							r.AsanaUseScimApi = types.BoolValue(bv)
 						}
 					}
 				}

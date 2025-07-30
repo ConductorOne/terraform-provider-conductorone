@@ -3,8 +3,13 @@ resource "conductorone_integration_cloudflare_v2" "cloudflare_v2" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  account_id_v2 = "..."
-  api_token     = "..."
-  email         = "..."
-  api_key_v2    = "..."
+  group_account_id = {
+    account_id_v2 = "..."
+    api_token     = "..."
+  }
+  group_email = {
+    account_id_v2 = "..."
+    email         = "..."
+    api_key_v2    = "..."
+  }
 }

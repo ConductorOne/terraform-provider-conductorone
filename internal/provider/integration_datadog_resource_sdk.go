@@ -186,13 +186,11 @@ func (r *IntegrationDatadogResourceModel) RefreshFromGetResponse(resp *shared.Co
 					r.DatadogSite = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["sync_secrets"]; ok {
+				if _, ok := configValues["sync_secrets"]; ok {
 					if val, ok := getStringValue(values, "sync_secrets"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SyncSecrets = types.BoolValue(bv)
-							}
+							r.SyncSecrets = types.BoolValue(bv)
 						}
 					}
 				}
@@ -245,13 +243,11 @@ func (r *IntegrationDatadogResourceModel) RefreshFromCreateResponse(resp *shared
 					r.DatadogSite = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["sync_secrets"]; ok {
+				if _, ok := configValues["sync_secrets"]; ok {
 					if val, ok := getStringValue(values, "sync_secrets"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SyncSecrets = types.BoolValue(bv)
-							}
+							r.SyncSecrets = types.BoolValue(bv)
 						}
 					}
 				}

@@ -236,30 +236,32 @@ func (r *IntegrationWizIdResourceModel) RefreshFromGetResponse(resp *shared.Conn
 					r.ProjectId = types.StringValue(val)
 				}
 
-				r.ResourceIds = nil
 				if val, ok := getStringValue(values, "resource_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.ResourceIds = append(r.ResourceIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.ResourceIds = valLists
 				}
 
 				if val, ok := getStringValue(values, "resource_tags"); ok {
 					r.ResourceTags = types.StringValue(val)
 				}
 
-				r.ResourceTypes = nil
 				if val, ok := getStringValue(values, "resource_types"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.ResourceTypes = append(r.ResourceTypes, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.ResourceTypes = valLists
 				}
 
 			}
@@ -325,30 +327,32 @@ func (r *IntegrationWizIdResourceModel) RefreshFromCreateResponse(resp *shared.C
 					r.ProjectId = types.StringValue(val)
 				}
 
-				r.ResourceIds = nil
 				if val, ok := getStringValue(values, "resource_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.ResourceIds = append(r.ResourceIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.ResourceIds = valLists
 				}
 
 				if val, ok := getStringValue(values, "resource_tags"); ok {
 					r.ResourceTags = types.StringValue(val)
 				}
 
-				r.ResourceTypes = nil
 				if val, ok := getStringValue(values, "resource_types"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.ResourceTypes = append(r.ResourceTypes, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.ResourceTypes = valLists
 				}
 
 			}

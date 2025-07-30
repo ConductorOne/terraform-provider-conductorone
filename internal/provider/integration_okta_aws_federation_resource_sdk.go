@@ -190,13 +190,11 @@ func (r *IntegrationOktaAwsFederationResourceModel) RefreshFromGetResponse(resp 
 					r.OktaAwsFederationAwsOktaAppId = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"]; ok {
+				if _, ok := configValues["okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"]; ok {
 					if val, ok := getStringValue(values, "okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning = types.BoolValue(bv)
-							}
+							r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning = types.BoolValue(bv)
 						}
 					}
 				}
@@ -253,13 +251,11 @@ func (r *IntegrationOktaAwsFederationResourceModel) RefreshFromCreateResponse(re
 					r.OktaAwsFederationAwsOktaAppId = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"]; ok {
+				if _, ok := configValues["okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"]; ok {
 					if val, ok := getStringValue(values, "okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning = types.BoolValue(bv)
-							}
+							r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning = types.BoolValue(bv)
 						}
 					}
 				}

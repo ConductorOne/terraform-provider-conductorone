@@ -41,11 +41,8 @@ type IntegrationPrivxResourceModel struct {
 	ID                     types.String   `tfsdk:"id"`
 	UpdatedAt              types.String   `tfsdk:"updated_at"`
 	UserIds                []types.String `tfsdk:"user_ids"`
-	PrivxBaseUrl           types.String   `tfsdk:"privx_base_url"`
-	PrivxClientId          types.String   `tfsdk:"privx_client_id"`
-	PrivxClientSecret      types.String   `tfsdk:"privx_client_secret"`
-	PrivxOauthClientId     types.String   `tfsdk:"privx_oauth_client_id"`
-	PrivxOauthClientSecret types.String   `tfsdk:"privx_oauth_client_secret"`
+	PrivxGroupOauth        types.Object   `tfsdk:"privx_group_oauth"`
+	PrivxGroupClientSecret types.Object   `tfsdk:"privx_group_client_secret"`
 }
 
 func (r *IntegrationPrivxResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -95,27 +92,43 @@ func (r *IntegrationPrivxResource) Schema(ctx context.Context, req resource.Sche
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"privx_base_url": &schema.StringAttribute{
+			"privx_group_oauth": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Base URL`,
+				Description: `OAuth`,
+				Attributes: map[string]schema.Attribute{
+					"privx_base_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Base URL`,
+					},
+					"privx_oauth_client_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `OAuth client ID`,
+					},
+					"privx_oauth_client_secret": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `OAuth client secret`,
+					},
+				},
 			},
-			"privx_client_id": &schema.StringAttribute{
+			"privx_group_client_secret": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Client ID`,
-			},
-			"privx_client_secret": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
 				Description: `Client secret`,
-			},
-			"privx_oauth_client_id": &schema.StringAttribute{
-				Optional:    true,
-				Description: `OAuth client ID`,
-			},
-			"privx_oauth_client_secret": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
-				Description: `OAuth client secret`,
+				Attributes: map[string]schema.Attribute{
+					"privx_base_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Base URL`,
+					},
+					"privx_client_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Client ID`,
+					},
+					"privx_client_secret": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Client secret`,
+					},
+				},
 			},
 		},
 	}

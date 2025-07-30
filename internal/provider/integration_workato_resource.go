@@ -35,15 +35,16 @@ type IntegrationWorkatoResource struct {
 
 // IntegrationWorkatoResourceModel describes the resource data model.
 type IntegrationWorkatoResourceModel struct {
-	AppID             types.String   `tfsdk:"app_id"`
-	CreatedAt         types.String   `tfsdk:"created_at"`
-	DeletedAt         types.String   `tfsdk:"deleted_at"`
-	ID                types.String   `tfsdk:"id"`
-	UpdatedAt         types.String   `tfsdk:"updated_at"`
-	UserIds           []types.String `tfsdk:"user_ids"`
-	WorkatoApiKey     types.String   `tfsdk:"workato_api_key"`
-	WorkatoDataCenter types.String   `tfsdk:"workato_data_center"`
-	WorkatoEnv        types.String   `tfsdk:"workato_env"`
+	AppID                         types.String   `tfsdk:"app_id"`
+	CreatedAt                     types.String   `tfsdk:"created_at"`
+	DeletedAt                     types.String   `tfsdk:"deleted_at"`
+	ID                            types.String   `tfsdk:"id"`
+	UpdatedAt                     types.String   `tfsdk:"updated_at"`
+	UserIds                       []types.String `tfsdk:"user_ids"`
+	WorkatoApiKey                 types.String   `tfsdk:"workato_api_key"`
+	WorkatoDataCenter             types.String   `tfsdk:"workato_data_center"`
+	WorkatoEnv                    types.String   `tfsdk:"workato_env"`
+	WorkatoDisableCustomRolesSync types.Bool     `tfsdk:"workato_disable_custom_roles_sync"`
 }
 
 func (r *IntegrationWorkatoResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -105,6 +106,10 @@ func (r *IntegrationWorkatoResource) Schema(ctx context.Context, req resource.Sc
 			"workato_env": &schema.StringAttribute{
 				Optional:    true,
 				Description: `Environment`,
+			},
+			"workato_disable_custom_roles_sync": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Disable custom roles sync`,
 			},
 		},
 	}

@@ -3,13 +3,15 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 const privxCatalogID = "2jcBmRnl40QiOGhV3srq5rAYpjE"
@@ -89,34 +91,54 @@ func (r *IntegrationPrivxResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 func (r *IntegrationPrivxResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
-	privxBaseUrl := new(string)
-	if !r.PrivxBaseUrl.IsUnknown() && !r.PrivxBaseUrl.IsNull() {
-		*privxBaseUrl = r.PrivxBaseUrl.ValueString()
-		configValues["privx_base_url"] = privxBaseUrl
+	if !r.PrivxGroupOauth.IsUnknown() && !r.PrivxGroupOauth.IsNull() {
+		configValues["C1_selected_field_group_name"] = "privx_group_oauth"
+		for k, v := range r.PrivxGroupOauth.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
 
-	privxClientId := new(string)
-	if !r.PrivxClientId.IsUnknown() && !r.PrivxClientId.IsNull() {
-		*privxClientId = r.PrivxClientId.ValueString()
-		configValues["privx_client_id"] = privxClientId
-	}
-
-	privxClientSecret := new(string)
-	if !r.PrivxClientSecret.IsUnknown() && !r.PrivxClientSecret.IsNull() {
-		*privxClientSecret = r.PrivxClientSecret.ValueString()
-		configValues["privx_client_secret"] = privxClientSecret
-	}
-
-	privxOauthClientId := new(string)
-	if !r.PrivxOauthClientId.IsUnknown() && !r.PrivxOauthClientId.IsNull() {
-		*privxOauthClientId = r.PrivxOauthClientId.ValueString()
-		configValues["privx_oauth_client_id"] = privxOauthClientId
-	}
-
-	privxOauthClientSecret := new(string)
-	if !r.PrivxOauthClientSecret.IsUnknown() && !r.PrivxOauthClientSecret.IsNull() {
-		*privxOauthClientSecret = r.PrivxOauthClientSecret.ValueString()
-		configValues["privx_oauth_client_secret"] = privxOauthClientSecret
+	if !r.PrivxGroupClientSecret.IsUnknown() && !r.PrivxGroupClientSecret.IsNull() {
+		configValues["C1_selected_field_group_name"] = "privx_group_client_secret"
+		for k, v := range r.PrivxGroupClientSecret.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
 
 	return configValues
@@ -184,19 +206,58 @@ func (r *IntegrationPrivxResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "privx_base_url"); ok {
-					r.PrivxBaseUrl = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "privx_group_oauth" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "privx_base_url"); ok {
+							attributeTypes["privx_base_url"] = types.StringType
+							attributeValues["privx_base_url"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "privx_oauth_client_id"); ok {
+							attributeTypes["privx_oauth_client_id"] = types.StringType
+							attributeValues["privx_oauth_client_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["privx_oauth_client_secret"] = types.StringType
+						if sv, ok := configValues["privx_oauth_client_secret"].(string); ok {
+							attributeValues["privx_oauth_client_secret"] = types.StringValue(sv)
+						} else {
+							attributeValues["privx_oauth_client_secret"] = types.StringNull()
+						}
+						r.PrivxGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
-				if val, ok := getStringValue(values, "privx_client_id"); ok {
-					r.PrivxClientId = types.StringValue(val)
-				}
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "privx_group_client_secret" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-				if val, ok := getStringValue(values, "privx_oauth_client_id"); ok {
-					r.PrivxOauthClientId = types.StringValue(val)
+						if val, ok := getStringValue(values, "privx_base_url"); ok {
+							attributeTypes["privx_base_url"] = types.StringType
+							attributeValues["privx_base_url"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "privx_client_id"); ok {
+							attributeTypes["privx_client_id"] = types.StringType
+							attributeValues["privx_client_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["privx_client_secret"] = types.StringType
+						if sv, ok := configValues["privx_client_secret"].(string); ok {
+							attributeValues["privx_client_secret"] = types.StringValue(sv)
+						} else {
+							attributeValues["privx_client_secret"] = types.StringNull()
+						}
+						r.PrivxGroupClientSecret = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
 			}
@@ -239,19 +300,58 @@ func (r *IntegrationPrivxResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "privx_base_url"); ok {
-					r.PrivxBaseUrl = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "privx_group_oauth" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "privx_base_url"); ok {
+							attributeTypes["privx_base_url"] = types.StringType
+							attributeValues["privx_base_url"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "privx_oauth_client_id"); ok {
+							attributeTypes["privx_oauth_client_id"] = types.StringType
+							attributeValues["privx_oauth_client_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["privx_oauth_client_secret"] = types.StringType
+						if sv, ok := configValues["privx_oauth_client_secret"].(string); ok {
+							attributeValues["privx_oauth_client_secret"] = types.StringValue(sv)
+						} else {
+							attributeValues["privx_oauth_client_secret"] = types.StringNull()
+						}
+						r.PrivxGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
-				if val, ok := getStringValue(values, "privx_client_id"); ok {
-					r.PrivxClientId = types.StringValue(val)
-				}
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "privx_group_client_secret" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-				if val, ok := getStringValue(values, "privx_oauth_client_id"); ok {
-					r.PrivxOauthClientId = types.StringValue(val)
+						if val, ok := getStringValue(values, "privx_base_url"); ok {
+							attributeTypes["privx_base_url"] = types.StringType
+							attributeValues["privx_base_url"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "privx_client_id"); ok {
+							attributeTypes["privx_client_id"] = types.StringType
+							attributeValues["privx_client_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["privx_client_secret"] = types.StringType
+						if sv, ok := configValues["privx_client_secret"].(string); ok {
+							attributeValues["privx_client_secret"] = types.StringValue(sv)
+						} else {
+							attributeValues["privx_client_secret"] = types.StringNull()
+						}
+						r.PrivxGroupClientSecret = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
 			}

@@ -95,12 +95,12 @@ func (r *IntegrationTenableVmResource) Schema(ctx context.Context, req resource.
 			"tenable_vm_access_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Access Key`,
+				Description: `Access key`,
 			},
 			"tenable_vm_secret_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Secret Key`,
+				Description: `Secret key`,
 			},
 		},
 	}

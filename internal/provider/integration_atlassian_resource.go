@@ -95,7 +95,7 @@ func (r *IntegrationAtlassianResource) Schema(ctx context.Context, req resource.
 			"access_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Access Token`,
+				Description: `Access token`,
 			},
 			"organization_id": &schema.StringAttribute{
 				Optional:    true,

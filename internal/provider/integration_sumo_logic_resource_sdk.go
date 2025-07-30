@@ -190,13 +190,11 @@ func (r *IntegrationSumoLogicResourceModel) RefreshFromGetResponse(resp *shared.
 					r.ApiBaseUrl = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["include-service-accounts"]; ok {
+				if _, ok := configValues["include-service-accounts"]; ok {
 					if val, ok := getStringValue(values, "include-service-accounts"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.IncludeServiceAccounts = types.BoolValue(bv)
-							}
+							r.IncludeServiceAccounts = types.BoolValue(bv)
 						}
 					}
 				}
@@ -253,13 +251,11 @@ func (r *IntegrationSumoLogicResourceModel) RefreshFromCreateResponse(resp *shar
 					r.ApiBaseUrl = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["include-service-accounts"]; ok {
+				if _, ok := configValues["include-service-accounts"]; ok {
 					if val, ok := getStringValue(values, "include-service-accounts"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.IncludeServiceAccounts = types.BoolValue(bv)
-							}
+							r.IncludeServiceAccounts = types.BoolValue(bv)
 						}
 					}
 				}

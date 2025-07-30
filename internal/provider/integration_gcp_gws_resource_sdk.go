@@ -140,6 +140,24 @@ func (r *IntegrationGcpGwsResourceModel) populateConfig() map[string]interface{}
 		configValues["project_ids"] = strings.Join(projectIds, ",")
 	}
 
+	enableWorkforceIdentityFederation := new(string)
+	if !r.EnableWorkforceIdentityFederation.IsUnknown() && !r.EnableWorkforceIdentityFederation.IsNull() {
+		*enableWorkforceIdentityFederation = strconv.FormatBool(r.EnableWorkforceIdentityFederation.ValueBool())
+		configValues["enable-workforce-identity-federation"] = enableWorkforceIdentityFederation
+	}
+
+	workforceIdentityPoolId := new(string)
+	if !r.WorkforceIdentityPoolId.IsUnknown() && !r.WorkforceIdentityPoolId.IsNull() {
+		*workforceIdentityPoolId = r.WorkforceIdentityPoolId.ValueString()
+		configValues["workforce-identity-pool-id"] = workforceIdentityPoolId
+	}
+
+	workforceIdentityPoolProviderId := new(string)
+	if !r.WorkforceIdentityPoolProviderId.IsUnknown() && !r.WorkforceIdentityPoolProviderId.IsNull() {
+		*workforceIdentityPoolProviderId = r.WorkforceIdentityPoolProviderId.ValueString()
+		configValues["workforce-identity-pool-provider-id"] = workforceIdentityPoolProviderId
+	}
+
 	return configValues
 }
 
@@ -221,48 +239,60 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromGetResponse(resp *shared.Con
 					r.AdministratorEmail = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["skip_system_accounts"]; ok {
+				if _, ok := configValues["skip_system_accounts"]; ok {
 					if val, ok := getStringValue(values, "skip_system_accounts"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipSystemAccounts = types.BoolValue(bv)
-							}
+							r.SkipSystemAccounts = types.BoolValue(bv)
 						}
 					}
 				}
 
-				if localV, ok := configValues["skip_default_projects"]; ok {
+				if _, ok := configValues["skip_default_projects"]; ok {
 					if val, ok := getStringValue(values, "skip_default_projects"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipDefaultProjects = types.BoolValue(bv)
-							}
+							r.SkipDefaultProjects = types.BoolValue(bv)
 						}
 					}
 				}
 
-				if localV, ok := configValues["sync_secrets"]; ok {
+				if _, ok := configValues["sync_secrets"]; ok {
 					if val, ok := getStringValue(values, "sync_secrets"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SyncSecrets = types.BoolValue(bv)
-							}
+							r.SyncSecrets = types.BoolValue(bv)
 						}
 					}
 				}
 
-				r.ProjectIds = nil
 				if val, ok := getStringValue(values, "project_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.ProjectIds = append(r.ProjectIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.ProjectIds = valLists
+				}
+
+				if _, ok := configValues["enable-workforce-identity-federation"]; ok {
+					if val, ok := getStringValue(values, "enable-workforce-identity-federation"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.EnableWorkforceIdentityFederation = types.BoolValue(bv)
+						}
+					}
+				}
+
+				if val, ok := getStringValue(values, "workforce-identity-pool-id"); ok {
+					r.WorkforceIdentityPoolId = types.StringValue(val)
+				}
+
+				if val, ok := getStringValue(values, "workforce-identity-pool-provider-id"); ok {
+					r.WorkforceIdentityPoolProviderId = types.StringValue(val)
 				}
 
 			}
@@ -321,48 +351,60 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromCreateResponse(resp *shared.
 					r.AdministratorEmail = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["skip_system_accounts"]; ok {
+				if _, ok := configValues["skip_system_accounts"]; ok {
 					if val, ok := getStringValue(values, "skip_system_accounts"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipSystemAccounts = types.BoolValue(bv)
-							}
+							r.SkipSystemAccounts = types.BoolValue(bv)
 						}
 					}
 				}
 
-				if localV, ok := configValues["skip_default_projects"]; ok {
+				if _, ok := configValues["skip_default_projects"]; ok {
 					if val, ok := getStringValue(values, "skip_default_projects"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SkipDefaultProjects = types.BoolValue(bv)
-							}
+							r.SkipDefaultProjects = types.BoolValue(bv)
 						}
 					}
 				}
 
-				if localV, ok := configValues["sync_secrets"]; ok {
+				if _, ok := configValues["sync_secrets"]; ok {
 					if val, ok := getStringValue(values, "sync_secrets"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SyncSecrets = types.BoolValue(bv)
-							}
+							r.SyncSecrets = types.BoolValue(bv)
 						}
 					}
 				}
 
-				r.ProjectIds = nil
 				if val, ok := getStringValue(values, "project_ids"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.ProjectIds = append(r.ProjectIds, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.ProjectIds = valLists
+				}
+
+				if _, ok := configValues["enable-workforce-identity-federation"]; ok {
+					if val, ok := getStringValue(values, "enable-workforce-identity-federation"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.EnableWorkforceIdentityFederation = types.BoolValue(bv)
+						}
+					}
+				}
+
+				if val, ok := getStringValue(values, "workforce-identity-pool-id"); ok {
+					r.WorkforceIdentityPoolId = types.StringValue(val)
+				}
+
+				if val, ok := getStringValue(values, "workforce-identity-pool-provider-id"); ok {
+					r.WorkforceIdentityPoolProviderId = types.StringValue(val)
 				}
 
 			}

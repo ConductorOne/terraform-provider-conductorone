@@ -3,5 +3,5 @@ resource "conductorone_integration_cursor" "cursor" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  api_key = "..."
+  cursor_api_key = "..."
 }

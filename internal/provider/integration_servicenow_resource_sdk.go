@@ -202,13 +202,11 @@ func (r *IntegrationServicenowResourceModel) RefreshFromGetResponse(resp *shared
 					r.Username = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
+				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
 					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
-							}
+							r.EnableExternalTicketProvisioning = types.BoolValue(bv)
 						}
 					}
 				}
@@ -273,13 +271,11 @@ func (r *IntegrationServicenowResourceModel) RefreshFromCreateResponse(resp *sha
 					r.Username = types.StringValue(val)
 				}
 
-				if localV, ok := configValues["enable_external_ticket_provisioning"]; ok {
+				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
 					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.EnableExternalTicketProvisioning = types.BoolValue(bv)
-							}
+							r.EnableExternalTicketProvisioning = types.BoolValue(bv)
 						}
 					}
 				}

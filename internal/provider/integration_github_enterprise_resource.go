@@ -35,15 +35,14 @@ type IntegrationGithubEnterpriseResource struct {
 
 // IntegrationGithubEnterpriseResourceModel describes the resource data model.
 type IntegrationGithubEnterpriseResourceModel struct {
-	AppID             types.String   `tfsdk:"app_id"`
-	CreatedAt         types.String   `tfsdk:"created_at"`
-	DeletedAt         types.String   `tfsdk:"deleted_at"`
-	ID                types.String   `tfsdk:"id"`
-	UpdatedAt         types.String   `tfsdk:"updated_at"`
-	UserIds           []types.String `tfsdk:"user_ids"`
-	GithubInstanceUrl types.String   `tfsdk:"github_instance_url"`
-	GithubAccessToken types.String   `tfsdk:"github_access_token"`
-	GithubOrgList     []types.String `tfsdk:"github_org_list"`
+	AppID                          types.String   `tfsdk:"app_id"`
+	CreatedAt                      types.String   `tfsdk:"created_at"`
+	DeletedAt                      types.String   `tfsdk:"deleted_at"`
+	ID                             types.String   `tfsdk:"id"`
+	UpdatedAt                      types.String   `tfsdk:"updated_at"`
+	UserIds                        []types.String `tfsdk:"user_ids"`
+	GithubPersonalAccessTokenGroup types.Object   `tfsdk:"github_personal_access_token_group"`
+	GithubAppGroup                 types.Object   `tfsdk:"github_app_group"`
 }
 
 func (r *IntegrationGithubEnterpriseResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -93,19 +92,48 @@ func (r *IntegrationGithubEnterpriseResource) Schema(ctx context.Context, req re
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"github_instance_url": &schema.StringAttribute{
+			"github_personal_access_token_group": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Instance URL`,
-			},
-			"github_access_token": &schema.StringAttribute{
-				Optional:    true,
-				Sensitive:   true,
 				Description: `Personal access token`,
+				Attributes: map[string]schema.Attribute{
+					"github_instance_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Instance URL`,
+					},
+					"github_access_token": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Personal access token`,
+					},
+					"github_org_list": &schema.ListAttribute{
+						Optional:    true,
+						Description: `Organizations (optional)`,
+						ElementType: types.StringType,
+					},
+				},
 			},
-			"github_org_list": &schema.ListAttribute{
+			"github_app_group": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Organizations (optional)`,
-				ElementType: types.StringType,
+				Description: `GitHub app`,
+				Attributes: map[string]schema.Attribute{
+					"github_instance_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Instance URL`,
+					},
+					"github_app_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `GitHub app ID`,
+					},
+					"github_app_private_key": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `GitHub app private key (.pem)`,
+					},
+					"github_app_org": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Github App Organization`,
+					},
+				},
 			},
 		},
 	}

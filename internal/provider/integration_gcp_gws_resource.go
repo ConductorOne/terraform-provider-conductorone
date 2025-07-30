@@ -35,20 +35,23 @@ type IntegrationGcpGwsResource struct {
 
 // IntegrationGcpGwsResourceModel describes the resource data model.
 type IntegrationGcpGwsResourceModel struct {
-	AppID               types.String   `tfsdk:"app_id"`
-	CreatedAt           types.String   `tfsdk:"created_at"`
-	DeletedAt           types.String   `tfsdk:"deleted_at"`
-	ID                  types.String   `tfsdk:"id"`
-	UpdatedAt           types.String   `tfsdk:"updated_at"`
-	UserIds             []types.String `tfsdk:"user_ids"`
-	CustomerId          types.String   `tfsdk:"customer_id"`
-	Domain              types.String   `tfsdk:"domain"`
-	AdministratorEmail  types.String   `tfsdk:"administrator_email"`
-	CredentialsJson     types.String   `tfsdk:"credentials_json"`
-	SkipSystemAccounts  types.Bool     `tfsdk:"skip_system_accounts"`
-	SkipDefaultProjects types.Bool     `tfsdk:"skip_default_projects"`
-	SyncSecrets         types.Bool     `tfsdk:"sync_secrets"`
-	ProjectIds          []types.String `tfsdk:"project_ids"`
+	AppID                             types.String   `tfsdk:"app_id"`
+	CreatedAt                         types.String   `tfsdk:"created_at"`
+	DeletedAt                         types.String   `tfsdk:"deleted_at"`
+	ID                                types.String   `tfsdk:"id"`
+	UpdatedAt                         types.String   `tfsdk:"updated_at"`
+	UserIds                           []types.String `tfsdk:"user_ids"`
+	CustomerId                        types.String   `tfsdk:"customer_id"`
+	Domain                            types.String   `tfsdk:"domain"`
+	AdministratorEmail                types.String   `tfsdk:"administrator_email"`
+	CredentialsJson                   types.String   `tfsdk:"credentials_json"`
+	SkipSystemAccounts                types.Bool     `tfsdk:"skip_system_accounts"`
+	SkipDefaultProjects               types.Bool     `tfsdk:"skip_default_projects"`
+	SyncSecrets                       types.Bool     `tfsdk:"sync_secrets"`
+	ProjectIds                        []types.String `tfsdk:"project_ids"`
+	EnableWorkforceIdentityFederation types.Bool     `tfsdk:"enable_workforce_identity_federation"`
+	WorkforceIdentityPoolId           types.String   `tfsdk:"workforce_identity_pool_id"`
+	WorkforceIdentityPoolProviderId   types.String   `tfsdk:"workforce_identity_pool_provider_id"`
 }
 
 func (r *IntegrationGcpGwsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -131,6 +134,18 @@ func (r *IntegrationGcpGwsResource) Schema(ctx context.Context, req resource.Sch
 				Optional:    true,
 				Description: `Project IDs (optional)`,
 				ElementType: types.StringType,
+			},
+			"enable_workforce_identity_federation": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Enable workforce identity federation`,
+			},
+			"workforce_identity_pool_id": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Google Workspace Workforce Identity Pool ID`,
+			},
+			"workforce_identity_pool_provider_id": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Google Workspace Workforce Identity Pool Provider ID`,
 			},
 		},
 	}

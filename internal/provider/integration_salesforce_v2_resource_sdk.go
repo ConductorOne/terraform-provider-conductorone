@@ -4,12 +4,14 @@ package provider
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 const salesforceV2CatalogID = "2k4W58EZuLALKVuoMIaFKRHvx9p"
@@ -89,40 +91,54 @@ func (r *IntegrationSalesforceV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 func (r *IntegrationSalesforceV2ResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
-	salesforceInstanceUrl := new(string)
-	if !r.SalesforceInstanceUrl.IsUnknown() && !r.SalesforceInstanceUrl.IsNull() {
-		*salesforceInstanceUrl = r.SalesforceInstanceUrl.ValueString()
-		configValues["salesforce_instance_url"] = salesforceInstanceUrl
+	if !r.SalesforceGroupOauth.IsUnknown() && !r.SalesforceGroupOauth.IsNull() {
+		configValues["C1_selected_field_group_name"] = "salesforce_group_oauth"
+		for k, v := range r.SalesforceGroupOauth.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
 
-	salesforceUsernameForEmail := new(string)
-	if !r.SalesforceUsernameForEmail.IsUnknown() && !r.SalesforceUsernameForEmail.IsNull() {
-		*salesforceUsernameForEmail = strconv.FormatBool(r.SalesforceUsernameForEmail.ValueBool())
-		configValues["salesforce_username_for_email"] = salesforceUsernameForEmail
-	}
-
-	salesforceUsername := new(string)
-	if !r.SalesforceUsername.IsUnknown() && !r.SalesforceUsername.IsNull() {
-		*salesforceUsername = r.SalesforceUsername.ValueString()
-		configValues["salesforce_username"] = salesforceUsername
-	}
-
-	salesforcePassword := new(string)
-	if !r.SalesforcePassword.IsUnknown() && !r.SalesforcePassword.IsNull() {
-		*salesforcePassword = r.SalesforcePassword.ValueString()
-		configValues["salesforce_password"] = salesforcePassword
-	}
-
-	salesforceSecurityToken := new(string)
-	if !r.SalesforceSecurityToken.IsUnknown() && !r.SalesforceSecurityToken.IsNull() {
-		*salesforceSecurityToken = r.SalesforceSecurityToken.ValueString()
-		configValues["salesforce_security_token"] = salesforceSecurityToken
-	}
-
-	salesforceSyncConnectedApps := new(string)
-	if !r.SalesforceSyncConnectedApps.IsUnknown() && !r.SalesforceSyncConnectedApps.IsNull() {
-		*salesforceSyncConnectedApps = strconv.FormatBool(r.SalesforceSyncConnectedApps.ValueBool())
-		configValues["salesforce_sync_connected_apps"] = salesforceSyncConnectedApps
+	if !r.SalesforceGroupAccessToken.IsUnknown() && !r.SalesforceGroupAccessToken.IsNull() {
+		configValues["C1_selected_field_group_name"] = "salesforce_group_access_token"
+		for k, v := range r.SalesforceGroupAccessToken.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
 
 	return configValues
@@ -194,33 +210,96 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromGetResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
-					r.SalesforceInstanceUrl = types.StringValue(val)
-				}
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "salesforce_group_oauth" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-				if localV, ok := configValues["salesforce_username_for_email"]; ok {
-					if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SalesforceUsernameForEmail = types.BoolValue(bv)
-							}
+						if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+							attributeTypes["salesforce_instance_url"] = types.StringType
+							attributeValues["salesforce_instance_url"] = types.StringValue(val)
 						}
+						if _, ok := configValues["salesforce_username_for_email"]; ok {
+							if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_username_for_email"] = types.BoolType
+									attributeValues["salesforce_username_for_email"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_username_for_email"] = types.BoolType
+							attributeValues["salesforce_username_for_email"] = types.BoolNull()
+						}
+						if _, ok := configValues["salesforce_sync_connected_apps"]; ok {
+							if val, ok := getStringValue(values, "salesforce_sync_connected_apps"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
+									attributeValues["salesforce_sync_connected_apps"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
+							attributeValues["salesforce_sync_connected_apps"] = types.BoolNull()
+						}
+						r.SalesforceGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
 				}
 
-				if val, ok := getStringValue(values, "salesforce_username"); ok {
-					r.SalesforceUsername = types.StringValue(val)
-				}
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "salesforce_group_access_token" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-				if localV, ok := configValues["salesforce_sync_connected_apps"]; ok {
-					if val, ok := getStringValue(values, "salesforce_sync_connected_apps"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SalesforceSyncConnectedApps = types.BoolValue(bv)
-							}
+						if val, ok := getStringValue(values, "salesforce_username"); ok {
+							attributeTypes["salesforce_username"] = types.StringType
+							attributeValues["salesforce_username"] = types.StringValue(val)
 						}
+
+						attributeTypes["salesforce_password"] = types.StringType
+						if sv, ok := configValues["salesforce_password"].(string); ok {
+							attributeValues["salesforce_password"] = types.StringValue(sv)
+						} else {
+							attributeValues["salesforce_password"] = types.StringNull()
+						}
+
+						attributeTypes["salesforce_security_token"] = types.StringType
+						if sv, ok := configValues["salesforce_security_token"].(string); ok {
+							attributeValues["salesforce_security_token"] = types.StringValue(sv)
+						} else {
+							attributeValues["salesforce_security_token"] = types.StringNull()
+						}
+
+						if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+							attributeTypes["salesforce_instance_url"] = types.StringType
+							attributeValues["salesforce_instance_url"] = types.StringValue(val)
+						}
+						if _, ok := configValues["salesforce_username_for_email"]; ok {
+							if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_username_for_email"] = types.BoolType
+									attributeValues["salesforce_username_for_email"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_username_for_email"] = types.BoolType
+							attributeValues["salesforce_username_for_email"] = types.BoolNull()
+						}
+						if _, ok := configValues["salesforce_sync_connected_apps"]; ok {
+							if val, ok := getStringValue(values, "salesforce_sync_connected_apps"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
+									attributeValues["salesforce_sync_connected_apps"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
+							attributeValues["salesforce_sync_connected_apps"] = types.BoolNull()
+						}
+						r.SalesforceGroupAccessToken = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
 				}
 
@@ -268,33 +347,96 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromCreateResponse(resp *s
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
-					r.SalesforceInstanceUrl = types.StringValue(val)
-				}
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "salesforce_group_oauth" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-				if localV, ok := configValues["salesforce_username_for_email"]; ok {
-					if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SalesforceUsernameForEmail = types.BoolValue(bv)
-							}
+						if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+							attributeTypes["salesforce_instance_url"] = types.StringType
+							attributeValues["salesforce_instance_url"] = types.StringValue(val)
 						}
+						if _, ok := configValues["salesforce_username_for_email"]; ok {
+							if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_username_for_email"] = types.BoolType
+									attributeValues["salesforce_username_for_email"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_username_for_email"] = types.BoolType
+							attributeValues["salesforce_username_for_email"] = types.BoolNull()
+						}
+						if _, ok := configValues["salesforce_sync_connected_apps"]; ok {
+							if val, ok := getStringValue(values, "salesforce_sync_connected_apps"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
+									attributeValues["salesforce_sync_connected_apps"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
+							attributeValues["salesforce_sync_connected_apps"] = types.BoolNull()
+						}
+						r.SalesforceGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
 				}
 
-				if val, ok := getStringValue(values, "salesforce_username"); ok {
-					r.SalesforceUsername = types.StringValue(val)
-				}
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "salesforce_group_access_token" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-				if localV, ok := configValues["salesforce_sync_connected_apps"]; ok {
-					if val, ok := getStringValue(values, "salesforce_sync_connected_apps"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							if localV != nil || (localV == nil && !bv) {
-								r.SalesforceSyncConnectedApps = types.BoolValue(bv)
-							}
+						if val, ok := getStringValue(values, "salesforce_username"); ok {
+							attributeTypes["salesforce_username"] = types.StringType
+							attributeValues["salesforce_username"] = types.StringValue(val)
 						}
+
+						attributeTypes["salesforce_password"] = types.StringType
+						if sv, ok := configValues["salesforce_password"].(string); ok {
+							attributeValues["salesforce_password"] = types.StringValue(sv)
+						} else {
+							attributeValues["salesforce_password"] = types.StringNull()
+						}
+
+						attributeTypes["salesforce_security_token"] = types.StringType
+						if sv, ok := configValues["salesforce_security_token"].(string); ok {
+							attributeValues["salesforce_security_token"] = types.StringValue(sv)
+						} else {
+							attributeValues["salesforce_security_token"] = types.StringNull()
+						}
+
+						if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+							attributeTypes["salesforce_instance_url"] = types.StringType
+							attributeValues["salesforce_instance_url"] = types.StringValue(val)
+						}
+						if _, ok := configValues["salesforce_username_for_email"]; ok {
+							if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_username_for_email"] = types.BoolType
+									attributeValues["salesforce_username_for_email"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_username_for_email"] = types.BoolType
+							attributeValues["salesforce_username_for_email"] = types.BoolNull()
+						}
+						if _, ok := configValues["salesforce_sync_connected_apps"]; ok {
+							if val, ok := getStringValue(values, "salesforce_sync_connected_apps"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
+									attributeValues["salesforce_sync_connected_apps"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
+							attributeValues["salesforce_sync_connected_apps"] = types.BoolNull()
+						}
+						r.SalesforceGroupAccessToken = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
 				}
 

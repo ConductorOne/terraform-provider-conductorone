@@ -33,12 +33,12 @@ resource "conductorone_integration_trello" "trello" {
 ### Required
 
 - `app_id` (String) The ID for the Application that this integration should connected to.
-- `organizations` (List of String) Organizations
 
 ### Optional
 
 - `api_key` (String) API key
 - `api_token` (String, Sensitive) API token
+- `organizations` (List of String) Organizations
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

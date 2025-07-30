@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -107,6 +107,12 @@ func (r *IntegrationWorkatoResourceModel) populateConfig() map[string]interface{
 		configValues["workato-env"] = workatoEnv
 	}
 
+	workatoDisableCustomRolesSync := new(string)
+	if !r.WorkatoDisableCustomRolesSync.IsUnknown() && !r.WorkatoDisableCustomRolesSync.IsNull() {
+		*workatoDisableCustomRolesSync = strconv.FormatBool(r.WorkatoDisableCustomRolesSync.ValueBool())
+		configValues["workato-disable-custom-roles-sync"] = workatoDisableCustomRolesSync
+	}
+
 	return configValues
 }
 
@@ -172,6 +178,7 @@ func (r *IntegrationWorkatoResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -182,6 +189,15 @@ func (r *IntegrationWorkatoResourceModel) RefreshFromGetResponse(resp *shared.Co
 
 				if val, ok := getStringValue(values, "workato-env"); ok {
 					r.WorkatoEnv = types.StringValue(val)
+				}
+
+				if _, ok := configValues["workato-disable-custom-roles-sync"]; ok {
+					if val, ok := getStringValue(values, "workato-disable-custom-roles-sync"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.WorkatoDisableCustomRolesSync = types.BoolValue(bv)
+						}
+					}
 				}
 
 			}
@@ -224,6 +240,7 @@ func (r *IntegrationWorkatoResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
@@ -234,6 +251,15 @@ func (r *IntegrationWorkatoResourceModel) RefreshFromCreateResponse(resp *shared
 
 				if val, ok := getStringValue(values, "workato-env"); ok {
 					r.WorkatoEnv = types.StringValue(val)
+				}
+
+				if _, ok := configValues["workato-disable-custom-roles-sync"]; ok {
+					if val, ok := getStringValue(values, "workato-disable-custom-roles-sync"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.WorkatoDisableCustomRolesSync = types.BoolValue(bv)
+						}
+					}
 				}
 
 			}

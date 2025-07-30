@@ -21,14 +21,17 @@ resource "conductorone_integration_gcp_gws" "gcp_gws" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  customer_id           = "..."
-  domain                = "..."
-  administrator_email   = "..."
-  credentials_json      = "..."
-  skip_system_accounts  = false
-  skip_default_projects = false
-  sync_secrets          = false
-  project_ids           = ["..."]
+  customer_id                          = "..."
+  domain                               = "..."
+  administrator_email                  = "..."
+  credentials_json                     = "..."
+  skip_system_accounts                 = false
+  skip_default_projects                = false
+  sync_secrets                         = false
+  project_ids                          = ["..."]
+  enable_workforce_identity_federation = false
+  workforce_identity_pool_id           = "..."
+  workforce_identity_pool_provider_id  = "..."
 }
 ```
 
@@ -45,11 +48,14 @@ resource "conductorone_integration_gcp_gws" "gcp_gws" {
 - `credentials_json` (String, Sensitive) Credentials (JSON)
 - `customer_id` (String) Google Workspace customer ID
 - `domain` (String) Google Workspace domain
+- `enable_workforce_identity_federation` (Boolean) Enable workforce identity federation
 - `project_ids` (List of String) Project IDs (optional)
 - `skip_default_projects` (Boolean) Skip Google Cloud Platform default projects
 - `skip_system_accounts` (Boolean) Skip Google Cloud Platform system accounts
 - `sync_secrets` (Boolean) Sync secrets
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
+- `workforce_identity_pool_id` (String) Google Workspace Workforce Identity Pool ID
+- `workforce_identity_pool_provider_id` (String) Google Workspace Workforce Identity Pool Provider ID
 
 ### Read-Only
 

@@ -182,15 +182,16 @@ func (r *IntegrationTrelloResourceModel) RefreshFromGetResponse(resp *shared.Con
 					r.ApiKey = types.StringValue(val)
 				}
 
-				r.Organizations = nil
 				if val, ok := getStringValue(values, "organizations"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.Organizations = append(r.Organizations, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.Organizations = valLists
 				}
 
 			}
@@ -240,15 +241,16 @@ func (r *IntegrationTrelloResourceModel) RefreshFromCreateResponse(resp *shared.
 					r.ApiKey = types.StringValue(val)
 				}
 
-				r.Organizations = nil
 				if val, ok := getStringValue(values, "organizations"); ok {
+					var valLists []types.String
 					tmpList := strings.Split(val, ",")
 					for _, item := range tmpList {
 						item = strings.TrimSpace(item)
 						if item != "" {
-							r.Organizations = append(r.Organizations, types.StringValue(item))
+							valLists = append(valLists, types.StringValue(item))
 						}
 					}
+					r.Organizations = valLists
 				}
 
 			}

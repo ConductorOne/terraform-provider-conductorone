@@ -21,14 +21,18 @@ resource "conductorone_integration_workday" "workday" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  workday_client_id            = "..."
-  workday_client_secret        = "..."
-  refresh_token                = "..."
-  workday_url                  = "..."
-  tenant_name                  = "..."
-  workday_report_url           = "..."
-  workday_report_username      = "..."
-  workday_report_user_password = "..."
+  workday_group_api_client = {
+    workday_client_id     = "..."
+    workday_client_secret = "..."
+    refresh_token         = "..."
+    workday_url           = "..."
+    tenant_name           = "..."
+  }
+  workday_group_report = {
+    workday_report_url           = "..."
+    workday_report_username      = "..."
+    workday_report_user_password = "..."
+  }
 }
 ```
 
@@ -41,15 +45,9 @@ resource "conductorone_integration_workday" "workday" {
 
 ### Optional
 
-- `refresh_token` (String, Sensitive) Refresh token
-- `tenant_name` (String) Tenant name
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
-- `workday_client_id` (String) Client ID
-- `workday_client_secret` (String, Sensitive) Client secret
-- `workday_report_url` (String) Report URL
-- `workday_report_user_password` (String, Sensitive) Report user password
-- `workday_report_username` (String) Report username
-- `workday_url` (String) Workday URL
+- `workday_group_api_client` (Attributes) API client (see [below for nested schema](#nestedatt--workday_group_api_client))
+- `workday_group_report` (Attributes) Custom report (see [below for nested schema](#nestedatt--workday_group_report))
 
 ### Read-Only
 
@@ -57,3 +55,24 @@ resource "conductorone_integration_workday" "workday" {
 - `deleted_at` (String) The time this integration was deleted.
 - `id` (String) The ID of this integration.
 - `updated_at` (String) The time this integration was last updated.
+
+<a id="nestedatt--workday_group_api_client"></a>
+### Nested Schema for `workday_group_api_client`
+
+Optional:
+
+- `refresh_token` (String, Sensitive) Refresh token
+- `tenant_name` (String) Tenant name
+- `workday_client_id` (String) Client ID
+- `workday_client_secret` (String, Sensitive) Client secret
+- `workday_url` (String) Workday URL
+
+
+<a id="nestedatt--workday_group_report"></a>
+### Nested Schema for `workday_group_report`
+
+Optional:
+
+- `workday_report_url` (String) Report URL
+- `workday_report_user_password` (String, Sensitive) Report user password
+- `workday_report_username` (String) Report username

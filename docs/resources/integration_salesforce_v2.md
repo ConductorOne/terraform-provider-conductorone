@@ -21,12 +21,19 @@ resource "conductorone_integration_salesforce_v2" "salesforce_v2" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  salesforce_instance_url        = "..."
-  salesforce_username_for_email  = false
-  salesforce_username            = "..."
-  salesforce_password            = "..."
-  salesforce_security_token      = "..."
-  salesforce_sync_connected_apps = false
+  salesforce_group_oauth = {
+    salesforce_instance_url        = "..."
+    salesforce_username_for_email  = false
+    salesforce_sync_connected_apps = false
+  }
+  salesforce_group_access_token = {
+    salesforce_username            = "..."
+    salesforce_password            = "..."
+    salesforce_security_token      = "..."
+    salesforce_instance_url        = "..."
+    salesforce_username_for_email  = false
+    salesforce_sync_connected_apps = false
+  }
 }
 ```
 
@@ -39,12 +46,8 @@ resource "conductorone_integration_salesforce_v2" "salesforce_v2" {
 
 ### Optional
 
-- `salesforce_instance_url` (String) Domain
-- `salesforce_password` (String, Sensitive) Your Salesforce password
-- `salesforce_security_token` (String, Sensitive) Your Salesforce security token (optional if trusted IP is configured)
-- `salesforce_sync_connected_apps` (Boolean) Sync connected apps
-- `salesforce_username` (String) Your Salesforce username
-- `salesforce_username_for_email` (Boolean) Use Salesforce usernames for email
+- `salesforce_group_access_token` (Attributes) Username and password (see [below for nested schema](#nestedatt--salesforce_group_access_token))
+- `salesforce_group_oauth` (Attributes) OAuth (see [below for nested schema](#nestedatt--salesforce_group_oauth))
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only
@@ -53,3 +56,25 @@ resource "conductorone_integration_salesforce_v2" "salesforce_v2" {
 - `deleted_at` (String) The time this integration was deleted.
 - `id` (String) The ID of this integration.
 - `updated_at` (String) The time this integration was last updated.
+
+<a id="nestedatt--salesforce_group_access_token"></a>
+### Nested Schema for `salesforce_group_access_token`
+
+Optional:
+
+- `salesforce_instance_url` (String) Domain
+- `salesforce_password` (String, Sensitive) Your Salesforce password
+- `salesforce_security_token` (String, Sensitive) Your Salesforce security token (optional if trusted IP is configured)
+- `salesforce_sync_connected_apps` (Boolean) Sync connected apps
+- `salesforce_username` (String) Your Salesforce username
+- `salesforce_username_for_email` (Boolean) Use Salesforce usernames for email
+
+
+<a id="nestedatt--salesforce_group_oauth"></a>
+### Nested Schema for `salesforce_group_oauth`
+
+Optional:
+
+- `salesforce_instance_url` (String) Domain
+- `salesforce_sync_connected_apps` (Boolean) Sync connected apps
+- `salesforce_username_for_email` (Boolean) Use Salesforce usernames for email

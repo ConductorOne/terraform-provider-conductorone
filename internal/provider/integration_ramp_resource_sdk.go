@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const rampCatalogID = "2BmBJNkLkChmzbk9JI1SYHa6SrX"
+const rampCatalogID = "301AOhxbzA3Ov3aOPtcEqBQ4zNf"
 
 func (r *IntegrationRampResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(rampCatalogID)
@@ -21,7 +21,7 @@ func (r *IntegrationRampResourceModel) ToCreateDelegatedSDKType() *shared.Connec
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("Ramp"),
+		DisplayName: sdk.String("Ramp V2"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -75,7 +75,7 @@ func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Ramp"),
+		DisplayName: sdk.String("Ramp V2"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(rampCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),

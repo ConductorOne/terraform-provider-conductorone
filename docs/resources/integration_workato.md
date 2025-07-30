@@ -21,9 +21,10 @@ resource "conductorone_integration_workato" "workato" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  workato_api_key     = "..."
-  workato_data_center = "..."
-  workato_env         = "..."
+  workato_api_key                   = "..."
+  workato_data_center               = "..."
+  workato_env                       = "..."
+  workato_disable_custom_roles_sync = false
 }
 ```
 
@@ -39,6 +40,7 @@ resource "conductorone_integration_workato" "workato" {
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 - `workato_api_key` (String, Sensitive) API key
 - `workato_data_center` (String) Data center
+- `workato_disable_custom_roles_sync` (Boolean) Disable custom roles sync
 - `workato_env` (String) Environment
 
 ### Read-Only

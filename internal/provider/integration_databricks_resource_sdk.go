@@ -3,13 +3,15 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 const databricksCatalogID = "2dYafA2XC9re3XRxtICxya99CC6"
@@ -89,58 +91,79 @@ func (r *IntegrationDatabricksResourceModel) ToUpdateSDKType() (*shared.Connecto
 func (r *IntegrationDatabricksResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
-	databricksAccountHostname := new(string)
-	if !r.DatabricksAccountHostname.IsUnknown() && !r.DatabricksAccountHostname.IsNull() {
-		*databricksAccountHostname = r.DatabricksAccountHostname.ValueString()
-		configValues["databricks_account_hostname"] = databricksAccountHostname
+	if !r.DatabricksGroupOauth.IsUnknown() && !r.DatabricksGroupOauth.IsNull() {
+		configValues["C1_selected_field_group_name"] = "databricks_group_oauth"
+		for k, v := range r.DatabricksGroupOauth.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
 
-	databricksHostname := new(string)
-	if !r.DatabricksHostname.IsUnknown() && !r.DatabricksHostname.IsNull() {
-		*databricksHostname = r.DatabricksHostname.ValueString()
-		configValues["databricks_hostname"] = databricksHostname
+	if !r.DatabricksGroupToken.IsUnknown() && !r.DatabricksGroupToken.IsNull() {
+		configValues["C1_selected_field_group_name"] = "databricks_group_token"
+		for k, v := range r.DatabricksGroupToken.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
 
-	databricksAccountId := new(string)
-	if !r.DatabricksAccountId.IsUnknown() && !r.DatabricksAccountId.IsNull() {
-		*databricksAccountId = r.DatabricksAccountId.ValueString()
-		configValues["databricks_account_id"] = databricksAccountId
-	}
-
-	databricksClientId := new(string)
-	if !r.DatabricksClientId.IsUnknown() && !r.DatabricksClientId.IsNull() {
-		*databricksClientId = r.DatabricksClientId.ValueString()
-		configValues["databricks_client_id"] = databricksClientId
-	}
-
-	databricksClientSecret := new(string)
-	if !r.DatabricksClientSecret.IsUnknown() && !r.DatabricksClientSecret.IsNull() {
-		*databricksClientSecret = r.DatabricksClientSecret.ValueString()
-		configValues["databricks_client_secret"] = databricksClientSecret
-	}
-
-	databricksAccessToken := new(string)
-	if !r.DatabricksAccessToken.IsUnknown() && !r.DatabricksAccessToken.IsNull() {
-		*databricksAccessToken = r.DatabricksAccessToken.ValueString()
-		configValues["databricks_access_token"] = databricksAccessToken
-	}
-
-	databricksWorkspace := new(string)
-	if !r.DatabricksWorkspace.IsUnknown() && !r.DatabricksWorkspace.IsNull() {
-		*databricksWorkspace = r.DatabricksWorkspace.ValueString()
-		configValues["databricks_workspace"] = databricksWorkspace
-	}
-
-	databricksUsername := new(string)
-	if !r.DatabricksUsername.IsUnknown() && !r.DatabricksUsername.IsNull() {
-		*databricksUsername = r.DatabricksUsername.ValueString()
-		configValues["databricks_username"] = databricksUsername
-	}
-
-	databricksPassword := new(string)
-	if !r.DatabricksPassword.IsUnknown() && !r.DatabricksPassword.IsNull() {
-		*databricksPassword = r.DatabricksPassword.ValueString()
-		configValues["databricks_password"] = databricksPassword
+	if !r.DatabricksGroupPassword.IsUnknown() && !r.DatabricksGroupPassword.IsNull() {
+		configValues["C1_selected_field_group_name"] = "databricks_group_password"
+		for k, v := range r.DatabricksGroupPassword.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
 
 	return configValues
@@ -208,31 +231,113 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
-					r.DatabricksAccountHostname = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "databricks_group_oauth" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "databricks_account_id"); ok {
+							attributeTypes["databricks_account_id"] = types.StringType
+							attributeValues["databricks_account_id"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "databricks_client_id"); ok {
+							attributeTypes["databricks_client_id"] = types.StringType
+							attributeValues["databricks_client_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["databricks_client_secret"] = types.StringType
+						if sv, ok := configValues["databricks_client_secret"].(string); ok {
+							attributeValues["databricks_client_secret"] = types.StringValue(sv)
+						} else {
+							attributeValues["databricks_client_secret"] = types.StringNull()
+						}
+
+						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+							attributeTypes["databricks_account_hostname"] = types.StringType
+							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "databricks_hostname"); ok {
+							attributeTypes["databricks_hostname"] = types.StringType
+							attributeValues["databricks_hostname"] = types.StringValue(val)
+						}
+						r.DatabricksGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
-				if val, ok := getStringValue(values, "databricks_hostname"); ok {
-					r.DatabricksHostname = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "databricks_group_token" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "databricks_account_id"); ok {
+							attributeTypes["databricks_account_id"] = types.StringType
+							attributeValues["databricks_account_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["databricks_access_token"] = types.StringType
+						if sv, ok := configValues["databricks_access_token"].(string); ok {
+							attributeValues["databricks_access_token"] = types.StringValue(sv)
+						} else {
+							attributeValues["databricks_access_token"] = types.StringNull()
+						}
+
+						if val, ok := getStringValue(values, "databricks_workspace"); ok {
+							attributeTypes["databricks_workspace"] = types.StringType
+							attributeValues["databricks_workspace"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+							attributeTypes["databricks_account_hostname"] = types.StringType
+							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "databricks_hostname"); ok {
+							attributeTypes["databricks_hostname"] = types.StringType
+							attributeValues["databricks_hostname"] = types.StringValue(val)
+						}
+						r.DatabricksGroupToken = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
-				if val, ok := getStringValue(values, "databricks_account_id"); ok {
-					r.DatabricksAccountId = types.StringValue(val)
-				}
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "databricks_group_password" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-				if val, ok := getStringValue(values, "databricks_client_id"); ok {
-					r.DatabricksClientId = types.StringValue(val)
-				}
+						if val, ok := getStringValue(values, "databricks_account_id"); ok {
+							attributeTypes["databricks_account_id"] = types.StringType
+							attributeValues["databricks_account_id"] = types.StringValue(val)
+						}
 
-				if val, ok := getStringValue(values, "databricks_workspace"); ok {
-					r.DatabricksWorkspace = types.StringValue(val)
-				}
+						if val, ok := getStringValue(values, "databricks_username"); ok {
+							attributeTypes["databricks_username"] = types.StringType
+							attributeValues["databricks_username"] = types.StringValue(val)
+						}
 
-				if val, ok := getStringValue(values, "databricks_username"); ok {
-					r.DatabricksUsername = types.StringValue(val)
+						attributeTypes["databricks_password"] = types.StringType
+						if sv, ok := configValues["databricks_password"].(string); ok {
+							attributeValues["databricks_password"] = types.StringValue(sv)
+						} else {
+							attributeValues["databricks_password"] = types.StringNull()
+						}
+
+						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+							attributeTypes["databricks_account_hostname"] = types.StringType
+							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "databricks_hostname"); ok {
+							attributeTypes["databricks_hostname"] = types.StringType
+							attributeValues["databricks_hostname"] = types.StringValue(val)
+						}
+						r.DatabricksGroupPassword = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
 			}
@@ -275,31 +380,113 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
-					r.DatabricksAccountHostname = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "databricks_group_oauth" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "databricks_account_id"); ok {
+							attributeTypes["databricks_account_id"] = types.StringType
+							attributeValues["databricks_account_id"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "databricks_client_id"); ok {
+							attributeTypes["databricks_client_id"] = types.StringType
+							attributeValues["databricks_client_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["databricks_client_secret"] = types.StringType
+						if sv, ok := configValues["databricks_client_secret"].(string); ok {
+							attributeValues["databricks_client_secret"] = types.StringValue(sv)
+						} else {
+							attributeValues["databricks_client_secret"] = types.StringNull()
+						}
+
+						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+							attributeTypes["databricks_account_hostname"] = types.StringType
+							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "databricks_hostname"); ok {
+							attributeTypes["databricks_hostname"] = types.StringType
+							attributeValues["databricks_hostname"] = types.StringValue(val)
+						}
+						r.DatabricksGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
-				if val, ok := getStringValue(values, "databricks_hostname"); ok {
-					r.DatabricksHostname = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "databricks_group_token" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "databricks_account_id"); ok {
+							attributeTypes["databricks_account_id"] = types.StringType
+							attributeValues["databricks_account_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["databricks_access_token"] = types.StringType
+						if sv, ok := configValues["databricks_access_token"].(string); ok {
+							attributeValues["databricks_access_token"] = types.StringValue(sv)
+						} else {
+							attributeValues["databricks_access_token"] = types.StringNull()
+						}
+
+						if val, ok := getStringValue(values, "databricks_workspace"); ok {
+							attributeTypes["databricks_workspace"] = types.StringType
+							attributeValues["databricks_workspace"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+							attributeTypes["databricks_account_hostname"] = types.StringType
+							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "databricks_hostname"); ok {
+							attributeTypes["databricks_hostname"] = types.StringType
+							attributeValues["databricks_hostname"] = types.StringValue(val)
+						}
+						r.DatabricksGroupToken = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
-				if val, ok := getStringValue(values, "databricks_account_id"); ok {
-					r.DatabricksAccountId = types.StringValue(val)
-				}
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "databricks_group_password" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-				if val, ok := getStringValue(values, "databricks_client_id"); ok {
-					r.DatabricksClientId = types.StringValue(val)
-				}
+						if val, ok := getStringValue(values, "databricks_account_id"); ok {
+							attributeTypes["databricks_account_id"] = types.StringType
+							attributeValues["databricks_account_id"] = types.StringValue(val)
+						}
 
-				if val, ok := getStringValue(values, "databricks_workspace"); ok {
-					r.DatabricksWorkspace = types.StringValue(val)
-				}
+						if val, ok := getStringValue(values, "databricks_username"); ok {
+							attributeTypes["databricks_username"] = types.StringType
+							attributeValues["databricks_username"] = types.StringValue(val)
+						}
 
-				if val, ok := getStringValue(values, "databricks_username"); ok {
-					r.DatabricksUsername = types.StringValue(val)
+						attributeTypes["databricks_password"] = types.StringType
+						if sv, ok := configValues["databricks_password"].(string); ok {
+							attributeValues["databricks_password"] = types.StringValue(sv)
+						} else {
+							attributeValues["databricks_password"] = types.StringNull()
+						}
+
+						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+							attributeTypes["databricks_account_hostname"] = types.StringType
+							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "databricks_hostname"); ok {
+							attributeTypes["databricks_hostname"] = types.StringType
+							attributeValues["databricks_hostname"] = types.StringValue(val)
+						}
+						r.DatabricksGroupPassword = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
 			}

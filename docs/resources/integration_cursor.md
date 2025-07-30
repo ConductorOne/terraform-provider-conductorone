@@ -21,7 +21,7 @@ resource "conductorone_integration_cursor" "cursor" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  api_key = "..."
+  cursor_api_key = "..."
 }
 ```
 
@@ -34,7 +34,7 @@ resource "conductorone_integration_cursor" "cursor" {
 
 ### Optional
 
-- `api_key` (String, Sensitive) API Key
+- `cursor_api_key` (String, Sensitive) API Key
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only
