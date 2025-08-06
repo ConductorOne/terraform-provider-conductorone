@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 0356d98a34b7424fce333f6cdf1693cc
+  docChecksum: eeb9583516cf7e8cc4e182a133e0ff3c
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.556.2
   generationVersion: 2.621.3
-  releaseVersion: 1.4.5
-  configChecksum: 44b472fa91012f414523e0566f76f992
+  releaseVersion: 1.4.6
+  configChecksum: f1b13c087cabc35de7d071cbb82d1d13
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -449,6 +449,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceremoveappentitlements.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicesetbundleautomation.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceupdate.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceupdateappentitlements.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogsearchservicesearchentitlements.go
   - internal/sdk/models/operations/c1apisettingsv1awsexternalidsettingsget.go
   - internal/sdk/models/operations/c1apisettingsv1orgdomainservicelist.go
@@ -883,6 +884,8 @@ generatedFiles:
   - internal/sdk/models/shared/requestcatalogmanagementserviceremoveaccessentitlementsresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementserviceremoveappentitlementsrequest.go
   - internal/sdk/models/shared/requestcatalogmanagementserviceremoveappentitlementsresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementserviceupdateappentitlementsrequest.go
+  - internal/sdk/models/shared/requestcatalogmanagementserviceupdateappentitlementsresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementserviceupdaterequest.go
   - internal/sdk/models/shared/requestcatalogsearchservicesearchentitlementsrequest.go
   - internal/sdk/models/shared/requestcatalogsearchservicesearchentitlementsresponse.go
@@ -2705,6 +2708,14 @@ examples:
       parameters:
         path:
           task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.UpdateAppEntitlements:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-update-app-entitlements:
+      parameters:
+        path:
+          catalog_id: "<id>"
       responses:
         "200":
           application/json: {}

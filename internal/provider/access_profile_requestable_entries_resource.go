@@ -5,9 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	speakeasy_listplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/listplanmodifier"
-	speakeasy_objectplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/objectplanmodifier"
-	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
@@ -15,10 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -55,47 +49,27 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 			"app_entitlements": schema.ListNestedAttribute{
 				Computed: true,
 				Optional: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-				},
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
 						speakeasy_objectvalidators.NotNull(),
 					},
-					PlanModifiers: []planmodifier.Object{
-						objectplanmodifier.RequiresReplaceIfConfigured(),
-						speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-					},
 					Attributes: map[string]schema.Attribute{
 						"app_id": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
-							PlanModifiers: []planmodifier.String{
-								stringplanmodifier.RequiresReplaceIfConfigured(),
-								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-							},
-							Description: `The appId field. Requires replacement if changed.`,
+							Computed:    true,
+							Optional:    true,
+							Description: `The appId field.`,
 						},
 						"id": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
-							PlanModifiers: []planmodifier.String{
-								stringplanmodifier.RequiresReplaceIfConfigured(),
-								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-							},
-							Description: `The id field. Requires replacement if changed.`,
+							Computed:    true,
+							Optional:    true,
+							Description: `The id field.`,
 						},
 					},
 				},
-				Description: `List of entitlements to add to the request catalog. Requires replacement if changed.`,
+				Description: `List of entitlements to add to the request catalog.`,
 			},
 			"catalog_id": schema.StringAttribute{
 				Required: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `Requires replacement if changed.`,
 			},
 			"create_requests": schema.BoolAttribute{
 				Optional: true,
@@ -299,7 +273,43 @@ func (r *AccessProfileRequestableEntriesResource) Update(ctx context.Context, re
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.RequestCatalogManagement.UpdateAppEntitlements(ctx, *request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.RequestCatalogManagementServiceUpdateAppEntitlementsResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceUpdateAppEntitlementsResponse(ctx, res.RequestCatalogManagementServiceUpdateAppEntitlementsResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
