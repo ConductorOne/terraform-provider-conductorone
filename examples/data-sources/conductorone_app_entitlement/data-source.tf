@@ -17,8 +17,15 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
   exclude_app_user_ids = [
     "..."
   ]
+  exclude_immutable = true
   exclude_resource_type_ids = [
     "..."
+  ]
+  excluded_entitlement_refs = [
+    {
+      app_id = "...my_app_id..."
+      id     = "...my_id..."
+    }
   ]
   include_deleted = true
   is_automated    = false
@@ -28,7 +35,12 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
   only_get_expiring = true
   page_size         = 5
   page_token        = "...my_page_token..."
-  query             = "...my_query..."
+  policy_refs = [
+    {
+      id = "...my_id..."
+    }
+  ]
+  query = "...my_query..."
   refs = [
     {
       app_id = "...my_app_id..."

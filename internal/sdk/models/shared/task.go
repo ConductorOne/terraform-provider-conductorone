@@ -36,6 +36,8 @@ const (
 	ActionsTaskActionTypeProcessNow                               Actions = "TASK_ACTION_TYPE_PROCESS_NOW"
 	ActionsTaskActionTypeApproveWithStepUp                        Actions = "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP"
 	ActionsTaskActionTypeSkipStep                                 Actions = "TASK_ACTION_TYPE_SKIP_STEP"
+	ActionsTaskActionTypeRollbackCancelled                        Actions = "TASK_ACTION_TYPE_ROLLBACK_CANCELLED"
+	ActionsTaskActionTypeUpdateRequestData                        Actions = "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA"
 )
 
 func (e Actions) ToPointer() *Actions {
@@ -94,6 +96,10 @@ func (e *Actions) UnmarshalJSON(data []byte) error {
 	case "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP":
 		fallthrough
 	case "TASK_ACTION_TYPE_SKIP_STEP":
+		fallthrough
+	case "TASK_ACTION_TYPE_ROLLBACK_CANCELLED":
+		fallthrough
+	case "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA":
 		*e = Actions(v)
 		return nil
 	default:
@@ -103,6 +109,9 @@ func (e *Actions) UnmarshalJSON(data []byte) error {
 
 // Annotations - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 type Annotations struct {
+}
+
+type Data struct {
 }
 
 // Origin - The origin field.
@@ -262,6 +271,7 @@ type Task struct {
 	CreatedAt    *time.Time `json:"createdAt,omitempty"`
 	// The ID of the user that is the creator of this task. This may not always match the userId field.
 	CreatedByUserID *string    `json:"createdByUserId,omitempty"`
+	Data            *Data      `json:"data,omitempty"`
 	DeletedAt       *time.Time `json:"deletedAt,omitempty"`
 	// The description of the task. This is also known as justification.
 	Description *string `json:"description,omitempty"`
@@ -271,6 +281,8 @@ type Task struct {
 	EmergencyAccess *bool `json:"emergencyAccess,omitempty"`
 	// An array of external references to the task. Historically that has been items like Jira task IDs. This is currently unused, but may come back in the future for integrations.
 	ExternalRefs []ExternalRef `json:"externalRefs,omitempty"`
+	// A form is a collection of fields to be filled out by a user
+	Form *Form `json:"form,omitempty"`
 	// The ID of the task.
 	ID *string `json:"id,omitempty"`
 	// The insightIds field.
@@ -358,6 +370,13 @@ func (o *Task) GetCreatedByUserID() *string {
 	return o.CreatedByUserID
 }
 
+func (o *Task) GetData() *Data {
+	if o == nil {
+		return nil
+	}
+	return o.Data
+}
+
 func (o *Task) GetDeletedAt() *time.Time {
 	if o == nil {
 		return nil
@@ -391,6 +410,13 @@ func (o *Task) GetExternalRefs() []ExternalRef {
 		return nil
 	}
 	return o.ExternalRefs
+}
+
+func (o *Task) GetForm() *Form {
+	if o == nil {
+		return nil
+	}
+	return o.Form
 }
 
 func (o *Task) GetID() *string {

@@ -8,6 +8,7 @@ import (
 
 type Approval struct {
 	AgentApproval             *AgentApproval            `tfsdk:"agent_approval"`
+	AllowDelegation           types.Bool                `tfsdk:"allow_delegation"`
 	AllowedReassignees        []types.String            `tfsdk:"allowed_reassignees"`
 	AllowReassignment         types.Bool                `tfsdk:"allow_reassignment"`
 	AppGroupApproval          *AppGroupApproval         `tfsdk:"app_group_approval"`

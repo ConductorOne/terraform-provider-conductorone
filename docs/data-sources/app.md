@@ -31,7 +31,12 @@ data "conductorone_app" "my_app" {
   only_directories = true
   page_size        = 6
   page_token       = "...my_page_token..."
-  query            = "...my_query..."
+  policy_refs = [
+    {
+      id = "...my_id..."
+    }
+  ]
+  query = "...my_query..."
 }
 ```
 
@@ -46,6 +51,7 @@ data "conductorone_app" "my_app" {
 - `only_directories` (Boolean) Only return apps which are directories
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 - `page_token` (String) The pageToken field.
+- `policy_refs` (Attributes List) Search for apps that use any of these policies. (see [below for nested schema](#nestedatt--policy_refs))
 - `query` (String) Query the apps with a fuzzy search on display name and description.
 
 ### Read-Only
@@ -73,3 +79,10 @@ data "conductorone_app" "my_app" {
 - `strict_access_entitlement_provisioning` (Boolean) The strictAccessEntitlementProvisioning field.
 - `updated_at` (String)
 - `user_count` (String) The number of users with grants to this app.
+
+<a id="nestedatt--policy_refs"></a>
+### Nested Schema for `policy_refs`
+
+Optional:
+
+- `id` (String) The id field.

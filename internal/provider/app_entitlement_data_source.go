@@ -50,7 +50,9 @@ type AppEntitlementDataSourceModel struct {
 	EmergencyGrantPolicyID         types.String                         `tfsdk:"emergency_grant_policy_id"`
 	ExcludeAppIds                  []types.String                       `tfsdk:"exclude_app_ids"`
 	ExcludeAppUserIds              []types.String                       `tfsdk:"exclude_app_user_ids"`
+	ExcludeImmutable               types.Bool                           `tfsdk:"exclude_immutable"`
 	ExcludeResourceTypeIds         []types.String                       `tfsdk:"exclude_resource_type_ids"`
+	ExcludedEntitlementRefs        []tfTypes.AppEntitlementRef          `tfsdk:"excluded_entitlement_refs"`
 	GrantCount                     types.String                         `tfsdk:"grant_count"`
 	GrantPolicyID                  types.String                         `tfsdk:"grant_policy_id"`
 	ID                             types.String                         `tfsdk:"id"`
@@ -65,6 +67,7 @@ type AppEntitlementDataSourceModel struct {
 	OverrideAccessRequestsDefaults types.Bool                           `tfsdk:"override_access_requests_defaults"`
 	PageSize                       types.Int32                          `tfsdk:"page_size"`
 	PageToken                      types.String                         `tfsdk:"page_token"`
+	PolicyRefs                     []tfTypes.PolicyRef                  `tfsdk:"policy_refs"`
 	ProvisionPolicy                *tfTypes.ProvisionPolicy             `tfsdk:"provision_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                         `tfsdk:"purpose"`
 	Query                          types.String                         `tfsdk:"query"`
@@ -333,10 +336,30 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				ElementType: types.StringType,
 				Description: `Exclude app entitlements from the results that these app users have granted.`,
 			},
+			"exclude_immutable": schema.BoolAttribute{
+				Optional:    true,
+				Description: `The excludeImmutable field.`,
+			},
 			"exclude_resource_type_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The excludeResourceTypeIds field.`,
+			},
+			"excluded_entitlement_refs": schema.ListNestedAttribute{
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"app_id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The appId field.`,
+						},
+						"id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The id field.`,
+						},
+					},
+				},
+				Description: `The excludedEntitlementRefs field.`,
 			},
 			"grant_count": schema.StringAttribute{
 				Computed:    true,
@@ -394,6 +417,18 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"page_token": schema.StringAttribute{
 				Optional:    true,
 				Description: `The pageToken field.`,
+			},
+			"policy_refs": schema.ListNestedAttribute{
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The id field.`,
+						},
+					},
+				},
+				Description: `Search for app entitlements that use any of these policies.`,
 			},
 			"provision_policy": schema.SingleNestedAttribute{
 				Computed: true,

@@ -64,7 +64,9 @@ type Policy struct {
 	PolicyType *PolicyType `json:"policyType,omitempty"`
 	// An array of actions (ordered) to take place after a policy completes processing.
 	PostActions []PolicyPostActions `json:"postActions,omitempty"`
-	// A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation refers to the individual delegates users set on their account.
+	// Deprecated. Use setting in policy step instead
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
 	// The rules field.
 	Rules []Rule `json:"rules,omitempty"`
@@ -180,7 +182,9 @@ type PolicyInput struct {
 	PolicyType *PolicyType `json:"policyType,omitempty"`
 	// An array of actions (ordered) to take place after a policy completes processing.
 	PostActions []PolicyPostActions `json:"postActions,omitempty"`
-	// A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation refers to the individual delegates users set on their account.
+	// Deprecated. Use setting in policy step instead
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
 	// The rules field.
 	Rules []Rule `json:"rules,omitempty"`

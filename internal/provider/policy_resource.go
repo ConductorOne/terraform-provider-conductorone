@@ -119,6 +119,19 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
+													"agent_failure_action": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The action to take if the agent fails to approve, deny, or reassign the task. must be one of ["APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]`,
+														Validators: []validator.String{
+															stringvalidator.OneOf(
+																"APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED",
+																"APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS",
+																"APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS",
+																"APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP",
+															),
+														},
+													},
 													"agent_mode": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
@@ -148,8 +161,19 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														ElementType: types.StringType,
 														Description: `The allow list of policy IDs to re-route the task to.`,
 													},
+													"reassign_to_user_ids": schema.ListAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: types.StringType,
+														Description: `The users to reassign the task to if the agent failure action is reassign to users.`,
+													},
 												},
 												Description: `The agent to assign the task to.`,
+											},
+											"allow_delegation": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Whether ticket delegation is allowed for this step.`,
 											},
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
@@ -575,6 +599,14 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											}...),
 										},
 									},
+									"form": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The Form message. Parsed as JSON.`,
+										Validators: []validator.String{
+											validators.IsValidJSON(),
+										},
+									},
 									"provision": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
@@ -969,9 +1001,10 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Description: `Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately.`,
 			},
 			"reassign_tasks_to_delegates": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Allows reassigning tasks to delegates.`,
+				Computed:           true,
+				Optional:           true,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `Deprecated. Use setting in policy step instead`,
 			},
 			"rules": schema.ListNestedAttribute{
 				Computed: true,

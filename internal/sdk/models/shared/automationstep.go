@@ -18,6 +18,7 @@ package shared
 //   - connectorAction
 //   - connectorCreateAccount
 //   - grantEntitlements
+//   - sendSlackMessage
 type AutomationStep struct {
 	// The ConnectorAction message.
 	//
@@ -54,6 +55,13 @@ type AutomationStep struct {
 	RunAutomation *RunAutomation `json:"runAutomation,omitempty"`
 	// The SendEmail message.
 	SendEmail *SendEmail `json:"sendEmail,omitempty"`
+	// The SendSlackMessage message.
+	//
+	// This message contains a oneof named channel. Only a single field of the following list may be set at a time:
+	//   - channelId
+	//   - channelIdCel
+	//
+	SendSlackMessage *SendSlackMessage `json:"sendSlackMessage,omitempty"`
 	// The skipIfTrueCel field.
 	SkipIfTrueCel *string `json:"skipIfTrueCel,omitempty"`
 	// The stepDisplayName field.
@@ -146,6 +154,13 @@ func (o *AutomationStep) GetSendEmail() *SendEmail {
 		return nil
 	}
 	return o.SendEmail
+}
+
+func (o *AutomationStep) GetSendSlackMessage() *SendSlackMessage {
+	if o == nil {
+		return nil
+	}
+	return o.SendSlackMessage
 }
 
 func (o *AutomationStep) GetSkipIfTrueCel() *string {

@@ -91,7 +91,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			},
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
-				Description: `The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
+				Description: `The nextPageToken field.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,
@@ -125,6 +125,10 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											"agent_approval": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
+													"agent_failure_action": schema.StringAttribute{
+														Computed:    true,
+														Description: `The action to take if the agent fails to approve, deny, or reassign the task.`,
+													},
 													"agent_mode": schema.StringAttribute{
 														Computed:    true,
 														Description: `The mode of the agent, full control, change policy only, or comment only.`,
@@ -142,8 +146,17 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 														ElementType: types.StringType,
 														Description: `The allow list of policy IDs to re-route the task to.`,
 													},
+													"reassign_to_user_ids": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `The users to reassign the task to if the agent failure action is reassign to users.`,
+													},
 												},
 												Description: `The agent to assign the task to.`,
+											},
+											"allow_delegation": schema.BoolAttribute{
+												Computed:    true,
+												Description: `Whether ticket delegation is allowed for this step.`,
 											},
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
@@ -405,6 +418,10 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											`  - webhook` + "\n" +
 											`  - resourceOwners` + "\n" +
 											`  - agent`,
+									},
+									"form": schema.StringAttribute{
+										Computed:    true,
+										Description: `The Form message. Parsed as JSON.`,
 									},
 									"provision": schema.SingleNestedAttribute{
 										Computed: true,
@@ -670,8 +687,9 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				Description: `Query the policies with a fuzzy search on display name and description.`,
 			},
 			"reassign_tasks_to_delegates": schema.BoolAttribute{
-				Computed:    true,
-				Description: `A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation refers to the individual delegates users set on their account.`,
+				Computed:           true,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `Deprecated. Use setting in policy step instead`,
 			},
 			"refs": schema.ListNestedAttribute{
 				Optional: true,
@@ -772,11 +790,11 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ListPolicyResponse != nil && res.ListPolicyResponse.List != nil && len(res.ListPolicyResponse.List) > 0) {
+	if !(res.SearchPoliciesResponse != nil && res.SearchPoliciesResponse.List != nil && len(res.SearchPoliciesResponse.List) > 0) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, &res.ListPolicyResponse.List[0])...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, &res.SearchPoliciesResponse.List[0])...)
 
 	if resp.Diagnostics.HasError() {
 		return

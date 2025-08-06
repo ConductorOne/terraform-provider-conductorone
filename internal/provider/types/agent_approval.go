@@ -7,8 +7,10 @@ import (
 )
 
 type AgentApproval struct {
-	AgentMode    types.String   `tfsdk:"agent_mode"`
-	AgentUserID  types.String   `tfsdk:"agent_user_id"`
-	Instructions types.String   `tfsdk:"instructions"`
-	PolicyIds    []types.String `tfsdk:"policy_ids"`
+	AgentFailureAction types.String   `tfsdk:"agent_failure_action"`
+	AgentMode          types.String   `tfsdk:"agent_mode"`
+	AgentUserID        types.String   `tfsdk:"agent_user_id"`
+	Instructions       types.String   `tfsdk:"instructions"`
+	PolicyIds          []types.String `tfsdk:"policy_ids"`
+	ReassignToUserIds  []types.String `tfsdk:"reassign_to_user_ids"`
 }

@@ -15,7 +15,7 @@ type C1APIPolicyV1PolicySearchSearchResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successful response
-	ListPolicyResponse *shared.ListPolicyResponse
+	SearchPoliciesResponse *shared.SearchPoliciesResponse
 }
 
 func (o *C1APIPolicyV1PolicySearchSearchResponse) GetContentType() string {
@@ -39,9 +39,9 @@ func (o *C1APIPolicyV1PolicySearchSearchResponse) GetRawResponse() *http.Respons
 	return o.RawResponse
 }
 
-func (o *C1APIPolicyV1PolicySearchSearchResponse) GetListPolicyResponse() *shared.ListPolicyResponse {
+func (o *C1APIPolicyV1PolicySearchSearchResponse) GetSearchPoliciesResponse() *shared.SearchPoliciesResponse {
 	if o == nil {
 		return nil
 	}
-	return o.ListPolicyResponse
+	return o.SearchPoliciesResponse
 }

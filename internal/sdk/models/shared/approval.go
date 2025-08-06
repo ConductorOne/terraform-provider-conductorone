@@ -18,6 +18,8 @@ package shared
 type Approval struct {
 	// The agent to assign the task to.
 	AgentApproval *AgentApproval `json:"agent,omitempty"`
+	// Whether ticket delegation is allowed for this step.
+	AllowDelegation *bool `json:"allowDelegation,omitempty"`
 	// Configuration to allow reassignment by reviewers during this step.
 	AllowReassignment *bool `json:"allowReassignment,omitempty"`
 	// List of users for whom this step can be reassigned.
@@ -67,6 +69,13 @@ func (o *Approval) GetAgentApproval() *AgentApproval {
 		return nil
 	}
 	return o.AgentApproval
+}
+
+func (o *Approval) GetAllowDelegation() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AllowDelegation
 }
 
 func (o *Approval) GetAllowReassignment() *bool {

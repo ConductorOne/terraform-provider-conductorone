@@ -60,8 +60,12 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	ExcludeAppIds []string `json:"excludeAppIds,omitempty"`
 	// Exclude app entitlements from the results that these app users have granted.
 	ExcludeAppUserIds []string `json:"excludeAppUserIds,omitempty"`
+	// The excludeImmutable field.
+	ExcludeImmutable *bool `json:"excludeImmutable,omitempty"`
 	// The excludeResourceTypeIds field.
 	ExcludeResourceTypeIds []string `json:"excludeResourceTypeIds,omitempty"`
+	// The excludedEntitlementRefs field.
+	ExcludedEntitlementRefs []AppEntitlementRef `json:"excludedEntitlementRefs,omitempty"`
 	// Include deleted app entitlements, this includes app entitlements that have a deleted parent object (app, app resource, app resource type)
 	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
 	// The isAutomated field.
@@ -74,6 +78,8 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
+	// Search for app entitlements that use any of these policies.
+	PolicyRefs []PolicyRef `json:"policyRefs,omitempty"`
 	// Query the app entitlements with a fuzzy search on display name and description.
 	Query *string `json:"query,omitempty"`
 	// The refs field.
@@ -146,11 +152,25 @@ func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeAppUserIds() []stri
 	return o.ExcludeAppUserIds
 }
 
+func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeImmutable() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludeImmutable
+}
+
 func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeResourceTypeIds() []string {
 	if o == nil {
 		return nil
 	}
 	return o.ExcludeResourceTypeIds
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetExcludedEntitlementRefs() []AppEntitlementRef {
+	if o == nil {
+		return nil
+	}
+	return o.ExcludedEntitlementRefs
 }
 
 func (o *AppEntitlementSearchServiceSearchRequest) GetIncludeDeleted() *bool {
@@ -193,6 +213,13 @@ func (o *AppEntitlementSearchServiceSearchRequest) GetPageToken() *string {
 		return nil
 	}
 	return o.PageToken
+}
+
+func (o *AppEntitlementSearchServiceSearchRequest) GetPolicyRefs() []PolicyRef {
+	if o == nil {
+		return nil
+	}
+	return o.PolicyRefs
 }
 
 func (o *AppEntitlementSearchServiceSearchRequest) GetQuery() *string {

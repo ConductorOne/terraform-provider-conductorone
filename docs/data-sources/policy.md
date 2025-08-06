@@ -59,11 +59,11 @@ data "conductorone_policy" "my_policy" {
 - `deleted_at` (String)
 - `description` (String) The description of the Policy.
 - `id` (String) The ID of the Policy.
-- `next_page_token` (String) The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
+- `next_page_token` (String) The nextPageToken field.
 - `policy_steps` (Attributes Map) A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set. (see [below for nested schema](#nestedatt--policy_steps))
 - `policy_type` (String) Indicates the type of this policy. Can also be used to get the value from policySteps.
 - `post_actions` (Attributes List) An array of actions (ordered) to take place after a policy completes processing. (see [below for nested schema](#nestedatt--post_actions))
-- `reassign_tasks_to_delegates` (Boolean) A policy configuration option that allows for reassinging tasks to delgated users. This level of delegation refers to the individual delegates users set on their account.
+- `reassign_tasks_to_delegates` (Boolean, Deprecated) Deprecated. Use setting in policy step instead
 - `rules` (Attributes List) The rules field. (see [below for nested schema](#nestedatt--rules))
 - `system_builtin` (Boolean) Whether this policy is a builtin system policy. Builtin system policies cannot be edited.
 - `updated_at` (String)
@@ -102,6 +102,7 @@ This message contains a oneof named typ. Only a single field of the following li
   - webhook
   - resourceOwners
   - agent (see [below for nested schema](#nestedatt--policy_steps--steps--approval))
+- `form` (String) The Form message. Parsed as JSON.
 - `provision` (Attributes) The provision step references a provision policy for this step. (see [below for nested schema](#nestedatt--policy_steps--steps--provision))
 - `reject` (Attributes) This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--policy_steps--steps--reject))
 - `wait` (Attributes) Define a Wait step for a policy to wait on a condition to be met.
@@ -123,6 +124,7 @@ Read-Only:
 Read-Only:
 
 - `agent_approval` (Attributes) The agent to assign the task to. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--agent_approval))
+- `allow_delegation` (Boolean) Whether ticket delegation is allowed for this step.
 - `allow_reassignment` (Boolean) Configuration to allow reassignment by reviewers during this step.
 - `allowed_reassignees` (List of String) List of users for whom this step can be reassigned.
 - `app_group_approval` (Attributes) The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_group_approval))
@@ -152,10 +154,12 @@ This message contains a oneof named escalation_policy. Only a single field of th
 
 Read-Only:
 
+- `agent_failure_action` (String) The action to take if the agent fails to approve, deny, or reassign the task.
 - `agent_mode` (String) The mode of the agent, full control, change policy only, or comment only.
 - `agent_user_id` (String) The agent user ID to assign the task to.
 - `instructions` (String) Instructions for the agent.
 - `policy_ids` (List of String) The allow list of policy IDs to re-route the task to.
+- `reassign_to_user_ids` (List of String) The users to reassign the task to if the agent failure action is reassign to users.
 
 
 <a id="nestedatt--policy_steps--steps--approval--app_group_approval"></a>

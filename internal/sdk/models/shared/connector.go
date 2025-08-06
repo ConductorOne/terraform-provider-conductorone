@@ -51,6 +51,8 @@ type Connector struct {
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
 	// The description of the connector.
 	Description *string `json:"description,omitempty"`
+	// The disableCheckBadSync field.
+	DisableCheckBadSync *bool `json:"disableCheckBadSync,omitempty"`
 	// The display name of the connector.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The downloadUrl for a spreadsheet if the connector was created from uploading a file.
@@ -126,6 +128,13 @@ func (o *Connector) GetDescription() *string {
 		return nil
 	}
 	return o.Description
+}
+
+func (o *Connector) GetDisableCheckBadSync() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DisableCheckBadSync
 }
 
 func (o *Connector) GetDisplayName() *string {
@@ -222,6 +231,8 @@ type ConnectorInput struct {
 	Config *Config `json:"config,omitempty"`
 	// The description of the connector.
 	Description *string `json:"description,omitempty"`
+	// The disableCheckBadSync field.
+	DisableCheckBadSync *bool `json:"disableCheckBadSync,omitempty"`
 	// The display name of the connector.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The id of the connector.
@@ -268,6 +279,13 @@ func (o *ConnectorInput) GetDescription() *string {
 		return nil
 	}
 	return o.Description
+}
+
+func (o *ConnectorInput) GetDisableCheckBadSync() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DisableCheckBadSync
 }
 
 func (o *ConnectorInput) GetDisplayName() *string {

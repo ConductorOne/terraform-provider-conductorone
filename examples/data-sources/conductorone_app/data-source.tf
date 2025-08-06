@@ -9,5 +9,10 @@ data "conductorone_app" "my_app" {
   only_directories = true
   page_size        = 6
   page_token       = "...my_page_token..."
-  query            = "...my_query..."
+  policy_refs = [
+    {
+      id = "...my_id..."
+    }
+  ]
+  query = "...my_query..."
 }

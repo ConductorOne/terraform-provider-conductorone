@@ -548,3 +548,6 @@ actions:
   - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse"]["properties"]["refs"]
     update:
       x-speakeasy-name-override: app_entitlements
+  - target: $["components"]["schemas"]["c1.api.policy.v1.Form"]
+    update:
+      x-speakeasy-type-override: any

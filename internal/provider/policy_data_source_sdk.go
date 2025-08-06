@@ -118,6 +118,11 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							steps.Approval.AgentApproval = nil
 						} else {
 							steps.Approval.AgentApproval = &tfTypes.AgentApproval{}
+							if stepsItem.Approval.AgentApproval.AgentFailureAction != nil {
+								steps.Approval.AgentApproval.AgentFailureAction = types.StringValue(string(*stepsItem.Approval.AgentApproval.AgentFailureAction))
+							} else {
+								steps.Approval.AgentApproval.AgentFailureAction = types.StringNull()
+							}
 							if stepsItem.Approval.AgentApproval.AgentMode != nil {
 								steps.Approval.AgentApproval.AgentMode = types.StringValue(string(*stepsItem.Approval.AgentApproval.AgentMode))
 							} else {
@@ -131,7 +136,14 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 									steps.Approval.AgentApproval.PolicyIds = append(steps.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 								}
 							}
+							if stepsItem.Approval.AgentApproval.ReassignToUserIds != nil {
+								steps.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.ReassignToUserIds))
+								for _, v := range stepsItem.Approval.AgentApproval.ReassignToUserIds {
+									steps.Approval.AgentApproval.ReassignToUserIds = append(steps.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
+								}
+							}
 						}
+						steps.Approval.AllowDelegation = types.BoolPointerValue(stepsItem.Approval.AllowDelegation)
 						if stepsItem.Approval.AllowedReassignees != nil {
 							steps.Approval.AllowedReassignees = make([]types.String, 0, len(stepsItem.Approval.AllowedReassignees))
 							for _, v := range stepsItem.Approval.AllowedReassignees {
@@ -297,6 +309,12 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							steps.Approval.WebhookApproval.WebhookID = types.StringPointerValue(stepsItem.Approval.WebhookApproval.WebhookID)
 						}
 					}
+					if stepsItem.Form == nil {
+						steps.Form = types.StringNull()
+					} else {
+						formResult, _ := json.Marshal(stepsItem.Form)
+						steps.Form = types.StringValue(string(formResult))
+					}
 					if stepsItem.Provision == nil {
 						steps.Provision = nil
 					} else {
@@ -433,6 +451,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 					} else {
 						policyStepsResult.Steps[stepsCount].Accept = steps.Accept
 						policyStepsResult.Steps[stepsCount].Approval = steps.Approval
+						policyStepsResult.Steps[stepsCount].Form = steps.Form
 						policyStepsResult.Steps[stepsCount].Provision = steps.Provision
 						policyStepsResult.Steps[stepsCount].Reject = steps.Reject
 						policyStepsResult.Steps[stepsCount].Wait = steps.Wait

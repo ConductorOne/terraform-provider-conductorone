@@ -10,13 +10,18 @@ resource "conductorone_policy" "my_policy" {
           }
           approval = {
             agent_approval = {
-              agent_mode    = "APPROVAL_AGENT_MODE_FULL_CONTROL"
-              agent_user_id = "...my_agent_user_id..."
-              instructions  = "...my_instructions..."
+              agent_failure_action = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS"
+              agent_mode           = "APPROVAL_AGENT_MODE_FULL_CONTROL"
+              agent_user_id        = "...my_agent_user_id..."
+              instructions         = "...my_instructions..."
               policy_ids = [
                 "..."
               ]
+              reassign_to_user_ids = [
+                "..."
+              ]
             }
+            allow_delegation   = true
             allow_reassignment = false
             allowed_reassignees = [
               "..."
@@ -97,6 +102,7 @@ resource "conductorone_policy" "my_policy" {
               webhook_id = "...my_webhook_id..."
             }
           }
+          form = "{ \"see\": \"documentation\" }"
           provision = {
             assigned = true
             provision_policy = {
