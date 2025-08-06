@@ -10,6 +10,7 @@ package shared
 //   - accept
 //   - reject
 //   - wait
+//   - form
 type PolicyStepInput struct {
 	// This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
 	Accept *Accept `json:"accept,omitempty"`
@@ -28,6 +29,8 @@ type PolicyStepInput struct {
 	//   - agent
 	//
 	Approval *ApprovalInput `json:"approval,omitempty"`
+	// The Form message.
+	Form any `json:"form,omitempty"`
 	// The provision step references a provision policy for this step.
 	Provision *Provision `json:"provision,omitempty"`
 	// This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
@@ -52,6 +55,13 @@ func (o *PolicyStepInput) GetApproval() *ApprovalInput {
 		return nil
 	}
 	return o.Approval
+}
+
+func (o *PolicyStepInput) GetForm() any {
+	if o == nil {
+		return nil
+	}
+	return o.Form
 }
 
 func (o *PolicyStepInput) GetProvision() *Provision {

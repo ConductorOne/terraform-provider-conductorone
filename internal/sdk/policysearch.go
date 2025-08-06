@@ -142,12 +142,12 @@ func (s *PolicySearch) Search(ctx context.Context, request *shared.SearchPolicie
 				return nil, err
 			}
 
-			var out shared.ListPolicyResponse
+			var out shared.SearchPoliciesResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.ListPolicyResponse = &out
+			res.SearchPoliciesResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

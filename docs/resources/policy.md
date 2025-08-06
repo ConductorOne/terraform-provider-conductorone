@@ -27,13 +27,18 @@ resource "conductorone_policy" "my_policy" {
           }
           approval = {
             agent_approval = {
-              agent_mode    = "APPROVAL_AGENT_MODE_FULL_CONTROL"
-              agent_user_id = "...my_agent_user_id..."
-              instructions  = "...my_instructions..."
+              agent_failure_action = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS"
+              agent_mode           = "APPROVAL_AGENT_MODE_FULL_CONTROL"
+              agent_user_id        = "...my_agent_user_id..."
+              instructions         = "...my_instructions..."
               policy_ids = [
                 "..."
               ]
+              reassign_to_user_ids = [
+                "..."
+              ]
             }
+            allow_delegation   = true
             allow_reassignment = false
             allowed_reassignees = [
               "..."
@@ -114,6 +119,7 @@ resource "conductorone_policy" "my_policy" {
               webhook_id = "...my_webhook_id..."
             }
           }
+          form = "{ \"see\": \"documentation\" }"
           provision = {
             assigned = true
             provision_policy = {
@@ -216,7 +222,7 @@ resource "conductorone_policy" "my_policy" {
 - `policy_steps` (Attributes Map) The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples. (see [below for nested schema](#nestedatt--policy_steps))
 - `policy_type` (String) The enum of the policy type. must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]
 - `post_actions` (Attributes List) Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately. (see [below for nested schema](#nestedatt--post_actions))
-- `reassign_tasks_to_delegates` (Boolean) Allows reassigning tasks to delegates.
+- `reassign_tasks_to_delegates` (Boolean, Deprecated) Deprecated. Use setting in policy step instead
 - `rules` (Attributes List) The rules field. (see [below for nested schema](#nestedatt--rules))
 
 ### Read-Only
@@ -252,6 +258,7 @@ This message contains a oneof named typ. Only a single field of the following li
   - webhook
   - resourceOwners
   - agent (see [below for nested schema](#nestedatt--policy_steps--steps--approval))
+- `form` (String) The Form message. Parsed as JSON.
 - `provision` (Attributes) The provision step references a provision policy for this step. (see [below for nested schema](#nestedatt--policy_steps--steps--provision))
 - `reject` (Attributes) This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--policy_steps--steps--reject))
 - `wait` (Attributes) Define a Wait step for a policy to wait on a condition to be met.
@@ -273,6 +280,7 @@ Optional:
 Optional:
 
 - `agent_approval` (Attributes) The agent to assign the task to. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--agent_approval))
+- `allow_delegation` (Boolean) Whether ticket delegation is allowed for this step.
 - `allow_reassignment` (Boolean) Configuration to allow reassignment by reviewers during this step.
 - `allowed_reassignees` (List of String) List of users for whom this step can be reassigned.
 - `app_group_approval` (Attributes) The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_group_approval))
@@ -305,10 +313,12 @@ Read-Only:
 
 Optional:
 
+- `agent_failure_action` (String) The action to take if the agent fails to approve, deny, or reassign the task. must be one of ["APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]
 - `agent_mode` (String) The mode of the agent, full control, change policy only, or comment only. must be one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]
 - `agent_user_id` (String) The agent user ID to assign the task to.
 - `instructions` (String) Instructions for the agent.
 - `policy_ids` (List of String) The allow list of policy IDs to re-route the task to.
+- `reassign_to_user_ids` (List of String) The users to reassign the task to if the agent failure action is reassign to users.
 
 
 <a id="nestedatt--policy_steps--steps--approval--app_group_approval"></a>

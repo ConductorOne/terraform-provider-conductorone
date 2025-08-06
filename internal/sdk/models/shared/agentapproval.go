@@ -7,6 +7,39 @@ import (
 	"fmt"
 )
 
+// AgentFailureAction - The action to take if the agent fails to approve, deny, or reassign the task.
+type AgentFailureAction string
+
+const (
+	AgentFailureActionApprovalAgentFailureActionUnspecified           AgentFailureAction = "APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED"
+	AgentFailureActionApprovalAgentFailureActionReassignToUsers       AgentFailureAction = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS"
+	AgentFailureActionApprovalAgentFailureActionReassignToSuperAdmins AgentFailureAction = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS"
+	AgentFailureActionApprovalAgentFailureActionSkipPolicyStep        AgentFailureAction = "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"
+)
+
+func (e AgentFailureAction) ToPointer() *AgentFailureAction {
+	return &e
+}
+func (e *AgentFailureAction) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED":
+		fallthrough
+	case "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS":
+		fallthrough
+	case "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS":
+		fallthrough
+	case "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP":
+		*e = AgentFailureAction(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AgentFailureAction: %v", v)
+	}
+}
+
 // AgentMode - The mode of the agent, full control, change policy only, or comment only.
 type AgentMode string
 
@@ -42,6 +75,8 @@ func (e *AgentMode) UnmarshalJSON(data []byte) error {
 
 // AgentApproval - The agent to assign the task to.
 type AgentApproval struct {
+	// The action to take if the agent fails to approve, deny, or reassign the task.
+	AgentFailureAction *AgentFailureAction `json:"agentFailureAction,omitempty"`
 	// The mode of the agent, full control, change policy only, or comment only.
 	AgentMode *AgentMode `json:"agentMode,omitempty"`
 	// The agent user ID to assign the task to.
@@ -50,6 +85,15 @@ type AgentApproval struct {
 	Instructions *string `json:"instructions,omitempty"`
 	// The allow list of policy IDs to re-route the task to.
 	PolicyIds []string `json:"policyIds,omitempty"`
+	// The users to reassign the task to if the agent failure action is reassign to users.
+	ReassignToUserIds []string `json:"reassignToUserIds,omitempty"`
+}
+
+func (o *AgentApproval) GetAgentFailureAction() *AgentFailureAction {
+	if o == nil {
+		return nil
+	}
+	return o.AgentFailureAction
 }
 
 func (o *AgentApproval) GetAgentMode() *AgentMode {
@@ -78,4 +122,11 @@ func (o *AgentApproval) GetPolicyIds() []string {
 		return nil
 	}
 	return o.PolicyIds
+}
+
+func (o *AgentApproval) GetReassignToUserIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ReassignToUserIds
 }

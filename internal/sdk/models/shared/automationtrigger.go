@@ -11,6 +11,8 @@ package shared
 //   - appUserUpdated
 //   - usageBasedRevocation
 //   - userCreated
+//   - grantFound
+//   - grantDeleted
 type AutomationTrigger struct {
 	// The AppUserCreatedTrigger message.
 	//
@@ -26,6 +28,10 @@ type AutomationTrigger struct {
 	//   - appIdCel
 	//
 	AppUserUpdatedTrigger *AppUserUpdatedTrigger `json:"appUserUpdated,omitempty"`
+	// The GrantDeletedTrigger message.
+	GrantDeletedTrigger *GrantDeletedTrigger `json:"grantDeleted,omitempty"`
+	// The GrantFoundTrigger message.
+	GrantFoundTrigger *GrantFoundTrigger `json:"grantFound,omitempty"`
 	// The ManualAutomationTrigger message.
 	ManualAutomationTrigger *ManualAutomationTrigger `json:"manual,omitempty"`
 	// The UsageBasedRevocationTrigger message.
@@ -53,6 +59,20 @@ func (o *AutomationTrigger) GetAppUserUpdatedTrigger() *AppUserUpdatedTrigger {
 		return nil
 	}
 	return o.AppUserUpdatedTrigger
+}
+
+func (o *AutomationTrigger) GetGrantDeletedTrigger() *GrantDeletedTrigger {
+	if o == nil {
+		return nil
+	}
+	return o.GrantDeletedTrigger
+}
+
+func (o *AutomationTrigger) GetGrantFoundTrigger() *GrantFoundTrigger {
+	if o == nil {
+		return nil
+	}
+	return o.GrantFoundTrigger
 }
 
 func (o *AutomationTrigger) GetManualAutomationTrigger() *ManualAutomationTrigger {

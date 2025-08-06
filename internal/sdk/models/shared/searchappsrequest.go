@@ -16,6 +16,8 @@ type SearchAppsRequest struct {
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
+	// Search for apps that use any of these policies.
+	PolicyRefs []PolicyRef `json:"policyRefs,omitempty"`
 	// Query the apps with a fuzzy search on display name and description.
 	Query *string `json:"query,omitempty"`
 }
@@ -60,6 +62,13 @@ func (o *SearchAppsRequest) GetPageToken() *string {
 		return nil
 	}
 	return o.PageToken
+}
+
+func (o *SearchAppsRequest) GetPolicyRefs() []PolicyRef {
+	if o == nil {
+		return nil
+	}
+	return o.PolicyRefs
 }
 
 func (o *SearchAppsRequest) GetQuery() *string {

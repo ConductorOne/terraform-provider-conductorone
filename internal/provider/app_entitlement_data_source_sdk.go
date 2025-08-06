@@ -68,11 +68,39 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 			excludeAppUserIds = append(excludeAppUserIds, excludeAppUserIdsItem.ValueString())
 		}
 	}
+	excludeImmutable := new(bool)
+	if !r.ExcludeImmutable.IsUnknown() && !r.ExcludeImmutable.IsNull() {
+		*excludeImmutable = r.ExcludeImmutable.ValueBool()
+	} else {
+		excludeImmutable = nil
+	}
 	var excludeResourceTypeIds []string
 	if r.ExcludeResourceTypeIds != nil {
 		excludeResourceTypeIds = make([]string, 0, len(r.ExcludeResourceTypeIds))
 		for _, excludeResourceTypeIdsItem := range r.ExcludeResourceTypeIds {
 			excludeResourceTypeIds = append(excludeResourceTypeIds, excludeResourceTypeIdsItem.ValueString())
+		}
+	}
+	var excludedEntitlementRefs []shared.AppEntitlementRef
+	if r.ExcludedEntitlementRefs != nil {
+		excludedEntitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.ExcludedEntitlementRefs))
+		for _, excludedEntitlementRefsItem := range r.ExcludedEntitlementRefs {
+			appID := new(string)
+			if !excludedEntitlementRefsItem.AppID.IsUnknown() && !excludedEntitlementRefsItem.AppID.IsNull() {
+				*appID = excludedEntitlementRefsItem.AppID.ValueString()
+			} else {
+				appID = nil
+			}
+			id := new(string)
+			if !excludedEntitlementRefsItem.ID.IsUnknown() && !excludedEntitlementRefsItem.ID.IsNull() {
+				*id = excludedEntitlementRefsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			excludedEntitlementRefs = append(excludedEntitlementRefs, shared.AppEntitlementRef{
+				AppID: appID,
+				ID:    id,
+			})
 		}
 	}
 	includeDeleted := new(bool)
@@ -112,6 +140,21 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 	} else {
 		pageToken = nil
 	}
+	var policyRefs []shared.PolicyRef
+	if r.PolicyRefs != nil {
+		policyRefs = make([]shared.PolicyRef, 0, len(r.PolicyRefs))
+		for _, policyRefsItem := range r.PolicyRefs {
+			id1 := new(string)
+			if !policyRefsItem.ID.IsUnknown() && !policyRefsItem.ID.IsNull() {
+				*id1 = policyRefsItem.ID.ValueString()
+			} else {
+				id1 = nil
+			}
+			policyRefs = append(policyRefs, shared.PolicyRef{
+				ID: id1,
+			})
+		}
+	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -122,21 +165,21 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 	if r.Refs != nil {
 		refs = make([]shared.AppEntitlementRef, 0, len(r.Refs))
 		for _, refsItem := range r.Refs {
-			appID := new(string)
+			appId1 := new(string)
 			if !refsItem.AppID.IsUnknown() && !refsItem.AppID.IsNull() {
-				*appID = refsItem.AppID.ValueString()
+				*appId1 = refsItem.AppID.ValueString()
 			} else {
-				appID = nil
+				appId1 = nil
 			}
-			id := new(string)
+			id2 := new(string)
 			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-				*id = refsItem.ID.ValueString()
+				*id2 = refsItem.ID.ValueString()
 			} else {
-				id = nil
+				id2 = nil
 			}
 			refs = append(refs, shared.AppEntitlementRef{
-				AppID: appID,
-				ID:    id,
+				AppID: appId1,
+				ID:    id2,
 			})
 		}
 	}
@@ -175,28 +218,31 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 		sourceConnectorID = nil
 	}
 	out := shared.AppEntitlementSearchServiceSearchRequest{
-		AccessReviewID:         accessReviewID,
-		Alias:                  alias,
-		AppIds:                 appIds,
-		AppUserIds:             appUserIds,
-		ComplianceFrameworkIds: complianceFrameworkIds,
-		DisplayName:            displayName,
-		ExcludeAppIds:          excludeAppIds,
-		ExcludeAppUserIds:      excludeAppUserIds,
-		ExcludeResourceTypeIds: excludeResourceTypeIds,
-		IncludeDeleted:         includeDeleted,
-		IsAutomated:            isAutomated,
-		MembershipType:         membershipType,
-		OnlyGetExpiring:        onlyGetExpiring,
-		PageSize:               pageSize,
-		PageToken:              pageToken,
-		Query:                  query,
-		Refs:                   refs,
-		ResourceIds:            resourceIds,
-		ResourceTraitIds:       resourceTraitIds,
-		ResourceTypeIds:        resourceTypeIds,
-		RiskLevelIds:           riskLevelIds,
-		SourceConnectorID:      sourceConnectorID,
+		AccessReviewID:          accessReviewID,
+		Alias:                   alias,
+		AppIds:                  appIds,
+		AppUserIds:              appUserIds,
+		ComplianceFrameworkIds:  complianceFrameworkIds,
+		DisplayName:             displayName,
+		ExcludeAppIds:           excludeAppIds,
+		ExcludeAppUserIds:       excludeAppUserIds,
+		ExcludeImmutable:        excludeImmutable,
+		ExcludeResourceTypeIds:  excludeResourceTypeIds,
+		ExcludedEntitlementRefs: excludedEntitlementRefs,
+		IncludeDeleted:          includeDeleted,
+		IsAutomated:             isAutomated,
+		MembershipType:          membershipType,
+		OnlyGetExpiring:         onlyGetExpiring,
+		PageSize:                pageSize,
+		PageToken:               pageToken,
+		PolicyRefs:              policyRefs,
+		Query:                   query,
+		Refs:                    refs,
+		ResourceIds:             resourceIds,
+		ResourceTraitIds:        resourceTraitIds,
+		ResourceTypeIds:         resourceTypeIds,
+		RiskLevelIds:            riskLevelIds,
+		SourceConnectorID:       sourceConnectorID,
 	}
 
 	return &out, diags

@@ -2,6 +2,9 @@
 
 package shared
 
+type RequestData struct {
+}
+
 // TaskServiceCreateGrantRequest - Create a grant task.
 type TaskServiceCreateGrantRequest struct {
 	// The ID of the app entitlement to grant access to.
@@ -16,7 +19,8 @@ type TaskServiceCreateGrantRequest struct {
 	EmergencyAccess *bool   `json:"emergencyAccess,omitempty"`
 	GrantDuration   *string `json:"grantDuration,omitempty"`
 	// The ID of the user associated with the app user we are granting access for. This field cannot be set if appUserID is also set.
-	IdentityUserID *string `json:"identityUserId,omitempty"`
+	IdentityUserID *string      `json:"identityUserId,omitempty"`
+	RequestData    *RequestData `json:"requestData,omitempty"`
 	// The TaskGrantSource message tracks which external URL was the source of the specificed grant ticket.
 	TaskGrantSource *TaskGrantSource `json:"source,omitempty"`
 }
@@ -68,6 +72,13 @@ func (o *TaskServiceCreateGrantRequest) GetIdentityUserID() *string {
 		return nil
 	}
 	return o.IdentityUserID
+}
+
+func (o *TaskServiceCreateGrantRequest) GetRequestData() *RequestData {
+	if o == nil {
+		return nil
+	}
+	return o.RequestData
 }
 
 func (o *TaskServiceCreateGrantRequest) GetTaskGrantSource() *TaskGrantSource {

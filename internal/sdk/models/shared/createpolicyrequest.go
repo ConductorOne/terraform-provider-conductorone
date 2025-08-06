@@ -58,7 +58,9 @@ type CreatePolicyRequest struct {
 	PolicyType *CreatePolicyRequestPolicyType `json:"policyType,omitempty"`
 	// Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately.
 	PostActions []PolicyPostActions `json:"postActions,omitempty"`
-	// Allows reassigning tasks to delegates.
+	// Deprecated. Use setting in policy step instead
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
 	// The rules field.
 	Rules []Rule `json:"rules,omitempty"`

@@ -51,6 +51,21 @@ func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*sh
 	} else {
 		pageToken = nil
 	}
+	var policyRefs []shared.PolicyRef
+	if r.PolicyRefs != nil {
+		policyRefs = make([]shared.PolicyRef, 0, len(r.PolicyRefs))
+		for _, policyRefsItem := range r.PolicyRefs {
+			id := new(string)
+			if !policyRefsItem.ID.IsUnknown() && !policyRefsItem.ID.IsNull() {
+				*id = policyRefsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			policyRefs = append(policyRefs, shared.PolicyRef{
+				ID: id,
+			})
+		}
+	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -64,6 +79,7 @@ func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*sh
 		OnlyDirectories: onlyDirectories,
 		PageSize:        pageSize,
 		PageToken:       pageToken,
+		PolicyRefs:      policyRefs,
 		Query:           query,
 	}
 

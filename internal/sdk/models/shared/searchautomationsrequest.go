@@ -16,6 +16,8 @@ const (
 	TriggerTypesTriggerTypeAppUserUpdate     TriggerTypes = "TRIGGER_TYPE_APP_USER_UPDATE"
 	TriggerTypesTriggerTypeUnusedAccess      TriggerTypes = "TRIGGER_TYPE_UNUSED_ACCESS"
 	TriggerTypesTriggerTypeUserCreated       TriggerTypes = "TRIGGER_TYPE_USER_CREATED"
+	TriggerTypesTriggerTypeGrantFound        TriggerTypes = "TRIGGER_TYPE_GRANT_FOUND"
+	TriggerTypesTriggerTypeGrantDeleted      TriggerTypes = "TRIGGER_TYPE_GRANT_DELETED"
 )
 
 func (e TriggerTypes) ToPointer() *TriggerTypes {
@@ -38,6 +40,10 @@ func (e *TriggerTypes) UnmarshalJSON(data []byte) error {
 	case "TRIGGER_TYPE_UNUSED_ACCESS":
 		fallthrough
 	case "TRIGGER_TYPE_USER_CREATED":
+		fallthrough
+	case "TRIGGER_TYPE_GRANT_FOUND":
+		fallthrough
+	case "TRIGGER_TYPE_GRANT_DELETED":
 		*e = TriggerTypes(v)
 		return nil
 	default:

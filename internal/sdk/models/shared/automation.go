@@ -19,6 +19,8 @@ const (
 	PrimaryTriggerTypeTriggerTypeAppUserUpdate     PrimaryTriggerType = "TRIGGER_TYPE_APP_USER_UPDATE"
 	PrimaryTriggerTypeTriggerTypeUnusedAccess      PrimaryTriggerType = "TRIGGER_TYPE_UNUSED_ACCESS"
 	PrimaryTriggerTypeTriggerTypeUserCreated       PrimaryTriggerType = "TRIGGER_TYPE_USER_CREATED"
+	PrimaryTriggerTypeTriggerTypeGrantFound        PrimaryTriggerType = "TRIGGER_TYPE_GRANT_FOUND"
+	PrimaryTriggerTypeTriggerTypeGrantDeleted      PrimaryTriggerType = "TRIGGER_TYPE_GRANT_DELETED"
 )
 
 func (e PrimaryTriggerType) ToPointer() *PrimaryTriggerType {
@@ -41,6 +43,10 @@ func (e *PrimaryTriggerType) UnmarshalJSON(data []byte) error {
 	case "TRIGGER_TYPE_UNUSED_ACCESS":
 		fallthrough
 	case "TRIGGER_TYPE_USER_CREATED":
+		fallthrough
+	case "TRIGGER_TYPE_GRANT_FOUND":
+		fallthrough
+	case "TRIGGER_TYPE_GRANT_DELETED":
 		*e = PrimaryTriggerType(v)
 		return nil
 	default:
@@ -49,11 +55,16 @@ func (e *PrimaryTriggerType) UnmarshalJSON(data []byte) error {
 }
 
 // The Automation message.
+//
+// This message contains a oneof named disabled_reason. Only a single field of the following list may be set at a time:
+//   - circuitBreaker
 type Automation struct {
 	// the app id this workflow_template belongs to
 	AppID *string `json:"appId,omitempty"`
 	// The automationSteps field.
 	AutomationSteps []AutomationStep `json:"automationSteps,omitempty"`
+	// The DisabledReasonCircuitBreaker message.
+	DisabledReasonCircuitBreaker *DisabledReasonCircuitBreaker `json:"circuitBreaker,omitempty"`
 	// The AutomationContext message.
 	AutomationContext *AutomationContext `json:"context,omitempty"`
 	CreatedAt         *time.Time         `json:"createdAt,omitempty"`
@@ -103,6 +114,13 @@ func (o *Automation) GetAutomationSteps() []AutomationStep {
 		return nil
 	}
 	return o.AutomationSteps
+}
+
+func (o *Automation) GetDisabledReasonCircuitBreaker() *DisabledReasonCircuitBreaker {
+	if o == nil {
+		return nil
+	}
+	return o.DisabledReasonCircuitBreaker
 }
 
 func (o *Automation) GetAutomationContext() *AutomationContext {
@@ -197,11 +215,16 @@ func (o *Automation) GetTriggers() []AutomationTrigger {
 }
 
 // AutomationInput - The Automation message.
+//
+// This message contains a oneof named disabled_reason. Only a single field of the following list may be set at a time:
+//   - circuitBreaker
 type AutomationInput struct {
 	// the app id this workflow_template belongs to
 	AppID *string `json:"appId,omitempty"`
 	// The automationSteps field.
 	AutomationSteps []AutomationStep `json:"automationSteps,omitempty"`
+	// The DisabledReasonCircuitBreaker message.
+	DisabledReasonCircuitBreaker *DisabledReasonCircuitBreaker `json:"circuitBreaker,omitempty"`
 	// The AutomationContext message.
 	AutomationContext *AutomationContext `json:"context,omitempty"`
 	CreatedAt         *time.Time         `json:"createdAt,omitempty"`
@@ -249,6 +272,13 @@ func (o *AutomationInput) GetAutomationSteps() []AutomationStep {
 		return nil
 	}
 	return o.AutomationSteps
+}
+
+func (o *AutomationInput) GetDisabledReasonCircuitBreaker() *DisabledReasonCircuitBreaker {
+	if o == nil {
+		return nil
+	}
+	return o.DisabledReasonCircuitBreaker
 }
 
 func (o *AutomationInput) GetAutomationContext() *AutomationContext {
