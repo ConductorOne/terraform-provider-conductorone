@@ -9,21 +9,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
-func (r *AppOwnerResourceModel) ToSharedSetAppOwnersRequest(ctx context.Context) (*shared.SetAppOwnersRequest, diag.Diagnostics) {
+func (r *AppOwnerResourceModel) RefreshFromSharedSetAppOwnersResponse(ctx context.Context, resp *shared.SetAppOwnersResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	var userIds []string
-	if r.UserIds != nil {
-		userIds = make([]string, 0, len(r.UserIds))
-		for _, userIdsItem := range r.UserIds {
-			userIds = append(userIds, userIdsItem.ValueString())
-		}
-	}
-	out := shared.SetAppOwnersRequest{
-		UserIds: userIds,
+	if resp != nil {
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *AppOwnerResourceModel) ToOperationsC1APIAppV1AppOwnersSetRequest(ctx context.Context) (*operations.C1APIAppV1AppOwnersSetRequest, diag.Diagnostics) {
@@ -47,11 +39,19 @@ func (r *AppOwnerResourceModel) ToOperationsC1APIAppV1AppOwnersSetRequest(ctx co
 	return &out, diags
 }
 
-func (r *AppOwnerResourceModel) RefreshFromSharedSetAppOwnersResponse(ctx context.Context, resp *shared.SetAppOwnersResponse) diag.Diagnostics {
+func (r *AppOwnerResourceModel) ToSharedSetAppOwnersRequest(ctx context.Context) (*shared.SetAppOwnersRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
+	var userIds []string
+	if r.UserIds != nil {
+		userIds = make([]string, 0, len(r.UserIds))
+		for _, userIdsItem := range r.UserIds {
+			userIds = append(userIds, userIdsItem.ValueString())
+		}
+	}
+	out := shared.SetAppOwnersRequest{
+		UserIds: userIds,
 	}
 
-	return diags
+	return &out, diags
 }

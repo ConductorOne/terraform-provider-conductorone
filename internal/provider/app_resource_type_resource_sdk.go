@@ -11,19 +11,25 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppResourceTypeResourceModel) ToSharedCreateManuallyManagedResourceTypeRequest(ctx context.Context) (*shared.CreateManuallyManagedResourceTypeRequest, diag.Diagnostics) {
+func (r *AppResourceTypeResourceModel) RefreshFromSharedAppResourceType(ctx context.Context, resp *shared.AppResourceType) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	var displayName string
-	displayName = r.DisplayName.ValueString()
-
-	resourceType := shared.ResourceType(r.ResourceType.ValueString())
-	out := shared.CreateManuallyManagedResourceTypeRequest{
-		DisplayName:  displayName,
-		ResourceType: resourceType,
+	if resp != nil {
+		r.AppID = types.StringPointerValue(resp.AppID)
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.ID = types.StringPointerValue(resp.ID)
+		if resp.TraitIds != nil {
+			r.TraitIds = make([]types.String, 0, len(resp.TraitIds))
+			for _, v := range resp.TraitIds {
+				r.TraitIds = append(r.TraitIds, types.StringValue(v))
+			}
+		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeRequest, diag.Diagnostics) {
@@ -47,42 +53,35 @@ func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServ
 	return &out, diags
 }
 
-func (r *AppResourceTypeResourceModel) ToSharedAppResourceTypeInput(ctx context.Context) (*shared.AppResourceTypeInput, diag.Diagnostics) {
+func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
-	var traitIds []string
-	if r.TraitIds != nil {
-		traitIds = make([]string, 0, len(r.TraitIds))
-		for _, traitIdsItem := range r.TraitIds {
-			traitIds = append(traitIds, traitIdsItem.ValueString())
-		}
-	}
-	out := shared.AppResourceTypeInput{
-		DisplayName: displayName,
-		TraitIds:    traitIds,
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest{
+		AppID: appID,
+		ID:    id,
 	}
 
 	return &out, diags
 }
 
-func (r *AppResourceTypeResourceModel) ToSharedUpdateManuallyManagedResourceTypeRequest(ctx context.Context) (*shared.UpdateManuallyManagedResourceTypeRequest, diag.Diagnostics) {
+func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServiceGetRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceTypeServiceGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	appResourceType, appResourceTypeDiags := r.ToSharedAppResourceTypeInput(ctx)
-	diags.Append(appResourceTypeDiags...)
+	var appID string
+	appID = r.AppID.ValueString()
 
-	if diags.HasError() {
-		return nil, diags
-	}
+	var id string
+	id = r.ID.ValueString()
 
-	out := shared.UpdateManuallyManagedResourceTypeRequest{
-		AppResourceType: appResourceType,
+	out := operations.C1APIAppV1AppResourceTypeServiceGetRequest{
+		AppID: appID,
+		ID:    id,
 	}
 
 	return &out, diags
@@ -113,57 +112,58 @@ func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServ
 	return &out, diags
 }
 
-func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServiceGetRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceTypeServiceGetRequest, diag.Diagnostics) {
+func (r *AppResourceTypeResourceModel) ToSharedAppResourceTypeInput(ctx context.Context) (*shared.AppResourceTypeInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAppV1AppResourceTypeServiceGetRequest{
-		AppID: appID,
-		ID:    id,
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
 	}
-
-	return &out, diags
-}
-
-func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest{
-		AppID: appID,
-		ID:    id,
-	}
-
-	return &out, diags
-}
-
-func (r *AppResourceTypeResourceModel) RefreshFromSharedAppResourceType(ctx context.Context, resp *shared.AppResourceType) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.AppID = types.StringPointerValue(resp.AppID)
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		r.ID = types.StringPointerValue(resp.ID)
-		if resp.TraitIds != nil {
-			r.TraitIds = make([]types.String, 0, len(resp.TraitIds))
-			for _, v := range resp.TraitIds {
-				r.TraitIds = append(r.TraitIds, types.StringValue(v))
-			}
+	var traitIds []string
+	if r.TraitIds != nil {
+		traitIds = make([]string, 0, len(r.TraitIds))
+		for _, traitIdsItem := range r.TraitIds {
+			traitIds = append(traitIds, traitIdsItem.ValueString())
 		}
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+	out := shared.AppResourceTypeInput{
+		DisplayName: displayName,
+		TraitIds:    traitIds,
 	}
 
-	return diags
+	return &out, diags
+}
+
+func (r *AppResourceTypeResourceModel) ToSharedCreateManuallyManagedResourceTypeRequest(ctx context.Context) (*shared.CreateManuallyManagedResourceTypeRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var displayName string
+	displayName = r.DisplayName.ValueString()
+
+	resourceType := shared.ResourceType(r.ResourceType.ValueString())
+	out := shared.CreateManuallyManagedResourceTypeRequest{
+		DisplayName:  displayName,
+		ResourceType: resourceType,
+	}
+
+	return &out, diags
+}
+
+func (r *AppResourceTypeResourceModel) ToSharedUpdateManuallyManagedResourceTypeRequest(ctx context.Context) (*shared.UpdateManuallyManagedResourceTypeRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	appResourceType, appResourceTypeDiags := r.ToSharedAppResourceTypeInput(ctx)
+	diags.Append(appResourceTypeDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := shared.UpdateManuallyManagedResourceTypeRequest{
+		AppResourceType: appResourceType,
+	}
+
+	return &out, diags
 }

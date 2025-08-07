@@ -25,6 +25,7 @@ func NewWebhookResource() resource.Resource {
 
 // WebhookResource defines the resource implementation.
 type WebhookResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

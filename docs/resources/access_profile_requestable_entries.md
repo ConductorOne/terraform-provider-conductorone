@@ -46,11 +46,11 @@ resource "conductorone_access_profile_requestable_entries" "my_access_profile_re
 
 ### Required
 
-- `catalog_id` (String) Requires replacement if changed.
+- `catalog_id` (String)
 
 ### Optional
 
-- `app_entitlements` (Attributes List) List of entitlements to add to the request catalog. Requires replacement if changed. (see [below for nested schema](#nestedatt--app_entitlements))
+- `app_entitlements` (Attributes List) List of entitlements to add to the request catalog. (see [below for nested schema](#nestedatt--app_entitlements))
 - `create_requests` (Boolean) Whether or not to create requests for newly added entitlements for users in the catalog.
  By default, this is false and no requests are created.
 Requires replacement if changed.
@@ -60,5 +60,5 @@ Requires replacement if changed.
 
 Optional:
 
-- `app_id` (String) The appId field. Requires replacement if changed.
-- `id` (String) The id field. Requires replacement if changed.
+- `app_id` (String) The appId field.
+- `id` (String) The id field.

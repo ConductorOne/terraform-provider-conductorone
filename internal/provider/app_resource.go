@@ -26,6 +26,7 @@ func NewAppResource() resource.Resource {
 
 // AppResource defines the resource implementation.
 type AppResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

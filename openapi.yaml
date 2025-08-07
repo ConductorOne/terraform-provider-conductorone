@@ -9000,6 +9000,27 @@ components:
             title: Request Catalog Management Service Remove App Entitlements Response
             type: object
             x-speakeasy-name-override: RequestCatalogManagementServiceRemoveAppEntitlementsResponse
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceUpdateAppEntitlementsRequestInput:
+            description: The RequestCatalogManagementServiceUpdateAppEntitlementsRequest object is used to update app entitlements to a request catalog id.
+            properties:
+                appEntitlements:
+                    description: The entitlement to get from the request catalog.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            required:
+                - appEntitlements
+            title: Request Catalog Management Service Update App Entitlements Request
+            type: object
+            x-speakeasy-entity: Access_Profile_Requestable_Entries
+            x-speakeasy-name-override: RequestCatalogManagementServiceUpdateAppEntitlementsRequest
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceUpdateAppEntitlementsResponse:
+            description: The RequestCatalogManagementServiceUpdateAppEntitlementsResponse object is is the response from UpdateAppEntitlements endpoint.
+            title: Request Catalog Management Service Update App Entitlements Response
+            type: object
+            x-speakeasy-name-override: RequestCatalogManagementServiceUpdateAppEntitlementsResponse
         c1.api.requestcatalog.v1.RequestCatalogManagementServiceUpdateRequestInput:
             description: Update a request catalog object by ID.
             properties:
@@ -18924,6 +18945,37 @@ paths:
                 - Request Catalog
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: ListEntitlementsPerCatalog
+    /api/v1/catalogs/{catalog_id}/requestable_entitlements/update:
+        post:
+            description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.UpdateAppEntitlements method.
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.UpdateAppEntitlements
+            parameters:
+                - in: path
+                  name: catalog_id
+                  required: true
+                  schema:
+                    description: The Id of the request catalog to get app entitlement to. This is a URL value.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceUpdateAppEntitlementsRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceUpdateAppEntitlementsResponse'
+                    description: The RequestCatalogManagementServiceUpdateAppEntitlementsResponse object is is the response from UpdateAppEntitlements endpoint.
+            summary: Update App Entitlements
+            tags:
+                - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-resource: Access_Profile_Requestable_Entries#update
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: UpdateAppEntitlements
     /api/v1/catalogs/{catalog_id}/requestable_entries:
         delete:
             description: Remove requestable entitlements from a catalog.
