@@ -438,7 +438,7 @@ func (s *AppResourceType) DeleteManuallyManagedResourceType(ctx context.Context,
 }
 
 // Get
-// Get an app resource type.
+// Get a user by ID.
 func (s *AppResourceType) Get(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceGetRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceTypeServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

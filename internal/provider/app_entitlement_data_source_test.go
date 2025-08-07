@@ -102,6 +102,7 @@ func TestAccAppEntitlementDataSource(t *testing.T) {
 				}
 
 				data "conductorone_app_entitlement" "by_alias" {
+					app_ids = [conductorone_app.test.id]
 					alias = conductorone_custom_app_entitlement.test.alias
 				}
 				`,
@@ -110,7 +111,6 @@ func TestAccAppEntitlementDataSource(t *testing.T) {
 					resource.TestCheckResourceAttr("data.conductorone_app_entitlement.by_alias", "description", "test entitlement for data source"),
 					resource.TestCheckResourceAttr("data.conductorone_app_entitlement.by_alias", "alias", "test-alias"),
 					resource.TestCheckResourceAttrSet("data.conductorone_app_entitlement.by_alias", "id"),
-					resource.TestCheckResourceAttrPair("data.conductorone_app_entitlement.by_alias", "app_id", "conductorone_app.test", "id"),
 					resource.TestCheckResourceAttrPair("data.conductorone_app_entitlement.by_alias", "app_resource_id", "conductorone_app_resource.test", "id"),
 					resource.TestCheckResourceAttrPair("data.conductorone_app_entitlement.by_alias", "app_resource_type_id", "conductorone_app_resource_type.test", "id"),
 				),
