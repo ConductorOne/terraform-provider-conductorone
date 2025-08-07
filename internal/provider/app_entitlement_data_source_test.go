@@ -10,7 +10,7 @@ func TestAccAppEntitlementDataSource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
-			Create an app with a custom entitlement to query
+			// Create an app with a custom entitlement to query
 			{
 				Config: providerConfig + `
 				resource "conductorone_app" "test" {
