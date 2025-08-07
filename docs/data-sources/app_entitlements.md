@@ -111,16 +111,13 @@ data "conductorone_app_entitlements" "my_app_entitlements" {
 - `display_name` (String) The displayName field.
 - `exclude_app_ids` (List of String) Exclude app entitlements from the results that are in these app IDs.
 - `exclude_app_user_ids` (List of String) Exclude app entitlements from the results that these app users have granted.
-- `exclude_immutable` (Boolean) The excludeImmutable field.
 - `exclude_resource_type_ids` (List of String) The excludeResourceTypeIds field.
-- `excluded_entitlement_refs` (Attributes List) The excludedEntitlementRefs field. (see [below for nested schema](#nestedatt--excluded_entitlement_refs))
 - `include_deleted` (Boolean) Include deleted app entitlements, this includes app entitlements that have a deleted parent object (app, app resource, app resource type)
 - `is_automated` (Boolean) The isAutomated field.
 - `membership_type` (List of String) The membershipType field.
 - `only_get_expiring` (Boolean) Restrict results to only those who have expiring app entitlement user bindings.
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 - `page_token` (String) The pageToken field.
-- `policy_refs` (Attributes List) Search for app entitlements that use any of these policies. (see [below for nested schema](#nestedatt--policy_refs))
 - `query` (String) Query the app entitlements with a fuzzy search on display name and description.
 - `refs` (Attributes List) The refs field. (see [below for nested schema](#nestedatt--refs))
 - `resource_ids` (List of String) Search for app entitlements that belongs to these resources.
@@ -133,23 +130,6 @@ data "conductorone_app_entitlements" "my_app_entitlements" {
 
 - `list` (Attributes List) List of app entitlement view objects. (see [below for nested schema](#nestedatt--list))
 - `next_page_token` (String) The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
-
-<a id="nestedatt--excluded_entitlement_refs"></a>
-### Nested Schema for `excluded_entitlement_refs`
-
-Optional:
-
-- `app_id` (String) The appId field.
-- `id` (String) The id field.
-
-
-<a id="nestedatt--policy_refs"></a>
-### Nested Schema for `policy_refs`
-
-Optional:
-
-- `id` (String) The id field.
-
 
 <a id="nestedatt--refs"></a>
 ### Nested Schema for `refs`
