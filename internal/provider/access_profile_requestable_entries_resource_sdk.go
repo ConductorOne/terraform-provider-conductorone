@@ -71,6 +71,59 @@ func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestc
 	return &out, diags
 }
 
+func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceUpdateAppEntitlementsRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceUpdateAppEntitlementsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appEntitlements []shared.AppEntitlementRef
+	if r.AppEntitlements != nil {
+		appEntitlements = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlements))
+		for _, appEntitlementsItem := range r.AppEntitlements {
+			appID := new(string)
+			if !appEntitlementsItem.AppID.IsUnknown() && !appEntitlementsItem.AppID.IsNull() {
+				*appID = appEntitlementsItem.AppID.ValueString()
+			} else {
+				appID = nil
+			}
+			id := new(string)
+			if !appEntitlementsItem.ID.IsUnknown() && !appEntitlementsItem.ID.IsNull() {
+				*id = appEntitlementsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			appEntitlements = append(appEntitlements, shared.AppEntitlementRef{
+				AppID: appID,
+				ID:    id,
+			})
+		}
+	}
+	out := shared.RequestCatalogManagementServiceUpdateAppEntitlementsRequest{
+		AppEntitlements: appEntitlements,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var catalogID string
+	catalogID = r.CatalogID.ValueString()
+
+	requestCatalogManagementServiceUpdateAppEntitlementsRequest, requestCatalogManagementServiceUpdateAppEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceUpdateAppEntitlementsRequest(ctx)
+	diags.Append(requestCatalogManagementServiceUpdateAppEntitlementsRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceUpdateAppEntitlementsRequest: requestCatalogManagementServiceUpdateAppEntitlementsRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -167,6 +220,15 @@ func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestC
 				}
 			}
 		}
+	}
+
+	return diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceUpdateAppEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceUpdateAppEntitlementsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
 	}
 
 	return diags
