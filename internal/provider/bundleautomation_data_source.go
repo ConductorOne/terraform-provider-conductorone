@@ -23,6 +23,7 @@ func NewBundleAutomationDataSource() datasource.DataSource {
 
 // BundleAutomationDataSource is the data source implementation.
 type BundleAutomationDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

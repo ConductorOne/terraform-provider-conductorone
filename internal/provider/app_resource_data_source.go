@@ -23,6 +23,7 @@ func NewAppResourceDataSource() datasource.DataSource {
 
 // AppResourceDataSource is the data source implementation.
 type AppResourceDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

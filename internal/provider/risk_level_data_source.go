@@ -22,6 +22,7 @@ func NewRiskLevelDataSource() datasource.DataSource {
 
 // RiskLevelDataSource is the data source implementation.
 type RiskLevelDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
