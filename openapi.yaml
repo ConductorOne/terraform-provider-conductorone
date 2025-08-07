@@ -18881,37 +18881,6 @@ paths:
                 terraform-resource: Access_Profile#create
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: Create
-    /api/v1/catalogs/{catalog_id}/requestable_entitlement/update:
-        post:
-            description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.UpdateAppEntitlements method.
-            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.UpdateAppEntitlements
-            parameters:
-                - in: path
-                  name: catalog_id
-                  required: true
-                  schema:
-                    description: The Id of the request catalog to get app entitlement to. This is a URL value.
-                    readOnly: false
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceUpdateAppEntitlementsRequestInput'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceUpdateAppEntitlementsResponse'
-                    description: The RequestCatalogManagementServiceUpdateAppEntitlementsResponse object is is the response from UpdateAppEntitlements endpoint.
-            summary: Update App Entitlements
-            tags:
-                - Request Catalog
-            x-speakeasy-entity-operation:
-                terraform-resource: Access_Profile_Requestable_Entries#update
-            x-speakeasy-group: RequestCatalogManagement
-            x-speakeasy-name-override: UpdateAppEntitlements
     /api/v1/catalogs/{catalog_id}/requestable_entitlementIDs:
         get:
             description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ListAllEntitlementIdsPerApp method.
@@ -18976,6 +18945,37 @@ paths:
                 - Request Catalog
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: ListEntitlementsPerCatalog
+    /api/v1/catalogs/{catalog_id}/requestable_entitlements/update:
+        post:
+            description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.UpdateAppEntitlements method.
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.UpdateAppEntitlements
+            parameters:
+                - in: path
+                  name: catalog_id
+                  required: true
+                  schema:
+                    description: The Id of the request catalog to get app entitlement to. This is a URL value.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceUpdateAppEntitlementsRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceUpdateAppEntitlementsResponse'
+                    description: The RequestCatalogManagementServiceUpdateAppEntitlementsResponse object is is the response from UpdateAppEntitlements endpoint.
+            summary: Update App Entitlements
+            tags:
+                - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-resource: Access_Profile_Requestable_Entries#update
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: UpdateAppEntitlements
     /api/v1/catalogs/{catalog_id}/requestable_entries:
         delete:
             description: Remove requestable entitlements from a catalog.
