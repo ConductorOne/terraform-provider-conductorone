@@ -23,6 +23,7 @@ func NewAppEntitlementAutomationDataSource() datasource.DataSource {
 
 // AppEntitlementAutomationDataSource is the data source implementation.
 type AppEntitlementAutomationDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
