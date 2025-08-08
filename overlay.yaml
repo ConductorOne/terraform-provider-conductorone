@@ -464,6 +464,12 @@ actions:
   - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalog"]["properties"]["accessEntitlements"]
     update:
       x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalog"]["properties"]["unenrollmentBehavior"]
+    update:
+      x-speakeasy-computed: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalog"]["properties"]["unenrollmentEntitlementBehavior"]
+    update:
+      x-speakeasy-computed: true
   - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogExpandMask"]
     update:
       x-speakeasy-ignore: true
