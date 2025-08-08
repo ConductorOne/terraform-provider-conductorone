@@ -11,21 +11,23 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServiceRotateCredentialRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceRotateCredentialRequest, diag.Diagnostics) {
+func (r *ConnectorCredentialResourceModel) RefreshFromSharedConnectorCredential(ctx context.Context, resp *shared.ConnectorCredential) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var connectorID string
-	connectorID = r.ConnectorID.ValueString()
-
-	out := operations.C1APIAppV1ConnectorServiceRotateCredentialRequest{
-		AppID:       appID,
-		ConnectorID: connectorID,
+	if resp != nil {
+		r.AppID = types.StringPointerValue(resp.AppID)
+		r.ClientID = types.StringPointerValue(resp.ClientID)
+		r.ConnectorID = types.StringPointerValue(resp.ConnectorID)
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.ExpiresTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresTime))
+		r.ID = types.StringPointerValue(resp.ID)
+		r.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.LastUsedAt))
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceGetCredentialsRequest, diag.Diagnostics) {
@@ -70,21 +72,19 @@ func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServic
 	return &out, diags
 }
 
-func (r *ConnectorCredentialResourceModel) RefreshFromSharedConnectorCredential(ctx context.Context, resp *shared.ConnectorCredential) diag.Diagnostics {
+func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServiceRotateCredentialRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceRotateCredentialRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.AppID = types.StringPointerValue(resp.AppID)
-		r.ClientID = types.StringPointerValue(resp.ClientID)
-		r.ConnectorID = types.StringPointerValue(resp.ConnectorID)
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		r.ExpiresTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresTime))
-		r.ID = types.StringPointerValue(resp.ID)
-		r.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.LastUsedAt))
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var connectorID string
+	connectorID = r.ConnectorID.ValueString()
+
+	out := operations.C1APIAppV1ConnectorServiceRotateCredentialRequest{
+		AppID:       appID,
+		ConnectorID: connectorID,
 	}
 
-	return diags
+	return &out, diags
 }

@@ -23,35 +23,39 @@ func NewAppEntitlementsDataSource() datasource.DataSource {
 
 // AppEntitlementsDataSource is the data source implementation.
 type AppEntitlementsDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
 // AppEntitlementsDataSourceModel describes the data model.
 type AppEntitlementsDataSourceModel struct {
-	AccessReviewID         types.String                 `tfsdk:"access_review_id"`
-	Alias                  types.String                 `tfsdk:"alias"`
-	AppIds                 []types.String               `tfsdk:"app_ids"`
-	AppUserIds             []types.String               `tfsdk:"app_user_ids"`
-	ComplianceFrameworkIds []types.String               `tfsdk:"compliance_framework_ids"`
-	DisplayName            types.String                 `tfsdk:"display_name"`
-	ExcludeAppIds          []types.String               `tfsdk:"exclude_app_ids"`
-	ExcludeAppUserIds      []types.String               `tfsdk:"exclude_app_user_ids"`
-	ExcludeResourceTypeIds []types.String               `tfsdk:"exclude_resource_type_ids"`
-	IncludeDeleted         types.Bool                   `tfsdk:"include_deleted"`
-	IsAutomated            types.Bool                   `tfsdk:"is_automated"`
-	List                   []tfTypes.AppEntitlementView `tfsdk:"list"`
-	MembershipType         []types.String               `tfsdk:"membership_type"`
-	NextPageToken          types.String                 `tfsdk:"next_page_token"`
-	OnlyGetExpiring        types.Bool                   `tfsdk:"only_get_expiring"`
-	PageSize               types.Int32                  `tfsdk:"page_size"`
-	PageToken              types.String                 `tfsdk:"page_token"`
-	Query                  types.String                 `tfsdk:"query"`
-	Refs                   []tfTypes.AppEntitlementRef  `tfsdk:"refs"`
-	ResourceIds            []types.String               `tfsdk:"resource_ids"`
-	ResourceTraitIds       []types.String               `tfsdk:"resource_trait_ids"`
-	ResourceTypeIds        []types.String               `tfsdk:"resource_type_ids"`
-	RiskLevelIds           []types.String               `tfsdk:"risk_level_ids"`
-	SourceConnectorID      types.String                 `tfsdk:"source_connector_id"`
+	AccessReviewID          types.String                 `tfsdk:"access_review_id"`
+	Alias                   types.String                 `tfsdk:"alias"`
+	AppIds                  []types.String               `tfsdk:"app_ids"`
+	AppUserIds              []types.String               `tfsdk:"app_user_ids"`
+	ComplianceFrameworkIds  []types.String               `tfsdk:"compliance_framework_ids"`
+	DisplayName             types.String                 `tfsdk:"display_name"`
+	ExcludeAppIds           []types.String               `tfsdk:"exclude_app_ids"`
+	ExcludeAppUserIds       []types.String               `tfsdk:"exclude_app_user_ids"`
+	ExcludeImmutable        types.Bool                   `tfsdk:"exclude_immutable"`
+	ExcludeResourceTypeIds  []types.String               `tfsdk:"exclude_resource_type_ids"`
+	ExcludedEntitlementRefs []tfTypes.AppEntitlementRef  `tfsdk:"excluded_entitlement_refs"`
+	IncludeDeleted          types.Bool                   `tfsdk:"include_deleted"`
+	IsAutomated             types.Bool                   `tfsdk:"is_automated"`
+	List                    []tfTypes.AppEntitlementView `tfsdk:"list"`
+	MembershipType          []types.String               `tfsdk:"membership_type"`
+	NextPageToken           types.String                 `tfsdk:"next_page_token"`
+	OnlyGetExpiring         types.Bool                   `tfsdk:"only_get_expiring"`
+	PageSize                types.Int32                  `tfsdk:"page_size"`
+	PageToken               types.String                 `tfsdk:"page_token"`
+	PolicyRefs              []tfTypes.PolicyRef          `tfsdk:"policy_refs"`
+	Query                   types.String                 `tfsdk:"query"`
+	Refs                    []tfTypes.AppEntitlementRef  `tfsdk:"refs"`
+	ResourceIds             []types.String               `tfsdk:"resource_ids"`
+	ResourceTraitIds        []types.String               `tfsdk:"resource_trait_ids"`
+	ResourceTypeIds         []types.String               `tfsdk:"resource_type_ids"`
+	RiskLevelIds            []types.String               `tfsdk:"risk_level_ids"`
+	SourceConnectorID       types.String                 `tfsdk:"source_connector_id"`
 }
 
 // Metadata returns the data source type name.
@@ -102,10 +106,30 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 				ElementType: types.StringType,
 				Description: `Exclude app entitlements from the results that these app users have granted.`,
 			},
+			"exclude_immutable": schema.BoolAttribute{
+				Optional:    true,
+				Description: `The excludeImmutable field.`,
+			},
 			"exclude_resource_type_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The excludeResourceTypeIds field.`,
+			},
+			"excluded_entitlement_refs": schema.ListNestedAttribute{
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"app_id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The appId field.`,
+						},
+						"id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The id field.`,
+						},
+					},
+				},
+				Description: `The excludedEntitlementRefs field.`,
 			},
 			"include_deleted": schema.BoolAttribute{
 				Optional:    true,
@@ -571,6 +595,18 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 				Optional:    true,
 				Description: `The pageToken field.`,
 			},
+			"policy_refs": schema.ListNestedAttribute{
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The id field.`,
+						},
+					},
+				},
+				Description: `Search for app entitlements that use any of these policies.`,
+			},
 			"query": schema.StringAttribute{
 				Optional:    true,
 				Description: `Query the app entitlements with a fuzzy search on display name and description.`,
@@ -688,24 +724,25 @@ func (r *AppEntitlementsDataSource) Read(ctx context.Context, req datasource.Rea
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
-	response, err := res.Next()
 	for {
+		res, err := res.Next()
+
 		if err != nil {
-			resp.Diagnostics.AddError("reading next results failed", debugResponse(response.RawResponse))
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
 			return
 		}
-		if response == nil {
+
+		if res == nil {
 			break
 		}
-		resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx, response.AppEntitlementSearchServiceSearchResponse)...)
+
+		resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx, res.AppEntitlementSearchServiceSearchResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return
 		}
-
-		response, err = response.Next()
 	}
+
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

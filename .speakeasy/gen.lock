@@ -1,28 +1,28 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: d0f56cbd895c7fe31b4799e13416616a
+  docChecksum: cac8c5636060f0e73ee9308e5f2b618c
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.556.2
-  generationVersion: 2.621.3
-  releaseVersion: 1.4.6
-  configChecksum: f1b13c087cabc35de7d071cbb82d1d13
+  speakeasyVersion: 1.599.0
+  generationVersion: 2.675.0
+  releaseVersion: 1.5.0
+  configChecksum: b3488c07f40b5b4f1328d5a095beea40
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
-    core: 3.41.10
+    core: 3.43.1
     deprecations: 2.82.0
     devContainers: 0.0.0
     globalSecurity: 2.81.12
-    globalServerURLs: 2.82.2
+    globalServerURLs: 2.83.0
     groups: 2.81.2
     ignores: 2.81.1
     includes: 2.81.1
     inputOutputModels: 2.83.0
     nameOverrides: 2.81.3
     nullables: 0.0.0
-    pagination: 2.82.1
+    pagination: 2.83.0
     typeOverrides: 2.81.1
 generatedFiles:
   - .gitattributes

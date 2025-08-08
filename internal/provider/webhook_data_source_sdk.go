@@ -10,6 +10,20 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *WebhookDataSourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+	r.Description = types.StringPointerValue(resp.Description)
+	r.DisplayName = types.StringPointerValue(resp.DisplayName)
+	r.ID = types.StringPointerValue(resp.ID)
+	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	r.URL = types.StringPointerValue(resp.URL)
+
+	return diags
+}
+
 func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest(ctx context.Context) (*shared.WebhooksSearchRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -54,18 +68,4 @@ func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest(ctx context.Conte
 	}
 
 	return &out, diags
-}
-
-func (r *WebhookDataSourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-	r.Description = types.StringPointerValue(resp.Description)
-	r.DisplayName = types.StringPointerValue(resp.DisplayName)
-	r.ID = types.StringPointerValue(resp.ID)
-	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	r.URL = types.StringPointerValue(resp.URL)
-
-	return diags
 }
