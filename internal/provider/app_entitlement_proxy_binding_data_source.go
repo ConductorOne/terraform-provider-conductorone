@@ -23,6 +23,7 @@ func NewAppEntitlementProxyBindingDataSource() datasource.DataSource {
 
 // AppEntitlementProxyBindingDataSource is the data source implementation.
 type AppEntitlementProxyBindingDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

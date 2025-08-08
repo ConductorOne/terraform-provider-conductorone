@@ -28,6 +28,7 @@ func NewComplianceFrameworkResource() resource.Resource {
 
 // ComplianceFrameworkResource defines the resource implementation.
 type ComplianceFrameworkResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
