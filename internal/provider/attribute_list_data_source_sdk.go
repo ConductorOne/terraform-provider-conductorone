@@ -6,9 +6,9 @@ import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 )
 
 func (d *AttributeListDataSourceModel) ToOperationsC1APIAttributeV1AttributesListAttributeValuesRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesListAttributeValuesRequest, diag.Diagnostics) {
@@ -37,16 +37,16 @@ func (d *AttributeListDataSourceModel) RefreshFromSharedListAttributeValuesRespo
 				}
 			}
 		}
-		
+
 		// Convert to attr.Value slice
 		var attrValues []attr.Value
 		for _, v := range values {
 			attrValues = append(attrValues, v)
 		}
-		
+
 		d.Values = types.ListValueMust(types.StringType, attrValues)
 		d.ID = d.AttributeTypeID // Use the attribute type ID as the ID
 	}
 
 	return diags
-} 
+}

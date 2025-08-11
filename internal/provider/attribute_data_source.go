@@ -132,4 +132,4 @@ func (d *AttributeDataSource) Read(ctx context.Context, req datasource.ReadReque
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-} 
+}

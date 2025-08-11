@@ -75,4 +75,4 @@ func (r *AttributeResourceModel) RefreshFromSharedAttributeValue(ctx context.Con
 	}
 
 	return diags
-} 
+}
