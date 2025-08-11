@@ -22,6 +22,7 @@ func NewAwsExternalIDDataSource() datasource.DataSource {
 
 // AwsExternalIDDataSource is the data source implementation.
 type AwsExternalIDDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

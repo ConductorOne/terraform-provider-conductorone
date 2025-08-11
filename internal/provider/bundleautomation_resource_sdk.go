@@ -12,6 +12,124 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx context.Context, resp *shared.BundleAutomation) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.BundleAutomationLastRunState == nil {
+			r.BundleAutomationLastRunState = nil
+		} else {
+			r.BundleAutomationLastRunState = &tfTypes.BundleAutomationLastRunState{}
+			r.BundleAutomationLastRunState.ErrorMessage = types.StringPointerValue(resp.BundleAutomationLastRunState.ErrorMessage)
+			r.BundleAutomationLastRunState.LastRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationLastRunState.LastRunAt))
+			if resp.BundleAutomationLastRunState.Status != nil {
+				r.BundleAutomationLastRunState.Status = types.StringValue(string(*resp.BundleAutomationLastRunState.Status))
+			} else {
+				r.BundleAutomationLastRunState.Status = types.StringNull()
+			}
+		}
+		if resp.BundleAutomationRuleEntitlement == nil {
+			r.BundleAutomationRuleEntitlement = nil
+		} else {
+			r.BundleAutomationRuleEntitlement = &tfTypes.BundleAutomationRuleEntitlement{}
+			if resp.BundleAutomationRuleEntitlement.EntitlementRefs != nil {
+				r.BundleAutomationRuleEntitlement.EntitlementRefs = []tfTypes.AppEntitlementRef{}
+
+				for _, entitlementRefsItem := range resp.BundleAutomationRuleEntitlement.EntitlementRefs {
+					var entitlementRefs tfTypes.AppEntitlementRef
+
+					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
+					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
+
+					r.BundleAutomationRuleEntitlement.EntitlementRefs = append(r.BundleAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
+				}
+			}
+		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.CreateTasks = types.BoolPointerValue(resp.CreateTasks)
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.RequestCatalogID = types.StringPointerValue(resp.RequestCatalogID)
+		r.TenantID = types.StringPointerValue(resp.TenantID)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestCatalogID string
+	requestCatalogID = r.RequestCatalogID.ValueString()
+
+	createBundleAutomationRequest, createBundleAutomationRequestDiags := r.ToSharedCreateBundleAutomationRequest(ctx)
+	diags.Append(createBundleAutomationRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest{
+		RequestCatalogID:              requestCatalogID,
+		CreateBundleAutomationRequest: createBundleAutomationRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestCatalogID string
+	requestCatalogID = r.RequestCatalogID.ValueString()
+
+	var deleteBundleAutomationRequest *shared.DeleteBundleAutomationRequest
+	if r.DeleteBundleAutomationRequest != nil {
+		deleteBundleAutomationRequest = &shared.DeleteBundleAutomationRequest{}
+	}
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest{
+		RequestCatalogID:              requestCatalogID,
+		DeleteBundleAutomationRequest: deleteBundleAutomationRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestCatalogID string
+	requestCatalogID = r.RequestCatalogID.ValueString()
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest{
+		RequestCatalogID: requestCatalogID,
+	}
+
+	return &out, diags
+}
+
+func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestCatalogID string
+	requestCatalogID = r.RequestCatalogID.ValueString()
+
+	setBundleAutomationRequest, setBundleAutomationRequestDiags := r.ToSharedSetBundleAutomationRequest(ctx)
+	diags.Append(setBundleAutomationRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest{
+		RequestCatalogID:           requestCatalogID,
+		SetBundleAutomationRequest: setBundleAutomationRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ctx context.Context) (*shared.CreateBundleAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -64,23 +182,10 @@ func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ct
 	return &out, diags
 }
 
-func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest, diag.Diagnostics) {
+func (r *BundleAutomationResourceModel) ToSharedDeleteBundleAutomationRequest(ctx context.Context) (*shared.DeleteBundleAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var requestCatalogID string
-	requestCatalogID = r.RequestCatalogID.ValueString()
-
-	createBundleAutomationRequest, createBundleAutomationRequestDiags := r.ToSharedCreateBundleAutomationRequest(ctx)
-	diags.Append(createBundleAutomationRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest{
-		RequestCatalogID:              requestCatalogID,
-		CreateBundleAutomationRequest: createBundleAutomationRequest,
-	}
+	out := shared.DeleteBundleAutomationRequest{}
 
 	return &out, diags
 }
@@ -135,114 +240,4 @@ func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest(ctx c
 	}
 
 	return &out, diags
-}
-
-func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var requestCatalogID string
-	requestCatalogID = r.RequestCatalogID.ValueString()
-
-	setBundleAutomationRequest, setBundleAutomationRequestDiags := r.ToSharedSetBundleAutomationRequest(ctx)
-	diags.Append(setBundleAutomationRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest{
-		RequestCatalogID:           requestCatalogID,
-		SetBundleAutomationRequest: setBundleAutomationRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *BundleAutomationResourceModel) ToSharedDeleteBundleAutomationRequest(ctx context.Context) (*shared.DeleteBundleAutomationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	out := shared.DeleteBundleAutomationRequest{}
-
-	return &out, diags
-}
-
-func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var requestCatalogID string
-	requestCatalogID = r.RequestCatalogID.ValueString()
-
-	var deleteBundleAutomationRequest *shared.DeleteBundleAutomationRequest
-	if r.DeleteBundleAutomationRequest != nil {
-		deleteBundleAutomationRequest = &shared.DeleteBundleAutomationRequest{}
-	}
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest{
-		RequestCatalogID:              requestCatalogID,
-		DeleteBundleAutomationRequest: deleteBundleAutomationRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var requestCatalogID string
-	requestCatalogID = r.RequestCatalogID.ValueString()
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest{
-		RequestCatalogID: requestCatalogID,
-	}
-
-	return &out, diags
-}
-
-func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx context.Context, resp *shared.BundleAutomation) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.BundleAutomationLastRunState == nil {
-			r.BundleAutomationLastRunState = nil
-		} else {
-			r.BundleAutomationLastRunState = &tfTypes.BundleAutomationLastRunState{}
-			r.BundleAutomationLastRunState.ErrorMessage = types.StringPointerValue(resp.BundleAutomationLastRunState.ErrorMessage)
-			r.BundleAutomationLastRunState.LastRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationLastRunState.LastRunAt))
-			if resp.BundleAutomationLastRunState.Status != nil {
-				r.BundleAutomationLastRunState.Status = types.StringValue(string(*resp.BundleAutomationLastRunState.Status))
-			} else {
-				r.BundleAutomationLastRunState.Status = types.StringNull()
-			}
-		}
-		if resp.BundleAutomationRuleEntitlement == nil {
-			r.BundleAutomationRuleEntitlement = nil
-		} else {
-			r.BundleAutomationRuleEntitlement = &tfTypes.BundleAutomationRuleEntitlement{}
-			if resp.BundleAutomationRuleEntitlement.EntitlementRefs != nil {
-				r.BundleAutomationRuleEntitlement.EntitlementRefs = []tfTypes.AppEntitlementRef{}
-				if len(r.BundleAutomationRuleEntitlement.EntitlementRefs) > len(resp.BundleAutomationRuleEntitlement.EntitlementRefs) {
-					r.BundleAutomationRuleEntitlement.EntitlementRefs = r.BundleAutomationRuleEntitlement.EntitlementRefs[:len(resp.BundleAutomationRuleEntitlement.EntitlementRefs)]
-				}
-				for entitlementRefsCount, entitlementRefsItem := range resp.BundleAutomationRuleEntitlement.EntitlementRefs {
-					var entitlementRefs tfTypes.AppEntitlementRef
-					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
-					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
-					if entitlementRefsCount+1 > len(r.BundleAutomationRuleEntitlement.EntitlementRefs) {
-						r.BundleAutomationRuleEntitlement.EntitlementRefs = append(r.BundleAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
-					} else {
-						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].AppID = entitlementRefs.AppID
-						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].ID = entitlementRefs.ID
-					}
-				}
-			}
-		}
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.CreateTasks = types.BoolPointerValue(resp.CreateTasks)
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.RequestCatalogID = types.StringPointerValue(resp.RequestCatalogID)
-		r.TenantID = types.StringPointerValue(resp.TenantID)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	}
-
-	return diags
 }

@@ -9,6 +9,57 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
+func (r *AccessProfileVisibilityBindingsResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAccessEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceAddAccessEntitlementsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+	}
+
+	return diags
+}
+
+func (r *AccessProfileVisibilityBindingsResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var catalogID string
+	catalogID = r.CatalogID.ValueString()
+
+	requestCatalogManagementServiceAddAccessEntitlementsRequest, requestCatalogManagementServiceAddAccessEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceAddAccessEntitlementsRequest(ctx)
+	diags.Append(requestCatalogManagementServiceAddAccessEntitlementsRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceAddAccessEntitlementsRequest: requestCatalogManagementServiceAddAccessEntitlementsRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileVisibilityBindingsResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var catalogID string
+	catalogID = r.CatalogID.ValueString()
+
+	requestCatalogManagementServiceRemoveAccessEntitlementsRequest, requestCatalogManagementServiceRemoveAccessEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceRemoveAccessEntitlementsRequest(ctx)
+	diags.Append(requestCatalogManagementServiceRemoveAccessEntitlementsRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceRemoveAccessEntitlementsRequest: requestCatalogManagementServiceRemoveAccessEntitlementsRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *AccessProfileVisibilityBindingsResourceModel) ToSharedRequestCatalogManagementServiceAddAccessEntitlementsRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceAddAccessEntitlementsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -36,27 +87,6 @@ func (r *AccessProfileVisibilityBindingsResourceModel) ToSharedRequestCatalogMan
 	}
 	out := shared.RequestCatalogManagementServiceAddAccessEntitlementsRequest{
 		AccessEntitlements: accessEntitlements,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileVisibilityBindingsResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var catalogID string
-	catalogID = r.CatalogID.ValueString()
-
-	requestCatalogManagementServiceAddAccessEntitlementsRequest, requestCatalogManagementServiceAddAccessEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceAddAccessEntitlementsRequest(ctx)
-	diags.Append(requestCatalogManagementServiceAddAccessEntitlementsRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest{
-		CatalogID: catalogID,
-		RequestCatalogManagementServiceAddAccessEntitlementsRequest: requestCatalogManagementServiceAddAccessEntitlementsRequest,
 	}
 
 	return &out, diags
@@ -92,34 +122,4 @@ func (r *AccessProfileVisibilityBindingsResourceModel) ToSharedRequestCatalogMan
 	}
 
 	return &out, diags
-}
-
-func (r *AccessProfileVisibilityBindingsResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var catalogID string
-	catalogID = r.CatalogID.ValueString()
-
-	requestCatalogManagementServiceRemoveAccessEntitlementsRequest, requestCatalogManagementServiceRemoveAccessEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceRemoveAccessEntitlementsRequest(ctx)
-	diags.Append(requestCatalogManagementServiceRemoveAccessEntitlementsRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest{
-		CatalogID: catalogID,
-		RequestCatalogManagementServiceRemoveAccessEntitlementsRequest: requestCatalogManagementServiceRemoveAccessEntitlementsRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileVisibilityBindingsResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAccessEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceAddAccessEntitlementsResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-	}
-
-	return diags
 }

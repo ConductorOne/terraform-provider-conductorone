@@ -134,6 +134,8 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewAppEntitlementAutomationResource,
 		NewBundleAutomationResource,
 		NewAccessConflictResource,
+		NewAccessReviewResource,
+		NewAccessReviewTemplateResource,
 	}
 
 	resources = append(resources, getIntegrationResources()...)

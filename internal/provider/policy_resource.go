@@ -29,6 +29,7 @@ func NewPolicyResource() resource.Resource {
 
 // PolicyResource defines the resource implementation.
 type PolicyResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

@@ -28,6 +28,7 @@ func NewRiskLevelResource() resource.Resource {
 
 // RiskLevelResource defines the resource implementation.
 type RiskLevelResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

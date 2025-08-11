@@ -26,6 +26,8 @@ TF_REATTACH_PROVIDERS=... terraform apply
 
 ### Resources
 
+* [conductorone_access_review](docs/resources/access_review.md)
+* [conductorone_access_review_template](docs/resources/access_review_template.md)
 * [conductorone_access_conflict](docs/resources/access_conflict.md)
 * [conductorone_access_profile](docs/resources/access_profile.md)
 * [conductorone_access_profile_requestable_entries](docs/resources/access_profile_requestable_entries.md)
@@ -46,6 +48,8 @@ TF_REATTACH_PROVIDERS=... terraform apply
 * [conductorone_webhook](docs/resources/webhook.md)
 ### Data Sources
 
+* [conductorone_access_review](docs/data-sources/access_review.md)
+* [conductorone_access_review_template](docs/data-sources/access_review_template.md)
 * [conductorone_access_profile](docs/data-sources/access_profile.md)
 * [conductorone_app](docs/data-sources/app.md)
 * [conductorone_app_entitlement](docs/data-sources/app_entitlement.md)
@@ -140,7 +144,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.4.6"
+      version = "1.5.0"
     }
   }
 }

@@ -11,6 +11,23 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *AppEntitlementProxyBindingDataSourceModel) RefreshFromSharedAppEntitlementProxy(ctx context.Context, resp *shared.AppEntitlementProxy) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.DstAppEntitlementID = types.StringPointerValue(resp.DstAppEntitlementID)
+		r.DstAppID = types.StringPointerValue(resp.DstAppID)
+		r.SrcAppEntitlementID = types.StringPointerValue(resp.SrcAppEntitlementID)
+		r.SrcAppID = types.StringPointerValue(resp.SrcAppID)
+		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
 func (r *AppEntitlementProxyBindingDataSourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -34,21 +51,4 @@ func (r *AppEntitlementProxyBindingDataSourceModel) ToOperationsC1APIAppV1AppEnt
 	}
 
 	return &out, diags
-}
-
-func (r *AppEntitlementProxyBindingDataSourceModel) RefreshFromSharedAppEntitlementProxy(ctx context.Context, resp *shared.AppEntitlementProxy) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.DstAppEntitlementID = types.StringPointerValue(resp.DstAppEntitlementID)
-		r.DstAppID = types.StringPointerValue(resp.DstAppID)
-		r.SrcAppEntitlementID = types.StringPointerValue(resp.SrcAppEntitlementID)
-		r.SrcAppID = types.StringPointerValue(resp.SrcAppID)
-		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	}
-
-	return diags
 }

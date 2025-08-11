@@ -42,19 +42,19 @@ func (e *ExcludeTypes) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type UserStatuses string
+type SearchUsersRequestUserStatuses string
 
 const (
-	UserStatusesUnknown  UserStatuses = "UNKNOWN"
-	UserStatusesEnabled  UserStatuses = "ENABLED"
-	UserStatusesDisabled UserStatuses = "DISABLED"
-	UserStatusesDeleted  UserStatuses = "DELETED"
+	SearchUsersRequestUserStatusesUnknown  SearchUsersRequestUserStatuses = "UNKNOWN"
+	SearchUsersRequestUserStatusesEnabled  SearchUsersRequestUserStatuses = "ENABLED"
+	SearchUsersRequestUserStatusesDisabled SearchUsersRequestUserStatuses = "DISABLED"
+	SearchUsersRequestUserStatusesDeleted  SearchUsersRequestUserStatuses = "DELETED"
 )
 
-func (e UserStatuses) ToPointer() *UserStatuses {
+func (e SearchUsersRequestUserStatuses) ToPointer() *SearchUsersRequestUserStatuses {
 	return &e
 }
-func (e *UserStatuses) UnmarshalJSON(data []byte) error {
+func (e *SearchUsersRequestUserStatuses) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -67,10 +67,10 @@ func (e *UserStatuses) UnmarshalJSON(data []byte) error {
 	case "DISABLED":
 		fallthrough
 	case "DELETED":
-		*e = UserStatuses(v)
+		*e = SearchUsersRequestUserStatuses(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for UserStatuses: %v", v)
+		return fmt.Errorf("invalid value for SearchUsersRequestUserStatuses: %v", v)
 	}
 }
 
@@ -95,7 +95,7 @@ type SearchUsersRequest struct {
 	// Search for users that have any of the role IDs on this list.
 	RoleIds []string `json:"roleIds,omitempty"`
 	// Search for users that have any of the statuses on this list. This can only be ENABLED, DISABLED, and DELETED
-	UserStatuses []UserStatuses `json:"userStatuses,omitempty"`
+	UserStatuses []SearchUsersRequestUserStatuses `json:"userStatuses,omitempty"`
 }
 
 func (o *SearchUsersRequest) GetEmail() *string {
@@ -161,7 +161,7 @@ func (o *SearchUsersRequest) GetRoleIds() []string {
 	return o.RoleIds
 }
 
-func (o *SearchUsersRequest) GetUserStatuses() []UserStatuses {
+func (o *SearchUsersRequest) GetUserStatuses() []SearchUsersRequestUserStatuses {
 	if o == nil {
 		return nil
 	}
