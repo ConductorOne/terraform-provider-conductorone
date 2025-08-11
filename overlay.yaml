@@ -464,16 +464,6 @@ actions:
   - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalog"]["properties"]["accessEntitlements"]
     update:
       x-speakeasy-ignore: true
-  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequest"]["properties"]["unenrollmentBehavior"]["enum"]
-    update:
-      - REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS
-      - REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL
-      - REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED
-
-  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequest"]["properties"]["unenrollmentEntitlementBehavior"]["enum"]
-    update:
-      - REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS
-      - REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE
   - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogExpandMask"]
     update:
       x-speakeasy-ignore: true
@@ -561,3 +551,13 @@ actions:
   - target: $["components"]["schemas"]["c1.api.policy.v1.Form"]
     update:
       x-speakeasy-type-override: any
+overrides:
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequest"]["properties"]["unenrollmentBehavior"]["enum"]
+    update:
+      - REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS
+      - REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL
+      - REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequest"]["properties"]["unenrollmentEntitlementBehavior"]["enum"]
+    update:
+      - REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS
+      - REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE
