@@ -49,7 +49,10 @@ func (r *AttributeResource) Schema(ctx context.Context, req resource.SchemaReque
 		MarkdownDescription: "Attribute Resource",
 		Attributes: map[string]schema.Attribute{
 			"attribute_type_id": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Description: `The ID of the AttributeType that this AttributeValue belongs to.`,
 			},
 			"created_at": schema.StringAttribute{
