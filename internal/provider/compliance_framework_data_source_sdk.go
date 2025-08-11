@@ -11,19 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *ComplianceFrameworkDataSourceModel) ToOperationsC1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
 func (r *ComplianceFrameworkDataSourceModel) RefreshFromSharedAttributeValue(ctx context.Context, resp *shared.AttributeValue) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -37,4 +24,17 @@ func (r *ComplianceFrameworkDataSourceModel) RefreshFromSharedAttributeValue(ctx
 	}
 
 	return diags
+}
+
+func (r *ComplianceFrameworkDataSourceModel) ToOperationsC1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest{
+		ID: id,
+	}
+
+	return &out, diags
 }

@@ -23,6 +23,7 @@ func NewAppEntitlementDataSource() datasource.DataSource {
 
 // AppEntitlementDataSource is the data source implementation.
 type AppEntitlementDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
@@ -726,6 +727,24 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 
 	if resp.Diagnostics.HasError() {
 		return
+	}
+	for {
+		res, err := res.Next()
+
+		if err != nil {
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			return
+		}
+
+		if res == nil {
+			break
+		}
+
+		resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.AppEntitlementSearchServiceSearchResponse.List[0].AppEntitlement)...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 
 	// Save updated data into Terraform state

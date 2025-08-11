@@ -23,6 +23,7 @@ func NewPolicyDataSource() datasource.DataSource {
 
 // PolicyDataSource is the data source implementation.
 type PolicyDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
