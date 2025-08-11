@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.621.3
+// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.673.2
 
 import (
 	"context"
@@ -51,6 +51,8 @@ func Pointer[T any](v T) *T { return &v }
 // ConductoroneAPI - ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
 type ConductoroneAPI struct {
 	SDKVersion                 string
+	AccessReview               *AccessReview
+	AccessReviewTemplate       *AccessReviewTemplate
 	AccessConflict             *AccessConflict
 	Apps                       *Apps
 	AppAccessRequestsDefaults  *AppAccessRequestsDefaults
@@ -192,9 +194,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.4.6",
+		SDKVersion: "1.5.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.4.6 2.621.3 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.5.0 2.673.2 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{
@@ -220,6 +222,8 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
 
+	sdk.AccessReview = newAccessReview(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AccessReviewTemplate = newAccessReviewTemplate(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccessConflict = newAccessConflict(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Apps = newApps(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppAccessRequestsDefaults = newAppAccessRequestsDefaults(sdk, sdk.sdkConfiguration, sdk.hooks)

@@ -58,8 +58,8 @@ type AutomationStep struct {
 	// The SendSlackMessage message.
 	//
 	// This message contains a oneof named channel. Only a single field of the following list may be set at a time:
-	//   - channelId
-	//   - channelIdCel
+	//   - channelName
+	//   - channelNameCel
 	//
 	SendSlackMessage *SendSlackMessage `json:"sendSlackMessage,omitempty"`
 	// The skipIfTrueCel field.

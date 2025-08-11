@@ -2,21 +2,21 @@
 
 package shared
 
-// Expanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type Expanded struct {
+// AppUserServiceListResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+type AppUserServiceListResponseExpanded struct {
 }
 
 // The AppUserServiceListResponse message.
 type AppUserServiceListResponse struct {
 	// The expanded field.
-	Expanded []Expanded `json:"expanded,omitempty"`
+	Expanded []AppUserServiceListResponseExpanded `json:"expanded,omitempty"`
 	// The list field.
 	List []AppUserView `json:"list,omitempty"`
 	// The nextPageToken field.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *AppUserServiceListResponse) GetExpanded() []Expanded {
+func (o *AppUserServiceListResponse) GetExpanded() []AppUserServiceListResponseExpanded {
 	if o == nil {
 		return nil
 	}

@@ -133,6 +133,1037 @@ components:
             title: Slack Notifications
             type: object
             x-speakeasy-name-override: SlackNotifications
+        c1.api.accessreview.v1.AccessReview:
+            description: |
+                The AccessReview message.
+
+                This message contains a oneof named setup_metadata. Only a single field of the following list may be set at a time:
+                  - singleApp
+                  - multiApp
+                  - bindings
+            properties:
+                accessReviewTemplateId:
+                    description: The ID of the template if the campaign was created from one
+                    readOnly: false
+                    type: string
+                autoResolve:
+                    description: The autoResolve field.
+                    readOnly: false
+                    type: boolean
+                bindings:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.BindingObjectSetup'
+                closedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                completionDate:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                connectorSourcesFrozenAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                createdById:
+                    description: The createdById field.
+                    readOnly: false
+                    type: string
+                defaultView:
+                    description: the default view that reviewers will see when they complete their access reviews
+                    enum:
+                        - ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED
+                        - ACCESS_REVIEW_VIEW_TYPE_BY_APP
+                        - ACCESS_REVIEW_VIEW_TYPE_BY_USER
+                        - ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                exclusionScope:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewExclusionScope'
+                expectedTicketCount:
+                    description: The expectedTicketCount field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                hasAccuracySupport:
+                    description: The hasAccuracySupport field.
+                    readOnly: false
+                    type: boolean
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+                inclusionScope:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewInclusionScope'
+                multiApp:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.MultiAppSetup'
+                notificationConfig:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.NotificationConfig'
+                policyId:
+                    description: The policyId field.
+                    readOnly: false
+                    type: string
+                reviewInstructions:
+                    description: The reviewInstructions field.
+                    readOnly: false
+                    type: string
+                scope:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewScope'
+                scopeV2:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewScopeV2'
+                scopingVersion:
+                    description: The scopingVersion field.
+                    format: int64
+                    readOnly: false
+                    type: string
+                singleApp:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.SingleAppSetup'
+                startedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                state:
+                    description: The state field.
+                    enum:
+                        - ACCESS_REVIEW_STATE_UNSPECIFIED
+                        - ACCESS_REVIEW_STATE_OPEN
+                        - ACCESS_REVIEW_STATE_CLOSED
+                        - ACCESS_REVIEW_STATE_PENDING
+                        - ACCESS_REVIEW_STATE_REVIEW
+                        - ACCESS_REVIEW_STATE_PREPARING
+                        - ACCESS_REVIEW_STATE_STARTING
+                        - ACCESS_REVIEW_STATE_DRAFT
+                        - ACCESS_REVIEW_STATE_DELETING
+                        - ACCESS_REVIEW_STATE_DELETED
+                        - ACCESS_REVIEW_STATE_RESETTING_POLICIES
+                        - ACCESS_REVIEW_STATE_COPYING_SETUP_ENTITLEMENTS
+                        - ACCESS_REVIEW_STATE_COPYING_RESOURCE_TYPE_SELECTIONS
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                updatedAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                usePolicyOverride:
+                    description: |-
+                        Determines the policy applied to the campaign. Default is false, using the campaign policy.
+                         If true, the order of precedence is entitlement → app → campaign policy.
+                    readOnly: false
+                    type: boolean
+            title: Access Review
+            type: object
+            x-speakeasy-entity: Access Review
+            x-speakeasy-name-override: AccessReview
+        c1.api.accessreview.v1.AccessReviewExclusionScope:
+            description: The AccessReviewExclusionScope message.
+            properties:
+                appUserStatuses:
+                    description: The appUserStatuses field.
+                    items:
+                        enum:
+                            - APP_USER_STATUS_UNSPECIFIED
+                            - APP_USER_STATUS_ENABLED
+                            - APP_USER_STATUS_DISABLED
+                            - APP_USER_STATUS_DELETED
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+                appUserTypes:
+                    description: The appUserTypes field.
+                    items:
+                        enum:
+                            - APP_USER_TYPE_UNSPECIFIED
+                            - APP_USER_TYPE_USER
+                            - APP_USER_TYPE_SERVICE_ACCOUNT
+                            - APP_USER_TYPE_SYSTEM_ACCOUNT
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Access Review Exclusion Scope
+            type: object
+            x-speakeasy-name-override: AccessReviewExclusionScope
+        c1.api.accessreview.v1.AccessReviewExpandMask:
+            description: The AccessReviewExpandMask message.
+            properties:
+                paths:
+                    description: The paths field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Access Review Expand Mask
+            type: object
+            x-speakeasy-name-override: AccessReviewExpandMask
+        c1.api.accessreview.v1.AccessReviewInclusionScope:
+            description: The AccessReviewInclusionScope message.
+            properties:
+                appUserStatuses:
+                    description: The appUserStatuses field.
+                    items:
+                        enum:
+                            - APP_USER_STATUS_UNSPECIFIED
+                            - APP_USER_STATUS_ENABLED
+                            - APP_USER_STATUS_DISABLED
+                            - APP_USER_STATUS_DELETED
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+                appUserTypes:
+                    description: The appUserTypes field.
+                    items:
+                        enum:
+                            - APP_USER_TYPE_UNSPECIFIED
+                            - APP_USER_TYPE_USER
+                            - APP_USER_TYPE_SERVICE_ACCOUNT
+                            - APP_USER_TYPE_SYSTEM_ACCOUNT
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+                managerIds:
+                    description: The managerIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                multiUserProfileAttributes:
+                    additionalProperties:
+                        $ref: '#/components/schemas/c1.api.accessreview.v1.IncludedUserAttributeValues'
+                    description: The multiUserProfileAttributes field.
+                    readOnly: false
+                    type: object
+                noAccountOwners:
+                    description: The noAccountOwners field.
+                    readOnly: false
+                    type: boolean
+                userIds:
+                    description: The userIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                userStatuses:
+                    description: The userStatuses field.
+                    items:
+                        enum:
+                            - USER_UNKNOWN
+                            - USER_ENABLED
+                            - USER_DISABLED
+                            - USER_DELETED
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Access Review Inclusion Scope
+            type: object
+            x-speakeasy-name-override: AccessReviewInclusionScope
+        c1.api.accessreview.v1.AccessReviewScope:
+            description: The AccessReviewScope message.
+            properties:
+                appUserStatuses:
+                    description: The appUserStatuses field.
+                    items:
+                        enum:
+                            - APP_USER_STATUS_UNSPECIFIED
+                            - APP_USER_STATUS_ENABLED
+                            - APP_USER_STATUS_DISABLED
+                            - APP_USER_STATUS_DELETED
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+                appUserTypes:
+                    description: The appUserTypes field.
+                    items:
+                        enum:
+                            - APP_USER_TYPE_UNSPECIFIED
+                            - APP_USER_TYPE_USER
+                            - APP_USER_TYPE_SERVICE_ACCOUNT
+                            - APP_USER_TYPE_SYSTEM_ACCOUNT
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Access Review Scope
+            type: object
+            x-speakeasy-name-override: AccessReviewScope
+        c1.api.accessreview.v1.AccessReviewScopeV2:
+            description: |
+                The AccessReviewScopeV2 message.
+
+                This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
+                  - appAccess
+                  - specificResources
+                  - appSelectionCriteria
+                  - resourceTypeSelections
+
+
+                This message contains a oneof named users_scope. Only a single field of the following list may be set at a time:
+                  - allUsers
+                  - selectedUsers
+                  - userCriteria
+
+
+                This message contains a oneof named accounts_scope. Only a single field of the following list may be set at a time:
+                  - allAccounts
+                  - accountCriteria
+
+
+                This message contains a oneof named grants_scope. Only a single field of the following list may be set at a time:
+                  - allGrants
+                  - grantsByCriteria
+            properties:
+                accountCriteria:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccountCriteriaScope'
+                allAccounts:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AllAccountsScope'
+                allGrants:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AllGrantsScope'
+                allUsers:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AllUsersScope'
+                appAccess:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.ApplicationAccessScope'
+                appSelectionCriteria:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AppSelectionCriteriaScope'
+                grantsByCriteria:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.GrantsByCriteriaScope'
+                resourceTypeSelections:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.ResourceTypeSelectionScope'
+                selectedUsers:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.SelectedUsersScope'
+                specificResources:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.SpecificResourcesScope'
+                userCriteria:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.UserCriteriaScope'
+            title: Access Review Scope V 2
+            type: object
+            x-speakeasy-name-override: AccessReviewScopeV2
+        c1.api.accessreview.v1.AccessReviewServiceCreateRequest:
+            description: The AccessReviewServiceCreateRequest message.
+            properties:
+                completionDate:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                duplicateFrom:
+                    description: The duplicateFrom field.
+                    readOnly: false
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewExpandMask'
+                notificationConfig:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.NotificationConfig'
+                ownerIds:
+                    description: The ownerIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                policyId:
+                    description: The policyId field.
+                    readOnly: false
+                    type: string
+            title: Access Review Service Create Request
+            type: object
+            x-speakeasy-name-override: AccessReviewServiceCreateRequest
+        c1.api.accessreview.v1.AccessReviewServiceCreateResponse:
+            description: The AccessReviewServiceCreateResponse message.
+            properties:
+                accessReview:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewView'
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties: true
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        readOnly: false
+                        type: object
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Access Review Service Create Response
+            type: object
+            x-speakeasy-name-override: AccessReviewServiceCreateResponse
+        c1.api.accessreview.v1.AccessReviewServiceDeleteRequestInput:
+            description: The AccessReviewServiceDeleteRequest message.
+            title: Access Review Service Delete Request
+            type: object
+            x-speakeasy-name-override: AccessReviewServiceDeleteRequest
+        c1.api.accessreview.v1.AccessReviewServiceDeleteResponse:
+            description: The AccessReviewServiceDeleteResponse message.
+            title: Access Review Service Delete Response
+            type: object
+            x-speakeasy-name-override: AccessReviewServiceDeleteResponse
+        c1.api.accessreview.v1.AccessReviewServiceGetResponse:
+            description: The AccessReviewServiceGetResponse message.
+            properties:
+                accessReview:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewView'
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties: true
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        readOnly: false
+                        type: object
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Access Review Service Get Response
+            type: object
+            x-speakeasy-name-override: AccessReviewServiceGetResponse
+        c1.api.accessreview.v1.AccessReviewServiceUpdateRequestInput:
+            description: The AccessReviewServiceUpdateRequest message.
+            properties:
+                accessReview:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReview'
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewExpandMask'
+                updateMask:
+                    nullable: true
+                    readOnly: false
+                    type: string
+            title: Access Review Service Update Request
+            type: object
+            x-speakeasy-name-override: AccessReviewServiceUpdateRequest
+        c1.api.accessreview.v1.AccessReviewServiceUpdateResponse:
+            description: The AccessReviewServiceUpdateResponse message.
+            properties:
+                accessReview:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewView'
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties: true
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        readOnly: false
+                        type: object
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Access Review Service Update Response
+            type: object
+            x-speakeasy-name-override: AccessReviewServiceUpdateResponse
+        c1.api.accessreview.v1.AccessReviewTemplate:
+            description: |
+                The AccessReviewTemplate message.
+
+                This message contains a oneof named slack_channel_details. Only a single field of the following list may be set at a time:
+                  - slackChannel
+            properties:
+                accessReviewDuration:
+                    format: duration
+                    readOnly: false
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                defaultView:
+                    description: The defaultView field.
+                    enum:
+                        - ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED
+                        - ACCESS_REVIEW_VIEW_TYPE_BY_APP
+                        - ACCESS_REVIEW_VIEW_TYPE_BY_USER
+                        - ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                deletedAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+                inclusionScope:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewInclusionScope'
+                isCampaignScheduleEnabled:
+                    description: The isCampaignScheduleEnabled field.
+                    readOnly: false
+                    type: boolean
+                nextScheduledCampaignAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                notificationConfig:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.NotificationConfig'
+                occurrences:
+                    description: The occurrences field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                policyId:
+                    description: The policyId field.
+                    readOnly: false
+                    type: string
+                recurrenceRule:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.RecurrenceRule'
+                reviewInstructions:
+                    description: The reviewInstructions field.
+                    readOnly: false
+                    type: string
+                scope:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewScopeV2'
+                slackChannel:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.SlackChannel'
+                updatedAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                usePolicyOverride:
+                    description: The usePolicyOverride field.
+                    readOnly: false
+                    type: boolean
+            title: Access Review Template
+            type: object
+            x-speakeasy-entity: Access Review Template
+            x-speakeasy-name-override: AccessReviewTemplate
+        c1.api.accessreview.v1.AccessReviewTemplateServiceCreateRequest:
+            description: The AccessReviewTemplateServiceCreateRequest message.
+            properties:
+                accessReviewDuration:
+                    format: duration
+                    readOnly: false
+                    type: string
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                notificationConfig:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.NotificationConfig'
+                ownerIds:
+                    description: The ownerIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                policyId:
+                    description: The policyId field.
+                    readOnly: false
+                    type: string
+            title: Access Review Template Service Create Request
+            type: object
+            x-speakeasy-name-override: AccessReviewTemplateServiceCreateRequest
+        c1.api.accessreview.v1.AccessReviewTemplateServiceCreateResponse:
+            description: The AccessReviewTemplateServiceCreateResponse message.
+            properties:
+                accessReviewTemplate:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplate'
+            title: Access Review Template Service Create Response
+            type: object
+            x-speakeasy-name-override: AccessReviewTemplateServiceCreateResponse
+        c1.api.accessreview.v1.AccessReviewTemplateServiceDeleteRequestInput:
+            description: The AccessReviewTemplateServiceDeleteRequest message.
+            title: Access Review Template Service Delete Request
+            type: object
+            x-speakeasy-name-override: AccessReviewTemplateServiceDeleteRequest
+        c1.api.accessreview.v1.AccessReviewTemplateServiceDeleteResponse:
+            description: The AccessReviewTemplateServiceDeleteResponse message.
+            title: Access Review Template Service Delete Response
+            type: object
+            x-speakeasy-name-override: AccessReviewTemplateServiceDeleteResponse
+        c1.api.accessreview.v1.AccessReviewTemplateServiceGetResponse:
+            description: The AccessReviewTemplateServiceGetResponse message.
+            properties:
+                accessReviewTemplate:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplate'
+            title: Access Review Template Service Get Response
+            type: object
+            x-speakeasy-name-override: AccessReviewTemplateServiceGetResponse
+        c1.api.accessreview.v1.AccessReviewTemplateServiceUpdateRequestInput:
+            description: The AccessReviewTemplateServiceUpdateRequest message.
+            properties:
+                accessReviewTemplate:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplate'
+                updateMask:
+                    nullable: true
+                    readOnly: false
+                    type: string
+            title: Access Review Template Service Update Request
+            type: object
+            x-speakeasy-name-override: AccessReviewTemplateServiceUpdateRequest
+        c1.api.accessreview.v1.AccessReviewTemplateServiceUpdateResponse:
+            description: The AccessReviewTemplateServiceUpdateResponse message.
+            properties:
+                accessReviewTemplate:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplate'
+            title: Access Review Template Service Update Response
+            type: object
+            x-speakeasy-name-override: AccessReviewTemplateServiceUpdateResponse
+        c1.api.accessreview.v1.AccessReviewView:
+            description: The AccessReviewView message.
+            properties:
+                accessReview:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReview'
+                createdByUserPath:
+                    description: The createdByUserPath field.
+                    readOnly: false
+                    type: string
+                objectPermissions:
+                    $ref: '#/components/schemas/c1.api.iam.v1.ActorObjectPermissions'
+                policyPath:
+                    description: The policyPath field.
+                    readOnly: false
+                    type: string
+            title: Access Review View
+            type: object
+            x-speakeasy-name-override: AccessReviewView
+        c1.api.accessreview.v1.AccountCriteriaScope:
+            description: The AccountCriteriaScope message.
+            nullable: true
+            properties:
+                accountTypes:
+                    description: The accountTypes field.
+                    items:
+                        enum:
+                            - APP_USER_TYPE_UNSPECIFIED
+                            - APP_USER_TYPE_USER
+                            - APP_USER_TYPE_SERVICE_ACCOUNT
+                            - APP_USER_TYPE_SYSTEM_ACCOUNT
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+                appUserStatuses:
+                    description: The appUserStatuses field.
+                    items:
+                        enum:
+                            - APP_USER_STATUS_UNSPECIFIED
+                            - APP_USER_STATUS_ENABLED
+                            - APP_USER_STATUS_DISABLED
+                            - APP_USER_STATUS_DELETED
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+                noAccountOwner:
+                    description: The noAccountOwner field.
+                    readOnly: false
+                    type: boolean
+            title: Account Criteria Scope
+            type: object
+            x-speakeasy-name-override: AccountCriteriaScope
+        c1.api.accessreview.v1.AllAccountsScope:
+            description: The AllAccountsScope message.
+            nullable: true
+            title: All Accounts Scope
+            type: object
+            x-speakeasy-name-override: AllAccountsScope
+        c1.api.accessreview.v1.AllGrantsScope:
+            description: The AllGrantsScope message.
+            nullable: true
+            title: All Grants Scope
+            type: object
+            x-speakeasy-name-override: AllGrantsScope
+        c1.api.accessreview.v1.AllUsersScope:
+            description: The AllUsersScope message.
+            nullable: true
+            title: All Users Scope
+            type: object
+            x-speakeasy-name-override: AllUsersScope
+        c1.api.accessreview.v1.AppSelectionCriteriaScope:
+            description: The AppSelectionCriteriaScope message.
+            nullable: true
+            title: App Selection Criteria Scope
+            type: object
+            x-speakeasy-name-override: AppSelectionCriteriaScope
+        c1.api.accessreview.v1.ApplicationAccessScope:
+            description: The ApplicationAccessScope message.
+            nullable: true
+            title: Application Access Scope
+            type: object
+            x-speakeasy-name-override: ApplicationAccessScope
+        c1.api.accessreview.v1.BindingObjectSetup:
+            description: The BindingObjectSetup message.
+            nullable: true
+            title: Binding Object Setup
+            type: object
+            x-speakeasy-name-override: BindingObjectSetup
+        c1.api.accessreview.v1.CampaignEntitlementDetails:
+            description: The CampaignEntitlementDetails message.
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                entitlementId:
+                    description: The entitlementId field.
+                    readOnly: false
+                    type: string
+                policyId:
+                    description: The policyId field.
+                    readOnly: false
+                    type: string
+            title: Campaign Entitlement Details
+            type: object
+            x-speakeasy-name-override: CampaignEntitlementDetails
+        c1.api.accessreview.v1.EntitlementToDetails:
+            description: The EntitlementToDetails message.
+            properties:
+                entitlementDetails:
+                    additionalProperties:
+                        $ref: '#/components/schemas/c1.api.accessreview.v1.CampaignEntitlementDetails'
+                    description: The entitlementDetails field.
+                    readOnly: false
+                    type: object
+            title: Entitlement To Details
+            type: object
+            x-speakeasy-name-override: EntitlementToDetails
+        c1.api.accessreview.v1.GrantAccessProfileFilter:
+            description: The GrantAccessProfileFilter message.
+            properties:
+                excludedAccessProfileIds:
+                    description: List of access profiles to exclude if type is EXCLUDE_SPECIFIC
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                filterType:
+                    description: The filterType field.
+                    enum:
+                        - ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED
+                        - ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL
+                        - ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL
+                        - ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Grant Access Profile Filter
+            type: object
+            x-speakeasy-name-override: GrantAccessProfileFilter
+        c1.api.accessreview.v1.GrantsAddedBetween:
+            description: The GrantsAddedBetween message.
+            nullable: true
+            properties:
+                endDate:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                startDate:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Grants Added Between
+            type: object
+            x-speakeasy-name-override: GrantsAddedBetween
+        c1.api.accessreview.v1.GrantsByCriteriaScope:
+            description: |
+                The GrantsByCriteriaScope message.
+
+                This message contains a oneof named criteria_filter. Only a single field of the following list may be set at a time:
+                  - daysSinceAdded
+                  - daysSinceReviewed
+                  - grantsAddedBetween
+            nullable: true
+            properties:
+                accessProfileFilter:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.GrantAccessProfileFilter'
+                daysSinceAdded:
+                    format: duration
+                    readOnly: false
+                    type: string
+                daysSinceLastUsed:
+                    format: duration
+                    readOnly: false
+                    type: string
+                daysSinceReviewed:
+                    format: duration
+                    readOnly: false
+                    type: string
+                grantsAddedBetween:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.GrantsAddedBetween'
+                sourceFilter:
+                    description: The sourceFilter field.
+                    enum:
+                        - GRANT_SOURCE_FILTER_UNSPECIFIED
+                        - GRANT_SOURCE_FILTER_DIRECT
+                        - GRANT_SOURCE_FILTER_INHERITED
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                typeFilter:
+                    description: The typeFilter field.
+                    enum:
+                        - GRANT_FILTER_TYPE_UNSPECIFIED
+                        - GRANT_FILTER_TYPE_PERMANENT
+                        - GRANT_FILTER_TYPE_TEMPORARY
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Grants By Criteria Scope
+            type: object
+            x-speakeasy-name-override: GrantsByCriteriaScope
+        c1.api.accessreview.v1.IncludedUserAttributeValue:
+            description: The IncludedUserAttributeValue message.
+            properties:
+                value:
+                    description: The value field.
+                    readOnly: false
+                    type: string
+            title: Included User Attribute Value
+            type: object
+            x-speakeasy-name-override: IncludedUserAttributeValue
+        c1.api.accessreview.v1.IncludedUserAttributeValues:
+            description: The IncludedUserAttributeValues message.
+            properties:
+                values:
+                    description: The values field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.accessreview.v1.IncludedUserAttributeValue'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Included User Attribute Values
+            type: object
+            x-speakeasy-name-override: IncludedUserAttributeValues
+        c1.api.accessreview.v1.MultiAppEntitlement:
+            description: The MultiAppEntitlement message.
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                entitlementIds:
+                    description: The entitlementIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Multi App Entitlement
+            type: object
+            x-speakeasy-name-override: MultiAppEntitlement
+        c1.api.accessreview.v1.MultiAppSetup:
+            description: The MultiAppSetup message.
+            nullable: true
+            properties:
+                appEntitlementDetails:
+                    additionalProperties:
+                        $ref: '#/components/schemas/c1.api.accessreview.v1.EntitlementToDetails'
+                    description: The appEntitlementDetails field.
+                    readOnly: false
+                    type: object
+                appEntitlements:
+                    additionalProperties:
+                        $ref: '#/components/schemas/c1.api.accessreview.v1.MultiAppEntitlement'
+                    description: The appEntitlements field.
+                    readOnly: false
+                    type: object
+            title: Multi App Setup
+            type: object
+            x-speakeasy-name-override: MultiAppSetup
+        c1.api.accessreview.v1.NotificationConfig:
+            description: The NotificationConfig message.
+            properties:
+                sendReminders:
+                    description: The sendReminders field.
+                    readOnly: false
+                    type: boolean
+            title: Notification Config
+            type: object
+            x-speakeasy-name-override: NotificationConfig
+        c1.api.accessreview.v1.RecurrenceRule:
+            description: |
+                The RecurrenceRule message.
+
+                This message contains a oneof named end_condition. Only a single field of the following list may be set at a time:
+                  - endDate
+                  - occurrences
+            properties:
+                endDate:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                frequency:
+                    description: The frequency field.
+                    enum:
+                        - FREQUENCY_UNSPECIFIED
+                        - FREQUENCY_NONE
+                        - FREQUENCY_DAILY
+                        - FREQUENCY_WEEKLY
+                        - FREQUENCY_MONTHLY
+                        - FREQUENCY_YEARLY
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                interval:
+                    description: The interval field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                occurrences:
+                    description: |-
+                        The occurrences field.
+                        This field is part of the `end_condition` oneof.
+                        See the documentation for `c1.api.accessreview.v1.RecurrenceRule` for more details.
+                    format: int32
+                    nullable: true
+                    readOnly: false
+                    type: integer
+                startDate:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Recurrence Rule
+            type: object
+            x-speakeasy-name-override: RecurrenceRule
+        c1.api.accessreview.v1.ResourceTypeSelectionScope:
+            description: The ResourceTypeSelectionScope message.
+            nullable: true
+            title: Resource Type Selection Scope
+            type: object
+            x-speakeasy-name-override: ResourceTypeSelectionScope
+        c1.api.accessreview.v1.SelectedUsersScope:
+            description: The SelectedUsersScope message.
+            nullable: true
+            properties:
+                userIds:
+                    description: The userIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Selected Users Scope
+            type: object
+            x-speakeasy-name-override: SelectedUsersScope
+        c1.api.accessreview.v1.SingleAppSetup:
+            description: The SingleAppSetup message.
+            nullable: true
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+            title: Single App Setup
+            type: object
+            x-speakeasy-name-override: SingleAppSetup
+        c1.api.accessreview.v1.SlackChannel:
+            description: The SlackChannel message.
+            nullable: true
+            properties:
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                name:
+                    description: The name field.
+                    readOnly: false
+                    type: string
+            title: Slack Channel
+            type: object
+            x-speakeasy-name-override: SlackChannel
+        c1.api.accessreview.v1.SpecificResourcesScope:
+            description: The SpecificResourcesScope message.
+            nullable: true
+            title: Specific Resources Scope
+            type: object
+            x-speakeasy-name-override: SpecificResourcesScope
+        c1.api.accessreview.v1.UserCriteriaScope:
+            description: The UserCriteriaScope message.
+            nullable: true
+            properties:
+                groupAppEntitlementsRef:
+                    description: The groupAppEntitlementsRef field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                managerUserIds:
+                    description: The managerUserIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                multiUserProfileAttributes:
+                    additionalProperties:
+                        $ref: '#/components/schemas/c1.api.accessreview.v1.IncludedUserAttributeValues'
+                    description: The multiUserProfileAttributes field.
+                    readOnly: false
+                    type: object
+                userStatus:
+                    description: The userStatus field.
+                    items:
+                        enum:
+                            - UNKNOWN
+                            - ENABLED
+                            - DISABLED
+                            - DELETED
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: User Criteria Scope
+            type: object
+            x-speakeasy-name-override: UserCriteriaScope
         c1.api.app.v1.AddAppEntitlementOwnerRequestInput:
             description: The request message for adding an app entitlement owner.
             properties:
@@ -5765,25 +6796,25 @@ components:
                 The SendSlackMessage message.
 
                 This message contains a oneof named channel. Only a single field of the following list may be set at a time:
-                  - channelId
-                  - channelIdCel
+                  - channelName
+                  - channelNameCel
             nullable: true
             properties:
                 body:
                     description: The body field.
                     readOnly: false
                     type: string
-                channelId:
+                channelName:
                     description: |-
-                        The channelId field.
+                        The channelName field.
                         This field is part of the `channel` oneof.
                         See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
                     nullable: true
                     readOnly: false
                     type: string
-                channelIdCel:
+                channelNameCel:
                     description: |-
-                        The channelIdCel field.
+                        The channelNameCel field.
                         This field is part of the `channel` oneof.
                         See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
                     nullable: true
@@ -6504,6 +7535,30 @@ components:
             title: Text Field
             type: object
             x-speakeasy-name-override: TextField
+        c1.api.iam.v1.ActorObjectPermissions:
+            description: The ActorObjectPermissions message.
+            properties:
+                delete:
+                    description: The delete field.
+                    readOnly: false
+                    type: boolean
+                edit:
+                    description: The edit field.
+                    readOnly: false
+                    type: boolean
+                extra:
+                    additionalProperties:
+                        type: boolean
+                    description: The extra field.
+                    readOnly: false
+                    type: object
+                read:
+                    description: The read field.
+                    readOnly: false
+                    type: boolean
+            title: Actor Object Permissions
+            type: object
+            x-speakeasy-name-override: ActorObjectPermissions
         c1.api.iam.v1.GetRolesResponse:
             description: The GetRolesResponse message contains the retrieved role.
             properties:
@@ -15440,6 +16495,226 @@ info:
     version: 0.1.0-alpha
 openapi: 3.1.0
 paths:
+    /api/v1/access_review:
+        post:
+            description: Invokes the c1.api.accessreview.v1.AccessReviewService.Create method.
+            operationId: c1.api.accessreview.v1.AccessReviewService.Create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewServiceCreateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewServiceCreateResponse'
+                    description: Successful response
+            summary: Create
+            tags:
+                - Access Review
+            x-speakeasy-entity-operation:
+                terraform-resource: Access Review#create
+            x-speakeasy-group: AccessReview
+            x-speakeasy-name-override: Create
+    /api/v1/access_review/{id}:
+        delete:
+            description: Invokes the c1.api.accessreview.v1.AccessReviewService.Delete method.
+            operationId: c1.api.accessreview.v1.AccessReviewService.Delete
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewServiceDeleteRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewServiceDeleteResponse'
+                    description: Successful response
+            summary: Delete
+            tags:
+                - Access Review
+            x-speakeasy-entity-operation:
+                terraform-resource: Access Review#delete
+            x-speakeasy-group: AccessReview
+            x-speakeasy-name-override: Delete
+        get:
+            description: Invokes the c1.api.accessreview.v1.AccessReviewService.Get method.
+            operationId: c1.api.accessreview.v1.AccessReviewService.Get
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewServiceGetResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Access Review
+            x-speakeasy-entity-operation:
+                terraform-datasource: Access Review#read
+                terraform-resource: Access Review#read
+            x-speakeasy-group: AccessReview
+            x-speakeasy-name-override: Get
+        post:
+            description: Invokes the c1.api.accessreview.v1.AccessReviewService.Update method.
+            operationId: c1.api.accessreview.v1.AccessReviewService.Update
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewServiceUpdateRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewServiceUpdateResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - Access Review
+            x-speakeasy-entity-operation:
+                terraform-resource: Access Review#update
+            x-speakeasy-group: AccessReview
+            x-speakeasy-name-override: Update
+    /api/v1/access_review_template:
+        post:
+            description: Invokes the c1.api.accessreview.v1.AccessReviewTemplateService.Create method.
+            operationId: c1.api.accessreview.v1.AccessReviewTemplateService.Create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplateServiceCreateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplateServiceCreateResponse'
+                    description: Successful response
+            summary: Create
+            tags:
+                - Access Review Template
+            x-speakeasy-entity-operation:
+                terraform-resource: Access Review Template#create
+            x-speakeasy-group: AccessReviewTemplate
+            x-speakeasy-name-override: Create
+    /api/v1/access_review_template/{id}:
+        delete:
+            description: Invokes the c1.api.accessreview.v1.AccessReviewTemplateService.Delete method.
+            operationId: c1.api.accessreview.v1.AccessReviewTemplateService.Delete
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplateServiceDeleteRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplateServiceDeleteResponse'
+                    description: Successful response
+            summary: Delete
+            tags:
+                - Access Review Template
+            x-speakeasy-entity-operation:
+                terraform-resource: Access Review Template#delete
+            x-speakeasy-group: AccessReviewTemplate
+            x-speakeasy-name-override: Delete
+        get:
+            description: Invokes the c1.api.accessreview.v1.AccessReviewTemplateService.Get method.
+            operationId: c1.api.accessreview.v1.AccessReviewTemplateService.Get
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplateServiceGetResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Access Review Template
+            x-speakeasy-entity-operation:
+                terraform-datasource: Access Review Template#read
+                terraform-resource: Access Review Template#read
+            x-speakeasy-group: AccessReviewTemplate
+            x-speakeasy-name-override: Get
+        post:
+            description: Invokes the c1.api.accessreview.v1.AccessReviewTemplateService.Update method.
+            operationId: c1.api.accessreview.v1.AccessReviewTemplateService.Update
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplateServiceUpdateRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplateServiceUpdateResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - Access Review Template
+            x-speakeasy-entity-operation:
+                terraform-resource: Access Review Template#update
+            x-speakeasy-group: AccessReviewTemplate
+            x-speakeasy-name-override: Update
     /api/v1/accessconflict:
         post:
             description: Invokes the c1.api.accessconflict.v1.AccessConflictService.CreateMonitor method.

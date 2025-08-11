@@ -30,6 +30,7 @@ func NewConnectorCredentialResource() resource.Resource {
 
 // ConnectorCredentialResource defines the resource implementation.
 type ConnectorCredentialResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
@@ -370,7 +371,7 @@ func (r *ConnectorCredentialResource) ImportState(ctx context.Context, req resou
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_id": "",  "connector_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"app_id": "", "connector_id": "", "id": ""}': `+err.Error())
 		return
 	}
 
@@ -389,5 +390,4 @@ func (r *ConnectorCredentialResource) ImportState(ctx context.Context, req resou
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }
