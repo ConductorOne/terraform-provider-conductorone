@@ -11,6 +11,121 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceAddAppEntitlementsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+	}
+
+	return diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.AppEntitlements != nil {
+			r.AppEntitlements = []tfTypes.AppEntitlementRef{}
+
+			for _, appEntitlementsItem := range resp.AppEntitlements {
+				var appEntitlements tfTypes.AppEntitlementRef
+
+				appEntitlements.AppID = types.StringPointerValue(appEntitlementsItem.AppID)
+				appEntitlements.ID = types.StringPointerValue(appEntitlementsItem.ID)
+
+				r.AppEntitlements = append(r.AppEntitlements, appEntitlements)
+			}
+		}
+	}
+
+	return diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceUpdateAppEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceUpdateAppEntitlementsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+	}
+
+	return diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var catalogID string
+	catalogID = r.CatalogID.ValueString()
+
+	requestCatalogManagementServiceAddAppEntitlementsRequest, requestCatalogManagementServiceAddAppEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest(ctx)
+	diags.Append(requestCatalogManagementServiceAddAppEntitlementsRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceAddAppEntitlementsRequest: requestCatalogManagementServiceAddAppEntitlementsRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var catalogID string
+	catalogID = r.CatalogID.ValueString()
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest{
+		CatalogID: catalogID,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var catalogID string
+	catalogID = r.CatalogID.ValueString()
+
+	requestCatalogManagementServiceRemoveAppEntitlementsRequest, requestCatalogManagementServiceRemoveAppEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx)
+	diags.Append(requestCatalogManagementServiceRemoveAppEntitlementsRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceRemoveAppEntitlementsRequest: requestCatalogManagementServiceRemoveAppEntitlementsRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var catalogID string
+	catalogID = r.CatalogID.ValueString()
+
+	requestCatalogManagementServiceUpdateAppEntitlementsRequest, requestCatalogManagementServiceUpdateAppEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceUpdateAppEntitlementsRequest(ctx)
+	diags.Append(requestCatalogManagementServiceUpdateAppEntitlementsRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest{
+		CatalogID: catalogID,
+		RequestCatalogManagementServiceUpdateAppEntitlementsRequest: requestCatalogManagementServiceUpdateAppEntitlementsRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceAddAppEntitlementsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -50,22 +165,33 @@ func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogMan
 	return &out, diags
 }
 
-func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest, diag.Diagnostics) {
+func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var catalogID string
-	catalogID = r.CatalogID.ValueString()
-
-	requestCatalogManagementServiceAddAppEntitlementsRequest, requestCatalogManagementServiceAddAppEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceAddAppEntitlementsRequest(ctx)
-	diags.Append(requestCatalogManagementServiceAddAppEntitlementsRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
+	var appEntitlements []shared.AppEntitlementRef
+	if r.AppEntitlements != nil {
+		appEntitlements = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlements))
+		for _, appEntitlementsItem := range r.AppEntitlements {
+			appID := new(string)
+			if !appEntitlementsItem.AppID.IsUnknown() && !appEntitlementsItem.AppID.IsNull() {
+				*appID = appEntitlementsItem.AppID.ValueString()
+			} else {
+				appID = nil
+			}
+			id := new(string)
+			if !appEntitlementsItem.ID.IsUnknown() && !appEntitlementsItem.ID.IsNull() {
+				*id = appEntitlementsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			appEntitlements = append(appEntitlements, shared.AppEntitlementRef{
+				AppID: appID,
+				ID:    id,
+			})
+		}
 	}
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest{
-		CatalogID: catalogID,
-		RequestCatalogManagementServiceAddAppEntitlementsRequest: requestCatalogManagementServiceAddAppEntitlementsRequest,
+	out := shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest{
+		AppEntitlements: appEntitlements,
 	}
 
 	return &out, diags
@@ -101,135 +227,4 @@ func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogMan
 	}
 
 	return &out, diags
-}
-
-func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var catalogID string
-	catalogID = r.CatalogID.ValueString()
-
-	requestCatalogManagementServiceUpdateAppEntitlementsRequest, requestCatalogManagementServiceUpdateAppEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceUpdateAppEntitlementsRequest(ctx)
-	diags.Append(requestCatalogManagementServiceUpdateAppEntitlementsRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest{
-		CatalogID: catalogID,
-		RequestCatalogManagementServiceUpdateAppEntitlementsRequest: requestCatalogManagementServiceUpdateAppEntitlementsRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var appEntitlements []shared.AppEntitlementRef
-	if r.AppEntitlements != nil {
-		appEntitlements = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlements))
-		for _, appEntitlementsItem := range r.AppEntitlements {
-			appID := new(string)
-			if !appEntitlementsItem.AppID.IsUnknown() && !appEntitlementsItem.AppID.IsNull() {
-				*appID = appEntitlementsItem.AppID.ValueString()
-			} else {
-				appID = nil
-			}
-			id := new(string)
-			if !appEntitlementsItem.ID.IsUnknown() && !appEntitlementsItem.ID.IsNull() {
-				*id = appEntitlementsItem.ID.ValueString()
-			} else {
-				id = nil
-			}
-			appEntitlements = append(appEntitlements, shared.AppEntitlementRef{
-				AppID: appID,
-				ID:    id,
-			})
-		}
-	}
-	out := shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest{
-		AppEntitlements: appEntitlements,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var catalogID string
-	catalogID = r.CatalogID.ValueString()
-
-	requestCatalogManagementServiceRemoveAppEntitlementsRequest, requestCatalogManagementServiceRemoveAppEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx)
-	diags.Append(requestCatalogManagementServiceRemoveAppEntitlementsRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest{
-		CatalogID: catalogID,
-		RequestCatalogManagementServiceRemoveAppEntitlementsRequest: requestCatalogManagementServiceRemoveAppEntitlementsRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var catalogID string
-	catalogID = r.CatalogID.ValueString()
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest{
-		CatalogID: catalogID,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceAddAppEntitlementsResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-	}
-
-	return diags
-}
-
-func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.AppEntitlements != nil {
-			r.AppEntitlements = []tfTypes.AppEntitlementRef{}
-			if len(r.AppEntitlements) > len(resp.AppEntitlements) {
-				r.AppEntitlements = r.AppEntitlements[:len(resp.AppEntitlements)]
-			}
-			for appEntitlementsCount, appEntitlementsItem := range resp.AppEntitlements {
-				var appEntitlements tfTypes.AppEntitlementRef
-				appEntitlements.AppID = types.StringPointerValue(appEntitlementsItem.AppID)
-				appEntitlements.ID = types.StringPointerValue(appEntitlementsItem.ID)
-				if appEntitlementsCount+1 > len(r.AppEntitlements) {
-					r.AppEntitlements = append(r.AppEntitlements, appEntitlements)
-				} else {
-					r.AppEntitlements[appEntitlementsCount].AppID = appEntitlements.AppID
-					r.AppEntitlements[appEntitlementsCount].ID = appEntitlements.ID
-				}
-			}
-		}
-	}
-
-	return diags
-}
-
-func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceUpdateAppEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceUpdateAppEntitlementsResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-	}
-
-	return diags
 }

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -23,6 +24,7 @@ func NewAppEntitlementDataSource() datasource.DataSource {
 
 // AppEntitlementDataSource is the data source implementation.
 type AppEntitlementDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
@@ -72,6 +74,7 @@ type AppEntitlementDataSourceModel struct {
 	Purpose                        types.String                         `tfsdk:"purpose"`
 	Query                          types.String                         `tfsdk:"query"`
 	Refs                           []tfTypes.AppEntitlementRef          `tfsdk:"refs"`
+	RequestSchemaID                types.String                         `tfsdk:"request_schema_id"`
 	ResourceIds                    []types.String                       `tfsdk:"resource_ids"`
 	ResourceTraitIds               []types.String                       `tfsdk:"resource_trait_ids"`
 	ResourceTypeIds                []types.String                       `tfsdk:"resource_type_ids"`
@@ -274,6 +277,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
 					},
 					"multi_step": schema.StringAttribute{
+						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
 						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
 					},
@@ -553,6 +557,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
 					},
 					"multi_step": schema.StringAttribute{
+						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
 						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
 					},
@@ -605,6 +610,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 					},
 				},
 				Description: `The refs field.`,
+			},
+			"request_schema_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The ID of the request schema associated with this app entitlement.`,
 			},
 			"resource_ids": schema.ListAttribute{
 				Optional:    true,
@@ -726,6 +735,24 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 
 	if resp.Diagnostics.HasError() {
 		return
+	}
+	for {
+		res, err := res.Next()
+
+		if err != nil {
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			return
+		}
+
+		if res == nil {
+			break
+		}
+
+		resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.AppEntitlementSearchServiceSearchResponse.List[0].AppEntitlement)...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 
 	// Save updated data into Terraform state

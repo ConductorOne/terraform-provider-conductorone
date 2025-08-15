@@ -28,6 +28,7 @@ func NewBundleAutomationResource() resource.Resource {
 
 // BundleAutomationResource defines the resource implementation.
 type BundleAutomationResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

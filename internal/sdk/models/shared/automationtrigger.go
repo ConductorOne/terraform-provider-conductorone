@@ -13,6 +13,9 @@ package shared
 //   - userCreated
 //   - grantFound
 //   - grantDeleted
+//   - webhook
+//   - schedule
+//   - form
 type AutomationTrigger struct {
 	// The AppUserCreatedTrigger message.
 	//
@@ -28,12 +31,16 @@ type AutomationTrigger struct {
 	//   - appIdCel
 	//
 	AppUserUpdatedTrigger *AppUserUpdatedTrigger `json:"appUserUpdated,omitempty"`
+	// The FormTrigger message.
+	FormTrigger *FormTrigger `json:"form,omitempty"`
 	// The GrantDeletedTrigger message.
 	GrantDeletedTrigger *GrantDeletedTrigger `json:"grantDeleted,omitempty"`
 	// The GrantFoundTrigger message.
 	GrantFoundTrigger *GrantFoundTrigger `json:"grantFound,omitempty"`
 	// The ManualAutomationTrigger message.
 	ManualAutomationTrigger *ManualAutomationTrigger `json:"manual,omitempty"`
+	// The ScheduleTrigger message.
+	ScheduleTrigger *ScheduleTrigger `json:"schedule,omitempty"`
 	// The UsageBasedRevocationTrigger message.
 	//
 	// This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
@@ -45,6 +52,13 @@ type AutomationTrigger struct {
 	UserCreatedTrigger *UserCreatedTrigger `json:"userCreated,omitempty"`
 	// The UserProfileChangeTrigger message.
 	UserProfileChangeTrigger *UserProfileChangeTrigger `json:"userProfileChange,omitempty"`
+	// The WebhookAutomationTrigger message.
+	//
+	// This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:
+	//   - jwt
+	//   - hmac
+	//
+	WebhookAutomationTrigger *WebhookAutomationTrigger `json:"webhook,omitempty"`
 }
 
 func (o *AutomationTrigger) GetAppUserCreatedTrigger() *AppUserCreatedTrigger {
@@ -59,6 +73,13 @@ func (o *AutomationTrigger) GetAppUserUpdatedTrigger() *AppUserUpdatedTrigger {
 		return nil
 	}
 	return o.AppUserUpdatedTrigger
+}
+
+func (o *AutomationTrigger) GetFormTrigger() *FormTrigger {
+	if o == nil {
+		return nil
+	}
+	return o.FormTrigger
 }
 
 func (o *AutomationTrigger) GetGrantDeletedTrigger() *GrantDeletedTrigger {
@@ -82,6 +103,13 @@ func (o *AutomationTrigger) GetManualAutomationTrigger() *ManualAutomationTrigge
 	return o.ManualAutomationTrigger
 }
 
+func (o *AutomationTrigger) GetScheduleTrigger() *ScheduleTrigger {
+	if o == nil {
+		return nil
+	}
+	return o.ScheduleTrigger
+}
+
 func (o *AutomationTrigger) GetUsageBasedRevocationTrigger() *UsageBasedRevocationTrigger {
 	if o == nil {
 		return nil
@@ -101,4 +129,11 @@ func (o *AutomationTrigger) GetUserProfileChangeTrigger() *UserProfileChangeTrig
 		return nil
 	}
 	return o.UserProfileChangeTrigger
+}
+
+func (o *AutomationTrigger) GetWebhookAutomationTrigger() *WebhookAutomationTrigger {
+	if o == nil {
+		return nil
+	}
+	return o.WebhookAutomationTrigger
 }

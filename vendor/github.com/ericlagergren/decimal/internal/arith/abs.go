@@ -13,9 +13,10 @@ func Abs(x int64) uint64 {
 
 // Cmp compares x and y and returns
 //
-//	-1 if x  < 0
-//	 0 if x == 0
-//	+1 if x  > 0
+//    -1 if x  < 0
+//     0 if x == 0
+//    +1 if x  > 0
+//
 func Cmp(x, y uint64) int {
 	if x != y {
 		if x > y {

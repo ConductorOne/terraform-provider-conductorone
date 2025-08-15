@@ -11,19 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *RiskLevelDataSourceModel) ToOperationsC1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
 func (r *RiskLevelDataSourceModel) RefreshFromSharedAttributeValue(ctx context.Context, resp *shared.AttributeValue) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -37,4 +24,17 @@ func (r *RiskLevelDataSourceModel) RefreshFromSharedAttributeValue(ctx context.C
 	}
 
 	return diags
+}
+
+func (r *RiskLevelDataSourceModel) ToOperationsC1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest{
+		ID: id,
+	}
+
+	return &out, diags
 }

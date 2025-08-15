@@ -1,0 +1,30 @@
+speakeasyVersion: 1.605.0
+sources:
+    my-source:
+        sourceNamespace: my-source
+        sourceRevisionDigest: sha256:049dc0cf9c0563fc0a5c8aa6030382eda0a4d82a47a3246e27ec0d08bd0d7ed3
+        sourceBlobDigest: sha256:d2b8fff7f6e4955885316915e04d254d020badcfe77192cfd58271a73e79a1ea
+        tags:
+            - latest
+            - 0.1.0-alpha
+targets:
+    conductorone:
+        source: my-source
+        sourceNamespace: my-source
+        sourceRevisionDigest: sha256:049dc0cf9c0563fc0a5c8aa6030382eda0a4d82a47a3246e27ec0d08bd0d7ed3
+        sourceBlobDigest: sha256:d2b8fff7f6e4955885316915e04d254d020badcfe77192cfd58271a73e79a1ea
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        my-source:
+            inputs:
+                - location: https://insulator.conductor.one/api/v1/openapi.yaml
+            overlays:
+                - location: ./overlay.yaml
+            registry:
+                location: registry.speakeasyapi.dev/conductor-one/conductorone/my-source
+    targets:
+        conductorone:
+            target: terraform
+            source: my-source

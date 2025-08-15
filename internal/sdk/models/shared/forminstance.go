@@ -41,12 +41,33 @@ func (e *FormInstanceState) UnmarshalJSON(data []byte) error {
 }
 
 // The FormInstance message.
+//
+// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
+//   - completed
+//   - restarted
+//   - reassigned
+//   - skipped
 type FormInstance struct {
-	Data *FormInstanceData `json:"data,omitempty"`
+	// The FormCompletedAction message.
+	FormCompletedAction *FormCompletedAction `json:"completed,omitempty"`
+	Data                *FormInstanceData    `json:"data,omitempty"`
 	// A form is a collection of fields to be filled out by a user
 	Form *Form `json:"form,omitempty"`
+	// The ReassignedAction object describes the outcome of a policy step that has been reassigned.
+	ReassignedAction *ReassignedAction `json:"reassigned,omitempty"`
+	// The restart action describes the outcome of policy steps for when the task was restarted. This can be applied to multiple steps since restart skips all pending next steps.
+	RestartAction *RestartAction `json:"restarted,omitempty"`
+	// The SkippedAction object describes the outcome of a policy step that has been skipped.
+	SkippedAction *SkippedAction `json:"skipped,omitempty"`
 	// The state field.
 	State *FormInstanceState `json:"state,omitempty"`
+}
+
+func (o *FormInstance) GetFormCompletedAction() *FormCompletedAction {
+	if o == nil {
+		return nil
+	}
+	return o.FormCompletedAction
 }
 
 func (o *FormInstance) GetData() *FormInstanceData {
@@ -61,6 +82,27 @@ func (o *FormInstance) GetForm() *Form {
 		return nil
 	}
 	return o.Form
+}
+
+func (o *FormInstance) GetReassignedAction() *ReassignedAction {
+	if o == nil {
+		return nil
+	}
+	return o.ReassignedAction
+}
+
+func (o *FormInstance) GetRestartAction() *RestartAction {
+	if o == nil {
+		return nil
+	}
+	return o.RestartAction
+}
+
+func (o *FormInstance) GetSkippedAction() *SkippedAction {
+	if o == nil {
+		return nil
+	}
+	return o.SkippedAction
 }
 
 func (o *FormInstance) GetState() *FormInstanceState {

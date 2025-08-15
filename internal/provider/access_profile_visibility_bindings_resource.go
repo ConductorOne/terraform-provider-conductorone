@@ -27,6 +27,7 @@ func NewAccessProfileVisibilityBindingsResource() resource.Resource {
 
 // AccessProfileVisibilityBindingsResource defines the resource implementation.
 type AccessProfileVisibilityBindingsResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

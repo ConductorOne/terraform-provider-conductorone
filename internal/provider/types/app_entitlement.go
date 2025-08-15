@@ -32,6 +32,7 @@ type AppEntitlement struct {
 	OverrideAccessRequestsDefaults types.Bool                   `tfsdk:"override_access_requests_defaults"`
 	ProvisionPolicy                *ProvisionPolicy             `tfsdk:"provision_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                 `tfsdk:"purpose"`
+	RequestSchemaID                types.String                 `tfsdk:"request_schema_id"`
 	RevokePolicyID                 types.String                 `tfsdk:"revoke_policy_id"`
 	RiskLevelValueID               types.String                 `tfsdk:"risk_level_value_id"`
 	Slug                           types.String                 `tfsdk:"slug"`

@@ -551,3 +551,53 @@ actions:
   - target: $["components"]["schemas"]["c1.api.policy.v1.Form"]
     update:
       x-speakeasy-type-override: any
+  # Function entity operations - resolve duplicate Function#create conflicts
+  - target: $["paths"]["/api/v1/functions/{function_id}/commits"]["post"]
+    update:
+      x-speakeasy-entity-operation:
+        terraform-resource: FunctionCommit#create
+  - target: $["paths"]["/api/v1/functions/{function_id}/tags"]["post"]
+    update:
+      x-speakeasy-entity-operation:
+        terraform-resource: FunctionTag#create
+  # Define Function entity
+  - target: $["components"]["schemas"]["c1.api.functions.v1.Function"]
+    update:
+      x-speakeasy-entity: Function
+  # Define FunctionCommit entity
+  - target: $["components"]["schemas"]["c1.api.functions.v1.FunctionCommit"]
+    update:
+      x-speakeasy-entity: FunctionCommit
+  # Define FunctionTag entity (create a simple schema for it)
+  - target: $["components"]["schemas"]["c1.api.functions.v1.FunctionTag"]
+    update:
+      x-speakeasy-entity: FunctionTag
+  # Function read operations - resolve duplicate Function#read conflicts
+  - target: $["paths"]["/api/v1/functions/{function_id}/commits/{id}"]["get"]
+    update:
+      x-speakeasy-entity-operation:
+        terraform-datasource: FunctionCommitDetail#read
+        terraform-resource: FunctionCommitDetail#read
+  - target: $["paths"]["/api/v1/functions/{function_id}/commits"]["get"]
+    update:
+      x-speakeasy-entity-operation:
+        terraform-datasource: FunctionCommit#read
+        terraform-resource: FunctionCommit#read
+  - target: $["paths"]["/api/v1/functions/{function_id}/tags"]["get"]
+    update:
+      x-speakeasy-entity-operation:
+        terraform-datasource: FunctionTag#read
+        terraform-resource: FunctionTag#read
+  # Function search operations - resolve duplicate Function#read conflicts
+  - target: $["paths"]["/api/v1/search/functions"]["post"]
+    update:
+      x-speakeasy-entity-operation:
+        terraform-datasource: FunctionSearch#read
+  # Function list operations - resolve duplicate Function#read conflicts
+  - target: $["paths"]["/api/v1/functions"]["get"]["x-speakeasy-entity-operation"]
+    remove: true
+  # Function update operations - resolve duplicate Function#update conflicts
+  - target: $["paths"]["/api/v1/functions/{function_id}/invoke"]["post"]
+    update:
+      x-speakeasy-entity-operation:
+        terraform-resource: FunctionInvoke#update

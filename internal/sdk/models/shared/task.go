@@ -38,6 +38,7 @@ const (
 	ActionsTaskActionTypeSkipStep                                 Actions = "TASK_ACTION_TYPE_SKIP_STEP"
 	ActionsTaskActionTypeRollbackCancelled                        Actions = "TASK_ACTION_TYPE_ROLLBACK_CANCELLED"
 	ActionsTaskActionTypeUpdateRequestData                        Actions = "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA"
+	ActionsTaskActionTypeUpdateGrantDuration                      Actions = "TASK_ACTION_TYPE_UPDATE_GRANT_DURATION"
 )
 
 func (e Actions) ToPointer() *Actions {
@@ -100,6 +101,8 @@ func (e *Actions) UnmarshalJSON(data []byte) error {
 	case "TASK_ACTION_TYPE_ROLLBACK_CANCELLED":
 		fallthrough
 	case "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA":
+		fallthrough
+	case "TASK_ACTION_TYPE_UPDATE_GRANT_DURATION":
 		*e = Actions(v)
 		return nil
 	default:
@@ -127,6 +130,10 @@ const (
 	OriginTaskOriginWebapp                      Origin = "TASK_ORIGIN_WEBAPP"
 	OriginTaskOriginTimeRevoke                  Origin = "TASK_ORIGIN_TIME_REVOKE"
 	OriginTaskOriginNonUsageRevoke              Origin = "TASK_ORIGIN_NON_USAGE_REVOKE"
+	OriginTaskOriginProfileMembershipManual     Origin = "TASK_ORIGIN_PROFILE_MEMBERSHIP_MANUAL"
+	OriginTaskOriginProfileMembership           Origin = "TASK_ORIGIN_PROFILE_MEMBERSHIP"
+	OriginTaskOriginAutomation                  Origin = "TASK_ORIGIN_AUTOMATION"
+	OriginTaskOriginAccessReview                Origin = "TASK_ORIGIN_ACCESS_REVIEW"
 )
 
 func (e Origin) ToPointer() *Origin {
@@ -155,6 +162,14 @@ func (e *Origin) UnmarshalJSON(data []byte) error {
 	case "TASK_ORIGIN_TIME_REVOKE":
 		fallthrough
 	case "TASK_ORIGIN_NON_USAGE_REVOKE":
+		fallthrough
+	case "TASK_ORIGIN_PROFILE_MEMBERSHIP_MANUAL":
+		fallthrough
+	case "TASK_ORIGIN_PROFILE_MEMBERSHIP":
+		fallthrough
+	case "TASK_ORIGIN_AUTOMATION":
+		fallthrough
+	case "TASK_ORIGIN_ACCESS_REVIEW":
 		*e = Origin(v)
 		return nil
 	default:

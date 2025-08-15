@@ -22,6 +22,7 @@ func NewComplianceFrameworkDataSource() datasource.DataSource {
 
 // ComplianceFrameworkDataSource is the data source implementation.
 type ComplianceFrameworkDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

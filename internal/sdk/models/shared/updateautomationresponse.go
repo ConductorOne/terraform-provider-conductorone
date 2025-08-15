@@ -10,6 +10,8 @@ type UpdateAutomationResponse struct {
 	//   - circuitBreaker
 	//
 	Automation *Automation `json:"automation,omitempty"`
+	// If we create a new trigger with an HMAC secret we return the HMAC on this field
+	WebhookHmacSecret *string `json:"webhookHmacSecret,omitempty"`
 }
 
 func (o *UpdateAutomationResponse) GetAutomation() *Automation {
@@ -17,4 +19,11 @@ func (o *UpdateAutomationResponse) GetAutomation() *Automation {
 		return nil
 	}
 	return o.Automation
+}
+
+func (o *UpdateAutomationResponse) GetWebhookHmacSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.WebhookHmacSecret
 }
