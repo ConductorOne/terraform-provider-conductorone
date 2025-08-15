@@ -27,6 +27,7 @@ func NewAccessProfileResource() resource.Resource {
 
 // AccessProfileResource defines the resource implementation.
 type AccessProfileResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

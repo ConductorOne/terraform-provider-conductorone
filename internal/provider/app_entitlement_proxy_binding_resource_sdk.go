@@ -11,6 +11,23 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedAppEntitlementProxy(ctx context.Context, resp *shared.AppEntitlementProxy) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.DstAppEntitlementID = types.StringPointerValue(resp.DstAppEntitlementID)
+		r.DstAppID = types.StringPointerValue(resp.DstAppID)
+		r.SrcAppEntitlementID = types.StringPointerValue(resp.SrcAppEntitlementID)
+		r.SrcAppID = types.StringPointerValue(resp.SrcAppID)
+		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
 func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyCreateRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyCreateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -27,31 +44,6 @@ func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntit
 	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
 
 	out := operations.C1APIAppV1AppEntitlementsProxyCreateRequest{
-		SrcAppID:            srcAppID,
-		SrcAppEntitlementID: srcAppEntitlementID,
-		DstAppID:            dstAppID,
-		DstAppEntitlementID: dstAppEntitlementID,
-	}
-
-	return &out, diags
-}
-
-func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyGetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var srcAppID string
-	srcAppID = r.SrcAppID.ValueString()
-
-	var srcAppEntitlementID string
-	srcAppEntitlementID = r.SrcAppEntitlementID.ValueString()
-
-	var dstAppID string
-	dstAppID = r.DstAppID.ValueString()
-
-	var dstAppEntitlementID string
-	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
-
-	out := operations.C1APIAppV1AppEntitlementsProxyGetRequest{
 		SrcAppID:            srcAppID,
 		SrcAppEntitlementID: srcAppEntitlementID,
 		DstAppID:            dstAppID,
@@ -86,19 +78,27 @@ func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntit
 	return &out, diags
 }
 
-func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedAppEntitlementProxy(ctx context.Context, resp *shared.AppEntitlementProxy) diag.Diagnostics {
+func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.DstAppEntitlementID = types.StringPointerValue(resp.DstAppEntitlementID)
-		r.DstAppID = types.StringPointerValue(resp.DstAppID)
-		r.SrcAppEntitlementID = types.StringPointerValue(resp.SrcAppEntitlementID)
-		r.SrcAppID = types.StringPointerValue(resp.SrcAppID)
-		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	var srcAppID string
+	srcAppID = r.SrcAppID.ValueString()
+
+	var srcAppEntitlementID string
+	srcAppEntitlementID = r.SrcAppEntitlementID.ValueString()
+
+	var dstAppID string
+	dstAppID = r.DstAppID.ValueString()
+
+	var dstAppEntitlementID string
+	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementsProxyGetRequest{
+		SrcAppID:            srcAppID,
+		SrcAppEntitlementID: srcAppEntitlementID,
+		DstAppID:            dstAppID,
+		DstAppEntitlementID: dstAppEntitlementID,
 	}
 
-	return diags
+	return &out, diags
 }

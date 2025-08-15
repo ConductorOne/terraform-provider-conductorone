@@ -28,6 +28,7 @@ func NewAccessProfileRequestableEntriesResource() resource.Resource {
 
 // AccessProfileRequestableEntriesResource defines the resource implementation.
 type AccessProfileRequestableEntriesResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

@@ -41,6 +41,9 @@ TF_REATTACH_PROVIDERS=... terraform apply
 * [conductorone_compliance_framework](docs/resources/compliance_framework.md)
 * [conductorone_connector_credential](docs/resources/connector_credential.md)
 * [conductorone_custom_app_entitlement](docs/resources/custom_app_entitlement.md)
+* [conductorone_function](docs/resources/function.md)
+* [conductorone_function_commit](docs/resources/function_commit.md)
+* [conductorone_function_tag](docs/resources/function_tag.md)
 * [conductorone_policy](docs/resources/policy.md)
 * [conductorone_risk_level](docs/resources/risk_level.md)
 * [conductorone_webhook](docs/resources/webhook.md)
@@ -59,6 +62,11 @@ TF_REATTACH_PROVIDERS=... terraform apply
 * [conductorone_bundle_automation](docs/data-sources/bundle_automation.md)
 * [conductorone_compliance_framework](docs/data-sources/compliance_framework.md)
 * [conductorone_connector_credential](docs/data-sources/connector_credential.md)
+* [conductorone_function](docs/data-sources/function.md)
+* [conductorone_function_commit](docs/data-sources/function_commit.md)
+* [conductorone_function_commit_detail](docs/data-sources/function_commit_detail.md)
+* [conductorone_function_search](docs/data-sources/function_search.md)
+* [conductorone_function_tag](docs/data-sources/function_tag.md)
 * [conductorone_policy](docs/data-sources/policy.md)
 * [conductorone_risk_level](docs/data-sources/risk_level.md)
 * [conductorone_user](docs/data-sources/user.md)
@@ -140,7 +148,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.4.6"
+      version = "1.5.8"
     }
   }
 }

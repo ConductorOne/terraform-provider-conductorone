@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/tls"
 	"errors"
-	"net/http"
 	"net/url"
 	"os"
 	"strings"
@@ -123,10 +122,8 @@ func (c *ClientConfig) GetServerURL() string {
 type CustomOptions struct {
 	*ClientConfig
 
-	// nolint:unused
-	withClient *http.Client
-	logger     *zap.Logger
-	tlsConfig  *tls.Config
+	logger    *zap.Logger
+	tlsConfig *tls.Config
 
 	userAgent string
 }
