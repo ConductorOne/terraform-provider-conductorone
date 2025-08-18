@@ -123,7 +123,7 @@ func (c *ClientConfig) GetServerURL() string {
 type CustomOptions struct {
 	*ClientConfig
 
-	// nolint:unused
+	//lint:ignore U1000 reason: unused
 	withClient *http.Client
 	logger     *zap.Logger
 	tlsConfig  *tls.Config

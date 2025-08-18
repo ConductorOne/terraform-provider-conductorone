@@ -12,23 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppEntitlementAutomationDataSourceModel) ToOperationsC1APIAppV1AppEntitlementsGetAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsGetAutomationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var appEntitlementID string
-	appEntitlementID = r.AppEntitlementID.ValueString()
-
-	out := operations.C1APIAppV1AppEntitlementsGetAutomationRequest{
-		AppID:            appID,
-		AppEntitlementID: appEntitlementID,
-	}
-
-	return &out, diags
-}
-
 func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlementAutomation(ctx context.Context, resp *shared.AppEntitlementAutomation) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -65,19 +48,14 @@ func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlemen
 			r.AppEntitlementAutomationRuleEntitlement = &tfTypes.AppEntitlementAutomationRuleEntitlement{}
 			if resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs != nil {
 				r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = []tfTypes.AppEntitlementRef{}
-				if len(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs) > len(resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs) {
-					r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[:len(resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs)]
-				}
-				for entitlementRefsCount, entitlementRefsItem := range resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
+
+				for _, entitlementRefsItem := range resp.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
 					var entitlementRefs tfTypes.AppEntitlementRef
+
 					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
 					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
-					if entitlementRefsCount+1 > len(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs) {
-						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = append(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
-					} else {
-						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].AppID = entitlementRefs.AppID
-						r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].ID = entitlementRefs.ID
-					}
+
+					r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = append(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
 				}
 			}
 		}
@@ -94,4 +72,21 @@ func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlemen
 	}
 
 	return diags
+}
+
+func (r *AppEntitlementAutomationDataSourceModel) ToOperationsC1APIAppV1AppEntitlementsGetAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsGetAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appEntitlementID string
+	appEntitlementID = r.AppEntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementsGetAutomationRequest{
+		AppID:            appID,
+		AppEntitlementID: appEntitlementID,
+	}
+
+	return &out, diags
 }
