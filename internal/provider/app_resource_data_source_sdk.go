@@ -12,27 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppResourceDataSourceModel) ToOperationsC1APIAppV1AppResourceServiceGetRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceGetRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var appResourceTypeID string
-	appResourceTypeID = r.AppResourceTypeID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAppV1AppResourceServiceGetRequest{
-		AppID:             appID,
-		AppResourceTypeID: appResourceTypeID,
-		ID:                id,
-	}
-
-	return &out, diags
-}
-
 func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Context, resp *shared.AppResource) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -61,4 +40,25 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 	}
 
 	return diags
+}
+
+func (r *AppResourceDataSourceModel) ToOperationsC1APIAppV1AppResourceServiceGetRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceGetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var appResourceTypeID string
+	appResourceTypeID = r.AppResourceTypeID.ValueString()
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAppV1AppResourceServiceGetRequest{
+		AppID:             appID,
+		AppResourceTypeID: appResourceTypeID,
+		ID:                id,
+	}
+
+	return &out, diags
 }

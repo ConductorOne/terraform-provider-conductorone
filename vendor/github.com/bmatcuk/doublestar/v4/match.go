@@ -8,24 +8,24 @@ import (
 // Match reports whether name matches the shell pattern.
 // The pattern syntax is:
 //
-//	pattern:
-//	  { term }
-//	term:
-//	  '*'         matches any sequence of non-path-separators
-//	  '/**/'      matches zero or more directories
-//	  '?'         matches any single non-path-separator character
-//	  '[' [ '^' '!' ] { character-range } ']'
-//	              character class (must be non-empty)
-//	              starting with `^` or `!` negates the class
-//	  '{' { term } [ ',' { term } ... ] '}'
-//	              alternatives
-//	  c           matches character c (c != '*', '?', '\\', '[')
-//	  '\\' c      matches character c
+//  pattern:
+//    { term }
+//  term:
+//    '*'         matches any sequence of non-path-separators
+//    '/**/'      matches zero or more directories
+//    '?'         matches any single non-path-separator character
+//    '[' [ '^' '!' ] { character-range } ']'
+//                character class (must be non-empty)
+//                starting with `^` or `!` negates the class
+//    '{' { term } [ ',' { term } ... ] '}'
+//                alternatives
+//    c           matches character c (c != '*', '?', '\\', '[')
+//    '\\' c      matches character c
 //
-//	character-range:
-//	  c           matches character c (c != '\\', '-', ']')
-//	  '\\' c      matches character c
-//	  lo '-' hi   matches character c for lo <= c <= hi
+//  character-range:
+//    c           matches character c (c != '\\', '-', ']')
+//    '\\' c      matches character c
+//    lo '-' hi   matches character c for lo <= c <= hi
 //
 // Match returns true if `name` matches the file name `pattern`. `name` and
 // `pattern` are split on forward slash (`/`) characters and may be relative or
@@ -48,6 +48,7 @@ import (
 //
 // Note: users should _not_ count on the returned error,
 // doublestar.ErrBadPattern, being equal to path.ErrBadPattern.
+//
 func Match(pattern, name string) (bool, error) {
 	return matchWithSeparator(pattern, name, '/', true)
 }
@@ -72,6 +73,7 @@ func MatchUnvalidated(pattern, name string) bool {
 // assumes that both `pattern` and `name` are using the system's path
 // separator. If you can't be sure of that, use filepath.ToSlash() on both
 // `pattern` and `name`, and then use the Match() function instead.
+//
 func PathMatch(pattern, name string) (bool, error) {
 	return matchWithSeparator(pattern, name, filepath.Separator, true)
 }
@@ -317,10 +319,10 @@ MATCH:
 	// we've reached the end of `name`; we've successfully matched if we've also
 	// reached the end of `pattern`, or if the rest of `pattern` can match a
 	// zero-length string
-	return isZeroLengthPattern(pattern[patIdx:], separator)
+	return isZeroLengthPattern(pattern[patIdx:], separator, validate)
 }
 
-func isZeroLengthPattern(pattern string, separator rune) (ret bool, err error) {
+func isZeroLengthPattern(pattern string, separator rune, validate bool) (ret bool, err error) {
 	// `/**`, `**/`, and `/**/` are special cases - a pattern such as `path/to/a/**` or `path/to/a/**/`
 	// *should* match `path/to/a` because `a` might be a directory
 	if pattern == "" ||
@@ -348,18 +350,18 @@ func isZeroLengthPattern(pattern string, separator rune) (ret bool, err error) {
 			}
 			commaIdx += patIdx
 
-			ret, err = isZeroLengthPattern(pattern[patIdx:commaIdx]+pattern[closingIdx+1:], separator)
+			ret, err = isZeroLengthPattern(pattern[patIdx:commaIdx]+pattern[closingIdx+1:], separator, validate)
 			if ret || err != nil {
 				return
 			}
 
 			patIdx = commaIdx + 1
 		}
-		return isZeroLengthPattern(pattern[patIdx:closingIdx]+pattern[closingIdx+1:], separator)
+		return isZeroLengthPattern(pattern[patIdx:closingIdx]+pattern[closingIdx+1:], separator, validate)
 	}
 
 	// no luck - validate the rest of the pattern
-	if !doValidatePattern(pattern, separator) {
+	if validate && !doValidatePattern(pattern, separator) {
 		return false, ErrBadPattern
 	}
 	return false, nil

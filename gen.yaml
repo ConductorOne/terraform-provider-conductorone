@@ -22,8 +22,12 @@ generation:
     oAuth2PasswordEnabled: false
   mockServer:
     disabled: true
+  tests:
+    generateTests: true
+    generateNewTests: false
+    skipResponseBodyAssertions: false
 terraform:
-  version: 1.4.6
+  version: 1.5.1
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []

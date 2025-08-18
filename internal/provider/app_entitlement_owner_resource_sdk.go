@@ -9,21 +9,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
-func (r *AppEntitlementOwnerResourceModel) ToSharedSetAppEntitlementOwnersRequest(ctx context.Context) (*shared.SetAppEntitlementOwnersRequest, diag.Diagnostics) {
+func (r *AppEntitlementOwnerResourceModel) RefreshFromSharedSetAppEntitlementOwnersResponse(ctx context.Context, resp *shared.SetAppEntitlementOwnersResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	var userIds []string
-	if r.UserIds != nil {
-		userIds = make([]string, 0, len(r.UserIds))
-		for _, userIdsItem := range r.UserIds {
-			userIds = append(userIds, userIdsItem.ValueString())
-		}
-	}
-	out := shared.SetAppEntitlementOwnersRequest{
-		UserIds: userIds,
+	if resp != nil {
 	}
 
-	return &out, diags
+	return diags
 }
 
 func (r *AppEntitlementOwnerResourceModel) ToOperationsC1APIAppV1AppEntitlementOwnersSetRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementOwnersSetRequest, diag.Diagnostics) {
@@ -51,11 +43,19 @@ func (r *AppEntitlementOwnerResourceModel) ToOperationsC1APIAppV1AppEntitlementO
 	return &out, diags
 }
 
-func (r *AppEntitlementOwnerResourceModel) RefreshFromSharedSetAppEntitlementOwnersResponse(ctx context.Context, resp *shared.SetAppEntitlementOwnersResponse) diag.Diagnostics {
+func (r *AppEntitlementOwnerResourceModel) ToSharedSetAppEntitlementOwnersRequest(ctx context.Context) (*shared.SetAppEntitlementOwnersRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
+	var userIds []string
+	if r.UserIds != nil {
+		userIds = make([]string, 0, len(r.UserIds))
+		for _, userIdsItem := range r.UserIds {
+			userIds = append(userIds, userIdsItem.ValueString())
+		}
+	}
+	out := shared.SetAppEntitlementOwnersRequest{
+		UserIds: userIds,
 	}
 
-	return diags
+	return &out, diags
 }

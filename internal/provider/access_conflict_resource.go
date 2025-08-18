@@ -26,6 +26,7 @@ func NewAccessConflictResource() resource.Resource {
 
 // AccessConflictResource defines the resource implementation.
 type AccessConflictResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

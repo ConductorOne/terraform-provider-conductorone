@@ -23,6 +23,7 @@ func NewUserDataSource() datasource.DataSource {
 
 // UserDataSource is the data source implementation.
 type UserDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

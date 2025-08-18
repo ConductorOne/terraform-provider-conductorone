@@ -11,6 +11,56 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesResponse(ctx context.Context, resp *shared.SearchAppResourcesResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Expanded != nil {
+		}
+		if resp.List != nil {
+			if r.List == nil {
+				r.List = []tfTypes.AppResourceView{}
+			}
+
+			for _, listItem := range resp.List {
+				var list tfTypes.AppResourceView
+
+				if listItem.AppResource == nil {
+					list.AppResource = nil
+				} else {
+					list.AppResource = &tfTypes.AppResource{}
+					list.AppResource.AppID = types.StringPointerValue(listItem.AppResource.AppID)
+					list.AppResource.AppResourceTypeID = types.StringPointerValue(listItem.AppResource.AppResourceTypeID)
+					list.AppResource.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.CreatedAt))
+					list.AppResource.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.DeletedAt))
+					list.AppResource.Description = types.StringPointerValue(listItem.AppResource.Description)
+					list.AppResource.DisplayName = types.StringPointerValue(listItem.AppResource.DisplayName)
+					list.AppResource.GrantCount = types.StringPointerValue(listItem.AppResource.GrantCount)
+					list.AppResource.ID = types.StringPointerValue(listItem.AppResource.ID)
+					list.AppResource.MatchBatonID = types.StringPointerValue(listItem.AppResource.MatchBatonID)
+					list.AppResource.ParentAppResourceID = types.StringPointerValue(listItem.AppResource.ParentAppResourceID)
+					list.AppResource.ParentAppResourceTypeID = types.StringPointerValue(listItem.AppResource.ParentAppResourceTypeID)
+					if listItem.AppResource.SecretTrait == nil {
+						list.AppResource.SecretTrait = nil
+					} else {
+						list.AppResource.SecretTrait = &tfTypes.SecretTrait{}
+						list.AppResource.SecretTrait.IdentityAppUserID = types.StringPointerValue(listItem.AppResource.SecretTrait.IdentityAppUserID)
+						list.AppResource.SecretTrait.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.SecretTrait.LastUsedAt))
+						list.AppResource.SecretTrait.SecretCreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.SecretTrait.SecretCreatedAt))
+						list.AppResource.SecretTrait.SecretExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.SecretTrait.SecretExpiresAt))
+					}
+					list.AppResource.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.UpdatedAt))
+				}
+
+				r.List = append(r.List, list)
+			}
+		}
+		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
+	}
+
+	return diags
+}
+
 func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx context.Context) (*shared.SearchAppResourcesRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -52,12 +102,6 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 		*pageSize = int(r.PageSize.ValueInt32())
 	} else {
 		pageSize = nil
-	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
 	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
@@ -122,7 +166,6 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 		ExcludeResourceIds:             excludeResourceIds,
 		ExcludeResourceTypeTraitIds:    excludeResourceTypeTraitIds,
 		PageSize:                       pageSize,
-		PageToken:                      pageToken,
 		Query:                          query,
 		Refs:                           refs,
 		ResourceIds:                    resourceIds,
@@ -131,60 +174,4 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 	}
 
 	return &out, diags
-}
-
-func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesResponse(ctx context.Context, resp *shared.SearchAppResourcesResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.Expanded != nil {
-		}
-		if resp.List != nil {
-			if r.List == nil {
-				r.List = []tfTypes.AppResourceView{}
-				if len(r.List) > len(resp.List) {
-					r.List = r.List[:len(resp.List)]
-				}
-			}
-			initListCount := len(r.List)
-			for listCount, listItem := range resp.List {
-				listCount = initListCount + listCount
-				var list tfTypes.AppResourceView
-				if listItem.AppResource == nil {
-					list.AppResource = nil
-				} else {
-					list.AppResource = &tfTypes.AppResource{}
-					list.AppResource.AppID = types.StringPointerValue(listItem.AppResource.AppID)
-					list.AppResource.AppResourceTypeID = types.StringPointerValue(listItem.AppResource.AppResourceTypeID)
-					list.AppResource.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.CreatedAt))
-					list.AppResource.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.DeletedAt))
-					list.AppResource.Description = types.StringPointerValue(listItem.AppResource.Description)
-					list.AppResource.DisplayName = types.StringPointerValue(listItem.AppResource.DisplayName)
-					list.AppResource.GrantCount = types.StringPointerValue(listItem.AppResource.GrantCount)
-					list.AppResource.ID = types.StringPointerValue(listItem.AppResource.ID)
-					list.AppResource.MatchBatonID = types.StringPointerValue(listItem.AppResource.MatchBatonID)
-					list.AppResource.ParentAppResourceID = types.StringPointerValue(listItem.AppResource.ParentAppResourceID)
-					list.AppResource.ParentAppResourceTypeID = types.StringPointerValue(listItem.AppResource.ParentAppResourceTypeID)
-					if listItem.AppResource.SecretTrait == nil {
-						list.AppResource.SecretTrait = nil
-					} else {
-						list.AppResource.SecretTrait = &tfTypes.SecretTrait{}
-						list.AppResource.SecretTrait.IdentityAppUserID = types.StringPointerValue(listItem.AppResource.SecretTrait.IdentityAppUserID)
-						list.AppResource.SecretTrait.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.SecretTrait.LastUsedAt))
-						list.AppResource.SecretTrait.SecretCreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.SecretTrait.SecretCreatedAt))
-						list.AppResource.SecretTrait.SecretExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.SecretTrait.SecretExpiresAt))
-					}
-					list.AppResource.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.UpdatedAt))
-				}
-				if listCount+1 > len(r.List) {
-					r.List = append(r.List, list)
-				} else {
-					r.List[listCount].AppResource = list.AppResource
-				}
-			}
-		}
-		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
-	}
-
-	return diags
 }

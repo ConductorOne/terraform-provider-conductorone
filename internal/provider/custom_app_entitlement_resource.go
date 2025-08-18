@@ -11,6 +11,7 @@ import (
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -33,6 +34,7 @@ func NewCustomAppEntitlementResource() resource.Resource {
 
 // CustomAppEntitlementResource defines the resource implementation.
 type CustomAppEntitlementResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
@@ -286,6 +288,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						},
 					},
 					"multi_step": schema.StringAttribute{
+						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
 						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
 						Validators: []validator.String{
@@ -296,7 +299,6 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 								path.MatchRelative().AtParent().AtName("manual_provision"),
 								path.MatchRelative().AtParent().AtName("webhook_provision"),
 							}...),
-							validators.IsValidJSON(),
 						},
 					},
 					"unconfigured_provision": schema.SingleNestedAttribute{
@@ -592,6 +594,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						},
 					},
 					"multi_step": schema.StringAttribute{
+						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
 						Optional:    true,
 						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
@@ -603,7 +606,6 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 								path.MatchRelative().AtParent().AtName("manual_provision"),
 								path.MatchRelative().AtParent().AtName("webhook_provision"),
 							}...),
-							validators.IsValidJSON(),
 						},
 					},
 					"unconfigured_provision": schema.SingleNestedAttribute{
@@ -978,7 +980,7 @@ func (r *CustomAppEntitlementResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"app_id": "...", "id": "..."}': `+err.Error())
 		return
 	}
 
@@ -992,5 +994,4 @@ func (r *CustomAppEntitlementResource) ImportState(ctx context.Context, req reso
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

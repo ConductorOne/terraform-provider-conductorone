@@ -430,7 +430,7 @@ func (s *AppEntitlementSearch) Search(ctx context.Context, request *shared.AppEn
 			if err != nil {
 				return nil, err
 			}
-			if val == nil || val == "" {
+			if val == nil {
 				return nil, nil
 			}
 			nCVal = val.(string)
@@ -439,28 +439,31 @@ func (s *AppEntitlementSearch) Search(ctx context.Context, request *shared.AppEn
 		return s.Search(
 			ctx,
 			&shared.AppEntitlementSearchServiceSearchRequest{
-				AccessReviewID:         request.AccessReviewID,
-				Alias:                  request.Alias,
-				AppIds:                 request.AppIds,
-				AppUserIds:             request.AppUserIds,
-				ComplianceFrameworkIds: request.ComplianceFrameworkIds,
-				DisplayName:            request.DisplayName,
-				ExcludeAppIds:          request.ExcludeAppIds,
-				ExcludeAppUserIds:      request.ExcludeAppUserIds,
-				ExcludeResourceTypeIds: request.ExcludeResourceTypeIds,
-				IncludeDeleted:         request.IncludeDeleted,
-				IsAutomated:            request.IsAutomated,
-				MembershipType:         request.MembershipType,
-				OnlyGetExpiring:        request.OnlyGetExpiring,
-				PageSize:               request.PageSize,
-				PageToken:              &nCVal,
-				Query:                  request.Query,
-				Refs:                   request.Refs,
-				ResourceIds:            request.ResourceIds,
-				ResourceTraitIds:       request.ResourceTraitIds,
-				ResourceTypeIds:        request.ResourceTypeIds,
-				RiskLevelIds:           request.RiskLevelIds,
-				SourceConnectorID:      request.SourceConnectorID,
+				AccessReviewID:          request.AccessReviewID,
+				Alias:                   request.Alias,
+				AppIds:                  request.AppIds,
+				AppUserIds:              request.AppUserIds,
+				ComplianceFrameworkIds:  request.ComplianceFrameworkIds,
+				DisplayName:             request.DisplayName,
+				ExcludeAppIds:           request.ExcludeAppIds,
+				ExcludeAppUserIds:       request.ExcludeAppUserIds,
+				ExcludeImmutable:        request.ExcludeImmutable,
+				ExcludeResourceTypeIds:  request.ExcludeResourceTypeIds,
+				ExcludedEntitlementRefs: request.ExcludedEntitlementRefs,
+				IncludeDeleted:          request.IncludeDeleted,
+				IsAutomated:             request.IsAutomated,
+				MembershipType:          request.MembershipType,
+				OnlyGetExpiring:         request.OnlyGetExpiring,
+				PageSize:                request.PageSize,
+				PageToken:               &nCVal,
+				PolicyRefs:              request.PolicyRefs,
+				Query:                   request.Query,
+				Refs:                    request.Refs,
+				ResourceIds:             request.ResourceIds,
+				ResourceTraitIds:        request.ResourceTraitIds,
+				ResourceTypeIds:         request.ResourceTypeIds,
+				RiskLevelIds:            request.RiskLevelIds,
+				SourceConnectorID:       request.SourceConnectorID,
 			},
 		)
 	}

@@ -11,17 +11,29 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *ComplianceFrameworkResourceModel) ToSharedCreateComplianceFrameworkAttributeValueRequest(ctx context.Context) (*shared.CreateComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
+func (r *ComplianceFrameworkResourceModel) RefreshFromSharedAttributeValue(ctx context.Context, resp *shared.AttributeValue) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	value := new(string)
-	if !r.Value.IsUnknown() && !r.Value.IsNull() {
-		*value = r.Value.ValueString()
-	} else {
-		value = nil
+	if resp != nil {
+		r.AttributeTypeID = types.StringPointerValue(resp.AttributeTypeID)
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.ID = types.StringPointerValue(resp.ID)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		r.Value = types.StringPointerValue(resp.Value)
 	}
-	out := shared.CreateComplianceFrameworkAttributeValueRequest{
-		Value: value,
+
+	return diags
+}
+
+func (r *ComplianceFrameworkResourceModel) ToOperationsC1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest{
+		ID: id,
 	}
 
 	return &out, diags
@@ -40,30 +52,18 @@ func (r *ComplianceFrameworkResourceModel) ToOperationsC1APIAttributeV1Attribute
 	return &out, diags
 }
 
-func (r *ComplianceFrameworkResourceModel) ToOperationsC1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
+func (r *ComplianceFrameworkResourceModel) ToSharedCreateComplianceFrameworkAttributeValueRequest(ctx context.Context) (*shared.CreateComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest{
-		ID: id,
+	value := new(string)
+	if !r.Value.IsUnknown() && !r.Value.IsNull() {
+		*value = r.Value.ValueString()
+	} else {
+		value = nil
+	}
+	out := shared.CreateComplianceFrameworkAttributeValueRequest{
+		Value: value,
 	}
 
 	return &out, diags
-}
-
-func (r *ComplianceFrameworkResourceModel) RefreshFromSharedAttributeValue(ctx context.Context, resp *shared.AttributeValue) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.AttributeTypeID = types.StringPointerValue(resp.AttributeTypeID)
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.ID = types.StringPointerValue(resp.ID)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-		r.Value = types.StringPointerValue(resp.Value)
-	}
-
-	return diags
 }
