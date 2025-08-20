@@ -62,6 +62,13 @@ type PolicyStepInstance struct {
 	//
 	ApprovalInstance *ApprovalInstance `json:"approval,omitempty"`
 	// The FormInstance message.
+	//
+	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
+	//   - completed
+	//   - restarted
+	//   - reassigned
+	//   - skipped
+	//
 	FormInstance *FormInstance `json:"form,omitempty"`
 	// The ID of the PolicyStepInstance. This is required by many action submission endpoints to indicate what step you're approving.
 	ID *string `json:"id,omitempty"`

@@ -23,6 +23,7 @@ func NewAccessProfileDataSource() datasource.DataSource {
 
 // AccessProfileDataSource is the data source implementation.
 type AccessProfileDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

@@ -35,12 +35,16 @@ TF_REATTACH_PROVIDERS=... terraform apply
 * [conductorone_app_entitlement_proxy_binding](docs/resources/app_entitlement_proxy_binding.md)
 * [conductorone_app_resource](docs/resources/app_resource.md)
 * [conductorone_app_resource_type](docs/resources/app_resource_type.md)
+* [conductorone_app_entitlement_monitor_binding](docs/resources/app_entitlement_monitor_binding.md)
 * [conductorone_app_entitlement_owner](docs/resources/app_entitlement_owner.md)
 * [conductorone_app_owner](docs/resources/app_owner.md)
 * [conductorone_bundle_automation](docs/resources/bundle_automation.md)
 * [conductorone_compliance_framework](docs/resources/compliance_framework.md)
 * [conductorone_connector_credential](docs/resources/connector_credential.md)
 * [conductorone_custom_app_entitlement](docs/resources/custom_app_entitlement.md)
+* [conductorone_function](docs/resources/function.md)
+* [conductorone_function_commit](docs/resources/function_commit.md)
+* [conductorone_function_tag](docs/resources/function_tag.md)
 * [conductorone_policy](docs/resources/policy.md)
 * [conductorone_risk_level](docs/resources/risk_level.md)
 * [conductorone_webhook](docs/resources/webhook.md)
@@ -55,10 +59,14 @@ TF_REATTACH_PROVIDERS=... terraform apply
 * [conductorone_app_resource](docs/data-sources/app_resource.md)
 * [conductorone_app_resource_type](docs/data-sources/app_resource_type.md)
 * [conductorone_app_resources](docs/data-sources/app_resources.md)
+* [conductorone_app_entitlement_monitor_binding](docs/data-sources/app_entitlement_monitor_binding.md)
 * [conductorone_aws_external_id](docs/data-sources/aws_external_id.md)
 * [conductorone_bundle_automation](docs/data-sources/bundle_automation.md)
 * [conductorone_compliance_framework](docs/data-sources/compliance_framework.md)
 * [conductorone_connector_credential](docs/data-sources/connector_credential.md)
+* [conductorone_function](docs/data-sources/function.md)
+* [conductorone_function_commit](docs/data-sources/function_commit.md)
+* [conductorone_function_tag](docs/data-sources/function_tag.md)
 * [conductorone_policy](docs/data-sources/policy.md)
 * [conductorone_risk_level](docs/data-sources/risk_level.md)
 * [conductorone_user](docs/data-sources/user.md)
@@ -140,7 +148,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.4.6"
+      version = "1.5.0"
     }
   }
 }

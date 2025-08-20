@@ -35,6 +35,7 @@ func NewAppEntitlementAutomationResource() resource.Resource {
 
 // AppEntitlementAutomationResource defines the resource implementation.
 type AppEntitlementAutomationResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
@@ -510,7 +511,7 @@ func (r *AppEntitlementAutomationResource) ImportState(ctx context.Context, req 
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_entitlement_id": "",  "app_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"app_entitlement_id": "...", "app_id": "..."}': `+err.Error())
 		return
 	}
 
@@ -524,5 +525,4 @@ func (r *AppEntitlementAutomationResource) ImportState(ctx context.Context, req 
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), data.AppID)...)
-
 }

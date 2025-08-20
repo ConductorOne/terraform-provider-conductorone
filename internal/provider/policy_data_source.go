@@ -7,6 +7,7 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -23,6 +24,7 @@ func NewPolicyDataSource() datasource.DataSource {
 
 // PolicyDataSource is the data source implementation.
 type PolicyDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
@@ -420,6 +422,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											`  - agent`,
 									},
 									"form": schema.StringAttribute{
+										CustomType:  jsontypes.NormalizedType{},
 										Computed:    true,
 										Description: `The Form message. Parsed as JSON.`,
 									},
@@ -553,6 +556,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 														Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
 													},
 													"multi_step": schema.StringAttribute{
+														CustomType:  jsontypes.NormalizedType{},
 														Computed:    true,
 														Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
 													},

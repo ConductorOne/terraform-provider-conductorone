@@ -8,85 +8,10 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
-
-func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Context) (*shared.SearchPoliciesRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
-	var excludePolicyIds []string
-	if r.ExcludePolicyIds != nil {
-		excludePolicyIds = make([]string, 0, len(r.ExcludePolicyIds))
-		for _, excludePolicyIdsItem := range r.ExcludePolicyIds {
-			excludePolicyIds = append(excludePolicyIds, excludePolicyIdsItem.ValueString())
-		}
-	}
-	includeDeleted := new(bool)
-	if !r.IncludeDeleted.IsUnknown() && !r.IncludeDeleted.IsNull() {
-		*includeDeleted = r.IncludeDeleted.ValueBool()
-	} else {
-		includeDeleted = nil
-	}
-	pageSize := new(int)
-	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
-		*pageSize = int(r.PageSize.ValueInt32())
-	} else {
-		pageSize = nil
-	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
-	}
-	var policyTypes []shared.PolicyTypes
-	if r.PolicyTypes != nil {
-		policyTypes = make([]shared.PolicyTypes, 0, len(r.PolicyTypes))
-		for _, policyTypesItem := range r.PolicyTypes {
-			policyTypes = append(policyTypes, shared.PolicyTypes(policyTypesItem.ValueString()))
-		}
-	}
-	query := new(string)
-	if !r.Query.IsUnknown() && !r.Query.IsNull() {
-		*query = r.Query.ValueString()
-	} else {
-		query = nil
-	}
-	var refs []shared.PolicyRef
-	if r.Refs != nil {
-		refs = make([]shared.PolicyRef, 0, len(r.Refs))
-		for _, refsItem := range r.Refs {
-			id := new(string)
-			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-				*id = refsItem.ID.ValueString()
-			} else {
-				id = nil
-			}
-			refs = append(refs, shared.PolicyRef{
-				ID: id,
-			})
-		}
-	}
-	out := shared.SearchPoliciesRequest{
-		DisplayName:      displayName,
-		ExcludePolicyIds: excludePolicyIds,
-		IncludeDeleted:   includeDeleted,
-		PageSize:         pageSize,
-		PageToken:        pageToken,
-		PolicyTypes:      policyTypes,
-		Query:            query,
-		Refs:             refs,
-	}
-
-	return &out, diags
-}
 
 func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, resp *shared.Policy) diag.Diagnostics {
 	var diags diag.Diagnostics
@@ -102,8 +27,10 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 			var policyStepsResult tfTypes.PolicySteps
 			if policyStepsValue.Steps != nil {
 				policyStepsResult.Steps = []tfTypes.PolicyStep{}
-				for stepsCount, stepsItem := range policyStepsValue.Steps {
+
+				for _, stepsItem := range policyStepsValue.Steps {
 					var steps tfTypes.PolicyStep
+
 					if stepsItem.Accept == nil {
 						steps.Accept = nil
 					} else {
@@ -310,10 +237,10 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 						}
 					}
 					if stepsItem.Form == nil {
-						steps.Form = types.StringNull()
+						steps.Form = jsontypes.NewNormalizedNull()
 					} else {
 						formResult, _ := json.Marshal(stepsItem.Form)
-						steps.Form = types.StringValue(string(formResult))
+						steps.Form = jsontypes.NewNormalizedValue(string(formResult))
 					}
 					if stepsItem.Provision == nil {
 						steps.Provision = nil
@@ -398,10 +325,10 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 								}
 							}
 							if stepsItem.Provision.ProvisionPolicy.MultiStep == nil {
-								steps.Provision.ProvisionPolicy.MultiStep = types.StringNull()
+								steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
 							} else {
 								multiStepResult, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.MultiStep)
-								steps.Provision.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult))
+								steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
 							}
 							if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
 								steps.Provision.ProvisionPolicy.UnconfiguredProvision = nil
@@ -446,16 +373,8 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							steps.Wait.WaitCondition.Condition = types.StringPointerValue(stepsItem.Wait.WaitCondition.Condition)
 						}
 					}
-					if stepsCount+1 > len(policyStepsResult.Steps) {
-						policyStepsResult.Steps = append(policyStepsResult.Steps, steps)
-					} else {
-						policyStepsResult.Steps[stepsCount].Accept = steps.Accept
-						policyStepsResult.Steps[stepsCount].Approval = steps.Approval
-						policyStepsResult.Steps[stepsCount].Form = steps.Form
-						policyStepsResult.Steps[stepsCount].Provision = steps.Provision
-						policyStepsResult.Steps[stepsCount].Reject = steps.Reject
-						policyStepsResult.Steps[stepsCount].Wait = steps.Wait
-					}
+
+					policyStepsResult.Steps = append(policyStepsResult.Steps, steps)
 				}
 			}
 
@@ -469,39 +388,106 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 	}
 	if resp.PostActions != nil {
 		r.PostActions = []tfTypes.PolicyPostActions{}
-		if len(r.PostActions) > len(resp.PostActions) {
-			r.PostActions = r.PostActions[:len(resp.PostActions)]
-		}
-		for postActionsCount, postActionsItem := range resp.PostActions {
+
+		for _, postActionsItem := range resp.PostActions {
 			var postActions tfTypes.PolicyPostActions
+
 			postActions.CertifyRemediateImmediately = types.BoolPointerValue(postActionsItem.CertifyRemediateImmediately)
-			if postActionsCount+1 > len(r.PostActions) {
-				r.PostActions = append(r.PostActions, postActions)
-			} else {
-				r.PostActions[postActionsCount].CertifyRemediateImmediately = postActions.CertifyRemediateImmediately
-			}
+
+			r.PostActions = append(r.PostActions, postActions)
 		}
 	}
 	r.ReassignTasksToDelegates = types.BoolPointerValue(resp.ReassignTasksToDelegates)
 	if resp.Rules != nil {
 		r.Rules = []tfTypes.Rule{}
-		if len(r.Rules) > len(resp.Rules) {
-			r.Rules = r.Rules[:len(resp.Rules)]
-		}
-		for rulesCount, rulesItem := range resp.Rules {
+
+		for _, rulesItem := range resp.Rules {
 			var rules tfTypes.Rule
+
 			rules.Condition = types.StringPointerValue(rulesItem.Condition)
 			rules.PolicyKey = types.StringPointerValue(rulesItem.PolicyKey)
-			if rulesCount+1 > len(r.Rules) {
-				r.Rules = append(r.Rules, rules)
-			} else {
-				r.Rules[rulesCount].Condition = rules.Condition
-				r.Rules[rulesCount].PolicyKey = rules.PolicyKey
-			}
+
+			r.Rules = append(r.Rules, rules)
 		}
 	}
 	r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
 	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 
 	return diags
+}
+
+func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Context) (*shared.SearchPoliciesRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
+	var excludePolicyIds []string
+	if r.ExcludePolicyIds != nil {
+		excludePolicyIds = make([]string, 0, len(r.ExcludePolicyIds))
+		for _, excludePolicyIdsItem := range r.ExcludePolicyIds {
+			excludePolicyIds = append(excludePolicyIds, excludePolicyIdsItem.ValueString())
+		}
+	}
+	includeDeleted := new(bool)
+	if !r.IncludeDeleted.IsUnknown() && !r.IncludeDeleted.IsNull() {
+		*includeDeleted = r.IncludeDeleted.ValueBool()
+	} else {
+		includeDeleted = nil
+	}
+	pageSize := new(int)
+	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
+		*pageSize = int(r.PageSize.ValueInt32())
+	} else {
+		pageSize = nil
+	}
+	pageToken := new(string)
+	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
+		*pageToken = r.PageToken.ValueString()
+	} else {
+		pageToken = nil
+	}
+	var policyTypes []shared.PolicyTypes
+	if r.PolicyTypes != nil {
+		policyTypes = make([]shared.PolicyTypes, 0, len(r.PolicyTypes))
+		for _, policyTypesItem := range r.PolicyTypes {
+			policyTypes = append(policyTypes, shared.PolicyTypes(policyTypesItem.ValueString()))
+		}
+	}
+	query := new(string)
+	if !r.Query.IsUnknown() && !r.Query.IsNull() {
+		*query = r.Query.ValueString()
+	} else {
+		query = nil
+	}
+	var refs []shared.PolicyRef
+	if r.Refs != nil {
+		refs = make([]shared.PolicyRef, 0, len(r.Refs))
+		for _, refsItem := range r.Refs {
+			id := new(string)
+			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
+				*id = refsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			refs = append(refs, shared.PolicyRef{
+				ID: id,
+			})
+		}
+	}
+	out := shared.SearchPoliciesRequest{
+		DisplayName:      displayName,
+		ExcludePolicyIds: excludePolicyIds,
+		IncludeDeleted:   includeDeleted,
+		PageSize:         pageSize,
+		PageToken:        pageToken,
+		PolicyTypes:      policyTypes,
+		Query:            query,
+		Refs:             refs,
+	}
+
+	return &out, diags
 }

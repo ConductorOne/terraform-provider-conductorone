@@ -12,19 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *BundleAutomationDataSourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var requestCatalogID string
-	requestCatalogID = r.RequestCatalogID.ValueString()
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest{
-		RequestCatalogID: requestCatalogID,
-	}
-
-	return &out, diags
-}
-
 func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(ctx context.Context, resp *shared.BundleAutomation) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -47,19 +34,14 @@ func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(ctx 
 			r.BundleAutomationRuleEntitlement = &tfTypes.BundleAutomationRuleEntitlement{}
 			if resp.BundleAutomationRuleEntitlement.EntitlementRefs != nil {
 				r.BundleAutomationRuleEntitlement.EntitlementRefs = []tfTypes.AppEntitlementRef{}
-				if len(r.BundleAutomationRuleEntitlement.EntitlementRefs) > len(resp.BundleAutomationRuleEntitlement.EntitlementRefs) {
-					r.BundleAutomationRuleEntitlement.EntitlementRefs = r.BundleAutomationRuleEntitlement.EntitlementRefs[:len(resp.BundleAutomationRuleEntitlement.EntitlementRefs)]
-				}
-				for entitlementRefsCount, entitlementRefsItem := range resp.BundleAutomationRuleEntitlement.EntitlementRefs {
+
+				for _, entitlementRefsItem := range resp.BundleAutomationRuleEntitlement.EntitlementRefs {
 					var entitlementRefs tfTypes.AppEntitlementRef
+
 					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
 					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
-					if entitlementRefsCount+1 > len(r.BundleAutomationRuleEntitlement.EntitlementRefs) {
-						r.BundleAutomationRuleEntitlement.EntitlementRefs = append(r.BundleAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
-					} else {
-						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].AppID = entitlementRefs.AppID
-						r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsCount].ID = entitlementRefs.ID
-					}
+
+					r.BundleAutomationRuleEntitlement.EntitlementRefs = append(r.BundleAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
 				}
 			}
 		}
@@ -73,4 +55,17 @@ func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(ctx 
 	}
 
 	return diags
+}
+
+func (r *BundleAutomationDataSourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestCatalogID string
+	requestCatalogID = r.RequestCatalogID.ValueString()
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest{
+		RequestCatalogID: requestCatalogID,
+	}
+
+	return &out, diags
 }

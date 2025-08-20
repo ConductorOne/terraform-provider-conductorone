@@ -8,6 +8,7 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -313,10 +314,10 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							}
 						}
 						if listItem.AppEntitlement.DeprovisionerPolicy.MultiStep == nil {
-							list.AppEntitlement.DeprovisionerPolicy.MultiStep = types.StringNull()
+							list.AppEntitlement.DeprovisionerPolicy.MultiStep = jsontypes.NewNormalizedNull()
 						} else {
 							multiStepResult, _ := json.Marshal(listItem.AppEntitlement.DeprovisionerPolicy.MultiStep)
-							list.AppEntitlement.DeprovisionerPolicy.MultiStep = types.StringValue(string(multiStepResult))
+							list.AppEntitlement.DeprovisionerPolicy.MultiStep = jsontypes.NewNormalizedValue((string(multiStepResult)))
 						}
 						if listItem.AppEntitlement.DeprovisionerPolicy.UnconfiguredProvision == nil {
 							list.AppEntitlement.DeprovisionerPolicy.UnconfiguredProvision = nil
@@ -425,10 +426,10 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							}
 						}
 						if listItem.AppEntitlement.ProvisionPolicy.MultiStep == nil {
-							list.AppEntitlement.ProvisionPolicy.MultiStep = types.StringNull()
+							list.AppEntitlement.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
 						} else {
 							multiStepResult1, _ := json.Marshal(listItem.AppEntitlement.ProvisionPolicy.MultiStep)
-							list.AppEntitlement.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult1))
+							list.AppEntitlement.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue((string(multiStepResult1)))
 						}
 						if listItem.AppEntitlement.ProvisionPolicy.UnconfiguredProvision == nil {
 							list.AppEntitlement.ProvisionPolicy.UnconfiguredProvision = nil

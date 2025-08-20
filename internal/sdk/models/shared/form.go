@@ -14,8 +14,6 @@ type Form struct {
 	Fields []Field `json:"fields,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
-	// The tenantId field.
-	TenantID *string `json:"tenantId,omitempty"`
 }
 
 func (o *Form) GetDescription() *string {
@@ -51,11 +49,4 @@ func (o *Form) GetID() *string {
 		return nil
 	}
 	return o.ID
-}
-
-func (o *Form) GetTenantID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.TenantID
 }

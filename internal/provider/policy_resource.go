@@ -9,6 +9,7 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -29,6 +30,7 @@ func NewPolicyResource() resource.Resource {
 
 // PolicyResource defines the resource implementation.
 type PolicyResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
@@ -600,12 +602,10 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 										},
 									},
 									"form": schema.StringAttribute{
+										CustomType:  jsontypes.NormalizedType{},
 										Computed:    true,
 										Optional:    true,
 										Description: `The Form message. Parsed as JSON.`,
-										Validators: []validator.String{
-											validators.IsValidJSON(),
-										},
 									},
 									"provision": schema.SingleNestedAttribute{
 										Computed: true,
@@ -799,6 +799,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														},
 													},
 													"multi_step": schema.StringAttribute{
+														CustomType:  jsontypes.NormalizedType{},
 														Computed:    true,
 														Optional:    true,
 														Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
@@ -810,7 +811,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 																path.MatchRelative().AtParent().AtName("manual_provision"),
 																path.MatchRelative().AtParent().AtName("webhook_provision"),
 															}...),
-															validators.IsValidJSON(),
 														},
 													},
 													"unconfigured_provision": schema.SingleNestedAttribute{
