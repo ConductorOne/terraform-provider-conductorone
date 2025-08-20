@@ -11,17 +11,29 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *RiskLevelResourceModel) ToSharedCreateRiskLevelAttributeValueRequest(ctx context.Context) (*shared.CreateRiskLevelAttributeValueRequest, diag.Diagnostics) {
+func (r *RiskLevelResourceModel) RefreshFromSharedAttributeValue(ctx context.Context, resp *shared.AttributeValue) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	value := new(string)
-	if !r.Value.IsUnknown() && !r.Value.IsNull() {
-		*value = r.Value.ValueString()
-	} else {
-		value = nil
+	if resp != nil {
+		r.AttributeTypeID = types.StringPointerValue(resp.AttributeTypeID)
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.ID = types.StringPointerValue(resp.ID)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+		r.Value = types.StringPointerValue(resp.Value)
 	}
-	out := shared.CreateRiskLevelAttributeValueRequest{
-		Value: value,
+
+	return diags
+}
+
+func (r *RiskLevelResourceModel) ToOperationsC1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest{
+		ID: id,
 	}
 
 	return &out, diags
@@ -40,30 +52,18 @@ func (r *RiskLevelResourceModel) ToOperationsC1APIAttributeV1AttributesGetRiskLe
 	return &out, diags
 }
 
-func (r *RiskLevelResourceModel) ToOperationsC1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest, diag.Diagnostics) {
+func (r *RiskLevelResourceModel) ToSharedCreateRiskLevelAttributeValueRequest(ctx context.Context) (*shared.CreateRiskLevelAttributeValueRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest{
-		ID: id,
+	value := new(string)
+	if !r.Value.IsUnknown() && !r.Value.IsNull() {
+		*value = r.Value.ValueString()
+	} else {
+		value = nil
+	}
+	out := shared.CreateRiskLevelAttributeValueRequest{
+		Value: value,
 	}
 
 	return &out, diags
-}
-
-func (r *RiskLevelResourceModel) RefreshFromSharedAttributeValue(ctx context.Context, resp *shared.AttributeValue) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.AttributeTypeID = types.StringPointerValue(resp.AttributeTypeID)
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.ID = types.StringPointerValue(resp.ID)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-		r.Value = types.StringPointerValue(resp.Value)
-	}
-
-	return diags
 }

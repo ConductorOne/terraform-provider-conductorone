@@ -8,6 +8,7 @@ package shared
 //   - stringField
 //   - boolField
 //   - stringSliceField
+//   - int64Field
 type Field struct {
 	// The BoolField message.
 	//
@@ -23,6 +24,20 @@ type Field struct {
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The Int64Field message.
+	//
+	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
+	//   - numberField
+	//
+	//
+	// This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:
+	//   - defaultValue
+	//
+	//
+	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
+	//   - rules
+	//
+	Int64Field *Int64Field `json:"int64Field,omitempty"`
 	// The name field.
 	Name *string `json:"name,omitempty"`
 	// The StringField message.
@@ -67,6 +82,13 @@ func (o *Field) GetDisplayName() *string {
 		return nil
 	}
 	return o.DisplayName
+}
+
+func (o *Field) GetInt64Field() *Int64Field {
+	if o == nil {
+		return nil
+	}
+	return o.Int64Field
 }
 
 func (o *Field) GetName() *string {

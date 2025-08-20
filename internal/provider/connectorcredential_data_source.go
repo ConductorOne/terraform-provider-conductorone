@@ -22,6 +22,7 @@ func NewConnectorCredentialDataSource() datasource.DataSource {
 
 // ConnectorCredentialDataSource is the data source implementation.
 type ConnectorCredentialDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

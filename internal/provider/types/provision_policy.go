@@ -3,7 +3,7 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 )
 
 type ProvisionPolicy struct {
@@ -11,7 +11,7 @@ type ProvisionPolicy struct {
 	DelegatedProvision      *DelegatedProvision      `tfsdk:"delegated_provision"`
 	ExternalTicketProvision *ExternalTicketProvision `tfsdk:"external_ticket_provision"`
 	ManualProvision         *ManualProvision         `tfsdk:"manual_provision"`
-	MultiStep               types.String             `tfsdk:"multi_step"`
+	MultiStep               jsontypes.Normalized     `tfsdk:"multi_step"`
 	UnconfiguredProvision   *UnconfiguredProvision   `tfsdk:"unconfigured_provision"`
 	WebhookProvision        *WebhookProvision        `tfsdk:"webhook_provision"`
 }

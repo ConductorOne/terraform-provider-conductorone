@@ -23,6 +23,7 @@ func NewWebhookDataSource() datasource.DataSource {
 
 // WebhookDataSource is the data source implementation.
 type WebhookDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

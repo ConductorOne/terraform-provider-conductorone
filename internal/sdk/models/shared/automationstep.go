@@ -19,7 +19,10 @@ package shared
 //   - connectorCreateAccount
 //   - grantEntitlements
 //   - sendSlackMessage
+//   - callFunction
 type AutomationStep struct {
+	// The CallFunction message.
+	CallFunction *CallFunction `json:"callFunction,omitempty"`
 	// The ConnectorAction message.
 	//
 	// This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:
@@ -58,8 +61,8 @@ type AutomationStep struct {
 	// The SendSlackMessage message.
 	//
 	// This message contains a oneof named channel. Only a single field of the following list may be set at a time:
-	//   - channelId
-	//   - channelIdCel
+	//   - channelName
+	//   - channelNameCel
 	//
 	SendSlackMessage *SendSlackMessage `json:"sendSlackMessage,omitempty"`
 	// The skipIfTrueCel field.
@@ -98,6 +101,13 @@ type AutomationStep struct {
 	//   - webhookIdCel
 	//
 	Webhook *Webhook `json:"webhook,omitempty"`
+}
+
+func (o *AutomationStep) GetCallFunction() *CallFunction {
+	if o == nil {
+		return nil
+	}
+	return o.CallFunction
 }
 
 func (o *AutomationStep) GetConnectorAction() *ConnectorAction {

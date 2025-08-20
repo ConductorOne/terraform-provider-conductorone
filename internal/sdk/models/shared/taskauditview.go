@@ -156,6 +156,8 @@ func (e *Source) UnmarshalJSON(data []byte) error {
 //   - reassignmentListError
 //   - slaEscalation
 //   - policyChanged
+//   - formInstanceChange
+//   - grantDurationUpdated
 type TaskAuditView struct {
 	// The TaskAuditAccessRequestOutcome message.
 	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
@@ -206,6 +208,10 @@ type TaskAuditView struct {
 	TaskAuditExternalTicketProvisionStepResolved *TaskAuditExternalTicketProvisionStepResolved `json:"externalTicketProvisionStepResolved,omitempty"`
 	// The TaskAuditExternalTicketTriggered message.
 	TaskAuditExternalTicketTriggered *TaskAuditExternalTicketTriggered `json:"externalTicketTriggered,omitempty"`
+	// The TaskAuditFormInstanceChange message.
+	TaskAuditFormInstanceChange *TaskAuditFormInstanceChange `json:"formInstanceChange,omitempty"`
+	// The TaskAuditGrantDurationUpdated message.
+	TaskAuditGrantDurationUpdated *TaskAuditGrantDurationUpdated `json:"grantDurationUpdated,omitempty"`
 	// The TaskAuditGrantOutcome message.
 	TaskAuditGrantOutcome *TaskAuditGrantOutcome `json:"grantOutcome,omitempty"`
 	// The TaskAuditHardReset message.
@@ -441,6 +447,20 @@ func (o *TaskAuditView) GetTaskAuditExternalTicketTriggered() *TaskAuditExternal
 		return nil
 	}
 	return o.TaskAuditExternalTicketTriggered
+}
+
+func (o *TaskAuditView) GetTaskAuditFormInstanceChange() *TaskAuditFormInstanceChange {
+	if o == nil {
+		return nil
+	}
+	return o.TaskAuditFormInstanceChange
+}
+
+func (o *TaskAuditView) GetTaskAuditGrantDurationUpdated() *TaskAuditGrantDurationUpdated {
+	if o == nil {
+		return nil
+	}
+	return o.TaskAuditGrantDurationUpdated
 }
 
 func (o *TaskAuditView) GetTaskAuditGrantOutcome() *TaskAuditGrantOutcome {

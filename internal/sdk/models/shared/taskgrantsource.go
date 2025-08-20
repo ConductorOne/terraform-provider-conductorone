@@ -4,12 +4,21 @@ package shared
 
 // The TaskGrantSource message tracks which external URL was the source of the specificed grant ticket.
 type TaskGrantSource struct {
+	// The ID of the conversation that created this ticket
+	ConversationID *string `json:"conversationId,omitempty"`
 	// The external url source of the grant ticket.
 	ExternalURL *string `json:"externalUrl,omitempty"`
 	// The integration id for the source of tickets.
 	IntegrationID *string `json:"integrationId,omitempty"`
 	// the request id for the grant ticket if the source is external
 	RequestID *string `json:"requestId,omitempty"`
+}
+
+func (o *TaskGrantSource) GetConversationID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ConversationID
 }
 
 func (o *TaskGrantSource) GetExternalURL() *string {
