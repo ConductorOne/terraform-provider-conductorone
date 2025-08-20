@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 9191d859b6328e3b7e46afa17a4f175d
+  docChecksum: e8da18998a10bf0d25a68da62c3a868e
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.606.0
   generationVersion: 2.686.7
-  releaseVersion: 1.5.0
-  configChecksum: b3488c07f40b5b4f1328d5a095beea40
+  releaseVersion: 1.5.1
+  configChecksum: 56d284e9ae149549c1c5915e38c8aeb9
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -37,18 +37,26 @@ generatedFiles:
   - examples/data-sources/conductorone_app_entitlements/data-source.tf
   - examples/data-sources/conductorone_app_resource/data-source.tf
   - examples/data-sources/conductorone_app_resource_type/data-source.tf
+  - examples/data-sources/conductorone_app_resource_types/data-source.tf
   - examples/data-sources/conductorone_app_resources/data-source.tf
+  - examples/data-sources/conductorone_apps/data-source.tf
   - examples/data-sources/conductorone_aws_external_id/data-source.tf
   - examples/data-sources/conductorone_bundle_automation/data-source.tf
   - examples/data-sources/conductorone_compliance_framework/data-source.tf
+  - examples/data-sources/conductorone_compliance_frameworks/data-source.tf
   - examples/data-sources/conductorone_connector_credential/data-source.tf
   - examples/data-sources/conductorone_function/data-source.tf
   - examples/data-sources/conductorone_function_commit/data-source.tf
   - examples/data-sources/conductorone_function_tag/data-source.tf
+  - examples/data-sources/conductorone_policies/data-source.tf
   - examples/data-sources/conductorone_policy/data-source.tf
+  - examples/data-sources/conductorone_request_catalogs/data-source.tf
   - examples/data-sources/conductorone_risk_level/data-source.tf
+  - examples/data-sources/conductorone_risk_levels/data-source.tf
   - examples/data-sources/conductorone_user/data-source.tf
+  - examples/data-sources/conductorone_users/data-source.tf
   - examples/data-sources/conductorone_webhook/data-source.tf
+  - examples/data-sources/conductorone_webhooks/data-source.tf
   - examples/provider/provider.tf
   - examples/resources/conductorone_access_conflict/import-by-string-id.tf
   - examples/resources/conductorone_access_conflict/import.sh
@@ -164,8 +172,12 @@ generatedFiles:
   - internal/provider/app_resource_type_data_source_sdk.go
   - internal/provider/app_resource_type_resource.go
   - internal/provider/app_resource_type_resource_sdk.go
+  - internal/provider/app_resource_types_data_source.go
+  - internal/provider/app_resource_types_data_source_sdk.go
   - internal/provider/app_resources_data_source.go
   - internal/provider/app_resources_data_source_sdk.go
+  - internal/provider/apps_data_source.go
+  - internal/provider/apps_data_source_sdk.go
   - internal/provider/aws_external_id_data_source.go
   - internal/provider/aws_external_id_data_source_sdk.go
   - internal/provider/bundleautomation_data_source.go
@@ -176,6 +188,8 @@ generatedFiles:
   - internal/provider/compliance_framework_data_source_sdk.go
   - internal/provider/compliance_framework_resource.go
   - internal/provider/compliance_framework_resource_sdk.go
+  - internal/provider/compliance_frameworks_data_source.go
+  - internal/provider/compliance_frameworks_data_source_sdk.go
   - internal/provider/connectorcredential_data_source.go
   - internal/provider/connectorcredential_data_source_sdk.go
   - internal/provider/connectorcredential_resource.go
@@ -194,6 +208,8 @@ generatedFiles:
   - internal/provider/function_tag_data_source_sdk.go
   - internal/provider/function_tag_resource.go
   - internal/provider/function_tag_resource_sdk.go
+  - internal/provider/policies_data_source.go
+  - internal/provider/policies_data_source_sdk.go
   - internal/provider/policy_data_source.go
   - internal/provider/policy_data_source_sdk.go
   - internal/provider/policy_resource.go
@@ -212,10 +228,14 @@ generatedFiles:
   - internal/provider/reflect/primitive.go
   - internal/provider/reflect/slice.go
   - internal/provider/reflect/struct.go
+  - internal/provider/request_catalogs_data_source.go
+  - internal/provider/request_catalogs_data_source_sdk.go
   - internal/provider/risk_level_data_source.go
   - internal/provider/risk_level_data_source_sdk.go
   - internal/provider/risk_level_resource.go
   - internal/provider/risk_level_resource_sdk.go
+  - internal/provider/risk_levels_data_source.go
+  - internal/provider/risk_levels_data_source_sdk.go
   - internal/provider/typeconvert/date.go
   - internal/provider/typeconvert/datetime.go
   - internal/provider/typeconvert/int.go
@@ -223,6 +243,7 @@ generatedFiles:
   - internal/provider/types/account_provision.go
   - internal/provider/types/account_provision_config.go
   - internal/provider/types/agent_approval.go
+  - internal/provider/types/app.go
   - internal/provider/types/app_entitlement.go
   - internal/provider/types/app_entitlement_automation_last_run_status.go
   - internal/provider/types/app_entitlement_automation_rule_basic.go
@@ -237,9 +258,11 @@ generatedFiles:
   - internal/provider/types/app_resource.go
   - internal/provider/types/app_resource_ref.go
   - internal/provider/types/app_resource_service_get_response_expanded.go
+  - internal/provider/types/app_resource_type.go
   - internal/provider/types/app_resource_type_service_get_response_expanded.go
   - internal/provider/types/app_resource_view.go
   - internal/provider/types/approval.go
+  - internal/provider/types/attribute_value.go
   - internal/provider/types/bundle_automation_last_run_state.go
   - internal/provider/types/bundle_automation_rule_entitlement.go
   - internal/provider/types/conflict_monitor_delete_request.go
@@ -263,6 +286,7 @@ generatedFiles:
   - internal/provider/types/manager_approval.go
   - internal/provider/types/manual_provision.go
   - internal/provider/types/notification_config.go
+  - internal/provider/types/policy.go
   - internal/provider/types/policy_post_actions.go
   - internal/provider/types/policy_ref.go
   - internal/provider/types/policy_step.go
@@ -274,7 +298,10 @@ generatedFiles:
   - internal/provider/types/reassign_to_approvers.go
   - internal/provider/types/reject.go
   - internal/provider/types/replace_policy.go
+  - internal/provider/types/request_catalog.go
   - internal/provider/types/request_catalog_management_service_get_response_expanded.go
+  - internal/provider/types/request_catalog_management_service_list_response_expanded.go
+  - internal/provider/types/request_catalog_view.go
   - internal/provider/types/resource_owner_approval.go
   - internal/provider/types/rule.go
   - internal/provider/types/save_to_vault.go
@@ -284,21 +311,28 @@ generatedFiles:
   - internal/provider/types/self_approval.go
   - internal/provider/types/slack_notifications.go
   - internal/provider/types/unconfigured_provision.go
+  - internal/provider/types/user.go
   - internal/provider/types/user_approval.go
   - internal/provider/types/user_attribute_mapping_source.go
   - internal/provider/types/user_ref.go
+  - internal/provider/types/user_view.go
   - internal/provider/types/wait.go
   - internal/provider/types/wait_condition.go
+  - internal/provider/types/webhook1.go
   - internal/provider/types/webhook_approval.go
   - internal/provider/types/webhook_provision.go
   - internal/provider/types/webhook_ref.go
   - internal/provider/user_data_source.go
   - internal/provider/user_data_source_sdk.go
+  - internal/provider/users_data_source.go
+  - internal/provider/users_data_source_sdk.go
   - internal/provider/utils.go
   - internal/provider/webhook_data_source.go
   - internal/provider/webhook_data_source_sdk.go
   - internal/provider/webhook_resource.go
   - internal/provider/webhook_resource_sdk.go
+  - internal/provider/webhooks_data_source.go
+  - internal/provider/webhooks_data_source_sdk.go
   - internal/sdk/.gitattributes
   - internal/sdk/accessconflict.go
   - internal/sdk/accountprovisionpolicytest.go
@@ -451,6 +485,8 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiattributev1attributesgetrisklevelattributevalue.go
   - internal/sdk/models/operations/c1apiattributev1attributeslistattributetypes.go
   - internal/sdk/models/operations/c1apiattributev1attributeslistattributevalues.go
+  - internal/sdk/models/operations/c1apiattributev1attributeslistcomplianceframeworks.go
+  - internal/sdk/models/operations/c1apiattributev1attributeslistrisklevels.go
   - internal/sdk/models/operations/c1apiauthv1authintrospect.go
   - internal/sdk/models/operations/c1apiautomationsv1automationexecutionactionsserviceterminateautomation.go
   - internal/sdk/models/operations/c1apiautomationsv1automationexecutionsearchservicesearchautomationexecutions.go
@@ -895,8 +931,10 @@ generatedFiles:
   - internal/sdk/models/shared/listautomationexclusionsresponse.go
   - internal/sdk/models/shared/listautomationexecutionsresponse.go
   - internal/sdk/models/shared/listautomationsresponse.go
+  - internal/sdk/models/shared/listcomplianceframeworksresponse.go
   - internal/sdk/models/shared/listorgdomainsresponse.go
   - internal/sdk/models/shared/listpolicyresponse.go
+  - internal/sdk/models/shared/listrisklevelsresponse.go
   - internal/sdk/models/shared/listrolesresponse.go
   - internal/sdk/models/shared/liststepupprovidersresponse.go
   - internal/sdk/models/shared/managerapproval.go
@@ -2928,6 +2966,16 @@ examples:
       parameters:
         path:
           task_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.ListComplianceFrameworks:
+    speakeasy-default-c1-api-attribute-v1-attributes-list-compliance-frameworks:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.attribute.v1.Attributes.ListRiskLevels:
+    speakeasy-default-c1-api-attribute-v1-attributes-list-risk-levels:
       responses:
         "200":
           application/json: {}
