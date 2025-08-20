@@ -173,6 +173,7 @@ This message contains a oneof named typ. Only a single field of the following li
   - externalTicket
   - unconfigured (see [below for nested schema](#nestedatt--provision_policy))
 - `purpose` (String) The purpose field.
+- `request_schema_id` (String) The ID of the request schema associated with this app entitlement.
 - `revoke_policy_id` (String) The ID of the policy that will be used for revoke tickets related to the app entitlement
 - `risk_level_value_id` (String) The riskLevelValueId field.
 - `slug` (String) The slug is displayed as an oval next to the name in the frontend of C1, it tells you what permission the entitlement grants. See https://www.conductorone.com/docs/product/admin/entitlements/
