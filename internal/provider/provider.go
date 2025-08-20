@@ -167,6 +167,7 @@ func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasou
 		NewRiskLevelsDataSource,
 		NewComplianceFrameworksDataSource,
 		NewWebhooksDataSource,
+		NewPoliciesDataSource,
 	}
 }
 
