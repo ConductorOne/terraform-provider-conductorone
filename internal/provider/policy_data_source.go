@@ -803,6 +803,24 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	for {
+		res, err := res.Next()
+
+		if err != nil {
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			return
+		}
+
+		if res == nil {
+			break
+		}
+
+		resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, &res.SearchPoliciesResponse.List[0])...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

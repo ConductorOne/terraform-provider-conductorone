@@ -575,6 +575,24 @@ func (r *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	for {
+		res, err := res.Next()
+
+		if err != nil {
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			return
+		}
+
+		if res == nil {
+			break
+		}
+
+		resp.Diagnostics.Append(data.RefreshFromSharedUser(ctx, res.SearchUsersResponse.List[0].User)...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

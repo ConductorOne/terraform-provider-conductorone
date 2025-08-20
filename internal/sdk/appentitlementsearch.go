@@ -6,6 +6,10 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"net/http"
+	"net/url"
+	"strconv"
+
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/config"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/hooks"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
@@ -13,9 +17,6 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/spyzhov/ajson"
-	"net/http"
-	"net/url"
-	"strconv"
 )
 
 type AppEntitlementSearch struct {
@@ -439,28 +440,31 @@ func (s *AppEntitlementSearch) Search(ctx context.Context, request *shared.AppEn
 		return s.Search(
 			ctx,
 			&shared.AppEntitlementSearchServiceSearchRequest{
-				AccessReviewID:         request.AccessReviewID,
-				Alias:                  request.Alias,
-				AppIds:                 request.AppIds,
-				AppUserIds:             request.AppUserIds,
-				ComplianceFrameworkIds: request.ComplianceFrameworkIds,
-				DisplayName:            request.DisplayName,
-				ExcludeAppIds:          request.ExcludeAppIds,
-				ExcludeAppUserIds:      request.ExcludeAppUserIds,
-				ExcludeResourceTypeIds: request.ExcludeResourceTypeIds,
-				IncludeDeleted:         request.IncludeDeleted,
-				IsAutomated:            request.IsAutomated,
-				MembershipType:         request.MembershipType,
-				OnlyGetExpiring:        request.OnlyGetExpiring,
-				PageSize:               request.PageSize,
-				PageToken:              &nCVal,
-				Query:                  request.Query,
-				Refs:                   request.Refs,
-				ResourceIds:            request.ResourceIds,
-				ResourceTraitIds:       request.ResourceTraitIds,
-				ResourceTypeIds:        request.ResourceTypeIds,
-				RiskLevelIds:           request.RiskLevelIds,
-				SourceConnectorID:      request.SourceConnectorID,
+				AccessReviewID:          request.AccessReviewID,
+				Alias:                   request.Alias,
+				AppIds:                  request.AppIds,
+				AppUserIds:              request.AppUserIds,
+				ComplianceFrameworkIds:  request.ComplianceFrameworkIds,
+				DisplayName:             request.DisplayName,
+				ExcludeAppIds:           request.ExcludeAppIds,
+				ExcludeAppUserIds:       request.ExcludeAppUserIds,
+				ExcludeImmutable:        request.ExcludeImmutable,
+				ExcludeResourceTypeIds:  request.ExcludeResourceTypeIds,
+				ExcludedEntitlementRefs: request.ExcludedEntitlementRefs,
+				IncludeDeleted:          request.IncludeDeleted,
+				IsAutomated:             request.IsAutomated,
+				MembershipType:          request.MembershipType,
+				OnlyGetExpiring:         request.OnlyGetExpiring,
+				PageSize:                request.PageSize,
+				PageToken:               &nCVal,
+				PolicyRefs:              request.PolicyRefs,
+				Query:                   request.Query,
+				Refs:                    request.Refs,
+				ResourceIds:             request.ResourceIds,
+				ResourceTraitIds:        request.ResourceTraitIds,
+				ResourceTypeIds:         request.ResourceTypeIds,
+				RiskLevelIds:            request.RiskLevelIds,
+				SourceConnectorID:       request.SourceConnectorID,
 			},
 		)
 	}

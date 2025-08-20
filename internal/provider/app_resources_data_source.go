@@ -23,6 +23,7 @@ func NewAppResourcesDataSource() datasource.DataSource {
 
 // AppResourcesDataSource is the data source implementation.
 type AppResourcesDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
@@ -291,23 +292,23 @@ func (r *AppResourcesDataSource) Read(ctx context.Context, req datasource.ReadRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
-	response, err := res.Next()
 	for {
+		res, err := res.Next()
+
 		if err != nil {
-			resp.Diagnostics.AddError("reading next results failed", debugResponse(response.RawResponse))
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
 			return
 		}
-		if response == nil {
+
+		if res == nil {
 			break
 		}
-		resp.Diagnostics.Append(data.RefreshFromSharedSearchAppResourcesResponse(ctx, response.SearchAppResourcesResponse)...)
+
+		resp.Diagnostics.Append(data.RefreshFromSharedSearchAppResourcesResponse(ctx, res.SearchAppResourcesResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return
 		}
-
-		response, err = response.Next()
 	}
 
 	// Save updated data into Terraform state

@@ -16,6 +16,8 @@ type C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse struct {
 	RawResponse *http.Response
 	// The SearchAppResourceTypesResponse message contains a list of results and a nextPageToken if applicable.
 	SearchAppResourceTypesResponse *shared.SearchAppResourceTypesResponse
+
+	Next func() (*C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse, error)
 }
 
 func (o *C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse) GetContentType() string {
