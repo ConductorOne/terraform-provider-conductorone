@@ -430,7 +430,7 @@ func (s *AppEntitlementSearch) Search(ctx context.Context, request *shared.AppEn
 			if err != nil {
 				return nil, err
 			}
-			if val == nil {
+			if val == nil || val == "" {
 				return nil, nil
 			}
 			nCVal = val.(string)

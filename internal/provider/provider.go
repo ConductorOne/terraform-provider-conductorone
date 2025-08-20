@@ -160,6 +160,13 @@ func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasou
 		NewAppEntitlementAutomationDataSource,
 		NewAppEntitlementsDataSource,
 		NewAppResourcesDataSource,
+		NewAppResourceTypesDataSource,
+		NewAppsDataSource,
+		NewUsersDataSource,
+		NewRequestCatalogsDataSource,
+		NewRiskLevelsDataSource,
+		NewComplianceFrameworksDataSource,
+		NewWebhooksDataSource,
 	}
 }
 

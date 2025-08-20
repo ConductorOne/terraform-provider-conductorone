@@ -162,7 +162,7 @@ func (s *AppResourceSearch) SearchAppResourceTypes(ctx context.Context, request 
 			if err != nil {
 				return nil, err
 			}
-			if val == nil {
+			if val == nil || val == "" {
 				return nil, nil
 			}
 			nCVal = val.(string)
@@ -349,7 +349,7 @@ func (s *AppResourceSearch) SearchAppResources(ctx context.Context, request *sha
 			if err != nil {
 				return nil, err
 			}
-			if val == nil {
+			if val == nil || val == "" {
 				return nil, nil
 			}
 			nCVal = val.(string)

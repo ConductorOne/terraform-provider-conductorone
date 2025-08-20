@@ -162,7 +162,7 @@ func (s *PolicySearch) Search(ctx context.Context, request *shared.SearchPolicie
 			if err != nil {
 				return nil, err
 			}
-			if val == nil {
+			if val == nil || val == "" {
 				return nil, nil
 			}
 			nCVal = val.(string)
