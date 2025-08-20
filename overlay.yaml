@@ -551,3 +551,6 @@ actions:
   - target: $["components"]["schemas"]["c1.api.policy.v1.Form"]
     update:
       x-speakeasy-type-override: any
+  - target: $["paths"]["/api/v1/functions/{function_id}/commits/{id}"]["get"]["parameters"][1]
+    update:
+      x-speakeasy-match: function_commit.id
