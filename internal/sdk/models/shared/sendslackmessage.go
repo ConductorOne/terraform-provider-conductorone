@@ -5,19 +5,19 @@ package shared
 // The SendSlackMessage message.
 //
 // This message contains a oneof named channel. Only a single field of the following list may be set at a time:
-//   - channelId
-//   - channelIdCel
+//   - channelName
+//   - channelNameCel
 type SendSlackMessage struct {
 	// The body field.
 	Body *string `json:"body,omitempty"`
-	// The channelId field.
+	// The channelName field.
 	// This field is part of the `channel` oneof.
 	// See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
-	ChannelID *string `json:"channelId,omitempty"`
-	// The channelIdCel field.
+	ChannelName *string `json:"channelName,omitempty"`
+	// The channelNameCel field.
 	// This field is part of the `channel` oneof.
 	// See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
-	ChannelIDCel *string `json:"channelIdCel,omitempty"`
+	ChannelNameCel *string `json:"channelNameCel,omitempty"`
 }
 
 func (o *SendSlackMessage) GetBody() *string {
@@ -27,16 +27,16 @@ func (o *SendSlackMessage) GetBody() *string {
 	return o.Body
 }
 
-func (o *SendSlackMessage) GetChannelID() *string {
+func (o *SendSlackMessage) GetChannelName() *string {
 	if o == nil {
 		return nil
 	}
-	return o.ChannelID
+	return o.ChannelName
 }
 
-func (o *SendSlackMessage) GetChannelIDCel() *string {
+func (o *SendSlackMessage) GetChannelNameCel() *string {
 	if o == nil {
 		return nil
 	}
-	return o.ChannelIDCel
+	return o.ChannelNameCel
 }

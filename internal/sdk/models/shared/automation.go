@@ -21,6 +21,9 @@ const (
 	PrimaryTriggerTypeTriggerTypeUserCreated       PrimaryTriggerType = "TRIGGER_TYPE_USER_CREATED"
 	PrimaryTriggerTypeTriggerTypeGrantFound        PrimaryTriggerType = "TRIGGER_TYPE_GRANT_FOUND"
 	PrimaryTriggerTypeTriggerTypeGrantDeleted      PrimaryTriggerType = "TRIGGER_TYPE_GRANT_DELETED"
+	PrimaryTriggerTypeTriggerTypeWebhook           PrimaryTriggerType = "TRIGGER_TYPE_WEBHOOK"
+	PrimaryTriggerTypeTriggerTypeSchedule          PrimaryTriggerType = "TRIGGER_TYPE_SCHEDULE"
+	PrimaryTriggerTypeTriggerTypeForm              PrimaryTriggerType = "TRIGGER_TYPE_FORM"
 )
 
 func (e PrimaryTriggerType) ToPointer() *PrimaryTriggerType {
@@ -47,6 +50,12 @@ func (e *PrimaryTriggerType) UnmarshalJSON(data []byte) error {
 	case "TRIGGER_TYPE_GRANT_FOUND":
 		fallthrough
 	case "TRIGGER_TYPE_GRANT_DELETED":
+		fallthrough
+	case "TRIGGER_TYPE_WEBHOOK":
+		fallthrough
+	case "TRIGGER_TYPE_SCHEDULE":
+		fallthrough
+	case "TRIGGER_TYPE_FORM":
 		*e = PrimaryTriggerType(v)
 		return nil
 	default:

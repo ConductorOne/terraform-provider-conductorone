@@ -10,6 +10,27 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *AppResourceTypeDataSourceModel) RefreshFromSharedAppResourceType(ctx context.Context, resp *shared.AppResourceType) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	r.AppID = types.StringPointerValue(resp.AppID)
+	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+	r.DisplayName = types.StringPointerValue(resp.DisplayName)
+	r.ID = types.StringPointerValue(resp.ID)
+	if resp.TraitIds != nil {
+		if r.TraitIds == nil {
+			r.TraitIds = make([]types.String, 0, len(resp.TraitIds))
+		}
+		for _, v := range resp.TraitIds {
+			r.TraitIds = append(r.TraitIds, types.StringValue(v))
+		}
+	}
+	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+
+	return diags
+}
+
 func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest(ctx context.Context) (*shared.SearchAppResourceTypesRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -53,12 +74,6 @@ func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest(c
 	} else {
 		pageSize = nil
 	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
-	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -86,30 +101,10 @@ func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest(c
 		ExcludeResourceTypeIds:      excludeResourceTypeIds,
 		ExcludeResourceTypeTraitIds: excludeResourceTypeTraitIds,
 		PageSize:                    pageSize,
-		PageToken:                   pageToken,
 		Query:                       query,
 		ResourceTypeIds:             resourceTypeIds,
 		ResourceTypeTraitIds:        resourceTypeTraitIds,
 	}
 
 	return &out, diags
-}
-
-func (r *AppResourceTypeDataSourceModel) RefreshFromSharedAppResourceType(ctx context.Context, resp *shared.AppResourceType) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	r.AppID = types.StringPointerValue(resp.AppID)
-	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-	r.DisplayName = types.StringPointerValue(resp.DisplayName)
-	r.ID = types.StringPointerValue(resp.ID)
-	if resp.TraitIds != nil {
-		r.TraitIds = make([]types.String, 0, len(resp.TraitIds))
-		for _, v := range resp.TraitIds {
-			r.TraitIds = append(r.TraitIds, types.StringValue(v))
-		}
-	}
-	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-
-	return diags
 }

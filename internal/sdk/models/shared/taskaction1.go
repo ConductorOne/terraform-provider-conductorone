@@ -39,6 +39,7 @@ const (
 	ActionTypeTaskActionTypeSkipStep                                 ActionType = "TASK_ACTION_TYPE_SKIP_STEP"
 	ActionTypeTaskActionTypeRollbackCancelled                        ActionType = "TASK_ACTION_TYPE_ROLLBACK_CANCELLED"
 	ActionTypeTaskActionTypeUpdateRequestData                        ActionType = "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA"
+	ActionTypeTaskActionTypeUpdateGrantDuration                      ActionType = "TASK_ACTION_TYPE_UPDATE_GRANT_DURATION"
 )
 
 func (e ActionType) ToPointer() *ActionType {
@@ -101,6 +102,8 @@ func (e *ActionType) UnmarshalJSON(data []byte) error {
 	case "TASK_ACTION_TYPE_ROLLBACK_CANCELLED":
 		fallthrough
 	case "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA":
+		fallthrough
+	case "TASK_ACTION_TYPE_UPDATE_GRANT_DURATION":
 		*e = ActionType(v)
 		return nil
 	default:

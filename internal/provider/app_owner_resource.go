@@ -25,6 +25,7 @@ func NewAppOwnerResource() resource.Resource {
 
 // AppOwnerResource defines the resource implementation.
 type AppOwnerResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 

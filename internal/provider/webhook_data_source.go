@@ -23,6 +23,7 @@ func NewWebhookDataSource() datasource.DataSource {
 
 // WebhookDataSource is the data source implementation.
 type WebhookDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
@@ -178,6 +179,24 @@ func (r *WebhookDataSource) Read(ctx context.Context, req datasource.ReadRequest
 
 	if resp.Diagnostics.HasError() {
 		return
+	}
+	for {
+		res, err := res.Next()
+
+		if err != nil {
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			return
+		}
+
+		if res == nil {
+			break
+		}
+
+		resp.Diagnostics.Append(data.RefreshFromSharedWebhook1(ctx, &res.WebhooksSearchResponse.List[0])...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 
 	// Save updated data into Terraform state

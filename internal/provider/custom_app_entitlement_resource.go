@@ -33,6 +33,7 @@ func NewCustomAppEntitlementResource() resource.Resource {
 
 // CustomAppEntitlementResource defines the resource implementation.
 type CustomAppEntitlementResource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
@@ -64,6 +65,7 @@ type CustomAppEntitlementResourceModel struct {
 	OverrideAccessRequestsDefaults types.Bool                                        `tfsdk:"override_access_requests_defaults"`
 	ProvisionPolicy                *tfTypes.ProvisionPolicy                          `tfsdk:"provision_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                                      `tfsdk:"purpose"`
+	RequestSchemaID                types.String                                      `tfsdk:"request_schema_id"`
 	RevokePolicyID                 types.String                                      `tfsdk:"revoke_policy_id"`
 	RiskLevelValueID               types.String                                      `tfsdk:"risk_level_value_id"`
 	Slug                           types.String                                      `tfsdk:"slug"`
@@ -656,6 +658,10 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 					),
 				},
 			},
+			"request_schema_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The ID of the request schema associated with this app entitlement.`,
+			},
 			"revoke_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -978,7 +984,7 @@ func (r *CustomAppEntitlementResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "app_id": "",  "id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"app_id": "", "id": ""}': `+err.Error())
 		return
 	}
 
@@ -992,5 +998,4 @@ func (r *CustomAppEntitlementResource) ImportState(ctx context.Context, req reso
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
-
 }

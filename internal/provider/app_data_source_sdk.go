@@ -10,6 +10,38 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *shared.App) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
+	r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
+	r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
+	r.ConnectorVersion = types.Int64PointerValue(resp.ConnectorVersion)
+	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+	r.DefaultRequestCatalogID = types.StringPointerValue(resp.DefaultRequestCatalogID)
+	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+	r.Description = types.StringPointerValue(resp.Description)
+	r.DisplayName = types.StringPointerValue(resp.DisplayName)
+	r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
+	r.ID = types.StringPointerValue(resp.ID)
+	if resp.IdentityMatching != nil {
+		r.IdentityMatching = types.StringValue(string(*resp.IdentityMatching))
+	} else {
+		r.IdentityMatching = types.StringNull()
+	}
+	r.Instructions = types.StringPointerValue(resp.Instructions)
+	r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
+	r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
+	r.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.MonthlyCostUsd))
+	r.ParentAppID = types.StringPointerValue(resp.ParentAppID)
+	r.RevokePolicyID = types.StringPointerValue(resp.RevokePolicyID)
+	r.StrictAccessEntitlementProvisioning = types.BoolPointerValue(resp.StrictAccessEntitlementProvisioning)
+	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	r.UserCount = types.StringPointerValue(resp.UserCount)
+
+	return diags
+}
+
 func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*shared.SearchAppsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -45,12 +77,6 @@ func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*sh
 	} else {
 		pageSize = nil
 	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
-	}
 	var policyRefs []shared.PolicyRef
 	if r.PolicyRefs != nil {
 		policyRefs = make([]shared.PolicyRef, 0, len(r.PolicyRefs))
@@ -78,42 +104,9 @@ func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*sh
 		ExcludeAppIds:   excludeAppIds,
 		OnlyDirectories: onlyDirectories,
 		PageSize:        pageSize,
-		PageToken:       pageToken,
 		PolicyRefs:      policyRefs,
 		Query:           query,
 	}
 
 	return &out, diags
-}
-
-func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *shared.App) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
-	r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
-	r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
-	r.ConnectorVersion = types.Int64PointerValue(resp.ConnectorVersion)
-	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-	r.DefaultRequestCatalogID = types.StringPointerValue(resp.DefaultRequestCatalogID)
-	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-	r.Description = types.StringPointerValue(resp.Description)
-	r.DisplayName = types.StringPointerValue(resp.DisplayName)
-	r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
-	r.ID = types.StringPointerValue(resp.ID)
-	if resp.IdentityMatching != nil {
-		r.IdentityMatching = types.StringValue(string(*resp.IdentityMatching))
-	} else {
-		r.IdentityMatching = types.StringNull()
-	}
-	r.Instructions = types.StringPointerValue(resp.Instructions)
-	r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
-	r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
-	r.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.MonthlyCostUsd))
-	r.ParentAppID = types.StringPointerValue(resp.ParentAppID)
-	r.RevokePolicyID = types.StringPointerValue(resp.RevokePolicyID)
-	r.StrictAccessEntitlementProvisioning = types.BoolPointerValue(resp.StrictAccessEntitlementProvisioning)
-	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	r.UserCount = types.StringPointerValue(resp.UserCount)
-
-	return diags
 }

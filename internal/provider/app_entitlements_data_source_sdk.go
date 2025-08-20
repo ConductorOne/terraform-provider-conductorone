@@ -12,196 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSearchRequest(ctx context.Context) (*shared.AppEntitlementSearchServiceSearchRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	accessReviewID := new(string)
-	if !r.AccessReviewID.IsUnknown() && !r.AccessReviewID.IsNull() {
-		*accessReviewID = r.AccessReviewID.ValueString()
-	} else {
-		accessReviewID = nil
-	}
-	alias := new(string)
-	if !r.Alias.IsUnknown() && !r.Alias.IsNull() {
-		*alias = r.Alias.ValueString()
-	} else {
-		alias = nil
-	}
-	var appIds []string
-	if r.AppIds != nil {
-		appIds = make([]string, 0, len(r.AppIds))
-		for _, appIdsItem := range r.AppIds {
-			appIds = append(appIds, appIdsItem.ValueString())
-		}
-	}
-	var appUserIds []string
-	if r.AppUserIds != nil {
-		appUserIds = make([]string, 0, len(r.AppUserIds))
-		for _, appUserIdsItem := range r.AppUserIds {
-			appUserIds = append(appUserIds, appUserIdsItem.ValueString())
-		}
-	}
-	var complianceFrameworkIds []string
-	if r.ComplianceFrameworkIds != nil {
-		complianceFrameworkIds = make([]string, 0, len(r.ComplianceFrameworkIds))
-		for _, complianceFrameworkIdsItem := range r.ComplianceFrameworkIds {
-			complianceFrameworkIds = append(complianceFrameworkIds, complianceFrameworkIdsItem.ValueString())
-		}
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
-	var excludeAppIds []string
-	if r.ExcludeAppIds != nil {
-		excludeAppIds = make([]string, 0, len(r.ExcludeAppIds))
-		for _, excludeAppIdsItem := range r.ExcludeAppIds {
-			excludeAppIds = append(excludeAppIds, excludeAppIdsItem.ValueString())
-		}
-	}
-	var excludeAppUserIds []string
-	if r.ExcludeAppUserIds != nil {
-		excludeAppUserIds = make([]string, 0, len(r.ExcludeAppUserIds))
-		for _, excludeAppUserIdsItem := range r.ExcludeAppUserIds {
-			excludeAppUserIds = append(excludeAppUserIds, excludeAppUserIdsItem.ValueString())
-		}
-	}
-	var excludeResourceTypeIds []string
-	if r.ExcludeResourceTypeIds != nil {
-		excludeResourceTypeIds = make([]string, 0, len(r.ExcludeResourceTypeIds))
-		for _, excludeResourceTypeIdsItem := range r.ExcludeResourceTypeIds {
-			excludeResourceTypeIds = append(excludeResourceTypeIds, excludeResourceTypeIdsItem.ValueString())
-		}
-	}
-	includeDeleted := new(bool)
-	if !r.IncludeDeleted.IsUnknown() && !r.IncludeDeleted.IsNull() {
-		*includeDeleted = r.IncludeDeleted.ValueBool()
-	} else {
-		includeDeleted = nil
-	}
-	isAutomated := new(bool)
-	if !r.IsAutomated.IsUnknown() && !r.IsAutomated.IsNull() {
-		*isAutomated = r.IsAutomated.ValueBool()
-	} else {
-		isAutomated = nil
-	}
-	var membershipType []shared.MembershipType
-	if r.MembershipType != nil {
-		membershipType = make([]shared.MembershipType, 0, len(r.MembershipType))
-		for _, membershipTypeItem := range r.MembershipType {
-			membershipType = append(membershipType, shared.MembershipType(membershipTypeItem.ValueString()))
-		}
-	}
-	onlyGetExpiring := new(bool)
-	if !r.OnlyGetExpiring.IsUnknown() && !r.OnlyGetExpiring.IsNull() {
-		*onlyGetExpiring = r.OnlyGetExpiring.ValueBool()
-	} else {
-		onlyGetExpiring = nil
-	}
-	pageSize := new(int)
-	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
-		*pageSize = int(r.PageSize.ValueInt32())
-	} else {
-		pageSize = nil
-	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
-	}
-	query := new(string)
-	if !r.Query.IsUnknown() && !r.Query.IsNull() {
-		*query = r.Query.ValueString()
-	} else {
-		query = nil
-	}
-	var refs []shared.AppEntitlementRef
-	if r.Refs != nil {
-		refs = make([]shared.AppEntitlementRef, 0, len(r.Refs))
-		for _, refsItem := range r.Refs {
-			appID := new(string)
-			if !refsItem.AppID.IsUnknown() && !refsItem.AppID.IsNull() {
-				*appID = refsItem.AppID.ValueString()
-			} else {
-				appID = nil
-			}
-			id := new(string)
-			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-				*id = refsItem.ID.ValueString()
-			} else {
-				id = nil
-			}
-			refs = append(refs, shared.AppEntitlementRef{
-				AppID: appID,
-				ID:    id,
-			})
-		}
-	}
-	var resourceIds []string
-	if r.ResourceIds != nil {
-		resourceIds = make([]string, 0, len(r.ResourceIds))
-		for _, resourceIdsItem := range r.ResourceIds {
-			resourceIds = append(resourceIds, resourceIdsItem.ValueString())
-		}
-	}
-	var resourceTraitIds []string
-	if r.ResourceTraitIds != nil {
-		resourceTraitIds = make([]string, 0, len(r.ResourceTraitIds))
-		for _, resourceTraitIdsItem := range r.ResourceTraitIds {
-			resourceTraitIds = append(resourceTraitIds, resourceTraitIdsItem.ValueString())
-		}
-	}
-	var resourceTypeIds []string
-	if r.ResourceTypeIds != nil {
-		resourceTypeIds = make([]string, 0, len(r.ResourceTypeIds))
-		for _, resourceTypeIdsItem := range r.ResourceTypeIds {
-			resourceTypeIds = append(resourceTypeIds, resourceTypeIdsItem.ValueString())
-		}
-	}
-	var riskLevelIds []string
-	if r.RiskLevelIds != nil {
-		riskLevelIds = make([]string, 0, len(r.RiskLevelIds))
-		for _, riskLevelIdsItem := range r.RiskLevelIds {
-			riskLevelIds = append(riskLevelIds, riskLevelIdsItem.ValueString())
-		}
-	}
-	sourceConnectorID := new(string)
-	if !r.SourceConnectorID.IsUnknown() && !r.SourceConnectorID.IsNull() {
-		*sourceConnectorID = r.SourceConnectorID.ValueString()
-	} else {
-		sourceConnectorID = nil
-	}
-	out := shared.AppEntitlementSearchServiceSearchRequest{
-		AccessReviewID:         accessReviewID,
-		Alias:                  alias,
-		AppIds:                 appIds,
-		AppUserIds:             appUserIds,
-		ComplianceFrameworkIds: complianceFrameworkIds,
-		DisplayName:            displayName,
-		ExcludeAppIds:          excludeAppIds,
-		ExcludeAppUserIds:      excludeAppUserIds,
-		ExcludeResourceTypeIds: excludeResourceTypeIds,
-		IncludeDeleted:         includeDeleted,
-		IsAutomated:            isAutomated,
-		MembershipType:         membershipType,
-		OnlyGetExpiring:        onlyGetExpiring,
-		PageSize:               pageSize,
-		PageToken:              pageToken,
-		Query:                  query,
-		Refs:                   refs,
-		ResourceIds:            resourceIds,
-		ResourceTraitIds:       resourceTraitIds,
-		ResourceTypeIds:        resourceTypeIds,
-		RiskLevelIds:           riskLevelIds,
-		SourceConnectorID:      sourceConnectorID,
-	}
-
-	return &out, diags
-}
-
 func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx context.Context, resp *shared.AppEntitlementSearchServiceSearchResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -209,14 +19,11 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 		if resp.List != nil {
 			if r.List == nil {
 				r.List = []tfTypes.AppEntitlementView{}
-				if len(r.List) > len(resp.List) {
-					r.List = r.List[:len(resp.List)]
-				}
 			}
-			initListCount := len(r.List)
-			for listCount, listItem := range resp.List {
-				listCount = initListCount + listCount
+
+			for _, listItem := range resp.List {
 				var list tfTypes.AppEntitlementView
+
 				if listItem.AppEntitlement == nil {
 					list.AppEntitlement = nil
 				} else {
@@ -227,7 +34,9 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 					list.AppEntitlement.AppResourceTypeID = types.StringPointerValue(listItem.AppEntitlement.AppResourceTypeID)
 					list.AppEntitlement.CertifyPolicyID = types.StringPointerValue(listItem.AppEntitlement.CertifyPolicyID)
 					if listItem.AppEntitlement.ComplianceFrameworkValueIds != nil {
-						list.AppEntitlement.ComplianceFrameworkValueIds = make([]types.String, 0, len(listItem.AppEntitlement.ComplianceFrameworkValueIds))
+						if list.AppEntitlement.ComplianceFrameworkValueIds == nil {
+							list.AppEntitlement.ComplianceFrameworkValueIds = make([]types.String, 0, len(listItem.AppEntitlement.ComplianceFrameworkValueIds))
+						}
 						for _, v := range listItem.AppEntitlement.ComplianceFrameworkValueIds {
 							list.AppEntitlement.ComplianceFrameworkValueIds = append(list.AppEntitlement.ComplianceFrameworkValueIds, types.StringValue(v))
 						}
@@ -263,7 +72,9 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 								} else {
 									list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
 									if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-										list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+										if list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds == nil {
+											list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+										}
 										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 											list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 										}
@@ -306,7 +117,9 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							list.AppEntitlement.DeprovisionerPolicy.ManualProvision = &tfTypes.ManualProvision{}
 							list.AppEntitlement.DeprovisionerPolicy.ManualProvision.Instructions = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.Instructions)
 							if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds != nil {
-								list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds))
+								if list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds == nil {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds))
+								}
 								for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds {
 									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds, types.StringValue(v))
 								}
@@ -375,7 +188,9 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 								} else {
 									list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
 									if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-										list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+										if list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds == nil {
+											list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+										}
 										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 											list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 										}
@@ -418,7 +233,9 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							list.AppEntitlement.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
 							list.AppEntitlement.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.Instructions)
 							if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds != nil {
-								list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds))
+								if list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds == nil {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds))
+								}
 								for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds {
 									list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 								}
@@ -447,6 +264,7 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 					} else {
 						list.AppEntitlement.Purpose = types.StringNull()
 					}
+					list.AppEntitlement.RequestSchemaID = types.StringPointerValue(listItem.AppEntitlement.RequestSchemaID)
 					list.AppEntitlement.RevokePolicyID = types.StringPointerValue(listItem.AppEntitlement.RevokePolicyID)
 					list.AppEntitlement.RiskLevelValueID = types.StringPointerValue(listItem.AppEntitlement.RiskLevelValueID)
 					list.AppEntitlement.Slug = types.StringPointerValue(listItem.AppEntitlement.Slug)
@@ -459,15 +277,241 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 					list.AppEntitlement.SystemBuiltin = types.BoolPointerValue(listItem.AppEntitlement.SystemBuiltin)
 					list.AppEntitlement.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppEntitlement.UpdatedAt))
 				}
-				if listCount+1 > len(r.List) {
-					r.List = append(r.List, list)
-				} else {
-					r.List[listCount].AppEntitlement = list.AppEntitlement
-				}
+
+				r.List = append(r.List, list)
 			}
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}
 
 	return diags
+}
+
+func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSearchRequest(ctx context.Context) (*shared.AppEntitlementSearchServiceSearchRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	accessReviewID := new(string)
+	if !r.AccessReviewID.IsUnknown() && !r.AccessReviewID.IsNull() {
+		*accessReviewID = r.AccessReviewID.ValueString()
+	} else {
+		accessReviewID = nil
+	}
+	alias := new(string)
+	if !r.Alias.IsUnknown() && !r.Alias.IsNull() {
+		*alias = r.Alias.ValueString()
+	} else {
+		alias = nil
+	}
+	var appIds []string
+	if r.AppIds != nil {
+		appIds = make([]string, 0, len(r.AppIds))
+		for _, appIdsItem := range r.AppIds {
+			appIds = append(appIds, appIdsItem.ValueString())
+		}
+	}
+	var appUserIds []string
+	if r.AppUserIds != nil {
+		appUserIds = make([]string, 0, len(r.AppUserIds))
+		for _, appUserIdsItem := range r.AppUserIds {
+			appUserIds = append(appUserIds, appUserIdsItem.ValueString())
+		}
+	}
+	var complianceFrameworkIds []string
+	if r.ComplianceFrameworkIds != nil {
+		complianceFrameworkIds = make([]string, 0, len(r.ComplianceFrameworkIds))
+		for _, complianceFrameworkIdsItem := range r.ComplianceFrameworkIds {
+			complianceFrameworkIds = append(complianceFrameworkIds, complianceFrameworkIdsItem.ValueString())
+		}
+	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
+	var excludeAppIds []string
+	if r.ExcludeAppIds != nil {
+		excludeAppIds = make([]string, 0, len(r.ExcludeAppIds))
+		for _, excludeAppIdsItem := range r.ExcludeAppIds {
+			excludeAppIds = append(excludeAppIds, excludeAppIdsItem.ValueString())
+		}
+	}
+	var excludeAppUserIds []string
+	if r.ExcludeAppUserIds != nil {
+		excludeAppUserIds = make([]string, 0, len(r.ExcludeAppUserIds))
+		for _, excludeAppUserIdsItem := range r.ExcludeAppUserIds {
+			excludeAppUserIds = append(excludeAppUserIds, excludeAppUserIdsItem.ValueString())
+		}
+	}
+	excludeImmutable := new(bool)
+	if !r.ExcludeImmutable.IsUnknown() && !r.ExcludeImmutable.IsNull() {
+		*excludeImmutable = r.ExcludeImmutable.ValueBool()
+	} else {
+		excludeImmutable = nil
+	}
+	var excludeResourceTypeIds []string
+	if r.ExcludeResourceTypeIds != nil {
+		excludeResourceTypeIds = make([]string, 0, len(r.ExcludeResourceTypeIds))
+		for _, excludeResourceTypeIdsItem := range r.ExcludeResourceTypeIds {
+			excludeResourceTypeIds = append(excludeResourceTypeIds, excludeResourceTypeIdsItem.ValueString())
+		}
+	}
+	var excludedEntitlementRefs []shared.AppEntitlementRef
+	if r.ExcludedEntitlementRefs != nil {
+		excludedEntitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.ExcludedEntitlementRefs))
+		for _, excludedEntitlementRefsItem := range r.ExcludedEntitlementRefs {
+			appID := new(string)
+			if !excludedEntitlementRefsItem.AppID.IsUnknown() && !excludedEntitlementRefsItem.AppID.IsNull() {
+				*appID = excludedEntitlementRefsItem.AppID.ValueString()
+			} else {
+				appID = nil
+			}
+			id := new(string)
+			if !excludedEntitlementRefsItem.ID.IsUnknown() && !excludedEntitlementRefsItem.ID.IsNull() {
+				*id = excludedEntitlementRefsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			excludedEntitlementRefs = append(excludedEntitlementRefs, shared.AppEntitlementRef{
+				AppID: appID,
+				ID:    id,
+			})
+		}
+	}
+	includeDeleted := new(bool)
+	if !r.IncludeDeleted.IsUnknown() && !r.IncludeDeleted.IsNull() {
+		*includeDeleted = r.IncludeDeleted.ValueBool()
+	} else {
+		includeDeleted = nil
+	}
+	isAutomated := new(bool)
+	if !r.IsAutomated.IsUnknown() && !r.IsAutomated.IsNull() {
+		*isAutomated = r.IsAutomated.ValueBool()
+	} else {
+		isAutomated = nil
+	}
+	var membershipType []shared.MembershipType
+	if r.MembershipType != nil {
+		membershipType = make([]shared.MembershipType, 0, len(r.MembershipType))
+		for _, membershipTypeItem := range r.MembershipType {
+			membershipType = append(membershipType, shared.MembershipType(membershipTypeItem.ValueString()))
+		}
+	}
+	onlyGetExpiring := new(bool)
+	if !r.OnlyGetExpiring.IsUnknown() && !r.OnlyGetExpiring.IsNull() {
+		*onlyGetExpiring = r.OnlyGetExpiring.ValueBool()
+	} else {
+		onlyGetExpiring = nil
+	}
+	pageSize := new(int)
+	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
+		*pageSize = int(r.PageSize.ValueInt32())
+	} else {
+		pageSize = nil
+	}
+	var policyRefs []shared.PolicyRef
+	if r.PolicyRefs != nil {
+		policyRefs = make([]shared.PolicyRef, 0, len(r.PolicyRefs))
+		for _, policyRefsItem := range r.PolicyRefs {
+			id1 := new(string)
+			if !policyRefsItem.ID.IsUnknown() && !policyRefsItem.ID.IsNull() {
+				*id1 = policyRefsItem.ID.ValueString()
+			} else {
+				id1 = nil
+			}
+			policyRefs = append(policyRefs, shared.PolicyRef{
+				ID: id1,
+			})
+		}
+	}
+	query := new(string)
+	if !r.Query.IsUnknown() && !r.Query.IsNull() {
+		*query = r.Query.ValueString()
+	} else {
+		query = nil
+	}
+	var refs []shared.AppEntitlementRef
+	if r.Refs != nil {
+		refs = make([]shared.AppEntitlementRef, 0, len(r.Refs))
+		for _, refsItem := range r.Refs {
+			appId1 := new(string)
+			if !refsItem.AppID.IsUnknown() && !refsItem.AppID.IsNull() {
+				*appId1 = refsItem.AppID.ValueString()
+			} else {
+				appId1 = nil
+			}
+			id2 := new(string)
+			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
+				*id2 = refsItem.ID.ValueString()
+			} else {
+				id2 = nil
+			}
+			refs = append(refs, shared.AppEntitlementRef{
+				AppID: appId1,
+				ID:    id2,
+			})
+		}
+	}
+	var resourceIds []string
+	if r.ResourceIds != nil {
+		resourceIds = make([]string, 0, len(r.ResourceIds))
+		for _, resourceIdsItem := range r.ResourceIds {
+			resourceIds = append(resourceIds, resourceIdsItem.ValueString())
+		}
+	}
+	var resourceTraitIds []string
+	if r.ResourceTraitIds != nil {
+		resourceTraitIds = make([]string, 0, len(r.ResourceTraitIds))
+		for _, resourceTraitIdsItem := range r.ResourceTraitIds {
+			resourceTraitIds = append(resourceTraitIds, resourceTraitIdsItem.ValueString())
+		}
+	}
+	var resourceTypeIds []string
+	if r.ResourceTypeIds != nil {
+		resourceTypeIds = make([]string, 0, len(r.ResourceTypeIds))
+		for _, resourceTypeIdsItem := range r.ResourceTypeIds {
+			resourceTypeIds = append(resourceTypeIds, resourceTypeIdsItem.ValueString())
+		}
+	}
+	var riskLevelIds []string
+	if r.RiskLevelIds != nil {
+		riskLevelIds = make([]string, 0, len(r.RiskLevelIds))
+		for _, riskLevelIdsItem := range r.RiskLevelIds {
+			riskLevelIds = append(riskLevelIds, riskLevelIdsItem.ValueString())
+		}
+	}
+	sourceConnectorID := new(string)
+	if !r.SourceConnectorID.IsUnknown() && !r.SourceConnectorID.IsNull() {
+		*sourceConnectorID = r.SourceConnectorID.ValueString()
+	} else {
+		sourceConnectorID = nil
+	}
+	out := shared.AppEntitlementSearchServiceSearchRequest{
+		AccessReviewID:          accessReviewID,
+		Alias:                   alias,
+		AppIds:                  appIds,
+		AppUserIds:              appUserIds,
+		ComplianceFrameworkIds:  complianceFrameworkIds,
+		DisplayName:             displayName,
+		ExcludeAppIds:           excludeAppIds,
+		ExcludeAppUserIds:       excludeAppUserIds,
+		ExcludeImmutable:        excludeImmutable,
+		ExcludeResourceTypeIds:  excludeResourceTypeIds,
+		ExcludedEntitlementRefs: excludedEntitlementRefs,
+		IncludeDeleted:          includeDeleted,
+		IsAutomated:             isAutomated,
+		MembershipType:          membershipType,
+		OnlyGetExpiring:         onlyGetExpiring,
+		PageSize:                pageSize,
+		PolicyRefs:              policyRefs,
+		Query:                   query,
+		Refs:                    refs,
+		ResourceIds:             resourceIds,
+		ResourceTraitIds:        resourceTraitIds,
+		ResourceTypeIds:         resourceTypeIds,
+		RiskLevelIds:            riskLevelIds,
+		SourceConnectorID:       sourceConnectorID,
+	}
+
+	return &out, diags
 }

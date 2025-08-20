@@ -39,11 +39,6 @@ actions:
   - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["durationUnset"]
     update:
       x-speakeasy-terraform-plan-only: true
-  - target: $["paths"]["/api/v1/search/users"]["post"]
-    update:
-      x-speakeasy-entity-operation:
-          terraform-datasource: User#read
-          terraform-resource: null
   - target: $["components"]["schemas"]["c1.api.user.v1.User"]
     update:
       x-speakeasy-entity: User

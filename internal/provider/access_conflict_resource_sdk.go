@@ -12,6 +12,101 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *AccessConflictResourceModel) RefreshFromSharedConflictMonitor(ctx context.Context, resp *shared.ConflictMonitor) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.EntitlementSetAID = types.StringPointerValue(resp.EntitlementSetAID)
+		r.EntitlementSetBID = types.StringPointerValue(resp.EntitlementSetBID)
+		r.ID = types.StringPointerValue(resp.ID)
+		if resp.NotificationConfig == nil {
+			r.NotificationConfig = nil
+		} else {
+			r.NotificationConfig = &tfTypes.NotificationConfig{}
+			if resp.NotificationConfig.EmailNotifications == nil {
+				r.NotificationConfig.EmailNotifications = nil
+			} else {
+				r.NotificationConfig.EmailNotifications = &tfTypes.EmailNotifications{}
+				r.NotificationConfig.EmailNotifications.Enabled = types.BoolPointerValue(resp.NotificationConfig.EmailNotifications.Enabled)
+				if resp.NotificationConfig.EmailNotifications.IdentityUserIds != nil {
+					r.NotificationConfig.EmailNotifications.IdentityUserIds = make([]types.String, 0, len(resp.NotificationConfig.EmailNotifications.IdentityUserIds))
+					for _, v := range resp.NotificationConfig.EmailNotifications.IdentityUserIds {
+						r.NotificationConfig.EmailNotifications.IdentityUserIds = append(r.NotificationConfig.EmailNotifications.IdentityUserIds, types.StringValue(v))
+					}
+				}
+			}
+			if resp.NotificationConfig.SlackNotifications == nil {
+				r.NotificationConfig.SlackNotifications = nil
+			} else {
+				r.NotificationConfig.SlackNotifications = &tfTypes.SlackNotifications{}
+				r.NotificationConfig.SlackNotifications.ChannelID = types.StringPointerValue(resp.NotificationConfig.SlackNotifications.ChannelID)
+				r.NotificationConfig.SlackNotifications.ChannelName = types.StringPointerValue(resp.NotificationConfig.SlackNotifications.ChannelName)
+				r.NotificationConfig.SlackNotifications.Enabled = types.BoolPointerValue(resp.NotificationConfig.SlackNotifications.Enabled)
+			}
+		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest(ctx context.Context) (*operations.C1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	var conflictMonitorDeleteRequest *shared.ConflictMonitorDeleteRequest
+	if r.ConflictMonitorDeleteRequest != nil {
+		conflictMonitorDeleteRequest = &shared.ConflictMonitorDeleteRequest{}
+	}
+	out := operations.C1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest{
+		ID:                           id,
+		ConflictMonitorDeleteRequest: conflictMonitorDeleteRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessConflictServiceGetMonitorRequest(ctx context.Context) (*operations.C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessConflictServiceUpdateMonitorRequest(ctx context.Context) (*operations.C1APIAccessconflictV1AccessConflictServiceUpdateMonitorRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	conflictMonitorUpdateRequest, conflictMonitorUpdateRequestDiags := r.ToSharedConflictMonitorUpdateRequest(ctx)
+	diags.Append(conflictMonitorUpdateRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIAccessconflictV1AccessConflictServiceUpdateMonitorRequest{
+		ID:                           id,
+		ConflictMonitorUpdateRequest: conflictMonitorUpdateRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *AccessConflictResourceModel) ToSharedConflictMonitorCreateRequest(ctx context.Context) (*shared.ConflictMonitorCreateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -82,6 +177,14 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorCreateRequest(ctx c
 		DisplayName:        displayName,
 		NotificationConfig: notificationConfig,
 	}
+
+	return &out, diags
+}
+
+func (r *AccessConflictResourceModel) ToSharedConflictMonitorDeleteRequest(ctx context.Context) (*shared.ConflictMonitorDeleteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.ConflictMonitorDeleteRequest{}
 
 	return &out, diags
 }
@@ -161,107 +264,4 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorUpdateRequest(ctx c
 	}
 
 	return &out, diags
-}
-
-func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessConflictServiceUpdateMonitorRequest(ctx context.Context) (*operations.C1APIAccessconflictV1AccessConflictServiceUpdateMonitorRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	conflictMonitorUpdateRequest, conflictMonitorUpdateRequestDiags := r.ToSharedConflictMonitorUpdateRequest(ctx)
-	diags.Append(conflictMonitorUpdateRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIAccessconflictV1AccessConflictServiceUpdateMonitorRequest{
-		ID:                           id,
-		ConflictMonitorUpdateRequest: conflictMonitorUpdateRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessConflictResourceModel) ToSharedConflictMonitorDeleteRequest(ctx context.Context) (*shared.ConflictMonitorDeleteRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	out := shared.ConflictMonitorDeleteRequest{}
-
-	return &out, diags
-}
-
-func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest(ctx context.Context) (*operations.C1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	var conflictMonitorDeleteRequest *shared.ConflictMonitorDeleteRequest
-	if r.ConflictMonitorDeleteRequest != nil {
-		conflictMonitorDeleteRequest = &shared.ConflictMonitorDeleteRequest{}
-	}
-	out := operations.C1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest{
-		ID:                           id,
-		ConflictMonitorDeleteRequest: conflictMonitorDeleteRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessConflictServiceGetMonitorRequest(ctx context.Context) (*operations.C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var id string
-	id = r.ID.ValueString()
-
-	out := operations.C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest{
-		ID: id,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessConflictResourceModel) RefreshFromSharedConflictMonitor(ctx context.Context, resp *shared.ConflictMonitor) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		r.Enabled = types.BoolPointerValue(resp.Enabled)
-		r.EntitlementSetAID = types.StringPointerValue(resp.EntitlementSetAID)
-		r.EntitlementSetBID = types.StringPointerValue(resp.EntitlementSetBID)
-		r.ID = types.StringPointerValue(resp.ID)
-		if resp.NotificationConfig == nil {
-			r.NotificationConfig = nil
-		} else {
-			r.NotificationConfig = &tfTypes.NotificationConfig{}
-			if resp.NotificationConfig.EmailNotifications == nil {
-				r.NotificationConfig.EmailNotifications = nil
-			} else {
-				r.NotificationConfig.EmailNotifications = &tfTypes.EmailNotifications{}
-				r.NotificationConfig.EmailNotifications.Enabled = types.BoolPointerValue(resp.NotificationConfig.EmailNotifications.Enabled)
-				if resp.NotificationConfig.EmailNotifications.IdentityUserIds != nil {
-					r.NotificationConfig.EmailNotifications.IdentityUserIds = make([]types.String, 0, len(resp.NotificationConfig.EmailNotifications.IdentityUserIds))
-					for _, v := range resp.NotificationConfig.EmailNotifications.IdentityUserIds {
-						r.NotificationConfig.EmailNotifications.IdentityUserIds = append(r.NotificationConfig.EmailNotifications.IdentityUserIds, types.StringValue(v))
-					}
-				}
-			}
-			if resp.NotificationConfig.SlackNotifications == nil {
-				r.NotificationConfig.SlackNotifications = nil
-			} else {
-				r.NotificationConfig.SlackNotifications = &tfTypes.SlackNotifications{}
-				r.NotificationConfig.SlackNotifications.ChannelID = types.StringPointerValue(resp.NotificationConfig.SlackNotifications.ChannelID)
-				r.NotificationConfig.SlackNotifications.ChannelName = types.StringPointerValue(resp.NotificationConfig.SlackNotifications.ChannelName)
-				r.NotificationConfig.SlackNotifications.Enabled = types.BoolPointerValue(resp.NotificationConfig.SlackNotifications.Enabled)
-			}
-		}
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	}
-
-	return diags
 }

@@ -1,5 +1,44 @@
 components:
     schemas:
+        c1.api.accessconflict.v1.AppEntitlementMonitorBinding:
+            description: The AppEntitlementMonitorBinding message.
+            properties:
+                appEntitlementId:
+                    description: The appEntitlementId field.
+                    readOnly: false
+                    type: string
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                deletedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                entitlementGroup:
+                    description: The entitlementGroup field.
+                    enum:
+                        - ENTITLEMENT_GROUP_UNSPECIFIED
+                        - ENTITLEMENT_GROUP_A
+                        - ENTITLEMENT_GROUP_B
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                monitorId:
+                    description: The monitorId field.
+                    readOnly: false
+                    type: string
+                updatedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: App Entitlement Monitor Binding
+            type: object
+            x-speakeasy-name-override: AppEntitlementMonitorBinding
         c1.api.accessconflict.v1.ConflictMonitor:
             description: The ConflictMonitor message.
             properties:
@@ -88,6 +127,65 @@ components:
             title: Conflict Monitor Update Request
             type: object
             x-speakeasy-name-override: ConflictMonitorUpdateRequest
+        c1.api.accessconflict.v1.CreateAppEntitlementMonitorBindingRequest:
+            description: The CreateAppEntitlementMonitorBindingRequest message.
+            properties:
+                appEntitlementId:
+                    description: The appEntitlementId field.
+                    readOnly: false
+                    type: string
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                entitlementGroup:
+                    description: The entitlementGroup field.
+                    enum:
+                        - ENTITLEMENT_GROUP_UNSPECIFIED
+                        - ENTITLEMENT_GROUP_A
+                        - ENTITLEMENT_GROUP_B
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                monitorId:
+                    description: The monitorId field.
+                    readOnly: false
+                    type: string
+            title: Create App Entitlement Monitor Binding Request
+            type: object
+            x-speakeasy-name-override: CreateAppEntitlementMonitorBindingRequest
+        c1.api.accessconflict.v1.DeleteAppEntitlementMonitorBindingRequest:
+            description: The DeleteAppEntitlementMonitorBindingRequest message.
+            properties:
+                appEntitlementId:
+                    description: The appEntitlementId field.
+                    readOnly: false
+                    type: string
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                entitlementGroup:
+                    description: The entitlementGroup field.
+                    enum:
+                        - ENTITLEMENT_GROUP_UNSPECIFIED
+                        - ENTITLEMENT_GROUP_A
+                        - ENTITLEMENT_GROUP_B
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                monitorId:
+                    description: The monitorId field.
+                    readOnly: false
+                    type: string
+            title: Delete App Entitlement Monitor Binding Request
+            type: object
+            x-speakeasy-name-override: DeleteAppEntitlementMonitorBindingRequest
+        c1.api.accessconflict.v1.DeleteAppEntitlementMonitorBindingResponse:
+            description: The DeleteAppEntitlementMonitorBindingResponse message.
+            title: Delete App Entitlement Monitor Binding Response
+            type: object
+            x-speakeasy-name-override: DeleteAppEntitlementMonitorBindingResponse
         c1.api.accessconflict.v1.EmailNotifications:
             description: The EmailNotifications message.
             properties:
@@ -105,6 +203,33 @@ components:
             title: Email Notifications
             type: object
             x-speakeasy-name-override: EmailNotifications
+        c1.api.accessconflict.v1.GetAppEntitlementMonitorBindingRequest:
+            description: The GetAppEntitlementMonitorBindingRequest message.
+            properties:
+                appEntitlementId:
+                    description: The appEntitlementId field.
+                    readOnly: false
+                    type: string
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                entitlementGroup:
+                    description: The entitlementGroup field.
+                    enum:
+                        - ENTITLEMENT_GROUP_UNSPECIFIED
+                        - ENTITLEMENT_GROUP_A
+                        - ENTITLEMENT_GROUP_B
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                monitorId:
+                    description: The monitorId field.
+                    readOnly: false
+                    type: string
+            title: Get App Entitlement Monitor Binding Request
+            type: object
+            x-speakeasy-name-override: GetAppEntitlementMonitorBindingRequest
         c1.api.accessconflict.v1.NotificationConfig:
             description: The NotificationConfig message.
             properties:
@@ -573,6 +698,10 @@ components:
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
+                requestSchemaId:
+                    description: The ID of the request schema associated with this app entitlement.
+                    readOnly: false
+                    type: string
                 revokePolicyId:
                     description: The ID of the policy that will be used for revoke tickets related to the app entitlement
                     readOnly: false
@@ -4484,6 +4613,40 @@ components:
             title: List Attribute Values Response
             type: object
             x-speakeasy-name-override: ListAttributeValuesResponse
+        c1.api.attribute.v1.ListComplianceFrameworksResponse:
+            description: The ListComplianceFrameworksResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.attribute.v1.AttributeValue'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: List Compliance Frameworks Response
+            type: object
+            x-speakeasy-name-override: ListComplianceFrameworksResponse
+        c1.api.attribute.v1.ListRiskLevelsResponse:
+            description: The ListRiskLevelsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.attribute.v1.AttributeValue'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: List Risk Levels Response
+            type: object
+            x-speakeasy-name-override: ListRiskLevelsResponse
         c1.api.attribute.v1.SearchAttributeValuesRequest:
             description: Search Attributes by a few properties.
             properties:
@@ -4727,6 +4890,9 @@ components:
                         - TRIGGER_TYPE_USER_CREATED
                         - TRIGGER_TYPE_GRANT_FOUND
                         - TRIGGER_TYPE_GRANT_DELETED
+                        - TRIGGER_TYPE_WEBHOOK
+                        - TRIGGER_TYPE_SCHEDULE
+                        - TRIGGER_TYPE_FORM
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
@@ -4871,7 +5037,10 @@ components:
                   - connectorCreateAccount
                   - grantEntitlements
                   - sendSlackMessage
+                  - callFunction
             properties:
+                callFunction:
+                    $ref: '#/components/schemas/c1.api.automations.v1.CallFunction'
                 connectorAction:
                     $ref: '#/components/schemas/c1.api.automations.v1.ConnectorAction'
                 connectorCreateAccount:
@@ -4980,26 +5149,52 @@ components:
                   - userCreated
                   - grantFound
                   - grantDeleted
+                  - webhook
+                  - schedule
+                  - form
             properties:
                 appUserCreated:
                     $ref: '#/components/schemas/c1.api.automations.v1.AppUserCreatedTrigger'
                 appUserUpdated:
                     $ref: '#/components/schemas/c1.api.automations.v1.AppUserUpdatedTrigger'
+                form:
+                    $ref: '#/components/schemas/c1.api.automations.v1.FormTrigger'
                 grantDeleted:
                     $ref: '#/components/schemas/c1.api.automations.v1.GrantDeletedTrigger'
                 grantFound:
                     $ref: '#/components/schemas/c1.api.automations.v1.GrantFoundTrigger'
                 manual:
                     $ref: '#/components/schemas/c1.api.automations.v1.ManualAutomationTrigger'
+                schedule:
+                    $ref: '#/components/schemas/c1.api.automations.v1.ScheduleTrigger'
                 usageBasedRevocation:
                     $ref: '#/components/schemas/c1.api.automations.v1.UsageBasedRevocationTrigger'
                 userCreated:
                     $ref: '#/components/schemas/c1.api.automations.v1.UserCreatedTrigger'
                 userProfileChange:
                     $ref: '#/components/schemas/c1.api.automations.v1.UserProfileChangeTrigger'
+                webhook:
+                    $ref: '#/components/schemas/c1.api.automations.v1.WebhookAutomationTrigger'
             title: Automation Trigger
             type: object
             x-speakeasy-name-override: AutomationTrigger
+        c1.api.automations.v1.CallFunction:
+            description: The CallFunction message.
+            nullable: true
+            properties:
+                args:
+                    additionalProperties:
+                        type: string
+                    description: The args field.
+                    readOnly: false
+                    type: object
+                functionId:
+                    description: The functionId field.
+                    readOnly: false
+                    type: string
+            title: Call Function
+            type: object
+            x-speakeasy-name-override: CallFunction
         c1.api.automations.v1.CloseAction:
             description: |
                 The CloseAction message.
@@ -5166,6 +5361,10 @@ components:
             properties:
                 automation:
                     $ref: '#/components/schemas/c1.api.automations.v1.Automation'
+                webhookHmacSecret:
+                    description: If we create a new trigger with an HMAC secret we return the HMAC on this field
+                    readOnly: false
+                    type: string
             title: Create Automation Response
             type: object
             x-speakeasy-name-override: CreateAutomationResponse
@@ -5237,6 +5436,15 @@ components:
             title: Execute Automation Response
             type: object
             x-speakeasy-name-override: ExecuteAutomationResponse
+        c1.api.automations.v1.FormTrigger:
+            description: The FormTrigger message.
+            nullable: true
+            properties:
+                form:
+                    $ref: '#/components/schemas/c1.api.form.v1.Form'
+            title: Form Trigger
+            type: object
+            x-speakeasy-name-override: FormTrigger
         c1.api.automations.v1.GetAutomationExecutionResponse:
             description: The GetAutomationExecutionResponse message.
             properties:
@@ -5539,6 +5747,29 @@ components:
             title: Run Immediately
             type: object
             x-speakeasy-name-override: RunImmediately
+        c1.api.automations.v1.ScheduleTrigger:
+            description: The ScheduleTrigger message.
+            nullable: true
+            properties:
+                advanced:
+                    description: The advanced field.
+                    readOnly: false
+                    type: boolean
+                cronSpec:
+                    description: The cronSpec field.
+                    readOnly: false
+                    type: string
+                skipIfTrueCel:
+                    description: The skipIfTrueCel field.
+                    readOnly: false
+                    type: string
+                start:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Schedule Trigger
+            type: object
+            x-speakeasy-name-override: ScheduleTrigger
         c1.api.automations.v1.SearchAutomationExecutionsRequest:
             description: The SearchAutomationExecutionsRequest message.
             properties:
@@ -5701,6 +5932,9 @@ components:
                             - TRIGGER_TYPE_USER_CREATED
                             - TRIGGER_TYPE_GRANT_FOUND
                             - TRIGGER_TYPE_GRANT_DELETED
+                            - TRIGGER_TYPE_WEBHOOK
+                            - TRIGGER_TYPE_SCHEDULE
+                            - TRIGGER_TYPE_FORM
                         type: string
                         x-speakeasy-unknown-values: allow
                     nullable: true
@@ -5765,25 +5999,25 @@ components:
                 The SendSlackMessage message.
 
                 This message contains a oneof named channel. Only a single field of the following list may be set at a time:
-                  - channelId
-                  - channelIdCel
+                  - channelName
+                  - channelNameCel
             nullable: true
             properties:
                 body:
                     description: The body field.
                     readOnly: false
                     type: string
-                channelId:
+                channelName:
                     description: |-
-                        The channelId field.
+                        The channelName field.
                         This field is part of the `channel` oneof.
                         See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
                     nullable: true
                     readOnly: false
                     type: string
-                channelIdCel:
+                channelNameCel:
                     description: |-
-                        The channelIdCel field.
+                        The channelNameCel field.
                         This field is part of the `channel` oneof.
                         See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
                     nullable: true
@@ -5881,6 +6115,10 @@ components:
             properties:
                 automation:
                     $ref: '#/components/schemas/c1.api.automations.v1.Automation'
+                webhookHmacSecret:
+                    description: If we create a new trigger with an HMAC secret we return the HMAC on this field
+                    readOnly: false
+                    type: string
             title: Update Automation Response
             type: object
             x-speakeasy-name-override: UpdateAutomationResponse
@@ -6092,6 +6330,43 @@ components:
             title: Webhook
             type: object
             x-speakeasy-name-override: Webhook
+        c1.api.automations.v1.WebhookAutomationTrigger:
+            description: |
+                The WebhookAutomationTrigger message.
+
+                This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:
+                  - jwt
+                  - hmac
+            nullable: true
+            properties:
+                hmac:
+                    $ref: '#/components/schemas/c1.api.automations.v1.WebhookListenerAuthHMAC'
+                jwt:
+                    $ref: '#/components/schemas/c1.api.automations.v1.WebhookListenerAuthJWT'
+                listenerId:
+                    description: Optional existing listener ID (hidden field from frontend)
+                    readOnly: false
+                    type: string
+            title: Webhook Automation Trigger
+            type: object
+            x-speakeasy-name-override: WebhookAutomationTrigger
+        c1.api.automations.v1.WebhookListenerAuthHMAC:
+            description: The WebhookListenerAuthHMAC message.
+            nullable: true
+            title: Webhook Listener Auth Hmac
+            type: object
+            x-speakeasy-name-override: WebhookListenerAuthHMAC
+        c1.api.automations.v1.WebhookListenerAuthJWT:
+            description: The WebhookListenerAuthJWT message.
+            nullable: true
+            properties:
+                jwksUrl:
+                    description: The jwksUrl field.
+                    readOnly: false
+                    type: string
+            title: Webhook Listener Auth Jwt
+            type: object
+            x-speakeasy-name-override: WebhookListenerAuthJWT
         c1.api.directory.v1.Directory:
             description: This object indicates that an app is also a directory.
             properties:
@@ -6331,6 +6606,7 @@ components:
                   - stringField
                   - boolField
                   - stringSliceField
+                  - int64Field
             properties:
                 boolField:
                     $ref: '#/components/schemas/c1.api.form.v1.BoolField'
@@ -6342,6 +6618,8 @@ components:
                     description: The displayName field.
                     readOnly: false
                     type: string
+                int64Field:
+                    $ref: '#/components/schemas/c1.api.form.v1.Int64Field'
                 name:
                     description: The name field.
                     readOnly: false
@@ -6408,19 +6686,73 @@ components:
                     description: The id field.
                     readOnly: false
                     type: string
-                tenantId:
-                    description: The tenantId field.
-                    readOnly: false
-                    type: string
             title: Form
             type: object
             x-speakeasy-name-override: Form
+        c1.api.form.v1.Int64Field:
+            description: |
+                The Int64Field message.
+
+                This message contains a oneof named view. Only a single field of the following list may be set at a time:
+                  - numberField
+
+
+                This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:
+                  - defaultValue
+
+
+                This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
+                  - rules
+            nullable: true
+            properties:
+                defaultValue:
+                    description: |-
+                        The defaultValue field.
+                        This field is part of the `_default_value` oneof.
+                        See the documentation for `c1.api.form.v1.Int64Field` for more details.
+                    format: int64
+                    nullable: true
+                    readOnly: false
+                    type: string
+                numberField:
+                    $ref: '#/components/schemas/c1.api.form.v1.NumberField'
+                placeholder:
+                    description: The placeholder field.
+                    readOnly: false
+                    type: string
+                rules:
+                    $ref: '#/components/schemas/validate.Int64Rules'
+            title: Int 64 Field
+            type: object
+            x-speakeasy-name-override: Int64Field
         c1.api.form.v1.MutuallyExclusive:
             description: The MutuallyExclusive message.
             nullable: true
             title: Mutually Exclusive
             type: object
             x-speakeasy-name-override: MutuallyExclusive
+        c1.api.form.v1.NumberField:
+            description: The NumberField message.
+            nullable: true
+            properties:
+                maxValue:
+                    description: The maxValue field.
+                    format: int64
+                    readOnly: false
+                    type: string
+                minValue:
+                    description: The minValue field.
+                    format: int64
+                    readOnly: false
+                    type: string
+                step:
+                    description: The step field.
+                    format: int64
+                    readOnly: false
+                    type: string
+            title: Number Field
+            type: object
+            x-speakeasy-name-override: NumberField
         c1.api.form.v1.PasswordField:
             description: The PasswordField message.
             nullable: true
@@ -6504,6 +6836,357 @@ components:
             title: Text Field
             type: object
             x-speakeasy-name-override: TextField
+        c1.api.functions.v1.Function:
+            description: Function represents a customer-provided code extension in the API
+            properties:
+                createdAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                deletedAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                functionType:
+                    description: The functionType field.
+                    enum:
+                        - FUNCTION_TYPE_UNSPECIFIED
+                        - FUNCTION_TYPE_ANY
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                head:
+                    description: The head field.
+                    readOnly: false
+                    type: string
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+                isDraft:
+                    description: The isDraft field.
+                    readOnly: false
+                    type: boolean
+                publishedCommitId:
+                    description: The publishedCommitId field.
+                    readOnly: false
+                    type: string
+                updatedAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+            title: Function
+            type: object
+            x-speakeasy-name-override: Function
+        c1.api.functions.v1.FunctionCommit:
+            description: FunctionCommit represents a single commit in a function's history
+            properties:
+                author:
+                    description: The author field.
+                    readOnly: false
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                functionId:
+                    description: The functionId field.
+                    readOnly: false
+                    type: string
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+                message:
+                    description: The message field.
+                    readOnly: false
+                    type: string
+            title: Function Commit
+            type: object
+            x-speakeasy-name-override: FunctionCommit
+        c1.api.functions.v1.FunctionsSearchRequest:
+            description: The FunctionsSearchRequest message.
+            properties:
+                functionTypes:
+                    description: The functionTypes field.
+                    items:
+                        enum:
+                            - FUNCTION_TYPE_UNSPECIFIED
+                            - FUNCTION_TYPE_ANY
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                query:
+                    description: The query field.
+                    readOnly: false
+                    type: string
+            title: Functions Search Request
+            type: object
+            x-speakeasy-name-override: FunctionsSearchRequest
+        c1.api.functions.v1.FunctionsSearchResponse:
+            description: The FunctionsSearchResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.functions.v1.Function'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Functions Search Response
+            type: object
+            x-speakeasy-name-override: FunctionsSearchResponse
+        c1.api.functions.v1.FunctionsServiceCommitRequestInput:
+            description: The FunctionsServiceCommitRequest message.
+            properties:
+                commitMessage:
+                    description: The commitMessage field.
+                    readOnly: false
+                    type: string
+                content:
+                    additionalProperties:
+                        format: base64
+                        type: string
+                    description: The content field.
+                    readOnly: false
+                    type: object
+            title: Functions Service Commit Request
+            type: object
+            x-speakeasy-name-override: FunctionsServiceCommitRequest
+        c1.api.functions.v1.FunctionsServiceCommitResponse:
+            description: The FunctionsServiceCommitResponse message.
+            properties:
+                commit:
+                    $ref: '#/components/schemas/c1.api.functions.v1.FunctionCommit'
+            title: Functions Service Commit Response
+            type: object
+            x-speakeasy-name-override: FunctionsServiceCommitResponse
+        c1.api.functions.v1.FunctionsServiceCreateFunctionRequest:
+            description: The FunctionsServiceCreateFunctionRequest message.
+            properties:
+                commitMessage:
+                    description: The commitMessage field.
+                    readOnly: false
+                    type: string
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                functionType:
+                    description: The functionType field.
+                    enum:
+                        - FUNCTION_TYPE_UNSPECIFIED
+                        - FUNCTION_TYPE_ANY
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                initialContent:
+                    additionalProperties:
+                        format: base64
+                        type: string
+                    description: The initialContent field.
+                    readOnly: false
+                    type: object
+            title: Functions Service Create Function Request
+            type: object
+            x-speakeasy-name-override: FunctionsServiceCreateFunctionRequest
+        c1.api.functions.v1.FunctionsServiceCreateFunctionResponse:
+            description: The FunctionsServiceCreateFunctionResponse message.
+            properties:
+                commit:
+                    $ref: '#/components/schemas/c1.api.functions.v1.FunctionCommit'
+                function:
+                    $ref: '#/components/schemas/c1.api.functions.v1.Function'
+            title: Functions Service Create Function Response
+            type: object
+            x-speakeasy-name-override: FunctionsServiceCreateFunctionResponse
+        c1.api.functions.v1.FunctionsServiceCreateTagRequestInput:
+            description: The FunctionsServiceCreateTagRequest message.
+            properties:
+                commitId:
+                    description: The commitId field.
+                    readOnly: false
+                    type: string
+                name:
+                    description: The name field.
+                    readOnly: false
+                    type: string
+            title: Functions Service Create Tag Request
+            type: object
+            x-speakeasy-name-override: FunctionsServiceCreateTagRequest
+        c1.api.functions.v1.FunctionsServiceCreateTagResponse:
+            description: The FunctionsServiceCreateTagResponse message.
+            title: Functions Service Create Tag Response
+            type: object
+            x-speakeasy-name-override: FunctionsServiceCreateTagResponse
+        c1.api.functions.v1.FunctionsServiceDeleteFunctionRequestInput:
+            description: The FunctionsServiceDeleteFunctionRequest message.
+            title: Functions Service Delete Function Request
+            type: object
+            x-speakeasy-name-override: FunctionsServiceDeleteFunctionRequest
+        c1.api.functions.v1.FunctionsServiceDeleteFunctionResponse:
+            description: The FunctionsServiceDeleteFunctionResponse message.
+            title: Functions Service Delete Function Response
+            type: object
+            x-speakeasy-name-override: FunctionsServiceDeleteFunctionResponse
+        c1.api.functions.v1.FunctionsServiceGetCommitResponse:
+            description: The FunctionsServiceGetCommitResponse message.
+            properties:
+                commit:
+                    $ref: '#/components/schemas/c1.api.functions.v1.FunctionCommit'
+                content:
+                    additionalProperties:
+                        format: base64
+                        type: string
+                    description: The content field.
+                    readOnly: false
+                    type: object
+            title: Functions Service Get Commit Response
+            type: object
+            x-speakeasy-name-override: FunctionsServiceGetCommitResponse
+        c1.api.functions.v1.FunctionsServiceGetFunctionResponse:
+            description: The FunctionsServiceGetFunctionResponse message.
+            properties:
+                function:
+                    $ref: '#/components/schemas/c1.api.functions.v1.Function'
+            title: Functions Service Get Function Response
+            type: object
+            x-speakeasy-name-override: FunctionsServiceGetFunctionResponse
+        c1.api.functions.v1.FunctionsServiceInvokeRequestInput:
+            description: |
+                The FunctionsServiceInvokeRequest message.
+
+                This message contains a oneof named arg. Only a single field of the following list may be set at a time:
+                  - json
+            properties:
+                commitId:
+                    description: The commitId field.
+                    readOnly: false
+                    type: string
+                json:
+                    description: |-
+                        The json field.
+                        This field is part of the `arg` oneof.
+                        See the documentation for `c1.api.functions.v1.FunctionsServiceInvokeRequest` for more details.
+                    format: base64
+                    nullable: true
+                    readOnly: false
+                    type: string
+            title: Functions Service Invoke Request
+            type: object
+            x-speakeasy-name-override: FunctionsServiceInvokeRequest
+        c1.api.functions.v1.FunctionsServiceInvokeResponse:
+            description: |
+                The FunctionsServiceInvokeResponse message.
+
+                This message contains a oneof named resp. Only a single field of the following list may be set at a time:
+                  - json
+            properties:
+                json:
+                    description: |-
+                        The json field.
+                        This field is part of the `resp` oneof.
+                        See the documentation for `c1.api.functions.v1.FunctionsServiceInvokeResponse` for more details.
+                    format: base64
+                    nullable: true
+                    readOnly: false
+                    type: string
+            title: Functions Service Invoke Response
+            type: object
+            x-speakeasy-name-override: FunctionsServiceInvokeResponse
+        c1.api.functions.v1.FunctionsServiceListCommitsResponse:
+            description: The FunctionsServiceListCommitsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.functions.v1.FunctionCommit'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Functions Service List Commits Response
+            type: object
+            x-speakeasy-name-override: FunctionsServiceListCommitsResponse
+        c1.api.functions.v1.FunctionsServiceListFunctionsResponse:
+            description: The FunctionsServiceListFunctionsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.functions.v1.Function'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Functions Service List Functions Response
+            type: object
+            x-speakeasy-name-override: FunctionsServiceListFunctionsResponse
+        c1.api.functions.v1.FunctionsServiceListTagsResponse:
+            description: The FunctionsServiceListTagsResponse message.
+            properties:
+                tags:
+                    additionalProperties:
+                        $ref: '#/components/schemas/c1.api.functions.v1.FunctionCommit'
+                    description: The tags field.
+                    readOnly: false
+                    type: object
+            title: Functions Service List Tags Response
+            type: object
+            x-speakeasy-name-override: FunctionsServiceListTagsResponse
+        c1.api.functions.v1.FunctionsServiceUpdateFunctionRequestInput:
+            description: The FunctionsServiceUpdateFunctionRequest message.
+            properties:
+                function:
+                    $ref: '#/components/schemas/c1.api.functions.v1.Function'
+                updateMask:
+                    nullable: true
+                    readOnly: false
+                    type: string
+            title: Functions Service Update Function Request
+            type: object
+            x-speakeasy-name-override: FunctionsServiceUpdateFunctionRequest
+        c1.api.functions.v1.FunctionsServiceUpdateFunctionResponse:
+            description: The FunctionsServiceUpdateFunctionResponse message.
+            properties:
+                function:
+                    $ref: '#/components/schemas/c1.api.functions.v1.Function'
+            title: Functions Service Update Function Response
+            type: object
+            x-speakeasy-name-override: FunctionsServiceUpdateFunctionResponse
         c1.api.iam.v1.GetRolesResponse:
             description: The GetRolesResponse message contains the retrieved role.
             properties:
@@ -7550,16 +8233,46 @@ components:
             title: Form
             type: object
             x-speakeasy-name-override: Form
-        c1.api.policy.v1.FormInstance:
-            description: The FormInstance message.
+        c1.api.policy.v1.FormCompletedAction:
+            description: The FormCompletedAction message.
             nullable: true
             properties:
+                completedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                userId:
+                    description: The userId field.
+                    readOnly: false
+                    type: string
+            title: Form Completed Action
+            type: object
+            x-speakeasy-name-override: FormCompletedAction
+        c1.api.policy.v1.FormInstance:
+            description: |
+                The FormInstance message.
+
+                This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
+                  - completed
+                  - restarted
+                  - reassigned
+                  - skipped
+            nullable: true
+            properties:
+                completed:
+                    $ref: '#/components/schemas/c1.api.policy.v1.FormCompletedAction'
                 data:
                     additionalProperties: true
                     readOnly: false
                     type: object
                 form:
                     $ref: '#/components/schemas/c1.api.form.v1.Form'
+                reassigned:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ReassignedAction'
+                restarted:
+                    $ref: '#/components/schemas/c1.api.policy.v1.RestartAction'
+                skipped:
+                    $ref: '#/components/schemas/c1.api.policy.v1.SkippedAction'
                 state:
                     description: The state field.
                     enum:
@@ -10248,6 +10961,7 @@ components:
                             - TASK_ACTION_TYPE_SKIP_STEP
                             - TASK_ACTION_TYPE_ROLLBACK_CANCELLED
                             - TASK_ACTION_TYPE_UPDATE_REQUEST_DATA
+                            - TASK_ACTION_TYPE_UPDATE_GRANT_DURATION
                         type: string
                         x-speakeasy-unknown-values: allow
                     nullable: true
@@ -10341,6 +11055,10 @@ components:
                         - TASK_ORIGIN_WEBAPP
                         - TASK_ORIGIN_TIME_REVOKE
                         - TASK_ORIGIN_NON_USAGE_REVOKE
+                        - TASK_ORIGIN_PROFILE_MEMBERSHIP_MANUAL
+                        - TASK_ORIGIN_PROFILE_MEMBERSHIP
+                        - TASK_ORIGIN_AUTOMATION
+                        - TASK_ORIGIN_ACCESS_REVIEW
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
@@ -10431,6 +11149,7 @@ components:
                         - TASK_ACTION_TYPE_SKIP_STEP
                         - TASK_ACTION_TYPE_ROLLBACK_CANCELLED
                         - TASK_ACTION_TYPE_UPDATE_REQUEST_DATA
+                        - TASK_ACTION_TYPE_UPDATE_GRANT_DURATION
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
@@ -10872,6 +11591,20 @@ components:
             title: Task Actions Service Skip Step Request
             type: object
             x-speakeasy-name-override: TaskActionsServiceSkipStepRequest
+        c1.api.task.v1.TaskActionsServiceUpdateGrantDurationRequestInput:
+            description: The TaskActionsServiceUpdateGrantDurationRequest message.
+            properties:
+                duration:
+                    format: duration
+                    readOnly: false
+                    type: string
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskExpandMask'
+            required:
+                - duration
+            title: Task Actions Service Update Grant Duration Request
+            type: object
+            x-speakeasy-name-override: TaskActionsServiceUpdateGrantDurationRequest
         c1.api.task.v1.TaskActionsServiceUpdateRequestDataRequestInput:
             description: The TaskActionsServiceUpdateRequestDataRequest message.
             properties:
@@ -11182,6 +11915,28 @@ components:
             title: Task Audit Finished Connector Actions
             type: object
             x-speakeasy-name-override: TaskAuditFinishedConnectorActions
+        c1.api.task.v1.TaskAuditFormInstanceChange:
+            description: The TaskAuditFormInstanceChange message.
+            nullable: true
+            properties:
+                isValid:
+                    description: The isValid field.
+                    readOnly: false
+                    type: boolean
+            title: Task Audit Form Instance Change
+            type: object
+            x-speakeasy-name-override: TaskAuditFormInstanceChange
+        c1.api.task.v1.TaskAuditGrantDurationUpdated:
+            description: The TaskAuditGrantDurationUpdated message.
+            nullable: true
+            properties:
+                duration:
+                    format: duration
+                    readOnly: false
+                    type: string
+            title: Task Audit Grant Duration Updated
+            type: object
+            x-speakeasy-name-override: TaskAuditGrantDurationUpdated
         c1.api.task.v1.TaskAuditGrantOutcome:
             description: The TaskAuditGrantOutcome message.
             nullable: true
@@ -11537,6 +12292,8 @@ components:
                   - reassignmentListError
                   - slaEscalation
                   - policyChanged
+                  - formInstanceChange
+                  - grantDurationUpdated
             properties:
                 accessRequestOutcome:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditAccessRequestOutcome'
@@ -11598,6 +12355,10 @@ components:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditExternalTicketProvisionStepResolved'
                 externalTicketTriggered:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditExternalTicketTriggered'
+                formInstanceChange:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskAuditFormInstanceChange'
+                grantDurationUpdated:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskAuditGrantDurationUpdated'
                 grantOutcome:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditGrantOutcome'
                 hardReset:
@@ -15550,6 +16311,75 @@ paths:
                 terraform-resource: Access_Conflict#update
             x-speakeasy-group: AccessConflict
             x-speakeasy-name-override: UpdateMonitor
+    /api/v1/appentitlementmonitorbinding:
+        delete:
+            description: Invokes the c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.DeleteAppEntitlementMonitorBinding method.
+            operationId: c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.DeleteAppEntitlementMonitorBinding
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessconflict.v1.DeleteAppEntitlementMonitorBindingRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessconflict.v1.DeleteAppEntitlementMonitorBindingResponse'
+                    description: Successful response
+            summary: Delete App Entitlement Monitor Binding
+            tags:
+                - App Entitlement Monitor Binding
+            x-speakeasy-entity-operation:
+                terraform-resource: App_Entitlement_Monitor_Binding#delete
+            x-speakeasy-group: AppEntitlementMonitorBinding
+            x-speakeasy-name-override: DeleteAppEntitlementMonitorBinding
+        post:
+            description: Invokes the c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.CreateAppEntitlementMonitorBinding method.
+            operationId: c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.CreateAppEntitlementMonitorBinding
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessconflict.v1.CreateAppEntitlementMonitorBindingRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessconflict.v1.AppEntitlementMonitorBinding'
+                    description: Successful response
+            summary: Create App Entitlement Monitor Binding
+            tags:
+                - App Entitlement Monitor Binding
+            x-speakeasy-entity-operation:
+                terraform-resource: App_Entitlement_Monitor_Binding#create
+            x-speakeasy-group: AppEntitlementMonitorBinding
+            x-speakeasy-name-override: CreateAppEntitlementMonitorBinding
+    /api/v1/appentitlementmonitorbinding/get:
+        post:
+            description: Invokes the c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.GetAppEntitlementMonitorBinding method.
+            operationId: c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.GetAppEntitlementMonitorBinding
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessconflict.v1.GetAppEntitlementMonitorBindingRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessconflict.v1.AppEntitlementMonitorBinding'
+                    description: Successful response
+            summary: Get App Entitlement Monitor Binding
+            tags:
+                - App Entitlement Monitor Binding
+            x-speakeasy-entity-operation:
+                terraform-datasource: App_Entitlement_Monitor_Binding#read
+                terraform-resource: App_Entitlement_Monitor_Binding#read
+            x-speakeasy-group: AppEntitlementMonitorBinding
+            x-speakeasy-name-override: GetAppEntitlementMonitorBinding
     /api/v1/apps:
         get:
             description: List all apps.
@@ -18308,6 +19138,24 @@ paths:
             x-speakeasy-group: Attributes
             x-speakeasy-name-override: GetAttributeValue
     /api/v1/attributes/compliance_frameworks:
+        get:
+            description: Invokes the c1.api.attribute.v1.Attributes.ListComplianceFrameworks method.
+            operationId: c1.api.attribute.v1.Attributes.ListComplianceFrameworks
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.attribute.v1.ListComplianceFrameworksResponse'
+                    description: Successful response
+            summary: List Compliance Frameworks
+            tags:
+                - Compliance Framework
+            x-speakeasy-entity-operation:
+                terraform-datasource: Compliance Frameworks#read
+                terraform-resource: null
+            x-speakeasy-group: Attributes
+            x-speakeasy-name-override: ListComplianceFrameworks
         post:
             description: Create a compliance framework value.
             operationId: c1.api.attribute.v1.Attributes.CreateComplianceFrameworkAttributeValue
@@ -18388,6 +19236,24 @@ paths:
             x-speakeasy-group: Attributes
             x-speakeasy-name-override: GetComplianceFrameworkAttributeValue
     /api/v1/attributes/risk_levels:
+        get:
+            description: Invokes the c1.api.attribute.v1.Attributes.ListRiskLevels method.
+            operationId: c1.api.attribute.v1.Attributes.ListRiskLevels
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.attribute.v1.ListRiskLevelsResponse'
+                    description: Successful response
+            summary: List Risk Levels
+            tags:
+                - Risk Level
+            x-speakeasy-entity-operation:
+                terraform-datasource: Risk Levels#read
+                terraform-resource: null
+            x-speakeasy-group: Attributes
+            x-speakeasy-name-override: ListRiskLevels
         post:
             description: Create a risk level attribute.
             operationId: c1.api.attribute.v1.Attributes.CreateRiskLevelAttributeValue
@@ -18857,6 +19723,9 @@ paths:
             summary: List
             tags:
                 - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-datasource: Request Catalogs#read
+                terraform-resource: null
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: List
         post:
@@ -19473,6 +20342,286 @@ paths:
                 - Directory
             x-speakeasy-group: Directory
             x-speakeasy-name-override: Get
+    /api/v1/functions:
+        get:
+            description: List retrieves all functions with pagination
+            operationId: c1.api.functions.v1.FunctionsService.ListFunctions
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceListFunctionsResponse'
+                    description: Successful response
+            summary: List Functions
+            tags:
+                - Function
+            x-speakeasy-group: Functions
+            x-speakeasy-name-override: ListFunctions
+        post:
+            description: Invokes the c1.api.functions.v1.FunctionsService.CreateFunction method.
+            operationId: c1.api.functions.v1.FunctionsService.CreateFunction
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceCreateFunctionRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceCreateFunctionResponse'
+                    description: Successful response
+            summary: Create Function
+            tags:
+                - Function
+            x-speakeasy-group: Functions
+            x-speakeasy-name-override: CreateFunction
+    /api/v1/functions/{function_id}/commits:
+        get:
+            description: ListCommits retrieves the commit history
+            operationId: c1.api.functions.v1.FunctionsService.ListCommits
+            parameters:
+                - in: path
+                  name: function_id
+                  required: true
+                  schema:
+                    description: The functionId field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceListCommitsResponse'
+                    description: Successful response
+            summary: List Commits
+            tags:
+                - Function
+            x-speakeasy-group: Functions
+            x-speakeasy-name-override: ListCommits
+        post:
+            description: Commit saves a new version of the function code
+            operationId: c1.api.functions.v1.FunctionsService.Commit
+            parameters:
+                - in: path
+                  name: function_id
+                  required: true
+                  schema:
+                    description: The functionId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceCommitRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceCommitResponse'
+                    description: Successful response
+            summary: Commit
+            tags:
+                - Function
+            x-speakeasy-group: Functions
+            x-speakeasy-name-override: Commit
+    /api/v1/functions/{function_id}/commits/{id}:
+        get:
+            description: GetCommit retrieves the commit and its code content for a specific version
+            operationId: c1.api.functions.v1.FunctionsService.GetCommit
+            parameters:
+                - in: path
+                  name: function_id
+                  required: true
+                  schema:
+                    description: The functionId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceGetCommitResponse'
+                    description: Successful response
+            summary: Get Commit
+            tags:
+                - Function
+            x-speakeasy-group: Functions
+            x-speakeasy-name-override: GetCommit
+    /api/v1/functions/{function_id}/invoke:
+        post:
+            description: Invokes the c1.api.functions.v1.FunctionsService.Invoke method.
+            operationId: c1.api.functions.v1.FunctionsService.Invoke
+            parameters:
+                - in: path
+                  name: function_id
+                  required: true
+                  schema:
+                    description: The functionId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceInvokeRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceInvokeResponse'
+                    description: Successful response
+            summary: Invoke
+            tags:
+                - Function
+            x-speakeasy-group: Functions
+            x-speakeasy-name-override: Invoke
+    /api/v1/functions/{function_id}/tags:
+        get:
+            description: ListTags lists all tags for a function
+            operationId: c1.api.functions.v1.FunctionsService.ListTags
+            parameters:
+                - in: path
+                  name: function_id
+                  required: true
+                  schema:
+                    description: The functionId field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceListTagsResponse'
+                    description: Successful response
+            summary: List Tags
+            tags:
+                - Function
+            x-speakeasy-group: Functions
+            x-speakeasy-name-override: ListTags
+        post:
+            description: CreateTag creates a named reference to a specific commit
+            operationId: c1.api.functions.v1.FunctionsService.CreateTag
+            parameters:
+                - in: path
+                  name: function_id
+                  required: true
+                  schema:
+                    description: The functionId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceCreateTagRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceCreateTagResponse'
+                    description: Successful response
+            summary: Create Tag
+            tags:
+                - Function
+            x-speakeasy-group: Functions
+            x-speakeasy-name-override: CreateTag
+    /api/v1/functions/{id}:
+        delete:
+            description: Delete removes a function
+            operationId: c1.api.functions.v1.FunctionsService.DeleteFunction
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceDeleteFunctionRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceDeleteFunctionResponse'
+                    description: Successful response
+            summary: Delete Function
+            tags:
+                - Function
+            x-speakeasy-group: Functions
+            x-speakeasy-name-override: DeleteFunction
+        get:
+            description: Get retrieves a specific function by ID
+            operationId: c1.api.functions.v1.FunctionsService.GetFunction
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceGetFunctionResponse'
+                    description: Successful response
+            summary: Get Function
+            tags:
+                - Function
+            x-speakeasy-group: Functions
+            x-speakeasy-name-override: GetFunction
+        post:
+            description: Update updates an existing function's metadata
+            operationId: c1.api.functions.v1.FunctionsService.UpdateFunction
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceUpdateFunctionRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsServiceUpdateFunctionResponse'
+                    description: Successful response
+            summary: Update Function
+            tags:
+                - Function
+            x-speakeasy-group: Functions
+            x-speakeasy-name-override: UpdateFunction
     /api/v1/grants/feed:
         post:
             description: Invokes the c1.api.app.v1.AppEntitlementUserBindingService.SearchGrantFeed method.
@@ -19893,10 +21042,20 @@ paths:
             tags:
                 - App Resource
             x-speakeasy-entity-operation:
-                terraform-datasource: App Resource Type#read
+                terraform-datasource:
+                    - App Resource Type#read
+                    - App Resource Types#read
                 terraform-resource: null
             x-speakeasy-group: AppResourceSearch
             x-speakeasy-name-override: SearchAppResourceTypes
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/app_resources:
         post:
             description: Invokes the c1.api.app.v1.AppResourceSearch.SearchAppResources method.
@@ -19970,10 +21129,20 @@ paths:
             tags:
                 - App
             x-speakeasy-entity-operation:
-                terraform-datasource: App#read
+                terraform-datasource:
+                    - App#read
+                    - Apps#read
                 terraform-resource: null
             x-speakeasy-group: AppSearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/apps/{app_id}/entitlements/users/{app_user_id}:
         get:
             description: Invokes the c1.api.app.v1.AppEntitlementSearchService.SearchAppEntitlementsForAppUser method.
@@ -20073,6 +21242,27 @@ paths:
                 outputs:
                     nextCursor: $.nextPageToken
                 type: cursor
+    /api/v1/search/functions:
+        post:
+            description: Search searches for functions based on criteria
+            operationId: c1.api.functions.v1.FunctionsSearch.Search
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.functions.v1.FunctionsSearchRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsSearchResponse'
+                    description: Successful response
+            summary: Search
+            tags:
+                - Function
+            x-speakeasy-group: FunctionsSearch
+            x-speakeasy-name-override: Search
     /api/v1/search/grants:
         post:
             description: Invokes the c1.api.app.v1.AppEntitlementSearchService.SearchGrants method.
@@ -20156,10 +21346,20 @@ paths:
             tags:
                 - Policy
             x-speakeasy-entity-operation:
-                terraform-datasource: Policy#read
+                terraform-datasource:
+                    - Policy#read
+                    - Policies#read
                 terraform-resource: null
             x-speakeasy-group: PolicySearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/request_catalog/entitlements:
         post:
             description: Search request catalogs based on filters specified in the request body.
@@ -20285,10 +21485,20 @@ paths:
             tags:
                 - User
             x-speakeasy-entity-operation:
-                terraform-datasource: User#read
+                terraform-datasource:
+                    - User#read
+                    - Users#read
                 terraform-resource: null
             x-speakeasy-group: UserSearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/webhooks:
         post:
             description: Invokes the c1.api.webhooks.v1.WebhooksSearch.Search method.
@@ -20309,10 +21519,20 @@ paths:
             tags:
                 - Webhook
             x-speakeasy-entity-operation:
-                terraform-datasource: Webhook#read
+                terraform-datasource:
+                    - Webhook#read
+                    - Webhooks#read
                 terraform-resource: null
             x-speakeasy-group: WebhooksSearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/settings/aws-external-id:
         get:
             description: Invokes the c1.api.settings.v1.AWSExternalIDSettings.Get method.
@@ -21248,6 +22468,35 @@ paths:
                 - Task
             x-speakeasy-group: TaskActions
             x-speakeasy-name-override: SkipStep
+    /api/v1/tasks/{task_id}/action/update-grant-duration:
+        post:
+            description: Invokes the c1.api.task.v1.TaskActionsService.UpdateGrantDuration method.
+            operationId: c1.api.task.v1.TaskActionsService.UpdateGrantDuration
+            parameters:
+                - in: path
+                  name: task_id
+                  required: true
+                  schema:
+                    description: The ID of the task to update the grant duration for.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.task.v1.TaskActionsServiceUpdateGrantDurationRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.task.v1.TaskServiceActionResponse'
+                    description: Successful response
+            summary: Update Grant Duration
+            tags:
+                - Task
+            x-speakeasy-group: TaskActions
+            x-speakeasy-name-override: UpdateGrantDuration
     /api/v1/tasks/{task_id}/action/update-request-data:
         post:
             description: Invokes the c1.api.task.v1.TaskActionsService.UpdateRequestData method.

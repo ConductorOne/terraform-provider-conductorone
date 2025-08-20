@@ -35,6 +35,7 @@ TF_REATTACH_PROVIDERS=... terraform apply
 * [conductorone_app_entitlement_proxy_binding](docs/resources/app_entitlement_proxy_binding.md)
 * [conductorone_app_resource](docs/resources/app_resource.md)
 * [conductorone_app_resource_type](docs/resources/app_resource_type.md)
+* [conductorone_app_entitlement_monitor_binding](docs/resources/app_entitlement_monitor_binding.md)
 * [conductorone_app_entitlement_owner](docs/resources/app_entitlement_owner.md)
 * [conductorone_app_owner](docs/resources/app_owner.md)
 * [conductorone_bundle_automation](docs/resources/bundle_automation.md)
@@ -54,15 +55,24 @@ TF_REATTACH_PROVIDERS=... terraform apply
 * [conductorone_app_entitlements](docs/data-sources/app_entitlements.md)
 * [conductorone_app_resource](docs/data-sources/app_resource.md)
 * [conductorone_app_resource_type](docs/data-sources/app_resource_type.md)
+* [conductorone_app_resource_types](docs/data-sources/app_resource_types.md)
 * [conductorone_app_resources](docs/data-sources/app_resources.md)
+* [conductorone_app_entitlement_monitor_binding](docs/data-sources/app_entitlement_monitor_binding.md)
+* [conductorone_apps](docs/data-sources/apps.md)
 * [conductorone_aws_external_id](docs/data-sources/aws_external_id.md)
 * [conductorone_bundle_automation](docs/data-sources/bundle_automation.md)
 * [conductorone_compliance_framework](docs/data-sources/compliance_framework.md)
+* [conductorone_compliance_frameworks](docs/data-sources/compliance_frameworks.md)
 * [conductorone_connector_credential](docs/data-sources/connector_credential.md)
+* [conductorone_policies](docs/data-sources/policies.md)
 * [conductorone_policy](docs/data-sources/policy.md)
+* [conductorone_request_catalogs](docs/data-sources/request_catalogs.md)
 * [conductorone_risk_level](docs/data-sources/risk_level.md)
+* [conductorone_risk_levels](docs/data-sources/risk_levels.md)
 * [conductorone_user](docs/data-sources/user.md)
+* [conductorone_users](docs/data-sources/users.md)
 * [conductorone_webhook](docs/data-sources/webhook.md)
+* [conductorone_webhooks](docs/data-sources/webhooks.md)
 <!-- End Available Resources and Data Sources [operations] -->
 
 Terraform allows you to use local provider builds by setting a `dev_overrides` block in a configuration file called `.terraformrc`. This block overrides all other configured installation methods.
@@ -140,7 +150,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.4.6"
+      version = "1.5.0"
     }
   }
 }
