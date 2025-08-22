@@ -143,5 +143,6 @@ func getIntegrationResources() []func() resource.Resource {
 		NewIntegrationZendeskV2Resource,
 		NewIntegrationZohoPeopleResource,
 		NewIntegrationZoomResource,
+		NewIntegrationHttpResource,
 	}
 }
