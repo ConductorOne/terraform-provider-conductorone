@@ -42,3 +42,34 @@ func getStringValue(values map[string]interface{}, key string) (string, bool) {
 	}
 	return "", false
 }
+
+type MapValue struct {
+	KeyValues *KeyValueItems `json:"keyValues"`
+}
+
+type KeyValueItems struct {
+	Items []KeyValueItem `json:"items"`
+}
+
+type KeyValueItem struct {
+	Key   interface{} `json:"key"`
+	Value interface{} `json:"value"`
+}
+
+func makeMapValue(value interface{}) *MapValue {
+	vm, ok := value.(map[string]string)
+	if !ok {
+		return nil
+	}
+
+	items := &KeyValueItems{}
+	for k, v := range vm {
+		items.Items = append(items.Items, KeyValueItem{
+			Key:   k,
+			Value: v,
+		})
+	}
+	return &MapValue{
+		KeyValues: items,
+	}
+}
