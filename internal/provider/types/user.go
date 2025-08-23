@@ -2,12 +2,14 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 type User struct {
 	CreatedAt               types.String                 `tfsdk:"created_at"`
 	DelegatedUserID         types.String                 `tfsdk:"delegated_user_id"`
-	DeletedAt               types.String                 `tfsdk:"-"`
+	DeletedAt               types.String                 `tfsdk:"deleted_at"`
 	Department              types.String                 `tfsdk:"department"`
 	DepartmentSources       []UserAttributeMappingSource `tfsdk:"department_sources"`
 	DirectoryIds            []types.String               `tfsdk:"directory_ids"`
@@ -16,6 +18,9 @@ type User struct {
 	DisplayName             types.String                 `tfsdk:"display_name"`
 	Email                   types.String                 `tfsdk:"email"`
 	Emails                  []types.String               `tfsdk:"emails"`
+	EmailSources            []UserAttributeMappingSource `tfsdk:"email_sources"`
+	EmployeeIds             []types.String               `tfsdk:"employee_ids"`
+	EmployeeIDSources       []UserAttributeMappingSource `tfsdk:"employee_id_sources"`
 	EmploymentStatus        types.String                 `tfsdk:"employment_status"`
 	EmploymentStatusSources []UserAttributeMappingSource `tfsdk:"employment_status_sources"`
 	EmploymentType          types.String                 `tfsdk:"employment_type"`
@@ -28,6 +33,7 @@ type User struct {
 	Profile                 *Profile                     `tfsdk:"profile"`
 	RoleIds                 []types.String               `tfsdk:"role_ids"`
 	Status                  types.String                 `tfsdk:"status"`
+	Type                    types.String                 `tfsdk:"type"`
 	UpdatedAt               types.String                 `tfsdk:"updated_at"`
 	Username                types.String                 `tfsdk:"username"`
 	Usernames               []types.String               `tfsdk:"usernames"`

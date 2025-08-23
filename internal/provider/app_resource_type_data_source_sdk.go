@@ -19,7 +19,9 @@ func (r *AppResourceTypeDataSourceModel) RefreshFromSharedAppResourceType(ctx co
 	r.DisplayName = types.StringPointerValue(resp.DisplayName)
 	r.ID = types.StringPointerValue(resp.ID)
 	if resp.TraitIds != nil {
-		r.TraitIds = make([]types.String, 0, len(resp.TraitIds))
+		if r.TraitIds == nil {
+			r.TraitIds = make([]types.String, 0, len(resp.TraitIds))
+		}
 		for _, v := range resp.TraitIds {
 			r.TraitIds = append(r.TraitIds, types.StringValue(v))
 		}
@@ -72,12 +74,6 @@ func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest(c
 	} else {
 		pageSize = nil
 	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
-	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -105,7 +101,6 @@ func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest(c
 		ExcludeResourceTypeIds:      excludeResourceTypeIds,
 		ExcludeResourceTypeTraitIds: excludeResourceTypeTraitIds,
 		PageSize:                    pageSize,
-		PageToken:                   pageToken,
 		Query:                       query,
 		ResourceTypeIds:             resourceTypeIds,
 		ResourceTypeTraitIds:        resourceTypeTraitIds,

@@ -77,12 +77,6 @@ func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*sh
 	} else {
 		pageSize = nil
 	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
-	}
 	var policyRefs []shared.PolicyRef
 	if r.PolicyRefs != nil {
 		policyRefs = make([]shared.PolicyRef, 0, len(r.PolicyRefs))
@@ -110,7 +104,6 @@ func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*sh
 		ExcludeAppIds:   excludeAppIds,
 		OnlyDirectories: onlyDirectories,
 		PageSize:        pageSize,
-		PageToken:       pageToken,
 		PolicyRefs:      policyRefs,
 		Query:           query,
 	}

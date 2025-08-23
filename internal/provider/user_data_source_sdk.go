@@ -20,7 +20,9 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Department = types.StringPointerValue(resp.Department)
 		if resp.DepartmentSources != nil {
-			r.DepartmentSources = []tfTypes.UserAttributeMappingSource{}
+			if r.DepartmentSources == nil {
+				r.DepartmentSources = []tfTypes.UserAttributeMappingSource{}
+			}
 
 			for _, departmentSourcesItem := range resp.DepartmentSources {
 				var departmentSources tfTypes.UserAttributeMappingSource
@@ -35,7 +37,9 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			}
 		}
 		if resp.DirectoryIds != nil {
-			r.DirectoryIds = make([]types.String, 0, len(resp.DirectoryIds))
+			if r.DirectoryIds == nil {
+				r.DirectoryIds = make([]types.String, 0, len(resp.DirectoryIds))
+			}
 			for _, v := range resp.DirectoryIds {
 				r.DirectoryIds = append(r.DirectoryIds, types.StringValue(v))
 			}
@@ -46,7 +50,9 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			r.DirectoryStatus = types.StringNull()
 		}
 		if resp.DirectoryStatusSources != nil {
-			r.DirectoryStatusSources = []tfTypes.UserAttributeMappingSource{}
+			if r.DirectoryStatusSources == nil {
+				r.DirectoryStatusSources = []tfTypes.UserAttributeMappingSource{}
+			}
 
 			for _, directoryStatusSourcesItem := range resp.DirectoryStatusSources {
 				var directoryStatusSources tfTypes.UserAttributeMappingSource
@@ -63,13 +69,17 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.Email = types.StringPointerValue(resp.Email)
 		if resp.Emails != nil {
-			r.Emails = make([]types.String, 0, len(resp.Emails))
+			if r.Emails == nil {
+				r.Emails = make([]types.String, 0, len(resp.Emails))
+			}
 			for _, v := range resp.Emails {
 				r.Emails = append(r.Emails, types.StringValue(v))
 			}
 		}
 		if resp.EmailSources != nil {
-			r.EmailSources = []tfTypes.UserAttributeMappingSource{}
+			if r.EmailSources == nil {
+				r.EmailSources = []tfTypes.UserAttributeMappingSource{}
+			}
 
 			for _, emailSourcesItem := range resp.EmailSources {
 				var emailSources tfTypes.UserAttributeMappingSource
@@ -84,13 +94,17 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			}
 		}
 		if resp.EmployeeIds != nil {
-			r.EmployeeIds = make([]types.String, 0, len(resp.EmployeeIds))
+			if r.EmployeeIds == nil {
+				r.EmployeeIds = make([]types.String, 0, len(resp.EmployeeIds))
+			}
 			for _, v := range resp.EmployeeIds {
 				r.EmployeeIds = append(r.EmployeeIds, types.StringValue(v))
 			}
 		}
 		if resp.EmployeeIDSources != nil {
-			r.EmployeeIDSources = []tfTypes.UserAttributeMappingSource{}
+			if r.EmployeeIDSources == nil {
+				r.EmployeeIDSources = []tfTypes.UserAttributeMappingSource{}
+			}
 
 			for _, employeeIDSourcesItem := range resp.EmployeeIDSources {
 				var employeeIDSources tfTypes.UserAttributeMappingSource
@@ -106,7 +120,9 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 		}
 		r.EmploymentStatus = types.StringPointerValue(resp.EmploymentStatus)
 		if resp.EmploymentStatusSources != nil {
-			r.EmploymentStatusSources = []tfTypes.UserAttributeMappingSource{}
+			if r.EmploymentStatusSources == nil {
+				r.EmploymentStatusSources = []tfTypes.UserAttributeMappingSource{}
+			}
 
 			for _, employmentStatusSourcesItem := range resp.EmploymentStatusSources {
 				var employmentStatusSources tfTypes.UserAttributeMappingSource
@@ -122,7 +138,9 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 		}
 		r.EmploymentType = types.StringPointerValue(resp.EmploymentType)
 		if resp.EmploymentTypeSources != nil {
-			r.EmploymentTypeSources = []tfTypes.UserAttributeMappingSource{}
+			if r.EmploymentTypeSources == nil {
+				r.EmploymentTypeSources = []tfTypes.UserAttributeMappingSource{}
+			}
 
 			for _, employmentTypeSourcesItem := range resp.EmploymentTypeSources {
 				var employmentTypeSources tfTypes.UserAttributeMappingSource
@@ -139,7 +157,9 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 		r.ID = types.StringPointerValue(resp.ID)
 		r.JobTitle = types.StringPointerValue(resp.JobTitle)
 		if resp.JobTitleSources != nil {
-			r.JobTitleSources = []tfTypes.UserAttributeMappingSource{}
+			if r.JobTitleSources == nil {
+				r.JobTitleSources = []tfTypes.UserAttributeMappingSource{}
+			}
 
 			for _, jobTitleSourcesItem := range resp.JobTitleSources {
 				var jobTitleSources tfTypes.UserAttributeMappingSource
@@ -154,13 +174,17 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			}
 		}
 		if resp.ManagerIds != nil {
-			r.ManagerIds = make([]types.String, 0, len(resp.ManagerIds))
+			if r.ManagerIds == nil {
+				r.ManagerIds = make([]types.String, 0, len(resp.ManagerIds))
+			}
 			for _, v := range resp.ManagerIds {
 				r.ManagerIds = append(r.ManagerIds, types.StringValue(v))
 			}
 		}
 		if resp.ManagerSources != nil {
-			r.ManagerSources = []tfTypes.UserAttributeMappingSource{}
+			if r.ManagerSources == nil {
+				r.ManagerSources = []tfTypes.UserAttributeMappingSource{}
+			}
 
 			for _, managerSourcesItem := range resp.ManagerSources {
 				var managerSources tfTypes.UserAttributeMappingSource
@@ -180,7 +204,9 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			r.Profile = &tfTypes.Profile{}
 		}
 		if resp.RoleIds != nil {
-			r.RoleIds = make([]types.String, 0, len(resp.RoleIds))
+			if r.RoleIds == nil {
+				r.RoleIds = make([]types.String, 0, len(resp.RoleIds))
+			}
 			for _, v := range resp.RoleIds {
 				r.RoleIds = append(r.RoleIds, types.StringValue(v))
 			}
@@ -198,13 +224,17 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 		r.Username = types.StringPointerValue(resp.Username)
 		if resp.Usernames != nil {
-			r.Usernames = make([]types.String, 0, len(resp.Usernames))
+			if r.Usernames == nil {
+				r.Usernames = make([]types.String, 0, len(resp.Usernames))
+			}
 			for _, v := range resp.Usernames {
 				r.Usernames = append(r.Usernames, types.StringValue(v))
 			}
 		}
 		if resp.UsernameSources != nil {
-			r.UsernameSources = []tfTypes.UserAttributeMappingSource{}
+			if r.UsernameSources == nil {
+				r.UsernameSources = []tfTypes.UserAttributeMappingSource{}
+			}
 
 			for _, usernameSourcesItem := range resp.UsernameSources {
 				var usernameSources tfTypes.UserAttributeMappingSource
@@ -259,12 +289,6 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 	} else {
 		pageSize = nil
 	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
-	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -306,7 +330,6 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 		ExcludeTypes: excludeTypes,
 		Ids:          ids,
 		PageSize:     pageSize,
-		PageToken:    pageToken,
 		Query:        query,
 		Refs:         refs,
 		RoleIds:      roleIds,
