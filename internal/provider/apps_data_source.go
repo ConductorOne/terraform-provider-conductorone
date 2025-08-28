@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -262,23 +263,22 @@ func (r *AppsDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	response, err := res.Next()
 	for {
-		res, err := res.Next()
-
 		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			resp.Diagnostics.AddError("reading next results failed", debugResponse(response.RawResponse))
 			return
 		}
-
-		if res == nil {
+		if response == nil {
 			break
 		}
-
-		resp.Diagnostics.Append(data.RefreshFromSharedSearchAppsResponse(ctx, res.SearchAppsResponse)...)
+		resp.Diagnostics.Append(data.RefreshFromSharedSearchAppsResponse(ctx, response.SearchAppsResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return
 		}
+
+		response, err = response.Next()
 	}
 
 	// Save updated data into Terraform state
