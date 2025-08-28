@@ -1,0 +1,9 @@
+# C1APIFunctionsV1FunctionsServiceGetFunctionResponse
+
+
+## Fields
+
+| Field                                                                                                             | Type                                                                                                              | Required                                                                                                          | Description                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                                | :heavy_check_mark:                                                                                                | N/A                                                                                                               |
+| `FunctionsServiceGetFunctionResponse`                                                                             | [*components.FunctionsServiceGetFunctionResponse](../../models/components/functionsservicegetfunctionresponse.md) | :heavy_minus_sign:                                                                                                | Successful response                                                                                               |

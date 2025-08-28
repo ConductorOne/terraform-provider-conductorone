@@ -1,0 +1,9 @@
+# C1APITaskV1TaskActionsServiceUpdateGrantDurationResponse
+
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                    | [components.HTTPMetadata](../../models/components/httpmetadata.md)                            | :heavy_check_mark:                                                                            | N/A                                                                                           |
+| `TaskServiceActionResponse`                                                                   | [*components.TaskServiceActionResponse](../../models/components/taskserviceactionresponse.md) | :heavy_minus_sign:                                                                            | Successful response                                                                           |

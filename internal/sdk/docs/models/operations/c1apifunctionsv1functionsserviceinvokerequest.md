@@ -1,0 +1,9 @@
+# C1APIFunctionsV1FunctionsServiceInvokeRequest
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `FunctionID`                                                                                          | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `FunctionsServiceInvokeRequest`                                                                       | [*components.FunctionsServiceInvokeRequest](../../models/components/functionsserviceinvokerequest.md) | :heavy_minus_sign:                                                                                    | N/A                                                                                                   |

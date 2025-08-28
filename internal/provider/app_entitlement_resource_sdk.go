@@ -6,7 +6,7 @@ import (
 
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -414,10 +414,10 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 			}
 		}
 		if resp.ProvisionPolicy.MultiStep == nil {
-			r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
+			r.ProvisionPolicy.MultiStep = types.StringNull()
 		} else {
 			multiStepResult1, _ := json.Marshal(resp.ProvisionPolicy.MultiStep)
-			r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue((string(multiStepResult1)))
+			r.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult1))
 		}
 		if resp.ProvisionPolicy.UnconfiguredProvision == nil {
 			r.ProvisionPolicy.UnconfiguredProvision = nil

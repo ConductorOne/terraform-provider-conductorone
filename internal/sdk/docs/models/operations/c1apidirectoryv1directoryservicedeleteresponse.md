@@ -1,0 +1,9 @@
+# C1APIDirectoryV1DirectoryServiceDeleteResponse
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                              | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                      | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `DirectoryServiceDeleteResponse`                                                                        | [*components.DirectoryServiceDeleteResponse](../../models/components/directoryservicedeleteresponse.md) | :heavy_minus_sign:                                                                                      | Empty response with a status code indicating success.                                                   |

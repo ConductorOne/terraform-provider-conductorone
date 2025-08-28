@@ -1,0 +1,9 @@
+# C1APIStepupV1StepUpProviderServiceCreateResponse
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                  | :heavy_check_mark:                                                                                  | N/A                                                                                                 |
+| `CreateStepUpProviderResponse`                                                                      | [*components.CreateStepUpProviderResponse](../../models/components/createstepupproviderresponse.md) | :heavy_minus_sign:                                                                                  | Successful response                                                                                 |

@@ -7,7 +7,6 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -422,7 +421,6 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											`  - agent`,
 									},
 									"form": schema.StringAttribute{
-										CustomType:  jsontypes.NormalizedType{},
 										Computed:    true,
 										Description: `The Form message. Parsed as JSON.`,
 									},
@@ -556,7 +554,6 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 														Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
 													},
 													"multi_step": schema.StringAttribute{
-														CustomType:  jsontypes.NormalizedType{},
 														Computed:    true,
 														Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
 													},
@@ -802,6 +799,24 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 
 	if resp.Diagnostics.HasError() {
 		return
+	}
+	for {
+		res, err := res.Next()
+
+		if err != nil {
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			return
+		}
+
+		if res == nil {
+			break
+		}
+
+		resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, &res.SearchPoliciesResponse.List[0])...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 
 	// Save updated data into Terraform state

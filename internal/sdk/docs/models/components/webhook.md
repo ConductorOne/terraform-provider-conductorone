@@ -1,0 +1,17 @@
+# Webhook
+
+The Webhook message.
+
+This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
+  - webhookId
+  - webhookIdCel
+
+
+
+## Fields
+
+| Field                                                                                                                                                     | Type                                                                                                                                                      | Required                                                                                                                                                  | Description                                                                                                                                               |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Payload`                                                                                                                                                 | map[string]*any*                                                                                                                                          | :heavy_minus_sign:                                                                                                                                        | N/A                                                                                                                                                       |
+| `WebhookID`                                                                                                                                               | **string*                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                        | The webhookId field.<br/>This field is part of the `webhook_identifier` oneof.<br/>See the documentation for `c1.api.automations.v1.Webhook` for more details. |
+| `WebhookIDCel`                                                                                                                                            | **string*                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                        | The webhookIdCel field.<br/>This field is part of the `webhook_identifier` oneof.<br/>See the documentation for `c1.api.automations.v1.Webhook` for more details. |

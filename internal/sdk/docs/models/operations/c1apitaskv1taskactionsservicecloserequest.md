@@ -1,0 +1,9 @@
+# C1APITaskV1TaskActionsServiceCloseRequest
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `TaskID`                                                                                                | *string*                                                                                                | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `TaskActionsServiceCloseRequest`                                                                        | [*components.TaskActionsServiceCloseRequest](../../models/components/taskactionsservicecloserequest.md) | :heavy_minus_sign:                                                                                      | N/A                                                                                                     |

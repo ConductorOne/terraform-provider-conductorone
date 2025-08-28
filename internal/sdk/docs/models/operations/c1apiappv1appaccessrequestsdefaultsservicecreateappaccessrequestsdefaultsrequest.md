@@ -1,0 +1,9 @@
+# C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsRequest
+
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `AppID`                                                                                       | *string*                                                                                      | :heavy_check_mark:                                                                            | N/A                                                                                           |
+| `AppAccessRequestDefaults`                                                                    | [*components.AppAccessRequestDefaults1](../../models/components/appaccessrequestdefaults1.md) | :heavy_minus_sign:                                                                            | N/A                                                                                           |

@@ -1,0 +1,9 @@
+# C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationResponse
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                              | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                      | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `DeleteBundleAutomationResponse`                                                                        | [*components.DeleteBundleAutomationResponse](../../models/components/deletebundleautomationresponse.md) | :heavy_minus_sign:                                                                                      | Successful response                                                                                     |

@@ -1,0 +1,9 @@
+# C1APIAppV1AppUsageControlsServiceGetResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `GetAppUsageControlsResponse`                                                                     | [*components.GetAppUsageControlsResponse](../../models/components/getappusagecontrolsresponse.md) | :heavy_minus_sign:                                                                                | The GetAppUsageControlsResponse message contains the retrieved AppUsageControls object.           |

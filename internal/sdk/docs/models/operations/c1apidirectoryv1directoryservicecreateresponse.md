@@ -1,0 +1,9 @@
+# C1APIDirectoryV1DirectoryServiceCreateResponse
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                              | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                      | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `DirectoryServiceCreateResponse`                                                                        | [*components.DirectoryServiceCreateResponse](../../models/components/directoryservicecreateresponse.md) | :heavy_minus_sign:                                                                                      | The DirectoryServiceCreateResponse message.                                                             |

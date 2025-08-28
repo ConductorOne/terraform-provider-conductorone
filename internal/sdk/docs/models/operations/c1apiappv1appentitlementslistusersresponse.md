@@ -1,0 +1,9 @@
+# C1APIAppV1AppEntitlementsListUsersResponse
+
+
+## Fields
+
+| Field                                                                                                     | Type                                                                                                      | Required                                                                                                  | Description                                                                                               |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                        | :heavy_check_mark:                                                                                        | N/A                                                                                                       |
+| `ListAppEntitlementUsersResponse`                                                                         | [*components.ListAppEntitlementUsersResponse](../../models/components/listappentitlementusersresponse.md) | :heavy_minus_sign:                                                                                        | The ListAppEntitlementUsersResponse message contains a list of results and a nextPageToken if applicable. |

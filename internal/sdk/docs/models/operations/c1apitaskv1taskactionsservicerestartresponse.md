@@ -1,0 +1,9 @@
+# C1APITaskV1TaskActionsServiceRestartResponse
+
+
+## Fields
+
+| Field                                                                                                         | Type                                                                                                          | Required                                                                                                      | Description                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                    | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                            | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
+| `TaskActionsServiceRestartResponse`                                                                           | [*components.TaskActionsServiceRestartResponse](../../models/components/taskactionsservicerestartresponse.md) | :heavy_minus_sign:                                                                                            | Successful response                                                                                           |

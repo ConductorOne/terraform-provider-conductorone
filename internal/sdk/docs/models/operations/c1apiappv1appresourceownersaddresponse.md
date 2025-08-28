@@ -1,0 +1,9 @@
+# C1APIAppV1AppResourceOwnersAddResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `AddAppResourceOwnerResponse`                                                                     | [*components.AddAppResourceOwnerResponse](../../models/components/addappresourceownerresponse.md) | :heavy_minus_sign:                                                                                | Successful response                                                                               |

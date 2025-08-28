@@ -671,6 +671,7 @@ components:
                     description: The unique ID for the App Entitlement.
                     readOnly: true
                     type: string
+                    x-terraform-update-in-place: "true"
                 isAutomationEnabled:
                     description: Flag to indicate whether automation (for adding users to entitlement based on rules) has been enabled.
                     readOnly: true
@@ -2433,6 +2434,10 @@ components:
                     description: The id of the app the connector is associated with.
                     readOnly: false
                     type: string
+                canResumeSync:
+                    description: The canResumeSync field.
+                    readOnly: false
+                    type: boolean
                 catalogId:
                     description: The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
                     readOnly: false
@@ -3637,6 +3642,16 @@ components:
             title: O Auth 2 Authorized As
             type: object
             x-speakeasy-name-override: OAuth2AuthorizedAs
+        c1.api.app.v1.PauseSyncRequestInput:
+            description: The PauseSyncRequest message.
+            title: Pause Sync Request
+            type: object
+            x-speakeasy-name-override: PauseSyncRequest
+        c1.api.app.v1.PauseSyncResponse:
+            description: The PauseSyncResponse message.
+            title: Pause Sync Response
+            type: object
+            x-speakeasy-name-override: PauseSyncResponse
         c1.api.app.v1.RemoveAppEntitlementOwnerRequestInput:
             description: The request message for removing an app entitlement owner.
             title: Remove App Entitlement Owner Request
@@ -3725,6 +3740,16 @@ components:
             title: Remove Grant Duration Response
             type: object
             x-speakeasy-name-override: RemoveGrantDurationResponse
+        c1.api.app.v1.ResumeSyncRequestInput:
+            description: The ResumeSyncRequest message.
+            title: Resume Sync Request
+            type: object
+            x-speakeasy-name-override: ResumeSyncRequest
+        c1.api.app.v1.ResumeSyncResponse:
+            description: The ResumeSyncResponse message.
+            title: Resume Sync Response
+            type: object
+            x-speakeasy-name-override: ResumeSyncResponse
         c1.api.app.v1.SearchAppEntitlementsWithExpiredResponse:
             description: The SearchAppEntitlementsWithExpiredResponse message contains a list of results and a nextPageToken if applicable.
             properties:
@@ -4613,6 +4638,40 @@ components:
             title: List Attribute Values Response
             type: object
             x-speakeasy-name-override: ListAttributeValuesResponse
+        c1.api.attribute.v1.ListComplianceFrameworksResponse:
+            description: The ListComplianceFrameworksResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.attribute.v1.AttributeValue'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: List Compliance Frameworks Response
+            type: object
+            x-speakeasy-name-override: ListComplianceFrameworksResponse
+        c1.api.attribute.v1.ListRiskLevelsResponse:
+            description: The ListRiskLevelsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.attribute.v1.AttributeValue'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: List Risk Levels Response
+            type: object
+            x-speakeasy-name-override: ListRiskLevelsResponse
         c1.api.attribute.v1.SearchAttributeValuesRequest:
             description: Search Attributes by a few properties.
             properties:
@@ -9167,6 +9226,8 @@ components:
                 This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
                   - entitlements
             properties:
+                circuitBreaker:
+                    $ref: '#/components/schemas/c1.api.requestcatalog.v1.BundleAutomationCircuitBreaker'
                 createTasks:
                     description: The createTasks field.
                     readOnly: false
@@ -9179,6 +9240,10 @@ components:
                     format: date-time
                     readOnly: false
                     type: string
+                disableCircuitBreaker:
+                    description: The disableCircuitBreaker field.
+                    readOnly: false
+                    type: boolean
                 enabled:
                     description: The enabled field.
                     readOnly: false
@@ -9202,6 +9267,32 @@ components:
             title: Bundle Automation
             type: object
             x-speakeasy-name-override: BundleAutomation
+        c1.api.requestcatalog.v1.BundleAutomationCircuitBreaker:
+            description: The BundleAutomationCircuitBreaker message.
+            properties:
+                removedMembersThresholdPercentage:
+                    description: The removedMembersThresholdPercentage field.
+                    format: int64
+                    readOnly: false
+                    type: string
+                state:
+                    description: The state field.
+                    enum:
+                        - CIRCUIT_BREAKER_STATE_UNSPECIFIED
+                        - CIRCUIT_BREAKER_STATE_TRIGGERED
+                        - CIRCUIT_BREAKER_STATE_BYPASS
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                updatedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Bundle Automation Circuit Breaker
+            type: object
+            x-speakeasy-name-override: BundleAutomationCircuitBreaker
         c1.api.requestcatalog.v1.BundleAutomationLastRunState:
             description: The BundleAutomationLastRunState message.
             properties:
@@ -9220,6 +9311,7 @@ components:
                         - BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS
                         - BUNDLE_AUTOMATION_RUN_STATUS_FAILURE
                         - BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS
+                        - BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
@@ -9249,6 +9341,10 @@ components:
             properties:
                 createTasks:
                     description: The createTasks field.
+                    readOnly: false
+                    type: boolean
+                disableCircuitBreaker:
+                    description: The disableCircuitBreaker field.
                     readOnly: false
                     type: boolean
                 enabled:
@@ -9813,6 +9909,16 @@ components:
             title: Request Catalog View
             type: object
             x-speakeasy-name-override: RequestCatalogView
+        c1.api.requestcatalog.v1.ResumePausedBundleAutomationRequestInput:
+            description: The ResumePausedBundleAutomationRequest message.
+            title: Resume Paused Bundle Automation Request
+            type: object
+            x-speakeasy-name-override: ResumePausedBundleAutomationRequest
+        c1.api.requestcatalog.v1.ResumePausedBundleAutomationResponse:
+            description: The ResumePausedBundleAutomationResponse message.
+            title: Resume Paused Bundle Automation Response
+            type: object
+            x-speakeasy-name-override: ResumePausedBundleAutomationResponse
         c1.api.requestcatalog.v1.SetBundleAutomationRequestInput:
             description: |
                 The SetBundleAutomationRequest message.
@@ -9822,6 +9928,10 @@ components:
             properties:
                 createTasks:
                     description: The createTasks field.
+                    readOnly: false
+                    type: boolean
+                disableCircuitBreaker:
+                    description: The disableCircuitBreaker field.
                     readOnly: false
                     type: boolean
                 enabled:
@@ -16789,6 +16899,78 @@ paths:
                 - Connector
             x-speakeasy-group: Connector
             x-speakeasy-name-override: ForceSync
+    /api/v1/apps/{app_id}/connectors/{connector_id}/pause:
+        post:
+            description: Invokes the c1.api.app.v1.ConnectorService.PauseSync method.
+            operationId: c1.api.app.v1.ConnectorService.PauseSync
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The AppID of the app the connector is attached to.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: connector_id
+                  required: true
+                  schema:
+                    description: The ConnectorID of the connector that we are pausing the sync for.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.PauseSyncRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.PauseSyncResponse'
+                    description: Successful response
+            summary: Pause Sync
+            tags:
+                - Connector
+            x-speakeasy-group: Connector
+            x-speakeasy-name-override: PauseSync
+    /api/v1/apps/{app_id}/connectors/{connector_id}/resume:
+        post:
+            description: Invokes the c1.api.app.v1.ConnectorService.ResumeSync method.
+            operationId: c1.api.app.v1.ConnectorService.ResumeSync
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The AppID of the app the connector is attached to.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: connector_id
+                  required: true
+                  schema:
+                    description: The ConnectorID of the connector that we are resuming the sync for.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.ResumeSyncRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.ResumeSyncResponse'
+                    description: Successful response
+            summary: Resume Sync
+            tags:
+                - Connector
+            x-speakeasy-group: Connector
+            x-speakeasy-name-override: ResumeSync
     /api/v1/apps/{app_id}/connectors/{id}:
         delete:
             description: Delete a connector.
@@ -17767,6 +17949,7 @@ paths:
                     description: The unique ID for the App Entitlement.
                     readOnly: true
                     type: string
+                    x-terraform-update-in-place: "true"
             requestBody:
                 content:
                     application/json:
@@ -19109,6 +19292,38 @@ paths:
             x-speakeasy-group: Attributes
             x-speakeasy-name-override: GetAttributeValue
     /api/v1/attributes/compliance_frameworks:
+        get:
+            description: Invokes the c1.api.attribute.v1.Attributes.ListComplianceFrameworks method.
+            operationId: c1.api.attribute.v1.Attributes.ListComplianceFrameworks
+            parameters:
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.attribute.v1.ListComplianceFrameworksResponse'
+                    description: Successful response
+            summary: List Compliance Frameworks
+            tags:
+                - Compliance Framework
+            x-speakeasy-entity-operation:
+                terraform-datasource: Compliance Frameworks#read
+                terraform-resource: null
+            x-speakeasy-group: Attributes
+            x-speakeasy-name-override: ListComplianceFrameworks
         post:
             description: Create a compliance framework value.
             operationId: c1.api.attribute.v1.Attributes.CreateComplianceFrameworkAttributeValue
@@ -19189,6 +19404,38 @@ paths:
             x-speakeasy-group: Attributes
             x-speakeasy-name-override: GetComplianceFrameworkAttributeValue
     /api/v1/attributes/risk_levels:
+        get:
+            description: Invokes the c1.api.attribute.v1.Attributes.ListRiskLevels method.
+            operationId: c1.api.attribute.v1.Attributes.ListRiskLevels
+            parameters:
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.attribute.v1.ListRiskLevelsResponse'
+                    description: Successful response
+            summary: List Risk Levels
+            tags:
+                - Risk Level
+            x-speakeasy-entity-operation:
+                terraform-datasource: Risk Levels#read
+                terraform-resource: null
+            x-speakeasy-group: Attributes
+            x-speakeasy-name-override: ListRiskLevels
         post:
             description: Create a risk level attribute.
             operationId: c1.api.attribute.v1.Attributes.CreateRiskLevelAttributeValue
@@ -19658,6 +19905,9 @@ paths:
             summary: List
             tags:
                 - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-datasource: Request Catalogs#read
+                terraform-resource: null
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: List
         post:
@@ -20141,6 +20391,35 @@ paths:
                 terraform-resource: BundleAutomation#create
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: CreateBundleAutomation
+    /api/v1/catalogs/{request_catalog_id}/bundle_automation/resume:
+        post:
+            description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ResumePausedBundleAutomation method.
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.ResumePausedBundleAutomation
+            parameters:
+                - in: path
+                  name: request_catalog_id
+                  required: true
+                  schema:
+                    description: The requestCatalogId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.requestcatalog.v1.ResumePausedBundleAutomationRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.ResumePausedBundleAutomationResponse'
+                    description: Successful response
+            summary: Resume Paused Bundle Automation
+            tags:
+                - Request Catalog
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: ResumePausedBundleAutomation
     /api/v1/catalogs/{request_catalog_id}/bundle_automation/run:
         post:
             description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ForceRunBundleAutomation method.
@@ -20986,10 +21265,20 @@ paths:
             tags:
                 - App Resource
             x-speakeasy-entity-operation:
-                terraform-datasource: App Resource Type#read
+                terraform-datasource:
+                    - App Resource Type#read
+                    - App Resource Types#read
                 terraform-resource: null
             x-speakeasy-group: AppResourceSearch
             x-speakeasy-name-override: SearchAppResourceTypes
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/app_resources:
         post:
             description: Invokes the c1.api.app.v1.AppResourceSearch.SearchAppResources method.
@@ -21063,10 +21352,20 @@ paths:
             tags:
                 - App
             x-speakeasy-entity-operation:
-                terraform-datasource: App#read
+                terraform-datasource:
+                    - App#read
+                    - Apps#read
                 terraform-resource: null
             x-speakeasy-group: AppSearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/apps/{app_id}/entitlements/users/{app_user_id}:
         get:
             description: Invokes the c1.api.app.v1.AppEntitlementSearchService.SearchAppEntitlementsForAppUser method.
@@ -21273,10 +21572,20 @@ paths:
             tags:
                 - Policy
             x-speakeasy-entity-operation:
-                terraform-datasource: Policy#read
+                terraform-datasource:
+                    - Policy#read
+                    - Policies#read
                 terraform-resource: null
             x-speakeasy-group: PolicySearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/request_catalog/entitlements:
         post:
             description: Search request catalogs based on filters specified in the request body.
@@ -21402,10 +21711,20 @@ paths:
             tags:
                 - User
             x-speakeasy-entity-operation:
-                terraform-datasource: User#read
+                terraform-datasource:
+                    - User#read
+                    - Users#read
                 terraform-resource: null
             x-speakeasy-group: UserSearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/webhooks:
         post:
             description: Invokes the c1.api.webhooks.v1.WebhooksSearch.Search method.
@@ -21426,10 +21745,20 @@ paths:
             tags:
                 - Webhook
             x-speakeasy-entity-operation:
-                terraform-datasource: Webhook#read
+                terraform-datasource:
+                    - Webhook#read
+                    - Webhooks#read
                 terraform-resource: null
             x-speakeasy-group: WebhooksSearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/settings/aws-external-id:
         get:
             description: Invokes the c1.api.settings.v1.AWSExternalIDSettings.Get method.

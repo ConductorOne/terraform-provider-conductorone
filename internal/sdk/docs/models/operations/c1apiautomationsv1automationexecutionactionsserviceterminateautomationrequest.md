@@ -1,0 +1,9 @@
+# C1APIAutomationsV1AutomationExecutionActionsServiceTerminateAutomationRequest
+
+
+## Fields
+
+| Field                                                                                           | Type                                                                                            | Required                                                                                        | Description                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `ID`                                                                                            | *int64*                                                                                         | :heavy_check_mark:                                                                              | N/A                                                                                             |
+| `TerminateAutomationRequest`                                                                    | [*components.TerminateAutomationRequest](../../models/components/terminateautomationrequest.md) | :heavy_minus_sign:                                                                              | N/A                                                                                             |

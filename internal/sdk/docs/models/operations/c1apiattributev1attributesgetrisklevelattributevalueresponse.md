@@ -1,0 +1,9 @@
+# C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse
+
+
+## Fields
+
+| Field                                                                                                           | Type                                                                                                            | Required                                                                                                        | Description                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                      | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                              | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
+| `GetRiskLevelAttributeValueResponse`                                                                            | [*components.GetRiskLevelAttributeValueResponse](../../models/components/getrisklevelattributevalueresponse.md) | :heavy_minus_sign:                                                                                              | Successful response                                                                                             |

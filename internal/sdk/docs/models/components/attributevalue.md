@@ -1,0 +1,15 @@
+# AttributeValue
+
+AttributeValue is the value of an attribute of a defined type.
+
+
+## Fields
+
+| Field                                                                                   | Type                                                                                    | Required                                                                                | Description                                                                             |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `AttributeTypeID`                                                                       | **string*                                                                               | :heavy_minus_sign:                                                                      | The ID of the AttributeType that this AttributeValue belongs to.                        |
+| `CreatedAt`                                                                             | [*time.Time](https://pkg.go.dev/time#Time)                                              | :heavy_minus_sign:                                                                      | N/A                                                                                     |
+| `DeletedAt`                                                                             | [*time.Time](https://pkg.go.dev/time#Time)                                              | :heavy_minus_sign:                                                                      | N/A                                                                                     |
+| `ID`                                                                                    | **string*                                                                               | :heavy_minus_sign:                                                                      | The ID of the AttributeValue.                                                           |
+| `UpdatedAt`                                                                             | [*time.Time](https://pkg.go.dev/time#Time)                                              | :heavy_minus_sign:                                                                      | N/A                                                                                     |
+| `Value`                                                                                 | **string*                                                                               | :heavy_minus_sign:                                                                      | The value of the AttributeValue. This is the string that will be displayed to the user. |

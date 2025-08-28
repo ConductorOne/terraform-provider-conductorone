@@ -1,0 +1,11 @@
+# UpdateManuallyManagedResourceTypeRequest
+
+The UpdateManuallyManagedResourceTypeRequest message.
+
+
+## Fields
+
+| Field                                                                                                                    | Type                                                                                                                     | Required                                                                                                                 | Description                                                                                                              |
+| ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `AppResourceType`                                                                                                        | [*components.AppResourceTypeInput](../../models/components/appresourcetypeinput.md)                                      | :heavy_minus_sign:                                                                                                       | The AppResourceType is referenced by an app entitlement defining its resource types. Commonly things like Group or Role. |
+| `UpdateMask`                                                                                                             | **string*                                                                                                                | :heavy_minus_sign:                                                                                                       | N/A                                                                                                                      |

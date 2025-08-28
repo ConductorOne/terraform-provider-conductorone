@@ -1,0 +1,9 @@
+# C1APIAppV1ConnectorServiceCreateDelegatedResponse
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                              | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                      | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `ConnectorServiceCreateResponse`                                                                        | [*components.ConnectorServiceCreateResponse](../../models/components/connectorservicecreateresponse.md) | :heavy_minus_sign:                                                                                      | The ConnectorServiceCreateResponse is the response returned from creating a connector.                  |

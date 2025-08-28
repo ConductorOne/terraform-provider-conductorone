@@ -1,0 +1,9 @@
+# C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsResponse
+
+
+## Fields
+
+| Field                                                                                       | Type                                                                                        | Required                                                                                    | Description                                                                                 |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                  | [components.HTTPMetadata](../../models/components/httpmetadata.md)                          | :heavy_check_mark:                                                                          | N/A                                                                                         |
+| `AppAccessRequestDefaults`                                                                  | [*components.AppAccessRequestDefaults](../../models/components/appaccessrequestdefaults.md) | :heavy_minus_sign:                                                                          | Successful response                                                                         |

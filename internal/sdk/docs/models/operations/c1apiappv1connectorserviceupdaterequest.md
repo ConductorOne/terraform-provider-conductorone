@@ -1,0 +1,10 @@
+# C1APIAppV1ConnectorServiceUpdateRequest
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `AppID`                                                                                               | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `ID`                                                                                                  | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `ConnectorServiceUpdateRequest`                                                                       | [*components.ConnectorServiceUpdateRequest](../../models/components/connectorserviceupdaterequest.md) | :heavy_minus_sign:                                                                                    | N/A                                                                                                   |

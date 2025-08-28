@@ -1,0 +1,9 @@
+# C1APITaskV1TaskServiceCreateOffboardingTaskResponse
+
+
+## Fields
+
+| Field                                                                                                               | Type                                                                                                                | Required                                                                                                            | Description                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                                  | :heavy_check_mark:                                                                                                  | N/A                                                                                                                 |
+| `TaskServiceCreateOffboardingResponse`                                                                              | [*components.TaskServiceCreateOffboardingResponse](../../models/components/taskservicecreateoffboardingresponse.md) | :heavy_minus_sign:                                                                                                  | Successful response                                                                                                 |

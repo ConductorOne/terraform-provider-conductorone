@@ -1,0 +1,9 @@
+# C1APIAttributeV1AttributesListAttributeValuesResponse
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                  | :heavy_check_mark:                                                                                  | N/A                                                                                                 |
+| `ListAttributeValuesResponse`                                                                       | [*components.ListAttributeValuesResponse](../../models/components/listattributevaluesresponse.md)   | :heavy_minus_sign:                                                                                  | ListAttributeValuesResponse is the response for listing attribute values for a given AttributeType. |

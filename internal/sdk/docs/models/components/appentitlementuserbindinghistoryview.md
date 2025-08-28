@@ -1,0 +1,13 @@
+# AppEntitlementUserBindingHistoryView
+
+The AppEntitlementUserBindingHistoryView message.
+
+
+## Fields
+
+| Field                                                                                                       | Type                                                                                                        | Required                                                                                                    | Description                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `AppPath`                                                                                                   | **string*                                                                                                   | :heavy_minus_sign:                                                                                          | The appPath field.                                                                                          |
+| `AppUserPath`                                                                                               | **string*                                                                                                   | :heavy_minus_sign:                                                                                          | The appUserPath field.                                                                                      |
+| `EntitlementPath`                                                                                           | **string*                                                                                                   | :heavy_minus_sign:                                                                                          | The entitlementPath field.                                                                                  |
+| `AppEntitlementUserBindingHistory`                                                                          | [*components.AppEntitlementUserBindingHistory](../../models/components/appentitlementuserbindinghistory.md) | :heavy_minus_sign:                                                                                          | The AppEntitlementUserBindingHistory message.                                                               |

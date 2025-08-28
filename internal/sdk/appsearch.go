@@ -12,8 +12,10 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/errors"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/spyzhov/ajson"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 type AppSearch struct {
@@ -131,6 +133,54 @@ func (s *AppSearch) Search(ctx context.Context, request *shared.SearchAppsReques
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
+	}
+	res.Next = func() (*operations.C1APIAppV1AppSearchSearchResponse, error) {
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+
+		b, err := ajson.Unmarshal(rawBody)
+		if err != nil {
+			return nil, err
+		}
+		nC, err := ajson.Eval(b, "$.nextPageToken")
+		if err != nil {
+			return nil, err
+		}
+		var nCVal string
+
+		if nC.IsNumeric() {
+			numVal, err := nC.GetNumeric()
+			if err != nil {
+				return nil, err
+			}
+			// GetNumeric returns as float64 so convert to the appropriate type.
+			nCVal = strconv.FormatFloat(numVal, 'f', 0, 64)
+		} else {
+			val, err := nC.Value()
+			if err != nil {
+				return nil, err
+			}
+			if val == nil {
+				return nil, nil
+			}
+			nCVal = val.(string)
+		}
+
+		return s.Search(
+			ctx,
+			&shared.SearchAppsRequest{
+				AppIds:          request.AppIds,
+				DisplayName:     request.DisplayName,
+				ExcludeAppIds:   request.ExcludeAppIds,
+				OnlyDirectories: request.OnlyDirectories,
+				PageSize:        request.PageSize,
+				PageToken:       &nCVal,
+				PolicyRefs:      request.PolicyRefs,
+				Query:           request.Query,
+			},
+		)
 	}
 
 	switch {

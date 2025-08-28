@@ -1,0 +1,11 @@
+# ListAutomationExclusionsResponse
+
+The ListAutomationExclusionsResponse message.
+
+
+## Fields
+
+| Field                                                                                                                  | Type                                                                                                                   | Required                                                                                                               | Description                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `List`                                                                                                                 | [][components.UserWithAppEntitlementUserBindingView](../../models/components/userwithappentitlementuserbindingview.md) | :heavy_minus_sign:                                                                                                     | The list field.                                                                                                        |
+| `NextPageToken`                                                                                                        | **string*                                                                                                              | :heavy_minus_sign:                                                                                                     | The nextPageToken field.                                                                                               |

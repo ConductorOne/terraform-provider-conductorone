@@ -6,7 +6,6 @@ package check
 import (
 	"bytes"
 	"fmt"
-	"slices"
 
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/parser"
@@ -28,14 +27,13 @@ type FrontMatterData struct {
 
 // FrontMatterOptions represents configuration options for FrontMatter.
 type FrontMatterOptions struct {
-	AllowedSubcategories []string
-	NoLayout             bool
-	NoPageTitle          bool
-	NoSidebarCurrent     bool
-	NoSubcategory        bool
-	RequireDescription   bool
-	RequireLayout        bool
-	RequirePageTitle     bool
+	NoLayout           bool
+	NoPageTitle        bool
+	NoSidebarCurrent   bool
+	NoSubcategory      bool
+	RequireDescription bool
+	RequireLayout      bool
+	RequirePageTitle   bool
 }
 
 func NewFrontMatterCheck(opts *FrontMatterOptions) *FrontMatterCheck {
@@ -100,12 +98,6 @@ func (check *FrontMatterCheck) Run(src []byte) error {
 
 	if check.Options.RequirePageTitle && frontMatter.PageTitle == nil {
 		return fmt.Errorf("YAML frontmatter missing required page_title")
-	}
-
-	if allowedSubcategories := check.Options.AllowedSubcategories; len(allowedSubcategories) != 0 && frontMatter.Subcategory != nil {
-		if !slices.Contains(allowedSubcategories, *frontMatter.Subcategory) {
-			return fmt.Errorf("YAML frontmatter contains a subcategory (%s) that is not in the allowed list", *frontMatter.Subcategory)
-		}
 	}
 
 	return nil

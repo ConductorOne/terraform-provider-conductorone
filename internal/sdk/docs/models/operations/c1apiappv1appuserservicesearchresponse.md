@@ -1,0 +1,9 @@
+# C1APIAppV1AppUserServiceSearchResponse
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                  | :heavy_check_mark:                                                                                  | N/A                                                                                                 |
+| `AppUserServiceSearchResponse`                                                                      | [*components.AppUserServiceSearchResponse](../../models/components/appuserservicesearchresponse.md) | :heavy_minus_sign:                                                                                  | Successful response                                                                                 |

@@ -1,0 +1,21 @@
+# SearchAppResourcesRequest
+
+The SearchAppResourcesRequest message.
+
+
+## Fields
+
+| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `AppID`                                                                  | **string*                                                                | :heavy_minus_sign:                                                       | The appId field.                                                         |
+| `AppUserIds`                                                             | []*string*                                                               | :heavy_minus_sign:                                                       | The appUserIds field.                                                    |
+| `ExcludeDeletedResourceBindings`                                         | **bool*                                                                  | :heavy_minus_sign:                                                       | The excludeDeletedResourceBindings field.                                |
+| `ExcludeResourceIds`                                                     | []*string*                                                               | :heavy_minus_sign:                                                       | The excludeResourceIds field.                                            |
+| `ExcludeResourceTypeTraitIds`                                            | []*string*                                                               | :heavy_minus_sign:                                                       | The excludeResourceTypeTraitIds field.                                   |
+| `PageSize`                                                               | **int*                                                                   | :heavy_minus_sign:                                                       | The pageSize field.                                                      |
+| `PageToken`                                                              | **string*                                                                | :heavy_minus_sign:                                                       | The pageToken field.                                                     |
+| `Query`                                                                  | **string*                                                                | :heavy_minus_sign:                                                       | The query field.                                                         |
+| `Refs`                                                                   | [][components.AppResourceRef](../../models/components/appresourceref.md) | :heavy_minus_sign:                                                       | The refs field.                                                          |
+| `ResourceIds`                                                            | []*string*                                                               | :heavy_minus_sign:                                                       | The resourceIds field.                                                   |
+| `ResourceTypeIds`                                                        | []*string*                                                               | :heavy_minus_sign:                                                       | The resourceTypeIds field.                                               |
+| `ResourceTypeTraitIds`                                                   | []*string*                                                               | :heavy_minus_sign:                                                       | The resourceTypeTraitIds field.                                          |

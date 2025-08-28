@@ -1,0 +1,9 @@
+# C1APITaskV1TaskActionsServiceDenyRequest
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `TaskID`                                                                                              | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `TaskActionsServiceDenyRequest`                                                                       | [*components.TaskActionsServiceDenyRequest](../../models/components/taskactionsservicedenyrequest.md) | :heavy_minus_sign:                                                                                    | N/A                                                                                                   |

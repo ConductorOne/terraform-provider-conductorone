@@ -1,1 +1,1 @@
-terraform import conductorone_app.my_conductorone_app "..."
+terraform import conductorone_app.my_conductorone_app ""

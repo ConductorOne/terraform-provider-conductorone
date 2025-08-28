@@ -16,6 +16,8 @@ type C1APIWebhooksV1WebhooksSearchSearchResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	WebhooksSearchResponse *shared.WebhooksSearchResponse
+
+	Next func() (*C1APIWebhooksV1WebhooksSearchSearchResponse, error)
 }
 
 func (o *C1APIWebhooksV1WebhooksSearchSearchResponse) GetContentType() string {

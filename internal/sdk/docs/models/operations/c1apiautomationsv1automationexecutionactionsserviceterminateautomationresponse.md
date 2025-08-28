@@ -1,0 +1,9 @@
+# C1APIAutomationsV1AutomationExecutionActionsServiceTerminateAutomationResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `TerminateAutomationResponse`                                                                     | [*components.TerminateAutomationResponse](../../models/components/terminateautomationresponse.md) | :heavy_minus_sign:                                                                                | Successful response                                                                               |

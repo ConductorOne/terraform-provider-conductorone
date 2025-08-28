@@ -1,0 +1,9 @@
+# C1APIWebhooksV1WebhooksServiceTestResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `WebhooksServiceTestResponse`                                                                     | [*components.WebhooksServiceTestResponse](../../models/components/webhooksservicetestresponse.md) | :heavy_minus_sign:                                                                                | Successful response                                                                               |

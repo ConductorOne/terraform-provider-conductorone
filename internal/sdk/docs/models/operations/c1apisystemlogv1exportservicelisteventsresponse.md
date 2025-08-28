@@ -1,0 +1,9 @@
+# C1APISystemlogV1ExportServiceListEventsResponse
+
+
+## Fields
+
+| Field                                                                                                     | Type                                                                                                      | Required                                                                                                  | Description                                                                                               |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                        | :heavy_check_mark:                                                                                        | N/A                                                                                                       |
+| `ExportServiceListEventsResponse`                                                                         | [*components.ExportServiceListEventsResponse](../../models/components/exportservicelisteventsresponse.md) | :heavy_minus_sign:                                                                                        | Successful response                                                                                       |

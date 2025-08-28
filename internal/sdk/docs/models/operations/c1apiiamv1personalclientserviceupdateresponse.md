@@ -1,0 +1,9 @@
+# C1APIIamV1PersonalClientServiceUpdateResponse
+
+
+## Fields
+
+| Field                                                                                                             | Type                                                                                                              | Required                                                                                                          | Description                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                                | :heavy_check_mark:                                                                                                | N/A                                                                                                               |
+| `PersonalClientServiceUpdateResponse`                                                                             | [*components.PersonalClientServiceUpdateResponse](../../models/components/personalclientserviceupdateresponse.md) | :heavy_minus_sign:                                                                                                | Successful response                                                                                               |

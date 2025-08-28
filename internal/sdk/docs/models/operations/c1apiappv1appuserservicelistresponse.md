@@ -1,0 +1,9 @@
+# C1APIAppV1AppUserServiceListResponse
+
+
+## Fields
+
+| Field                                                                                           | Type                                                                                            | Required                                                                                        | Description                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                      | [components.HTTPMetadata](../../models/components/httpmetadata.md)                              | :heavy_check_mark:                                                                              | N/A                                                                                             |
+| `AppUserServiceListResponse`                                                                    | [*components.AppUserServiceListResponse](../../models/components/appuserservicelistresponse.md) | :heavy_minus_sign:                                                                              | Successful response                                                                             |

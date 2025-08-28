@@ -1,0 +1,10 @@
+# C1APIAppV1AppEntitlementOwnersAddRequest
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `AppID`                                                                                               | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `EntitlementID`                                                                                       | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `AddAppEntitlementOwnerRequest`                                                                       | [*components.AddAppEntitlementOwnerRequest](../../models/components/addappentitlementownerrequest.md) | :heavy_minus_sign:                                                                                    | N/A                                                                                                   |

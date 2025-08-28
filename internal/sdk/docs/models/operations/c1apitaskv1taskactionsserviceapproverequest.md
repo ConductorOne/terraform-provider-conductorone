@@ -1,0 +1,9 @@
+# C1APITaskV1TaskActionsServiceApproveRequest
+
+
+## Fields
+
+| Field                                                                                                       | Type                                                                                                        | Required                                                                                                    | Description                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `TaskID`                                                                                                    | *string*                                                                                                    | :heavy_check_mark:                                                                                          | N/A                                                                                                         |
+| `TaskActionsServiceApproveRequest`                                                                          | [*components.TaskActionsServiceApproveRequest](../../models/components/taskactionsserviceapproverequest.md) | :heavy_minus_sign:                                                                                          | N/A                                                                                                         |

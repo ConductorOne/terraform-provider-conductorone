@@ -369,7 +369,7 @@ func (r *AppEntitlementProxyBindingResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"dst_app_entitlement_id": "...", "dst_app_id": "...", "src_app_entitlement_id": "...", "src_app_id": "..."}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"dst_app_entitlement_id": "", "dst_app_id": "", "src_app_entitlement_id": "", "src_app_id": ""}': `+err.Error())
 		return
 	}
 

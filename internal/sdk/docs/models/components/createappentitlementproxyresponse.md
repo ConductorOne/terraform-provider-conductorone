@@ -1,0 +1,11 @@
+# CreateAppEntitlementProxyResponse
+
+The CreateAppEntitlementProxyResponse message.
+
+
+## Fields
+
+| Field                                                                                                                          | Type                                                                                                                           | Required                                                                                                                       | Description                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `AppEntitlementProxyView`                                                                                                      | [*components.AppEntitlementProxyView](../../models/components/appentitlementproxyview.md)                                      | :heavy_minus_sign:                                                                                                             | The AppEntitlementProxyView message.                                                                                           |
+| `Expanded`                                                                                                                     | [][components.CreateAppEntitlementProxyResponseExpanded](../../models/components/createappentitlementproxyresponseexpanded.md) | :heavy_minus_sign:                                                                                                             | The expanded field.                                                                                                            |

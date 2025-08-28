@@ -9,7 +9,6 @@ import (
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -239,10 +238,10 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 							}
 						}
 						if stepsItem.Form == nil {
-							steps.Form = jsontypes.NewNormalizedNull()
+							steps.Form = types.StringNull()
 						} else {
 							formResult, _ := json.Marshal(stepsItem.Form)
-							steps.Form = jsontypes.NewNormalizedValue(string(formResult))
+							steps.Form = types.StringValue(string(formResult))
 						}
 						if stepsItem.Provision == nil {
 							steps.Provision = nil
@@ -327,10 +326,10 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									}
 								}
 								if stepsItem.Provision.ProvisionPolicy.MultiStep == nil {
-									steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
+									steps.Provision.ProvisionPolicy.MultiStep = types.StringNull()
 								} else {
 									multiStepResult, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.MultiStep)
-									steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
+									steps.Provision.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult))
 								}
 								if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
 									steps.Provision.ProvisionPolicy.UnconfiguredProvision = nil

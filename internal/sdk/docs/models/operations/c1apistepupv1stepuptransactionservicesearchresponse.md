@@ -1,0 +1,9 @@
+# C1APIStepupV1StepUpTransactionServiceSearchResponse
+
+
+## Fields
+
+| Field                                                                                                       | Type                                                                                                        | Required                                                                                                    | Description                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                  | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                          | :heavy_check_mark:                                                                                          | N/A                                                                                                         |
+| `SearchStepUpTransactionsResponse`                                                                          | [*components.SearchStepUpTransactionsResponse](../../models/components/searchstepuptransactionsresponse.md) | :heavy_minus_sign:                                                                                          | Response message for searching step-up transactions                                                         |

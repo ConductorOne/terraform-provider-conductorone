@@ -1,0 +1,16 @@
+# AutomationTemplateVersion
+
+The AutomationTemplateVersion message.
+
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `AutomationSteps`                                                              | [][components.AutomationStep](../../models/components/automationstep.md)       | :heavy_minus_sign:                                                             | The automationSteps field.                                                     |
+| `AutomationTemplateID`                                                         | **string*                                                                      | :heavy_minus_sign:                                                             | The automationTemplateId field.                                                |
+| `CreatedAt`                                                                    | [*time.Time](https://pkg.go.dev/time#Time)                                     | :heavy_minus_sign:                                                             | N/A                                                                            |
+| `DeletedAt`                                                                    | [*time.Time](https://pkg.go.dev/time#Time)                                     | :heavy_minus_sign:                                                             | N/A                                                                            |
+| `Triggers`                                                                     | [][components.AutomationTrigger](../../models/components/automationtrigger.md) | :heavy_minus_sign:                                                             | The triggers field.                                                            |
+| `UpdatedAt`                                                                    | [*time.Time](https://pkg.go.dev/time#Time)                                     | :heavy_minus_sign:                                                             | N/A                                                                            |
+| `Version`                                                                      | **int64*                                                                       | :heavy_minus_sign:                                                             | The version field.                                                             |

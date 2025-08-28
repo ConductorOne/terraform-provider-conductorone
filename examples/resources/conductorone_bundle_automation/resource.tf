@@ -11,6 +11,7 @@ resource "conductorone_bundle_automation" "my_bundleautomation" {
   delete_bundle_automation_request = {
     # ...
   }
-  enabled            = true
-  request_catalog_id = "...my_request_catalog_id..."
+  disable_circuit_breaker = false
+  enabled                 = true
+  request_catalog_id      = "...my_request_catalog_id..."
 }

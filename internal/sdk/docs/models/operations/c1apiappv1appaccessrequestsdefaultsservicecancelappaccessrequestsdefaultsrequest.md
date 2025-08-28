@@ -1,0 +1,9 @@
+# C1APIAppV1AppAccessRequestsDefaultsServiceCancelAppAccessRequestsDefaultsRequest
+
+
+## Fields
+
+| Field                                                                                                           | Type                                                                                                            | Required                                                                                                        | Description                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `AppID`                                                                                                         | *string*                                                                                                        | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
+| `CancelAccessRequestDefaultsRequest`                                                                            | [*components.CancelAccessRequestDefaultsRequest](../../models/components/cancelaccessrequestdefaultsrequest.md) | :heavy_minus_sign:                                                                                              | N/A                                                                                                             |

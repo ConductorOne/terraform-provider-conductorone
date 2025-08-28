@@ -1,0 +1,9 @@
+# C1APIAttributeV1AttributesCreateAttributeValueResponse
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                  | :heavy_check_mark:                                                                                  | N/A                                                                                                 |
+| `CreateAttributeValueResponse`                                                                      | [*components.CreateAttributeValueResponse](../../models/components/createattributevalueresponse.md) | :heavy_minus_sign:                                                                                  | CreateAttributeValueResponse is the response for creating an attribute value.                       |

@@ -1,0 +1,9 @@
+# C1APIAttributeV1AttributesDeleteAttributeValueRequest
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `ID`                                                                                              | *string*                                                                                          | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `DeleteAttributeValueRequest`                                                                     | [*components.DeleteAttributeValueRequest](../../models/components/deleteattributevaluerequest.md) | :heavy_minus_sign:                                                                                | N/A                                                                                               |

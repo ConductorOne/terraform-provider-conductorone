@@ -8,7 +8,6 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -115,10 +114,10 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 				}
 			}
 			if resp.DeprovisionerPolicy.MultiStep == nil {
-				r.DeprovisionerPolicy.MultiStep = jsontypes.NewNormalizedNull()
+				r.DeprovisionerPolicy.MultiStep = types.StringNull()
 			} else {
 				multiStepResult, _ := json.Marshal(resp.DeprovisionerPolicy.MultiStep)
-				r.DeprovisionerPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
+				r.DeprovisionerPolicy.MultiStep = types.StringValue(string(multiStepResult))
 			}
 			if resp.DeprovisionerPolicy.UnconfiguredProvision == nil {
 				r.DeprovisionerPolicy.UnconfiguredProvision = nil
@@ -231,10 +230,10 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 				}
 			}
 			if resp.ProvisionPolicy.MultiStep == nil {
-				r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
+				r.ProvisionPolicy.MultiStep = types.StringNull()
 			} else {
 				multiStepResult1, _ := json.Marshal(resp.ProvisionPolicy.MultiStep)
-				r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
+				r.ProvisionPolicy.MultiStep = types.StringValue(string(multiStepResult1))
 			}
 			if resp.ProvisionPolicy.UnconfiguredProvision == nil {
 				r.ProvisionPolicy.UnconfiguredProvision = nil

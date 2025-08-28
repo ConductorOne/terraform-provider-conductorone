@@ -1,0 +1,9 @@
+# C1APIAppV1AppEntitlementsUpdateResponse
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                  | :heavy_check_mark:                                                                                  | N/A                                                                                                 |
+| `UpdateAppEntitlementResponse`                                                                      | [*components.UpdateAppEntitlementResponse](../../models/components/updateappentitlementresponse.md) | :heavy_minus_sign:                                                                                  | Successful response                                                                                 |

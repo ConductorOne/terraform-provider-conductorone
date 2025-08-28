@@ -16,6 +16,8 @@ type C1APIUserV1UserSearchSearchResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	SearchUsersResponse *shared.SearchUsersResponse
+
+	Next func() (*C1APIUserV1UserSearchSearchResponse, error)
 }
 
 func (o *C1APIUserV1UserSearchSearchResponse) GetContentType() string {

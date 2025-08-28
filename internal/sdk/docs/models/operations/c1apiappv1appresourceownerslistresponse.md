@@ -1,0 +1,9 @@
+# C1APIAppV1AppResourceOwnersListResponse
+
+
+## Fields
+
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `HTTPMeta`                                                                                             | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                     | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `ListAppResourceOwnersResponse`                                                                        | [*components.ListAppResourceOwnersResponse](../../models/components/listappresourceownersresponse.md)  | :heavy_minus_sign:                                                                                     | The ListAppResourceOwnersResponse message contains a list of results and a nextPageToken if applicable |

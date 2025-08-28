@@ -1,0 +1,9 @@
+# C1APIAccessconflictV1AccessConflictServiceDeleteMonitorResponse
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                            | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                    | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `ConflictMonitorDeleteResponse`                                                                       | [*components.ConflictMonitorDeleteResponse](../../models/components/conflictmonitordeleteresponse.md) | :heavy_minus_sign:                                                                                    | Successful response                                                                                   |
