@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -23,6 +24,7 @@ func NewAppResourcesDataSource() datasource.DataSource {
 
 // AppResourcesDataSource is the data source implementation.
 type AppResourcesDataSource struct {
+	// Provider configured SDK client.
 	client *sdk.ConductoroneAPI
 }
 
@@ -291,7 +293,6 @@ func (r *AppResourcesDataSource) Read(ctx context.Context, req datasource.ReadRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
 	response, err := res.Next()
 	for {
 		if err != nil {
@@ -306,7 +307,6 @@ func (r *AppResourcesDataSource) Read(ctx context.Context, req datasource.ReadRe
 		if resp.Diagnostics.HasError() {
 			return
 		}
-
 		response, err = response.Next()
 	}
 

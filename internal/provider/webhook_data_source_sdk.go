@@ -33,12 +33,6 @@ func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest(ctx context.Conte
 	} else {
 		pageSize = nil
 	}
-	pageToken := new(string)
-	if !r.PageToken.IsUnknown() && !r.PageToken.IsNull() {
-		*pageToken = r.PageToken.ValueString()
-	} else {
-		pageToken = nil
-	}
 	query := new(string)
 	if !r.Query.IsUnknown() && !r.Query.IsNull() {
 		*query = r.Query.ValueString()
@@ -61,10 +55,9 @@ func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest(ctx context.Conte
 		}
 	}
 	out := shared.WebhooksSearchRequest{
-		PageSize:  pageSize,
-		PageToken: pageToken,
-		Query:     query,
-		Refs:      refs,
+		PageSize: pageSize,
+		Query:    query,
+		Refs:     refs,
 	}
 
 	return &out, diags

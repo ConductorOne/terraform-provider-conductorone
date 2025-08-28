@@ -4613,6 +4613,40 @@ components:
             title: List Attribute Values Response
             type: object
             x-speakeasy-name-override: ListAttributeValuesResponse
+        c1.api.attribute.v1.ListComplianceFrameworksResponse:
+            description: The ListComplianceFrameworksResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.attribute.v1.AttributeValue'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: List Compliance Frameworks Response
+            type: object
+            x-speakeasy-name-override: ListComplianceFrameworksResponse
+        c1.api.attribute.v1.ListRiskLevelsResponse:
+            description: The ListRiskLevelsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.attribute.v1.AttributeValue'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: List Risk Levels Response
+            type: object
+            x-speakeasy-name-override: ListRiskLevelsResponse
         c1.api.attribute.v1.SearchAttributeValuesRequest:
             description: Search Attributes by a few properties.
             properties:
@@ -19109,6 +19143,38 @@ paths:
             x-speakeasy-group: Attributes
             x-speakeasy-name-override: GetAttributeValue
     /api/v1/attributes/compliance_frameworks:
+        get:
+            description: Invokes the c1.api.attribute.v1.Attributes.ListComplianceFrameworks method.
+            operationId: c1.api.attribute.v1.Attributes.ListComplianceFrameworks
+            parameters:
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.attribute.v1.ListComplianceFrameworksResponse'
+                    description: Successful response
+            summary: List Compliance Frameworks
+            tags:
+                - Compliance Framework
+            x-speakeasy-entity-operation:
+                terraform-datasource: Compliance Frameworks#read
+                terraform-resource: null
+            x-speakeasy-group: Attributes
+            x-speakeasy-name-override: ListComplianceFrameworks
         post:
             description: Create a compliance framework value.
             operationId: c1.api.attribute.v1.Attributes.CreateComplianceFrameworkAttributeValue
@@ -19189,6 +19255,38 @@ paths:
             x-speakeasy-group: Attributes
             x-speakeasy-name-override: GetComplianceFrameworkAttributeValue
     /api/v1/attributes/risk_levels:
+        get:
+            description: Invokes the c1.api.attribute.v1.Attributes.ListRiskLevels method.
+            operationId: c1.api.attribute.v1.Attributes.ListRiskLevels
+            parameters:
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.attribute.v1.ListRiskLevelsResponse'
+                    description: Successful response
+            summary: List Risk Levels
+            tags:
+                - Risk Level
+            x-speakeasy-entity-operation:
+                terraform-datasource: Risk Levels#read
+                terraform-resource: null
+            x-speakeasy-group: Attributes
+            x-speakeasy-name-override: ListRiskLevels
         post:
             description: Create a risk level attribute.
             operationId: c1.api.attribute.v1.Attributes.CreateRiskLevelAttributeValue
@@ -19658,6 +19756,9 @@ paths:
             summary: List
             tags:
                 - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-datasource: Request Catalogs#read
+                terraform-resource: null
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: List
         post:
@@ -20986,10 +21087,20 @@ paths:
             tags:
                 - App Resource
             x-speakeasy-entity-operation:
-                terraform-datasource: App Resource Type#read
+                terraform-datasource:
+                    - App Resource Type#read
+                    - App Resource Types#read
                 terraform-resource: null
             x-speakeasy-group: AppResourceSearch
             x-speakeasy-name-override: SearchAppResourceTypes
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/app_resources:
         post:
             description: Invokes the c1.api.app.v1.AppResourceSearch.SearchAppResources method.
@@ -21063,10 +21174,20 @@ paths:
             tags:
                 - App
             x-speakeasy-entity-operation:
-                terraform-datasource: App#read
+                terraform-datasource:
+                    - App#read
+                    - Apps#read
                 terraform-resource: null
             x-speakeasy-group: AppSearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/apps/{app_id}/entitlements/users/{app_user_id}:
         get:
             description: Invokes the c1.api.app.v1.AppEntitlementSearchService.SearchAppEntitlementsForAppUser method.
@@ -21273,10 +21394,20 @@ paths:
             tags:
                 - Policy
             x-speakeasy-entity-operation:
-                terraform-datasource: Policy#read
+                terraform-datasource:
+                    - Policy#read
+                    - Policies#read
                 terraform-resource: null
             x-speakeasy-group: PolicySearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/request_catalog/entitlements:
         post:
             description: Search request catalogs based on filters specified in the request body.
@@ -21402,10 +21533,20 @@ paths:
             tags:
                 - User
             x-speakeasy-entity-operation:
-                terraform-datasource: User#read
+                terraform-datasource:
+                    - User#read
+                    - Users#read
                 terraform-resource: null
             x-speakeasy-group: UserSearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/search/webhooks:
         post:
             description: Invokes the c1.api.webhooks.v1.WebhooksSearch.Search method.
@@ -21426,10 +21567,20 @@ paths:
             tags:
                 - Webhook
             x-speakeasy-entity-operation:
-                terraform-datasource: Webhook#read
+                terraform-datasource:
+                    - Webhook#read
+                    - Webhooks#read
                 terraform-resource: null
             x-speakeasy-group: WebhooksSearch
             x-speakeasy-name-override: Search
+            x-speakeasy-pagination:
+                inputs:
+                    - in: requestBody
+                      name: pageToken
+                      type: cursor
+                outputs:
+                    nextCursor: $.nextPageToken
+                type: cursor
     /api/v1/settings/aws-external-id:
         get:
             description: Invokes the c1.api.settings.v1.AWSExternalIDSettings.Get method.
