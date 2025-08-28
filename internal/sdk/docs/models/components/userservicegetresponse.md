@@ -1,0 +1,11 @@
+# UserServiceGetResponse
+
+The UserServiceGetResponse returns a user view which has a user including JSONPATHs to the expanded items in the expanded array.
+
+
+## Fields
+
+| Field                                                                                                               | Type                                                                                                                | Required                                                                                                            | Description                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `Expanded`                                                                                                          | [][components.UserServiceGetResponseExpanded](../../models/components/userservicegetresponseexpanded.md)            | :heavy_minus_sign:                                                                                                  | List of serialized related objects.                                                                                 |
+| `UserView`                                                                                                          | [*components.UserView](../../models/components/userview.md)                                                         | :heavy_minus_sign:                                                                                                  | The UserView object provides a user response object, as well as JSONPATHs to related objects provided by expanders. |

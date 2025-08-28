@@ -1,0 +1,9 @@
+# C1APIAppV1AppEntitlementOwnersRemoveResponse
+
+
+## Fields
+
+| Field                                                                                                         | Type                                                                                                          | Required                                                                                                      | Description                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                    | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                            | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
+| `RemoveAppEntitlementOwnerResponse`                                                                           | [*components.RemoveAppEntitlementOwnerResponse](../../models/components/removeappentitlementownerresponse.md) | :heavy_minus_sign:                                                                                            | The empty response message for removing an app entitlement owner.                                             |

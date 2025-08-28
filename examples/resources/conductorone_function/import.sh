@@ -1,1 +1,1 @@
-terraform import conductorone_function.my_conductorone_function "..."
+terraform import conductorone_function.my_conductorone_function ""

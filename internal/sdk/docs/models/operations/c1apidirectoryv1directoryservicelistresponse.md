@@ -1,0 +1,9 @@
+# C1APIDirectoryV1DirectoryServiceListResponse
+
+
+## Fields
+
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `HTTPMeta`                                                                                             | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                     | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `DirectoryServiceListResponse`                                                                         | [*components.DirectoryServiceListResponse](../../models/components/directoryservicelistresponse.md)    | :heavy_minus_sign:                                                                                     | The DirectoryServiceListResponse message contains a list of results and a nextPageToken if applicable. |

@@ -1,0 +1,9 @@
+# C1APIAppV1AppReportServiceListResponse
+
+
+## Fields
+
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `HTTPMeta`                                                                                             | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                     | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `AppReportServiceListResponse`                                                                         | [*components.AppReportServiceListResponse](../../models/components/appreportservicelistresponse.md)    | :heavy_minus_sign:                                                                                     | The AppReportServiceListResponse message contains a list of results and a nextPageToken if applicable. |

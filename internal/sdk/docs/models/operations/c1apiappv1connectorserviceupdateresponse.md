@@ -1,0 +1,9 @@
+# C1APIAppV1ConnectorServiceUpdateResponse
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                              | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                      | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `ConnectorServiceUpdateResponse`                                                                        | [*components.ConnectorServiceUpdateResponse](../../models/components/connectorserviceupdateresponse.md) | :heavy_minus_sign:                                                                                      | ConnectorServiceUpdateResponse is the response returned by the update method.                           |

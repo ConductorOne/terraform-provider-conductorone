@@ -1,0 +1,9 @@
+# C1APIIamV1PersonalClientServiceCreateResponse
+
+
+## Fields
+
+| Field                                                                                                             | Type                                                                                                              | Required                                                                                                          | Description                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                                | :heavy_check_mark:                                                                                                | N/A                                                                                                               |
+| `PersonalClientServiceCreateResponse`                                                                             | [*components.PersonalClientServiceCreateResponse](../../models/components/personalclientservicecreateresponse.md) | :heavy_minus_sign:                                                                                                | The PersonalClientServiceCreateResponse message contains the created personal client and client secret.           |

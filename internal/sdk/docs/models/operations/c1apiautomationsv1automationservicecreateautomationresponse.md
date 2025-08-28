@@ -1,0 +1,9 @@
+# C1APIAutomationsV1AutomationServiceCreateAutomationResponse
+
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                    | [components.HTTPMetadata](../../models/components/httpmetadata.md)                            | :heavy_check_mark:                                                                            | N/A                                                                                           |
+| `CreateAutomationResponse`                                                                    | [*components.CreateAutomationResponse1](../../models/components/createautomationresponse1.md) | :heavy_minus_sign:                                                                            | Successful response                                                                           |

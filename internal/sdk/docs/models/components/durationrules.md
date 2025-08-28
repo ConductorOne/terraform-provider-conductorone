@@ -1,0 +1,18 @@
+# DurationRules
+
+DurationRules describe the constraints applied exclusively to the
+ `google.protobuf.Duration` well-known type
+
+
+## Fields
+
+| Field                                                                           | Type                                                                            | Required                                                                        | Description                                                                     |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `Const`                                                                         | **string*                                                                       | :heavy_minus_sign:                                                              | N/A                                                                             |
+| `Gt`                                                                            | **string*                                                                       | :heavy_minus_sign:                                                              | N/A                                                                             |
+| `Gte`                                                                           | **string*                                                                       | :heavy_minus_sign:                                                              | N/A                                                                             |
+| `In`                                                                            | []*string*                                                                      | :heavy_minus_sign:                                                              | In specifies that this field must be equal to one of the specified<br/> values  |
+| `Lt`                                                                            | **string*                                                                       | :heavy_minus_sign:                                                              | N/A                                                                             |
+| `Lte`                                                                           | **string*                                                                       | :heavy_minus_sign:                                                              | N/A                                                                             |
+| `NotIn`                                                                         | []*string*                                                                      | :heavy_minus_sign:                                                              | NotIn specifies that this field cannot be equal to one of the specified<br/> values |
+| `Required`                                                                      | **bool*                                                                         | :heavy_minus_sign:                                                              | Required specifies that this field must be set                                  |

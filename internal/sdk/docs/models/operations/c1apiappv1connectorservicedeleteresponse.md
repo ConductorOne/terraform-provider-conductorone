@@ -1,0 +1,9 @@
+# C1APIAppV1ConnectorServiceDeleteResponse
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                              | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                      | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `ConnectorServiceDeleteResponse`                                                                        | [*components.ConnectorServiceDeleteResponse](../../models/components/connectorservicedeleteresponse.md) | :heavy_minus_sign:                                                                                      | Empty response body. Status code indicates success.                                                     |

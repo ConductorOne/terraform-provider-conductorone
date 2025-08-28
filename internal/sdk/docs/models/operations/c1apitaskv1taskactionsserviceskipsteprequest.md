@@ -1,0 +1,9 @@
+# C1APITaskV1TaskActionsServiceSkipStepRequest
+
+
+## Fields
+
+| Field                                                                                                         | Type                                                                                                          | Required                                                                                                      | Description                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `TaskID`                                                                                                      | *string*                                                                                                      | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
+| `TaskActionsServiceSkipStepRequest`                                                                           | [*components.TaskActionsServiceSkipStepRequest](../../models/components/taskactionsserviceskipsteprequest.md) | :heavy_minus_sign:                                                                                            | N/A                                                                                                           |

@@ -1,0 +1,9 @@
+# C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationRequest
+
+
+## Fields
+
+| Field                                                                                                     | Type                                                                                                      | Required                                                                                                  | Description                                                                                               |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `RequestCatalogID`                                                                                        | *string*                                                                                                  | :heavy_check_mark:                                                                                        | N/A                                                                                                       |
+| `ForceRunBundleAutomationRequest`                                                                         | [*components.ForceRunBundleAutomationRequest](../../models/components/forcerunbundleautomationrequest.md) | :heavy_minus_sign:                                                                                        | N/A                                                                                                       |

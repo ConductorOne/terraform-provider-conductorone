@@ -12,10 +12,14 @@ import (
 // This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
 //   - entitlements
 type BundleAutomation struct {
+	// The BundleAutomationCircuitBreaker message.
+	BundleAutomationCircuitBreaker *BundleAutomationCircuitBreaker `json:"circuitBreaker,omitempty"`
 	// The createTasks field.
 	CreateTasks *bool      `json:"createTasks,omitempty"`
 	CreatedAt   *time.Time `json:"createdAt,omitempty"`
 	DeletedAt   *time.Time `json:"deletedAt,omitempty"`
+	// The disableCircuitBreaker field.
+	DisableCircuitBreaker *bool `json:"disableCircuitBreaker,omitempty"`
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The BundleAutomationRuleEntitlement message.
@@ -40,6 +44,13 @@ func (b *BundleAutomation) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *BundleAutomation) GetBundleAutomationCircuitBreaker() *BundleAutomationCircuitBreaker {
+	if o == nil {
+		return nil
+	}
+	return o.BundleAutomationCircuitBreaker
+}
+
 func (o *BundleAutomation) GetCreateTasks() *bool {
 	if o == nil {
 		return nil
@@ -59,6 +70,13 @@ func (o *BundleAutomation) GetDeletedAt() *time.Time {
 		return nil
 	}
 	return o.DeletedAt
+}
+
+func (o *BundleAutomation) GetDisableCircuitBreaker() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.DisableCircuitBreaker
 }
 
 func (o *BundleAutomation) GetEnabled() *bool {

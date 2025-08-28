@@ -1,0 +1,9 @@
+# C1APIStepupV1StepUpProviderServiceDeleteRequest
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `ID`                                                                                              | *string*                                                                                          | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `DeleteStepUpProviderRequest`                                                                     | [*components.DeleteStepUpProviderRequest](../../models/components/deletestepupproviderrequest.md) | :heavy_minus_sign:                                                                                | N/A                                                                                               |

@@ -1,0 +1,9 @@
+# C1APISystemlogV1ExportServiceListEventsRequest
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `ExportID`                                                                                              | *string*                                                                                                | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `ExportServiceListEventsRequest`                                                                        | [*components.ExportServiceListEventsRequest](../../models/components/exportservicelisteventsrequest.md) | :heavy_minus_sign:                                                                                      | N/A                                                                                                     |

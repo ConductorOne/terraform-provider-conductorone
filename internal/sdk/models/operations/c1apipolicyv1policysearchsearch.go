@@ -16,6 +16,8 @@ type C1APIPolicyV1PolicySearchSearchResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	SearchPoliciesResponse *shared.SearchPoliciesResponse
+
+	Next func() (*C1APIPolicyV1PolicySearchSearchResponse, error)
 }
 
 func (o *C1APIPolicyV1PolicySearchSearchResponse) GetContentType() string {

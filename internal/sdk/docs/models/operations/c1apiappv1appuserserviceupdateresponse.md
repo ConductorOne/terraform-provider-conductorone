@@ -1,0 +1,9 @@
+# C1APIAppV1AppUserServiceUpdateResponse
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                  | :heavy_check_mark:                                                                                  | N/A                                                                                                 |
+| `AppUserServiceUpdateResponse`                                                                      | [*components.AppUserServiceUpdateResponse](../../models/components/appuserserviceupdateresponse.md) | :heavy_minus_sign:                                                                                  | Successful response                                                                                 |

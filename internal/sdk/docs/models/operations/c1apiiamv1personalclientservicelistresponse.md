@@ -1,0 +1,9 @@
+# C1APIIamV1PersonalClientServiceListResponse
+
+
+## Fields
+
+| Field                                                                                                         | Type                                                                                                          | Required                                                                                                      | Description                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                    | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                            | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
+| `PersonalClientServiceListResponse`                                                                           | [*components.PersonalClientServiceListResponse](../../models/components/personalclientservicelistresponse.md) | :heavy_minus_sign:                                                                                            | Successful response                                                                                           |

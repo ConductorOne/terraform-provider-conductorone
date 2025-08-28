@@ -1,0 +1,64 @@
+# AppReportAction
+(*AppReportAction*)
+
+## Overview
+
+### Available Operations
+
+* [GenerateReport](#generatereport) - Generate Report
+
+## GenerateReport
+
+Generate a report for the given app.
+
+### Example Usage
+
+<!-- UsageSnippet language="go" operationID="c1.api.app.v1.AppReportActionService.GenerateReport" method="post" path="/api/v1/apps/{app_id}/report" -->
+```go
+package main
+
+import(
+	"context"
+	"undefined"
+	"undefined/models/components"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := undefined.New(
+        undefined.WithSecurity(components.Security{
+            BearerAuth: "<YOUR_BEARER_TOKEN_HERE>",
+            Oauth: "<YOUR_OAUTH_HERE>",
+        }),
+    )
+
+    res, err := s.AppReportAction.GenerateReport(ctx, "<id>", nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res.AppActionsServiceGenerateReportResponse != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter                                                                                                               | Type                                                                                                                    | Required                                                                                                                | Description                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `ctx`                                                                                                                   | [context.Context](https://pkg.go.dev/context#Context)                                                                   | :heavy_check_mark:                                                                                                      | The context to use for the request.                                                                                     |
+| `appID`                                                                                                                 | *string*                                                                                                                | :heavy_check_mark:                                                                                                      | N/A                                                                                                                     |
+| `appActionsServiceGenerateReportRequest`                                                                                | [*components.AppActionsServiceGenerateReportRequest](../../models/components/appactionsservicegeneratereportrequest.md) | :heavy_minus_sign:                                                                                                      | N/A                                                                                                                     |
+| `opts`                                                                                                                  | [][operations.Option](../../models/operations/option.md)                                                                | :heavy_minus_sign:                                                                                                      | The options for this request.                                                                                           |
+
+### Response
+
+**[*operations.C1APIAppV1AppReportActionServiceGenerateReportResponse](../../models/operations/c1apiappv1appreportactionservicegeneratereportresponse.md), error**
+
+### Errors
+
+| Error Type         | Status Code        | Content Type       |
+| ------------------ | ------------------ | ------------------ |
+| apierrors.APIError | 4XX, 5XX           | \*/\*              |

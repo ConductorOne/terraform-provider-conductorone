@@ -1,0 +1,9 @@
+# C1APISystemlogV1ExportServiceDeleteResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `ExportServiceDeleteResponse`                                                                     | [*components.ExportServiceDeleteResponse](../../models/components/exportservicedeleteresponse.md) | :heavy_minus_sign:                                                                                | Successful response                                                                               |

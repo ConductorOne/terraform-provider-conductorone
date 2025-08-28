@@ -1,0 +1,9 @@
+# C1APIStepupV1StepUpProviderServiceUpdateSecretRequest
+
+
+## Fields
+
+| Field                                                                                                         | Type                                                                                                          | Required                                                                                                      | Description                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `ID`                                                                                                          | *string*                                                                                                      | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
+| `UpdateStepUpProviderSecretRequest`                                                                           | [*components.UpdateStepUpProviderSecretRequest](../../models/components/updatestepupprovidersecretrequest.md) | :heavy_minus_sign:                                                                                            | N/A                                                                                                           |

@@ -1,0 +1,9 @@
+# C1APIWebhooksV1WebhooksServiceListResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `WebhooksServiceListResponse`                                                                     | [*components.WebhooksServiceListResponse](../../models/components/webhooksservicelistresponse.md) | :heavy_minus_sign:                                                                                | Successful response                                                                               |

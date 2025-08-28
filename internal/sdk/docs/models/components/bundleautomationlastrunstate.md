@@ -1,0 +1,12 @@
+# BundleAutomationLastRunState
+
+The BundleAutomationLastRunState message.
+
+
+## Fields
+
+| Field                                                                                                           | Type                                                                                                            | Required                                                                                                        | Description                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `ErrorMessage`                                                                                                  | **string*                                                                                                       | :heavy_minus_sign:                                                                                              | The errorMessage field.                                                                                         |
+| `LastRunAt`                                                                                                     | [*time.Time](https://pkg.go.dev/time#Time)                                                                      | :heavy_minus_sign:                                                                                              | N/A                                                                                                             |
+| `Status`                                                                                                        | [*components.BundleAutomationLastRunStateStatus](../../models/components/bundleautomationlastrunstatestatus.md) | :heavy_minus_sign:                                                                                              | The status field.                                                                                               |

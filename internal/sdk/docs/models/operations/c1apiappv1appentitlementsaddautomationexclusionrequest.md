@@ -1,0 +1,10 @@
+# C1APIAppV1AppEntitlementsAddAutomationExclusionRequest
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `AppID`                                                                                               | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `AppEntitlementID`                                                                                    | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `AddAutomationExclusionRequest`                                                                       | [*components.AddAutomationExclusionRequest](../../models/components/addautomationexclusionrequest.md) | :heavy_minus_sign:                                                                                    | N/A                                                                                                   |

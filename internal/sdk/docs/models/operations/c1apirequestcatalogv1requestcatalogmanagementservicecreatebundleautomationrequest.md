@@ -1,0 +1,9 @@
+# C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `RequestCatalogID`                                                                                    | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `CreateBundleAutomationRequest`                                                                       | [*components.CreateBundleAutomationRequest](../../models/components/createbundleautomationrequest.md) | :heavy_minus_sign:                                                                                    | N/A                                                                                                   |

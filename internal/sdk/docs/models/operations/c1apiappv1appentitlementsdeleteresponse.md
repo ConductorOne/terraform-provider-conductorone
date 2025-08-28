@@ -1,0 +1,9 @@
+# C1APIAppV1AppEntitlementsDeleteResponse
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                  | :heavy_check_mark:                                                                                  | N/A                                                                                                 |
+| `DeleteAppEntitlementResponse`                                                                      | [*components.DeleteAppEntitlementResponse](../../models/components/deleteappentitlementresponse.md) | :heavy_minus_sign:                                                                                  | Successful response                                                                                 |

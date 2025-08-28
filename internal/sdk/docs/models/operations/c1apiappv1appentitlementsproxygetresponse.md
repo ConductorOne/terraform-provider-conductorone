@@ -1,0 +1,9 @@
+# C1APIAppV1AppEntitlementsProxyGetResponse
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                              | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                      | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `GetAppEntitlementProxyResponse`                                                                        | [*components.GetAppEntitlementProxyResponse](../../models/components/getappentitlementproxyresponse.md) | :heavy_minus_sign:                                                                                      | Successful response                                                                                     |

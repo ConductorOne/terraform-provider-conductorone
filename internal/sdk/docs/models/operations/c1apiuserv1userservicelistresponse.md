@@ -1,0 +1,9 @@
+# C1APIUserV1UserServiceListResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `UserServiceListResponse`                                                                         | [*components.UserServiceListResponse](../../models/components/userservicelistresponse.md)         | :heavy_minus_sign:                                                                                | The UserServiceListResponse message contains a list of results and a nextPageToken if applicable. |

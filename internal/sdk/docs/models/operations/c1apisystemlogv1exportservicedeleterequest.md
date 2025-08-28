@@ -1,0 +1,9 @@
+# C1APISystemlogV1ExportServiceDeleteRequest
+
+
+## Fields
+
+| Field                                                                                           | Type                                                                                            | Required                                                                                        | Description                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `ExportID`                                                                                      | *string*                                                                                        | :heavy_check_mark:                                                                              | N/A                                                                                             |
+| `ExportServiceDeleteRequest`                                                                    | [*components.ExportServiceDeleteRequest](../../models/components/exportservicedeleterequest.md) | :heavy_minus_sign:                                                                              | N/A                                                                                             |

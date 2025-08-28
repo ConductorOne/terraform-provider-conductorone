@@ -1,0 +1,9 @@
+# C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                  | :heavy_check_mark:                                                                                  | N/A                                                                                                 |
+| `ManuallyManagedUsersResponse`                                                                      | [*components.ManuallyManagedUsersResponse](../../models/components/manuallymanagedusersresponse.md) | :heavy_minus_sign:                                                                                  | Successful response                                                                                 |

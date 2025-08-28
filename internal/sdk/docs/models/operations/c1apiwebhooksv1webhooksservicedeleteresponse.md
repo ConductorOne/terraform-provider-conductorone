@@ -1,0 +1,9 @@
+# C1APIWebhooksV1WebhooksServiceDeleteResponse
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                            | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                    | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `WebhooksServiceDeleteResponse`                                                                       | [*components.WebhooksServiceDeleteResponse](../../models/components/webhooksservicedeleteresponse.md) | :heavy_minus_sign:                                                                                    | Empty response body. Status code indicates success.                                                   |

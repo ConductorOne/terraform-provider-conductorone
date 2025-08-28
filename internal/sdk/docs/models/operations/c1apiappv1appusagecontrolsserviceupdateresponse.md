@@ -1,0 +1,9 @@
+# C1APIAppV1AppUsageControlsServiceUpdateResponse
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                              | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                      | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `UpdateAppUsageControlsResponse`                                                                        | [*components.UpdateAppUsageControlsResponse](../../models/components/updateappusagecontrolsresponse.md) | :heavy_minus_sign:                                                                                      | The UpdateAppUsageControlsResponse message contains the updated AppUsageControls object.                |

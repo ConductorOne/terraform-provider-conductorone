@@ -1,0 +1,9 @@
+# C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest
+
+
+## Fields
+
+| Field                                                                                                               | Type                                                                                                                | Required                                                                                                            | Description                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `ID`                                                                                                                | *string*                                                                                                            | :heavy_check_mark:                                                                                                  | N/A                                                                                                                 |
+| `DeleteRiskLevelAttributeValueRequest`                                                                              | [*components.DeleteRiskLevelAttributeValueRequest](../../models/components/deleterisklevelattributevaluerequest.md) | :heavy_minus_sign:                                                                                                  | N/A                                                                                                                 |

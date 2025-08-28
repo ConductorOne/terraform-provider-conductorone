@@ -1,0 +1,9 @@
+# C1APIAppV1ConnectorServiceListResponse
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                            | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                    | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `ConnectorServiceListResponse`                                                                        | [*components.ConnectorServiceListResponse](../../models/components/connectorservicelistresponse.md)   | :heavy_minus_sign:                                                                                    | The ConnectorServiceListResponse message contains a list of results and a nextPageToken if applicable |

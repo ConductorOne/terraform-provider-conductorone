@@ -1,0 +1,9 @@
+# C1APIAutomationsV1AutomationExecutionSearchServiceSearchAutomationExecutionsResponse
+
+
+## Fields
+
+| Field                                                                                                           | Type                                                                                                            | Required                                                                                                        | Description                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                      | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                              | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
+| `SearchAutomationExecutionsResponse`                                                                            | [*components.SearchAutomationExecutionsResponse](../../models/components/searchautomationexecutionsresponse.md) | :heavy_minus_sign:                                                                                              | Successful response                                                                                             |

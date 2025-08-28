@@ -134,6 +134,56 @@ func (s *AppResourceSearch) SearchAppResourceTypes(ctx context.Context, request 
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
 	}
+	res.Next = func() (*operations.C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse, error) {
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+
+		b, err := ajson.Unmarshal(rawBody)
+		if err != nil {
+			return nil, err
+		}
+		nC, err := ajson.Eval(b, "$.nextPageToken")
+		if err != nil {
+			return nil, err
+		}
+		var nCVal string
+
+		if nC.IsNumeric() {
+			numVal, err := nC.GetNumeric()
+			if err != nil {
+				return nil, err
+			}
+			// GetNumeric returns as float64 so convert to the appropriate type.
+			nCVal = strconv.FormatFloat(numVal, 'f', 0, 64)
+		} else {
+			val, err := nC.Value()
+			if err != nil {
+				return nil, err
+			}
+			if val == nil {
+				return nil, nil
+			}
+			nCVal = val.(string)
+		}
+
+		return s.SearchAppResourceTypes(
+			ctx,
+			&shared.SearchAppResourceTypesRequest{
+				AppIds:                      request.AppIds,
+				AppUserIds:                  request.AppUserIds,
+				DisplayName:                 request.DisplayName,
+				ExcludeResourceTypeIds:      request.ExcludeResourceTypeIds,
+				ExcludeResourceTypeTraitIds: request.ExcludeResourceTypeTraitIds,
+				PageSize:                    request.PageSize,
+				PageToken:                   &nCVal,
+				Query:                       request.Query,
+				ResourceTypeIds:             request.ResourceTypeIds,
+				ResourceTypeTraitIds:        request.ResourceTypeTraitIds,
+			},
+		)
+	}
 
 	switch {
 	case httpRes.StatusCode == 200:
@@ -299,7 +349,7 @@ func (s *AppResourceSearch) SearchAppResources(ctx context.Context, request *sha
 			if err != nil {
 				return nil, err
 			}
-			if val == nil || val == "" {
+			if val == nil {
 				return nil, nil
 			}
 			nCVal = val.(string)

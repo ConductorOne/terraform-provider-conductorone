@@ -1,0 +1,9 @@
+# C1APIAutomationsV1AutomationExecutionServiceGetAutomationExecutionResponse
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                              | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                      | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `GetAutomationExecutionResponse`                                                                        | [*components.GetAutomationExecutionResponse](../../models/components/getautomationexecutionresponse.md) | :heavy_minus_sign:                                                                                      | Successful response                                                                                     |

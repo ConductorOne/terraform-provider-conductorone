@@ -1,0 +1,9 @@
+# C1APIAppV1AppEntitlementUserBindingServiceSearchGrantFeedResponse
+
+
+## Fields
+
+| Field                                                                                                         | Type                                                                                                          | Required                                                                                                      | Description                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                    | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                            | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
+| `SearchGrantFeedResponse`                                                                                     | [*components.SearchGrantFeedResponse](../../models/components/searchgrantfeedresponse.md)                     | :heavy_minus_sign:                                                                                            | The SearchGrantFeedResponse message contains a list of grant event results and a nextPageToken if applicable. |

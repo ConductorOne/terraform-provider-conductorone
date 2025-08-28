@@ -1,0 +1,9 @@
+# C1APISystemlogV1ExportServiceUpdateResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `ExportServiceUpdateResponse`                                                                     | [*components.ExportServiceUpdateResponse](../../models/components/exportserviceupdateresponse.md) | :heavy_minus_sign:                                                                                | Successful response                                                                               |

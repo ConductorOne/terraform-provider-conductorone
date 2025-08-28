@@ -1,0 +1,9 @@
+# C1APIAppV1AppEntitlementOwnersListResponse
+
+
+## Fields
+
+| Field                                                                                                       | Type                                                                                                        | Required                                                                                                    | Description                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                  | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                          | :heavy_check_mark:                                                                                          | N/A                                                                                                         |
+| `ListAppEntitlementOwnersResponse`                                                                          | [*components.ListAppEntitlementOwnersResponse](../../models/components/listappentitlementownersresponse.md) | :heavy_minus_sign:                                                                                          | The response message for listing app entitlement owners.                                                    |

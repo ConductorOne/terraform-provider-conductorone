@@ -1,0 +1,9 @@
+# C1APITaskV1TaskActionsServiceCommentRequest
+
+
+## Fields
+
+| Field                                                                                                       | Type                                                                                                        | Required                                                                                                    | Description                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `TaskID`                                                                                                    | *string*                                                                                                    | :heavy_check_mark:                                                                                          | N/A                                                                                                         |
+| `TaskActionsServiceCommentRequest`                                                                          | [*components.TaskActionsServiceCommentRequest](../../models/components/taskactionsservicecommentrequest.md) | :heavy_minus_sign:                                                                                          | N/A                                                                                                         |

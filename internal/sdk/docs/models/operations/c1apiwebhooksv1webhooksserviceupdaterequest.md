@@ -1,0 +1,9 @@
+# C1APIWebhooksV1WebhooksServiceUpdateRequest
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `ID`                                                                                                | *string*                                                                                            | :heavy_check_mark:                                                                                  | N/A                                                                                                 |
+| `WebhooksServiceUpdateRequest`                                                                      | [*components.WebhooksServiceUpdateRequest](../../models/components/webhooksserviceupdaterequest.md) | :heavy_minus_sign:                                                                                  | N/A                                                                                                 |

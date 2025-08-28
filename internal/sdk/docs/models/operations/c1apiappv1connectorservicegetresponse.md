@@ -1,0 +1,9 @@
+# C1APIAppV1ConnectorServiceGetResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `ConnectorServiceGetResponse`                                                                     | [*components.ConnectorServiceGetResponse](../../models/components/connectorservicegetresponse.md) | :heavy_minus_sign:                                                                                | The ConnectorServiceGetResponse message contains the connectorView, and an expand mask.           |

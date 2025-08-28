@@ -1,0 +1,9 @@
+# C1APIAppV1AppResourceTypeServiceListResponse
+
+
+## Fields
+
+| Field                                                                                                           | Type                                                                                                            | Required                                                                                                        | Description                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                      | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                              | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
+| `AppResourceTypeServiceListResponse`                                                                            | [*components.AppResourceTypeServiceListResponse](../../models/components/appresourcetypeservicelistresponse.md) | :heavy_minus_sign:                                                                                              | The AppResourceTypeServiceListResponse message contains a list of results and a nextPageToken if applicable.    |

@@ -1,0 +1,9 @@
+# C1APIWebhooksV1WebhooksServiceCreateResponse
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                            | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                    | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `WebhooksServiceCreateResponse`                                                                       | [*components.WebhooksServiceCreateResponse](../../models/components/webhooksservicecreateresponse.md) | :heavy_minus_sign:                                                                                    | Successful response                                                                                   |

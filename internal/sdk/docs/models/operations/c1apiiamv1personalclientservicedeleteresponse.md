@@ -1,0 +1,9 @@
+# C1APIIamV1PersonalClientServiceDeleteResponse
+
+
+## Fields
+
+| Field                                                                                                             | Type                                                                                                              | Required                                                                                                          | Description                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                                | :heavy_check_mark:                                                                                                | N/A                                                                                                               |
+| `PersonalClientServiceDeleteResponse`                                                                             | [*components.PersonalClientServiceDeleteResponse](../../models/components/personalclientservicedeleteresponse.md) | :heavy_minus_sign:                                                                                                | Successful response                                                                                               |

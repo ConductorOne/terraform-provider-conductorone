@@ -1,0 +1,9 @@
+# C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                            | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                    | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `SearchAttributeValuesResponse`                                                                       | [*components.SearchAttributeValuesResponse](../../models/components/searchattributevaluesresponse.md) | :heavy_minus_sign:                                                                                    | SearchAttributeValuesResponse is the response for searching AttributeValues.                          |

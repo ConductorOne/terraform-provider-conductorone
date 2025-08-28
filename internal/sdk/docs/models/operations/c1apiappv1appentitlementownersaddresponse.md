@@ -1,0 +1,9 @@
+# C1APIAppV1AppEntitlementOwnersAddResponse
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                              | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                      | :heavy_check_mark:                                                                                      | N/A                                                                                                     |
+| `AddAppEntitlementOwnerResponse`                                                                        | [*components.AddAppEntitlementOwnerResponse](../../models/components/addappentitlementownerresponse.md) | :heavy_minus_sign:                                                                                      | The empty response message for adding an app entitlement owner.                                         |

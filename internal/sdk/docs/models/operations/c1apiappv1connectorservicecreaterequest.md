@@ -1,0 +1,9 @@
+# C1APIAppV1ConnectorServiceCreateRequest
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `AppID`                                                                                               | *string*                                                                                              | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `ConnectorServiceCreateRequest`                                                                       | [*components.ConnectorServiceCreateRequest](../../models/components/connectorservicecreaterequest.md) | :heavy_minus_sign:                                                                                    | N/A                                                                                                   |

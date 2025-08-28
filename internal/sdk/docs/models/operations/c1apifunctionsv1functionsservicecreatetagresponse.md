@@ -1,0 +1,9 @@
+# C1APIFunctionsV1FunctionsServiceCreateTagResponse
+
+
+## Fields
+
+| Field                                                                                                         | Type                                                                                                          | Required                                                                                                      | Description                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                    | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                            | :heavy_check_mark:                                                                                            | N/A                                                                                                           |
+| `FunctionsServiceCreateTagResponse`                                                                           | [*components.FunctionsServiceCreateTagResponse](../../models/components/functionsservicecreatetagresponse.md) | :heavy_minus_sign:                                                                                            | Successful response                                                                                           |

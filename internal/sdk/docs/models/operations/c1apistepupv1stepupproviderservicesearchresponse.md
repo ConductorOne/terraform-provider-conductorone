@@ -1,0 +1,9 @@
+# C1APIStepupV1StepUpProviderServiceSearchResponse
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                            | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                    | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `SearchStepUpProvidersResponse`                                                                       | [*components.SearchStepUpProvidersResponse](../../models/components/searchstepupprovidersresponse.md) | :heavy_minus_sign:                                                                                    | Response message for searching step-up providers                                                      |

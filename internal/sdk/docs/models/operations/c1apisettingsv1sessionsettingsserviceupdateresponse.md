@@ -1,0 +1,9 @@
+# C1APISettingsV1SessionSettingsServiceUpdateResponse
+
+
+## Fields
+
+| Field                                                                                                 | Type                                                                                                  | Required                                                                                              | Description                                                                                           |
+| ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                            | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                    | :heavy_check_mark:                                                                                    | N/A                                                                                                   |
+| `UpdateSessionSettingsResponse`                                                                       | [*components.UpdateSessionSettingsResponse](../../models/components/updatesessionsettingsresponse.md) | :heavy_minus_sign:                                                                                    | Successful response                                                                                   |

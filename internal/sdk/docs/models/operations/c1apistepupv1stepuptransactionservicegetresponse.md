@@ -1,0 +1,9 @@
+# C1APIStepupV1StepUpTransactionServiceGetResponse
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                  | :heavy_check_mark:                                                                                  | N/A                                                                                                 |
+| `GetStepUpTransactionResponse`                                                                      | [*components.GetStepUpTransactionResponse](../../models/components/getstepuptransactionresponse.md) | :heavy_minus_sign:                                                                                  | Response message containing the requested step-up transaction                                       |

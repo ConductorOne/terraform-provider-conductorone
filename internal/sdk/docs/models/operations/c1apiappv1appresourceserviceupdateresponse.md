@@ -1,0 +1,9 @@
+# C1APIAppV1AppResourceServiceUpdateResponse
+
+
+## Fields
+
+| Field                                                                                                       | Type                                                                                                        | Required                                                                                                    | Description                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                  | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                          | :heavy_check_mark:                                                                                          | N/A                                                                                                         |
+| `AppResourceServiceUpdateResponse`                                                                          | [*components.AppResourceServiceUpdateResponse](../../models/components/appresourceserviceupdateresponse.md) | :heavy_minus_sign:                                                                                          | Successful response                                                                                         |

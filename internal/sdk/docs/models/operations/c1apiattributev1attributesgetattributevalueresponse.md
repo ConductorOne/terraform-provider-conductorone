@@ -1,0 +1,9 @@
+# C1APIAttributeV1AttributesGetAttributeValueResponse
+
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                    | [components.HTTPMetadata](../../models/components/httpmetadata.md)                            | :heavy_check_mark:                                                                            | N/A                                                                                           |
+| `GetAttributeValueResponse`                                                                   | [*components.GetAttributeValueResponse](../../models/components/getattributevalueresponse.md) | :heavy_minus_sign:                                                                            | GetAttributeValueResponse is the response for getting an attribute value by id.               |

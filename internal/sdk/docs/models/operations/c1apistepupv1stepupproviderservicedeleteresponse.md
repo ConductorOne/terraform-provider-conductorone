@@ -1,0 +1,9 @@
+# C1APIStepupV1StepUpProviderServiceDeleteResponse
+
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                  | :heavy_check_mark:                                                                                  | N/A                                                                                                 |
+| `DeleteStepUpProviderResponse`                                                                      | [*components.DeleteStepUpProviderResponse](../../models/components/deletestepupproviderresponse.md) | :heavy_minus_sign:                                                                                  | Successful response                                                                                 |

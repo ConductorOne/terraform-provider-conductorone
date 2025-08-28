@@ -1,0 +1,9 @@
+# C1APISystemlogV1ExportServiceCreateResponse
+
+
+## Fields
+
+| Field                                                                                             | Type                                                                                              | Required                                                                                          | Description                                                                                       |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                        | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                | :heavy_check_mark:                                                                                | N/A                                                                                               |
+| `ExportServiceCreateResponse`                                                                     | [*components.ExportServiceCreateResponse](../../models/components/exportservicecreateresponse.md) | :heavy_minus_sign:                                                                                | Successful response                                                                               |

@@ -1,0 +1,9 @@
+# C1APISystemlogV1ExportsSearchServiceSearchResponse
+
+
+## Fields
+
+| Field                                                                                                           | Type                                                                                                            | Required                                                                                                        | Description                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                      | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                              | :heavy_check_mark:                                                                                              | N/A                                                                                                             |
+| `ExportsSearchServiceSearchResponse`                                                                            | [*components.ExportsSearchServiceSearchResponse](../../models/components/exportssearchservicesearchresponse.md) | :heavy_minus_sign:                                                                                              | Successful response                                                                                             |

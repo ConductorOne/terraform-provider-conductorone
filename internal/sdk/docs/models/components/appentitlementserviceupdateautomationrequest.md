@@ -1,0 +1,23 @@
+# AppEntitlementServiceUpdateAutomationRequest
+
+The AppEntitlementServiceUpdateAutomationRequest message.
+
+This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
+  - none
+  - entitlements
+  - cel
+  - basic
+
+
+
+## Fields
+
+| Field                                                                                                                     | Type                                                                                                                      | Required                                                                                                                  | Description                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `AppEntitlementAutomationRuleBasic`                                                                                       | [*components.AppEntitlementAutomationRuleBasic](../../models/components/appentitlementautomationrulebasic.md)             | :heavy_minus_sign:                                                                                                        | The AppEntitlementAutomationRuleBasic message.                                                                            |
+| `AppEntitlementAutomationRuleCEL`                                                                                         | [*components.AppEntitlementAutomationRuleCEL](../../models/components/appentitlementautomationrulecel.md)                 | :heavy_minus_sign:                                                                                                        | The AppEntitlementAutomationRuleCEL message.                                                                              |
+| `Description`                                                                                                             | **string*                                                                                                                 | :heavy_minus_sign:                                                                                                        | The description of the app entitlement.                                                                                   |
+| `DisplayName`                                                                                                             | **string*                                                                                                                 | :heavy_minus_sign:                                                                                                        | The display name of the app entitlement.                                                                                  |
+| `AppEntitlementAutomationRuleEntitlement`                                                                                 | [*components.AppEntitlementAutomationRuleEntitlement](../../models/components/appentitlementautomationruleentitlement.md) | :heavy_minus_sign:                                                                                                        | The AppEntitlementAutomationRuleEntitlement message.                                                                      |
+| `AppEntitlementAutomationRuleNone`                                                                                        | [*components.AppEntitlementAutomationRuleNone](../../models/components/appentitlementautomationrulenone.md)               | :heavy_minus_sign:                                                                                                        | The AppEntitlementAutomationRuleNone message.                                                                             |
+| `UpdateMask`                                                                                                              | **string*                                                                                                                 | :heavy_minus_sign:                                                                                                        | N/A                                                                                                                       |

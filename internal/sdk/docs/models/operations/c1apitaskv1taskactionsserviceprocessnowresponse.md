@@ -1,0 +1,9 @@
+# C1APITaskV1TaskActionsServiceProcessNowResponse
+
+
+## Fields
+
+| Field                                                                                                               | Type                                                                                                                | Required                                                                                                            | Description                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `HTTPMeta`                                                                                                          | [components.HTTPMetadata](../../models/components/httpmetadata.md)                                                  | :heavy_check_mark:                                                                                                  | N/A                                                                                                                 |
+| `TaskActionsServiceProcessNowResponse`                                                                              | [*components.TaskActionsServiceProcessNowResponse](../../models/components/taskactionsserviceprocessnowresponse.md) | :heavy_minus_sign:                                                                                                  | Successful response                                                                                                 |

@@ -3,14 +3,14 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type PolicyStep struct {
-	Accept    *Accept              `tfsdk:"accept"`
-	Approval  *Approval            `tfsdk:"approval" tfPlanOnly:"true"`
-	Form      jsontypes.Normalized `tfsdk:"form"`
-	Provision *Provision           `tfsdk:"provision"`
-	Reject    *Reject              `tfsdk:"reject"`
-	Wait      *Wait                `tfsdk:"wait"`
+	Accept    *Accept      `tfsdk:"accept"`
+	Approval  *Approval    `tfsdk:"approval" tfPlanOnly:"true"`
+	Form      types.String `tfsdk:"form"`
+	Provision *Provision   `tfsdk:"provision"`
+	Reject    *Reject      `tfsdk:"reject"`
+	Wait      *Wait        `tfsdk:"wait"`
 }
