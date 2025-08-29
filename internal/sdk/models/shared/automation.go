@@ -13,7 +13,6 @@ import (
 type PrimaryTriggerType string
 
 const (
-	PrimaryTriggerTypeTriggerTypeUnspecified       PrimaryTriggerType = "TRIGGER_TYPE_UNSPECIFIED"
 	PrimaryTriggerTypeTriggerTypeUserProfileChange PrimaryTriggerType = "TRIGGER_TYPE_USER_PROFILE_CHANGE"
 	PrimaryTriggerTypeTriggerTypeAppUserCreate     PrimaryTriggerType = "TRIGGER_TYPE_APP_USER_CREATE"
 	PrimaryTriggerTypeTriggerTypeAppUserUpdate     PrimaryTriggerType = "TRIGGER_TYPE_APP_USER_UPDATE"
@@ -35,8 +34,6 @@ func (e *PrimaryTriggerType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TRIGGER_TYPE_UNSPECIFIED":
-		fallthrough
 	case "TRIGGER_TYPE_USER_PROFILE_CHANGE":
 		fallthrough
 	case "TRIGGER_TYPE_APP_USER_CREATE":
@@ -105,7 +102,7 @@ func (a Automation) MarshalJSON() ([]byte, error) {
 }
 
 func (a *Automation) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -263,7 +260,7 @@ func (a AutomationInput) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AutomationInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -92,10 +92,9 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The status field. must be one of ["APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS"]`,
+						Description: `The status field. must be one of ["APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED",
 								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS",
 								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED",
 								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS",

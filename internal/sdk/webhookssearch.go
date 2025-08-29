@@ -162,7 +162,7 @@ func (s *WebhooksSearch) Search(ctx context.Context, request *shared.WebhooksSea
 			if err != nil {
 				return nil, err
 			}
-			if val == nil || val == "" {
+			if val == nil {
 				return nil, nil
 			}
 			nCVal = val.(string)

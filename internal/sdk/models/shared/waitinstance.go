@@ -13,10 +13,9 @@ import (
 type WaitInstanceState string
 
 const (
-	WaitInstanceStateWaitInstanceStateUnspecified WaitInstanceState = "WAIT_INSTANCE_STATE_UNSPECIFIED"
-	WaitInstanceStateWaitInstanceStateWaiting     WaitInstanceState = "WAIT_INSTANCE_STATE_WAITING"
-	WaitInstanceStateWaitInstanceStateCompleted   WaitInstanceState = "WAIT_INSTANCE_STATE_COMPLETED"
-	WaitInstanceStateWaitInstanceStateTimedOut    WaitInstanceState = "WAIT_INSTANCE_STATE_TIMED_OUT"
+	WaitInstanceStateWaitInstanceStateWaiting   WaitInstanceState = "WAIT_INSTANCE_STATE_WAITING"
+	WaitInstanceStateWaitInstanceStateCompleted WaitInstanceState = "WAIT_INSTANCE_STATE_COMPLETED"
+	WaitInstanceStateWaitInstanceStateTimedOut  WaitInstanceState = "WAIT_INSTANCE_STATE_TIMED_OUT"
 )
 
 func (e WaitInstanceState) ToPointer() *WaitInstanceState {
@@ -28,8 +27,6 @@ func (e *WaitInstanceState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "WAIT_INSTANCE_STATE_UNSPECIFIED":
-		fallthrough
 	case "WAIT_INSTANCE_STATE_WAITING":
 		fallthrough
 	case "WAIT_INSTANCE_STATE_COMPLETED":
@@ -78,7 +75,7 @@ func (w WaitInstance) MarshalJSON() ([]byte, error) {
 }
 
 func (w *WaitInstance) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
 		return err
 	}
 	return nil

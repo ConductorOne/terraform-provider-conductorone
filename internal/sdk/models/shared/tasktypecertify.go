@@ -13,7 +13,6 @@ import (
 type Outcome string
 
 const (
-	OutcomeCertifyOutcomeUnspecified  Outcome = "CERTIFY_OUTCOME_UNSPECIFIED"
 	OutcomeCertifyOutcomeCertified    Outcome = "CERTIFY_OUTCOME_CERTIFIED"
 	OutcomeCertifyOutcomeDecertified  Outcome = "CERTIFY_OUTCOME_DECERTIFIED"
 	OutcomeCertifyOutcomeError        Outcome = "CERTIFY_OUTCOME_ERROR"
@@ -30,8 +29,6 @@ func (e *Outcome) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "CERTIFY_OUTCOME_UNSPECIFIED":
-		fallthrough
 	case "CERTIFY_OUTCOME_CERTIFIED":
 		fallthrough
 	case "CERTIFY_OUTCOME_DECERTIFIED":
@@ -72,7 +69,7 @@ func (t TaskTypeCertify) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TaskTypeCertify) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

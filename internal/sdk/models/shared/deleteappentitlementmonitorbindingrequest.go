@@ -11,9 +11,8 @@ import (
 type EntitlementGroup string
 
 const (
-	EntitlementGroupEntitlementGroupUnspecified EntitlementGroup = "ENTITLEMENT_GROUP_UNSPECIFIED"
-	EntitlementGroupEntitlementGroupA           EntitlementGroup = "ENTITLEMENT_GROUP_A"
-	EntitlementGroupEntitlementGroupB           EntitlementGroup = "ENTITLEMENT_GROUP_B"
+	EntitlementGroupEntitlementGroupA EntitlementGroup = "ENTITLEMENT_GROUP_A"
+	EntitlementGroupEntitlementGroupB EntitlementGroup = "ENTITLEMENT_GROUP_B"
 )
 
 func (e EntitlementGroup) ToPointer() *EntitlementGroup {
@@ -25,8 +24,6 @@ func (e *EntitlementGroup) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "ENTITLEMENT_GROUP_UNSPECIFIED":
-		fallthrough
 	case "ENTITLEMENT_GROUP_A":
 		fallthrough
 	case "ENTITLEMENT_GROUP_B":

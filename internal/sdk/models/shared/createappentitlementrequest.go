@@ -14,9 +14,8 @@ type CreateAppEntitlementRequestDurationUnset struct {
 type CreateAppEntitlementRequestPurpose string
 
 const (
-	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValueUnspecified CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED"
-	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValueAssignment  CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
-	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValuePermission  CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"
+	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValueAssignment CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
+	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValuePermission CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"
 )
 
 func (e CreateAppEntitlementRequestPurpose) ToPointer() *CreateAppEntitlementRequestPurpose {
@@ -28,8 +27,6 @@ func (e *CreateAppEntitlementRequestPurpose) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED":
-		fallthrough
 	case "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT":
 		fallthrough
 	case "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION":

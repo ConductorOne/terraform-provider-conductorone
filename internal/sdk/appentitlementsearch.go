@@ -6,10 +6,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/config"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/hooks"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
@@ -17,6 +13,9 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/spyzhov/ajson"
+	"net/http"
+	"net/url"
+	"strconv"
 )
 
 type AppEntitlementSearch struct {
@@ -431,7 +430,7 @@ func (s *AppEntitlementSearch) Search(ctx context.Context, request *shared.AppEn
 			if err != nil {
 				return nil, err
 			}
-			if val == nil || val == "" {
+			if val == nil {
 				return nil, nil
 			}
 			nCVal = val.(string)

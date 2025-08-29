@@ -82,11 +82,10 @@ func (e *UserStatus) UnmarshalJSON(data []byte) error {
 type Type string
 
 const (
-	TypeUserTypeUnspecified Type = "USER_TYPE_UNSPECIFIED"
-	TypeUserTypeSystem      Type = "USER_TYPE_SYSTEM"
-	TypeUserTypeHuman       Type = "USER_TYPE_HUMAN"
-	TypeUserTypeService     Type = "USER_TYPE_SERVICE"
-	TypeUserTypeAgent       Type = "USER_TYPE_AGENT"
+	TypeUserTypeSystem  Type = "USER_TYPE_SYSTEM"
+	TypeUserTypeHuman   Type = "USER_TYPE_HUMAN"
+	TypeUserTypeService Type = "USER_TYPE_SERVICE"
+	TypeUserTypeAgent   Type = "USER_TYPE_AGENT"
 )
 
 func (e Type) ToPointer() *Type {
@@ -98,8 +97,6 @@ func (e *Type) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "USER_TYPE_UNSPECIFIED":
-		fallthrough
 	case "USER_TYPE_SYSTEM":
 		fallthrough
 	case "USER_TYPE_HUMAN":
@@ -181,7 +178,7 @@ func (u User) MarshalJSON() ([]byte, error) {
 }
 
 func (u *User) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil

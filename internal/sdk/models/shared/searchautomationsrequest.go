@@ -10,7 +10,6 @@ import (
 type TriggerTypes string
 
 const (
-	TriggerTypesTriggerTypeUnspecified       TriggerTypes = "TRIGGER_TYPE_UNSPECIFIED"
 	TriggerTypesTriggerTypeUserProfileChange TriggerTypes = "TRIGGER_TYPE_USER_PROFILE_CHANGE"
 	TriggerTypesTriggerTypeAppUserCreate     TriggerTypes = "TRIGGER_TYPE_APP_USER_CREATE"
 	TriggerTypesTriggerTypeAppUserUpdate     TriggerTypes = "TRIGGER_TYPE_APP_USER_UPDATE"
@@ -32,8 +31,6 @@ func (e *TriggerTypes) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TRIGGER_TYPE_UNSPECIFIED":
-		fallthrough
 	case "TRIGGER_TYPE_USER_PROFILE_CHANGE":
 		fallthrough
 	case "TRIGGER_TYPE_APP_USER_CREATE":

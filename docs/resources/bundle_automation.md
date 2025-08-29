@@ -80,7 +80,7 @@ Read-Only:
 
 - `error_message` (String) The errorMessage field.
 - `last_run_at` (String)
-- `status` (String) The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED", "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS"]
+- `status` (String) The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS"]
 
 ## Import
 

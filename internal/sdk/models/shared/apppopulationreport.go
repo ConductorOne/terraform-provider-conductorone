@@ -13,10 +13,9 @@ import (
 type AppPopulationReportState string
 
 const (
-	AppPopulationReportStateReportStateUnspecified AppPopulationReportState = "REPORT_STATE_UNSPECIFIED"
-	AppPopulationReportStateReportStatePending     AppPopulationReportState = "REPORT_STATE_PENDING"
-	AppPopulationReportStateReportStateOk          AppPopulationReportState = "REPORT_STATE_OK"
-	AppPopulationReportStateReportStateError       AppPopulationReportState = "REPORT_STATE_ERROR"
+	AppPopulationReportStateReportStatePending AppPopulationReportState = "REPORT_STATE_PENDING"
+	AppPopulationReportStateReportStateOk      AppPopulationReportState = "REPORT_STATE_OK"
+	AppPopulationReportStateReportStateError   AppPopulationReportState = "REPORT_STATE_ERROR"
 )
 
 func (e AppPopulationReportState) ToPointer() *AppPopulationReportState {
@@ -28,8 +27,6 @@ func (e *AppPopulationReportState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "REPORT_STATE_UNSPECIFIED":
-		fallthrough
 	case "REPORT_STATE_PENDING":
 		fallthrough
 	case "REPORT_STATE_OK":
@@ -62,7 +59,7 @@ func (a AppPopulationReport) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppPopulationReport) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

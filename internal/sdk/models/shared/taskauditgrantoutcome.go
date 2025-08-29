@@ -11,7 +11,6 @@ import (
 type TaskAuditGrantOutcomeOutcome string
 
 const (
-	TaskAuditGrantOutcomeOutcomeGrantOutcomeUnspecified  TaskAuditGrantOutcomeOutcome = "GRANT_OUTCOME_UNSPECIFIED"
 	TaskAuditGrantOutcomeOutcomeGrantOutcomeGranted      TaskAuditGrantOutcomeOutcome = "GRANT_OUTCOME_GRANTED"
 	TaskAuditGrantOutcomeOutcomeGrantOutcomeDenied       TaskAuditGrantOutcomeOutcome = "GRANT_OUTCOME_DENIED"
 	TaskAuditGrantOutcomeOutcomeGrantOutcomeError        TaskAuditGrantOutcomeOutcome = "GRANT_OUTCOME_ERROR"
@@ -28,8 +27,6 @@ func (e *TaskAuditGrantOutcomeOutcome) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "GRANT_OUTCOME_UNSPECIFIED":
-		fallthrough
 	case "GRANT_OUTCOME_GRANTED":
 		fallthrough
 	case "GRANT_OUTCOME_DENIED":

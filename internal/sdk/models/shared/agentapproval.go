@@ -11,7 +11,6 @@ import (
 type AgentFailureAction string
 
 const (
-	AgentFailureActionApprovalAgentFailureActionUnspecified           AgentFailureAction = "APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED"
 	AgentFailureActionApprovalAgentFailureActionReassignToUsers       AgentFailureAction = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS"
 	AgentFailureActionApprovalAgentFailureActionReassignToSuperAdmins AgentFailureAction = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS"
 	AgentFailureActionApprovalAgentFailureActionSkipPolicyStep        AgentFailureAction = "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"
@@ -26,8 +25,6 @@ func (e *AgentFailureAction) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED":
-		fallthrough
 	case "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS":
 		fallthrough
 	case "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS":
@@ -44,7 +41,6 @@ func (e *AgentFailureAction) UnmarshalJSON(data []byte) error {
 type AgentMode string
 
 const (
-	AgentModeApprovalAgentModeUnspecified      AgentMode = "APPROVAL_AGENT_MODE_UNSPECIFIED"
 	AgentModeApprovalAgentModeFullControl      AgentMode = "APPROVAL_AGENT_MODE_FULL_CONTROL"
 	AgentModeApprovalAgentModeChangePolicyOnly AgentMode = "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY"
 	AgentModeApprovalAgentModeCommentOnly      AgentMode = "APPROVAL_AGENT_MODE_COMMENT_ONLY"
@@ -59,8 +55,6 @@ func (e *AgentMode) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APPROVAL_AGENT_MODE_UNSPECIFIED":
-		fallthrough
 	case "APPROVAL_AGENT_MODE_FULL_CONTROL":
 		fallthrough
 	case "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY":

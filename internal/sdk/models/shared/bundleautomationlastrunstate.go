@@ -13,10 +13,9 @@ import (
 type BundleAutomationLastRunStateStatus string
 
 const (
-	BundleAutomationLastRunStateStatusBundleAutomationRunStatusUnspecified BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED"
-	BundleAutomationLastRunStateStatusBundleAutomationRunStatusSuccess     BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS"
-	BundleAutomationLastRunStateStatusBundleAutomationRunStatusFailure     BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE"
-	BundleAutomationLastRunStateStatusBundleAutomationRunStatusInProgress  BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS"
+	BundleAutomationLastRunStateStatusBundleAutomationRunStatusSuccess    BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS"
+	BundleAutomationLastRunStateStatusBundleAutomationRunStatusFailure    BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE"
+	BundleAutomationLastRunStateStatusBundleAutomationRunStatusInProgress BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS"
 )
 
 func (e BundleAutomationLastRunStateStatus) ToPointer() *BundleAutomationLastRunStateStatus {
@@ -28,8 +27,6 @@ func (e *BundleAutomationLastRunStateStatus) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED":
-		fallthrough
 	case "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS":
 		fallthrough
 	case "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE":
@@ -56,7 +53,7 @@ func (b BundleAutomationLastRunState) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BundleAutomationLastRunState) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil

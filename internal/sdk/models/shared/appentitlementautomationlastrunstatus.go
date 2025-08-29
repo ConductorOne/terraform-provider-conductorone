@@ -13,10 +13,9 @@ import (
 type AppEntitlementAutomationLastRunStatusStatus string
 
 const (
-	AppEntitlementAutomationLastRunStatusStatusAppEntitlementAutomationRunStatusUnspecified AppEntitlementAutomationLastRunStatusStatus = "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED"
-	AppEntitlementAutomationLastRunStatusStatusAppEntitlementAutomationRunStatusSuccess     AppEntitlementAutomationLastRunStatusStatus = "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS"
-	AppEntitlementAutomationLastRunStatusStatusAppEntitlementAutomationRunStatusFailed      AppEntitlementAutomationLastRunStatusStatus = "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED"
-	AppEntitlementAutomationLastRunStatusStatusAppEntitlementAutomationRunStatusInProgress  AppEntitlementAutomationLastRunStatusStatus = "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS"
+	AppEntitlementAutomationLastRunStatusStatusAppEntitlementAutomationRunStatusSuccess    AppEntitlementAutomationLastRunStatusStatus = "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS"
+	AppEntitlementAutomationLastRunStatusStatusAppEntitlementAutomationRunStatusFailed     AppEntitlementAutomationLastRunStatusStatus = "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED"
+	AppEntitlementAutomationLastRunStatusStatusAppEntitlementAutomationRunStatusInProgress AppEntitlementAutomationLastRunStatusStatus = "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS"
 )
 
 func (e AppEntitlementAutomationLastRunStatusStatus) ToPointer() *AppEntitlementAutomationLastRunStatusStatus {
@@ -28,8 +27,6 @@ func (e *AppEntitlementAutomationLastRunStatusStatus) UnmarshalJSON(data []byte)
 		return err
 	}
 	switch v {
-	case "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED":
-		fallthrough
 	case "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS":
 		fallthrough
 	case "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED":
@@ -56,7 +53,7 @@ func (a AppEntitlementAutomationLastRunStatus) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppEntitlementAutomationLastRunStatus) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

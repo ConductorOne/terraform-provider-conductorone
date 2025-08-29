@@ -4,7 +4,7 @@ data "conductorone_user" "my_user" {
     "..."
   ]
   exclude_types = [
-    "USER_TYPE_HUMAN"
+    "USER_TYPE_SERVICE"
   ]
   ids = [
     "..."

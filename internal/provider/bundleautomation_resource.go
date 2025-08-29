@@ -69,10 +69,9 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 					},
 					"status": schema.StringAttribute{
 						Computed:    true,
-						Description: `The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED", "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS"]`,
+						Description: `The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED",
 								"BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS",
 								"BUNDLE_AUTOMATION_RUN_STATUS_FAILURE",
 								"BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS",

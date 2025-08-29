@@ -11,7 +11,6 @@ import (
 type TaskAuditRevokeOutcomeOutcome string
 
 const (
-	TaskAuditRevokeOutcomeOutcomeRevokeOutcomeUnspecified  TaskAuditRevokeOutcomeOutcome = "REVOKE_OUTCOME_UNSPECIFIED"
 	TaskAuditRevokeOutcomeOutcomeRevokeOutcomeRevoked      TaskAuditRevokeOutcomeOutcome = "REVOKE_OUTCOME_REVOKED"
 	TaskAuditRevokeOutcomeOutcomeRevokeOutcomeDenied       TaskAuditRevokeOutcomeOutcome = "REVOKE_OUTCOME_DENIED"
 	TaskAuditRevokeOutcomeOutcomeRevokeOutcomeError        TaskAuditRevokeOutcomeOutcome = "REVOKE_OUTCOME_ERROR"
@@ -28,8 +27,6 @@ func (e *TaskAuditRevokeOutcomeOutcome) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "REVOKE_OUTCOME_UNSPECIFIED":
-		fallthrough
 	case "REVOKE_OUTCOME_REVOKED":
 		fallthrough
 	case "REVOKE_OUTCOME_DENIED":

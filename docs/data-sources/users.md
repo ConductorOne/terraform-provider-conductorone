@@ -19,7 +19,7 @@ data "conductorone_users" "my_users" {
     "..."
   ]
   exclude_types = [
-    "USER_TYPE_SYSTEM"
+    "USER_TYPE_HUMAN"
   ]
   ids = [
     "..."
