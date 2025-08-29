@@ -13,7 +13,6 @@ import (
 type EnrollmentBehavior string
 
 const (
-	EnrollmentBehaviorRequestCatalogEnrollmentBehaviorUnspecified                     EnrollmentBehavior = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED"
 	EnrollmentBehaviorRequestCatalogEnrollmentBehaviorBypassEntitlementRequestPolicy  EnrollmentBehavior = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY"
 	EnrollmentBehaviorRequestCatalogEnrollmentBehaviorEnforceEntitlementRequestPolicy EnrollmentBehavior = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY"
 )
@@ -27,8 +26,6 @@ func (e *EnrollmentBehavior) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED":
-		fallthrough
 	case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY":
 		fallthrough
 	case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY":
@@ -43,7 +40,6 @@ func (e *EnrollmentBehavior) UnmarshalJSON(data []byte) error {
 type UnenrollmentBehavior string
 
 const (
-	UnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorUnspecified       UnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED"
 	UnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorLeaveAccessAsIs   UnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS"
 	UnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorRevokeAll         UnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL"
 	UnenrollmentBehaviorRequestCatalogUnenrollmentBehaviorRevokeUnjustified UnenrollmentBehavior = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED"
@@ -58,8 +54,6 @@ func (e *UnenrollmentBehavior) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED":
-		fallthrough
 	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS":
 		fallthrough
 	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL":
@@ -76,9 +70,8 @@ func (e *UnenrollmentBehavior) UnmarshalJSON(data []byte) error {
 type UnenrollmentEntitlementBehavior string
 
 const (
-	UnenrollmentEntitlementBehaviorRequestCatalogUnenrollmentEntitlementBehaviorUnspecified UnenrollmentEntitlementBehavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED"
-	UnenrollmentEntitlementBehaviorRequestCatalogUnenrollmentEntitlementBehaviorBypass      UnenrollmentEntitlementBehavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS"
-	UnenrollmentEntitlementBehaviorRequestCatalogUnenrollmentEntitlementBehaviorEnforce     UnenrollmentEntitlementBehavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE"
+	UnenrollmentEntitlementBehaviorRequestCatalogUnenrollmentEntitlementBehaviorBypass  UnenrollmentEntitlementBehavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS"
+	UnenrollmentEntitlementBehaviorRequestCatalogUnenrollmentEntitlementBehaviorEnforce UnenrollmentEntitlementBehavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE"
 )
 
 func (e UnenrollmentEntitlementBehavior) ToPointer() *UnenrollmentEntitlementBehavior {
@@ -90,8 +83,6 @@ func (e *UnenrollmentEntitlementBehavior) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED":
-		fallthrough
 	case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS":
 		fallthrough
 	case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE":
@@ -134,7 +125,7 @@ func (r RequestCatalog) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestCatalog) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil

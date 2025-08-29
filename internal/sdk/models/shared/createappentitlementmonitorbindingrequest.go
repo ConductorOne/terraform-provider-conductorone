@@ -11,9 +11,8 @@ import (
 type CreateAppEntitlementMonitorBindingRequestEntitlementGroup string
 
 const (
-	CreateAppEntitlementMonitorBindingRequestEntitlementGroupEntitlementGroupUnspecified CreateAppEntitlementMonitorBindingRequestEntitlementGroup = "ENTITLEMENT_GROUP_UNSPECIFIED"
-	CreateAppEntitlementMonitorBindingRequestEntitlementGroupEntitlementGroupA           CreateAppEntitlementMonitorBindingRequestEntitlementGroup = "ENTITLEMENT_GROUP_A"
-	CreateAppEntitlementMonitorBindingRequestEntitlementGroupEntitlementGroupB           CreateAppEntitlementMonitorBindingRequestEntitlementGroup = "ENTITLEMENT_GROUP_B"
+	CreateAppEntitlementMonitorBindingRequestEntitlementGroupEntitlementGroupA CreateAppEntitlementMonitorBindingRequestEntitlementGroup = "ENTITLEMENT_GROUP_A"
+	CreateAppEntitlementMonitorBindingRequestEntitlementGroupEntitlementGroupB CreateAppEntitlementMonitorBindingRequestEntitlementGroup = "ENTITLEMENT_GROUP_B"
 )
 
 func (e CreateAppEntitlementMonitorBindingRequestEntitlementGroup) ToPointer() *CreateAppEntitlementMonitorBindingRequestEntitlementGroup {
@@ -25,8 +24,6 @@ func (e *CreateAppEntitlementMonitorBindingRequestEntitlementGroup) UnmarshalJSO
 		return err
 	}
 	switch v {
-	case "ENTITLEMENT_GROUP_UNSPECIFIED":
-		fallthrough
 	case "ENTITLEMENT_GROUP_A":
 		fallthrough
 	case "ENTITLEMENT_GROUP_B":

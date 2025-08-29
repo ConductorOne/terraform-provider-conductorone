@@ -13,7 +13,6 @@ import (
 type AppUserType string
 
 const (
-	AppUserTypeAppUserTypeUnspecified    AppUserType = "APP_USER_TYPE_UNSPECIFIED"
 	AppUserTypeAppUserTypeUser           AppUserType = "APP_USER_TYPE_USER"
 	AppUserTypeAppUserTypeServiceAccount AppUserType = "APP_USER_TYPE_SERVICE_ACCOUNT"
 	AppUserTypeAppUserTypeSystemAccount  AppUserType = "APP_USER_TYPE_SYSTEM_ACCOUNT"
@@ -28,8 +27,6 @@ func (e *AppUserType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_USER_TYPE_UNSPECIFIED":
-		fallthrough
 	case "APP_USER_TYPE_USER":
 		fallthrough
 	case "APP_USER_TYPE_SERVICE_ACCOUNT":
@@ -82,7 +79,7 @@ func (a AppUser) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppUser) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

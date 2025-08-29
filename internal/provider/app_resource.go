@@ -111,10 +111,9 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"identity_matching": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"]`,
+				Description: `Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						"APP_USER_IDENTITY_MATCHING_UNSPECIFIED",
 						"APP_USER_IDENTITY_MATCHING_STRICT",
 						"APP_USER_IDENTITY_MATCHING_DISPLAY_NAME",
 					),

@@ -10,10 +10,9 @@ import (
 type TaskTypes string
 
 const (
-	TaskTypesTaskTypeUnspecified TaskTypes = "TASK_TYPE_UNSPECIFIED"
-	TaskTypesTaskTypeRequest     TaskTypes = "TASK_TYPE_REQUEST"
-	TaskTypesTaskTypeRevoke      TaskTypes = "TASK_TYPE_REVOKE"
-	TaskTypesTaskTypeReview      TaskTypes = "TASK_TYPE_REVIEW"
+	TaskTypesTaskTypeRequest TaskTypes = "TASK_TYPE_REQUEST"
+	TaskTypesTaskTypeRevoke  TaskTypes = "TASK_TYPE_REVOKE"
+	TaskTypesTaskTypeReview  TaskTypes = "TASK_TYPE_REVIEW"
 )
 
 func (e TaskTypes) ToPointer() *TaskTypes {
@@ -25,8 +24,6 @@ func (e *TaskTypes) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_TYPE_UNSPECIFIED":
-		fallthrough
 	case "TASK_TYPE_REQUEST":
 		fallthrough
 	case "TASK_TYPE_REVOKE":

@@ -84,7 +84,7 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
       webhook_id = "...my_webhook_id..."
     }
   }
-  purpose             = "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED"
+  purpose             = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
   revoke_policy_id    = "...my_revoke_policy_id..."
   risk_level_value_id = "...my_risk_level_value_id..."
   slug                = "...my_slug..."
@@ -124,7 +124,7 @@ This message contains a oneof named typ. Only a single field of the following li
   - multiStep
   - externalTicket
   - unconfigured (see [below for nested schema](#nestedatt--provision_policy))
-- `purpose` (String) The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"]
+- `purpose` (String) The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"]
 - `revoke_policy_id` (String) The revokePolicyId field.
 - `risk_level_value_id` (String) The riskLevelValueId field.
 - `slug` (String) The slug field.

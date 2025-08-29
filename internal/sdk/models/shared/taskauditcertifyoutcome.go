@@ -11,7 +11,6 @@ import (
 type TaskAuditCertifyOutcomeOutcome string
 
 const (
-	TaskAuditCertifyOutcomeOutcomeCertifyOutcomeUnspecified  TaskAuditCertifyOutcomeOutcome = "CERTIFY_OUTCOME_UNSPECIFIED"
 	TaskAuditCertifyOutcomeOutcomeCertifyOutcomeCertified    TaskAuditCertifyOutcomeOutcome = "CERTIFY_OUTCOME_CERTIFIED"
 	TaskAuditCertifyOutcomeOutcomeCertifyOutcomeDecertified  TaskAuditCertifyOutcomeOutcome = "CERTIFY_OUTCOME_DECERTIFIED"
 	TaskAuditCertifyOutcomeOutcomeCertifyOutcomeError        TaskAuditCertifyOutcomeOutcome = "CERTIFY_OUTCOME_ERROR"
@@ -28,8 +27,6 @@ func (e *TaskAuditCertifyOutcomeOutcome) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "CERTIFY_OUTCOME_UNSPECIFIED":
-		fallthrough
 	case "CERTIFY_OUTCOME_CERTIFIED":
 		fallthrough
 	case "CERTIFY_OUTCOME_DECERTIFIED":

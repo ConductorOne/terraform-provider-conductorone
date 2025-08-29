@@ -10,11 +10,10 @@ import (
 type ExcludeTypes string
 
 const (
-	ExcludeTypesUserTypeUnspecified ExcludeTypes = "USER_TYPE_UNSPECIFIED"
-	ExcludeTypesUserTypeSystem      ExcludeTypes = "USER_TYPE_SYSTEM"
-	ExcludeTypesUserTypeHuman       ExcludeTypes = "USER_TYPE_HUMAN"
-	ExcludeTypesUserTypeService     ExcludeTypes = "USER_TYPE_SERVICE"
-	ExcludeTypesUserTypeAgent       ExcludeTypes = "USER_TYPE_AGENT"
+	ExcludeTypesUserTypeSystem  ExcludeTypes = "USER_TYPE_SYSTEM"
+	ExcludeTypesUserTypeHuman   ExcludeTypes = "USER_TYPE_HUMAN"
+	ExcludeTypesUserTypeService ExcludeTypes = "USER_TYPE_SERVICE"
+	ExcludeTypesUserTypeAgent   ExcludeTypes = "USER_TYPE_AGENT"
 )
 
 func (e ExcludeTypes) ToPointer() *ExcludeTypes {
@@ -26,8 +25,6 @@ func (e *ExcludeTypes) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "USER_TYPE_UNSPECIFIED":
-		fallthrough
 	case "USER_TYPE_SYSTEM":
 		fallthrough
 	case "USER_TYPE_HUMAN":

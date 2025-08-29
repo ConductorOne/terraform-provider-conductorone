@@ -82,10 +82,9 @@ func (r *AppEntitlementMonitorBindingResource) Schema(ctx context.Context, req r
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The entitlementGroup field. must be one of ["ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]; Requires replacement if changed.`,
+				Description: `The entitlementGroup field. must be one of ["ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]; Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						"ENTITLEMENT_GROUP_UNSPECIFIED",
 						"ENTITLEMENT_GROUP_A",
 						"ENTITLEMENT_GROUP_B",
 					),

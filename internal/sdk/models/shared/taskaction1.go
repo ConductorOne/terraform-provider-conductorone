@@ -13,7 +13,6 @@ import (
 type ActionType string
 
 const (
-	ActionTypeTaskActionTypeUnspecified                              ActionType = "TASK_ACTION_TYPE_UNSPECIFIED"
 	ActionTypeTaskActionTypeClose                                    ActionType = "TASK_ACTION_TYPE_CLOSE"
 	ActionTypeTaskActionTypeApprove                                  ActionType = "TASK_ACTION_TYPE_APPROVE"
 	ActionTypeTaskActionTypeDeny                                     ActionType = "TASK_ACTION_TYPE_DENY"
@@ -51,8 +50,6 @@ func (e *ActionType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_ACTION_TYPE_UNSPECIFIED":
-		fallthrough
 	case "TASK_ACTION_TYPE_CLOSE":
 		fallthrough
 	case "TASK_ACTION_TYPE_APPROVE":
@@ -133,7 +130,7 @@ func (t TaskAction1) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TaskAction1) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

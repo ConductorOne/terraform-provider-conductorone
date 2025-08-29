@@ -15,9 +15,8 @@ import (
 type ReferenceStrength string
 
 const (
-	ReferenceStrengthGrantReasonReferenceStrengthUnspecified ReferenceStrength = "GRANT_REASON_REFERENCE_STRENGTH_UNSPECIFIED"
-	ReferenceStrengthGrantReasonReferenceStrengthWeak        ReferenceStrength = "GRANT_REASON_REFERENCE_STRENGTH_WEAK"
-	ReferenceStrengthGrantReasonReferenceStrengthStrong      ReferenceStrength = "GRANT_REASON_REFERENCE_STRENGTH_STRONG"
+	ReferenceStrengthGrantReasonReferenceStrengthWeak   ReferenceStrength = "GRANT_REASON_REFERENCE_STRENGTH_WEAK"
+	ReferenceStrengthGrantReasonReferenceStrengthStrong ReferenceStrength = "GRANT_REASON_REFERENCE_STRENGTH_STRONG"
 )
 
 func (e ReferenceStrength) ToPointer() *ReferenceStrength {
@@ -29,8 +28,6 @@ func (e *ReferenceStrength) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "GRANT_REASON_REFERENCE_STRENGTH_UNSPECIFIED":
-		fallthrough
 	case "GRANT_REASON_REFERENCE_STRENGTH_WEAK":
 		fallthrough
 	case "GRANT_REASON_REFERENCE_STRENGTH_STRONG":
@@ -67,7 +64,7 @@ func (g GrantReason) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GrantReason) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil

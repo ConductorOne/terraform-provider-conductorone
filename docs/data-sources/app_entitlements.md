@@ -65,7 +65,7 @@ data "conductorone_app_entitlements" "my_app_entitlements" {
   include_deleted = false
   is_automated    = false
   membership_type = [
-    "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER"
+    "APP_ENTITLEMENT_MEMBERSHIP_TYPE_EXCLUSION"
   ]
   only_get_expiring = true
   page_size         = 5

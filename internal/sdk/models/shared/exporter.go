@@ -13,10 +13,9 @@ import (
 type ExporterState string
 
 const (
-	ExporterStateExportStateUnspecified ExporterState = "EXPORT_STATE_UNSPECIFIED"
-	ExporterStateExportStateExporting   ExporterState = "EXPORT_STATE_EXPORTING"
-	ExporterStateExportStateWaiting     ExporterState = "EXPORT_STATE_WAITING"
-	ExporterStateExportStateError       ExporterState = "EXPORT_STATE_ERROR"
+	ExporterStateExportStateExporting ExporterState = "EXPORT_STATE_EXPORTING"
+	ExporterStateExportStateWaiting   ExporterState = "EXPORT_STATE_WAITING"
+	ExporterStateExportStateError     ExporterState = "EXPORT_STATE_ERROR"
 )
 
 func (e ExporterState) ToPointer() *ExporterState {
@@ -28,8 +27,6 @@ func (e *ExporterState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "EXPORT_STATE_UNSPECIFIED":
-		fallthrough
 	case "EXPORT_STATE_EXPORTING":
 		fallthrough
 	case "EXPORT_STATE_WAITING":
@@ -67,7 +64,7 @@ func (e Exporter) MarshalJSON() ([]byte, error) {
 }
 
 func (e *Exporter) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

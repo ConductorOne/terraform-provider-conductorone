@@ -11,7 +11,6 @@ import (
 type AccountType string
 
 const (
-	AccountTypeAppUserTypeUnspecified    AccountType = "APP_USER_TYPE_UNSPECIFIED"
 	AccountTypeAppUserTypeUser           AccountType = "APP_USER_TYPE_USER"
 	AccountTypeAppUserTypeServiceAccount AccountType = "APP_USER_TYPE_SERVICE_ACCOUNT"
 	AccountTypeAppUserTypeSystemAccount  AccountType = "APP_USER_TYPE_SYSTEM_ACCOUNT"
@@ -26,8 +25,6 @@ func (e *AccountType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_USER_TYPE_UNSPECIFIED":
-		fallthrough
 	case "APP_USER_TYPE_USER":
 		fallthrough
 	case "APP_USER_TYPE_SERVICE_ACCOUNT":

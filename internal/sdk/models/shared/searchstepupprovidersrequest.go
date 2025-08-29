@@ -11,9 +11,8 @@ import (
 type ProviderType string
 
 const (
-	ProviderTypeProviderTypeUnspecified ProviderType = "PROVIDER_TYPE_UNSPECIFIED"
-	ProviderTypeProviderTypeOauth2      ProviderType = "PROVIDER_TYPE_OAUTH2"
-	ProviderTypeProviderTypeMicrosoft   ProviderType = "PROVIDER_TYPE_MICROSOFT"
+	ProviderTypeProviderTypeOauth2    ProviderType = "PROVIDER_TYPE_OAUTH2"
+	ProviderTypeProviderTypeMicrosoft ProviderType = "PROVIDER_TYPE_MICROSOFT"
 )
 
 func (e ProviderType) ToPointer() *ProviderType {
@@ -25,8 +24,6 @@ func (e *ProviderType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "PROVIDER_TYPE_UNSPECIFIED":
-		fallthrough
 	case "PROVIDER_TYPE_OAUTH2":
 		fallthrough
 	case "PROVIDER_TYPE_MICROSOFT":

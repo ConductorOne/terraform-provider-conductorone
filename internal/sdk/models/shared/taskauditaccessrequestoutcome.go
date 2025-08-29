@@ -11,11 +11,10 @@ import (
 type TaskAuditAccessRequestOutcomeOutcome string
 
 const (
-	TaskAuditAccessRequestOutcomeOutcomeAccessRequestOutcomeUnspecified TaskAuditAccessRequestOutcomeOutcome = "ACCESS_REQUEST_OUTCOME_UNSPECIFIED"
-	TaskAuditAccessRequestOutcomeOutcomeAccessRequestOutcomeApproved    TaskAuditAccessRequestOutcomeOutcome = "ACCESS_REQUEST_OUTCOME_APPROVED"
-	TaskAuditAccessRequestOutcomeOutcomeAccessRequestOutcomeDenied      TaskAuditAccessRequestOutcomeOutcome = "ACCESS_REQUEST_OUTCOME_DENIED"
-	TaskAuditAccessRequestOutcomeOutcomeAccessRequestOutcomeError       TaskAuditAccessRequestOutcomeOutcome = "ACCESS_REQUEST_OUTCOME_ERROR"
-	TaskAuditAccessRequestOutcomeOutcomeAccessRequestOutcomeCancelled   TaskAuditAccessRequestOutcomeOutcome = "ACCESS_REQUEST_OUTCOME_CANCELLED"
+	TaskAuditAccessRequestOutcomeOutcomeAccessRequestOutcomeApproved  TaskAuditAccessRequestOutcomeOutcome = "ACCESS_REQUEST_OUTCOME_APPROVED"
+	TaskAuditAccessRequestOutcomeOutcomeAccessRequestOutcomeDenied    TaskAuditAccessRequestOutcomeOutcome = "ACCESS_REQUEST_OUTCOME_DENIED"
+	TaskAuditAccessRequestOutcomeOutcomeAccessRequestOutcomeError     TaskAuditAccessRequestOutcomeOutcome = "ACCESS_REQUEST_OUTCOME_ERROR"
+	TaskAuditAccessRequestOutcomeOutcomeAccessRequestOutcomeCancelled TaskAuditAccessRequestOutcomeOutcome = "ACCESS_REQUEST_OUTCOME_CANCELLED"
 )
 
 func (e TaskAuditAccessRequestOutcomeOutcome) ToPointer() *TaskAuditAccessRequestOutcomeOutcome {
@@ -27,8 +26,6 @@ func (e *TaskAuditAccessRequestOutcomeOutcome) UnmarshalJSON(data []byte) error 
 		return err
 	}
 	switch v {
-	case "ACCESS_REQUEST_OUTCOME_UNSPECIFIED":
-		fallthrough
 	case "ACCESS_REQUEST_OUTCOME_APPROVED":
 		fallthrough
 	case "ACCESS_REQUEST_OUTCOME_DENIED":

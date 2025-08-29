@@ -22,7 +22,7 @@ data "conductorone_policies" "my_policies" {
   page_size       = 8
   page_token      = "...my_page_token..."
   policy_types = [
-    "POLICY_TYPE_CERTIFY"
+    "POLICY_TYPE_ACCESS_REQUEST"
   ]
   query = "...my_query..."
   refs = [

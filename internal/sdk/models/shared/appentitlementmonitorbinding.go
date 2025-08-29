@@ -13,9 +13,8 @@ import (
 type AppEntitlementMonitorBindingEntitlementGroup string
 
 const (
-	AppEntitlementMonitorBindingEntitlementGroupEntitlementGroupUnspecified AppEntitlementMonitorBindingEntitlementGroup = "ENTITLEMENT_GROUP_UNSPECIFIED"
-	AppEntitlementMonitorBindingEntitlementGroupEntitlementGroupA           AppEntitlementMonitorBindingEntitlementGroup = "ENTITLEMENT_GROUP_A"
-	AppEntitlementMonitorBindingEntitlementGroupEntitlementGroupB           AppEntitlementMonitorBindingEntitlementGroup = "ENTITLEMENT_GROUP_B"
+	AppEntitlementMonitorBindingEntitlementGroupEntitlementGroupA AppEntitlementMonitorBindingEntitlementGroup = "ENTITLEMENT_GROUP_A"
+	AppEntitlementMonitorBindingEntitlementGroupEntitlementGroupB AppEntitlementMonitorBindingEntitlementGroup = "ENTITLEMENT_GROUP_B"
 )
 
 func (e AppEntitlementMonitorBindingEntitlementGroup) ToPointer() *AppEntitlementMonitorBindingEntitlementGroup {
@@ -27,8 +26,6 @@ func (e *AppEntitlementMonitorBindingEntitlementGroup) UnmarshalJSON(data []byte
 		return err
 	}
 	switch v {
-	case "ENTITLEMENT_GROUP_UNSPECIFIED":
-		fallthrough
 	case "ENTITLEMENT_GROUP_A":
 		fallthrough
 	case "ENTITLEMENT_GROUP_B":
@@ -59,7 +56,7 @@ func (a AppEntitlementMonitorBinding) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppEntitlementMonitorBinding) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

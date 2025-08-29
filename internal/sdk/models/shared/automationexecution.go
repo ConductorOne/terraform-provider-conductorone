@@ -13,7 +13,6 @@ import (
 type AutomationExecutionState string
 
 const (
-	AutomationExecutionStateAutomationExecutionStateUnspecified  AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_UNSPECIFIED"
 	AutomationExecutionStateAutomationExecutionStatePending      AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_PENDING"
 	AutomationExecutionStateAutomationExecutionStateCreating     AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_CREATING"
 	AutomationExecutionStateAutomationExecutionStateGetStep      AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_GET_STEP"
@@ -34,8 +33,6 @@ func (e *AutomationExecutionState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "AUTOMATION_EXECUTION_STATE_UNSPECIFIED":
-		fallthrough
 	case "AUTOMATION_EXECUTION_STATE_PENDING":
 		fallthrough
 	case "AUTOMATION_EXECUTION_STATE_CREATING":
@@ -86,7 +83,7 @@ func (a AutomationExecution) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AutomationExecution) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

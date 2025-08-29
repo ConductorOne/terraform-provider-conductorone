@@ -13,7 +13,6 @@ import (
 type TaskTypeRevokeOutcome string
 
 const (
-	TaskTypeRevokeOutcomeRevokeOutcomeUnspecified  TaskTypeRevokeOutcome = "REVOKE_OUTCOME_UNSPECIFIED"
 	TaskTypeRevokeOutcomeRevokeOutcomeRevoked      TaskTypeRevokeOutcome = "REVOKE_OUTCOME_REVOKED"
 	TaskTypeRevokeOutcomeRevokeOutcomeDenied       TaskTypeRevokeOutcome = "REVOKE_OUTCOME_DENIED"
 	TaskTypeRevokeOutcomeRevokeOutcomeError        TaskTypeRevokeOutcome = "REVOKE_OUTCOME_ERROR"
@@ -30,8 +29,6 @@ func (e *TaskTypeRevokeOutcome) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "REVOKE_OUTCOME_UNSPECIFIED":
-		fallthrough
 	case "REVOKE_OUTCOME_REVOKED":
 		fallthrough
 	case "REVOKE_OUTCOME_DENIED":
@@ -77,7 +74,7 @@ func (t TaskTypeRevoke) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TaskTypeRevoke) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

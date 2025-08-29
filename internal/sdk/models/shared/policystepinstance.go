@@ -11,9 +11,8 @@ import (
 type PolicyStepInstanceState string
 
 const (
-	PolicyStepInstanceStatePolicyStepStateUnspecified PolicyStepInstanceState = "POLICY_STEP_STATE_UNSPECIFIED"
-	PolicyStepInstanceStatePolicyStepStateActive      PolicyStepInstanceState = "POLICY_STEP_STATE_ACTIVE"
-	PolicyStepInstanceStatePolicyStepStateDone        PolicyStepInstanceState = "POLICY_STEP_STATE_DONE"
+	PolicyStepInstanceStatePolicyStepStateActive PolicyStepInstanceState = "POLICY_STEP_STATE_ACTIVE"
+	PolicyStepInstanceStatePolicyStepStateDone   PolicyStepInstanceState = "POLICY_STEP_STATE_DONE"
 )
 
 func (e PolicyStepInstanceState) ToPointer() *PolicyStepInstanceState {
@@ -25,8 +24,6 @@ func (e *PolicyStepInstanceState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "POLICY_STEP_STATE_UNSPECIFIED":
-		fallthrough
 	case "POLICY_STEP_STATE_ACTIVE":
 		fallthrough
 	case "POLICY_STEP_STATE_DONE":

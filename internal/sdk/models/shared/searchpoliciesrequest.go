@@ -10,7 +10,6 @@ import (
 type PolicyTypes string
 
 const (
-	PolicyTypesPolicyTypeUnspecified   PolicyTypes = "POLICY_TYPE_UNSPECIFIED"
 	PolicyTypesPolicyTypeGrant         PolicyTypes = "POLICY_TYPE_GRANT"
 	PolicyTypesPolicyTypeRevoke        PolicyTypes = "POLICY_TYPE_REVOKE"
 	PolicyTypesPolicyTypeCertify       PolicyTypes = "POLICY_TYPE_CERTIFY"
@@ -27,8 +26,6 @@ func (e *PolicyTypes) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "POLICY_TYPE_UNSPECIFIED":
-		fallthrough
 	case "POLICY_TYPE_GRANT":
 		fallthrough
 	case "POLICY_TYPE_REVOKE":

@@ -41,7 +41,7 @@ resource "conductorone_app" "my_app" {
 - `certify_policy_id` (String) Creates the app with this certify policy.
 - `description` (String) Creates the app with this description.
 - `grant_policy_id` (String) Creates the app with this grant policy.
-- `identity_matching` (String) Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"]
+- `identity_matching` (String) Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"]
 - `monthly_cost_usd` (Number) Creates the app with this monthly cost per seat.
 - `revoke_policy_id` (String) Creates the app with this revoke policy.
 - `strict_access_entitlement_provisioning` (Boolean) This flag enforces a provisioning mode where the access entitlement is always included in the provisioning flow, if the app user doesn't exist

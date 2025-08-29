@@ -11,9 +11,8 @@ import (
 type GrantFilterType string
 
 const (
-	GrantFilterTypeGrantFilterTypeUnspecified GrantFilterType = "GRANT_FILTER_TYPE_UNSPECIFIED"
-	GrantFilterTypeGrantFilterTypePermanent   GrantFilterType = "GRANT_FILTER_TYPE_PERMANENT"
-	GrantFilterTypeGrantFilterTypeTemporary   GrantFilterType = "GRANT_FILTER_TYPE_TEMPORARY"
+	GrantFilterTypeGrantFilterTypePermanent GrantFilterType = "GRANT_FILTER_TYPE_PERMANENT"
+	GrantFilterTypeGrantFilterTypeTemporary GrantFilterType = "GRANT_FILTER_TYPE_TEMPORARY"
 )
 
 func (e GrantFilterType) ToPointer() *GrantFilterType {
@@ -25,8 +24,6 @@ func (e *GrantFilterType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "GRANT_FILTER_TYPE_UNSPECIFIED":
-		fallthrough
 	case "GRANT_FILTER_TYPE_PERMANENT":
 		fallthrough
 	case "GRANT_FILTER_TYPE_TEMPORARY":
@@ -41,7 +38,6 @@ func (e *GrantFilterType) UnmarshalJSON(data []byte) error {
 type GrantJustificationType string
 
 const (
-	GrantJustificationTypeGrantJustificationTypeUnspecified  GrantJustificationType = "GRANT_JUSTIFICATION_TYPE_UNSPECIFIED"
 	GrantJustificationTypeGrantJustificationTypeAll          GrantJustificationType = "GRANT_JUSTIFICATION_TYPE_ALL"
 	GrantJustificationTypeGrantJustificationTypeConductorOne GrantJustificationType = "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE"
 	GrantJustificationTypeGrantJustificationTypeDirect       GrantJustificationType = "GRANT_JUSTIFICATION_TYPE_DIRECT"
@@ -56,8 +52,6 @@ func (e *GrantJustificationType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "GRANT_JUSTIFICATION_TYPE_UNSPECIFIED":
-		fallthrough
 	case "GRANT_JUSTIFICATION_TYPE_ALL":
 		fallthrough
 	case "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE":
@@ -74,9 +68,8 @@ func (e *GrantJustificationType) UnmarshalJSON(data []byte) error {
 type GrantSourceFilter string
 
 const (
-	GrantSourceFilterGrantSourceFilterUnspecified GrantSourceFilter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
-	GrantSourceFilterGrantSourceFilterDirect      GrantSourceFilter = "GRANT_SOURCE_FILTER_DIRECT"
-	GrantSourceFilterGrantSourceFilterInherited   GrantSourceFilter = "GRANT_SOURCE_FILTER_INHERITED"
+	GrantSourceFilterGrantSourceFilterDirect    GrantSourceFilter = "GRANT_SOURCE_FILTER_DIRECT"
+	GrantSourceFilterGrantSourceFilterInherited GrantSourceFilter = "GRANT_SOURCE_FILTER_INHERITED"
 )
 
 func (e GrantSourceFilter) ToPointer() *GrantSourceFilter {
@@ -88,8 +81,6 @@ func (e *GrantSourceFilter) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "GRANT_SOURCE_FILTER_UNSPECIFIED":
-		fallthrough
 	case "GRANT_SOURCE_FILTER_DIRECT":
 		fallthrough
 	case "GRANT_SOURCE_FILTER_INHERITED":

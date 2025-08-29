@@ -66,7 +66,7 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
       webhook_id = "...my_webhook_id..."
     }
   }
-  purpose             = "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED"
+  purpose             = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
   revoke_policy_id    = "...my_revoke_policy_id..."
   risk_level_value_id = "...my_risk_level_value_id..."
   slug                = "...my_slug..."

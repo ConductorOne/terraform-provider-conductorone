@@ -12,7 +12,6 @@ import (
 type Actions string
 
 const (
-	ActionsTaskActionTypeUnspecified                              Actions = "TASK_ACTION_TYPE_UNSPECIFIED"
 	ActionsTaskActionTypeClose                                    Actions = "TASK_ACTION_TYPE_CLOSE"
 	ActionsTaskActionTypeApprove                                  Actions = "TASK_ACTION_TYPE_APPROVE"
 	ActionsTaskActionTypeDeny                                     Actions = "TASK_ACTION_TYPE_DENY"
@@ -50,8 +49,6 @@ func (e *Actions) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_ACTION_TYPE_UNSPECIFIED":
-		fallthrough
 	case "TASK_ACTION_TYPE_CLOSE":
 		fallthrough
 	case "TASK_ACTION_TYPE_APPROVE":
@@ -121,7 +118,6 @@ type Data struct {
 type Origin string
 
 const (
-	OriginTaskOriginUnspecified                 Origin = "TASK_ORIGIN_UNSPECIFIED"
 	OriginTaskOriginProfileMembershipAutomation Origin = "TASK_ORIGIN_PROFILE_MEMBERSHIP_AUTOMATION"
 	OriginTaskOriginSlack                       Origin = "TASK_ORIGIN_SLACK"
 	OriginTaskOriginAPI                         Origin = "TASK_ORIGIN_API"
@@ -145,8 +141,6 @@ func (e *Origin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_ORIGIN_UNSPECIFIED":
-		fallthrough
 	case "TASK_ORIGIN_PROFILE_MEMBERSHIP_AUTOMATION":
 		fallthrough
 	case "TASK_ORIGIN_SLACK":
@@ -181,10 +175,9 @@ func (e *Origin) UnmarshalJSON(data []byte) error {
 type Processing string
 
 const (
-	ProcessingTaskProcessingTypeUnspecified Processing = "TASK_PROCESSING_TYPE_UNSPECIFIED"
-	ProcessingTaskProcessingTypeProcessing  Processing = "TASK_PROCESSING_TYPE_PROCESSING"
-	ProcessingTaskProcessingTypeWaiting     Processing = "TASK_PROCESSING_TYPE_WAITING"
-	ProcessingTaskProcessingTypeDone        Processing = "TASK_PROCESSING_TYPE_DONE"
+	ProcessingTaskProcessingTypeProcessing Processing = "TASK_PROCESSING_TYPE_PROCESSING"
+	ProcessingTaskProcessingTypeWaiting    Processing = "TASK_PROCESSING_TYPE_WAITING"
+	ProcessingTaskProcessingTypeDone       Processing = "TASK_PROCESSING_TYPE_DONE"
 )
 
 func (e Processing) ToPointer() *Processing {
@@ -196,8 +189,6 @@ func (e *Processing) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_PROCESSING_TYPE_UNSPECIFIED":
-		fallthrough
 	case "TASK_PROCESSING_TYPE_PROCESSING":
 		fallthrough
 	case "TASK_PROCESSING_TYPE_WAITING":
@@ -214,10 +205,9 @@ func (e *Processing) UnmarshalJSON(data []byte) error {
 type Recommendation string
 
 const (
-	RecommendationInsightRecommendationUnspecified Recommendation = "INSIGHT_RECOMMENDATION_UNSPECIFIED"
-	RecommendationInsightRecommendationApprove     Recommendation = "INSIGHT_RECOMMENDATION_APPROVE"
-	RecommendationInsightRecommendationDeny        Recommendation = "INSIGHT_RECOMMENDATION_DENY"
-	RecommendationInsightRecommendationReview      Recommendation = "INSIGHT_RECOMMENDATION_REVIEW"
+	RecommendationInsightRecommendationApprove Recommendation = "INSIGHT_RECOMMENDATION_APPROVE"
+	RecommendationInsightRecommendationDeny    Recommendation = "INSIGHT_RECOMMENDATION_DENY"
+	RecommendationInsightRecommendationReview  Recommendation = "INSIGHT_RECOMMENDATION_REVIEW"
 )
 
 func (e Recommendation) ToPointer() *Recommendation {
@@ -229,8 +219,6 @@ func (e *Recommendation) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "INSIGHT_RECOMMENDATION_UNSPECIFIED":
-		fallthrough
 	case "INSIGHT_RECOMMENDATION_APPROVE":
 		fallthrough
 	case "INSIGHT_RECOMMENDATION_DENY":
@@ -247,9 +235,8 @@ func (e *Recommendation) UnmarshalJSON(data []byte) error {
 type TaskState string
 
 const (
-	TaskStateTaskStateUnspecified TaskState = "TASK_STATE_UNSPECIFIED"
-	TaskStateTaskStateOpen        TaskState = "TASK_STATE_OPEN"
-	TaskStateTaskStateClosed      TaskState = "TASK_STATE_CLOSED"
+	TaskStateTaskStateOpen   TaskState = "TASK_STATE_OPEN"
+	TaskStateTaskStateClosed TaskState = "TASK_STATE_CLOSED"
 )
 
 func (e TaskState) ToPointer() *TaskState {
@@ -261,8 +248,6 @@ func (e *TaskState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_STATE_UNSPECIFIED":
-		fallthrough
 	case "TASK_STATE_OPEN":
 		fallthrough
 	case "TASK_STATE_CLOSED":
@@ -337,7 +322,7 @@ func (t Task) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Task) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

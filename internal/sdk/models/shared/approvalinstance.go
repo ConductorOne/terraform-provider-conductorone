@@ -11,7 +11,6 @@ import (
 type ApprovalInstanceState string
 
 const (
-	ApprovalInstanceStateApprovalInstanceStateUnspecified          ApprovalInstanceState = "APPROVAL_INSTANCE_STATE_UNSPECIFIED"
 	ApprovalInstanceStateApprovalInstanceStateInit                 ApprovalInstanceState = "APPROVAL_INSTANCE_STATE_INIT"
 	ApprovalInstanceStateApprovalInstanceStateSendingNotifications ApprovalInstanceState = "APPROVAL_INSTANCE_STATE_SENDING_NOTIFICATIONS"
 	ApprovalInstanceStateApprovalInstanceStateWaiting              ApprovalInstanceState = "APPROVAL_INSTANCE_STATE_WAITING"
@@ -27,8 +26,6 @@ func (e *ApprovalInstanceState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APPROVAL_INSTANCE_STATE_UNSPECIFIED":
-		fallthrough
 	case "APPROVAL_INSTANCE_STATE_INIT":
 		fallthrough
 	case "APPROVAL_INSTANCE_STATE_SENDING_NOTIFICATIONS":

@@ -13,7 +13,6 @@ import (
 type TaskTypeGrantOutcome string
 
 const (
-	TaskTypeGrantOutcomeGrantOutcomeUnspecified  TaskTypeGrantOutcome = "GRANT_OUTCOME_UNSPECIFIED"
 	TaskTypeGrantOutcomeGrantOutcomeGranted      TaskTypeGrantOutcome = "GRANT_OUTCOME_GRANTED"
 	TaskTypeGrantOutcomeGrantOutcomeDenied       TaskTypeGrantOutcome = "GRANT_OUTCOME_DENIED"
 	TaskTypeGrantOutcomeGrantOutcomeError        TaskTypeGrantOutcome = "GRANT_OUTCOME_ERROR"
@@ -30,8 +29,6 @@ func (e *TaskTypeGrantOutcome) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "GRANT_OUTCOME_UNSPECIFIED":
-		fallthrough
 	case "GRANT_OUTCOME_GRANTED":
 		fallthrough
 	case "GRANT_OUTCOME_DENIED":
@@ -71,7 +68,7 @@ func (t TaskTypeGrant) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TaskTypeGrant) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

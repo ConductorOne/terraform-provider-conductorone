@@ -11,7 +11,6 @@ import (
 type ProvisionInstanceState string
 
 const (
-	ProvisionInstanceStateProvisionInstanceStateUnspecified                     ProvisionInstanceState = "PROVISION_INSTANCE_STATE_UNSPECIFIED"
 	ProvisionInstanceStateProvisionInstanceStateInit                            ProvisionInstanceState = "PROVISION_INSTANCE_STATE_INIT"
 	ProvisionInstanceStateProvisionInstanceStateCreateConnectorActionsForTarget ProvisionInstanceState = "PROVISION_INSTANCE_STATE_CREATE_CONNECTOR_ACTIONS_FOR_TARGET"
 	ProvisionInstanceStateProvisionInstanceStateSendingNotifications            ProvisionInstanceState = "PROVISION_INSTANCE_STATE_SENDING_NOTIFICATIONS"
@@ -32,8 +31,6 @@ func (e *ProvisionInstanceState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "PROVISION_INSTANCE_STATE_UNSPECIFIED":
-		fallthrough
 	case "PROVISION_INSTANCE_STATE_INIT":
 		fallthrough
 	case "PROVISION_INSTANCE_STATE_CREATE_CONNECTOR_ACTIONS_FOR_TARGET":

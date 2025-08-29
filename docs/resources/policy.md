@@ -27,8 +27,8 @@ resource "conductorone_policy" "my_policy" {
           }
           approval = {
             agent_approval = {
-              agent_failure_action = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS"
-              agent_mode           = "APPROVAL_AGENT_MODE_FULL_CONTROL"
+              agent_failure_action = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS"
+              agent_mode           = "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY"
               agent_user_id        = "...my_agent_user_id..."
               instructions         = "...my_instructions..."
               policy_ids = [
@@ -193,7 +193,7 @@ resource "conductorone_policy" "my_policy" {
       ]
     }
   }
-  policy_type = "POLICY_TYPE_UNSPECIFIED"
+  policy_type = "POLICY_TYPE_GRANT"
   post_actions = [
     {
       certify_remediate_immediately = false
@@ -220,7 +220,7 @@ resource "conductorone_policy" "my_policy" {
 
 - `description` (String) The description of the new policy.
 - `policy_steps` (Attributes Map) The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples. (see [below for nested schema](#nestedatt--policy_steps))
-- `policy_type` (String) The enum of the policy type. must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]
+- `policy_type` (String) The enum of the policy type. must be one of ["POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]
 - `post_actions` (Attributes List) Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately. (see [below for nested schema](#nestedatt--post_actions))
 - `reassign_tasks_to_delegates` (Boolean, Deprecated) Deprecated. Use setting in policy step instead
 - `rules` (Attributes List) The rules field. (see [below for nested schema](#nestedatt--rules))
@@ -313,8 +313,8 @@ Read-Only:
 
 Optional:
 
-- `agent_failure_action` (String) The action to take if the agent fails to approve, deny, or reassign the task. must be one of ["APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]
-- `agent_mode` (String) The mode of the agent, full control, change policy only, or comment only. must be one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]
+- `agent_failure_action` (String) The action to take if the agent fails to approve, deny, or reassign the task. must be one of ["APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]
+- `agent_mode` (String) The mode of the agent, full control, change policy only, or comment only. must be one of ["APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]
 - `agent_user_id` (String) The agent user ID to assign the task to.
 - `instructions` (String) Instructions for the agent.
 - `policy_ids` (List of String) The allow list of policy IDs to re-route the task to.

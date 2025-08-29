@@ -13,9 +13,8 @@ import (
 type CurrentState string
 
 const (
-	CurrentStateTaskStateUnspecified CurrentState = "TASK_STATE_UNSPECIFIED"
-	CurrentStateTaskStateOpen        CurrentState = "TASK_STATE_OPEN"
-	CurrentStateTaskStateClosed      CurrentState = "TASK_STATE_CLOSED"
+	CurrentStateTaskStateOpen   CurrentState = "TASK_STATE_OPEN"
+	CurrentStateTaskStateClosed CurrentState = "TASK_STATE_CLOSED"
 )
 
 func (e CurrentState) ToPointer() *CurrentState {
@@ -27,8 +26,6 @@ func (e *CurrentState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_STATE_UNSPECIFIED":
-		fallthrough
 	case "TASK_STATE_OPEN":
 		fallthrough
 	case "TASK_STATE_CLOSED":
@@ -43,9 +40,8 @@ func (e *CurrentState) UnmarshalJSON(data []byte) error {
 type TaskAuditViewEventType string
 
 const (
-	TaskAuditViewEventTypeTaskAuditEventTypeUnspecified TaskAuditViewEventType = "TASK_AUDIT_EVENT_TYPE_UNSPECIFIED"
-	TaskAuditViewEventTypeTaskAuditEventTypeNeutral     TaskAuditViewEventType = "TASK_AUDIT_EVENT_TYPE_NEUTRAL"
-	TaskAuditViewEventTypeTaskAuditEventTypeError       TaskAuditViewEventType = "TASK_AUDIT_EVENT_TYPE_ERROR"
+	TaskAuditViewEventTypeTaskAuditEventTypeNeutral TaskAuditViewEventType = "TASK_AUDIT_EVENT_TYPE_NEUTRAL"
+	TaskAuditViewEventTypeTaskAuditEventTypeError   TaskAuditViewEventType = "TASK_AUDIT_EVENT_TYPE_ERROR"
 )
 
 func (e TaskAuditViewEventType) ToPointer() *TaskAuditViewEventType {
@@ -57,8 +53,6 @@ func (e *TaskAuditViewEventType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_AUDIT_EVENT_TYPE_UNSPECIFIED":
-		fallthrough
 	case "TASK_AUDIT_EVENT_TYPE_NEUTRAL":
 		fallthrough
 	case "TASK_AUDIT_EVENT_TYPE_ERROR":
@@ -73,7 +67,6 @@ func (e *TaskAuditViewEventType) UnmarshalJSON(data []byte) error {
 type Source string
 
 const (
-	SourceSourceUnspecified   Source = "SOURCE_UNSPECIFIED"
 	SourceSourceC1            Source = "SOURCE_C1"
 	SourceSourceJira          Source = "SOURCE_JIRA"
 	SourceSourceSlack         Source = "SOURCE_SLACK"
@@ -89,8 +82,6 @@ func (e *Source) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "SOURCE_UNSPECIFIED":
-		fallthrough
 	case "SOURCE_C1":
 		fallthrough
 	case "SOURCE_JIRA":
@@ -289,7 +280,7 @@ func (t TaskAuditView) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TaskAuditView) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

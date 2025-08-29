@@ -11,7 +11,6 @@ import (
 type Format string
 
 const (
-	FormatExportFormatUnspecified  Format = "EXPORT_FORMAT_UNSPECIFIED"
 	FormatExportFormatOcsfJSONZstd Format = "EXPORT_FORMAT_OCSF_JSON_ZSTD"
 	FormatExportFormatOcsfJSONGzip Format = "EXPORT_FORMAT_OCSF_JSON_GZIP"
 )
@@ -25,8 +24,6 @@ func (e *Format) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "EXPORT_FORMAT_UNSPECIFIED":
-		fallthrough
 	case "EXPORT_FORMAT_OCSF_JSON_ZSTD":
 		fallthrough
 	case "EXPORT_FORMAT_OCSF_JSON_GZIP":

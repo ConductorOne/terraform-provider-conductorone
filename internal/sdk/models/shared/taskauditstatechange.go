@@ -11,9 +11,8 @@ import (
 type PreviousState string
 
 const (
-	PreviousStateTaskStateUnspecified PreviousState = "TASK_STATE_UNSPECIFIED"
-	PreviousStateTaskStateOpen        PreviousState = "TASK_STATE_OPEN"
-	PreviousStateTaskStateClosed      PreviousState = "TASK_STATE_CLOSED"
+	PreviousStateTaskStateOpen   PreviousState = "TASK_STATE_OPEN"
+	PreviousStateTaskStateClosed PreviousState = "TASK_STATE_CLOSED"
 )
 
 func (e PreviousState) ToPointer() *PreviousState {
@@ -25,8 +24,6 @@ func (e *PreviousState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_STATE_UNSPECIFIED":
-		fallthrough
 	case "TASK_STATE_OPEN":
 		fallthrough
 	case "TASK_STATE_CLOSED":

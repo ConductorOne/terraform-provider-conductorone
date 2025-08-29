@@ -650,10 +650,9 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"purpose": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"]`,
+				Description: `The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						"APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED",
 						"APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT",
 						"APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION",
 					),

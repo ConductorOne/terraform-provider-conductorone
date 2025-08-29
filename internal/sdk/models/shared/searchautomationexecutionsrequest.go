@@ -10,7 +10,6 @@ import (
 type ExecutionStepStates string
 
 const (
-	ExecutionStepStatesAutomationExecutionStateUnspecified  ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_UNSPECIFIED"
 	ExecutionStepStatesAutomationExecutionStatePending      ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_PENDING"
 	ExecutionStepStatesAutomationExecutionStateCreating     ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_CREATING"
 	ExecutionStepStatesAutomationExecutionStateGetStep      ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_GET_STEP"
@@ -31,8 +30,6 @@ func (e *ExecutionStepStates) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "AUTOMATION_EXECUTION_STATE_UNSPECIFIED":
-		fallthrough
 	case "AUTOMATION_EXECUTION_STATE_PENDING":
 		fallthrough
 	case "AUTOMATION_EXECUTION_STATE_CREATING":

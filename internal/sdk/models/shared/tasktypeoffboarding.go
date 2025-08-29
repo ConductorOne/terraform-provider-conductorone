@@ -13,11 +13,10 @@ import (
 type TaskTypeOffboardingOutcome string
 
 const (
-	TaskTypeOffboardingOutcomeOffboardingOutcomeUnspecified TaskTypeOffboardingOutcome = "OFFBOARDING_OUTCOME_UNSPECIFIED"
-	TaskTypeOffboardingOutcomeOffboardingOutcomeInProgress  TaskTypeOffboardingOutcome = "OFFBOARDING_OUTCOME_IN_PROGRESS"
-	TaskTypeOffboardingOutcomeOffboardingOutcomeDone        TaskTypeOffboardingOutcome = "OFFBOARDING_OUTCOME_DONE"
-	TaskTypeOffboardingOutcomeOffboardingOutcomeError       TaskTypeOffboardingOutcome = "OFFBOARDING_OUTCOME_ERROR"
-	TaskTypeOffboardingOutcomeOffboardingOutcomeCancelled   TaskTypeOffboardingOutcome = "OFFBOARDING_OUTCOME_CANCELLED"
+	TaskTypeOffboardingOutcomeOffboardingOutcomeInProgress TaskTypeOffboardingOutcome = "OFFBOARDING_OUTCOME_IN_PROGRESS"
+	TaskTypeOffboardingOutcomeOffboardingOutcomeDone       TaskTypeOffboardingOutcome = "OFFBOARDING_OUTCOME_DONE"
+	TaskTypeOffboardingOutcomeOffboardingOutcomeError      TaskTypeOffboardingOutcome = "OFFBOARDING_OUTCOME_ERROR"
+	TaskTypeOffboardingOutcomeOffboardingOutcomeCancelled  TaskTypeOffboardingOutcome = "OFFBOARDING_OUTCOME_CANCELLED"
 )
 
 func (e TaskTypeOffboardingOutcome) ToPointer() *TaskTypeOffboardingOutcome {
@@ -29,8 +28,6 @@ func (e *TaskTypeOffboardingOutcome) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "OFFBOARDING_OUTCOME_UNSPECIFIED":
-		fallthrough
 	case "OFFBOARDING_OUTCOME_IN_PROGRESS":
 		fallthrough
 	case "OFFBOARDING_OUTCOME_DONE":
@@ -59,7 +56,7 @@ func (t TaskTypeOffboarding) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TaskTypeOffboarding) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

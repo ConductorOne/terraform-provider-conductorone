@@ -11,9 +11,8 @@ import (
 type GetAppEntitlementMonitorBindingRequestEntitlementGroup string
 
 const (
-	GetAppEntitlementMonitorBindingRequestEntitlementGroupEntitlementGroupUnspecified GetAppEntitlementMonitorBindingRequestEntitlementGroup = "ENTITLEMENT_GROUP_UNSPECIFIED"
-	GetAppEntitlementMonitorBindingRequestEntitlementGroupEntitlementGroupA           GetAppEntitlementMonitorBindingRequestEntitlementGroup = "ENTITLEMENT_GROUP_A"
-	GetAppEntitlementMonitorBindingRequestEntitlementGroupEntitlementGroupB           GetAppEntitlementMonitorBindingRequestEntitlementGroup = "ENTITLEMENT_GROUP_B"
+	GetAppEntitlementMonitorBindingRequestEntitlementGroupEntitlementGroupA GetAppEntitlementMonitorBindingRequestEntitlementGroup = "ENTITLEMENT_GROUP_A"
+	GetAppEntitlementMonitorBindingRequestEntitlementGroupEntitlementGroupB GetAppEntitlementMonitorBindingRequestEntitlementGroup = "ENTITLEMENT_GROUP_B"
 )
 
 func (e GetAppEntitlementMonitorBindingRequestEntitlementGroup) ToPointer() *GetAppEntitlementMonitorBindingRequestEntitlementGroup {
@@ -25,8 +24,6 @@ func (e *GetAppEntitlementMonitorBindingRequestEntitlementGroup) UnmarshalJSON(d
 		return err
 	}
 	switch v {
-	case "ENTITLEMENT_GROUP_UNSPECIFIED":
-		fallthrough
 	case "ENTITLEMENT_GROUP_A":
 		fallthrough
 	case "ENTITLEMENT_GROUP_B":

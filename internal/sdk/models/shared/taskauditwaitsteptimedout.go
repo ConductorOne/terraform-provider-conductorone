@@ -21,7 +21,7 @@ func (t TaskAuditWaitStepTimedOut) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TaskAuditWaitStepTimedOut) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

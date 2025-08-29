@@ -16,10 +16,9 @@ type Claims struct {
 type StepUpTransactionState string
 
 const (
-	StepUpTransactionStateStepUpTransactionStateUnspecified StepUpTransactionState = "STEP_UP_TRANSACTION_STATE_UNSPECIFIED"
-	StepUpTransactionStateStepUpTransactionStatePending     StepUpTransactionState = "STEP_UP_TRANSACTION_STATE_PENDING"
-	StepUpTransactionStateStepUpTransactionStateVerified    StepUpTransactionState = "STEP_UP_TRANSACTION_STATE_VERIFIED"
-	StepUpTransactionStateStepUpTransactionStateError       StepUpTransactionState = "STEP_UP_TRANSACTION_STATE_ERROR"
+	StepUpTransactionStateStepUpTransactionStatePending  StepUpTransactionState = "STEP_UP_TRANSACTION_STATE_PENDING"
+	StepUpTransactionStateStepUpTransactionStateVerified StepUpTransactionState = "STEP_UP_TRANSACTION_STATE_VERIFIED"
+	StepUpTransactionStateStepUpTransactionStateError    StepUpTransactionState = "STEP_UP_TRANSACTION_STATE_ERROR"
 )
 
 func (e StepUpTransactionState) ToPointer() *StepUpTransactionState {
@@ -31,8 +30,6 @@ func (e *StepUpTransactionState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "STEP_UP_TRANSACTION_STATE_UNSPECIFIED":
-		fallthrough
 	case "STEP_UP_TRANSACTION_STATE_PENDING":
 		fallthrough
 	case "STEP_UP_TRANSACTION_STATE_VERIFIED":
@@ -76,7 +73,7 @@ func (s StepUpTransaction) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StepUpTransaction) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
