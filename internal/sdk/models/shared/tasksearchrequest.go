@@ -69,7 +69,6 @@ func (e *CurrentStep) UnmarshalJSON(data []byte) error {
 type EmergencyStatus string
 
 const (
-	EmergencyStatusUnspecified  EmergencyStatus = "UNSPECIFIED"
 	EmergencyStatusAll          EmergencyStatus = "ALL"
 	EmergencyStatusNonEmergency EmergencyStatus = "NON_EMERGENCY"
 	EmergencyStatusEmergency    EmergencyStatus = "EMERGENCY"
@@ -84,8 +83,6 @@ func (e *EmergencyStatus) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "UNSPECIFIED":
-		fallthrough
 	case "ALL":
 		fallthrough
 	case "NON_EMERGENCY":
