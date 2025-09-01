@@ -12,7 +12,6 @@ import (
 type TargetedAppUserTypes string
 
 const (
-	TargetedAppUserTypesAppUserTypeUnspecified    TargetedAppUserTypes = "APP_USER_TYPE_UNSPECIFIED"
 	TargetedAppUserTypesAppUserTypeUser           TargetedAppUserTypes = "APP_USER_TYPE_USER"
 	TargetedAppUserTypesAppUserTypeServiceAccount TargetedAppUserTypes = "APP_USER_TYPE_SERVICE_ACCOUNT"
 	TargetedAppUserTypesAppUserTypeSystemAccount  TargetedAppUserTypes = "APP_USER_TYPE_SYSTEM_ACCOUNT"
@@ -27,8 +26,6 @@ func (e *TargetedAppUserTypes) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_USER_TYPE_UNSPECIFIED":
-		fallthrough
 	case "APP_USER_TYPE_USER":
 		fallthrough
 	case "APP_USER_TYPE_SERVICE_ACCOUNT":
@@ -73,7 +70,7 @@ func (u UsageBasedRevocationTrigger) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UsageBasedRevocationTrigger) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -732,6 +732,7 @@ func (r *AppEntitlementsDataSource) Read(ctx context.Context, req datasource.Rea
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	
 	response, err := res.Next()
 	for {
 		if err != nil {

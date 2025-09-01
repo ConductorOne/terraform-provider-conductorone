@@ -162,7 +162,7 @@ func (s *AppSearch) Search(ctx context.Context, request *shared.SearchAppsReques
 			if err != nil {
 				return nil, err
 			}
-			if val == nil || val == "" {
+			if val == nil {
 				return nil, nil
 			}
 			nCVal = val.(string)

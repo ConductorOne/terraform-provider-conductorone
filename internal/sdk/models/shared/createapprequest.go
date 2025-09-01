@@ -11,7 +11,6 @@ import (
 type CreateAppRequestIdentityMatching string
 
 const (
-	CreateAppRequestIdentityMatchingAppUserIdentityMatchingUnspecified CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_UNSPECIFIED"
 	CreateAppRequestIdentityMatchingAppUserIdentityMatchingStrict      CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_STRICT"
 	CreateAppRequestIdentityMatchingAppUserIdentityMatchingDisplayName CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
 )
@@ -25,8 +24,6 @@ func (e *CreateAppRequestIdentityMatching) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_USER_IDENTITY_MATCHING_UNSPECIFIED":
-		fallthrough
 	case "APP_USER_IDENTITY_MATCHING_STRICT":
 		fallthrough
 	case "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME":

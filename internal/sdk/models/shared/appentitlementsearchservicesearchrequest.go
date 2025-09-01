@@ -10,11 +10,10 @@ import (
 type MembershipType string
 
 const (
-	MembershipTypeAppEntitlementMembershipTypeUnspecified MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_UNSPECIFIED"
-	MembershipTypeAppEntitlementMembershipTypeMember      MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_MEMBER"
-	MembershipTypeAppEntitlementMembershipTypeOwner       MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER"
-	MembershipTypeAppEntitlementMembershipTypeExclusion   MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_EXCLUSION"
-	MembershipTypeAppEntitlementMembershipTypeAdmin       MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_ADMIN"
+	MembershipTypeAppEntitlementMembershipTypeMember    MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_MEMBER"
+	MembershipTypeAppEntitlementMembershipTypeOwner     MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER"
+	MembershipTypeAppEntitlementMembershipTypeExclusion MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_EXCLUSION"
+	MembershipTypeAppEntitlementMembershipTypeAdmin     MembershipType = "APP_ENTITLEMENT_MEMBERSHIP_TYPE_ADMIN"
 )
 
 func (e MembershipType) ToPointer() *MembershipType {
@@ -26,8 +25,6 @@ func (e *MembershipType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_UNSPECIFIED":
-		fallthrough
 	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_MEMBER":
 		fallthrough
 	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER":

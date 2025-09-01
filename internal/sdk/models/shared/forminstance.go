@@ -14,9 +14,8 @@ type FormInstanceData struct {
 type FormInstanceState string
 
 const (
-	FormInstanceStateFormInstanceStateUnspecified FormInstanceState = "FORM_INSTANCE_STATE_UNSPECIFIED"
-	FormInstanceStateFormInstanceStateWaiting     FormInstanceState = "FORM_INSTANCE_STATE_WAITING"
-	FormInstanceStateFormInstanceStateDone        FormInstanceState = "FORM_INSTANCE_STATE_DONE"
+	FormInstanceStateFormInstanceStateWaiting FormInstanceState = "FORM_INSTANCE_STATE_WAITING"
+	FormInstanceStateFormInstanceStateDone    FormInstanceState = "FORM_INSTANCE_STATE_DONE"
 )
 
 func (e FormInstanceState) ToPointer() *FormInstanceState {
@@ -28,8 +27,6 @@ func (e *FormInstanceState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "FORM_INSTANCE_STATE_UNSPECIFIED":
-		fallthrough
 	case "FORM_INSTANCE_STATE_WAITING":
 		fallthrough
 	case "FORM_INSTANCE_STATE_DONE":

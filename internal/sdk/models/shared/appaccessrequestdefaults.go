@@ -14,7 +14,6 @@ type DurationUnset struct {
 type State string
 
 const (
-	StateAppAccessRequestDefaultsLastApplyStateUnspecified   State = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_UNSPECIFIED"
 	StateAppAccessRequestDefaultsLastApplyStateRunning       State = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_RUNNING"
 	StateAppAccessRequestDefaultsLastApplyStateSuccess       State = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_SUCCESS"
 	StateAppAccessRequestDefaultsLastApplyStateFailed        State = "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_FAILED"
@@ -32,8 +31,6 @@ func (e *State) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_UNSPECIFIED":
-		fallthrough
 	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_RUNNING":
 		fallthrough
 	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_SUCCESS":

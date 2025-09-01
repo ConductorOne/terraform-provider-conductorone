@@ -13,9 +13,8 @@ import (
 type SortDirection string
 
 const (
-	SortDirectionSortDirectionUnspecified SortDirection = "SORT_DIRECTION_UNSPECIFIED"
-	SortDirectionSortDirectionAsc         SortDirection = "SORT_DIRECTION_ASC"
-	SortDirectionSortDirectionDesc        SortDirection = "SORT_DIRECTION_DESC"
+	SortDirectionSortDirectionAsc  SortDirection = "SORT_DIRECTION_ASC"
+	SortDirectionSortDirectionDesc SortDirection = "SORT_DIRECTION_DESC"
 )
 
 func (e SortDirection) ToPointer() *SortDirection {
@@ -27,8 +26,6 @@ func (e *SortDirection) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "SORT_DIRECTION_UNSPECIFIED":
-		fallthrough
 	case "SORT_DIRECTION_ASC":
 		fallthrough
 	case "SORT_DIRECTION_DESC":
@@ -58,7 +55,7 @@ func (s SystemLogServiceListEventsRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SystemLogServiceListEventsRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

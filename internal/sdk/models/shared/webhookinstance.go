@@ -13,7 +13,6 @@ import (
 type WebhookInstanceState string
 
 const (
-	WebhookInstanceStateWebhookStateUnspecified     WebhookInstanceState = "WEBHOOK_STATE_UNSPECIFIED"
 	WebhookInstanceStateWebhookStatePending         WebhookInstanceState = "WEBHOOK_STATE_PENDING"
 	WebhookInstanceStateWebhookStateRunning         WebhookInstanceState = "WEBHOOK_STATE_RUNNING"
 	WebhookInstanceStateWebhookStateError           WebhookInstanceState = "WEBHOOK_STATE_ERROR"
@@ -32,8 +31,6 @@ func (e *WebhookInstanceState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "WEBHOOK_STATE_UNSPECIFIED":
-		fallthrough
 	case "WEBHOOK_STATE_PENDING":
 		fallthrough
 	case "WEBHOOK_STATE_RUNNING":
@@ -88,7 +85,7 @@ func (w WebhookInstance) MarshalJSON() ([]byte, error) {
 }
 
 func (w *WebhookInstance) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
 		return err
 	}
 	return nil

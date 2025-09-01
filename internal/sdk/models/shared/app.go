@@ -13,7 +13,6 @@ import (
 type IdentityMatching string
 
 const (
-	IdentityMatchingAppUserIdentityMatchingUnspecified IdentityMatching = "APP_USER_IDENTITY_MATCHING_UNSPECIFIED"
 	IdentityMatchingAppUserIdentityMatchingStrict      IdentityMatching = "APP_USER_IDENTITY_MATCHING_STRICT"
 	IdentityMatchingAppUserIdentityMatchingDisplayName IdentityMatching = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
 )
@@ -27,8 +26,6 @@ func (e *IdentityMatching) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_USER_IDENTITY_MATCHING_UNSPECIFIED":
-		fallthrough
 	case "APP_USER_IDENTITY_MATCHING_STRICT":
 		fallthrough
 	case "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME":
@@ -94,7 +91,7 @@ func (a App) MarshalJSON() ([]byte, error) {
 }
 
 func (a *App) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

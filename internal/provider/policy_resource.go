@@ -124,10 +124,9 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													"agent_failure_action": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `The action to take if the agent fails to approve, deny, or reassign the task. must be one of ["APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]`,
+														Description: `The action to take if the agent fails to approve, deny, or reassign the task. must be one of ["APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]`,
 														Validators: []validator.String{
 															stringvalidator.OneOf(
-																"APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED",
 																"APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS",
 																"APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS",
 																"APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP",
@@ -137,10 +136,9 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													"agent_mode": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `The mode of the agent, full control, change policy only, or comment only. must be one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]`,
+														Description: `The mode of the agent, full control, change policy only, or comment only. must be one of ["APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]`,
 														Validators: []validator.String{
 															stringvalidator.OneOf(
-																"APPROVAL_AGENT_MODE_UNSPECIFIED",
 																"APPROVAL_AGENT_MODE_FULL_CONTROL",
 																"APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY",
 																"APPROVAL_AGENT_MODE_COMMENT_ONLY",
@@ -968,10 +966,9 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"policy_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The enum of the policy type. must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]`,
+				Description: `The enum of the policy type. must be one of ["POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						"POLICY_TYPE_UNSPECIFIED",
 						"POLICY_TYPE_GRANT",
 						"POLICY_TYPE_REVOKE",
 						"POLICY_TYPE_CERTIFY",

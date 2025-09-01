@@ -10,8 +10,8 @@ resource "conductorone_policy" "my_policy" {
           }
           approval = {
             agent_approval = {
-              agent_failure_action = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS"
-              agent_mode           = "APPROVAL_AGENT_MODE_FULL_CONTROL"
+              agent_failure_action = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS"
+              agent_mode           = "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY"
               agent_user_id        = "...my_agent_user_id..."
               instructions         = "...my_instructions..."
               policy_ids = [
@@ -176,7 +176,7 @@ resource "conductorone_policy" "my_policy" {
       ]
     }
   }
-  policy_type = "POLICY_TYPE_UNSPECIFIED"
+  policy_type = "POLICY_TYPE_GRANT"
   post_actions = [
     {
       certify_remediate_immediately = false

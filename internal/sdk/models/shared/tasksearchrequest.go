@@ -12,7 +12,6 @@ import (
 type AccountTypes string
 
 const (
-	AccountTypesAppUserTypeUnspecified    AccountTypes = "APP_USER_TYPE_UNSPECIFIED"
 	AccountTypesAppUserTypeUser           AccountTypes = "APP_USER_TYPE_USER"
 	AccountTypesAppUserTypeServiceAccount AccountTypes = "APP_USER_TYPE_SERVICE_ACCOUNT"
 	AccountTypesAppUserTypeSystemAccount  AccountTypes = "APP_USER_TYPE_SYSTEM_ACCOUNT"
@@ -27,8 +26,6 @@ func (e *AccountTypes) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_USER_TYPE_UNSPECIFIED":
-		fallthrough
 	case "APP_USER_TYPE_USER":
 		fallthrough
 	case "APP_USER_TYPE_SERVICE_ACCOUNT":
@@ -45,9 +42,8 @@ func (e *AccountTypes) UnmarshalJSON(data []byte) error {
 type CurrentStep string
 
 const (
-	CurrentStepTaskSearchCurrentStepUnspecified CurrentStep = "TASK_SEARCH_CURRENT_STEP_UNSPECIFIED"
-	CurrentStepTaskSearchCurrentStepApproval    CurrentStep = "TASK_SEARCH_CURRENT_STEP_APPROVAL"
-	CurrentStepTaskSearchCurrentStepProvision   CurrentStep = "TASK_SEARCH_CURRENT_STEP_PROVISION"
+	CurrentStepTaskSearchCurrentStepApproval  CurrentStep = "TASK_SEARCH_CURRENT_STEP_APPROVAL"
+	CurrentStepTaskSearchCurrentStepProvision CurrentStep = "TASK_SEARCH_CURRENT_STEP_PROVISION"
 )
 
 func (e CurrentStep) ToPointer() *CurrentStep {
@@ -59,8 +55,6 @@ func (e *CurrentStep) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_SEARCH_CURRENT_STEP_UNSPECIFIED":
-		fallthrough
 	case "TASK_SEARCH_CURRENT_STEP_APPROVAL":
 		fallthrough
 	case "TASK_SEARCH_CURRENT_STEP_PROVISION":
@@ -75,7 +69,6 @@ func (e *CurrentStep) UnmarshalJSON(data []byte) error {
 type EmergencyStatus string
 
 const (
-	EmergencyStatusUnspecified  EmergencyStatus = "UNSPECIFIED"
 	EmergencyStatusAll          EmergencyStatus = "ALL"
 	EmergencyStatusNonEmergency EmergencyStatus = "NON_EMERGENCY"
 	EmergencyStatusEmergency    EmergencyStatus = "EMERGENCY"
@@ -90,8 +83,6 @@ func (e *EmergencyStatus) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "UNSPECIFIED":
-		fallthrough
 	case "ALL":
 		fallthrough
 	case "NON_EMERGENCY":
@@ -108,7 +99,6 @@ func (e *EmergencyStatus) UnmarshalJSON(data []byte) error {
 type SortBy string
 
 const (
-	SortByTaskSearchSortByUnspecified      SortBy = "TASK_SEARCH_SORT_BY_UNSPECIFIED"
 	SortByTaskSearchSortByAccount          SortBy = "TASK_SEARCH_SORT_BY_ACCOUNT"
 	SortByTaskSearchSortByResource         SortBy = "TASK_SEARCH_SORT_BY_RESOURCE"
 	SortByTaskSearchSortByAccountOwner     SortBy = "TASK_SEARCH_SORT_BY_ACCOUNT_OWNER"
@@ -127,8 +117,6 @@ func (e *SortBy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_SEARCH_SORT_BY_UNSPECIFIED":
-		fallthrough
 	case "TASK_SEARCH_SORT_BY_ACCOUNT":
 		fallthrough
 	case "TASK_SEARCH_SORT_BY_RESOURCE":
@@ -152,7 +140,6 @@ func (e *SortBy) UnmarshalJSON(data []byte) error {
 type StepApprovalTypes string
 
 const (
-	StepApprovalTypesStepApprovalTypeUnspecified       StepApprovalTypes = "STEP_APPROVAL_TYPE_UNSPECIFIED"
 	StepApprovalTypesStepApprovalTypeUsers             StepApprovalTypes = "STEP_APPROVAL_TYPE_USERS"
 	StepApprovalTypesStepApprovalTypeManager           StepApprovalTypes = "STEP_APPROVAL_TYPE_MANAGER"
 	StepApprovalTypesStepApprovalTypeAppOwners         StepApprovalTypes = "STEP_APPROVAL_TYPE_APP_OWNERS"
@@ -174,8 +161,6 @@ func (e *StepApprovalTypes) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "STEP_APPROVAL_TYPE_UNSPECIFIED":
-		fallthrough
 	case "STEP_APPROVAL_TYPE_USERS":
 		fallthrough
 	case "STEP_APPROVAL_TYPE_MANAGER":
@@ -205,9 +190,8 @@ func (e *StepApprovalTypes) UnmarshalJSON(data []byte) error {
 type TaskStates string
 
 const (
-	TaskStatesTaskStateUnspecified TaskStates = "TASK_STATE_UNSPECIFIED"
-	TaskStatesTaskStateOpen        TaskStates = "TASK_STATE_OPEN"
-	TaskStatesTaskStateClosed      TaskStates = "TASK_STATE_CLOSED"
+	TaskStatesTaskStateOpen   TaskStates = "TASK_STATE_OPEN"
+	TaskStatesTaskStateClosed TaskStates = "TASK_STATE_CLOSED"
 )
 
 func (e TaskStates) ToPointer() *TaskStates {
@@ -219,8 +203,6 @@ func (e *TaskStates) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TASK_STATE_UNSPECIFIED":
-		fallthrough
 	case "TASK_STATE_OPEN":
 		fallthrough
 	case "TASK_STATE_CLOSED":
@@ -305,7 +287,7 @@ func (t TaskSearchRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TaskSearchRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -13,11 +13,10 @@ import (
 type ConnectorStatusStatus string
 
 const (
-	ConnectorStatusStatusSyncStatusUnspecified ConnectorStatusStatus = "SYNC_STATUS_UNSPECIFIED"
-	ConnectorStatusStatusSyncStatusRunning     ConnectorStatusStatus = "SYNC_STATUS_RUNNING"
-	ConnectorStatusStatusSyncStatusDone        ConnectorStatusStatus = "SYNC_STATUS_DONE"
-	ConnectorStatusStatusSyncStatusError       ConnectorStatusStatus = "SYNC_STATUS_ERROR"
-	ConnectorStatusStatusSyncStatusDisabled    ConnectorStatusStatus = "SYNC_STATUS_DISABLED"
+	ConnectorStatusStatusSyncStatusRunning  ConnectorStatusStatus = "SYNC_STATUS_RUNNING"
+	ConnectorStatusStatusSyncStatusDone     ConnectorStatusStatus = "SYNC_STATUS_DONE"
+	ConnectorStatusStatusSyncStatusError    ConnectorStatusStatus = "SYNC_STATUS_ERROR"
+	ConnectorStatusStatusSyncStatusDisabled ConnectorStatusStatus = "SYNC_STATUS_DISABLED"
 )
 
 func (e ConnectorStatusStatus) ToPointer() *ConnectorStatusStatus {
@@ -29,8 +28,6 @@ func (e *ConnectorStatusStatus) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "SYNC_STATUS_UNSPECIFIED":
-		fallthrough
 	case "SYNC_STATUS_RUNNING":
 		fallthrough
 	case "SYNC_STATUS_DONE":
@@ -61,7 +58,7 @@ func (c ConnectorStatus) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConnectorStatus) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

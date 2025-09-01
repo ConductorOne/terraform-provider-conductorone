@@ -10,9 +10,8 @@ import (
 type AppUserDomains string
 
 const (
-	AppUserDomainsAppUserDomainUnspecified AppUserDomains = "APP_USER_DOMAIN_UNSPECIFIED"
-	AppUserDomainsAppUserDomainExternal    AppUserDomains = "APP_USER_DOMAIN_EXTERNAL"
-	AppUserDomainsAppUserDomainTrusted     AppUserDomains = "APP_USER_DOMAIN_TRUSTED"
+	AppUserDomainsAppUserDomainExternal AppUserDomains = "APP_USER_DOMAIN_EXTERNAL"
+	AppUserDomainsAppUserDomainTrusted  AppUserDomains = "APP_USER_DOMAIN_TRUSTED"
 )
 
 func (e AppUserDomains) ToPointer() *AppUserDomains {
@@ -24,8 +23,6 @@ func (e *AppUserDomains) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_USER_DOMAIN_UNSPECIFIED":
-		fallthrough
 	case "APP_USER_DOMAIN_EXTERNAL":
 		fallthrough
 	case "APP_USER_DOMAIN_TRUSTED":
@@ -39,10 +36,9 @@ func (e *AppUserDomains) UnmarshalJSON(data []byte) error {
 type AppUserStatuses string
 
 const (
-	AppUserStatusesStatusUnspecified AppUserStatuses = "STATUS_UNSPECIFIED"
-	AppUserStatusesStatusEnabled     AppUserStatuses = "STATUS_ENABLED"
-	AppUserStatusesStatusDisabled    AppUserStatuses = "STATUS_DISABLED"
-	AppUserStatusesStatusDeleted     AppUserStatuses = "STATUS_DELETED"
+	AppUserStatusesStatusEnabled  AppUserStatuses = "STATUS_ENABLED"
+	AppUserStatusesStatusDisabled AppUserStatuses = "STATUS_DISABLED"
+	AppUserStatusesStatusDeleted  AppUserStatuses = "STATUS_DELETED"
 )
 
 func (e AppUserStatuses) ToPointer() *AppUserStatuses {
@@ -54,8 +50,6 @@ func (e *AppUserStatuses) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "STATUS_UNSPECIFIED":
-		fallthrough
 	case "STATUS_ENABLED":
 		fallthrough
 	case "STATUS_DISABLED":
@@ -71,7 +65,6 @@ func (e *AppUserStatuses) UnmarshalJSON(data []byte) error {
 type AppUserTypes string
 
 const (
-	AppUserTypesAppUserTypeUnspecified    AppUserTypes = "APP_USER_TYPE_UNSPECIFIED"
 	AppUserTypesAppUserTypeUser           AppUserTypes = "APP_USER_TYPE_USER"
 	AppUserTypesAppUserTypeServiceAccount AppUserTypes = "APP_USER_TYPE_SERVICE_ACCOUNT"
 	AppUserTypesAppUserTypeSystemAccount  AppUserTypes = "APP_USER_TYPE_SYSTEM_ACCOUNT"
@@ -86,8 +79,6 @@ func (e *AppUserTypes) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_USER_TYPE_UNSPECIFIED":
-		fallthrough
 	case "APP_USER_TYPE_USER":
 		fallthrough
 	case "APP_USER_TYPE_SERVICE_ACCOUNT":

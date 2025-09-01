@@ -11,8 +11,7 @@ import (
 type ExternalRefSource string
 
 const (
-	ExternalRefSourceUnspecified ExternalRefSource = "UNSPECIFIED"
-	ExternalRefSourceJira        ExternalRefSource = "JIRA"
+	ExternalRefSourceJira ExternalRefSource = "JIRA"
 )
 
 func (e ExternalRefSource) ToPointer() *ExternalRefSource {
@@ -24,8 +23,6 @@ func (e *ExternalRefSource) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "UNSPECIFIED":
-		fallthrough
 	case "JIRA":
 		*e = ExternalRefSource(v)
 		return nil

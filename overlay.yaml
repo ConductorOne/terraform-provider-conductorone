@@ -1,8 +1,11 @@
 overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
 info:
   title: Overlay prod-openapi.yaml => openapinew.yaml
   version: 0.0.0
 actions:
+  - target: $..enum.[?match(@,".*UNSPECIFIED$")]
+    remove: true
   - target: $..[?(@.additionalProperties == true)]
     update:
       additionalProperties: false
@@ -12,7 +15,7 @@ actions:
   - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceCreateRequestInput"]["properties"]["config"]
     update:
       additionalProperties: true
-  - target: $..\@type
+  - target: $..['@type']
     remove: true
   - target: $["components"]["schemas"]["c1.api.app.v1.DeleteAutomationRequestInput"]
     update:

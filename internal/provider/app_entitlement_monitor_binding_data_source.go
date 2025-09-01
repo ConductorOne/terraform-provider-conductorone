@@ -69,10 +69,9 @@ func (r *AppEntitlementMonitorBindingDataSource) Schema(ctx context.Context, req
 			"entitlement_group": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The entitlementGroup field. must be one of ["ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]`,
+				Description: `The entitlementGroup field. must be one of ["ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						"ENTITLEMENT_GROUP_UNSPECIFIED",
 						"ENTITLEMENT_GROUP_A",
 						"ENTITLEMENT_GROUP_B",
 					),

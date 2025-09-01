@@ -13,9 +13,8 @@ import (
 type EventType string
 
 const (
-	EventTypeGrantEventTypeUnspecified EventType = "GRANT_EVENT_TYPE_UNSPECIFIED"
-	EventTypeGrantEventTypeAdded       EventType = "GRANT_EVENT_TYPE_ADDED"
-	EventTypeGrantEventTypeRemoved     EventType = "GRANT_EVENT_TYPE_REMOVED"
+	EventTypeGrantEventTypeAdded   EventType = "GRANT_EVENT_TYPE_ADDED"
+	EventTypeGrantEventTypeRemoved EventType = "GRANT_EVENT_TYPE_REMOVED"
 )
 
 func (e EventType) ToPointer() *EventType {
@@ -27,8 +26,6 @@ func (e *EventType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "GRANT_EVENT_TYPE_UNSPECIFIED":
-		fallthrough
 	case "GRANT_EVENT_TYPE_ADDED":
 		fallthrough
 	case "GRANT_EVENT_TYPE_REMOVED":
@@ -59,7 +56,7 @@ func (a AppEntitlementUserBindingFeed) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppEntitlementUserBindingFeed) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

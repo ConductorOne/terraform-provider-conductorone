@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
@@ -20,11 +21,14 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 		if resp.List != nil {
 			if r.List == nil {
 				r.List = []tfTypes.AppEntitlementView{}
+				if len(r.List) > len(resp.List) {
+					r.List = r.List[:len(resp.List)]
+				}
 			}
-
-			for _, listItem := range resp.List {
+			initListCount := len(r.List)
+			for listCount, listItem := range resp.List {
+				listCount = initListCount + listCount
 				var list tfTypes.AppEntitlementView
-
 				if listItem.AppEntitlement == nil {
 					list.AppEntitlement = nil
 				} else {

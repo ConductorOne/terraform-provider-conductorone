@@ -13,10 +13,9 @@ import (
 type SearchStepUpTransactionsRequestState string
 
 const (
-	SearchStepUpTransactionsRequestStateStepUpTransactionStateUnspecified SearchStepUpTransactionsRequestState = "STEP_UP_TRANSACTION_STATE_UNSPECIFIED"
-	SearchStepUpTransactionsRequestStateStepUpTransactionStatePending     SearchStepUpTransactionsRequestState = "STEP_UP_TRANSACTION_STATE_PENDING"
-	SearchStepUpTransactionsRequestStateStepUpTransactionStateVerified    SearchStepUpTransactionsRequestState = "STEP_UP_TRANSACTION_STATE_VERIFIED"
-	SearchStepUpTransactionsRequestStateStepUpTransactionStateError       SearchStepUpTransactionsRequestState = "STEP_UP_TRANSACTION_STATE_ERROR"
+	SearchStepUpTransactionsRequestStateStepUpTransactionStatePending  SearchStepUpTransactionsRequestState = "STEP_UP_TRANSACTION_STATE_PENDING"
+	SearchStepUpTransactionsRequestStateStepUpTransactionStateVerified SearchStepUpTransactionsRequestState = "STEP_UP_TRANSACTION_STATE_VERIFIED"
+	SearchStepUpTransactionsRequestStateStepUpTransactionStateError    SearchStepUpTransactionsRequestState = "STEP_UP_TRANSACTION_STATE_ERROR"
 )
 
 func (e SearchStepUpTransactionsRequestState) ToPointer() *SearchStepUpTransactionsRequestState {
@@ -28,8 +27,6 @@ func (e *SearchStepUpTransactionsRequestState) UnmarshalJSON(data []byte) error 
 		return err
 	}
 	switch v {
-	case "STEP_UP_TRANSACTION_STATE_UNSPECIFIED":
-		fallthrough
 	case "STEP_UP_TRANSACTION_STATE_PENDING":
 		fallthrough
 	case "STEP_UP_TRANSACTION_STATE_VERIFIED":
@@ -46,9 +43,8 @@ func (e *SearchStepUpTransactionsRequestState) UnmarshalJSON(data []byte) error 
 type TargetType string
 
 const (
-	TargetTypeTargetTypeUnspecified TargetType = "TARGET_TYPE_UNSPECIFIED"
-	TargetTypeTargetTypeTicket      TargetType = "TARGET_TYPE_TICKET"
-	TargetTypeTargetTypeTest        TargetType = "TARGET_TYPE_TEST"
+	TargetTypeTargetTypeTicket TargetType = "TARGET_TYPE_TICKET"
+	TargetTypeTargetTypeTest   TargetType = "TARGET_TYPE_TEST"
 )
 
 func (e TargetType) ToPointer() *TargetType {
@@ -60,8 +56,6 @@ func (e *TargetType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "TARGET_TYPE_UNSPECIFIED":
-		fallthrough
 	case "TARGET_TYPE_TICKET":
 		fallthrough
 	case "TARGET_TYPE_TEST":
@@ -97,7 +91,7 @@ func (s SearchStepUpTransactionsRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SearchStepUpTransactionsRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

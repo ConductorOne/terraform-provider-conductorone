@@ -307,6 +307,7 @@ func (r *AppResourcesDataSource) Read(ctx context.Context, req datasource.ReadRe
 		if resp.Diagnostics.HasError() {
 			return
 		}
+
 		response, err = response.Next()
 	}
 

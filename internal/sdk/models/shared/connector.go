@@ -19,7 +19,7 @@ func (c Config) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Config) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -82,7 +82,7 @@ func (c Connector) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Connector) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

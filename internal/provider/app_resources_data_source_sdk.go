@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
@@ -20,11 +21,14 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 		if resp.List != nil {
 			if r.List == nil {
 				r.List = []tfTypes.AppResourceView{}
+				if len(r.List) > len(resp.List) {
+					r.List = r.List[:len(resp.List)]
+				}
 			}
-
-			for _, listItem := range resp.List {
+			initListCount := len(r.List)
+			for listCount, listItem := range resp.List {
+				listCount = initListCount + listCount
 				var list tfTypes.AppResourceView
-
 				if listItem.AppResource == nil {
 					list.AppResource = nil
 				} else {

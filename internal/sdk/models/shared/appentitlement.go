@@ -16,9 +16,8 @@ type AppEntitlementDurationUnset struct {
 type Purpose string
 
 const (
-	PurposeAppEntitlementPurposeValueUnspecified Purpose = "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED"
-	PurposeAppEntitlementPurposeValueAssignment  Purpose = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
-	PurposeAppEntitlementPurposeValuePermission  Purpose = "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"
+	PurposeAppEntitlementPurposeValueAssignment Purpose = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
+	PurposeAppEntitlementPurposeValuePermission Purpose = "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"
 )
 
 func (e Purpose) ToPointer() *Purpose {
@@ -30,8 +29,6 @@ func (e *Purpose) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED":
-		fallthrough
 	case "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT":
 		fallthrough
 	case "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION":
@@ -205,7 +202,7 @@ func (a AppEntitlement) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppEntitlement) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -11,7 +11,6 @@ import (
 type CreatePolicyRequestPolicyType string
 
 const (
-	CreatePolicyRequestPolicyTypePolicyTypeUnspecified   CreatePolicyRequestPolicyType = "POLICY_TYPE_UNSPECIFIED"
 	CreatePolicyRequestPolicyTypePolicyTypeGrant         CreatePolicyRequestPolicyType = "POLICY_TYPE_GRANT"
 	CreatePolicyRequestPolicyTypePolicyTypeRevoke        CreatePolicyRequestPolicyType = "POLICY_TYPE_REVOKE"
 	CreatePolicyRequestPolicyTypePolicyTypeCertify       CreatePolicyRequestPolicyType = "POLICY_TYPE_CERTIFY"
@@ -28,8 +27,6 @@ func (e *CreatePolicyRequestPolicyType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "POLICY_TYPE_UNSPECIFIED":
-		fallthrough
 	case "POLICY_TYPE_GRANT":
 		fallthrough
 	case "POLICY_TYPE_REVOKE":

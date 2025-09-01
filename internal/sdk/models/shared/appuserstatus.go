@@ -11,10 +11,9 @@ import (
 type AppUserStatusStatus string
 
 const (
-	AppUserStatusStatusStatusUnspecified AppUserStatusStatus = "STATUS_UNSPECIFIED"
-	AppUserStatusStatusStatusEnabled     AppUserStatusStatus = "STATUS_ENABLED"
-	AppUserStatusStatusStatusDisabled    AppUserStatusStatus = "STATUS_DISABLED"
-	AppUserStatusStatusStatusDeleted     AppUserStatusStatus = "STATUS_DELETED"
+	AppUserStatusStatusStatusEnabled  AppUserStatusStatus = "STATUS_ENABLED"
+	AppUserStatusStatusStatusDisabled AppUserStatusStatus = "STATUS_DISABLED"
+	AppUserStatusStatusStatusDeleted  AppUserStatusStatus = "STATUS_DELETED"
 )
 
 func (e AppUserStatusStatus) ToPointer() *AppUserStatusStatus {
@@ -26,8 +25,6 @@ func (e *AppUserStatusStatus) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "STATUS_UNSPECIFIED":
-		fallthrough
 	case "STATUS_ENABLED":
 		fallthrough
 	case "STATUS_DISABLED":

@@ -11,10 +11,9 @@ import (
 type GrantedStatus string
 
 const (
-	GrantedStatusUnspecified GrantedStatus = "UNSPECIFIED"
-	GrantedStatusAll         GrantedStatus = "ALL"
-	GrantedStatusGranted     GrantedStatus = "GRANTED"
-	GrantedStatusNotGranted  GrantedStatus = "NOT_GRANTED"
+	GrantedStatusAll        GrantedStatus = "ALL"
+	GrantedStatusGranted    GrantedStatus = "GRANTED"
+	GrantedStatusNotGranted GrantedStatus = "NOT_GRANTED"
 )
 
 func (e GrantedStatus) ToPointer() *GrantedStatus {
@@ -26,8 +25,6 @@ func (e *GrantedStatus) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "UNSPECIFIED":
-		fallthrough
 	case "ALL":
 		fallthrough
 	case "GRANTED":

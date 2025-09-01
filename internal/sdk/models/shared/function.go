@@ -13,8 +13,7 @@ import (
 type FunctionType string
 
 const (
-	FunctionTypeFunctionTypeUnspecified FunctionType = "FUNCTION_TYPE_UNSPECIFIED"
-	FunctionTypeFunctionTypeAny         FunctionType = "FUNCTION_TYPE_ANY"
+	FunctionTypeFunctionTypeAny FunctionType = "FUNCTION_TYPE_ANY"
 )
 
 func (e FunctionType) ToPointer() *FunctionType {
@@ -26,8 +25,6 @@ func (e *FunctionType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "FUNCTION_TYPE_UNSPECIFIED":
-		fallthrough
 	case "FUNCTION_TYPE_ANY":
 		*e = FunctionType(v)
 		return nil
@@ -62,7 +59,7 @@ func (f Function) MarshalJSON() ([]byte, error) {
 }
 
 func (f *Function) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
 		return err
 	}
 	return nil
