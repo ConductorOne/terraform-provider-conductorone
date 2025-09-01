@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
@@ -731,23 +732,23 @@ func (r *AppEntitlementsDataSource) Read(ctx context.Context, req datasource.Rea
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	
+	response, err := res.Next()
 	for {
-		res, err := res.Next()
-
 		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			resp.Diagnostics.AddError("reading next results failed", debugResponse(response.RawResponse))
 			return
 		}
-
-		if res == nil {
+		if response == nil {
 			break
 		}
-
-		resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx, res.AppEntitlementSearchServiceSearchResponse)...)
+		resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx, response.AppEntitlementSearchServiceSearchResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return
 		}
+
+		response, err = response.Next()
 	}
 
 	// Save updated data into Terraform state
