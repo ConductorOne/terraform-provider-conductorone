@@ -31,7 +31,7 @@ func (c ConnectorCredential) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConnectorCredential) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

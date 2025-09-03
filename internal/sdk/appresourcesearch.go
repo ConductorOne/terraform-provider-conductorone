@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 type AppResourceSearch struct {
@@ -162,10 +163,13 @@ func (s *AppResourceSearch) SearchAppResourceTypes(ctx context.Context, request 
 			if err != nil {
 				return nil, err
 			}
-			if val == nil || val == "" {
+			if val == nil {
 				return nil, nil
 			}
 			nCVal = val.(string)
+			if strings.TrimSpace(nCVal) == "" {
+				return nil, nil
+			}
 		}
 
 		return s.SearchAppResourceTypes(
@@ -349,10 +353,13 @@ func (s *AppResourceSearch) SearchAppResources(ctx context.Context, request *sha
 			if err != nil {
 				return nil, err
 			}
-			if val == nil || val == "" {
+			if val == nil {
 				return nil, nil
 			}
 			nCVal = val.(string)
+			if strings.TrimSpace(nCVal) == "" {
+				return nil, nil
+			}
 		}
 
 		return s.SearchAppResources(

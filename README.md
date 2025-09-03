@@ -21,6 +21,21 @@ TF_REATTACH_PROVIDERS=... terraform apply
 ```
 <!-- End SDK Example Usage -->
 
+<!-- Start Authentication [security] -->
+## Authentication
+
+This provider supports authentication configuration via provider configuration.
+
+Available configuration:
+
+| Provider Attribute | Description |
+|---|---|
+| `bearer_auth` | HTTP Bearer. |
+| `oauth` | This API uses OAuth2 with the Client Credential flow.
+Client Credentials must be sent in the BODY, not the headers.
+For an example of how to implement this, refer to the [c1TokenSource.Token()](https://github.com/ConductorOne/conductorone-sdk-go/blob/3375fe7c0126d17e7ec4e711693dee7b791023aa/token_source.go#L101-L187) function.. |
+<!-- End Authentication [security] -->
+
 <!-- Start Available Resources and Data Sources [operations] -->
 ## Available Resources and Data Sources
 
@@ -138,6 +153,7 @@ ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne r
 * [ConductorOne Terraform Provider](#conductorone-terraform-provider)
   * [Usage](#usage)
   * [Testing the provider locally](#testing-the-provider-locally)
+  * [Authentication](#authentication)
   * [Available Resources and Data Sources](#available-resources-and-data-sources)
   * [Versions with breaking changes](#versions-with-breaking-changes)
   * [Contributions](#contributions)
@@ -156,7 +172,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.5.1"
+      version = "1.6.1"
     }
   }
 }

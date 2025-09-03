@@ -1,0 +1,14 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    my-source:
+        inputs:
+            - location: ./openapi.yaml
+        overlays:
+            - location: ./overlay.yaml
+        registry:
+            location: registry.speakeasyapi.dev/conductor-one/conductorone/my-source
+targets:
+    conductorone-terraform:
+        target: terraform
+        source: my-source
