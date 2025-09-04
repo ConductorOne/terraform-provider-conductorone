@@ -51,9 +51,22 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 					ConnectorID: connectorId1,
 				}
 			}
+			var deleteAccount *shared.DeleteAccount
+			if r.ProvisionPolicy.ConnectorProvision.DeleteAccount != nil {
+				connectorId2 := new(string)
+				if !r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsNull() {
+					*connectorId2 = r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
+				} else {
+					connectorId2 = nil
+				}
+				deleteAccount = &shared.DeleteAccount{
+					ConnectorID: connectorId2,
+				}
+			}
 			connectorProvision = &shared.ConnectorProvision{
 				AccountProvision: accountProvision,
 				DefaultBehavior:  defaultBehavior,
+				DeleteAccount:    deleteAccount,
 			}
 		}
 		var delegatedProvision *shared.DelegatedProvision
@@ -383,6 +396,12 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 			} else {
 				r.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
 				r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+			}
+			if resp.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
+				r.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
+			} else {
+				r.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
+				r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
 			}
 		}
 		if resp.ProvisionPolicy.DelegatedProvision == nil {
