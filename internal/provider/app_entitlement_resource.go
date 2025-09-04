@@ -200,11 +200,9 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 							},
 							"delete_account": schema.SingleNestedAttribute{
 								Computed: true,
-								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"connector_id": schema.StringAttribute{
 										Computed:    true,
-										Optional:    true,
 										Description: `The connectorId field.`,
 									},
 								},

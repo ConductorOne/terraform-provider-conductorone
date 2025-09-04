@@ -85,6 +85,9 @@ Optional:
 
 - `account_provision` (Attributes) The AccountProvision message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision--account_provision))
 - `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision--default_behavior))
+
+Read-Only:
+
 - `delete_account` (Attributes) The DeleteAccount message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision--delete_account))
 
 <a id="nestedatt--provision_policy--connector_provision--account_provision"></a>
@@ -113,7 +116,7 @@ Optional:
 <a id="nestedatt--provision_policy--connector_provision--delete_account"></a>
 ### Nested Schema for `provision_policy.connector_provision.delete_account`
 
-Optional:
+Read-Only:
 
 - `connector_id` (String) The connectorId field.
 
