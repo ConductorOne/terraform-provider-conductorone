@@ -88,7 +88,7 @@ func (w WebhookInstance) MarshalJSON() ([]byte, error) {
 }
 
 func (w *WebhookInstance) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
 		return err
 	}
 	return nil

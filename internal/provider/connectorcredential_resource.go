@@ -58,12 +58,13 @@ func (r *ConnectorCredentialResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "ConnectorCredential Resource",
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `The appId of the app the connector is attached to. Requires replacement if changed.`,
 			},
 			"client_id": schema.StringAttribute{
 				Computed:    true,
@@ -72,15 +73,16 @@ func (r *ConnectorCredentialResource) Schema(ctx context.Context, req resource.S
 			"client_secret": schema.StringAttribute{
 				Computed:    true,
 				Sensitive:   true,
-				Description: `The new clientSecret returned after rotating the connector credential.`,
+				Description: `The client secret of the ConnectorCredential. It's only returned on creation.`,
 			},
 			"connector_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `The connectorId of the connector that we are rotating the credentials for. Requires replacement if changed.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -156,13 +158,13 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1ConnectorServiceRotateCredentialRequest(ctx)
+	request, requestDiags := data.ToSharedConnectorServiceRotateCredentialRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Connector.RotateCredential(ctx, *request)
+	res, err := r.client.Connector.RotateCredential(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -183,43 +185,6 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res.ConnectorServiceRotateCredentialResponse.ConnectorCredential)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Connector.GetCredentials(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.ConnectorServiceGetCredentialsResponse != nil && res1.ConnectorServiceGetCredentialsResponse.ConnectorCredential != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res1.ConnectorServiceGetCredentialsResponse.ConnectorCredential)...)
 
 	if resp.Diagnostics.HasError() {
 		return

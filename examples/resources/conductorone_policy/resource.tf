@@ -171,6 +171,14 @@ resource "conductorone_policy" "my_policy" {
             wait_condition = {
               condition = "...my_condition..."
             }
+            wait_duration = {
+              duration = "...my_duration..."
+            }
+            wait_until_time = {
+              hours    = 5
+              minutes  = 8
+              timezone = "...my_timezone..."
+            }
           }
         }
       ]

@@ -30,14 +30,35 @@ data "conductorone_bundle_automation" "my_bundleautomation" {
 
 ### Read-Only
 
+- `bundle_automation_circuit_breaker` (Attributes) The BundleAutomationCircuitBreaker message. (see [below for nested schema](#nestedatt--bundle_automation_circuit_breaker))
 - `bundle_automation_last_run_state` (Attributes) The BundleAutomationLastRunState message. (see [below for nested schema](#nestedatt--bundle_automation_last_run_state))
 - `bundle_automation_rule_entitlement` (Attributes) The BundleAutomationRuleEntitlement message. (see [below for nested schema](#nestedatt--bundle_automation_rule_entitlement))
 - `create_tasks` (Boolean) The createTasks field.
 - `created_at` (String)
 - `deleted_at` (String)
+- `disable_circuit_breaker` (Boolean) The disableCircuitBreaker field.
 - `enabled` (Boolean) The enabled field.
 - `tenant_id` (String) The tenantId field.
 - `updated_at` (String)
+
+<a id="nestedatt--bundle_automation_circuit_breaker"></a>
+### Nested Schema for `bundle_automation_circuit_breaker`
+
+Read-Only:
+
+- `removed_members_threshold_percentage` (String) The removedMembersThresholdPercentage field.
+- `state` (String) The state field.
+- `updated_at` (String)
+- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--bundle_automation_circuit_breaker--user_ref))
+
+<a id="nestedatt--bundle_automation_circuit_breaker--user_ref"></a>
+### Nested Schema for `bundle_automation_circuit_breaker.user_ref`
+
+Read-Only:
+
+- `id` (String) The id of the user.
+
+
 
 <a id="nestedatt--bundle_automation_last_run_state"></a>
 ### Nested Schema for `bundle_automation_last_run_state`

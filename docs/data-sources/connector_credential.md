@@ -36,6 +36,7 @@ data "conductorone_connector_credential" "my_connectorcredential" {
 ### Read-Only
 
 - `client_id` (String) The client id of the ConnectorCredential.
+- `client_secret` (String, Sensitive) The client secret of the ConnectorCredential. It's only returned on creation.
 - `created_at` (String)
 - `deleted_at` (String)
 - `display_name` (String) The display name of the ConnectorCredential.

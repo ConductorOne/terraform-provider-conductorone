@@ -2433,6 +2433,10 @@ components:
                     description: The id of the app the connector is associated with.
                     readOnly: false
                     type: string
+                canResumeSync:
+                    description: The canResumeSync field.
+                    readOnly: false
+                    type: boolean
                 catalogId:
                     description: The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
                     readOnly: false
@@ -2527,6 +2531,10 @@ components:
                     type: string
                 clientId:
                     description: The client id of the ConnectorCredential.
+                    readOnly: false
+                    type: string
+                clientSecret:
+                    description: The client secret of the ConnectorCredential. It's only returned on creation.
                     readOnly: false
                     type: string
                 connectorId:
@@ -2759,8 +2767,17 @@ components:
             type: object
             x-speakeasy-entity: ConnectorCredential
             x-speakeasy-name-override: ConnectorServiceRevokeCredentialResponse
-        c1.api.app.v1.ConnectorServiceRotateCredentialRequestInput:
+        c1.api.app.v1.ConnectorServiceRotateCredentialRequest:
             description: ConnectorServiceRotateCredentialRequest is a request for rotating connector credentials. It uses URL values for input.
+            properties:
+                appId:
+                    description: The appId of the app the connector is attached to.
+                    readOnly: false
+                    type: string
+                connectorId:
+                    description: The connectorId of the connector that we are rotating the credentials for.
+                    readOnly: false
+                    type: string
             title: Connector Service Rotate Credential Request
             type: object
             x-speakeasy-entity: ConnectorCredential
@@ -2768,10 +2785,6 @@ components:
         c1.api.app.v1.ConnectorServiceRotateCredentialResponse:
             description: ConnectorServiceRotateCredentialResponse is the response returned by the rotate method.
             properties:
-                clientSecret:
-                    description: The new clientSecret returned after rotating the connector credential.
-                    readOnly: false
-                    type: string
                 credential:
                     $ref: '#/components/schemas/c1.api.app.v1.ConnectorCredential'
             title: Connector Service Rotate Credential Response
@@ -3637,6 +3650,16 @@ components:
             title: O Auth 2 Authorized As
             type: object
             x-speakeasy-name-override: OAuth2AuthorizedAs
+        c1.api.app.v1.PauseSyncRequestInput:
+            description: The PauseSyncRequest message.
+            title: Pause Sync Request
+            type: object
+            x-speakeasy-name-override: PauseSyncRequest
+        c1.api.app.v1.PauseSyncResponse:
+            description: The PauseSyncResponse message.
+            title: Pause Sync Response
+            type: object
+            x-speakeasy-name-override: PauseSyncResponse
         c1.api.app.v1.RemoveAppEntitlementOwnerRequestInput:
             description: The request message for removing an app entitlement owner.
             title: Remove App Entitlement Owner Request
@@ -3725,6 +3748,16 @@ components:
             title: Remove Grant Duration Response
             type: object
             x-speakeasy-name-override: RemoveGrantDurationResponse
+        c1.api.app.v1.ResumeSyncRequestInput:
+            description: The ResumeSyncRequest message.
+            title: Resume Sync Request
+            type: object
+            x-speakeasy-name-override: ResumeSyncRequest
+        c1.api.app.v1.ResumeSyncResponse:
+            description: The ResumeSyncResponse message.
+            title: Resume Sync Response
+            type: object
+            x-speakeasy-name-override: ResumeSyncResponse
         c1.api.app.v1.SearchAppEntitlementsWithExpiredResponse:
             description: The SearchAppEntitlementsWithExpiredResponse message contains a list of results and a nextPageToken if applicable.
             properties:
@@ -6052,6 +6085,15 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                taskUserRelation:
+                    description: The taskUserRelation field.
+                    enum:
+                        - TASK_USER_RELATION_UNSPECIFIED
+                        - TASK_USER_RELATION_ASSIGNEE
+                        - TASK_USER_RELATION_SUBJECT
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
             title: Task Action
             type: object
             x-speakeasy-name-override: TaskAction
@@ -9031,6 +9073,8 @@ components:
 
                 This message contains a oneof named until. Only a single field of the following list may be set at a time:
                   - condition
+                  - duration
+                  - untilTime
             nullable: true
             properties:
                 commentOnFirstWait:
@@ -9043,6 +9087,8 @@ components:
                     type: string
                 condition:
                     $ref: '#/components/schemas/c1.api.policy.v1.WaitCondition'
+                duration:
+                    $ref: '#/components/schemas/c1.api.policy.v1.WaitDuration'
                 name:
                     description: The name of our condition to show on the task details page
                     readOnly: false
@@ -9051,6 +9097,8 @@ components:
                     format: duration
                     readOnly: false
                     type: string
+                untilTime:
+                    $ref: '#/components/schemas/c1.api.policy.v1.WaitUntilTime'
             title: Wait
             type: object
             x-speakeasy-name-override: Wait
@@ -9076,12 +9124,24 @@ components:
             title: Wait Condition Instance
             type: object
             x-speakeasy-name-override: WaitConditionInstance
+        c1.api.policy.v1.WaitDuration:
+            description: The WaitDuration message.
+            nullable: true
+            properties:
+                duration:
+                    format: duration
+                    readOnly: false
+                    type: string
+            title: Wait Duration
+            type: object
+            x-speakeasy-name-override: WaitDuration
         c1.api.policy.v1.WaitInstance:
             description: |
                 Used by the policy engine to describe an instantiated wait step.
 
                 This message contains a oneof named until. Only a single field of the following list may be set at a time:
                   - condition
+                  - untilTime
 
 
                 This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
@@ -9132,6 +9192,8 @@ components:
                     format: duration
                     readOnly: false
                     type: string
+                untilTime:
+                    $ref: '#/components/schemas/c1.api.policy.v1.WaitUntilTimeInstance'
             title: Wait Instance
             type: object
             x-speakeasy-name-override: WaitInstance
@@ -9157,6 +9219,42 @@ components:
             title: Condition Timed Out
             type: object
             x-speakeasy-name-override: ConditionTimedOut
+        c1.api.policy.v1.WaitUntilTime:
+            description: Waits until a specific time of the day (UTC)
+            nullable: true
+            properties:
+                hours:
+                    description: The hours field.
+                    format: uint32
+                    readOnly: false
+                    type: integer
+                minutes:
+                    description: The minutes field.
+                    format: uint32
+                    readOnly: false
+                    type: integer
+                timezone:
+                    description: The timezone field.
+                    readOnly: false
+                    type: string
+            title: Wait Until Time
+            type: object
+            x-speakeasy-name-override: WaitUntilTime
+        c1.api.policy.v1.WaitUntilTimeInstance:
+            description: The WaitUntilTimeInstance message.
+            nullable: true
+            properties:
+                durationIfExists:
+                    format: duration
+                    readOnly: false
+                    type: string
+                untilTime:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Wait Until Time Instance
+            type: object
+            x-speakeasy-name-override: WaitUntilTimeInstance
         c1.api.policy.v1.WebhookApproval:
             description: The WebhookApproval message.
             nullable: true
@@ -9201,6 +9299,8 @@ components:
                 This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
                   - entitlements
             properties:
+                circuitBreaker:
+                    $ref: '#/components/schemas/c1.api.requestcatalog.v1.BundleAutomationCircuitBreaker'
                 createTasks:
                     description: The createTasks field.
                     readOnly: false
@@ -9213,6 +9313,10 @@ components:
                     format: date-time
                     readOnly: false
                     type: string
+                disableCircuitBreaker:
+                    description: The disableCircuitBreaker field.
+                    readOnly: false
+                    type: boolean
                 enabled:
                     description: The enabled field.
                     readOnly: false
@@ -9236,6 +9340,32 @@ components:
             title: Bundle Automation
             type: object
             x-speakeasy-name-override: BundleAutomation
+        c1.api.requestcatalog.v1.BundleAutomationCircuitBreaker:
+            description: The BundleAutomationCircuitBreaker message.
+            properties:
+                removedMembersThresholdPercentage:
+                    description: The removedMembersThresholdPercentage field.
+                    format: int64
+                    readOnly: false
+                    type: string
+                state:
+                    description: The state field.
+                    enum:
+                        - CIRCUIT_BREAKER_STATE_UNSPECIFIED
+                        - CIRCUIT_BREAKER_STATE_TRIGGERED
+                        - CIRCUIT_BREAKER_STATE_BYPASS
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                updatedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Bundle Automation Circuit Breaker
+            type: object
+            x-speakeasy-name-override: BundleAutomationCircuitBreaker
         c1.api.requestcatalog.v1.BundleAutomationLastRunState:
             description: The BundleAutomationLastRunState message.
             properties:
@@ -9254,6 +9384,7 @@ components:
                         - BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS
                         - BUNDLE_AUTOMATION_RUN_STATUS_FAILURE
                         - BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS
+                        - BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
@@ -9283,6 +9414,10 @@ components:
             properties:
                 createTasks:
                     description: The createTasks field.
+                    readOnly: false
+                    type: boolean
+                disableCircuitBreaker:
+                    description: The disableCircuitBreaker field.
                     readOnly: false
                     type: boolean
                 enabled:
@@ -9847,6 +9982,16 @@ components:
             title: Request Catalog View
             type: object
             x-speakeasy-name-override: RequestCatalogView
+        c1.api.requestcatalog.v1.ResumePausedBundleAutomationRequestInput:
+            description: The ResumePausedBundleAutomationRequest message.
+            title: Resume Paused Bundle Automation Request
+            type: object
+            x-speakeasy-name-override: ResumePausedBundleAutomationRequest
+        c1.api.requestcatalog.v1.ResumePausedBundleAutomationResponse:
+            description: The ResumePausedBundleAutomationResponse message.
+            title: Resume Paused Bundle Automation Response
+            type: object
+            x-speakeasy-name-override: ResumePausedBundleAutomationResponse
         c1.api.requestcatalog.v1.SetBundleAutomationRequestInput:
             description: |
                 The SetBundleAutomationRequest message.
@@ -9856,6 +10001,10 @@ components:
             properties:
                 createTasks:
                     description: The createTasks field.
+                    readOnly: false
+                    type: boolean
+                disableCircuitBreaker:
+                    description: The disableCircuitBreaker field.
                     readOnly: false
                     type: boolean
                 enabled:
@@ -12295,6 +12444,8 @@ components:
                   - policyChanged
                   - formInstanceChange
                   - grantDurationUpdated
+                  - waitStepUntilTime
+                  - webhookApprovalFatalError
             properties:
                 accessRequestOutcome:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditAccessRequestOutcome'
@@ -12427,12 +12578,16 @@ components:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditWaitStepSuccess'
                 waitStepTimedOut:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditWaitStepTimedOut'
+                waitStepUntilTime:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskAuditWaitStepUntilTime'
                 waitStepWaiting:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditWaitStepWaiting'
                 webhookApprovalAttempt:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditWebhookApprovalAttempt'
                 webhookApprovalBadResponse:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditWebhookApprovalBadResponse'
+                webhookApprovalFatalError:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskAuditWebhookApprovalFatalError'
                 webhookApprovalSuccess:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditWebhookApprovalSuccess'
                 webhookApprovalTriggered:
@@ -12540,6 +12695,21 @@ components:
             title: Task Audit Wait Step Timed Out
             type: object
             x-speakeasy-name-override: TaskAuditWaitStepTimedOut
+        c1.api.task.v1.TaskAuditWaitStepUntilTime:
+            description: The TaskAuditWaitStepUntilTime message.
+            nullable: true
+            properties:
+                stepId:
+                    description: The stepId field.
+                    readOnly: false
+                    type: string
+                untilTime:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Task Audit Wait Step Until Time
+            type: object
+            x-speakeasy-name-override: TaskAuditWaitStepUntilTime
         c1.api.task.v1.TaskAuditWaitStepWaiting:
             description: The TaskAuditWaitStepWaiting message.
             nullable: true
@@ -12605,6 +12775,33 @@ components:
             title: Task Audit Webhook Approval Bad Response
             type: object
             x-speakeasy-name-override: TaskAuditWebhookApprovalBadResponse
+        c1.api.task.v1.TaskAuditWebhookApprovalFatalError:
+            description: The TaskAuditWebhookApprovalFatalError message.
+            nullable: true
+            properties:
+                error:
+                    description: The error field.
+                    readOnly: false
+                    type: string
+                webhookId:
+                    description: The webhookId field.
+                    readOnly: false
+                    type: string
+                webhookInstanceId:
+                    description: The webhookInstanceId field.
+                    readOnly: false
+                    type: string
+                webhookName:
+                    description: The webhookName field.
+                    readOnly: false
+                    type: string
+                webhookUrl:
+                    description: The webhookUrl field.
+                    readOnly: false
+                    type: string
+            title: Task Audit Webhook Approval Fatal Error
+            type: object
+            x-speakeasy-name-override: TaskAuditWebhookApprovalFatalError
         c1.api.task.v1.TaskAuditWebhookApprovalSuccess:
             description: The TaskAuditWebhookApprovalSuccess message.
             nullable: true
@@ -16664,44 +16861,6 @@ paths:
                 - Connector
             x-speakeasy-group: Connector
             x-speakeasy-name-override: CreateDelegated
-    /api/v1/apps/{app_id}/connectors/{connector_id}/credentials:
-        post:
-            description: Rotate credentials for a connector.
-            operationId: c1.api.app.v1.ConnectorService.RotateCredential
-            parameters:
-                - in: path
-                  name: app_id
-                  required: true
-                  schema:
-                    description: The appId of the app the connector is attached to.
-                    readOnly: false
-                    type: string
-                - in: path
-                  name: connector_id
-                  required: true
-                  schema:
-                    description: The connectorId of the connector that we are rotating the credentials for.
-                    readOnly: false
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.app.v1.ConnectorServiceRotateCredentialRequestInput'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.app.v1.ConnectorServiceRotateCredentialResponse'
-                    description: ConnectorServiceRotateCredentialResponse is the response returned by the rotate method.
-            summary: Rotate Credential
-            tags:
-                - Connector
-            x-speakeasy-entity-operation:
-                terraform-resource: ConnectorCredential#create
-            x-speakeasy-group: Connector
-            x-speakeasy-name-override: RotateCredential
     /api/v1/apps/{app_id}/connectors/{connector_id}/credentials/{id}:
         get:
             description: Get credentials for a connector.
@@ -16823,6 +16982,78 @@ paths:
                 - Connector
             x-speakeasy-group: Connector
             x-speakeasy-name-override: ForceSync
+    /api/v1/apps/{app_id}/connectors/{connector_id}/pause:
+        post:
+            description: Invokes the c1.api.app.v1.ConnectorService.PauseSync method.
+            operationId: c1.api.app.v1.ConnectorService.PauseSync
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The AppID of the app the connector is attached to.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: connector_id
+                  required: true
+                  schema:
+                    description: The ConnectorID of the connector that we are pausing the sync for.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.PauseSyncRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.PauseSyncResponse'
+                    description: Successful response
+            summary: Pause Sync
+            tags:
+                - Connector
+            x-speakeasy-group: Connector
+            x-speakeasy-name-override: PauseSync
+    /api/v1/apps/{app_id}/connectors/{connector_id}/resume:
+        post:
+            description: Invokes the c1.api.app.v1.ConnectorService.ResumeSync method.
+            operationId: c1.api.app.v1.ConnectorService.ResumeSync
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The AppID of the app the connector is attached to.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: connector_id
+                  required: true
+                  schema:
+                    description: The ConnectorID of the connector that we are resuming the sync for.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.ResumeSyncRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.ResumeSyncResponse'
+                    description: Successful response
+            summary: Resume Sync
+            tags:
+                - Connector
+            x-speakeasy-group: Connector
+            x-speakeasy-name-override: ResumeSync
     /api/v1/apps/{app_id}/connectors/{id}:
         delete:
             description: Delete a connector.
@@ -19047,6 +19278,29 @@ paths:
                 terraform-resource: App Entitlement Proxy Binding#create
             x-speakeasy-group: AppEntitlementsProxy
             x-speakeasy-name-override: Create
+    /api/v1/apps/connectors/credentials:
+        post:
+            description: Rotate credentials for a connector.
+            operationId: c1.api.app.v1.ConnectorService.RotateCredential
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.ConnectorServiceRotateCredentialRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.ConnectorServiceRotateCredentialResponse'
+                    description: ConnectorServiceRotateCredentialResponse is the response returned by the rotate method.
+            summary: Rotate Credential
+            tags:
+                - Connector
+            x-speakeasy-entity-operation:
+                terraform-resource: ConnectorCredential#create
+            x-speakeasy-group: Connector
+            x-speakeasy-name-override: RotateCredential
     /api/v1/apps/connectors/validate_config/http:
         post:
             description: Invokes the c1.api.app.v1.ConnectorService.ValidateHTTPConnectorConfig method.
@@ -20242,6 +20496,35 @@ paths:
                 terraform-resource: BundleAutomation#create
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: CreateBundleAutomation
+    /api/v1/catalogs/{request_catalog_id}/bundle_automation/resume:
+        post:
+            description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ResumePausedBundleAutomation method.
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.ResumePausedBundleAutomation
+            parameters:
+                - in: path
+                  name: request_catalog_id
+                  required: true
+                  schema:
+                    description: The requestCatalogId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.requestcatalog.v1.ResumePausedBundleAutomationRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.ResumePausedBundleAutomationResponse'
+                    description: Successful response
+            summary: Resume Paused Bundle Automation
+            tags:
+                - Request Catalog
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: ResumePausedBundleAutomation
     /api/v1/catalogs/{request_catalog_id}/bundle_automation/run:
         post:
             description: Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ForceRunBundleAutomation method.

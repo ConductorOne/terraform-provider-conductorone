@@ -374,6 +374,20 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Wait.WaitCondition = &tfTypes.WaitCondition{}
 								steps.Wait.WaitCondition.Condition = types.StringPointerValue(stepsItem.Wait.WaitCondition.Condition)
 							}
+							if stepsItem.Wait.WaitDuration == nil {
+								steps.Wait.WaitDuration = nil
+							} else {
+								steps.Wait.WaitDuration = &tfTypes.WaitDuration{}
+								steps.Wait.WaitDuration.Duration = types.StringPointerValue(stepsItem.Wait.WaitDuration.Duration)
+							}
+							if stepsItem.Wait.WaitUntilTime == nil {
+								steps.Wait.WaitUntilTime = nil
+							} else {
+								steps.Wait.WaitUntilTime = &tfTypes.WaitUntilTime{}
+								steps.Wait.WaitUntilTime.Hours = types.Int64PointerValue(stepsItem.Wait.WaitUntilTime.Hours)
+								steps.Wait.WaitUntilTime.Minutes = types.Int64PointerValue(stepsItem.Wait.WaitUntilTime.Minutes)
+								steps.Wait.WaitUntilTime.Timezone = types.StringPointerValue(stepsItem.Wait.WaitUntilTime.Timezone)
+							}
 						}
 
 						policyStepsResult.Steps = append(policyStepsResult.Steps, steps)
@@ -1153,6 +1167,18 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							Condition: condition,
 						}
 					}
+					var waitDuration *shared.WaitDuration
+					if stepsItem.Wait.WaitDuration != nil {
+						duration := new(string)
+						if !stepsItem.Wait.WaitDuration.Duration.IsUnknown() && !stepsItem.Wait.WaitDuration.Duration.IsNull() {
+							*duration = stepsItem.Wait.WaitDuration.Duration.ValueString()
+						} else {
+							duration = nil
+						}
+						waitDuration = &shared.WaitDuration{
+							Duration: duration,
+						}
+					}
 					name := new(string)
 					if !stepsItem.Wait.Name.IsUnknown() && !stepsItem.Wait.Name.IsNull() {
 						*name = stepsItem.Wait.Name.ValueString()
@@ -1165,12 +1191,40 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					} else {
 						timeoutDuration = nil
 					}
+					var waitUntilTime *shared.WaitUntilTime
+					if stepsItem.Wait.WaitUntilTime != nil {
+						hours := new(int64)
+						if !stepsItem.Wait.WaitUntilTime.Hours.IsUnknown() && !stepsItem.Wait.WaitUntilTime.Hours.IsNull() {
+							*hours = stepsItem.Wait.WaitUntilTime.Hours.ValueInt64()
+						} else {
+							hours = nil
+						}
+						minutes := new(int64)
+						if !stepsItem.Wait.WaitUntilTime.Minutes.IsUnknown() && !stepsItem.Wait.WaitUntilTime.Minutes.IsNull() {
+							*minutes = stepsItem.Wait.WaitUntilTime.Minutes.ValueInt64()
+						} else {
+							minutes = nil
+						}
+						timezone := new(string)
+						if !stepsItem.Wait.WaitUntilTime.Timezone.IsUnknown() && !stepsItem.Wait.WaitUntilTime.Timezone.IsNull() {
+							*timezone = stepsItem.Wait.WaitUntilTime.Timezone.ValueString()
+						} else {
+							timezone = nil
+						}
+						waitUntilTime = &shared.WaitUntilTime{
+							Hours:    hours,
+							Minutes:  minutes,
+							Timezone: timezone,
+						}
+					}
 					wait = &shared.Wait{
 						CommentOnFirstWait: commentOnFirstWait,
 						CommentOnTimeout:   commentOnTimeout,
 						WaitCondition:      waitCondition,
+						WaitDuration:       waitDuration,
 						Name:               name,
 						TimeoutDuration:    timeoutDuration,
+						WaitUntilTime:      waitUntilTime,
 					}
 				}
 				steps = append(steps, shared.PolicyStepInput{
@@ -1940,6 +1994,18 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							Condition: condition,
 						}
 					}
+					var waitDuration *shared.WaitDuration
+					if stepsItem.Wait.WaitDuration != nil {
+						duration := new(string)
+						if !stepsItem.Wait.WaitDuration.Duration.IsUnknown() && !stepsItem.Wait.WaitDuration.Duration.IsNull() {
+							*duration = stepsItem.Wait.WaitDuration.Duration.ValueString()
+						} else {
+							duration = nil
+						}
+						waitDuration = &shared.WaitDuration{
+							Duration: duration,
+						}
+					}
 					name := new(string)
 					if !stepsItem.Wait.Name.IsUnknown() && !stepsItem.Wait.Name.IsNull() {
 						*name = stepsItem.Wait.Name.ValueString()
@@ -1952,12 +2018,40 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					} else {
 						timeoutDuration = nil
 					}
+					var waitUntilTime *shared.WaitUntilTime
+					if stepsItem.Wait.WaitUntilTime != nil {
+						hours := new(int64)
+						if !stepsItem.Wait.WaitUntilTime.Hours.IsUnknown() && !stepsItem.Wait.WaitUntilTime.Hours.IsNull() {
+							*hours = stepsItem.Wait.WaitUntilTime.Hours.ValueInt64()
+						} else {
+							hours = nil
+						}
+						minutes := new(int64)
+						if !stepsItem.Wait.WaitUntilTime.Minutes.IsUnknown() && !stepsItem.Wait.WaitUntilTime.Minutes.IsNull() {
+							*minutes = stepsItem.Wait.WaitUntilTime.Minutes.ValueInt64()
+						} else {
+							minutes = nil
+						}
+						timezone := new(string)
+						if !stepsItem.Wait.WaitUntilTime.Timezone.IsUnknown() && !stepsItem.Wait.WaitUntilTime.Timezone.IsNull() {
+							*timezone = stepsItem.Wait.WaitUntilTime.Timezone.ValueString()
+						} else {
+							timezone = nil
+						}
+						waitUntilTime = &shared.WaitUntilTime{
+							Hours:    hours,
+							Minutes:  minutes,
+							Timezone: timezone,
+						}
+					}
 					wait = &shared.Wait{
 						CommentOnFirstWait: commentOnFirstWait,
 						CommentOnTimeout:   commentOnTimeout,
 						WaitCondition:      waitCondition,
+						WaitDuration:       waitDuration,
 						Name:               name,
 						TimeoutDuration:    timeoutDuration,
+						WaitUntilTime:      waitUntilTime,
 					}
 				}
 				steps = append(steps, shared.PolicyStepInput{

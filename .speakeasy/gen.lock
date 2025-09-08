@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: e8da18998a10bf0d25a68da62c3a868e
+  docChecksum: 3bed373af68ca1a691446b41e208e292
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.606.0
-  generationVersion: 2.686.7
-  releaseVersion: 1.5.1
-  configChecksum: 56d284e9ae149549c1c5915e38c8aeb9
+  speakeasyVersion: 1.611.0
+  generationVersion: 2.694.1
+  releaseVersion: 1.6.0
+  configChecksum: 40eac26864708727042604b0d453505a
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -14,7 +14,7 @@ features:
     core: 3.44.1
     deprecations: 2.82.0
     devContainers: 0.0.0
-    globalSecurity: 2.81.12
+    globalSecurity: 2.82.0
     globalServerURLs: 2.83.0
     groups: 2.81.2
     ignores: 2.81.1
@@ -263,6 +263,7 @@ generatedFiles:
   - internal/provider/types/app_resource_view.go
   - internal/provider/types/approval.go
   - internal/provider/types/attribute_value.go
+  - internal/provider/types/bundle_automation_circuit_breaker.go
   - internal/provider/types/bundle_automation_last_run_state.go
   - internal/provider/types/bundle_automation_rule_entitlement.go
   - internal/provider/types/conflict_monitor_delete_request.go
@@ -318,6 +319,8 @@ generatedFiles:
   - internal/provider/types/user_view.go
   - internal/provider/types/wait.go
   - internal/provider/types/wait_condition.go
+  - internal/provider/types/wait_duration.go
+  - internal/provider/types/wait_until_time.go
   - internal/provider/types/webhook1.go
   - internal/provider/types/webhook_approval.go
   - internal/provider/types/webhook_provision.go
@@ -468,6 +471,8 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1connectorserviceget.go
   - internal/sdk/models/operations/c1apiappv1connectorservicegetcredentials.go
   - internal/sdk/models/operations/c1apiappv1connectorservicelist.go
+  - internal/sdk/models/operations/c1apiappv1connectorservicepausesync.go
+  - internal/sdk/models/operations/c1apiappv1connectorserviceresumesync.go
   - internal/sdk/models/operations/c1apiappv1connectorservicerevokecredential.go
   - internal/sdk/models/operations/c1apiappv1connectorservicerotatecredential.go
   - internal/sdk/models/operations/c1apiappv1connectorserviceupdate.go
@@ -548,6 +553,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementspercatalog.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceremoveaccessentitlements.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceremoveappentitlements.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceresumepausedbundleautomation.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicesetbundleautomation.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceupdate.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceupdateappentitlements.go
@@ -714,6 +720,7 @@ generatedFiles:
   - internal/sdk/models/shared/boolfield.go
   - internal/sdk/models/shared/boolrules.go
   - internal/sdk/models/shared/bundleautomation.go
+  - internal/sdk/models/shared/bundleautomationcircuitbreaker.go
   - internal/sdk/models/shared/bundleautomationlastrunstate.go
   - internal/sdk/models/shared/bundleautomationruleentitlement.go
   - internal/sdk/models/shared/bytesrules.go
@@ -951,6 +958,8 @@ generatedFiles:
   - internal/sdk/models/shared/oauth2authorizedasinput.go
   - internal/sdk/models/shared/orgdomain.go
   - internal/sdk/models/shared/passwordfield.go
+  - internal/sdk/models/shared/pausesyncrequest.go
+  - internal/sdk/models/shared/pausesyncresponse.go
   - internal/sdk/models/shared/payloadpolicyapprovalstep.go
   - internal/sdk/models/shared/payloadpolicypostaction.go
   - internal/sdk/models/shared/payloadprovisionstep.go
@@ -1039,6 +1048,10 @@ generatedFiles:
   - internal/sdk/models/shared/responsetest.go
   - internal/sdk/models/shared/responseworkflowstep.go
   - internal/sdk/models/shared/restartaction.go
+  - internal/sdk/models/shared/resumepausedbundleautomationrequest.go
+  - internal/sdk/models/shared/resumepausedbundleautomationresponse.go
+  - internal/sdk/models/shared/resumesyncrequest.go
+  - internal/sdk/models/shared/resumesyncresponse.go
   - internal/sdk/models/shared/role.go
   - internal/sdk/models/shared/roleinput.go
   - internal/sdk/models/shared/rule.go
@@ -1181,9 +1194,11 @@ generatedFiles:
   - internal/sdk/models/shared/taskauditwaitforanalysisstepwaiting.go
   - internal/sdk/models/shared/taskauditwaitstepsuccess.go
   - internal/sdk/models/shared/taskauditwaitsteptimedout.go
+  - internal/sdk/models/shared/taskauditwaitstepuntiltime.go
   - internal/sdk/models/shared/taskauditwaitstepwaiting.go
   - internal/sdk/models/shared/taskauditwebhookapprovalattempt.go
   - internal/sdk/models/shared/taskauditwebhookapprovalbadresponse.go
+  - internal/sdk/models/shared/taskauditwebhookapprovalfatalerror.go
   - internal/sdk/models/shared/taskauditwebhookapprovalsuccess.go
   - internal/sdk/models/shared/taskauditwebhookapprovaltriggered.go
   - internal/sdk/models/shared/taskauditwebhookattempt.go
@@ -1271,8 +1286,11 @@ generatedFiles:
   - internal/sdk/models/shared/wait.go
   - internal/sdk/models/shared/waitcondition.go
   - internal/sdk/models/shared/waitconditioninstance.go
+  - internal/sdk/models/shared/waitduration.go
   - internal/sdk/models/shared/waitforduration.go
   - internal/sdk/models/shared/waitinstance.go
+  - internal/sdk/models/shared/waituntiltime.go
+  - internal/sdk/models/shared/waituntiltimeinstance.go
   - internal/sdk/models/shared/webhook.go
   - internal/sdk/models/shared/webhook1.go
   - internal/sdk/models/shared/webhookapproval.go
@@ -2976,6 +2994,32 @@ examples:
           application/json: {}
   c1.api.attribute.v1.Attributes.ListRiskLevels:
     speakeasy-default-c1-api-attribute-v1-attributes-list-risk-levels:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.PauseSync:
+    speakeasy-default-c1-api-app-v1-connector-service-pause-sync:
+      parameters:
+        path:
+          app_id: "<id>"
+          connector_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.ResumeSync:
+    speakeasy-default-c1-api-app-v1-connector-service-resume-sync:
+      parameters:
+        path:
+          app_id: "<id>"
+          connector_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.ResumePausedBundleAutomation:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-resume-paused-bundle-automation:
+      parameters:
+        path:
+          request_catalog_id: "<id>"
       responses:
         "200":
           application/json: {}

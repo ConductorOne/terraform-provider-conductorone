@@ -93,6 +93,7 @@ type PolicyStepInstance struct {
 	//
 	// This message contains a oneof named until. Only a single field of the following list may be set at a time:
 	//   - condition
+	//   - untilTime
 	//
 	//
 	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:

@@ -188,6 +188,14 @@ resource "conductorone_policy" "my_policy" {
             wait_condition = {
               condition = "...my_condition..."
             }
+            wait_duration = {
+              duration = "...my_duration..."
+            }
+            wait_until_time = {
+              hours    = 5
+              minutes  = 8
+              timezone = "...my_timezone..."
+            }
           }
         }
       ]
@@ -264,7 +272,9 @@ This message contains a oneof named typ. Only a single field of the following li
 - `wait` (Attributes) Define a Wait step for a policy to wait on a condition to be met.
 
 This message contains a oneof named until. Only a single field of the following list may be set at a time:
-  - condition (see [below for nested schema](#nestedatt--policy_steps--steps--wait))
+  - condition
+  - duration
+  - untilTime (see [below for nested schema](#nestedatt--policy_steps--steps--wait))
 
 <a id="nestedatt--policy_steps--steps--accept"></a>
 ### Nested Schema for `policy_steps.steps.accept`
@@ -615,6 +625,8 @@ Optional:
 - `name` (String) The name of our condition to show on the task details page
 - `timeout_duration` (String)
 - `wait_condition` (Attributes) The WaitCondition message. (see [below for nested schema](#nestedatt--policy_steps--steps--wait--wait_condition))
+- `wait_duration` (Attributes) The WaitDuration message. (see [below for nested schema](#nestedatt--policy_steps--steps--wait--wait_duration))
+- `wait_until_time` (Attributes) Waits until a specific time of the day (UTC) (see [below for nested schema](#nestedatt--policy_steps--steps--wait--wait_until_time))
 
 <a id="nestedatt--policy_steps--steps--wait--wait_condition"></a>
 ### Nested Schema for `policy_steps.steps.wait.wait_condition`
@@ -622,6 +634,24 @@ Optional:
 Optional:
 
 - `condition` (String) The condition that has to be true for this wait condition to continue.
+
+
+<a id="nestedatt--policy_steps--steps--wait--wait_duration"></a>
+### Nested Schema for `policy_steps.steps.wait.wait_duration`
+
+Optional:
+
+- `duration` (String)
+
+
+<a id="nestedatt--policy_steps--steps--wait--wait_until_time"></a>
+### Nested Schema for `policy_steps.steps.wait.wait_until_time`
+
+Optional:
+
+- `hours` (Number) The hours field.
+- `minutes` (Number) The minutes field.
+- `timezone` (String) The timezone field.
 
 
 

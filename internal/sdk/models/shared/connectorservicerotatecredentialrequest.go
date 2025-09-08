@@ -4,4 +4,22 @@ package shared
 
 // ConnectorServiceRotateCredentialRequest is a request for rotating connector credentials. It uses URL values for input.
 type ConnectorServiceRotateCredentialRequest struct {
+	// The appId of the app the connector is attached to.
+	AppID *string `json:"appId,omitempty"`
+	// The connectorId of the connector that we are rotating the credentials for.
+	ConnectorID *string `json:"connectorId,omitempty"`
+}
+
+func (o *ConnectorServiceRotateCredentialRequest) GetAppID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AppID
+}
+
+func (o *ConnectorServiceRotateCredentialRequest) GetConnectorID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ConnectorID
 }

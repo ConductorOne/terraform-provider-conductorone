@@ -648,11 +648,40 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 												},
 												Description: `The WaitCondition message.`,
 											},
+											"wait_duration": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"duration": schema.StringAttribute{
+														Computed: true,
+													},
+												},
+												Description: `The WaitDuration message.`,
+											},
+											"wait_until_time": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"hours": schema.Int64Attribute{
+														Computed:    true,
+														Description: `The hours field.`,
+													},
+													"minutes": schema.Int64Attribute{
+														Computed:    true,
+														Description: `The minutes field.`,
+													},
+													"timezone": schema.StringAttribute{
+														Computed:    true,
+														Description: `The timezone field.`,
+													},
+												},
+												Description: `Waits until a specific time of the day (UTC)`,
+											},
 										},
 										MarkdownDescription: `Define a Wait step for a policy to wait on a condition to be met.` + "\n" +
 											`` + "\n" +
 											`This message contains a oneof named until. Only a single field of the following list may be set at a time:` + "\n" +
-											`  - condition`,
+											`  - condition` + "\n" +
+											`  - duration` + "\n" +
+											`  - untilTime`,
 									},
 								},
 							},

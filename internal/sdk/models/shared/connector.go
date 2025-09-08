@@ -19,7 +19,7 @@ func (c Config) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Config) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -43,6 +43,8 @@ func (o *Config) GetAdditionalProperties() any {
 type Connector struct {
 	// The id of the app the connector is associated with.
 	AppID *string `json:"appId,omitempty"`
+	// The canResumeSync field.
+	CanResumeSync *bool `json:"canResumeSync,omitempty"`
 	// The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
@@ -82,7 +84,7 @@ func (c Connector) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Connector) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -93,6 +95,13 @@ func (o *Connector) GetAppID() *string {
 		return nil
 	}
 	return o.AppID
+}
+
+func (o *Connector) GetCanResumeSync() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.CanResumeSync
 }
 
 func (o *Connector) GetCatalogID() *string {
@@ -225,6 +234,8 @@ func (o *Connector) GetUserIds() []string {
 type ConnectorInput struct {
 	// The id of the app the connector is associated with.
 	AppID *string `json:"appId,omitempty"`
+	// The canResumeSync field.
+	CanResumeSync *bool `json:"canResumeSync,omitempty"`
 	// The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
@@ -258,6 +269,13 @@ func (o *ConnectorInput) GetAppID() *string {
 		return nil
 	}
 	return o.AppID
+}
+
+func (o *ConnectorInput) GetCanResumeSync() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.CanResumeSync
 }
 
 func (o *ConnectorInput) GetCatalogID() *string {

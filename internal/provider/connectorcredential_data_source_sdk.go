@@ -17,6 +17,7 @@ func (r *ConnectorCredentialDataSourceModel) RefreshFromSharedConnectorCredentia
 	if resp != nil {
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.ClientID = types.StringPointerValue(resp.ClientID)
+		r.ClientSecret = types.StringPointerValue(resp.ClientSecret)
 		r.ConnectorID = types.StringPointerValue(resp.ConnectorID)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))

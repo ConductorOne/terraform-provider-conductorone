@@ -28,16 +28,17 @@ type ConnectorCredentialDataSource struct {
 
 // ConnectorCredentialDataSourceModel describes the data model.
 type ConnectorCredentialDataSourceModel struct {
-	AppID       types.String `tfsdk:"app_id"`
-	ClientID    types.String `tfsdk:"client_id"`
-	ConnectorID types.String `tfsdk:"connector_id"`
-	CreatedAt   types.String `tfsdk:"created_at"`
-	DeletedAt   types.String `tfsdk:"deleted_at"`
-	DisplayName types.String `tfsdk:"display_name"`
-	ExpiresTime types.String `tfsdk:"expires_time"`
-	ID          types.String `tfsdk:"id"`
-	LastUsedAt  types.String `tfsdk:"last_used_at"`
-	UpdatedAt   types.String `tfsdk:"updated_at"`
+	AppID        types.String `tfsdk:"app_id"`
+	ClientID     types.String `tfsdk:"client_id"`
+	ClientSecret types.String `tfsdk:"client_secret"`
+	ConnectorID  types.String `tfsdk:"connector_id"`
+	CreatedAt    types.String `tfsdk:"created_at"`
+	DeletedAt    types.String `tfsdk:"deleted_at"`
+	DisplayName  types.String `tfsdk:"display_name"`
+	ExpiresTime  types.String `tfsdk:"expires_time"`
+	ID           types.String `tfsdk:"id"`
+	LastUsedAt   types.String `tfsdk:"last_used_at"`
+	UpdatedAt    types.String `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -57,6 +58,11 @@ func (r *ConnectorCredentialDataSource) Schema(ctx context.Context, req datasour
 			"client_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The client id of the ConnectorCredential.`,
+			},
+			"client_secret": schema.StringAttribute{
+				Computed:    true,
+				Sensitive:   true,
+				Description: `The client secret of the ConnectorCredential. It's only returned on creation.`,
 			},
 			"connector_id": schema.StringAttribute{
 				Required: true,

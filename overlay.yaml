@@ -187,7 +187,7 @@ actions:
   - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceRotateCredentialRequestInput"]
     update:
       x-speakeasy-ignore: true
-  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceRotateCredentialResponse"]["properties"]["clientSecret"]
+  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorCredential"]["properties"]["clientSecret"]
     update:
       x-speakeasy-param-sensitive: true
   - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceUpdateDelegatedRequestInput"]["properties"]["expandMask"]

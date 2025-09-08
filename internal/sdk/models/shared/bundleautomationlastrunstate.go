@@ -13,10 +13,11 @@ import (
 type BundleAutomationLastRunStateStatus string
 
 const (
-	BundleAutomationLastRunStateStatusBundleAutomationRunStatusUnspecified BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED"
-	BundleAutomationLastRunStateStatusBundleAutomationRunStatusSuccess     BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS"
-	BundleAutomationLastRunStateStatusBundleAutomationRunStatusFailure     BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE"
-	BundleAutomationLastRunStateStatusBundleAutomationRunStatusInProgress  BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS"
+	BundleAutomationLastRunStateStatusBundleAutomationRunStatusUnspecified        BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED"
+	BundleAutomationLastRunStateStatusBundleAutomationRunStatusSuccess            BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS"
+	BundleAutomationLastRunStateStatusBundleAutomationRunStatusFailure            BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE"
+	BundleAutomationLastRunStateStatusBundleAutomationRunStatusInProgress         BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS"
+	BundleAutomationLastRunStateStatusBundleAutomationRunStatusWaitingForApproval BundleAutomationLastRunStateStatus = "BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL"
 )
 
 func (e BundleAutomationLastRunStateStatus) ToPointer() *BundleAutomationLastRunStateStatus {
@@ -35,6 +36,8 @@ func (e *BundleAutomationLastRunStateStatus) UnmarshalJSON(data []byte) error {
 	case "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE":
 		fallthrough
 	case "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS":
+		fallthrough
+	case "BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL":
 		*e = BundleAutomationLastRunStateStatus(v)
 		return nil
 	default:
@@ -56,7 +59,7 @@ func (b BundleAutomationLastRunState) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BundleAutomationLastRunState) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil

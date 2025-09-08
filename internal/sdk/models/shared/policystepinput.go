@@ -39,6 +39,8 @@ type PolicyStepInput struct {
 	//
 	// This message contains a oneof named until. Only a single field of the following list may be set at a time:
 	//   - condition
+	//   - duration
+	//   - untilTime
 	//
 	Wait *Wait `json:"wait,omitempty"`
 }
