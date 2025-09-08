@@ -110,9 +110,7 @@ This message contains a oneof named typ. Only a single field of the following li
 - `wait` (Attributes) Define a Wait step for a policy to wait on a condition to be met.
 
 This message contains a oneof named until. Only a single field of the following list may be set at a time:
-  - condition
-  - duration
-  - untilTime (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait))
+  - condition (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait))
 
 <a id="nestedatt--list--policy_steps--steps--accept"></a>
 ### Nested Schema for `list.policy_steps.steps.accept`
@@ -451,8 +449,6 @@ Read-Only:
 - `name` (String) The name of our condition to show on the task details page
 - `timeout_duration` (String)
 - `wait_condition` (Attributes) The WaitCondition message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--wait_condition))
-- `wait_duration` (Attributes) The WaitDuration message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--wait_duration))
-- `wait_until_time` (Attributes) Waits until a specific time of the day (UTC) (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--wait_until_time))
 
 <a id="nestedatt--list--policy_steps--steps--wait--wait_condition"></a>
 ### Nested Schema for `list.policy_steps.steps.wait.wait_condition`
@@ -460,24 +456,6 @@ Read-Only:
 Read-Only:
 
 - `condition` (String) The condition that has to be true for this wait condition to continue.
-
-
-<a id="nestedatt--list--policy_steps--steps--wait--wait_duration"></a>
-### Nested Schema for `list.policy_steps.steps.wait.wait_duration`
-
-Read-Only:
-
-- `duration` (String)
-
-
-<a id="nestedatt--list--policy_steps--steps--wait--wait_until_time"></a>
-### Nested Schema for `list.policy_steps.steps.wait.wait_until_time`
-
-Read-Only:
-
-- `hours` (Number) The hours field.
-- `minutes` (Number) The minutes field.
-- `timezone` (String) The timezone field.
 
 
 
