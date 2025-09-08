@@ -10,6 +10,7 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -197,12 +198,23 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 								},
 								Description: `The DefaultBehavior message.`,
 							},
+							"delete_account": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The connectorId field.`,
+									},
+								},
+								Description: `The DeleteAccount message.`,
+							},
 						},
 						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
 							`` + "\n" +
 							`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
 							`  - defaultBehavior` + "\n" +
-							`  - account`,
+							`  - account` + "\n" +
+							`  - deleteAccount`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("delegated_provision"),
@@ -303,6 +315,7 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 						},
 					},
 					"multi_step": schema.StringAttribute{
+						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
 						Optional:    true,
 						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
