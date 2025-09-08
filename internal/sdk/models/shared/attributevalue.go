@@ -25,7 +25,7 @@ func (a AttributeValue) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AttributeValue) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

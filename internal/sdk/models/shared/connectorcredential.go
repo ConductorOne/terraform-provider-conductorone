@@ -13,6 +13,8 @@ type ConnectorCredential struct {
 	AppID *string `json:"appId,omitempty"`
 	// The client id of the ConnectorCredential.
 	ClientID *string `json:"clientId,omitempty"`
+	// The client secret of the ConnectorCredential. It's only returned on creation.
+	ClientSecret *string `json:"clientSecret,omitempty"`
 	// The connectorId of the connector the credential is associated with.
 	ConnectorID *string    `json:"connectorId,omitempty"`
 	CreatedAt   *time.Time `json:"createdAt,omitempty"`
@@ -31,7 +33,7 @@ func (c ConnectorCredential) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConnectorCredential) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -49,6 +51,13 @@ func (o *ConnectorCredential) GetClientID() *string {
 		return nil
 	}
 	return o.ClientID
+}
+
+func (o *ConnectorCredential) GetClientSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ClientSecret
 }
 
 func (o *ConnectorCredential) GetConnectorID() *string {

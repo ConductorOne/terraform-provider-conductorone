@@ -417,6 +417,20 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 										steps.Wait.WaitCondition = &tfTypes.WaitCondition{}
 										steps.Wait.WaitCondition.Condition = types.StringPointerValue(stepsItem.Wait.WaitCondition.Condition)
 									}
+									if stepsItem.Wait.WaitDuration == nil {
+										steps.Wait.WaitDuration = nil
+									} else {
+										steps.Wait.WaitDuration = &tfTypes.WaitDuration{}
+										steps.Wait.WaitDuration.Duration = types.StringPointerValue(stepsItem.Wait.WaitDuration.Duration)
+									}
+									if stepsItem.Wait.WaitUntilTime == nil {
+										steps.Wait.WaitUntilTime = nil
+									} else {
+										steps.Wait.WaitUntilTime = &tfTypes.WaitUntilTime{}
+										steps.Wait.WaitUntilTime.Hours = types.Int64PointerValue(stepsItem.Wait.WaitUntilTime.Hours)
+										steps.Wait.WaitUntilTime.Minutes = types.Int64PointerValue(stepsItem.Wait.WaitUntilTime.Minutes)
+										steps.Wait.WaitUntilTime.Timezone = types.StringPointerValue(stepsItem.Wait.WaitUntilTime.Timezone)
+									}
 								}
 
 								policyStepsResult.Steps = append(policyStepsResult.Steps, steps)

@@ -12,4 +12,6 @@ type Wait struct {
 	Name               types.String   `tfsdk:"name"`
 	TimeoutDuration    types.String   `tfsdk:"timeout_duration"`
 	WaitCondition      *WaitCondition `tfsdk:"wait_condition"`
+	WaitDuration       *WaitDuration  `tfsdk:"wait_duration"`
+	WaitUntilTime      *WaitUntilTime `tfsdk:"wait_until_time"`
 }

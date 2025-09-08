@@ -34,12 +34,14 @@ type BundleAutomationResource struct {
 
 // BundleAutomationResourceModel describes the resource data model.
 type BundleAutomationResourceModel struct {
+	BundleAutomationCircuitBreaker  *tfTypes.BundleAutomationCircuitBreaker  `tfsdk:"bundle_automation_circuit_breaker"`
 	BundleAutomationLastRunState    *tfTypes.BundleAutomationLastRunState    `tfsdk:"bundle_automation_last_run_state"`
 	BundleAutomationRuleEntitlement *tfTypes.BundleAutomationRuleEntitlement `tfsdk:"bundle_automation_rule_entitlement"`
 	CreateTasks                     types.Bool                               `tfsdk:"create_tasks"`
 	CreatedAt                       types.String                             `tfsdk:"created_at"`
 	DeleteBundleAutomationRequest   *tfTypes.DeleteBundleAutomationRequest   `tfsdk:"delete_bundle_automation_request"`
 	DeletedAt                       types.String                             `tfsdk:"-"`
+	DisableCircuitBreaker           types.Bool                               `tfsdk:"disable_circuit_breaker"`
 	Enabled                         types.Bool                               `tfsdk:"enabled"`
 	RequestCatalogID                types.String                             `tfsdk:"request_catalog_id"`
 	TenantID                        types.String                             `tfsdk:"tenant_id"`
@@ -54,6 +56,43 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "BundleAutomation Resource",
 		Attributes: map[string]schema.Attribute{
+			"bundle_automation_circuit_breaker": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"removed_members_threshold_percentage": schema.StringAttribute{
+						Computed:    true,
+						Description: `The removedMembersThresholdPercentage field.`,
+					},
+					"state": schema.StringAttribute{
+						Computed:    true,
+						Description: `The state field. must be one of ["CIRCUIT_BREAKER_STATE_UNSPECIFIED", "CIRCUIT_BREAKER_STATE_TRIGGERED", "CIRCUIT_BREAKER_STATE_BYPASS"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"CIRCUIT_BREAKER_STATE_UNSPECIFIED",
+								"CIRCUIT_BREAKER_STATE_TRIGGERED",
+								"CIRCUIT_BREAKER_STATE_BYPASS",
+							),
+						},
+					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"user_ref": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The id of the user.`,
+							},
+						},
+						Description: `A reference to a user.`,
+					},
+				},
+				Description: `The BundleAutomationCircuitBreaker message.`,
+			},
 			"bundle_automation_last_run_state": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
@@ -69,13 +108,14 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 					},
 					"status": schema.StringAttribute{
 						Computed:    true,
-						Description: `The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED", "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS"]`,
+						Description: `The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED", "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS", "BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED",
 								"BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS",
 								"BUNDLE_AUTOMATION_RUN_STATUS_FAILURE",
 								"BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS",
+								"BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL",
 							),
 						},
 					},
@@ -125,6 +165,11 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 			"delete_bundle_automation_request": schema.SingleNestedAttribute{
 				Optional:    true,
 				Description: `The DeleteBundleAutomationRequest message.`,
+			},
+			"disable_circuit_breaker": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The disableCircuitBreaker field.`,
 			},
 			"enabled": schema.BoolAttribute{
 				Computed:    true,

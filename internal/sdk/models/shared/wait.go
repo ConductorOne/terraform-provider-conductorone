@@ -6,6 +6,8 @@ package shared
 //
 // This message contains a oneof named until. Only a single field of the following list may be set at a time:
 //   - condition
+//   - duration
+//   - untilTime
 type Wait struct {
 	// The comment to post on first failed check.
 	CommentOnFirstWait *string `json:"commentOnFirstWait,omitempty"`
@@ -13,9 +15,13 @@ type Wait struct {
 	CommentOnTimeout *string `json:"commentOnTimeout,omitempty"`
 	// The WaitCondition message.
 	WaitCondition *WaitCondition `json:"condition,omitempty"`
+	// The WaitDuration message.
+	WaitDuration *WaitDuration `json:"duration,omitempty"`
 	// The name of our condition to show on the task details page
 	Name            *string `json:"name,omitempty"`
 	TimeoutDuration *string `json:"timeoutDuration,omitempty"`
+	// Waits until a specific time of the day (UTC)
+	WaitUntilTime *WaitUntilTime `json:"untilTime,omitempty"`
 }
 
 func (o *Wait) GetCommentOnFirstWait() *string {
@@ -39,6 +45,13 @@ func (o *Wait) GetWaitCondition() *WaitCondition {
 	return o.WaitCondition
 }
 
+func (o *Wait) GetWaitDuration() *WaitDuration {
+	if o == nil {
+		return nil
+	}
+	return o.WaitDuration
+}
+
 func (o *Wait) GetName() *string {
 	if o == nil {
 		return nil
@@ -51,4 +64,11 @@ func (o *Wait) GetTimeoutDuration() *string {
 		return nil
 	}
 	return o.TimeoutDuration
+}
+
+func (o *Wait) GetWaitUntilTime() *WaitUntilTime {
+	if o == nil {
+		return nil
+	}
+	return o.WaitUntilTime
 }

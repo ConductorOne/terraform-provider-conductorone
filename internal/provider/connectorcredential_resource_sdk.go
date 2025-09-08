@@ -17,6 +17,7 @@ func (r *ConnectorCredentialResourceModel) RefreshFromSharedConnectorCredential(
 	if resp != nil {
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.ClientID = types.StringPointerValue(resp.ClientID)
+		r.ClientSecret = types.StringPointerValue(resp.ClientSecret)
 		r.ConnectorID = types.StringPointerValue(resp.ConnectorID)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
@@ -72,16 +73,22 @@ func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServic
 	return &out, diags
 }
 
-func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServiceRotateCredentialRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceRotateCredentialRequest, diag.Diagnostics) {
+func (r *ConnectorCredentialResourceModel) ToSharedConnectorServiceRotateCredentialRequest(ctx context.Context) (*shared.ConnectorServiceRotateCredentialRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var connectorID string
-	connectorID = r.ConnectorID.ValueString()
-
-	out := operations.C1APIAppV1ConnectorServiceRotateCredentialRequest{
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
+	connectorID := new(string)
+	if !r.ConnectorID.IsUnknown() && !r.ConnectorID.IsNull() {
+		*connectorID = r.ConnectorID.ValueString()
+	} else {
+		connectorID = nil
+	}
+	out := shared.ConnectorServiceRotateCredentialRequest{
 		AppID:       appID,
 		ConnectorID: connectorID,
 	}

@@ -46,6 +46,7 @@ func (e *WaitInstanceState) UnmarshalJSON(data []byte) error {
 //
 // This message contains a oneof named until. Only a single field of the following list may be set at a time:
 //   - condition
+//   - untilTime
 //
 // This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
 //   - succeeded
@@ -71,6 +72,8 @@ type WaitInstance struct {
 	ConditionTimedOut *ConditionTimedOut `json:"timedOut,omitempty"`
 	Timeout           *time.Time         `json:"timeout,omitempty"`
 	TimeoutDuration   *string            `json:"timeoutDuration,omitempty"`
+	// The WaitUntilTimeInstance message.
+	WaitUntilTimeInstance *WaitUntilTimeInstance `json:"untilTime,omitempty"`
 }
 
 func (w WaitInstance) MarshalJSON() ([]byte, error) {
@@ -78,7 +81,7 @@ func (w WaitInstance) MarshalJSON() ([]byte, error) {
 }
 
 func (w *WaitInstance) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -159,4 +162,11 @@ func (o *WaitInstance) GetTimeoutDuration() *string {
 		return nil
 	}
 	return o.TimeoutDuration
+}
+
+func (o *WaitInstance) GetWaitUntilTimeInstance() *WaitUntilTimeInstance {
+	if o == nil {
+		return nil
+	}
+	return o.WaitUntilTimeInstance
 }

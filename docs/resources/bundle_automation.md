@@ -26,8 +26,9 @@ resource "conductorone_bundle_automation" "my_bundleautomation" {
   delete_bundle_automation_request = {
     # ...
   }
-  enabled            = true
-  request_catalog_id = "...my_request_catalog_id..."
+  disable_circuit_breaker = false
+  enabled                 = true
+  request_catalog_id      = "...my_request_catalog_id..."
 }
 ```
 
@@ -43,10 +44,12 @@ resource "conductorone_bundle_automation" "my_bundleautomation" {
 - `bundle_automation_rule_entitlement` (Attributes) The BundleAutomationRuleEntitlement message. (see [below for nested schema](#nestedatt--bundle_automation_rule_entitlement))
 - `create_tasks` (Boolean) The createTasks field.
 - `delete_bundle_automation_request` (Attributes) The DeleteBundleAutomationRequest message. (see [below for nested schema](#nestedatt--delete_bundle_automation_request))
+- `disable_circuit_breaker` (Boolean) The disableCircuitBreaker field.
 - `enabled` (Boolean) The enabled field.
 
 ### Read-Only
 
+- `bundle_automation_circuit_breaker` (Attributes) The BundleAutomationCircuitBreaker message. (see [below for nested schema](#nestedatt--bundle_automation_circuit_breaker))
 - `bundle_automation_last_run_state` (Attributes) The BundleAutomationLastRunState message. (see [below for nested schema](#nestedatt--bundle_automation_last_run_state))
 - `created_at` (String)
 - `tenant_id` (String) The tenantId field.
@@ -73,6 +76,25 @@ Optional:
 ### Nested Schema for `delete_bundle_automation_request`
 
 
+<a id="nestedatt--bundle_automation_circuit_breaker"></a>
+### Nested Schema for `bundle_automation_circuit_breaker`
+
+Read-Only:
+
+- `removed_members_threshold_percentage` (String) The removedMembersThresholdPercentage field.
+- `state` (String) The state field. must be one of ["CIRCUIT_BREAKER_STATE_UNSPECIFIED", "CIRCUIT_BREAKER_STATE_TRIGGERED", "CIRCUIT_BREAKER_STATE_BYPASS"]
+- `updated_at` (String)
+- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--bundle_automation_circuit_breaker--user_ref))
+
+<a id="nestedatt--bundle_automation_circuit_breaker--user_ref"></a>
+### Nested Schema for `bundle_automation_circuit_breaker.user_ref`
+
+Read-Only:
+
+- `id` (String) The id of the user.
+
+
+
 <a id="nestedatt--bundle_automation_last_run_state"></a>
 ### Nested Schema for `bundle_automation_last_run_state`
 
@@ -80,7 +102,7 @@ Read-Only:
 
 - `error_message` (String) The errorMessage field.
 - `last_run_at` (String)
-- `status` (String) The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED", "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS"]
+- `status` (String) The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED", "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS", "BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL"]
 
 ## Import
 

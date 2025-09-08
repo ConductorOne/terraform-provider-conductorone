@@ -39,6 +39,36 @@ func (e *TaskTypes) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// TaskUserRelation - The taskUserRelation field.
+type TaskUserRelation string
+
+const (
+	TaskUserRelationTaskUserRelationUnspecified TaskUserRelation = "TASK_USER_RELATION_UNSPECIFIED"
+	TaskUserRelationTaskUserRelationAssignee    TaskUserRelation = "TASK_USER_RELATION_ASSIGNEE"
+	TaskUserRelationTaskUserRelationSubject     TaskUserRelation = "TASK_USER_RELATION_SUBJECT"
+)
+
+func (e TaskUserRelation) ToPointer() *TaskUserRelation {
+	return &e
+}
+func (e *TaskUserRelation) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "TASK_USER_RELATION_UNSPECIFIED":
+		fallthrough
+	case "TASK_USER_RELATION_ASSIGNEE":
+		fallthrough
+	case "TASK_USER_RELATION_SUBJECT":
+		*e = TaskUserRelation(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for TaskUserRelation: %v", v)
+	}
+}
+
 // The TaskAction message.
 //
 // This message contains a oneof named action. Only a single field of the following list may be set at a time:
@@ -66,6 +96,8 @@ type TaskAction struct {
 	ReassignAction *ReassignAction `json:"reassign,omitempty"`
 	// The taskTypes field.
 	TaskTypes []TaskTypes `json:"taskTypes,omitempty"`
+	// The taskUserRelation field.
+	TaskUserRelation *TaskUserRelation `json:"taskUserRelation,omitempty"`
 }
 
 func (o *TaskAction) GetCloseAction() *CloseAction {
@@ -87,4 +119,11 @@ func (o *TaskAction) GetTaskTypes() []TaskTypes {
 		return nil
 	}
 	return o.TaskTypes
+}
+
+func (o *TaskAction) GetTaskUserRelation() *TaskUserRelation {
+	if o == nil {
+		return nil
+	}
+	return o.TaskUserRelation
 }

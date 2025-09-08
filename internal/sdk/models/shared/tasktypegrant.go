@@ -71,7 +71,7 @@ func (t TaskTypeGrant) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TaskTypeGrant) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

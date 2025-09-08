@@ -16,6 +16,24 @@ func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx co
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.BundleAutomationCircuitBreaker == nil {
+			r.BundleAutomationCircuitBreaker = nil
+		} else {
+			r.BundleAutomationCircuitBreaker = &tfTypes.BundleAutomationCircuitBreaker{}
+			r.BundleAutomationCircuitBreaker.RemovedMembersThresholdPercentage = types.StringPointerValue(resp.BundleAutomationCircuitBreaker.RemovedMembersThresholdPercentage)
+			if resp.BundleAutomationCircuitBreaker.State != nil {
+				r.BundleAutomationCircuitBreaker.State = types.StringValue(string(*resp.BundleAutomationCircuitBreaker.State))
+			} else {
+				r.BundleAutomationCircuitBreaker.State = types.StringNull()
+			}
+			r.BundleAutomationCircuitBreaker.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationCircuitBreaker.UpdatedAt))
+			if resp.BundleAutomationCircuitBreaker.UserRef == nil {
+				r.BundleAutomationCircuitBreaker.UserRef = nil
+			} else {
+				r.BundleAutomationCircuitBreaker.UserRef = &tfTypes.UserRef{}
+				r.BundleAutomationCircuitBreaker.UserRef.ID = types.StringPointerValue(resp.BundleAutomationCircuitBreaker.UserRef.ID)
+			}
+		}
 		if resp.BundleAutomationLastRunState == nil {
 			r.BundleAutomationLastRunState = nil
 		} else {
@@ -48,6 +66,7 @@ func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx co
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CreateTasks = types.BoolPointerValue(resp.CreateTasks)
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.DisableCircuitBreaker = types.BoolPointerValue(resp.DisableCircuitBreaker)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.RequestCatalogID = types.StringPointerValue(resp.RequestCatalogID)
 		r.TenantID = types.StringPointerValue(resp.TenantID)
@@ -139,6 +158,12 @@ func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ct
 	} else {
 		createTasks = nil
 	}
+	disableCircuitBreaker := new(bool)
+	if !r.DisableCircuitBreaker.IsUnknown() && !r.DisableCircuitBreaker.IsNull() {
+		*disableCircuitBreaker = r.DisableCircuitBreaker.ValueBool()
+	} else {
+		disableCircuitBreaker = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -175,6 +200,7 @@ func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ct
 	}
 	out := shared.CreateBundleAutomationRequest{
 		CreateTasks:                     createTasks,
+		DisableCircuitBreaker:           disableCircuitBreaker,
 		Enabled:                         enabled,
 		BundleAutomationRuleEntitlement: bundleAutomationRuleEntitlement,
 	}
@@ -198,6 +224,12 @@ func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest(ctx c
 		*createTasks = r.CreateTasks.ValueBool()
 	} else {
 		createTasks = nil
+	}
+	disableCircuitBreaker := new(bool)
+	if !r.DisableCircuitBreaker.IsUnknown() && !r.DisableCircuitBreaker.IsNull() {
+		*disableCircuitBreaker = r.DisableCircuitBreaker.ValueBool()
+	} else {
+		disableCircuitBreaker = nil
 	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
@@ -235,6 +267,7 @@ func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest(ctx c
 	}
 	out := shared.SetBundleAutomationRequest{
 		CreateTasks:                     createTasks,
+		DisableCircuitBreaker:           disableCircuitBreaker,
 		Enabled:                         enabled,
 		BundleAutomationRuleEntitlement: bundleAutomationRuleEntitlement,
 	}

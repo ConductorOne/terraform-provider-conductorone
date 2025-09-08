@@ -158,6 +158,8 @@ func (e *Source) UnmarshalJSON(data []byte) error {
 //   - policyChanged
 //   - formInstanceChange
 //   - grantDurationUpdated
+//   - waitStepUntilTime
+//   - webhookApprovalFatalError
 type TaskAuditView struct {
 	// The TaskAuditAccessRequestOutcome message.
 	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
@@ -264,12 +266,16 @@ type TaskAuditView struct {
 	TaskAuditWaitStepSuccess *TaskAuditWaitStepSuccess `json:"waitStepSuccess,omitempty"`
 	// The TaskAuditWaitStepTimedOut message.
 	TaskAuditWaitStepTimedOut *TaskAuditWaitStepTimedOut `json:"waitStepTimedOut,omitempty"`
+	// The TaskAuditWaitStepUntilTime message.
+	TaskAuditWaitStepUntilTime *TaskAuditWaitStepUntilTime `json:"waitStepUntilTime,omitempty"`
 	// The TaskAuditWaitStepWaiting message.
 	TaskAuditWaitStepWaiting *TaskAuditWaitStepWaiting `json:"waitStepWaiting,omitempty"`
 	// The TaskAuditWebhookApprovalAttempt message.
 	TaskAuditWebhookApprovalAttempt *TaskAuditWebhookApprovalAttempt `json:"webhookApprovalAttempt,omitempty"`
 	// The TaskAuditWebhookApprovalBadResponse message.
 	TaskAuditWebhookApprovalBadResponse *TaskAuditWebhookApprovalBadResponse `json:"webhookApprovalBadResponse,omitempty"`
+	// The TaskAuditWebhookApprovalFatalError message.
+	TaskAuditWebhookApprovalFatalError *TaskAuditWebhookApprovalFatalError `json:"webhookApprovalFatalError,omitempty"`
 	// The TaskAuditWebhookApprovalSuccess message.
 	TaskAuditWebhookApprovalSuccess *TaskAuditWebhookApprovalSuccess `json:"webhookApprovalSuccess,omitempty"`
 	// The TaskAuditWebhookApprovalTriggered message.
@@ -289,7 +295,7 @@ func (t TaskAuditView) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TaskAuditView) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -645,6 +651,13 @@ func (o *TaskAuditView) GetTaskAuditWaitStepTimedOut() *TaskAuditWaitStepTimedOu
 	return o.TaskAuditWaitStepTimedOut
 }
 
+func (o *TaskAuditView) GetTaskAuditWaitStepUntilTime() *TaskAuditWaitStepUntilTime {
+	if o == nil {
+		return nil
+	}
+	return o.TaskAuditWaitStepUntilTime
+}
+
 func (o *TaskAuditView) GetTaskAuditWaitStepWaiting() *TaskAuditWaitStepWaiting {
 	if o == nil {
 		return nil
@@ -664,6 +677,13 @@ func (o *TaskAuditView) GetTaskAuditWebhookApprovalBadResponse() *TaskAuditWebho
 		return nil
 	}
 	return o.TaskAuditWebhookApprovalBadResponse
+}
+
+func (o *TaskAuditView) GetTaskAuditWebhookApprovalFatalError() *TaskAuditWebhookApprovalFatalError {
+	if o == nil {
+		return nil
+	}
+	return o.TaskAuditWebhookApprovalFatalError
 }
 
 func (o *TaskAuditView) GetTaskAuditWebhookApprovalSuccess() *TaskAuditWebhookApprovalSuccess {
