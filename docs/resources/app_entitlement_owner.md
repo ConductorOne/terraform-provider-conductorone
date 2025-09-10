@@ -31,9 +31,9 @@ resource "conductorone_app_entitlement_owner" "my_app_entitlement_owner" {
 
 ### Required
 
-- `app_id` (String) Requires replacement if changed.
-- `entitlement_id` (String) Requires replacement if changed.
+- `app_id` (String)
+- `entitlement_id` (String)
 
 ### Optional
 
-- `user_ids` (List of String) The user_ids field for the users to set as an owner of the app entitlement. Requires replacement if changed.
+- `user_ids` (List of String) The user_ids field for the users to set as an owner of the app entitlement.
