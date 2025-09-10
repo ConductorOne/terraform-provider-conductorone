@@ -549,3 +549,11 @@ actions:
   - target: $["paths"]["/api/v1/functions/{function_id}/commits/{id}"]["get"]["parameters"][1]
     update:
       x-speakeasy-match: function_commit.id
+  - target: $["paths"]["/api/v1/apps/{app_id}/entitlements/{entitlement_id}/owners"]["put"]["x-speakeasy-entity-operation"]["terraform-resource"]
+    update:
+      - App_Entitlement_Owner#create
+      - App_Entitlement_Owner#update
+  - target: $["paths"]["/api/v1/apps/{src_app_id}/{src_app_entitlement_id}/bindings/{dst_app_id}/{dst_app_entitlement_id}"]["post"]["x-speakeasy-entity-operation"]["terraform-resource"]
+    update:
+      - App Entitlement Proxy Binding#create
+      - App Entitlement Proxy Binding#update
