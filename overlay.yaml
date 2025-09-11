@@ -553,7 +553,6 @@ actions:
     update:
       - App_Entitlement_Owner#create
       - App_Entitlement_Owner#update
-  - target: $["paths"]["/api/v1/apps/{src_app_id}/{src_app_entitlement_id}/bindings/{dst_app_id}/{dst_app_entitlement_id}"]["post"]["x-speakeasy-entity-operation"]["terraform-resource"]
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["id"]
     update:
-      - App Entitlement Proxy Binding#create
-      - App Entitlement Proxy Binding#update
+      x-speakeasy-param-suppress-computed-diff: allow
