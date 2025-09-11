@@ -20,6 +20,7 @@ generation:
   auth:
     oAuth2ClientCredentialsEnabled: false
     oAuth2PasswordEnabled: false
+    hoistGlobalSecurity: true
   mockServer:
     disabled: true
   tests:
@@ -27,7 +28,7 @@ generation:
     generateNewTests: false
     skipResponseBodyAssertions: false
 terraform:
-  version: 1.6.0
+  version: 1.6.4
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []

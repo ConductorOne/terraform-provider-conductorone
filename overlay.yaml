@@ -549,3 +549,10 @@ actions:
   - target: $["paths"]["/api/v1/functions/{function_id}/commits/{id}"]["get"]["parameters"][1]
     update:
       x-speakeasy-match: function_commit.id
+  - target: $["paths"]["/api/v1/apps/{app_id}/entitlements/{entitlement_id}/owners"]["put"]["x-speakeasy-entity-operation"]["terraform-resource"]
+    update:
+      - App_Entitlement_Owner#create
+      - App_Entitlement_Owner#update
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["id"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
