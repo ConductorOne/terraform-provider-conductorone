@@ -28,10 +28,10 @@ resource "conductorone_app_entitlement_proxy_binding" "my_app_entitlement_proxy_
 
 ### Required
 
-- `dst_app_entitlement_id` (String)
-- `dst_app_id` (String)
-- `src_app_entitlement_id` (String)
-- `src_app_id` (String)
+- `dst_app_entitlement_id` (String) Requires replacement if changed.
+- `dst_app_id` (String) Requires replacement if changed.
+- `src_app_entitlement_id` (String) Requires replacement if changed.
+- `src_app_id` (String) Requires replacement if changed.
 
 ### Read-Only
 

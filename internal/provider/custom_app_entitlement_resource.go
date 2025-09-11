@@ -391,7 +391,10 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				Description: `The grantPolicyId field.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The unique ID for the App Entitlement.`,
 			},
 			"is_automation_enabled": schema.BoolAttribute{
