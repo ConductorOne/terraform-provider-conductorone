@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 09377b62be6f5939af8721bf0f5a4cba
+  docChecksum: 0646d72fa1826cf4b9becf70537362ef
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.615.1
   generationVersion: 2.698.4
-  releaseVersion: 1.6.4
-  configChecksum: 7ea046f8880c137bb3208c9b09aed5d8
+  releaseVersion: 1.6.6
+  configChecksum: 6dada6181445368d5eb75c2afd811c32
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -86,6 +86,9 @@ generatedFiles:
   - examples/resources/conductorone_app_resource_type/import-by-string-id.tf
   - examples/resources/conductorone_app_resource_type/import.sh
   - examples/resources/conductorone_app_resource_type/resource.tf
+  - examples/resources/conductorone_automation/import-by-string-id.tf
+  - examples/resources/conductorone_automation/import.sh
+  - examples/resources/conductorone_automation/resource.tf
   - examples/resources/conductorone_bundle_automation/import-by-string-id.tf
   - examples/resources/conductorone_bundle_automation/import.sh
   - examples/resources/conductorone_bundle_automation/resource.tf
@@ -178,6 +181,8 @@ generatedFiles:
   - internal/provider/app_resources_data_source_sdk.go
   - internal/provider/apps_data_source.go
   - internal/provider/apps_data_source_sdk.go
+  - internal/provider/automation_resource.go
+  - internal/provider/automation_resource_sdk.go
   - internal/provider/aws_external_id_data_source.go
   - internal/provider/aws_external_id_data_source_sdk.go
   - internal/provider/bundleautomation_data_source.go
@@ -240,6 +245,7 @@ generatedFiles:
   - internal/provider/typeconvert/datetime.go
   - internal/provider/typeconvert/int.go
   - internal/provider/types/accept.go
+  - internal/provider/types/account_filter.go
   - internal/provider/types/account_provision.go
   - internal/provider/types/account_provision_config.go
   - internal/provider/types/agent_approval.go
@@ -261,21 +267,38 @@ generatedFiles:
   - internal/provider/types/app_resource_type.go
   - internal/provider/types/app_resource_type_service_get_response_expanded.go
   - internal/provider/types/app_resource_view.go
+  - internal/provider/types/app_user_created_trigger.go
+  - internal/provider/types/app_user_updated_trigger.go
   - internal/provider/types/approval.go
+  - internal/provider/types/args_template.go
   - internal/provider/types/attribute_value.go
+  - internal/provider/types/automation_context.go
+  - internal/provider/types/automation_step.go
+  - internal/provider/types/automation_template_ref.go
+  - internal/provider/types/automation_trigger.go
   - internal/provider/types/bundle_automation_circuit_breaker.go
   - internal/provider/types/bundle_automation_last_run_state.go
   - internal/provider/types/bundle_automation_rule_entitlement.go
+  - internal/provider/types/call_function.go
+  - internal/provider/types/close_action.go
   - internal/provider/types/conflict_monitor_delete_request.go
+  - internal/provider/types/connector_action.go
+  - internal/provider/types/connector_create_account.go
   - internal/provider/types/connector_provision.go
+  - internal/provider/types/connector_ref.go
+  - internal/provider/types/context.go
+  - internal/provider/types/create_access_review.go
   - internal/provider/types/create_app_entitlement_request_duration_unset.go
+  - internal/provider/types/create_revoke_tasks.go
   - internal/provider/types/default_behavior.go
   - internal/provider/types/delegated_provision.go
   - internal/provider/types/delete_account.go
   - internal/provider/types/delete_bundle_automation_request.go
   - internal/provider/types/deprovisioner_policy.go
+  - internal/provider/types/disabled_reason_circuit_breaker.go
   - internal/provider/types/do_not_save.go
   - internal/provider/types/email_notifications.go
+  - internal/provider/types/entitlement_filter.go
   - internal/provider/types/entitlement_owner_approval.go
   - internal/provider/types/escalation.go
   - internal/provider/types/expression_approval.go
@@ -284,9 +307,16 @@ generatedFiles:
   - internal/provider/types/functions_service_delete_function_request.go
   - internal/provider/types/get_app_entitlement_proxy_response_expanded.go
   - internal/provider/types/get_app_entitlement_response_expanded.go
+  - internal/provider/types/grant_deleted_trigger.go
+  - internal/provider/types/grant_entitlements.go
+  - internal/provider/types/grant_filter.go
+  - internal/provider/types/grant_found_trigger.go
+  - internal/provider/types/grant_trigger_filter.go
   - internal/provider/types/manager_approval.go
+  - internal/provider/types/manual_automation_trigger.go
   - internal/provider/types/manual_provision.go
   - internal/provider/types/notification_config.go
+  - internal/provider/types/payload.go
   - internal/provider/types/policy.go
   - internal/provider/types/policy_post_actions.go
   - internal/provider/types/policy_ref.go
@@ -296,8 +326,10 @@ generatedFiles:
   - internal/provider/types/provision.go
   - internal/provider/types/provision_policy.go
   - internal/provider/types/provision_target.go
+  - internal/provider/types/reassign_action.go
   - internal/provider/types/reassign_to_approvers.go
   - internal/provider/types/reject.go
+  - internal/provider/types/remove_from_delegation.go
   - internal/provider/types/replace_policy.go
   - internal/provider/types/request_catalog.go
   - internal/provider/types/request_catalog_management_service_get_response_expanded.go
@@ -305,24 +337,42 @@ generatedFiles:
   - internal/provider/types/request_catalog_view.go
   - internal/provider/types/resource_owner_approval.go
   - internal/provider/types/rule.go
+  - internal/provider/types/run_automation.go
+  - internal/provider/types/run_delayed.go
+  - internal/provider/types/run_immediately.go
   - internal/provider/types/save_to_vault.go
+  - internal/provider/types/schedule_trigger.go
   - internal/provider/types/search_app_resources_response_expanded.go
   - internal/provider/types/search_users_response_expanded.go
   - internal/provider/types/secret_trait.go
   - internal/provider/types/self_approval.go
+  - internal/provider/types/send_email.go
+  - internal/provider/types/send_slack_message.go
   - internal/provider/types/slack_notifications.go
+  - internal/provider/types/task_action.go
   - internal/provider/types/unconfigured_provision.go
+  - internal/provider/types/unenroll_from_all_access_profiles.go
+  - internal/provider/types/update_user.go
+  - internal/provider/types/usage_based_revocation_trigger.go
   - internal/provider/types/user.go
   - internal/provider/types/user_approval.go
   - internal/provider/types/user_attribute_mapping_source.go
+  - internal/provider/types/user_created_trigger.go
+  - internal/provider/types/user_profile_change_trigger.go
+  - internal/provider/types/user_properties.go
   - internal/provider/types/user_ref.go
   - internal/provider/types/user_view.go
   - internal/provider/types/wait.go
   - internal/provider/types/wait_condition.go
   - internal/provider/types/wait_duration.go
+  - internal/provider/types/wait_for_duration.go
   - internal/provider/types/wait_until_time.go
+  - internal/provider/types/webhook.go
   - internal/provider/types/webhook1.go
   - internal/provider/types/webhook_approval.go
+  - internal/provider/types/webhook_automation_trigger.go
+  - internal/provider/types/webhook_listener_auth_hmac.go
+  - internal/provider/types/webhook_listener_auth_jwt.go
   - internal/provider/types/webhook_provision.go
   - internal/provider/types/webhook_ref.go
   - internal/provider/user_data_source.go
@@ -464,6 +514,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1appuserservicelistappusersforuser.go
   - internal/sdk/models/operations/c1apiappv1appuserservicesearch.go
   - internal/sdk/models/operations/c1apiappv1appuserserviceupdate.go
+  - internal/sdk/models/operations/c1apiappv1connectorserviceconfirmsyncvalid.go
   - internal/sdk/models/operations/c1apiappv1connectorservicecreate.go
   - internal/sdk/models/operations/c1apiappv1connectorservicecreatedelegated.go
   - internal/sdk/models/operations/c1apiappv1connectorservicedelete.go
@@ -509,6 +560,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apidirectoryv1directoryservicedelete.go
   - internal/sdk/models/operations/c1apidirectoryv1directoryserviceget.go
   - internal/sdk/models/operations/c1apidirectoryv1directoryservicelist.go
+  - internal/sdk/models/operations/c1apidirectoryv1directoryserviceupdate.go
   - internal/sdk/models/operations/c1apifunctionsv1functionssearchsearch.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicecommit.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicecreatefunction.go
@@ -734,6 +786,8 @@ generatedFiles:
   - internal/sdk/models/shared/completedaction.go
   - internal/sdk/models/shared/conditionsucceeded.go
   - internal/sdk/models/shared/conditiontimedout.go
+  - internal/sdk/models/shared/confirmsyncvalidrequest.go
+  - internal/sdk/models/shared/confirmsyncvalidresponse.go
   - internal/sdk/models/shared/conflictmonitor.go
   - internal/sdk/models/shared/conflictmonitorcreaterequest.go
   - internal/sdk/models/shared/conflictmonitordeleterequest.go
@@ -821,12 +875,16 @@ generatedFiles:
   - internal/sdk/models/shared/deletestepupproviderresponse.go
   - internal/sdk/models/shared/deniedaction.go
   - internal/sdk/models/shared/directory.go
+  - internal/sdk/models/shared/directoryaccountfilterall.go
+  - internal/sdk/models/shared/directoryaccountfiltercel.go
   - internal/sdk/models/shared/directoryservicecreaterequest.go
   - internal/sdk/models/shared/directoryservicecreateresponse.go
   - internal/sdk/models/shared/directoryservicedeleterequest.go
   - internal/sdk/models/shared/directoryservicedeleteresponse.go
   - internal/sdk/models/shared/directoryservicegetresponse.go
   - internal/sdk/models/shared/directoryservicelistresponse.go
+  - internal/sdk/models/shared/directoryserviceupdaterequest.go
+  - internal/sdk/models/shared/directoryserviceupdateresponse.go
   - internal/sdk/models/shared/directoryview.go
   - internal/sdk/models/shared/disabledreasoncircuitbreaker.go
   - internal/sdk/models/shared/donotsave.go
@@ -878,7 +936,6 @@ generatedFiles:
   - internal/sdk/models/shared/form.go
   - internal/sdk/models/shared/formcompletedaction.go
   - internal/sdk/models/shared/forminstance.go
-  - internal/sdk/models/shared/formtrigger.go
   - internal/sdk/models/shared/function.go
   - internal/sdk/models/shared/functioncommit.go
   - internal/sdk/models/shared/functionssearchrequest.go
@@ -3020,6 +3077,24 @@ examples:
       parameters:
         path:
           request_catalog_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.ConfirmSyncValid:
+    speakeasy-default-c1-api-app-v1-connector-service-confirm-sync-valid:
+      parameters:
+        path:
+          app_id: "<id>"
+          connector_id: "<id>"
+          sync_lifecycle_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.directory.v1.DirectoryService.Update:
+    speakeasy-default-c1-api-directory-v1-directory-service-update:
+      parameters:
+        path:
+          app_id: "<id>"
       responses:
         "200":
           application/json: {}

@@ -76,6 +76,8 @@ func (e *UserStatuses) UnmarshalJSON(data []byte) error {
 
 // SearchUsersRequest - Search for users based on some filters.
 type SearchUsersRequest struct {
+	// Search for users that have any of the departments on this list.
+	Departments []string `json:"departments,omitempty"`
 	// Search for users based on their email (exact match).
 	Email *string `json:"email,omitempty"`
 	// An array of users IDs to exclude from the results.
@@ -84,6 +86,10 @@ type SearchUsersRequest struct {
 	ExcludeTypes []ExcludeTypes `json:"excludeTypes,omitempty"`
 	// Deprecated. Use refs array instead.
 	Ids []string `json:"ids,omitempty"`
+	// Search for users that have any of the job titles on this list.
+	JobTitles []string `json:"jobTitles,omitempty"`
+	// Search for users that have any of the manager IDs on this list.
+	ManagerIds []string `json:"managerIds,omitempty"`
 	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
@@ -96,6 +102,13 @@ type SearchUsersRequest struct {
 	RoleIds []string `json:"roleIds,omitempty"`
 	// Search for users that have any of the statuses on this list. This can only be ENABLED, DISABLED, and DELETED
 	UserStatuses []UserStatuses `json:"userStatuses,omitempty"`
+}
+
+func (o *SearchUsersRequest) GetDepartments() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Departments
 }
 
 func (o *SearchUsersRequest) GetEmail() *string {
@@ -124,6 +137,20 @@ func (o *SearchUsersRequest) GetIds() []string {
 		return nil
 	}
 	return o.Ids
+}
+
+func (o *SearchUsersRequest) GetJobTitles() []string {
+	if o == nil {
+		return nil
+	}
+	return o.JobTitles
+}
+
+func (o *SearchUsersRequest) GetManagerIds() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ManagerIds
 }
 
 func (o *SearchUsersRequest) GetPageSize() *int {

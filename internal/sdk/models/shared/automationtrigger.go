@@ -32,7 +32,7 @@ type AutomationTrigger struct {
 	//
 	AppUserUpdatedTrigger *AppUserUpdatedTrigger `json:"appUserUpdated,omitempty"`
 	// The FormTrigger message.
-	FormTrigger *FormTrigger `json:"form,omitempty"`
+	FormTrigger any `json:"form,omitempty"`
 	// The GrantDeletedTrigger message.
 	GrantDeletedTrigger *GrantDeletedTrigger `json:"grantDeleted,omitempty"`
 	// The GrantFoundTrigger message.
@@ -75,7 +75,7 @@ func (o *AutomationTrigger) GetAppUserUpdatedTrigger() *AppUserUpdatedTrigger {
 	return o.AppUserUpdatedTrigger
 }
 
-func (o *AutomationTrigger) GetFormTrigger() *FormTrigger {
+func (o *AutomationTrigger) GetFormTrigger() any {
 	if o == nil {
 		return nil
 	}

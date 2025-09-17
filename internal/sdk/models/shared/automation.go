@@ -98,6 +98,8 @@ type Automation struct {
 	PrimaryTriggerType *PrimaryTriggerType `json:"primaryTriggerType,omitempty"`
 	// The triggers field.
 	Triggers []AutomationTrigger `json:"triggers,omitempty"`
+	// If we create a new trigger with an HMAC secret we return the HMAC on this field
+	WebhookHmacSecret *string `json:"webhookHmacSecret,omitempty"`
 }
 
 func (a Automation) MarshalJSON() ([]byte, error) {
@@ -223,6 +225,13 @@ func (o *Automation) GetTriggers() []AutomationTrigger {
 	return o.Triggers
 }
 
+func (o *Automation) GetWebhookHmacSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.WebhookHmacSecret
+}
+
 // AutomationInput - The Automation message.
 //
 // This message contains a oneof named disabled_reason. Only a single field of the following list may be set at a time:
@@ -256,6 +265,8 @@ type AutomationInput struct {
 	PrimaryTriggerType *PrimaryTriggerType `json:"primaryTriggerType,omitempty"`
 	// The triggers field.
 	Triggers []AutomationTrigger `json:"triggers,omitempty"`
+	// If we create a new trigger with an HMAC secret we return the HMAC on this field
+	WebhookHmacSecret *string `json:"webhookHmacSecret,omitempty"`
 }
 
 func (a AutomationInput) MarshalJSON() ([]byte, error) {
@@ -372,4 +383,11 @@ func (o *AutomationInput) GetTriggers() []AutomationTrigger {
 		return nil
 	}
 	return o.Triggers
+}
+
+func (o *AutomationInput) GetWebhookHmacSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.WebhookHmacSecret
 }

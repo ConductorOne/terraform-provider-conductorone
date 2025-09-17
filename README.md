@@ -53,6 +53,7 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_app_entitlement_monitor_binding](docs/resources/app_entitlement_monitor_binding.md)
 * [conductorone_app_entitlement_owner](docs/resources/app_entitlement_owner.md)
 * [conductorone_app_owner](docs/resources/app_owner.md)
+* [conductorone_automation](docs/resources/automation.md)
 * [conductorone_bundle_automation](docs/resources/bundle_automation.md)
 * [conductorone_compliance_framework](docs/resources/compliance_framework.md)
 * [conductorone_connector_credential](docs/resources/connector_credential.md)
@@ -172,7 +173,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.6.4"
+      version = "1.6.6"
     }
   }
 }

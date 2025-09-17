@@ -1,4 +1,7 @@
 data "conductorone_users" "my_users" {
+  departments = [
+    "..."
+  ]
   email = "...my_email..."
   exclude_ids = [
     "..."
@@ -7,6 +10,12 @@ data "conductorone_users" "my_users" {
     "USER_TYPE_SYSTEM"
   ]
   ids = [
+    "..."
+  ]
+  job_titles = [
+    "..."
+  ]
+  manager_ids = [
     "..."
   ]
   page_size  = 5

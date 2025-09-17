@@ -35,6 +35,7 @@ type UserDataSourceModel struct {
 	DeletedAt               types.String                          `tfsdk:"deleted_at"`
 	Department              types.String                          `tfsdk:"department"`
 	DepartmentSources       []tfTypes.UserAttributeMappingSource  `tfsdk:"department_sources"`
+	Departments             []types.String                        `tfsdk:"departments"`
 	DirectoriesPath         types.String                          `tfsdk:"directories_path"`
 	DirectoryIds            []types.String                        `tfsdk:"directory_ids"`
 	DirectoryStatus         types.String                          `tfsdk:"directory_status"`
@@ -56,6 +57,7 @@ type UserDataSourceModel struct {
 	Ids                     []types.String                        `tfsdk:"ids"`
 	JobTitle                types.String                          `tfsdk:"job_title"`
 	JobTitleSources         []tfTypes.UserAttributeMappingSource  `tfsdk:"job_title_sources"`
+	JobTitles               []types.String                        `tfsdk:"job_titles"`
 	ManagerIds              []types.String                        `tfsdk:"manager_ids"`
 	ManagerSources          []tfTypes.UserAttributeMappingSource  `tfsdk:"manager_sources"`
 	ManagersPath            types.String                          `tfsdk:"managers_path"`
@@ -132,6 +134,11 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 					},
 				},
 				Description: `A list of objects mapped based on department attribute mappings configured in the system.`,
+			},
+			"departments": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Search for users that have any of the departments on this list.`,
 			},
 			"directories_path": schema.StringAttribute{
 				Computed:    true,
@@ -371,10 +378,16 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				},
 				Description: `A list of objects mapped based on jobTitle attribute mappings configured in the system.`,
 			},
+			"job_titles": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Search for users that have any of the job titles on this list.`,
+			},
 			"manager_ids": schema.ListAttribute{
 				Computed:    true,
+				Optional:    true,
 				ElementType: types.StringType,
-				Description: `A list of ids of the user's managers.`,
+				Description: `Search for users that have any of the manager IDs on this list.`,
 			},
 			"manager_sources": schema.ListNestedAttribute{
 				Computed: true,

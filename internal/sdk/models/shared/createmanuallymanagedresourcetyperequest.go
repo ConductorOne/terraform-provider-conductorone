@@ -11,13 +11,14 @@ import (
 type ResourceType string
 
 const (
-	ResourceTypeRole    ResourceType = "ROLE"
-	ResourceTypeGroup   ResourceType = "GROUP"
-	ResourceTypeLicense ResourceType = "LICENSE"
-	ResourceTypeProject ResourceType = "PROJECT"
-	ResourceTypeCatalog ResourceType = "CATALOG"
-	ResourceTypeCustom  ResourceType = "CUSTOM"
-	ResourceTypeVault   ResourceType = "VAULT"
+	ResourceTypeRole        ResourceType = "ROLE"
+	ResourceTypeGroup       ResourceType = "GROUP"
+	ResourceTypeLicense     ResourceType = "LICENSE"
+	ResourceTypeProject     ResourceType = "PROJECT"
+	ResourceTypeCatalog     ResourceType = "CATALOG"
+	ResourceTypeCustom      ResourceType = "CUSTOM"
+	ResourceTypeVault       ResourceType = "VAULT"
+	ResourceTypeProfileType ResourceType = "PROFILE_TYPE"
 )
 
 func (e ResourceType) ToPointer() *ResourceType {
@@ -42,6 +43,8 @@ func (e *ResourceType) UnmarshalJSON(data []byte) error {
 	case "CUSTOM":
 		fallthrough
 	case "VAULT":
+		fallthrough
+	case "PROFILE_TYPE":
 		*e = ResourceType(v)
 		return nil
 	default:
