@@ -12,16 +12,16 @@ type AppReportServiceListResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *AppReportServiceListResponse) GetList() []AppPopulationReport {
-	if o == nil {
+func (a *AppReportServiceListResponse) GetList() []AppPopulationReport {
+	if a == nil {
 		return nil
 	}
-	return o.List
+	return a.List
 }
 
-func (o *AppReportServiceListResponse) GetNextPageToken() *string {
-	if o == nil {
+func (a *AppReportServiceListResponse) GetNextPageToken() *string {
+	if a == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return a.NextPageToken
 }

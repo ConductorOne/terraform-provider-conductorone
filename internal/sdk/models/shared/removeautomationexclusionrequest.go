@@ -8,9 +8,9 @@ type RemoveAutomationExclusionRequest struct {
 	UserIds []string `json:"userIds,omitempty"`
 }
 
-func (o *RemoveAutomationExclusionRequest) GetUserIds() []string {
-	if o == nil {
+func (r *RemoveAutomationExclusionRequest) GetUserIds() []string {
+	if r == nil {
 		return nil
 	}
-	return o.UserIds
+	return r.UserIds
 }

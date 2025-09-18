@@ -10,16 +10,16 @@ type EmailNotifications struct {
 	IdentityUserIds []string `json:"identityUserIds,omitempty"`
 }
 
-func (o *EmailNotifications) GetEnabled() *bool {
-	if o == nil {
+func (e *EmailNotifications) GetEnabled() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Enabled
+	return e.Enabled
 }
 
-func (o *EmailNotifications) GetIdentityUserIds() []string {
-	if o == nil {
+func (e *EmailNotifications) GetIdentityUserIds() []string {
+	if e == nil {
 		return nil
 	}
-	return o.IdentityUserIds
+	return e.IdentityUserIds
 }

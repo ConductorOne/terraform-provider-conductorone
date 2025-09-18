@@ -11,16 +11,16 @@ type RequestCatalogManagementServiceAddAppEntitlementsRequest struct {
 	CreateRequests *bool `json:"createRequests,omitempty"`
 }
 
-func (o *RequestCatalogManagementServiceAddAppEntitlementsRequest) GetAppEntitlements() []AppEntitlementRef {
-	if o == nil {
+func (r *RequestCatalogManagementServiceAddAppEntitlementsRequest) GetAppEntitlements() []AppEntitlementRef {
+	if r == nil {
 		return nil
 	}
-	return o.AppEntitlements
+	return r.AppEntitlements
 }
 
-func (o *RequestCatalogManagementServiceAddAppEntitlementsRequest) GetCreateRequests() *bool {
-	if o == nil {
+func (r *RequestCatalogManagementServiceAddAppEntitlementsRequest) GetCreateRequests() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.CreateRequests
+	return r.CreateRequests
 }

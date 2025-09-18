@@ -8,9 +8,9 @@ type PersonalClientServiceUpdateResponse struct {
 	PersonalClient *PersonalClient `json:"client,omitempty"`
 }
 
-func (o *PersonalClientServiceUpdateResponse) GetPersonalClient() *PersonalClient {
-	if o == nil {
+func (p *PersonalClientServiceUpdateResponse) GetPersonalClient() *PersonalClient {
+	if p == nil {
 		return nil
 	}
-	return o.PersonalClient
+	return p.PersonalClient
 }

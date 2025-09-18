@@ -98,156 +98,156 @@ type FieldRules struct {
 	UInt64Rules *UInt64Rules `json:"uint64,omitempty"`
 }
 
-func (o *FieldRules) GetAnyRules() *AnyRules {
-	if o == nil {
+func (f *FieldRules) GetAnyRules() *AnyRules {
+	if f == nil {
 		return nil
 	}
-	return o.AnyRules
+	return f.AnyRules
 }
 
-func (o *FieldRules) GetBoolRules() *BoolRules {
-	if o == nil {
+func (f *FieldRules) GetBoolRules() *BoolRules {
+	if f == nil {
 		return nil
 	}
-	return o.BoolRules
+	return f.BoolRules
 }
 
-func (o *FieldRules) GetBytesRules() *BytesRules {
-	if o == nil {
+func (f *FieldRules) GetBytesRules() *BytesRules {
+	if f == nil {
 		return nil
 	}
-	return o.BytesRules
+	return f.BytesRules
 }
 
-func (o *FieldRules) GetDoubleRules() *DoubleRules {
-	if o == nil {
+func (f *FieldRules) GetDoubleRules() *DoubleRules {
+	if f == nil {
 		return nil
 	}
-	return o.DoubleRules
+	return f.DoubleRules
 }
 
-func (o *FieldRules) GetDurationRules() *DurationRules {
-	if o == nil {
+func (f *FieldRules) GetDurationRules() *DurationRules {
+	if f == nil {
 		return nil
 	}
-	return o.DurationRules
+	return f.DurationRules
 }
 
-func (o *FieldRules) GetEnumRules() *EnumRules {
-	if o == nil {
+func (f *FieldRules) GetEnumRules() *EnumRules {
+	if f == nil {
 		return nil
 	}
-	return o.EnumRules
+	return f.EnumRules
 }
 
-func (o *FieldRules) GetFixed32Rules() *Fixed32Rules {
-	if o == nil {
+func (f *FieldRules) GetFixed32Rules() *Fixed32Rules {
+	if f == nil {
 		return nil
 	}
-	return o.Fixed32Rules
+	return f.Fixed32Rules
 }
 
-func (o *FieldRules) GetFixed64Rules() *Fixed64Rules {
-	if o == nil {
+func (f *FieldRules) GetFixed64Rules() *Fixed64Rules {
+	if f == nil {
 		return nil
 	}
-	return o.Fixed64Rules
+	return f.Fixed64Rules
 }
 
-func (o *FieldRules) GetFloatRules() *FloatRules {
-	if o == nil {
+func (f *FieldRules) GetFloatRules() *FloatRules {
+	if f == nil {
 		return nil
 	}
-	return o.FloatRules
+	return f.FloatRules
 }
 
-func (o *FieldRules) GetInt32Rules() *Int32Rules {
-	if o == nil {
+func (f *FieldRules) GetInt32Rules() *Int32Rules {
+	if f == nil {
 		return nil
 	}
-	return o.Int32Rules
+	return f.Int32Rules
 }
 
-func (o *FieldRules) GetInt64Rules() *Int64Rules {
-	if o == nil {
+func (f *FieldRules) GetInt64Rules() *Int64Rules {
+	if f == nil {
 		return nil
 	}
-	return o.Int64Rules
+	return f.Int64Rules
 }
 
-func (o *FieldRules) GetMapRules() *MapRules {
-	if o == nil {
+func (f *FieldRules) GetMapRules() *MapRules {
+	if f == nil {
 		return nil
 	}
-	return o.MapRules
+	return f.MapRules
 }
 
-func (o *FieldRules) GetMessageRules() *MessageRules {
-	if o == nil {
+func (f *FieldRules) GetMessageRules() *MessageRules {
+	if f == nil {
 		return nil
 	}
-	return o.MessageRules
+	return f.MessageRules
 }
 
-func (o *FieldRules) GetRepeatedRules() *RepeatedRules {
-	if o == nil {
+func (f *FieldRules) GetRepeatedRules() *RepeatedRules {
+	if f == nil {
 		return nil
 	}
-	return o.RepeatedRules
+	return f.RepeatedRules
 }
 
-func (o *FieldRules) GetSFixed32Rules() *SFixed32Rules {
-	if o == nil {
+func (f *FieldRules) GetSFixed32Rules() *SFixed32Rules {
+	if f == nil {
 		return nil
 	}
-	return o.SFixed32Rules
+	return f.SFixed32Rules
 }
 
-func (o *FieldRules) GetSFixed64Rules() *SFixed64Rules {
-	if o == nil {
+func (f *FieldRules) GetSFixed64Rules() *SFixed64Rules {
+	if f == nil {
 		return nil
 	}
-	return o.SFixed64Rules
+	return f.SFixed64Rules
 }
 
-func (o *FieldRules) GetSInt32Rules() *SInt32Rules {
-	if o == nil {
+func (f *FieldRules) GetSInt32Rules() *SInt32Rules {
+	if f == nil {
 		return nil
 	}
-	return o.SInt32Rules
+	return f.SInt32Rules
 }
 
-func (o *FieldRules) GetSInt64Rules() *SInt64Rules {
-	if o == nil {
+func (f *FieldRules) GetSInt64Rules() *SInt64Rules {
+	if f == nil {
 		return nil
 	}
-	return o.SInt64Rules
+	return f.SInt64Rules
 }
 
-func (o *FieldRules) GetStringRules() *StringRules {
-	if o == nil {
+func (f *FieldRules) GetStringRules() *StringRules {
+	if f == nil {
 		return nil
 	}
-	return o.StringRules
+	return f.StringRules
 }
 
-func (o *FieldRules) GetTimestampRules() *TimestampRules {
-	if o == nil {
+func (f *FieldRules) GetTimestampRules() *TimestampRules {
+	if f == nil {
 		return nil
 	}
-	return o.TimestampRules
+	return f.TimestampRules
 }
 
-func (o *FieldRules) GetUInt32Rules() *UInt32Rules {
-	if o == nil {
+func (f *FieldRules) GetUInt32Rules() *UInt32Rules {
+	if f == nil {
 		return nil
 	}
-	return o.UInt32Rules
+	return f.UInt32Rules
 }
 
-func (o *FieldRules) GetUInt64Rules() *UInt64Rules {
-	if o == nil {
+func (f *FieldRules) GetUInt64Rules() *UInt64Rules {
+	if f == nil {
 		return nil
 	}
-	return o.UInt64Rules
+	return f.UInt64Rules
 }

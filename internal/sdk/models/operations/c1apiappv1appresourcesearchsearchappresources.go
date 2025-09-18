@@ -20,30 +20,30 @@ type C1APIAppV1AppResourceSearchSearchAppResourcesResponse struct {
 	Next func() (*C1APIAppV1AppResourceSearchSearchAppResourcesResponse, error)
 }
 
-func (o *C1APIAppV1AppResourceSearchSearchAppResourcesResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceSearchSearchAppResourcesResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppResourceSearchSearchAppResourcesResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppResourceSearchSearchAppResourcesResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppResourceSearchSearchAppResourcesResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppResourceSearchSearchAppResourcesResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppResourceSearchSearchAppResourcesResponse) GetSearchAppResourcesResponse() *shared.SearchAppResourcesResponse {
-	if o == nil {
+func (c *C1APIAppV1AppResourceSearchSearchAppResourcesResponse) GetSearchAppResourcesResponse() *shared.SearchAppResourcesResponse {
+	if c == nil {
 		return nil
 	}
-	return o.SearchAppResourcesResponse
+	return c.SearchAppResourcesResponse
 }

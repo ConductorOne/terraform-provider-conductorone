@@ -11,11 +11,11 @@ type C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsReque
 	AppID string `pathParam:"style=simple,explode=false,name=app_id"`
 }
 
-func (o *C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
 type C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsResponse struct {
@@ -29,30 +29,30 @@ type C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsRespo
 	AppAccessRequestDefaults *shared.AppAccessRequestDefaults
 }
 
-func (o *C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsResponse) GetAppAccessRequestDefaults() *shared.AppAccessRequestDefaults {
-	if o == nil {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceGetAppAccessRequestsDefaultsResponse) GetAppAccessRequestDefaults() *shared.AppAccessRequestDefaults {
+	if c == nil {
 		return nil
 	}
-	return o.AppAccessRequestDefaults
+	return c.AppAccessRequestDefaults
 }

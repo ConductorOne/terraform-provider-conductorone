@@ -61,30 +61,30 @@ func (b *BundleAutomationCircuitBreaker) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *BundleAutomationCircuitBreaker) GetRemovedMembersThresholdPercentage() *string {
-	if o == nil {
+func (b *BundleAutomationCircuitBreaker) GetRemovedMembersThresholdPercentage() *string {
+	if b == nil {
 		return nil
 	}
-	return o.RemovedMembersThresholdPercentage
+	return b.RemovedMembersThresholdPercentage
 }
 
-func (o *BundleAutomationCircuitBreaker) GetState() *BundleAutomationCircuitBreakerState {
-	if o == nil {
+func (b *BundleAutomationCircuitBreaker) GetState() *BundleAutomationCircuitBreakerState {
+	if b == nil {
 		return nil
 	}
-	return o.State
+	return b.State
 }
 
-func (o *BundleAutomationCircuitBreaker) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (b *BundleAutomationCircuitBreaker) GetUpdatedAt() *time.Time {
+	if b == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return b.UpdatedAt
 }
 
-func (o *BundleAutomationCircuitBreaker) GetUserRef() *UserRef {
-	if o == nil {
+func (b *BundleAutomationCircuitBreaker) GetUserRef() *UserRef {
+	if b == nil {
 		return nil
 	}
-	return o.UserRef
+	return b.UserRef
 }

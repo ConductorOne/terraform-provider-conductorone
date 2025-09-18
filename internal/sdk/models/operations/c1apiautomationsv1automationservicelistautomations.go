@@ -18,30 +18,30 @@ type C1APIAutomationsV1AutomationServiceListAutomationsResponse struct {
 	ListAutomationsResponse *shared.ListAutomationsResponse
 }
 
-func (o *C1APIAutomationsV1AutomationServiceListAutomationsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceListAutomationsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAutomationsV1AutomationServiceListAutomationsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceListAutomationsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAutomationsV1AutomationServiceListAutomationsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceListAutomationsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAutomationsV1AutomationServiceListAutomationsResponse) GetListAutomationsResponse() *shared.ListAutomationsResponse {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceListAutomationsResponse) GetListAutomationsResponse() *shared.ListAutomationsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ListAutomationsResponse
+	return c.ListAutomationsResponse
 }

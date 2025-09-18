@@ -128,6 +128,59 @@ func (pt Provider) IsZero() bool {
 	return pt == Provider{}
 }
 
+// Validate returns error if the Provider representing "modern"
+// (Terraform 0.14+) address is not valid. Valid address implies
+// both valid namespace and a non-empty hostname.
+//
+// Validation makes assumptions equivalent to [ValidateProviderAddress].
+//
+// If you can guarantee [ValidateProviderAddress] was called
+// on the input and the [Provider] data was not mutated
+// you should not need to call this method.
+func (pt Provider) Validate() error {
+	if pt.IsZero() {
+		return &ParserError{
+			Summary: "Empty provider address",
+			Detail:  "Expected address composed of hostname, provider namespace and name",
+		}
+	}
+
+	if pt.Hostname == "" {
+		return &ParserError{
+			Summary: "Unknown hostname",
+			Detail:  "Expected hostname in the provider address to be set",
+		}
+	}
+	if pt.Namespace == "" {
+		return &ParserError{
+			Summary: "Unknown provider namespace",
+			Detail:  "Expected provider namespace to be set",
+		}
+	}
+	if pt.Type == "" {
+		return &ParserError{
+			Summary: "Unknown provider type",
+			Detail:  "Expected provider type to be set",
+		}
+	}
+
+	if !pt.HasKnownNamespace() {
+		return &ParserError{
+			Summary: "Unknown provider namespace",
+			Detail:  `Expected FQN in the format "hostname/namespace/name"`,
+		}
+	}
+
+	if pt.IsLegacy() {
+		return &ParserError{
+			Summary: "Invalid legacy provider namespace",
+			Detail:  `Expected FQN in the format "hostname/namespace/name"`,
+		}
+	}
+
+	return nil
+}
+
 // HasKnownNamespace returns true if the provider namespace is known
 // (also if it is legacy namespace)
 func (pt Provider) HasKnownNamespace() bool {
@@ -160,6 +213,31 @@ func (pt Provider) LessThan(other Provider) bool {
 	default:
 		return pt.Type < other.Type
 	}
+}
+
+// MarshalText implements encoding.TextMarshaler interface.
+//
+// It encodes the [Provider] into an FQN, equivalent to [String]
+// or returns an error for an invalid [Provider].
+func (pt Provider) MarshalText() ([]byte, error) {
+	err := pt.Validate()
+	if err != nil {
+		return nil, err
+	}
+
+	return []byte(pt.String()), nil
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler interface.
+//
+// It decodes a valid provider address or returns an error
+// using [ParseProviderSource].
+//
+// [Validate] should be called on the decoded [Provider]
+// if modern-style Terraform 0.14+ addresses are expected.
+func (pt *Provider) UnmarshalText(text []byte) (err error) {
+	*pt, err = ParseProviderSource(string(text))
+	return
 }
 
 // IsLegacy returns true if the provider is a legacy-style provider
@@ -333,7 +411,7 @@ func ValidateProviderAddress(raw string) error {
 		}
 	}
 
-	if !p.IsLegacy() {
+	if p.IsLegacy() {
 		return &ParserError{
 			Summary: "Invalid legacy provider namespace",
 			Detail:  `Expected FQN in the format "hostname/namespace/name"`,

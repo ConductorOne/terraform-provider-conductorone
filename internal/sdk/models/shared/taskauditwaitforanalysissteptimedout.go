@@ -25,16 +25,16 @@ func (t *TaskAuditWaitForAnalysisStepTimedOut) UnmarshalJSON(data []byte) error 
 	return nil
 }
 
-func (o *TaskAuditWaitForAnalysisStepTimedOut) GetStepID() *string {
-	if o == nil {
+func (t *TaskAuditWaitForAnalysisStepTimedOut) GetStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.StepID
+	return t.StepID
 }
 
-func (o *TaskAuditWaitForAnalysisStepTimedOut) GetTimedOutAt() *time.Time {
-	if o == nil {
+func (t *TaskAuditWaitForAnalysisStepTimedOut) GetTimedOutAt() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.TimedOutAt
+	return t.TimedOutAt
 }

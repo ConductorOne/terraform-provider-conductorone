@@ -14,32 +14,32 @@ type C1APIAppV1AppResourceOwnersAddRequest struct {
 	AddAppResourceOwnerRequest *shared.AddAppResourceOwnerRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppResourceOwnersAddRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersAddRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppResourceOwnersAddRequest) GetResourceTypeID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersAddRequest) GetResourceTypeID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ResourceTypeID
+	return c.ResourceTypeID
 }
 
-func (o *C1APIAppV1AppResourceOwnersAddRequest) GetResourceID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersAddRequest) GetResourceID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ResourceID
+	return c.ResourceID
 }
 
-func (o *C1APIAppV1AppResourceOwnersAddRequest) GetAddAppResourceOwnerRequest() *shared.AddAppResourceOwnerRequest {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersAddRequest) GetAddAppResourceOwnerRequest() *shared.AddAppResourceOwnerRequest {
+	if c == nil {
 		return nil
 	}
-	return o.AddAppResourceOwnerRequest
+	return c.AddAppResourceOwnerRequest
 }
 
 type C1APIAppV1AppResourceOwnersAddResponse struct {
@@ -53,30 +53,30 @@ type C1APIAppV1AppResourceOwnersAddResponse struct {
 	AddAppResourceOwnerResponse *shared.AddAppResourceOwnerResponse
 }
 
-func (o *C1APIAppV1AppResourceOwnersAddResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersAddResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppResourceOwnersAddResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersAddResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppResourceOwnersAddResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersAddResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppResourceOwnersAddResponse) GetAddAppResourceOwnerResponse() *shared.AddAppResourceOwnerResponse {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersAddResponse) GetAddAppResourceOwnerResponse() *shared.AddAppResourceOwnerResponse {
+	if c == nil {
 		return nil
 	}
-	return o.AddAppResourceOwnerResponse
+	return c.AddAppResourceOwnerResponse
 }

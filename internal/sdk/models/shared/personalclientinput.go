@@ -32,30 +32,30 @@ func (p *PersonalClientInput) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *PersonalClientInput) GetAllowSourceCidr() []string {
-	if o == nil {
+func (p *PersonalClientInput) GetAllowSourceCidr() []string {
+	if p == nil {
 		return nil
 	}
-	return o.AllowSourceCidr
+	return p.AllowSourceCidr
 }
 
-func (o *PersonalClientInput) GetDisplayName() *string {
-	if o == nil {
+func (p *PersonalClientInput) GetDisplayName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.DisplayName
+	return p.DisplayName
 }
 
-func (o *PersonalClientInput) GetExpiresTime() *time.Time {
-	if o == nil {
+func (p *PersonalClientInput) GetExpiresTime() *time.Time {
+	if p == nil {
 		return nil
 	}
-	return o.ExpiresTime
+	return p.ExpiresTime
 }
 
-func (o *PersonalClientInput) GetScopedRoles() []string {
-	if o == nil {
+func (p *PersonalClientInput) GetScopedRoles() []string {
+	if p == nil {
 		return nil
 	}
-	return o.ScopedRoles
+	return p.ScopedRoles
 }

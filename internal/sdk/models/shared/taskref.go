@@ -8,9 +8,9 @@ type TaskRef struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *TaskRef) GetID() *string {
-	if o == nil {
+func (t *TaskRef) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }

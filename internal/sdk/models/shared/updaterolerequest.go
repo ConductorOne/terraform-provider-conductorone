@@ -9,16 +9,16 @@ type UpdateRoleRequest struct {
 	UpdateMask *string    `json:"updateMask,omitempty"`
 }
 
-func (o *UpdateRoleRequest) GetRole() *RoleInput {
-	if o == nil {
+func (u *UpdateRoleRequest) GetRole() *RoleInput {
+	if u == nil {
 		return nil
 	}
-	return o.Role
+	return u.Role
 }
 
-func (o *UpdateRoleRequest) GetUpdateMask() *string {
-	if o == nil {
+func (u *UpdateRoleRequest) GetUpdateMask() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return u.UpdateMask
 }

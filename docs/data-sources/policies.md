@@ -110,7 +110,9 @@ This message contains a oneof named typ. Only a single field of the following li
 - `wait` (Attributes) Define a Wait step for a policy to wait on a condition to be met.
 
 This message contains a oneof named until. Only a single field of the following list may be set at a time:
-  - condition (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait))
+  - condition
+  - duration
+  - untilTime (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait))
 
 <a id="nestedatt--list--policy_steps--steps--accept"></a>
 ### Nested Schema for `list.policy_steps.steps.accept`
@@ -173,7 +175,18 @@ Read-Only:
 - `app_group_id` (String) The ID of the group specified for approval.
 - `app_id` (String) The ID of the app that contains the group specified for approval.
 - `fallback` (Boolean) Configuration to allow a fallback if the group is empty.
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the group is empty. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--app_group_approval--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the group is empty.
+- `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
+
+<a id="nestedatt--list--policy_steps--steps--approval--app_group_approval--fallback_group_ids"></a>
+### Nested Schema for `list.policy_steps.steps.approval.app_group_approval.fallback_group_ids`
+
+Read-Only:
+
+- `app_entitlement_id` (String) The ID of the Entitlement.
+- `app_id` (String) The ID of the App this entitlement belongs to.
+
 
 
 <a id="nestedatt--list--policy_steps--steps--approval--app_owner_approval"></a>
@@ -449,6 +462,8 @@ Read-Only:
 - `name` (String) The name of our condition to show on the task details page
 - `timeout_duration` (String)
 - `wait_condition` (Attributes) The WaitCondition message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--wait_condition))
+- `wait_duration` (Attributes) The WaitDuration message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--wait_duration))
+- `wait_until_time` (Attributes) Waits until a specific time of the day (UTC) (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--wait_until_time))
 
 <a id="nestedatt--list--policy_steps--steps--wait--wait_condition"></a>
 ### Nested Schema for `list.policy_steps.steps.wait.wait_condition`
@@ -456,6 +471,24 @@ Read-Only:
 Read-Only:
 
 - `condition` (String) The condition that has to be true for this wait condition to continue.
+
+
+<a id="nestedatt--list--policy_steps--steps--wait--wait_duration"></a>
+### Nested Schema for `list.policy_steps.steps.wait.wait_duration`
+
+Read-Only:
+
+- `duration` (String)
+
+
+<a id="nestedatt--list--policy_steps--steps--wait--wait_until_time"></a>
+### Nested Schema for `list.policy_steps.steps.wait.wait_until_time`
+
+Read-Only:
+
+- `hours` (Number) The hours field.
+- `minutes` (Number) The minutes field.
+- `timezone` (String) The timezone field.
 
 
 

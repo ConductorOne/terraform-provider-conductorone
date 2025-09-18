@@ -14,16 +14,16 @@ type PayloadProvisionStep struct {
 	TaskView *TaskView `json:"taskView,omitempty"`
 }
 
-func (o *PayloadProvisionStep) GetExpanded() []PayloadProvisionStepExpanded {
-	if o == nil {
+func (p *PayloadProvisionStep) GetExpanded() []PayloadProvisionStepExpanded {
+	if p == nil {
 		return nil
 	}
-	return o.Expanded
+	return p.Expanded
 }
 
-func (o *PayloadProvisionStep) GetTaskView() *TaskView {
-	if o == nil {
+func (p *PayloadProvisionStep) GetTaskView() *TaskView {
+	if p == nil {
 		return nil
 	}
-	return o.TaskView
+	return p.TaskView
 }

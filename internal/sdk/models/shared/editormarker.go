@@ -59,44 +59,44 @@ type EditorMarker struct {
 	StartLineNumber *int `json:"startLineNumber,omitempty"`
 }
 
-func (o *EditorMarker) GetEndColumn() *int {
-	if o == nil {
+func (e *EditorMarker) GetEndColumn() *int {
+	if e == nil {
 		return nil
 	}
-	return o.EndColumn
+	return e.EndColumn
 }
 
-func (o *EditorMarker) GetEndLineNumber() *int {
-	if o == nil {
+func (e *EditorMarker) GetEndLineNumber() *int {
+	if e == nil {
 		return nil
 	}
-	return o.EndLineNumber
+	return e.EndLineNumber
 }
 
-func (o *EditorMarker) GetMessage() *string {
-	if o == nil {
+func (e *EditorMarker) GetMessage() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Message
+	return e.Message
 }
 
-func (o *EditorMarker) GetSeverity() *Severity {
-	if o == nil {
+func (e *EditorMarker) GetSeverity() *Severity {
+	if e == nil {
 		return nil
 	}
-	return o.Severity
+	return e.Severity
 }
 
-func (o *EditorMarker) GetStartColumn() *int {
-	if o == nil {
+func (e *EditorMarker) GetStartColumn() *int {
+	if e == nil {
 		return nil
 	}
-	return o.StartColumn
+	return e.StartColumn
 }
 
-func (o *EditorMarker) GetStartLineNumber() *int {
-	if o == nil {
+func (e *EditorMarker) GetStartLineNumber() *int {
+	if e == nil {
 		return nil
 	}
-	return o.StartLineNumber
+	return e.StartLineNumber
 }

@@ -140,95 +140,95 @@ func (r *RequestCatalog) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *RequestCatalog) GetCreatedAt() *time.Time {
-	if o == nil {
+func (r *RequestCatalog) GetCreatedAt() *time.Time {
+	if r == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return r.CreatedAt
 }
 
-func (o *RequestCatalog) GetCreatedByUserID() *string {
-	if o == nil {
+func (r *RequestCatalog) GetCreatedByUserID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.CreatedByUserID
+	return r.CreatedByUserID
 }
 
-func (o *RequestCatalog) GetDeletedAt() *time.Time {
-	if o == nil {
+func (r *RequestCatalog) GetDeletedAt() *time.Time {
+	if r == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return r.DeletedAt
 }
 
-func (o *RequestCatalog) GetDescription() *string {
-	if o == nil {
+func (r *RequestCatalog) GetDescription() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Description
+	return r.Description
 }
 
-func (o *RequestCatalog) GetDisplayName() *string {
-	if o == nil {
+func (r *RequestCatalog) GetDisplayName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.DisplayName
+	return r.DisplayName
 }
 
-func (o *RequestCatalog) GetEnrollmentBehavior() *EnrollmentBehavior {
-	if o == nil {
+func (r *RequestCatalog) GetEnrollmentBehavior() *EnrollmentBehavior {
+	if r == nil {
 		return nil
 	}
-	return o.EnrollmentBehavior
+	return r.EnrollmentBehavior
 }
 
-func (o *RequestCatalog) GetID() *string {
-	if o == nil {
+func (r *RequestCatalog) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RequestCatalog) GetPublished() *bool {
-	if o == nil {
+func (r *RequestCatalog) GetPublished() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Published
+	return r.Published
 }
 
-func (o *RequestCatalog) GetRequestBundle() *bool {
-	if o == nil {
+func (r *RequestCatalog) GetRequestBundle() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.RequestBundle
+	return r.RequestBundle
 }
 
-func (o *RequestCatalog) GetUnenrollmentBehavior() *UnenrollmentBehavior {
-	if o == nil {
+func (r *RequestCatalog) GetUnenrollmentBehavior() *UnenrollmentBehavior {
+	if r == nil {
 		return nil
 	}
-	return o.UnenrollmentBehavior
+	return r.UnenrollmentBehavior
 }
 
-func (o *RequestCatalog) GetUnenrollmentEntitlementBehavior() *UnenrollmentEntitlementBehavior {
-	if o == nil {
+func (r *RequestCatalog) GetUnenrollmentEntitlementBehavior() *UnenrollmentEntitlementBehavior {
+	if r == nil {
 		return nil
 	}
-	return o.UnenrollmentEntitlementBehavior
+	return r.UnenrollmentEntitlementBehavior
 }
 
-func (o *RequestCatalog) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (r *RequestCatalog) GetUpdatedAt() *time.Time {
+	if r == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return r.UpdatedAt
 }
 
-func (o *RequestCatalog) GetVisibleToEveryone() *bool {
-	if o == nil {
+func (r *RequestCatalog) GetVisibleToEveryone() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.VisibleToEveryone
+	return r.VisibleToEveryone
 }
 
 // RequestCatalogInput - The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
@@ -255,72 +255,72 @@ type RequestCatalogInput struct {
 	VisibleToEveryone *bool `json:"visibleToEveryone,omitempty"`
 }
 
-func (o *RequestCatalogInput) GetCreatedByUserID() *string {
-	if o == nil {
+func (r *RequestCatalogInput) GetCreatedByUserID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.CreatedByUserID
+	return r.CreatedByUserID
 }
 
-func (o *RequestCatalogInput) GetDescription() *string {
-	if o == nil {
+func (r *RequestCatalogInput) GetDescription() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Description
+	return r.Description
 }
 
-func (o *RequestCatalogInput) GetDisplayName() *string {
-	if o == nil {
+func (r *RequestCatalogInput) GetDisplayName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.DisplayName
+	return r.DisplayName
 }
 
-func (o *RequestCatalogInput) GetEnrollmentBehavior() *EnrollmentBehavior {
-	if o == nil {
+func (r *RequestCatalogInput) GetEnrollmentBehavior() *EnrollmentBehavior {
+	if r == nil {
 		return nil
 	}
-	return o.EnrollmentBehavior
+	return r.EnrollmentBehavior
 }
 
-func (o *RequestCatalogInput) GetID() *string {
-	if o == nil {
+func (r *RequestCatalogInput) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RequestCatalogInput) GetPublished() *bool {
-	if o == nil {
+func (r *RequestCatalogInput) GetPublished() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Published
+	return r.Published
 }
 
-func (o *RequestCatalogInput) GetRequestBundle() *bool {
-	if o == nil {
+func (r *RequestCatalogInput) GetRequestBundle() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.RequestBundle
+	return r.RequestBundle
 }
 
-func (o *RequestCatalogInput) GetUnenrollmentBehavior() *UnenrollmentBehavior {
-	if o == nil {
+func (r *RequestCatalogInput) GetUnenrollmentBehavior() *UnenrollmentBehavior {
+	if r == nil {
 		return nil
 	}
-	return o.UnenrollmentBehavior
+	return r.UnenrollmentBehavior
 }
 
-func (o *RequestCatalogInput) GetUnenrollmentEntitlementBehavior() *UnenrollmentEntitlementBehavior {
-	if o == nil {
+func (r *RequestCatalogInput) GetUnenrollmentEntitlementBehavior() *UnenrollmentEntitlementBehavior {
+	if r == nil {
 		return nil
 	}
-	return o.UnenrollmentEntitlementBehavior
+	return r.UnenrollmentEntitlementBehavior
 }
 
-func (o *RequestCatalogInput) GetVisibleToEveryone() *bool {
-	if o == nil {
+func (r *RequestCatalogInput) GetVisibleToEveryone() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.VisibleToEveryone
+	return r.VisibleToEveryone
 }

@@ -88,12 +88,25 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Approval.AppGroupApproval.AppGroupID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppGroupID)
 								steps.Approval.AppGroupApproval.AppID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppID)
 								steps.Approval.AppGroupApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.Fallback)
+								if stepsItem.Approval.AppGroupApproval.FallbackGroupIds != nil {
+									steps.Approval.AppGroupApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+									for _, fallbackGroupIdsItem := range stepsItem.Approval.AppGroupApproval.FallbackGroupIds {
+										var fallbackGroupIds tfTypes.AppEntitlementReference
+
+										fallbackGroupIds.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem.AppEntitlementID)
+										fallbackGroupIds.AppID = types.StringPointerValue(fallbackGroupIdsItem.AppID)
+
+										steps.Approval.AppGroupApproval.FallbackGroupIds = append(steps.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds)
+									}
+								}
 								if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
 									steps.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
 										steps.Approval.AppGroupApproval.FallbackUserIds = append(steps.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
+								steps.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
 							}
 							if stepsItem.Approval.AppOwnerApproval == nil {
 								steps.Approval.AppOwnerApproval = nil
@@ -732,6 +745,28 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							fallback2 = nil
 						}
+						var fallbackGroupIds []shared.AppEntitlementReference
+						if stepsItem.Approval.AppGroupApproval.FallbackGroupIds != nil {
+							fallbackGroupIds = make([]shared.AppEntitlementReference, 0, len(stepsItem.Approval.AppGroupApproval.FallbackGroupIds))
+							for _, fallbackGroupIdsItem := range stepsItem.Approval.AppGroupApproval.FallbackGroupIds {
+								appEntitlementID := new(string)
+								if !fallbackGroupIdsItem.AppEntitlementID.IsUnknown() && !fallbackGroupIdsItem.AppEntitlementID.IsNull() {
+									*appEntitlementID = fallbackGroupIdsItem.AppEntitlementID.ValueString()
+								} else {
+									appEntitlementID = nil
+								}
+								appId1 := new(string)
+								if !fallbackGroupIdsItem.AppID.IsUnknown() && !fallbackGroupIdsItem.AppID.IsNull() {
+									*appId1 = fallbackGroupIdsItem.AppID.ValueString()
+								} else {
+									appId1 = nil
+								}
+								fallbackGroupIds = append(fallbackGroupIds, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementID,
+									AppID:            appId1,
+								})
+							}
+						}
 						var fallbackUserIds2 []string
 						if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
 							fallbackUserIds2 = make([]string, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
@@ -739,12 +774,20 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								fallbackUserIds2 = append(fallbackUserIds2, fallbackUserIdsItem2.ValueString())
 							}
 						}
+						isGroupFallbackEnabled := new(bool)
+						if !stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled.IsUnknown() && !stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled = stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled = nil
+						}
 						appGroupApproval = &shared.AppGroupApproval{
-							AllowSelfApproval: allowSelfApproval3,
-							AppGroupID:        appGroupID,
-							AppID:             appID,
-							Fallback:          fallback2,
-							FallbackUserIds:   fallbackUserIds2,
+							AllowSelfApproval:      allowSelfApproval3,
+							AppGroupID:             appGroupID,
+							AppID:                  appID,
+							Fallback:               fallback2,
+							FallbackGroupIds:       fallbackGroupIds,
+							FallbackUserIds:        fallbackUserIds2,
+							IsGroupFallbackEnabled: isGroupFallbackEnabled,
 						}
 					}
 					var managerApproval *shared.ManagerApprovalInput
@@ -990,11 +1033,11 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						}
 						var delegatedProvision *shared.DelegatedProvision
 						if stepsItem.Provision.ProvisionPolicy.DelegatedProvision != nil {
-							appId1 := new(string)
+							appId2 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-								*appId1 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+								*appId2 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
 							} else {
-								appId1 = nil
+								appId2 = nil
 							}
 							entitlementID := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
@@ -1003,17 +1046,17 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								entitlementID = nil
 							}
 							delegatedProvision = &shared.DelegatedProvision{
-								AppID:         appId1,
+								AppID:         appId2,
 								EntitlementID: entitlementID,
 							}
 						}
 						var externalTicketProvision *shared.ExternalTicketProvision
 						if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision != nil {
-							appId2 := new(string)
+							appId3 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
-								*appId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
+								*appId3 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
 							} else {
-								appId2 = nil
+								appId3 = nil
 							}
 							connectorId3 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
@@ -1034,7 +1077,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								instructions1 = nil
 							}
 							externalTicketProvision = &shared.ExternalTicketProvision{
-								AppID:                             appId2,
+								AppID:                             appId3,
 								ConnectorID:                       connectorId3,
 								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 								Instructions:                      instructions1,
@@ -1092,17 +1135,17 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					}
 					var provisionTarget *shared.ProvisionTarget
 					if stepsItem.Provision.ProvisionTarget != nil {
-						appEntitlementID := new(string)
+						appEntitlementId1 := new(string)
 						if !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsNull() {
-							*appEntitlementID = stepsItem.Provision.ProvisionTarget.AppEntitlementID.ValueString()
+							*appEntitlementId1 = stepsItem.Provision.ProvisionTarget.AppEntitlementID.ValueString()
 						} else {
-							appEntitlementID = nil
+							appEntitlementId1 = nil
 						}
-						appId3 := new(string)
+						appId4 := new(string)
 						if !stepsItem.Provision.ProvisionTarget.AppID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppID.IsNull() {
-							*appId3 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
+							*appId4 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
 						} else {
-							appId3 = nil
+							appId4 = nil
 						}
 						appUserID := new(string)
 						if !stepsItem.Provision.ProvisionTarget.AppUserID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppUserID.IsNull() {
@@ -1117,8 +1160,8 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							grantDuration = nil
 						}
 						provisionTarget = &shared.ProvisionTarget{
-							AppEntitlementID: appEntitlementID,
-							AppID:            appId3,
+							AppEntitlementID: appEntitlementId1,
+							AppID:            appId4,
 							AppUserID:        appUserID,
 							GrantDuration:    grantDuration,
 						}
@@ -1559,6 +1602,28 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							fallback2 = nil
 						}
+						var fallbackGroupIds []shared.AppEntitlementReference
+						if stepsItem.Approval.AppGroupApproval.FallbackGroupIds != nil {
+							fallbackGroupIds = make([]shared.AppEntitlementReference, 0, len(stepsItem.Approval.AppGroupApproval.FallbackGroupIds))
+							for _, fallbackGroupIdsItem := range stepsItem.Approval.AppGroupApproval.FallbackGroupIds {
+								appEntitlementID := new(string)
+								if !fallbackGroupIdsItem.AppEntitlementID.IsUnknown() && !fallbackGroupIdsItem.AppEntitlementID.IsNull() {
+									*appEntitlementID = fallbackGroupIdsItem.AppEntitlementID.ValueString()
+								} else {
+									appEntitlementID = nil
+								}
+								appId1 := new(string)
+								if !fallbackGroupIdsItem.AppID.IsUnknown() && !fallbackGroupIdsItem.AppID.IsNull() {
+									*appId1 = fallbackGroupIdsItem.AppID.ValueString()
+								} else {
+									appId1 = nil
+								}
+								fallbackGroupIds = append(fallbackGroupIds, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementID,
+									AppID:            appId1,
+								})
+							}
+						}
 						var fallbackUserIds2 []string
 						if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
 							fallbackUserIds2 = make([]string, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
@@ -1566,12 +1631,20 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								fallbackUserIds2 = append(fallbackUserIds2, fallbackUserIdsItem2.ValueString())
 							}
 						}
+						isGroupFallbackEnabled := new(bool)
+						if !stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled.IsUnknown() && !stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled = stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled = nil
+						}
 						appGroupApproval = &shared.AppGroupApproval{
-							AllowSelfApproval: allowSelfApproval3,
-							AppGroupID:        appGroupID,
-							AppID:             appID,
-							Fallback:          fallback2,
-							FallbackUserIds:   fallbackUserIds2,
+							AllowSelfApproval:      allowSelfApproval3,
+							AppGroupID:             appGroupID,
+							AppID:                  appID,
+							Fallback:               fallback2,
+							FallbackGroupIds:       fallbackGroupIds,
+							FallbackUserIds:        fallbackUserIds2,
+							IsGroupFallbackEnabled: isGroupFallbackEnabled,
 						}
 					}
 					var managerApproval *shared.ManagerApprovalInput
@@ -1817,11 +1890,11 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						}
 						var delegatedProvision *shared.DelegatedProvision
 						if stepsItem.Provision.ProvisionPolicy.DelegatedProvision != nil {
-							appId1 := new(string)
+							appId2 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-								*appId1 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+								*appId2 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
 							} else {
-								appId1 = nil
+								appId2 = nil
 							}
 							entitlementID := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
@@ -1830,17 +1903,17 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								entitlementID = nil
 							}
 							delegatedProvision = &shared.DelegatedProvision{
-								AppID:         appId1,
+								AppID:         appId2,
 								EntitlementID: entitlementID,
 							}
 						}
 						var externalTicketProvision *shared.ExternalTicketProvision
 						if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision != nil {
-							appId2 := new(string)
+							appId3 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
-								*appId2 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
+								*appId3 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
 							} else {
-								appId2 = nil
+								appId3 = nil
 							}
 							connectorId3 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
@@ -1861,7 +1934,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								instructions1 = nil
 							}
 							externalTicketProvision = &shared.ExternalTicketProvision{
-								AppID:                             appId2,
+								AppID:                             appId3,
 								ConnectorID:                       connectorId3,
 								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 								Instructions:                      instructions1,
@@ -1919,17 +1992,17 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					}
 					var provisionTarget *shared.ProvisionTarget
 					if stepsItem.Provision.ProvisionTarget != nil {
-						appEntitlementID := new(string)
+						appEntitlementId1 := new(string)
 						if !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppEntitlementID.IsNull() {
-							*appEntitlementID = stepsItem.Provision.ProvisionTarget.AppEntitlementID.ValueString()
+							*appEntitlementId1 = stepsItem.Provision.ProvisionTarget.AppEntitlementID.ValueString()
 						} else {
-							appEntitlementID = nil
+							appEntitlementId1 = nil
 						}
-						appId3 := new(string)
+						appId4 := new(string)
 						if !stepsItem.Provision.ProvisionTarget.AppID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppID.IsNull() {
-							*appId3 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
+							*appId4 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
 						} else {
-							appId3 = nil
+							appId4 = nil
 						}
 						appUserID := new(string)
 						if !stepsItem.Provision.ProvisionTarget.AppUserID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppUserID.IsNull() {
@@ -1944,8 +2017,8 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							grantDuration = nil
 						}
 						provisionTarget = &shared.ProvisionTarget{
-							AppEntitlementID: appEntitlementID,
-							AppID:            appId3,
+							AppEntitlementID: appEntitlementId1,
+							AppID:            appId4,
 							AppUserID:        appUserID,
 							GrantDuration:    grantDuration,
 						}

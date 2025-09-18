@@ -18,30 +18,30 @@ type C1APIAppV1AppEntitlementUserBindingServiceSearchPastGrantsResponse struct {
 	SearchPastGrantsResponse *shared.SearchPastGrantsResponse
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceSearchPastGrantsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceSearchPastGrantsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceSearchPastGrantsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceSearchPastGrantsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceSearchPastGrantsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceSearchPastGrantsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceSearchPastGrantsResponse) GetSearchPastGrantsResponse() *shared.SearchPastGrantsResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceSearchPastGrantsResponse) GetSearchPastGrantsResponse() *shared.SearchPastGrantsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.SearchPastGrantsResponse
+	return c.SearchPastGrantsResponse
 }

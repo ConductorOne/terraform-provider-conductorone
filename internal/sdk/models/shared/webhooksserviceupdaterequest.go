@@ -9,16 +9,16 @@ type WebhooksServiceUpdateRequest struct {
 	Webhook *WebhookInput `json:"webhook,omitempty"`
 }
 
-func (o *WebhooksServiceUpdateRequest) GetUpdateMask() *string {
-	if o == nil {
+func (w *WebhooksServiceUpdateRequest) GetUpdateMask() *string {
+	if w == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return w.UpdateMask
 }
 
-func (o *WebhooksServiceUpdateRequest) GetWebhook() *WebhookInput {
-	if o == nil {
+func (w *WebhooksServiceUpdateRequest) GetWebhook() *WebhookInput {
+	if w == nil {
 		return nil
 	}
-	return o.Webhook
+	return w.Webhook
 }

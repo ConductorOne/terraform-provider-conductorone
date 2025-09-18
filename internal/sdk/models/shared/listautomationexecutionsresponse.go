@@ -10,16 +10,16 @@ type ListAutomationExecutionsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ListAutomationExecutionsResponse) GetAutomationExecutions() []AutomationExecution {
-	if o == nil {
+func (l *ListAutomationExecutionsResponse) GetAutomationExecutions() []AutomationExecution {
+	if l == nil {
 		return nil
 	}
-	return o.AutomationExecutions
+	return l.AutomationExecutions
 }
 
-func (o *ListAutomationExecutionsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (l *ListAutomationExecutionsResponse) GetNextPageToken() *string {
+	if l == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return l.NextPageToken
 }

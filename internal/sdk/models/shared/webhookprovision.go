@@ -8,9 +8,9 @@ type WebhookProvision struct {
 	WebhookID *string `json:"webhookId,omitempty"`
 }
 
-func (o *WebhookProvision) GetWebhookID() *string {
-	if o == nil {
+func (w *WebhookProvision) GetWebhookID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookID
+	return w.WebhookID
 }

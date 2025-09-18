@@ -10,16 +10,16 @@ type TestSourceIPRequest struct {
 	SourceIP *string `json:"sourceIp,omitempty"`
 }
 
-func (o *TestSourceIPRequest) GetAllowCidr() []string {
-	if o == nil {
+func (t *TestSourceIPRequest) GetAllowCidr() []string {
+	if t == nil {
 		return nil
 	}
-	return o.AllowCidr
+	return t.AllowCidr
 }
 
-func (o *TestSourceIPRequest) GetSourceIP() *string {
-	if o == nil {
+func (t *TestSourceIPRequest) GetSourceIP() *string {
+	if t == nil {
 		return nil
 	}
-	return o.SourceIP
+	return t.SourceIP
 }

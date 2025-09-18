@@ -8,9 +8,9 @@ type ConnectorServiceRotateCredentialResponse struct {
 	ConnectorCredential *ConnectorCredential `json:"credential,omitempty"`
 }
 
-func (o *ConnectorServiceRotateCredentialResponse) GetConnectorCredential() *ConnectorCredential {
-	if o == nil {
+func (c *ConnectorServiceRotateCredentialResponse) GetConnectorCredential() *ConnectorCredential {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorCredential
+	return c.ConnectorCredential
 }

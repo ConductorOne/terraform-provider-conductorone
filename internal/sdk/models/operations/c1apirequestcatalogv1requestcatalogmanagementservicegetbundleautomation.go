@@ -11,11 +11,11 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequ
 	RequestCatalogID string `pathParam:"style=simple,explode=false,name=request_catalog_id"`
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest) GetRequestCatalogID() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest) GetRequestCatalogID() string {
+	if c == nil {
 		return ""
 	}
-	return o.RequestCatalogID
+	return c.RequestCatalogID
 }
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationResponse struct {
@@ -29,30 +29,30 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationResp
 	BundleAutomation *shared.BundleAutomation
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationResponse) GetBundleAutomation() *shared.BundleAutomation {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationResponse) GetBundleAutomation() *shared.BundleAutomation {
+	if c == nil {
 		return nil
 	}
-	return o.BundleAutomation
+	return c.BundleAutomation
 }

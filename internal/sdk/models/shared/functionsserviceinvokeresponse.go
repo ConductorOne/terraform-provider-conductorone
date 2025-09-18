@@ -13,9 +13,9 @@ type FunctionsServiceInvokeResponse struct {
 	JSON *string `json:"json,omitempty"`
 }
 
-func (o *FunctionsServiceInvokeResponse) GetJSON() *string {
-	if o == nil {
+func (f *FunctionsServiceInvokeResponse) GetJSON() *string {
+	if f == nil {
 		return nil
 	}
-	return o.JSON
+	return f.JSON
 }

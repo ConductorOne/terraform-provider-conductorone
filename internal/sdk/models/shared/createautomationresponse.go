@@ -15,9 +15,9 @@ type CreateAutomationResponse struct {
 	AppEntitlementAutomation *AppEntitlementAutomation `json:"automation,omitempty"`
 }
 
-func (o *CreateAutomationResponse) GetAppEntitlementAutomation() *AppEntitlementAutomation {
-	if o == nil {
+func (c *CreateAutomationResponse) GetAppEntitlementAutomation() *AppEntitlementAutomation {
+	if c == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomation
+	return c.AppEntitlementAutomation
 }

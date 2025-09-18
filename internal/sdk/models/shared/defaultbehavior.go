@@ -9,9 +9,9 @@ type DefaultBehavior struct {
 	ConnectorID *string `json:"connectorId,omitempty"`
 }
 
-func (o *DefaultBehavior) GetConnectorID() *string {
-	if o == nil {
+func (d *DefaultBehavior) GetConnectorID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ConnectorID
+	return d.ConnectorID
 }

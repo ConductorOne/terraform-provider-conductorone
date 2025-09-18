@@ -31,58 +31,58 @@ type DoubleRules struct {
 	NotIn []float64 `json:"notIn,omitempty"`
 }
 
-func (o *DoubleRules) GetConst() *float64 {
-	if o == nil {
+func (d *DoubleRules) GetConst() *float64 {
+	if d == nil {
 		return nil
 	}
-	return o.Const
+	return d.Const
 }
 
-func (o *DoubleRules) GetGt() *float64 {
-	if o == nil {
+func (d *DoubleRules) GetGt() *float64 {
+	if d == nil {
 		return nil
 	}
-	return o.Gt
+	return d.Gt
 }
 
-func (o *DoubleRules) GetGte() *float64 {
-	if o == nil {
+func (d *DoubleRules) GetGte() *float64 {
+	if d == nil {
 		return nil
 	}
-	return o.Gte
+	return d.Gte
 }
 
-func (o *DoubleRules) GetIgnoreEmpty() *bool {
-	if o == nil {
+func (d *DoubleRules) GetIgnoreEmpty() *bool {
+	if d == nil {
 		return nil
 	}
-	return o.IgnoreEmpty
+	return d.IgnoreEmpty
 }
 
-func (o *DoubleRules) GetIn() []float64 {
-	if o == nil {
+func (d *DoubleRules) GetIn() []float64 {
+	if d == nil {
 		return nil
 	}
-	return o.In
+	return d.In
 }
 
-func (o *DoubleRules) GetLt() *float64 {
-	if o == nil {
+func (d *DoubleRules) GetLt() *float64 {
+	if d == nil {
 		return nil
 	}
-	return o.Lt
+	return d.Lt
 }
 
-func (o *DoubleRules) GetLte() *float64 {
-	if o == nil {
+func (d *DoubleRules) GetLte() *float64 {
+	if d == nil {
 		return nil
 	}
-	return o.Lte
+	return d.Lte
 }
 
-func (o *DoubleRules) GetNotIn() []float64 {
-	if o == nil {
+func (d *DoubleRules) GetNotIn() []float64 {
+	if d == nil {
 		return nil
 	}
-	return o.NotIn
+	return d.NotIn
 }

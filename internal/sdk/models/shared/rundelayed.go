@@ -8,9 +8,9 @@ type RunDelayed struct {
 	ColdStartDelayDays int64 `json:"coldStartDelayDays"`
 }
 
-func (o *RunDelayed) GetColdStartDelayDays() int64 {
-	if o == nil {
+func (r *RunDelayed) GetColdStartDelayDays() int64 {
+	if r == nil {
 		return 0
 	}
-	return o.ColdStartDelayDays
+	return r.ColdStartDelayDays
 }

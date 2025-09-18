@@ -11,11 +11,11 @@ type C1APIFunctionsV1FunctionsServiceListCommitsRequest struct {
 	FunctionID string `pathParam:"style=simple,explode=false,name=function_id"`
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceListCommitsRequest) GetFunctionID() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceListCommitsRequest) GetFunctionID() string {
+	if c == nil {
 		return ""
 	}
-	return o.FunctionID
+	return c.FunctionID
 }
 
 type C1APIFunctionsV1FunctionsServiceListCommitsResponse struct {
@@ -29,30 +29,30 @@ type C1APIFunctionsV1FunctionsServiceListCommitsResponse struct {
 	FunctionsServiceListCommitsResponse *shared.FunctionsServiceListCommitsResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceListCommitsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceListCommitsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceListCommitsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceListCommitsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceListCommitsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceListCommitsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceListCommitsResponse) GetFunctionsServiceListCommitsResponse() *shared.FunctionsServiceListCommitsResponse {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceListCommitsResponse) GetFunctionsServiceListCommitsResponse() *shared.FunctionsServiceListCommitsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionsServiceListCommitsResponse
+	return c.FunctionsServiceListCommitsResponse
 }

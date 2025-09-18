@@ -17,30 +17,30 @@ type EnumRules struct {
 	NotIn []int `json:"notIn,omitempty"`
 }
 
-func (o *EnumRules) GetConst() *int {
-	if o == nil {
+func (e *EnumRules) GetConst() *int {
+	if e == nil {
 		return nil
 	}
-	return o.Const
+	return e.Const
 }
 
-func (o *EnumRules) GetDefinedOnly() *bool {
-	if o == nil {
+func (e *EnumRules) GetDefinedOnly() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.DefinedOnly
+	return e.DefinedOnly
 }
 
-func (o *EnumRules) GetIn() []int {
-	if o == nil {
+func (e *EnumRules) GetIn() []int {
+	if e == nil {
 		return nil
 	}
-	return o.In
+	return e.In
 }
 
-func (o *EnumRules) GetNotIn() []int {
-	if o == nil {
+func (e *EnumRules) GetNotIn() []int {
+	if e == nil {
 		return nil
 	}
-	return o.NotIn
+	return e.NotIn
 }

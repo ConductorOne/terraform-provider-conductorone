@@ -12,23 +12,23 @@ type ConflictMonitorCreateRequest struct {
 	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 }
 
-func (o *ConflictMonitorCreateRequest) GetDescription() *string {
-	if o == nil {
+func (c *ConflictMonitorCreateRequest) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *ConflictMonitorCreateRequest) GetDisplayName() string {
-	if o == nil {
+func (c *ConflictMonitorCreateRequest) GetDisplayName() string {
+	if c == nil {
 		return ""
 	}
-	return o.DisplayName
+	return c.DisplayName
 }
 
-func (o *ConflictMonitorCreateRequest) GetNotificationConfig() *NotificationConfig {
-	if o == nil {
+func (c *ConflictMonitorCreateRequest) GetNotificationConfig() *NotificationConfig {
+	if c == nil {
 		return nil
 	}
-	return o.NotificationConfig
+	return c.NotificationConfig
 }

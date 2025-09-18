@@ -16,37 +16,37 @@ type IntrospectResponse struct {
 	UserID *string `json:"userId,omitempty"`
 }
 
-func (o *IntrospectResponse) GetFeatures() []string {
-	if o == nil {
+func (i *IntrospectResponse) GetFeatures() []string {
+	if i == nil {
 		return nil
 	}
-	return o.Features
+	return i.Features
 }
 
-func (o *IntrospectResponse) GetPermissions() []string {
-	if o == nil {
+func (i *IntrospectResponse) GetPermissions() []string {
+	if i == nil {
 		return nil
 	}
-	return o.Permissions
+	return i.Permissions
 }
 
-func (o *IntrospectResponse) GetPrincipleID() *string {
-	if o == nil {
+func (i *IntrospectResponse) GetPrincipleID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.PrincipleID
+	return i.PrincipleID
 }
 
-func (o *IntrospectResponse) GetRoles() []string {
-	if o == nil {
+func (i *IntrospectResponse) GetRoles() []string {
+	if i == nil {
 		return nil
 	}
-	return o.Roles
+	return i.Roles
 }
 
-func (o *IntrospectResponse) GetUserID() *string {
-	if o == nil {
+func (i *IntrospectResponse) GetUserID() *string {
+	if i == nil {
 		return nil
 	}
-	return o.UserID
+	return i.UserID
 }

@@ -12,16 +12,16 @@ type ListRolesResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ListRolesResponse) GetList() []Role {
-	if o == nil {
+func (l *ListRolesResponse) GetList() []Role {
+	if l == nil {
 		return nil
 	}
-	return o.List
+	return l.List
 }
 
-func (o *ListRolesResponse) GetNextPageToken() *string {
-	if o == nil {
+func (l *ListRolesResponse) GetNextPageToken() *string {
+	if l == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return l.NextPageToken
 }

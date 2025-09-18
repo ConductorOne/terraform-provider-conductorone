@@ -14,16 +14,16 @@ type TaskActionsServiceCommentResponse struct {
 	TaskView *TaskView `json:"taskView,omitempty"`
 }
 
-func (o *TaskActionsServiceCommentResponse) GetExpanded() []TaskActionsServiceCommentResponseExpanded {
-	if o == nil {
+func (t *TaskActionsServiceCommentResponse) GetExpanded() []TaskActionsServiceCommentResponseExpanded {
+	if t == nil {
 		return nil
 	}
-	return o.Expanded
+	return t.Expanded
 }
 
-func (o *TaskActionsServiceCommentResponse) GetTaskView() *TaskView {
-	if o == nil {
+func (t *TaskActionsServiceCommentResponse) GetTaskView() *TaskView {
+	if t == nil {
 		return nil
 	}
-	return o.TaskView
+	return t.TaskView
 }

@@ -31,9 +31,16 @@ resource "conductorone_policy" "my_policy" {
               app_group_id        = "...my_app_group_id..."
               app_id              = "...my_app_id..."
               fallback            = true
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled = false
             }
             app_owner_approval = {
               allow_self_approval = true

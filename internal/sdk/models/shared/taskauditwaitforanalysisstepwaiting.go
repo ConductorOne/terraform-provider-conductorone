@@ -8,9 +8,9 @@ type TaskAuditWaitForAnalysisStepWaiting struct {
 	StepID *string `json:"stepId,omitempty"`
 }
 
-func (o *TaskAuditWaitForAnalysisStepWaiting) GetStepID() *string {
-	if o == nil {
+func (t *TaskAuditWaitForAnalysisStepWaiting) GetStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.StepID
+	return t.StepID
 }

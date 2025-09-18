@@ -10,16 +10,16 @@ type TaskActionsServiceEscalateToEmergencyAccessRequest struct {
 	PolicyStepID *string `json:"policyStepId,omitempty"`
 }
 
-func (o *TaskActionsServiceEscalateToEmergencyAccessRequest) GetComment() *string {
-	if o == nil {
+func (t *TaskActionsServiceEscalateToEmergencyAccessRequest) GetComment() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Comment
+	return t.Comment
 }
 
-func (o *TaskActionsServiceEscalateToEmergencyAccessRequest) GetPolicyStepID() *string {
-	if o == nil {
+func (t *TaskActionsServiceEscalateToEmergencyAccessRequest) GetPolicyStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.PolicyStepID
+	return t.PolicyStepID
 }

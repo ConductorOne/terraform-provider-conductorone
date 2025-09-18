@@ -11,7 +11,7 @@ features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
-    core: 3.44.1
+    core: 3.45.0
     deprecations: 2.82.0
     devContainers: 0.0.0
     globalSecurity: 2.82.1
@@ -22,12 +22,11 @@ features:
     inputOutputModels: 2.83.0
     nameOverrides: 2.81.3
     nullables: 0.0.0
-    pagination: 2.83.0
+    pagination: 2.83.1
     typeOverrides: 2.81.1
 generatedFiles:
   - .gitattributes
   - USAGE.md
-  - examples/README.md
   - examples/data-sources/conductorone_access_profile/data-source.tf
   - examples/data-sources/conductorone_app/data-source.tf
   - examples/data-sources/conductorone_app_entitlement/data-source.tf
@@ -258,6 +257,7 @@ generatedFiles:
   - internal/provider/types/app_entitlement_automation_rule_none.go
   - internal/provider/types/app_entitlement_duration_unset.go
   - internal/provider/types/app_entitlement_ref.go
+  - internal/provider/types/app_entitlement_reference.go
   - internal/provider/types/app_entitlement_view.go
   - internal/provider/types/app_group_approval.go
   - internal/provider/types/app_owner_approval.go
@@ -1146,6 +1146,8 @@ generatedFiles:
   - internal/sdk/models/shared/searchusersresponse.go
   - internal/sdk/models/shared/secrettrait.go
   - internal/sdk/models/shared/security.go
+  - internal/sdk/models/shared/selectfield.go
+  - internal/sdk/models/shared/selectoption.go
   - internal/sdk/models/shared/selfapproval.go
   - internal/sdk/models/shared/selfapprovalinput.go
   - internal/sdk/models/shared/sendemail.go
@@ -1377,6 +1379,8 @@ generatedFiles:
   - internal/sdk/models/shared/webhooksservicetestresponse.go
   - internal/sdk/models/shared/webhooksserviceupdaterequest.go
   - internal/sdk/models/shared/webhooksserviceupdateresponse.go
+  - internal/sdk/optionalnullable/optionalnullable.go
+  - internal/sdk/optionalnullable/optionalnullable_test.go
   - internal/sdk/orgdomain.go
   - internal/sdk/personalclient.go
   - internal/sdk/personalclientsearch.go

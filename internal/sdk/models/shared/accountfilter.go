@@ -46,9 +46,9 @@ type AccountFilter struct {
 	AccountType *AccountType `json:"accountType,omitempty"`
 }
 
-func (o *AccountFilter) GetAccountType() *AccountType {
-	if o == nil {
+func (a *AccountFilter) GetAccountType() *AccountType {
+	if a == nil {
 		return nil
 	}
-	return o.AccountType
+	return a.AccountType
 }

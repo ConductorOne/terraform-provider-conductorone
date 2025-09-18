@@ -15,9 +15,9 @@ type TaskTypeRevokeInput struct {
 	TaskRevokeSource *TaskRevokeSource `json:"source,omitempty"`
 }
 
-func (o *TaskTypeRevokeInput) GetTaskRevokeSource() *TaskRevokeSource {
-	if o == nil {
+func (t *TaskTypeRevokeInput) GetTaskRevokeSource() *TaskRevokeSource {
+	if t == nil {
 		return nil
 	}
-	return o.TaskRevokeSource
+	return t.TaskRevokeSource
 }

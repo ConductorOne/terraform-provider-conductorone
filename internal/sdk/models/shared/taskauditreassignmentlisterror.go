@@ -8,9 +8,9 @@ type TaskAuditReassignmentListError struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
-func (o *TaskAuditReassignmentListError) GetErrorMessage() *string {
-	if o == nil {
+func (t *TaskAuditReassignmentListError) GetErrorMessage() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ErrorMessage
+	return t.ErrorMessage
 }

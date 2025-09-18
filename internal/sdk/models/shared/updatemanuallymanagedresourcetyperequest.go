@@ -9,16 +9,16 @@ type UpdateManuallyManagedResourceTypeRequest struct {
 	UpdateMask      *string               `json:"updateMask,omitempty"`
 }
 
-func (o *UpdateManuallyManagedResourceTypeRequest) GetAppResourceType() *AppResourceTypeInput {
-	if o == nil {
+func (u *UpdateManuallyManagedResourceTypeRequest) GetAppResourceType() *AppResourceTypeInput {
+	if u == nil {
 		return nil
 	}
-	return o.AppResourceType
+	return u.AppResourceType
 }
 
-func (o *UpdateManuallyManagedResourceTypeRequest) GetUpdateMask() *string {
-	if o == nil {
+func (u *UpdateManuallyManagedResourceTypeRequest) GetUpdateMask() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return u.UpdateMask
 }

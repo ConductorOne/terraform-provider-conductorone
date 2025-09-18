@@ -10,16 +10,16 @@ type FunctionsServiceCommitRequest struct {
 	Content map[string]string `json:"content,omitempty"`
 }
 
-func (o *FunctionsServiceCommitRequest) GetCommitMessage() *string {
-	if o == nil {
+func (f *FunctionsServiceCommitRequest) GetCommitMessage() *string {
+	if f == nil {
 		return nil
 	}
-	return o.CommitMessage
+	return f.CommitMessage
 }
 
-func (o *FunctionsServiceCommitRequest) GetContent() map[string]string {
-	if o == nil {
+func (f *FunctionsServiceCommitRequest) GetContent() map[string]string {
+	if f == nil {
 		return nil
 	}
-	return o.Content
+	return f.Content
 }

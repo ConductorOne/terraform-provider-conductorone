@@ -14,32 +14,32 @@ type C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredReques
 	PageToken        *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRequest) GetAppEntitlementID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRequest) GetAppEntitlementID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppEntitlementID
+	return c.AppEntitlementID
 }
 
-func (o *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredResponse struct {
@@ -53,30 +53,30 @@ type C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRespon
 	SearchAppEntitlementsWithExpiredResponse *shared.SearchAppEntitlementsWithExpiredResponse
 }
 
-func (o *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredResponse) GetSearchAppEntitlementsWithExpiredResponse() *shared.SearchAppEntitlementsWithExpiredResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredResponse) GetSearchAppEntitlementsWithExpiredResponse() *shared.SearchAppEntitlementsWithExpiredResponse {
+	if c == nil {
 		return nil
 	}
-	return o.SearchAppEntitlementsWithExpiredResponse
+	return c.SearchAppEntitlementsWithExpiredResponse
 }

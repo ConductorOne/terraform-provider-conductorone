@@ -8,9 +8,9 @@ type WebhookListenerAuthJWT struct {
 	JwksURL *string `json:"jwksUrl,omitempty"`
 }
 
-func (o *WebhookListenerAuthJWT) GetJwksURL() *string {
-	if o == nil {
+func (w *WebhookListenerAuthJWT) GetJwksURL() *string {
+	if w == nil {
 		return nil
 	}
-	return o.JwksURL
+	return w.JwksURL
 }

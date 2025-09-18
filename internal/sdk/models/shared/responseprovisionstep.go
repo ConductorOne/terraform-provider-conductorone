@@ -17,23 +17,23 @@ type ResponseProvisionStep struct {
 	Version *string `json:"version,omitempty"`
 }
 
-func (o *ResponseProvisionStep) GetResponseProvisionStepComplete() *ResponseProvisionStepComplete {
-	if o == nil {
+func (r *ResponseProvisionStep) GetResponseProvisionStepComplete() *ResponseProvisionStepComplete {
+	if r == nil {
 		return nil
 	}
-	return o.ResponseProvisionStepComplete
+	return r.ResponseProvisionStepComplete
 }
 
-func (o *ResponseProvisionStep) GetResponseProvisionStepErrored() *ResponseProvisionStepErrored {
-	if o == nil {
+func (r *ResponseProvisionStep) GetResponseProvisionStepErrored() *ResponseProvisionStepErrored {
+	if r == nil {
 		return nil
 	}
-	return o.ResponseProvisionStepErrored
+	return r.ResponseProvisionStepErrored
 }
 
-func (o *ResponseProvisionStep) GetVersion() *string {
-	if o == nil {
+func (r *ResponseProvisionStep) GetVersion() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Version
+	return r.Version
 }

@@ -18,30 +18,30 @@ type C1APISystemlogV1ExportServiceCreateResponse struct {
 	ExportServiceCreateResponse *shared.ExportServiceCreateResponse
 }
 
-func (o *C1APISystemlogV1ExportServiceCreateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceCreateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APISystemlogV1ExportServiceCreateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceCreateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APISystemlogV1ExportServiceCreateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceCreateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APISystemlogV1ExportServiceCreateResponse) GetExportServiceCreateResponse() *shared.ExportServiceCreateResponse {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceCreateResponse) GetExportServiceCreateResponse() *shared.ExportServiceCreateResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ExportServiceCreateResponse
+	return c.ExportServiceCreateResponse
 }

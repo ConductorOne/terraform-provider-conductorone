@@ -10,16 +10,16 @@ type AppEntitlementWithUserBinding struct {
 	AppEntitlementView *AppEntitlementView `json:"entitlement,omitempty"`
 }
 
-func (o *AppEntitlementWithUserBinding) GetAppEntitlementUserView() *AppEntitlementUserView {
-	if o == nil {
+func (a *AppEntitlementWithUserBinding) GetAppEntitlementUserView() *AppEntitlementUserView {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementUserView
+	return a.AppEntitlementUserView
 }
 
-func (o *AppEntitlementWithUserBinding) GetAppEntitlementView() *AppEntitlementView {
-	if o == nil {
+func (a *AppEntitlementWithUserBinding) GetAppEntitlementView() *AppEntitlementView {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementView
+	return a.AppEntitlementView
 }

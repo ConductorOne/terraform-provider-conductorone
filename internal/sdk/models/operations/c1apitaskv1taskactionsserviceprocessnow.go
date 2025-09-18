@@ -12,18 +12,18 @@ type C1APITaskV1TaskActionsServiceProcessNowRequest struct {
 	TaskActionsServiceProcessNowRequest *shared.TaskActionsServiceProcessNowRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APITaskV1TaskActionsServiceProcessNowRequest) GetTaskID() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceProcessNowRequest) GetTaskID() string {
+	if c == nil {
 		return ""
 	}
-	return o.TaskID
+	return c.TaskID
 }
 
-func (o *C1APITaskV1TaskActionsServiceProcessNowRequest) GetTaskActionsServiceProcessNowRequest() *shared.TaskActionsServiceProcessNowRequest {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceProcessNowRequest) GetTaskActionsServiceProcessNowRequest() *shared.TaskActionsServiceProcessNowRequest {
+	if c == nil {
 		return nil
 	}
-	return o.TaskActionsServiceProcessNowRequest
+	return c.TaskActionsServiceProcessNowRequest
 }
 
 type C1APITaskV1TaskActionsServiceProcessNowResponse struct {
@@ -37,30 +37,30 @@ type C1APITaskV1TaskActionsServiceProcessNowResponse struct {
 	TaskActionsServiceProcessNowResponse *shared.TaskActionsServiceProcessNowResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceProcessNowResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceProcessNowResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APITaskV1TaskActionsServiceProcessNowResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceProcessNowResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APITaskV1TaskActionsServiceProcessNowResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceProcessNowResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceProcessNowResponse) GetTaskActionsServiceProcessNowResponse() *shared.TaskActionsServiceProcessNowResponse {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceProcessNowResponse) GetTaskActionsServiceProcessNowResponse() *shared.TaskActionsServiceProcessNowResponse {
+	if c == nil {
 		return nil
 	}
-	return o.TaskActionsServiceProcessNowResponse
+	return c.TaskActionsServiceProcessNowResponse
 }

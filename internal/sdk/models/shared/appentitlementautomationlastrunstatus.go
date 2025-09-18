@@ -62,23 +62,23 @@ func (a *AppEntitlementAutomationLastRunStatus) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-func (o *AppEntitlementAutomationLastRunStatus) GetErrorMessage() *string {
-	if o == nil {
+func (a *AppEntitlementAutomationLastRunStatus) GetErrorMessage() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ErrorMessage
+	return a.ErrorMessage
 }
 
-func (o *AppEntitlementAutomationLastRunStatus) GetLastCompletedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementAutomationLastRunStatus) GetLastCompletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.LastCompletedAt
+	return a.LastCompletedAt
 }
 
-func (o *AppEntitlementAutomationLastRunStatus) GetStatus() *AppEntitlementAutomationLastRunStatusStatus {
-	if o == nil {
+func (a *AppEntitlementAutomationLastRunStatus) GetStatus() *AppEntitlementAutomationLastRunStatusStatus {
+	if a == nil {
 		return nil
 	}
-	return o.Status
+	return a.Status
 }

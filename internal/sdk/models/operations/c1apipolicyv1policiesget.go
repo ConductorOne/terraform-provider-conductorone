@@ -11,11 +11,11 @@ type C1APIPolicyV1PoliciesGetRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIPolicyV1PoliciesGetRequest) GetID() string {
-	if o == nil {
+func (c *C1APIPolicyV1PoliciesGetRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIPolicyV1PoliciesGetResponse struct {
@@ -29,30 +29,30 @@ type C1APIPolicyV1PoliciesGetResponse struct {
 	GetPolicyResponse *shared.GetPolicyResponse
 }
 
-func (o *C1APIPolicyV1PoliciesGetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIPolicyV1PoliciesGetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIPolicyV1PoliciesGetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIPolicyV1PoliciesGetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIPolicyV1PoliciesGetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIPolicyV1PoliciesGetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIPolicyV1PoliciesGetResponse) GetGetPolicyResponse() *shared.GetPolicyResponse {
-	if o == nil {
+func (c *C1APIPolicyV1PoliciesGetResponse) GetGetPolicyResponse() *shared.GetPolicyResponse {
+	if c == nil {
 		return nil
 	}
-	return o.GetPolicyResponse
+	return c.GetPolicyResponse
 }

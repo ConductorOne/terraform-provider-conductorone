@@ -23,9 +23,9 @@ func (c *ConditionSucceeded) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *ConditionSucceeded) GetSucceededAt() *time.Time {
-	if o == nil {
+func (c *ConditionSucceeded) GetSucceededAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.SucceededAt
+	return c.SucceededAt
 }

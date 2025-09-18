@@ -207,7 +207,9 @@ func (r *AppResourceTypeDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 	for {
-		res, err := res.Next()
+		var err error
+
+		res, err = res.Next()
 
 		if err != nil {
 			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))

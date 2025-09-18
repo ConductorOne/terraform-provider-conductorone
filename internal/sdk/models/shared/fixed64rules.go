@@ -31,58 +31,58 @@ type Fixed64Rules struct {
 	NotIn []string `json:"notIn,omitempty"`
 }
 
-func (o *Fixed64Rules) GetConst() *string {
-	if o == nil {
+func (f *Fixed64Rules) GetConst() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Const
+	return f.Const
 }
 
-func (o *Fixed64Rules) GetGt() *string {
-	if o == nil {
+func (f *Fixed64Rules) GetGt() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Gt
+	return f.Gt
 }
 
-func (o *Fixed64Rules) GetGte() *string {
-	if o == nil {
+func (f *Fixed64Rules) GetGte() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Gte
+	return f.Gte
 }
 
-func (o *Fixed64Rules) GetIgnoreEmpty() *bool {
-	if o == nil {
+func (f *Fixed64Rules) GetIgnoreEmpty() *bool {
+	if f == nil {
 		return nil
 	}
-	return o.IgnoreEmpty
+	return f.IgnoreEmpty
 }
 
-func (o *Fixed64Rules) GetIn() []string {
-	if o == nil {
+func (f *Fixed64Rules) GetIn() []string {
+	if f == nil {
 		return nil
 	}
-	return o.In
+	return f.In
 }
 
-func (o *Fixed64Rules) GetLt() *string {
-	if o == nil {
+func (f *Fixed64Rules) GetLt() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Lt
+	return f.Lt
 }
 
-func (o *Fixed64Rules) GetLte() *string {
-	if o == nil {
+func (f *Fixed64Rules) GetLte() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Lte
+	return f.Lte
 }
 
-func (o *Fixed64Rules) GetNotIn() []string {
-	if o == nil {
+func (f *Fixed64Rules) GetNotIn() []string {
+	if f == nil {
 		return nil
 	}
-	return o.NotIn
+	return f.NotIn
 }

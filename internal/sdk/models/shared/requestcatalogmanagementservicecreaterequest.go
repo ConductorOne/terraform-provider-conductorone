@@ -120,58 +120,58 @@ type RequestCatalogManagementServiceCreateRequest struct {
 	VisibleToEveryone *bool `json:"visibleToEveryone,omitempty"`
 }
 
-func (o *RequestCatalogManagementServiceCreateRequest) GetDescription() *string {
-	if o == nil {
+func (r *RequestCatalogManagementServiceCreateRequest) GetDescription() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Description
+	return r.Description
 }
 
-func (o *RequestCatalogManagementServiceCreateRequest) GetDisplayName() string {
-	if o == nil {
+func (r *RequestCatalogManagementServiceCreateRequest) GetDisplayName() string {
+	if r == nil {
 		return ""
 	}
-	return o.DisplayName
+	return r.DisplayName
 }
 
-func (o *RequestCatalogManagementServiceCreateRequest) GetEnrollmentBehavior() *RequestCatalogManagementServiceCreateRequestEnrollmentBehavior {
-	if o == nil {
+func (r *RequestCatalogManagementServiceCreateRequest) GetEnrollmentBehavior() *RequestCatalogManagementServiceCreateRequestEnrollmentBehavior {
+	if r == nil {
 		return nil
 	}
-	return o.EnrollmentBehavior
+	return r.EnrollmentBehavior
 }
 
-func (o *RequestCatalogManagementServiceCreateRequest) GetPublished() *bool {
-	if o == nil {
+func (r *RequestCatalogManagementServiceCreateRequest) GetPublished() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Published
+	return r.Published
 }
 
-func (o *RequestCatalogManagementServiceCreateRequest) GetRequestBundle() *bool {
-	if o == nil {
+func (r *RequestCatalogManagementServiceCreateRequest) GetRequestBundle() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.RequestBundle
+	return r.RequestBundle
 }
 
-func (o *RequestCatalogManagementServiceCreateRequest) GetUnenrollmentBehavior() *RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior {
-	if o == nil {
+func (r *RequestCatalogManagementServiceCreateRequest) GetUnenrollmentBehavior() *RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior {
+	if r == nil {
 		return nil
 	}
-	return o.UnenrollmentBehavior
+	return r.UnenrollmentBehavior
 }
 
-func (o *RequestCatalogManagementServiceCreateRequest) GetUnenrollmentEntitlementBehavior() *RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior {
-	if o == nil {
+func (r *RequestCatalogManagementServiceCreateRequest) GetUnenrollmentEntitlementBehavior() *RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior {
+	if r == nil {
 		return nil
 	}
-	return o.UnenrollmentEntitlementBehavior
+	return r.UnenrollmentEntitlementBehavior
 }
 
-func (o *RequestCatalogManagementServiceCreateRequest) GetVisibleToEveryone() *bool {
-	if o == nil {
+func (r *RequestCatalogManagementServiceCreateRequest) GetVisibleToEveryone() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.VisibleToEveryone
+	return r.VisibleToEveryone
 }

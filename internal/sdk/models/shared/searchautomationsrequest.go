@@ -76,44 +76,44 @@ type SearchAutomationsRequest struct {
 	TriggerTypes []TriggerTypes `json:"triggerTypes,omitempty"`
 }
 
-func (o *SearchAutomationsRequest) GetAppID() *string {
-	if o == nil {
+func (s *SearchAutomationsRequest) GetAppID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.AppID
+	return s.AppID
 }
 
-func (o *SearchAutomationsRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchAutomationsRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SearchAutomationsRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchAutomationsRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }
 
-func (o *SearchAutomationsRequest) GetQuery() *string {
-	if o == nil {
+func (s *SearchAutomationsRequest) GetQuery() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Query
+	return s.Query
 }
 
-func (o *SearchAutomationsRequest) GetRefs() []*AutomationTemplateRef {
-	if o == nil {
+func (s *SearchAutomationsRequest) GetRefs() []*AutomationTemplateRef {
+	if s == nil {
 		return nil
 	}
-	return o.Refs
+	return s.Refs
 }
 
-func (o *SearchAutomationsRequest) GetTriggerTypes() []TriggerTypes {
-	if o == nil {
+func (s *SearchAutomationsRequest) GetTriggerTypes() []TriggerTypes {
+	if s == nil {
 		return nil
 	}
-	return o.TriggerTypes
+	return s.TriggerTypes
 }

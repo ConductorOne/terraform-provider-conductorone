@@ -14,30 +14,30 @@ type TaskAuditListRequest struct {
 	TaskID *string `json:"taskId,omitempty"`
 }
 
-func (o *TaskAuditListRequest) GetPageSize() *int {
-	if o == nil {
+func (t *TaskAuditListRequest) GetPageSize() *int {
+	if t == nil {
 		return nil
 	}
-	return o.PageSize
+	return t.PageSize
 }
 
-func (o *TaskAuditListRequest) GetPageToken() *string {
-	if o == nil {
+func (t *TaskAuditListRequest) GetPageToken() *string {
+	if t == nil {
 		return nil
 	}
-	return o.PageToken
+	return t.PageToken
 }
 
-func (o *TaskAuditListRequest) GetRefs() []TaskAuditViewRef {
-	if o == nil {
+func (t *TaskAuditListRequest) GetRefs() []TaskAuditViewRef {
+	if t == nil {
 		return nil
 	}
-	return o.Refs
+	return t.Refs
 }
 
-func (o *TaskAuditListRequest) GetTaskID() *string {
-	if o == nil {
+func (t *TaskAuditListRequest) GetTaskID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.TaskID
+	return t.TaskID
 }

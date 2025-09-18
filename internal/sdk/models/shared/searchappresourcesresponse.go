@@ -16,23 +16,23 @@ type SearchAppResourcesResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *SearchAppResourcesResponse) GetExpanded() []SearchAppResourcesResponseExpanded {
-	if o == nil {
+func (s *SearchAppResourcesResponse) GetExpanded() []SearchAppResourcesResponseExpanded {
+	if s == nil {
 		return nil
 	}
-	return o.Expanded
+	return s.Expanded
 }
 
-func (o *SearchAppResourcesResponse) GetList() []AppResourceView {
-	if o == nil {
+func (s *SearchAppResourcesResponse) GetList() []AppResourceView {
+	if s == nil {
 		return nil
 	}
-	return o.List
+	return s.List
 }
 
-func (o *SearchAppResourcesResponse) GetNextPageToken() *string {
-	if o == nil {
+func (s *SearchAppResourcesResponse) GetNextPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return s.NextPageToken
 }

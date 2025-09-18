@@ -280,6 +280,13 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 func (r *UsersDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*shared.SearchUsersRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	var departments []string
+	if r.Departments != nil {
+		departments = make([]string, 0, len(r.Departments))
+		for _, departmentsItem := range r.Departments {
+			departments = append(departments, departmentsItem.ValueString())
+		}
+	}
 	email := new(string)
 	if !r.Email.IsUnknown() && !r.Email.IsNull() {
 		*email = r.Email.ValueString()
@@ -305,6 +312,20 @@ func (r *UsersDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (
 		ids = make([]string, 0, len(r.Ids))
 		for _, idsItem := range r.Ids {
 			ids = append(ids, idsItem.ValueString())
+		}
+	}
+	var jobTitles []string
+	if r.JobTitles != nil {
+		jobTitles = make([]string, 0, len(r.JobTitles))
+		for _, jobTitlesItem := range r.JobTitles {
+			jobTitles = append(jobTitles, jobTitlesItem.ValueString())
+		}
+	}
+	var managerIds []string
+	if r.ManagerIds != nil {
+		managerIds = make([]string, 0, len(r.ManagerIds))
+		for _, managerIdsItem := range r.ManagerIds {
+			managerIds = append(managerIds, managerIdsItem.ValueString())
 		}
 	}
 	pageSize := new(int)
@@ -349,10 +370,13 @@ func (r *UsersDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (
 		}
 	}
 	out := shared.SearchUsersRequest{
+		Departments:  departments,
 		Email:        email,
 		ExcludeIds:   excludeIds,
 		ExcludeTypes: excludeTypes,
 		Ids:          ids,
+		JobTitles:    jobTitles,
+		ManagerIds:   managerIds,
 		PageSize:     pageSize,
 		Query:        query,
 		Refs:         refs,

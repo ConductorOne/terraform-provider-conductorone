@@ -20,30 +20,30 @@ type TaskRevokeSource struct {
 	TaskRevokeSourceReview *TaskRevokeSourceReview `json:"review,omitempty"`
 }
 
-func (o *TaskRevokeSource) GetTaskRevokeSourceExpired() *TaskRevokeSourceExpired {
-	if o == nil {
+func (t *TaskRevokeSource) GetTaskRevokeSourceExpired() *TaskRevokeSourceExpired {
+	if t == nil {
 		return nil
 	}
-	return o.TaskRevokeSourceExpired
+	return t.TaskRevokeSourceExpired
 }
 
-func (o *TaskRevokeSource) GetTaskRevokeSourceNonUsage() *TaskRevokeSourceNonUsage {
-	if o == nil {
+func (t *TaskRevokeSource) GetTaskRevokeSourceNonUsage() *TaskRevokeSourceNonUsage {
+	if t == nil {
 		return nil
 	}
-	return o.TaskRevokeSourceNonUsage
+	return t.TaskRevokeSourceNonUsage
 }
 
-func (o *TaskRevokeSource) GetTaskRevokeSourceRequest() *TaskRevokeSourceRequest {
-	if o == nil {
+func (t *TaskRevokeSource) GetTaskRevokeSourceRequest() *TaskRevokeSourceRequest {
+	if t == nil {
 		return nil
 	}
-	return o.TaskRevokeSourceRequest
+	return t.TaskRevokeSourceRequest
 }
 
-func (o *TaskRevokeSource) GetTaskRevokeSourceReview() *TaskRevokeSourceReview {
-	if o == nil {
+func (t *TaskRevokeSource) GetTaskRevokeSourceReview() *TaskRevokeSourceReview {
+	if t == nil {
 		return nil
 	}
-	return o.TaskRevokeSourceReview
+	return t.TaskRevokeSourceReview
 }

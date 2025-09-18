@@ -8,9 +8,9 @@ type GetAppResponse struct {
 	App *App `json:"app,omitempty"`
 }
 
-func (o *GetAppResponse) GetApp() *App {
-	if o == nil {
+func (g *GetAppResponse) GetApp() *App {
+	if g == nil {
 		return nil
 	}
-	return o.App
+	return g.App
 }

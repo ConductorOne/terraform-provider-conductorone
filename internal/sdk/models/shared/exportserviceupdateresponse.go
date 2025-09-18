@@ -12,9 +12,9 @@ type ExportServiceUpdateResponse struct {
 	Exporter *Exporter `json:"exporter,omitempty"`
 }
 
-func (o *ExportServiceUpdateResponse) GetExporter() *Exporter {
-	if o == nil {
+func (e *ExportServiceUpdateResponse) GetExporter() *Exporter {
+	if e == nil {
 		return nil
 	}
-	return o.Exporter
+	return e.Exporter
 }

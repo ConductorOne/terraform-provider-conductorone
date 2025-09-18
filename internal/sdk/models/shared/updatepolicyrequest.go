@@ -9,16 +9,16 @@ type UpdatePolicyRequest struct {
 	UpdateMask *string      `json:"updateMask,omitempty"`
 }
 
-func (o *UpdatePolicyRequest) GetPolicy() *PolicyInput {
-	if o == nil {
+func (u *UpdatePolicyRequest) GetPolicy() *PolicyInput {
+	if u == nil {
 		return nil
 	}
-	return o.Policy
+	return u.Policy
 }
 
-func (o *UpdatePolicyRequest) GetUpdateMask() *string {
-	if o == nil {
+func (u *UpdatePolicyRequest) GetUpdateMask() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return u.UpdateMask
 }

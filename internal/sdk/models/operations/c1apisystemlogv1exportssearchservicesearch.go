@@ -18,30 +18,30 @@ type C1APISystemlogV1ExportsSearchServiceSearchResponse struct {
 	ExportsSearchServiceSearchResponse *shared.ExportsSearchServiceSearchResponse
 }
 
-func (o *C1APISystemlogV1ExportsSearchServiceSearchResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APISystemlogV1ExportsSearchServiceSearchResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APISystemlogV1ExportsSearchServiceSearchResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APISystemlogV1ExportsSearchServiceSearchResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APISystemlogV1ExportsSearchServiceSearchResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APISystemlogV1ExportsSearchServiceSearchResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APISystemlogV1ExportsSearchServiceSearchResponse) GetExportsSearchServiceSearchResponse() *shared.ExportsSearchServiceSearchResponse {
-	if o == nil {
+func (c *C1APISystemlogV1ExportsSearchServiceSearchResponse) GetExportsSearchServiceSearchResponse() *shared.ExportsSearchServiceSearchResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ExportsSearchServiceSearchResponse
+	return c.ExportsSearchServiceSearchResponse
 }

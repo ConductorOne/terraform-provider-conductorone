@@ -18,30 +18,30 @@ type C1APIAppV1AppsCreateResponse struct {
 	CreateAppResponse *shared.CreateAppResponse
 }
 
-func (o *C1APIAppV1AppsCreateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppsCreateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppsCreateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppsCreateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppsCreateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppsCreateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppsCreateResponse) GetCreateAppResponse() *shared.CreateAppResponse {
-	if o == nil {
+func (c *C1APIAppV1AppsCreateResponse) GetCreateAppResponse() *shared.CreateAppResponse {
+	if c == nil {
 		return nil
 	}
-	return o.CreateAppResponse
+	return c.CreateAppResponse
 }

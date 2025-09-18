@@ -13,25 +13,25 @@ type C1APIAppV1AppReportServiceListRequest struct {
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIAppV1AppReportServiceListRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppReportServiceListRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppReportServiceListRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIAppV1AppReportServiceListRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIAppV1AppReportServiceListRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIAppV1AppReportServiceListRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIAppV1AppReportServiceListResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1AppReportServiceListResponse struct {
 	AppReportServiceListResponse *shared.AppReportServiceListResponse
 }
 
-func (o *C1APIAppV1AppReportServiceListResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppReportServiceListResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppReportServiceListResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppReportServiceListResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppReportServiceListResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppReportServiceListResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppReportServiceListResponse) GetAppReportServiceListResponse() *shared.AppReportServiceListResponse {
-	if o == nil {
+func (c *C1APIAppV1AppReportServiceListResponse) GetAppReportServiceListResponse() *shared.AppReportServiceListResponse {
+	if c == nil {
 		return nil
 	}
-	return o.AppReportServiceListResponse
+	return c.AppReportServiceListResponse
 }

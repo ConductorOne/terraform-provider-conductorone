@@ -11,11 +11,11 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest) GetID() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse struct {
@@ -29,30 +29,30 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse struct {
 	RequestCatalogManagementServiceGetResponse *shared.RequestCatalogManagementServiceGetResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetRequestCatalogManagementServiceGetResponse() *shared.RequestCatalogManagementServiceGetResponse {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetRequestCatalogManagementServiceGetResponse() *shared.RequestCatalogManagementServiceGetResponse {
+	if c == nil {
 		return nil
 	}
-	return o.RequestCatalogManagementServiceGetResponse
+	return c.RequestCatalogManagementServiceGetResponse
 }

@@ -15,39 +15,39 @@ type C1APIAppV1AppResourceOwnersListRequest struct {
 	PageToken      *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIAppV1AppResourceOwnersListRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersListRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppResourceOwnersListRequest) GetResourceTypeID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersListRequest) GetResourceTypeID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ResourceTypeID
+	return c.ResourceTypeID
 }
 
-func (o *C1APIAppV1AppResourceOwnersListRequest) GetResourceID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersListRequest) GetResourceID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ResourceID
+	return c.ResourceID
 }
 
-func (o *C1APIAppV1AppResourceOwnersListRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersListRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIAppV1AppResourceOwnersListRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersListRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIAppV1AppResourceOwnersListResponse struct {
@@ -61,30 +61,30 @@ type C1APIAppV1AppResourceOwnersListResponse struct {
 	ListAppResourceOwnersResponse *shared.ListAppResourceOwnersResponse
 }
 
-func (o *C1APIAppV1AppResourceOwnersListResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersListResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppResourceOwnersListResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersListResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppResourceOwnersListResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersListResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppResourceOwnersListResponse) GetListAppResourceOwnersResponse() *shared.ListAppResourceOwnersResponse {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersListResponse) GetListAppResourceOwnersResponse() *shared.ListAppResourceOwnersResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ListAppResourceOwnersResponse
+	return c.ListAppResourceOwnersResponse
 }

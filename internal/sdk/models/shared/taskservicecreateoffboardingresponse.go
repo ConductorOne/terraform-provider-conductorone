@@ -14,16 +14,16 @@ type TaskServiceCreateOffboardingResponse struct {
 	TaskView *TaskView `json:"taskView,omitempty"`
 }
 
-func (o *TaskServiceCreateOffboardingResponse) GetExpanded() []TaskServiceCreateOffboardingResponseExpanded {
-	if o == nil {
+func (t *TaskServiceCreateOffboardingResponse) GetExpanded() []TaskServiceCreateOffboardingResponseExpanded {
+	if t == nil {
 		return nil
 	}
-	return o.Expanded
+	return t.Expanded
 }
 
-func (o *TaskServiceCreateOffboardingResponse) GetTaskView() *TaskView {
-	if o == nil {
+func (t *TaskServiceCreateOffboardingResponse) GetTaskView() *TaskView {
+	if t == nil {
 		return nil
 	}
-	return o.TaskView
+	return t.TaskView
 }

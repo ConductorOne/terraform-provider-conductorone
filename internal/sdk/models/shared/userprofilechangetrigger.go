@@ -8,9 +8,9 @@ type UserProfileChangeTrigger struct {
 	Condition *string `json:"condition,omitempty"`
 }
 
-func (o *UserProfileChangeTrigger) GetCondition() *string {
-	if o == nil {
+func (u *UserProfileChangeTrigger) GetCondition() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Condition
+	return u.Condition
 }

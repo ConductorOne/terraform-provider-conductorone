@@ -8,9 +8,9 @@ type RemoveGrantDurationResponse struct {
 	AppEntitlementUserBinding *AppEntitlementUserBinding `json:"binding,omitempty"`
 }
 
-func (o *RemoveGrantDurationResponse) GetAppEntitlementUserBinding() *AppEntitlementUserBinding {
-	if o == nil {
+func (r *RemoveGrantDurationResponse) GetAppEntitlementUserBinding() *AppEntitlementUserBinding {
+	if r == nil {
 		return nil
 	}
-	return o.AppEntitlementUserBinding
+	return r.AppEntitlementUserBinding
 }

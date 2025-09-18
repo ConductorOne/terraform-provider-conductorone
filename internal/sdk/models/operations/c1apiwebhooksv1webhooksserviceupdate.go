@@ -12,18 +12,18 @@ type C1APIWebhooksV1WebhooksServiceUpdateRequest struct {
 	WebhooksServiceUpdateRequest *shared.WebhooksServiceUpdateRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceUpdateRequest) GetID() string {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceUpdateRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceUpdateRequest) GetWebhooksServiceUpdateRequest() *shared.WebhooksServiceUpdateRequest {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceUpdateRequest) GetWebhooksServiceUpdateRequest() *shared.WebhooksServiceUpdateRequest {
+	if c == nil {
 		return nil
 	}
-	return o.WebhooksServiceUpdateRequest
+	return c.WebhooksServiceUpdateRequest
 }
 
 type C1APIWebhooksV1WebhooksServiceUpdateResponse struct {
@@ -37,30 +37,30 @@ type C1APIWebhooksV1WebhooksServiceUpdateResponse struct {
 	WebhooksServiceUpdateResponse *shared.WebhooksServiceUpdateResponse
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceUpdateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceUpdateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceUpdateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceUpdateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceUpdateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceUpdateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceUpdateResponse) GetWebhooksServiceUpdateResponse() *shared.WebhooksServiceUpdateResponse {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceUpdateResponse) GetWebhooksServiceUpdateResponse() *shared.WebhooksServiceUpdateResponse {
+	if c == nil {
 		return nil
 	}
-	return o.WebhooksServiceUpdateResponse
+	return c.WebhooksServiceUpdateResponse
 }

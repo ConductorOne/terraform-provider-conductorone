@@ -23,7 +23,7 @@ import (
 // presented from Go's perspective. These messages are thus not appropriate
 // for display to end-users. An error returned from ToCtyValue represents a
 // bug in the calling program, not user error.
-func ToCtyValue(val interface{}, ty cty.Type) (cty.Value, error) {
+func ToCtyValue(val any, ty cty.Type) (cty.Value, error) {
 	// 'path' starts off as empty but will grow for each level of recursive
 	// call we make, so by the time toCtyValue returns it is likely to have
 	// unused capacity on the end of it, depending on how deeply-recursive
@@ -268,7 +268,7 @@ func toCtySet(val reflect.Value, ety cty.Type, path cty.Path) (cty.Value, error)
 			return cty.NilVal, path.NewErrorf("can't convert Go %s to %#v", val.Type(), cty.Set(ety))
 		}
 
-		rawSet := val.Interface().(set.Set[interface{}])
+		rawSet := val.Interface().(set.Set[any])
 		inVals := rawSet.Values()
 
 		if len(inVals) == 0 {

@@ -33,51 +33,51 @@ func (a *AppEntitlementUserBinding) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppEntitlementUserBinding) GetAppEntitlementID() *string {
-	if o == nil {
+func (a *AppEntitlementUserBinding) GetAppEntitlementID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementID
+	return a.AppEntitlementID
 }
 
-func (o *AppEntitlementUserBinding) GetAppID() *string {
-	if o == nil {
+func (a *AppEntitlementUserBinding) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppEntitlementUserBinding) GetAppUserID() *string {
-	if o == nil {
+func (a *AppEntitlementUserBinding) GetAppUserID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserID
+	return a.AppUserID
 }
 
-func (o *AppEntitlementUserBinding) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementUserBinding) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AppEntitlementUserBinding) GetDeletedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementUserBinding) GetDeletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return a.DeletedAt
 }
 
-func (o *AppEntitlementUserBinding) GetDeprovisionAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementUserBinding) GetDeprovisionAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.DeprovisionAt
+	return a.DeprovisionAt
 }
 
-func (o *AppEntitlementUserBinding) GetGrantSources() []AppEntitlementRef {
-	if o == nil {
+func (a *AppEntitlementUserBinding) GetGrantSources() []AppEntitlementRef {
+	if a == nil {
 		return nil
 	}
-	return o.GrantSources
+	return a.GrantSources
 }

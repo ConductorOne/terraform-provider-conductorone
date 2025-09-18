@@ -14,30 +14,30 @@ type WebhookInput struct {
 	URL *string `json:"url,omitempty"`
 }
 
-func (o *WebhookInput) GetDescription() *string {
-	if o == nil {
+func (w *WebhookInput) GetDescription() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Description
+	return w.Description
 }
 
-func (o *WebhookInput) GetDisplayName() *string {
-	if o == nil {
+func (w *WebhookInput) GetDisplayName() *string {
+	if w == nil {
 		return nil
 	}
-	return o.DisplayName
+	return w.DisplayName
 }
 
-func (o *WebhookInput) GetID() *string {
-	if o == nil {
+func (w *WebhookInput) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
-func (o *WebhookInput) GetURL() *string {
-	if o == nil {
+func (w *WebhookInput) GetURL() *string {
+	if w == nil {
 		return nil
 	}
-	return o.URL
+	return w.URL
 }

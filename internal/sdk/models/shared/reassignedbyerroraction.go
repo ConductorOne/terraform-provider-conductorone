@@ -32,44 +32,44 @@ func (r *ReassignedByErrorAction) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *ReassignedByErrorAction) GetDescription() *string {
-	if o == nil {
+func (r *ReassignedByErrorAction) GetDescription() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Description
+	return r.Description
 }
 
-func (o *ReassignedByErrorAction) GetErrorCode() *string {
-	if o == nil {
+func (r *ReassignedByErrorAction) GetErrorCode() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ErrorCode
+	return r.ErrorCode
 }
 
-func (o *ReassignedByErrorAction) GetErrorUserID() *string {
-	if o == nil {
+func (r *ReassignedByErrorAction) GetErrorUserID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ErrorUserID
+	return r.ErrorUserID
 }
 
-func (o *ReassignedByErrorAction) GetErroredAt() *time.Time {
-	if o == nil {
+func (r *ReassignedByErrorAction) GetErroredAt() *time.Time {
+	if r == nil {
 		return nil
 	}
-	return o.ErroredAt
+	return r.ErroredAt
 }
 
-func (o *ReassignedByErrorAction) GetNewPolicyStepID() *string {
-	if o == nil {
+func (r *ReassignedByErrorAction) GetNewPolicyStepID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.NewPolicyStepID
+	return r.NewPolicyStepID
 }
 
-func (o *ReassignedByErrorAction) GetReassignedAt() *time.Time {
-	if o == nil {
+func (r *ReassignedByErrorAction) GetReassignedAt() *time.Time {
+	if r == nil {
 		return nil
 	}
-	return o.ReassignedAt
+	return r.ReassignedAt
 }

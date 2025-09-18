@@ -343,184 +343,184 @@ func (t *Task) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Task) GetActions() []Actions {
-	if o == nil {
+func (t *Task) GetActions() []Actions {
+	if t == nil {
 		return nil
 	}
-	return o.Actions
+	return t.Actions
 }
 
-func (o *Task) GetAnalysisID() *string {
-	if o == nil {
+func (t *Task) GetAnalysisID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.AnalysisID
+	return t.AnalysisID
 }
 
-func (o *Task) GetAnnotations() []Annotations {
-	if o == nil {
+func (t *Task) GetAnnotations() []Annotations {
+	if t == nil {
 		return nil
 	}
-	return o.Annotations
+	return t.Annotations
 }
 
-func (o *Task) GetCommentCount() *int {
-	if o == nil {
+func (t *Task) GetCommentCount() *int {
+	if t == nil {
 		return nil
 	}
-	return o.CommentCount
+	return t.CommentCount
 }
 
-func (o *Task) GetCreatedAt() *time.Time {
-	if o == nil {
+func (t *Task) GetCreatedAt() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return t.CreatedAt
 }
 
-func (o *Task) GetCreatedByUserID() *string {
-	if o == nil {
+func (t *Task) GetCreatedByUserID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.CreatedByUserID
+	return t.CreatedByUserID
 }
 
-func (o *Task) GetData() *Data {
-	if o == nil {
+func (t *Task) GetData() *Data {
+	if t == nil {
 		return nil
 	}
-	return o.Data
+	return t.Data
 }
 
-func (o *Task) GetDeletedAt() *time.Time {
-	if o == nil {
+func (t *Task) GetDeletedAt() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return t.DeletedAt
 }
 
-func (o *Task) GetDescription() *string {
-	if o == nil {
+func (t *Task) GetDescription() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Description
+	return t.Description
 }
 
-func (o *Task) GetDisplayName() *string {
-	if o == nil {
+func (t *Task) GetDisplayName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.DisplayName
+	return t.DisplayName
 }
 
-func (o *Task) GetEmergencyAccess() *bool {
-	if o == nil {
+func (t *Task) GetEmergencyAccess() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.EmergencyAccess
+	return t.EmergencyAccess
 }
 
-func (o *Task) GetExternalRefs() []ExternalRef {
-	if o == nil {
+func (t *Task) GetExternalRefs() []ExternalRef {
+	if t == nil {
 		return nil
 	}
-	return o.ExternalRefs
+	return t.ExternalRefs
 }
 
-func (o *Task) GetForm() *Form {
-	if o == nil {
+func (t *Task) GetForm() *Form {
+	if t == nil {
 		return nil
 	}
-	return o.Form
+	return t.Form
 }
 
-func (o *Task) GetID() *string {
-	if o == nil {
+func (t *Task) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
-func (o *Task) GetInsightIds() []string {
-	if o == nil {
+func (t *Task) GetInsightIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.InsightIds
+	return t.InsightIds
 }
 
-func (o *Task) GetNumericID() *string {
-	if o == nil {
+func (t *Task) GetNumericID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.NumericID
+	return t.NumericID
 }
 
-func (o *Task) GetOrigin() *Origin {
-	if o == nil {
+func (t *Task) GetOrigin() *Origin {
+	if t == nil {
 		return nil
 	}
-	return o.Origin
+	return t.Origin
 }
 
-func (o *Task) GetPolicyInstance() *PolicyInstance {
-	if o == nil {
+func (t *Task) GetPolicyInstance() *PolicyInstance {
+	if t == nil {
 		return nil
 	}
-	return o.PolicyInstance
+	return t.PolicyInstance
 }
 
-func (o *Task) GetPolicyGenerationID() *string {
-	if o == nil {
+func (t *Task) GetPolicyGenerationID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.PolicyGenerationID
+	return t.PolicyGenerationID
 }
 
-func (o *Task) GetProcessing() *Processing {
-	if o == nil {
+func (t *Task) GetProcessing() *Processing {
+	if t == nil {
 		return nil
 	}
-	return o.Processing
+	return t.Processing
 }
 
-func (o *Task) GetRecommendation() *Recommendation {
-	if o == nil {
+func (t *Task) GetRecommendation() *Recommendation {
+	if t == nil {
 		return nil
 	}
-	return o.Recommendation
+	return t.Recommendation
 }
 
-func (o *Task) GetState() *TaskState {
-	if o == nil {
+func (t *Task) GetState() *TaskState {
+	if t == nil {
 		return nil
 	}
-	return o.State
+	return t.State
 }
 
-func (o *Task) GetStepApproverIds() []string {
-	if o == nil {
+func (t *Task) GetStepApproverIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.StepApproverIds
+	return t.StepApproverIds
 }
 
-func (o *Task) GetTaskType() *TaskType {
-	if o == nil {
+func (t *Task) GetTaskType() *TaskType {
+	if t == nil {
 		return nil
 	}
-	return o.TaskType
+	return t.TaskType
 }
 
-func (o *Task) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (t *Task) GetUpdatedAt() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return t.UpdatedAt
 }
 
-func (o *Task) GetUserID() *string {
-	if o == nil {
+func (t *Task) GetUserID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.UserID
+	return t.UserID
 }

@@ -8,9 +8,9 @@ type RemoveEntitlementMembershipRequest struct {
 	AppUserID *string `json:"appUserId,omitempty"`
 }
 
-func (o *RemoveEntitlementMembershipRequest) GetAppUserID() *string {
-	if o == nil {
+func (r *RemoveEntitlementMembershipRequest) GetAppUserID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.AppUserID
+	return r.AppUserID
 }

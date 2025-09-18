@@ -17,44 +17,44 @@ type SessionSettings struct {
 	CIDRRestriction4 *CIDRRestriction `json:"ssoUserSource,omitempty"`
 }
 
-func (o *SessionSettings) GetCIDRRestriction() *CIDRRestriction {
-	if o == nil {
+func (s *SessionSettings) GetCIDRRestriction() *CIDRRestriction {
+	if s == nil {
 		return nil
 	}
-	return o.CIDRRestriction
+	return s.CIDRRestriction
 }
 
-func (o *SessionSettings) GetMaxSessionLength() *string {
-	if o == nil {
+func (s *SessionSettings) GetMaxSessionLength() *string {
+	if s == nil {
 		return nil
 	}
-	return o.MaxSessionLength
+	return s.MaxSessionLength
 }
 
-func (o *SessionSettings) GetCIDRRestriction1() *CIDRRestriction {
-	if o == nil {
+func (s *SessionSettings) GetCIDRRestriction1() *CIDRRestriction {
+	if s == nil {
 		return nil
 	}
-	return o.CIDRRestriction1
+	return s.CIDRRestriction1
 }
 
-func (o *SessionSettings) GetCIDRRestriction2() *CIDRRestriction {
-	if o == nil {
+func (s *SessionSettings) GetCIDRRestriction2() *CIDRRestriction {
+	if s == nil {
 		return nil
 	}
-	return o.CIDRRestriction2
+	return s.CIDRRestriction2
 }
 
-func (o *SessionSettings) GetCIDRRestriction3() *CIDRRestriction {
-	if o == nil {
+func (s *SessionSettings) GetCIDRRestriction3() *CIDRRestriction {
+	if s == nil {
 		return nil
 	}
-	return o.CIDRRestriction3
+	return s.CIDRRestriction3
 }
 
-func (o *SessionSettings) GetCIDRRestriction4() *CIDRRestriction {
-	if o == nil {
+func (s *SessionSettings) GetCIDRRestriction4() *CIDRRestriction {
+	if s == nil {
 		return nil
 	}
-	return o.CIDRRestriction4
+	return s.CIDRRestriction4
 }

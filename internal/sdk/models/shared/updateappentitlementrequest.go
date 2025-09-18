@@ -16,23 +16,23 @@ type UpdateAppEntitlementRequest struct {
 	UpdateMask                     *string `json:"updateMask,omitempty"`
 }
 
-func (o *UpdateAppEntitlementRequest) GetAppEntitlement() *AppEntitlementInput {
-	if o == nil {
+func (u *UpdateAppEntitlementRequest) GetAppEntitlement() *AppEntitlementInput {
+	if u == nil {
 		return nil
 	}
-	return o.AppEntitlement
+	return u.AppEntitlement
 }
 
-func (o *UpdateAppEntitlementRequest) GetOverrideAccessRequestsDefaults() *bool {
-	if o == nil {
+func (u *UpdateAppEntitlementRequest) GetOverrideAccessRequestsDefaults() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.OverrideAccessRequestsDefaults
+	return u.OverrideAccessRequestsDefaults
 }
 
-func (o *UpdateAppEntitlementRequest) GetUpdateMask() *string {
-	if o == nil {
+func (u *UpdateAppEntitlementRequest) GetUpdateMask() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return u.UpdateMask
 }

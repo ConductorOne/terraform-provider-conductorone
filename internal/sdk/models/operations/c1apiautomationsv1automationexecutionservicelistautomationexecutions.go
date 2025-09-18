@@ -18,30 +18,30 @@ type C1APIAutomationsV1AutomationExecutionServiceListAutomationExecutionsRespons
 	ListAutomationExecutionsResponse *shared.ListAutomationExecutionsResponse
 }
 
-func (o *C1APIAutomationsV1AutomationExecutionServiceListAutomationExecutionsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationExecutionServiceListAutomationExecutionsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAutomationsV1AutomationExecutionServiceListAutomationExecutionsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationExecutionServiceListAutomationExecutionsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAutomationsV1AutomationExecutionServiceListAutomationExecutionsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationExecutionServiceListAutomationExecutionsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAutomationsV1AutomationExecutionServiceListAutomationExecutionsResponse) GetListAutomationExecutionsResponse() *shared.ListAutomationExecutionsResponse {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationExecutionServiceListAutomationExecutionsResponse) GetListAutomationExecutionsResponse() *shared.ListAutomationExecutionsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ListAutomationExecutionsResponse
+	return c.ListAutomationExecutionsResponse
 }

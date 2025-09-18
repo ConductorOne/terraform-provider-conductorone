@@ -68,44 +68,44 @@ func (a *AppPopulationReport) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppPopulationReport) GetAppID() *string {
-	if o == nil {
+func (a *AppPopulationReport) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppPopulationReport) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *AppPopulationReport) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AppPopulationReport) GetDownloadURL() *string {
-	if o == nil {
+func (a *AppPopulationReport) GetDownloadURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DownloadURL
+	return a.DownloadURL
 }
 
-func (o *AppPopulationReport) GetHashes() map[string]string {
-	if o == nil {
+func (a *AppPopulationReport) GetHashes() map[string]string {
+	if a == nil {
 		return nil
 	}
-	return o.Hashes
+	return a.Hashes
 }
 
-func (o *AppPopulationReport) GetID() *string {
-	if o == nil {
+func (a *AppPopulationReport) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AppPopulationReport) GetState() *AppPopulationReportState {
-	if o == nil {
+func (a *AppPopulationReport) GetState() *AppPopulationReportState {
+	if a == nil {
 		return nil
 	}
-	return o.State
+	return a.State
 }

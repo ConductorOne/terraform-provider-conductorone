@@ -50,100 +50,100 @@ func (a *AppResource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppResource) GetAppID() *string {
-	if o == nil {
+func (a *AppResource) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppResource) GetAppResourceTypeID() *string {
-	if o == nil {
+func (a *AppResource) GetAppResourceTypeID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppResourceTypeID
+	return a.AppResourceTypeID
 }
 
-func (o *AppResource) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *AppResource) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AppResource) GetCustomDescription() *string {
-	if o == nil {
+func (a *AppResource) GetCustomDescription() *string {
+	if a == nil {
 		return nil
 	}
-	return o.CustomDescription
+	return a.CustomDescription
 }
 
-func (o *AppResource) GetDeletedAt() *time.Time {
-	if o == nil {
+func (a *AppResource) GetDeletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return a.DeletedAt
 }
 
-func (o *AppResource) GetDescription() *string {
-	if o == nil {
+func (a *AppResource) GetDescription() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Description
+	return a.Description
 }
 
-func (o *AppResource) GetDisplayName() *string {
-	if o == nil {
+func (a *AppResource) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *AppResource) GetGrantCount() *string {
-	if o == nil {
+func (a *AppResource) GetGrantCount() *string {
+	if a == nil {
 		return nil
 	}
-	return o.GrantCount
+	return a.GrantCount
 }
 
-func (o *AppResource) GetID() *string {
-	if o == nil {
+func (a *AppResource) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AppResource) GetMatchBatonID() *string {
-	if o == nil {
+func (a *AppResource) GetMatchBatonID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.MatchBatonID
+	return a.MatchBatonID
 }
 
-func (o *AppResource) GetParentAppResourceID() *string {
-	if o == nil {
+func (a *AppResource) GetParentAppResourceID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParentAppResourceID
+	return a.ParentAppResourceID
 }
 
-func (o *AppResource) GetParentAppResourceTypeID() *string {
-	if o == nil {
+func (a *AppResource) GetParentAppResourceTypeID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParentAppResourceTypeID
+	return a.ParentAppResourceTypeID
 }
 
-func (o *AppResource) GetSecretTrait() *SecretTrait {
-	if o == nil {
+func (a *AppResource) GetSecretTrait() *SecretTrait {
+	if a == nil {
 		return nil
 	}
-	return o.SecretTrait
+	return a.SecretTrait
 }
 
-func (o *AppResource) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (a *AppResource) GetUpdatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

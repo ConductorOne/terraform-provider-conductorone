@@ -37,37 +37,37 @@ type Body struct {
 	WebhookID *string `json:"webhookId,omitempty"`
 }
 
-func (o *Body) GetCallbackURL() *string {
-	if o == nil {
+func (b *Body) GetCallbackURL() *string {
+	if b == nil {
 		return nil
 	}
-	return o.CallbackURL
+	return b.CallbackURL
 }
 
-func (o *Body) GetEvent() *string {
-	if o == nil {
+func (b *Body) GetEvent() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Event
+	return b.Event
 }
 
-func (o *Body) GetPayload() *BodyPayload {
-	if o == nil {
+func (b *Body) GetPayload() *BodyPayload {
+	if b == nil {
 		return nil
 	}
-	return o.Payload
+	return b.Payload
 }
 
-func (o *Body) GetVersion() *string {
-	if o == nil {
+func (b *Body) GetVersion() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Version
+	return b.Version
 }
 
-func (o *Body) GetWebhookID() *string {
-	if o == nil {
+func (b *Body) GetWebhookID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.WebhookID
+	return b.WebhookID
 }

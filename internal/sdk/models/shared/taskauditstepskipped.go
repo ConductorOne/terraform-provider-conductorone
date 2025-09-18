@@ -8,9 +8,9 @@ type TaskAuditStepSkipped struct {
 	SkippedBy *string `json:"skippedBy,omitempty"`
 }
 
-func (o *TaskAuditStepSkipped) GetSkippedBy() *string {
-	if o == nil {
+func (t *TaskAuditStepSkipped) GetSkippedBy() *string {
+	if t == nil {
 		return nil
 	}
-	return o.SkippedBy
+	return t.SkippedBy
 }

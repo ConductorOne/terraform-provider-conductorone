@@ -21,30 +21,30 @@ type FieldRelationship struct {
 	RequiredTogether *RequiredTogether `json:"requiredTogether,omitempty"`
 }
 
-func (o *FieldRelationship) GetAtLeastOne() *AtLeastOne {
-	if o == nil {
+func (f *FieldRelationship) GetAtLeastOne() *AtLeastOne {
+	if f == nil {
 		return nil
 	}
-	return o.AtLeastOne
+	return f.AtLeastOne
 }
 
-func (o *FieldRelationship) GetFieldNames() []string {
-	if o == nil {
+func (f *FieldRelationship) GetFieldNames() []string {
+	if f == nil {
 		return nil
 	}
-	return o.FieldNames
+	return f.FieldNames
 }
 
-func (o *FieldRelationship) GetMutuallyExclusive() *MutuallyExclusive {
-	if o == nil {
+func (f *FieldRelationship) GetMutuallyExclusive() *MutuallyExclusive {
+	if f == nil {
 		return nil
 	}
-	return o.MutuallyExclusive
+	return f.MutuallyExclusive
 }
 
-func (o *FieldRelationship) GetRequiredTogether() *RequiredTogether {
-	if o == nil {
+func (f *FieldRelationship) GetRequiredTogether() *RequiredTogether {
+	if f == nil {
 		return nil
 	}
-	return o.RequiredTogether
+	return f.RequiredTogether
 }

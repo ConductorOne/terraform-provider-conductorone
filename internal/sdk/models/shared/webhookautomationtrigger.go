@@ -16,23 +16,23 @@ type WebhookAutomationTrigger struct {
 	ListenerID *string `json:"listenerId,omitempty"`
 }
 
-func (o *WebhookAutomationTrigger) GetWebhookListenerAuthHMAC() *WebhookListenerAuthHMAC {
-	if o == nil {
+func (w *WebhookAutomationTrigger) GetWebhookListenerAuthHMAC() *WebhookListenerAuthHMAC {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookListenerAuthHMAC
+	return w.WebhookListenerAuthHMAC
 }
 
-func (o *WebhookAutomationTrigger) GetWebhookListenerAuthJWT() *WebhookListenerAuthJWT {
-	if o == nil {
+func (w *WebhookAutomationTrigger) GetWebhookListenerAuthJWT() *WebhookListenerAuthJWT {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookListenerAuthJWT
+	return w.WebhookListenerAuthJWT
 }
 
-func (o *WebhookAutomationTrigger) GetListenerID() *string {
-	if o == nil {
+func (w *WebhookAutomationTrigger) GetListenerID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ListenerID
+	return w.ListenerID
 }

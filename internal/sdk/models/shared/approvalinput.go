@@ -62,135 +62,135 @@ type ApprovalInput struct {
 	WebhookApproval *WebhookApproval `json:"webhook,omitempty"`
 }
 
-func (o *ApprovalInput) GetAgentApproval() *AgentApproval {
-	if o == nil {
+func (a *ApprovalInput) GetAgentApproval() *AgentApproval {
+	if a == nil {
 		return nil
 	}
-	return o.AgentApproval
+	return a.AgentApproval
 }
 
-func (o *ApprovalInput) GetAllowDelegation() *bool {
-	if o == nil {
+func (a *ApprovalInput) GetAllowDelegation() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowDelegation
+	return a.AllowDelegation
 }
 
-func (o *ApprovalInput) GetAllowReassignment() *bool {
-	if o == nil {
+func (a *ApprovalInput) GetAllowReassignment() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowReassignment
+	return a.AllowReassignment
 }
 
-func (o *ApprovalInput) GetAllowedReassignees() []string {
-	if o == nil {
+func (a *ApprovalInput) GetAllowedReassignees() []string {
+	if a == nil {
 		return nil
 	}
-	return o.AllowedReassignees
+	return a.AllowedReassignees
 }
 
-func (o *ApprovalInput) GetAppOwnerApproval() *AppOwnerApproval {
-	if o == nil {
+func (a *ApprovalInput) GetAppOwnerApproval() *AppOwnerApproval {
+	if a == nil {
 		return nil
 	}
-	return o.AppOwnerApproval
+	return a.AppOwnerApproval
 }
 
-func (o *ApprovalInput) GetEntitlementOwnerApproval() *EntitlementOwnerApproval {
-	if o == nil {
+func (a *ApprovalInput) GetEntitlementOwnerApproval() *EntitlementOwnerApproval {
+	if a == nil {
 		return nil
 	}
-	return o.EntitlementOwnerApproval
+	return a.EntitlementOwnerApproval
 }
 
-func (o *ApprovalInput) GetEscalation() *Escalation {
-	if o == nil {
+func (a *ApprovalInput) GetEscalation() *Escalation {
+	if a == nil {
 		return nil
 	}
-	return o.Escalation
+	return a.Escalation
 }
 
-func (o *ApprovalInput) GetEscalationEnabled() *bool {
-	if o == nil {
+func (a *ApprovalInput) GetEscalationEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.EscalationEnabled
+	return a.EscalationEnabled
 }
 
-func (o *ApprovalInput) GetExpressionApproval() *ExpressionApprovalInput {
-	if o == nil {
+func (a *ApprovalInput) GetExpressionApproval() *ExpressionApprovalInput {
+	if a == nil {
 		return nil
 	}
-	return o.ExpressionApproval
+	return a.ExpressionApproval
 }
 
-func (o *ApprovalInput) GetAppGroupApproval() *AppGroupApproval {
-	if o == nil {
+func (a *ApprovalInput) GetAppGroupApproval() *AppGroupApproval {
+	if a == nil {
 		return nil
 	}
-	return o.AppGroupApproval
+	return a.AppGroupApproval
 }
 
-func (o *ApprovalInput) GetManagerApproval() *ManagerApprovalInput {
-	if o == nil {
+func (a *ApprovalInput) GetManagerApproval() *ManagerApprovalInput {
+	if a == nil {
 		return nil
 	}
-	return o.ManagerApproval
+	return a.ManagerApproval
 }
 
-func (o *ApprovalInput) GetRequireApprovalReason() *bool {
-	if o == nil {
+func (a *ApprovalInput) GetRequireApprovalReason() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.RequireApprovalReason
+	return a.RequireApprovalReason
 }
 
-func (o *ApprovalInput) GetRequireDenialReason() *bool {
-	if o == nil {
+func (a *ApprovalInput) GetRequireDenialReason() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.RequireDenialReason
+	return a.RequireDenialReason
 }
 
-func (o *ApprovalInput) GetRequireReassignmentReason() *bool {
-	if o == nil {
+func (a *ApprovalInput) GetRequireReassignmentReason() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.RequireReassignmentReason
+	return a.RequireReassignmentReason
 }
 
-func (o *ApprovalInput) GetRequiresStepUpProviderID() *string {
-	if o == nil {
+func (a *ApprovalInput) GetRequiresStepUpProviderID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.RequiresStepUpProviderID
+	return a.RequiresStepUpProviderID
 }
 
-func (o *ApprovalInput) GetResourceOwnerApproval() *ResourceOwnerApproval {
-	if o == nil {
+func (a *ApprovalInput) GetResourceOwnerApproval() *ResourceOwnerApproval {
+	if a == nil {
 		return nil
 	}
-	return o.ResourceOwnerApproval
+	return a.ResourceOwnerApproval
 }
 
-func (o *ApprovalInput) GetSelfApproval() *SelfApprovalInput {
-	if o == nil {
+func (a *ApprovalInput) GetSelfApproval() *SelfApprovalInput {
+	if a == nil {
 		return nil
 	}
-	return o.SelfApproval
+	return a.SelfApproval
 }
 
-func (o *ApprovalInput) GetUserApproval() *UserApproval {
-	if o == nil {
+func (a *ApprovalInput) GetUserApproval() *UserApproval {
+	if a == nil {
 		return nil
 	}
-	return o.UserApproval
+	return a.UserApproval
 }
 
-func (o *ApprovalInput) GetWebhookApproval() *WebhookApproval {
-	if o == nil {
+func (a *ApprovalInput) GetWebhookApproval() *WebhookApproval {
+	if a == nil {
 		return nil
 	}
-	return o.WebhookApproval
+	return a.WebhookApproval
 }

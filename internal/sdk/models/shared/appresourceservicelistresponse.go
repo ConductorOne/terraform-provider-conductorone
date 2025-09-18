@@ -18,23 +18,23 @@ type AppResourceServiceListResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *AppResourceServiceListResponse) GetExpanded() []AppResourceServiceListResponseExpanded {
-	if o == nil {
+func (a *AppResourceServiceListResponse) GetExpanded() []AppResourceServiceListResponseExpanded {
+	if a == nil {
 		return nil
 	}
-	return o.Expanded
+	return a.Expanded
 }
 
-func (o *AppResourceServiceListResponse) GetList() []AppResourceView {
-	if o == nil {
+func (a *AppResourceServiceListResponse) GetList() []AppResourceView {
+	if a == nil {
 		return nil
 	}
-	return o.List
+	return a.List
 }
 
-func (o *AppResourceServiceListResponse) GetNextPageToken() *string {
-	if o == nil {
+func (a *AppResourceServiceListResponse) GetNextPageToken() *string {
+	if a == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return a.NextPageToken
 }

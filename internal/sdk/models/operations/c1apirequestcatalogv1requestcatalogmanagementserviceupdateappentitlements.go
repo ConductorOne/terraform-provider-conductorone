@@ -12,18 +12,18 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRe
 	RequestCatalogManagementServiceUpdateAppEntitlementsRequest *shared.RequestCatalogManagementServiceUpdateAppEntitlementsRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest) GetCatalogID() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest) GetCatalogID() string {
+	if c == nil {
 		return ""
 	}
-	return o.CatalogID
+	return c.CatalogID
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest) GetRequestCatalogManagementServiceUpdateAppEntitlementsRequest() *shared.RequestCatalogManagementServiceUpdateAppEntitlementsRequest {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest) GetRequestCatalogManagementServiceUpdateAppEntitlementsRequest() *shared.RequestCatalogManagementServiceUpdateAppEntitlementsRequest {
+	if c == nil {
 		return nil
 	}
-	return o.RequestCatalogManagementServiceUpdateAppEntitlementsRequest
+	return c.RequestCatalogManagementServiceUpdateAppEntitlementsRequest
 }
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsResponse struct {
@@ -37,30 +37,30 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRe
 	RequestCatalogManagementServiceUpdateAppEntitlementsResponse *shared.RequestCatalogManagementServiceUpdateAppEntitlementsResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsResponse) GetRequestCatalogManagementServiceUpdateAppEntitlementsResponse() *shared.RequestCatalogManagementServiceUpdateAppEntitlementsResponse {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsResponse) GetRequestCatalogManagementServiceUpdateAppEntitlementsResponse() *shared.RequestCatalogManagementServiceUpdateAppEntitlementsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.RequestCatalogManagementServiceUpdateAppEntitlementsResponse
+	return c.RequestCatalogManagementServiceUpdateAppEntitlementsResponse
 }

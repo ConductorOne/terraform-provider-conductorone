@@ -12,23 +12,23 @@ type SlackNotifications struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-func (o *SlackNotifications) GetChannelID() *string {
-	if o == nil {
+func (s *SlackNotifications) GetChannelID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ChannelID
+	return s.ChannelID
 }
 
-func (o *SlackNotifications) GetChannelName() *string {
-	if o == nil {
+func (s *SlackNotifications) GetChannelName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ChannelName
+	return s.ChannelName
 }
 
-func (o *SlackNotifications) GetEnabled() *bool {
-	if o == nil {
+func (s *SlackNotifications) GetEnabled() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Enabled
+	return s.Enabled
 }

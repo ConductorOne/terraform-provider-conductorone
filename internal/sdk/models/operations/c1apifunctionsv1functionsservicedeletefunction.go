@@ -12,18 +12,18 @@ type C1APIFunctionsV1FunctionsServiceDeleteFunctionRequest struct {
 	FunctionsServiceDeleteFunctionRequest *shared.FunctionsServiceDeleteFunctionRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceDeleteFunctionRequest) GetID() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceDeleteFunctionRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceDeleteFunctionRequest) GetFunctionsServiceDeleteFunctionRequest() *shared.FunctionsServiceDeleteFunctionRequest {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceDeleteFunctionRequest) GetFunctionsServiceDeleteFunctionRequest() *shared.FunctionsServiceDeleteFunctionRequest {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionsServiceDeleteFunctionRequest
+	return c.FunctionsServiceDeleteFunctionRequest
 }
 
 type C1APIFunctionsV1FunctionsServiceDeleteFunctionResponse struct {
@@ -37,30 +37,30 @@ type C1APIFunctionsV1FunctionsServiceDeleteFunctionResponse struct {
 	FunctionsServiceDeleteFunctionResponse *shared.FunctionsServiceDeleteFunctionResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceDeleteFunctionResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceDeleteFunctionResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceDeleteFunctionResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceDeleteFunctionResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceDeleteFunctionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceDeleteFunctionResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceDeleteFunctionResponse) GetFunctionsServiceDeleteFunctionResponse() *shared.FunctionsServiceDeleteFunctionResponse {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceDeleteFunctionResponse) GetFunctionsServiceDeleteFunctionResponse() *shared.FunctionsServiceDeleteFunctionResponse {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionsServiceDeleteFunctionResponse
+	return c.FunctionsServiceDeleteFunctionResponse
 }

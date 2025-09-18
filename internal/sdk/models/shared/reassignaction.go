@@ -28,37 +28,37 @@ type ReassignAction struct {
 	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 }
 
-func (o *ReassignAction) GetAssigneeUserIDCel() *string {
-	if o == nil {
+func (r *ReassignAction) GetAssigneeUserIDCel() *string {
+	if r == nil {
 		return nil
 	}
-	return o.AssigneeUserIDCel
+	return r.AssigneeUserIDCel
 }
 
-func (o *ReassignAction) GetUserRef() *UserRef {
-	if o == nil {
+func (r *ReassignAction) GetUserRef() *UserRef {
+	if r == nil {
 		return nil
 	}
-	return o.UserRef
+	return r.UserRef
 }
 
-func (o *ReassignAction) GetSubjectUserIDCel() *string {
-	if o == nil {
+func (r *ReassignAction) GetSubjectUserIDCel() *string {
+	if r == nil {
 		return nil
 	}
-	return o.SubjectUserIDCel
+	return r.SubjectUserIDCel
 }
 
-func (o *ReassignAction) GetUserRef1() *UserRef {
-	if o == nil {
+func (r *ReassignAction) GetUserRef1() *UserRef {
+	if r == nil {
 		return nil
 	}
-	return o.UserRef1
+	return r.UserRef1
 }
 
-func (o *ReassignAction) GetUseSubjectUser() *bool {
-	if o == nil {
+func (r *ReassignAction) GetUseSubjectUser() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.UseSubjectUser
+	return r.UseSubjectUser
 }

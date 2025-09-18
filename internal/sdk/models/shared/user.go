@@ -187,219 +187,219 @@ func (u *User) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *User) GetCreatedAt() *time.Time {
-	if o == nil {
+func (u *User) GetCreatedAt() *time.Time {
+	if u == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return u.CreatedAt
 }
 
-func (o *User) GetDelegatedUserID() *string {
-	if o == nil {
+func (u *User) GetDelegatedUserID() *string {
+	if u == nil {
 		return nil
 	}
-	return o.DelegatedUserID
+	return u.DelegatedUserID
 }
 
-func (o *User) GetDeletedAt() *time.Time {
-	if o == nil {
+func (u *User) GetDeletedAt() *time.Time {
+	if u == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return u.DeletedAt
 }
 
-func (o *User) GetDepartment() *string {
-	if o == nil {
+func (u *User) GetDepartment() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Department
+	return u.Department
 }
 
-func (o *User) GetDepartmentSources() []UserAttributeMappingSource {
-	if o == nil {
+func (u *User) GetDepartmentSources() []UserAttributeMappingSource {
+	if u == nil {
 		return nil
 	}
-	return o.DepartmentSources
+	return u.DepartmentSources
 }
 
-func (o *User) GetDirectoryIds() []string {
-	if o == nil {
+func (u *User) GetDirectoryIds() []string {
+	if u == nil {
 		return nil
 	}
-	return o.DirectoryIds
+	return u.DirectoryIds
 }
 
-func (o *User) GetDirectoryStatus() *DirectoryStatus {
-	if o == nil {
+func (u *User) GetDirectoryStatus() *DirectoryStatus {
+	if u == nil {
 		return nil
 	}
-	return o.DirectoryStatus
+	return u.DirectoryStatus
 }
 
-func (o *User) GetDirectoryStatusSources() []UserAttributeMappingSource {
-	if o == nil {
+func (u *User) GetDirectoryStatusSources() []UserAttributeMappingSource {
+	if u == nil {
 		return nil
 	}
-	return o.DirectoryStatusSources
+	return u.DirectoryStatusSources
 }
 
-func (o *User) GetDisplayName() *string {
-	if o == nil {
+func (u *User) GetDisplayName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.DisplayName
+	return u.DisplayName
 }
 
-func (o *User) GetEmail() *string {
-	if o == nil {
+func (u *User) GetEmail() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Email
+	return u.Email
 }
 
-func (o *User) GetEmailSources() []UserAttributeMappingSource {
-	if o == nil {
+func (u *User) GetEmailSources() []UserAttributeMappingSource {
+	if u == nil {
 		return nil
 	}
-	return o.EmailSources
+	return u.EmailSources
 }
 
-func (o *User) GetEmails() []string {
-	if o == nil {
+func (u *User) GetEmails() []string {
+	if u == nil {
 		return nil
 	}
-	return o.Emails
+	return u.Emails
 }
 
-func (o *User) GetEmployeeIDSources() []UserAttributeMappingSource {
-	if o == nil {
+func (u *User) GetEmployeeIDSources() []UserAttributeMappingSource {
+	if u == nil {
 		return nil
 	}
-	return o.EmployeeIDSources
+	return u.EmployeeIDSources
 }
 
-func (o *User) GetEmployeeIds() []string {
-	if o == nil {
+func (u *User) GetEmployeeIds() []string {
+	if u == nil {
 		return nil
 	}
-	return o.EmployeeIds
+	return u.EmployeeIds
 }
 
-func (o *User) GetEmploymentStatus() *string {
-	if o == nil {
+func (u *User) GetEmploymentStatus() *string {
+	if u == nil {
 		return nil
 	}
-	return o.EmploymentStatus
+	return u.EmploymentStatus
 }
 
-func (o *User) GetEmploymentStatusSources() []UserAttributeMappingSource {
-	if o == nil {
+func (u *User) GetEmploymentStatusSources() []UserAttributeMappingSource {
+	if u == nil {
 		return nil
 	}
-	return o.EmploymentStatusSources
+	return u.EmploymentStatusSources
 }
 
-func (o *User) GetEmploymentType() *string {
-	if o == nil {
+func (u *User) GetEmploymentType() *string {
+	if u == nil {
 		return nil
 	}
-	return o.EmploymentType
+	return u.EmploymentType
 }
 
-func (o *User) GetEmploymentTypeSources() []UserAttributeMappingSource {
-	if o == nil {
+func (u *User) GetEmploymentTypeSources() []UserAttributeMappingSource {
+	if u == nil {
 		return nil
 	}
-	return o.EmploymentTypeSources
+	return u.EmploymentTypeSources
 }
 
-func (o *User) GetID() *string {
-	if o == nil {
+func (u *User) GetID() *string {
+	if u == nil {
 		return nil
 	}
-	return o.ID
+	return u.ID
 }
 
-func (o *User) GetJobTitle() *string {
-	if o == nil {
+func (u *User) GetJobTitle() *string {
+	if u == nil {
 		return nil
 	}
-	return o.JobTitle
+	return u.JobTitle
 }
 
-func (o *User) GetJobTitleSources() []UserAttributeMappingSource {
-	if o == nil {
+func (u *User) GetJobTitleSources() []UserAttributeMappingSource {
+	if u == nil {
 		return nil
 	}
-	return o.JobTitleSources
+	return u.JobTitleSources
 }
 
-func (o *User) GetManagerIds() []string {
-	if o == nil {
+func (u *User) GetManagerIds() []string {
+	if u == nil {
 		return nil
 	}
-	return o.ManagerIds
+	return u.ManagerIds
 }
 
-func (o *User) GetManagerSources() []UserAttributeMappingSource {
-	if o == nil {
+func (u *User) GetManagerSources() []UserAttributeMappingSource {
+	if u == nil {
 		return nil
 	}
-	return o.ManagerSources
+	return u.ManagerSources
 }
 
-func (o *User) GetProfile() *Profile {
-	if o == nil {
+func (u *User) GetProfile() *Profile {
+	if u == nil {
 		return nil
 	}
-	return o.Profile
+	return u.Profile
 }
 
-func (o *User) GetRoleIds() []string {
-	if o == nil {
+func (u *User) GetRoleIds() []string {
+	if u == nil {
 		return nil
 	}
-	return o.RoleIds
+	return u.RoleIds
 }
 
-func (o *User) GetStatus() *UserStatus {
-	if o == nil {
+func (u *User) GetStatus() *UserStatus {
+	if u == nil {
 		return nil
 	}
-	return o.Status
+	return u.Status
 }
 
-func (o *User) GetType() *Type {
-	if o == nil {
+func (u *User) GetType() *Type {
+	if u == nil {
 		return nil
 	}
-	return o.Type
+	return u.Type
 }
 
-func (o *User) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (u *User) GetUpdatedAt() *time.Time {
+	if u == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return u.UpdatedAt
 }
 
-func (o *User) GetUsername() *string {
-	if o == nil {
+func (u *User) GetUsername() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Username
+	return u.Username
 }
 
-func (o *User) GetUsernameSources() []UserAttributeMappingSource {
-	if o == nil {
+func (u *User) GetUsernameSources() []UserAttributeMappingSource {
+	if u == nil {
 		return nil
 	}
-	return o.UsernameSources
+	return u.UsernameSources
 }
 
-func (o *User) GetUsernames() []string {
-	if o == nil {
+func (u *User) GetUsernames() []string {
+	if u == nil {
 		return nil
 	}
-	return o.Usernames
+	return u.Usernames
 }

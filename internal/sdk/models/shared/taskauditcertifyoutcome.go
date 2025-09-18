@@ -52,9 +52,9 @@ type TaskAuditCertifyOutcome struct {
 	Outcome *TaskAuditCertifyOutcomeOutcome `json:"outcome,omitempty"`
 }
 
-func (o *TaskAuditCertifyOutcome) GetOutcome() *TaskAuditCertifyOutcomeOutcome {
-	if o == nil {
+func (t *TaskAuditCertifyOutcome) GetOutcome() *TaskAuditCertifyOutcomeOutcome {
+	if t == nil {
 		return nil
 	}
-	return o.Outcome
+	return t.Outcome
 }

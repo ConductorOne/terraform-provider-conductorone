@@ -10,16 +10,16 @@ type TestAccountProvisionPolicyResponse struct {
 	Value *string `json:"value,omitempty"`
 }
 
-func (o *TestAccountProvisionPolicyResponse) GetType() *string {
-	if o == nil {
+func (t *TestAccountProvisionPolicyResponse) GetType() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Type
+	return t.Type
 }
 
-func (o *TestAccountProvisionPolicyResponse) GetValue() *string {
-	if o == nil {
+func (t *TestAccountProvisionPolicyResponse) GetValue() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Value
+	return t.Value
 }

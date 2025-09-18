@@ -13,25 +13,25 @@ type C1APIAppV1AppEntitlementsAddManuallyManagedMembersRequest struct {
 	AddManuallyManagedUsersRequest *shared.AddManuallyManagedUsersRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppEntitlementsAddManuallyManagedMembersRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsAddManuallyManagedMembersRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementsAddManuallyManagedMembersRequest) GetAppEntitlementID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsAddManuallyManagedMembersRequest) GetAppEntitlementID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppEntitlementID
+	return c.AppEntitlementID
 }
 
-func (o *C1APIAppV1AppEntitlementsAddManuallyManagedMembersRequest) GetAddManuallyManagedUsersRequest() *shared.AddManuallyManagedUsersRequest {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsAddManuallyManagedMembersRequest) GetAddManuallyManagedUsersRequest() *shared.AddManuallyManagedUsersRequest {
+	if c == nil {
 		return nil
 	}
-	return o.AddManuallyManagedUsersRequest
+	return c.AddManuallyManagedUsersRequest
 }
 
 type C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse struct {
 	ManuallyManagedUsersResponse *shared.ManuallyManagedUsersResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse) GetManuallyManagedUsersResponse() *shared.ManuallyManagedUsersResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse) GetManuallyManagedUsersResponse() *shared.ManuallyManagedUsersResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ManuallyManagedUsersResponse
+	return c.ManuallyManagedUsersResponse
 }

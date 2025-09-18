@@ -8,9 +8,9 @@ type UserCreatedTrigger struct {
 	Condition *string `json:"condition,omitempty"`
 }
 
-func (o *UserCreatedTrigger) GetCondition() *string {
-	if o == nil {
+func (u *UserCreatedTrigger) GetCondition() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Condition
+	return u.Condition
 }

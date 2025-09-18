@@ -26,72 +26,72 @@ type SearchAppResourceTypesRequest struct {
 	ResourceTypeTraitIds []string `json:"resourceTypeTraitIds,omitempty"`
 }
 
-func (o *SearchAppResourceTypesRequest) GetAppIds() []string {
-	if o == nil {
+func (s *SearchAppResourceTypesRequest) GetAppIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.AppIds
+	return s.AppIds
 }
 
-func (o *SearchAppResourceTypesRequest) GetAppUserIds() []string {
-	if o == nil {
+func (s *SearchAppResourceTypesRequest) GetAppUserIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.AppUserIds
+	return s.AppUserIds
 }
 
-func (o *SearchAppResourceTypesRequest) GetDisplayName() *string {
-	if o == nil {
+func (s *SearchAppResourceTypesRequest) GetDisplayName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.DisplayName
+	return s.DisplayName
 }
 
-func (o *SearchAppResourceTypesRequest) GetExcludeResourceTypeIds() []string {
-	if o == nil {
+func (s *SearchAppResourceTypesRequest) GetExcludeResourceTypeIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.ExcludeResourceTypeIds
+	return s.ExcludeResourceTypeIds
 }
 
-func (o *SearchAppResourceTypesRequest) GetExcludeResourceTypeTraitIds() []string {
-	if o == nil {
+func (s *SearchAppResourceTypesRequest) GetExcludeResourceTypeTraitIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.ExcludeResourceTypeTraitIds
+	return s.ExcludeResourceTypeTraitIds
 }
 
-func (o *SearchAppResourceTypesRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchAppResourceTypesRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SearchAppResourceTypesRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchAppResourceTypesRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }
 
-func (o *SearchAppResourceTypesRequest) GetQuery() *string {
-	if o == nil {
+func (s *SearchAppResourceTypesRequest) GetQuery() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Query
+	return s.Query
 }
 
-func (o *SearchAppResourceTypesRequest) GetResourceTypeIds() []string {
-	if o == nil {
+func (s *SearchAppResourceTypesRequest) GetResourceTypeIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.ResourceTypeIds
+	return s.ResourceTypeIds
 }
 
-func (o *SearchAppResourceTypesRequest) GetResourceTypeTraitIds() []string {
-	if o == nil {
+func (s *SearchAppResourceTypesRequest) GetResourceTypeTraitIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.ResourceTypeTraitIds
+	return s.ResourceTypeTraitIds
 }

@@ -100,179 +100,179 @@ func (a *App) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *App) GetAppAccountID() *string {
-	if o == nil {
+func (a *App) GetAppAccountID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppAccountID
+	return a.AppAccountID
 }
 
-func (o *App) GetAppAccountName() *string {
-	if o == nil {
+func (a *App) GetAppAccountName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppAccountName
+	return a.AppAccountName
 }
 
-func (o *App) GetAppOwners() []User {
-	if o == nil {
+func (a *App) GetAppOwners() []User {
+	if a == nil {
 		return nil
 	}
-	return o.AppOwners
+	return a.AppOwners
 }
 
-func (o *App) GetCertifyPolicyID() *string {
-	if o == nil {
+func (a *App) GetCertifyPolicyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.CertifyPolicyID
+	return a.CertifyPolicyID
 }
 
-func (o *App) GetConnectorVersion() *int64 {
-	if o == nil {
+func (a *App) GetConnectorVersion() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectorVersion
+	return a.ConnectorVersion
 }
 
-func (o *App) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *App) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *App) GetDefaultRequestCatalogID() *string {
-	if o == nil {
+func (a *App) GetDefaultRequestCatalogID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DefaultRequestCatalogID
+	return a.DefaultRequestCatalogID
 }
 
-func (o *App) GetDeletedAt() *time.Time {
-	if o == nil {
+func (a *App) GetDeletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return a.DeletedAt
 }
 
-func (o *App) GetDescription() *string {
-	if o == nil {
+func (a *App) GetDescription() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Description
+	return a.Description
 }
 
-func (o *App) GetDisplayName() *string {
-	if o == nil {
+func (a *App) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *App) GetFieldMask() *string {
-	if o == nil {
+func (a *App) GetFieldMask() *string {
+	if a == nil {
 		return nil
 	}
-	return o.FieldMask
+	return a.FieldMask
 }
 
-func (o *App) GetGrantPolicyID() *string {
-	if o == nil {
+func (a *App) GetGrantPolicyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.GrantPolicyID
+	return a.GrantPolicyID
 }
 
-func (o *App) GetIconURL() *string {
-	if o == nil {
+func (a *App) GetIconURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.IconURL
+	return a.IconURL
 }
 
-func (o *App) GetID() *string {
-	if o == nil {
+func (a *App) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *App) GetIdentityMatching() *IdentityMatching {
-	if o == nil {
+func (a *App) GetIdentityMatching() *IdentityMatching {
+	if a == nil {
 		return nil
 	}
-	return o.IdentityMatching
+	return a.IdentityMatching
 }
 
-func (o *App) GetInstructions() *string {
-	if o == nil {
+func (a *App) GetInstructions() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Instructions
+	return a.Instructions
 }
 
-func (o *App) GetIsDirectory() *bool {
-	if o == nil {
+func (a *App) GetIsDirectory() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.IsDirectory
+	return a.IsDirectory
 }
 
-func (o *App) GetIsManuallyManaged() *bool {
-	if o == nil {
+func (a *App) GetIsManuallyManaged() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.IsManuallyManaged
+	return a.IsManuallyManaged
 }
 
-func (o *App) GetLogoURI() *string {
-	if o == nil {
+func (a *App) GetLogoURI() *string {
+	if a == nil {
 		return nil
 	}
-	return o.LogoURI
+	return a.LogoURI
 }
 
-func (o *App) GetMonthlyCostUsd() *int {
-	if o == nil {
+func (a *App) GetMonthlyCostUsd() *int {
+	if a == nil {
 		return nil
 	}
-	return o.MonthlyCostUsd
+	return a.MonthlyCostUsd
 }
 
-func (o *App) GetParentAppID() *string {
-	if o == nil {
+func (a *App) GetParentAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParentAppID
+	return a.ParentAppID
 }
 
-func (o *App) GetRevokePolicyID() *string {
-	if o == nil {
+func (a *App) GetRevokePolicyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.RevokePolicyID
+	return a.RevokePolicyID
 }
 
-func (o *App) GetStrictAccessEntitlementProvisioning() *bool {
-	if o == nil {
+func (a *App) GetStrictAccessEntitlementProvisioning() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.StrictAccessEntitlementProvisioning
+	return a.StrictAccessEntitlementProvisioning
 }
 
-func (o *App) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (a *App) GetUpdatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *App) GetUserCount() *string {
-	if o == nil {
+func (a *App) GetUserCount() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UserCount
+	return a.UserCount
 }
 
 // AppInput - The App object provides all of the details for an app, as well as some configuration.
@@ -305,93 +305,93 @@ type AppInput struct {
 	StrictAccessEntitlementProvisioning *bool `json:"strictAccessEntitlementProvisioning,omitempty"`
 }
 
-func (o *AppInput) GetCertifyPolicyID() *string {
-	if o == nil {
+func (a *AppInput) GetCertifyPolicyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.CertifyPolicyID
+	return a.CertifyPolicyID
 }
 
-func (o *AppInput) GetConnectorVersion() *int64 {
-	if o == nil {
+func (a *AppInput) GetConnectorVersion() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectorVersion
+	return a.ConnectorVersion
 }
 
-func (o *AppInput) GetDefaultRequestCatalogID() *string {
-	if o == nil {
+func (a *AppInput) GetDefaultRequestCatalogID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DefaultRequestCatalogID
+	return a.DefaultRequestCatalogID
 }
 
-func (o *AppInput) GetDescription() *string {
-	if o == nil {
+func (a *AppInput) GetDescription() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Description
+	return a.Description
 }
 
-func (o *AppInput) GetDisplayName() *string {
-	if o == nil {
+func (a *AppInput) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *AppInput) GetGrantPolicyID() *string {
-	if o == nil {
+func (a *AppInput) GetGrantPolicyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.GrantPolicyID
+	return a.GrantPolicyID
 }
 
-func (o *AppInput) GetIconURL() *string {
-	if o == nil {
+func (a *AppInput) GetIconURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.IconURL
+	return a.IconURL
 }
 
-func (o *AppInput) GetIdentityMatching() *IdentityMatching {
-	if o == nil {
+func (a *AppInput) GetIdentityMatching() *IdentityMatching {
+	if a == nil {
 		return nil
 	}
-	return o.IdentityMatching
+	return a.IdentityMatching
 }
 
-func (o *AppInput) GetInstructions() *string {
-	if o == nil {
+func (a *AppInput) GetInstructions() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Instructions
+	return a.Instructions
 }
 
-func (o *AppInput) GetIsManuallyManaged() *bool {
-	if o == nil {
+func (a *AppInput) GetIsManuallyManaged() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.IsManuallyManaged
+	return a.IsManuallyManaged
 }
 
-func (o *AppInput) GetMonthlyCostUsd() *int {
-	if o == nil {
+func (a *AppInput) GetMonthlyCostUsd() *int {
+	if a == nil {
 		return nil
 	}
-	return o.MonthlyCostUsd
+	return a.MonthlyCostUsd
 }
 
-func (o *AppInput) GetRevokePolicyID() *string {
-	if o == nil {
+func (a *AppInput) GetRevokePolicyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.RevokePolicyID
+	return a.RevokePolicyID
 }
 
-func (o *AppInput) GetStrictAccessEntitlementProvisioning() *bool {
-	if o == nil {
+func (a *AppInput) GetStrictAccessEntitlementProvisioning() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.StrictAccessEntitlementProvisioning
+	return a.StrictAccessEntitlementProvisioning
 }

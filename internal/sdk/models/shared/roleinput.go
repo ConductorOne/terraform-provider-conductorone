@@ -12,23 +12,23 @@ type RoleInput struct {
 	ServiceRoles []string `json:"serviceRoles,omitempty"`
 }
 
-func (o *RoleInput) GetDisplayName() *string {
-	if o == nil {
+func (r *RoleInput) GetDisplayName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.DisplayName
+	return r.DisplayName
 }
 
-func (o *RoleInput) GetPermissions() []string {
-	if o == nil {
+func (r *RoleInput) GetPermissions() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Permissions
+	return r.Permissions
 }
 
-func (o *RoleInput) GetServiceRoles() []string {
-	if o == nil {
+func (r *RoleInput) GetServiceRoles() []string {
+	if r == nil {
 		return nil
 	}
-	return o.ServiceRoles
+	return r.ServiceRoles
 }

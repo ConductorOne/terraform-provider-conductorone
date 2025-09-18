@@ -13,16 +13,16 @@ type MessageRules struct {
 	Skip *bool `json:"skip,omitempty"`
 }
 
-func (o *MessageRules) GetRequired() *bool {
-	if o == nil {
+func (m *MessageRules) GetRequired() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.Required
+	return m.Required
 }
 
-func (o *MessageRules) GetSkip() *bool {
-	if o == nil {
+func (m *MessageRules) GetSkip() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.Skip
+	return m.Skip
 }

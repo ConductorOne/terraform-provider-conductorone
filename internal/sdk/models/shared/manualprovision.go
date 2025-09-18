@@ -10,16 +10,16 @@ type ManualProvision struct {
 	UserIds []string `json:"userIds,omitempty"`
 }
 
-func (o *ManualProvision) GetInstructions() *string {
-	if o == nil {
+func (m *ManualProvision) GetInstructions() *string {
+	if m == nil {
 		return nil
 	}
-	return o.Instructions
+	return m.Instructions
 }
 
-func (o *ManualProvision) GetUserIds() []string {
-	if o == nil {
+func (m *ManualProvision) GetUserIds() []string {
+	if m == nil {
 		return nil
 	}
-	return o.UserIds
+	return m.UserIds
 }

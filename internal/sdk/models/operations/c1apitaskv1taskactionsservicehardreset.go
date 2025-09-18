@@ -12,18 +12,18 @@ type C1APITaskV1TaskActionsServiceHardResetRequest struct {
 	TaskActionsServiceHardResetRequest *shared.TaskActionsServiceHardResetRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APITaskV1TaskActionsServiceHardResetRequest) GetTaskID() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceHardResetRequest) GetTaskID() string {
+	if c == nil {
 		return ""
 	}
-	return o.TaskID
+	return c.TaskID
 }
 
-func (o *C1APITaskV1TaskActionsServiceHardResetRequest) GetTaskActionsServiceHardResetRequest() *shared.TaskActionsServiceHardResetRequest {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceHardResetRequest) GetTaskActionsServiceHardResetRequest() *shared.TaskActionsServiceHardResetRequest {
+	if c == nil {
 		return nil
 	}
-	return o.TaskActionsServiceHardResetRequest
+	return c.TaskActionsServiceHardResetRequest
 }
 
 type C1APITaskV1TaskActionsServiceHardResetResponse struct {
@@ -37,30 +37,30 @@ type C1APITaskV1TaskActionsServiceHardResetResponse struct {
 	TaskActionsServiceHardResetResponse *shared.TaskActionsServiceHardResetResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceHardResetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceHardResetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APITaskV1TaskActionsServiceHardResetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceHardResetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APITaskV1TaskActionsServiceHardResetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceHardResetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceHardResetResponse) GetTaskActionsServiceHardResetResponse() *shared.TaskActionsServiceHardResetResponse {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceHardResetResponse) GetTaskActionsServiceHardResetResponse() *shared.TaskActionsServiceHardResetResponse {
+	if c == nil {
 		return nil
 	}
-	return o.TaskActionsServiceHardResetResponse
+	return c.TaskActionsServiceHardResetResponse
 }

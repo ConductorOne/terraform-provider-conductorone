@@ -10,16 +10,16 @@ type ListStepUpProvidersResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ListStepUpProvidersResponse) GetList() []StepUpProvider {
-	if o == nil {
+func (l *ListStepUpProvidersResponse) GetList() []StepUpProvider {
+	if l == nil {
 		return nil
 	}
-	return o.List
+	return l.List
 }
 
-func (o *ListStepUpProvidersResponse) GetNextPageToken() *string {
-	if o == nil {
+func (l *ListStepUpProvidersResponse) GetNextPageToken() *string {
+	if l == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return l.NextPageToken
 }

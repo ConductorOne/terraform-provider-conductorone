@@ -12,18 +12,18 @@ type C1APIWebhooksV1WebhooksServiceDeleteRequest struct {
 	WebhooksServiceDeleteRequest *shared.WebhooksServiceDeleteRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceDeleteRequest) GetID() string {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceDeleteRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceDeleteRequest) GetWebhooksServiceDeleteRequest() *shared.WebhooksServiceDeleteRequest {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceDeleteRequest) GetWebhooksServiceDeleteRequest() *shared.WebhooksServiceDeleteRequest {
+	if c == nil {
 		return nil
 	}
-	return o.WebhooksServiceDeleteRequest
+	return c.WebhooksServiceDeleteRequest
 }
 
 type C1APIWebhooksV1WebhooksServiceDeleteResponse struct {
@@ -37,30 +37,30 @@ type C1APIWebhooksV1WebhooksServiceDeleteResponse struct {
 	WebhooksServiceDeleteResponse *shared.WebhooksServiceDeleteResponse
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceDeleteResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceDeleteResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceDeleteResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceDeleteResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceDeleteResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceDeleteResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceDeleteResponse) GetWebhooksServiceDeleteResponse() *shared.WebhooksServiceDeleteResponse {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceDeleteResponse) GetWebhooksServiceDeleteResponse() *shared.WebhooksServiceDeleteResponse {
+	if c == nil {
 		return nil
 	}
-	return o.WebhooksServiceDeleteResponse
+	return c.WebhooksServiceDeleteResponse
 }

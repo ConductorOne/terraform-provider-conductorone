@@ -24,51 +24,51 @@ type Wait struct {
 	WaitUntilTime *WaitUntilTime `json:"untilTime,omitempty"`
 }
 
-func (o *Wait) GetCommentOnFirstWait() *string {
-	if o == nil {
+func (w *Wait) GetCommentOnFirstWait() *string {
+	if w == nil {
 		return nil
 	}
-	return o.CommentOnFirstWait
+	return w.CommentOnFirstWait
 }
 
-func (o *Wait) GetCommentOnTimeout() *string {
-	if o == nil {
+func (w *Wait) GetCommentOnTimeout() *string {
+	if w == nil {
 		return nil
 	}
-	return o.CommentOnTimeout
+	return w.CommentOnTimeout
 }
 
-func (o *Wait) GetWaitCondition() *WaitCondition {
-	if o == nil {
+func (w *Wait) GetWaitCondition() *WaitCondition {
+	if w == nil {
 		return nil
 	}
-	return o.WaitCondition
+	return w.WaitCondition
 }
 
-func (o *Wait) GetWaitDuration() *WaitDuration {
-	if o == nil {
+func (w *Wait) GetWaitDuration() *WaitDuration {
+	if w == nil {
 		return nil
 	}
-	return o.WaitDuration
+	return w.WaitDuration
 }
 
-func (o *Wait) GetName() *string {
-	if o == nil {
+func (w *Wait) GetName() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Name
+	return w.Name
 }
 
-func (o *Wait) GetTimeoutDuration() *string {
-	if o == nil {
+func (w *Wait) GetTimeoutDuration() *string {
+	if w == nil {
 		return nil
 	}
-	return o.TimeoutDuration
+	return w.TimeoutDuration
 }
 
-func (o *Wait) GetWaitUntilTime() *WaitUntilTime {
-	if o == nil {
+func (w *Wait) GetWaitUntilTime() *WaitUntilTime {
+	if w == nil {
 		return nil
 	}
-	return o.WaitUntilTime
+	return w.WaitUntilTime
 }

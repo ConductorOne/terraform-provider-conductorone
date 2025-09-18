@@ -18,23 +18,23 @@ type RequestCatalogManagementServiceListEntitlementsForAccessResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetExpanded() []RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded {
-	if o == nil {
+func (r *RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetExpanded() []RequestCatalogManagementServiceListEntitlementsForAccessResponseExpanded {
+	if r == nil {
 		return nil
 	}
-	return o.Expanded
+	return r.Expanded
 }
 
-func (o *RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetList() []AppEntitlementView {
-	if o == nil {
+func (r *RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetList() []AppEntitlementView {
+	if r == nil {
 		return nil
 	}
-	return o.List
+	return r.List
 }
 
-func (o *RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetNextPageToken() *string {
-	if o == nil {
+func (r *RequestCatalogManagementServiceListEntitlementsForAccessResponse) GetNextPageToken() *string {
+	if r == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return r.NextPageToken
 }

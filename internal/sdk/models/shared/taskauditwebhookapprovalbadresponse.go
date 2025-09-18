@@ -16,37 +16,37 @@ type TaskAuditWebhookApprovalBadResponse struct {
 	WebhookURL *string `json:"webhookUrl,omitempty"`
 }
 
-func (o *TaskAuditWebhookApprovalBadResponse) GetError() *string {
-	if o == nil {
+func (t *TaskAuditWebhookApprovalBadResponse) GetError() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Error
+	return t.Error
 }
 
-func (o *TaskAuditWebhookApprovalBadResponse) GetWebhookID() *string {
-	if o == nil {
+func (t *TaskAuditWebhookApprovalBadResponse) GetWebhookID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.WebhookID
+	return t.WebhookID
 }
 
-func (o *TaskAuditWebhookApprovalBadResponse) GetWebhookInstanceID() *string {
-	if o == nil {
+func (t *TaskAuditWebhookApprovalBadResponse) GetWebhookInstanceID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.WebhookInstanceID
+	return t.WebhookInstanceID
 }
 
-func (o *TaskAuditWebhookApprovalBadResponse) GetWebhookName() *string {
-	if o == nil {
+func (t *TaskAuditWebhookApprovalBadResponse) GetWebhookName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.WebhookName
+	return t.WebhookName
 }
 
-func (o *TaskAuditWebhookApprovalBadResponse) GetWebhookURL() *string {
-	if o == nil {
+func (t *TaskAuditWebhookApprovalBadResponse) GetWebhookURL() *string {
+	if t == nil {
 		return nil
 	}
-	return o.WebhookURL
+	return t.WebhookURL
 }

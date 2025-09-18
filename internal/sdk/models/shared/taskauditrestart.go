@@ -8,9 +8,9 @@ type TaskAuditRestart struct {
 	OldPolicyStepID *string `json:"oldPolicyStepId,omitempty"`
 }
 
-func (o *TaskAuditRestart) GetOldPolicyStepID() *string {
-	if o == nil {
+func (t *TaskAuditRestart) GetOldPolicyStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.OldPolicyStepID
+	return t.OldPolicyStepID
 }

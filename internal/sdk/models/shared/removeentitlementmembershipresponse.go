@@ -9,9 +9,9 @@ type RemoveEntitlementMembershipResponse struct {
 	RevokeTaskID *string `json:"revokeTaskId,omitempty"`
 }
 
-func (o *RemoveEntitlementMembershipResponse) GetRevokeTaskID() *string {
-	if o == nil {
+func (r *RemoveEntitlementMembershipResponse) GetRevokeTaskID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.RevokeTaskID
+	return r.RevokeTaskID
 }

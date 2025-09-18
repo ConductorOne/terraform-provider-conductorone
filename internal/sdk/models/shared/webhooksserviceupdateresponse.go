@@ -8,9 +8,9 @@ type WebhooksServiceUpdateResponse struct {
 	Webhook *Webhook1 `json:"webhook,omitempty"`
 }
 
-func (o *WebhooksServiceUpdateResponse) GetWebhook() *Webhook1 {
-	if o == nil {
+func (w *WebhooksServiceUpdateResponse) GetWebhook() *Webhook1 {
+	if w == nil {
 		return nil
 	}
-	return o.Webhook
+	return w.Webhook
 }

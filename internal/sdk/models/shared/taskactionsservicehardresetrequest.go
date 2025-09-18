@@ -8,9 +8,9 @@ type TaskActionsServiceHardResetRequest struct {
 	Comment *string `json:"comment,omitempty"`
 }
 
-func (o *TaskActionsServiceHardResetRequest) GetComment() *string {
-	if o == nil {
+func (t *TaskActionsServiceHardResetRequest) GetComment() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Comment
+	return t.Comment
 }

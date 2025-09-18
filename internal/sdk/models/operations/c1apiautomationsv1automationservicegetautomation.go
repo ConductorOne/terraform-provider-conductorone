@@ -11,11 +11,11 @@ type C1APIAutomationsV1AutomationServiceGetAutomationRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIAutomationsV1AutomationServiceGetAutomationRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceGetAutomationRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIAutomationsV1AutomationServiceGetAutomationResponse struct {
@@ -29,30 +29,30 @@ type C1APIAutomationsV1AutomationServiceGetAutomationResponse struct {
 	GetAutomationResponse *shared.GetAutomationResponse
 }
 
-func (o *C1APIAutomationsV1AutomationServiceGetAutomationResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceGetAutomationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAutomationsV1AutomationServiceGetAutomationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceGetAutomationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAutomationsV1AutomationServiceGetAutomationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceGetAutomationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAutomationsV1AutomationServiceGetAutomationResponse) GetGetAutomationResponse() *shared.GetAutomationResponse {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceGetAutomationResponse) GetGetAutomationResponse() *shared.GetAutomationResponse {
+	if c == nil {
 		return nil
 	}
-	return o.GetAutomationResponse
+	return c.GetAutomationResponse
 }

@@ -12,23 +12,23 @@ type SearchAutomationTemplateVersionsRequest struct {
 	PageToken *string `json:"pageToken,omitempty"`
 }
 
-func (o *SearchAutomationTemplateVersionsRequest) GetAutomationTemplateID() *string {
-	if o == nil {
+func (s *SearchAutomationTemplateVersionsRequest) GetAutomationTemplateID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.AutomationTemplateID
+	return s.AutomationTemplateID
 }
 
-func (o *SearchAutomationTemplateVersionsRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchAutomationTemplateVersionsRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SearchAutomationTemplateVersionsRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchAutomationTemplateVersionsRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }

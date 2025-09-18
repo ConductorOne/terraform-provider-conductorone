@@ -8,9 +8,9 @@ type TaskAuditMetaData struct {
 	User *User `json:"user,omitempty"`
 }
 
-func (o *TaskAuditMetaData) GetUser() *User {
-	if o == nil {
+func (t *TaskAuditMetaData) GetUser() *User {
+	if t == nil {
 		return nil
 	}
-	return o.User
+	return t.User
 }

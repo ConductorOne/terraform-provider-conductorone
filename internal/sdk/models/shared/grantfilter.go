@@ -110,23 +110,23 @@ type GrantFilter struct {
 	GrantSourceFilter *GrantSourceFilter `json:"grantSourceFilter,omitempty"`
 }
 
-func (o *GrantFilter) GetGrantFilterType() *GrantFilterType {
-	if o == nil {
+func (g *GrantFilter) GetGrantFilterType() *GrantFilterType {
+	if g == nil {
 		return nil
 	}
-	return o.GrantFilterType
+	return g.GrantFilterType
 }
 
-func (o *GrantFilter) GetGrantJustificationType() *GrantJustificationType {
-	if o == nil {
+func (g *GrantFilter) GetGrantJustificationType() *GrantJustificationType {
+	if g == nil {
 		return nil
 	}
-	return o.GrantJustificationType
+	return g.GrantJustificationType
 }
 
-func (o *GrantFilter) GetGrantSourceFilter() *GrantSourceFilter {
-	if o == nil {
+func (g *GrantFilter) GetGrantSourceFilter() *GrantSourceFilter {
+	if g == nil {
 		return nil
 	}
-	return o.GrantSourceFilter
+	return g.GrantSourceFilter
 }

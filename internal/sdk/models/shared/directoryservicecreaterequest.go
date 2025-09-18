@@ -23,11 +23,25 @@ func (o *DirectoryServiceCreateRequest) GetDirectoryAccountFilterAll() *Director
 	return o.DirectoryAccountFilterAll
 }
 
-func (o *DirectoryServiceCreateRequest) GetAppID() *string {
-	if o == nil {
+func (d *DirectoryServiceCreateRequest) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
+	if d == nil {
 		return nil
 	}
-	return o.AppID
+	return d.DirectoryAccountFilterAll
+}
+
+func (d *DirectoryServiceCreateRequest) GetAppID() *string {
+	if d == nil {
+		return nil
+	}
+	return d.AppID
+}
+
+func (d *DirectoryServiceCreateRequest) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
+	if d == nil {
+		return nil
+	}
+	return d.DirectoryAccountFilterCel
 }
 
 func (o *DirectoryServiceCreateRequest) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {

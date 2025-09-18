@@ -93,86 +93,86 @@ type ProvisionInstance struct {
 	WebhookInstanceID *string `json:"webhookInstanceId,omitempty"`
 }
 
-func (o *ProvisionInstance) GetCancelledAction() *CancelledAction {
-	if o == nil {
+func (p *ProvisionInstance) GetCancelledAction() *CancelledAction {
+	if p == nil {
 		return nil
 	}
-	return o.CancelledAction
+	return p.CancelledAction
 }
 
-func (o *ProvisionInstance) GetCompletedAction() *CompletedAction {
-	if o == nil {
+func (p *ProvisionInstance) GetCompletedAction() *CompletedAction {
+	if p == nil {
 		return nil
 	}
-	return o.CompletedAction
+	return p.CompletedAction
 }
 
-func (o *ProvisionInstance) GetErroredAction() *ErroredAction {
-	if o == nil {
+func (p *ProvisionInstance) GetErroredAction() *ErroredAction {
+	if p == nil {
 		return nil
 	}
-	return o.ErroredAction
+	return p.ErroredAction
 }
 
-func (o *ProvisionInstance) GetExternalTicketID() *string {
-	if o == nil {
+func (p *ProvisionInstance) GetExternalTicketID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ExternalTicketID
+	return p.ExternalTicketID
 }
 
-func (o *ProvisionInstance) GetExternalTicketProvisionerConfigID() *string {
-	if o == nil {
+func (p *ProvisionInstance) GetExternalTicketProvisionerConfigID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ExternalTicketProvisionerConfigID
+	return p.ExternalTicketProvisionerConfigID
 }
 
-func (o *ProvisionInstance) GetNotificationID() *string {
-	if o == nil {
+func (p *ProvisionInstance) GetNotificationID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.NotificationID
+	return p.NotificationID
 }
 
-func (o *ProvisionInstance) GetProvision() *Provision {
-	if o == nil {
+func (p *ProvisionInstance) GetProvision() *Provision {
+	if p == nil {
 		return nil
 	}
-	return o.Provision
+	return p.Provision
 }
 
-func (o *ProvisionInstance) GetReassignedByErrorAction() *ReassignedByErrorAction {
-	if o == nil {
+func (p *ProvisionInstance) GetReassignedByErrorAction() *ReassignedByErrorAction {
+	if p == nil {
 		return nil
 	}
-	return o.ReassignedByErrorAction
+	return p.ReassignedByErrorAction
 }
 
-func (o *ProvisionInstance) GetSkippedAction() *SkippedAction {
-	if o == nil {
+func (p *ProvisionInstance) GetSkippedAction() *SkippedAction {
+	if p == nil {
 		return nil
 	}
-	return o.SkippedAction
+	return p.SkippedAction
 }
 
-func (o *ProvisionInstance) GetState() *ProvisionInstanceState {
-	if o == nil {
+func (p *ProvisionInstance) GetState() *ProvisionInstanceState {
+	if p == nil {
 		return nil
 	}
-	return o.State
+	return p.State
 }
 
-func (o *ProvisionInstance) GetWebhookID() *string {
-	if o == nil {
+func (p *ProvisionInstance) GetWebhookID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.WebhookID
+	return p.WebhookID
 }
 
-func (o *ProvisionInstance) GetWebhookInstanceID() *string {
-	if o == nil {
+func (p *ProvisionInstance) GetWebhookInstanceID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.WebhookInstanceID
+	return p.WebhookInstanceID
 }

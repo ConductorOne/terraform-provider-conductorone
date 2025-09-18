@@ -8,9 +8,9 @@ type TestStepUpProviderResponse struct {
 	RedirectURL *string `json:"redirectUrl,omitempty"`
 }
 
-func (o *TestStepUpProviderResponse) GetRedirectURL() *string {
-	if o == nil {
+func (t *TestStepUpProviderResponse) GetRedirectURL() *string {
+	if t == nil {
 		return nil
 	}
-	return o.RedirectURL
+	return t.RedirectURL
 }

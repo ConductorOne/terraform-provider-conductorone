@@ -16,23 +16,23 @@ type SearchAutomationExecutionsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *SearchAutomationExecutionsResponse) GetExpanded() []SearchAutomationExecutionsResponseExpanded {
-	if o == nil {
+func (s *SearchAutomationExecutionsResponse) GetExpanded() []SearchAutomationExecutionsResponseExpanded {
+	if s == nil {
 		return nil
 	}
-	return o.Expanded
+	return s.Expanded
 }
 
-func (o *SearchAutomationExecutionsResponse) GetList() []AutomationExecutionView {
-	if o == nil {
+func (s *SearchAutomationExecutionsResponse) GetList() []AutomationExecutionView {
+	if s == nil {
 		return nil
 	}
-	return o.List
+	return s.List
 }
 
-func (o *SearchAutomationExecutionsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (s *SearchAutomationExecutionsResponse) GetNextPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return s.NextPageToken
 }

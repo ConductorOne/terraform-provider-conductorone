@@ -12,23 +12,23 @@ type ResourceOwnerApproval struct {
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
 }
 
-func (o *ResourceOwnerApproval) GetAllowSelfApproval() *bool {
-	if o == nil {
+func (r *ResourceOwnerApproval) GetAllowSelfApproval() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.AllowSelfApproval
+	return r.AllowSelfApproval
 }
 
-func (o *ResourceOwnerApproval) GetFallback() *bool {
-	if o == nil {
+func (r *ResourceOwnerApproval) GetFallback() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Fallback
+	return r.Fallback
 }
 
-func (o *ResourceOwnerApproval) GetFallbackUserIds() []string {
-	if o == nil {
+func (r *ResourceOwnerApproval) GetFallbackUserIds() []string {
+	if r == nil {
 		return nil
 	}
-	return o.FallbackUserIds
+	return r.FallbackUserIds
 }

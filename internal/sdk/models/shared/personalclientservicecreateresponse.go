@@ -10,16 +10,16 @@ type PersonalClientServiceCreateResponse struct {
 	ClientSecret *string `json:"clientSecret,omitempty"`
 }
 
-func (o *PersonalClientServiceCreateResponse) GetPersonalClient() *PersonalClient {
-	if o == nil {
+func (p *PersonalClientServiceCreateResponse) GetPersonalClient() *PersonalClient {
+	if p == nil {
 		return nil
 	}
-	return o.PersonalClient
+	return p.PersonalClient
 }
 
-func (o *PersonalClientServiceCreateResponse) GetClientSecret() *string {
-	if o == nil {
+func (p *PersonalClientServiceCreateResponse) GetClientSecret() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ClientSecret
+	return p.ClientSecret
 }

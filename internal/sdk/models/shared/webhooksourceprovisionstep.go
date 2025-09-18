@@ -8,9 +8,9 @@ type WebhookSourceProvisionStep struct {
 	TicketID *string `json:"ticketId,omitempty"`
 }
 
-func (o *WebhookSourceProvisionStep) GetTicketID() *string {
-	if o == nil {
+func (w *WebhookSourceProvisionStep) GetTicketID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.TicketID
+	return w.TicketID
 }

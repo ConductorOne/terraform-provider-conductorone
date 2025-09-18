@@ -16,37 +16,37 @@ type UserView struct {
 	User *User `json:"user,omitempty"`
 }
 
-func (o *UserView) GetDelegatedUserPath() *string {
-	if o == nil {
+func (u *UserView) GetDelegatedUserPath() *string {
+	if u == nil {
 		return nil
 	}
-	return o.DelegatedUserPath
+	return u.DelegatedUserPath
 }
 
-func (o *UserView) GetDirectoriesPath() *string {
-	if o == nil {
+func (u *UserView) GetDirectoriesPath() *string {
+	if u == nil {
 		return nil
 	}
-	return o.DirectoriesPath
+	return u.DirectoriesPath
 }
 
-func (o *UserView) GetManagersPath() *string {
-	if o == nil {
+func (u *UserView) GetManagersPath() *string {
+	if u == nil {
 		return nil
 	}
-	return o.ManagersPath
+	return u.ManagersPath
 }
 
-func (o *UserView) GetRolesPath() *string {
-	if o == nil {
+func (u *UserView) GetRolesPath() *string {
+	if u == nil {
 		return nil
 	}
-	return o.RolesPath
+	return u.RolesPath
 }
 
-func (o *UserView) GetUser() *User {
-	if o == nil {
+func (u *UserView) GetUser() *User {
+	if u == nil {
 		return nil
 	}
-	return o.User
+	return u.User
 }

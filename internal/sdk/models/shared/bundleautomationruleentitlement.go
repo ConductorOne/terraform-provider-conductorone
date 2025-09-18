@@ -8,9 +8,9 @@ type BundleAutomationRuleEntitlement struct {
 	EntitlementRefs []AppEntitlementRef `json:"entitlementRefs,omitempty"`
 }
 
-func (o *BundleAutomationRuleEntitlement) GetEntitlementRefs() []AppEntitlementRef {
-	if o == nil {
+func (b *BundleAutomationRuleEntitlement) GetEntitlementRefs() []AppEntitlementRef {
+	if b == nil {
 		return nil
 	}
-	return o.EntitlementRefs
+	return b.EntitlementRefs
 }

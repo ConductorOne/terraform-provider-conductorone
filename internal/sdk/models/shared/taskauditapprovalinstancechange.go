@@ -17,9 +17,9 @@ type TaskAuditApprovalInstanceChange struct {
 	ApprovalInstance *ApprovalInstance `json:"instance,omitempty"`
 }
 
-func (o *TaskAuditApprovalInstanceChange) GetApprovalInstance() *ApprovalInstance {
-	if o == nil {
+func (t *TaskAuditApprovalInstanceChange) GetApprovalInstance() *ApprovalInstance {
+	if t == nil {
 		return nil
 	}
-	return o.ApprovalInstance
+	return t.ApprovalInstance
 }

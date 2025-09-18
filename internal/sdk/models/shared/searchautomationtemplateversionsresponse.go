@@ -10,16 +10,16 @@ type SearchAutomationTemplateVersionsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *SearchAutomationTemplateVersionsResponse) GetList() []AutomationTemplateVersion {
-	if o == nil {
+func (s *SearchAutomationTemplateVersionsResponse) GetList() []AutomationTemplateVersion {
+	if s == nil {
 		return nil
 	}
-	return o.List
+	return s.List
 }
 
-func (o *SearchAutomationTemplateVersionsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (s *SearchAutomationTemplateVersionsResponse) GetNextPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return s.NextPageToken
 }

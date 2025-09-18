@@ -12,18 +12,18 @@ type C1APISystemlogV1ExportServiceUpdateRequest struct {
 	ExportServiceUpdateRequest *shared.ExportServiceUpdateRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APISystemlogV1ExportServiceUpdateRequest) GetExportID() string {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceUpdateRequest) GetExportID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ExportID
+	return c.ExportID
 }
 
-func (o *C1APISystemlogV1ExportServiceUpdateRequest) GetExportServiceUpdateRequest() *shared.ExportServiceUpdateRequest {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceUpdateRequest) GetExportServiceUpdateRequest() *shared.ExportServiceUpdateRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ExportServiceUpdateRequest
+	return c.ExportServiceUpdateRequest
 }
 
 type C1APISystemlogV1ExportServiceUpdateResponse struct {
@@ -37,30 +37,30 @@ type C1APISystemlogV1ExportServiceUpdateResponse struct {
 	ExportServiceUpdateResponse *shared.ExportServiceUpdateResponse
 }
 
-func (o *C1APISystemlogV1ExportServiceUpdateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceUpdateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APISystemlogV1ExportServiceUpdateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceUpdateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APISystemlogV1ExportServiceUpdateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceUpdateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APISystemlogV1ExportServiceUpdateResponse) GetExportServiceUpdateResponse() *shared.ExportServiceUpdateResponse {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceUpdateResponse) GetExportServiceUpdateResponse() *shared.ExportServiceUpdateResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ExportServiceUpdateResponse
+	return c.ExportServiceUpdateResponse
 }

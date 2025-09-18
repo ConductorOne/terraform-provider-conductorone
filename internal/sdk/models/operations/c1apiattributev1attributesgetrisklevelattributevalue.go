@@ -11,11 +11,11 @@ type C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse struct {
@@ -29,30 +29,30 @@ type C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse struct {
 	GetRiskLevelAttributeValueResponse *shared.GetRiskLevelAttributeValueResponse
 }
 
-func (o *C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse) GetGetRiskLevelAttributeValueResponse() *shared.GetRiskLevelAttributeValueResponse {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse) GetGetRiskLevelAttributeValueResponse() *shared.GetRiskLevelAttributeValueResponse {
+	if c == nil {
 		return nil
 	}
-	return o.GetRiskLevelAttributeValueResponse
+	return c.GetRiskLevelAttributeValueResponse
 }

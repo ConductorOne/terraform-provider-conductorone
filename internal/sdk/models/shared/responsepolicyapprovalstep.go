@@ -23,37 +23,37 @@ type ResponsePolicyApprovalStep struct {
 	Version *string `json:"version,omitempty"`
 }
 
-func (o *ResponsePolicyApprovalStep) GetResponsePolicyApprovalStepApprove() *ResponsePolicyApprovalStepApprove {
-	if o == nil {
+func (r *ResponsePolicyApprovalStep) GetResponsePolicyApprovalStepApprove() *ResponsePolicyApprovalStepApprove {
+	if r == nil {
 		return nil
 	}
-	return o.ResponsePolicyApprovalStepApprove
+	return r.ResponsePolicyApprovalStepApprove
 }
 
-func (o *ResponsePolicyApprovalStep) GetResponsePolicyApprovalStepDeny() *ResponsePolicyApprovalStepDeny {
-	if o == nil {
+func (r *ResponsePolicyApprovalStep) GetResponsePolicyApprovalStepDeny() *ResponsePolicyApprovalStepDeny {
+	if r == nil {
 		return nil
 	}
-	return o.ResponsePolicyApprovalStepDeny
+	return r.ResponsePolicyApprovalStepDeny
 }
 
-func (o *ResponsePolicyApprovalStep) GetResponsePolicyApprovalStepReassign() *ResponsePolicyApprovalStepReassign {
-	if o == nil {
+func (r *ResponsePolicyApprovalStep) GetResponsePolicyApprovalStepReassign() *ResponsePolicyApprovalStepReassign {
+	if r == nil {
 		return nil
 	}
-	return o.ResponsePolicyApprovalStepReassign
+	return r.ResponsePolicyApprovalStepReassign
 }
 
-func (o *ResponsePolicyApprovalStep) GetResponsePolicyApprovalReplacePolicy() *ResponsePolicyApprovalReplacePolicy {
-	if o == nil {
+func (r *ResponsePolicyApprovalStep) GetResponsePolicyApprovalReplacePolicy() *ResponsePolicyApprovalReplacePolicy {
+	if r == nil {
 		return nil
 	}
-	return o.ResponsePolicyApprovalReplacePolicy
+	return r.ResponsePolicyApprovalReplacePolicy
 }
 
-func (o *ResponsePolicyApprovalStep) GetVersion() *string {
-	if o == nil {
+func (r *ResponsePolicyApprovalStep) GetVersion() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Version
+	return r.Version
 }

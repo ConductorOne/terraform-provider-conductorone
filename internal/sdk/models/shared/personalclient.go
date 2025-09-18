@@ -42,79 +42,79 @@ func (p *PersonalClient) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *PersonalClient) GetAllowSourceCidr() []string {
-	if o == nil {
+func (p *PersonalClient) GetAllowSourceCidr() []string {
+	if p == nil {
 		return nil
 	}
-	return o.AllowSourceCidr
+	return p.AllowSourceCidr
 }
 
-func (o *PersonalClient) GetClientID() *string {
-	if o == nil {
+func (p *PersonalClient) GetClientID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ClientID
+	return p.ClientID
 }
 
-func (o *PersonalClient) GetCreatedAt() *time.Time {
-	if o == nil {
+func (p *PersonalClient) GetCreatedAt() *time.Time {
+	if p == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return p.CreatedAt
 }
 
-func (o *PersonalClient) GetDeletedAt() *time.Time {
-	if o == nil {
+func (p *PersonalClient) GetDeletedAt() *time.Time {
+	if p == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return p.DeletedAt
 }
 
-func (o *PersonalClient) GetDisplayName() *string {
-	if o == nil {
+func (p *PersonalClient) GetDisplayName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.DisplayName
+	return p.DisplayName
 }
 
-func (o *PersonalClient) GetExpiresTime() *time.Time {
-	if o == nil {
+func (p *PersonalClient) GetExpiresTime() *time.Time {
+	if p == nil {
 		return nil
 	}
-	return o.ExpiresTime
+	return p.ExpiresTime
 }
 
-func (o *PersonalClient) GetID() *string {
-	if o == nil {
+func (p *PersonalClient) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *PersonalClient) GetLastUsedAt() *time.Time {
-	if o == nil {
+func (p *PersonalClient) GetLastUsedAt() *time.Time {
+	if p == nil {
 		return nil
 	}
-	return o.LastUsedAt
+	return p.LastUsedAt
 }
 
-func (o *PersonalClient) GetScopedRoles() []string {
-	if o == nil {
+func (p *PersonalClient) GetScopedRoles() []string {
+	if p == nil {
 		return nil
 	}
-	return o.ScopedRoles
+	return p.ScopedRoles
 }
 
-func (o *PersonalClient) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (p *PersonalClient) GetUpdatedAt() *time.Time {
+	if p == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return p.UpdatedAt
 }
 
-func (o *PersonalClient) GetUserID() *string {
-	if o == nil {
+func (p *PersonalClient) GetUserID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.UserID
+	return p.UserID
 }

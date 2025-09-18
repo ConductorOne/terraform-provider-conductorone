@@ -12,18 +12,18 @@ type C1APIAppV1AppEntitlementsListAutomationExclusionsRequest struct {
 	AppEntitlementID string `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
 }
 
-func (o *C1APIAppV1AppEntitlementsListAutomationExclusionsRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListAutomationExclusionsRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementsListAutomationExclusionsRequest) GetAppEntitlementID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListAutomationExclusionsRequest) GetAppEntitlementID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppEntitlementID
+	return c.AppEntitlementID
 }
 
 type C1APIAppV1AppEntitlementsListAutomationExclusionsResponse struct {
@@ -37,30 +37,30 @@ type C1APIAppV1AppEntitlementsListAutomationExclusionsResponse struct {
 	ListAutomationExclusionsResponse *shared.ListAutomationExclusionsResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsListAutomationExclusionsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListAutomationExclusionsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementsListAutomationExclusionsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListAutomationExclusionsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementsListAutomationExclusionsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListAutomationExclusionsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsListAutomationExclusionsResponse) GetListAutomationExclusionsResponse() *shared.ListAutomationExclusionsResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListAutomationExclusionsResponse) GetListAutomationExclusionsResponse() *shared.ListAutomationExclusionsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ListAutomationExclusionsResponse
+	return c.ListAutomationExclusionsResponse
 }

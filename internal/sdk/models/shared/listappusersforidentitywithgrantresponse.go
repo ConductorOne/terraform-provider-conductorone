@@ -9,9 +9,9 @@ type ListAppUsersForIdentityWithGrantResponse struct {
 	Bindings []AppEntitlementUserBinding `json:"bindings,omitempty"`
 }
 
-func (o *ListAppUsersForIdentityWithGrantResponse) GetBindings() []AppEntitlementUserBinding {
-	if o == nil {
+func (l *ListAppUsersForIdentityWithGrantResponse) GetBindings() []AppEntitlementUserBinding {
+	if l == nil {
 		return nil
 	}
-	return o.Bindings
+	return l.Bindings
 }

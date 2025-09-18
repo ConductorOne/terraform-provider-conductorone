@@ -12,18 +12,18 @@ type C1APIAutomationsV1AutomationServiceDeleteAutomationRequest struct {
 	DeleteAutomationRequest *shared.DeleteAutomationRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAutomationsV1AutomationServiceDeleteAutomationRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIAutomationsV1AutomationServiceDeleteAutomationRequest) GetDeleteAutomationRequest() *shared.DeleteAutomationRequest {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationRequest) GetDeleteAutomationRequest() *shared.DeleteAutomationRequest {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteAutomationRequest
+	return c.DeleteAutomationRequest
 }
 
 type C1APIAutomationsV1AutomationServiceDeleteAutomationResponse struct {
@@ -37,30 +37,30 @@ type C1APIAutomationsV1AutomationServiceDeleteAutomationResponse struct {
 	DeleteAutomationResponse *shared.DeleteAutomationResponse
 }
 
-func (o *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetDeleteAutomationResponse() *shared.DeleteAutomationResponse {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetDeleteAutomationResponse() *shared.DeleteAutomationResponse {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteAutomationResponse
+	return c.DeleteAutomationResponse
 }

@@ -13,25 +13,25 @@ type C1APIAppV1ConnectorServiceDeleteRequest struct {
 	ConnectorServiceDeleteRequest *shared.ConnectorServiceDeleteRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1ConnectorServiceDeleteRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceDeleteRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1ConnectorServiceDeleteRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceDeleteRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIAppV1ConnectorServiceDeleteRequest) GetConnectorServiceDeleteRequest() *shared.ConnectorServiceDeleteRequest {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceDeleteRequest) GetConnectorServiceDeleteRequest() *shared.ConnectorServiceDeleteRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceDeleteRequest
+	return c.ConnectorServiceDeleteRequest
 }
 
 type C1APIAppV1ConnectorServiceDeleteResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1ConnectorServiceDeleteResponse struct {
 	ConnectorServiceDeleteResponse *shared.ConnectorServiceDeleteResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceDeleteResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceDeleteResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceDeleteResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceDeleteResponse) GetConnectorServiceDeleteResponse() *shared.ConnectorServiceDeleteResponse {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceDeleteResponse) GetConnectorServiceDeleteResponse() *shared.ConnectorServiceDeleteResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceDeleteResponse
+	return c.ConnectorServiceDeleteResponse
 }

@@ -18,30 +18,30 @@ type C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse struct {
 	EditorValidateResponse *shared.EditorValidateResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetEditorValidateResponse() *shared.EditorValidateResponse {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetEditorValidateResponse() *shared.EditorValidateResponse {
+	if c == nil {
 		return nil
 	}
-	return o.EditorValidateResponse
+	return c.EditorValidateResponse
 }

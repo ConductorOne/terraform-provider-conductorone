@@ -73,58 +73,58 @@ func (e *Exporter) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Exporter) GetCreatedAt() *time.Time {
-	if o == nil {
+func (e *Exporter) GetCreatedAt() *time.Time {
+	if e == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return e.CreatedAt
 }
 
-func (o *Exporter) GetExportToDatasource() *ExportToDatasource {
-	if o == nil {
+func (e *Exporter) GetExportToDatasource() *ExportToDatasource {
+	if e == nil {
 		return nil
 	}
-	return o.ExportToDatasource
+	return e.ExportToDatasource
 }
 
-func (o *Exporter) GetDeletedAt() *time.Time {
-	if o == nil {
+func (e *Exporter) GetDeletedAt() *time.Time {
+	if e == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return e.DeletedAt
 }
 
-func (o *Exporter) GetDisplayName() *string {
-	if o == nil {
+func (e *Exporter) GetDisplayName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.DisplayName
+	return e.DisplayName
 }
 
-func (o *Exporter) GetExportID() *string {
-	if o == nil {
+func (e *Exporter) GetExportID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ExportID
+	return e.ExportID
 }
 
-func (o *Exporter) GetState() *ExporterState {
-	if o == nil {
+func (e *Exporter) GetState() *ExporterState {
+	if e == nil {
 		return nil
 	}
-	return o.State
+	return e.State
 }
 
-func (o *Exporter) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (e *Exporter) GetUpdatedAt() *time.Time {
+	if e == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return e.UpdatedAt
 }
 
-func (o *Exporter) GetWatermarkEventID() *string {
-	if o == nil {
+func (e *Exporter) GetWatermarkEventID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.WatermarkEventID
+	return e.WatermarkEventID
 }

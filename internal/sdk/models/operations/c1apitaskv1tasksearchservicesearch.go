@@ -18,30 +18,30 @@ type C1APITaskV1TaskSearchServiceSearchResponse struct {
 	TaskSearchResponse *shared.TaskSearchResponse
 }
 
-func (o *C1APITaskV1TaskSearchServiceSearchResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APITaskV1TaskSearchServiceSearchResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APITaskV1TaskSearchServiceSearchResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APITaskV1TaskSearchServiceSearchResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APITaskV1TaskSearchServiceSearchResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APITaskV1TaskSearchServiceSearchResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APITaskV1TaskSearchServiceSearchResponse) GetTaskSearchResponse() *shared.TaskSearchResponse {
-	if o == nil {
+func (c *C1APITaskV1TaskSearchServiceSearchResponse) GetTaskSearchResponse() *shared.TaskSearchResponse {
+	if c == nil {
 		return nil
 	}
-	return o.TaskSearchResponse
+	return c.TaskSearchResponse
 }

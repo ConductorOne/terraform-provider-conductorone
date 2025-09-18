@@ -18,30 +18,30 @@ type C1APISettingsV1SessionSettingsServiceUpdateResponse struct {
 	UpdateSessionSettingsResponse *shared.UpdateSessionSettingsResponse
 }
 
-func (o *C1APISettingsV1SessionSettingsServiceUpdateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APISettingsV1SessionSettingsServiceUpdateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APISettingsV1SessionSettingsServiceUpdateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APISettingsV1SessionSettingsServiceUpdateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APISettingsV1SessionSettingsServiceUpdateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APISettingsV1SessionSettingsServiceUpdateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APISettingsV1SessionSettingsServiceUpdateResponse) GetUpdateSessionSettingsResponse() *shared.UpdateSessionSettingsResponse {
-	if o == nil {
+func (c *C1APISettingsV1SessionSettingsServiceUpdateResponse) GetUpdateSessionSettingsResponse() *shared.UpdateSessionSettingsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.UpdateSessionSettingsResponse
+	return c.UpdateSessionSettingsResponse
 }

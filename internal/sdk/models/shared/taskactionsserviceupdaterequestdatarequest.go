@@ -10,9 +10,9 @@ type TaskActionsServiceUpdateRequestDataRequest struct {
 	Data *TaskActionsServiceUpdateRequestDataRequestData `json:"data,omitempty"`
 }
 
-func (o *TaskActionsServiceUpdateRequestDataRequest) GetData() *TaskActionsServiceUpdateRequestDataRequestData {
-	if o == nil {
+func (t *TaskActionsServiceUpdateRequestDataRequest) GetData() *TaskActionsServiceUpdateRequestDataRequestData {
+	if t == nil {
 		return nil
 	}
-	return o.Data
+	return t.Data
 }

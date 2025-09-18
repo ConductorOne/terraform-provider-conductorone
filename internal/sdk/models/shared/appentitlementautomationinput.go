@@ -26,51 +26,51 @@ type AppEntitlementAutomationInput struct {
 	AppEntitlementAutomationRuleNone *AppEntitlementAutomationRuleNone `json:"none,omitempty"`
 }
 
-func (o *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleBasic() *AppEntitlementAutomationRuleBasic {
-	if o == nil {
+func (a *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleBasic() *AppEntitlementAutomationRuleBasic {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleBasic
+	return a.AppEntitlementAutomationRuleBasic
 }
 
-func (o *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleCEL() *AppEntitlementAutomationRuleCEL {
-	if o == nil {
+func (a *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleCEL() *AppEntitlementAutomationRuleCEL {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleCEL
+	return a.AppEntitlementAutomationRuleCEL
 }
 
-func (o *AppEntitlementAutomationInput) GetDescription() *string {
-	if o == nil {
+func (a *AppEntitlementAutomationInput) GetDescription() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Description
+	return a.Description
 }
 
-func (o *AppEntitlementAutomationInput) GetDisplayName() *string {
-	if o == nil {
+func (a *AppEntitlementAutomationInput) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleEntitlement() *AppEntitlementAutomationRuleEntitlement {
-	if o == nil {
+func (a *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleEntitlement() *AppEntitlementAutomationRuleEntitlement {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleEntitlement
+	return a.AppEntitlementAutomationRuleEntitlement
 }
 
-func (o *AppEntitlementAutomationInput) GetAppEntitlementAutomationLastRunStatus() *AppEntitlementAutomationLastRunStatusInput {
-	if o == nil {
+func (a *AppEntitlementAutomationInput) GetAppEntitlementAutomationLastRunStatus() *AppEntitlementAutomationLastRunStatusInput {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationLastRunStatus
+	return a.AppEntitlementAutomationLastRunStatus
 }
 
-func (o *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleNone() *AppEntitlementAutomationRuleNone {
-	if o == nil {
+func (a *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleNone() *AppEntitlementAutomationRuleNone {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleNone
+	return a.AppEntitlementAutomationRuleNone
 }

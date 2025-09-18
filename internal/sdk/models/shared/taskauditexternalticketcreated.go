@@ -18,44 +18,44 @@ type TaskAuditExternalTicketCreated struct {
 	ExternalTicketURL *string `json:"externalTicketUrl,omitempty"`
 }
 
-func (o *TaskAuditExternalTicketCreated) GetAppID() *string {
-	if o == nil {
+func (t *TaskAuditExternalTicketCreated) GetAppID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.AppID
+	return t.AppID
 }
 
-func (o *TaskAuditExternalTicketCreated) GetConnectorID() *string {
-	if o == nil {
+func (t *TaskAuditExternalTicketCreated) GetConnectorID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ConnectorID
+	return t.ConnectorID
 }
 
-func (o *TaskAuditExternalTicketCreated) GetExternalTicketID() *string {
-	if o == nil {
+func (t *TaskAuditExternalTicketCreated) GetExternalTicketID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ExternalTicketID
+	return t.ExternalTicketID
 }
 
-func (o *TaskAuditExternalTicketCreated) GetExternalTicketProvisionerConfigID() *string {
-	if o == nil {
+func (t *TaskAuditExternalTicketCreated) GetExternalTicketProvisionerConfigID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ExternalTicketProvisionerConfigID
+	return t.ExternalTicketProvisionerConfigID
 }
 
-func (o *TaskAuditExternalTicketCreated) GetExternalTicketProvisionerConfigName() *string {
-	if o == nil {
+func (t *TaskAuditExternalTicketCreated) GetExternalTicketProvisionerConfigName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ExternalTicketProvisionerConfigName
+	return t.ExternalTicketProvisionerConfigName
 }
 
-func (o *TaskAuditExternalTicketCreated) GetExternalTicketURL() *string {
-	if o == nil {
+func (t *TaskAuditExternalTicketCreated) GetExternalTicketURL() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ExternalTicketURL
+	return t.ExternalTicketURL
 }

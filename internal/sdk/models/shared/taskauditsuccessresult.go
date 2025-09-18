@@ -12,9 +12,9 @@ type TaskAuditSuccessResult struct {
 	Annotations []TaskAuditSuccessResultAnnotations `json:"annotations,omitempty"`
 }
 
-func (o *TaskAuditSuccessResult) GetAnnotations() []TaskAuditSuccessResultAnnotations {
-	if o == nil {
+func (t *TaskAuditSuccessResult) GetAnnotations() []TaskAuditSuccessResultAnnotations {
+	if t == nil {
 		return nil
 	}
-	return o.Annotations
+	return t.Annotations
 }

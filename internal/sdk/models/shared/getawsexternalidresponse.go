@@ -8,9 +8,9 @@ type GetAWSExternalIDResponse struct {
 	AWSExternalID *AWSExternalID `json:"awsExternalId,omitempty"`
 }
 
-func (o *GetAWSExternalIDResponse) GetAWSExternalID() *AWSExternalID {
-	if o == nil {
+func (g *GetAWSExternalIDResponse) GetAWSExternalID() *AWSExternalID {
+	if g == nil {
 		return nil
 	}
-	return o.AWSExternalID
+	return g.AWSExternalID
 }

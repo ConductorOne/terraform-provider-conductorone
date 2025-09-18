@@ -20,23 +20,23 @@ type SendSlackMessage struct {
 	ChannelNameCel *string `json:"channelNameCel,omitempty"`
 }
 
-func (o *SendSlackMessage) GetBody() *string {
-	if o == nil {
+func (s *SendSlackMessage) GetBody() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Body
+	return s.Body
 }
 
-func (o *SendSlackMessage) GetChannelName() *string {
-	if o == nil {
+func (s *SendSlackMessage) GetChannelName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ChannelName
+	return s.ChannelName
 }
 
-func (o *SendSlackMessage) GetChannelNameCel() *string {
-	if o == nil {
+func (s *SendSlackMessage) GetChannelNameCel() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ChannelNameCel
+	return s.ChannelNameCel
 }

@@ -8,9 +8,9 @@ type UpdateOrgDomainResponse struct {
 	List []OrgDomain `json:"list,omitempty"`
 }
 
-func (o *UpdateOrgDomainResponse) GetList() []OrgDomain {
-	if o == nil {
+func (u *UpdateOrgDomainResponse) GetList() []OrgDomain {
+	if u == nil {
 		return nil
 	}
-	return o.List
+	return u.List
 }

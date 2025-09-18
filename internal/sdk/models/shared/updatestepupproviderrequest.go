@@ -14,16 +14,16 @@ type UpdateStepUpProviderRequest struct {
 	UpdateMask     *string              `json:"updateMask,omitempty"`
 }
 
-func (o *UpdateStepUpProviderRequest) GetStepUpProvider() *StepUpProviderInput {
-	if o == nil {
+func (u *UpdateStepUpProviderRequest) GetStepUpProvider() *StepUpProviderInput {
+	if u == nil {
 		return nil
 	}
-	return o.StepUpProvider
+	return u.StepUpProvider
 }
 
-func (o *UpdateStepUpProviderRequest) GetUpdateMask() *string {
-	if o == nil {
+func (u *UpdateStepUpProviderRequest) GetUpdateMask() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return u.UpdateMask
 }

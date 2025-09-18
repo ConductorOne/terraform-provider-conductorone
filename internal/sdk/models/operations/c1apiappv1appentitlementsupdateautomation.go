@@ -13,25 +13,25 @@ type C1APIAppV1AppEntitlementsUpdateAutomationRequest struct {
 	AppEntitlementServiceUpdateAutomationRequest *shared.AppEntitlementServiceUpdateAutomationRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppEntitlementsUpdateAutomationRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsUpdateAutomationRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementsUpdateAutomationRequest) GetAppEntitlementID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsUpdateAutomationRequest) GetAppEntitlementID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppEntitlementID
+	return c.AppEntitlementID
 }
 
-func (o *C1APIAppV1AppEntitlementsUpdateAutomationRequest) GetAppEntitlementServiceUpdateAutomationRequest() *shared.AppEntitlementServiceUpdateAutomationRequest {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsUpdateAutomationRequest) GetAppEntitlementServiceUpdateAutomationRequest() *shared.AppEntitlementServiceUpdateAutomationRequest {
+	if c == nil {
 		return nil
 	}
-	return o.AppEntitlementServiceUpdateAutomationRequest
+	return c.AppEntitlementServiceUpdateAutomationRequest
 }
 
 type C1APIAppV1AppEntitlementsUpdateAutomationResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1AppEntitlementsUpdateAutomationResponse struct {
 	AppEntitlementServiceUpdateAutomationResponse *shared.AppEntitlementServiceUpdateAutomationResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsUpdateAutomationResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsUpdateAutomationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementsUpdateAutomationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsUpdateAutomationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementsUpdateAutomationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsUpdateAutomationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsUpdateAutomationResponse) GetAppEntitlementServiceUpdateAutomationResponse() *shared.AppEntitlementServiceUpdateAutomationResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsUpdateAutomationResponse) GetAppEntitlementServiceUpdateAutomationResponse() *shared.AppEntitlementServiceUpdateAutomationResponse {
+	if c == nil {
 		return nil
 	}
-	return o.AppEntitlementServiceUpdateAutomationResponse
+	return c.AppEntitlementServiceUpdateAutomationResponse
 }

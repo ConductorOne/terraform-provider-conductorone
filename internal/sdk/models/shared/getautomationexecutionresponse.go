@@ -8,9 +8,9 @@ type GetAutomationExecutionResponse struct {
 	AutomationExecution *AutomationExecution `json:"automationExecution,omitempty"`
 }
 
-func (o *GetAutomationExecutionResponse) GetAutomationExecution() *AutomationExecution {
-	if o == nil {
+func (g *GetAutomationExecutionResponse) GetAutomationExecution() *AutomationExecution {
+	if g == nil {
 		return nil
 	}
-	return o.AutomationExecution
+	return g.AutomationExecution
 }

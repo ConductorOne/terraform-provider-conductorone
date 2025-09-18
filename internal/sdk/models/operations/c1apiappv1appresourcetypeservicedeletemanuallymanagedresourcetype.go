@@ -13,25 +13,25 @@ type C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest st
 	DeleteManuallyManagedResourceTypeRequest *shared.DeleteManuallyManagedResourceTypeRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest) GetDeleteManuallyManagedResourceTypeRequest() *shared.DeleteManuallyManagedResourceTypeRequest {
-	if o == nil {
+func (c *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest) GetDeleteManuallyManagedResourceTypeRequest() *shared.DeleteManuallyManagedResourceTypeRequest {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteManuallyManagedResourceTypeRequest
+	return c.DeleteManuallyManagedResourceTypeRequest
 }
 
 type C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse s
 	DeleteManuallyManagedResourceTypeResponse *shared.DeleteManuallyManagedResourceTypeResponse
 }
 
-func (o *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse) GetDeleteManuallyManagedResourceTypeResponse() *shared.DeleteManuallyManagedResourceTypeResponse {
-	if o == nil {
+func (c *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse) GetDeleteManuallyManagedResourceTypeResponse() *shared.DeleteManuallyManagedResourceTypeResponse {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteManuallyManagedResourceTypeResponse
+	return c.DeleteManuallyManagedResourceTypeResponse
 }

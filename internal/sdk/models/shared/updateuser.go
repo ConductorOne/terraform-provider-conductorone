@@ -70,37 +70,37 @@ type UpdateUser struct {
 	UserStatusEnum *UserStatusEnum `json:"userStatusEnum,omitempty"`
 }
 
-func (o *UpdateUser) GetUseSubjectUser() *bool {
-	if o == nil {
+func (u *UpdateUser) GetUseSubjectUser() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.UseSubjectUser
+	return u.UseSubjectUser
 }
 
-func (o *UpdateUser) GetUserIDCel() *string {
-	if o == nil {
+func (u *UpdateUser) GetUserIDCel() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UserIDCel
+	return u.UserIDCel
 }
 
-func (o *UpdateUser) GetUserRef() *UserRef {
-	if o == nil {
+func (u *UpdateUser) GetUserRef() *UserRef {
+	if u == nil {
 		return nil
 	}
-	return o.UserRef
+	return u.UserRef
 }
 
-func (o *UpdateUser) GetUserStatusCel() *string {
-	if o == nil {
+func (u *UpdateUser) GetUserStatusCel() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UserStatusCel
+	return u.UserStatusCel
 }
 
-func (o *UpdateUser) GetUserStatusEnum() *UserStatusEnum {
-	if o == nil {
+func (u *UpdateUser) GetUserStatusEnum() *UserStatusEnum {
+	if u == nil {
 		return nil
 	}
-	return o.UserStatusEnum
+	return u.UserStatusEnum
 }

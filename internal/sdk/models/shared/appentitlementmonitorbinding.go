@@ -65,51 +65,51 @@ func (a *AppEntitlementMonitorBinding) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppEntitlementMonitorBinding) GetAppEntitlementID() *string {
-	if o == nil {
+func (a *AppEntitlementMonitorBinding) GetAppEntitlementID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementID
+	return a.AppEntitlementID
 }
 
-func (o *AppEntitlementMonitorBinding) GetAppID() *string {
-	if o == nil {
+func (a *AppEntitlementMonitorBinding) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppEntitlementMonitorBinding) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementMonitorBinding) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AppEntitlementMonitorBinding) GetDeletedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementMonitorBinding) GetDeletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return a.DeletedAt
 }
 
-func (o *AppEntitlementMonitorBinding) GetEntitlementGroup() *AppEntitlementMonitorBindingEntitlementGroup {
-	if o == nil {
+func (a *AppEntitlementMonitorBinding) GetEntitlementGroup() *AppEntitlementMonitorBindingEntitlementGroup {
+	if a == nil {
 		return nil
 	}
-	return o.EntitlementGroup
+	return a.EntitlementGroup
 }
 
-func (o *AppEntitlementMonitorBinding) GetMonitorID() *string {
-	if o == nil {
+func (a *AppEntitlementMonitorBinding) GetMonitorID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.MonitorID
+	return a.MonitorID
 }
 
-func (o *AppEntitlementMonitorBinding) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementMonitorBinding) GetUpdatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

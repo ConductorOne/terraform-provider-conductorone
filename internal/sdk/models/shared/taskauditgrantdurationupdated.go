@@ -7,9 +7,9 @@ type TaskAuditGrantDurationUpdated struct {
 	Duration *string `json:"duration,omitempty"`
 }
 
-func (o *TaskAuditGrantDurationUpdated) GetDuration() *string {
-	if o == nil {
+func (t *TaskAuditGrantDurationUpdated) GetDuration() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Duration
+	return t.Duration
 }

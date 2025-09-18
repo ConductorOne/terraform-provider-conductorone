@@ -8,9 +8,9 @@ type EditorValidateResponse struct {
 	Markers []EditorMarker `json:"markers,omitempty"`
 }
 
-func (o *EditorValidateResponse) GetMarkers() []EditorMarker {
-	if o == nil {
+func (e *EditorValidateResponse) GetMarkers() []EditorMarker {
+	if e == nil {
 		return nil
 	}
-	return o.Markers
+	return e.Markers
 }

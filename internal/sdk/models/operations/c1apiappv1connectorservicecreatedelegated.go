@@ -12,18 +12,18 @@ type C1APIAppV1ConnectorServiceCreateDelegatedRequest struct {
 	ConnectorServiceCreateDelegatedRequest *shared.ConnectorServiceCreateDelegatedRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateDelegatedRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateDelegatedRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateDelegatedRequest) GetConnectorServiceCreateDelegatedRequest() *shared.ConnectorServiceCreateDelegatedRequest {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateDelegatedRequest) GetConnectorServiceCreateDelegatedRequest() *shared.ConnectorServiceCreateDelegatedRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceCreateDelegatedRequest
+	return c.ConnectorServiceCreateDelegatedRequest
 }
 
 type C1APIAppV1ConnectorServiceCreateDelegatedResponse struct {
@@ -37,30 +37,30 @@ type C1APIAppV1ConnectorServiceCreateDelegatedResponse struct {
 	ConnectorServiceCreateResponse *shared.ConnectorServiceCreateResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetConnectorServiceCreateResponse() *shared.ConnectorServiceCreateResponse {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetConnectorServiceCreateResponse() *shared.ConnectorServiceCreateResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceCreateResponse
+	return c.ConnectorServiceCreateResponse
 }

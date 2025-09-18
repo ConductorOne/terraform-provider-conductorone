@@ -8,9 +8,9 @@ type AppRef struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AppRef) GetID() *string {
-	if o == nil {
+func (a *AppRef) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }

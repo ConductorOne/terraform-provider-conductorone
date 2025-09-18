@@ -14,30 +14,30 @@ type ManagerApproval struct {
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
 }
 
-func (o *ManagerApproval) GetAllowSelfApproval() *bool {
-	if o == nil {
+func (m *ManagerApproval) GetAllowSelfApproval() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.AllowSelfApproval
+	return m.AllowSelfApproval
 }
 
-func (o *ManagerApproval) GetAssignedUserIds() []string {
-	if o == nil {
+func (m *ManagerApproval) GetAssignedUserIds() []string {
+	if m == nil {
 		return nil
 	}
-	return o.AssignedUserIds
+	return m.AssignedUserIds
 }
 
-func (o *ManagerApproval) GetFallback() *bool {
-	if o == nil {
+func (m *ManagerApproval) GetFallback() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.Fallback
+	return m.Fallback
 }
 
-func (o *ManagerApproval) GetFallbackUserIds() []string {
-	if o == nil {
+func (m *ManagerApproval) GetFallbackUserIds() []string {
+	if m == nil {
 		return nil
 	}
-	return o.FallbackUserIds
+	return m.FallbackUserIds
 }

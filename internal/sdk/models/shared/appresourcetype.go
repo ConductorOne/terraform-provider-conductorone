@@ -33,51 +33,51 @@ func (a *AppResourceType) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppResourceType) GetAppID() *string {
-	if o == nil {
+func (a *AppResourceType) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppResourceType) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *AppResourceType) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AppResourceType) GetDeletedAt() *time.Time {
-	if o == nil {
+func (a *AppResourceType) GetDeletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return a.DeletedAt
 }
 
-func (o *AppResourceType) GetDisplayName() *string {
-	if o == nil {
+func (a *AppResourceType) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *AppResourceType) GetID() *string {
-	if o == nil {
+func (a *AppResourceType) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AppResourceType) GetTraitIds() []string {
-	if o == nil {
+func (a *AppResourceType) GetTraitIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.TraitIds
+	return a.TraitIds
 }
 
-func (o *AppResourceType) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (a *AppResourceType) GetUpdatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

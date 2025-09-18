@@ -88,116 +88,116 @@ func (a *AppUser) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppUser) GetAppID() *string {
-	if o == nil {
+func (a *AppUser) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppUser) GetAppUserType() *AppUserType {
-	if o == nil {
+func (a *AppUser) GetAppUserType() *AppUserType {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserType
+	return a.AppUserType
 }
 
-func (o *AppUser) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *AppUser) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AppUser) GetDeletedAt() *time.Time {
-	if o == nil {
+func (a *AppUser) GetDeletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return a.DeletedAt
 }
 
-func (o *AppUser) GetDisplayName() *string {
-	if o == nil {
+func (a *AppUser) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *AppUser) GetEmail() *string {
-	if o == nil {
+func (a *AppUser) GetEmail() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Email
+	return a.Email
 }
 
-func (o *AppUser) GetEmails() []string {
-	if o == nil {
+func (a *AppUser) GetEmails() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Emails
+	return a.Emails
 }
 
-func (o *AppUser) GetEmployeeIds() []string {
-	if o == nil {
+func (a *AppUser) GetEmployeeIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.EmployeeIds
+	return a.EmployeeIds
 }
 
-func (o *AppUser) GetID() *string {
-	if o == nil {
+func (a *AppUser) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AppUser) GetIdentityUserID() *string {
-	if o == nil {
+func (a *AppUser) GetIdentityUserID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.IdentityUserID
+	return a.IdentityUserID
 }
 
-func (o *AppUser) GetIsExternal() *bool {
-	if o == nil {
+func (a *AppUser) GetIsExternal() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.IsExternal
+	return a.IsExternal
 }
 
-func (o *AppUser) GetProfile() *AppUserProfile {
-	if o == nil {
+func (a *AppUser) GetProfile() *AppUserProfile {
+	if a == nil {
 		return nil
 	}
-	return o.Profile
+	return a.Profile
 }
 
-func (o *AppUser) GetAppUserStatus() *AppUserStatus {
-	if o == nil {
+func (a *AppUser) GetAppUserStatus() *AppUserStatus {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserStatus
+	return a.AppUserStatus
 }
 
-func (o *AppUser) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (a *AppUser) GetUpdatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AppUser) GetUsername() *string {
-	if o == nil {
+func (a *AppUser) GetUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Username
+	return a.Username
 }
 
-func (o *AppUser) GetUsernames() []string {
-	if o == nil {
+func (a *AppUser) GetUsernames() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Usernames
+	return a.Usernames
 }
 
 // AppUserInput - Application User that represents an account in the application.
@@ -208,16 +208,16 @@ type AppUserInput struct {
 	AppUserStatus *AppUserStatusInput `json:"status,omitempty"`
 }
 
-func (o *AppUserInput) GetAppUserType() *AppUserType {
-	if o == nil {
+func (a *AppUserInput) GetAppUserType() *AppUserType {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserType
+	return a.AppUserType
 }
 
-func (o *AppUserInput) GetAppUserStatus() *AppUserStatusInput {
-	if o == nil {
+func (a *AppUserInput) GetAppUserStatus() *AppUserStatusInput {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserStatus
+	return a.AppUserStatus
 }

@@ -27,23 +27,23 @@ func (t *TaskAuditWaitStepTimedOut) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *TaskAuditWaitStepTimedOut) GetCondition() *string {
-	if o == nil {
+func (t *TaskAuditWaitStepTimedOut) GetCondition() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Condition
+	return t.Condition
 }
 
-func (o *TaskAuditWaitStepTimedOut) GetStepID() *string {
-	if o == nil {
+func (t *TaskAuditWaitStepTimedOut) GetStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.StepID
+	return t.StepID
 }
 
-func (o *TaskAuditWaitStepTimedOut) GetTimedOutAt() *time.Time {
-	if o == nil {
+func (t *TaskAuditWaitStepTimedOut) GetTimedOutAt() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.TimedOutAt
+	return t.TimedOutAt
 }

@@ -13,25 +13,25 @@ type C1APIAppV1AppOwnersRemoveRequest struct {
 	RemoveAppOwnerRequest *shared.RemoveAppOwnerRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppOwnersRemoveRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersRemoveRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppOwnersRemoveRequest) GetUserID() string {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersRemoveRequest) GetUserID() string {
+	if c == nil {
 		return ""
 	}
-	return o.UserID
+	return c.UserID
 }
 
-func (o *C1APIAppV1AppOwnersRemoveRequest) GetRemoveAppOwnerRequest() *shared.RemoveAppOwnerRequest {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersRemoveRequest) GetRemoveAppOwnerRequest() *shared.RemoveAppOwnerRequest {
+	if c == nil {
 		return nil
 	}
-	return o.RemoveAppOwnerRequest
+	return c.RemoveAppOwnerRequest
 }
 
 type C1APIAppV1AppOwnersRemoveResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1AppOwnersRemoveResponse struct {
 	RemoveAppOwnerResponse *shared.RemoveAppOwnerResponse
 }
 
-func (o *C1APIAppV1AppOwnersRemoveResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersRemoveResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppOwnersRemoveResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersRemoveResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppOwnersRemoveResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersRemoveResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppOwnersRemoveResponse) GetRemoveAppOwnerResponse() *shared.RemoveAppOwnerResponse {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersRemoveResponse) GetRemoveAppOwnerResponse() *shared.RemoveAppOwnerResponse {
+	if c == nil {
 		return nil
 	}
-	return o.RemoveAppOwnerResponse
+	return c.RemoveAppOwnerResponse
 }

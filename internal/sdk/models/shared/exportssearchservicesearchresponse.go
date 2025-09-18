@@ -10,16 +10,16 @@ type ExportsSearchServiceSearchResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ExportsSearchServiceSearchResponse) GetList() []Exporter {
-	if o == nil {
+func (e *ExportsSearchServiceSearchResponse) GetList() []Exporter {
+	if e == nil {
 		return nil
 	}
-	return o.List
+	return e.List
 }
 
-func (o *ExportsSearchServiceSearchResponse) GetNextPageToken() *string {
-	if o == nil {
+func (e *ExportsSearchServiceSearchResponse) GetNextPageToken() *string {
+	if e == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return e.NextPageToken
 }

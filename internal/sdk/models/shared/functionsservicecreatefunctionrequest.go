@@ -48,37 +48,37 @@ type FunctionsServiceCreateFunctionRequest struct {
 	InitialContent map[string]string `json:"initialContent,omitempty"`
 }
 
-func (o *FunctionsServiceCreateFunctionRequest) GetCommitMessage() *string {
-	if o == nil {
+func (f *FunctionsServiceCreateFunctionRequest) GetCommitMessage() *string {
+	if f == nil {
 		return nil
 	}
-	return o.CommitMessage
+	return f.CommitMessage
 }
 
-func (o *FunctionsServiceCreateFunctionRequest) GetDescription() *string {
-	if o == nil {
+func (f *FunctionsServiceCreateFunctionRequest) GetDescription() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Description
+	return f.Description
 }
 
-func (o *FunctionsServiceCreateFunctionRequest) GetDisplayName() *string {
-	if o == nil {
+func (f *FunctionsServiceCreateFunctionRequest) GetDisplayName() *string {
+	if f == nil {
 		return nil
 	}
-	return o.DisplayName
+	return f.DisplayName
 }
 
-func (o *FunctionsServiceCreateFunctionRequest) GetFunctionType() *FunctionsServiceCreateFunctionRequestFunctionType {
-	if o == nil {
+func (f *FunctionsServiceCreateFunctionRequest) GetFunctionType() *FunctionsServiceCreateFunctionRequestFunctionType {
+	if f == nil {
 		return nil
 	}
-	return o.FunctionType
+	return f.FunctionType
 }
 
-func (o *FunctionsServiceCreateFunctionRequest) GetInitialContent() map[string]string {
-	if o == nil {
+func (f *FunctionsServiceCreateFunctionRequest) GetInitialContent() map[string]string {
+	if f == nil {
 		return nil
 	}
-	return o.InitialContent
+	return f.InitialContent
 }

@@ -33,51 +33,51 @@ func (w *Webhook1) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Webhook1) GetCreatedAt() *time.Time {
-	if o == nil {
+func (w *Webhook1) GetCreatedAt() *time.Time {
+	if w == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return w.CreatedAt
 }
 
-func (o *Webhook1) GetDeletedAt() *time.Time {
-	if o == nil {
+func (w *Webhook1) GetDeletedAt() *time.Time {
+	if w == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return w.DeletedAt
 }
 
-func (o *Webhook1) GetDescription() *string {
-	if o == nil {
+func (w *Webhook1) GetDescription() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Description
+	return w.Description
 }
 
-func (o *Webhook1) GetDisplayName() *string {
-	if o == nil {
+func (w *Webhook1) GetDisplayName() *string {
+	if w == nil {
 		return nil
 	}
-	return o.DisplayName
+	return w.DisplayName
 }
 
-func (o *Webhook1) GetID() *string {
-	if o == nil {
+func (w *Webhook1) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
-func (o *Webhook1) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (w *Webhook1) GetUpdatedAt() *time.Time {
+	if w == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return w.UpdatedAt
 }
 
-func (o *Webhook1) GetURL() *string {
-	if o == nil {
+func (w *Webhook1) GetURL() *string {
+	if w == nil {
 		return nil
 	}
-	return o.URL
+	return w.URL
 }

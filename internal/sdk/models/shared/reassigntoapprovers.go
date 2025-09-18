@@ -8,9 +8,9 @@ type ReassignToApprovers struct {
 	ApproverIds []string `json:"approverIds,omitempty"`
 }
 
-func (o *ReassignToApprovers) GetApproverIds() []string {
-	if o == nil {
+func (r *ReassignToApprovers) GetApproverIds() []string {
+	if r == nil {
 		return nil
 	}
-	return o.ApproverIds
+	return r.ApproverIds
 }

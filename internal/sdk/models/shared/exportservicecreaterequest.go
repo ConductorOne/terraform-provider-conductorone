@@ -13,16 +13,16 @@ type ExportServiceCreateRequest struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-func (o *ExportServiceCreateRequest) GetExportToDatasource() *ExportToDatasource {
-	if o == nil {
+func (e *ExportServiceCreateRequest) GetExportToDatasource() *ExportToDatasource {
+	if e == nil {
 		return nil
 	}
-	return o.ExportToDatasource
+	return e.ExportToDatasource
 }
 
-func (o *ExportServiceCreateRequest) GetDisplayName() *string {
-	if o == nil {
+func (e *ExportServiceCreateRequest) GetDisplayName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.DisplayName
+	return e.DisplayName
 }

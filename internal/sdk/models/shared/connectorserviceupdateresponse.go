@@ -14,16 +14,16 @@ type ConnectorServiceUpdateResponse struct {
 	Expanded []ConnectorServiceUpdateResponseExpanded `json:"expanded,omitempty"`
 }
 
-func (o *ConnectorServiceUpdateResponse) GetConnectorView() *ConnectorView {
-	if o == nil {
+func (c *ConnectorServiceUpdateResponse) GetConnectorView() *ConnectorView {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorView
+	return c.ConnectorView
 }
 
-func (o *ConnectorServiceUpdateResponse) GetExpanded() []ConnectorServiceUpdateResponseExpanded {
-	if o == nil {
+func (c *ConnectorServiceUpdateResponse) GetExpanded() []ConnectorServiceUpdateResponseExpanded {
+	if c == nil {
 		return nil
 	}
-	return o.Expanded
+	return c.Expanded
 }

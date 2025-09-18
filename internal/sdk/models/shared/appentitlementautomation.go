@@ -49,86 +49,86 @@ func (a *AppEntitlementAutomation) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppEntitlementAutomation) GetAppEntitlementID() *string {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetAppEntitlementID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementID
+	return a.AppEntitlementID
 }
 
-func (o *AppEntitlementAutomation) GetAppID() *string {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppEntitlementAutomation) GetAppEntitlementAutomationRuleBasic() *AppEntitlementAutomationRuleBasic {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetAppEntitlementAutomationRuleBasic() *AppEntitlementAutomationRuleBasic {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleBasic
+	return a.AppEntitlementAutomationRuleBasic
 }
 
-func (o *AppEntitlementAutomation) GetAppEntitlementAutomationRuleCEL() *AppEntitlementAutomationRuleCEL {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetAppEntitlementAutomationRuleCEL() *AppEntitlementAutomationRuleCEL {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleCEL
+	return a.AppEntitlementAutomationRuleCEL
 }
 
-func (o *AppEntitlementAutomation) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AppEntitlementAutomation) GetDeletedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetDeletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return a.DeletedAt
 }
 
-func (o *AppEntitlementAutomation) GetDescription() *string {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetDescription() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Description
+	return a.Description
 }
 
-func (o *AppEntitlementAutomation) GetDisplayName() *string {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *AppEntitlementAutomation) GetAppEntitlementAutomationRuleEntitlement() *AppEntitlementAutomationRuleEntitlement {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetAppEntitlementAutomationRuleEntitlement() *AppEntitlementAutomationRuleEntitlement {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleEntitlement
+	return a.AppEntitlementAutomationRuleEntitlement
 }
 
-func (o *AppEntitlementAutomation) GetAppEntitlementAutomationLastRunStatus() *AppEntitlementAutomationLastRunStatus {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetAppEntitlementAutomationLastRunStatus() *AppEntitlementAutomationLastRunStatus {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationLastRunStatus
+	return a.AppEntitlementAutomationLastRunStatus
 }
 
-func (o *AppEntitlementAutomation) GetAppEntitlementAutomationRuleNone() *AppEntitlementAutomationRuleNone {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetAppEntitlementAutomationRuleNone() *AppEntitlementAutomationRuleNone {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleNone
+	return a.AppEntitlementAutomationRuleNone
 }
 
-func (o *AppEntitlementAutomation) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementAutomation) GetUpdatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

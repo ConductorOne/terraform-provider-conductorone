@@ -128,86 +128,86 @@ type AppUserServiceSearchRequest struct {
 	UserIds []string `json:"userIds,omitempty"`
 }
 
-func (o *AppUserServiceSearchRequest) GetAppID() *string {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppUserServiceSearchRequest) GetAppUserDomains() []AppUserDomains {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetAppUserDomains() []AppUserDomains {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserDomains
+	return a.AppUserDomains
 }
 
-func (o *AppUserServiceSearchRequest) GetAppUserIds() []string {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetAppUserIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserIds
+	return a.AppUserIds
 }
 
-func (o *AppUserServiceSearchRequest) GetAppUserStatusDetails() []string {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetAppUserStatusDetails() []string {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserStatusDetails
+	return a.AppUserStatusDetails
 }
 
-func (o *AppUserServiceSearchRequest) GetAppUserStatuses() []AppUserStatuses {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetAppUserStatuses() []AppUserStatuses {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserStatuses
+	return a.AppUserStatuses
 }
 
-func (o *AppUserServiceSearchRequest) GetAppUserTypes() []AppUserTypes {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetAppUserTypes() []AppUserTypes {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserTypes
+	return a.AppUserTypes
 }
 
-func (o *AppUserServiceSearchRequest) GetExcludeAppUserIds() []string {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetExcludeAppUserIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ExcludeAppUserIds
+	return a.ExcludeAppUserIds
 }
 
-func (o *AppUserServiceSearchRequest) GetPageSize() *int {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetPageSize() *int {
+	if a == nil {
 		return nil
 	}
-	return o.PageSize
+	return a.PageSize
 }
 
-func (o *AppUserServiceSearchRequest) GetPageToken() *string {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetPageToken() *string {
+	if a == nil {
 		return nil
 	}
-	return o.PageToken
+	return a.PageToken
 }
 
-func (o *AppUserServiceSearchRequest) GetQuery() *string {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetQuery() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Query
+	return a.Query
 }
 
-func (o *AppUserServiceSearchRequest) GetRefs() []AppUserRef {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetRefs() []AppUserRef {
+	if a == nil {
 		return nil
 	}
-	return o.Refs
+	return a.Refs
 }
 
-func (o *AppUserServiceSearchRequest) GetUserIds() []string {
-	if o == nil {
+func (a *AppUserServiceSearchRequest) GetUserIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.UserIds
+	return a.UserIds
 }

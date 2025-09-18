@@ -10,16 +10,16 @@ type UserApproval struct {
 	UserIds []string `json:"userIds,omitempty"`
 }
 
-func (o *UserApproval) GetAllowSelfApproval() *bool {
-	if o == nil {
+func (u *UserApproval) GetAllowSelfApproval() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.AllowSelfApproval
+	return u.AllowSelfApproval
 }
 
-func (o *UserApproval) GetUserIds() []string {
-	if o == nil {
+func (u *UserApproval) GetUserIds() []string {
+	if u == nil {
 		return nil
 	}
-	return o.UserIds
+	return u.UserIds
 }

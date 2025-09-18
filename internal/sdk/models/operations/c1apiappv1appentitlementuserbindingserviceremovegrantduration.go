@@ -14,32 +14,32 @@ type C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationRequest struct
 	RemoveGrantDurationRequest *shared.RemoveGrantDurationRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationRequest) GetAppEntitlementID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationRequest) GetAppEntitlementID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppEntitlementID
+	return c.AppEntitlementID
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationRequest) GetAppUserID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationRequest) GetAppUserID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppUserID
+	return c.AppUserID
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationRequest) GetRemoveGrantDurationRequest() *shared.RemoveGrantDurationRequest {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationRequest) GetRemoveGrantDurationRequest() *shared.RemoveGrantDurationRequest {
+	if c == nil {
 		return nil
 	}
-	return o.RemoveGrantDurationRequest
+	return c.RemoveGrantDurationRequest
 }
 
 type C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse struct {
@@ -53,30 +53,30 @@ type C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse struc
 	RemoveGrantDurationResponse *shared.RemoveGrantDurationResponse
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse) GetRemoveGrantDurationResponse() *shared.RemoveGrantDurationResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse) GetRemoveGrantDurationResponse() *shared.RemoveGrantDurationResponse {
+	if c == nil {
 		return nil
 	}
-	return o.RemoveGrantDurationResponse
+	return c.RemoveGrantDurationResponse
 }

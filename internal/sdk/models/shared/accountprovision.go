@@ -22,37 +22,37 @@ type AccountProvision struct {
 	SchemaID *string `json:"schemaId,omitempty"`
 }
 
-func (o *AccountProvision) GetConfig() *AccountProvisionConfig {
-	if o == nil {
+func (a *AccountProvision) GetConfig() *AccountProvisionConfig {
+	if a == nil {
 		return nil
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AccountProvision) GetConnectorID() *string {
-	if o == nil {
+func (a *AccountProvision) GetConnectorID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectorID
+	return a.ConnectorID
 }
 
-func (o *AccountProvision) GetDoNotSave() *DoNotSave {
-	if o == nil {
+func (a *AccountProvision) GetDoNotSave() *DoNotSave {
+	if a == nil {
 		return nil
 	}
-	return o.DoNotSave
+	return a.DoNotSave
 }
 
-func (o *AccountProvision) GetSaveToVault() *SaveToVault {
-	if o == nil {
+func (a *AccountProvision) GetSaveToVault() *SaveToVault {
+	if a == nil {
 		return nil
 	}
-	return o.SaveToVault
+	return a.SaveToVault
 }
 
-func (o *AccountProvision) GetSchemaID() *string {
-	if o == nil {
+func (a *AccountProvision) GetSchemaID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SchemaID
+	return a.SchemaID
 }

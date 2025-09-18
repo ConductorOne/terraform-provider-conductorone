@@ -8,9 +8,9 @@ type TestAccountProvisionPolicyRequest struct {
 	Cel *string `json:"cel,omitempty"`
 }
 
-func (o *TestAccountProvisionPolicyRequest) GetCel() *string {
-	if o == nil {
+func (t *TestAccountProvisionPolicyRequest) GetCel() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Cel
+	return t.Cel
 }

@@ -13,25 +13,25 @@ type C1APIAppV1ConnectorServiceListRequest struct {
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIAppV1ConnectorServiceListRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceListRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1ConnectorServiceListRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceListRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIAppV1ConnectorServiceListRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceListRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIAppV1ConnectorServiceListResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1ConnectorServiceListResponse struct {
 	ConnectorServiceListResponse *shared.ConnectorServiceListResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceListResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceListResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1ConnectorServiceListResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceListResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1ConnectorServiceListResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceListResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceListResponse) GetConnectorServiceListResponse() *shared.ConnectorServiceListResponse {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceListResponse) GetConnectorServiceListResponse() *shared.ConnectorServiceListResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceListResponse
+	return c.ConnectorServiceListResponse
 }

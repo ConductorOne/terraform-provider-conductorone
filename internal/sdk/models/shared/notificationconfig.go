@@ -10,16 +10,16 @@ type NotificationConfig struct {
 	SlackNotifications *SlackNotifications `json:"slackNotifications,omitempty"`
 }
 
-func (o *NotificationConfig) GetEmailNotifications() *EmailNotifications {
-	if o == nil {
+func (n *NotificationConfig) GetEmailNotifications() *EmailNotifications {
+	if n == nil {
 		return nil
 	}
-	return o.EmailNotifications
+	return n.EmailNotifications
 }
 
-func (o *NotificationConfig) GetSlackNotifications() *SlackNotifications {
-	if o == nil {
+func (n *NotificationConfig) GetSlackNotifications() *SlackNotifications {
+	if n == nil {
 		return nil
 	}
-	return o.SlackNotifications
+	return n.SlackNotifications
 }

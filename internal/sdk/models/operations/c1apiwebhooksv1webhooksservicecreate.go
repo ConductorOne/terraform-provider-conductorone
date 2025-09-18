@@ -18,30 +18,30 @@ type C1APIWebhooksV1WebhooksServiceCreateResponse struct {
 	WebhooksServiceCreateResponse *shared.WebhooksServiceCreateResponse
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceCreateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceCreateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceCreateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceCreateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceCreateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceCreateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceCreateResponse) GetWebhooksServiceCreateResponse() *shared.WebhooksServiceCreateResponse {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceCreateResponse) GetWebhooksServiceCreateResponse() *shared.WebhooksServiceCreateResponse {
+	if c == nil {
 		return nil
 	}
-	return o.WebhooksServiceCreateResponse
+	return c.WebhooksServiceCreateResponse
 }

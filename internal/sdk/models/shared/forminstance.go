@@ -63,51 +63,51 @@ type FormInstance struct {
 	State *FormInstanceState `json:"state,omitempty"`
 }
 
-func (o *FormInstance) GetFormCompletedAction() *FormCompletedAction {
-	if o == nil {
+func (f *FormInstance) GetFormCompletedAction() *FormCompletedAction {
+	if f == nil {
 		return nil
 	}
-	return o.FormCompletedAction
+	return f.FormCompletedAction
 }
 
-func (o *FormInstance) GetData() *FormInstanceData {
-	if o == nil {
+func (f *FormInstance) GetData() *FormInstanceData {
+	if f == nil {
 		return nil
 	}
-	return o.Data
+	return f.Data
 }
 
-func (o *FormInstance) GetForm() *Form {
-	if o == nil {
+func (f *FormInstance) GetForm() *Form {
+	if f == nil {
 		return nil
 	}
-	return o.Form
+	return f.Form
 }
 
-func (o *FormInstance) GetReassignedAction() *ReassignedAction {
-	if o == nil {
+func (f *FormInstance) GetReassignedAction() *ReassignedAction {
+	if f == nil {
 		return nil
 	}
-	return o.ReassignedAction
+	return f.ReassignedAction
 }
 
-func (o *FormInstance) GetRestartAction() *RestartAction {
-	if o == nil {
+func (f *FormInstance) GetRestartAction() *RestartAction {
+	if f == nil {
 		return nil
 	}
-	return o.RestartAction
+	return f.RestartAction
 }
 
-func (o *FormInstance) GetSkippedAction() *SkippedAction {
-	if o == nil {
+func (f *FormInstance) GetSkippedAction() *SkippedAction {
+	if f == nil {
 		return nil
 	}
-	return o.SkippedAction
+	return f.SkippedAction
 }
 
-func (o *FormInstance) GetState() *FormInstanceState {
-	if o == nil {
+func (f *FormInstance) GetState() *FormInstanceState {
+	if f == nil {
 		return nil
 	}
-	return o.State
+	return f.State
 }

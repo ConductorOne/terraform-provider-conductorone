@@ -27,23 +27,23 @@ func (s *SkippedAction) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *SkippedAction) GetNewPolicyStepID() *string {
-	if o == nil {
+func (s *SkippedAction) GetNewPolicyStepID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NewPolicyStepID
+	return s.NewPolicyStepID
 }
 
-func (o *SkippedAction) GetSkippedAt() *time.Time {
-	if o == nil {
+func (s *SkippedAction) GetSkippedAt() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.SkippedAt
+	return s.SkippedAt
 }
 
-func (o *SkippedAction) GetUserID() *string {
-	if o == nil {
+func (s *SkippedAction) GetUserID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.UserID
+	return s.UserID
 }

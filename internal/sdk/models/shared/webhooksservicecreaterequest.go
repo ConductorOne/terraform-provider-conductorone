@@ -12,23 +12,23 @@ type WebhooksServiceCreateRequest struct {
 	URL string `json:"url"`
 }
 
-func (o *WebhooksServiceCreateRequest) GetDescription() *string {
-	if o == nil {
+func (w *WebhooksServiceCreateRequest) GetDescription() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Description
+	return w.Description
 }
 
-func (o *WebhooksServiceCreateRequest) GetDisplayName() string {
-	if o == nil {
+func (w *WebhooksServiceCreateRequest) GetDisplayName() string {
+	if w == nil {
 		return ""
 	}
-	return o.DisplayName
+	return w.DisplayName
 }
 
-func (o *WebhooksServiceCreateRequest) GetURL() string {
-	if o == nil {
+func (w *WebhooksServiceCreateRequest) GetURL() string {
+	if w == nil {
 		return ""
 	}
-	return o.URL
+	return w.URL
 }

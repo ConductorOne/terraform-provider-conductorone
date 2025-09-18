@@ -12,23 +12,23 @@ type SelfApproval struct {
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
 }
 
-func (o *SelfApproval) GetAssignedUserIds() []string {
-	if o == nil {
+func (s *SelfApproval) GetAssignedUserIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.AssignedUserIds
+	return s.AssignedUserIds
 }
 
-func (o *SelfApproval) GetFallback() *bool {
-	if o == nil {
+func (s *SelfApproval) GetFallback() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Fallback
+	return s.Fallback
 }
 
-func (o *SelfApproval) GetFallbackUserIds() []string {
-	if o == nil {
+func (s *SelfApproval) GetFallbackUserIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.FallbackUserIds
+	return s.FallbackUserIds
 }

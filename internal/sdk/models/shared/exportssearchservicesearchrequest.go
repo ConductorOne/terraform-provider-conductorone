@@ -16,37 +16,37 @@ type ExportsSearchServiceSearchRequest struct {
 	Refs []ExporterRef `json:"refs,omitempty"`
 }
 
-func (o *ExportsSearchServiceSearchRequest) GetDisplayName() *string {
-	if o == nil {
+func (e *ExportsSearchServiceSearchRequest) GetDisplayName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.DisplayName
+	return e.DisplayName
 }
 
-func (o *ExportsSearchServiceSearchRequest) GetPageSize() *int {
-	if o == nil {
+func (e *ExportsSearchServiceSearchRequest) GetPageSize() *int {
+	if e == nil {
 		return nil
 	}
-	return o.PageSize
+	return e.PageSize
 }
 
-func (o *ExportsSearchServiceSearchRequest) GetPageToken() *string {
-	if o == nil {
+func (e *ExportsSearchServiceSearchRequest) GetPageToken() *string {
+	if e == nil {
 		return nil
 	}
-	return o.PageToken
+	return e.PageToken
 }
 
-func (o *ExportsSearchServiceSearchRequest) GetQuery() *string {
-	if o == nil {
+func (e *ExportsSearchServiceSearchRequest) GetQuery() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Query
+	return e.Query
 }
 
-func (o *ExportsSearchServiceSearchRequest) GetRefs() []ExporterRef {
-	if o == nil {
+func (e *ExportsSearchServiceSearchRequest) GetRefs() []ExporterRef {
+	if e == nil {
 		return nil
 	}
-	return o.Refs
+	return e.Refs
 }

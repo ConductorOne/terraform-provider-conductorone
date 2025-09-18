@@ -10,16 +10,16 @@ type TaskActionsServiceApproveRequest struct {
 	PolicyStepID string `json:"policyStepId"`
 }
 
-func (o *TaskActionsServiceApproveRequest) GetComment() *string {
-	if o == nil {
+func (t *TaskActionsServiceApproveRequest) GetComment() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Comment
+	return t.Comment
 }
 
-func (o *TaskActionsServiceApproveRequest) GetPolicyStepID() string {
-	if o == nil {
+func (t *TaskActionsServiceApproveRequest) GetPolicyStepID() string {
+	if t == nil {
 		return ""
 	}
-	return o.PolicyStepID
+	return t.PolicyStepID
 }

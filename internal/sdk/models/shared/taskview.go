@@ -26,72 +26,72 @@ type TaskView struct {
 	UserPath *string `json:"userPath,omitempty"`
 }
 
-func (o *TaskView) GetAccessReviewPath() *string {
-	if o == nil {
+func (t *TaskView) GetAccessReviewPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.AccessReviewPath
+	return t.AccessReviewPath
 }
 
-func (o *TaskView) GetAppPath() *string {
-	if o == nil {
+func (t *TaskView) GetAppPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.AppPath
+	return t.AppPath
 }
 
-func (o *TaskView) GetAppUserPath() *string {
-	if o == nil {
+func (t *TaskView) GetAppUserPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.AppUserPath
+	return t.AppUserPath
 }
 
-func (o *TaskView) GetCreatedByUserPath() *string {
-	if o == nil {
+func (t *TaskView) GetCreatedByUserPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.CreatedByUserPath
+	return t.CreatedByUserPath
 }
 
-func (o *TaskView) GetEntitlementsPath() *string {
-	if o == nil {
+func (t *TaskView) GetEntitlementsPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.EntitlementsPath
+	return t.EntitlementsPath
 }
 
-func (o *TaskView) GetIdentityUserPath() *string {
-	if o == nil {
+func (t *TaskView) GetIdentityUserPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.IdentityUserPath
+	return t.IdentityUserPath
 }
 
-func (o *TaskView) GetInsightsPath() *string {
-	if o == nil {
+func (t *TaskView) GetInsightsPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.InsightsPath
+	return t.InsightsPath
 }
 
-func (o *TaskView) GetStepApproversPath() *string {
-	if o == nil {
+func (t *TaskView) GetStepApproversPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.StepApproversPath
+	return t.StepApproversPath
 }
 
-func (o *TaskView) GetTask() *Task {
-	if o == nil {
+func (t *TaskView) GetTask() *Task {
+	if t == nil {
 		return nil
 	}
-	return o.Task
+	return t.Task
 }
 
-func (o *TaskView) GetUserPath() *string {
-	if o == nil {
+func (t *TaskView) GetUserPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.UserPath
+	return t.UserPath
 }

@@ -20,44 +20,44 @@ type CreateRevokeTasks struct {
 	UserRef *UserRef `json:"userRef,omitempty"`
 }
 
-func (o *CreateRevokeTasks) GetAppEntitlementRefs() []AppEntitlementRef {
-	if o == nil {
+func (c *CreateRevokeTasks) GetAppEntitlementRefs() []AppEntitlementRef {
+	if c == nil {
 		return nil
 	}
-	return o.AppEntitlementRefs
+	return c.AppEntitlementRefs
 }
 
-func (o *CreateRevokeTasks) GetAppEntitlementRefsCel() *string {
-	if o == nil {
+func (c *CreateRevokeTasks) GetAppEntitlementRefsCel() *string {
+	if c == nil {
 		return nil
 	}
-	return o.AppEntitlementRefsCel
+	return c.AppEntitlementRefsCel
 }
 
-func (o *CreateRevokeTasks) GetRevokeAll() *bool {
-	if o == nil {
+func (c *CreateRevokeTasks) GetRevokeAll() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.RevokeAll
+	return c.RevokeAll
 }
 
-func (o *CreateRevokeTasks) GetUseSubjectUser() *bool {
-	if o == nil {
+func (c *CreateRevokeTasks) GetUseSubjectUser() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.UseSubjectUser
+	return c.UseSubjectUser
 }
 
-func (o *CreateRevokeTasks) GetUserIDCel() *string {
-	if o == nil {
+func (c *CreateRevokeTasks) GetUserIDCel() *string {
+	if c == nil {
 		return nil
 	}
-	return o.UserIDCel
+	return c.UserIDCel
 }
 
-func (o *CreateRevokeTasks) GetUserRef() *UserRef {
-	if o == nil {
+func (c *CreateRevokeTasks) GetUserRef() *UserRef {
+	if c == nil {
 		return nil
 	}
-	return o.UserRef
+	return c.UserRef
 }

@@ -9,9 +9,9 @@ type ResponseTest struct {
 	Version *string `json:"version,omitempty"`
 }
 
-func (o *ResponseTest) GetVersion() *string {
-	if o == nil {
+func (r *ResponseTest) GetVersion() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Version
+	return r.Version
 }

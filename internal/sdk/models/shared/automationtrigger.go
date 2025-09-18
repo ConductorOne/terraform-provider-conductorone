@@ -61,79 +61,79 @@ type AutomationTrigger struct {
 	WebhookAutomationTrigger *WebhookAutomationTrigger `json:"webhook,omitempty"`
 }
 
-func (o *AutomationTrigger) GetAppUserCreatedTrigger() *AppUserCreatedTrigger {
-	if o == nil {
+func (a *AutomationTrigger) GetAppUserCreatedTrigger() *AppUserCreatedTrigger {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserCreatedTrigger
+	return a.AppUserCreatedTrigger
 }
 
-func (o *AutomationTrigger) GetAppUserUpdatedTrigger() *AppUserUpdatedTrigger {
-	if o == nil {
+func (a *AutomationTrigger) GetAppUserUpdatedTrigger() *AppUserUpdatedTrigger {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserUpdatedTrigger
+	return a.AppUserUpdatedTrigger
 }
 
 func (o *AutomationTrigger) GetFormTrigger() any {
 	if o == nil {
 		return nil
 	}
-	return o.FormTrigger
+	return a.FormTrigger
 }
 
-func (o *AutomationTrigger) GetGrantDeletedTrigger() *GrantDeletedTrigger {
-	if o == nil {
+func (a *AutomationTrigger) GetGrantDeletedTrigger() *GrantDeletedTrigger {
+	if a == nil {
 		return nil
 	}
-	return o.GrantDeletedTrigger
+	return a.GrantDeletedTrigger
 }
 
-func (o *AutomationTrigger) GetGrantFoundTrigger() *GrantFoundTrigger {
-	if o == nil {
+func (a *AutomationTrigger) GetGrantFoundTrigger() *GrantFoundTrigger {
+	if a == nil {
 		return nil
 	}
-	return o.GrantFoundTrigger
+	return a.GrantFoundTrigger
 }
 
-func (o *AutomationTrigger) GetManualAutomationTrigger() *ManualAutomationTrigger {
-	if o == nil {
+func (a *AutomationTrigger) GetManualAutomationTrigger() *ManualAutomationTrigger {
+	if a == nil {
 		return nil
 	}
-	return o.ManualAutomationTrigger
+	return a.ManualAutomationTrigger
 }
 
-func (o *AutomationTrigger) GetScheduleTrigger() *ScheduleTrigger {
-	if o == nil {
+func (a *AutomationTrigger) GetScheduleTrigger() *ScheduleTrigger {
+	if a == nil {
 		return nil
 	}
-	return o.ScheduleTrigger
+	return a.ScheduleTrigger
 }
 
-func (o *AutomationTrigger) GetUsageBasedRevocationTrigger() *UsageBasedRevocationTrigger {
-	if o == nil {
+func (a *AutomationTrigger) GetUsageBasedRevocationTrigger() *UsageBasedRevocationTrigger {
+	if a == nil {
 		return nil
 	}
-	return o.UsageBasedRevocationTrigger
+	return a.UsageBasedRevocationTrigger
 }
 
-func (o *AutomationTrigger) GetUserCreatedTrigger() *UserCreatedTrigger {
-	if o == nil {
+func (a *AutomationTrigger) GetUserCreatedTrigger() *UserCreatedTrigger {
+	if a == nil {
 		return nil
 	}
-	return o.UserCreatedTrigger
+	return a.UserCreatedTrigger
 }
 
-func (o *AutomationTrigger) GetUserProfileChangeTrigger() *UserProfileChangeTrigger {
-	if o == nil {
+func (a *AutomationTrigger) GetUserProfileChangeTrigger() *UserProfileChangeTrigger {
+	if a == nil {
 		return nil
 	}
-	return o.UserProfileChangeTrigger
+	return a.UserProfileChangeTrigger
 }
 
-func (o *AutomationTrigger) GetWebhookAutomationTrigger() *WebhookAutomationTrigger {
-	if o == nil {
+func (a *AutomationTrigger) GetWebhookAutomationTrigger() *WebhookAutomationTrigger {
+	if a == nil {
 		return nil
 	}
-	return o.WebhookAutomationTrigger
+	return a.WebhookAutomationTrigger
 }

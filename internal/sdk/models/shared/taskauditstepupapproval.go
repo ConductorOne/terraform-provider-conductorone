@@ -8,9 +8,9 @@ type TaskAuditStepUpApproval struct {
 	StepUpTransactionID *string `json:"stepUpTransactionId,omitempty"`
 }
 
-func (o *TaskAuditStepUpApproval) GetStepUpTransactionID() *string {
-	if o == nil {
+func (t *TaskAuditStepUpApproval) GetStepUpTransactionID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.StepUpTransactionID
+	return t.StepUpTransactionID
 }

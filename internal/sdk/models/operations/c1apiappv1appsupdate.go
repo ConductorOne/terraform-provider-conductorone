@@ -12,18 +12,18 @@ type C1APIAppV1AppsUpdateRequest struct {
 	UpdateAppRequest *shared.UpdateAppRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppsUpdateRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAppV1AppsUpdateRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIAppV1AppsUpdateRequest) GetUpdateAppRequest() *shared.UpdateAppRequest {
-	if o == nil {
+func (c *C1APIAppV1AppsUpdateRequest) GetUpdateAppRequest() *shared.UpdateAppRequest {
+	if c == nil {
 		return nil
 	}
-	return o.UpdateAppRequest
+	return c.UpdateAppRequest
 }
 
 type C1APIAppV1AppsUpdateResponse struct {
@@ -37,30 +37,30 @@ type C1APIAppV1AppsUpdateResponse struct {
 	UpdateAppResponse *shared.UpdateAppResponse
 }
 
-func (o *C1APIAppV1AppsUpdateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppsUpdateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppsUpdateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppsUpdateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppsUpdateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppsUpdateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppsUpdateResponse) GetUpdateAppResponse() *shared.UpdateAppResponse {
-	if o == nil {
+func (c *C1APIAppV1AppsUpdateResponse) GetUpdateAppResponse() *shared.UpdateAppResponse {
+	if c == nil {
 		return nil
 	}
-	return o.UpdateAppResponse
+	return c.UpdateAppResponse
 }

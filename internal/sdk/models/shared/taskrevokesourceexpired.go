@@ -23,9 +23,9 @@ func (t *TaskRevokeSourceExpired) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *TaskRevokeSourceExpired) GetExpiredAt() *time.Time {
-	if o == nil {
+func (t *TaskRevokeSourceExpired) GetExpiredAt() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.ExpiredAt
+	return t.ExpiredAt
 }

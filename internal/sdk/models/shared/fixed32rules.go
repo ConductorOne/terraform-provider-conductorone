@@ -31,58 +31,58 @@ type Fixed32Rules struct {
 	NotIn []int64 `json:"notIn,omitempty"`
 }
 
-func (o *Fixed32Rules) GetConst() *int64 {
-	if o == nil {
+func (f *Fixed32Rules) GetConst() *int64 {
+	if f == nil {
 		return nil
 	}
-	return o.Const
+	return f.Const
 }
 
-func (o *Fixed32Rules) GetGt() *int64 {
-	if o == nil {
+func (f *Fixed32Rules) GetGt() *int64 {
+	if f == nil {
 		return nil
 	}
-	return o.Gt
+	return f.Gt
 }
 
-func (o *Fixed32Rules) GetGte() *int64 {
-	if o == nil {
+func (f *Fixed32Rules) GetGte() *int64 {
+	if f == nil {
 		return nil
 	}
-	return o.Gte
+	return f.Gte
 }
 
-func (o *Fixed32Rules) GetIgnoreEmpty() *bool {
-	if o == nil {
+func (f *Fixed32Rules) GetIgnoreEmpty() *bool {
+	if f == nil {
 		return nil
 	}
-	return o.IgnoreEmpty
+	return f.IgnoreEmpty
 }
 
-func (o *Fixed32Rules) GetIn() []int64 {
-	if o == nil {
+func (f *Fixed32Rules) GetIn() []int64 {
+	if f == nil {
 		return nil
 	}
-	return o.In
+	return f.In
 }
 
-func (o *Fixed32Rules) GetLt() *int64 {
-	if o == nil {
+func (f *Fixed32Rules) GetLt() *int64 {
+	if f == nil {
 		return nil
 	}
-	return o.Lt
+	return f.Lt
 }
 
-func (o *Fixed32Rules) GetLte() *int64 {
-	if o == nil {
+func (f *Fixed32Rules) GetLte() *int64 {
+	if f == nil {
 		return nil
 	}
-	return o.Lte
+	return f.Lte
 }
 
-func (o *Fixed32Rules) GetNotIn() []int64 {
-	if o == nil {
+func (f *Fixed32Rules) GetNotIn() []int64 {
+	if f == nil {
 		return nil
 	}
-	return o.NotIn
+	return f.NotIn
 }

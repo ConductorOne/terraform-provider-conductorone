@@ -30,44 +30,44 @@ type StepUpProviderInput struct {
 	StepUpOAuth2Settings *StepUpOAuth2Settings `json:"oauth2,omitempty"`
 }
 
-func (o *StepUpProviderInput) GetClientID() *string {
-	if o == nil {
+func (s *StepUpProviderInput) GetClientID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ClientID
+	return s.ClientID
 }
 
-func (o *StepUpProviderInput) GetDisplayName() *string {
-	if o == nil {
+func (s *StepUpProviderInput) GetDisplayName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.DisplayName
+	return s.DisplayName
 }
 
-func (o *StepUpProviderInput) GetEnabled() *bool {
-	if o == nil {
+func (s *StepUpProviderInput) GetEnabled() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Enabled
+	return s.Enabled
 }
 
-func (o *StepUpProviderInput) GetIssuerURL() *string {
-	if o == nil {
+func (s *StepUpProviderInput) GetIssuerURL() *string {
+	if s == nil {
 		return nil
 	}
-	return o.IssuerURL
+	return s.IssuerURL
 }
 
-func (o *StepUpProviderInput) GetStepUpMicrosoftSettings() *StepUpMicrosoftSettings {
-	if o == nil {
+func (s *StepUpProviderInput) GetStepUpMicrosoftSettings() *StepUpMicrosoftSettings {
+	if s == nil {
 		return nil
 	}
-	return o.StepUpMicrosoftSettings
+	return s.StepUpMicrosoftSettings
 }
 
-func (o *StepUpProviderInput) GetStepUpOAuth2Settings() *StepUpOAuth2Settings {
-	if o == nil {
+func (s *StepUpProviderInput) GetStepUpOAuth2Settings() *StepUpOAuth2Settings {
+	if s == nil {
 		return nil
 	}
-	return o.StepUpOAuth2Settings
+	return s.StepUpOAuth2Settings
 }

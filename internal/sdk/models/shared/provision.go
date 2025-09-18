@@ -22,23 +22,23 @@ type Provision struct {
 	ProvisionTarget *ProvisionTarget `json:"provisionTarget,omitempty"`
 }
 
-func (o *Provision) GetAssigned() *bool {
-	if o == nil {
+func (p *Provision) GetAssigned() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.Assigned
+	return p.Assigned
 }
 
-func (o *Provision) GetProvisionPolicy() *ProvisionPolicy {
-	if o == nil {
+func (p *Provision) GetProvisionPolicy() *ProvisionPolicy {
+	if p == nil {
 		return nil
 	}
-	return o.ProvisionPolicy
+	return p.ProvisionPolicy
 }
 
-func (o *Provision) GetProvisionTarget() *ProvisionTarget {
-	if o == nil {
+func (p *Provision) GetProvisionTarget() *ProvisionTarget {
+	if p == nil {
 		return nil
 	}
-	return o.ProvisionTarget
+	return p.ProvisionTarget
 }

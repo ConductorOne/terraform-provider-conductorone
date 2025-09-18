@@ -10,16 +10,16 @@ type WebhooksSearchResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *WebhooksSearchResponse) GetList() []Webhook1 {
-	if o == nil {
+func (w *WebhooksSearchResponse) GetList() []Webhook1 {
+	if w == nil {
 		return nil
 	}
-	return o.List
+	return w.List
 }
 
-func (o *WebhooksSearchResponse) GetNextPageToken() *string {
-	if o == nil {
+func (w *WebhooksSearchResponse) GetNextPageToken() *string {
+	if w == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return w.NextPageToken
 }

@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.698.4
+// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.706.1
 
 import (
 	"context"

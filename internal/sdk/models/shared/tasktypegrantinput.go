@@ -8,9 +8,9 @@ type TaskTypeGrantInput struct {
 	TaskGrantSource *TaskGrantSource `json:"source,omitempty"`
 }
 
-func (o *TaskTypeGrantInput) GetTaskGrantSource() *TaskGrantSource {
-	if o == nil {
+func (t *TaskTypeGrantInput) GetTaskGrantSource() *TaskGrantSource {
+	if t == nil {
 		return nil
 	}
-	return o.TaskGrantSource
+	return t.TaskGrantSource
 }

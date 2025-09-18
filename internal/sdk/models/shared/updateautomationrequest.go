@@ -13,16 +13,16 @@ type UpdateAutomationRequest struct {
 	UpdateMask *string          `json:"updateMask,omitempty"`
 }
 
-func (o *UpdateAutomationRequest) GetAutomation() *AutomationInput {
-	if o == nil {
+func (u *UpdateAutomationRequest) GetAutomation() *AutomationInput {
+	if u == nil {
 		return nil
 	}
-	return o.Automation
+	return u.Automation
 }
 
-func (o *UpdateAutomationRequest) GetUpdateMask() *string {
-	if o == nil {
+func (u *UpdateAutomationRequest) GetUpdateMask() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return u.UpdateMask
 }

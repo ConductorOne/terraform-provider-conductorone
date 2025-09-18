@@ -51,72 +51,72 @@ func (s *StepUpProvider) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *StepUpProvider) GetClientID() *string {
-	if o == nil {
+func (s *StepUpProvider) GetClientID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ClientID
+	return s.ClientID
 }
 
-func (o *StepUpProvider) GetCreatedAt() *time.Time {
-	if o == nil {
+func (s *StepUpProvider) GetCreatedAt() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return s.CreatedAt
 }
 
-func (o *StepUpProvider) GetDisplayName() *string {
-	if o == nil {
+func (s *StepUpProvider) GetDisplayName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.DisplayName
+	return s.DisplayName
 }
 
-func (o *StepUpProvider) GetEnabled() *bool {
-	if o == nil {
+func (s *StepUpProvider) GetEnabled() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Enabled
+	return s.Enabled
 }
 
-func (o *StepUpProvider) GetID() *string {
-	if o == nil {
+func (s *StepUpProvider) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *StepUpProvider) GetIssuerURL() *string {
-	if o == nil {
+func (s *StepUpProvider) GetIssuerURL() *string {
+	if s == nil {
 		return nil
 	}
-	return o.IssuerURL
+	return s.IssuerURL
 }
 
-func (o *StepUpProvider) GetLastTestedAt() *time.Time {
-	if o == nil {
+func (s *StepUpProvider) GetLastTestedAt() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.LastTestedAt
+	return s.LastTestedAt
 }
 
-func (o *StepUpProvider) GetStepUpMicrosoftSettings() *StepUpMicrosoftSettings {
-	if o == nil {
+func (s *StepUpProvider) GetStepUpMicrosoftSettings() *StepUpMicrosoftSettings {
+	if s == nil {
 		return nil
 	}
-	return o.StepUpMicrosoftSettings
+	return s.StepUpMicrosoftSettings
 }
 
-func (o *StepUpProvider) GetStepUpOAuth2Settings() *StepUpOAuth2Settings {
-	if o == nil {
+func (s *StepUpProvider) GetStepUpOAuth2Settings() *StepUpOAuth2Settings {
+	if s == nil {
 		return nil
 	}
-	return o.StepUpOAuth2Settings
+	return s.StepUpOAuth2Settings
 }
 
-func (o *StepUpProvider) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (s *StepUpProvider) GetUpdatedAt() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return s.UpdatedAt
 }

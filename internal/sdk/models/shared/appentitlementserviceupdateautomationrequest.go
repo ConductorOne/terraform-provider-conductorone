@@ -25,51 +25,51 @@ type AppEntitlementServiceUpdateAutomationRequest struct {
 	UpdateMask                       *string                           `json:"updateMask,omitempty"`
 }
 
-func (o *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleBasic() *AppEntitlementAutomationRuleBasic {
-	if o == nil {
+func (a *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleBasic() *AppEntitlementAutomationRuleBasic {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleBasic
+	return a.AppEntitlementAutomationRuleBasic
 }
 
-func (o *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleCEL() *AppEntitlementAutomationRuleCEL {
-	if o == nil {
+func (a *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleCEL() *AppEntitlementAutomationRuleCEL {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleCEL
+	return a.AppEntitlementAutomationRuleCEL
 }
 
-func (o *AppEntitlementServiceUpdateAutomationRequest) GetDescription() *string {
-	if o == nil {
+func (a *AppEntitlementServiceUpdateAutomationRequest) GetDescription() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Description
+	return a.Description
 }
 
-func (o *AppEntitlementServiceUpdateAutomationRequest) GetDisplayName() *string {
-	if o == nil {
+func (a *AppEntitlementServiceUpdateAutomationRequest) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleEntitlement() *AppEntitlementAutomationRuleEntitlement {
-	if o == nil {
+func (a *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleEntitlement() *AppEntitlementAutomationRuleEntitlement {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleEntitlement
+	return a.AppEntitlementAutomationRuleEntitlement
 }
 
-func (o *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleNone() *AppEntitlementAutomationRuleNone {
-	if o == nil {
+func (a *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleNone() *AppEntitlementAutomationRuleNone {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementAutomationRuleNone
+	return a.AppEntitlementAutomationRuleNone
 }
 
-func (o *AppEntitlementServiceUpdateAutomationRequest) GetUpdateMask() *string {
-	if o == nil {
+func (a *AppEntitlementServiceUpdateAutomationRequest) GetUpdateMask() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return a.UpdateMask
 }

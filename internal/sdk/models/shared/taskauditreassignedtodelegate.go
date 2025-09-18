@@ -14,30 +14,30 @@ type TaskAuditReassignedToDelegate struct {
 	OriginalAssigneeUserID *string `json:"originalAssigneeUserId,omitempty"`
 }
 
-func (o *TaskAuditReassignedToDelegate) GetUser() *User {
-	if o == nil {
+func (t *TaskAuditReassignedToDelegate) GetUser() *User {
+	if t == nil {
 		return nil
 	}
-	return o.User
+	return t.User
 }
 
-func (o *TaskAuditReassignedToDelegate) GetDelegatedAssigneeUserID() *string {
-	if o == nil {
+func (t *TaskAuditReassignedToDelegate) GetDelegatedAssigneeUserID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.DelegatedAssigneeUserID
+	return t.DelegatedAssigneeUserID
 }
 
-func (o *TaskAuditReassignedToDelegate) GetUser1() *User {
-	if o == nil {
+func (t *TaskAuditReassignedToDelegate) GetUser1() *User {
+	if t == nil {
 		return nil
 	}
-	return o.User1
+	return t.User1
 }
 
-func (o *TaskAuditReassignedToDelegate) GetOriginalAssigneeUserID() *string {
-	if o == nil {
+func (t *TaskAuditReassignedToDelegate) GetOriginalAssigneeUserID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.OriginalAssigneeUserID
+	return t.OriginalAssigneeUserID
 }

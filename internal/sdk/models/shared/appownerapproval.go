@@ -8,9 +8,9 @@ type AppOwnerApproval struct {
 	AllowSelfApproval *bool `json:"allowSelfApproval,omitempty"`
 }
 
-func (o *AppOwnerApproval) GetAllowSelfApproval() *bool {
-	if o == nil {
+func (a *AppOwnerApproval) GetAllowSelfApproval() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowSelfApproval
+	return a.AllowSelfApproval
 }

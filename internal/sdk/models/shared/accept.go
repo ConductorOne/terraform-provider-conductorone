@@ -8,9 +8,9 @@ type Accept struct {
 	AcceptMessage *string `json:"acceptMessage,omitempty"`
 }
 
-func (o *Accept) GetAcceptMessage() *string {
-	if o == nil {
+func (a *Accept) GetAcceptMessage() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AcceptMessage
+	return a.AcceptMessage
 }

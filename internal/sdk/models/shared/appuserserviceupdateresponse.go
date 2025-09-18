@@ -14,16 +14,16 @@ type AppUserServiceUpdateResponse struct {
 	Expanded []AppUserServiceUpdateResponseExpanded `json:"expanded,omitempty"`
 }
 
-func (o *AppUserServiceUpdateResponse) GetAppUserView() *AppUserView {
-	if o == nil {
+func (a *AppUserServiceUpdateResponse) GetAppUserView() *AppUserView {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserView
+	return a.AppUserView
 }
 
-func (o *AppUserServiceUpdateResponse) GetExpanded() []AppUserServiceUpdateResponseExpanded {
-	if o == nil {
+func (a *AppUserServiceUpdateResponse) GetExpanded() []AppUserServiceUpdateResponseExpanded {
+	if a == nil {
 		return nil
 	}
-	return o.Expanded
+	return a.Expanded
 }

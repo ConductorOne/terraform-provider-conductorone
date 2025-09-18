@@ -18,30 +18,30 @@ type C1APIStepupV1StepUpProviderServiceCreateResponse struct {
 	CreateStepUpProviderResponse *shared.CreateStepUpProviderResponse
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceCreateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceCreateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceCreateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceCreateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceCreateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceCreateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceCreateResponse) GetCreateStepUpProviderResponse() *shared.CreateStepUpProviderResponse {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceCreateResponse) GetCreateStepUpProviderResponse() *shared.CreateStepUpProviderResponse {
+	if c == nil {
 		return nil
 	}
-	return o.CreateStepUpProviderResponse
+	return c.CreateStepUpProviderResponse
 }

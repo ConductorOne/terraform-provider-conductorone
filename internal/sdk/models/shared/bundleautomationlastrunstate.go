@@ -65,23 +65,23 @@ func (b *BundleAutomationLastRunState) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *BundleAutomationLastRunState) GetErrorMessage() *string {
-	if o == nil {
+func (b *BundleAutomationLastRunState) GetErrorMessage() *string {
+	if b == nil {
 		return nil
 	}
-	return o.ErrorMessage
+	return b.ErrorMessage
 }
 
-func (o *BundleAutomationLastRunState) GetLastRunAt() *time.Time {
-	if o == nil {
+func (b *BundleAutomationLastRunState) GetLastRunAt() *time.Time {
+	if b == nil {
 		return nil
 	}
-	return o.LastRunAt
+	return b.LastRunAt
 }
 
-func (o *BundleAutomationLastRunState) GetStatus() *BundleAutomationLastRunStateStatus {
-	if o == nil {
+func (b *BundleAutomationLastRunState) GetStatus() *BundleAutomationLastRunStateStatus {
+	if b == nil {
 		return nil
 	}
-	return o.Status
+	return b.Status
 }

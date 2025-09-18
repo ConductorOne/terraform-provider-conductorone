@@ -49,9 +49,9 @@ type TaskAuditAccessRequestOutcome struct {
 	Outcome *TaskAuditAccessRequestOutcomeOutcome `json:"outcome,omitempty"`
 }
 
-func (o *TaskAuditAccessRequestOutcome) GetOutcome() *TaskAuditAccessRequestOutcomeOutcome {
-	if o == nil {
+func (t *TaskAuditAccessRequestOutcome) GetOutcome() *TaskAuditAccessRequestOutcomeOutcome {
+	if t == nil {
 		return nil
 	}
-	return o.Outcome
+	return t.Outcome
 }

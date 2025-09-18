@@ -8,9 +8,9 @@ type ResponseProvisionStepComplete struct {
 	Comment *string `json:"comment,omitempty"`
 }
 
-func (o *ResponseProvisionStepComplete) GetComment() *string {
-	if o == nil {
+func (r *ResponseProvisionStepComplete) GetComment() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Comment
+	return r.Comment
 }

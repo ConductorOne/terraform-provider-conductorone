@@ -46,7 +46,7 @@ func (o *Directory) GetAppID() *string {
 	if o == nil {
 		return nil
 	}
-	return o.AppID
+	return d.DirectoryAccountFilterAll
 }
 
 func (o *Directory) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
@@ -60,19 +60,33 @@ func (o *Directory) GetCreatedAt() *time.Time {
 	if o == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return d.AppID
 }
 
-func (o *Directory) GetDeletedAt() *time.Time {
-	if o == nil {
+func (d *Directory) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
+	if d == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return d.DirectoryAccountFilterCel
 }
 
-func (o *Directory) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (d *Directory) GetCreatedAt() *time.Time {
+	if d == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return d.CreatedAt
+}
+
+func (d *Directory) GetDeletedAt() *time.Time {
+	if d == nil {
+		return nil
+	}
+	return d.DeletedAt
+}
+
+func (d *Directory) GetUpdatedAt() *time.Time {
+	if d == nil {
+		return nil
+	}
+	return d.UpdatedAt
 }

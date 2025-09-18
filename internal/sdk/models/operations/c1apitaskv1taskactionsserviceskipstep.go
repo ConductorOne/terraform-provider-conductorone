@@ -12,18 +12,18 @@ type C1APITaskV1TaskActionsServiceSkipStepRequest struct {
 	TaskActionsServiceSkipStepRequest *shared.TaskActionsServiceSkipStepRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APITaskV1TaskActionsServiceSkipStepRequest) GetTaskID() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceSkipStepRequest) GetTaskID() string {
+	if c == nil {
 		return ""
 	}
-	return o.TaskID
+	return c.TaskID
 }
 
-func (o *C1APITaskV1TaskActionsServiceSkipStepRequest) GetTaskActionsServiceSkipStepRequest() *shared.TaskActionsServiceSkipStepRequest {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceSkipStepRequest) GetTaskActionsServiceSkipStepRequest() *shared.TaskActionsServiceSkipStepRequest {
+	if c == nil {
 		return nil
 	}
-	return o.TaskActionsServiceSkipStepRequest
+	return c.TaskActionsServiceSkipStepRequest
 }
 
 type C1APITaskV1TaskActionsServiceSkipStepResponse struct {
@@ -37,30 +37,30 @@ type C1APITaskV1TaskActionsServiceSkipStepResponse struct {
 	TaskServiceActionResponse *shared.TaskServiceActionResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceSkipStepResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceSkipStepResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APITaskV1TaskActionsServiceSkipStepResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceSkipStepResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APITaskV1TaskActionsServiceSkipStepResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceSkipStepResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceSkipStepResponse) GetTaskServiceActionResponse() *shared.TaskServiceActionResponse {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceSkipStepResponse) GetTaskServiceActionResponse() *shared.TaskServiceActionResponse {
+	if c == nil {
 		return nil
 	}
-	return o.TaskServiceActionResponse
+	return c.TaskServiceActionResponse
 }

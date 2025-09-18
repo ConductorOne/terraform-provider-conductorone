@@ -11,11 +11,11 @@ type C1APIDirectoryV1DirectoryServiceGetRequest struct {
 	AppID string `pathParam:"style=simple,explode=false,name=app_id"`
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceGetRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceGetRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
 type C1APIDirectoryV1DirectoryServiceGetResponse struct {
@@ -30,30 +30,30 @@ type C1APIDirectoryV1DirectoryServiceGetResponse struct {
 	DirectoryServiceGetResponse *shared.DirectoryServiceGetResponse
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceGetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceGetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceGetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceGetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceGetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceGetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceGetResponse) GetDirectoryServiceGetResponse() *shared.DirectoryServiceGetResponse {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceGetResponse) GetDirectoryServiceGetResponse() *shared.DirectoryServiceGetResponse {
+	if c == nil {
 		return nil
 	}
-	return o.DirectoryServiceGetResponse
+	return c.DirectoryServiceGetResponse
 }

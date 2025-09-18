@@ -14,32 +14,32 @@ type C1APIAppV1AppResourceOwnersRemoveRequest struct {
 	RemoveAppResourceOwnerRequest *shared.RemoveAppResourceOwnerRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppResourceOwnersRemoveRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppResourceOwnersRemoveRequest) GetResourceTypeID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetResourceTypeID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ResourceTypeID
+	return c.ResourceTypeID
 }
 
-func (o *C1APIAppV1AppResourceOwnersRemoveRequest) GetResourceID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetResourceID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ResourceID
+	return c.ResourceID
 }
 
-func (o *C1APIAppV1AppResourceOwnersRemoveRequest) GetRemoveAppResourceOwnerRequest() *shared.RemoveAppResourceOwnerRequest {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetRemoveAppResourceOwnerRequest() *shared.RemoveAppResourceOwnerRequest {
+	if c == nil {
 		return nil
 	}
-	return o.RemoveAppResourceOwnerRequest
+	return c.RemoveAppResourceOwnerRequest
 }
 
 type C1APIAppV1AppResourceOwnersRemoveResponse struct {
@@ -53,30 +53,30 @@ type C1APIAppV1AppResourceOwnersRemoveResponse struct {
 	RemoveAppResourceOwnerResponse *shared.RemoveAppResourceOwnerResponse
 }
 
-func (o *C1APIAppV1AppResourceOwnersRemoveResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersRemoveResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppResourceOwnersRemoveResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersRemoveResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppResourceOwnersRemoveResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersRemoveResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppResourceOwnersRemoveResponse) GetRemoveAppResourceOwnerResponse() *shared.RemoveAppResourceOwnerResponse {
-	if o == nil {
+func (c *C1APIAppV1AppResourceOwnersRemoveResponse) GetRemoveAppResourceOwnerResponse() *shared.RemoveAppResourceOwnerResponse {
+	if c == nil {
 		return nil
 	}
-	return o.RemoveAppResourceOwnerResponse
+	return c.RemoveAppResourceOwnerResponse
 }

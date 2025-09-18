@@ -8,9 +8,9 @@ type AddAppResourceOwnerRequest struct {
 	UserID *string `json:"userId,omitempty"`
 }
 
-func (o *AddAppResourceOwnerRequest) GetUserID() *string {
-	if o == nil {
+func (a *AddAppResourceOwnerRequest) GetUserID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UserID
+	return a.UserID
 }

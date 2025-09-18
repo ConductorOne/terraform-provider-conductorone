@@ -12,16 +12,16 @@ type ListAppEntitlementOwnersResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ListAppEntitlementOwnersResponse) GetList() []User {
-	if o == nil {
+func (l *ListAppEntitlementOwnersResponse) GetList() []User {
+	if l == nil {
 		return nil
 	}
-	return o.List
+	return l.List
 }
 
-func (o *ListAppEntitlementOwnersResponse) GetNextPageToken() *string {
-	if o == nil {
+func (l *ListAppEntitlementOwnersResponse) GetNextPageToken() *string {
+	if l == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return l.NextPageToken
 }

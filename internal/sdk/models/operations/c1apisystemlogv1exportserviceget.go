@@ -11,11 +11,11 @@ type C1APISystemlogV1ExportServiceGetRequest struct {
 	ExportID string `pathParam:"style=simple,explode=false,name=export_id"`
 }
 
-func (o *C1APISystemlogV1ExportServiceGetRequest) GetExportID() string {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceGetRequest) GetExportID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ExportID
+	return c.ExportID
 }
 
 type C1APISystemlogV1ExportServiceGetResponse struct {
@@ -29,30 +29,30 @@ type C1APISystemlogV1ExportServiceGetResponse struct {
 	ExportServiceGetResponse *shared.ExportServiceGetResponse
 }
 
-func (o *C1APISystemlogV1ExportServiceGetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceGetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APISystemlogV1ExportServiceGetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceGetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APISystemlogV1ExportServiceGetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceGetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APISystemlogV1ExportServiceGetResponse) GetExportServiceGetResponse() *shared.ExportServiceGetResponse {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceGetResponse) GetExportServiceGetResponse() *shared.ExportServiceGetResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ExportServiceGetResponse
+	return c.ExportServiceGetResponse
 }

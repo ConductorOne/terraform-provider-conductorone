@@ -18,23 +18,23 @@ type RequestCatalogSearchServiceSearchEntitlementsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *RequestCatalogSearchServiceSearchEntitlementsResponse) GetExpanded() []RequestCatalogSearchServiceSearchEntitlementsResponseExpanded {
-	if o == nil {
+func (r *RequestCatalogSearchServiceSearchEntitlementsResponse) GetExpanded() []RequestCatalogSearchServiceSearchEntitlementsResponseExpanded {
+	if r == nil {
 		return nil
 	}
-	return o.Expanded
+	return r.Expanded
 }
 
-func (o *RequestCatalogSearchServiceSearchEntitlementsResponse) GetList() []AppEntitlementWithUserBindings {
-	if o == nil {
+func (r *RequestCatalogSearchServiceSearchEntitlementsResponse) GetList() []AppEntitlementWithUserBindings {
+	if r == nil {
 		return nil
 	}
-	return o.List
+	return r.List
 }
 
-func (o *RequestCatalogSearchServiceSearchEntitlementsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (r *RequestCatalogSearchServiceSearchEntitlementsResponse) GetNextPageToken() *string {
+	if r == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return r.NextPageToken
 }

@@ -13,9 +13,9 @@ type AppEntitlementView struct {
 	AppEntitlement *AppEntitlement `json:"appEntitlement,omitempty"`
 }
 
-func (o *AppEntitlementView) GetAppEntitlement() *AppEntitlement {
-	if o == nil {
+func (a *AppEntitlementView) GetAppEntitlement() *AppEntitlement {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlement
+	return a.AppEntitlement
 }

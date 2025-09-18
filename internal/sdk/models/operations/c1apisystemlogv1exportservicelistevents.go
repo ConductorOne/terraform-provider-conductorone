@@ -12,18 +12,18 @@ type C1APISystemlogV1ExportServiceListEventsRequest struct {
 	ExportServiceListEventsRequest *shared.ExportServiceListEventsRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APISystemlogV1ExportServiceListEventsRequest) GetExportID() string {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceListEventsRequest) GetExportID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ExportID
+	return c.ExportID
 }
 
-func (o *C1APISystemlogV1ExportServiceListEventsRequest) GetExportServiceListEventsRequest() *shared.ExportServiceListEventsRequest {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceListEventsRequest) GetExportServiceListEventsRequest() *shared.ExportServiceListEventsRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ExportServiceListEventsRequest
+	return c.ExportServiceListEventsRequest
 }
 
 type C1APISystemlogV1ExportServiceListEventsResponse struct {
@@ -37,30 +37,30 @@ type C1APISystemlogV1ExportServiceListEventsResponse struct {
 	ExportServiceListEventsResponse *shared.ExportServiceListEventsResponse
 }
 
-func (o *C1APISystemlogV1ExportServiceListEventsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceListEventsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APISystemlogV1ExportServiceListEventsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceListEventsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APISystemlogV1ExportServiceListEventsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceListEventsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APISystemlogV1ExportServiceListEventsResponse) GetExportServiceListEventsResponse() *shared.ExportServiceListEventsResponse {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceListEventsResponse) GetExportServiceListEventsResponse() *shared.ExportServiceListEventsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ExportServiceListEventsResponse
+	return c.ExportServiceListEventsResponse
 }

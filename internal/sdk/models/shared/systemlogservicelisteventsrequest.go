@@ -64,44 +64,44 @@ func (s *SystemLogServiceListEventsRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *SystemLogServiceListEventsRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SystemLogServiceListEventsRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SystemLogServiceListEventsRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SystemLogServiceListEventsRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }
 
-func (o *SystemLogServiceListEventsRequest) GetSince() *time.Time {
-	if o == nil {
+func (s *SystemLogServiceListEventsRequest) GetSince() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.Since
+	return s.Since
 }
 
-func (o *SystemLogServiceListEventsRequest) GetSinceEventUID() *string {
-	if o == nil {
+func (s *SystemLogServiceListEventsRequest) GetSinceEventUID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SinceEventUID
+	return s.SinceEventUID
 }
 
-func (o *SystemLogServiceListEventsRequest) GetSortDirection() *SortDirection {
-	if o == nil {
+func (s *SystemLogServiceListEventsRequest) GetSortDirection() *SortDirection {
+	if s == nil {
 		return nil
 	}
-	return o.SortDirection
+	return s.SortDirection
 }
 
-func (o *SystemLogServiceListEventsRequest) GetUntil() *time.Time {
-	if o == nil {
+func (s *SystemLogServiceListEventsRequest) GetUntil() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.Until
+	return s.Until
 }

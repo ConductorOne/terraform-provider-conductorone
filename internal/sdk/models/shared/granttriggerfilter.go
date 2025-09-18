@@ -12,23 +12,23 @@ type GrantTriggerFilter struct {
 	GrantFilter *GrantFilter `json:"grantFilter,omitempty"`
 }
 
-func (o *GrantTriggerFilter) GetAccountFilter() *AccountFilter {
-	if o == nil {
+func (g *GrantTriggerFilter) GetAccountFilter() *AccountFilter {
+	if g == nil {
 		return nil
 	}
-	return o.AccountFilter
+	return g.AccountFilter
 }
 
-func (o *GrantTriggerFilter) GetEntitlementFilter() *EntitlementFilter {
-	if o == nil {
+func (g *GrantTriggerFilter) GetEntitlementFilter() *EntitlementFilter {
+	if g == nil {
 		return nil
 	}
-	return o.EntitlementFilter
+	return g.EntitlementFilter
 }
 
-func (o *GrantTriggerFilter) GetGrantFilter() *GrantFilter {
-	if o == nil {
+func (g *GrantTriggerFilter) GetGrantFilter() *GrantFilter {
+	if g == nil {
 		return nil
 	}
-	return o.GrantFilter
+	return g.GrantFilter
 }

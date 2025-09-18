@@ -43,9 +43,9 @@ type TaskAuditStateChange struct {
 	PreviousState *PreviousState `json:"previousState,omitempty"`
 }
 
-func (o *TaskAuditStateChange) GetPreviousState() *PreviousState {
-	if o == nil {
+func (t *TaskAuditStateChange) GetPreviousState() *PreviousState {
+	if t == nil {
 		return nil
 	}
-	return o.PreviousState
+	return t.PreviousState
 }

@@ -15,16 +15,16 @@ type FunctionsServiceInvokeRequest struct {
 	JSON *string `json:"json,omitempty"`
 }
 
-func (o *FunctionsServiceInvokeRequest) GetCommitID() *string {
-	if o == nil {
+func (f *FunctionsServiceInvokeRequest) GetCommitID() *string {
+	if f == nil {
 		return nil
 	}
-	return o.CommitID
+	return f.CommitID
 }
 
-func (o *FunctionsServiceInvokeRequest) GetJSON() *string {
-	if o == nil {
+func (f *FunctionsServiceInvokeRequest) GetJSON() *string {
+	if f == nil {
 		return nil
 	}
-	return o.JSON
+	return f.JSON
 }

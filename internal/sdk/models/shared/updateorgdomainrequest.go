@@ -8,9 +8,9 @@ type UpdateOrgDomainRequest struct {
 	NewDomains []string `json:"newDomains,omitempty"`
 }
 
-func (o *UpdateOrgDomainRequest) GetNewDomains() []string {
-	if o == nil {
+func (u *UpdateOrgDomainRequest) GetNewDomains() []string {
+	if u == nil {
 		return nil
 	}
-	return o.NewDomains
+	return u.NewDomains
 }

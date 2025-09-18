@@ -20,30 +20,30 @@ type C1APIPolicyV1PolicySearchSearchResponse struct {
 	Next func() (*C1APIPolicyV1PolicySearchSearchResponse, error)
 }
 
-func (o *C1APIPolicyV1PolicySearchSearchResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIPolicyV1PolicySearchSearchResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIPolicyV1PolicySearchSearchResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIPolicyV1PolicySearchSearchResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIPolicyV1PolicySearchSearchResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIPolicyV1PolicySearchSearchResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIPolicyV1PolicySearchSearchResponse) GetSearchPoliciesResponse() *shared.SearchPoliciesResponse {
-	if o == nil {
+func (c *C1APIPolicyV1PolicySearchSearchResponse) GetSearchPoliciesResponse() *shared.SearchPoliciesResponse {
+	if c == nil {
 		return nil
 	}
-	return o.SearchPoliciesResponse
+	return c.SearchPoliciesResponse
 }

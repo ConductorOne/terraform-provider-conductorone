@@ -8,9 +8,9 @@ type WaitCondition struct {
 	Condition *string `json:"condition,omitempty"`
 }
 
-func (o *WaitCondition) GetCondition() *string {
-	if o == nil {
+func (w *WaitCondition) GetCondition() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Condition
+	return w.Condition
 }

@@ -8,9 +8,9 @@ type SaveToVault struct {
 	VaultIds []string `json:"vaultIds,omitempty"`
 }
 
-func (o *SaveToVault) GetVaultIds() []string {
-	if o == nil {
+func (s *SaveToVault) GetVaultIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.VaultIds
+	return s.VaultIds
 }

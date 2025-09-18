@@ -58,100 +58,100 @@ type BytesRules struct {
 	Suffix *string `json:"suffix,omitempty"`
 }
 
-func (o *BytesRules) GetConst() *string {
-	if o == nil {
+func (b *BytesRules) GetConst() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Const
+	return b.Const
 }
 
-func (o *BytesRules) GetContains() *string {
-	if o == nil {
+func (b *BytesRules) GetContains() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Contains
+	return b.Contains
 }
 
-func (o *BytesRules) GetIgnoreEmpty() *bool {
-	if o == nil {
+func (b *BytesRules) GetIgnoreEmpty() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.IgnoreEmpty
+	return b.IgnoreEmpty
 }
 
-func (o *BytesRules) GetIn() []string {
-	if o == nil {
+func (b *BytesRules) GetIn() []string {
+	if b == nil {
 		return nil
 	}
-	return o.In
+	return b.In
 }
 
-func (o *BytesRules) GetIP() *bool {
-	if o == nil {
+func (b *BytesRules) GetIP() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.IP
+	return b.IP
 }
 
-func (o *BytesRules) GetIpv4() *bool {
-	if o == nil {
+func (b *BytesRules) GetIpv4() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.Ipv4
+	return b.Ipv4
 }
 
-func (o *BytesRules) GetIpv6() *bool {
-	if o == nil {
+func (b *BytesRules) GetIpv6() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.Ipv6
+	return b.Ipv6
 }
 
-func (o *BytesRules) GetLen() *string {
-	if o == nil {
+func (b *BytesRules) GetLen() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Len
+	return b.Len
 }
 
-func (o *BytesRules) GetMaxLen() *string {
-	if o == nil {
+func (b *BytesRules) GetMaxLen() *string {
+	if b == nil {
 		return nil
 	}
-	return o.MaxLen
+	return b.MaxLen
 }
 
-func (o *BytesRules) GetMinLen() *string {
-	if o == nil {
+func (b *BytesRules) GetMinLen() *string {
+	if b == nil {
 		return nil
 	}
-	return o.MinLen
+	return b.MinLen
 }
 
-func (o *BytesRules) GetNotIn() []string {
-	if o == nil {
+func (b *BytesRules) GetNotIn() []string {
+	if b == nil {
 		return nil
 	}
-	return o.NotIn
+	return b.NotIn
 }
 
-func (o *BytesRules) GetPattern() *string {
-	if o == nil {
+func (b *BytesRules) GetPattern() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Pattern
+	return b.Pattern
 }
 
-func (o *BytesRules) GetPrefix() *string {
-	if o == nil {
+func (b *BytesRules) GetPrefix() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Prefix
+	return b.Prefix
 }
 
-func (o *BytesRules) GetSuffix() *string {
-	if o == nil {
+func (b *BytesRules) GetSuffix() *string {
+	if b == nil {
 		return nil
 	}
-	return o.Suffix
+	return b.Suffix
 }

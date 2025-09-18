@@ -8,9 +8,9 @@ type AppEntitlementUserBindingExpandHistoryMask struct {
 	Paths []string `json:"paths,omitempty"`
 }
 
-func (o *AppEntitlementUserBindingExpandHistoryMask) GetPaths() []string {
-	if o == nil {
+func (a *AppEntitlementUserBindingExpandHistoryMask) GetPaths() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Paths
+	return a.Paths
 }

@@ -12,16 +12,16 @@ type ListAppsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ListAppsResponse) GetList() []App {
-	if o == nil {
+func (l *ListAppsResponse) GetList() []App {
+	if l == nil {
 		return nil
 	}
-	return o.List
+	return l.List
 }
 
-func (o *ListAppsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (l *ListAppsResponse) GetNextPageToken() *string {
+	if l == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return l.NextPageToken
 }

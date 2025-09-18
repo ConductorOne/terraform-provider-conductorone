@@ -14,30 +14,30 @@ type PersonalClientSearchServiceSearchRequest struct {
 	Users []UserRef `json:"users,omitempty"`
 }
 
-func (o *PersonalClientSearchServiceSearchRequest) GetPageSize() *int {
-	if o == nil {
+func (p *PersonalClientSearchServiceSearchRequest) GetPageSize() *int {
+	if p == nil {
 		return nil
 	}
-	return o.PageSize
+	return p.PageSize
 }
 
-func (o *PersonalClientSearchServiceSearchRequest) GetPageToken() *string {
-	if o == nil {
+func (p *PersonalClientSearchServiceSearchRequest) GetPageToken() *string {
+	if p == nil {
 		return nil
 	}
-	return o.PageToken
+	return p.PageToken
 }
 
-func (o *PersonalClientSearchServiceSearchRequest) GetQuery() *string {
-	if o == nil {
+func (p *PersonalClientSearchServiceSearchRequest) GetQuery() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Query
+	return p.Query
 }
 
-func (o *PersonalClientSearchServiceSearchRequest) GetUsers() []UserRef {
-	if o == nil {
+func (p *PersonalClientSearchServiceSearchRequest) GetUsers() []UserRef {
+	if p == nil {
 		return nil
 	}
-	return o.Users
+	return p.Users
 }

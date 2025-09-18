@@ -8,9 +8,9 @@ type SetAppEntitlementOwnersRequest struct {
 	UserIds []string `json:"userIds,omitempty"`
 }
 
-func (o *SetAppEntitlementOwnersRequest) GetUserIds() []string {
-	if o == nil {
+func (s *SetAppEntitlementOwnersRequest) GetUserIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.UserIds
+	return s.UserIds
 }

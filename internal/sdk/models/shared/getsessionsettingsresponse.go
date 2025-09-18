@@ -8,9 +8,9 @@ type GetSessionSettingsResponse struct {
 	SessionSettings *SessionSettings `json:"sessionSettings,omitempty"`
 }
 
-func (o *GetSessionSettingsResponse) GetSessionSettings() *SessionSettings {
-	if o == nil {
+func (g *GetSessionSettingsResponse) GetSessionSettings() *SessionSettings {
+	if g == nil {
 		return nil
 	}
-	return o.SessionSettings
+	return g.SessionSettings
 }

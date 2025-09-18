@@ -10,16 +10,16 @@ type FunctionsServiceGetCommitResponse struct {
 	Content map[string]string `json:"content,omitempty"`
 }
 
-func (o *FunctionsServiceGetCommitResponse) GetFunctionCommit() *FunctionCommit {
-	if o == nil {
+func (f *FunctionsServiceGetCommitResponse) GetFunctionCommit() *FunctionCommit {
+	if f == nil {
 		return nil
 	}
-	return o.FunctionCommit
+	return f.FunctionCommit
 }
 
-func (o *FunctionsServiceGetCommitResponse) GetContent() map[string]string {
-	if o == nil {
+func (f *FunctionsServiceGetCommitResponse) GetContent() map[string]string {
+	if f == nil {
 		return nil
 	}
-	return o.Content
+	return f.Content
 }

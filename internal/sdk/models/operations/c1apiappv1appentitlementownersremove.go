@@ -14,32 +14,32 @@ type C1APIAppV1AppEntitlementOwnersRemoveRequest struct {
 	RemoveAppEntitlementOwnerRequest *shared.RemoveAppEntitlementOwnerRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetEntitlementID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetEntitlementID() string {
+	if c == nil {
 		return ""
 	}
-	return o.EntitlementID
+	return c.EntitlementID
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetUserID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetUserID() string {
+	if c == nil {
 		return ""
 	}
-	return o.UserID
+	return c.UserID
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetRemoveAppEntitlementOwnerRequest() *shared.RemoveAppEntitlementOwnerRequest {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetRemoveAppEntitlementOwnerRequest() *shared.RemoveAppEntitlementOwnerRequest {
+	if c == nil {
 		return nil
 	}
-	return o.RemoveAppEntitlementOwnerRequest
+	return c.RemoveAppEntitlementOwnerRequest
 }
 
 type C1APIAppV1AppEntitlementOwnersRemoveResponse struct {
@@ -53,30 +53,30 @@ type C1APIAppV1AppEntitlementOwnersRemoveResponse struct {
 	RemoveAppEntitlementOwnerResponse *shared.RemoveAppEntitlementOwnerResponse
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersRemoveResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersRemoveResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersRemoveResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersRemoveResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersRemoveResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersRemoveResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersRemoveResponse) GetRemoveAppEntitlementOwnerResponse() *shared.RemoveAppEntitlementOwnerResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersRemoveResponse) GetRemoveAppEntitlementOwnerResponse() *shared.RemoveAppEntitlementOwnerResponse {
+	if c == nil {
 		return nil
 	}
-	return o.RemoveAppEntitlementOwnerResponse
+	return c.RemoveAppEntitlementOwnerResponse
 }

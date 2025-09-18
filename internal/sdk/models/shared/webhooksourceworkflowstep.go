@@ -10,16 +10,16 @@ type WebhookSourceWorkflowStep struct {
 	WorkflowStepID *string `json:"workflowStepId,omitempty"`
 }
 
-func (o *WebhookSourceWorkflowStep) GetWorkflowExecutionID() *string {
-	if o == nil {
+func (w *WebhookSourceWorkflowStep) GetWorkflowExecutionID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.WorkflowExecutionID
+	return w.WorkflowExecutionID
 }
 
-func (o *WebhookSourceWorkflowStep) GetWorkflowStepID() *string {
-	if o == nil {
+func (w *WebhookSourceWorkflowStep) GetWorkflowStepID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.WorkflowStepID
+	return w.WorkflowStepID
 }

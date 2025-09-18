@@ -10,16 +10,16 @@ type TaskAuditListResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *TaskAuditListResponse) GetList() []TaskAuditView {
-	if o == nil {
+func (t *TaskAuditListResponse) GetList() []TaskAuditView {
+	if t == nil {
 		return nil
 	}
-	return o.List
+	return t.List
 }
 
-func (o *TaskAuditListResponse) GetNextPageToken() *string {
-	if o == nil {
+func (t *TaskAuditListResponse) GetNextPageToken() *string {
+	if t == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return t.NextPageToken
 }

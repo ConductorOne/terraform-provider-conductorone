@@ -9,16 +9,16 @@ type PersonalClientServiceUpdateRequest struct {
 	UpdateMask     *string              `json:"updateMask,omitempty"`
 }
 
-func (o *PersonalClientServiceUpdateRequest) GetPersonalClient() *PersonalClientInput {
-	if o == nil {
+func (p *PersonalClientServiceUpdateRequest) GetPersonalClient() *PersonalClientInput {
+	if p == nil {
 		return nil
 	}
-	return o.PersonalClient
+	return p.PersonalClient
 }
 
-func (o *PersonalClientServiceUpdateRequest) GetUpdateMask() *string {
-	if o == nil {
+func (p *PersonalClientServiceUpdateRequest) GetUpdateMask() *string {
+	if p == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return p.UpdateMask
 }

@@ -10,16 +10,16 @@ type TaskActionsServiceDenyRequest struct {
 	PolicyStepID *string `json:"policyStepId,omitempty"`
 }
 
-func (o *TaskActionsServiceDenyRequest) GetComment() *string {
-	if o == nil {
+func (t *TaskActionsServiceDenyRequest) GetComment() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Comment
+	return t.Comment
 }
 
-func (o *TaskActionsServiceDenyRequest) GetPolicyStepID() *string {
-	if o == nil {
+func (t *TaskActionsServiceDenyRequest) GetPolicyStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.PolicyStepID
+	return t.PolicyStepID
 }

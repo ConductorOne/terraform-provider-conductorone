@@ -10,9 +10,9 @@ type RejectInstance struct {
 	RejectMessage *string `json:"rejectMessage,omitempty"`
 }
 
-func (o *RejectInstance) GetRejectMessage() *string {
-	if o == nil {
+func (r *RejectInstance) GetRejectMessage() *string {
+	if r == nil {
 		return nil
 	}
-	return o.RejectMessage
+	return r.RejectMessage
 }

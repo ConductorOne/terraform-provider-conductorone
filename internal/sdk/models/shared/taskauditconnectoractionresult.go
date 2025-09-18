@@ -25,51 +25,51 @@ type TaskAuditConnectorActionResult struct {
 	TaskAuditSuccessResult *TaskAuditSuccessResult `json:"success,omitempty"`
 }
 
-func (o *TaskAuditConnectorActionResult) GetAppEntitlementID() *string {
-	if o == nil {
+func (t *TaskAuditConnectorActionResult) GetAppEntitlementID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.AppEntitlementID
+	return t.AppEntitlementID
 }
 
-func (o *TaskAuditConnectorActionResult) GetAppID() *string {
-	if o == nil {
+func (t *TaskAuditConnectorActionResult) GetAppID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.AppID
+	return t.AppID
 }
 
-func (o *TaskAuditConnectorActionResult) GetTaskAuditCancelledResult() *TaskAuditCancelledResult {
-	if o == nil {
+func (t *TaskAuditConnectorActionResult) GetTaskAuditCancelledResult() *TaskAuditCancelledResult {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditCancelledResult
+	return t.TaskAuditCancelledResult
 }
 
-func (o *TaskAuditConnectorActionResult) GetConnectorActionID() *string {
-	if o == nil {
+func (t *TaskAuditConnectorActionResult) GetConnectorActionID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ConnectorActionID
+	return t.ConnectorActionID
 }
 
-func (o *TaskAuditConnectorActionResult) GetConnectorID() *string {
-	if o == nil {
+func (t *TaskAuditConnectorActionResult) GetConnectorID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ConnectorID
+	return t.ConnectorID
 }
 
-func (o *TaskAuditConnectorActionResult) GetTaskAuditErrorResult() *TaskAuditErrorResult {
-	if o == nil {
+func (t *TaskAuditConnectorActionResult) GetTaskAuditErrorResult() *TaskAuditErrorResult {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditErrorResult
+	return t.TaskAuditErrorResult
 }
 
-func (o *TaskAuditConnectorActionResult) GetTaskAuditSuccessResult() *TaskAuditSuccessResult {
-	if o == nil {
+func (t *TaskAuditConnectorActionResult) GetTaskAuditSuccessResult() *TaskAuditSuccessResult {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditSuccessResult
+	return t.TaskAuditSuccessResult
 }

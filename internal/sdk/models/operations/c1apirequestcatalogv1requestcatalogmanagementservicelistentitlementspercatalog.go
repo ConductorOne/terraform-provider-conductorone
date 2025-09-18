@@ -13,25 +13,25 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCata
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest) GetCatalogID() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest) GetCatalogID() string {
+	if c == nil {
 		return ""
 	}
-	return o.CatalogID
+	return c.CatalogID
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogResponse struct {
@@ -45,30 +45,30 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCata
 	RequestCatalogManagementServiceListEntitlementsPerCatalogResponse *shared.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogResponse) GetRequestCatalogManagementServiceListEntitlementsPerCatalogResponse() *shared.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogResponse) GetRequestCatalogManagementServiceListEntitlementsPerCatalogResponse() *shared.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse {
+	if c == nil {
 		return nil
 	}
-	return o.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse
+	return c.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse
 }

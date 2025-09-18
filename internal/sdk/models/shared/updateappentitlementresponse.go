@@ -14,16 +14,16 @@ type UpdateAppEntitlementResponse struct {
 	Expanded []UpdateAppEntitlementResponseExpanded `json:"expanded,omitempty"`
 }
 
-func (o *UpdateAppEntitlementResponse) GetAppEntitlementView() *AppEntitlementView {
-	if o == nil {
+func (u *UpdateAppEntitlementResponse) GetAppEntitlementView() *AppEntitlementView {
+	if u == nil {
 		return nil
 	}
-	return o.AppEntitlementView
+	return u.AppEntitlementView
 }
 
-func (o *UpdateAppEntitlementResponse) GetExpanded() []UpdateAppEntitlementResponseExpanded {
-	if o == nil {
+func (u *UpdateAppEntitlementResponse) GetExpanded() []UpdateAppEntitlementResponseExpanded {
+	if u == nil {
 		return nil
 	}
-	return o.Expanded
+	return u.Expanded
 }

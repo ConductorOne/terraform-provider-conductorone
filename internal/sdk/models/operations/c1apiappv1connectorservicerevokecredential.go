@@ -14,32 +14,32 @@ type C1APIAppV1ConnectorServiceRevokeCredentialRequest struct {
 	ConnectorServiceRevokeCredentialRequest *shared.ConnectorServiceRevokeCredentialRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetConnectorID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetConnectorID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ConnectorID
+	return c.ConnectorID
 }
 
-func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetConnectorServiceRevokeCredentialRequest() *shared.ConnectorServiceRevokeCredentialRequest {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetConnectorServiceRevokeCredentialRequest() *shared.ConnectorServiceRevokeCredentialRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceRevokeCredentialRequest
+	return c.ConnectorServiceRevokeCredentialRequest
 }
 
 type C1APIAppV1ConnectorServiceRevokeCredentialResponse struct {
@@ -53,30 +53,30 @@ type C1APIAppV1ConnectorServiceRevokeCredentialResponse struct {
 	ConnectorServiceRevokeCredentialResponse *shared.ConnectorServiceRevokeCredentialResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetConnectorServiceRevokeCredentialResponse() *shared.ConnectorServiceRevokeCredentialResponse {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetConnectorServiceRevokeCredentialResponse() *shared.ConnectorServiceRevokeCredentialResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceRevokeCredentialResponse
+	return c.ConnectorServiceRevokeCredentialResponse
 }

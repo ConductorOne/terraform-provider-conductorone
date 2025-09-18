@@ -10,16 +10,16 @@ type Rule struct {
 	PolicyKey *string `json:"policyKey,omitempty"`
 }
 
-func (o *Rule) GetCondition() *string {
-	if o == nil {
+func (r *Rule) GetCondition() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Condition
+	return r.Condition
 }
 
-func (o *Rule) GetPolicyKey() *string {
-	if o == nil {
+func (r *Rule) GetPolicyKey() *string {
+	if r == nil {
 		return nil
 	}
-	return o.PolicyKey
+	return r.PolicyKey
 }

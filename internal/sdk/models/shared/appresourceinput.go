@@ -31,79 +31,79 @@ type AppResourceInput struct {
 	SecretTrait *SecretTrait `json:"secretTrait,omitempty"`
 }
 
-func (o *AppResourceInput) GetAppID() *string {
-	if o == nil {
+func (a *AppResourceInput) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppResourceInput) GetAppResourceTypeID() *string {
-	if o == nil {
+func (a *AppResourceInput) GetAppResourceTypeID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppResourceTypeID
+	return a.AppResourceTypeID
 }
 
-func (o *AppResourceInput) GetCustomDescription() *string {
-	if o == nil {
+func (a *AppResourceInput) GetCustomDescription() *string {
+	if a == nil {
 		return nil
 	}
-	return o.CustomDescription
+	return a.CustomDescription
 }
 
-func (o *AppResourceInput) GetDescription() *string {
-	if o == nil {
+func (a *AppResourceInput) GetDescription() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Description
+	return a.Description
 }
 
-func (o *AppResourceInput) GetDisplayName() *string {
-	if o == nil {
+func (a *AppResourceInput) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *AppResourceInput) GetGrantCount() *string {
-	if o == nil {
+func (a *AppResourceInput) GetGrantCount() *string {
+	if a == nil {
 		return nil
 	}
-	return o.GrantCount
+	return a.GrantCount
 }
 
-func (o *AppResourceInput) GetID() *string {
-	if o == nil {
+func (a *AppResourceInput) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AppResourceInput) GetMatchBatonID() *string {
-	if o == nil {
+func (a *AppResourceInput) GetMatchBatonID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.MatchBatonID
+	return a.MatchBatonID
 }
 
-func (o *AppResourceInput) GetParentAppResourceID() *string {
-	if o == nil {
+func (a *AppResourceInput) GetParentAppResourceID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParentAppResourceID
+	return a.ParentAppResourceID
 }
 
-func (o *AppResourceInput) GetParentAppResourceTypeID() *string {
-	if o == nil {
+func (a *AppResourceInput) GetParentAppResourceTypeID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParentAppResourceTypeID
+	return a.ParentAppResourceTypeID
 }
 
-func (o *AppResourceInput) GetSecretTrait() *SecretTrait {
-	if o == nil {
+func (a *AppResourceInput) GetSecretTrait() *SecretTrait {
+	if a == nil {
 		return nil
 	}
-	return o.SecretTrait
+	return a.SecretTrait
 }

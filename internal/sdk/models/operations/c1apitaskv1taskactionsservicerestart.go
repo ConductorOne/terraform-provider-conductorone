@@ -12,18 +12,18 @@ type C1APITaskV1TaskActionsServiceRestartRequest struct {
 	TaskActionsServiceRestartRequest *shared.TaskActionsServiceRestartRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APITaskV1TaskActionsServiceRestartRequest) GetTaskID() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceRestartRequest) GetTaskID() string {
+	if c == nil {
 		return ""
 	}
-	return o.TaskID
+	return c.TaskID
 }
 
-func (o *C1APITaskV1TaskActionsServiceRestartRequest) GetTaskActionsServiceRestartRequest() *shared.TaskActionsServiceRestartRequest {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceRestartRequest) GetTaskActionsServiceRestartRequest() *shared.TaskActionsServiceRestartRequest {
+	if c == nil {
 		return nil
 	}
-	return o.TaskActionsServiceRestartRequest
+	return c.TaskActionsServiceRestartRequest
 }
 
 type C1APITaskV1TaskActionsServiceRestartResponse struct {
@@ -37,30 +37,30 @@ type C1APITaskV1TaskActionsServiceRestartResponse struct {
 	TaskActionsServiceRestartResponse *shared.TaskActionsServiceRestartResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceRestartResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceRestartResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APITaskV1TaskActionsServiceRestartResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceRestartResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APITaskV1TaskActionsServiceRestartResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceRestartResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceRestartResponse) GetTaskActionsServiceRestartResponse() *shared.TaskActionsServiceRestartResponse {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceRestartResponse) GetTaskActionsServiceRestartResponse() *shared.TaskActionsServiceRestartResponse {
+	if c == nil {
 		return nil
 	}
-	return o.TaskActionsServiceRestartResponse
+	return c.TaskActionsServiceRestartResponse
 }

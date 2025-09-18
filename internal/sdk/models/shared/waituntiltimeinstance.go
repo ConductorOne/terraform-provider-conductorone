@@ -24,16 +24,16 @@ func (w *WaitUntilTimeInstance) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *WaitUntilTimeInstance) GetDurationIfExists() *string {
-	if o == nil {
+func (w *WaitUntilTimeInstance) GetDurationIfExists() *string {
+	if w == nil {
 		return nil
 	}
-	return o.DurationIfExists
+	return w.DurationIfExists
 }
 
-func (o *WaitUntilTimeInstance) GetUntilTime() *time.Time {
-	if o == nil {
+func (w *WaitUntilTimeInstance) GetUntilTime() *time.Time {
+	if w == nil {
 		return nil
 	}
-	return o.UntilTime
+	return w.UntilTime
 }

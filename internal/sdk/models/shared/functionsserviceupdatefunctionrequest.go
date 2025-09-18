@@ -9,16 +9,16 @@ type FunctionsServiceUpdateFunctionRequest struct {
 	UpdateMask *string        `json:"updateMask,omitempty"`
 }
 
-func (o *FunctionsServiceUpdateFunctionRequest) GetFunction() *FunctionInput {
-	if o == nil {
+func (f *FunctionsServiceUpdateFunctionRequest) GetFunction() *FunctionInput {
+	if f == nil {
 		return nil
 	}
-	return o.Function
+	return f.Function
 }
 
-func (o *FunctionsServiceUpdateFunctionRequest) GetUpdateMask() *string {
-	if o == nil {
+func (f *FunctionsServiceUpdateFunctionRequest) GetUpdateMask() *string {
+	if f == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return f.UpdateMask
 }

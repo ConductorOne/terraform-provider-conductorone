@@ -91,65 +91,65 @@ type ApprovalInstance struct {
 	State *ApprovalInstanceState `json:"state,omitempty"`
 }
 
-func (o *ApprovalInstance) GetApproval() *Approval {
-	if o == nil {
+func (a *ApprovalInstance) GetApproval() *Approval {
+	if a == nil {
 		return nil
 	}
-	return o.Approval
+	return a.Approval
 }
 
-func (o *ApprovalInstance) GetApprovedAction() *ApprovedAction {
-	if o == nil {
+func (a *ApprovalInstance) GetApprovedAction() *ApprovedAction {
+	if a == nil {
 		return nil
 	}
-	return o.ApprovedAction
+	return a.ApprovedAction
 }
 
-func (o *ApprovalInstance) GetDeniedAction() *DeniedAction {
-	if o == nil {
+func (a *ApprovalInstance) GetDeniedAction() *DeniedAction {
+	if a == nil {
 		return nil
 	}
-	return o.DeniedAction
+	return a.DeniedAction
 }
 
-func (o *ApprovalInstance) GetEscalationInstance() *EscalationInstance {
-	if o == nil {
+func (a *ApprovalInstance) GetEscalationInstance() *EscalationInstance {
+	if a == nil {
 		return nil
 	}
-	return o.EscalationInstance
+	return a.EscalationInstance
 }
 
-func (o *ApprovalInstance) GetReassignedAction() *ReassignedAction {
-	if o == nil {
+func (a *ApprovalInstance) GetReassignedAction() *ReassignedAction {
+	if a == nil {
 		return nil
 	}
-	return o.ReassignedAction
+	return a.ReassignedAction
 }
 
-func (o *ApprovalInstance) GetReassignedByErrorAction() *ReassignedByErrorAction {
-	if o == nil {
+func (a *ApprovalInstance) GetReassignedByErrorAction() *ReassignedByErrorAction {
+	if a == nil {
 		return nil
 	}
-	return o.ReassignedByErrorAction
+	return a.ReassignedByErrorAction
 }
 
-func (o *ApprovalInstance) GetRestartAction() *RestartAction {
-	if o == nil {
+func (a *ApprovalInstance) GetRestartAction() *RestartAction {
+	if a == nil {
 		return nil
 	}
-	return o.RestartAction
+	return a.RestartAction
 }
 
-func (o *ApprovalInstance) GetSkippedAction() *SkippedAction {
-	if o == nil {
+func (a *ApprovalInstance) GetSkippedAction() *SkippedAction {
+	if a == nil {
 		return nil
 	}
-	return o.SkippedAction
+	return a.SkippedAction
 }
 
-func (o *ApprovalInstance) GetState() *ApprovalInstanceState {
-	if o == nil {
+func (a *ApprovalInstance) GetState() *ApprovalInstanceState {
+	if a == nil {
 		return nil
 	}
-	return o.State
+	return a.State
 }

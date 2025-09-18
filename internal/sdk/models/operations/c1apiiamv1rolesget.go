@@ -11,11 +11,11 @@ type C1APIIamV1RolesGetRequest struct {
 	RoleID string `pathParam:"style=simple,explode=false,name=role_id"`
 }
 
-func (o *C1APIIamV1RolesGetRequest) GetRoleID() string {
-	if o == nil {
+func (c *C1APIIamV1RolesGetRequest) GetRoleID() string {
+	if c == nil {
 		return ""
 	}
-	return o.RoleID
+	return c.RoleID
 }
 
 type C1APIIamV1RolesGetResponse struct {
@@ -29,30 +29,30 @@ type C1APIIamV1RolesGetResponse struct {
 	GetRolesResponse *shared.GetRolesResponse
 }
 
-func (o *C1APIIamV1RolesGetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIIamV1RolesGetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIIamV1RolesGetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIIamV1RolesGetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIIamV1RolesGetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIIamV1RolesGetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIIamV1RolesGetResponse) GetGetRolesResponse() *shared.GetRolesResponse {
-	if o == nil {
+func (c *C1APIIamV1RolesGetResponse) GetGetRolesResponse() *shared.GetRolesResponse {
+	if c == nil {
 		return nil
 	}
-	return o.GetRolesResponse
+	return c.GetRolesResponse
 }

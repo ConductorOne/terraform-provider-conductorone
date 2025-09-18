@@ -8,9 +8,9 @@ type FunctionsServiceCommitResponse struct {
 	FunctionCommit *FunctionCommit `json:"commit,omitempty"`
 }
 
-func (o *FunctionsServiceCommitResponse) GetFunctionCommit() *FunctionCommit {
-	if o == nil {
+func (f *FunctionsServiceCommitResponse) GetFunctionCommit() *FunctionCommit {
+	if f == nil {
 		return nil
 	}
-	return o.FunctionCommit
+	return f.FunctionCommit
 }

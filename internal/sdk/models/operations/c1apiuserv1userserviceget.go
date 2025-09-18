@@ -11,11 +11,11 @@ type C1APIUserV1UserServiceGetRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIUserV1UserServiceGetRequest) GetID() string {
-	if o == nil {
+func (c *C1APIUserV1UserServiceGetRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIUserV1UserServiceGetResponse struct {
@@ -29,30 +29,30 @@ type C1APIUserV1UserServiceGetResponse struct {
 	UserServiceGetResponse *shared.UserServiceGetResponse
 }
 
-func (o *C1APIUserV1UserServiceGetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIUserV1UserServiceGetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIUserV1UserServiceGetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIUserV1UserServiceGetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIUserV1UserServiceGetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIUserV1UserServiceGetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIUserV1UserServiceGetResponse) GetUserServiceGetResponse() *shared.UserServiceGetResponse {
-	if o == nil {
+func (c *C1APIUserV1UserServiceGetResponse) GetUserServiceGetResponse() *shared.UserServiceGetResponse {
+	if c == nil {
 		return nil
 	}
-	return o.UserServiceGetResponse
+	return c.UserServiceGetResponse
 }

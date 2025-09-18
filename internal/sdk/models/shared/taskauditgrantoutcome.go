@@ -52,9 +52,9 @@ type TaskAuditGrantOutcome struct {
 	Outcome *TaskAuditGrantOutcomeOutcome `json:"outcome,omitempty"`
 }
 
-func (o *TaskAuditGrantOutcome) GetOutcome() *TaskAuditGrantOutcomeOutcome {
-	if o == nil {
+func (t *TaskAuditGrantOutcome) GetOutcome() *TaskAuditGrantOutcomeOutcome {
+	if t == nil {
 		return nil
 	}
-	return o.Outcome
+	return t.Outcome
 }

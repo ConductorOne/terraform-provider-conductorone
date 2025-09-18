@@ -9,16 +9,16 @@ type UpdateAppRequest struct {
 	UpdateMask *string   `json:"updateMask,omitempty"`
 }
 
-func (o *UpdateAppRequest) GetApp() *AppInput {
-	if o == nil {
+func (u *UpdateAppRequest) GetApp() *AppInput {
+	if u == nil {
 		return nil
 	}
-	return o.App
+	return u.App
 }
 
-func (o *UpdateAppRequest) GetUpdateMask() *string {
-	if o == nil {
+func (u *UpdateAppRequest) GetUpdateMask() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return u.UpdateMask
 }

@@ -13,30 +13,30 @@ type PersonalClientServiceCreateRequest struct {
 	ScopedRoles []string `json:"scopedRoles,omitempty"`
 }
 
-func (o *PersonalClientServiceCreateRequest) GetAllowSourceCidr() []string {
-	if o == nil {
+func (p *PersonalClientServiceCreateRequest) GetAllowSourceCidr() []string {
+	if p == nil {
 		return nil
 	}
-	return o.AllowSourceCidr
+	return p.AllowSourceCidr
 }
 
-func (o *PersonalClientServiceCreateRequest) GetDisplayName() *string {
-	if o == nil {
+func (p *PersonalClientServiceCreateRequest) GetDisplayName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.DisplayName
+	return p.DisplayName
 }
 
-func (o *PersonalClientServiceCreateRequest) GetExpires() *string {
-	if o == nil {
+func (p *PersonalClientServiceCreateRequest) GetExpires() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Expires
+	return p.Expires
 }
 
-func (o *PersonalClientServiceCreateRequest) GetScopedRoles() []string {
-	if o == nil {
+func (p *PersonalClientServiceCreateRequest) GetScopedRoles() []string {
+	if p == nil {
 		return nil
 	}
-	return o.ScopedRoles
+	return p.ScopedRoles
 }

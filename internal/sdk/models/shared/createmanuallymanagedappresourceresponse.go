@@ -12,9 +12,9 @@ type CreateManuallyManagedAppResourceResponse struct {
 	AppResource *AppResource `json:"appResource,omitempty"`
 }
 
-func (o *CreateManuallyManagedAppResourceResponse) GetAppResource() *AppResource {
-	if o == nil {
+func (c *CreateManuallyManagedAppResourceResponse) GetAppResource() *AppResource {
+	if c == nil {
 		return nil
 	}
-	return o.AppResource
+	return c.AppResource
 }

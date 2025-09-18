@@ -14,32 +14,32 @@ type C1APIAppV1AppEntitlementsListUsersRequest struct {
 	PageToken        *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIAppV1AppEntitlementsListUsersRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListUsersRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementsListUsersRequest) GetAppEntitlementID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListUsersRequest) GetAppEntitlementID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppEntitlementID
+	return c.AppEntitlementID
 }
 
-func (o *C1APIAppV1AppEntitlementsListUsersRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListUsersRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIAppV1AppEntitlementsListUsersRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListUsersRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIAppV1AppEntitlementsListUsersResponse struct {
@@ -53,30 +53,30 @@ type C1APIAppV1AppEntitlementsListUsersResponse struct {
 	ListAppEntitlementUsersResponse *shared.ListAppEntitlementUsersResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsListUsersResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListUsersResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementsListUsersResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListUsersResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementsListUsersResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListUsersResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsListUsersResponse) GetListAppEntitlementUsersResponse() *shared.ListAppEntitlementUsersResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListUsersResponse) GetListAppEntitlementUsersResponse() *shared.ListAppEntitlementUsersResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ListAppEntitlementUsersResponse
+	return c.ListAppEntitlementUsersResponse
 }

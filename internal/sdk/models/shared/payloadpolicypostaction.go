@@ -14,16 +14,16 @@ type PayloadPolicyPostAction struct {
 	TaskView *TaskView `json:"taskView,omitempty"`
 }
 
-func (o *PayloadPolicyPostAction) GetExpanded() []PayloadPolicyPostActionExpanded {
-	if o == nil {
+func (p *PayloadPolicyPostAction) GetExpanded() []PayloadPolicyPostActionExpanded {
+	if p == nil {
 		return nil
 	}
-	return o.Expanded
+	return p.Expanded
 }
 
-func (o *PayloadPolicyPostAction) GetTaskView() *TaskView {
-	if o == nil {
+func (p *PayloadPolicyPostAction) GetTaskView() *TaskView {
+	if p == nil {
 		return nil
 	}
-	return o.TaskView
+	return p.TaskView
 }

@@ -10,16 +10,16 @@ type ListOrgDomainsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ListOrgDomainsResponse) GetList() []OrgDomain {
-	if o == nil {
+func (l *ListOrgDomainsResponse) GetList() []OrgDomain {
+	if l == nil {
 		return nil
 	}
-	return o.List
+	return l.List
 }
 
-func (o *ListOrgDomainsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (l *ListOrgDomainsResponse) GetNextPageToken() *string {
+	if l == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return l.NextPageToken
 }

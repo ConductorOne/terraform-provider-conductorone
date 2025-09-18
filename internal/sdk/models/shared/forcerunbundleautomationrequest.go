@@ -8,9 +8,9 @@ type ForceRunBundleAutomationRequest struct {
 	Refs []AppEntitlementRef `json:"refs,omitempty"`
 }
 
-func (o *ForceRunBundleAutomationRequest) GetRefs() []AppEntitlementRef {
-	if o == nil {
+func (f *ForceRunBundleAutomationRequest) GetRefs() []AppEntitlementRef {
+	if f == nil {
 		return nil
 	}
-	return o.Refs
+	return f.Refs
 }

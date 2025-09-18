@@ -18,30 +18,30 @@ type C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse struct {
 	SearchAttributeValuesResponse *shared.SearchAttributeValuesResponse
 }
 
-func (o *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetSearchAttributeValuesResponse() *shared.SearchAttributeValuesResponse {
-	if o == nil {
+func (c *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetSearchAttributeValuesResponse() *shared.SearchAttributeValuesResponse {
+	if c == nil {
 		return nil
 	}
-	return o.SearchAttributeValuesResponse
+	return c.SearchAttributeValuesResponse
 }

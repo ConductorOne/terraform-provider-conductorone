@@ -8,9 +8,9 @@ type ReplacePolicy struct {
 	PolicyID *string `json:"policyId,omitempty"`
 }
 
-func (o *ReplacePolicy) GetPolicyID() *string {
-	if o == nil {
+func (r *ReplacePolicy) GetPolicyID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.PolicyID
+	return r.PolicyID
 }

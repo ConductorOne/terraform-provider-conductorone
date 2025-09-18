@@ -31,44 +31,44 @@ func (a *AttributeValue) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AttributeValue) GetAttributeTypeID() *string {
-	if o == nil {
+func (a *AttributeValue) GetAttributeTypeID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AttributeTypeID
+	return a.AttributeTypeID
 }
 
-func (o *AttributeValue) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *AttributeValue) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AttributeValue) GetDeletedAt() *time.Time {
-	if o == nil {
+func (a *AttributeValue) GetDeletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return a.DeletedAt
 }
 
-func (o *AttributeValue) GetID() *string {
-	if o == nil {
+func (a *AttributeValue) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AttributeValue) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (a *AttributeValue) GetUpdatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AttributeValue) GetValue() *string {
-	if o == nil {
+func (a *AttributeValue) GetValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Value
+	return a.Value
 }

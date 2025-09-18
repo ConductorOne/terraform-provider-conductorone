@@ -115,28 +115,28 @@ func (o *SearchUsersRequest) GetEmail() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Email
+	return s.Departments
 }
 
-func (o *SearchUsersRequest) GetExcludeIds() []string {
-	if o == nil {
+func (s *SearchUsersRequest) GetEmail() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ExcludeIds
+	return s.Email
 }
 
-func (o *SearchUsersRequest) GetExcludeTypes() []ExcludeTypes {
-	if o == nil {
+func (s *SearchUsersRequest) GetExcludeIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.ExcludeTypes
+	return s.ExcludeIds
 }
 
-func (o *SearchUsersRequest) GetIds() []string {
-	if o == nil {
+func (s *SearchUsersRequest) GetExcludeTypes() []ExcludeTypes {
+	if s == nil {
 		return nil
 	}
-	return o.Ids
+	return s.ExcludeTypes
 }
 
 func (o *SearchUsersRequest) GetJobTitles() []string {
@@ -157,40 +157,61 @@ func (o *SearchUsersRequest) GetPageSize() *int {
 	if o == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.Ids
 }
 
-func (o *SearchUsersRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchUsersRequest) GetJobTitles() []string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.JobTitles
 }
 
-func (o *SearchUsersRequest) GetQuery() *string {
-	if o == nil {
+func (s *SearchUsersRequest) GetManagerIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Query
+	return s.ManagerIds
 }
 
-func (o *SearchUsersRequest) GetRefs() []UserRef {
-	if o == nil {
+func (s *SearchUsersRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.Refs
+	return s.PageSize
 }
 
-func (o *SearchUsersRequest) GetRoleIds() []string {
-	if o == nil {
+func (s *SearchUsersRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.RoleIds
+	return s.PageToken
 }
 
-func (o *SearchUsersRequest) GetUserStatuses() []UserStatuses {
-	if o == nil {
+func (s *SearchUsersRequest) GetQuery() *string {
+	if s == nil {
 		return nil
 	}
-	return o.UserStatuses
+	return s.Query
+}
+
+func (s *SearchUsersRequest) GetRefs() []UserRef {
+	if s == nil {
+		return nil
+	}
+	return s.Refs
+}
+
+func (s *SearchUsersRequest) GetRoleIds() []string {
+	if s == nil {
+		return nil
+	}
+	return s.RoleIds
+}
+
+func (s *SearchUsersRequest) GetUserStatuses() []UserStatuses {
+	if s == nil {
+		return nil
+	}
+	return s.UserStatuses
 }

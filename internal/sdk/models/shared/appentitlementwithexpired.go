@@ -38,65 +38,65 @@ func (a *AppEntitlementWithExpired) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppEntitlementWithExpired) GetAppEntitlementID() *string {
-	if o == nil {
+func (a *AppEntitlementWithExpired) GetAppEntitlementID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementID
+	return a.AppEntitlementID
 }
 
-func (o *AppEntitlementWithExpired) GetAppID() *string {
-	if o == nil {
+func (a *AppEntitlementWithExpired) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppEntitlementWithExpired) GetAppUser() *AppUser {
-	if o == nil {
+func (a *AppEntitlementWithExpired) GetAppUser() *AppUser {
+	if a == nil {
 		return nil
 	}
-	return o.AppUser
+	return a.AppUser
 }
 
-func (o *AppEntitlementWithExpired) GetAppUserID() *string {
-	if o == nil {
+func (a *AppEntitlementWithExpired) GetAppUserID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserID
+	return a.AppUserID
 }
 
-func (o *AppEntitlementWithExpired) GetDiscovered() *time.Time {
-	if o == nil {
+func (a *AppEntitlementWithExpired) GetDiscovered() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.Discovered
+	return a.Discovered
 }
 
-func (o *AppEntitlementWithExpired) GetExpired() *time.Time {
-	if o == nil {
+func (a *AppEntitlementWithExpired) GetExpired() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.Expired
+	return a.Expired
 }
 
-func (o *AppEntitlementWithExpired) GetGrantReasons() []GrantReason {
-	if o == nil {
+func (a *AppEntitlementWithExpired) GetGrantReasons() []GrantReason {
+	if a == nil {
 		return nil
 	}
-	return o.GrantReasons
+	return a.GrantReasons
 }
 
-func (o *AppEntitlementWithExpired) GetGrantSources() []AppEntitlementRef {
-	if o == nil {
+func (a *AppEntitlementWithExpired) GetGrantSources() []AppEntitlementRef {
+	if a == nil {
 		return nil
 	}
-	return o.GrantSources
+	return a.GrantSources
 }
 
-func (o *AppEntitlementWithExpired) GetUser() *User {
-	if o == nil {
+func (a *AppEntitlementWithExpired) GetUser() *User {
+	if a == nil {
 		return nil
 	}
-	return o.User
+	return a.User
 }

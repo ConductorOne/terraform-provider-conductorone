@@ -14,30 +14,30 @@ type ConnectorView struct {
 	UsersPath *string `json:"usersPath,omitempty"`
 }
 
-func (o *ConnectorView) GetAppPath() *string {
-	if o == nil {
+func (c *ConnectorView) GetAppPath() *string {
+	if c == nil {
 		return nil
 	}
-	return o.AppPath
+	return c.AppPath
 }
 
-func (o *ConnectorView) GetCapabilitiesPath() *string {
-	if o == nil {
+func (c *ConnectorView) GetCapabilitiesPath() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CapabilitiesPath
+	return c.CapabilitiesPath
 }
 
-func (o *ConnectorView) GetConnector() *Connector {
-	if o == nil {
+func (c *ConnectorView) GetConnector() *Connector {
+	if c == nil {
 		return nil
 	}
-	return o.Connector
+	return c.Connector
 }
 
-func (o *ConnectorView) GetUsersPath() *string {
-	if o == nil {
+func (c *ConnectorView) GetUsersPath() *string {
+	if c == nil {
 		return nil
 	}
-	return o.UsersPath
+	return c.UsersPath
 }
