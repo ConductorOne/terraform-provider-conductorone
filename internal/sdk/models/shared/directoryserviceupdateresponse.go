@@ -14,16 +14,16 @@ type DirectoryServiceUpdateResponse struct {
 	Expanded []DirectoryServiceUpdateResponseExpanded `json:"expanded,omitempty"`
 }
 
-func (o *DirectoryServiceUpdateResponse) GetDirectoryView() *DirectoryView {
-	if o == nil {
+func (d *DirectoryServiceUpdateResponse) GetDirectoryView() *DirectoryView {
+	if d == nil {
 		return nil
 	}
-	return o.DirectoryView
+	return d.DirectoryView
 }
 
-func (o *DirectoryServiceUpdateResponse) GetExpanded() []DirectoryServiceUpdateResponseExpanded {
-	if o == nil {
+func (d *DirectoryServiceUpdateResponse) GetExpanded() []DirectoryServiceUpdateResponseExpanded {
+	if d == nil {
 		return nil
 	}
-	return o.Expanded
+	return d.Expanded
 }

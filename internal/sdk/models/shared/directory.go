@@ -35,29 +35,15 @@ func (d *Directory) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Directory) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
-	if o == nil {
-		return nil
-	}
-	return o.DirectoryAccountFilterAll
-}
-
-func (o *Directory) GetAppID() *string {
-	if o == nil {
+func (d *Directory) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
+	if d == nil {
 		return nil
 	}
 	return d.DirectoryAccountFilterAll
 }
 
-func (o *Directory) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
-	if o == nil {
-		return nil
-	}
-	return o.DirectoryAccountFilterCel
-}
-
-func (o *Directory) GetCreatedAt() *time.Time {
-	if o == nil {
+func (d *Directory) GetAppID() *string {
+	if d == nil {
 		return nil
 	}
 	return d.AppID

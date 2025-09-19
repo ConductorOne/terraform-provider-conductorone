@@ -8,9 +8,9 @@ type DirectoryAccountFilterCel struct {
 	Expression *string `json:"expression,omitempty"`
 }
 
-func (o *DirectoryAccountFilterCel) GetExpression() *string {
-	if o == nil {
+func (d *DirectoryAccountFilterCel) GetExpression() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Expression
+	return d.Expression
 }

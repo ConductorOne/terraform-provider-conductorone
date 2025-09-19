@@ -16,13 +16,6 @@ type DirectoryServiceCreateRequest struct {
 	DirectoryAccountFilterCel *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
 }
 
-func (o *DirectoryServiceCreateRequest) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
-	if o == nil {
-		return nil
-	}
-	return o.DirectoryAccountFilterAll
-}
-
 func (d *DirectoryServiceCreateRequest) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
 	if d == nil {
 		return nil
@@ -42,11 +35,4 @@ func (d *DirectoryServiceCreateRequest) GetDirectoryAccountFilterCel() *Director
 		return nil
 	}
 	return d.DirectoryAccountFilterCel
-}
-
-func (o *DirectoryServiceCreateRequest) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
-	if o == nil {
-		return nil
-	}
-	return o.DirectoryAccountFilterCel
 }

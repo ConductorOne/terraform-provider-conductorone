@@ -998,6 +998,8 @@ C1ApiTaskV1TaskSearchServiceSearchResponse (ContentType: string, StatusCode: int
          PasswordField (empty)
          StringRules (address: boolean, const: string, contains: string ...)
           WellKnownRegex (enum: UNKNOWN, HTTP_HEADER_NAME, HTTP_HEADER_VALUE)
+         SelectField (options: array)
+           SelectOption (displayName: string, value: string)
          TextField (multiline: boolean)
         StringSliceField (ChipsField: ChipsField, defaultValues: array, placeholder: string ...)
          ChipsField (empty)

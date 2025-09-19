@@ -225,11 +225,11 @@ func (a *Automation) GetTriggers() []AutomationTrigger {
 	return a.Triggers
 }
 
-func (o *Automation) GetWebhookHmacSecret() *string {
-	if o == nil {
+func (a *Automation) GetWebhookHmacSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return o.WebhookHmacSecret
+	return a.WebhookHmacSecret
 }
 
 // AutomationInput - The Automation message.
@@ -385,9 +385,9 @@ func (a *AutomationInput) GetTriggers() []AutomationTrigger {
 	return a.Triggers
 }
 
-func (o *AutomationInput) GetWebhookHmacSecret() *string {
-	if o == nil {
+func (a *AutomationInput) GetWebhookHmacSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return o.WebhookHmacSecret
+	return a.WebhookHmacSecret
 }

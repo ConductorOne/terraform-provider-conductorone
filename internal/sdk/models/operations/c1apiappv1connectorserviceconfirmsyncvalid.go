@@ -14,32 +14,32 @@ type C1APIAppV1ConnectorServiceConfirmSyncValidRequest struct {
 	ConfirmSyncValidRequest *shared.ConfirmSyncValidRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetConnectorID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetConnectorID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ConnectorID
+	return c.ConnectorID
 }
 
-func (o *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetSyncLifecycleID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetSyncLifecycleID() string {
+	if c == nil {
 		return ""
 	}
-	return o.SyncLifecycleID
+	return c.SyncLifecycleID
 }
 
-func (o *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetConfirmSyncValidRequest() *shared.ConfirmSyncValidRequest {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetConfirmSyncValidRequest() *shared.ConfirmSyncValidRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ConfirmSyncValidRequest
+	return c.ConfirmSyncValidRequest
 }
 
 type C1APIAppV1ConnectorServiceConfirmSyncValidResponse struct {
@@ -53,30 +53,30 @@ type C1APIAppV1ConnectorServiceConfirmSyncValidResponse struct {
 	ConfirmSyncValidResponse *shared.ConfirmSyncValidResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceConfirmSyncValidResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceConfirmSyncValidResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1ConnectorServiceConfirmSyncValidResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceConfirmSyncValidResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1ConnectorServiceConfirmSyncValidResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceConfirmSyncValidResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceConfirmSyncValidResponse) GetConfirmSyncValidResponse() *shared.ConfirmSyncValidResponse {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceConfirmSyncValidResponse) GetConfirmSyncValidResponse() *shared.ConfirmSyncValidResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ConfirmSyncValidResponse
+	return c.ConfirmSyncValidResponse
 }

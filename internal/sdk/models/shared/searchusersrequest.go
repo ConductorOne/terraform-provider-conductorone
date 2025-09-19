@@ -104,15 +104,8 @@ type SearchUsersRequest struct {
 	UserStatuses []UserStatuses `json:"userStatuses,omitempty"`
 }
 
-func (o *SearchUsersRequest) GetDepartments() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Departments
-}
-
-func (o *SearchUsersRequest) GetEmail() *string {
-	if o == nil {
+func (s *SearchUsersRequest) GetDepartments() []string {
+	if s == nil {
 		return nil
 	}
 	return s.Departments
@@ -139,22 +132,8 @@ func (s *SearchUsersRequest) GetExcludeTypes() []ExcludeTypes {
 	return s.ExcludeTypes
 }
 
-func (o *SearchUsersRequest) GetJobTitles() []string {
-	if o == nil {
-		return nil
-	}
-	return o.JobTitles
-}
-
-func (o *SearchUsersRequest) GetManagerIds() []string {
-	if o == nil {
-		return nil
-	}
-	return o.ManagerIds
-}
-
-func (o *SearchUsersRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchUsersRequest) GetIds() []string {
+	if s == nil {
 		return nil
 	}
 	return s.Ids

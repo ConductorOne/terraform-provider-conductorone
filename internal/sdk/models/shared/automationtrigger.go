@@ -75,8 +75,8 @@ func (a *AutomationTrigger) GetAppUserUpdatedTrigger() *AppUserUpdatedTrigger {
 	return a.AppUserUpdatedTrigger
 }
 
-func (o *AutomationTrigger) GetFormTrigger() any {
-	if o == nil {
+func (a *AutomationTrigger) GetFormTrigger() any {
+	if a == nil {
 		return nil
 	}
 	return a.FormTrigger
