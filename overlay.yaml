@@ -546,9 +546,12 @@ actions:
   - target: $["components"]["schemas"]["c1.api.policy.v1.Form"]
     update:
       x-speakeasy-type-override: any
+  - target: $["components"]["schemas"]["c1.api.automations.v1.FormTrigger"]
+    update:
+      x-speakeasy-type-override: any
   - target: $["paths"]["/api/v1/functions/{function_id}/commits/{id}"]["get"]["parameters"][1]
     update:
-      x-speakeasy-match: function_commit.id
+      x-speakeasy-match: function_commit.id 
   - target: $["paths"]["/api/v1/apps/{app_id}/entitlements/{entitlement_id}/owners"]["put"]["x-speakeasy-entity-operation"]["terraform-resource"]
     update:
       - App_Entitlement_Owner#create
@@ -556,3 +559,14 @@ actions:
   - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["id"]
     update:
       x-speakeasy-param-suppress-computed-diff: allow
+  # `webhookHmacSecret` is only returned on creation and terraform expects all the fields to be known throughout its lifecycle. 
+  # To align with this, we should wrap `webhookHmacSecret` inside `Automation`, 
+  - target: $["components"]["schemas"]["c1.api.automations.v1.Automation"]["properties"]
+    update:
+      webhookHmacSecret:
+        description: If we create a new trigger with an HMAC secret we return the HMAC on this field
+        readOnly: false
+        type: string
+  - target: $["components"]["schemas"]["c1.api.automations.v1.CreateAutomationResponse"]["properties"]["webhookHmacSecret"]
+    update:
+      x-speakeasy-ignore: true

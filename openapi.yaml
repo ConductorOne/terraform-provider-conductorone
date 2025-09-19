@@ -2426,6 +2426,16 @@ components:
             title: Cancel Access Request Defaults Request
             type: object
             x-speakeasy-name-override: CancelAccessRequestDefaultsRequest
+        c1.api.app.v1.ConfirmSyncValidRequestInput:
+            description: The ConfirmSyncValidRequest message.
+            title: Confirm Sync Valid Request
+            type: object
+            x-speakeasy-name-override: ConfirmSyncValidRequest
+        c1.api.app.v1.ConfirmSyncValidResponse:
+            description: The ConfirmSyncValidResponse message.
+            title: Confirm Sync Valid Response
+            type: object
+            x-speakeasy-name-override: ConfirmSyncValidResponse
         c1.api.app.v1.Connector:
             description: A Connector is used to sync objects into Apps
             properties:
@@ -3179,6 +3189,7 @@ components:
                         - CATALOG
                         - CUSTOM
                         - VAULT
+                        - PROFILE_TYPE
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
@@ -4938,6 +4949,7 @@ components:
                     type: array
             title: Automation
             type: object
+            x-speakeasy-entity: Automation
             x-speakeasy-name-override: Automation
         c1.api.automations.v1.AutomationContext:
             description: The AutomationContext message.
@@ -6410,12 +6422,21 @@ components:
             type: object
             x-speakeasy-name-override: WebhookListenerAuthJWT
         c1.api.directory.v1.Directory:
-            description: This object indicates that an app is also a directory.
+            description: |
+                This object indicates that an app is also a directory.
+
+                This message contains a oneof named account_filter. Only a single field of the following list may be set at a time:
+                  - all
+                  - celExpression
             properties:
+                all:
+                    $ref: '#/components/schemas/c1.api.directory.v1.DirectoryAccountFilterAll'
                 appId:
                     description: The ID of the app associated with the directory.
                     readOnly: true
                     type: string
+                celExpression:
+                    $ref: '#/components/schemas/c1.api.directory.v1.DirectoryAccountFilterCel'
                 createdAt:
                     format: date-time
                     readOnly: true
@@ -6431,6 +6452,23 @@ components:
             title: Directory
             type: object
             x-speakeasy-name-override: Directory
+        c1.api.directory.v1.DirectoryAccountFilterAll:
+            description: The DirectoryAccountFilterAll message.
+            nullable: true
+            title: Directory Account Filter All
+            type: object
+            x-speakeasy-name-override: DirectoryAccountFilterAll
+        c1.api.directory.v1.DirectoryAccountFilterCel:
+            description: The DirectoryAccountFilterCel message.
+            nullable: true
+            properties:
+                expression:
+                    description: The expression field.
+                    readOnly: false
+                    type: string
+            title: Directory Account Filter Cel
+            type: object
+            x-speakeasy-name-override: DirectoryAccountFilterCel
         c1.api.directory.v1.DirectoryExpandMask:
             description: The fields to be included in the directory response.
             properties:
@@ -6445,12 +6483,21 @@ components:
             type: object
             x-speakeasy-name-override: DirectoryExpandMask
         c1.api.directory.v1.DirectoryServiceCreateRequest:
-            description: Uplevel an app into a full directory.
+            description: |
+                Uplevel an app into a full directory.
+
+                This message contains a oneof named account_filter. Only a single field of the following list may be set at a time:
+                  - all
+                  - celExpression
             properties:
+                all:
+                    $ref: '#/components/schemas/c1.api.directory.v1.DirectoryAccountFilterAll'
                 appId:
                     description: The AppID to make into a directory, providing identities and more for the C1 app.
                     readOnly: false
                     type: string
+                celExpression:
+                    $ref: '#/components/schemas/c1.api.directory.v1.DirectoryAccountFilterCel'
                 expandMask:
                     $ref: '#/components/schemas/c1.api.directory.v1.DirectoryExpandMask'
             title: Directory Service Create Request
@@ -6546,11 +6593,50 @@ components:
             title: Directory Service List Response
             type: object
             x-speakeasy-name-override: DirectoryServiceListResponse
+        c1.api.directory.v1.DirectoryServiceUpdateRequestInput:
+            description: |
+                Update a directory by app_id.
+
+                This message contains a oneof named account_filter. Only a single field of the following list may be set at a time:
+                  - all
+                  - celExpression
+            properties:
+                all:
+                    $ref: '#/components/schemas/c1.api.directory.v1.DirectoryAccountFilterAll'
+                celExpression:
+                    $ref: '#/components/schemas/c1.api.directory.v1.DirectoryAccountFilterCel'
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.directory.v1.DirectoryExpandMask'
+            title: Directory Service Update Request
+            type: object
+            x-speakeasy-name-override: DirectoryServiceUpdateRequest
+        c1.api.directory.v1.DirectoryServiceUpdateResponse:
+            description: The DirectoryServiceUpdateResponse message.
+            properties:
+                directoryView:
+                    $ref: '#/components/schemas/c1.api.directory.v1.DirectoryView'
+                expanded:
+                    description: List of serialized related objects.
+                    items:
+                        additionalProperties: true
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        readOnly: false
+                        type: object
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Directory Service Update Response
+            type: object
+            x-speakeasy-name-override: DirectoryServiceUpdateResponse
         c1.api.directory.v1.DirectoryView:
             description: The directory view contains a directory and an app_path which is a JSONPATH set to the location in the expand mask that the expanded app will live if requested by the expander.
             properties:
                 appPath:
-                    description: JSONPATH expression indicating the location of the App object in the  array.
+                    description: JSONPATH expression indicating the location of the App object in the array.
                     readOnly: false
                     type: string
                 directory:
@@ -13755,6 +13841,13 @@ components:
         c1.api.user.v1.SearchUsersRequest:
             description: Search for users based on some filters.
             properties:
+                departments:
+                    description: Search for users that have any of the departments on this list.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
                 email:
                     description: Search for users based on their email (exact match).
                     readOnly: false
@@ -13784,6 +13877,20 @@ components:
                     $ref: '#/components/schemas/c1.api.user.v1.UserExpandMask'
                 ids:
                     description: Deprecated. Use refs array instead.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                jobTitles:
+                    description: Search for users that have any of the job titles on this list.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                managerIds:
+                    description: Search for users that have any of the manager IDs on this list.
                     items:
                         type: string
                     nullable: true
@@ -16861,6 +16968,49 @@ paths:
                 - Connector
             x-speakeasy-group: Connector
             x-speakeasy-name-override: CreateDelegated
+    /api/v1/apps/{app_id}/connectors/{connector_id}/confirm_sync_valid/{sync_lifecycle_id}:
+        post:
+            description: Invokes the c1.api.app.v1.ConnectorService.ConfirmSyncValid method.
+            operationId: c1.api.app.v1.ConnectorService.ConfirmSyncValid
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The AppID of the app the connector is attached to.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: connector_id
+                  required: true
+                  schema:
+                    description: The ConnectorID of the connector that we are confirming the sync for.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: sync_lifecycle_id
+                  required: true
+                  schema:
+                    description: The completed lifecycle id of the most recent sync we want to validate
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.ConfirmSyncValidRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.ConfirmSyncValidResponse'
+                    description: Successful response
+            summary: Confirm Sync Valid
+            tags:
+                - Connector
+            x-speakeasy-group: Connector
+            x-speakeasy-name-override: ConfirmSyncValid
     /api/v1/apps/{app_id}/connectors/{connector_id}/credentials/{id}:
         get:
             description: Get credentials for a connector.
@@ -19850,6 +20000,8 @@ paths:
             summary: Create Automation
             tags:
                 - Automations
+            x-speakeasy-entity-operation:
+                terraform-resource: Automation#create
             x-speakeasy-group: Automation
             x-speakeasy-name-override: CreateAutomation
     /api/v1/automations/{id}:
@@ -19879,6 +20031,8 @@ paths:
             summary: Delete Automation
             tags:
                 - Automations
+            x-speakeasy-entity-operation:
+                terraform-resource: Automation#delete
             x-speakeasy-group: Automation
             x-speakeasy-name-override: DeleteAutomation
         get:
@@ -19902,6 +20056,9 @@ paths:
             summary: Get Automation
             tags:
                 - Automations
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: Automation#read
             x-speakeasy-group: Automation
             x-speakeasy-name-override: GetAutomation
         post:
@@ -19930,6 +20087,8 @@ paths:
             summary: Update Automation
             tags:
                 - Automations
+            x-speakeasy-entity-operation:
+                terraform-resource: Automation#update
             x-speakeasy-group: Automation
             x-speakeasy-name-override: UpdateAutomation
     /api/v1/automations/{id}/execute:
@@ -20658,6 +20817,34 @@ paths:
                 - Directory
             x-speakeasy-group: Directory
             x-speakeasy-name-override: Get
+        put:
+            description: Update a directory by app_id.
+            operationId: c1.api.directory.v1.DirectoryService.Update
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.directory.v1.DirectoryServiceUpdateRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.directory.v1.DirectoryServiceUpdateResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - Directory
+            x-speakeasy-group: Directory
+            x-speakeasy-name-override: Update
     /api/v1/functions:
         get:
             description: List retrieves all functions with pagination

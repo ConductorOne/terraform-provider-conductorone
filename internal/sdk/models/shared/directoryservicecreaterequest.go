@@ -3,9 +3,24 @@
 package shared
 
 // DirectoryServiceCreateRequest - Uplevel an app into a full directory.
+//
+// This message contains a oneof named account_filter. Only a single field of the following list may be set at a time:
+//   - all
+//   - celExpression
 type DirectoryServiceCreateRequest struct {
+	// The DirectoryAccountFilterAll message.
+	DirectoryAccountFilterAll *DirectoryAccountFilterAll `json:"all,omitempty"`
 	// The AppID to make into a directory, providing identities and more for the C1 app.
 	AppID *string `json:"appId,omitempty"`
+	// The DirectoryAccountFilterCel message.
+	DirectoryAccountFilterCel *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
+}
+
+func (o *DirectoryServiceCreateRequest) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
+	if o == nil {
+		return nil
+	}
+	return o.DirectoryAccountFilterAll
 }
 
 func (o *DirectoryServiceCreateRequest) GetAppID() *string {
@@ -13,4 +28,11 @@ func (o *DirectoryServiceCreateRequest) GetAppID() *string {
 		return nil
 	}
 	return o.AppID
+}
+
+func (o *DirectoryServiceCreateRequest) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
+	if o == nil {
+		return nil
+	}
+	return o.DirectoryAccountFilterCel
 }

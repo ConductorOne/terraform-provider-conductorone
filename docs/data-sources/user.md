@@ -23,6 +23,9 @@ This data source enables you to retrieve ConductorOne users using the following 
 
 ```terraform
 data "conductorone_user" "my_user" {
+  departments = [
+    "..."
+  ]
   email = "...my_email..."
   exclude_ids = [
     "..."
@@ -31,6 +34,12 @@ data "conductorone_user" "my_user" {
     "USER_TYPE_HUMAN"
   ]
   ids = [
+    "..."
+  ]
+  job_titles = [
+    "..."
+  ]
+  manager_ids = [
     "..."
   ]
   page_size  = 10
@@ -55,10 +64,13 @@ data "conductorone_user" "my_user" {
 
 ### Optional
 
+- `departments` (List of String) Search for users that have any of the departments on this list.
 - `email` (String) Search for users based on their email (exact match).
 - `exclude_ids` (List of String) An array of users IDs to exclude from the results.
 - `exclude_types` (List of String) An array of types to exclude from the results.
 - `ids` (List of String) Deprecated. Use refs array instead.
+- `job_titles` (List of String) Search for users that have any of the job titles on this list.
+- `manager_ids` (List of String) Search for users that have any of the manager IDs on this list.
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 - `page_token` (String) The pageToken field.
 - `query` (String) Query the apps with a fuzzy search on display name and emails.
@@ -91,7 +103,6 @@ data "conductorone_user" "my_user" {
 - `id` (String) A unique identifier of the user.
 - `job_title` (String) The job title of the user.
 - `job_title_sources` (Attributes List) A list of objects mapped based on jobTitle attribute mappings configured in the system. (see [below for nested schema](#nestedatt--job_title_sources))
-- `manager_ids` (List of String) A list of ids of the user's managers.
 - `manager_sources` (Attributes List) A list of objects mapped based on managerId attribute mappings configured in the system. (see [below for nested schema](#nestedatt--manager_sources))
 - `managers_path` (String) JSONPATH expression indicating the location of the user objects that managed the current user in the expanded array.
 - `next_page_token` (String) The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.

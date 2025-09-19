@@ -8,12 +8,20 @@ import (
 )
 
 // Directory - This object indicates that an app is also a directory.
+//
+// This message contains a oneof named account_filter. Only a single field of the following list may be set at a time:
+//   - all
+//   - celExpression
 type Directory struct {
+	// The DirectoryAccountFilterAll message.
+	DirectoryAccountFilterAll *DirectoryAccountFilterAll `json:"all,omitempty"`
 	// The ID of the app associated with the directory.
-	AppID     *string    `json:"appId,omitempty"`
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	AppID *string `json:"appId,omitempty"`
+	// The DirectoryAccountFilterCel message.
+	DirectoryAccountFilterCel *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
+	CreatedAt                 *time.Time                 `json:"createdAt,omitempty"`
+	DeletedAt                 *time.Time                 `json:"deletedAt,omitempty"`
+	UpdatedAt                 *time.Time                 `json:"updatedAt,omitempty"`
 }
 
 func (d Directory) MarshalJSON() ([]byte, error) {
@@ -27,11 +35,25 @@ func (d *Directory) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (o *Directory) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
+	if o == nil {
+		return nil
+	}
+	return o.DirectoryAccountFilterAll
+}
+
 func (o *Directory) GetAppID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AppID
+}
+
+func (o *Directory) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
+	if o == nil {
+		return nil
+	}
+	return o.DirectoryAccountFilterCel
 }
 
 func (o *Directory) GetCreatedAt() *time.Time {

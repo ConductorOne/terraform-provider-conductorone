@@ -195,9 +195,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.6.4",
+		SDKVersion: "1.6.6",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.6.4 2.698.4 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.6.6 2.698.4 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{

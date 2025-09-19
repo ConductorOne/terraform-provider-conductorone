@@ -29,7 +29,7 @@ resource "conductorone_app_resource_type" "my_app_resource_type" {
 
 - `app_id` (String)
 - `display_name` (String) The displayName field.
-- `resource_type` (String) The resourceType field. must be one of ["ROLE", "GROUP", "LICENSE", "PROJECT", "CATALOG", "CUSTOM", "VAULT"]; Requires replacement if changed.
+- `resource_type` (String) The resourceType field. must be one of ["ROLE", "GROUP", "LICENSE", "PROJECT", "CATALOG", "CUSTOM", "VAULT", "PROFILE_TYPE"]; Requires replacement if changed.
 
 ### Read-Only
 

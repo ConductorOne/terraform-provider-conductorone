@@ -85,7 +85,7 @@ func (r *AppResourceTypeResource) Schema(ctx context.Context, req resource.Schem
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The resourceType field. must be one of ["ROLE", "GROUP", "LICENSE", "PROJECT", "CATALOG", "CUSTOM", "VAULT"]; Requires replacement if changed.`,
+				Description: `The resourceType field. must be one of ["ROLE", "GROUP", "LICENSE", "PROJECT", "CATALOG", "CUSTOM", "VAULT", "PROFILE_TYPE"]; Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"ROLE",
@@ -95,6 +95,7 @@ func (r *AppResourceTypeResource) Schema(ctx context.Context, req resource.Schem
 						"CATALOG",
 						"CUSTOM",
 						"VAULT",
+						"PROFILE_TYPE",
 					),
 				},
 			},
