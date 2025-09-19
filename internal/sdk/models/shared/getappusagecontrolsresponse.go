@@ -10,16 +10,16 @@ type GetAppUsageControlsResponse struct {
 	HasUsageData *bool `json:"hasUsageData,omitempty"`
 }
 
-func (o *GetAppUsageControlsResponse) GetAppUsageControls() *AppUsageControls {
-	if o == nil {
+func (g *GetAppUsageControlsResponse) GetAppUsageControls() *AppUsageControls {
+	if g == nil {
 		return nil
 	}
-	return o.AppUsageControls
+	return g.AppUsageControls
 }
 
-func (o *GetAppUsageControlsResponse) GetHasUsageData() *bool {
-	if o == nil {
+func (g *GetAppUsageControlsResponse) GetHasUsageData() *bool {
+	if g == nil {
 		return nil
 	}
-	return o.HasUsageData
+	return g.HasUsageData
 }

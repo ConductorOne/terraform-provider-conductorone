@@ -8,9 +8,9 @@ type RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse stru
 	AppEntitlements []AppEntitlementRef `json:"refs,omitempty"`
 }
 
-func (o *RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse) GetAppEntitlements() []AppEntitlementRef {
-	if o == nil {
+func (r *RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse) GetAppEntitlements() []AppEntitlementRef {
+	if r == nil {
 		return nil
 	}
-	return o.AppEntitlements
+	return r.AppEntitlements
 }

@@ -13,9 +13,9 @@ type GetStepUpTransactionResponse struct {
 	StepUpTransaction *StepUpTransaction `json:"transaction,omitempty"`
 }
 
-func (o *GetStepUpTransactionResponse) GetStepUpTransaction() *StepUpTransaction {
-	if o == nil {
+func (g *GetStepUpTransactionResponse) GetStepUpTransaction() *StepUpTransaction {
+	if g == nil {
 		return nil
 	}
-	return o.StepUpTransaction
+	return g.StepUpTransaction
 }

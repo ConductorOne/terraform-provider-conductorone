@@ -8,9 +8,9 @@ type ResponsePolicyApprovalStepApprove struct {
 	Comment *string `json:"comment,omitempty"`
 }
 
-func (o *ResponsePolicyApprovalStepApprove) GetComment() *string {
-	if o == nil {
+func (r *ResponsePolicyApprovalStepApprove) GetComment() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Comment
+	return r.Comment
 }

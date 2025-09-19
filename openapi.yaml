@@ -6893,6 +6893,34 @@ components:
             title: Required Together
             type: object
             x-speakeasy-name-override: RequiredTogether
+        c1.api.form.v1.SelectField:
+            description: The SelectField message.
+            nullable: true
+            properties:
+                options:
+                    description: The options field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.form.v1.SelectOption'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Select Field
+            type: object
+            x-speakeasy-name-override: SelectField
+        c1.api.form.v1.SelectOption:
+            description: The SelectOption message.
+            properties:
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                value:
+                    description: The value field.
+                    readOnly: false
+                    type: string
+            title: Select Option
+            type: object
+            x-speakeasy-name-override: SelectOption
         c1.api.form.v1.StringField:
             description: |
                 The StringField message.
@@ -6900,6 +6928,7 @@ components:
                 This message contains a oneof named view. Only a single field of the following list may be set at a time:
                   - textField
                   - passwordField
+                  - selectField
 
 
                 This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
@@ -6918,6 +6947,8 @@ components:
                     type: string
                 rules:
                     $ref: '#/components/schemas/validate.StringRules'
+                selectField:
+                    $ref: '#/components/schemas/c1.api.form.v1.SelectField'
                 textField:
                     $ref: '#/components/schemas/c1.api.form.v1.TextField'
             title: String Field
@@ -7721,6 +7752,13 @@ components:
                     description: Configuration to allow a fallback if the group is empty.
                     readOnly: false
                     type: boolean
+                fallbackGroupIds:
+                    description: Configuration to specify which groups to fallback to if fallback is enabled and the group is empty.
+                    items:
+                        $ref: '#/components/schemas/c1.api.policy.v1.AppEntitlementReference'
+                    nullable: true
+                    readOnly: false
+                    type: array
                 fallbackUserIds:
                     description: Configuration to specific which users to fallback to if fallback is enabled and the group is empty.
                     items:
@@ -7728,6 +7766,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                isGroupFallbackEnabled:
+                    description: Configuration to enable fallback for group fallback.
+                    readOnly: false
+                    type: boolean
             title: App Group Approval
             type: object
             x-speakeasy-name-override: AppGroupApproval

@@ -14,30 +14,30 @@ type UserProperties struct {
 	UsernameCel *string `json:"usernameCel,omitempty"`
 }
 
-func (o *UserProperties) GetDisplayNameCel() *string {
-	if o == nil {
+func (u *UserProperties) GetDisplayNameCel() *string {
+	if u == nil {
 		return nil
 	}
-	return o.DisplayNameCel
+	return u.DisplayNameCel
 }
 
-func (o *UserProperties) GetEmailCel() *string {
-	if o == nil {
+func (u *UserProperties) GetEmailCel() *string {
+	if u == nil {
 		return nil
 	}
-	return o.EmailCel
+	return u.EmailCel
 }
 
-func (o *UserProperties) GetProfileAttributeCel() *string {
-	if o == nil {
+func (u *UserProperties) GetProfileAttributeCel() *string {
+	if u == nil {
 		return nil
 	}
-	return o.ProfileAttributeCel
+	return u.ProfileAttributeCel
 }
 
-func (o *UserProperties) GetUsernameCel() *string {
-	if o == nil {
+func (u *UserProperties) GetUsernameCel() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UsernameCel
+	return u.UsernameCel
 }

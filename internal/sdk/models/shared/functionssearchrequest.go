@@ -45,30 +45,30 @@ type FunctionsSearchRequest struct {
 	Query *string `json:"query,omitempty"`
 }
 
-func (o *FunctionsSearchRequest) GetFunctionTypes() []FunctionTypes {
-	if o == nil {
+func (f *FunctionsSearchRequest) GetFunctionTypes() []FunctionTypes {
+	if f == nil {
 		return nil
 	}
-	return o.FunctionTypes
+	return f.FunctionTypes
 }
 
-func (o *FunctionsSearchRequest) GetPageSize() *int {
-	if o == nil {
+func (f *FunctionsSearchRequest) GetPageSize() *int {
+	if f == nil {
 		return nil
 	}
-	return o.PageSize
+	return f.PageSize
 }
 
-func (o *FunctionsSearchRequest) GetPageToken() *string {
-	if o == nil {
+func (f *FunctionsSearchRequest) GetPageToken() *string {
+	if f == nil {
 		return nil
 	}
-	return o.PageToken
+	return f.PageToken
 }
 
-func (o *FunctionsSearchRequest) GetQuery() *string {
-	if o == nil {
+func (f *FunctionsSearchRequest) GetQuery() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Query
+	return f.Query
 }

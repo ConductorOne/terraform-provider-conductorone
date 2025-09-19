@@ -10,16 +10,16 @@ type CIDRRestriction struct {
 	SourceCidr []string `json:"sourceCidr,omitempty"`
 }
 
-func (o *CIDRRestriction) GetEnabled() *bool {
-	if o == nil {
+func (c *CIDRRestriction) GetEnabled() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.Enabled
+	return c.Enabled
 }
 
-func (o *CIDRRestriction) GetSourceCidr() []string {
-	if o == nil {
+func (c *CIDRRestriction) GetSourceCidr() []string {
+	if c == nil {
 		return nil
 	}
-	return o.SourceCidr
+	return c.SourceCidr
 }

@@ -10,16 +10,16 @@ type ExportServiceListEventsRequest struct {
 	PageToken *string `json:"pageToken,omitempty"`
 }
 
-func (o *ExportServiceListEventsRequest) GetPageSize() *int {
-	if o == nil {
+func (e *ExportServiceListEventsRequest) GetPageSize() *int {
+	if e == nil {
 		return nil
 	}
-	return o.PageSize
+	return e.PageSize
 }
 
-func (o *ExportServiceListEventsRequest) GetPageToken() *string {
-	if o == nil {
+func (e *ExportServiceListEventsRequest) GetPageToken() *string {
+	if e == nil {
 		return nil
 	}
-	return o.PageToken
+	return e.PageToken
 }

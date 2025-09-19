@@ -8,9 +8,9 @@ type UpdatePolicyResponse struct {
 	Policy *Policy `json:"policy,omitempty"`
 }
 
-func (o *UpdatePolicyResponse) GetPolicy() *Policy {
-	if o == nil {
+func (u *UpdatePolicyResponse) GetPolicy() *Policy {
+	if u == nil {
 		return nil
 	}
-	return o.Policy
+	return u.Policy
 }

@@ -30,37 +30,37 @@ func (a *AppEntitlementUserBindingHistory) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppEntitlementUserBindingHistory) GetAppEntitlementID() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingHistory) GetAppEntitlementID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementID
+	return a.AppEntitlementID
 }
 
-func (o *AppEntitlementUserBindingHistory) GetAppID() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingHistory) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppEntitlementUserBindingHistory) GetAppUserID() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingHistory) GetAppUserID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserID
+	return a.AppUserID
 }
 
-func (o *AppEntitlementUserBindingHistory) GetGrantedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementUserBindingHistory) GetGrantedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.GrantedAt
+	return a.GrantedAt
 }
 
-func (o *AppEntitlementUserBindingHistory) GetRevokedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementUserBindingHistory) GetRevokedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.RevokedAt
+	return a.RevokedAt
 }

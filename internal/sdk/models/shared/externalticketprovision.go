@@ -14,30 +14,30 @@ type ExternalTicketProvision struct {
 	Instructions *string `json:"instructions,omitempty"`
 }
 
-func (o *ExternalTicketProvision) GetAppID() *string {
-	if o == nil {
+func (e *ExternalTicketProvision) GetAppID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.AppID
+	return e.AppID
 }
 
-func (o *ExternalTicketProvision) GetConnectorID() *string {
-	if o == nil {
+func (e *ExternalTicketProvision) GetConnectorID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ConnectorID
+	return e.ConnectorID
 }
 
-func (o *ExternalTicketProvision) GetExternalTicketProvisionerConfigID() *string {
-	if o == nil {
+func (e *ExternalTicketProvision) GetExternalTicketProvisionerConfigID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ExternalTicketProvisionerConfigID
+	return e.ExternalTicketProvisionerConfigID
 }
 
-func (o *ExternalTicketProvision) GetInstructions() *string {
-	if o == nil {
+func (e *ExternalTicketProvision) GetInstructions() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Instructions
+	return e.Instructions
 }

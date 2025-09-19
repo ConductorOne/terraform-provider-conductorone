@@ -12,18 +12,18 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomatio
 	ForceRunBundleAutomationRequest *shared.ForceRunBundleAutomationRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationRequest) GetRequestCatalogID() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationRequest) GetRequestCatalogID() string {
+	if c == nil {
 		return ""
 	}
-	return o.RequestCatalogID
+	return c.RequestCatalogID
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationRequest) GetForceRunBundleAutomationRequest() *shared.ForceRunBundleAutomationRequest {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationRequest) GetForceRunBundleAutomationRequest() *shared.ForceRunBundleAutomationRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ForceRunBundleAutomationRequest
+	return c.ForceRunBundleAutomationRequest
 }
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse struct {
@@ -37,30 +37,30 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomatio
 	ForceRunBundleAutomationResponse *shared.ForceRunBundleAutomationResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse) GetForceRunBundleAutomationResponse() *shared.ForceRunBundleAutomationResponse {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse) GetForceRunBundleAutomationResponse() *shared.ForceRunBundleAutomationResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ForceRunBundleAutomationResponse
+	return c.ForceRunBundleAutomationResponse
 }

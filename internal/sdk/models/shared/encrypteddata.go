@@ -18,44 +18,44 @@ type EncryptedData struct {
 	Schema *string `json:"schema,omitempty"`
 }
 
-func (o *EncryptedData) GetDescription() *string {
-	if o == nil {
+func (e *EncryptedData) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *EncryptedData) GetEncryptedBytes() *string {
-	if o == nil {
+func (e *EncryptedData) GetEncryptedBytes() *string {
+	if e == nil {
 		return nil
 	}
-	return o.EncryptedBytes
+	return e.EncryptedBytes
 }
 
-func (o *EncryptedData) GetKeyID() *string {
-	if o == nil {
+func (e *EncryptedData) GetKeyID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.KeyID
+	return e.KeyID
 }
 
-func (o *EncryptedData) GetName() *string {
-	if o == nil {
+func (e *EncryptedData) GetName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Name
+	return e.Name
 }
 
-func (o *EncryptedData) GetProvider() *string {
-	if o == nil {
+func (e *EncryptedData) GetProvider() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Provider
+	return e.Provider
 }
 
-func (o *EncryptedData) GetSchema() *string {
-	if o == nil {
+func (e *EncryptedData) GetSchema() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Schema
+	return e.Schema
 }

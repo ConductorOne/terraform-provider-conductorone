@@ -8,9 +8,9 @@ type FunctionsServiceUpdateFunctionResponse struct {
 	Function *Function `json:"function,omitempty"`
 }
 
-func (o *FunctionsServiceUpdateFunctionResponse) GetFunction() *Function {
-	if o == nil {
+func (f *FunctionsServiceUpdateFunctionResponse) GetFunction() *Function {
+	if f == nil {
 		return nil
 	}
-	return o.Function
+	return f.Function
 }

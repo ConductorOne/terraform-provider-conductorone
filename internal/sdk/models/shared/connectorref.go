@@ -10,16 +10,16 @@ type ConnectorRef struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ConnectorRef) GetAppID() *string {
-	if o == nil {
+func (c *ConnectorRef) GetAppID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *ConnectorRef) GetID() *string {
-	if o == nil {
+func (c *ConnectorRef) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }

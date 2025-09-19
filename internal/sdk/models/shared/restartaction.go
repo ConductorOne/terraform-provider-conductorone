@@ -27,23 +27,23 @@ func (r *RestartAction) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *RestartAction) GetOldPolicyStepID() *string {
-	if o == nil {
+func (r *RestartAction) GetOldPolicyStepID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.OldPolicyStepID
+	return r.OldPolicyStepID
 }
 
-func (o *RestartAction) GetRestartedAt() *time.Time {
-	if o == nil {
+func (r *RestartAction) GetRestartedAt() *time.Time {
+	if r == nil {
 		return nil
 	}
-	return o.RestartedAt
+	return r.RestartedAt
 }
 
-func (o *RestartAction) GetUserID() *string {
-	if o == nil {
+func (r *RestartAction) GetUserID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.UserID
+	return r.UserID
 }

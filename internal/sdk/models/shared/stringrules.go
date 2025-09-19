@@ -159,184 +159,184 @@ type StringRules struct {
 	WellKnownRegex *WellKnownRegex `json:"wellKnownRegex,omitempty"`
 }
 
-func (o *StringRules) GetAddress() *bool {
-	if o == nil {
+func (s *StringRules) GetAddress() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Address
+	return s.Address
 }
 
-func (o *StringRules) GetConst() *string {
-	if o == nil {
+func (s *StringRules) GetConst() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Const
+	return s.Const
 }
 
-func (o *StringRules) GetContains() *string {
-	if o == nil {
+func (s *StringRules) GetContains() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Contains
+	return s.Contains
 }
 
-func (o *StringRules) GetEmail() *bool {
-	if o == nil {
+func (s *StringRules) GetEmail() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Email
+	return s.Email
 }
 
-func (o *StringRules) GetHostname() *bool {
-	if o == nil {
+func (s *StringRules) GetHostname() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Hostname
+	return s.Hostname
 }
 
-func (o *StringRules) GetIgnoreEmpty() *bool {
-	if o == nil {
+func (s *StringRules) GetIgnoreEmpty() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.IgnoreEmpty
+	return s.IgnoreEmpty
 }
 
-func (o *StringRules) GetIn() []string {
-	if o == nil {
+func (s *StringRules) GetIn() []string {
+	if s == nil {
 		return nil
 	}
-	return o.In
+	return s.In
 }
 
-func (o *StringRules) GetIP() *bool {
-	if o == nil {
+func (s *StringRules) GetIP() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.IP
+	return s.IP
 }
 
-func (o *StringRules) GetIpv4() *bool {
-	if o == nil {
+func (s *StringRules) GetIpv4() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Ipv4
+	return s.Ipv4
 }
 
-func (o *StringRules) GetIpv6() *bool {
-	if o == nil {
+func (s *StringRules) GetIpv6() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Ipv6
+	return s.Ipv6
 }
 
-func (o *StringRules) GetLen() *string {
-	if o == nil {
+func (s *StringRules) GetLen() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Len
+	return s.Len
 }
 
-func (o *StringRules) GetLenBytes() *string {
-	if o == nil {
+func (s *StringRules) GetLenBytes() *string {
+	if s == nil {
 		return nil
 	}
-	return o.LenBytes
+	return s.LenBytes
 }
 
-func (o *StringRules) GetMaxBytes() *string {
-	if o == nil {
+func (s *StringRules) GetMaxBytes() *string {
+	if s == nil {
 		return nil
 	}
-	return o.MaxBytes
+	return s.MaxBytes
 }
 
-func (o *StringRules) GetMaxLen() *string {
-	if o == nil {
+func (s *StringRules) GetMaxLen() *string {
+	if s == nil {
 		return nil
 	}
-	return o.MaxLen
+	return s.MaxLen
 }
 
-func (o *StringRules) GetMinBytes() *string {
-	if o == nil {
+func (s *StringRules) GetMinBytes() *string {
+	if s == nil {
 		return nil
 	}
-	return o.MinBytes
+	return s.MinBytes
 }
 
-func (o *StringRules) GetMinLen() *string {
-	if o == nil {
+func (s *StringRules) GetMinLen() *string {
+	if s == nil {
 		return nil
 	}
-	return o.MinLen
+	return s.MinLen
 }
 
-func (o *StringRules) GetNotContains() *string {
-	if o == nil {
+func (s *StringRules) GetNotContains() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NotContains
+	return s.NotContains
 }
 
-func (o *StringRules) GetNotIn() []string {
-	if o == nil {
+func (s *StringRules) GetNotIn() []string {
+	if s == nil {
 		return nil
 	}
-	return o.NotIn
+	return s.NotIn
 }
 
-func (o *StringRules) GetPattern() *string {
-	if o == nil {
+func (s *StringRules) GetPattern() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Pattern
+	return s.Pattern
 }
 
-func (o *StringRules) GetPrefix() *string {
-	if o == nil {
+func (s *StringRules) GetPrefix() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Prefix
+	return s.Prefix
 }
 
-func (o *StringRules) GetStrict() *bool {
-	if o == nil {
+func (s *StringRules) GetStrict() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Strict
+	return s.Strict
 }
 
-func (o *StringRules) GetSuffix() *string {
-	if o == nil {
+func (s *StringRules) GetSuffix() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Suffix
+	return s.Suffix
 }
 
-func (o *StringRules) GetURI() *bool {
-	if o == nil {
+func (s *StringRules) GetURI() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.URI
+	return s.URI
 }
 
-func (o *StringRules) GetURIRef() *bool {
-	if o == nil {
+func (s *StringRules) GetURIRef() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.URIRef
+	return s.URIRef
 }
 
-func (o *StringRules) GetUUID() *bool {
-	if o == nil {
+func (s *StringRules) GetUUID() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.UUID
+	return s.UUID
 }
 
-func (o *StringRules) GetWellKnownRegex() *WellKnownRegex {
-	if o == nil {
+func (s *StringRules) GetWellKnownRegex() *WellKnownRegex {
+	if s == nil {
 		return nil
 	}
-	return o.WellKnownRegex
+	return s.WellKnownRegex
 }

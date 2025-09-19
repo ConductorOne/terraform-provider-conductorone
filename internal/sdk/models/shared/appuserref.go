@@ -10,16 +10,16 @@ type AppUserRef struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AppUserRef) GetAppID() *string {
-	if o == nil {
+func (a *AppUserRef) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppUserRef) GetID() *string {
-	if o == nil {
+func (a *AppUserRef) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }

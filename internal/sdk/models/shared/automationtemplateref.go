@@ -8,9 +8,9 @@ type AutomationTemplateRef struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AutomationTemplateRef) GetID() *string {
-	if o == nil {
+func (a *AutomationTemplateRef) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }

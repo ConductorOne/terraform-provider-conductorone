@@ -10,16 +10,16 @@ type TaskRevokeSourceReview struct {
 	CertTicketID *string `json:"certTicketId,omitempty"`
 }
 
-func (o *TaskRevokeSourceReview) GetAccessReviewID() *string {
-	if o == nil {
+func (t *TaskRevokeSourceReview) GetAccessReviewID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.AccessReviewID
+	return t.AccessReviewID
 }
 
-func (o *TaskRevokeSourceReview) GetCertTicketID() *string {
-	if o == nil {
+func (t *TaskRevokeSourceReview) GetCertTicketID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.CertTicketID
+	return t.CertTicketID
 }

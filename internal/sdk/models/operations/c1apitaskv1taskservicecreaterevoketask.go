@@ -18,30 +18,30 @@ type C1APITaskV1TaskServiceCreateRevokeTaskResponse struct {
 	TaskServiceCreateRevokeResponse *shared.TaskServiceCreateRevokeResponse
 }
 
-func (o *C1APITaskV1TaskServiceCreateRevokeTaskResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APITaskV1TaskServiceCreateRevokeTaskResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APITaskV1TaskServiceCreateRevokeTaskResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APITaskV1TaskServiceCreateRevokeTaskResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APITaskV1TaskServiceCreateRevokeTaskResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APITaskV1TaskServiceCreateRevokeTaskResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APITaskV1TaskServiceCreateRevokeTaskResponse) GetTaskServiceCreateRevokeResponse() *shared.TaskServiceCreateRevokeResponse {
-	if o == nil {
+func (c *C1APITaskV1TaskServiceCreateRevokeTaskResponse) GetTaskServiceCreateRevokeResponse() *shared.TaskServiceCreateRevokeResponse {
+	if c == nil {
 		return nil
 	}
-	return o.TaskServiceCreateRevokeResponse
+	return c.TaskServiceCreateRevokeResponse
 }

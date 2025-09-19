@@ -23,30 +23,30 @@ type PolicyInstance struct {
 	Policy *Policy `json:"policy,omitempty"`
 }
 
-func (o *PolicyInstance) GetPolicyStepInstance() *PolicyStepInstance {
-	if o == nil {
+func (p *PolicyInstance) GetPolicyStepInstance() *PolicyStepInstance {
+	if p == nil {
 		return nil
 	}
-	return o.PolicyStepInstance
+	return p.PolicyStepInstance
 }
 
-func (o *PolicyInstance) GetHistory() []PolicyStepInstance {
-	if o == nil {
+func (p *PolicyInstance) GetHistory() []PolicyStepInstance {
+	if p == nil {
 		return nil
 	}
-	return o.History
+	return p.History
 }
 
-func (o *PolicyInstance) GetNext() []PolicyStep {
-	if o == nil {
+func (p *PolicyInstance) GetNext() []PolicyStep {
+	if p == nil {
 		return nil
 	}
-	return o.Next
+	return p.Next
 }
 
-func (o *PolicyInstance) GetPolicy() *Policy {
-	if o == nil {
+func (p *PolicyInstance) GetPolicy() *Policy {
+	if p == nil {
 		return nil
 	}
-	return o.Policy
+	return p.Policy
 }

@@ -14,16 +14,16 @@ type CreateAppEntitlementProxyResponse struct {
 	Expanded []CreateAppEntitlementProxyResponseExpanded `json:"expanded,omitempty"`
 }
 
-func (o *CreateAppEntitlementProxyResponse) GetAppEntitlementProxyView() *AppEntitlementProxyView {
-	if o == nil {
+func (c *CreateAppEntitlementProxyResponse) GetAppEntitlementProxyView() *AppEntitlementProxyView {
+	if c == nil {
 		return nil
 	}
-	return o.AppEntitlementProxyView
+	return c.AppEntitlementProxyView
 }
 
-func (o *CreateAppEntitlementProxyResponse) GetExpanded() []CreateAppEntitlementProxyResponseExpanded {
-	if o == nil {
+func (c *CreateAppEntitlementProxyResponse) GetExpanded() []CreateAppEntitlementProxyResponseExpanded {
+	if c == nil {
 		return nil
 	}
-	return o.Expanded
+	return c.Expanded
 }

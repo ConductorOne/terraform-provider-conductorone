@@ -8,9 +8,9 @@ type FunctionsServiceListTagsResponse struct {
 	Tags map[string]FunctionCommit `json:"tags,omitempty"`
 }
 
-func (o *FunctionsServiceListTagsResponse) GetTags() map[string]FunctionCommit {
-	if o == nil {
+func (f *FunctionsServiceListTagsResponse) GetTags() map[string]FunctionCommit {
+	if f == nil {
 		return nil
 	}
-	return o.Tags
+	return f.Tags
 }

@@ -8,9 +8,9 @@ type TaskActionsServiceCloseRequest struct {
 	Comment *string `json:"comment,omitempty"`
 }
 
-func (o *TaskActionsServiceCloseRequest) GetComment() *string {
-	if o == nil {
+func (t *TaskActionsServiceCloseRequest) GetComment() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Comment
+	return t.Comment
 }

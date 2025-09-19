@@ -14,30 +14,30 @@ type AppEntitlementUserBindingHistoryView struct {
 	AppEntitlementUserBindingHistory *AppEntitlementUserBindingHistory `json:"history,omitempty"`
 }
 
-func (o *AppEntitlementUserBindingHistoryView) GetAppPath() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingHistoryView) GetAppPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppPath
+	return a.AppPath
 }
 
-func (o *AppEntitlementUserBindingHistoryView) GetAppUserPath() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingHistoryView) GetAppUserPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserPath
+	return a.AppUserPath
 }
 
-func (o *AppEntitlementUserBindingHistoryView) GetEntitlementPath() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingHistoryView) GetEntitlementPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.EntitlementPath
+	return a.EntitlementPath
 }
 
-func (o *AppEntitlementUserBindingHistoryView) GetAppEntitlementUserBindingHistory() *AppEntitlementUserBindingHistory {
-	if o == nil {
+func (a *AppEntitlementUserBindingHistoryView) GetAppEntitlementUserBindingHistory() *AppEntitlementUserBindingHistory {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementUserBindingHistory
+	return a.AppEntitlementUserBindingHistory
 }

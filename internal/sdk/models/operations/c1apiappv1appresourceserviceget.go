@@ -13,25 +13,25 @@ type C1APIAppV1AppResourceServiceGetRequest struct {
 	ID                string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIAppV1AppResourceServiceGetRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceServiceGetRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppResourceServiceGetRequest) GetAppResourceTypeID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceServiceGetRequest) GetAppResourceTypeID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppResourceTypeID
+	return c.AppResourceTypeID
 }
 
-func (o *C1APIAppV1AppResourceServiceGetRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceServiceGetRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIAppV1AppResourceServiceGetResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1AppResourceServiceGetResponse struct {
 	AppResourceServiceGetResponse *shared.AppResourceServiceGetResponse
 }
 
-func (o *C1APIAppV1AppResourceServiceGetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppResourceServiceGetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppResourceServiceGetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppResourceServiceGetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppResourceServiceGetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppResourceServiceGetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppResourceServiceGetResponse) GetAppResourceServiceGetResponse() *shared.AppResourceServiceGetResponse {
-	if o == nil {
+func (c *C1APIAppV1AppResourceServiceGetResponse) GetAppResourceServiceGetResponse() *shared.AppResourceServiceGetResponse {
+	if c == nil {
 		return nil
 	}
-	return o.AppResourceServiceGetResponse
+	return c.AppResourceServiceGetResponse
 }

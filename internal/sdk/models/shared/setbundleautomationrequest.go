@@ -17,30 +17,30 @@ type SetBundleAutomationRequest struct {
 	BundleAutomationRuleEntitlement *BundleAutomationRuleEntitlement `json:"entitlements,omitempty"`
 }
 
-func (o *SetBundleAutomationRequest) GetCreateTasks() *bool {
-	if o == nil {
+func (s *SetBundleAutomationRequest) GetCreateTasks() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.CreateTasks
+	return s.CreateTasks
 }
 
-func (o *SetBundleAutomationRequest) GetDisableCircuitBreaker() *bool {
-	if o == nil {
+func (s *SetBundleAutomationRequest) GetDisableCircuitBreaker() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.DisableCircuitBreaker
+	return s.DisableCircuitBreaker
 }
 
-func (o *SetBundleAutomationRequest) GetEnabled() *bool {
-	if o == nil {
+func (s *SetBundleAutomationRequest) GetEnabled() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Enabled
+	return s.Enabled
 }
 
-func (o *SetBundleAutomationRequest) GetBundleAutomationRuleEntitlement() *BundleAutomationRuleEntitlement {
-	if o == nil {
+func (s *SetBundleAutomationRequest) GetBundleAutomationRuleEntitlement() *BundleAutomationRuleEntitlement {
+	if s == nil {
 		return nil
 	}
-	return o.BundleAutomationRuleEntitlement
+	return s.BundleAutomationRuleEntitlement
 }

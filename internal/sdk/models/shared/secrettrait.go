@@ -27,30 +27,30 @@ func (s *SecretTrait) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *SecretTrait) GetIdentityAppUserID() *string {
-	if o == nil {
+func (s *SecretTrait) GetIdentityAppUserID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.IdentityAppUserID
+	return s.IdentityAppUserID
 }
 
-func (o *SecretTrait) GetLastUsedAt() *time.Time {
-	if o == nil {
+func (s *SecretTrait) GetLastUsedAt() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.LastUsedAt
+	return s.LastUsedAt
 }
 
-func (o *SecretTrait) GetSecretCreatedAt() *time.Time {
-	if o == nil {
+func (s *SecretTrait) GetSecretCreatedAt() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.SecretCreatedAt
+	return s.SecretCreatedAt
 }
 
-func (o *SecretTrait) GetSecretExpiresAt() *time.Time {
-	if o == nil {
+func (s *SecretTrait) GetSecretExpiresAt() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.SecretExpiresAt
+	return s.SecretExpiresAt
 }

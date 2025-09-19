@@ -24,16 +24,16 @@ func (t *TaskRevokeSourceNonUsage) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *TaskRevokeSourceNonUsage) GetExpiresAt() *time.Time {
-	if o == nil {
+func (t *TaskRevokeSourceNonUsage) GetExpiresAt() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.ExpiresAt
+	return t.ExpiresAt
 }
 
-func (o *TaskRevokeSourceNonUsage) GetLastLogin() *time.Time {
-	if o == nil {
+func (t *TaskRevokeSourceNonUsage) GetLastLogin() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.LastLogin
+	return t.LastLogin
 }

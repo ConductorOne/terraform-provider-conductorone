@@ -16,37 +16,37 @@ type ConnectorServiceCreateDelegatedRequest struct {
 	UserIds []string `json:"userIds,omitempty"`
 }
 
-func (o *ConnectorServiceCreateDelegatedRequest) GetAppManagedStateBindingRef() *AppManagedStateBindingRef {
-	if o == nil {
+func (c *ConnectorServiceCreateDelegatedRequest) GetAppManagedStateBindingRef() *AppManagedStateBindingRef {
+	if c == nil {
 		return nil
 	}
-	return o.AppManagedStateBindingRef
+	return c.AppManagedStateBindingRef
 }
 
-func (o *ConnectorServiceCreateDelegatedRequest) GetCatalogID() *string {
-	if o == nil {
+func (c *ConnectorServiceCreateDelegatedRequest) GetCatalogID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CatalogID
+	return c.CatalogID
 }
 
-func (o *ConnectorServiceCreateDelegatedRequest) GetDescription() *string {
-	if o == nil {
+func (c *ConnectorServiceCreateDelegatedRequest) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *ConnectorServiceCreateDelegatedRequest) GetDisplayName() *string {
-	if o == nil {
+func (c *ConnectorServiceCreateDelegatedRequest) GetDisplayName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.DisplayName
+	return c.DisplayName
 }
 
-func (o *ConnectorServiceCreateDelegatedRequest) GetUserIds() []string {
-	if o == nil {
+func (c *ConnectorServiceCreateDelegatedRequest) GetUserIds() []string {
+	if c == nil {
 		return nil
 	}
-	return o.UserIds
+	return c.UserIds
 }

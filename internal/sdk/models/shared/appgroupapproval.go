@@ -12,41 +12,59 @@ type AppGroupApproval struct {
 	AppID *string `json:"appId,omitempty"`
 	// Configuration to allow a fallback if the group is empty.
 	Fallback *bool `json:"fallback,omitempty"`
+	// Configuration to specify which groups to fallback to if fallback is enabled and the group is empty.
+	FallbackGroupIds []AppEntitlementReference `json:"fallbackGroupIds,omitempty"`
 	// Configuration to specific which users to fallback to if fallback is enabled and the group is empty.
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
+	// Configuration to enable fallback for group fallback.
+	IsGroupFallbackEnabled *bool `json:"isGroupFallbackEnabled,omitempty"`
 }
 
-func (o *AppGroupApproval) GetAllowSelfApproval() *bool {
-	if o == nil {
+func (a *AppGroupApproval) GetAllowSelfApproval() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowSelfApproval
+	return a.AllowSelfApproval
 }
 
-func (o *AppGroupApproval) GetAppGroupID() *string {
-	if o == nil {
+func (a *AppGroupApproval) GetAppGroupID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppGroupID
+	return a.AppGroupID
 }
 
-func (o *AppGroupApproval) GetAppID() *string {
-	if o == nil {
+func (a *AppGroupApproval) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppGroupApproval) GetFallback() *bool {
-	if o == nil {
+func (a *AppGroupApproval) GetFallback() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Fallback
+	return a.Fallback
 }
 
-func (o *AppGroupApproval) GetFallbackUserIds() []string {
-	if o == nil {
+func (a *AppGroupApproval) GetFallbackGroupIds() []AppEntitlementReference {
+	if a == nil {
 		return nil
 	}
-	return o.FallbackUserIds
+	return a.FallbackGroupIds
+}
+
+func (a *AppGroupApproval) GetFallbackUserIds() []string {
+	if a == nil {
+		return nil
+	}
+	return a.FallbackUserIds
+}
+
+func (a *AppGroupApproval) GetIsGroupFallbackEnabled() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.IsGroupFallbackEnabled
 }

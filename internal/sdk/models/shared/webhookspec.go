@@ -8,9 +8,9 @@ type WebhookSpec struct {
 	Destination *string `json:"destination,omitempty"`
 }
 
-func (o *WebhookSpec) GetDestination() *string {
-	if o == nil {
+func (w *WebhookSpec) GetDestination() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Destination
+	return w.Destination
 }

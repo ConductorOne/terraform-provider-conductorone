@@ -8,9 +8,9 @@ type RemoveAppResourceOwnerRequest struct {
 	UserID *string `json:"userId,omitempty"`
 }
 
-func (o *RemoveAppResourceOwnerRequest) GetUserID() *string {
-	if o == nil {
+func (r *RemoveAppResourceOwnerRequest) GetUserID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.UserID
+	return r.UserID
 }

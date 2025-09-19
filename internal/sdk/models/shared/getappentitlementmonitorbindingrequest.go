@@ -49,30 +49,30 @@ type GetAppEntitlementMonitorBindingRequest struct {
 	MonitorID *string `json:"monitorId,omitempty"`
 }
 
-func (o *GetAppEntitlementMonitorBindingRequest) GetAppEntitlementID() *string {
-	if o == nil {
+func (g *GetAppEntitlementMonitorBindingRequest) GetAppEntitlementID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.AppEntitlementID
+	return g.AppEntitlementID
 }
 
-func (o *GetAppEntitlementMonitorBindingRequest) GetAppID() *string {
-	if o == nil {
+func (g *GetAppEntitlementMonitorBindingRequest) GetAppID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.AppID
+	return g.AppID
 }
 
-func (o *GetAppEntitlementMonitorBindingRequest) GetEntitlementGroup() *GetAppEntitlementMonitorBindingRequestEntitlementGroup {
-	if o == nil {
+func (g *GetAppEntitlementMonitorBindingRequest) GetEntitlementGroup() *GetAppEntitlementMonitorBindingRequestEntitlementGroup {
+	if g == nil {
 		return nil
 	}
-	return o.EntitlementGroup
+	return g.EntitlementGroup
 }
 
-func (o *GetAppEntitlementMonitorBindingRequest) GetMonitorID() *string {
-	if o == nil {
+func (g *GetAppEntitlementMonitorBindingRequest) GetMonitorID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.MonitorID
+	return g.MonitorID
 }

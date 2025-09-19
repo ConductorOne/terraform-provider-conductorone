@@ -15,39 +15,39 @@ type C1APIAppV1AppEntitlementsListForAppResourceRequest struct {
 	PageToken         *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppResourceTypeID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppResourceTypeID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppResourceTypeID
+	return c.AppResourceTypeID
 }
 
-func (o *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppResourceID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppResourceID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppResourceID
+	return c.AppResourceID
 }
 
-func (o *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIAppV1AppEntitlementsListForAppResourceResponse struct {
@@ -61,30 +61,30 @@ type C1APIAppV1AppEntitlementsListForAppResourceResponse struct {
 	ListAppEntitlementsResponse *shared.ListAppEntitlementsResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsListForAppResourceResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementsListForAppResourceResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementsListForAppResourceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsListForAppResourceResponse) GetListAppEntitlementsResponse() *shared.ListAppEntitlementsResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceResponse) GetListAppEntitlementsResponse() *shared.ListAppEntitlementsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ListAppEntitlementsResponse
+	return c.ListAppEntitlementsResponse
 }

@@ -13,30 +13,30 @@ type ProvisionTarget struct {
 	GrantDuration *string `json:"grantDuration,omitempty"`
 }
 
-func (o *ProvisionTarget) GetAppEntitlementID() *string {
-	if o == nil {
+func (p *ProvisionTarget) GetAppEntitlementID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.AppEntitlementID
+	return p.AppEntitlementID
 }
 
-func (o *ProvisionTarget) GetAppID() *string {
-	if o == nil {
+func (p *ProvisionTarget) GetAppID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.AppID
+	return p.AppID
 }
 
-func (o *ProvisionTarget) GetAppUserID() *string {
-	if o == nil {
+func (p *ProvisionTarget) GetAppUserID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.AppUserID
+	return p.AppUserID
 }
 
-func (o *ProvisionTarget) GetGrantDuration() *string {
-	if o == nil {
+func (p *ProvisionTarget) GetGrantDuration() *string {
+	if p == nil {
 		return nil
 	}
-	return o.GrantDuration
+	return p.GrantDuration
 }

@@ -12,18 +12,18 @@ type C1APIIamV1RolesUpdateRequest struct {
 	UpdateRoleRequest *shared.UpdateRoleRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIIamV1RolesUpdateRequest) GetRoleID() string {
-	if o == nil {
+func (c *C1APIIamV1RolesUpdateRequest) GetRoleID() string {
+	if c == nil {
 		return ""
 	}
-	return o.RoleID
+	return c.RoleID
 }
 
-func (o *C1APIIamV1RolesUpdateRequest) GetUpdateRoleRequest() *shared.UpdateRoleRequest {
-	if o == nil {
+func (c *C1APIIamV1RolesUpdateRequest) GetUpdateRoleRequest() *shared.UpdateRoleRequest {
+	if c == nil {
 		return nil
 	}
-	return o.UpdateRoleRequest
+	return c.UpdateRoleRequest
 }
 
 type C1APIIamV1RolesUpdateResponse struct {
@@ -37,30 +37,30 @@ type C1APIIamV1RolesUpdateResponse struct {
 	UpdateRolesResponse *shared.UpdateRolesResponse
 }
 
-func (o *C1APIIamV1RolesUpdateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIIamV1RolesUpdateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIIamV1RolesUpdateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIIamV1RolesUpdateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIIamV1RolesUpdateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIIamV1RolesUpdateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIIamV1RolesUpdateResponse) GetUpdateRolesResponse() *shared.UpdateRolesResponse {
-	if o == nil {
+func (c *C1APIIamV1RolesUpdateResponse) GetUpdateRolesResponse() *shared.UpdateRolesResponse {
+	if c == nil {
 		return nil
 	}
-	return o.UpdateRolesResponse
+	return c.UpdateRolesResponse
 }

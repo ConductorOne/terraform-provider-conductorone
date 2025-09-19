@@ -20,30 +20,30 @@ type TaskTypeInput struct {
 	TaskTypeRevoke *TaskTypeRevokeInput `json:"revoke,omitempty"`
 }
 
-func (o *TaskTypeInput) GetTaskTypeCertify() *TaskTypeCertifyInput {
-	if o == nil {
+func (t *TaskTypeInput) GetTaskTypeCertify() *TaskTypeCertifyInput {
+	if t == nil {
 		return nil
 	}
-	return o.TaskTypeCertify
+	return t.TaskTypeCertify
 }
 
-func (o *TaskTypeInput) GetTaskTypeGrant() *TaskTypeGrantInput {
-	if o == nil {
+func (t *TaskTypeInput) GetTaskTypeGrant() *TaskTypeGrantInput {
+	if t == nil {
 		return nil
 	}
-	return o.TaskTypeGrant
+	return t.TaskTypeGrant
 }
 
-func (o *TaskTypeInput) GetTaskTypeOffboarding() *TaskTypeOffboardingInput {
-	if o == nil {
+func (t *TaskTypeInput) GetTaskTypeOffboarding() *TaskTypeOffboardingInput {
+	if t == nil {
 		return nil
 	}
-	return o.TaskTypeOffboarding
+	return t.TaskTypeOffboarding
 }
 
-func (o *TaskTypeInput) GetTaskTypeRevoke() *TaskTypeRevokeInput {
-	if o == nil {
+func (t *TaskTypeInput) GetTaskTypeRevoke() *TaskTypeRevokeInput {
+	if t == nil {
 		return nil
 	}
-	return o.TaskTypeRevoke
+	return t.TaskTypeRevoke
 }

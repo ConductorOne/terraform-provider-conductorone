@@ -31,58 +31,58 @@ type SFixed64Rules struct {
 	NotIn []string `json:"notIn,omitempty"`
 }
 
-func (o *SFixed64Rules) GetConst() *string {
-	if o == nil {
+func (s *SFixed64Rules) GetConst() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Const
+	return s.Const
 }
 
-func (o *SFixed64Rules) GetGt() *string {
-	if o == nil {
+func (s *SFixed64Rules) GetGt() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Gt
+	return s.Gt
 }
 
-func (o *SFixed64Rules) GetGte() *string {
-	if o == nil {
+func (s *SFixed64Rules) GetGte() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Gte
+	return s.Gte
 }
 
-func (o *SFixed64Rules) GetIgnoreEmpty() *bool {
-	if o == nil {
+func (s *SFixed64Rules) GetIgnoreEmpty() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.IgnoreEmpty
+	return s.IgnoreEmpty
 }
 
-func (o *SFixed64Rules) GetIn() []string {
-	if o == nil {
+func (s *SFixed64Rules) GetIn() []string {
+	if s == nil {
 		return nil
 	}
-	return o.In
+	return s.In
 }
 
-func (o *SFixed64Rules) GetLt() *string {
-	if o == nil {
+func (s *SFixed64Rules) GetLt() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Lt
+	return s.Lt
 }
 
-func (o *SFixed64Rules) GetLte() *string {
-	if o == nil {
+func (s *SFixed64Rules) GetLte() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Lte
+	return s.Lte
 }
 
-func (o *SFixed64Rules) GetNotIn() []string {
-	if o == nil {
+func (s *SFixed64Rules) GetNotIn() []string {
+	if s == nil {
 		return nil
 	}
-	return o.NotIn
+	return s.NotIn
 }

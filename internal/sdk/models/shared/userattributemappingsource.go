@@ -16,37 +16,37 @@ type UserAttributeMappingSource struct {
 	Value *string `json:"value,omitempty"`
 }
 
-func (o *UserAttributeMappingSource) GetAppID() *string {
-	if o == nil {
+func (u *UserAttributeMappingSource) GetAppID() *string {
+	if u == nil {
 		return nil
 	}
-	return o.AppID
+	return u.AppID
 }
 
-func (o *UserAttributeMappingSource) GetAppUserID() *string {
-	if o == nil {
+func (u *UserAttributeMappingSource) GetAppUserID() *string {
+	if u == nil {
 		return nil
 	}
-	return o.AppUserID
+	return u.AppUserID
 }
 
-func (o *UserAttributeMappingSource) GetAppUserProfileAttributeKey() *string {
-	if o == nil {
+func (u *UserAttributeMappingSource) GetAppUserProfileAttributeKey() *string {
+	if u == nil {
 		return nil
 	}
-	return o.AppUserProfileAttributeKey
+	return u.AppUserProfileAttributeKey
 }
 
-func (o *UserAttributeMappingSource) GetUserAttributeMappingID() *string {
-	if o == nil {
+func (u *UserAttributeMappingSource) GetUserAttributeMappingID() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UserAttributeMappingID
+	return u.UserAttributeMappingID
 }
 
-func (o *UserAttributeMappingSource) GetValue() *string {
-	if o == nil {
+func (u *UserAttributeMappingSource) GetValue() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Value
+	return u.Value
 }

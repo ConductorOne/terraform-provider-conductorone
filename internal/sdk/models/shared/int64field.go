@@ -25,30 +25,30 @@ type Int64Field struct {
 	Int64Rules *Int64Rules `json:"rules,omitempty"`
 }
 
-func (o *Int64Field) GetDefaultValue() *string {
-	if o == nil {
+func (i *Int64Field) GetDefaultValue() *string {
+	if i == nil {
 		return nil
 	}
-	return o.DefaultValue
+	return i.DefaultValue
 }
 
-func (o *Int64Field) GetNumberField() *NumberField {
-	if o == nil {
+func (i *Int64Field) GetNumberField() *NumberField {
+	if i == nil {
 		return nil
 	}
-	return o.NumberField
+	return i.NumberField
 }
 
-func (o *Int64Field) GetPlaceholder() *string {
-	if o == nil {
+func (i *Int64Field) GetPlaceholder() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Placeholder
+	return i.Placeholder
 }
 
-func (o *Int64Field) GetInt64Rules() *Int64Rules {
-	if o == nil {
+func (i *Int64Field) GetInt64Rules() *Int64Rules {
+	if i == nil {
 		return nil
 	}
-	return o.Int64Rules
+	return i.Int64Rules
 }

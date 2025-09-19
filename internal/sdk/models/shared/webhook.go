@@ -22,23 +22,23 @@ type Webhook struct {
 	WebhookIDCel *string `json:"webhookIdCel,omitempty"`
 }
 
-func (o *Webhook) GetPayload() *Payload {
-	if o == nil {
+func (w *Webhook) GetPayload() *Payload {
+	if w == nil {
 		return nil
 	}
-	return o.Payload
+	return w.Payload
 }
 
-func (o *Webhook) GetWebhookID() *string {
-	if o == nil {
+func (w *Webhook) GetWebhookID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookID
+	return w.WebhookID
 }
 
-func (o *Webhook) GetWebhookIDCel() *string {
-	if o == nil {
+func (w *Webhook) GetWebhookIDCel() *string {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookIDCel
+	return w.WebhookIDCel
 }

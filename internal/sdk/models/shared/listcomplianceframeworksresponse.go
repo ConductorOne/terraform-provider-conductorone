@@ -10,16 +10,16 @@ type ListComplianceFrameworksResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ListComplianceFrameworksResponse) GetList() []AttributeValue {
-	if o == nil {
+func (l *ListComplianceFrameworksResponse) GetList() []AttributeValue {
+	if l == nil {
 		return nil
 	}
-	return o.List
+	return l.List
 }
 
-func (o *ListComplianceFrameworksResponse) GetNextPageToken() *string {
-	if o == nil {
+func (l *ListComplianceFrameworksResponse) GetNextPageToken() *string {
+	if l == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return l.NextPageToken
 }

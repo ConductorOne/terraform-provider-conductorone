@@ -72,44 +72,44 @@ type MapRules struct {
 	FieldRules1 *FieldRules `json:"values,omitempty"`
 }
 
-func (o *MapRules) GetIgnoreEmpty() *bool {
-	if o == nil {
+func (m *MapRules) GetIgnoreEmpty() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.IgnoreEmpty
+	return m.IgnoreEmpty
 }
 
-func (o *MapRules) GetFieldRules() *FieldRules {
-	if o == nil {
+func (m *MapRules) GetFieldRules() *FieldRules {
+	if m == nil {
 		return nil
 	}
-	return o.FieldRules
+	return m.FieldRules
 }
 
-func (o *MapRules) GetMaxPairs() *string {
-	if o == nil {
+func (m *MapRules) GetMaxPairs() *string {
+	if m == nil {
 		return nil
 	}
-	return o.MaxPairs
+	return m.MaxPairs
 }
 
-func (o *MapRules) GetMinPairs() *string {
-	if o == nil {
+func (m *MapRules) GetMinPairs() *string {
+	if m == nil {
 		return nil
 	}
-	return o.MinPairs
+	return m.MinPairs
 }
 
-func (o *MapRules) GetNoSparse() *bool {
-	if o == nil {
+func (m *MapRules) GetNoSparse() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.NoSparse
+	return m.NoSparse
 }
 
-func (o *MapRules) GetFieldRules1() *FieldRules {
-	if o == nil {
+func (m *MapRules) GetFieldRules1() *FieldRules {
+	if m == nil {
 		return nil
 	}
-	return o.FieldRules1
+	return m.FieldRules1
 }

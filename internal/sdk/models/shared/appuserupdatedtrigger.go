@@ -20,23 +20,23 @@ type AppUserUpdatedTrigger struct {
 	Condition *string `json:"condition,omitempty"`
 }
 
-func (o *AppUserUpdatedTrigger) GetAppID() *string {
-	if o == nil {
+func (a *AppUserUpdatedTrigger) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppUserUpdatedTrigger) GetAppIDCel() *string {
-	if o == nil {
+func (a *AppUserUpdatedTrigger) GetAppIDCel() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppIDCel
+	return a.AppIDCel
 }
 
-func (o *AppUserUpdatedTrigger) GetCondition() *string {
-	if o == nil {
+func (a *AppUserUpdatedTrigger) GetCondition() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Condition
+	return a.Condition
 }

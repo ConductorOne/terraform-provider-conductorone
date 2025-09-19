@@ -14,30 +14,30 @@ type ExpressionApprovalInput struct {
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
 }
 
-func (o *ExpressionApprovalInput) GetAllowSelfApproval() *bool {
-	if o == nil {
+func (e *ExpressionApprovalInput) GetAllowSelfApproval() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.AllowSelfApproval
+	return e.AllowSelfApproval
 }
 
-func (o *ExpressionApprovalInput) GetExpressions() []string {
-	if o == nil {
+func (e *ExpressionApprovalInput) GetExpressions() []string {
+	if e == nil {
 		return nil
 	}
-	return o.Expressions
+	return e.Expressions
 }
 
-func (o *ExpressionApprovalInput) GetFallback() *bool {
-	if o == nil {
+func (e *ExpressionApprovalInput) GetFallback() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Fallback
+	return e.Fallback
 }
 
-func (o *ExpressionApprovalInput) GetFallbackUserIds() []string {
-	if o == nil {
+func (e *ExpressionApprovalInput) GetFallbackUserIds() []string {
+	if e == nil {
 		return nil
 	}
-	return o.FallbackUserIds
+	return e.FallbackUserIds
 }

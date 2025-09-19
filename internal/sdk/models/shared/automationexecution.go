@@ -92,79 +92,79 @@ func (a *AutomationExecution) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AutomationExecution) GetAutomationTemplateID() *string {
-	if o == nil {
+func (a *AutomationExecution) GetAutomationTemplateID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AutomationTemplateID
+	return a.AutomationTemplateID
 }
 
-func (o *AutomationExecution) GetCompletedAt() *time.Time {
-	if o == nil {
+func (a *AutomationExecution) GetCompletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CompletedAt
+	return a.CompletedAt
 }
 
-func (o *AutomationExecution) GetAutomationContext() *AutomationContext {
-	if o == nil {
+func (a *AutomationExecution) GetAutomationContext() *AutomationContext {
+	if a == nil {
 		return nil
 	}
-	return o.AutomationContext
+	return a.AutomationContext
 }
 
-func (o *AutomationExecution) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *AutomationExecution) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AutomationExecution) GetCurrentVersion() *int {
-	if o == nil {
+func (a *AutomationExecution) GetCurrentVersion() *int {
+	if a == nil {
 		return nil
 	}
-	return o.CurrentVersion
+	return a.CurrentVersion
 }
 
-func (o *AutomationExecution) GetDeletedAt() *time.Time {
-	if o == nil {
+func (a *AutomationExecution) GetDeletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return a.DeletedAt
 }
 
-func (o *AutomationExecution) GetDuration() *string {
-	if o == nil {
+func (a *AutomationExecution) GetDuration() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Duration
+	return a.Duration
 }
 
-func (o *AutomationExecution) GetID() *string {
-	if o == nil {
+func (a *AutomationExecution) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AutomationExecution) GetIsDraft() *bool {
-	if o == nil {
+func (a *AutomationExecution) GetIsDraft() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.IsDraft
+	return a.IsDraft
 }
 
-func (o *AutomationExecution) GetState() *AutomationExecutionState {
-	if o == nil {
+func (a *AutomationExecution) GetState() *AutomationExecutionState {
+	if a == nil {
 		return nil
 	}
-	return o.State
+	return a.State
 }
 
-func (o *AutomationExecution) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (a *AutomationExecution) GetUpdatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

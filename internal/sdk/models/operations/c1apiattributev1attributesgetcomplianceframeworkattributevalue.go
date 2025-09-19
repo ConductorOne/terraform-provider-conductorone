@@ -11,11 +11,11 @@ type C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest struc
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse struct {
@@ -29,30 +29,30 @@ type C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse stru
 	GetComplianceFrameworkAttributeValueResponse *shared.GetComplianceFrameworkAttributeValueResponse
 }
 
-func (o *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse) GetGetComplianceFrameworkAttributeValueResponse() *shared.GetComplianceFrameworkAttributeValueResponse {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse) GetGetComplianceFrameworkAttributeValueResponse() *shared.GetComplianceFrameworkAttributeValueResponse {
+	if c == nil {
 		return nil
 	}
-	return o.GetComplianceFrameworkAttributeValueResponse
+	return c.GetComplianceFrameworkAttributeValueResponse
 }

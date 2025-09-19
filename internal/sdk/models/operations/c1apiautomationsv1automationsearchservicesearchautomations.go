@@ -18,30 +18,30 @@ type C1APIAutomationsV1AutomationSearchServiceSearchAutomationsResponse struct {
 	SearchAutomationsResponse *shared.SearchAutomationsResponse
 }
 
-func (o *C1APIAutomationsV1AutomationSearchServiceSearchAutomationsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationSearchServiceSearchAutomationsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAutomationsV1AutomationSearchServiceSearchAutomationsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationSearchServiceSearchAutomationsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAutomationsV1AutomationSearchServiceSearchAutomationsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationSearchServiceSearchAutomationsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAutomationsV1AutomationSearchServiceSearchAutomationsResponse) GetSearchAutomationsResponse() *shared.SearchAutomationsResponse {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationSearchServiceSearchAutomationsResponse) GetSearchAutomationsResponse() *shared.SearchAutomationsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.SearchAutomationsResponse
+	return c.SearchAutomationsResponse
 }

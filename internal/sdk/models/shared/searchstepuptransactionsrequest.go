@@ -103,65 +103,65 @@ func (s *SearchStepUpTransactionsRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *SearchStepUpTransactionsRequest) GetCreatedAfter() *time.Time {
-	if o == nil {
+func (s *SearchStepUpTransactionsRequest) GetCreatedAfter() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.CreatedAfter
+	return s.CreatedAfter
 }
 
-func (o *SearchStepUpTransactionsRequest) GetCreatedBefore() *time.Time {
-	if o == nil {
+func (s *SearchStepUpTransactionsRequest) GetCreatedBefore() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.CreatedBefore
+	return s.CreatedBefore
 }
 
-func (o *SearchStepUpTransactionsRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchStepUpTransactionsRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SearchStepUpTransactionsRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchStepUpTransactionsRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }
 
-func (o *SearchStepUpTransactionsRequest) GetProviderID() *string {
-	if o == nil {
+func (s *SearchStepUpTransactionsRequest) GetProviderID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ProviderID
+	return s.ProviderID
 }
 
-func (o *SearchStepUpTransactionsRequest) GetState() *SearchStepUpTransactionsRequestState {
-	if o == nil {
+func (s *SearchStepUpTransactionsRequest) GetState() *SearchStepUpTransactionsRequestState {
+	if s == nil {
 		return nil
 	}
-	return o.State
+	return s.State
 }
 
-func (o *SearchStepUpTransactionsRequest) GetTargetType() *TargetType {
-	if o == nil {
+func (s *SearchStepUpTransactionsRequest) GetTargetType() *TargetType {
+	if s == nil {
 		return nil
 	}
-	return o.TargetType
+	return s.TargetType
 }
 
-func (o *SearchStepUpTransactionsRequest) GetTaskID() *string {
-	if o == nil {
+func (s *SearchStepUpTransactionsRequest) GetTaskID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.TaskID
+	return s.TaskID
 }
 
-func (o *SearchStepUpTransactionsRequest) GetUserID() *string {
-	if o == nil {
+func (s *SearchStepUpTransactionsRequest) GetUserID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.UserID
+	return s.UserID
 }

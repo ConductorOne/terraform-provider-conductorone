@@ -8,9 +8,9 @@ type AppResourceTypeView struct {
 	AppResourceType *AppResourceType `json:"appResourceType,omitempty"`
 }
 
-func (o *AppResourceTypeView) GetAppResourceType() *AppResourceType {
-	if o == nil {
+func (a *AppResourceTypeView) GetAppResourceType() *AppResourceType {
+	if a == nil {
 		return nil
 	}
-	return o.AppResourceType
+	return a.AppResourceType
 }

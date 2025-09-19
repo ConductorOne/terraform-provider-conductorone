@@ -8,9 +8,9 @@ type EditorValidateRequest struct {
 	Text *string `json:"text,omitempty"`
 }
 
-func (o *EditorValidateRequest) GetText() *string {
-	if o == nil {
+func (e *EditorValidateRequest) GetText() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Text
+	return e.Text
 }

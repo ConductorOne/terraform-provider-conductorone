@@ -38,65 +38,65 @@ func (t *TimestampRules) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *TimestampRules) GetConst() *time.Time {
-	if o == nil {
+func (t *TimestampRules) GetConst() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.Const
+	return t.Const
 }
 
-func (o *TimestampRules) GetGt() *time.Time {
-	if o == nil {
+func (t *TimestampRules) GetGt() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.Gt
+	return t.Gt
 }
 
-func (o *TimestampRules) GetGtNow() *bool {
-	if o == nil {
+func (t *TimestampRules) GetGtNow() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.GtNow
+	return t.GtNow
 }
 
-func (o *TimestampRules) GetGte() *time.Time {
-	if o == nil {
+func (t *TimestampRules) GetGte() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.Gte
+	return t.Gte
 }
 
-func (o *TimestampRules) GetLt() *time.Time {
-	if o == nil {
+func (t *TimestampRules) GetLt() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.Lt
+	return t.Lt
 }
 
-func (o *TimestampRules) GetLtNow() *bool {
-	if o == nil {
+func (t *TimestampRules) GetLtNow() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.LtNow
+	return t.LtNow
 }
 
-func (o *TimestampRules) GetLte() *time.Time {
-	if o == nil {
+func (t *TimestampRules) GetLte() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.Lte
+	return t.Lte
 }
 
-func (o *TimestampRules) GetRequired() *bool {
-	if o == nil {
+func (t *TimestampRules) GetRequired() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.Required
+	return t.Required
 }
 
-func (o *TimestampRules) GetWithin() *string {
-	if o == nil {
+func (t *TimestampRules) GetWithin() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Within
+	return t.Within
 }

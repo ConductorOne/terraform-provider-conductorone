@@ -103,128 +103,128 @@ type AutomationStep struct {
 	Webhook *Webhook `json:"webhook,omitempty"`
 }
 
-func (o *AutomationStep) GetCallFunction() *CallFunction {
-	if o == nil {
+func (a *AutomationStep) GetCallFunction() *CallFunction {
+	if a == nil {
 		return nil
 	}
-	return o.CallFunction
+	return a.CallFunction
 }
 
-func (o *AutomationStep) GetConnectorAction() *ConnectorAction {
-	if o == nil {
+func (a *AutomationStep) GetConnectorAction() *ConnectorAction {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectorAction
+	return a.ConnectorAction
 }
 
-func (o *AutomationStep) GetConnectorCreateAccount() *ConnectorCreateAccount {
-	if o == nil {
+func (a *AutomationStep) GetConnectorCreateAccount() *ConnectorCreateAccount {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectorCreateAccount
+	return a.ConnectorCreateAccount
 }
 
-func (o *AutomationStep) GetCreateAccessReview() *CreateAccessReview {
-	if o == nil {
+func (a *AutomationStep) GetCreateAccessReview() *CreateAccessReview {
+	if a == nil {
 		return nil
 	}
-	return o.CreateAccessReview
+	return a.CreateAccessReview
 }
 
-func (o *AutomationStep) GetCreateRevokeTasks() *CreateRevokeTasks {
-	if o == nil {
+func (a *AutomationStep) GetCreateRevokeTasks() *CreateRevokeTasks {
+	if a == nil {
 		return nil
 	}
-	return o.CreateRevokeTasks
+	return a.CreateRevokeTasks
 }
 
-func (o *AutomationStep) GetGrantEntitlements() *GrantEntitlements {
-	if o == nil {
+func (a *AutomationStep) GetGrantEntitlements() *GrantEntitlements {
+	if a == nil {
 		return nil
 	}
-	return o.GrantEntitlements
+	return a.GrantEntitlements
 }
 
-func (o *AutomationStep) GetRemoveFromDelegation() *RemoveFromDelegation {
-	if o == nil {
+func (a *AutomationStep) GetRemoveFromDelegation() *RemoveFromDelegation {
+	if a == nil {
 		return nil
 	}
-	return o.RemoveFromDelegation
+	return a.RemoveFromDelegation
 }
 
-func (o *AutomationStep) GetRunAutomation() *RunAutomation {
-	if o == nil {
+func (a *AutomationStep) GetRunAutomation() *RunAutomation {
+	if a == nil {
 		return nil
 	}
-	return o.RunAutomation
+	return a.RunAutomation
 }
 
-func (o *AutomationStep) GetSendEmail() *SendEmail {
-	if o == nil {
+func (a *AutomationStep) GetSendEmail() *SendEmail {
+	if a == nil {
 		return nil
 	}
-	return o.SendEmail
+	return a.SendEmail
 }
 
-func (o *AutomationStep) GetSendSlackMessage() *SendSlackMessage {
-	if o == nil {
+func (a *AutomationStep) GetSendSlackMessage() *SendSlackMessage {
+	if a == nil {
 		return nil
 	}
-	return o.SendSlackMessage
+	return a.SendSlackMessage
 }
 
-func (o *AutomationStep) GetSkipIfTrueCel() *string {
-	if o == nil {
+func (a *AutomationStep) GetSkipIfTrueCel() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SkipIfTrueCel
+	return a.SkipIfTrueCel
 }
 
-func (o *AutomationStep) GetStepDisplayName() *string {
-	if o == nil {
+func (a *AutomationStep) GetStepDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.StepDisplayName
+	return a.StepDisplayName
 }
 
-func (o *AutomationStep) GetStepName() *string {
-	if o == nil {
+func (a *AutomationStep) GetStepName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.StepName
+	return a.StepName
 }
 
-func (o *AutomationStep) GetTaskAction() *TaskAction {
-	if o == nil {
+func (a *AutomationStep) GetTaskAction() *TaskAction {
+	if a == nil {
 		return nil
 	}
-	return o.TaskAction
+	return a.TaskAction
 }
 
-func (o *AutomationStep) GetUnenrollFromAllAccessProfiles() *UnenrollFromAllAccessProfiles {
-	if o == nil {
+func (a *AutomationStep) GetUnenrollFromAllAccessProfiles() *UnenrollFromAllAccessProfiles {
+	if a == nil {
 		return nil
 	}
-	return o.UnenrollFromAllAccessProfiles
+	return a.UnenrollFromAllAccessProfiles
 }
 
-func (o *AutomationStep) GetUpdateUser() *UpdateUser {
-	if o == nil {
+func (a *AutomationStep) GetUpdateUser() *UpdateUser {
+	if a == nil {
 		return nil
 	}
-	return o.UpdateUser
+	return a.UpdateUser
 }
 
-func (o *AutomationStep) GetWaitForDuration() *WaitForDuration {
-	if o == nil {
+func (a *AutomationStep) GetWaitForDuration() *WaitForDuration {
+	if a == nil {
 		return nil
 	}
-	return o.WaitForDuration
+	return a.WaitForDuration
 }
 
-func (o *AutomationStep) GetWebhook() *Webhook {
-	if o == nil {
+func (a *AutomationStep) GetWebhook() *Webhook {
+	if a == nil {
 		return nil
 	}
-	return o.Webhook
+	return a.Webhook
 }

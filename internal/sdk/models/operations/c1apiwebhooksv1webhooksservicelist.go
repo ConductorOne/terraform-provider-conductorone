@@ -12,18 +12,18 @@ type C1APIWebhooksV1WebhooksServiceListRequest struct {
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceListRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceListRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceListRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceListRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIWebhooksV1WebhooksServiceListResponse struct {
@@ -37,30 +37,30 @@ type C1APIWebhooksV1WebhooksServiceListResponse struct {
 	WebhooksServiceListResponse *shared.WebhooksServiceListResponse
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceListResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceListResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceListResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceListResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceListResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceListResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceListResponse) GetWebhooksServiceListResponse() *shared.WebhooksServiceListResponse {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceListResponse) GetWebhooksServiceListResponse() *shared.WebhooksServiceListResponse {
+	if c == nil {
 		return nil
 	}
-	return o.WebhooksServiceListResponse
+	return c.WebhooksServiceListResponse
 }

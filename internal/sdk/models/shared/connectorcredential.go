@@ -39,79 +39,79 @@ func (c *ConnectorCredential) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *ConnectorCredential) GetAppID() *string {
-	if o == nil {
+func (c *ConnectorCredential) GetAppID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *ConnectorCredential) GetClientID() *string {
-	if o == nil {
+func (c *ConnectorCredential) GetClientID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ClientID
+	return c.ClientID
 }
 
-func (o *ConnectorCredential) GetClientSecret() *string {
-	if o == nil {
+func (c *ConnectorCredential) GetClientSecret() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ClientSecret
+	return c.ClientSecret
 }
 
-func (o *ConnectorCredential) GetConnectorID() *string {
-	if o == nil {
+func (c *ConnectorCredential) GetConnectorID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorID
+	return c.ConnectorID
 }
 
-func (o *ConnectorCredential) GetCreatedAt() *time.Time {
-	if o == nil {
+func (c *ConnectorCredential) GetCreatedAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *ConnectorCredential) GetDeletedAt() *time.Time {
-	if o == nil {
+func (c *ConnectorCredential) GetDeletedAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return c.DeletedAt
 }
 
-func (o *ConnectorCredential) GetDisplayName() *string {
-	if o == nil {
+func (c *ConnectorCredential) GetDisplayName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.DisplayName
+	return c.DisplayName
 }
 
-func (o *ConnectorCredential) GetExpiresTime() *time.Time {
-	if o == nil {
+func (c *ConnectorCredential) GetExpiresTime() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.ExpiresTime
+	return c.ExpiresTime
 }
 
-func (o *ConnectorCredential) GetID() *string {
-	if o == nil {
+func (c *ConnectorCredential) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *ConnectorCredential) GetLastUsedAt() *time.Time {
-	if o == nil {
+func (c *ConnectorCredential) GetLastUsedAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.LastUsedAt
+	return c.LastUsedAt
 }
 
-func (o *ConnectorCredential) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (c *ConnectorCredential) GetUpdatedAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

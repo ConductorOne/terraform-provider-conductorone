@@ -20,51 +20,51 @@ type SearchAttributeValuesRequest struct {
 	Value *string `json:"value,omitempty"`
 }
 
-func (o *SearchAttributeValuesRequest) GetAttributeTypeIds() []string {
-	if o == nil {
+func (s *SearchAttributeValuesRequest) GetAttributeTypeIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.AttributeTypeIds
+	return s.AttributeTypeIds
 }
 
-func (o *SearchAttributeValuesRequest) GetExcludeIds() []string {
-	if o == nil {
+func (s *SearchAttributeValuesRequest) GetExcludeIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.ExcludeIds
+	return s.ExcludeIds
 }
 
-func (o *SearchAttributeValuesRequest) GetIds() []string {
-	if o == nil {
+func (s *SearchAttributeValuesRequest) GetIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Ids
+	return s.Ids
 }
 
-func (o *SearchAttributeValuesRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchAttributeValuesRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SearchAttributeValuesRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchAttributeValuesRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }
 
-func (o *SearchAttributeValuesRequest) GetQuery() *string {
-	if o == nil {
+func (s *SearchAttributeValuesRequest) GetQuery() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Query
+	return s.Query
 }
 
-func (o *SearchAttributeValuesRequest) GetValue() *string {
-	if o == nil {
+func (s *SearchAttributeValuesRequest) GetValue() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Value
+	return s.Value
 }

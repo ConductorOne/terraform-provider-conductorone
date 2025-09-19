@@ -18,30 +18,30 @@ type C1APIAttributeV1AttributesCreateRiskLevelAttributeValueResponse struct {
 	CreateRiskLevelAttributeValueResponse *shared.CreateRiskLevelAttributeValueResponse
 }
 
-func (o *C1APIAttributeV1AttributesCreateRiskLevelAttributeValueResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesCreateRiskLevelAttributeValueResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAttributeV1AttributesCreateRiskLevelAttributeValueResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesCreateRiskLevelAttributeValueResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAttributeV1AttributesCreateRiskLevelAttributeValueResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesCreateRiskLevelAttributeValueResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAttributeV1AttributesCreateRiskLevelAttributeValueResponse) GetCreateRiskLevelAttributeValueResponse() *shared.CreateRiskLevelAttributeValueResponse {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesCreateRiskLevelAttributeValueResponse) GetCreateRiskLevelAttributeValueResponse() *shared.CreateRiskLevelAttributeValueResponse {
+	if c == nil {
 		return nil
 	}
-	return o.CreateRiskLevelAttributeValueResponse
+	return c.CreateRiskLevelAttributeValueResponse
 }

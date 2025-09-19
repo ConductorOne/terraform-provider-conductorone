@@ -22,37 +22,37 @@ type RemoveFromDelegation struct {
 	UserRef1 *UserRef `json:"userRef,omitempty"`
 }
 
-func (o *RemoveFromDelegation) GetReplacementUserIDCel() *string {
-	if o == nil {
+func (r *RemoveFromDelegation) GetReplacementUserIDCel() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ReplacementUserIDCel
+	return r.ReplacementUserIDCel
 }
 
-func (o *RemoveFromDelegation) GetUserRef() *UserRef {
-	if o == nil {
+func (r *RemoveFromDelegation) GetUserRef() *UserRef {
+	if r == nil {
 		return nil
 	}
-	return o.UserRef
+	return r.UserRef
 }
 
-func (o *RemoveFromDelegation) GetUseSubjectUser() *bool {
-	if o == nil {
+func (r *RemoveFromDelegation) GetUseSubjectUser() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.UseSubjectUser
+	return r.UseSubjectUser
 }
 
-func (o *RemoveFromDelegation) GetUserIDCel() *string {
-	if o == nil {
+func (r *RemoveFromDelegation) GetUserIDCel() *string {
+	if r == nil {
 		return nil
 	}
-	return o.UserIDCel
+	return r.UserIDCel
 }
 
-func (o *RemoveFromDelegation) GetUserRef1() *UserRef {
-	if o == nil {
+func (r *RemoveFromDelegation) GetUserRef1() *UserRef {
+	if r == nil {
 		return nil
 	}
-	return o.UserRef1
+	return r.UserRef1
 }

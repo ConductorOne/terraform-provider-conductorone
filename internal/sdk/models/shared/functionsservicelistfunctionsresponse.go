@@ -10,16 +10,16 @@ type FunctionsServiceListFunctionsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *FunctionsServiceListFunctionsResponse) GetList() []Function {
-	if o == nil {
+func (f *FunctionsServiceListFunctionsResponse) GetList() []Function {
+	if f == nil {
 		return nil
 	}
-	return o.List
+	return f.List
 }
 
-func (o *FunctionsServiceListFunctionsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (f *FunctionsServiceListFunctionsResponse) GetNextPageToken() *string {
+	if f == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return f.NextPageToken
 }

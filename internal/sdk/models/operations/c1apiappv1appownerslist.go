@@ -13,25 +13,25 @@ type C1APIAppV1AppOwnersListRequest struct {
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIAppV1AppOwnersListRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersListRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppOwnersListRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersListRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIAppV1AppOwnersListRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersListRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIAppV1AppOwnersListResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1AppOwnersListResponse struct {
 	ListAppOwnersResponse *shared.ListAppOwnersResponse
 }
 
-func (o *C1APIAppV1AppOwnersListResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersListResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppOwnersListResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersListResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppOwnersListResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersListResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppOwnersListResponse) GetListAppOwnersResponse() *shared.ListAppOwnersResponse {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersListResponse) GetListAppOwnersResponse() *shared.ListAppOwnersResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ListAppOwnersResponse
+	return c.ListAppOwnersResponse
 }

@@ -38,58 +38,58 @@ func (a *AppEntitlementProxy) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppEntitlementProxy) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementProxy) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AppEntitlementProxy) GetDeletedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementProxy) GetDeletedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return a.DeletedAt
 }
 
-func (o *AppEntitlementProxy) GetDstAppEntitlementID() *string {
-	if o == nil {
+func (a *AppEntitlementProxy) GetDstAppEntitlementID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DstAppEntitlementID
+	return a.DstAppEntitlementID
 }
 
-func (o *AppEntitlementProxy) GetDstAppID() *string {
-	if o == nil {
+func (a *AppEntitlementProxy) GetDstAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DstAppID
+	return a.DstAppID
 }
 
-func (o *AppEntitlementProxy) GetSrcAppEntitlementID() *string {
-	if o == nil {
+func (a *AppEntitlementProxy) GetSrcAppEntitlementID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SrcAppEntitlementID
+	return a.SrcAppEntitlementID
 }
 
-func (o *AppEntitlementProxy) GetSrcAppID() *string {
-	if o == nil {
+func (a *AppEntitlementProxy) GetSrcAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SrcAppID
+	return a.SrcAppID
 }
 
-func (o *AppEntitlementProxy) GetSystemBuiltin() *bool {
-	if o == nil {
+func (a *AppEntitlementProxy) GetSystemBuiltin() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SystemBuiltin
+	return a.SystemBuiltin
 }
 
-func (o *AppEntitlementProxy) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (a *AppEntitlementProxy) GetUpdatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

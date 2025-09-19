@@ -5,7 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
@@ -174,10 +173,30 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																	Computed:    true,
 																	Description: `Configuration to allow a fallback if the group is empty.`,
 																},
+																"fallback_group_ids": schema.ListNestedAttribute{
+																	Computed: true,
+																	NestedObject: schema.NestedAttributeObject{
+																		Attributes: map[string]schema.Attribute{
+																			"app_entitlement_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the Entitlement.`,
+																			},
+																			"app_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the App this entitlement belongs to.`,
+																			},
+																		},
+																	},
+																	Description: `Configuration to specify which groups to fallback to if fallback is enabled and the group is empty.`,
+																},
 																"fallback_user_ids": schema.ListAttribute{
 																	Computed:    true,
 																	ElementType: types.StringType,
 																	Description: `Configuration to specific which users to fallback to if fallback is enabled and the group is empty.`,
+																},
+																"is_group_fallback_enabled": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to enable fallback for group fallback.`,
 																},
 															},
 															Description: `The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step.`,
@@ -634,11 +653,40 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 															},
 															Description: `The WaitCondition message.`,
 														},
+														"wait_duration": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"duration": schema.StringAttribute{
+																	Computed: true,
+																},
+															},
+															Description: `The WaitDuration message.`,
+														},
+														"wait_until_time": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"hours": schema.Int64Attribute{
+																	Computed:    true,
+																	Description: `The hours field.`,
+																},
+																"minutes": schema.Int64Attribute{
+																	Computed:    true,
+																	Description: `The minutes field.`,
+																},
+																"timezone": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The timezone field.`,
+																},
+															},
+															Description: `Waits until a specific time of the day (UTC)`,
+														},
 													},
 													MarkdownDescription: `Define a Wait step for a policy to wait on a condition to be met.` + "\n" +
 														`` + "\n" +
 														`This message contains a oneof named until. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - condition`,
+														`  - condition` + "\n" +
+														`  - duration` + "\n" +
+														`  - untilTime`,
 												},
 											},
 										},
@@ -805,21 +853,25 @@ func (r *PoliciesDataSource) Read(ctx context.Context, req datasource.ReadReques
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	response, err := res.Next()
 	for {
+		var err error
+
+		res, err = res.Next()
+
 		if err != nil {
-			resp.Diagnostics.AddError("reading next results failed", debugResponse(response.RawResponse))
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
 			return
 		}
-		if response == nil {
+
+		if res == nil {
 			break
 		}
-		resp.Diagnostics.Append(data.RefreshFromSharedSearchPoliciesResponse(ctx, response.SearchPoliciesResponse)...)
+
+		resp.Diagnostics.Append(data.RefreshFromSharedSearchPoliciesResponse(ctx, res.SearchPoliciesResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return
 		}
-		response, err = response.Next()
 	}
 
 	// Save updated data into Terraform state

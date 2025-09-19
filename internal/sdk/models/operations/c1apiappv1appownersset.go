@@ -12,18 +12,18 @@ type C1APIAppV1AppOwnersSetRequest struct {
 	SetAppOwnersRequest *shared.SetAppOwnersRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppOwnersSetRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersSetRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppOwnersSetRequest) GetSetAppOwnersRequest() *shared.SetAppOwnersRequest {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersSetRequest) GetSetAppOwnersRequest() *shared.SetAppOwnersRequest {
+	if c == nil {
 		return nil
 	}
-	return o.SetAppOwnersRequest
+	return c.SetAppOwnersRequest
 }
 
 type C1APIAppV1AppOwnersSetResponse struct {
@@ -37,30 +37,30 @@ type C1APIAppV1AppOwnersSetResponse struct {
 	SetAppOwnersResponse *shared.SetAppOwnersResponse
 }
 
-func (o *C1APIAppV1AppOwnersSetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersSetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppOwnersSetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersSetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppOwnersSetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersSetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppOwnersSetResponse) GetSetAppOwnersResponse() *shared.SetAppOwnersResponse {
-	if o == nil {
+func (c *C1APIAppV1AppOwnersSetResponse) GetSetAppOwnersResponse() *shared.SetAppOwnersResponse {
+	if c == nil {
 		return nil
 	}
-	return o.SetAppOwnersResponse
+	return c.SetAppOwnersResponse
 }

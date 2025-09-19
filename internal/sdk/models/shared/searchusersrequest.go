@@ -104,93 +104,93 @@ type SearchUsersRequest struct {
 	UserStatuses []UserStatuses `json:"userStatuses,omitempty"`
 }
 
-func (o *SearchUsersRequest) GetDepartments() []string {
-	if o == nil {
+func (s *SearchUsersRequest) GetDepartments() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Departments
+	return s.Departments
 }
 
-func (o *SearchUsersRequest) GetEmail() *string {
-	if o == nil {
+func (s *SearchUsersRequest) GetEmail() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Email
+	return s.Email
 }
 
-func (o *SearchUsersRequest) GetExcludeIds() []string {
-	if o == nil {
+func (s *SearchUsersRequest) GetExcludeIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.ExcludeIds
+	return s.ExcludeIds
 }
 
-func (o *SearchUsersRequest) GetExcludeTypes() []ExcludeTypes {
-	if o == nil {
+func (s *SearchUsersRequest) GetExcludeTypes() []ExcludeTypes {
+	if s == nil {
 		return nil
 	}
-	return o.ExcludeTypes
+	return s.ExcludeTypes
 }
 
-func (o *SearchUsersRequest) GetIds() []string {
-	if o == nil {
+func (s *SearchUsersRequest) GetIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Ids
+	return s.Ids
 }
 
-func (o *SearchUsersRequest) GetJobTitles() []string {
-	if o == nil {
+func (s *SearchUsersRequest) GetJobTitles() []string {
+	if s == nil {
 		return nil
 	}
-	return o.JobTitles
+	return s.JobTitles
 }
 
-func (o *SearchUsersRequest) GetManagerIds() []string {
-	if o == nil {
+func (s *SearchUsersRequest) GetManagerIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.ManagerIds
+	return s.ManagerIds
 }
 
-func (o *SearchUsersRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchUsersRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SearchUsersRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchUsersRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }
 
-func (o *SearchUsersRequest) GetQuery() *string {
-	if o == nil {
+func (s *SearchUsersRequest) GetQuery() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Query
+	return s.Query
 }
 
-func (o *SearchUsersRequest) GetRefs() []UserRef {
-	if o == nil {
+func (s *SearchUsersRequest) GetRefs() []UserRef {
+	if s == nil {
 		return nil
 	}
-	return o.Refs
+	return s.Refs
 }
 
-func (o *SearchUsersRequest) GetRoleIds() []string {
-	if o == nil {
+func (s *SearchUsersRequest) GetRoleIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.RoleIds
+	return s.RoleIds
 }
 
-func (o *SearchUsersRequest) GetUserStatuses() []UserStatuses {
-	if o == nil {
+func (s *SearchUsersRequest) GetUserStatuses() []UserStatuses {
+	if s == nil {
 		return nil
 	}
-	return o.UserStatuses
+	return s.UserStatuses
 }

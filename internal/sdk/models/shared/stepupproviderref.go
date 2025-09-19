@@ -8,9 +8,9 @@ type StepUpProviderRef struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *StepUpProviderRef) GetID() *string {
-	if o == nil {
+func (s *StepUpProviderRef) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }

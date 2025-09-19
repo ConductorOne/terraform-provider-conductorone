@@ -44,79 +44,79 @@ func (b *BundleAutomation) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *BundleAutomation) GetBundleAutomationCircuitBreaker() *BundleAutomationCircuitBreaker {
-	if o == nil {
+func (b *BundleAutomation) GetBundleAutomationCircuitBreaker() *BundleAutomationCircuitBreaker {
+	if b == nil {
 		return nil
 	}
-	return o.BundleAutomationCircuitBreaker
+	return b.BundleAutomationCircuitBreaker
 }
 
-func (o *BundleAutomation) GetCreateTasks() *bool {
-	if o == nil {
+func (b *BundleAutomation) GetCreateTasks() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.CreateTasks
+	return b.CreateTasks
 }
 
-func (o *BundleAutomation) GetCreatedAt() *time.Time {
-	if o == nil {
+func (b *BundleAutomation) GetCreatedAt() *time.Time {
+	if b == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return b.CreatedAt
 }
 
-func (o *BundleAutomation) GetDeletedAt() *time.Time {
-	if o == nil {
+func (b *BundleAutomation) GetDeletedAt() *time.Time {
+	if b == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return b.DeletedAt
 }
 
-func (o *BundleAutomation) GetDisableCircuitBreaker() *bool {
-	if o == nil {
+func (b *BundleAutomation) GetDisableCircuitBreaker() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.DisableCircuitBreaker
+	return b.DisableCircuitBreaker
 }
 
-func (o *BundleAutomation) GetEnabled() *bool {
-	if o == nil {
+func (b *BundleAutomation) GetEnabled() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.Enabled
+	return b.Enabled
 }
 
-func (o *BundleAutomation) GetBundleAutomationRuleEntitlement() *BundleAutomationRuleEntitlement {
-	if o == nil {
+func (b *BundleAutomation) GetBundleAutomationRuleEntitlement() *BundleAutomationRuleEntitlement {
+	if b == nil {
 		return nil
 	}
-	return o.BundleAutomationRuleEntitlement
+	return b.BundleAutomationRuleEntitlement
 }
 
-func (o *BundleAutomation) GetRequestCatalogID() *string {
-	if o == nil {
+func (b *BundleAutomation) GetRequestCatalogID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.RequestCatalogID
+	return b.RequestCatalogID
 }
 
-func (o *BundleAutomation) GetBundleAutomationLastRunState() *BundleAutomationLastRunState {
-	if o == nil {
+func (b *BundleAutomation) GetBundleAutomationLastRunState() *BundleAutomationLastRunState {
+	if b == nil {
 		return nil
 	}
-	return o.BundleAutomationLastRunState
+	return b.BundleAutomationLastRunState
 }
 
-func (o *BundleAutomation) GetTenantID() *string {
-	if o == nil {
+func (b *BundleAutomation) GetTenantID() *string {
+	if b == nil {
 		return nil
 	}
-	return o.TenantID
+	return b.TenantID
 }
 
-func (o *BundleAutomation) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (b *BundleAutomation) GetUpdatedAt() *time.Time {
+	if b == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return b.UpdatedAt
 }

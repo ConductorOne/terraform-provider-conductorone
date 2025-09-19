@@ -18,30 +18,30 @@ type C1APISettingsV1OrgDomainServiceUpdateResponse struct {
 	UpdateOrgDomainResponse *shared.UpdateOrgDomainResponse
 }
 
-func (o *C1APISettingsV1OrgDomainServiceUpdateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APISettingsV1OrgDomainServiceUpdateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APISettingsV1OrgDomainServiceUpdateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APISettingsV1OrgDomainServiceUpdateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APISettingsV1OrgDomainServiceUpdateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APISettingsV1OrgDomainServiceUpdateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APISettingsV1OrgDomainServiceUpdateResponse) GetUpdateOrgDomainResponse() *shared.UpdateOrgDomainResponse {
-	if o == nil {
+func (c *C1APISettingsV1OrgDomainServiceUpdateResponse) GetUpdateOrgDomainResponse() *shared.UpdateOrgDomainResponse {
+	if c == nil {
 		return nil
 	}
-	return o.UpdateOrgDomainResponse
+	return c.UpdateOrgDomainResponse
 }

@@ -96,177 +96,177 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	SourceConnectorID *string `json:"sourceConnectorId,omitempty"`
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetAccessReviewID() *string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetAccessReviewID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AccessReviewID
+	return a.AccessReviewID
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetAlias() *string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetAlias() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Alias
+	return a.Alias
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetAppIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetAppIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.AppIds
+	return a.AppIds
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetAppUserIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetAppUserIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserIds
+	return a.AppUserIds
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetComplianceFrameworkIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetComplianceFrameworkIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ComplianceFrameworkIds
+	return a.ComplianceFrameworkIds
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetDisplayName() *string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeAppIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetExcludeAppIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ExcludeAppIds
+	return a.ExcludeAppIds
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeAppUserIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetExcludeAppUserIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ExcludeAppUserIds
+	return a.ExcludeAppUserIds
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeImmutable() *bool {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetExcludeImmutable() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ExcludeImmutable
+	return a.ExcludeImmutable
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetExcludeResourceTypeIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetExcludeResourceTypeIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ExcludeResourceTypeIds
+	return a.ExcludeResourceTypeIds
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetExcludedEntitlementRefs() []AppEntitlementRef {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetExcludedEntitlementRefs() []AppEntitlementRef {
+	if a == nil {
 		return nil
 	}
-	return o.ExcludedEntitlementRefs
+	return a.ExcludedEntitlementRefs
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetIncludeDeleted() *bool {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetIncludeDeleted() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.IncludeDeleted
+	return a.IncludeDeleted
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetIsAutomated() *bool {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetIsAutomated() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.IsAutomated
+	return a.IsAutomated
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetMembershipType() []MembershipType {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetMembershipType() []MembershipType {
+	if a == nil {
 		return nil
 	}
-	return o.MembershipType
+	return a.MembershipType
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetOnlyGetExpiring() *bool {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetOnlyGetExpiring() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.OnlyGetExpiring
+	return a.OnlyGetExpiring
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetPageSize() *int {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetPageSize() *int {
+	if a == nil {
 		return nil
 	}
-	return o.PageSize
+	return a.PageSize
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetPageToken() *string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetPageToken() *string {
+	if a == nil {
 		return nil
 	}
-	return o.PageToken
+	return a.PageToken
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetPolicyRefs() []PolicyRef {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetPolicyRefs() []PolicyRef {
+	if a == nil {
 		return nil
 	}
-	return o.PolicyRefs
+	return a.PolicyRefs
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetQuery() *string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetQuery() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Query
+	return a.Query
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetRefs() []AppEntitlementRef {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetRefs() []AppEntitlementRef {
+	if a == nil {
 		return nil
 	}
-	return o.Refs
+	return a.Refs
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetResourceIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetResourceIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ResourceIds
+	return a.ResourceIds
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetResourceTraitIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetResourceTraitIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ResourceTraitIds
+	return a.ResourceTraitIds
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetResourceTypeIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetResourceTypeIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ResourceTypeIds
+	return a.ResourceTypeIds
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetRiskLevelIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetRiskLevelIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.RiskLevelIds
+	return a.RiskLevelIds
 }
 
-func (o *AppEntitlementSearchServiceSearchRequest) GetSourceConnectorID() *string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchRequest) GetSourceConnectorID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SourceConnectorID
+	return a.SourceConnectorID
 }

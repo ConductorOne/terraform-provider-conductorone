@@ -12,18 +12,18 @@ type C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsRe
 	AppAccessRequestDefaults *shared.AppAccessRequestDefaults1 `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsRequest) GetAppAccessRequestDefaults() *shared.AppAccessRequestDefaults1 {
-	if o == nil {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsRequest) GetAppAccessRequestDefaults() *shared.AppAccessRequestDefaults1 {
+	if c == nil {
 		return nil
 	}
-	return o.AppAccessRequestDefaults
+	return c.AppAccessRequestDefaults
 }
 
 type C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsResponse struct {
@@ -37,30 +37,30 @@ type C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsRe
 	AppAccessRequestDefaults *shared.AppAccessRequestDefaults
 }
 
-func (o *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsResponse) GetAppAccessRequestDefaults() *shared.AppAccessRequestDefaults {
-	if o == nil {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsResponse) GetAppAccessRequestDefaults() *shared.AppAccessRequestDefaults {
+	if c == nil {
 		return nil
 	}
-	return o.AppAccessRequestDefaults
+	return c.AppAccessRequestDefaults
 }

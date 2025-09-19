@@ -11,11 +11,11 @@ type C1APIIamV1PersonalClientServiceGetRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIIamV1PersonalClientServiceGetRequest) GetID() string {
-	if o == nil {
+func (c *C1APIIamV1PersonalClientServiceGetRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIIamV1PersonalClientServiceGetResponse struct {
@@ -29,30 +29,30 @@ type C1APIIamV1PersonalClientServiceGetResponse struct {
 	PersonalClientServiceGetResponse *shared.PersonalClientServiceGetResponse
 }
 
-func (o *C1APIIamV1PersonalClientServiceGetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIIamV1PersonalClientServiceGetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIIamV1PersonalClientServiceGetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIIamV1PersonalClientServiceGetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIIamV1PersonalClientServiceGetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIIamV1PersonalClientServiceGetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIIamV1PersonalClientServiceGetResponse) GetPersonalClientServiceGetResponse() *shared.PersonalClientServiceGetResponse {
-	if o == nil {
+func (c *C1APIIamV1PersonalClientServiceGetResponse) GetPersonalClientServiceGetResponse() *shared.PersonalClientServiceGetResponse {
+	if c == nil {
 		return nil
 	}
-	return o.PersonalClientServiceGetResponse
+	return c.PersonalClientServiceGetResponse
 }

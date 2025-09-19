@@ -18,23 +18,23 @@ type DirectoryServiceListResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *DirectoryServiceListResponse) GetExpanded() []DirectoryServiceListResponseExpanded {
-	if o == nil {
+func (d *DirectoryServiceListResponse) GetExpanded() []DirectoryServiceListResponseExpanded {
+	if d == nil {
 		return nil
 	}
-	return o.Expanded
+	return d.Expanded
 }
 
-func (o *DirectoryServiceListResponse) GetList() []DirectoryView {
-	if o == nil {
+func (d *DirectoryServiceListResponse) GetList() []DirectoryView {
+	if d == nil {
 		return nil
 	}
-	return o.List
+	return d.List
 }
 
-func (o *DirectoryServiceListResponse) GetNextPageToken() *string {
-	if o == nil {
+func (d *DirectoryServiceListResponse) GetNextPageToken() *string {
+	if d == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return d.NextPageToken
 }

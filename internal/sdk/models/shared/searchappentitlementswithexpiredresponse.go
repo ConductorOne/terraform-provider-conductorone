@@ -10,16 +10,16 @@ type SearchAppEntitlementsWithExpiredResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *SearchAppEntitlementsWithExpiredResponse) GetList() []AppEntitlementWithExpired {
-	if o == nil {
+func (s *SearchAppEntitlementsWithExpiredResponse) GetList() []AppEntitlementWithExpired {
+	if s == nil {
 		return nil
 	}
-	return o.List
+	return s.List
 }
 
-func (o *SearchAppEntitlementsWithExpiredResponse) GetNextPageToken() *string {
-	if o == nil {
+func (s *SearchAppEntitlementsWithExpiredResponse) GetNextPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return s.NextPageToken
 }

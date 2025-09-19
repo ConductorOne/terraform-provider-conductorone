@@ -14,30 +14,30 @@ type TaskAuditWebhookApprovalAttempt struct {
 	WebhookURL *string `json:"webhookUrl,omitempty"`
 }
 
-func (o *TaskAuditWebhookApprovalAttempt) GetWebhookID() *string {
-	if o == nil {
+func (t *TaskAuditWebhookApprovalAttempt) GetWebhookID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.WebhookID
+	return t.WebhookID
 }
 
-func (o *TaskAuditWebhookApprovalAttempt) GetWebhookInstanceID() *string {
-	if o == nil {
+func (t *TaskAuditWebhookApprovalAttempt) GetWebhookInstanceID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.WebhookInstanceID
+	return t.WebhookInstanceID
 }
 
-func (o *TaskAuditWebhookApprovalAttempt) GetWebhookName() *string {
-	if o == nil {
+func (t *TaskAuditWebhookApprovalAttempt) GetWebhookName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.WebhookName
+	return t.WebhookName
 }
 
-func (o *TaskAuditWebhookApprovalAttempt) GetWebhookURL() *string {
-	if o == nil {
+func (t *TaskAuditWebhookApprovalAttempt) GetWebhookURL() *string {
+	if t == nil {
 		return nil
 	}
-	return o.WebhookURL
+	return t.WebhookURL
 }

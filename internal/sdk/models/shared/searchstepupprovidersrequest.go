@@ -51,37 +51,37 @@ type SearchStepUpProvidersRequest struct {
 	Refs []StepUpProviderRef `json:"refs,omitempty"`
 }
 
-func (o *SearchStepUpProvidersRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchStepUpProvidersRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SearchStepUpProvidersRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchStepUpProvidersRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }
 
-func (o *SearchStepUpProvidersRequest) GetProviderType() *ProviderType {
-	if o == nil {
+func (s *SearchStepUpProvidersRequest) GetProviderType() *ProviderType {
+	if s == nil {
 		return nil
 	}
-	return o.ProviderType
+	return s.ProviderType
 }
 
-func (o *SearchStepUpProvidersRequest) GetQuery() *string {
-	if o == nil {
+func (s *SearchStepUpProvidersRequest) GetQuery() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Query
+	return s.Query
 }
 
-func (o *SearchStepUpProvidersRequest) GetRefs() []StepUpProviderRef {
-	if o == nil {
+func (s *SearchStepUpProvidersRequest) GetRefs() []StepUpProviderRef {
+	if s == nil {
 		return nil
 	}
-	return o.Refs
+	return s.Refs
 }

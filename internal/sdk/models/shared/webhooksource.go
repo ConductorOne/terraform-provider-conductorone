@@ -23,37 +23,37 @@ type WebhookSource struct {
 	WebhookSourceWorkflowStep *WebhookSourceWorkflowStep `json:"workflowStep,omitempty"`
 }
 
-func (o *WebhookSource) GetWebhookSourceApprovalStep() *WebhookSourceApprovalStep {
-	if o == nil {
+func (w *WebhookSource) GetWebhookSourceApprovalStep() *WebhookSourceApprovalStep {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookSourceApprovalStep
+	return w.WebhookSourceApprovalStep
 }
 
-func (o *WebhookSource) GetWebhookSourcePolicyPostAction() *WebhookSourcePolicyPostAction {
-	if o == nil {
+func (w *WebhookSource) GetWebhookSourcePolicyPostAction() *WebhookSourcePolicyPostAction {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookSourcePolicyPostAction
+	return w.WebhookSourcePolicyPostAction
 }
 
-func (o *WebhookSource) GetWebhookSourceProvisionStep() *WebhookSourceProvisionStep {
-	if o == nil {
+func (w *WebhookSource) GetWebhookSourceProvisionStep() *WebhookSourceProvisionStep {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookSourceProvisionStep
+	return w.WebhookSourceProvisionStep
 }
 
-func (o *WebhookSource) GetWebhookSourceTest() *WebhookSourceTest {
-	if o == nil {
+func (w *WebhookSource) GetWebhookSourceTest() *WebhookSourceTest {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookSourceTest
+	return w.WebhookSourceTest
 }
 
-func (o *WebhookSource) GetWebhookSourceWorkflowStep() *WebhookSourceWorkflowStep {
-	if o == nil {
+func (w *WebhookSource) GetWebhookSourceWorkflowStep() *WebhookSourceWorkflowStep {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookSourceWorkflowStep
+	return w.WebhookSourceWorkflowStep
 }

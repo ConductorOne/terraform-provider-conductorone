@@ -16,23 +16,23 @@ type SearchUsersResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *SearchUsersResponse) GetExpanded() []SearchUsersResponseExpanded {
-	if o == nil {
+func (s *SearchUsersResponse) GetExpanded() []SearchUsersResponseExpanded {
+	if s == nil {
 		return nil
 	}
-	return o.Expanded
+	return s.Expanded
 }
 
-func (o *SearchUsersResponse) GetList() []UserView {
-	if o == nil {
+func (s *SearchUsersResponse) GetList() []UserView {
+	if s == nil {
 		return nil
 	}
-	return o.List
+	return s.List
 }
 
-func (o *SearchUsersResponse) GetNextPageToken() *string {
-	if o == nil {
+func (s *SearchUsersResponse) GetNextPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return s.NextPageToken
 }

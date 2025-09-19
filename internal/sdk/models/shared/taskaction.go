@@ -100,30 +100,30 @@ type TaskAction struct {
 	TaskUserRelation *TaskUserRelation `json:"taskUserRelation,omitempty"`
 }
 
-func (o *TaskAction) GetCloseAction() *CloseAction {
-	if o == nil {
+func (t *TaskAction) GetCloseAction() *CloseAction {
+	if t == nil {
 		return nil
 	}
-	return o.CloseAction
+	return t.CloseAction
 }
 
-func (o *TaskAction) GetReassignAction() *ReassignAction {
-	if o == nil {
+func (t *TaskAction) GetReassignAction() *ReassignAction {
+	if t == nil {
 		return nil
 	}
-	return o.ReassignAction
+	return t.ReassignAction
 }
 
-func (o *TaskAction) GetTaskTypes() []TaskTypes {
-	if o == nil {
+func (t *TaskAction) GetTaskTypes() []TaskTypes {
+	if t == nil {
 		return nil
 	}
-	return o.TaskTypes
+	return t.TaskTypes
 }
 
-func (o *TaskAction) GetTaskUserRelation() *TaskUserRelation {
-	if o == nil {
+func (t *TaskAction) GetTaskUserRelation() *TaskUserRelation {
+	if t == nil {
 		return nil
 	}
-	return o.TaskUserRelation
+	return t.TaskUserRelation
 }

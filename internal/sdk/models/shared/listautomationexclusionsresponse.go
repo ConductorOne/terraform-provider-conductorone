@@ -10,16 +10,16 @@ type ListAutomationExclusionsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ListAutomationExclusionsResponse) GetList() []UserWithAppEntitlementUserBindingView {
-	if o == nil {
+func (l *ListAutomationExclusionsResponse) GetList() []UserWithAppEntitlementUserBindingView {
+	if l == nil {
 		return nil
 	}
-	return o.List
+	return l.List
 }
 
-func (o *ListAutomationExclusionsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (l *ListAutomationExclusionsResponse) GetNextPageToken() *string {
+	if l == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return l.NextPageToken
 }

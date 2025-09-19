@@ -48,9 +48,16 @@ resource "conductorone_policy" "my_policy" {
               app_group_id        = "...my_app_group_id..."
               app_id              = "...my_app_id..."
               fallback            = true
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled = false
             }
             app_owner_approval = {
               allow_self_approval = true
@@ -340,7 +347,18 @@ Optional:
 - `app_group_id` (String) The ID of the group specified for approval.
 - `app_id` (String) The ID of the app that contains the group specified for approval.
 - `fallback` (Boolean) Configuration to allow a fallback if the group is empty.
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the group is empty. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_group_approval--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the group is empty.
+- `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
+
+<a id="nestedatt--policy_steps--steps--approval--app_group_approval--fallback_group_ids"></a>
+### Nested Schema for `policy_steps.steps.approval.app_group_approval.fallback_group_ids`
+
+Optional:
+
+- `app_entitlement_id` (String) The ID of the Entitlement.
+- `app_id` (String) The ID of the App this entitlement belongs to.
+
 
 
 <a id="nestedatt--policy_steps--steps--approval--app_owner_approval"></a>

@@ -68,74 +68,74 @@ func (f *Function) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Function) GetCreatedAt() *time.Time {
-	if o == nil {
+func (f *Function) GetCreatedAt() *time.Time {
+	if f == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return f.CreatedAt
 }
 
-func (o *Function) GetDeletedAt() *time.Time {
-	if o == nil {
+func (f *Function) GetDeletedAt() *time.Time {
+	if f == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return f.DeletedAt
 }
 
-func (o *Function) GetDescription() *string {
-	if o == nil {
+func (f *Function) GetDescription() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Description
+	return f.Description
 }
 
-func (o *Function) GetDisplayName() *string {
-	if o == nil {
+func (f *Function) GetDisplayName() *string {
+	if f == nil {
 		return nil
 	}
-	return o.DisplayName
+	return f.DisplayName
 }
 
-func (o *Function) GetFunctionType() *FunctionType {
-	if o == nil {
+func (f *Function) GetFunctionType() *FunctionType {
+	if f == nil {
 		return nil
 	}
-	return o.FunctionType
+	return f.FunctionType
 }
 
-func (o *Function) GetHead() *string {
-	if o == nil {
+func (f *Function) GetHead() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Head
+	return f.Head
 }
 
-func (o *Function) GetID() *string {
-	if o == nil {
+func (f *Function) GetID() *string {
+	if f == nil {
 		return nil
 	}
-	return o.ID
+	return f.ID
 }
 
-func (o *Function) GetIsDraft() *bool {
-	if o == nil {
+func (f *Function) GetIsDraft() *bool {
+	if f == nil {
 		return nil
 	}
-	return o.IsDraft
+	return f.IsDraft
 }
 
-func (o *Function) GetPublishedCommitID() *string {
-	if o == nil {
+func (f *Function) GetPublishedCommitID() *string {
+	if f == nil {
 		return nil
 	}
-	return o.PublishedCommitID
+	return f.PublishedCommitID
 }
 
-func (o *Function) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (f *Function) GetUpdatedAt() *time.Time {
+	if f == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return f.UpdatedAt
 }
 
 // FunctionInput - Function represents a customer-provided code extension in the API
@@ -156,51 +156,51 @@ type FunctionInput struct {
 	PublishedCommitID *string `json:"publishedCommitId,omitempty"`
 }
 
-func (o *FunctionInput) GetDescription() *string {
-	if o == nil {
+func (f *FunctionInput) GetDescription() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Description
+	return f.Description
 }
 
-func (o *FunctionInput) GetDisplayName() *string {
-	if o == nil {
+func (f *FunctionInput) GetDisplayName() *string {
+	if f == nil {
 		return nil
 	}
-	return o.DisplayName
+	return f.DisplayName
 }
 
-func (o *FunctionInput) GetFunctionType() *FunctionType {
-	if o == nil {
+func (f *FunctionInput) GetFunctionType() *FunctionType {
+	if f == nil {
 		return nil
 	}
-	return o.FunctionType
+	return f.FunctionType
 }
 
-func (o *FunctionInput) GetHead() *string {
-	if o == nil {
+func (f *FunctionInput) GetHead() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Head
+	return f.Head
 }
 
-func (o *FunctionInput) GetID() *string {
-	if o == nil {
+func (f *FunctionInput) GetID() *string {
+	if f == nil {
 		return nil
 	}
-	return o.ID
+	return f.ID
 }
 
-func (o *FunctionInput) GetIsDraft() *bool {
-	if o == nil {
+func (f *FunctionInput) GetIsDraft() *bool {
+	if f == nil {
 		return nil
 	}
-	return o.IsDraft
+	return f.IsDraft
 }
 
-func (o *FunctionInput) GetPublishedCommitID() *string {
-	if o == nil {
+func (f *FunctionInput) GetPublishedCommitID() *string {
+	if f == nil {
 		return nil
 	}
-	return o.PublishedCommitID
+	return f.PublishedCommitID
 }

@@ -38,65 +38,65 @@ func (s *SearchGrantFeedRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *SearchGrantFeedRequest) GetAfter() *time.Time {
-	if o == nil {
+func (s *SearchGrantFeedRequest) GetAfter() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.After
+	return s.After
 }
 
-func (o *SearchGrantFeedRequest) GetAppEntitlementRefs() []AppEntitlementRef {
-	if o == nil {
+func (s *SearchGrantFeedRequest) GetAppEntitlementRefs() []AppEntitlementRef {
+	if s == nil {
 		return nil
 	}
-	return o.AppEntitlementRefs
+	return s.AppEntitlementRefs
 }
 
-func (o *SearchGrantFeedRequest) GetAppRefs() []AppRef {
-	if o == nil {
+func (s *SearchGrantFeedRequest) GetAppRefs() []AppRef {
+	if s == nil {
 		return nil
 	}
-	return o.AppRefs
+	return s.AppRefs
 }
 
-func (o *SearchGrantFeedRequest) GetAppUserRefs() []AppUserRef {
-	if o == nil {
+func (s *SearchGrantFeedRequest) GetAppUserRefs() []AppUserRef {
+	if s == nil {
 		return nil
 	}
-	return o.AppUserRefs
+	return s.AppUserRefs
 }
 
-func (o *SearchGrantFeedRequest) GetBefore() *time.Time {
-	if o == nil {
+func (s *SearchGrantFeedRequest) GetBefore() *time.Time {
+	if s == nil {
 		return nil
 	}
-	return o.Before
+	return s.Before
 }
 
-func (o *SearchGrantFeedRequest) GetAppEntitlementUserBindingExpandHistoryMask() *AppEntitlementUserBindingExpandHistoryMask {
-	if o == nil {
+func (s *SearchGrantFeedRequest) GetAppEntitlementUserBindingExpandHistoryMask() *AppEntitlementUserBindingExpandHistoryMask {
+	if s == nil {
 		return nil
 	}
-	return o.AppEntitlementUserBindingExpandHistoryMask
+	return s.AppEntitlementUserBindingExpandHistoryMask
 }
 
-func (o *SearchGrantFeedRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchGrantFeedRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SearchGrantFeedRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchGrantFeedRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }
 
-func (o *SearchGrantFeedRequest) GetUserRefs() []UserRef {
-	if o == nil {
+func (s *SearchGrantFeedRequest) GetUserRefs() []UserRef {
+	if s == nil {
 		return nil
 	}
-	return o.UserRefs
+	return s.UserRefs
 }

@@ -12,23 +12,23 @@ type TaskActionsServiceReassignRequest struct {
 	PolicyStepID *string `json:"policyStepId,omitempty"`
 }
 
-func (o *TaskActionsServiceReassignRequest) GetComment() *string {
-	if o == nil {
+func (t *TaskActionsServiceReassignRequest) GetComment() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Comment
+	return t.Comment
 }
 
-func (o *TaskActionsServiceReassignRequest) GetNewStepUserIds() []string {
-	if o == nil {
+func (t *TaskActionsServiceReassignRequest) GetNewStepUserIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.NewStepUserIds
+	return t.NewStepUserIds
 }
 
-func (o *TaskActionsServiceReassignRequest) GetPolicyStepID() *string {
-	if o == nil {
+func (t *TaskActionsServiceReassignRequest) GetPolicyStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.PolicyStepID
+	return t.PolicyStepID
 }

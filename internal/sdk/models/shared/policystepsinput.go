@@ -8,9 +8,9 @@ type PolicyStepsInput struct {
 	Steps []PolicyStepInput `json:"steps,omitempty"`
 }
 
-func (o *PolicyStepsInput) GetSteps() []PolicyStepInput {
-	if o == nil {
+func (p *PolicyStepsInput) GetSteps() []PolicyStepInput {
+	if p == nil {
 		return nil
 	}
-	return o.Steps
+	return p.Steps
 }

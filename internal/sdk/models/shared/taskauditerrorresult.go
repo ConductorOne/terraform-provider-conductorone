@@ -10,16 +10,16 @@ type TaskAuditErrorResult struct {
 	ErrorReason *string `json:"errorReason,omitempty"`
 }
 
-func (o *TaskAuditErrorResult) GetErrorCount() *string {
-	if o == nil {
+func (t *TaskAuditErrorResult) GetErrorCount() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ErrorCount
+	return t.ErrorCount
 }
 
-func (o *TaskAuditErrorResult) GetErrorReason() *string {
-	if o == nil {
+func (t *TaskAuditErrorResult) GetErrorReason() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ErrorReason
+	return t.ErrorReason
 }

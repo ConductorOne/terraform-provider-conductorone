@@ -8,9 +8,9 @@ type TaskAuditViewRef struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *TaskAuditViewRef) GetID() *string {
-	if o == nil {
+func (t *TaskAuditViewRef) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }

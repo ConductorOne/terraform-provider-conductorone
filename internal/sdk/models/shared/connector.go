@@ -25,18 +25,18 @@ func (c *Config) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Config) GetAtType() *string {
-	if o == nil {
+func (c *Config) GetAtType() *string {
+	if c == nil {
 		return nil
 	}
-	return o.AtType
+	return c.AtType
 }
 
-func (o *Config) GetAdditionalProperties() any {
-	if o == nil {
+func (c *Config) GetAdditionalProperties() any {
+	if c == nil {
 		return nil
 	}
-	return o.AdditionalProperties
+	return c.AdditionalProperties
 }
 
 // A Connector is used to sync objects into Apps
@@ -90,144 +90,144 @@ func (c *Connector) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Connector) GetAppID() *string {
-	if o == nil {
+func (c *Connector) GetAppID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *Connector) GetCanResumeSync() *bool {
-	if o == nil {
+func (c *Connector) GetCanResumeSync() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.CanResumeSync
+	return c.CanResumeSync
 }
 
-func (o *Connector) GetCatalogID() *string {
-	if o == nil {
+func (c *Connector) GetCatalogID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CatalogID
+	return c.CatalogID
 }
 
-func (o *Connector) GetConfig() *Config {
-	if o == nil {
+func (c *Connector) GetConfig() *Config {
+	if c == nil {
 		return nil
 	}
-	return o.Config
+	return c.Config
 }
 
-func (o *Connector) GetCreatedAt() *time.Time {
-	if o == nil {
+func (c *Connector) GetCreatedAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *Connector) GetDeletedAt() *time.Time {
-	if o == nil {
+func (c *Connector) GetDeletedAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return c.DeletedAt
 }
 
-func (o *Connector) GetDescription() *string {
-	if o == nil {
+func (c *Connector) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *Connector) GetDisableCheckBadSync() *bool {
-	if o == nil {
+func (c *Connector) GetDisableCheckBadSync() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.DisableCheckBadSync
+	return c.DisableCheckBadSync
 }
 
-func (o *Connector) GetDisplayName() *string {
-	if o == nil {
+func (c *Connector) GetDisplayName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.DisplayName
+	return c.DisplayName
 }
 
-func (o *Connector) GetDownloadURL() *string {
-	if o == nil {
+func (c *Connector) GetDownloadURL() *string {
+	if c == nil {
 		return nil
 	}
-	return o.DownloadURL
+	return c.DownloadURL
 }
 
-func (o *Connector) GetID() *string {
-	if o == nil {
+func (c *Connector) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *Connector) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAs {
-	if o == nil {
+func (c *Connector) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAs {
+	if c == nil {
 		return nil
 	}
-	return o.OAuth2AuthorizedAs
+	return c.OAuth2AuthorizedAs
 }
 
-func (o *Connector) GetProfileAllowList() []string {
-	if o == nil {
+func (c *Connector) GetProfileAllowList() []string {
+	if c == nil {
 		return nil
 	}
-	return o.ProfileAllowList
+	return c.ProfileAllowList
 }
 
-func (o *Connector) GetProfileIgnoreList() []string {
-	if o == nil {
+func (c *Connector) GetProfileIgnoreList() []string {
+	if c == nil {
 		return nil
 	}
-	return o.ProfileIgnoreList
+	return c.ProfileIgnoreList
 }
 
-func (o *Connector) GetConnectorStatus() *ConnectorStatus {
-	if o == nil {
+func (c *Connector) GetConnectorStatus() *ConnectorStatus {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorStatus
+	return c.ConnectorStatus
 }
 
-func (o *Connector) GetSyncDisabledAt() *time.Time {
-	if o == nil {
+func (c *Connector) GetSyncDisabledAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.SyncDisabledAt
+	return c.SyncDisabledAt
 }
 
-func (o *Connector) GetSyncDisabledCategory() *string {
-	if o == nil {
+func (c *Connector) GetSyncDisabledCategory() *string {
+	if c == nil {
 		return nil
 	}
-	return o.SyncDisabledCategory
+	return c.SyncDisabledCategory
 }
 
-func (o *Connector) GetSyncDisabledReason() *string {
-	if o == nil {
+func (c *Connector) GetSyncDisabledReason() *string {
+	if c == nil {
 		return nil
 	}
-	return o.SyncDisabledReason
+	return c.SyncDisabledReason
 }
 
-func (o *Connector) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (c *Connector) GetUpdatedAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }
 
-func (o *Connector) GetUserIds() []string {
-	if o == nil {
+func (c *Connector) GetUserIds() []string {
+	if c == nil {
 		return nil
 	}
-	return o.UserIds
+	return c.UserIds
 }
 
 // ConnectorInput - A Connector is used to sync objects into Apps
@@ -264,107 +264,107 @@ type ConnectorInput struct {
 	UserIds []string `json:"userIds,omitempty"`
 }
 
-func (o *ConnectorInput) GetAppID() *string {
-	if o == nil {
+func (c *ConnectorInput) GetAppID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *ConnectorInput) GetCanResumeSync() *bool {
-	if o == nil {
+func (c *ConnectorInput) GetCanResumeSync() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.CanResumeSync
+	return c.CanResumeSync
 }
 
-func (o *ConnectorInput) GetCatalogID() *string {
-	if o == nil {
+func (c *ConnectorInput) GetCatalogID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CatalogID
+	return c.CatalogID
 }
 
-func (o *ConnectorInput) GetConfig() *Config {
-	if o == nil {
+func (c *ConnectorInput) GetConfig() *Config {
+	if c == nil {
 		return nil
 	}
-	return o.Config
+	return c.Config
 }
 
-func (o *ConnectorInput) GetDescription() *string {
-	if o == nil {
+func (c *ConnectorInput) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *ConnectorInput) GetDisableCheckBadSync() *bool {
-	if o == nil {
+func (c *ConnectorInput) GetDisableCheckBadSync() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.DisableCheckBadSync
+	return c.DisableCheckBadSync
 }
 
-func (o *ConnectorInput) GetDisplayName() *string {
-	if o == nil {
+func (c *ConnectorInput) GetDisplayName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.DisplayName
+	return c.DisplayName
 }
 
-func (o *ConnectorInput) GetID() *string {
-	if o == nil {
+func (c *ConnectorInput) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *ConnectorInput) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAsInput {
-	if o == nil {
+func (c *ConnectorInput) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAsInput {
+	if c == nil {
 		return nil
 	}
-	return o.OAuth2AuthorizedAs
+	return c.OAuth2AuthorizedAs
 }
 
-func (o *ConnectorInput) GetProfileAllowList() []string {
-	if o == nil {
+func (c *ConnectorInput) GetProfileAllowList() []string {
+	if c == nil {
 		return nil
 	}
-	return o.ProfileAllowList
+	return c.ProfileAllowList
 }
 
-func (o *ConnectorInput) GetProfileIgnoreList() []string {
-	if o == nil {
+func (c *ConnectorInput) GetProfileIgnoreList() []string {
+	if c == nil {
 		return nil
 	}
-	return o.ProfileIgnoreList
+	return c.ProfileIgnoreList
 }
 
-func (o *ConnectorInput) GetConnectorStatus() *ConnectorStatus {
-	if o == nil {
+func (c *ConnectorInput) GetConnectorStatus() *ConnectorStatus {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorStatus
+	return c.ConnectorStatus
 }
 
-func (o *ConnectorInput) GetSyncDisabledCategory() *string {
-	if o == nil {
+func (c *ConnectorInput) GetSyncDisabledCategory() *string {
+	if c == nil {
 		return nil
 	}
-	return o.SyncDisabledCategory
+	return c.SyncDisabledCategory
 }
 
-func (o *ConnectorInput) GetSyncDisabledReason() *string {
-	if o == nil {
+func (c *ConnectorInput) GetSyncDisabledReason() *string {
+	if c == nil {
 		return nil
 	}
-	return o.SyncDisabledReason
+	return c.SyncDisabledReason
 }
 
-func (o *ConnectorInput) GetUserIds() []string {
-	if o == nil {
+func (c *ConnectorInput) GetUserIds() []string {
+	if c == nil {
 		return nil
 	}
-	return o.UserIds
+	return c.UserIds
 }

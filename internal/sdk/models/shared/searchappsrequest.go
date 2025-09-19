@@ -22,58 +22,58 @@ type SearchAppsRequest struct {
 	Query *string `json:"query,omitempty"`
 }
 
-func (o *SearchAppsRequest) GetAppIds() []string {
-	if o == nil {
+func (s *SearchAppsRequest) GetAppIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.AppIds
+	return s.AppIds
 }
 
-func (o *SearchAppsRequest) GetDisplayName() *string {
-	if o == nil {
+func (s *SearchAppsRequest) GetDisplayName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.DisplayName
+	return s.DisplayName
 }
 
-func (o *SearchAppsRequest) GetExcludeAppIds() []string {
-	if o == nil {
+func (s *SearchAppsRequest) GetExcludeAppIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.ExcludeAppIds
+	return s.ExcludeAppIds
 }
 
-func (o *SearchAppsRequest) GetOnlyDirectories() *bool {
-	if o == nil {
+func (s *SearchAppsRequest) GetOnlyDirectories() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.OnlyDirectories
+	return s.OnlyDirectories
 }
 
-func (o *SearchAppsRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchAppsRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SearchAppsRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchAppsRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }
 
-func (o *SearchAppsRequest) GetPolicyRefs() []PolicyRef {
-	if o == nil {
+func (s *SearchAppsRequest) GetPolicyRefs() []PolicyRef {
+	if s == nil {
 		return nil
 	}
-	return o.PolicyRefs
+	return s.PolicyRefs
 }
 
-func (o *SearchAppsRequest) GetQuery() *string {
-	if o == nil {
+func (s *SearchAppsRequest) GetQuery() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Query
+	return s.Query
 }

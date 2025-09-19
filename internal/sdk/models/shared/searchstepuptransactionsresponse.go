@@ -10,16 +10,16 @@ type SearchStepUpTransactionsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *SearchStepUpTransactionsResponse) GetList() []StepUpTransaction {
-	if o == nil {
+func (s *SearchStepUpTransactionsResponse) GetList() []StepUpTransaction {
+	if s == nil {
 		return nil
 	}
-	return o.List
+	return s.List
 }
 
-func (o *SearchStepUpTransactionsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (s *SearchStepUpTransactionsResponse) GetNextPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return s.NextPageToken
 }

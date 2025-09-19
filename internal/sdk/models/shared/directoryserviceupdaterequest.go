@@ -14,16 +14,16 @@ type DirectoryServiceUpdateRequest struct {
 	DirectoryAccountFilterCel *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
 }
 
-func (o *DirectoryServiceUpdateRequest) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
-	if o == nil {
+func (d *DirectoryServiceUpdateRequest) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
+	if d == nil {
 		return nil
 	}
-	return o.DirectoryAccountFilterAll
+	return d.DirectoryAccountFilterAll
 }
 
-func (o *DirectoryServiceUpdateRequest) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
-	if o == nil {
+func (d *DirectoryServiceUpdateRequest) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
+	if d == nil {
 		return nil
 	}
-	return o.DirectoryAccountFilterCel
+	return d.DirectoryAccountFilterCel
 }

@@ -94,79 +94,79 @@ func (w *WebhookInstance) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *WebhookInstance) GetAttempts() *int {
-	if o == nil {
+func (w *WebhookInstance) GetAttempts() *int {
+	if w == nil {
 		return nil
 	}
-	return o.Attempts
+	return w.Attempts
 }
 
-func (o *WebhookInstance) GetCompletedAt() *time.Time {
-	if o == nil {
+func (w *WebhookInstance) GetCompletedAt() *time.Time {
+	if w == nil {
 		return nil
 	}
-	return o.CompletedAt
+	return w.CompletedAt
 }
 
-func (o *WebhookInstance) GetCreatedAt() *time.Time {
-	if o == nil {
+func (w *WebhookInstance) GetCreatedAt() *time.Time {
+	if w == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return w.CreatedAt
 }
 
-func (o *WebhookInstance) GetExpiresAt() *time.Time {
-	if o == nil {
+func (w *WebhookInstance) GetExpiresAt() *time.Time {
+	if w == nil {
 		return nil
 	}
-	return o.ExpiresAt
+	return w.ExpiresAt
 }
 
-func (o *WebhookInstance) GetID() *string {
-	if o == nil {
+func (w *WebhookInstance) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
-func (o *WebhookInstance) GetLastAttemptedAt() *time.Time {
-	if o == nil {
+func (w *WebhookInstance) GetLastAttemptedAt() *time.Time {
+	if w == nil {
 		return nil
 	}
-	return o.LastAttemptedAt
+	return w.LastAttemptedAt
 }
 
-func (o *WebhookInstance) GetWebhookSource() *WebhookSource {
-	if o == nil {
+func (w *WebhookInstance) GetWebhookSource() *WebhookSource {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookSource
+	return w.WebhookSource
 }
 
-func (o *WebhookInstance) GetWebhookSpec() *WebhookSpec {
-	if o == nil {
+func (w *WebhookInstance) GetWebhookSpec() *WebhookSpec {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookSpec
+	return w.WebhookSpec
 }
 
-func (o *WebhookInstance) GetState() *WebhookInstanceState {
-	if o == nil {
+func (w *WebhookInstance) GetState() *WebhookInstanceState {
+	if w == nil {
 		return nil
 	}
-	return o.State
+	return w.State
 }
 
-func (o *WebhookInstance) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (w *WebhookInstance) GetUpdatedAt() *time.Time {
+	if w == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return w.UpdatedAt
 }
 
-func (o *WebhookInstance) GetWebhookID() *string {
-	if o == nil {
+func (w *WebhookInstance) GetWebhookID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookID
+	return w.WebhookID
 }

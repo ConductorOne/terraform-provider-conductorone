@@ -14,9 +14,9 @@ type PolicyPostActions struct {
 	CertifyRemediateImmediately *bool `json:"certifyRemediateImmediately,omitempty"`
 }
 
-func (o *PolicyPostActions) GetCertifyRemediateImmediately() *bool {
-	if o == nil {
+func (p *PolicyPostActions) GetCertifyRemediateImmediately() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.CertifyRemediateImmediately
+	return p.CertifyRemediateImmediately
 }

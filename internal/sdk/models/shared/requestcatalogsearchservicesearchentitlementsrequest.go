@@ -58,51 +58,51 @@ type RequestCatalogSearchServiceSearchEntitlementsRequest struct {
 	Query *string `json:"query,omitempty"`
 }
 
-func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetAppDisplayName() *string {
-	if o == nil {
+func (r *RequestCatalogSearchServiceSearchEntitlementsRequest) GetAppDisplayName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.AppDisplayName
+	return r.AppDisplayName
 }
 
-func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetEntitlementAlias() *string {
-	if o == nil {
+func (r *RequestCatalogSearchServiceSearchEntitlementsRequest) GetEntitlementAlias() *string {
+	if r == nil {
 		return nil
 	}
-	return o.EntitlementAlias
+	return r.EntitlementAlias
 }
 
-func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetGrantedStatus() *GrantedStatus {
-	if o == nil {
+func (r *RequestCatalogSearchServiceSearchEntitlementsRequest) GetGrantedStatus() *GrantedStatus {
+	if r == nil {
 		return nil
 	}
-	return o.GrantedStatus
+	return r.GrantedStatus
 }
 
-func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetIncludeDeleted() *bool {
-	if o == nil {
+func (r *RequestCatalogSearchServiceSearchEntitlementsRequest) GetIncludeDeleted() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.IncludeDeleted
+	return r.IncludeDeleted
 }
 
-func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetPageSize() *int {
-	if o == nil {
+func (r *RequestCatalogSearchServiceSearchEntitlementsRequest) GetPageSize() *int {
+	if r == nil {
 		return nil
 	}
-	return o.PageSize
+	return r.PageSize
 }
 
-func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetPageToken() *string {
-	if o == nil {
+func (r *RequestCatalogSearchServiceSearchEntitlementsRequest) GetPageToken() *string {
+	if r == nil {
 		return nil
 	}
-	return o.PageToken
+	return r.PageToken
 }
 
-func (o *RequestCatalogSearchServiceSearchEntitlementsRequest) GetQuery() *string {
-	if o == nil {
+func (r *RequestCatalogSearchServiceSearchEntitlementsRequest) GetQuery() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Query
+	return r.Query
 }

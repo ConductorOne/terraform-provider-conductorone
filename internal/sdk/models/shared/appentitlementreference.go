@@ -10,16 +10,16 @@ type AppEntitlementReference struct {
 	AppID *string `json:"appId,omitempty"`
 }
 
-func (o *AppEntitlementReference) GetAppEntitlementID() *string {
-	if o == nil {
+func (a *AppEntitlementReference) GetAppEntitlementID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementID
+	return a.AppEntitlementID
 }
 
-func (o *AppEntitlementReference) GetAppID() *string {
-	if o == nil {
+func (a *AppEntitlementReference) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }

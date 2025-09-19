@@ -11,11 +11,11 @@ type C1APIStepupV1StepUpTransactionServiceGetRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIStepupV1StepUpTransactionServiceGetRequest) GetID() string {
-	if o == nil {
+func (c *C1APIStepupV1StepUpTransactionServiceGetRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIStepupV1StepUpTransactionServiceGetResponse struct {
@@ -29,30 +29,30 @@ type C1APIStepupV1StepUpTransactionServiceGetResponse struct {
 	GetStepUpTransactionResponse *shared.GetStepUpTransactionResponse
 }
 
-func (o *C1APIStepupV1StepUpTransactionServiceGetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIStepupV1StepUpTransactionServiceGetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIStepupV1StepUpTransactionServiceGetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIStepupV1StepUpTransactionServiceGetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIStepupV1StepUpTransactionServiceGetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIStepupV1StepUpTransactionServiceGetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIStepupV1StepUpTransactionServiceGetResponse) GetGetStepUpTransactionResponse() *shared.GetStepUpTransactionResponse {
-	if o == nil {
+func (c *C1APIStepupV1StepUpTransactionServiceGetResponse) GetGetStepUpTransactionResponse() *shared.GetStepUpTransactionResponse {
+	if c == nil {
 		return nil
 	}
-	return o.GetStepUpTransactionResponse
+	return c.GetStepUpTransactionResponse
 }

@@ -16,23 +16,23 @@ type ConnectorServiceListResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ConnectorServiceListResponse) GetExpanded() []ConnectorServiceListResponseExpanded {
-	if o == nil {
+func (c *ConnectorServiceListResponse) GetExpanded() []ConnectorServiceListResponseExpanded {
+	if c == nil {
 		return nil
 	}
-	return o.Expanded
+	return c.Expanded
 }
 
-func (o *ConnectorServiceListResponse) GetList() []ConnectorView {
-	if o == nil {
+func (c *ConnectorServiceListResponse) GetList() []ConnectorView {
+	if c == nil {
 		return nil
 	}
-	return o.List
+	return c.List
 }
 
-func (o *ConnectorServiceListResponse) GetNextPageToken() *string {
-	if o == nil {
+func (c *ConnectorServiceListResponse) GetNextPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return c.NextPageToken
 }

@@ -8,9 +8,9 @@ type TaskAuditExternalTicketError struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
-func (o *TaskAuditExternalTicketError) GetErrorMessage() *string {
-	if o == nil {
+func (t *TaskAuditExternalTicketError) GetErrorMessage() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ErrorMessage
+	return t.ErrorMessage
 }

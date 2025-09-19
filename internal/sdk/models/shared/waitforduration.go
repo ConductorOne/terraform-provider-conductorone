@@ -7,9 +7,9 @@ type WaitForDuration struct {
 	Duration *string `json:"duration,omitempty"`
 }
 
-func (o *WaitForDuration) GetDuration() *string {
-	if o == nil {
+func (w *WaitForDuration) GetDuration() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Duration
+	return w.Duration
 }

@@ -12,18 +12,18 @@ type C1APITaskV1TaskActionsServiceDenyRequest struct {
 	TaskActionsServiceDenyRequest *shared.TaskActionsServiceDenyRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APITaskV1TaskActionsServiceDenyRequest) GetTaskID() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceDenyRequest) GetTaskID() string {
+	if c == nil {
 		return ""
 	}
-	return o.TaskID
+	return c.TaskID
 }
 
-func (o *C1APITaskV1TaskActionsServiceDenyRequest) GetTaskActionsServiceDenyRequest() *shared.TaskActionsServiceDenyRequest {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceDenyRequest) GetTaskActionsServiceDenyRequest() *shared.TaskActionsServiceDenyRequest {
+	if c == nil {
 		return nil
 	}
-	return o.TaskActionsServiceDenyRequest
+	return c.TaskActionsServiceDenyRequest
 }
 
 type C1APITaskV1TaskActionsServiceDenyResponse struct {
@@ -37,30 +37,30 @@ type C1APITaskV1TaskActionsServiceDenyResponse struct {
 	TaskActionsServiceDenyResponse *shared.TaskActionsServiceDenyResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceDenyResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceDenyResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APITaskV1TaskActionsServiceDenyResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceDenyResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APITaskV1TaskActionsServiceDenyResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceDenyResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceDenyResponse) GetTaskActionsServiceDenyResponse() *shared.TaskActionsServiceDenyResponse {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceDenyResponse) GetTaskActionsServiceDenyResponse() *shared.TaskActionsServiceDenyResponse {
+	if c == nil {
 		return nil
 	}
-	return o.TaskActionsServiceDenyResponse
+	return c.TaskActionsServiceDenyResponse
 }

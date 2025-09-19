@@ -16,37 +16,37 @@ type TaskAuditConditionalPolicyExecutionResult struct {
 	PolicyKey *string `json:"policyKey,omitempty"`
 }
 
-func (o *TaskAuditConditionalPolicyExecutionResult) GetCondition() *string {
-	if o == nil {
+func (t *TaskAuditConditionalPolicyExecutionResult) GetCondition() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Condition
+	return t.Condition
 }
 
-func (o *TaskAuditConditionalPolicyExecutionResult) GetConditionMatched() *bool {
-	if o == nil {
+func (t *TaskAuditConditionalPolicyExecutionResult) GetConditionMatched() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.ConditionMatched
+	return t.ConditionMatched
 }
 
-func (o *TaskAuditConditionalPolicyExecutionResult) GetDefaultCondition() *bool {
-	if o == nil {
+func (t *TaskAuditConditionalPolicyExecutionResult) GetDefaultCondition() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.DefaultCondition
+	return t.DefaultCondition
 }
 
-func (o *TaskAuditConditionalPolicyExecutionResult) GetError() *string {
-	if o == nil {
+func (t *TaskAuditConditionalPolicyExecutionResult) GetError() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Error
+	return t.Error
 }
 
-func (o *TaskAuditConditionalPolicyExecutionResult) GetPolicyKey() *string {
-	if o == nil {
+func (t *TaskAuditConditionalPolicyExecutionResult) GetPolicyKey() *string {
+	if t == nil {
 		return nil
 	}
-	return o.PolicyKey
+	return t.PolicyKey
 }

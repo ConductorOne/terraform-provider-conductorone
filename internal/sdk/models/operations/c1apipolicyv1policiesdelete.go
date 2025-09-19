@@ -12,18 +12,18 @@ type C1APIPolicyV1PoliciesDeleteRequest struct {
 	DeletePolicyRequest *shared.DeletePolicyRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIPolicyV1PoliciesDeleteRequest) GetID() string {
-	if o == nil {
+func (c *C1APIPolicyV1PoliciesDeleteRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIPolicyV1PoliciesDeleteRequest) GetDeletePolicyRequest() *shared.DeletePolicyRequest {
-	if o == nil {
+func (c *C1APIPolicyV1PoliciesDeleteRequest) GetDeletePolicyRequest() *shared.DeletePolicyRequest {
+	if c == nil {
 		return nil
 	}
-	return o.DeletePolicyRequest
+	return c.DeletePolicyRequest
 }
 
 type C1APIPolicyV1PoliciesDeleteResponse struct {
@@ -37,30 +37,30 @@ type C1APIPolicyV1PoliciesDeleteResponse struct {
 	DeletePolicyResponse *shared.DeletePolicyResponse
 }
 
-func (o *C1APIPolicyV1PoliciesDeleteResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIPolicyV1PoliciesDeleteResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIPolicyV1PoliciesDeleteResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIPolicyV1PoliciesDeleteResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIPolicyV1PoliciesDeleteResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIPolicyV1PoliciesDeleteResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIPolicyV1PoliciesDeleteResponse) GetDeletePolicyResponse() *shared.DeletePolicyResponse {
-	if o == nil {
+func (c *C1APIPolicyV1PoliciesDeleteResponse) GetDeletePolicyResponse() *shared.DeletePolicyResponse {
+	if c == nil {
 		return nil
 	}
-	return o.DeletePolicyResponse
+	return c.DeletePolicyResponse
 }

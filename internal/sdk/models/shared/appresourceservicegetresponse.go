@@ -14,16 +14,16 @@ type AppResourceServiceGetResponse struct {
 	Expanded []AppResourceServiceGetResponseExpanded `json:"expanded,omitempty"`
 }
 
-func (o *AppResourceServiceGetResponse) GetAppResourceView() *AppResourceView {
-	if o == nil {
+func (a *AppResourceServiceGetResponse) GetAppResourceView() *AppResourceView {
+	if a == nil {
 		return nil
 	}
-	return o.AppResourceView
+	return a.AppResourceView
 }
 
-func (o *AppResourceServiceGetResponse) GetExpanded() []AppResourceServiceGetResponseExpanded {
-	if o == nil {
+func (a *AppResourceServiceGetResponse) GetExpanded() []AppResourceServiceGetResponseExpanded {
+	if a == nil {
 		return nil
 	}
-	return o.Expanded
+	return a.Expanded
 }

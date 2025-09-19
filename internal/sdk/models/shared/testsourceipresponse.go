@@ -18,23 +18,23 @@ type TestSourceIPResponse struct {
 	Status *Status `json:"details,omitempty"`
 }
 
-func (o *TestSourceIPResponse) GetAllowed() *bool {
-	if o == nil {
+func (t *TestSourceIPResponse) GetAllowed() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.Allowed
+	return t.Allowed
 }
 
-func (o *TestSourceIPResponse) GetCheckedIP() *string {
-	if o == nil {
+func (t *TestSourceIPResponse) GetCheckedIP() *string {
+	if t == nil {
 		return nil
 	}
-	return o.CheckedIP
+	return t.CheckedIP
 }
 
-func (o *TestSourceIPResponse) GetStatus() *Status {
-	if o == nil {
+func (t *TestSourceIPResponse) GetStatus() *Status {
+	if t == nil {
 		return nil
 	}
-	return o.Status
+	return t.Status
 }

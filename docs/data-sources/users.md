@@ -55,10 +55,13 @@ data "conductorone_users" "my_users" {
 
 ### Optional
 
+- `departments` (List of String) Search for users that have any of the departments on this list.
 - `email` (String) Search for users based on their email (exact match).
 - `exclude_ids` (List of String) An array of users IDs to exclude from the results.
 - `exclude_types` (List of String) An array of types to exclude from the results.
 - `ids` (List of String) Deprecated. Use refs array instead.
+- `job_titles` (List of String) Search for users that have any of the job titles on this list.
+- `manager_ids` (List of String) Search for users that have any of the manager IDs on this list.
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 - `page_token` (String) The pageToken field.
 - `query` (String) Query the apps with a fuzzy search on display name and emails.

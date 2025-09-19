@@ -13,25 +13,25 @@ type C1APIAppV1ConnectorServiceResumeSyncRequest struct {
 	ResumeSyncRequest *shared.ResumeSyncRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1ConnectorServiceResumeSyncRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceResumeSyncRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1ConnectorServiceResumeSyncRequest) GetConnectorID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceResumeSyncRequest) GetConnectorID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ConnectorID
+	return c.ConnectorID
 }
 
-func (o *C1APIAppV1ConnectorServiceResumeSyncRequest) GetResumeSyncRequest() *shared.ResumeSyncRequest {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceResumeSyncRequest) GetResumeSyncRequest() *shared.ResumeSyncRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ResumeSyncRequest
+	return c.ResumeSyncRequest
 }
 
 type C1APIAppV1ConnectorServiceResumeSyncResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1ConnectorServiceResumeSyncResponse struct {
 	ResumeSyncResponse *shared.ResumeSyncResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceResumeSyncResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceResumeSyncResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1ConnectorServiceResumeSyncResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceResumeSyncResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1ConnectorServiceResumeSyncResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceResumeSyncResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceResumeSyncResponse) GetResumeSyncResponse() *shared.ResumeSyncResponse {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceResumeSyncResponse) GetResumeSyncResponse() *shared.ResumeSyncResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ResumeSyncResponse
+	return c.ResumeSyncResponse
 }

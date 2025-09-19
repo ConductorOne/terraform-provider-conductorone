@@ -10,16 +10,16 @@ type FunctionsServiceListCommitsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *FunctionsServiceListCommitsResponse) GetList() []FunctionCommit {
-	if o == nil {
+func (f *FunctionsServiceListCommitsResponse) GetList() []FunctionCommit {
+	if f == nil {
 		return nil
 	}
-	return o.List
+	return f.List
 }
 
-func (o *FunctionsServiceListCommitsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (f *FunctionsServiceListCommitsResponse) GetNextPageToken() *string {
+	if f == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return f.NextPageToken
 }

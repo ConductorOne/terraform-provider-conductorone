@@ -21,58 +21,58 @@ type DurationRules struct {
 	Required *bool `json:"required,omitempty"`
 }
 
-func (o *DurationRules) GetConst() *string {
-	if o == nil {
+func (d *DurationRules) GetConst() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Const
+	return d.Const
 }
 
-func (o *DurationRules) GetGt() *string {
-	if o == nil {
+func (d *DurationRules) GetGt() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Gt
+	return d.Gt
 }
 
-func (o *DurationRules) GetGte() *string {
-	if o == nil {
+func (d *DurationRules) GetGte() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Gte
+	return d.Gte
 }
 
-func (o *DurationRules) GetIn() []string {
-	if o == nil {
+func (d *DurationRules) GetIn() []string {
+	if d == nil {
 		return nil
 	}
-	return o.In
+	return d.In
 }
 
-func (o *DurationRules) GetLt() *string {
-	if o == nil {
+func (d *DurationRules) GetLt() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Lt
+	return d.Lt
 }
 
-func (o *DurationRules) GetLte() *string {
-	if o == nil {
+func (d *DurationRules) GetLte() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Lte
+	return d.Lte
 }
 
-func (o *DurationRules) GetNotIn() []string {
-	if o == nil {
+func (d *DurationRules) GetNotIn() []string {
+	if d == nil {
 		return nil
 	}
-	return o.NotIn
+	return d.NotIn
 }
 
-func (o *DurationRules) GetRequired() *bool {
-	if o == nil {
+func (d *DurationRules) GetRequired() *bool {
+	if d == nil {
 		return nil
 	}
-	return o.Required
+	return d.Required
 }

@@ -8,9 +8,9 @@ type UpdateRolesResponse struct {
 	Role *Role `json:"role,omitempty"`
 }
 
-func (o *UpdateRolesResponse) GetRole() *Role {
-	if o == nil {
+func (u *UpdateRolesResponse) GetRole() *Role {
+	if u == nil {
 		return nil
 	}
-	return o.Role
+	return u.Role
 }

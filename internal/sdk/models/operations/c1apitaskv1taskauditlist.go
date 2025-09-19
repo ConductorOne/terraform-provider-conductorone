@@ -18,30 +18,30 @@ type C1APITaskV1TaskAuditListResponse struct {
 	TaskAuditListResponse *shared.TaskAuditListResponse
 }
 
-func (o *C1APITaskV1TaskAuditListResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APITaskV1TaskAuditListResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APITaskV1TaskAuditListResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APITaskV1TaskAuditListResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APITaskV1TaskAuditListResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APITaskV1TaskAuditListResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APITaskV1TaskAuditListResponse) GetTaskAuditListResponse() *shared.TaskAuditListResponse {
-	if o == nil {
+func (c *C1APITaskV1TaskAuditListResponse) GetTaskAuditListResponse() *shared.TaskAuditListResponse {
+	if c == nil {
 		return nil
 	}
-	return o.TaskAuditListResponse
+	return c.TaskAuditListResponse
 }

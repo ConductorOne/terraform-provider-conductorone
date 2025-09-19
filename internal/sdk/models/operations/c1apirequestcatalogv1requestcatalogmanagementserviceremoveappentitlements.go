@@ -12,18 +12,18 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRe
 	RequestCatalogManagementServiceRemoveAppEntitlementsRequest *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest) GetCatalogID() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest) GetCatalogID() string {
+	if c == nil {
 		return ""
 	}
-	return o.CatalogID
+	return c.CatalogID
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest) GetRequestCatalogManagementServiceRemoveAppEntitlementsRequest() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest) GetRequestCatalogManagementServiceRemoveAppEntitlementsRequest() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsRequest {
+	if c == nil {
 		return nil
 	}
-	return o.RequestCatalogManagementServiceRemoveAppEntitlementsRequest
+	return c.RequestCatalogManagementServiceRemoveAppEntitlementsRequest
 }
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse struct {
@@ -37,30 +37,30 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRe
 	RequestCatalogManagementServiceRemoveAppEntitlementsResponse *shared.RequestCatalogManagementServiceRemoveAppEntitlementsResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetRequestCatalogManagementServiceRemoveAppEntitlementsResponse() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsResponse {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsResponse) GetRequestCatalogManagementServiceRemoveAppEntitlementsResponse() *shared.RequestCatalogManagementServiceRemoveAppEntitlementsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.RequestCatalogManagementServiceRemoveAppEntitlementsResponse
+	return c.RequestCatalogManagementServiceRemoveAppEntitlementsResponse
 }

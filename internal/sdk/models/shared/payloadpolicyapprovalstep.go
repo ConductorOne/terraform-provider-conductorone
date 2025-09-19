@@ -14,16 +14,16 @@ type PayloadPolicyApprovalStep struct {
 	TaskView *TaskView `json:"taskView,omitempty"`
 }
 
-func (o *PayloadPolicyApprovalStep) GetExpanded() []PayloadPolicyApprovalStepExpanded {
-	if o == nil {
+func (p *PayloadPolicyApprovalStep) GetExpanded() []PayloadPolicyApprovalStepExpanded {
+	if p == nil {
 		return nil
 	}
-	return o.Expanded
+	return p.Expanded
 }
 
-func (o *PayloadPolicyApprovalStep) GetTaskView() *TaskView {
-	if o == nil {
+func (p *PayloadPolicyApprovalStep) GetTaskView() *TaskView {
+	if p == nil {
 		return nil
 	}
-	return o.TaskView
+	return p.TaskView
 }

@@ -8,9 +8,9 @@ type ExporterRef struct {
 	ExportID *string `json:"exportId,omitempty"`
 }
 
-func (o *ExporterRef) GetExportID() *string {
-	if o == nil {
+func (e *ExporterRef) GetExportID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ExportID
+	return e.ExportID
 }

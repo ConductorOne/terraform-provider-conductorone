@@ -12,23 +12,23 @@ type WaitUntilTime struct {
 	Timezone *string `json:"timezone,omitempty"`
 }
 
-func (o *WaitUntilTime) GetHours() *int64 {
-	if o == nil {
+func (w *WaitUntilTime) GetHours() *int64 {
+	if w == nil {
 		return nil
 	}
-	return o.Hours
+	return w.Hours
 }
 
-func (o *WaitUntilTime) GetMinutes() *int64 {
-	if o == nil {
+func (w *WaitUntilTime) GetMinutes() *int64 {
+	if w == nil {
 		return nil
 	}
-	return o.Minutes
+	return w.Minutes
 }
 
-func (o *WaitUntilTime) GetTimezone() *string {
-	if o == nil {
+func (w *WaitUntilTime) GetTimezone() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Timezone
+	return w.Timezone
 }

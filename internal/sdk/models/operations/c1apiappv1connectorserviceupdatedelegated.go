@@ -13,25 +13,25 @@ type C1APIAppV1ConnectorServiceUpdateDelegatedRequest struct {
 	ConnectorServiceUpdateDelegatedRequest *shared.ConnectorServiceUpdateDelegatedRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1ConnectorServiceUpdateDelegatedRequest) GetConnectorAppID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceUpdateDelegatedRequest) GetConnectorAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ConnectorAppID
+	return c.ConnectorAppID
 }
 
-func (o *C1APIAppV1ConnectorServiceUpdateDelegatedRequest) GetConnectorID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceUpdateDelegatedRequest) GetConnectorID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ConnectorID
+	return c.ConnectorID
 }
 
-func (o *C1APIAppV1ConnectorServiceUpdateDelegatedRequest) GetConnectorServiceUpdateDelegatedRequest() *shared.ConnectorServiceUpdateDelegatedRequest {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceUpdateDelegatedRequest) GetConnectorServiceUpdateDelegatedRequest() *shared.ConnectorServiceUpdateDelegatedRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceUpdateDelegatedRequest
+	return c.ConnectorServiceUpdateDelegatedRequest
 }
 
 type C1APIAppV1ConnectorServiceUpdateDelegatedResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1ConnectorServiceUpdateDelegatedResponse struct {
 	ConnectorServiceUpdateResponse *shared.ConnectorServiceUpdateResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceUpdateDelegatedResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceUpdateDelegatedResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1ConnectorServiceUpdateDelegatedResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceUpdateDelegatedResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1ConnectorServiceUpdateDelegatedResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceUpdateDelegatedResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceUpdateDelegatedResponse) GetConnectorServiceUpdateResponse() *shared.ConnectorServiceUpdateResponse {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceUpdateDelegatedResponse) GetConnectorServiceUpdateResponse() *shared.ConnectorServiceUpdateResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceUpdateResponse
+	return c.ConnectorServiceUpdateResponse
 }

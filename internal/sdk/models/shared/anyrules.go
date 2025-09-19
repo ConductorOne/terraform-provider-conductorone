@@ -16,23 +16,23 @@ type AnyRules struct {
 	Required *bool `json:"required,omitempty"`
 }
 
-func (o *AnyRules) GetIn() []string {
-	if o == nil {
+func (a *AnyRules) GetIn() []string {
+	if a == nil {
 		return nil
 	}
-	return o.In
+	return a.In
 }
 
-func (o *AnyRules) GetNotIn() []string {
-	if o == nil {
+func (a *AnyRules) GetNotIn() []string {
+	if a == nil {
 		return nil
 	}
-	return o.NotIn
+	return a.NotIn
 }
 
-func (o *AnyRules) GetRequired() *bool {
-	if o == nil {
+func (a *AnyRules) GetRequired() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Required
+	return a.Required
 }

@@ -18,30 +18,30 @@ type C1APIIamV1PersonalClientServiceListResponse struct {
 	PersonalClientServiceListResponse *shared.PersonalClientServiceListResponse
 }
 
-func (o *C1APIIamV1PersonalClientServiceListResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIIamV1PersonalClientServiceListResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIIamV1PersonalClientServiceListResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIIamV1PersonalClientServiceListResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIIamV1PersonalClientServiceListResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIIamV1PersonalClientServiceListResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIIamV1PersonalClientServiceListResponse) GetPersonalClientServiceListResponse() *shared.PersonalClientServiceListResponse {
-	if o == nil {
+func (c *C1APIIamV1PersonalClientServiceListResponse) GetPersonalClientServiceListResponse() *shared.PersonalClientServiceListResponse {
+	if c == nil {
 		return nil
 	}
-	return o.PersonalClientServiceListResponse
+	return c.PersonalClientServiceListResponse
 }

@@ -8,9 +8,9 @@ type TaskRevokeSourceRequest struct {
 	RequestUserID *string `json:"requestUserId,omitempty"`
 }
 
-func (o *TaskRevokeSourceRequest) GetRequestUserID() *string {
-	if o == nil {
+func (t *TaskRevokeSourceRequest) GetRequestUserID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.RequestUserID
+	return t.RequestUserID
 }

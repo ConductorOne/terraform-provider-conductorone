@@ -12,18 +12,18 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutom
 	ResumePausedBundleAutomationRequest *shared.ResumePausedBundleAutomationRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationRequest) GetRequestCatalogID() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationRequest) GetRequestCatalogID() string {
+	if c == nil {
 		return ""
 	}
-	return o.RequestCatalogID
+	return c.RequestCatalogID
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationRequest) GetResumePausedBundleAutomationRequest() *shared.ResumePausedBundleAutomationRequest {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationRequest) GetResumePausedBundleAutomationRequest() *shared.ResumePausedBundleAutomationRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ResumePausedBundleAutomationRequest
+	return c.ResumePausedBundleAutomationRequest
 }
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationResponse struct {
@@ -37,30 +37,30 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutom
 	ResumePausedBundleAutomationResponse *shared.ResumePausedBundleAutomationResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationResponse) GetResumePausedBundleAutomationResponse() *shared.ResumePausedBundleAutomationResponse {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationResponse) GetResumePausedBundleAutomationResponse() *shared.ResumePausedBundleAutomationResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ResumePausedBundleAutomationResponse
+	return c.ResumePausedBundleAutomationResponse
 }

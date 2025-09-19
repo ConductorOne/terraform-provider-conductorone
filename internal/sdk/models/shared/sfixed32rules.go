@@ -31,58 +31,58 @@ type SFixed32Rules struct {
 	NotIn []int `json:"notIn,omitempty"`
 }
 
-func (o *SFixed32Rules) GetConst() *int {
-	if o == nil {
+func (s *SFixed32Rules) GetConst() *int {
+	if s == nil {
 		return nil
 	}
-	return o.Const
+	return s.Const
 }
 
-func (o *SFixed32Rules) GetGt() *int {
-	if o == nil {
+func (s *SFixed32Rules) GetGt() *int {
+	if s == nil {
 		return nil
 	}
-	return o.Gt
+	return s.Gt
 }
 
-func (o *SFixed32Rules) GetGte() *int {
-	if o == nil {
+func (s *SFixed32Rules) GetGte() *int {
+	if s == nil {
 		return nil
 	}
-	return o.Gte
+	return s.Gte
 }
 
-func (o *SFixed32Rules) GetIgnoreEmpty() *bool {
-	if o == nil {
+func (s *SFixed32Rules) GetIgnoreEmpty() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.IgnoreEmpty
+	return s.IgnoreEmpty
 }
 
-func (o *SFixed32Rules) GetIn() []int {
-	if o == nil {
+func (s *SFixed32Rules) GetIn() []int {
+	if s == nil {
 		return nil
 	}
-	return o.In
+	return s.In
 }
 
-func (o *SFixed32Rules) GetLt() *int {
-	if o == nil {
+func (s *SFixed32Rules) GetLt() *int {
+	if s == nil {
 		return nil
 	}
-	return o.Lt
+	return s.Lt
 }
 
-func (o *SFixed32Rules) GetLte() *int {
-	if o == nil {
+func (s *SFixed32Rules) GetLte() *int {
+	if s == nil {
 		return nil
 	}
-	return o.Lte
+	return s.Lte
 }
 
-func (o *SFixed32Rules) GetNotIn() []int {
-	if o == nil {
+func (s *SFixed32Rules) GetNotIn() []int {
+	if s == nil {
 		return nil
 	}
-	return o.NotIn
+	return s.NotIn
 }

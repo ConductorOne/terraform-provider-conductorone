@@ -11,11 +11,11 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPe
 	CatalogID string `pathParam:"style=simple,explode=false,name=catalog_id"`
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest) GetCatalogID() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest) GetCatalogID() string {
+	if c == nil {
 		return ""
 	}
-	return o.CatalogID
+	return c.CatalogID
 }
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppResponse struct {
@@ -29,30 +29,30 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPe
 	RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse *shared.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppResponse) GetRequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse() *shared.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse {
-	if o == nil {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppResponse) GetRequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse() *shared.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse {
+	if c == nil {
 		return nil
 	}
-	return o.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse
+	return c.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse
 }

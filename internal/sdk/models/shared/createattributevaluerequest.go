@@ -10,16 +10,16 @@ type CreateAttributeValueRequest struct {
 	Value *string `json:"value,omitempty"`
 }
 
-func (o *CreateAttributeValueRequest) GetAttributeTypeID() *string {
-	if o == nil {
+func (c *CreateAttributeValueRequest) GetAttributeTypeID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.AttributeTypeID
+	return c.AttributeTypeID
 }
 
-func (o *CreateAttributeValueRequest) GetValue() *string {
-	if o == nil {
+func (c *CreateAttributeValueRequest) GetValue() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Value
+	return c.Value
 }

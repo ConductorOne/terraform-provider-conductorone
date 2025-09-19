@@ -8,9 +8,9 @@ type RequestCatalogView struct {
 	RequestCatalog *RequestCatalog `json:"requestCatalog,omitempty"`
 }
 
-func (o *RequestCatalogView) GetRequestCatalog() *RequestCatalog {
-	if o == nil {
+func (r *RequestCatalogView) GetRequestCatalog() *RequestCatalog {
+	if r == nil {
 		return nil
 	}
-	return o.RequestCatalog
+	return r.RequestCatalog
 }

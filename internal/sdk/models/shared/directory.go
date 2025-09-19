@@ -35,44 +35,44 @@ func (d *Directory) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Directory) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
-	if o == nil {
+func (d *Directory) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
+	if d == nil {
 		return nil
 	}
-	return o.DirectoryAccountFilterAll
+	return d.DirectoryAccountFilterAll
 }
 
-func (o *Directory) GetAppID() *string {
-	if o == nil {
+func (d *Directory) GetAppID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.AppID
+	return d.AppID
 }
 
-func (o *Directory) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
-	if o == nil {
+func (d *Directory) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
+	if d == nil {
 		return nil
 	}
-	return o.DirectoryAccountFilterCel
+	return d.DirectoryAccountFilterCel
 }
 
-func (o *Directory) GetCreatedAt() *time.Time {
-	if o == nil {
+func (d *Directory) GetCreatedAt() *time.Time {
+	if d == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return d.CreatedAt
 }
 
-func (o *Directory) GetDeletedAt() *time.Time {
-	if o == nil {
+func (d *Directory) GetDeletedAt() *time.Time {
+	if d == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return d.DeletedAt
 }
 
-func (o *Directory) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (d *Directory) GetUpdatedAt() *time.Time {
+	if d == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return d.UpdatedAt
 }

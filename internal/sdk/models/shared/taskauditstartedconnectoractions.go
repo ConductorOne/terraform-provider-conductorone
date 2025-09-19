@@ -8,9 +8,9 @@ type TaskAuditStartedConnectorActions struct {
 	PolicyStepID *string `json:"policyStepId,omitempty"`
 }
 
-func (o *TaskAuditStartedConnectorActions) GetPolicyStepID() *string {
-	if o == nil {
+func (t *TaskAuditStartedConnectorActions) GetPolicyStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.PolicyStepID
+	return t.PolicyStepID
 }

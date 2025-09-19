@@ -14,23 +14,23 @@ type TaskActionsServiceApproveWithStepUpRequest struct {
 	StepUpTransactionID string `json:"stepUpTransactionId"`
 }
 
-func (o *TaskActionsServiceApproveWithStepUpRequest) GetComment() *string {
-	if o == nil {
+func (t *TaskActionsServiceApproveWithStepUpRequest) GetComment() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Comment
+	return t.Comment
 }
 
-func (o *TaskActionsServiceApproveWithStepUpRequest) GetPolicyStepID() string {
-	if o == nil {
+func (t *TaskActionsServiceApproveWithStepUpRequest) GetPolicyStepID() string {
+	if t == nil {
 		return ""
 	}
-	return o.PolicyStepID
+	return t.PolicyStepID
 }
 
-func (o *TaskActionsServiceApproveWithStepUpRequest) GetStepUpTransactionID() string {
-	if o == nil {
+func (t *TaskActionsServiceApproveWithStepUpRequest) GetStepUpTransactionID() string {
+	if t == nil {
 		return ""
 	}
-	return o.StepUpTransactionID
+	return t.StepUpTransactionID
 }

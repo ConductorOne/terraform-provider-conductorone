@@ -10,16 +10,16 @@ type AppUserServiceListCredentialsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *AppUserServiceListCredentialsResponse) GetList() []AppUserCredential {
-	if o == nil {
+func (a *AppUserServiceListCredentialsResponse) GetList() []AppUserCredential {
+	if a == nil {
 		return nil
 	}
-	return o.List
+	return a.List
 }
 
-func (o *AppUserServiceListCredentialsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (a *AppUserServiceListCredentialsResponse) GetNextPageToken() *string {
+	if a == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return a.NextPageToken
 }

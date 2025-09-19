@@ -8,9 +8,9 @@ type TaskAuditExpressionPolicyStepError struct {
 	Error *string `json:"error,omitempty"`
 }
 
-func (o *TaskAuditExpressionPolicyStepError) GetError() *string {
-	if o == nil {
+func (t *TaskAuditExpressionPolicyStepError) GetError() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Error
+	return t.Error
 }

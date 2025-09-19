@@ -10,16 +10,16 @@ type TaskAuditEscalateToEmergencyAccess struct {
 	OldPolicyStepID *string `json:"oldPolicyStepId,omitempty"`
 }
 
-func (o *TaskAuditEscalateToEmergencyAccess) GetOldPolicyID() *string {
-	if o == nil {
+func (t *TaskAuditEscalateToEmergencyAccess) GetOldPolicyID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.OldPolicyID
+	return t.OldPolicyID
 }
 
-func (o *TaskAuditEscalateToEmergencyAccess) GetOldPolicyStepID() *string {
-	if o == nil {
+func (t *TaskAuditEscalateToEmergencyAccess) GetOldPolicyStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.OldPolicyStepID
+	return t.OldPolicyStepID
 }

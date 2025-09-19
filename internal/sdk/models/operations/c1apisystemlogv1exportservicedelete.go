@@ -12,18 +12,18 @@ type C1APISystemlogV1ExportServiceDeleteRequest struct {
 	ExportServiceDeleteRequest *shared.ExportServiceDeleteRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APISystemlogV1ExportServiceDeleteRequest) GetExportID() string {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceDeleteRequest) GetExportID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ExportID
+	return c.ExportID
 }
 
-func (o *C1APISystemlogV1ExportServiceDeleteRequest) GetExportServiceDeleteRequest() *shared.ExportServiceDeleteRequest {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceDeleteRequest) GetExportServiceDeleteRequest() *shared.ExportServiceDeleteRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ExportServiceDeleteRequest
+	return c.ExportServiceDeleteRequest
 }
 
 type C1APISystemlogV1ExportServiceDeleteResponse struct {
@@ -37,30 +37,30 @@ type C1APISystemlogV1ExportServiceDeleteResponse struct {
 	ExportServiceDeleteResponse *shared.ExportServiceDeleteResponse
 }
 
-func (o *C1APISystemlogV1ExportServiceDeleteResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceDeleteResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APISystemlogV1ExportServiceDeleteResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceDeleteResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APISystemlogV1ExportServiceDeleteResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceDeleteResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APISystemlogV1ExportServiceDeleteResponse) GetExportServiceDeleteResponse() *shared.ExportServiceDeleteResponse {
-	if o == nil {
+func (c *C1APISystemlogV1ExportServiceDeleteResponse) GetExportServiceDeleteResponse() *shared.ExportServiceDeleteResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ExportServiceDeleteResponse
+	return c.ExportServiceDeleteResponse
 }

@@ -45,6 +45,7 @@ type Field struct {
 	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
 	//   - textField
 	//   - passwordField
+	//   - selectField
 	//
 	//
 	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
@@ -63,51 +64,51 @@ type Field struct {
 	StringSliceField *StringSliceField `json:"stringSliceField,omitempty"`
 }
 
-func (o *Field) GetBoolField() *BoolField {
-	if o == nil {
+func (f *Field) GetBoolField() *BoolField {
+	if f == nil {
 		return nil
 	}
-	return o.BoolField
+	return f.BoolField
 }
 
-func (o *Field) GetDescription() *string {
-	if o == nil {
+func (f *Field) GetDescription() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Description
+	return f.Description
 }
 
-func (o *Field) GetDisplayName() *string {
-	if o == nil {
+func (f *Field) GetDisplayName() *string {
+	if f == nil {
 		return nil
 	}
-	return o.DisplayName
+	return f.DisplayName
 }
 
-func (o *Field) GetInt64Field() *Int64Field {
-	if o == nil {
+func (f *Field) GetInt64Field() *Int64Field {
+	if f == nil {
 		return nil
 	}
-	return o.Int64Field
+	return f.Int64Field
 }
 
-func (o *Field) GetName() *string {
-	if o == nil {
+func (f *Field) GetName() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Name
+	return f.Name
 }
 
-func (o *Field) GetStringField() *StringField {
-	if o == nil {
+func (f *Field) GetStringField() *StringField {
+	if f == nil {
 		return nil
 	}
-	return o.StringField
+	return f.StringField
 }
 
-func (o *Field) GetStringSliceField() *StringSliceField {
-	if o == nil {
+func (f *Field) GetStringSliceField() *StringSliceField {
+	if f == nil {
 		return nil
 	}
-	return o.StringSliceField
+	return f.StringSliceField
 }

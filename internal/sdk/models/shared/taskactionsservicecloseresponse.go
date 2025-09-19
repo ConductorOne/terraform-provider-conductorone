@@ -16,23 +16,23 @@ type TaskActionsServiceCloseResponse struct {
 	TaskView *TaskView `json:"taskView,omitempty"`
 }
 
-func (o *TaskActionsServiceCloseResponse) GetExpanded() []TaskActionsServiceCloseResponseExpanded {
-	if o == nil {
+func (t *TaskActionsServiceCloseResponse) GetExpanded() []TaskActionsServiceCloseResponseExpanded {
+	if t == nil {
 		return nil
 	}
-	return o.Expanded
+	return t.Expanded
 }
 
-func (o *TaskActionsServiceCloseResponse) GetTaskActionID() *string {
-	if o == nil {
+func (t *TaskActionsServiceCloseResponse) GetTaskActionID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.TaskActionID
+	return t.TaskActionID
 }
 
-func (o *TaskActionsServiceCloseResponse) GetTaskView() *TaskView {
-	if o == nil {
+func (t *TaskActionsServiceCloseResponse) GetTaskView() *TaskView {
+	if t == nil {
 		return nil
 	}
-	return o.TaskView
+	return t.TaskView
 }

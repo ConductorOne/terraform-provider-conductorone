@@ -13,25 +13,25 @@ type C1APIAppV1AppUserServiceUpdateRequest struct {
 	AppUserServiceUpdateRequest *shared.AppUserServiceUpdateRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppUserServiceUpdateRequest) GetAppUserAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceUpdateRequest) GetAppUserAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppUserAppID
+	return c.AppUserAppID
 }
 
-func (o *C1APIAppV1AppUserServiceUpdateRequest) GetAppUserID() string {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceUpdateRequest) GetAppUserID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppUserID
+	return c.AppUserID
 }
 
-func (o *C1APIAppV1AppUserServiceUpdateRequest) GetAppUserServiceUpdateRequest() *shared.AppUserServiceUpdateRequest {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceUpdateRequest) GetAppUserServiceUpdateRequest() *shared.AppUserServiceUpdateRequest {
+	if c == nil {
 		return nil
 	}
-	return o.AppUserServiceUpdateRequest
+	return c.AppUserServiceUpdateRequest
 }
 
 type C1APIAppV1AppUserServiceUpdateResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1AppUserServiceUpdateResponse struct {
 	AppUserServiceUpdateResponse *shared.AppUserServiceUpdateResponse
 }
 
-func (o *C1APIAppV1AppUserServiceUpdateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceUpdateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppUserServiceUpdateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceUpdateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppUserServiceUpdateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceUpdateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppUserServiceUpdateResponse) GetAppUserServiceUpdateResponse() *shared.AppUserServiceUpdateResponse {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceUpdateResponse) GetAppUserServiceUpdateResponse() *shared.AppUserServiceUpdateResponse {
+	if c == nil {
 		return nil
 	}
-	return o.AppUserServiceUpdateResponse
+	return c.AppUserServiceUpdateResponse
 }

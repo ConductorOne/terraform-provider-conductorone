@@ -10,16 +10,16 @@ type AppEntitlementSearchServiceSearchResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *AppEntitlementSearchServiceSearchResponse) GetList() []AppEntitlementView {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchResponse) GetList() []AppEntitlementView {
+	if a == nil {
 		return nil
 	}
-	return o.List
+	return a.List
 }
 
-func (o *AppEntitlementSearchServiceSearchResponse) GetNextPageToken() *string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchResponse) GetNextPageToken() *string {
+	if a == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return a.NextPageToken
 }

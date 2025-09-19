@@ -14,32 +14,32 @@ type C1APIAppV1AppUserServiceListAppUsersForUserRequest struct {
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetUserID() string {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetUserID() string {
+	if c == nil {
 		return ""
 	}
-	return o.UserID
+	return c.UserID
 }
 
-func (o *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIAppV1AppUserServiceListAppUsersForUserResponse struct {
@@ -53,30 +53,30 @@ type C1APIAppV1AppUserServiceListAppUsersForUserResponse struct {
 	AppUsersForUserServiceListResponse *shared.AppUsersForUserServiceListResponse
 }
 
-func (o *C1APIAppV1AppUserServiceListAppUsersForUserResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceListAppUsersForUserResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppUserServiceListAppUsersForUserResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceListAppUsersForUserResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppUserServiceListAppUsersForUserResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceListAppUsersForUserResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppUserServiceListAppUsersForUserResponse) GetAppUsersForUserServiceListResponse() *shared.AppUsersForUserServiceListResponse {
-	if o == nil {
+func (c *C1APIAppV1AppUserServiceListAppUsersForUserResponse) GetAppUsersForUserServiceListResponse() *shared.AppUsersForUserServiceListResponse {
+	if c == nil {
 		return nil
 	}
-	return o.AppUsersForUserServiceListResponse
+	return c.AppUsersForUserServiceListResponse
 }

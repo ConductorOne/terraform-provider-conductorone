@@ -9,9 +9,9 @@ type ResponsePolicyPostAction struct {
 	Version *string `json:"version,omitempty"`
 }
 
-func (o *ResponsePolicyPostAction) GetVersion() *string {
-	if o == nil {
+func (r *ResponsePolicyPostAction) GetVersion() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Version
+	return r.Version
 }

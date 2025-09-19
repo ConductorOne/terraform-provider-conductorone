@@ -12,18 +12,18 @@ type C1APIDirectoryV1DirectoryServiceDeleteRequest struct {
 	DirectoryServiceDeleteRequest *shared.DirectoryServiceDeleteRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceDeleteRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceDeleteRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceDeleteRequest) GetDirectoryServiceDeleteRequest() *shared.DirectoryServiceDeleteRequest {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceDeleteRequest) GetDirectoryServiceDeleteRequest() *shared.DirectoryServiceDeleteRequest {
+	if c == nil {
 		return nil
 	}
-	return o.DirectoryServiceDeleteRequest
+	return c.DirectoryServiceDeleteRequest
 }
 
 type C1APIDirectoryV1DirectoryServiceDeleteResponse struct {
@@ -37,30 +37,30 @@ type C1APIDirectoryV1DirectoryServiceDeleteResponse struct {
 	DirectoryServiceDeleteResponse *shared.DirectoryServiceDeleteResponse
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceDeleteResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceDeleteResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceDeleteResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceDeleteResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceDeleteResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceDeleteResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceDeleteResponse) GetDirectoryServiceDeleteResponse() *shared.DirectoryServiceDeleteResponse {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceDeleteResponse) GetDirectoryServiceDeleteResponse() *shared.DirectoryServiceDeleteResponse {
+	if c == nil {
 		return nil
 	}
-	return o.DirectoryServiceDeleteResponse
+	return c.DirectoryServiceDeleteResponse
 }

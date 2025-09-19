@@ -16,37 +16,37 @@ type UnenrollFromAllAccessProfiles struct {
 	UserRefs []UserRef `json:"userRefs,omitempty"`
 }
 
-func (o *UnenrollFromAllAccessProfiles) GetCatalogIds() []string {
-	if o == nil {
+func (u *UnenrollFromAllAccessProfiles) GetCatalogIds() []string {
+	if u == nil {
 		return nil
 	}
-	return o.CatalogIds
+	return u.CatalogIds
 }
 
-func (o *UnenrollFromAllAccessProfiles) GetCatalogIdsCel() *string {
-	if o == nil {
+func (u *UnenrollFromAllAccessProfiles) GetCatalogIdsCel() *string {
+	if u == nil {
 		return nil
 	}
-	return o.CatalogIdsCel
+	return u.CatalogIdsCel
 }
 
-func (o *UnenrollFromAllAccessProfiles) GetUseSubjectUser() *bool {
-	if o == nil {
+func (u *UnenrollFromAllAccessProfiles) GetUseSubjectUser() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.UseSubjectUser
+	return u.UseSubjectUser
 }
 
-func (o *UnenrollFromAllAccessProfiles) GetUserIdsCel() *string {
-	if o == nil {
+func (u *UnenrollFromAllAccessProfiles) GetUserIdsCel() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UserIdsCel
+	return u.UserIdsCel
 }
 
-func (o *UnenrollFromAllAccessProfiles) GetUserRefs() []UserRef {
-	if o == nil {
+func (u *UnenrollFromAllAccessProfiles) GetUserRefs() []UserRef {
+	if u == nil {
 		return nil
 	}
-	return o.UserRefs
+	return u.UserRefs
 }

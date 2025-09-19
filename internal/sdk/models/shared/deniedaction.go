@@ -25,16 +25,16 @@ func (d *DeniedAction) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *DeniedAction) GetDeniedAt() *time.Time {
-	if o == nil {
+func (d *DeniedAction) GetDeniedAt() *time.Time {
+	if d == nil {
 		return nil
 	}
-	return o.DeniedAt
+	return d.DeniedAt
 }
 
-func (o *DeniedAction) GetUserID() *string {
-	if o == nil {
+func (d *DeniedAction) GetUserID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.UserID
+	return d.UserID
 }

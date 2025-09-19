@@ -10,16 +10,16 @@ type PersonalClientSearchServiceSearchResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *PersonalClientSearchServiceSearchResponse) GetList() []PersonalClient {
-	if o == nil {
+func (p *PersonalClientSearchServiceSearchResponse) GetList() []PersonalClient {
+	if p == nil {
 		return nil
 	}
-	return o.List
+	return p.List
 }
 
-func (o *PersonalClientSearchServiceSearchResponse) GetNextPageToken() *string {
-	if o == nil {
+func (p *PersonalClientSearchServiceSearchResponse) GetNextPageToken() *string {
+	if p == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return p.NextPageToken
 }

@@ -22,58 +22,58 @@ type AppEntitlementSearchServiceSearchGrantsRequest struct {
 	UserID *string `json:"userId,omitempty"`
 }
 
-func (o *AppEntitlementSearchServiceSearchGrantsRequest) GetAppIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetAppIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.AppIds
+	return a.AppIds
 }
 
-func (o *AppEntitlementSearchServiceSearchGrantsRequest) GetAppUserIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetAppUserIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserIds
+	return a.AppUserIds
 }
 
-func (o *AppEntitlementSearchServiceSearchGrantsRequest) GetEntitlementRefs() []AppEntitlementRef {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetEntitlementRefs() []AppEntitlementRef {
+	if a == nil {
 		return nil
 	}
-	return o.EntitlementRefs
+	return a.EntitlementRefs
 }
 
-func (o *AppEntitlementSearchServiceSearchGrantsRequest) GetPageSize() *int {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetPageSize() *int {
+	if a == nil {
 		return nil
 	}
-	return o.PageSize
+	return a.PageSize
 }
 
-func (o *AppEntitlementSearchServiceSearchGrantsRequest) GetPageToken() *string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetPageToken() *string {
+	if a == nil {
 		return nil
 	}
-	return o.PageToken
+	return a.PageToken
 }
 
-func (o *AppEntitlementSearchServiceSearchGrantsRequest) GetResourceIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetResourceIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ResourceIds
+	return a.ResourceIds
 }
 
-func (o *AppEntitlementSearchServiceSearchGrantsRequest) GetResourceTypeIds() []string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetResourceTypeIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ResourceTypeIds
+	return a.ResourceTypeIds
 }
 
-func (o *AppEntitlementSearchServiceSearchGrantsRequest) GetUserID() *string {
-	if o == nil {
+func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetUserID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UserID
+	return a.UserID
 }

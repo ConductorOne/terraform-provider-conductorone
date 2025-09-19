@@ -18,30 +18,30 @@ type C1APIFunctionsV1FunctionsServiceCreateFunctionResponse struct {
 	FunctionsServiceCreateFunctionResponse *shared.FunctionsServiceCreateFunctionResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCreateFunctionResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCreateFunctionResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCreateFunctionResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCreateFunctionResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCreateFunctionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCreateFunctionResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCreateFunctionResponse) GetFunctionsServiceCreateFunctionResponse() *shared.FunctionsServiceCreateFunctionResponse {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCreateFunctionResponse) GetFunctionsServiceCreateFunctionResponse() *shared.FunctionsServiceCreateFunctionResponse {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionsServiceCreateFunctionResponse
+	return c.FunctionsServiceCreateFunctionResponse
 }

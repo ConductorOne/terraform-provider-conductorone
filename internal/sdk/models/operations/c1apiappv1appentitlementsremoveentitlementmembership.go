@@ -13,25 +13,25 @@ type C1APIAppV1AppEntitlementsRemoveEntitlementMembershipRequest struct {
 	RemoveEntitlementMembershipRequest *shared.RemoveEntitlementMembershipRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipRequest) GetAppEntitlementID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipRequest) GetAppEntitlementID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppEntitlementID
+	return c.AppEntitlementID
 }
 
-func (o *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipRequest) GetRemoveEntitlementMembershipRequest() *shared.RemoveEntitlementMembershipRequest {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipRequest) GetRemoveEntitlementMembershipRequest() *shared.RemoveEntitlementMembershipRequest {
+	if c == nil {
 		return nil
 	}
-	return o.RemoveEntitlementMembershipRequest
+	return c.RemoveEntitlementMembershipRequest
 }
 
 type C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse struct {
 	RemoveEntitlementMembershipResponse *shared.RemoveEntitlementMembershipResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse) GetRemoveEntitlementMembershipResponse() *shared.RemoveEntitlementMembershipResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse) GetRemoveEntitlementMembershipResponse() *shared.RemoveEntitlementMembershipResponse {
+	if c == nil {
 		return nil
 	}
-	return o.RemoveEntitlementMembershipResponse
+	return c.RemoveEntitlementMembershipResponse
 }

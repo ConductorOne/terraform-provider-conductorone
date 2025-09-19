@@ -10,16 +10,16 @@ type SearchPoliciesResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *SearchPoliciesResponse) GetList() []Policy {
-	if o == nil {
+func (s *SearchPoliciesResponse) GetList() []Policy {
+	if s == nil {
 		return nil
 	}
-	return o.List
+	return s.List
 }
 
-func (o *SearchPoliciesResponse) GetNextPageToken() *string {
-	if o == nil {
+func (s *SearchPoliciesResponse) GetNextPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return s.NextPageToken
 }

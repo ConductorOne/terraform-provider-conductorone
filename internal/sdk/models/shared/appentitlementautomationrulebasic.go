@@ -8,9 +8,9 @@ type AppEntitlementAutomationRuleBasic struct {
 	Expression *string `json:"expression,omitempty"`
 }
 
-func (o *AppEntitlementAutomationRuleBasic) GetExpression() *string {
-	if o == nil {
+func (a *AppEntitlementAutomationRuleBasic) GetExpression() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Expression
+	return a.Expression
 }

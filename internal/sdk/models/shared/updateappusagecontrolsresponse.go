@@ -8,9 +8,9 @@ type UpdateAppUsageControlsResponse struct {
 	AppUsageControls *AppUsageControls `json:"appUsageControls,omitempty"`
 }
 
-func (o *UpdateAppUsageControlsResponse) GetAppUsageControls() *AppUsageControls {
-	if o == nil {
+func (u *UpdateAppUsageControlsResponse) GetAppUsageControls() *AppUsageControls {
+	if u == nil {
 		return nil
 	}
-	return o.AppUsageControls
+	return u.AppUsageControls
 }

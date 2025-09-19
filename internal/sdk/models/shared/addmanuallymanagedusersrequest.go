@@ -8,9 +8,9 @@ type AddManuallyManagedUsersRequest struct {
 	UserIds []string `json:"userIds,omitempty"`
 }
 
-func (o *AddManuallyManagedUsersRequest) GetUserIds() []string {
-	if o == nil {
+func (a *AddManuallyManagedUsersRequest) GetUserIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.UserIds
+	return a.UserIds
 }

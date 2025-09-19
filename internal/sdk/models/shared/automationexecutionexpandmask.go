@@ -8,9 +8,9 @@ type AutomationExecutionExpandMask struct {
 	Paths []string `json:"paths,omitempty"`
 }
 
-func (o *AutomationExecutionExpandMask) GetPaths() []string {
-	if o == nil {
+func (a *AutomationExecutionExpandMask) GetPaths() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Paths
+	return a.Paths
 }

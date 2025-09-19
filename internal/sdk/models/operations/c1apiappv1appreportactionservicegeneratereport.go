@@ -12,18 +12,18 @@ type C1APIAppV1AppReportActionServiceGenerateReportRequest struct {
 	AppActionsServiceGenerateReportRequest *shared.AppActionsServiceGenerateReportRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppReportActionServiceGenerateReportRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppReportActionServiceGenerateReportRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppReportActionServiceGenerateReportRequest) GetAppActionsServiceGenerateReportRequest() *shared.AppActionsServiceGenerateReportRequest {
-	if o == nil {
+func (c *C1APIAppV1AppReportActionServiceGenerateReportRequest) GetAppActionsServiceGenerateReportRequest() *shared.AppActionsServiceGenerateReportRequest {
+	if c == nil {
 		return nil
 	}
-	return o.AppActionsServiceGenerateReportRequest
+	return c.AppActionsServiceGenerateReportRequest
 }
 
 type C1APIAppV1AppReportActionServiceGenerateReportResponse struct {
@@ -37,30 +37,30 @@ type C1APIAppV1AppReportActionServiceGenerateReportResponse struct {
 	AppActionsServiceGenerateReportResponse *shared.AppActionsServiceGenerateReportResponse
 }
 
-func (o *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetAppActionsServiceGenerateReportResponse() *shared.AppActionsServiceGenerateReportResponse {
-	if o == nil {
+func (c *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetAppActionsServiceGenerateReportResponse() *shared.AppActionsServiceGenerateReportResponse {
+	if c == nil {
 		return nil
 	}
-	return o.AppActionsServiceGenerateReportResponse
+	return c.AppActionsServiceGenerateReportResponse
 }

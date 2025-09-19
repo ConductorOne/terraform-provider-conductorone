@@ -9,16 +9,16 @@ type UpdateSessionSettingsRequest struct {
 	UpdateMask      *string          `json:"updateMask,omitempty"`
 }
 
-func (o *UpdateSessionSettingsRequest) GetSessionSettings() *SessionSettings {
-	if o == nil {
+func (u *UpdateSessionSettingsRequest) GetSessionSettings() *SessionSettings {
+	if u == nil {
 		return nil
 	}
-	return o.SessionSettings
+	return u.SessionSettings
 }
 
-func (o *UpdateSessionSettingsRequest) GetUpdateMask() *string {
-	if o == nil {
+func (u *UpdateSessionSettingsRequest) GetUpdateMask() *string {
+	if u == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return u.UpdateMask
 }

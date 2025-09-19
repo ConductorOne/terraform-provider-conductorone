@@ -16,23 +16,23 @@ type TaskActionsServiceReassignResponse struct {
 	TicketActionID *string `json:"ticketActionId,omitempty"`
 }
 
-func (o *TaskActionsServiceReassignResponse) GetExpanded() []TaskActionsServiceReassignResponseExpanded {
-	if o == nil {
+func (t *TaskActionsServiceReassignResponse) GetExpanded() []TaskActionsServiceReassignResponseExpanded {
+	if t == nil {
 		return nil
 	}
-	return o.Expanded
+	return t.Expanded
 }
 
-func (o *TaskActionsServiceReassignResponse) GetTaskView() *TaskView {
-	if o == nil {
+func (t *TaskActionsServiceReassignResponse) GetTaskView() *TaskView {
+	if t == nil {
 		return nil
 	}
-	return o.TaskView
+	return t.TaskView
 }
 
-func (o *TaskActionsServiceReassignResponse) GetTicketActionID() *string {
-	if o == nil {
+func (t *TaskActionsServiceReassignResponse) GetTicketActionID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.TicketActionID
+	return t.TicketActionID
 }

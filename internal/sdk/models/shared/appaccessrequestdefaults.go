@@ -78,74 +78,74 @@ type AppAccessRequestDefaults struct {
 	State *State `json:"state,omitempty"`
 }
 
-func (o *AppAccessRequestDefaults) GetAppID() *string {
-	if o == nil {
+func (a *AppAccessRequestDefaults) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppAccessRequestDefaults) GetCatalogIds() []string {
-	if o == nil {
+func (a *AppAccessRequestDefaults) GetCatalogIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.CatalogIds
+	return a.CatalogIds
 }
 
-func (o *AppAccessRequestDefaults) GetDefaultsEnabled() *bool {
-	if o == nil {
+func (a *AppAccessRequestDefaults) GetDefaultsEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.DefaultsEnabled
+	return a.DefaultsEnabled
 }
 
-func (o *AppAccessRequestDefaults) GetDurationGrant() *string {
-	if o == nil {
+func (a *AppAccessRequestDefaults) GetDurationGrant() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DurationGrant
+	return a.DurationGrant
 }
 
-func (o *AppAccessRequestDefaults) GetDurationUnset() *DurationUnset {
-	if o == nil {
+func (a *AppAccessRequestDefaults) GetDurationUnset() *DurationUnset {
+	if a == nil {
 		return nil
 	}
-	return o.DurationUnset
+	return a.DurationUnset
 }
 
-func (o *AppAccessRequestDefaults) GetEmergencyGrantEnabled() *bool {
-	if o == nil {
+func (a *AppAccessRequestDefaults) GetEmergencyGrantEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.EmergencyGrantEnabled
+	return a.EmergencyGrantEnabled
 }
 
-func (o *AppAccessRequestDefaults) GetEmergencyGrantPolicyID() *string {
-	if o == nil {
+func (a *AppAccessRequestDefaults) GetEmergencyGrantPolicyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.EmergencyGrantPolicyID
+	return a.EmergencyGrantPolicyID
 }
 
-func (o *AppAccessRequestDefaults) GetRequestPolicyID() *string {
-	if o == nil {
+func (a *AppAccessRequestDefaults) GetRequestPolicyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.RequestPolicyID
+	return a.RequestPolicyID
 }
 
-func (o *AppAccessRequestDefaults) GetResourceTypeIds() []string {
-	if o == nil {
+func (a *AppAccessRequestDefaults) GetResourceTypeIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ResourceTypeIds
+	return a.ResourceTypeIds
 }
 
-func (o *AppAccessRequestDefaults) GetState() *State {
-	if o == nil {
+func (a *AppAccessRequestDefaults) GetState() *State {
+	if a == nil {
 		return nil
 	}
-	return o.State
+	return a.State
 }
 
 // AppAccessRequestDefaults1 - The AppAccessRequestDefaults message.
@@ -172,65 +172,65 @@ type AppAccessRequestDefaults1 struct {
 	State *State `json:"state,omitempty"`
 }
 
-func (o *AppAccessRequestDefaults1) GetCatalogIds() []string {
-	if o == nil {
+func (a *AppAccessRequestDefaults1) GetCatalogIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.CatalogIds
+	return a.CatalogIds
 }
 
-func (o *AppAccessRequestDefaults1) GetDefaultsEnabled() *bool {
-	if o == nil {
+func (a *AppAccessRequestDefaults1) GetDefaultsEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.DefaultsEnabled
+	return a.DefaultsEnabled
 }
 
-func (o *AppAccessRequestDefaults1) GetDurationGrant() *string {
-	if o == nil {
+func (a *AppAccessRequestDefaults1) GetDurationGrant() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DurationGrant
+	return a.DurationGrant
 }
 
-func (o *AppAccessRequestDefaults1) GetDurationUnset() *DurationUnset {
-	if o == nil {
+func (a *AppAccessRequestDefaults1) GetDurationUnset() *DurationUnset {
+	if a == nil {
 		return nil
 	}
-	return o.DurationUnset
+	return a.DurationUnset
 }
 
-func (o *AppAccessRequestDefaults1) GetEmergencyGrantEnabled() *bool {
-	if o == nil {
+func (a *AppAccessRequestDefaults1) GetEmergencyGrantEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.EmergencyGrantEnabled
+	return a.EmergencyGrantEnabled
 }
 
-func (o *AppAccessRequestDefaults1) GetEmergencyGrantPolicyID() *string {
-	if o == nil {
+func (a *AppAccessRequestDefaults1) GetEmergencyGrantPolicyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.EmergencyGrantPolicyID
+	return a.EmergencyGrantPolicyID
 }
 
-func (o *AppAccessRequestDefaults1) GetRequestPolicyID() *string {
-	if o == nil {
+func (a *AppAccessRequestDefaults1) GetRequestPolicyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.RequestPolicyID
+	return a.RequestPolicyID
 }
 
-func (o *AppAccessRequestDefaults1) GetResourceTypeIds() []string {
-	if o == nil {
+func (a *AppAccessRequestDefaults1) GetResourceTypeIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ResourceTypeIds
+	return a.ResourceTypeIds
 }
 
-func (o *AppAccessRequestDefaults1) GetState() *State {
-	if o == nil {
+func (a *AppAccessRequestDefaults1) GetState() *State {
+	if a == nil {
 		return nil
 	}
-	return o.State
+	return a.State
 }

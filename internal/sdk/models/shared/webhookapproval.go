@@ -8,9 +8,9 @@ type WebhookApproval struct {
 	WebhookID *string `json:"webhookId,omitempty"`
 }
 
-func (o *WebhookApproval) GetWebhookID() *string {
-	if o == nil {
+func (w *WebhookApproval) GetWebhookID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.WebhookID
+	return w.WebhookID
 }

@@ -13,9 +13,9 @@ type UpdateStepUpProviderResponse struct {
 	StepUpProvider *StepUpProvider `json:"stepUpProvider,omitempty"`
 }
 
-func (o *UpdateStepUpProviderResponse) GetStepUpProvider() *StepUpProvider {
-	if o == nil {
+func (u *UpdateStepUpProviderResponse) GetStepUpProvider() *StepUpProvider {
+	if u == nil {
 		return nil
 	}
-	return o.StepUpProvider
+	return u.StepUpProvider
 }

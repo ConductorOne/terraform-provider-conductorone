@@ -12,18 +12,18 @@ type C1APIAutomationsV1AutomationServiceExecuteAutomationRequest struct {
 	ExecuteAutomationRequest *shared.ExecuteAutomationRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAutomationsV1AutomationServiceExecuteAutomationRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceExecuteAutomationRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIAutomationsV1AutomationServiceExecuteAutomationRequest) GetExecuteAutomationRequest() *shared.ExecuteAutomationRequest {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceExecuteAutomationRequest) GetExecuteAutomationRequest() *shared.ExecuteAutomationRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ExecuteAutomationRequest
+	return c.ExecuteAutomationRequest
 }
 
 type C1APIAutomationsV1AutomationServiceExecuteAutomationResponse struct {
@@ -37,30 +37,30 @@ type C1APIAutomationsV1AutomationServiceExecuteAutomationResponse struct {
 	ExecuteAutomationResponse *shared.ExecuteAutomationResponse
 }
 
-func (o *C1APIAutomationsV1AutomationServiceExecuteAutomationResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceExecuteAutomationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAutomationsV1AutomationServiceExecuteAutomationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceExecuteAutomationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAutomationsV1AutomationServiceExecuteAutomationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceExecuteAutomationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAutomationsV1AutomationServiceExecuteAutomationResponse) GetExecuteAutomationResponse() *shared.ExecuteAutomationResponse {
-	if o == nil {
+func (c *C1APIAutomationsV1AutomationServiceExecuteAutomationResponse) GetExecuteAutomationResponse() *shared.ExecuteAutomationResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ExecuteAutomationResponse
+	return c.ExecuteAutomationResponse
 }

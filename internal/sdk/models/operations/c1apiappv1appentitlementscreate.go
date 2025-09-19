@@ -12,18 +12,18 @@ type C1APIAppV1AppEntitlementsCreateRequest struct {
 	CreateAppEntitlementRequest *shared.CreateAppEntitlementRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppEntitlementsCreateRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsCreateRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementsCreateRequest) GetCreateAppEntitlementRequest() *shared.CreateAppEntitlementRequest {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsCreateRequest) GetCreateAppEntitlementRequest() *shared.CreateAppEntitlementRequest {
+	if c == nil {
 		return nil
 	}
-	return o.CreateAppEntitlementRequest
+	return c.CreateAppEntitlementRequest
 }
 
 type C1APIAppV1AppEntitlementsCreateResponse struct {
@@ -37,30 +37,30 @@ type C1APIAppV1AppEntitlementsCreateResponse struct {
 	CreateAppEntitlementResponse *shared.CreateAppEntitlementResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsCreateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsCreateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementsCreateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsCreateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementsCreateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsCreateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsCreateResponse) GetCreateAppEntitlementResponse() *shared.CreateAppEntitlementResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsCreateResponse) GetCreateAppEntitlementResponse() *shared.CreateAppEntitlementResponse {
+	if c == nil {
 		return nil
 	}
-	return o.CreateAppEntitlementResponse
+	return c.CreateAppEntitlementResponse
 }

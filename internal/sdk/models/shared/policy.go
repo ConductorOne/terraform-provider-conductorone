@@ -86,88 +86,88 @@ func (p *Policy) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *Policy) GetCreatedAt() *time.Time {
-	if o == nil {
+func (p *Policy) GetCreatedAt() *time.Time {
+	if p == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return p.CreatedAt
 }
 
-func (o *Policy) GetDeletedAt() *time.Time {
-	if o == nil {
+func (p *Policy) GetDeletedAt() *time.Time {
+	if p == nil {
 		return nil
 	}
-	return o.DeletedAt
+	return p.DeletedAt
 }
 
-func (o *Policy) GetDescription() *string {
-	if o == nil {
+func (p *Policy) GetDescription() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Description
+	return p.Description
 }
 
-func (o *Policy) GetDisplayName() *string {
-	if o == nil {
+func (p *Policy) GetDisplayName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.DisplayName
+	return p.DisplayName
 }
 
-func (o *Policy) GetID() *string {
-	if o == nil {
+func (p *Policy) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *Policy) GetPolicySteps() map[string]PolicySteps {
-	if o == nil {
+func (p *Policy) GetPolicySteps() map[string]PolicySteps {
+	if p == nil {
 		return nil
 	}
-	return o.PolicySteps
+	return p.PolicySteps
 }
 
-func (o *Policy) GetPolicyType() *PolicyType {
-	if o == nil {
+func (p *Policy) GetPolicyType() *PolicyType {
+	if p == nil {
 		return nil
 	}
-	return o.PolicyType
+	return p.PolicyType
 }
 
-func (o *Policy) GetPostActions() []PolicyPostActions {
-	if o == nil {
+func (p *Policy) GetPostActions() []PolicyPostActions {
+	if p == nil {
 		return nil
 	}
-	return o.PostActions
+	return p.PostActions
 }
 
-func (o *Policy) GetReassignTasksToDelegates() *bool {
-	if o == nil {
+func (p *Policy) GetReassignTasksToDelegates() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.ReassignTasksToDelegates
+	return p.ReassignTasksToDelegates
 }
 
-func (o *Policy) GetRules() []Rule {
-	if o == nil {
+func (p *Policy) GetRules() []Rule {
+	if p == nil {
 		return nil
 	}
-	return o.Rules
+	return p.Rules
 }
 
-func (o *Policy) GetSystemBuiltin() *bool {
-	if o == nil {
+func (p *Policy) GetSystemBuiltin() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.SystemBuiltin
+	return p.SystemBuiltin
 }
 
-func (o *Policy) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (p *Policy) GetUpdatedAt() *time.Time {
+	if p == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return p.UpdatedAt
 }
 
 // PolicyInput - A policy describes the behavior of the ConductorOne system when processing a task. You can describe the type, approvers, fallback behavior, and escalation processes.
@@ -190,51 +190,51 @@ type PolicyInput struct {
 	Rules []Rule `json:"rules,omitempty"`
 }
 
-func (o *PolicyInput) GetDescription() *string {
-	if o == nil {
+func (p *PolicyInput) GetDescription() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Description
+	return p.Description
 }
 
-func (o *PolicyInput) GetDisplayName() *string {
-	if o == nil {
+func (p *PolicyInput) GetDisplayName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.DisplayName
+	return p.DisplayName
 }
 
-func (o *PolicyInput) GetPolicySteps() map[string]PolicyStepsInput {
-	if o == nil {
+func (p *PolicyInput) GetPolicySteps() map[string]PolicyStepsInput {
+	if p == nil {
 		return nil
 	}
-	return o.PolicySteps
+	return p.PolicySteps
 }
 
-func (o *PolicyInput) GetPolicyType() *PolicyType {
-	if o == nil {
+func (p *PolicyInput) GetPolicyType() *PolicyType {
+	if p == nil {
 		return nil
 	}
-	return o.PolicyType
+	return p.PolicyType
 }
 
-func (o *PolicyInput) GetPostActions() []PolicyPostActions {
-	if o == nil {
+func (p *PolicyInput) GetPostActions() []PolicyPostActions {
+	if p == nil {
 		return nil
 	}
-	return o.PostActions
+	return p.PostActions
 }
 
-func (o *PolicyInput) GetReassignTasksToDelegates() *bool {
-	if o == nil {
+func (p *PolicyInput) GetReassignTasksToDelegates() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.ReassignTasksToDelegates
+	return p.ReassignTasksToDelegates
 }
 
-func (o *PolicyInput) GetRules() []Rule {
-	if o == nil {
+func (p *PolicyInput) GetRules() []Rule {
+	if p == nil {
 		return nil
 	}
-	return o.Rules
+	return p.Rules
 }

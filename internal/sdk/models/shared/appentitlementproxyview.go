@@ -12,9 +12,9 @@ type AppEntitlementProxyView struct {
 	AppEntitlementProxy *AppEntitlementProxy `json:"appProxyEntitlement,omitempty"`
 }
 
-func (o *AppEntitlementProxyView) GetAppEntitlementProxy() *AppEntitlementProxy {
-	if o == nil {
+func (a *AppEntitlementProxyView) GetAppEntitlementProxy() *AppEntitlementProxy {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementProxy
+	return a.AppEntitlementProxy
 }

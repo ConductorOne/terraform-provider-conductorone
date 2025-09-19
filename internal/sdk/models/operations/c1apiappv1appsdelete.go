@@ -12,18 +12,18 @@ type C1APIAppV1AppsDeleteRequest struct {
 	DeleteAppRequest *shared.DeleteAppRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppsDeleteRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAppV1AppsDeleteRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIAppV1AppsDeleteRequest) GetDeleteAppRequest() *shared.DeleteAppRequest {
-	if o == nil {
+func (c *C1APIAppV1AppsDeleteRequest) GetDeleteAppRequest() *shared.DeleteAppRequest {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteAppRequest
+	return c.DeleteAppRequest
 }
 
 type C1APIAppV1AppsDeleteResponse struct {
@@ -37,30 +37,30 @@ type C1APIAppV1AppsDeleteResponse struct {
 	DeleteAppResponse *shared.DeleteAppResponse
 }
 
-func (o *C1APIAppV1AppsDeleteResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppsDeleteResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppsDeleteResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppsDeleteResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppsDeleteResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppsDeleteResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppsDeleteResponse) GetDeleteAppResponse() *shared.DeleteAppResponse {
-	if o == nil {
+func (c *C1APIAppV1AppsDeleteResponse) GetDeleteAppResponse() *shared.DeleteAppResponse {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteAppResponse
+	return c.DeleteAppResponse
 }

@@ -12,18 +12,18 @@ type C1APISettingsV1OrgDomainServiceListRequest struct {
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APISettingsV1OrgDomainServiceListRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APISettingsV1OrgDomainServiceListRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APISettingsV1OrgDomainServiceListRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APISettingsV1OrgDomainServiceListRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APISettingsV1OrgDomainServiceListResponse struct {
@@ -37,30 +37,30 @@ type C1APISettingsV1OrgDomainServiceListResponse struct {
 	ListOrgDomainsResponse *shared.ListOrgDomainsResponse
 }
 
-func (o *C1APISettingsV1OrgDomainServiceListResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APISettingsV1OrgDomainServiceListResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APISettingsV1OrgDomainServiceListResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APISettingsV1OrgDomainServiceListResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APISettingsV1OrgDomainServiceListResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APISettingsV1OrgDomainServiceListResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APISettingsV1OrgDomainServiceListResponse) GetListOrgDomainsResponse() *shared.ListOrgDomainsResponse {
-	if o == nil {
+func (c *C1APISettingsV1OrgDomainServiceListResponse) GetListOrgDomainsResponse() *shared.ListOrgDomainsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ListOrgDomainsResponse
+	return c.ListOrgDomainsResponse
 }

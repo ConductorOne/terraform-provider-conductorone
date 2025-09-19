@@ -8,9 +8,9 @@ type BoolRules struct {
 	Const *bool `json:"const,omitempty"`
 }
 
-func (o *BoolRules) GetConst() *bool {
-	if o == nil {
+func (b *BoolRules) GetConst() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.Const
+	return b.Const
 }

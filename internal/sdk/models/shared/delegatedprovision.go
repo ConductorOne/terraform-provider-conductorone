@@ -10,16 +10,16 @@ type DelegatedProvision struct {
 	EntitlementID *string `json:"entitlementId,omitempty"`
 }
 
-func (o *DelegatedProvision) GetAppID() *string {
-	if o == nil {
+func (d *DelegatedProvision) GetAppID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.AppID
+	return d.AppID
 }
 
-func (o *DelegatedProvision) GetEntitlementID() *string {
-	if o == nil {
+func (d *DelegatedProvision) GetEntitlementID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.EntitlementID
+	return d.EntitlementID
 }

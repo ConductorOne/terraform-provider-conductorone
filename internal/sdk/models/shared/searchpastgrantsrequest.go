@@ -18,44 +18,44 @@ type SearchPastGrantsRequest struct {
 	PageToken *string `json:"pageToken,omitempty"`
 }
 
-func (o *SearchPastGrantsRequest) GetAppEntitlementRefs() []AppEntitlementRef {
-	if o == nil {
+func (s *SearchPastGrantsRequest) GetAppEntitlementRefs() []AppEntitlementRef {
+	if s == nil {
 		return nil
 	}
-	return o.AppEntitlementRefs
+	return s.AppEntitlementRefs
 }
 
-func (o *SearchPastGrantsRequest) GetAppIds() []string {
-	if o == nil {
+func (s *SearchPastGrantsRequest) GetAppIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.AppIds
+	return s.AppIds
 }
 
-func (o *SearchPastGrantsRequest) GetAppUserRefs() []AppUserRef {
-	if o == nil {
+func (s *SearchPastGrantsRequest) GetAppUserRefs() []AppUserRef {
+	if s == nil {
 		return nil
 	}
-	return o.AppUserRefs
+	return s.AppUserRefs
 }
 
-func (o *SearchPastGrantsRequest) GetAppEntitlementUserBindingExpandHistoryMask() *AppEntitlementUserBindingExpandHistoryMask {
-	if o == nil {
+func (s *SearchPastGrantsRequest) GetAppEntitlementUserBindingExpandHistoryMask() *AppEntitlementUserBindingExpandHistoryMask {
+	if s == nil {
 		return nil
 	}
-	return o.AppEntitlementUserBindingExpandHistoryMask
+	return s.AppEntitlementUserBindingExpandHistoryMask
 }
 
-func (o *SearchPastGrantsRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchPastGrantsRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SearchPastGrantsRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchPastGrantsRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }

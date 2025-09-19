@@ -11,11 +11,11 @@ type C1APIWebhooksV1WebhooksServiceGetRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceGetRequest) GetID() string {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceGetRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIWebhooksV1WebhooksServiceGetResponse struct {
@@ -29,30 +29,30 @@ type C1APIWebhooksV1WebhooksServiceGetResponse struct {
 	WebhooksServiceGetResponse *shared.WebhooksServiceGetResponse
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceGetResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceGetResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceGetResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceGetResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceGetResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceGetResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIWebhooksV1WebhooksServiceGetResponse) GetWebhooksServiceGetResponse() *shared.WebhooksServiceGetResponse {
-	if o == nil {
+func (c *C1APIWebhooksV1WebhooksServiceGetResponse) GetWebhooksServiceGetResponse() *shared.WebhooksServiceGetResponse {
+	if c == nil {
 		return nil
 	}
-	return o.WebhooksServiceGetResponse
+	return c.WebhooksServiceGetResponse
 }

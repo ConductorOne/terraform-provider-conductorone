@@ -12,18 +12,18 @@ type C1APIStepupV1StepUpProviderServiceUpdateRequest struct {
 	UpdateStepUpProviderRequest *shared.UpdateStepUpProviderRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceUpdateRequest) GetID() string {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceUpdateRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceUpdateRequest) GetUpdateStepUpProviderRequest() *shared.UpdateStepUpProviderRequest {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceUpdateRequest) GetUpdateStepUpProviderRequest() *shared.UpdateStepUpProviderRequest {
+	if c == nil {
 		return nil
 	}
-	return o.UpdateStepUpProviderRequest
+	return c.UpdateStepUpProviderRequest
 }
 
 type C1APIStepupV1StepUpProviderServiceUpdateResponse struct {
@@ -37,30 +37,30 @@ type C1APIStepupV1StepUpProviderServiceUpdateResponse struct {
 	UpdateStepUpProviderResponse *shared.UpdateStepUpProviderResponse
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceUpdateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceUpdateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceUpdateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceUpdateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceUpdateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceUpdateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceUpdateResponse) GetUpdateStepUpProviderResponse() *shared.UpdateStepUpProviderResponse {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceUpdateResponse) GetUpdateStepUpProviderResponse() *shared.UpdateStepUpProviderResponse {
+	if c == nil {
 		return nil
 	}
-	return o.UpdateStepUpProviderResponse
+	return c.UpdateStepUpProviderResponse
 }

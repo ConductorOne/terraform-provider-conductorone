@@ -8,9 +8,9 @@ type WebhookRef struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *WebhookRef) GetID() *string {
-	if o == nil {
+func (w *WebhookRef) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }

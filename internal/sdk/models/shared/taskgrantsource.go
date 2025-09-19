@@ -14,30 +14,30 @@ type TaskGrantSource struct {
 	RequestID *string `json:"requestId,omitempty"`
 }
 
-func (o *TaskGrantSource) GetConversationID() *string {
-	if o == nil {
+func (t *TaskGrantSource) GetConversationID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ConversationID
+	return t.ConversationID
 }
 
-func (o *TaskGrantSource) GetExternalURL() *string {
-	if o == nil {
+func (t *TaskGrantSource) GetExternalURL() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ExternalURL
+	return t.ExternalURL
 }
 
-func (o *TaskGrantSource) GetIntegrationID() *string {
-	if o == nil {
+func (t *TaskGrantSource) GetIntegrationID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.IntegrationID
+	return t.IntegrationID
 }
 
-func (o *TaskGrantSource) GetRequestID() *string {
-	if o == nil {
+func (t *TaskGrantSource) GetRequestID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.RequestID
+	return t.RequestID
 }

@@ -8,9 +8,9 @@ type RequestCatalogManagementServiceRemoveAppEntitlementsRequest struct {
 	AppEntitlements []AppEntitlementRef `json:"appEntitlements,omitempty"`
 }
 
-func (o *RequestCatalogManagementServiceRemoveAppEntitlementsRequest) GetAppEntitlements() []AppEntitlementRef {
-	if o == nil {
+func (r *RequestCatalogManagementServiceRemoveAppEntitlementsRequest) GetAppEntitlements() []AppEntitlementRef {
+	if r == nil {
 		return nil
 	}
-	return o.AppEntitlements
+	return r.AppEntitlements
 }

@@ -10,9 +10,9 @@ type AutomationContext struct {
 	Context *Context `json:"context,omitempty"`
 }
 
-func (o *AutomationContext) GetContext() *Context {
-	if o == nil {
+func (a *AutomationContext) GetContext() *Context {
+	if a == nil {
 		return nil
 	}
-	return o.Context
+	return a.Context
 }

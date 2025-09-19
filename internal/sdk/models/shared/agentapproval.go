@@ -89,44 +89,44 @@ type AgentApproval struct {
 	ReassignToUserIds []string `json:"reassignToUserIds,omitempty"`
 }
 
-func (o *AgentApproval) GetAgentFailureAction() *AgentFailureAction {
-	if o == nil {
+func (a *AgentApproval) GetAgentFailureAction() *AgentFailureAction {
+	if a == nil {
 		return nil
 	}
-	return o.AgentFailureAction
+	return a.AgentFailureAction
 }
 
-func (o *AgentApproval) GetAgentMode() *AgentMode {
-	if o == nil {
+func (a *AgentApproval) GetAgentMode() *AgentMode {
+	if a == nil {
 		return nil
 	}
-	return o.AgentMode
+	return a.AgentMode
 }
 
-func (o *AgentApproval) GetAgentUserID() *string {
-	if o == nil {
+func (a *AgentApproval) GetAgentUserID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AgentUserID
+	return a.AgentUserID
 }
 
-func (o *AgentApproval) GetInstructions() *string {
-	if o == nil {
+func (a *AgentApproval) GetInstructions() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Instructions
+	return a.Instructions
 }
 
-func (o *AgentApproval) GetPolicyIds() []string {
-	if o == nil {
+func (a *AgentApproval) GetPolicyIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.PolicyIds
+	return a.PolicyIds
 }
 
-func (o *AgentApproval) GetReassignToUserIds() []string {
-	if o == nil {
+func (a *AgentApproval) GetReassignToUserIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.ReassignToUserIds
+	return a.ReassignToUserIds
 }

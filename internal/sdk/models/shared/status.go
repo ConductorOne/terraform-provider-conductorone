@@ -26,23 +26,23 @@ type Status struct {
 	Message *string `json:"message,omitempty"`
 }
 
-func (o *Status) GetCode() *int {
-	if o == nil {
+func (s *Status) GetCode() *int {
+	if s == nil {
 		return nil
 	}
-	return o.Code
+	return s.Code
 }
 
-func (o *Status) GetDetails() []Details {
-	if o == nil {
+func (s *Status) GetDetails() []Details {
+	if s == nil {
 		return nil
 	}
-	return o.Details
+	return s.Details
 }
 
-func (o *Status) GetMessage() *string {
-	if o == nil {
+func (s *Status) GetMessage() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Message
+	return s.Message
 }

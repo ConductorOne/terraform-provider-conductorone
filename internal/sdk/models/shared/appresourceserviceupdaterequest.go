@@ -13,16 +13,16 @@ type AppResourceServiceUpdateRequest struct {
 	UpdateMask  *string           `json:"updateMask,omitempty"`
 }
 
-func (o *AppResourceServiceUpdateRequest) GetAppResource() *AppResourceInput {
-	if o == nil {
+func (a *AppResourceServiceUpdateRequest) GetAppResource() *AppResourceInput {
+	if a == nil {
 		return nil
 	}
-	return o.AppResource
+	return a.AppResource
 }
 
-func (o *AppResourceServiceUpdateRequest) GetUpdateMask() *string {
-	if o == nil {
+func (a *AppResourceServiceUpdateRequest) GetUpdateMask() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return a.UpdateMask
 }

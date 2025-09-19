@@ -13,16 +13,16 @@ type ExporterInput struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-func (o *ExporterInput) GetExportToDatasource() *ExportToDatasource {
-	if o == nil {
+func (e *ExporterInput) GetExportToDatasource() *ExportToDatasource {
+	if e == nil {
 		return nil
 	}
-	return o.ExportToDatasource
+	return e.ExportToDatasource
 }
 
-func (o *ExporterInput) GetDisplayName() *string {
-	if o == nil {
+func (e *ExporterInput) GetDisplayName() *string {
+	if e == nil {
 		return nil
 	}
-	return o.DisplayName
+	return e.DisplayName
 }

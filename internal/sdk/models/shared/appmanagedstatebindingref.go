@@ -12,23 +12,23 @@ type AppManagedStateBindingRef struct {
 	ResourceTypeID *string `json:"resourceTypeId,omitempty"`
 }
 
-func (o *AppManagedStateBindingRef) GetAppID() *string {
-	if o == nil {
+func (a *AppManagedStateBindingRef) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppManagedStateBindingRef) GetResourceID() *string {
-	if o == nil {
+func (a *AppManagedStateBindingRef) GetResourceID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ResourceID
+	return a.ResourceID
 }
 
-func (o *AppManagedStateBindingRef) GetResourceTypeID() *string {
-	if o == nil {
+func (a *AppManagedStateBindingRef) GetResourceTypeID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ResourceTypeID
+	return a.ResourceTypeID
 }

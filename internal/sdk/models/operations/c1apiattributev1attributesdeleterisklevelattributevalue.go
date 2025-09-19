@@ -12,18 +12,18 @@ type C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest struct {
 	DeleteRiskLevelAttributeValueRequest *shared.DeleteRiskLevelAttributeValueRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest) GetDeleteRiskLevelAttributeValueRequest() *shared.DeleteRiskLevelAttributeValueRequest {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest) GetDeleteRiskLevelAttributeValueRequest() *shared.DeleteRiskLevelAttributeValueRequest {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteRiskLevelAttributeValueRequest
+	return c.DeleteRiskLevelAttributeValueRequest
 }
 
 type C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse struct {
@@ -37,30 +37,30 @@ type C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse struct {
 	DeleteRiskLevelAttributeValueResponse *shared.DeleteRiskLevelAttributeValueResponse
 }
 
-func (o *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse) GetDeleteRiskLevelAttributeValueResponse() *shared.DeleteRiskLevelAttributeValueResponse {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse) GetDeleteRiskLevelAttributeValueResponse() *shared.DeleteRiskLevelAttributeValueResponse {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteRiskLevelAttributeValueResponse
+	return c.DeleteRiskLevelAttributeValueResponse
 }

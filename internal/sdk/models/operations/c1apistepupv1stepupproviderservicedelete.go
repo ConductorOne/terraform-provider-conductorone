@@ -12,18 +12,18 @@ type C1APIStepupV1StepUpProviderServiceDeleteRequest struct {
 	DeleteStepUpProviderRequest *shared.DeleteStepUpProviderRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceDeleteRequest) GetID() string {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceDeleteRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceDeleteRequest) GetDeleteStepUpProviderRequest() *shared.DeleteStepUpProviderRequest {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceDeleteRequest) GetDeleteStepUpProviderRequest() *shared.DeleteStepUpProviderRequest {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteStepUpProviderRequest
+	return c.DeleteStepUpProviderRequest
 }
 
 type C1APIStepupV1StepUpProviderServiceDeleteResponse struct {
@@ -37,30 +37,30 @@ type C1APIStepupV1StepUpProviderServiceDeleteResponse struct {
 	DeleteStepUpProviderResponse *shared.DeleteStepUpProviderResponse
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceDeleteResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceDeleteResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceDeleteResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceDeleteResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceDeleteResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceDeleteResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceDeleteResponse) GetDeleteStepUpProviderResponse() *shared.DeleteStepUpProviderResponse {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceDeleteResponse) GetDeleteStepUpProviderResponse() *shared.DeleteStepUpProviderResponse {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteStepUpProviderResponse
+	return c.DeleteStepUpProviderResponse
 }

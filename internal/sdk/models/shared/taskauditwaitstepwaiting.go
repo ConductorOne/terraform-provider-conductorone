@@ -10,16 +10,16 @@ type TaskAuditWaitStepWaiting struct {
 	StepID *string `json:"stepId,omitempty"`
 }
 
-func (o *TaskAuditWaitStepWaiting) GetCondition() *string {
-	if o == nil {
+func (t *TaskAuditWaitStepWaiting) GetCondition() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Condition
+	return t.Condition
 }
 
-func (o *TaskAuditWaitStepWaiting) GetStepID() *string {
-	if o == nil {
+func (t *TaskAuditWaitStepWaiting) GetStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.StepID
+	return t.StepID
 }

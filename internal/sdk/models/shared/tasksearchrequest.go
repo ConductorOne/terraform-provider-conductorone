@@ -311,240 +311,240 @@ func (t *TaskSearchRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *TaskSearchRequest) GetAccessReviewIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetAccessReviewIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.AccessReviewIds
+	return t.AccessReviewIds
 }
 
-func (o *TaskSearchRequest) GetAccountOwnerIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetAccountOwnerIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.AccountOwnerIds
+	return t.AccountOwnerIds
 }
 
-func (o *TaskSearchRequest) GetAccountTypes() []AccountTypes {
-	if o == nil {
+func (t *TaskSearchRequest) GetAccountTypes() []AccountTypes {
+	if t == nil {
 		return nil
 	}
-	return o.AccountTypes
+	return t.AccountTypes
 }
 
-func (o *TaskSearchRequest) GetActorID() *string {
-	if o == nil {
+func (t *TaskSearchRequest) GetActorID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ActorID
+	return t.ActorID
 }
 
-func (o *TaskSearchRequest) GetAppEntitlementIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetAppEntitlementIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.AppEntitlementIds
+	return t.AppEntitlementIds
 }
 
-func (o *TaskSearchRequest) GetAppResourceIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetAppResourceIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.AppResourceIds
+	return t.AppResourceIds
 }
 
-func (o *TaskSearchRequest) GetAppResourceTypeIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetAppResourceTypeIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.AppResourceTypeIds
+	return t.AppResourceTypeIds
 }
 
-func (o *TaskSearchRequest) GetAppUserSubjectIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetAppUserSubjectIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.AppUserSubjectIds
+	return t.AppUserSubjectIds
 }
 
-func (o *TaskSearchRequest) GetApplicationIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetApplicationIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.ApplicationIds
+	return t.ApplicationIds
 }
 
-func (o *TaskSearchRequest) GetAssignedOrStepApproverUserID() *string {
-	if o == nil {
+func (t *TaskSearchRequest) GetAssignedOrStepApproverUserID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.AssignedOrStepApproverUserID
+	return t.AssignedOrStepApproverUserID
 }
 
-func (o *TaskSearchRequest) GetAssigneesInIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetAssigneesInIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.AssigneesInIds
+	return t.AssigneesInIds
 }
 
-func (o *TaskSearchRequest) GetCreatedAfter() *time.Time {
-	if o == nil {
+func (t *TaskSearchRequest) GetCreatedAfter() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.CreatedAfter
+	return t.CreatedAfter
 }
 
-func (o *TaskSearchRequest) GetCreatedBefore() *time.Time {
-	if o == nil {
+func (t *TaskSearchRequest) GetCreatedBefore() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.CreatedBefore
+	return t.CreatedBefore
 }
 
-func (o *TaskSearchRequest) GetCurrentStep() *CurrentStep {
-	if o == nil {
+func (t *TaskSearchRequest) GetCurrentStep() *CurrentStep {
+	if t == nil {
 		return nil
 	}
-	return o.CurrentStep
+	return t.CurrentStep
 }
 
-func (o *TaskSearchRequest) GetEmergencyStatus() *EmergencyStatus {
-	if o == nil {
+func (t *TaskSearchRequest) GetEmergencyStatus() *EmergencyStatus {
+	if t == nil {
 		return nil
 	}
-	return o.EmergencyStatus
+	return t.EmergencyStatus
 }
 
-func (o *TaskSearchRequest) GetExcludeAppEntitlementIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetExcludeAppEntitlementIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.ExcludeAppEntitlementIds
+	return t.ExcludeAppEntitlementIds
 }
 
-func (o *TaskSearchRequest) GetExcludeAppResourceTypeIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetExcludeAppResourceTypeIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.ExcludeAppResourceTypeIds
+	return t.ExcludeAppResourceTypeIds
 }
 
-func (o *TaskSearchRequest) GetExcludeIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetExcludeIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.ExcludeIds
+	return t.ExcludeIds
 }
 
-func (o *TaskSearchRequest) GetIncludeDeleted() *bool {
-	if o == nil {
+func (t *TaskSearchRequest) GetIncludeDeleted() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.IncludeDeleted
+	return t.IncludeDeleted
 }
 
-func (o *TaskSearchRequest) GetMyWorkUserIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetMyWorkUserIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.MyWorkUserIds
+	return t.MyWorkUserIds
 }
 
-func (o *TaskSearchRequest) GetOlderThanDuration() *string {
-	if o == nil {
+func (t *TaskSearchRequest) GetOlderThanDuration() *string {
+	if t == nil {
 		return nil
 	}
-	return o.OlderThanDuration
+	return t.OlderThanDuration
 }
 
-func (o *TaskSearchRequest) GetOpenerIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetOpenerIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.OpenerIds
+	return t.OpenerIds
 }
 
-func (o *TaskSearchRequest) GetOpenerOrSubjectUserID() *string {
-	if o == nil {
+func (t *TaskSearchRequest) GetOpenerOrSubjectUserID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.OpenerOrSubjectUserID
+	return t.OpenerOrSubjectUserID
 }
 
-func (o *TaskSearchRequest) GetPageSize() *int {
-	if o == nil {
+func (t *TaskSearchRequest) GetPageSize() *int {
+	if t == nil {
 		return nil
 	}
-	return o.PageSize
+	return t.PageSize
 }
 
-func (o *TaskSearchRequest) GetPageToken() *string {
-	if o == nil {
+func (t *TaskSearchRequest) GetPageToken() *string {
+	if t == nil {
 		return nil
 	}
-	return o.PageToken
+	return t.PageToken
 }
 
-func (o *TaskSearchRequest) GetPreviouslyActedOnIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetPreviouslyActedOnIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.PreviouslyActedOnIds
+	return t.PreviouslyActedOnIds
 }
 
-func (o *TaskSearchRequest) GetQuery() *string {
-	if o == nil {
+func (t *TaskSearchRequest) GetQuery() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Query
+	return t.Query
 }
 
-func (o *TaskSearchRequest) GetRefs() []TaskRef {
-	if o == nil {
+func (t *TaskSearchRequest) GetRefs() []TaskRef {
+	if t == nil {
 		return nil
 	}
-	return o.Refs
+	return t.Refs
 }
 
-func (o *TaskSearchRequest) GetSortBy() *SortBy {
-	if o == nil {
+func (t *TaskSearchRequest) GetSortBy() *SortBy {
+	if t == nil {
 		return nil
 	}
-	return o.SortBy
+	return t.SortBy
 }
 
-func (o *TaskSearchRequest) GetStepApprovalTypes() []StepApprovalTypes {
-	if o == nil {
+func (t *TaskSearchRequest) GetStepApprovalTypes() []StepApprovalTypes {
+	if t == nil {
 		return nil
 	}
-	return o.StepApprovalTypes
+	return t.StepApprovalTypes
 }
 
-func (o *TaskSearchRequest) GetSubjectIds() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetSubjectIds() []string {
+	if t == nil {
 		return nil
 	}
-	return o.SubjectIds
+	return t.SubjectIds
 }
 
-func (o *TaskSearchRequest) GetTaskStates() []TaskStates {
-	if o == nil {
+func (t *TaskSearchRequest) GetTaskStates() []TaskStates {
+	if t == nil {
 		return nil
 	}
-	return o.TaskStates
+	return t.TaskStates
 }
 
-func (o *TaskSearchRequest) GetTaskTypes() []TaskTypeInput {
-	if o == nil {
+func (t *TaskSearchRequest) GetTaskTypes() []TaskTypeInput {
+	if t == nil {
 		return nil
 	}
-	return o.TaskTypes
+	return t.TaskTypes
 }
 
-func (o *TaskSearchRequest) GetUserEmploymentStatuses() []string {
-	if o == nil {
+func (t *TaskSearchRequest) GetUserEmploymentStatuses() []string {
+	if t == nil {
 		return nil
 	}
-	return o.UserEmploymentStatuses
+	return t.UserEmploymentStatuses
 }

@@ -8,9 +8,9 @@ type TaskAuditPolicyEvaluationStep struct {
 	StepComment *string `json:"stepComment,omitempty"`
 }
 
-func (o *TaskAuditPolicyEvaluationStep) GetStepComment() *string {
-	if o == nil {
+func (t *TaskAuditPolicyEvaluationStep) GetStepComment() *string {
+	if t == nil {
 		return nil
 	}
-	return o.StepComment
+	return t.StepComment
 }

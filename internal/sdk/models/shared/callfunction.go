@@ -10,16 +10,16 @@ type CallFunction struct {
 	FunctionID *string `json:"functionId,omitempty"`
 }
 
-func (o *CallFunction) GetArgs() map[string]string {
-	if o == nil {
+func (c *CallFunction) GetArgs() map[string]string {
+	if c == nil {
 		return nil
 	}
-	return o.Args
+	return c.Args
 }
 
-func (o *CallFunction) GetFunctionID() *string {
-	if o == nil {
+func (c *CallFunction) GetFunctionID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionID
+	return c.FunctionID
 }

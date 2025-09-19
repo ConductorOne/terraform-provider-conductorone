@@ -10,9 +10,9 @@ type AcceptInstance struct {
 	AcceptMessage *string `json:"acceptMessage,omitempty"`
 }
 
-func (o *AcceptInstance) GetAcceptMessage() *string {
-	if o == nil {
+func (a *AcceptInstance) GetAcceptMessage() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AcceptMessage
+	return a.AcceptMessage
 }

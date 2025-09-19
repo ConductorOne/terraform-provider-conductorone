@@ -12,18 +12,18 @@ type C1APIFunctionsV1FunctionsServiceCreateTagRequest struct {
 	FunctionsServiceCreateTagRequest *shared.FunctionsServiceCreateTagRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCreateTagRequest) GetFunctionID() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCreateTagRequest) GetFunctionID() string {
+	if c == nil {
 		return ""
 	}
-	return o.FunctionID
+	return c.FunctionID
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCreateTagRequest) GetFunctionsServiceCreateTagRequest() *shared.FunctionsServiceCreateTagRequest {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCreateTagRequest) GetFunctionsServiceCreateTagRequest() *shared.FunctionsServiceCreateTagRequest {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionsServiceCreateTagRequest
+	return c.FunctionsServiceCreateTagRequest
 }
 
 type C1APIFunctionsV1FunctionsServiceCreateTagResponse struct {
@@ -37,30 +37,30 @@ type C1APIFunctionsV1FunctionsServiceCreateTagResponse struct {
 	FunctionsServiceCreateTagResponse *shared.FunctionsServiceCreateTagResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCreateTagResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCreateTagResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCreateTagResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCreateTagResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCreateTagResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCreateTagResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCreateTagResponse) GetFunctionsServiceCreateTagResponse() *shared.FunctionsServiceCreateTagResponse {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCreateTagResponse) GetFunctionsServiceCreateTagResponse() *shared.FunctionsServiceCreateTagResponse {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionsServiceCreateTagResponse
+	return c.FunctionsServiceCreateTagResponse
 }

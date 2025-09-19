@@ -8,9 +8,9 @@ type DeleteAccount struct {
 	ConnectorID *string `json:"connectorId,omitempty"`
 }
 
-func (o *DeleteAccount) GetConnectorID() *string {
-	if o == nil {
+func (d *DeleteAccount) GetConnectorID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ConnectorID
+	return d.ConnectorID
 }

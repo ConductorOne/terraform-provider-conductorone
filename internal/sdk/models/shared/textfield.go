@@ -8,9 +8,9 @@ type TextField struct {
 	Multiline *bool `json:"multiline,omitempty"`
 }
 
-func (o *TextField) GetMultiline() *bool {
-	if o == nil {
+func (t *TextField) GetMultiline() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.Multiline
+	return t.Multiline
 }

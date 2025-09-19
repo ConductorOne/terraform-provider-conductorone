@@ -12,23 +12,23 @@ type AutomationExecutionView struct {
 	AutomationPath *string `json:"automationPath,omitempty"`
 }
 
-func (o *AutomationExecutionView) GetAutomationExecution() *AutomationExecution {
-	if o == nil {
+func (a *AutomationExecutionView) GetAutomationExecution() *AutomationExecution {
+	if a == nil {
 		return nil
 	}
-	return o.AutomationExecution
+	return a.AutomationExecution
 }
 
-func (o *AutomationExecutionView) GetAutomationExecutionTriggerPath() *string {
-	if o == nil {
+func (a *AutomationExecutionView) GetAutomationExecutionTriggerPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AutomationExecutionTriggerPath
+	return a.AutomationExecutionTriggerPath
 }
 
-func (o *AutomationExecutionView) GetAutomationPath() *string {
-	if o == nil {
+func (a *AutomationExecutionView) GetAutomationPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AutomationPath
+	return a.AutomationPath
 }

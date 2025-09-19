@@ -16,37 +16,37 @@ type AppEntitlementUserBindingFeedView struct {
 	TicketPath *string `json:"ticketPath,omitempty"`
 }
 
-func (o *AppEntitlementUserBindingFeedView) GetAppPath() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingFeedView) GetAppPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppPath
+	return a.AppPath
 }
 
-func (o *AppEntitlementUserBindingFeedView) GetAppUserPath() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingFeedView) GetAppUserPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserPath
+	return a.AppUserPath
 }
 
-func (o *AppEntitlementUserBindingFeedView) GetEntitlementPath() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingFeedView) GetEntitlementPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.EntitlementPath
+	return a.EntitlementPath
 }
 
-func (o *AppEntitlementUserBindingFeedView) GetAppEntitlementUserBindingFeed() *AppEntitlementUserBindingFeed {
-	if o == nil {
+func (a *AppEntitlementUserBindingFeedView) GetAppEntitlementUserBindingFeed() *AppEntitlementUserBindingFeed {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementUserBindingFeed
+	return a.AppEntitlementUserBindingFeed
 }
 
-func (o *AppEntitlementUserBindingFeedView) GetTicketPath() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingFeedView) GetTicketPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.TicketPath
+	return a.TicketPath
 }

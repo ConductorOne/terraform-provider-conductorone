@@ -5,7 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -183,21 +182,25 @@ func (r *WebhooksDataSource) Read(ctx context.Context, req datasource.ReadReques
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	response, err := res.Next()
 	for {
+		var err error
+
+		res, err = res.Next()
+
 		if err != nil {
-			resp.Diagnostics.AddError("reading next results failed", debugResponse(response.RawResponse))
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
 			return
 		}
-		if response == nil {
+
+		if res == nil {
 			break
 		}
-		resp.Diagnostics.Append(data.RefreshFromSharedWebhooksSearchResponse(ctx, response.WebhooksSearchResponse)...)
+
+		resp.Diagnostics.Append(data.RefreshFromSharedWebhooksSearchResponse(ctx, res.WebhooksSearchResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return
 		}
-		response, err = response.Next()
 	}
 
 	// Save updated data into Terraform state

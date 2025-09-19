@@ -12,18 +12,18 @@ type C1APITaskV1TaskActionsServiceApproveRequest struct {
 	TaskActionsServiceApproveRequest *shared.TaskActionsServiceApproveRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APITaskV1TaskActionsServiceApproveRequest) GetTaskID() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceApproveRequest) GetTaskID() string {
+	if c == nil {
 		return ""
 	}
-	return o.TaskID
+	return c.TaskID
 }
 
-func (o *C1APITaskV1TaskActionsServiceApproveRequest) GetTaskActionsServiceApproveRequest() *shared.TaskActionsServiceApproveRequest {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceApproveRequest) GetTaskActionsServiceApproveRequest() *shared.TaskActionsServiceApproveRequest {
+	if c == nil {
 		return nil
 	}
-	return o.TaskActionsServiceApproveRequest
+	return c.TaskActionsServiceApproveRequest
 }
 
 type C1APITaskV1TaskActionsServiceApproveResponse struct {
@@ -37,30 +37,30 @@ type C1APITaskV1TaskActionsServiceApproveResponse struct {
 	TaskActionsServiceApproveResponse *shared.TaskActionsServiceApproveResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceApproveResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceApproveResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APITaskV1TaskActionsServiceApproveResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceApproveResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APITaskV1TaskActionsServiceApproveResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceApproveResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APITaskV1TaskActionsServiceApproveResponse) GetTaskActionsServiceApproveResponse() *shared.TaskActionsServiceApproveResponse {
-	if o == nil {
+func (c *C1APITaskV1TaskActionsServiceApproveResponse) GetTaskActionsServiceApproveResponse() *shared.TaskActionsServiceApproveResponse {
+	if c == nil {
 		return nil
 	}
-	return o.TaskActionsServiceApproveResponse
+	return c.TaskActionsServiceApproveResponse
 }

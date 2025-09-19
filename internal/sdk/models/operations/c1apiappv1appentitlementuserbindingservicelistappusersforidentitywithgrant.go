@@ -13,25 +13,25 @@ type C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantR
 	IdentityUserID   string `pathParam:"style=simple,explode=false,name=identity_user_id"`
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppEntitlementID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppEntitlementID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppEntitlementID
+	return c.AppEntitlementID
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetIdentityUserID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetIdentityUserID() string {
+	if c == nil {
 		return ""
 	}
-	return o.IdentityUserID
+	return c.IdentityUserID
 }
 
 type C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantR
 	ListAppUsersForIdentityWithGrantResponse *shared.ListAppUsersForIdentityWithGrantResponse
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetListAppUsersForIdentityWithGrantResponse() *shared.ListAppUsersForIdentityWithGrantResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse) GetListAppUsersForIdentityWithGrantResponse() *shared.ListAppUsersForIdentityWithGrantResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ListAppUsersForIdentityWithGrantResponse
+	return c.ListAppUsersForIdentityWithGrantResponse
 }

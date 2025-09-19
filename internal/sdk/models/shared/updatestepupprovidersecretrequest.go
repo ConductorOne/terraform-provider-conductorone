@@ -8,9 +8,9 @@ type UpdateStepUpProviderSecretRequest struct {
 	ClientSecret *string `json:"clientSecret,omitempty"`
 }
 
-func (o *UpdateStepUpProviderSecretRequest) GetClientSecret() *string {
-	if o == nil {
+func (u *UpdateStepUpProviderSecretRequest) GetClientSecret() *string {
+	if u == nil {
 		return nil
 	}
-	return o.ClientSecret
+	return u.ClientSecret
 }

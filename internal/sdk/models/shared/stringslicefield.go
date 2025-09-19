@@ -20,30 +20,30 @@ type StringSliceField struct {
 	RepeatedRules *RepeatedRules `json:"rules,omitempty"`
 }
 
-func (o *StringSliceField) GetChipsField() *ChipsField {
-	if o == nil {
+func (s *StringSliceField) GetChipsField() *ChipsField {
+	if s == nil {
 		return nil
 	}
-	return o.ChipsField
+	return s.ChipsField
 }
 
-func (o *StringSliceField) GetDefaultValues() []string {
-	if o == nil {
+func (s *StringSliceField) GetDefaultValues() []string {
+	if s == nil {
 		return nil
 	}
-	return o.DefaultValues
+	return s.DefaultValues
 }
 
-func (o *StringSliceField) GetPlaceholder() *string {
-	if o == nil {
+func (s *StringSliceField) GetPlaceholder() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Placeholder
+	return s.Placeholder
 }
 
-func (o *StringSliceField) GetRepeatedRules() *RepeatedRules {
-	if o == nil {
+func (s *StringSliceField) GetRepeatedRules() *RepeatedRules {
+	if s == nil {
 		return nil
 	}
-	return o.RepeatedRules
+	return s.RepeatedRules
 }

@@ -212,11 +212,38 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Optional:    true,
 														Description: `Configuration to allow a fallback if the group is empty.`,
 													},
+													"fallback_group_ids": schema.ListNestedAttribute{
+														Computed: true,
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"app_entitlement_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the Entitlement.`,
+																},
+																"app_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the App this entitlement belongs to.`,
+																},
+															},
+														},
+														Description: `Configuration to specify which groups to fallback to if fallback is enabled and the group is empty.`,
+													},
 													"fallback_user_ids": schema.ListAttribute{
 														Computed:    true,
 														Optional:    true,
 														ElementType: types.StringType,
 														Description: `Configuration to specific which users to fallback to if fallback is enabled and the group is empty.`,
+													},
+													"is_group_fallback_enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Configuration to enable fallback for group fallback.`,
 													},
 												},
 												Description: `The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step.`,

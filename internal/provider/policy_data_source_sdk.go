@@ -94,6 +94,20 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							steps.Approval.AppGroupApproval.AppGroupID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppGroupID)
 							steps.Approval.AppGroupApproval.AppID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppID)
 							steps.Approval.AppGroupApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.Fallback)
+							if stepsItem.Approval.AppGroupApproval.FallbackGroupIds != nil {
+								if steps.Approval.AppGroupApproval.FallbackGroupIds == nil {
+									steps.Approval.AppGroupApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+								}
+
+								for _, fallbackGroupIdsItem := range stepsItem.Approval.AppGroupApproval.FallbackGroupIds {
+									var fallbackGroupIds tfTypes.AppEntitlementReference
+
+									fallbackGroupIds.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem.AppEntitlementID)
+									fallbackGroupIds.AppID = types.StringPointerValue(fallbackGroupIdsItem.AppID)
+
+									steps.Approval.AppGroupApproval.FallbackGroupIds = append(steps.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds)
+								}
+							}
 							if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
 								if steps.Approval.AppGroupApproval.FallbackUserIds == nil {
 									steps.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
@@ -102,6 +116,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 									steps.Approval.AppGroupApproval.FallbackUserIds = append(steps.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 								}
 							}
+							steps.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
 						}
 						if stepsItem.Approval.AppOwnerApproval == nil {
 							steps.Approval.AppOwnerApproval = nil

@@ -10,16 +10,16 @@ type SelfApprovalInput struct {
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
 }
 
-func (o *SelfApprovalInput) GetFallback() *bool {
-	if o == nil {
+func (s *SelfApprovalInput) GetFallback() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Fallback
+	return s.Fallback
 }
 
-func (o *SelfApprovalInput) GetFallbackUserIds() []string {
-	if o == nil {
+func (s *SelfApprovalInput) GetFallbackUserIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.FallbackUserIds
+	return s.FallbackUserIds
 }

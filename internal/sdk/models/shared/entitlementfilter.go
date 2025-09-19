@@ -12,23 +12,23 @@ type EntitlementFilter struct {
 	AppID *string `json:"appId,omitempty"`
 }
 
-func (o *EntitlementFilter) GetAppEntitlementRefs() []AppEntitlementRef {
-	if o == nil {
+func (e *EntitlementFilter) GetAppEntitlementRefs() []AppEntitlementRef {
+	if e == nil {
 		return nil
 	}
-	return o.AppEntitlementRefs
+	return e.AppEntitlementRefs
 }
 
-func (o *EntitlementFilter) GetAppEntitlementRefsCel() *string {
-	if o == nil {
+func (e *EntitlementFilter) GetAppEntitlementRefsCel() *string {
+	if e == nil {
 		return nil
 	}
-	return o.AppEntitlementRefsCel
+	return e.AppEntitlementRefsCel
 }
 
-func (o *EntitlementFilter) GetAppID() *string {
-	if o == nil {
+func (e *EntitlementFilter) GetAppID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.AppID
+	return e.AppID
 }

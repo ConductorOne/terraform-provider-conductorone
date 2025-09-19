@@ -7,16 +7,16 @@ type Security struct {
 	Oauth      string `security:"scheme,type=oauth2,name=Authorization"`
 }
 
-func (o *Security) GetBearerAuth() string {
-	if o == nil {
+func (s *Security) GetBearerAuth() string {
+	if s == nil {
 		return ""
 	}
-	return o.BearerAuth
+	return s.BearerAuth
 }
 
-func (o *Security) GetOauth() string {
-	if o == nil {
+func (s *Security) GetOauth() string {
+	if s == nil {
 		return ""
 	}
-	return o.Oauth
+	return s.Oauth
 }

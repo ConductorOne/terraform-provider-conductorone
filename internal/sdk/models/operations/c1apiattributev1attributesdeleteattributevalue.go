@@ -12,18 +12,18 @@ type C1APIAttributeV1AttributesDeleteAttributeValueRequest struct {
 	DeleteAttributeValueRequest *shared.DeleteAttributeValueRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAttributeV1AttributesDeleteAttributeValueRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteAttributeValueRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIAttributeV1AttributesDeleteAttributeValueRequest) GetDeleteAttributeValueRequest() *shared.DeleteAttributeValueRequest {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteAttributeValueRequest) GetDeleteAttributeValueRequest() *shared.DeleteAttributeValueRequest {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteAttributeValueRequest
+	return c.DeleteAttributeValueRequest
 }
 
 type C1APIAttributeV1AttributesDeleteAttributeValueResponse struct {
@@ -37,30 +37,30 @@ type C1APIAttributeV1AttributesDeleteAttributeValueResponse struct {
 	DeleteAttributeValueResponse *shared.DeleteAttributeValueResponse
 }
 
-func (o *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetDeleteAttributeValueResponse() *shared.DeleteAttributeValueResponse {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesDeleteAttributeValueResponse) GetDeleteAttributeValueResponse() *shared.DeleteAttributeValueResponse {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteAttributeValueResponse
+	return c.DeleteAttributeValueResponse
 }

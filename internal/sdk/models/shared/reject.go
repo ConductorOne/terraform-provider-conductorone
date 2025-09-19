@@ -8,9 +8,9 @@ type Reject struct {
 	RejectMessage *string `json:"rejectMessage,omitempty"`
 }
 
-func (o *Reject) GetRejectMessage() *string {
-	if o == nil {
+func (r *Reject) GetRejectMessage() *string {
+	if r == nil {
 		return nil
 	}
-	return o.RejectMessage
+	return r.RejectMessage
 }

@@ -11,11 +11,11 @@ type C1APIFunctionsV1FunctionsServiceGetFunctionRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceGetFunctionRequest) GetID() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceGetFunctionRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIFunctionsV1FunctionsServiceGetFunctionResponse struct {
@@ -29,30 +29,30 @@ type C1APIFunctionsV1FunctionsServiceGetFunctionResponse struct {
 	FunctionsServiceGetFunctionResponse *shared.FunctionsServiceGetFunctionResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceGetFunctionResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceGetFunctionResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceGetFunctionResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceGetFunctionResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceGetFunctionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceGetFunctionResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceGetFunctionResponse) GetFunctionsServiceGetFunctionResponse() *shared.FunctionsServiceGetFunctionResponse {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceGetFunctionResponse) GetFunctionsServiceGetFunctionResponse() *shared.FunctionsServiceGetFunctionResponse {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionsServiceGetFunctionResponse
+	return c.FunctionsServiceGetFunctionResponse
 }

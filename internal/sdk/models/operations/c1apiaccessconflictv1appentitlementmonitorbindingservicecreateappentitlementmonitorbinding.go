@@ -18,30 +18,30 @@ type C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitlemen
 	AppEntitlementMonitorBinding *shared.AppEntitlementMonitorBinding
 }
 
-func (o *C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitlementMonitorBindingResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitlementMonitorBindingResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitlementMonitorBindingResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitlementMonitorBindingResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitlementMonitorBindingResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitlementMonitorBindingResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitlementMonitorBindingResponse) GetAppEntitlementMonitorBinding() *shared.AppEntitlementMonitorBinding {
-	if o == nil {
+func (c *C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitlementMonitorBindingResponse) GetAppEntitlementMonitorBinding() *shared.AppEntitlementMonitorBinding {
+	if c == nil {
 		return nil
 	}
-	return o.AppEntitlementMonitorBinding
+	return c.AppEntitlementMonitorBinding
 }

@@ -13,25 +13,25 @@ type C1APIAppV1ConnectorServicePauseSyncRequest struct {
 	PauseSyncRequest *shared.PauseSyncRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1ConnectorServicePauseSyncRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServicePauseSyncRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1ConnectorServicePauseSyncRequest) GetConnectorID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServicePauseSyncRequest) GetConnectorID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ConnectorID
+	return c.ConnectorID
 }
 
-func (o *C1APIAppV1ConnectorServicePauseSyncRequest) GetPauseSyncRequest() *shared.PauseSyncRequest {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServicePauseSyncRequest) GetPauseSyncRequest() *shared.PauseSyncRequest {
+	if c == nil {
 		return nil
 	}
-	return o.PauseSyncRequest
+	return c.PauseSyncRequest
 }
 
 type C1APIAppV1ConnectorServicePauseSyncResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1ConnectorServicePauseSyncResponse struct {
 	PauseSyncResponse *shared.PauseSyncResponse
 }
 
-func (o *C1APIAppV1ConnectorServicePauseSyncResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServicePauseSyncResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1ConnectorServicePauseSyncResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServicePauseSyncResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1ConnectorServicePauseSyncResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServicePauseSyncResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1ConnectorServicePauseSyncResponse) GetPauseSyncResponse() *shared.PauseSyncResponse {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServicePauseSyncResponse) GetPauseSyncResponse() *shared.PauseSyncResponse {
+	if c == nil {
 		return nil
 	}
-	return o.PauseSyncResponse
+	return c.PauseSyncResponse
 }

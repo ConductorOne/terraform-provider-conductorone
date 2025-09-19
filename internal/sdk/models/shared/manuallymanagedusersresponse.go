@@ -8,9 +8,9 @@ type ManuallyManagedUsersResponse struct {
 	FailedUsersErrorMap map[string]string `json:"failedUsersErrorMap,omitempty"`
 }
 
-func (o *ManuallyManagedUsersResponse) GetFailedUsersErrorMap() map[string]string {
-	if o == nil {
+func (m *ManuallyManagedUsersResponse) GetFailedUsersErrorMap() map[string]string {
+	if m == nil {
 		return nil
 	}
-	return o.FailedUsersErrorMap
+	return m.FailedUsersErrorMap
 }

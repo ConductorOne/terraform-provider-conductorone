@@ -10,16 +10,16 @@ type ListRiskLevelsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *ListRiskLevelsResponse) GetList() []AttributeValue {
-	if o == nil {
+func (l *ListRiskLevelsResponse) GetList() []AttributeValue {
+	if l == nil {
 		return nil
 	}
-	return o.List
+	return l.List
 }
 
-func (o *ListRiskLevelsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (l *ListRiskLevelsResponse) GetNextPageToken() *string {
+	if l == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return l.NextPageToken
 }

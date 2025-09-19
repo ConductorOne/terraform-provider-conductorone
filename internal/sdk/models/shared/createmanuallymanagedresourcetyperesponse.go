@@ -14,16 +14,16 @@ type CreateManuallyManagedResourceTypeResponse struct {
 	Expanded []CreateManuallyManagedResourceTypeResponseExpanded `json:"expanded,omitempty"`
 }
 
-func (o *CreateManuallyManagedResourceTypeResponse) GetAppResourceType() *AppResourceType {
-	if o == nil {
+func (c *CreateManuallyManagedResourceTypeResponse) GetAppResourceType() *AppResourceType {
+	if c == nil {
 		return nil
 	}
-	return o.AppResourceType
+	return c.AppResourceType
 }
 
-func (o *CreateManuallyManagedResourceTypeResponse) GetExpanded() []CreateManuallyManagedResourceTypeResponseExpanded {
-	if o == nil {
+func (c *CreateManuallyManagedResourceTypeResponse) GetExpanded() []CreateManuallyManagedResourceTypeResponseExpanded {
+	if c == nil {
 		return nil
 	}
-	return o.Expanded
+	return c.Expanded
 }

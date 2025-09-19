@@ -18,23 +18,23 @@ type RequestCatalogManagementServiceListResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *RequestCatalogManagementServiceListResponse) GetExpanded() []RequestCatalogManagementServiceListResponseExpanded {
-	if o == nil {
+func (r *RequestCatalogManagementServiceListResponse) GetExpanded() []RequestCatalogManagementServiceListResponseExpanded {
+	if r == nil {
 		return nil
 	}
-	return o.Expanded
+	return r.Expanded
 }
 
-func (o *RequestCatalogManagementServiceListResponse) GetList() []RequestCatalogView {
-	if o == nil {
+func (r *RequestCatalogManagementServiceListResponse) GetList() []RequestCatalogView {
+	if r == nil {
 		return nil
 	}
-	return o.List
+	return r.List
 }
 
-func (o *RequestCatalogManagementServiceListResponse) GetNextPageToken() *string {
-	if o == nil {
+func (r *RequestCatalogManagementServiceListResponse) GetNextPageToken() *string {
+	if r == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return r.NextPageToken
 }

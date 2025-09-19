@@ -12,16 +12,16 @@ type SearchAppResourceTypesResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *SearchAppResourceTypesResponse) GetList() []AppResourceType {
-	if o == nil {
+func (s *SearchAppResourceTypesResponse) GetList() []AppResourceType {
+	if s == nil {
 		return nil
 	}
-	return o.List
+	return s.List
 }
 
-func (o *SearchAppResourceTypesResponse) GetNextPageToken() *string {
-	if o == nil {
+func (s *SearchAppResourceTypesResponse) GetNextPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return s.NextPageToken
 }

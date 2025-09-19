@@ -14,16 +14,16 @@ type RequestCatalogManagementServiceGetResponse struct {
 	RequestCatalogView *RequestCatalogView `json:"requestCatalogView,omitempty"`
 }
 
-func (o *RequestCatalogManagementServiceGetResponse) GetExpanded() []RequestCatalogManagementServiceGetResponseExpanded {
-	if o == nil {
+func (r *RequestCatalogManagementServiceGetResponse) GetExpanded() []RequestCatalogManagementServiceGetResponseExpanded {
+	if r == nil {
 		return nil
 	}
-	return o.Expanded
+	return r.Expanded
 }
 
-func (o *RequestCatalogManagementServiceGetResponse) GetRequestCatalogView() *RequestCatalogView {
-	if o == nil {
+func (r *RequestCatalogManagementServiceGetResponse) GetRequestCatalogView() *RequestCatalogView {
+	if r == nil {
 		return nil
 	}
-	return o.RequestCatalogView
+	return r.RequestCatalogView
 }

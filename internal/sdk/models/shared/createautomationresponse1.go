@@ -12,9 +12,9 @@ type CreateAutomationResponse1 struct {
 	Automation *Automation `json:"automation,omitempty"`
 }
 
-func (o *CreateAutomationResponse1) GetAutomation() *Automation {
-	if o == nil {
+func (c *CreateAutomationResponse1) GetAutomation() *Automation {
+	if c == nil {
 		return nil
 	}
-	return o.Automation
+	return c.Automation
 }

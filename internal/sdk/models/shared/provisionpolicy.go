@@ -35,51 +35,51 @@ type ProvisionPolicy struct {
 	WebhookProvision *WebhookProvision `json:"webhook,omitempty"`
 }
 
-func (o *ProvisionPolicy) GetConnectorProvision() *ConnectorProvision {
-	if o == nil {
+func (p *ProvisionPolicy) GetConnectorProvision() *ConnectorProvision {
+	if p == nil {
 		return nil
 	}
-	return o.ConnectorProvision
+	return p.ConnectorProvision
 }
 
-func (o *ProvisionPolicy) GetDelegatedProvision() *DelegatedProvision {
-	if o == nil {
+func (p *ProvisionPolicy) GetDelegatedProvision() *DelegatedProvision {
+	if p == nil {
 		return nil
 	}
-	return o.DelegatedProvision
+	return p.DelegatedProvision
 }
 
-func (o *ProvisionPolicy) GetExternalTicketProvision() *ExternalTicketProvision {
-	if o == nil {
+func (p *ProvisionPolicy) GetExternalTicketProvision() *ExternalTicketProvision {
+	if p == nil {
 		return nil
 	}
-	return o.ExternalTicketProvision
+	return p.ExternalTicketProvision
 }
 
-func (o *ProvisionPolicy) GetManualProvision() *ManualProvision {
-	if o == nil {
+func (p *ProvisionPolicy) GetManualProvision() *ManualProvision {
+	if p == nil {
 		return nil
 	}
-	return o.ManualProvision
+	return p.ManualProvision
 }
 
-func (o *ProvisionPolicy) GetMultiStep() any {
-	if o == nil {
+func (p *ProvisionPolicy) GetMultiStep() any {
+	if p == nil {
 		return nil
 	}
-	return o.MultiStep
+	return p.MultiStep
 }
 
-func (o *ProvisionPolicy) GetUnconfiguredProvision() *UnconfiguredProvision {
-	if o == nil {
+func (p *ProvisionPolicy) GetUnconfiguredProvision() *UnconfiguredProvision {
+	if p == nil {
 		return nil
 	}
-	return o.UnconfiguredProvision
+	return p.UnconfiguredProvision
 }
 
-func (o *ProvisionPolicy) GetWebhookProvision() *WebhookProvision {
-	if o == nil {
+func (p *ProvisionPolicy) GetWebhookProvision() *WebhookProvision {
+	if p == nil {
 		return nil
 	}
-	return o.WebhookProvision
+	return p.WebhookProvision
 }

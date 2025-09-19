@@ -8,9 +8,9 @@ type GrantFoundTrigger struct {
 	GrantTriggerFilter *GrantTriggerFilter `json:"grantTriggerFilter,omitempty"`
 }
 
-func (o *GrantFoundTrigger) GetGrantTriggerFilter() *GrantTriggerFilter {
-	if o == nil {
+func (g *GrantFoundTrigger) GetGrantTriggerFilter() *GrantTriggerFilter {
+	if g == nil {
 		return nil
 	}
-	return o.GrantTriggerFilter
+	return g.GrantTriggerFilter
 }

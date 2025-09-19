@@ -10,16 +10,16 @@ type FunctionsServiceCreateTagRequest struct {
 	Name *string `json:"name,omitempty"`
 }
 
-func (o *FunctionsServiceCreateTagRequest) GetCommitID() *string {
-	if o == nil {
+func (f *FunctionsServiceCreateTagRequest) GetCommitID() *string {
+	if f == nil {
 		return nil
 	}
-	return o.CommitID
+	return f.CommitID
 }
 
-func (o *FunctionsServiceCreateTagRequest) GetName() *string {
-	if o == nil {
+func (f *FunctionsServiceCreateTagRequest) GetName() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Name
+	return f.Name
 }

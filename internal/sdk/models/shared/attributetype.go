@@ -10,16 +10,16 @@ type AttributeType struct {
 	Name *string `json:"name,omitempty"`
 }
 
-func (o *AttributeType) GetID() *string {
-	if o == nil {
+func (a *AttributeType) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AttributeType) GetName() *string {
-	if o == nil {
+func (a *AttributeType) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }

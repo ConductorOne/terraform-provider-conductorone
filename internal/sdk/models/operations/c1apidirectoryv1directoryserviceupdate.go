@@ -12,18 +12,18 @@ type C1APIDirectoryV1DirectoryServiceUpdateRequest struct {
 	DirectoryServiceUpdateRequest *shared.DirectoryServiceUpdateRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceUpdateRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceUpdateRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceUpdateRequest) GetDirectoryServiceUpdateRequest() *shared.DirectoryServiceUpdateRequest {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceUpdateRequest) GetDirectoryServiceUpdateRequest() *shared.DirectoryServiceUpdateRequest {
+	if c == nil {
 		return nil
 	}
-	return o.DirectoryServiceUpdateRequest
+	return c.DirectoryServiceUpdateRequest
 }
 
 type C1APIDirectoryV1DirectoryServiceUpdateResponse struct {
@@ -37,30 +37,30 @@ type C1APIDirectoryV1DirectoryServiceUpdateResponse struct {
 	DirectoryServiceUpdateResponse *shared.DirectoryServiceUpdateResponse
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceUpdateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceUpdateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceUpdateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceUpdateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceUpdateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceUpdateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIDirectoryV1DirectoryServiceUpdateResponse) GetDirectoryServiceUpdateResponse() *shared.DirectoryServiceUpdateResponse {
-	if o == nil {
+func (c *C1APIDirectoryV1DirectoryServiceUpdateResponse) GetDirectoryServiceUpdateResponse() *shared.DirectoryServiceUpdateResponse {
+	if c == nil {
 		return nil
 	}
-	return o.DirectoryServiceUpdateResponse
+	return c.DirectoryServiceUpdateResponse
 }

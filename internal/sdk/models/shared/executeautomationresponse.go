@@ -8,9 +8,9 @@ type ExecuteAutomationResponse struct {
 	ExecutionID *string `json:"executionId,omitempty"`
 }
 
-func (o *ExecuteAutomationResponse) GetExecutionID() *string {
-	if o == nil {
+func (e *ExecuteAutomationResponse) GetExecutionID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ExecutionID
+	return e.ExecutionID
 }

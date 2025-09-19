@@ -18,23 +18,23 @@ type SearchPastGrantsResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *SearchPastGrantsResponse) GetExpanded() []SearchPastGrantsResponseExpanded {
-	if o == nil {
+func (s *SearchPastGrantsResponse) GetExpanded() []SearchPastGrantsResponseExpanded {
+	if s == nil {
 		return nil
 	}
-	return o.Expanded
+	return s.Expanded
 }
 
-func (o *SearchPastGrantsResponse) GetList() []AppEntitlementUserBindingHistoryView {
-	if o == nil {
+func (s *SearchPastGrantsResponse) GetList() []AppEntitlementUserBindingHistoryView {
+	if s == nil {
 		return nil
 	}
-	return o.List
+	return s.List
 }
 
-func (o *SearchPastGrantsResponse) GetNextPageToken() *string {
-	if o == nil {
+func (s *SearchPastGrantsResponse) GetNextPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return s.NextPageToken
 }

@@ -16,37 +16,37 @@ type Form struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *Form) GetDescription() *string {
-	if o == nil {
+func (f *Form) GetDescription() *string {
+	if f == nil {
 		return nil
 	}
-	return o.Description
+	return f.Description
 }
 
-func (o *Form) GetDisplayName() *string {
-	if o == nil {
+func (f *Form) GetDisplayName() *string {
+	if f == nil {
 		return nil
 	}
-	return o.DisplayName
+	return f.DisplayName
 }
 
-func (o *Form) GetFieldRelationships() []FieldRelationship {
-	if o == nil {
+func (f *Form) GetFieldRelationships() []FieldRelationship {
+	if f == nil {
 		return nil
 	}
-	return o.FieldRelationships
+	return f.FieldRelationships
 }
 
-func (o *Form) GetFields() []Field {
-	if o == nil {
+func (f *Form) GetFields() []Field {
+	if f == nil {
 		return nil
 	}
-	return o.Fields
+	return f.Fields
 }
 
-func (o *Form) GetID() *string {
-	if o == nil {
+func (f *Form) GetID() *string {
+	if f == nil {
 		return nil
 	}
-	return o.ID
+	return f.ID
 }

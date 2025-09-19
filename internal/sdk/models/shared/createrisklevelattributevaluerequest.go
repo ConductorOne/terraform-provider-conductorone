@@ -8,9 +8,9 @@ type CreateRiskLevelAttributeValueRequest struct {
 	Value *string `json:"value,omitempty"`
 }
 
-func (o *CreateRiskLevelAttributeValueRequest) GetValue() *string {
-	if o == nil {
+func (c *CreateRiskLevelAttributeValueRequest) GetValue() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Value
+	return c.Value
 }

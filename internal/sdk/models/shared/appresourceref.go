@@ -12,23 +12,23 @@ type AppResourceRef struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AppResourceRef) GetAppID() *string {
-	if o == nil {
+func (a *AppResourceRef) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppResourceRef) GetAppResourceTypeID() *string {
-	if o == nil {
+func (a *AppResourceRef) GetAppResourceTypeID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppResourceTypeID
+	return a.AppResourceTypeID
 }
 
-func (o *AppResourceRef) GetID() *string {
-	if o == nil {
+func (a *AppResourceRef) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }

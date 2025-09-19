@@ -18,30 +18,30 @@ type TaskActionsServiceApproveWithStepUpResponse struct {
 	TicketActionID *string `json:"ticketActionId,omitempty"`
 }
 
-func (o *TaskActionsServiceApproveWithStepUpResponse) GetExpanded() []TaskActionsServiceApproveWithStepUpResponseExpanded {
-	if o == nil {
+func (t *TaskActionsServiceApproveWithStepUpResponse) GetExpanded() []TaskActionsServiceApproveWithStepUpResponseExpanded {
+	if t == nil {
 		return nil
 	}
-	return o.Expanded
+	return t.Expanded
 }
 
-func (o *TaskActionsServiceApproveWithStepUpResponse) GetRedirectURL() *string {
-	if o == nil {
+func (t *TaskActionsServiceApproveWithStepUpResponse) GetRedirectURL() *string {
+	if t == nil {
 		return nil
 	}
-	return o.RedirectURL
+	return t.RedirectURL
 }
 
-func (o *TaskActionsServiceApproveWithStepUpResponse) GetTaskView() *TaskView {
-	if o == nil {
+func (t *TaskActionsServiceApproveWithStepUpResponse) GetTaskView() *TaskView {
+	if t == nil {
 		return nil
 	}
-	return o.TaskView
+	return t.TaskView
 }
 
-func (o *TaskActionsServiceApproveWithStepUpResponse) GetTicketActionID() *string {
-	if o == nil {
+func (t *TaskActionsServiceApproveWithStepUpResponse) GetTicketActionID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.TicketActionID
+	return t.TicketActionID
 }

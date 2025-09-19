@@ -12,18 +12,18 @@ type C1APIFunctionsV1FunctionsServiceInvokeRequest struct {
 	FunctionsServiceInvokeRequest *shared.FunctionsServiceInvokeRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceInvokeRequest) GetFunctionID() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceInvokeRequest) GetFunctionID() string {
+	if c == nil {
 		return ""
 	}
-	return o.FunctionID
+	return c.FunctionID
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceInvokeRequest) GetFunctionsServiceInvokeRequest() *shared.FunctionsServiceInvokeRequest {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceInvokeRequest) GetFunctionsServiceInvokeRequest() *shared.FunctionsServiceInvokeRequest {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionsServiceInvokeRequest
+	return c.FunctionsServiceInvokeRequest
 }
 
 type C1APIFunctionsV1FunctionsServiceInvokeResponse struct {
@@ -37,30 +37,30 @@ type C1APIFunctionsV1FunctionsServiceInvokeResponse struct {
 	FunctionsServiceInvokeResponse *shared.FunctionsServiceInvokeResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceInvokeResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceInvokeResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceInvokeResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceInvokeResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceInvokeResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceInvokeResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceInvokeResponse) GetFunctionsServiceInvokeResponse() *shared.FunctionsServiceInvokeResponse {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceInvokeResponse) GetFunctionsServiceInvokeResponse() *shared.FunctionsServiceInvokeResponse {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionsServiceInvokeResponse
+	return c.FunctionsServiceInvokeResponse
 }

@@ -8,9 +8,9 @@ type UserRef struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *UserRef) GetID() *string {
-	if o == nil {
+func (u *UserRef) GetID() *string {
+	if u == nil {
 		return nil
 	}
-	return o.ID
+	return u.ID
 }

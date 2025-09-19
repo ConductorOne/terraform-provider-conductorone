@@ -18,30 +18,30 @@ type C1APIAttributeV1AttributesCreateComplianceFrameworkAttributeValueResponse s
 	CreateComplianceFrameworkAttributeValueResponse *shared.CreateComplianceFrameworkAttributeValueResponse
 }
 
-func (o *C1APIAttributeV1AttributesCreateComplianceFrameworkAttributeValueResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesCreateComplianceFrameworkAttributeValueResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAttributeV1AttributesCreateComplianceFrameworkAttributeValueResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesCreateComplianceFrameworkAttributeValueResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAttributeV1AttributesCreateComplianceFrameworkAttributeValueResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesCreateComplianceFrameworkAttributeValueResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAttributeV1AttributesCreateComplianceFrameworkAttributeValueResponse) GetCreateComplianceFrameworkAttributeValueResponse() *shared.CreateComplianceFrameworkAttributeValueResponse {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesCreateComplianceFrameworkAttributeValueResponse) GetCreateComplianceFrameworkAttributeValueResponse() *shared.CreateComplianceFrameworkAttributeValueResponse {
+	if c == nil {
 		return nil
 	}
-	return o.CreateComplianceFrameworkAttributeValueResponse
+	return c.CreateComplianceFrameworkAttributeValueResponse
 }

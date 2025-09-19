@@ -49,30 +49,30 @@ type DeleteAppEntitlementMonitorBindingRequest struct {
 	MonitorID *string `json:"monitorId,omitempty"`
 }
 
-func (o *DeleteAppEntitlementMonitorBindingRequest) GetAppEntitlementID() *string {
-	if o == nil {
+func (d *DeleteAppEntitlementMonitorBindingRequest) GetAppEntitlementID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.AppEntitlementID
+	return d.AppEntitlementID
 }
 
-func (o *DeleteAppEntitlementMonitorBindingRequest) GetAppID() *string {
-	if o == nil {
+func (d *DeleteAppEntitlementMonitorBindingRequest) GetAppID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.AppID
+	return d.AppID
 }
 
-func (o *DeleteAppEntitlementMonitorBindingRequest) GetEntitlementGroup() *EntitlementGroup {
-	if o == nil {
+func (d *DeleteAppEntitlementMonitorBindingRequest) GetEntitlementGroup() *EntitlementGroup {
+	if d == nil {
 		return nil
 	}
-	return o.EntitlementGroup
+	return d.EntitlementGroup
 }
 
-func (o *DeleteAppEntitlementMonitorBindingRequest) GetMonitorID() *string {
-	if o == nil {
+func (d *DeleteAppEntitlementMonitorBindingRequest) GetMonitorID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.MonitorID
+	return d.MonitorID
 }

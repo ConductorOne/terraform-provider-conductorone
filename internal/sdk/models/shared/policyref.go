@@ -8,9 +8,9 @@ type PolicyRef struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *PolicyRef) GetID() *string {
-	if o == nil {
+func (p *PolicyRef) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }

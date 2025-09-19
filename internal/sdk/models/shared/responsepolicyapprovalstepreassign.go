@@ -10,16 +10,16 @@ type ResponsePolicyApprovalStepReassign struct {
 	NewStepUserIds []string `json:"newStepUserIds,omitempty"`
 }
 
-func (o *ResponsePolicyApprovalStepReassign) GetComment() *string {
-	if o == nil {
+func (r *ResponsePolicyApprovalStepReassign) GetComment() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Comment
+	return r.Comment
 }
 
-func (o *ResponsePolicyApprovalStepReassign) GetNewStepUserIds() []string {
-	if o == nil {
+func (r *ResponsePolicyApprovalStepReassign) GetNewStepUserIds() []string {
+	if r == nil {
 		return nil
 	}
-	return o.NewStepUserIds
+	return r.NewStepUserIds
 }

@@ -22,23 +22,23 @@ type ConnectorProvision struct {
 	DeleteAccount *DeleteAccount `json:"deleteAccount,omitempty"`
 }
 
-func (o *ConnectorProvision) GetAccountProvision() *AccountProvision {
-	if o == nil {
+func (c *ConnectorProvision) GetAccountProvision() *AccountProvision {
+	if c == nil {
 		return nil
 	}
-	return o.AccountProvision
+	return c.AccountProvision
 }
 
-func (o *ConnectorProvision) GetDefaultBehavior() *DefaultBehavior {
-	if o == nil {
+func (c *ConnectorProvision) GetDefaultBehavior() *DefaultBehavior {
+	if c == nil {
 		return nil
 	}
-	return o.DefaultBehavior
+	return c.DefaultBehavior
 }
 
-func (o *ConnectorProvision) GetDeleteAccount() *DeleteAccount {
-	if o == nil {
+func (c *ConnectorProvision) GetDeleteAccount() *DeleteAccount {
+	if c == nil {
 		return nil
 	}
-	return o.DeleteAccount
+	return c.DeleteAccount
 }

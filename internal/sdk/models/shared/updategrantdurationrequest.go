@@ -23,9 +23,9 @@ func (u *UpdateGrantDurationRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *UpdateGrantDurationRequest) GetNewDeprovisionAt() *time.Time {
-	if o == nil {
+func (u *UpdateGrantDurationRequest) GetNewDeprovisionAt() *time.Time {
+	if u == nil {
 		return nil
 	}
-	return o.NewDeprovisionAt
+	return u.NewDeprovisionAt
 }

@@ -10,16 +10,16 @@ type ResponsePolicyApprovalReplacePolicy struct {
 	PolicySteps []PolicyStep `json:"policySteps,omitempty"`
 }
 
-func (o *ResponsePolicyApprovalReplacePolicy) GetComment() *string {
-	if o == nil {
+func (r *ResponsePolicyApprovalReplacePolicy) GetComment() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Comment
+	return r.Comment
 }
 
-func (o *ResponsePolicyApprovalReplacePolicy) GetPolicySteps() []PolicyStep {
-	if o == nil {
+func (r *ResponsePolicyApprovalReplacePolicy) GetPolicySteps() []PolicyStep {
+	if r == nil {
 		return nil
 	}
-	return o.PolicySteps
+	return r.PolicySteps
 }

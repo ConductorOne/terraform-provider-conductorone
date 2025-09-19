@@ -8,9 +8,9 @@ type AddAppEntitlementOwnerRequest struct {
 	UserID *string `json:"userId,omitempty"`
 }
 
-func (o *AddAppEntitlementOwnerRequest) GetUserID() *string {
-	if o == nil {
+func (a *AddAppEntitlementOwnerRequest) GetUserID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UserID
+	return a.UserID
 }

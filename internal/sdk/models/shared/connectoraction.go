@@ -17,23 +17,23 @@ type ConnectorAction struct {
 	ConnectorRef *ConnectorRef `json:"connectorRef,omitempty"`
 }
 
-func (o *ConnectorAction) GetActionName() *string {
-	if o == nil {
+func (c *ConnectorAction) GetActionName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ActionName
+	return c.ActionName
 }
 
-func (o *ConnectorAction) GetArgsTemplate() *ArgsTemplate {
-	if o == nil {
+func (c *ConnectorAction) GetArgsTemplate() *ArgsTemplate {
+	if c == nil {
 		return nil
 	}
-	return o.ArgsTemplate
+	return c.ArgsTemplate
 }
 
-func (o *ConnectorAction) GetConnectorRef() *ConnectorRef {
-	if o == nil {
+func (c *ConnectorAction) GetConnectorRef() *ConnectorRef {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorRef
+	return c.ConnectorRef
 }

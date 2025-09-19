@@ -87,86 +87,86 @@ func (w *WaitInstance) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *WaitInstance) GetCommentOnFirstWait() *string {
-	if o == nil {
+func (w *WaitInstance) GetCommentOnFirstWait() *string {
+	if w == nil {
 		return nil
 	}
-	return o.CommentOnFirstWait
+	return w.CommentOnFirstWait
 }
 
-func (o *WaitInstance) GetCommentOnTimeout() *string {
-	if o == nil {
+func (w *WaitInstance) GetCommentOnTimeout() *string {
+	if w == nil {
 		return nil
 	}
-	return o.CommentOnTimeout
+	return w.CommentOnTimeout
 }
 
-func (o *WaitInstance) GetWaitConditionInstance() *WaitConditionInstance {
-	if o == nil {
+func (w *WaitInstance) GetWaitConditionInstance() *WaitConditionInstance {
+	if w == nil {
 		return nil
 	}
-	return o.WaitConditionInstance
+	return w.WaitConditionInstance
 }
 
-func (o *WaitInstance) GetName() *string {
-	if o == nil {
+func (w *WaitInstance) GetName() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Name
+	return w.Name
 }
 
-func (o *WaitInstance) GetSkippedAction() *SkippedAction {
-	if o == nil {
+func (w *WaitInstance) GetSkippedAction() *SkippedAction {
+	if w == nil {
 		return nil
 	}
-	return o.SkippedAction
+	return w.SkippedAction
 }
 
-func (o *WaitInstance) GetStartedWaitingAt() *time.Time {
-	if o == nil {
+func (w *WaitInstance) GetStartedWaitingAt() *time.Time {
+	if w == nil {
 		return nil
 	}
-	return o.StartedWaitingAt
+	return w.StartedWaitingAt
 }
 
-func (o *WaitInstance) GetState() *WaitInstanceState {
-	if o == nil {
+func (w *WaitInstance) GetState() *WaitInstanceState {
+	if w == nil {
 		return nil
 	}
-	return o.State
+	return w.State
 }
 
-func (o *WaitInstance) GetConditionSucceeded() *ConditionSucceeded {
-	if o == nil {
+func (w *WaitInstance) GetConditionSucceeded() *ConditionSucceeded {
+	if w == nil {
 		return nil
 	}
-	return o.ConditionSucceeded
+	return w.ConditionSucceeded
 }
 
-func (o *WaitInstance) GetConditionTimedOut() *ConditionTimedOut {
-	if o == nil {
+func (w *WaitInstance) GetConditionTimedOut() *ConditionTimedOut {
+	if w == nil {
 		return nil
 	}
-	return o.ConditionTimedOut
+	return w.ConditionTimedOut
 }
 
-func (o *WaitInstance) GetTimeout() *time.Time {
-	if o == nil {
+func (w *WaitInstance) GetTimeout() *time.Time {
+	if w == nil {
 		return nil
 	}
-	return o.Timeout
+	return w.Timeout
 }
 
-func (o *WaitInstance) GetTimeoutDuration() *string {
-	if o == nil {
+func (w *WaitInstance) GetTimeoutDuration() *string {
+	if w == nil {
 		return nil
 	}
-	return o.TimeoutDuration
+	return w.TimeoutDuration
 }
 
-func (o *WaitInstance) GetWaitUntilTimeInstance() *WaitUntilTimeInstance {
-	if o == nil {
+func (w *WaitInstance) GetWaitUntilTimeInstance() *WaitUntilTimeInstance {
+	if w == nil {
 		return nil
 	}
-	return o.WaitUntilTimeInstance
+	return w.WaitUntilTimeInstance
 }

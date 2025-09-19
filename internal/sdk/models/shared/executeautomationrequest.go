@@ -8,9 +8,9 @@ type ExecuteAutomationRequest struct {
 	AutomationContext *AutomationContext `json:"context,omitempty"`
 }
 
-func (o *ExecuteAutomationRequest) GetAutomationContext() *AutomationContext {
-	if o == nil {
+func (e *ExecuteAutomationRequest) GetAutomationContext() *AutomationContext {
+	if e == nil {
 		return nil
 	}
-	return o.AutomationContext
+	return e.AutomationContext
 }

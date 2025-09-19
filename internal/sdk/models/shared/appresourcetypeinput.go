@@ -10,16 +10,16 @@ type AppResourceTypeInput struct {
 	TraitIds []string `json:"traitIds,omitempty"`
 }
 
-func (o *AppResourceTypeInput) GetDisplayName() *string {
-	if o == nil {
+func (a *AppResourceTypeInput) GetDisplayName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DisplayName
+	return a.DisplayName
 }
 
-func (o *AppResourceTypeInput) GetTraitIds() []string {
-	if o == nil {
+func (a *AppResourceTypeInput) GetTraitIds() []string {
+	if a == nil {
 		return nil
 	}
-	return o.TraitIds
+	return a.TraitIds
 }

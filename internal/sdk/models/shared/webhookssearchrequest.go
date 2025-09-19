@@ -14,30 +14,30 @@ type WebhooksSearchRequest struct {
 	Refs []WebhookRef `json:"refs,omitempty"`
 }
 
-func (o *WebhooksSearchRequest) GetPageSize() *int {
-	if o == nil {
+func (w *WebhooksSearchRequest) GetPageSize() *int {
+	if w == nil {
 		return nil
 	}
-	return o.PageSize
+	return w.PageSize
 }
 
-func (o *WebhooksSearchRequest) GetPageToken() *string {
-	if o == nil {
+func (w *WebhooksSearchRequest) GetPageToken() *string {
+	if w == nil {
 		return nil
 	}
-	return o.PageToken
+	return w.PageToken
 }
 
-func (o *WebhooksSearchRequest) GetQuery() *string {
-	if o == nil {
+func (w *WebhooksSearchRequest) GetQuery() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Query
+	return w.Query
 }
 
-func (o *WebhooksSearchRequest) GetRefs() []WebhookRef {
-	if o == nil {
+func (w *WebhooksSearchRequest) GetRefs() []WebhookRef {
+	if w == nil {
 		return nil
 	}
-	return o.Refs
+	return w.Refs
 }

@@ -59,65 +59,65 @@ type CreateAppRequest struct {
 	StrictAccessEntitlementProvisioning *bool `json:"strictAccessEntitlementProvisioning,omitempty"`
 }
 
-func (o *CreateAppRequest) GetCertifyPolicyID() *string {
-	if o == nil {
+func (c *CreateAppRequest) GetCertifyPolicyID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CertifyPolicyID
+	return c.CertifyPolicyID
 }
 
-func (o *CreateAppRequest) GetDescription() *string {
-	if o == nil {
+func (c *CreateAppRequest) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateAppRequest) GetDisplayName() string {
-	if o == nil {
+func (c *CreateAppRequest) GetDisplayName() string {
+	if c == nil {
 		return ""
 	}
-	return o.DisplayName
+	return c.DisplayName
 }
 
-func (o *CreateAppRequest) GetGrantPolicyID() *string {
-	if o == nil {
+func (c *CreateAppRequest) GetGrantPolicyID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.GrantPolicyID
+	return c.GrantPolicyID
 }
 
-func (o *CreateAppRequest) GetIdentityMatching() *CreateAppRequestIdentityMatching {
-	if o == nil {
+func (c *CreateAppRequest) GetIdentityMatching() *CreateAppRequestIdentityMatching {
+	if c == nil {
 		return nil
 	}
-	return o.IdentityMatching
+	return c.IdentityMatching
 }
 
-func (o *CreateAppRequest) GetMonthlyCostUsd() *int {
-	if o == nil {
+func (c *CreateAppRequest) GetMonthlyCostUsd() *int {
+	if c == nil {
 		return nil
 	}
-	return o.MonthlyCostUsd
+	return c.MonthlyCostUsd
 }
 
-func (o *CreateAppRequest) GetOwners() []string {
-	if o == nil {
+func (c *CreateAppRequest) GetOwners() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Owners
+	return c.Owners
 }
 
-func (o *CreateAppRequest) GetRevokePolicyID() *string {
-	if o == nil {
+func (c *CreateAppRequest) GetRevokePolicyID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.RevokePolicyID
+	return c.RevokePolicyID
 }
 
-func (o *CreateAppRequest) GetStrictAccessEntitlementProvisioning() *bool {
-	if o == nil {
+func (c *CreateAppRequest) GetStrictAccessEntitlementProvisioning() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.StrictAccessEntitlementProvisioning
+	return c.StrictAccessEntitlementProvisioning
 }

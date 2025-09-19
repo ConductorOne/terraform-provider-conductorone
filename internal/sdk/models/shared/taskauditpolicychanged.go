@@ -10,16 +10,16 @@ type TaskAuditPolicyChanged struct {
 	OldPolicyID *string `json:"oldPolicyId,omitempty"`
 }
 
-func (o *TaskAuditPolicyChanged) GetNewPolicyID() *string {
-	if o == nil {
+func (t *TaskAuditPolicyChanged) GetNewPolicyID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.NewPolicyID
+	return t.NewPolicyID
 }
 
-func (o *TaskAuditPolicyChanged) GetOldPolicyID() *string {
-	if o == nil {
+func (t *TaskAuditPolicyChanged) GetOldPolicyID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.OldPolicyID
+	return t.OldPolicyID
 }

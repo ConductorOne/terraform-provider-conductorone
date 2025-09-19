@@ -18,23 +18,23 @@ type TaskSearchResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *TaskSearchResponse) GetExpanded() []TaskSearchResponseExpanded {
-	if o == nil {
+func (t *TaskSearchResponse) GetExpanded() []TaskSearchResponseExpanded {
+	if t == nil {
 		return nil
 	}
-	return o.Expanded
+	return t.Expanded
 }
 
-func (o *TaskSearchResponse) GetList() []TaskView {
-	if o == nil {
+func (t *TaskSearchResponse) GetList() []TaskView {
+	if t == nil {
 		return nil
 	}
-	return o.List
+	return t.List
 }
 
-func (o *TaskSearchResponse) GetNextPageToken() *string {
-	if o == nil {
+func (t *TaskSearchResponse) GetNextPageToken() *string {
+	if t == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return t.NextPageToken
 }

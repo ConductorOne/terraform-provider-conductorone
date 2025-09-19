@@ -18,23 +18,23 @@ type SearchGrantFeedResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *SearchGrantFeedResponse) GetExpanded() []SearchGrantFeedResponseExpanded {
-	if o == nil {
+func (s *SearchGrantFeedResponse) GetExpanded() []SearchGrantFeedResponseExpanded {
+	if s == nil {
 		return nil
 	}
-	return o.Expanded
+	return s.Expanded
 }
 
-func (o *SearchGrantFeedResponse) GetList() []AppEntitlementUserBindingFeedView {
-	if o == nil {
+func (s *SearchGrantFeedResponse) GetList() []AppEntitlementUserBindingFeedView {
+	if s == nil {
 		return nil
 	}
-	return o.List
+	return s.List
 }
 
-func (o *SearchGrantFeedResponse) GetNextPageToken() *string {
-	if o == nil {
+func (s *SearchGrantFeedResponse) GetNextPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return s.NextPageToken
 }

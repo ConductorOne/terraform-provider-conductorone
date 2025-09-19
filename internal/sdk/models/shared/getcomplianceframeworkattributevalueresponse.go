@@ -8,9 +8,9 @@ type GetComplianceFrameworkAttributeValueResponse struct {
 	AttributeValue *AttributeValue `json:"value,omitempty"`
 }
 
-func (o *GetComplianceFrameworkAttributeValueResponse) GetAttributeValue() *AttributeValue {
-	if o == nil {
+func (g *GetComplianceFrameworkAttributeValueResponse) GetAttributeValue() *AttributeValue {
+	if g == nil {
 		return nil
 	}
-	return o.AttributeValue
+	return g.AttributeValue
 }

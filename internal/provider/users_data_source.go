@@ -5,7 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -30,12 +29,15 @@ type UsersDataSource struct {
 
 // UsersDataSourceModel describes the data model.
 type UsersDataSourceModel struct {
+	Departments   []types.String                        `tfsdk:"departments"`
 	Email         types.String                          `tfsdk:"email"`
 	ExcludeIds    []types.String                        `tfsdk:"exclude_ids"`
 	ExcludeTypes  []types.String                        `tfsdk:"exclude_types"`
 	Expanded      []tfTypes.SearchUsersResponseExpanded `tfsdk:"expanded"`
 	Ids           []types.String                        `tfsdk:"ids"`
+	JobTitles     []types.String                        `tfsdk:"job_titles"`
 	List          []tfTypes.UserView                    `tfsdk:"list"`
+	ManagerIds    []types.String                        `tfsdk:"manager_ids"`
 	NextPageToken types.String                          `tfsdk:"next_page_token"`
 	PageSize      types.Int32                           `tfsdk:"page_size"`
 	PageToken     types.String                          `tfsdk:"page_token"`
@@ -56,6 +58,11 @@ func (r *UsersDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 		MarkdownDescription: "Users DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"departments": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Search for users that have any of the departments on this list.`,
+			},
 			"email": schema.StringAttribute{
 				Optional:    true,
 				Description: `Search for users based on their email (exact match).`,
@@ -81,6 +88,11 @@ func (r *UsersDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Deprecated. Use refs array instead.`,
+			},
+			"job_titles": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Search for users that have any of the job titles on this list.`,
 			},
 			"list": schema.ListNestedAttribute{
 				Computed: true,
@@ -454,6 +466,11 @@ func (r *UsersDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 				},
 				Description: `The list of results containing up to X results, where X is the page size defined in the request`,
 			},
+			"manager_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Search for users that have any of the manager IDs on this list.`,
+			},
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
 				Description: `The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
@@ -565,20 +582,25 @@ func (r *UsersDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	response, err := res.Next()
 	for {
+		var err error
+
+		res, err = res.Next()
+
 		if err != nil {
-			resp.Diagnostics.AddError("reading next results failed", debugResponse(response.RawResponse))
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
 			return
 		}
-		if response == nil {
+
+		if res == nil {
 			break
 		}
-		resp.Diagnostics.Append(data.RefreshFromSharedSearchUsersResponse(ctx, response.SearchUsersResponse)...)
+
+		resp.Diagnostics.Append(data.RefreshFromSharedSearchUsersResponse(ctx, res.SearchUsersResponse)...)
+
 		if resp.Diagnostics.HasError() {
 			return
 		}
-		response, err = response.Next()
 	}
 
 	// Save updated data into Terraform state

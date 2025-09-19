@@ -12,18 +12,18 @@ type C1APIFunctionsV1FunctionsServiceCommitRequest struct {
 	FunctionsServiceCommitRequest *shared.FunctionsServiceCommitRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCommitRequest) GetFunctionID() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCommitRequest) GetFunctionID() string {
+	if c == nil {
 		return ""
 	}
-	return o.FunctionID
+	return c.FunctionID
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCommitRequest) GetFunctionsServiceCommitRequest() *shared.FunctionsServiceCommitRequest {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCommitRequest) GetFunctionsServiceCommitRequest() *shared.FunctionsServiceCommitRequest {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionsServiceCommitRequest
+	return c.FunctionsServiceCommitRequest
 }
 
 type C1APIFunctionsV1FunctionsServiceCommitResponse struct {
@@ -37,30 +37,30 @@ type C1APIFunctionsV1FunctionsServiceCommitResponse struct {
 	FunctionsServiceCommitResponse *shared.FunctionsServiceCommitResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCommitResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCommitResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCommitResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCommitResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCommitResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCommitResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIFunctionsV1FunctionsServiceCommitResponse) GetFunctionsServiceCommitResponse() *shared.FunctionsServiceCommitResponse {
-	if o == nil {
+func (c *C1APIFunctionsV1FunctionsServiceCommitResponse) GetFunctionsServiceCommitResponse() *shared.FunctionsServiceCommitResponse {
+	if c == nil {
 		return nil
 	}
-	return o.FunctionsServiceCommitResponse
+	return c.FunctionsServiceCommitResponse
 }

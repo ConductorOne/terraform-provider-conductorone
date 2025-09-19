@@ -14,30 +14,30 @@ type TaskAuditPolicyProvisionReassigned struct {
 	Users []User `json:"users,omitempty"`
 }
 
-func (o *TaskAuditPolicyProvisionReassigned) GetNewPolicyStepID() *string {
-	if o == nil {
+func (t *TaskAuditPolicyProvisionReassigned) GetNewPolicyStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.NewPolicyStepID
+	return t.NewPolicyStepID
 }
 
-func (o *TaskAuditPolicyProvisionReassigned) GetNewUsers() []string {
-	if o == nil {
+func (t *TaskAuditPolicyProvisionReassigned) GetNewUsers() []string {
+	if t == nil {
 		return nil
 	}
-	return o.NewUsers
+	return t.NewUsers
 }
 
-func (o *TaskAuditPolicyProvisionReassigned) GetOldPolicyStepID() *string {
-	if o == nil {
+func (t *TaskAuditPolicyProvisionReassigned) GetOldPolicyStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.OldPolicyStepID
+	return t.OldPolicyStepID
 }
 
-func (o *TaskAuditPolicyProvisionReassigned) GetUsers() []User {
-	if o == nil {
+func (t *TaskAuditPolicyProvisionReassigned) GetUsers() []User {
+	if t == nil {
 		return nil
 	}
-	return o.Users
+	return t.Users
 }

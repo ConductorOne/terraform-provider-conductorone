@@ -13,25 +13,25 @@ type C1APIAppV1AppEntitlementOwnersAddRequest struct {
 	AddAppEntitlementOwnerRequest *shared.AddAppEntitlementOwnerRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersAddRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersAddRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersAddRequest) GetEntitlementID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersAddRequest) GetEntitlementID() string {
+	if c == nil {
 		return ""
 	}
-	return o.EntitlementID
+	return c.EntitlementID
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersAddRequest) GetAddAppEntitlementOwnerRequest() *shared.AddAppEntitlementOwnerRequest {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersAddRequest) GetAddAppEntitlementOwnerRequest() *shared.AddAppEntitlementOwnerRequest {
+	if c == nil {
 		return nil
 	}
-	return o.AddAppEntitlementOwnerRequest
+	return c.AddAppEntitlementOwnerRequest
 }
 
 type C1APIAppV1AppEntitlementOwnersAddResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1AppEntitlementOwnersAddResponse struct {
 	AddAppEntitlementOwnerResponse *shared.AddAppEntitlementOwnerResponse
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersAddResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersAddResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersAddResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementOwnersAddResponse) GetAddAppEntitlementOwnerResponse() *shared.AddAppEntitlementOwnerResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementOwnersAddResponse) GetAddAppEntitlementOwnerResponse() *shared.AddAppEntitlementOwnerResponse {
+	if c == nil {
 		return nil
 	}
-	return o.AddAppEntitlementOwnerResponse
+	return c.AddAppEntitlementOwnerResponse
 }

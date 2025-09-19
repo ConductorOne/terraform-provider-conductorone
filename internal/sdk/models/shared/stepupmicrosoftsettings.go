@@ -10,16 +10,16 @@ type StepUpMicrosoftSettings struct {
 	Tenant *string `json:"tenant,omitempty"`
 }
 
-func (o *StepUpMicrosoftSettings) GetConditionalAccessIds() []string {
-	if o == nil {
+func (s *StepUpMicrosoftSettings) GetConditionalAccessIds() []string {
+	if s == nil {
 		return nil
 	}
-	return o.ConditionalAccessIds
+	return s.ConditionalAccessIds
 }
 
-func (o *StepUpMicrosoftSettings) GetTenant() *string {
-	if o == nil {
+func (s *StepUpMicrosoftSettings) GetTenant() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Tenant
+	return s.Tenant
 }

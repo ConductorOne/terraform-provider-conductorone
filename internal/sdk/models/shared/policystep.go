@@ -45,44 +45,44 @@ type PolicyStep struct {
 	Wait *Wait `json:"wait,omitempty"`
 }
 
-func (o *PolicyStep) GetAccept() *Accept {
-	if o == nil {
+func (p *PolicyStep) GetAccept() *Accept {
+	if p == nil {
 		return nil
 	}
-	return o.Accept
+	return p.Accept
 }
 
-func (o *PolicyStep) GetApproval() *Approval {
-	if o == nil {
+func (p *PolicyStep) GetApproval() *Approval {
+	if p == nil {
 		return nil
 	}
-	return o.Approval
+	return p.Approval
 }
 
-func (o *PolicyStep) GetForm() any {
-	if o == nil {
+func (p *PolicyStep) GetForm() any {
+	if p == nil {
 		return nil
 	}
-	return o.Form
+	return p.Form
 }
 
-func (o *PolicyStep) GetProvision() *Provision {
-	if o == nil {
+func (p *PolicyStep) GetProvision() *Provision {
+	if p == nil {
 		return nil
 	}
-	return o.Provision
+	return p.Provision
 }
 
-func (o *PolicyStep) GetReject() *Reject {
-	if o == nil {
+func (p *PolicyStep) GetReject() *Reject {
+	if p == nil {
 		return nil
 	}
-	return o.Reject
+	return p.Reject
 }
 
-func (o *PolicyStep) GetWait() *Wait {
-	if o == nil {
+func (p *PolicyStep) GetWait() *Wait {
+	if p == nil {
 		return nil
 	}
-	return o.Wait
+	return p.Wait
 }

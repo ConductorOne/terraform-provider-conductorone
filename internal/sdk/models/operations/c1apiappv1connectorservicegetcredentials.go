@@ -13,25 +13,25 @@ type C1APIAppV1ConnectorServiceGetCredentialsRequest struct {
 	ID          string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetConnectorID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetConnectorID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ConnectorID
+	return c.ConnectorID
 }
 
-func (o *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIAppV1ConnectorServiceGetCredentialsResponse struct {
@@ -45,30 +45,30 @@ type C1APIAppV1ConnectorServiceGetCredentialsResponse struct {
 	ConnectorServiceGetCredentialsResponse *shared.ConnectorServiceGetCredentialsResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetConnectorServiceGetCredentialsResponse() *shared.ConnectorServiceGetCredentialsResponse {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetConnectorServiceGetCredentialsResponse() *shared.ConnectorServiceGetCredentialsResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceGetCredentialsResponse
+	return c.ConnectorServiceGetCredentialsResponse
 }

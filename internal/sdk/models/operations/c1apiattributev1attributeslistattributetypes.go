@@ -12,18 +12,18 @@ type C1APIAttributeV1AttributesListAttributeTypesRequest struct {
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIAttributeV1AttributesListAttributeTypesRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListAttributeTypesRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIAttributeV1AttributesListAttributeTypesRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListAttributeTypesRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIAttributeV1AttributesListAttributeTypesResponse struct {
@@ -37,30 +37,30 @@ type C1APIAttributeV1AttributesListAttributeTypesResponse struct {
 	ListAttributeTypesResponse *shared.ListAttributeTypesResponse
 }
 
-func (o *C1APIAttributeV1AttributesListAttributeTypesResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListAttributeTypesResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAttributeV1AttributesListAttributeTypesResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListAttributeTypesResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAttributeV1AttributesListAttributeTypesResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListAttributeTypesResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAttributeV1AttributesListAttributeTypesResponse) GetListAttributeTypesResponse() *shared.ListAttributeTypesResponse {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListAttributeTypesResponse) GetListAttributeTypesResponse() *shared.ListAttributeTypesResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ListAttributeTypesResponse
+	return c.ListAttributeTypesResponse
 }

@@ -8,9 +8,9 @@ type TaskAuditSLAEscalation struct {
 	Message *string `json:"message,omitempty"`
 }
 
-func (o *TaskAuditSLAEscalation) GetMessage() *string {
-	if o == nil {
+func (t *TaskAuditSLAEscalation) GetMessage() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Message
+	return t.Message
 }

@@ -8,9 +8,9 @@ type TaskAuditFormInstanceChange struct {
 	IsValid *bool `json:"isValid,omitempty"`
 }
 
-func (o *TaskAuditFormInstanceChange) GetIsValid() *bool {
-	if o == nil {
+func (t *TaskAuditFormInstanceChange) GetIsValid() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.IsValid
+	return t.IsValid
 }

@@ -66,51 +66,51 @@ type CreatePolicyRequest struct {
 	Rules []Rule `json:"rules,omitempty"`
 }
 
-func (o *CreatePolicyRequest) GetDescription() *string {
-	if o == nil {
+func (c *CreatePolicyRequest) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreatePolicyRequest) GetDisplayName() string {
-	if o == nil {
+func (c *CreatePolicyRequest) GetDisplayName() string {
+	if c == nil {
 		return ""
 	}
-	return o.DisplayName
+	return c.DisplayName
 }
 
-func (o *CreatePolicyRequest) GetPolicySteps() map[string]PolicyStepsInput {
-	if o == nil {
+func (c *CreatePolicyRequest) GetPolicySteps() map[string]PolicyStepsInput {
+	if c == nil {
 		return nil
 	}
-	return o.PolicySteps
+	return c.PolicySteps
 }
 
-func (o *CreatePolicyRequest) GetPolicyType() *CreatePolicyRequestPolicyType {
-	if o == nil {
+func (c *CreatePolicyRequest) GetPolicyType() *CreatePolicyRequestPolicyType {
+	if c == nil {
 		return nil
 	}
-	return o.PolicyType
+	return c.PolicyType
 }
 
-func (o *CreatePolicyRequest) GetPostActions() []PolicyPostActions {
-	if o == nil {
+func (c *CreatePolicyRequest) GetPostActions() []PolicyPostActions {
+	if c == nil {
 		return nil
 	}
-	return o.PostActions
+	return c.PostActions
 }
 
-func (o *CreatePolicyRequest) GetReassignTasksToDelegates() *bool {
-	if o == nil {
+func (c *CreatePolicyRequest) GetReassignTasksToDelegates() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.ReassignTasksToDelegates
+	return c.ReassignTasksToDelegates
 }
 
-func (o *CreatePolicyRequest) GetRules() []Rule {
-	if o == nil {
+func (c *CreatePolicyRequest) GetRules() []Rule {
+	if c == nil {
 		return nil
 	}
-	return o.Rules
+	return c.Rules
 }

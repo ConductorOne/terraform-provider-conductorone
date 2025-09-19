@@ -16,37 +16,37 @@ type GrantEntitlements struct {
 	UserRef *UserRef `json:"userRef,omitempty"`
 }
 
-func (o *GrantEntitlements) GetAppEntitlementRefs() []AppEntitlementRef {
-	if o == nil {
+func (g *GrantEntitlements) GetAppEntitlementRefs() []AppEntitlementRef {
+	if g == nil {
 		return nil
 	}
-	return o.AppEntitlementRefs
+	return g.AppEntitlementRefs
 }
 
-func (o *GrantEntitlements) GetAppEntitlementRefsCel() *string {
-	if o == nil {
+func (g *GrantEntitlements) GetAppEntitlementRefsCel() *string {
+	if g == nil {
 		return nil
 	}
-	return o.AppEntitlementRefsCel
+	return g.AppEntitlementRefsCel
 }
 
-func (o *GrantEntitlements) GetUseSubjectUser() *bool {
-	if o == nil {
+func (g *GrantEntitlements) GetUseSubjectUser() *bool {
+	if g == nil {
 		return nil
 	}
-	return o.UseSubjectUser
+	return g.UseSubjectUser
 }
 
-func (o *GrantEntitlements) GetUserIDCel() *string {
-	if o == nil {
+func (g *GrantEntitlements) GetUserIDCel() *string {
+	if g == nil {
 		return nil
 	}
-	return o.UserIDCel
+	return g.UserIDCel
 }
 
-func (o *GrantEntitlements) GetUserRef() *UserRef {
-	if o == nil {
+func (g *GrantEntitlements) GetUserRef() *UserRef {
+	if g == nil {
 		return nil
 	}
-	return o.UserRef
+	return g.UserRef
 }

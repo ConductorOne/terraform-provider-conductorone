@@ -14,30 +14,30 @@ type AppUserView struct {
 	LastUsagePath *string `json:"lastUsagePath,omitempty"`
 }
 
-func (o *AppUserView) GetAppPath() *string {
-	if o == nil {
+func (a *AppUserView) GetAppPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppPath
+	return a.AppPath
 }
 
-func (o *AppUserView) GetAppUser() *AppUser {
-	if o == nil {
+func (a *AppUserView) GetAppUser() *AppUser {
+	if a == nil {
 		return nil
 	}
-	return o.AppUser
+	return a.AppUser
 }
 
-func (o *AppUserView) GetIdentityUserPath() *string {
-	if o == nil {
+func (a *AppUserView) GetIdentityUserPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.IdentityUserPath
+	return a.IdentityUserPath
 }
 
-func (o *AppUserView) GetLastUsagePath() *string {
-	if o == nil {
+func (a *AppUserView) GetLastUsagePath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.LastUsagePath
+	return a.LastUsagePath
 }

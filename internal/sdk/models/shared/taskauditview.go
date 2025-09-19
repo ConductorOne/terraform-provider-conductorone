@@ -301,429 +301,429 @@ func (t *TaskAuditView) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *TaskAuditView) GetTaskAuditAccessRequestOutcome() *TaskAuditAccessRequestOutcome {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditAccessRequestOutcome() *TaskAuditAccessRequestOutcome {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditAccessRequestOutcome
+	return t.TaskAuditAccessRequestOutcome
 }
 
-func (o *TaskAuditView) GetTaskAuditConnectorActionResult() *TaskAuditConnectorActionResult {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditConnectorActionResult() *TaskAuditConnectorActionResult {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditConnectorActionResult
+	return t.TaskAuditConnectorActionResult
 }
 
-func (o *TaskAuditView) GetTaskAuditActionSubmitted() *TaskAuditActionSubmitted {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditActionSubmitted() *TaskAuditActionSubmitted {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditActionSubmitted
+	return t.TaskAuditActionSubmitted
 }
 
-func (o *TaskAuditView) GetTaskAuditApprovalAutoAcceptedByPolicy() *TaskAuditApprovalAutoAcceptedByPolicy {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditApprovalAutoAcceptedByPolicy() *TaskAuditApprovalAutoAcceptedByPolicy {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditApprovalAutoAcceptedByPolicy
+	return t.TaskAuditApprovalAutoAcceptedByPolicy
 }
 
-func (o *TaskAuditView) GetTaskAuditApprovalAutoRejectedByPolicy() *TaskAuditApprovalAutoRejectedByPolicy {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditApprovalAutoRejectedByPolicy() *TaskAuditApprovalAutoRejectedByPolicy {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditApprovalAutoRejectedByPolicy
+	return t.TaskAuditApprovalAutoRejectedByPolicy
 }
 
-func (o *TaskAuditView) GetTaskAuditApprovalInstanceChange() *TaskAuditApprovalInstanceChange {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditApprovalInstanceChange() *TaskAuditApprovalInstanceChange {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditApprovalInstanceChange
+	return t.TaskAuditApprovalInstanceChange
 }
 
-func (o *TaskAuditView) GetTaskAuditPolicyApprovalReassigned() *TaskAuditPolicyApprovalReassigned {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditPolicyApprovalReassigned() *TaskAuditPolicyApprovalReassigned {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditPolicyApprovalReassigned
+	return t.TaskAuditPolicyApprovalReassigned
 }
 
-func (o *TaskAuditView) GetTaskAuditApprovalHappenedAutomatically() *TaskAuditApprovalHappenedAutomatically {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditApprovalHappenedAutomatically() *TaskAuditApprovalHappenedAutomatically {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditApprovalHappenedAutomatically
+	return t.TaskAuditApprovalHappenedAutomatically
 }
 
-func (o *TaskAuditView) GetTaskAuditBulkActionError() *TaskAuditBulkActionError {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditBulkActionError() *TaskAuditBulkActionError {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditBulkActionError
+	return t.TaskAuditBulkActionError
 }
 
-func (o *TaskAuditView) GetTaskAuditCertifyOutcome() *TaskAuditCertifyOutcome {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditCertifyOutcome() *TaskAuditCertifyOutcome {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditCertifyOutcome
+	return t.TaskAuditCertifyOutcome
 }
 
-func (o *TaskAuditView) GetTaskAuditComment() *TaskAuditComment {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditComment() *TaskAuditComment {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditComment
+	return t.TaskAuditComment
 }
 
-func (o *TaskAuditView) GetTaskAuditConditionalPolicyExecutionResult() *TaskAuditConditionalPolicyExecutionResult {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditConditionalPolicyExecutionResult() *TaskAuditConditionalPolicyExecutionResult {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditConditionalPolicyExecutionResult
+	return t.TaskAuditConditionalPolicyExecutionResult
 }
 
-func (o *TaskAuditView) GetTaskAuditFinishedConnectorActions() *TaskAuditFinishedConnectorActions {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditFinishedConnectorActions() *TaskAuditFinishedConnectorActions {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditFinishedConnectorActions
+	return t.TaskAuditFinishedConnectorActions
 }
 
-func (o *TaskAuditView) GetTaskAuditStartedConnectorActions() *TaskAuditStartedConnectorActions {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditStartedConnectorActions() *TaskAuditStartedConnectorActions {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditStartedConnectorActions
+	return t.TaskAuditStartedConnectorActions
 }
 
-func (o *TaskAuditView) GetCreated() *time.Time {
-	if o == nil {
+func (t *TaskAuditView) GetCreated() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.Created
+	return t.Created
 }
 
-func (o *TaskAuditView) GetCurrentState() *CurrentState {
-	if o == nil {
+func (t *TaskAuditView) GetCurrentState() *CurrentState {
+	if t == nil {
 		return nil
 	}
-	return o.CurrentState
+	return t.CurrentState
 }
 
-func (o *TaskAuditView) GetEventType() *TaskAuditViewEventType {
-	if o == nil {
+func (t *TaskAuditView) GetEventType() *TaskAuditViewEventType {
+	if t == nil {
 		return nil
 	}
-	return o.EventType
+	return t.EventType
 }
 
-func (o *TaskAuditView) GetTaskAuditExpressionPolicyStepError() *TaskAuditExpressionPolicyStepError {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditExpressionPolicyStepError() *TaskAuditExpressionPolicyStepError {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditExpressionPolicyStepError
+	return t.TaskAuditExpressionPolicyStepError
 }
 
-func (o *TaskAuditView) GetTaskAuditExternalTicketCreated() *TaskAuditExternalTicketCreated {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditExternalTicketCreated() *TaskAuditExternalTicketCreated {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditExternalTicketCreated
+	return t.TaskAuditExternalTicketCreated
 }
 
-func (o *TaskAuditView) GetTaskAuditExternalTicketError() *TaskAuditExternalTicketError {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditExternalTicketError() *TaskAuditExternalTicketError {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditExternalTicketError
+	return t.TaskAuditExternalTicketError
 }
 
-func (o *TaskAuditView) GetTaskAuditExternalTicketProvisionStepResolved() *TaskAuditExternalTicketProvisionStepResolved {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditExternalTicketProvisionStepResolved() *TaskAuditExternalTicketProvisionStepResolved {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditExternalTicketProvisionStepResolved
+	return t.TaskAuditExternalTicketProvisionStepResolved
 }
 
-func (o *TaskAuditView) GetTaskAuditExternalTicketTriggered() *TaskAuditExternalTicketTriggered {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditExternalTicketTriggered() *TaskAuditExternalTicketTriggered {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditExternalTicketTriggered
+	return t.TaskAuditExternalTicketTriggered
 }
 
-func (o *TaskAuditView) GetTaskAuditFormInstanceChange() *TaskAuditFormInstanceChange {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditFormInstanceChange() *TaskAuditFormInstanceChange {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditFormInstanceChange
+	return t.TaskAuditFormInstanceChange
 }
 
-func (o *TaskAuditView) GetTaskAuditGrantDurationUpdated() *TaskAuditGrantDurationUpdated {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditGrantDurationUpdated() *TaskAuditGrantDurationUpdated {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditGrantDurationUpdated
+	return t.TaskAuditGrantDurationUpdated
 }
 
-func (o *TaskAuditView) GetTaskAuditGrantOutcome() *TaskAuditGrantOutcome {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditGrantOutcome() *TaskAuditGrantOutcome {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditGrantOutcome
+	return t.TaskAuditGrantOutcome
 }
 
-func (o *TaskAuditView) GetTaskAuditHardReset() *TaskAuditHardReset {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditHardReset() *TaskAuditHardReset {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditHardReset
+	return t.TaskAuditHardReset
 }
 
-func (o *TaskAuditView) GetID() *string {
-	if o == nil {
+func (t *TaskAuditView) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
-func (o *TaskAuditView) GetTaskAuditMetaData() *TaskAuditMetaData {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditMetaData() *TaskAuditMetaData {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditMetaData
+	return t.TaskAuditMetaData
 }
 
-func (o *TaskAuditView) GetTaskAuditPolicyChanged() *TaskAuditPolicyChanged {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditPolicyChanged() *TaskAuditPolicyChanged {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditPolicyChanged
+	return t.TaskAuditPolicyChanged
 }
 
-func (o *TaskAuditView) GetTaskAuditPolicyEvaluationStep() *TaskAuditPolicyEvaluationStep {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditPolicyEvaluationStep() *TaskAuditPolicyEvaluationStep {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditPolicyEvaluationStep
+	return t.TaskAuditPolicyEvaluationStep
 }
 
-func (o *TaskAuditView) GetTaskAuditPolicyProvisionError() *TaskAuditPolicyProvisionError {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditPolicyProvisionError() *TaskAuditPolicyProvisionError {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditPolicyProvisionError
+	return t.TaskAuditPolicyProvisionError
 }
 
-func (o *TaskAuditView) GetTaskAuditPolicyProvisionReassigned() *TaskAuditPolicyProvisionReassigned {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditPolicyProvisionReassigned() *TaskAuditPolicyProvisionReassigned {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditPolicyProvisionReassigned
+	return t.TaskAuditPolicyProvisionReassigned
 }
 
-func (o *TaskAuditView) GetTaskAuditReassignedToDelegate() *TaskAuditReassignedToDelegate {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditReassignedToDelegate() *TaskAuditReassignedToDelegate {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditReassignedToDelegate
+	return t.TaskAuditReassignedToDelegate
 }
 
-func (o *TaskAuditView) GetTaskAuditReassignmentListError() *TaskAuditReassignmentListError {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditReassignmentListError() *TaskAuditReassignmentListError {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditReassignmentListError
+	return t.TaskAuditReassignmentListError
 }
 
-func (o *TaskAuditView) GetTaskAuditRevokeOutcome() *TaskAuditRevokeOutcome {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditRevokeOutcome() *TaskAuditRevokeOutcome {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditRevokeOutcome
+	return t.TaskAuditRevokeOutcome
 }
 
-func (o *TaskAuditView) GetTaskAuditSLAEscalation() *TaskAuditSLAEscalation {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditSLAEscalation() *TaskAuditSLAEscalation {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditSLAEscalation
+	return t.TaskAuditSLAEscalation
 }
 
-func (o *TaskAuditView) GetSource() *Source {
-	if o == nil {
+func (t *TaskAuditView) GetSource() *Source {
+	if t == nil {
 		return nil
 	}
-	return o.Source
+	return t.Source
 }
 
-func (o *TaskAuditView) GetTaskAuditStateChange() *TaskAuditStateChange {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditStateChange() *TaskAuditStateChange {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditStateChange
+	return t.TaskAuditStateChange
 }
 
-func (o *TaskAuditView) GetTaskAuditStepSkipped() *TaskAuditStepSkipped {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditStepSkipped() *TaskAuditStepSkipped {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditStepSkipped
+	return t.TaskAuditStepSkipped
 }
 
-func (o *TaskAuditView) GetTaskAuditStepUpApproval() *TaskAuditStepUpApproval {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditStepUpApproval() *TaskAuditStepUpApproval {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditStepUpApproval
+	return t.TaskAuditStepUpApproval
 }
 
-func (o *TaskAuditView) GetTaskAuditNewTask() *TaskAuditNewTask {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditNewTask() *TaskAuditNewTask {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditNewTask
+	return t.TaskAuditNewTask
 }
 
-func (o *TaskAuditView) GetTaskAuditEscalateToEmergencyAccess() *TaskAuditEscalateToEmergencyAccess {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditEscalateToEmergencyAccess() *TaskAuditEscalateToEmergencyAccess {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditEscalateToEmergencyAccess
+	return t.TaskAuditEscalateToEmergencyAccess
 }
 
-func (o *TaskAuditView) GetTaskAuditRestart() *TaskAuditRestart {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditRestart() *TaskAuditRestart {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditRestart
+	return t.TaskAuditRestart
 }
 
-func (o *TaskAuditView) GetTicketID() *string {
-	if o == nil {
+func (t *TaskAuditView) GetTicketID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.TicketID
+	return t.TicketID
 }
 
-func (o *TaskAuditView) GetUserID() *string {
-	if o == nil {
+func (t *TaskAuditView) GetUserID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.UserID
+	return t.UserID
 }
 
-func (o *TaskAuditView) GetTaskAuditWaitForAnalysisStepSuccess() *TaskAuditWaitForAnalysisStepSuccess {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWaitForAnalysisStepSuccess() *TaskAuditWaitForAnalysisStepSuccess {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWaitForAnalysisStepSuccess
+	return t.TaskAuditWaitForAnalysisStepSuccess
 }
 
-func (o *TaskAuditView) GetTaskAuditWaitForAnalysisStepTimedOut() *TaskAuditWaitForAnalysisStepTimedOut {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWaitForAnalysisStepTimedOut() *TaskAuditWaitForAnalysisStepTimedOut {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWaitForAnalysisStepTimedOut
+	return t.TaskAuditWaitForAnalysisStepTimedOut
 }
 
-func (o *TaskAuditView) GetTaskAuditWaitForAnalysisStepWaiting() *TaskAuditWaitForAnalysisStepWaiting {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWaitForAnalysisStepWaiting() *TaskAuditWaitForAnalysisStepWaiting {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWaitForAnalysisStepWaiting
+	return t.TaskAuditWaitForAnalysisStepWaiting
 }
 
-func (o *TaskAuditView) GetTaskAuditWaitStepSuccess() *TaskAuditWaitStepSuccess {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWaitStepSuccess() *TaskAuditWaitStepSuccess {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWaitStepSuccess
+	return t.TaskAuditWaitStepSuccess
 }
 
-func (o *TaskAuditView) GetTaskAuditWaitStepTimedOut() *TaskAuditWaitStepTimedOut {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWaitStepTimedOut() *TaskAuditWaitStepTimedOut {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWaitStepTimedOut
+	return t.TaskAuditWaitStepTimedOut
 }
 
-func (o *TaskAuditView) GetTaskAuditWaitStepUntilTime() *TaskAuditWaitStepUntilTime {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWaitStepUntilTime() *TaskAuditWaitStepUntilTime {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWaitStepUntilTime
+	return t.TaskAuditWaitStepUntilTime
 }
 
-func (o *TaskAuditView) GetTaskAuditWaitStepWaiting() *TaskAuditWaitStepWaiting {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWaitStepWaiting() *TaskAuditWaitStepWaiting {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWaitStepWaiting
+	return t.TaskAuditWaitStepWaiting
 }
 
-func (o *TaskAuditView) GetTaskAuditWebhookApprovalAttempt() *TaskAuditWebhookApprovalAttempt {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWebhookApprovalAttempt() *TaskAuditWebhookApprovalAttempt {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWebhookApprovalAttempt
+	return t.TaskAuditWebhookApprovalAttempt
 }
 
-func (o *TaskAuditView) GetTaskAuditWebhookApprovalBadResponse() *TaskAuditWebhookApprovalBadResponse {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWebhookApprovalBadResponse() *TaskAuditWebhookApprovalBadResponse {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWebhookApprovalBadResponse
+	return t.TaskAuditWebhookApprovalBadResponse
 }
 
-func (o *TaskAuditView) GetTaskAuditWebhookApprovalFatalError() *TaskAuditWebhookApprovalFatalError {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWebhookApprovalFatalError() *TaskAuditWebhookApprovalFatalError {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWebhookApprovalFatalError
+	return t.TaskAuditWebhookApprovalFatalError
 }
 
-func (o *TaskAuditView) GetTaskAuditWebhookApprovalSuccess() *TaskAuditWebhookApprovalSuccess {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWebhookApprovalSuccess() *TaskAuditWebhookApprovalSuccess {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWebhookApprovalSuccess
+	return t.TaskAuditWebhookApprovalSuccess
 }
 
-func (o *TaskAuditView) GetTaskAuditWebhookApprovalTriggered() *TaskAuditWebhookApprovalTriggered {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWebhookApprovalTriggered() *TaskAuditWebhookApprovalTriggered {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWebhookApprovalTriggered
+	return t.TaskAuditWebhookApprovalTriggered
 }
 
-func (o *TaskAuditView) GetTaskAuditWebhookAttempt() *TaskAuditWebhookAttempt {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWebhookAttempt() *TaskAuditWebhookAttempt {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWebhookAttempt
+	return t.TaskAuditWebhookAttempt
 }
 
-func (o *TaskAuditView) GetTaskAuditWebhookSuccess() *TaskAuditWebhookSuccess {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWebhookSuccess() *TaskAuditWebhookSuccess {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWebhookSuccess
+	return t.TaskAuditWebhookSuccess
 }
 
-func (o *TaskAuditView) GetTaskAuditWebhookTriggered() *TaskAuditWebhookTriggered {
-	if o == nil {
+func (t *TaskAuditView) GetTaskAuditWebhookTriggered() *TaskAuditWebhookTriggered {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAuditWebhookTriggered
+	return t.TaskAuditWebhookTriggered
 }
 
-func (o *TaskAuditView) GetWorkflowStep() *int {
-	if o == nil {
+func (t *TaskAuditView) GetWorkflowStep() *int {
+	if t == nil {
 		return nil
 	}
-	return o.WorkflowStep
+	return t.WorkflowStep
 }

@@ -27,23 +27,23 @@ func (e *ErroredAction) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *ErroredAction) GetDescription() *string {
-	if o == nil {
+func (e *ErroredAction) GetDescription() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Description
+	return e.Description
 }
 
-func (o *ErroredAction) GetErrorCode() *string {
-	if o == nil {
+func (e *ErroredAction) GetErrorCode() *string {
+	if e == nil {
 		return nil
 	}
-	return o.ErrorCode
+	return e.ErrorCode
 }
 
-func (o *ErroredAction) GetErroredAt() *time.Time {
-	if o == nil {
+func (e *ErroredAction) GetErroredAt() *time.Time {
+	if e == nil {
 		return nil
 	}
-	return o.ErroredAt
+	return e.ErroredAt
 }

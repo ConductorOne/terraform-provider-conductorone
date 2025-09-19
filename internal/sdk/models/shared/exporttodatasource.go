@@ -47,23 +47,23 @@ type ExportToDatasource struct {
 	Prefix *string `json:"prefix,omitempty"`
 }
 
-func (o *ExportToDatasource) GetDatasourceID() *string {
-	if o == nil {
+func (e *ExportToDatasource) GetDatasourceID() *string {
+	if e == nil {
 		return nil
 	}
-	return o.DatasourceID
+	return e.DatasourceID
 }
 
-func (o *ExportToDatasource) GetFormat() *Format {
-	if o == nil {
+func (e *ExportToDatasource) GetFormat() *Format {
+	if e == nil {
 		return nil
 	}
-	return o.Format
+	return e.Format
 }
 
-func (o *ExportToDatasource) GetPrefix() *string {
-	if o == nil {
+func (e *ExportToDatasource) GetPrefix() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Prefix
+	return e.Prefix
 }

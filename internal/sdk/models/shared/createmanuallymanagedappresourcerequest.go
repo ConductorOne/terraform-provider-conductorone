@@ -12,23 +12,23 @@ type CreateManuallyManagedAppResourceRequest struct {
 	MatchBatonID *string `json:"matchBatonId,omitempty"`
 }
 
-func (o *CreateManuallyManagedAppResourceRequest) GetDescription() *string {
-	if o == nil {
+func (c *CreateManuallyManagedAppResourceRequest) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateManuallyManagedAppResourceRequest) GetDisplayName() string {
-	if o == nil {
+func (c *CreateManuallyManagedAppResourceRequest) GetDisplayName() string {
+	if c == nil {
 		return ""
 	}
-	return o.DisplayName
+	return c.DisplayName
 }
 
-func (o *CreateManuallyManagedAppResourceRequest) GetMatchBatonID() *string {
-	if o == nil {
+func (c *CreateManuallyManagedAppResourceRequest) GetMatchBatonID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.MatchBatonID
+	return c.MatchBatonID
 }

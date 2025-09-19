@@ -31,58 +31,58 @@ type Int64Rules struct {
 	NotIn []string `json:"notIn,omitempty"`
 }
 
-func (o *Int64Rules) GetConst() *string {
-	if o == nil {
+func (i *Int64Rules) GetConst() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Const
+	return i.Const
 }
 
-func (o *Int64Rules) GetGt() *string {
-	if o == nil {
+func (i *Int64Rules) GetGt() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Gt
+	return i.Gt
 }
 
-func (o *Int64Rules) GetGte() *string {
-	if o == nil {
+func (i *Int64Rules) GetGte() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Gte
+	return i.Gte
 }
 
-func (o *Int64Rules) GetIgnoreEmpty() *bool {
-	if o == nil {
+func (i *Int64Rules) GetIgnoreEmpty() *bool {
+	if i == nil {
 		return nil
 	}
-	return o.IgnoreEmpty
+	return i.IgnoreEmpty
 }
 
-func (o *Int64Rules) GetIn() []string {
-	if o == nil {
+func (i *Int64Rules) GetIn() []string {
+	if i == nil {
 		return nil
 	}
-	return o.In
+	return i.In
 }
 
-func (o *Int64Rules) GetLt() *string {
-	if o == nil {
+func (i *Int64Rules) GetLt() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Lt
+	return i.Lt
 }
 
-func (o *Int64Rules) GetLte() *string {
-	if o == nil {
+func (i *Int64Rules) GetLte() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Lte
+	return i.Lte
 }
 
-func (o *Int64Rules) GetNotIn() []string {
-	if o == nil {
+func (i *Int64Rules) GetNotIn() []string {
+	if i == nil {
 		return nil
 	}
-	return o.NotIn
+	return i.NotIn
 }

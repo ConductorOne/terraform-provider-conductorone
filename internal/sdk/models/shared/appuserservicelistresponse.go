@@ -16,23 +16,23 @@ type AppUserServiceListResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *AppUserServiceListResponse) GetExpanded() []Expanded {
-	if o == nil {
+func (a *AppUserServiceListResponse) GetExpanded() []Expanded {
+	if a == nil {
 		return nil
 	}
-	return o.Expanded
+	return a.Expanded
 }
 
-func (o *AppUserServiceListResponse) GetList() []AppUserView {
-	if o == nil {
+func (a *AppUserServiceListResponse) GetList() []AppUserView {
+	if a == nil {
 		return nil
 	}
-	return o.List
+	return a.List
 }
 
-func (o *AppUserServiceListResponse) GetNextPageToken() *string {
-	if o == nil {
+func (a *AppUserServiceListResponse) GetNextPageToken() *string {
+	if a == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return a.NextPageToken
 }

@@ -12,18 +12,18 @@ type C1APIStepupV1StepUpProviderServiceTestRequest struct {
 	TestStepUpProviderRequest *shared.TestStepUpProviderRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceTestRequest) GetID() string {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceTestRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceTestRequest) GetTestStepUpProviderRequest() *shared.TestStepUpProviderRequest {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceTestRequest) GetTestStepUpProviderRequest() *shared.TestStepUpProviderRequest {
+	if c == nil {
 		return nil
 	}
-	return o.TestStepUpProviderRequest
+	return c.TestStepUpProviderRequest
 }
 
 type C1APIStepupV1StepUpProviderServiceTestResponse struct {
@@ -37,30 +37,30 @@ type C1APIStepupV1StepUpProviderServiceTestResponse struct {
 	TestStepUpProviderResponse *shared.TestStepUpProviderResponse
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceTestResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceTestResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceTestResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceTestResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceTestResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceTestResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIStepupV1StepUpProviderServiceTestResponse) GetTestStepUpProviderResponse() *shared.TestStepUpProviderResponse {
-	if o == nil {
+func (c *C1APIStepupV1StepUpProviderServiceTestResponse) GetTestStepUpProviderResponse() *shared.TestStepUpProviderResponse {
+	if c == nil {
 		return nil
 	}
-	return o.TestStepUpProviderResponse
+	return c.TestStepUpProviderResponse
 }

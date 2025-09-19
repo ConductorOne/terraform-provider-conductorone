@@ -10,16 +10,16 @@ type ConnectorServiceRotateCredentialRequest struct {
 	ConnectorID *string `json:"connectorId,omitempty"`
 }
 
-func (o *ConnectorServiceRotateCredentialRequest) GetAppID() *string {
-	if o == nil {
+func (c *ConnectorServiceRotateCredentialRequest) GetAppID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *ConnectorServiceRotateCredentialRequest) GetConnectorID() *string {
-	if o == nil {
+func (c *ConnectorServiceRotateCredentialRequest) GetConnectorID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorID
+	return c.ConnectorID
 }

@@ -12,18 +12,18 @@ type C1APIAppV1ConnectorServiceCreateRequest struct {
 	ConnectorServiceCreateRequest *shared.ConnectorServiceCreateRequest `request:"mediaType=application/json"`
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateRequest) GetConnectorServiceCreateRequest() *shared.ConnectorServiceCreateRequest {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateRequest) GetConnectorServiceCreateRequest() *shared.ConnectorServiceCreateRequest {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceCreateRequest
+	return c.ConnectorServiceCreateRequest
 }
 
 type C1APIAppV1ConnectorServiceCreateResponse struct {
@@ -37,30 +37,30 @@ type C1APIAppV1ConnectorServiceCreateResponse struct {
 	ConnectorServiceCreateResponse *shared.ConnectorServiceCreateResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1ConnectorServiceCreateResponse) GetConnectorServiceCreateResponse() *shared.ConnectorServiceCreateResponse {
-	if o == nil {
+func (c *C1APIAppV1ConnectorServiceCreateResponse) GetConnectorServiceCreateResponse() *shared.ConnectorServiceCreateResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectorServiceCreateResponse
+	return c.ConnectorServiceCreateResponse
 }

@@ -11,11 +11,11 @@ type C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest) GetID() string {
-	if o == nil {
+func (c *C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
 type C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse struct {
@@ -29,30 +29,30 @@ type C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse struct {
 	ConflictMonitor *shared.ConflictMonitor
 }
 
-func (o *C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse) GetConflictMonitor() *shared.ConflictMonitor {
-	if o == nil {
+func (c *C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse) GetConflictMonitor() *shared.ConflictMonitor {
+	if c == nil {
 		return nil
 	}
-	return o.ConflictMonitor
+	return c.ConflictMonitor
 }

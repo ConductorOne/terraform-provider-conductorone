@@ -35,37 +35,37 @@ func (e *EscalationInstance) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *EscalationInstance) GetAlreadyEscalated() *bool {
-	if o == nil {
+func (e *EscalationInstance) GetAlreadyEscalated() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.AlreadyEscalated
+	return e.AlreadyEscalated
 }
 
-func (o *EscalationInstance) GetEscalationComment() *string {
-	if o == nil {
+func (e *EscalationInstance) GetEscalationComment() *string {
+	if e == nil {
 		return nil
 	}
-	return o.EscalationComment
+	return e.EscalationComment
 }
 
-func (o *EscalationInstance) GetExpiresAt() *time.Time {
-	if o == nil {
+func (e *EscalationInstance) GetExpiresAt() *time.Time {
+	if e == nil {
 		return nil
 	}
-	return o.ExpiresAt
+	return e.ExpiresAt
 }
 
-func (o *EscalationInstance) GetReassignToApprovers() *ReassignToApprovers {
-	if o == nil {
+func (e *EscalationInstance) GetReassignToApprovers() *ReassignToApprovers {
+	if e == nil {
 		return nil
 	}
-	return o.ReassignToApprovers
+	return e.ReassignToApprovers
 }
 
-func (o *EscalationInstance) GetReplacePolicy() *ReplacePolicy {
-	if o == nil {
+func (e *EscalationInstance) GetReplacePolicy() *ReplacePolicy {
+	if e == nil {
 		return nil
 	}
-	return o.ReplacePolicy
+	return e.ReplacePolicy
 }

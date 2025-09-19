@@ -8,9 +8,9 @@ type TaskAuditActionSubmitted struct {
 	TaskAction *TaskAction1 `json:"action,omitempty"`
 }
 
-func (o *TaskAuditActionSubmitted) GetTaskAction() *TaskAction1 {
-	if o == nil {
+func (t *TaskAuditActionSubmitted) GetTaskAction() *TaskAction1 {
+	if t == nil {
 		return nil
 	}
-	return o.TaskAction
+	return t.TaskAction
 }

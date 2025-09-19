@@ -12,23 +12,23 @@ type EntitlementOwnerApproval struct {
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
 }
 
-func (o *EntitlementOwnerApproval) GetAllowSelfApproval() *bool {
-	if o == nil {
+func (e *EntitlementOwnerApproval) GetAllowSelfApproval() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.AllowSelfApproval
+	return e.AllowSelfApproval
 }
 
-func (o *EntitlementOwnerApproval) GetFallback() *bool {
-	if o == nil {
+func (e *EntitlementOwnerApproval) GetFallback() *bool {
+	if e == nil {
 		return nil
 	}
-	return o.Fallback
+	return e.Fallback
 }
 
-func (o *EntitlementOwnerApproval) GetFallbackUserIds() []string {
-	if o == nil {
+func (e *EntitlementOwnerApproval) GetFallbackUserIds() []string {
+	if e == nil {
 		return nil
 	}
-	return o.FallbackUserIds
+	return e.FallbackUserIds
 }

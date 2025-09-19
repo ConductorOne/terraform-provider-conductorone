@@ -14,16 +14,16 @@ type TaskServiceGetResponse struct {
 	TaskView *TaskView `json:"taskView,omitempty"`
 }
 
-func (o *TaskServiceGetResponse) GetExpanded() []TaskServiceGetResponseExpanded {
-	if o == nil {
+func (t *TaskServiceGetResponse) GetExpanded() []TaskServiceGetResponseExpanded {
+	if t == nil {
 		return nil
 	}
-	return o.Expanded
+	return t.Expanded
 }
 
-func (o *TaskServiceGetResponse) GetTaskView() *TaskView {
-	if o == nil {
+func (t *TaskServiceGetResponse) GetTaskView() *TaskView {
+	if t == nil {
 		return nil
 	}
-	return o.TaskView
+	return t.TaskView
 }

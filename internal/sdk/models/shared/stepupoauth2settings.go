@@ -16,9 +16,9 @@ type StepUpOAuth2Settings struct {
 	AcrValues []string `json:"acrValues,omitempty"`
 }
 
-func (o *StepUpOAuth2Settings) GetAcrValues() []string {
-	if o == nil {
+func (s *StepUpOAuth2Settings) GetAcrValues() []string {
+	if s == nil {
 		return nil
 	}
-	return o.AcrValues
+	return s.AcrValues
 }

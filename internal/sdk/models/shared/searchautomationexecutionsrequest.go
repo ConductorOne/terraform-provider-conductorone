@@ -77,58 +77,58 @@ type SearchAutomationExecutionsRequest struct {
 	Refs []AutomationExecutionRef `json:"refs,omitempty"`
 }
 
-func (o *SearchAutomationExecutionsRequest) GetAutomationTemplateID() *string {
-	if o == nil {
+func (s *SearchAutomationExecutionsRequest) GetAutomationTemplateID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.AutomationTemplateID
+	return s.AutomationTemplateID
 }
 
-func (o *SearchAutomationExecutionsRequest) GetExecutionID() *string {
-	if o == nil {
+func (s *SearchAutomationExecutionsRequest) GetExecutionID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ExecutionID
+	return s.ExecutionID
 }
 
-func (o *SearchAutomationExecutionsRequest) GetExecutionStepStates() []ExecutionStepStates {
-	if o == nil {
+func (s *SearchAutomationExecutionsRequest) GetExecutionStepStates() []ExecutionStepStates {
+	if s == nil {
 		return nil
 	}
-	return o.ExecutionStepStates
+	return s.ExecutionStepStates
 }
 
-func (o *SearchAutomationExecutionsRequest) GetAutomationExecutionExpandMask() *AutomationExecutionExpandMask {
-	if o == nil {
+func (s *SearchAutomationExecutionsRequest) GetAutomationExecutionExpandMask() *AutomationExecutionExpandMask {
+	if s == nil {
 		return nil
 	}
-	return o.AutomationExecutionExpandMask
+	return s.AutomationExecutionExpandMask
 }
 
-func (o *SearchAutomationExecutionsRequest) GetPageSize() *int {
-	if o == nil {
+func (s *SearchAutomationExecutionsRequest) GetPageSize() *int {
+	if s == nil {
 		return nil
 	}
-	return o.PageSize
+	return s.PageSize
 }
 
-func (o *SearchAutomationExecutionsRequest) GetPageToken() *string {
-	if o == nil {
+func (s *SearchAutomationExecutionsRequest) GetPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PageToken
+	return s.PageToken
 }
 
-func (o *SearchAutomationExecutionsRequest) GetQuery() *string {
-	if o == nil {
+func (s *SearchAutomationExecutionsRequest) GetQuery() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Query
+	return s.Query
 }
 
-func (o *SearchAutomationExecutionsRequest) GetRefs() []AutomationExecutionRef {
-	if o == nil {
+func (s *SearchAutomationExecutionsRequest) GetRefs() []AutomationExecutionRef {
+	if s == nil {
 		return nil
 	}
-	return o.Refs
+	return s.Refs
 }

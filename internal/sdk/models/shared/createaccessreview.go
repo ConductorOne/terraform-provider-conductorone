@@ -18,44 +18,44 @@ type CreateAccessReview struct {
 	UserRefs []UserRef `json:"userRefs,omitempty"`
 }
 
-func (o *CreateAccessReview) GetAccessReviewTemplateCel() *string {
-	if o == nil {
+func (c *CreateAccessReview) GetAccessReviewTemplateCel() *string {
+	if c == nil {
 		return nil
 	}
-	return o.AccessReviewTemplateCel
+	return c.AccessReviewTemplateCel
 }
 
-func (o *CreateAccessReview) GetAccessReviewTemplateID() *string {
-	if o == nil {
+func (c *CreateAccessReview) GetAccessReviewTemplateID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.AccessReviewTemplateID
+	return c.AccessReviewTemplateID
 }
 
-func (o *CreateAccessReview) GetCampaignName() *string {
-	if o == nil {
+func (c *CreateAccessReview) GetCampaignName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CampaignName
+	return c.CampaignName
 }
 
-func (o *CreateAccessReview) GetUseSubjectUser() *bool {
-	if o == nil {
+func (c *CreateAccessReview) GetUseSubjectUser() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.UseSubjectUser
+	return c.UseSubjectUser
 }
 
-func (o *CreateAccessReview) GetUserIdsCel() *string {
-	if o == nil {
+func (c *CreateAccessReview) GetUserIdsCel() *string {
+	if c == nil {
 		return nil
 	}
-	return o.UserIdsCel
+	return c.UserIdsCel
 }
 
-func (o *CreateAccessReview) GetUserRefs() []UserRef {
-	if o == nil {
+func (c *CreateAccessReview) GetUserRefs() []UserRef {
+	if c == nil {
 		return nil
 	}
-	return o.UserRefs
+	return c.UserRefs
 }

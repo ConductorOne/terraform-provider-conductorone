@@ -65,44 +65,44 @@ func (a *AppEntitlementUserBindingFeed) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AppEntitlementUserBindingFeed) GetAppEntitlementID() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingFeed) GetAppEntitlementID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppEntitlementID
+	return a.AppEntitlementID
 }
 
-func (o *AppEntitlementUserBindingFeed) GetAppID() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingFeed) GetAppID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppID
+	return a.AppID
 }
 
-func (o *AppEntitlementUserBindingFeed) GetAppUserID() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingFeed) GetAppUserID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AppUserID
+	return a.AppUserID
 }
 
-func (o *AppEntitlementUserBindingFeed) GetDate() *time.Time {
-	if o == nil {
+func (a *AppEntitlementUserBindingFeed) GetDate() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.Date
+	return a.Date
 }
 
-func (o *AppEntitlementUserBindingFeed) GetEventType() *EventType {
-	if o == nil {
+func (a *AppEntitlementUserBindingFeed) GetEventType() *EventType {
+	if a == nil {
 		return nil
 	}
-	return o.EventType
+	return a.EventType
 }
 
-func (o *AppEntitlementUserBindingFeed) GetTicketID() *string {
-	if o == nil {
+func (a *AppEntitlementUserBindingFeed) GetTicketID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.TicketID
+	return a.TicketID
 }

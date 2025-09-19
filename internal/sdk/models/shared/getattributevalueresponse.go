@@ -8,9 +8,9 @@ type GetAttributeValueResponse struct {
 	AttributeValue *AttributeValue `json:"value,omitempty"`
 }
 
-func (o *GetAttributeValueResponse) GetAttributeValue() *AttributeValue {
-	if o == nil {
+func (g *GetAttributeValueResponse) GetAttributeValue() *AttributeValue {
+	if g == nil {
 		return nil
 	}
-	return o.AttributeValue
+	return g.AttributeValue
 }

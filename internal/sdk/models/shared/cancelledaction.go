@@ -25,16 +25,16 @@ func (c *CancelledAction) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *CancelledAction) GetCancelledAt() *time.Time {
-	if o == nil {
+func (c *CancelledAction) GetCancelledAt() *time.Time {
+	if c == nil {
 		return nil
 	}
-	return o.CancelledAt
+	return c.CancelledAt
 }
 
-func (o *CancelledAction) GetCancelledByUserID() *string {
-	if o == nil {
+func (c *CancelledAction) GetCancelledByUserID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CancelledByUserID
+	return c.CancelledByUserID
 }

@@ -18,44 +18,44 @@ type SendEmail struct {
 	UserRefs []UserRef `json:"userRefs,omitempty"`
 }
 
-func (o *SendEmail) GetBody() *string {
-	if o == nil {
+func (s *SendEmail) GetBody() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Body
+	return s.Body
 }
 
-func (o *SendEmail) GetSubject() *string {
-	if o == nil {
+func (s *SendEmail) GetSubject() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Subject
+	return s.Subject
 }
 
-func (o *SendEmail) GetTitle() *string {
-	if o == nil {
+func (s *SendEmail) GetTitle() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Title
+	return s.Title
 }
 
-func (o *SendEmail) GetUseSubjectUser() *bool {
-	if o == nil {
+func (s *SendEmail) GetUseSubjectUser() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.UseSubjectUser
+	return s.UseSubjectUser
 }
 
-func (o *SendEmail) GetUserIdsCel() *string {
-	if o == nil {
+func (s *SendEmail) GetUserIdsCel() *string {
+	if s == nil {
 		return nil
 	}
-	return o.UserIdsCel
+	return s.UserIdsCel
 }
 
-func (o *SendEmail) GetUserRefs() []UserRef {
-	if o == nil {
+func (s *SendEmail) GetUserRefs() []UserRef {
+	if s == nil {
 		return nil
 	}
-	return o.UserRefs
+	return s.UserRefs
 }

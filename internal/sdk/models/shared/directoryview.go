@@ -15,16 +15,16 @@ type DirectoryView struct {
 	Directory *Directory `json:"directory,omitempty"`
 }
 
-func (o *DirectoryView) GetAppPath() *string {
-	if o == nil {
+func (d *DirectoryView) GetAppPath() *string {
+	if d == nil {
 		return nil
 	}
-	return o.AppPath
+	return d.AppPath
 }
 
-func (o *DirectoryView) GetDirectory() *Directory {
-	if o == nil {
+func (d *DirectoryView) GetDirectory() *Directory {
+	if d == nil {
 		return nil
 	}
-	return o.Directory
+	return d.Directory
 }

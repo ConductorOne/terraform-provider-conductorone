@@ -9,16 +9,16 @@ type RequestCatalogManagementServiceUpdateRequest struct {
 	UpdateMask     *string              `json:"updateMask,omitempty"`
 }
 
-func (o *RequestCatalogManagementServiceUpdateRequest) GetRequestCatalog() *RequestCatalogInput {
-	if o == nil {
+func (r *RequestCatalogManagementServiceUpdateRequest) GetRequestCatalog() *RequestCatalogInput {
+	if r == nil {
 		return nil
 	}
-	return o.RequestCatalog
+	return r.RequestCatalog
 }
 
-func (o *RequestCatalogManagementServiceUpdateRequest) GetUpdateMask() *string {
-	if o == nil {
+func (r *RequestCatalogManagementServiceUpdateRequest) GetUpdateMask() *string {
+	if r == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return r.UpdateMask
 }

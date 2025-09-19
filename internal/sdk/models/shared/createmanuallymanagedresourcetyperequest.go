@@ -60,16 +60,16 @@ type CreateManuallyManagedResourceTypeRequest struct {
 	ResourceType ResourceType `json:"resourceType"`
 }
 
-func (o *CreateManuallyManagedResourceTypeRequest) GetDisplayName() string {
-	if o == nil {
+func (c *CreateManuallyManagedResourceTypeRequest) GetDisplayName() string {
+	if c == nil {
 		return ""
 	}
-	return o.DisplayName
+	return c.DisplayName
 }
 
-func (o *CreateManuallyManagedResourceTypeRequest) GetResourceType() ResourceType {
-	if o == nil {
+func (c *CreateManuallyManagedResourceTypeRequest) GetResourceType() ResourceType {
+	if c == nil {
 		return ResourceType("")
 	}
-	return o.ResourceType
+	return c.ResourceType
 }

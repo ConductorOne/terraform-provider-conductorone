@@ -18,30 +18,30 @@ type Escalation struct {
 	ReplacePolicy *ReplacePolicy `json:"replacePolicy,omitempty"`
 }
 
-func (o *Escalation) GetEscalationComment() *string {
-	if o == nil {
+func (e *Escalation) GetEscalationComment() *string {
+	if e == nil {
 		return nil
 	}
-	return o.EscalationComment
+	return e.EscalationComment
 }
 
-func (o *Escalation) GetExpiration() *string {
-	if o == nil {
+func (e *Escalation) GetExpiration() *string {
+	if e == nil {
 		return nil
 	}
-	return o.Expiration
+	return e.Expiration
 }
 
-func (o *Escalation) GetReassignToApprovers() *ReassignToApprovers {
-	if o == nil {
+func (e *Escalation) GetReassignToApprovers() *ReassignToApprovers {
+	if e == nil {
 		return nil
 	}
-	return o.ReassignToApprovers
+	return e.ReassignToApprovers
 }
 
-func (o *Escalation) GetReplacePolicy() *ReplacePolicy {
-	if o == nil {
+func (e *Escalation) GetReplacePolicy() *ReplacePolicy {
+	if e == nil {
 		return nil
 	}
-	return o.ReplacePolicy
+	return e.ReplacePolicy
 }

@@ -8,9 +8,9 @@ type ResponseProvisionStepErrored struct {
 	Comment *string `json:"comment,omitempty"`
 }
 
-func (o *ResponseProvisionStepErrored) GetComment() *string {
-	if o == nil {
+func (r *ResponseProvisionStepErrored) GetComment() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Comment
+	return r.Comment
 }

@@ -12,18 +12,18 @@ type C1APIAppV1AppEntitlementsGetAutomationRequest struct {
 	AppEntitlementID string `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
 }
 
-func (o *C1APIAppV1AppEntitlementsGetAutomationRequest) GetAppID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsGetAutomationRequest) GetAppID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppID
+	return c.AppID
 }
 
-func (o *C1APIAppV1AppEntitlementsGetAutomationRequest) GetAppEntitlementID() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsGetAutomationRequest) GetAppEntitlementID() string {
+	if c == nil {
 		return ""
 	}
-	return o.AppEntitlementID
+	return c.AppEntitlementID
 }
 
 type C1APIAppV1AppEntitlementsGetAutomationResponse struct {
@@ -37,30 +37,30 @@ type C1APIAppV1AppEntitlementsGetAutomationResponse struct {
 	AppEntitlementServiceGetAutomationResponse *shared.AppEntitlementServiceGetAutomationResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsGetAutomationResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsGetAutomationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAppV1AppEntitlementsGetAutomationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsGetAutomationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAppV1AppEntitlementsGetAutomationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsGetAutomationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAppV1AppEntitlementsGetAutomationResponse) GetAppEntitlementServiceGetAutomationResponse() *shared.AppEntitlementServiceGetAutomationResponse {
-	if o == nil {
+func (c *C1APIAppV1AppEntitlementsGetAutomationResponse) GetAppEntitlementServiceGetAutomationResponse() *shared.AppEntitlementServiceGetAutomationResponse {
+	if c == nil {
 		return nil
 	}
-	return o.AppEntitlementServiceGetAutomationResponse
+	return c.AppEntitlementServiceGetAutomationResponse
 }

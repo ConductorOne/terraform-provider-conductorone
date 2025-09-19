@@ -13,16 +13,16 @@ type ExportServiceUpdateRequest struct {
 	UpdateMask *string        `json:"updateMask,omitempty"`
 }
 
-func (o *ExportServiceUpdateRequest) GetExporter() *ExporterInput {
-	if o == nil {
+func (e *ExportServiceUpdateRequest) GetExporter() *ExporterInput {
+	if e == nil {
 		return nil
 	}
-	return o.Exporter
+	return e.Exporter
 }
 
-func (o *ExportServiceUpdateRequest) GetUpdateMask() *string {
-	if o == nil {
+func (e *ExportServiceUpdateRequest) GetUpdateMask() *string {
+	if e == nil {
 		return nil
 	}
-	return o.UpdateMask
+	return e.UpdateMask
 }

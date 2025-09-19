@@ -20,30 +20,30 @@ type C1APIUserV1UserSearchSearchResponse struct {
 	Next func() (*C1APIUserV1UserSearchSearchResponse, error)
 }
 
-func (o *C1APIUserV1UserSearchSearchResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIUserV1UserSearchSearchResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIUserV1UserSearchSearchResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIUserV1UserSearchSearchResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIUserV1UserSearchSearchResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIUserV1UserSearchSearchResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIUserV1UserSearchSearchResponse) GetSearchUsersResponse() *shared.SearchUsersResponse {
-	if o == nil {
+func (c *C1APIUserV1UserSearchSearchResponse) GetSearchUsersResponse() *shared.SearchUsersResponse {
+	if c == nil {
 		return nil
 	}
-	return o.SearchUsersResponse
+	return c.SearchUsersResponse
 }

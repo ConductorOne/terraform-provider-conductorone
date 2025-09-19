@@ -12,16 +12,16 @@ type SearchAttributeValuesResponse struct {
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (o *SearchAttributeValuesResponse) GetList() []AttributeValue {
-	if o == nil {
+func (s *SearchAttributeValuesResponse) GetList() []AttributeValue {
+	if s == nil {
 		return nil
 	}
-	return o.List
+	return s.List
 }
 
-func (o *SearchAttributeValuesResponse) GetNextPageToken() *string {
-	if o == nil {
+func (s *SearchAttributeValuesResponse) GetNextPageToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.NextPageToken
+	return s.NextPageToken
 }

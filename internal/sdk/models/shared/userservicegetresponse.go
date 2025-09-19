@@ -14,16 +14,16 @@ type UserServiceGetResponse struct {
 	UserView *UserView `json:"userView,omitempty"`
 }
 
-func (o *UserServiceGetResponse) GetExpanded() []UserServiceGetResponseExpanded {
-	if o == nil {
+func (u *UserServiceGetResponse) GetExpanded() []UserServiceGetResponseExpanded {
+	if u == nil {
 		return nil
 	}
-	return o.Expanded
+	return u.Expanded
 }
 
-func (o *UserServiceGetResponse) GetUserView() *UserView {
-	if o == nil {
+func (u *UserServiceGetResponse) GetUserView() *UserView {
+	if u == nil {
 		return nil
 	}
-	return o.UserView
+	return u.UserView
 }

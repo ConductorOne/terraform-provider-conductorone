@@ -46,37 +46,37 @@ type RepeatedRules struct {
 	Unique *bool `json:"unique,omitempty"`
 }
 
-func (o *RepeatedRules) GetIgnoreEmpty() *bool {
-	if o == nil {
+func (r *RepeatedRules) GetIgnoreEmpty() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.IgnoreEmpty
+	return r.IgnoreEmpty
 }
 
-func (o *RepeatedRules) GetFieldRules() *FieldRules {
-	if o == nil {
+func (r *RepeatedRules) GetFieldRules() *FieldRules {
+	if r == nil {
 		return nil
 	}
-	return o.FieldRules
+	return r.FieldRules
 }
 
-func (o *RepeatedRules) GetMaxItems() *string {
-	if o == nil {
+func (r *RepeatedRules) GetMaxItems() *string {
+	if r == nil {
 		return nil
 	}
-	return o.MaxItems
+	return r.MaxItems
 }
 
-func (o *RepeatedRules) GetMinItems() *string {
-	if o == nil {
+func (r *RepeatedRules) GetMinItems() *string {
+	if r == nil {
 		return nil
 	}
-	return o.MinItems
+	return r.MinItems
 }
 
-func (o *RepeatedRules) GetUnique() *bool {
-	if o == nil {
+func (r *RepeatedRules) GetUnique() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Unique
+	return r.Unique
 }

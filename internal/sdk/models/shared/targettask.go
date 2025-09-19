@@ -10,16 +10,16 @@ type TargetTask struct {
 	TaskID *string `json:"taskId,omitempty"`
 }
 
-func (o *TargetTask) GetPolicyStepID() *string {
-	if o == nil {
+func (t *TargetTask) GetPolicyStepID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.PolicyStepID
+	return t.PolicyStepID
 }
 
-func (o *TargetTask) GetTaskID() *string {
-	if o == nil {
+func (t *TargetTask) GetTaskID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.TaskID
+	return t.TaskID
 }

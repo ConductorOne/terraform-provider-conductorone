@@ -12,18 +12,18 @@ type C1APIAttributeV1AttributesListComplianceFrameworksRequest struct {
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (o *C1APIAttributeV1AttributesListComplianceFrameworksRequest) GetPageSize() *int {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListComplianceFrameworksRequest) GetPageSize() *int {
+	if c == nil {
 		return nil
 	}
-	return o.PageSize
+	return c.PageSize
 }
 
-func (o *C1APIAttributeV1AttributesListComplianceFrameworksRequest) GetPageToken() *string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListComplianceFrameworksRequest) GetPageToken() *string {
+	if c == nil {
 		return nil
 	}
-	return o.PageToken
+	return c.PageToken
 }
 
 type C1APIAttributeV1AttributesListComplianceFrameworksResponse struct {
@@ -37,30 +37,30 @@ type C1APIAttributeV1AttributesListComplianceFrameworksResponse struct {
 	ListComplianceFrameworksResponse *shared.ListComplianceFrameworksResponse
 }
 
-func (o *C1APIAttributeV1AttributesListComplianceFrameworksResponse) GetContentType() string {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListComplianceFrameworksResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *C1APIAttributeV1AttributesListComplianceFrameworksResponse) GetStatusCode() int {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListComplianceFrameworksResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *C1APIAttributeV1AttributesListComplianceFrameworksResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListComplianceFrameworksResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *C1APIAttributeV1AttributesListComplianceFrameworksResponse) GetListComplianceFrameworksResponse() *shared.ListComplianceFrameworksResponse {
-	if o == nil {
+func (c *C1APIAttributeV1AttributesListComplianceFrameworksResponse) GetListComplianceFrameworksResponse() *shared.ListComplianceFrameworksResponse {
+	if c == nil {
 		return nil
 	}
-	return o.ListComplianceFrameworksResponse
+	return c.ListComplianceFrameworksResponse
 }
