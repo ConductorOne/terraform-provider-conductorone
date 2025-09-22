@@ -63,11 +63,10 @@ func (e *AutomationExecutionState) UnmarshalJSON(data []byte) error {
 // The AutomationExecution message.
 type AutomationExecution struct {
 	// The automationTemplateId field.
-	AutomationTemplateID *string    `json:"automationTemplateId,omitempty"`
-	CompletedAt          *time.Time `json:"completedAt,omitempty"`
-	// The AutomationContext message.
-	AutomationContext *AutomationContext `json:"context,omitempty"`
-	CreatedAt         *time.Time         `json:"createdAt,omitempty"`
+	AutomationTemplateID *string            `json:"automationTemplateId,omitempty"`
+	CompletedAt          *time.Time         `json:"completedAt,omitempty"`
+	Context              *AutomationContext `json:"context,omitempty"`
+	CreatedAt            *time.Time         `json:"createdAt,omitempty"`
 	// The currentVersion field.
 	CurrentVersion *int       `json:"currentVersion,omitempty"`
 	DeletedAt      *time.Time `json:"deletedAt,omitempty"`
@@ -106,11 +105,11 @@ func (a *AutomationExecution) GetCompletedAt() *time.Time {
 	return a.CompletedAt
 }
 
-func (a *AutomationExecution) GetAutomationContext() *AutomationContext {
+func (a *AutomationExecution) GetContext() *AutomationContext {
 	if a == nil {
 		return nil
 	}
-	return a.AutomationContext
+	return a.Context
 }
 
 func (a *AutomationExecution) GetCreatedAt() *time.Time {

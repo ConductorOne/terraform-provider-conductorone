@@ -8,21 +8,21 @@ import (
 )
 
 type C1APIAppV1AppUserServiceUpdateRequest struct {
-	AppUserAppID                string                              `pathParam:"style=simple,explode=false,name=app_user_app_id"`
-	AppUserID                   string                              `pathParam:"style=simple,explode=false,name=app_user_id"`
+	AppUserAppID                *string                             `pathParam:"style=simple,explode=false,name=app_user_app_id"`
+	AppUserID                   *string                             `pathParam:"style=simple,explode=false,name=app_user_id"`
 	AppUserServiceUpdateRequest *shared.AppUserServiceUpdateRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppUserServiceUpdateRequest) GetAppUserAppID() string {
+func (c *C1APIAppV1AppUserServiceUpdateRequest) GetAppUserAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppUserAppID
 }
 
-func (c *C1APIAppV1AppUserServiceUpdateRequest) GetAppUserID() string {
+func (c *C1APIAppV1AppUserServiceUpdateRequest) GetAppUserID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppUserID
 }

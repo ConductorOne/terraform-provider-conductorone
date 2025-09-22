@@ -46,8 +46,7 @@ type BundleAutomationCircuitBreaker struct {
 	// The state field.
 	State     *BundleAutomationCircuitBreakerState `json:"state,omitempty"`
 	UpdatedAt *time.Time                           `json:"updatedAt,omitempty"`
-	// A reference to a user.
-	UserRef *UserRef `json:"userRef,omitempty"`
+	UserRef   *UserRef                             `json:"userRef,omitempty"`
 }
 
 func (b BundleAutomationCircuitBreaker) MarshalJSON() ([]byte, error) {

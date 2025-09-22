@@ -56,7 +56,7 @@ func (r *FunctionTagResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `The commitId field. Requires replacement if changed.`,
 			},
 			"function_id": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},

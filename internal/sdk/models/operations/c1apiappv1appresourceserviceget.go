@@ -8,28 +8,28 @@ import (
 )
 
 type C1APIAppV1AppResourceServiceGetRequest struct {
-	AppID             string `pathParam:"style=simple,explode=false,name=app_id"`
-	AppResourceTypeID string `pathParam:"style=simple,explode=false,name=app_resource_type_id"`
-	ID                string `pathParam:"style=simple,explode=false,name=id"`
+	AppID             *string `pathParam:"style=simple,explode=false,name=app_id"`
+	AppResourceTypeID *string `pathParam:"style=simple,explode=false,name=app_resource_type_id"`
+	ID                *string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (c *C1APIAppV1AppResourceServiceGetRequest) GetAppID() string {
+func (c *C1APIAppV1AppResourceServiceGetRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppResourceServiceGetRequest) GetAppResourceTypeID() string {
+func (c *C1APIAppV1AppResourceServiceGetRequest) GetAppResourceTypeID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppResourceTypeID
 }
 
-func (c *C1APIAppV1AppResourceServiceGetRequest) GetID() string {
+func (c *C1APIAppV1AppResourceServiceGetRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

@@ -296,8 +296,7 @@ type Task struct {
 	EmergencyAccess *bool `json:"emergencyAccess,omitempty"`
 	// An array of external references to the task. Historically that has been items like Jira task IDs. This is currently unused, but may come back in the future for integrations.
 	ExternalRefs []ExternalRef `json:"externalRefs,omitempty"`
-	// A form is a collection of fields to be filled out by a user
-	Form *Form `json:"form,omitempty"`
+	Form         *Form         `json:"form,omitempty"`
 	// The ID of the task.
 	ID *string `json:"id,omitempty"`
 	// The insightIds field.
@@ -305,9 +304,8 @@ type Task struct {
 	// A human-usable numeric ID of a task which can be included in place of the fully qualified task id in path parmeters (but not search queries).
 	NumericID *string `json:"numericId,omitempty"`
 	// The origin field.
-	Origin *Origin `json:"origin,omitempty"`
-	// A policy instance is an object that contains a reference to the policy it was created from, the currently executing step, the next steps, and the history of previously completed steps.
-	PolicyInstance *PolicyInstance `json:"policy,omitempty"`
+	Origin *Origin         `json:"origin,omitempty"`
+	Policy *PolicyInstance `json:"policy,omitempty"`
 	// The policy generation id refers to the current policy's generation ID. This is changed when the policy is changed on a task.
 	PolicyGenerationID *string `json:"policyGenerationId,omitempty"`
 	// The processing state of a task as defined by the `processing_enum`
@@ -317,17 +315,9 @@ type Task struct {
 	// The current state of the task as defined by the `state_enum`
 	State *TaskState `json:"state,omitempty"`
 	// An array of IDs belonging to Identity Users that are allowed to review this step in a task.
-	StepApproverIds []string `json:"stepApproverIds,omitempty"`
-	// Task Type provides configuration for the type of task: certify, grant, or revoke
-	//
-	// This message contains a oneof named task_type. Only a single field of the following list may be set at a time:
-	//   - grant
-	//   - revoke
-	//   - certify
-	//   - offboarding
-	//
-	TaskType  *TaskType  `json:"type,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	StepApproverIds []string   `json:"stepApproverIds,omitempty"`
+	Type            *TaskType  `json:"type,omitempty"`
+	UpdatedAt       *time.Time `json:"updatedAt,omitempty"`
 	// The ID of the user that is the target of this task. This may be empty if we're targeting a specific app user that has no known identity user.
 	UserID *string `json:"userId,omitempty"`
 }
@@ -462,11 +452,11 @@ func (t *Task) GetOrigin() *Origin {
 	return t.Origin
 }
 
-func (t *Task) GetPolicyInstance() *PolicyInstance {
+func (t *Task) GetPolicy() *PolicyInstance {
 	if t == nil {
 		return nil
 	}
-	return t.PolicyInstance
+	return t.Policy
 }
 
 func (t *Task) GetPolicyGenerationID() *string {
@@ -504,11 +494,11 @@ func (t *Task) GetStepApproverIds() []string {
 	return t.StepApproverIds
 }
 
-func (t *Task) GetTaskType() *TaskType {
+func (t *Task) GetType() *TaskType {
 	if t == nil {
 		return nil
 	}
-	return t.TaskType
+	return t.Type
 }
 
 func (t *Task) GetUpdatedAt() *time.Time {

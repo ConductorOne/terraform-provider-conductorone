@@ -10,33 +10,29 @@ package shared
 //   - cel
 //   - basic
 type AppEntitlementServiceUpdateAutomationRequest struct {
-	// The AppEntitlementAutomationRuleBasic message.
-	AppEntitlementAutomationRuleBasic *AppEntitlementAutomationRuleBasic `json:"basic,omitempty"`
-	// The AppEntitlementAutomationRuleCEL message.
-	AppEntitlementAutomationRuleCEL *AppEntitlementAutomationRuleCEL `json:"cel,omitempty"`
+	Basic *AppEntitlementAutomationRuleBasic `json:"basic,omitempty"`
+	Cel   *AppEntitlementAutomationRuleCEL   `json:"cel,omitempty"`
 	// The description of the app entitlement.
 	Description *string `json:"description,omitempty"`
 	// The display name of the app entitlement.
-	DisplayName *string `json:"displayName,omitempty"`
-	// The AppEntitlementAutomationRuleEntitlement message.
-	AppEntitlementAutomationRuleEntitlement *AppEntitlementAutomationRuleEntitlement `json:"entitlements,omitempty"`
-	// The AppEntitlementAutomationRuleNone message.
-	AppEntitlementAutomationRuleNone *AppEntitlementAutomationRuleNone `json:"none,omitempty"`
-	UpdateMask                       *string                           `json:"updateMask,omitempty"`
+	DisplayName  *string                                  `json:"displayName,omitempty"`
+	Entitlements *AppEntitlementAutomationRuleEntitlement `json:"entitlements,omitempty"`
+	None         *AppEntitlementAutomationRuleNone        `json:"none,omitempty"`
+	UpdateMask   *string                                  `json:"updateMask,omitempty"`
 }
 
-func (a *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleBasic() *AppEntitlementAutomationRuleBasic {
+func (a *AppEntitlementServiceUpdateAutomationRequest) GetBasic() *AppEntitlementAutomationRuleBasic {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementAutomationRuleBasic
+	return a.Basic
 }
 
-func (a *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleCEL() *AppEntitlementAutomationRuleCEL {
+func (a *AppEntitlementServiceUpdateAutomationRequest) GetCel() *AppEntitlementAutomationRuleCEL {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementAutomationRuleCEL
+	return a.Cel
 }
 
 func (a *AppEntitlementServiceUpdateAutomationRequest) GetDescription() *string {
@@ -53,18 +49,18 @@ func (a *AppEntitlementServiceUpdateAutomationRequest) GetDisplayName() *string 
 	return a.DisplayName
 }
 
-func (a *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleEntitlement() *AppEntitlementAutomationRuleEntitlement {
+func (a *AppEntitlementServiceUpdateAutomationRequest) GetEntitlements() *AppEntitlementAutomationRuleEntitlement {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementAutomationRuleEntitlement
+	return a.Entitlements
 }
 
-func (a *AppEntitlementServiceUpdateAutomationRequest) GetAppEntitlementAutomationRuleNone() *AppEntitlementAutomationRuleNone {
+func (a *AppEntitlementServiceUpdateAutomationRequest) GetNone() *AppEntitlementAutomationRuleNone {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementAutomationRuleNone
+	return a.None
 }
 
 func (a *AppEntitlementServiceUpdateAutomationRequest) GetUpdateMask() *string {

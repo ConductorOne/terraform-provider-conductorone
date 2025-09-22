@@ -58,9 +58,12 @@ func (r *AccessConflictResourceModel) RefreshFromSharedConflictMonitor(ctx conte
 func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest(ctx context.Context) (*operations.C1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	var conflictMonitorDeleteRequest *shared.ConflictMonitorDeleteRequest
 	if r.ConflictMonitorDeleteRequest != nil {
 		conflictMonitorDeleteRequest = &shared.ConflictMonitorDeleteRequest{}
@@ -76,9 +79,12 @@ func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessCon
 func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessConflictServiceGetMonitorRequest(ctx context.Context) (*operations.C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest{
 		ID: id,
 	}
@@ -89,9 +95,12 @@ func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessCon
 func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessConflictServiceUpdateMonitorRequest(ctx context.Context) (*operations.C1APIAccessconflictV1AccessConflictServiceUpdateMonitorRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	conflictMonitorUpdateRequest, conflictMonitorUpdateRequestDiags := r.ToSharedConflictMonitorUpdateRequest(ctx)
 	diags.Append(conflictMonitorUpdateRequestDiags...)
 

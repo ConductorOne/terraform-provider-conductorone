@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIStepupV1StepUpProviderServiceTestRequest struct {
-	ID                        string                            `pathParam:"style=simple,explode=false,name=id"`
+	ID                        *string                           `pathParam:"style=simple,explode=false,name=id"`
 	TestStepUpProviderRequest *shared.TestStepUpProviderRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIStepupV1StepUpProviderServiceTestRequest) GetID() string {
+func (c *C1APIStepupV1StepUpProviderServiceTestRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

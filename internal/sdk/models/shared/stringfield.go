@@ -13,30 +13,13 @@ package shared
 //   - rules
 type StringField struct {
 	// The defaultValue field.
-	DefaultValue *string `json:"defaultValue,omitempty"`
-	// The PasswordField message.
+	DefaultValue  *string        `json:"defaultValue,omitempty"`
 	PasswordField *PasswordField `json:"passwordField,omitempty"`
 	// The placeholder field.
-	Placeholder *string `json:"placeholder,omitempty"`
-	// StringRules describe the constraints applied to `string` values
-	//
-	// This message contains a oneof named well_known. Only a single field of the following list may be set at a time:
-	//   - email
-	//   - hostname
-	//   - ip
-	//   - ipv4
-	//   - ipv6
-	//   - uri
-	//   - uriRef
-	//   - address
-	//   - uuid
-	//   - wellKnownRegex
-	//
-	StringRules *StringRules `json:"rules,omitempty"`
-	// The SelectField message.
+	Placeholder *string      `json:"placeholder,omitempty"`
+	Rules       *StringRules `json:"rules,omitempty"`
 	SelectField *SelectField `json:"selectField,omitempty"`
-	// The TextField message.
-	TextField *TextField `json:"textField,omitempty"`
+	TextField   *TextField   `json:"textField,omitempty"`
 }
 
 func (s *StringField) GetDefaultValue() *string {
@@ -60,11 +43,11 @@ func (s *StringField) GetPlaceholder() *string {
 	return s.Placeholder
 }
 
-func (s *StringField) GetStringRules() *StringRules {
+func (s *StringField) GetRules() *StringRules {
 	if s == nil {
 		return nil
 	}
-	return s.StringRules
+	return s.Rules
 }
 
 func (s *StringField) GetSelectField() *SelectField {

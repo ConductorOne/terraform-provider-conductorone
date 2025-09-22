@@ -20,6 +20,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -41,18 +42,18 @@ type AppEntitlementAutomationResource struct {
 
 // AppEntitlementAutomationResourceModel describes the resource data model.
 type AppEntitlementAutomationResourceModel struct {
-	AppEntitlementAutomationLastRunStatus   *tfTypes.AppEntitlementAutomationLastRunStatus   `tfsdk:"app_entitlement_automation_last_run_status"`
-	AppEntitlementAutomationRuleBasic       *tfTypes.AppEntitlementAutomationRuleBasic       `tfsdk:"app_entitlement_automation_rule_basic" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleCEL         *tfTypes.AppEntitlementAutomationRuleCEL         `tfsdk:"app_entitlement_automation_rule_cel" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleEntitlement *tfTypes.AppEntitlementAutomationRuleEntitlement `tfsdk:"app_entitlement_automation_rule_entitlement" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleNone        *tfTypes.AppEntitlementAutomationRuleNone        `tfsdk:"app_entitlement_automation_rule_none" tfPlanOnly:"true"`
-	AppEntitlementID                        types.String                                     `tfsdk:"app_entitlement_id"`
-	AppID                                   types.String                                     `tfsdk:"app_id"`
-	CreatedAt                               types.String                                     `tfsdk:"created_at"`
-	DeletedAt                               types.String                                     `tfsdk:"-"`
-	Description                             types.String                                     `tfsdk:"description"`
-	DisplayName                             types.String                                     `tfsdk:"display_name"`
-	UpdatedAt                               types.String                                     `tfsdk:"updated_at"`
+	AppEntitlementID types.String                                     `tfsdk:"app_entitlement_id"`
+	AppID            types.String                                     `tfsdk:"app_id"`
+	Basic            *tfTypes.AppEntitlementAutomationRuleBasic       `tfsdk:"basic" tfPlanOnly:"true"`
+	Cel              *tfTypes.AppEntitlementAutomationRuleCEL         `tfsdk:"cel" tfPlanOnly:"true"`
+	CreatedAt        types.String                                     `tfsdk:"created_at"`
+	DeletedAt        types.String                                     `tfsdk:"-"`
+	Description      types.String                                     `tfsdk:"description"`
+	DisplayName      types.String                                     `tfsdk:"display_name"`
+	Entitlements     *tfTypes.AppEntitlementAutomationRuleEntitlement `tfsdk:"entitlements" tfPlanOnly:"true"`
+	LastRunStatus    *tfTypes.AppEntitlementAutomationLastRunStatus   `tfsdk:"last_run_status"`
+	None             *tfTypes.AppEntitlementAutomationRuleNone        `tfsdk:"none" tfPlanOnly:"true"`
+	UpdatedAt        types.String                                     `tfsdk:"updated_at"`
 }
 
 func (r *AppEntitlementAutomationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,49 +64,15 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AppEntitlementAutomation Resource",
 		Attributes: map[string]schema.Attribute{
-			"app_entitlement_automation_last_run_status": schema.SingleNestedAttribute{
+			"app_entitlement_id": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
-				Attributes: map[string]schema.Attribute{
-					"error_message": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `The errorMessage field.`,
-					},
-					"last_completed_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-					"status": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `The status field. must be one of ["APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED",
-								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS",
-								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED",
-								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS",
-							),
-						},
-					},
-				},
-				Description: `The AppEntitlementAutomationLastRunStatus message. Requires replacement if changed.`,
 			},
-			"app_entitlement_automation_rule_basic": schema.SingleNestedAttribute{
+			"app_id": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+			},
+			"basic": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
@@ -124,7 +91,7 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 					}...),
 				},
 			},
-			"app_entitlement_automation_rule_cel": schema.SingleNestedAttribute{
+			"cel": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
@@ -143,7 +110,29 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 					}...),
 				},
 			},
-			"app_entitlement_automation_rule_entitlement": schema.SingleNestedAttribute{
+			"created_at": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Requires replacement if changed.`,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
+			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The description of the app entitlement.`,
+			},
+			"display_name": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The display name of the app entitlement.`,
+			},
+			"entitlements": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
@@ -179,7 +168,52 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 					}...),
 				},
 			},
-			"app_entitlement_automation_rule_none": schema.SingleNestedAttribute{
+			"last_run_status": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
+				Attributes: map[string]schema.Attribute{
+					"error_message": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `The errorMessage field.`,
+					},
+					"last_completed_at": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `Requires replacement if changed.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"status": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `The status field. must be one of ["APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED",
+								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS",
+								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED",
+								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS",
+							),
+						},
+					},
+				},
+				Description: `The AppEntitlementAutomationLastRunStatus message. Requires replacement if changed.`,
+			},
+			"none": schema.SingleNestedAttribute{
 				Computed:    true,
 				Optional:    true,
 				Description: `The AppEntitlementAutomationRuleNone message.`,
@@ -191,30 +225,14 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 					}...),
 				},
 			},
-			"app_entitlement_id": schema.StringAttribute{
-				Required: true,
-			},
-			"app_id": schema.StringAttribute{
-				Required: true,
-			},
-			"created_at": schema.StringAttribute{
-				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
-			},
-			"description": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The description of the app entitlement.`,
-			},
-			"display_name": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The display name of the app entitlement.`,
-			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Requires replacement if changed.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
@@ -283,11 +301,11 @@ func (r *AppEntitlementAutomationResource) Create(ctx context.Context, req resou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateAutomationResponse != nil && res.CreateAutomationResponse.AppEntitlementAutomation != nil) {
+	if !(res.CreateAutomationResponse != nil && res.CreateAutomationResponse.Automation != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementAutomation(ctx, res.CreateAutomationResponse.AppEntitlementAutomation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementAutomation(ctx, res.CreateAutomationResponse.Automation)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -506,8 +524,8 @@ func (r *AppEntitlementAutomationResource) ImportState(ctx context.Context, req 
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		AppEntitlementID string `json:"app_entitlement_id"`
-		AppID            string `json:"app_id"`
+		AppEntitlementID *string `json:"app_entitlement_id"`
+		AppID            *string `json:"app_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -515,12 +533,12 @@ func (r *AppEntitlementAutomationResource) ImportState(ctx context.Context, req 
 		return
 	}
 
-	if len(data.AppEntitlementID) == 0 {
+	if data.AppEntitlementID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field app_entitlement_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_entitlement_id"), data.AppEntitlementID)...)
-	if len(data.AppID) == 0 {
+	if data.AppID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field app_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}

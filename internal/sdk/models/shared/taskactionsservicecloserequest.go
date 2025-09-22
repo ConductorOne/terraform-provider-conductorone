@@ -5,7 +5,8 @@ package shared
 // The TaskActionsServiceCloseRequest object lets you close or cancel a task.
 type TaskActionsServiceCloseRequest struct {
 	// The comment field.
-	Comment *string `json:"comment,omitempty"`
+	Comment    *string         `json:"comment,omitempty"`
+	ExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 }
 
 func (t *TaskActionsServiceCloseRequest) GetComment() *string {
@@ -13,4 +14,11 @@ func (t *TaskActionsServiceCloseRequest) GetComment() *string {
 		return nil
 	}
 	return t.Comment
+}
+
+func (t *TaskActionsServiceCloseRequest) GetExpandMask() *TaskExpandMask {
+	if t == nil {
+		return nil
+	}
+	return t.ExpandMask
 }

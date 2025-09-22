@@ -16,51 +16,22 @@ func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx co
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.BundleAutomationCircuitBreaker == nil {
-			r.BundleAutomationCircuitBreaker = nil
+		if resp.CircuitBreaker == nil {
+			r.CircuitBreaker = nil
 		} else {
-			r.BundleAutomationCircuitBreaker = &tfTypes.BundleAutomationCircuitBreaker{}
-			r.BundleAutomationCircuitBreaker.RemovedMembersThresholdPercentage = types.StringPointerValue(resp.BundleAutomationCircuitBreaker.RemovedMembersThresholdPercentage)
-			if resp.BundleAutomationCircuitBreaker.State != nil {
-				r.BundleAutomationCircuitBreaker.State = types.StringValue(string(*resp.BundleAutomationCircuitBreaker.State))
+			r.CircuitBreaker = &tfTypes.BundleAutomationCircuitBreaker{}
+			r.CircuitBreaker.RemovedMembersThresholdPercentage = types.StringPointerValue(resp.CircuitBreaker.RemovedMembersThresholdPercentage)
+			if resp.CircuitBreaker.State != nil {
+				r.CircuitBreaker.State = types.StringValue(string(*resp.CircuitBreaker.State))
 			} else {
-				r.BundleAutomationCircuitBreaker.State = types.StringNull()
+				r.CircuitBreaker.State = types.StringNull()
 			}
-			r.BundleAutomationCircuitBreaker.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationCircuitBreaker.UpdatedAt))
-			if resp.BundleAutomationCircuitBreaker.UserRef == nil {
-				r.BundleAutomationCircuitBreaker.UserRef = nil
+			r.CircuitBreaker.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CircuitBreaker.UpdatedAt))
+			if resp.CircuitBreaker.UserRef == nil {
+				r.CircuitBreaker.UserRef = nil
 			} else {
-				r.BundleAutomationCircuitBreaker.UserRef = &tfTypes.UserRef{}
-				r.BundleAutomationCircuitBreaker.UserRef.ID = types.StringPointerValue(resp.BundleAutomationCircuitBreaker.UserRef.ID)
-			}
-		}
-		if resp.BundleAutomationLastRunState == nil {
-			r.BundleAutomationLastRunState = nil
-		} else {
-			r.BundleAutomationLastRunState = &tfTypes.BundleAutomationLastRunState{}
-			r.BundleAutomationLastRunState.ErrorMessage = types.StringPointerValue(resp.BundleAutomationLastRunState.ErrorMessage)
-			r.BundleAutomationLastRunState.LastRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationLastRunState.LastRunAt))
-			if resp.BundleAutomationLastRunState.Status != nil {
-				r.BundleAutomationLastRunState.Status = types.StringValue(string(*resp.BundleAutomationLastRunState.Status))
-			} else {
-				r.BundleAutomationLastRunState.Status = types.StringNull()
-			}
-		}
-		if resp.BundleAutomationRuleEntitlement == nil {
-			r.BundleAutomationRuleEntitlement = nil
-		} else {
-			r.BundleAutomationRuleEntitlement = &tfTypes.BundleAutomationRuleEntitlement{}
-			if resp.BundleAutomationRuleEntitlement.EntitlementRefs != nil {
-				r.BundleAutomationRuleEntitlement.EntitlementRefs = []tfTypes.AppEntitlementRef{}
-
-				for _, entitlementRefsItem := range resp.BundleAutomationRuleEntitlement.EntitlementRefs {
-					var entitlementRefs tfTypes.AppEntitlementRef
-
-					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
-					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
-
-					r.BundleAutomationRuleEntitlement.EntitlementRefs = append(r.BundleAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
-				}
+				r.CircuitBreaker.UserRef = &tfTypes.UserRef{}
+				r.CircuitBreaker.UserRef.ID = types.StringPointerValue(resp.CircuitBreaker.UserRef.ID)
 			}
 		}
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
@@ -68,7 +39,36 @@ func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx co
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.DisableCircuitBreaker = types.BoolPointerValue(resp.DisableCircuitBreaker)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		if resp.Entitlements == nil {
+			r.Entitlements = nil
+		} else {
+			r.Entitlements = &tfTypes.BundleAutomationRuleEntitlement{}
+			if resp.Entitlements.EntitlementRefs != nil {
+				r.Entitlements.EntitlementRefs = []tfTypes.AppEntitlementRef{}
+
+				for _, entitlementRefsItem := range resp.Entitlements.EntitlementRefs {
+					var entitlementRefs tfTypes.AppEntitlementRef
+
+					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
+					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
+
+					r.Entitlements.EntitlementRefs = append(r.Entitlements.EntitlementRefs, entitlementRefs)
+				}
+			}
+		}
 		r.RequestCatalogID = types.StringPointerValue(resp.RequestCatalogID)
+		if resp.State == nil {
+			r.State = nil
+		} else {
+			r.State = &tfTypes.BundleAutomationLastRunState{}
+			r.State.ErrorMessage = types.StringPointerValue(resp.State.ErrorMessage)
+			r.State.LastRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.State.LastRunAt))
+			if resp.State.Status != nil {
+				r.State.Status = types.StringValue(string(*resp.State.Status))
+			} else {
+				r.State.Status = types.StringNull()
+			}
+		}
 		r.TenantID = types.StringPointerValue(resp.TenantID)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
@@ -79,9 +79,12 @@ func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx co
 func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var requestCatalogID string
-	requestCatalogID = r.RequestCatalogID.ValueString()
-
+	requestCatalogID := new(string)
+	if !r.RequestCatalogID.IsUnknown() && !r.RequestCatalogID.IsNull() {
+		*requestCatalogID = r.RequestCatalogID.ValueString()
+	} else {
+		requestCatalogID = nil
+	}
 	createBundleAutomationRequest, createBundleAutomationRequestDiags := r.ToSharedCreateBundleAutomationRequest(ctx)
 	diags.Append(createBundleAutomationRequestDiags...)
 
@@ -100,9 +103,12 @@ func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1Request
 func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var requestCatalogID string
-	requestCatalogID = r.RequestCatalogID.ValueString()
-
+	requestCatalogID := new(string)
+	if !r.RequestCatalogID.IsUnknown() && !r.RequestCatalogID.IsNull() {
+		*requestCatalogID = r.RequestCatalogID.ValueString()
+	} else {
+		requestCatalogID = nil
+	}
 	var deleteBundleAutomationRequest *shared.DeleteBundleAutomationRequest
 	if r.DeleteBundleAutomationRequest != nil {
 		deleteBundleAutomationRequest = &shared.DeleteBundleAutomationRequest{}
@@ -118,9 +124,12 @@ func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1Request
 func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var requestCatalogID string
-	requestCatalogID = r.RequestCatalogID.ValueString()
-
+	requestCatalogID := new(string)
+	if !r.RequestCatalogID.IsUnknown() && !r.RequestCatalogID.IsNull() {
+		*requestCatalogID = r.RequestCatalogID.ValueString()
+	} else {
+		requestCatalogID = nil
+	}
 	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationRequest{
 		RequestCatalogID: requestCatalogID,
 	}
@@ -131,9 +140,12 @@ func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1Request
 func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var requestCatalogID string
-	requestCatalogID = r.RequestCatalogID.ValueString()
-
+	requestCatalogID := new(string)
+	if !r.RequestCatalogID.IsUnknown() && !r.RequestCatalogID.IsNull() {
+		*requestCatalogID = r.RequestCatalogID.ValueString()
+	} else {
+		requestCatalogID = nil
+	}
 	setBundleAutomationRequest, setBundleAutomationRequestDiags := r.ToSharedSetBundleAutomationRequest(ctx)
 	diags.Append(setBundleAutomationRequestDiags...)
 
@@ -170,12 +182,12 @@ func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ct
 	} else {
 		enabled = nil
 	}
-	var bundleAutomationRuleEntitlement *shared.BundleAutomationRuleEntitlement
-	if r.BundleAutomationRuleEntitlement != nil {
+	var entitlements *shared.BundleAutomationRuleEntitlement
+	if r.Entitlements != nil {
 		var entitlementRefs []shared.AppEntitlementRef
-		if r.BundleAutomationRuleEntitlement.EntitlementRefs != nil {
-			entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.BundleAutomationRuleEntitlement.EntitlementRefs))
-			for _, entitlementRefsItem := range r.BundleAutomationRuleEntitlement.EntitlementRefs {
+		if r.Entitlements.EntitlementRefs != nil {
+			entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.Entitlements.EntitlementRefs))
+			for _, entitlementRefsItem := range r.Entitlements.EntitlementRefs {
 				appID := new(string)
 				if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
 					*appID = entitlementRefsItem.AppID.ValueString()
@@ -194,15 +206,15 @@ func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ct
 				})
 			}
 		}
-		bundleAutomationRuleEntitlement = &shared.BundleAutomationRuleEntitlement{
+		entitlements = &shared.BundleAutomationRuleEntitlement{
 			EntitlementRefs: entitlementRefs,
 		}
 	}
 	out := shared.CreateBundleAutomationRequest{
-		CreateTasks:                     createTasks,
-		DisableCircuitBreaker:           disableCircuitBreaker,
-		Enabled:                         enabled,
-		BundleAutomationRuleEntitlement: bundleAutomationRuleEntitlement,
+		CreateTasks:           createTasks,
+		DisableCircuitBreaker: disableCircuitBreaker,
+		Enabled:               enabled,
+		Entitlements:          entitlements,
 	}
 
 	return &out, diags
@@ -237,12 +249,12 @@ func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest(ctx c
 	} else {
 		enabled = nil
 	}
-	var bundleAutomationRuleEntitlement *shared.BundleAutomationRuleEntitlement
-	if r.BundleAutomationRuleEntitlement != nil {
+	var entitlements *shared.BundleAutomationRuleEntitlement
+	if r.Entitlements != nil {
 		var entitlementRefs []shared.AppEntitlementRef
-		if r.BundleAutomationRuleEntitlement.EntitlementRefs != nil {
-			entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.BundleAutomationRuleEntitlement.EntitlementRefs))
-			for _, entitlementRefsItem := range r.BundleAutomationRuleEntitlement.EntitlementRefs {
+		if r.Entitlements.EntitlementRefs != nil {
+			entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.Entitlements.EntitlementRefs))
+			for _, entitlementRefsItem := range r.Entitlements.EntitlementRefs {
 				appID := new(string)
 				if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
 					*appID = entitlementRefsItem.AppID.ValueString()
@@ -261,15 +273,15 @@ func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest(ctx c
 				})
 			}
 		}
-		bundleAutomationRuleEntitlement = &shared.BundleAutomationRuleEntitlement{
+		entitlements = &shared.BundleAutomationRuleEntitlement{
 			EntitlementRefs: entitlementRefs,
 		}
 	}
 	out := shared.SetBundleAutomationRequest{
-		CreateTasks:                     createTasks,
-		DisableCircuitBreaker:           disableCircuitBreaker,
-		Enabled:                         enabled,
-		BundleAutomationRuleEntitlement: bundleAutomationRuleEntitlement,
+		CreateTasks:           createTasks,
+		DisableCircuitBreaker: disableCircuitBreaker,
+		Enabled:               enabled,
+		Entitlements:          entitlements,
 	}
 
 	return &out, diags

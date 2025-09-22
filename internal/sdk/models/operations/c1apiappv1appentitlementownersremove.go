@@ -8,29 +8,29 @@ import (
 )
 
 type C1APIAppV1AppEntitlementOwnersRemoveRequest struct {
-	AppID                            string                                   `pathParam:"style=simple,explode=false,name=app_id"`
-	EntitlementID                    string                                   `pathParam:"style=simple,explode=false,name=entitlement_id"`
-	UserID                           string                                   `pathParam:"style=simple,explode=false,name=user_id"`
+	AppID                            *string                                  `pathParam:"style=simple,explode=false,name=app_id"`
+	EntitlementID                    *string                                  `pathParam:"style=simple,explode=false,name=entitlement_id"`
+	UserID                           *string                                  `pathParam:"style=simple,explode=false,name=user_id"`
 	RemoveAppEntitlementOwnerRequest *shared.RemoveAppEntitlementOwnerRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetAppID() string {
+func (c *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetEntitlementID() string {
+func (c *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetEntitlementID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.EntitlementID
 }
 
-func (c *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetUserID() string {
+func (c *C1APIAppV1AppEntitlementOwnersRemoveRequest) GetUserID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.UserID
 }

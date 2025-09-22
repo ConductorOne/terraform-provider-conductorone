@@ -4,17 +4,16 @@ package shared
 
 // The FunctionsServiceGetCommitResponse message.
 type FunctionsServiceGetCommitResponse struct {
-	// FunctionCommit represents a single commit in a function's history
-	FunctionCommit *FunctionCommit `json:"commit,omitempty"`
+	Commit *FunctionCommit `json:"commit,omitempty"`
 	// The content field.
 	Content map[string]string `json:"content,omitempty"`
 }
 
-func (f *FunctionsServiceGetCommitResponse) GetFunctionCommit() *FunctionCommit {
+func (f *FunctionsServiceGetCommitResponse) GetCommit() *FunctionCommit {
 	if f == nil {
 		return nil
 	}
-	return f.FunctionCommit
+	return f.Commit
 }
 
 func (f *FunctionsServiceGetCommitResponse) GetContent() map[string]string {

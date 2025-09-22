@@ -12,16 +12,13 @@ type Wait struct {
 	// The comment to post on first failed check.
 	CommentOnFirstWait *string `json:"commentOnFirstWait,omitempty"`
 	// The comment to post if we timeout.
-	CommentOnTimeout *string `json:"commentOnTimeout,omitempty"`
-	// The WaitCondition message.
-	WaitCondition *WaitCondition `json:"condition,omitempty"`
-	// The WaitDuration message.
-	WaitDuration *WaitDuration `json:"duration,omitempty"`
+	CommentOnTimeout *string        `json:"commentOnTimeout,omitempty"`
+	Condition        *WaitCondition `json:"condition,omitempty"`
+	Duration         *WaitDuration  `json:"duration,omitempty"`
 	// The name of our condition to show on the task details page
-	Name            *string `json:"name,omitempty"`
-	TimeoutDuration *string `json:"timeoutDuration,omitempty"`
-	// Waits until a specific time of the day (UTC)
-	WaitUntilTime *WaitUntilTime `json:"untilTime,omitempty"`
+	Name            *string        `json:"name,omitempty"`
+	TimeoutDuration *string        `json:"timeoutDuration,omitempty"`
+	UntilTime       *WaitUntilTime `json:"untilTime,omitempty"`
 }
 
 func (w *Wait) GetCommentOnFirstWait() *string {
@@ -38,18 +35,18 @@ func (w *Wait) GetCommentOnTimeout() *string {
 	return w.CommentOnTimeout
 }
 
-func (w *Wait) GetWaitCondition() *WaitCondition {
+func (w *Wait) GetCondition() *WaitCondition {
 	if w == nil {
 		return nil
 	}
-	return w.WaitCondition
+	return w.Condition
 }
 
-func (w *Wait) GetWaitDuration() *WaitDuration {
+func (w *Wait) GetDuration() *WaitDuration {
 	if w == nil {
 		return nil
 	}
-	return w.WaitDuration
+	return w.Duration
 }
 
 func (w *Wait) GetName() *string {
@@ -66,9 +63,9 @@ func (w *Wait) GetTimeoutDuration() *string {
 	return w.TimeoutDuration
 }
 
-func (w *Wait) GetWaitUntilTime() *WaitUntilTime {
+func (w *Wait) GetUntilTime() *WaitUntilTime {
 	if w == nil {
 		return nil
 	}
-	return w.WaitUntilTime
+	return w.UntilTime
 }

@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIStepupV1StepUpProviderServiceDeleteRequest struct {
-	ID                          string                              `pathParam:"style=simple,explode=false,name=id"`
+	ID                          *string                             `pathParam:"style=simple,explode=false,name=id"`
 	DeleteStepUpProviderRequest *shared.DeleteStepUpProviderRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIStepupV1StepUpProviderServiceDeleteRequest) GetID() string {
+func (c *C1APIStepupV1StepUpProviderServiceDeleteRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

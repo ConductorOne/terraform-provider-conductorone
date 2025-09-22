@@ -8,21 +8,21 @@ import (
 )
 
 type C1APIAppV1AppEntitlementsDeleteRequest struct {
-	AppID                       string                              `pathParam:"style=simple,explode=false,name=app_id"`
-	ID                          string                              `pathParam:"style=simple,explode=false,name=id"`
+	AppID                       *string                             `pathParam:"style=simple,explode=false,name=app_id"`
+	ID                          *string                             `pathParam:"style=simple,explode=false,name=id"`
 	DeleteAppEntitlementRequest *shared.DeleteAppEntitlementRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppEntitlementsDeleteRequest) GetAppID() string {
+func (c *C1APIAppV1AppEntitlementsDeleteRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppEntitlementsDeleteRequest) GetID() string {
+func (c *C1APIAppV1AppEntitlementsDeleteRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

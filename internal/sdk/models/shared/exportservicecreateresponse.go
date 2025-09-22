@@ -4,11 +4,6 @@ package shared
 
 // The ExportServiceCreateResponse message.
 type ExportServiceCreateResponse struct {
-	// The Exporter message.
-	//
-	// This message contains a oneof named export_to. Only a single field of the following list may be set at a time:
-	//   - datasource
-	//
 	Exporter *Exporter `json:"exporter,omitempty"`
 }
 

@@ -11,14 +11,11 @@ package shared
 //   - atLeastOne
 //   - mutuallyExclusive
 type FieldRelationship struct {
-	// The AtLeastOne message.
 	AtLeastOne *AtLeastOne `json:"atLeastOne,omitempty"`
 	// The names of the fields that share this relationship
-	FieldNames []string `json:"fieldNames,omitempty"`
-	// The MutuallyExclusive message.
+	FieldNames        []string           `json:"fieldNames,omitempty"`
 	MutuallyExclusive *MutuallyExclusive `json:"mutuallyExclusive,omitempty"`
-	// The RequiredTogether message.
-	RequiredTogether *RequiredTogether `json:"requiredTogether,omitempty"`
+	RequiredTogether  *RequiredTogether  `json:"requiredTogether,omitempty"`
 }
 
 func (f *FieldRelationship) GetAtLeastOne() *AtLeastOne {

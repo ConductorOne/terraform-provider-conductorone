@@ -7,15 +7,15 @@ import (
 )
 
 type AutomationTrigger struct {
-	AppUserCreatedTrigger       *AppUserCreatedTrigger       `tfsdk:"app_user_created_trigger"`
-	AppUserUpdatedTrigger       *AppUserUpdatedTrigger       `tfsdk:"app_user_updated_trigger"`
-	FormTrigger                 jsontypes.Normalized         `tfsdk:"form_trigger"`
-	GrantDeletedTrigger         *GrantDeletedTrigger         `tfsdk:"grant_deleted_trigger"`
-	GrantFoundTrigger           *GrantFoundTrigger           `tfsdk:"grant_found_trigger"`
-	ManualAutomationTrigger     *ManualAutomationTrigger     `tfsdk:"manual_automation_trigger"`
-	ScheduleTrigger             *ScheduleTrigger             `tfsdk:"schedule_trigger"`
-	UsageBasedRevocationTrigger *UsageBasedRevocationTrigger `tfsdk:"usage_based_revocation_trigger"`
-	UserCreatedTrigger          *UserCreatedTrigger          `tfsdk:"user_created_trigger"`
-	UserProfileChangeTrigger    *UserProfileChangeTrigger    `tfsdk:"user_profile_change_trigger"`
-	WebhookAutomationTrigger    *WebhookAutomationTrigger    `tfsdk:"webhook_automation_trigger"`
+	AppUserCreated       *AppUserCreatedTrigger       `tfsdk:"app_user_created"`
+	AppUserUpdated       *AppUserUpdatedTrigger       `tfsdk:"app_user_updated"`
+	Form                 jsontypes.Normalized         `tfsdk:"form"`
+	GrantDeleted         *GrantDeletedTrigger         `tfsdk:"grant_deleted"`
+	GrantFound           *GrantFoundTrigger           `tfsdk:"grant_found"`
+	Manual               *ManualAutomationTrigger     `tfsdk:"manual"`
+	Schedule             *ScheduleTrigger             `tfsdk:"schedule"`
+	UsageBasedRevocation *UsageBasedRevocationTrigger `tfsdk:"usage_based_revocation"`
+	UserCreated          *UserCreatedTrigger          `tfsdk:"user_created"`
+	UserProfileChange    *UserProfileChangeTrigger    `tfsdk:"user_profile_change"`
+	Webhook              *WebhookAutomationTrigger    `tfsdk:"webhook"`
 }

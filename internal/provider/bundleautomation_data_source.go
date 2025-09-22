@@ -29,17 +29,17 @@ type BundleAutomationDataSource struct {
 
 // BundleAutomationDataSourceModel describes the data model.
 type BundleAutomationDataSourceModel struct {
-	BundleAutomationCircuitBreaker  *tfTypes.BundleAutomationCircuitBreaker  `tfsdk:"bundle_automation_circuit_breaker"`
-	BundleAutomationLastRunState    *tfTypes.BundleAutomationLastRunState    `tfsdk:"bundle_automation_last_run_state"`
-	BundleAutomationRuleEntitlement *tfTypes.BundleAutomationRuleEntitlement `tfsdk:"bundle_automation_rule_entitlement"`
-	CreateTasks                     types.Bool                               `tfsdk:"create_tasks"`
-	CreatedAt                       types.String                             `tfsdk:"created_at"`
-	DeletedAt                       types.String                             `tfsdk:"deleted_at"`
-	DisableCircuitBreaker           types.Bool                               `tfsdk:"disable_circuit_breaker"`
-	Enabled                         types.Bool                               `tfsdk:"enabled"`
-	RequestCatalogID                types.String                             `tfsdk:"request_catalog_id"`
-	TenantID                        types.String                             `tfsdk:"tenant_id"`
-	UpdatedAt                       types.String                             `tfsdk:"updated_at"`
+	CircuitBreaker        *tfTypes.BundleAutomationCircuitBreaker  `tfsdk:"circuit_breaker"`
+	CreateTasks           types.Bool                               `tfsdk:"create_tasks"`
+	CreatedAt             types.String                             `tfsdk:"created_at"`
+	DeletedAt             types.String                             `tfsdk:"deleted_at"`
+	DisableCircuitBreaker types.Bool                               `tfsdk:"disable_circuit_breaker"`
+	Enabled               types.Bool                               `tfsdk:"enabled"`
+	Entitlements          *tfTypes.BundleAutomationRuleEntitlement `tfsdk:"entitlements"`
+	RequestCatalogID      types.String                             `tfsdk:"request_catalog_id"`
+	State                 *tfTypes.BundleAutomationLastRunState    `tfsdk:"state"`
+	TenantID              types.String                             `tfsdk:"tenant_id"`
+	UpdatedAt             types.String                             `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -53,7 +53,7 @@ func (r *BundleAutomationDataSource) Schema(ctx context.Context, req datasource.
 		MarkdownDescription: "BundleAutomation DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"bundle_automation_circuit_breaker": schema.SingleNestedAttribute{
+			"circuit_breaker": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"removed_members_threshold_percentage": schema.StringAttribute{
@@ -80,24 +80,25 @@ func (r *BundleAutomationDataSource) Schema(ctx context.Context, req datasource.
 				},
 				Description: `The BundleAutomationCircuitBreaker message.`,
 			},
-			"bundle_automation_last_run_state": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"error_message": schema.StringAttribute{
-						Computed:    true,
-						Description: `The errorMessage field.`,
-					},
-					"last_run_at": schema.StringAttribute{
-						Computed: true,
-					},
-					"status": schema.StringAttribute{
-						Computed:    true,
-						Description: `The status field.`,
-					},
-				},
-				Description: `The BundleAutomationLastRunState message.`,
+			"create_tasks": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The createTasks field.`,
 			},
-			"bundle_automation_rule_entitlement": schema.SingleNestedAttribute{
+			"created_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"deleted_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"disable_circuit_breaker": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The disableCircuitBreaker field.`,
+			},
+			"enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The enabled field.`,
+			},
+			"entitlements": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"entitlement_refs": schema.ListNestedAttribute{
@@ -119,26 +120,26 @@ func (r *BundleAutomationDataSource) Schema(ctx context.Context, req datasource.
 				},
 				Description: `The BundleAutomationRuleEntitlement message.`,
 			},
-			"create_tasks": schema.BoolAttribute{
-				Computed:    true,
-				Description: `The createTasks field.`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"deleted_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"disable_circuit_breaker": schema.BoolAttribute{
-				Computed:    true,
-				Description: `The disableCircuitBreaker field.`,
-			},
-			"enabled": schema.BoolAttribute{
-				Computed:    true,
-				Description: `The enabled field.`,
-			},
 			"request_catalog_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
+			},
+			"state": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"error_message": schema.StringAttribute{
+						Computed:    true,
+						Description: `The errorMessage field.`,
+					},
+					"last_run_at": schema.StringAttribute{
+						Computed: true,
+					},
+					"status": schema.StringAttribute{
+						Computed:    true,
+						Description: `The status field.`,
+					},
+				},
+				Description: `The BundleAutomationLastRunState message.`,
 			},
 			"tenant_id": schema.StringAttribute{
 				Computed:    true,

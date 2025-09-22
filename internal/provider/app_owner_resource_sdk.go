@@ -21,9 +21,12 @@ func (r *AppOwnerResourceModel) RefreshFromSharedSetAppOwnersResponse(ctx contex
 func (r *AppOwnerResourceModel) ToOperationsC1APIAppV1AppOwnersSetRequest(ctx context.Context) (*operations.C1APIAppV1AppOwnersSetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
 	setAppOwnersRequest, setAppOwnersRequestDiags := r.ToSharedSetAppOwnersRequest(ctx)
 	diags.Append(setAppOwnersRequestDiags...)
 

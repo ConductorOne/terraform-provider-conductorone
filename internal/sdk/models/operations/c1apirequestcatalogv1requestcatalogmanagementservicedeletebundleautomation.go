@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest struct {
-	RequestCatalogID              string                                `pathParam:"style=simple,explode=false,name=request_catalog_id"`
+	RequestCatalogID              *string                               `pathParam:"style=simple,explode=false,name=request_catalog_id"`
 	DeleteBundleAutomationRequest *shared.DeleteBundleAutomationRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest) GetRequestCatalogID() string {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest) GetRequestCatalogID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.RequestCatalogID
 }

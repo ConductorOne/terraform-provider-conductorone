@@ -5,7 +5,8 @@ package shared
 // The TaskActionsServiceSkipStepRequest object lets you skip a policy step in a task.
 type TaskActionsServiceSkipStepRequest struct {
 	// The comment attached to the request.
-	Comment *string `json:"comment,omitempty"`
+	Comment    *string         `json:"comment,omitempty"`
+	ExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// The ID of the policy step to skip.
 	PolicyStepID string `json:"policyStepId"`
 }
@@ -15,6 +16,13 @@ func (t *TaskActionsServiceSkipStepRequest) GetComment() *string {
 		return nil
 	}
 	return t.Comment
+}
+
+func (t *TaskActionsServiceSkipStepRequest) GetExpandMask() *TaskExpandMask {
+	if t == nil {
+		return nil
+	}
+	return t.ExpandMask
 }
 
 func (t *TaskActionsServiceSkipStepRequest) GetPolicyStepID() string {

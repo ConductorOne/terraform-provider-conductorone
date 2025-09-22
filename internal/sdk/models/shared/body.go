@@ -24,8 +24,7 @@ type Body struct {
 	//  - "c1.webhooks.v1.PayloadPolicyApprovalStep"
 	//  - "c1.webhooks.v1.PayloadPolicyPostAction"
 	//  - "c1.webhooks.v1.PayloadProvisionStep"
-	Event *string `json:"event,omitempty"`
-	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+	Event   *string      `json:"event,omitempty"`
 	Payload *BodyPayload `json:"payload,omitempty"`
 	// version contains the constant value "v1". Future versions of the Webhook body will use a different string.
 	//

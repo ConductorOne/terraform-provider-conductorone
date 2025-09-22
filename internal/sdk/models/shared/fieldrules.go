@@ -29,225 +29,180 @@ package shared
 //   - duration
 //   - timestamp
 type FieldRules struct {
-	// AnyRules describe constraints applied exclusively to the
-	//  `google.protobuf.Any` well-known type
-	AnyRules *AnyRules `json:"any,omitempty"`
-	// BoolRules describes the constraints applied to `bool` values
-	BoolRules *BoolRules `json:"bool,omitempty"`
-	// BytesRules describe the constraints applied to `bytes` values
-	//
-	// This message contains a oneof named well_known. Only a single field of the following list may be set at a time:
-	//   - ip
-	//   - ipv4
-	//   - ipv6
-	//
-	BytesRules *BytesRules `json:"bytes,omitempty"`
-	// DoubleRules describes the constraints applied to `double` values
-	DoubleRules *DoubleRules `json:"double,omitempty"`
-	// DurationRules describe the constraints applied exclusively to the
-	//  `google.protobuf.Duration` well-known type
-	DurationRules *DurationRules `json:"duration,omitempty"`
-	// EnumRules describe the constraints applied to enum values
-	EnumRules *EnumRules `json:"enum,omitempty"`
-	// Fixed32Rules describes the constraints applied to `fixed32` values
-	Fixed32Rules *Fixed32Rules `json:"fixed32,omitempty"`
-	// Fixed64Rules describes the constraints applied to `fixed64` values
-	Fixed64Rules *Fixed64Rules `json:"fixed64,omitempty"`
-	// FloatRules describes the constraints applied to `float` values
-	FloatRules *FloatRules `json:"float,omitempty"`
-	// Int32Rules describes the constraints applied to `int32` values
-	Int32Rules *Int32Rules `json:"int32,omitempty"`
-	// Int64Rules describes the constraints applied to `int64` values
-	Int64Rules *Int64Rules `json:"int64,omitempty"`
-	// MapRules describe the constraints applied to `map` values
-	MapRules *MapRules `json:"map,omitempty"`
-	// MessageRules describe the constraints applied to embedded message values.
-	//  For message-type fields, validation is performed recursively.
-	MessageRules *MessageRules `json:"message,omitempty"`
-	// RepeatedRules describe the constraints applied to `repeated` values
-	RepeatedRules *RepeatedRules `json:"repeated,omitempty"`
-	// SFixed32Rules describes the constraints applied to `sfixed32` values
-	SFixed32Rules *SFixed32Rules `json:"sfixed32,omitempty"`
-	// SFixed64Rules describes the constraints applied to `sfixed64` values
-	SFixed64Rules *SFixed64Rules `json:"sfixed64,omitempty"`
-	// SInt32Rules describes the constraints applied to `sint32` values
-	SInt32Rules *SInt32Rules `json:"sint32,omitempty"`
-	// SInt64Rules describes the constraints applied to `sint64` values
-	SInt64Rules *SInt64Rules `json:"sint64,omitempty"`
-	// StringRules describe the constraints applied to `string` values
-	//
-	// This message contains a oneof named well_known. Only a single field of the following list may be set at a time:
-	//   - email
-	//   - hostname
-	//   - ip
-	//   - ipv4
-	//   - ipv6
-	//   - uri
-	//   - uriRef
-	//   - address
-	//   - uuid
-	//   - wellKnownRegex
-	//
-	StringRules *StringRules `json:"string,omitempty"`
-	// TimestampRules describe the constraints applied exclusively to the
-	//  `google.protobuf.Timestamp` well-known type
-	TimestampRules *TimestampRules `json:"timestamp,omitempty"`
-	// UInt32Rules describes the constraints applied to `uint32` values
-	UInt32Rules *UInt32Rules `json:"uint32,omitempty"`
-	// UInt64Rules describes the constraints applied to `uint64` values
-	UInt64Rules *UInt64Rules `json:"uint64,omitempty"`
+	Any       *AnyRules       `json:"any,omitempty"`
+	Bool      *BoolRules      `json:"bool,omitempty"`
+	Bytes     *BytesRules     `json:"bytes,omitempty"`
+	Double    *DoubleRules    `json:"double,omitempty"`
+	Duration  *DurationRules  `json:"duration,omitempty"`
+	Enum      *EnumRules      `json:"enum,omitempty"`
+	Fixed32   *Fixed32Rules   `json:"fixed32,omitempty"`
+	Fixed64   *Fixed64Rules   `json:"fixed64,omitempty"`
+	Float     *FloatRules     `json:"float,omitempty"`
+	Int32     *Int32Rules     `json:"int32,omitempty"`
+	Int64     *Int64Rules     `json:"int64,omitempty"`
+	Map       *MapRules       `json:"map,omitempty"`
+	Message   *MessageRules   `json:"message,omitempty"`
+	Repeated  *RepeatedRules  `json:"repeated,omitempty"`
+	Sfixed32  *SFixed32Rules  `json:"sfixed32,omitempty"`
+	Sfixed64  *SFixed64Rules  `json:"sfixed64,omitempty"`
+	Sint32    *SInt32Rules    `json:"sint32,omitempty"`
+	Sint64    *SInt64Rules    `json:"sint64,omitempty"`
+	String    *StringRules    `json:"string,omitempty"`
+	Timestamp *TimestampRules `json:"timestamp,omitempty"`
+	Uint32    *UInt32Rules    `json:"uint32,omitempty"`
+	Uint64    *UInt64Rules    `json:"uint64,omitempty"`
 }
 
-func (f *FieldRules) GetAnyRules() *AnyRules {
+func (f *FieldRules) GetAny() *AnyRules {
 	if f == nil {
 		return nil
 	}
-	return f.AnyRules
+	return f.Any
 }
 
-func (f *FieldRules) GetBoolRules() *BoolRules {
+func (f *FieldRules) GetBool() *BoolRules {
 	if f == nil {
 		return nil
 	}
-	return f.BoolRules
+	return f.Bool
 }
 
-func (f *FieldRules) GetBytesRules() *BytesRules {
+func (f *FieldRules) GetBytes() *BytesRules {
 	if f == nil {
 		return nil
 	}
-	return f.BytesRules
+	return f.Bytes
 }
 
-func (f *FieldRules) GetDoubleRules() *DoubleRules {
+func (f *FieldRules) GetDouble() *DoubleRules {
 	if f == nil {
 		return nil
 	}
-	return f.DoubleRules
+	return f.Double
 }
 
-func (f *FieldRules) GetDurationRules() *DurationRules {
+func (f *FieldRules) GetDuration() *DurationRules {
 	if f == nil {
 		return nil
 	}
-	return f.DurationRules
+	return f.Duration
 }
 
-func (f *FieldRules) GetEnumRules() *EnumRules {
+func (f *FieldRules) GetEnum() *EnumRules {
 	if f == nil {
 		return nil
 	}
-	return f.EnumRules
+	return f.Enum
 }
 
-func (f *FieldRules) GetFixed32Rules() *Fixed32Rules {
+func (f *FieldRules) GetFixed32() *Fixed32Rules {
 	if f == nil {
 		return nil
 	}
-	return f.Fixed32Rules
+	return f.Fixed32
 }
 
-func (f *FieldRules) GetFixed64Rules() *Fixed64Rules {
+func (f *FieldRules) GetFixed64() *Fixed64Rules {
 	if f == nil {
 		return nil
 	}
-	return f.Fixed64Rules
+	return f.Fixed64
 }
 
-func (f *FieldRules) GetFloatRules() *FloatRules {
+func (f *FieldRules) GetFloat() *FloatRules {
 	if f == nil {
 		return nil
 	}
-	return f.FloatRules
+	return f.Float
 }
 
-func (f *FieldRules) GetInt32Rules() *Int32Rules {
+func (f *FieldRules) GetInt32() *Int32Rules {
 	if f == nil {
 		return nil
 	}
-	return f.Int32Rules
+	return f.Int32
 }
 
-func (f *FieldRules) GetInt64Rules() *Int64Rules {
+func (f *FieldRules) GetInt64() *Int64Rules {
 	if f == nil {
 		return nil
 	}
-	return f.Int64Rules
+	return f.Int64
 }
 
-func (f *FieldRules) GetMapRules() *MapRules {
+func (f *FieldRules) GetMap() *MapRules {
 	if f == nil {
 		return nil
 	}
-	return f.MapRules
+	return f.Map
 }
 
-func (f *FieldRules) GetMessageRules() *MessageRules {
+func (f *FieldRules) GetMessage() *MessageRules {
 	if f == nil {
 		return nil
 	}
-	return f.MessageRules
+	return f.Message
 }
 
-func (f *FieldRules) GetRepeatedRules() *RepeatedRules {
+func (f *FieldRules) GetRepeated() *RepeatedRules {
 	if f == nil {
 		return nil
 	}
-	return f.RepeatedRules
+	return f.Repeated
 }
 
-func (f *FieldRules) GetSFixed32Rules() *SFixed32Rules {
+func (f *FieldRules) GetSfixed32() *SFixed32Rules {
 	if f == nil {
 		return nil
 	}
-	return f.SFixed32Rules
+	return f.Sfixed32
 }
 
-func (f *FieldRules) GetSFixed64Rules() *SFixed64Rules {
+func (f *FieldRules) GetSfixed64() *SFixed64Rules {
 	if f == nil {
 		return nil
 	}
-	return f.SFixed64Rules
+	return f.Sfixed64
 }
 
-func (f *FieldRules) GetSInt32Rules() *SInt32Rules {
+func (f *FieldRules) GetSint32() *SInt32Rules {
 	if f == nil {
 		return nil
 	}
-	return f.SInt32Rules
+	return f.Sint32
 }
 
-func (f *FieldRules) GetSInt64Rules() *SInt64Rules {
+func (f *FieldRules) GetSint64() *SInt64Rules {
 	if f == nil {
 		return nil
 	}
-	return f.SInt64Rules
+	return f.Sint64
 }
 
-func (f *FieldRules) GetStringRules() *StringRules {
+func (f *FieldRules) GetString() *StringRules {
 	if f == nil {
 		return nil
 	}
-	return f.StringRules
+	return f.String
 }
 
-func (f *FieldRules) GetTimestampRules() *TimestampRules {
+func (f *FieldRules) GetTimestamp() *TimestampRules {
 	if f == nil {
 		return nil
 	}
-	return f.TimestampRules
+	return f.Timestamp
 }
 
-func (f *FieldRules) GetUInt32Rules() *UInt32Rules {
+func (f *FieldRules) GetUint32() *UInt32Rules {
 	if f == nil {
 		return nil
 	}
-	return f.UInt32Rules
+	return f.Uint32
 }
 
-func (f *FieldRules) GetUInt64Rules() *UInt64Rules {
+func (f *FieldRules) GetUint64() *UInt64Rules {
 	if f == nil {
 		return nil
 	}
-	return f.UInt64Rules
+	return f.Uint64
 }

@@ -8,13 +8,13 @@ import (
 )
 
 type C1APISystemlogV1ExportServiceDeleteRequest struct {
-	ExportID                   string                             `pathParam:"style=simple,explode=false,name=export_id"`
+	ExportID                   *string                            `pathParam:"style=simple,explode=false,name=export_id"`
 	ExportServiceDeleteRequest *shared.ExportServiceDeleteRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APISystemlogV1ExportServiceDeleteRequest) GetExportID() string {
+func (c *C1APISystemlogV1ExportServiceDeleteRequest) GetExportID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ExportID
 }

@@ -12,8 +12,7 @@ type AppEntitlementWithExpired struct {
 	// The appEntitlementId field.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
 	// The appId field.
-	AppID *string `json:"appId,omitempty"`
-	// Application User that represents an account in the application.
+	AppID   *string  `json:"appId,omitempty"`
 	AppUser *AppUser `json:"appUser,omitempty"`
 	// The appUserId field.
 	AppUserID  *string    `json:"appUserId,omitempty"`
@@ -23,8 +22,7 @@ type AppEntitlementWithExpired struct {
 	GrantReasons []GrantReason `json:"grantReasons,omitempty"`
 	// The grantSources field.
 	GrantSources []AppEntitlementRef `json:"grantSources,omitempty"`
-	// The User object provides all of the details for an user, as well as some configuration.
-	User *User `json:"user,omitempty"`
+	User         *User               `json:"user,omitempty"`
 }
 
 func (a AppEntitlementWithExpired) MarshalJSON() ([]byte, error) {

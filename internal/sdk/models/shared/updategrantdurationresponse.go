@@ -4,13 +4,12 @@ package shared
 
 // The UpdateGrantDurationResponse message.
 type UpdateGrantDurationResponse struct {
-	// The AppEntitlementUserBinding represents the relationship that gives an app user access to an app entitlement
-	AppEntitlementUserBinding *AppEntitlementUserBinding `json:"binding,omitempty"`
+	Binding *AppEntitlementUserBinding `json:"binding,omitempty"`
 }
 
-func (u *UpdateGrantDurationResponse) GetAppEntitlementUserBinding() *AppEntitlementUserBinding {
+func (u *UpdateGrantDurationResponse) GetBinding() *AppEntitlementUserBinding {
 	if u == nil {
 		return nil
 	}
-	return u.AppEntitlementUserBinding
+	return u.Binding
 }

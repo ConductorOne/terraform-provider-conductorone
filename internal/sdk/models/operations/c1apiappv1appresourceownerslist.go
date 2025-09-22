@@ -8,30 +8,30 @@ import (
 )
 
 type C1APIAppV1AppResourceOwnersListRequest struct {
-	AppID          string  `pathParam:"style=simple,explode=false,name=app_id"`
-	ResourceTypeID string  `pathParam:"style=simple,explode=false,name=resource_type_id"`
-	ResourceID     string  `pathParam:"style=simple,explode=false,name=resource_id"`
+	AppID          *string `pathParam:"style=simple,explode=false,name=app_id"`
+	ResourceTypeID *string `pathParam:"style=simple,explode=false,name=resource_type_id"`
+	ResourceID     *string `pathParam:"style=simple,explode=false,name=resource_id"`
 	PageSize       *int    `queryParam:"style=form,explode=true,name=page_size"`
 	PageToken      *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (c *C1APIAppV1AppResourceOwnersListRequest) GetAppID() string {
+func (c *C1APIAppV1AppResourceOwnersListRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppResourceOwnersListRequest) GetResourceTypeID() string {
+func (c *C1APIAppV1AppResourceOwnersListRequest) GetResourceTypeID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ResourceTypeID
 }
 
-func (c *C1APIAppV1AppResourceOwnersListRequest) GetResourceID() string {
+func (c *C1APIAppV1AppResourceOwnersListRequest) GetResourceID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ResourceID
 }

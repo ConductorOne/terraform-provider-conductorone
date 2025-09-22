@@ -33,10 +33,9 @@ type AppResource struct {
 	// The parent resource id, if this resource is a child of another resource.
 	ParentAppResourceID *string `json:"parentAppResourceId,omitempty"`
 	// The parent resource type id, if this resource is a child of another resource.
-	ParentAppResourceTypeID *string `json:"parentAppResourceTypeId,omitempty"`
-	// The SecretTrait message.
-	SecretTrait *SecretTrait `json:"secretTrait,omitempty"`
-	UpdatedAt   *time.Time   `json:"updatedAt,omitempty"`
+	ParentAppResourceTypeID *string      `json:"parentAppResourceTypeId,omitempty"`
+	SecretTrait             *SecretTrait `json:"secretTrait,omitempty"`
+	UpdatedAt               *time.Time   `json:"updatedAt,omitempty"`
 }
 
 func (a AppResource) MarshalJSON() ([]byte, error) {

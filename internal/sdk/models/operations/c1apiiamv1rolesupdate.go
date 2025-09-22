@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIIamV1RolesUpdateRequest struct {
-	RoleID            string                    `pathParam:"style=simple,explode=false,name=role_id"`
+	RoleID            *string                   `pathParam:"style=simple,explode=false,name=role_id"`
 	UpdateRoleRequest *shared.UpdateRoleRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIIamV1RolesUpdateRequest) GetRoleID() string {
+func (c *C1APIIamV1RolesUpdateRequest) GetRoleID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.RoleID
 }

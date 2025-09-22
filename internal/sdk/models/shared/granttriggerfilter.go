@@ -4,12 +4,9 @@ package shared
 
 // The GrantTriggerFilter message.
 type GrantTriggerFilter struct {
-	// The AccountFilter message.
-	AccountFilter *AccountFilter `json:"accountFilter,omitempty"`
-	// The EntitlementFilter message.
+	AccountFilter     *AccountFilter     `json:"accountFilter,omitempty"`
 	EntitlementFilter *EntitlementFilter `json:"entitlementFilter,omitempty"`
-	// The GrantFilter message.
-	GrantFilter *GrantFilter `json:"grantFilter,omitempty"`
+	GrantFilter       *GrantFilter       `json:"grantFilter,omitempty"`
 }
 
 func (g *GrantTriggerFilter) GetAccountFilter() *AccountFilter {

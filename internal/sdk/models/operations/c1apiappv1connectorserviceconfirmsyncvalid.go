@@ -8,29 +8,29 @@ import (
 )
 
 type C1APIAppV1ConnectorServiceConfirmSyncValidRequest struct {
-	AppID                   string                          `pathParam:"style=simple,explode=false,name=app_id"`
-	ConnectorID             string                          `pathParam:"style=simple,explode=false,name=connector_id"`
-	SyncLifecycleID         string                          `pathParam:"style=simple,explode=false,name=sync_lifecycle_id"`
+	AppID                   *string                         `pathParam:"style=simple,explode=false,name=app_id"`
+	ConnectorID             *string                         `pathParam:"style=simple,explode=false,name=connector_id"`
+	SyncLifecycleID         *string                         `pathParam:"style=simple,explode=false,name=sync_lifecycle_id"`
 	ConfirmSyncValidRequest *shared.ConfirmSyncValidRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetAppID() string {
+func (c *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetConnectorID() string {
+func (c *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetConnectorID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ConnectorID
 }
 
-func (c *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetSyncLifecycleID() string {
+func (c *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetSyncLifecycleID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.SyncLifecycleID
 }

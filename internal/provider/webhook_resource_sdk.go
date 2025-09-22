@@ -9,6 +9,7 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
 func (r *WebhookResourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {
@@ -30,9 +31,12 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhook1(ctx context.Context, re
 func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceDeleteRequest(ctx context.Context) (*operations.C1APIWebhooksV1WebhooksServiceDeleteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIWebhooksV1WebhooksServiceDeleteRequest{
 		ID: id,
 	}
@@ -43,9 +47,12 @@ func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceDeleteR
 func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceGetRequest(ctx context.Context) (*operations.C1APIWebhooksV1WebhooksServiceGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIWebhooksV1WebhooksServiceGetRequest{
 		ID: id,
 	}
@@ -56,9 +63,12 @@ func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceGetRequ
 func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceUpdateRequest(ctx context.Context) (*operations.C1APIWebhooksV1WebhooksServiceUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	webhooksServiceUpdateRequest, webhooksServiceUpdateRequestDiags := r.ToSharedWebhooksServiceUpdateRequest(ctx)
 	diags.Append(webhooksServiceUpdateRequestDiags...)
 
@@ -74,9 +84,21 @@ func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceUpdateR
 	return &out, diags
 }
 
-func (r *WebhookResourceModel) ToSharedWebhookInput(ctx context.Context) (*shared.WebhookInput, diag.Diagnostics) {
+func (r *WebhookResourceModel) ToSharedWebhook1(ctx context.Context) (*shared.Webhook1, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	createdAt := new(time.Time)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt, _ = time.Parse(time.RFC3339Nano, r.CreatedAt.ValueString())
+	} else {
+		createdAt = nil
+	}
+	deletedAt := new(time.Time)
+	if !r.DeletedAt.IsUnknown() && !r.DeletedAt.IsNull() {
+		*deletedAt, _ = time.Parse(time.RFC3339Nano, r.DeletedAt.ValueString())
+	} else {
+		deletedAt = nil
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -95,16 +117,25 @@ func (r *WebhookResourceModel) ToSharedWebhookInput(ctx context.Context) (*share
 	} else {
 		id = nil
 	}
+	updatedAt := new(time.Time)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt, _ = time.Parse(time.RFC3339Nano, r.UpdatedAt.ValueString())
+	} else {
+		updatedAt = nil
+	}
 	url := new(string)
 	if !r.URL.IsUnknown() && !r.URL.IsNull() {
 		*url = r.URL.ValueString()
 	} else {
 		url = nil
 	}
-	out := shared.WebhookInput{
+	out := shared.Webhook1{
+		CreatedAt:   createdAt,
+		DeletedAt:   deletedAt,
 		Description: description,
 		DisplayName: displayName,
 		ID:          id,
+		UpdatedAt:   updatedAt,
 		URL:         url,
 	}
 
@@ -138,7 +169,7 @@ func (r *WebhookResourceModel) ToSharedWebhooksServiceCreateRequest(ctx context.
 func (r *WebhookResourceModel) ToSharedWebhooksServiceUpdateRequest(ctx context.Context) (*shared.WebhooksServiceUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	webhook, webhookDiags := r.ToSharedWebhookInput(ctx)
+	webhook, webhookDiags := r.ToSharedWebhook1(ctx)
 	diags.Append(webhookDiags...)
 
 	if diags.HasError() {

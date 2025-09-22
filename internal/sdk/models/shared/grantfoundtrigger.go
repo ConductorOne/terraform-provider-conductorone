@@ -4,7 +4,6 @@ package shared
 
 // The GrantFoundTrigger message.
 type GrantFoundTrigger struct {
-	// The GrantTriggerFilter message.
 	GrantTriggerFilter *GrantTriggerFilter `json:"grantTriggerFilter,omitempty"`
 }
 

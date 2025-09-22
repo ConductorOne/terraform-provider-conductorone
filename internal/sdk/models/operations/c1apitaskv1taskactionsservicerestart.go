@@ -8,13 +8,13 @@ import (
 )
 
 type C1APITaskV1TaskActionsServiceRestartRequest struct {
-	TaskID                           string                                   `pathParam:"style=simple,explode=false,name=task_id"`
+	TaskID                           *string                                  `pathParam:"style=simple,explode=false,name=task_id"`
 	TaskActionsServiceRestartRequest *shared.TaskActionsServiceRestartRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APITaskV1TaskActionsServiceRestartRequest) GetTaskID() string {
+func (c *C1APITaskV1TaskActionsServiceRestartRequest) GetTaskID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.TaskID
 }

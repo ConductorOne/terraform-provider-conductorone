@@ -7,8 +7,8 @@ import (
 )
 
 type TaskAction struct {
-	CloseAction      *CloseAction    `tfsdk:"close_action"`
-	ReassignAction   *ReassignAction `tfsdk:"reassign_action"`
+	Close            *CloseAction    `tfsdk:"close"`
+	Reassign         *ReassignAction `tfsdk:"reassign"`
 	TaskTypes        []types.String  `tfsdk:"task_types"`
 	TaskUserRelation types.String    `tfsdk:"task_user_relation"`
 }

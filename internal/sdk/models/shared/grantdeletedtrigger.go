@@ -4,7 +4,6 @@ package shared
 
 // The GrantDeletedTrigger message.
 type GrantDeletedTrigger struct {
-	// The GrantTriggerFilter message.
 	GrantTriggerFilter *GrantTriggerFilter `json:"grantTriggerFilter,omitempty"`
 }
 

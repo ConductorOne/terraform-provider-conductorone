@@ -15,9 +15,8 @@ type CreateRevokeTasks struct {
 	// If true, the step will use the subject user of the automation as the subject.
 	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 	// The userIdCel field.
-	UserIDCel *string `json:"userIdCel,omitempty"`
-	// A reference to a user.
-	UserRef *UserRef `json:"userRef,omitempty"`
+	UserIDCel *string  `json:"userIdCel,omitempty"`
+	UserRef   *UserRef `json:"userRef,omitempty"`
 }
 
 func (c *CreateRevokeTasks) GetAppEntitlementRefs() []AppEntitlementRef {

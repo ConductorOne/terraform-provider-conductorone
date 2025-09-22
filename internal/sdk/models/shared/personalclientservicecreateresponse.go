@@ -4,17 +4,16 @@ package shared
 
 // The PersonalClientServiceCreateResponse message contains the created personal client and client secret.
 type PersonalClientServiceCreateResponse struct {
-	// The PersonalClient message contains information about a presonal client credential.
-	PersonalClient *PersonalClient `json:"client,omitempty"`
+	Client *PersonalClient `json:"client,omitempty"`
 	// The client secret that corresponds to the personal client. Make sure to save this, because it cannot be returned or queried again.
 	ClientSecret *string `json:"clientSecret,omitempty"`
 }
 
-func (p *PersonalClientServiceCreateResponse) GetPersonalClient() *PersonalClient {
+func (p *PersonalClientServiceCreateResponse) GetClient() *PersonalClient {
 	if p == nil {
 		return nil
 	}
-	return p.PersonalClient
+	return p.Client
 }
 
 func (p *PersonalClientServiceCreateResponse) GetClientSecret() *string {

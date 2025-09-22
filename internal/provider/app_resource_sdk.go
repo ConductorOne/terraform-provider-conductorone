@@ -9,6 +9,7 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
 func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *shared.App) diag.Diagnostics {
@@ -48,9 +49,12 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 func (r *AppResourceModel) ToOperationsC1APIAppV1AppsDeleteRequest(ctx context.Context) (*operations.C1APIAppV1AppsDeleteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAppV1AppsDeleteRequest{
 		ID: id,
 	}
@@ -61,9 +65,12 @@ func (r *AppResourceModel) ToOperationsC1APIAppV1AppsDeleteRequest(ctx context.C
 func (r *AppResourceModel) ToOperationsC1APIAppV1AppsGetRequest(ctx context.Context) (*operations.C1APIAppV1AppsGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAppV1AppsGetRequest{
 		ID: id,
 	}
@@ -74,9 +81,12 @@ func (r *AppResourceModel) ToOperationsC1APIAppV1AppsGetRequest(ctx context.Cont
 func (r *AppResourceModel) ToOperationsC1APIAppV1AppsUpdateRequest(ctx context.Context) (*operations.C1APIAppV1AppsUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	updateAppRequest, updateAppRequestDiags := r.ToSharedUpdateAppRequest(ctx)
 	diags.Append(updateAppRequestDiags...)
 
@@ -107,11 +117,23 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 	} else {
 		connectorVersion = nil
 	}
+	createdAt := new(time.Time)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt, _ = time.Parse(time.RFC3339Nano, r.CreatedAt.ValueString())
+	} else {
+		createdAt = nil
+	}
 	defaultRequestCatalogID := new(string)
 	if !r.DefaultRequestCatalogID.IsUnknown() && !r.DefaultRequestCatalogID.IsNull() {
 		*defaultRequestCatalogID = r.DefaultRequestCatalogID.ValueString()
 	} else {
 		defaultRequestCatalogID = nil
+	}
+	deletedAt := new(time.Time)
+	if !r.DeletedAt.IsUnknown() && !r.DeletedAt.IsNull() {
+		*deletedAt, _ = time.Parse(time.RFC3339Nano, r.DeletedAt.ValueString())
+	} else {
+		deletedAt = nil
 	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
@@ -167,10 +189,18 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 	} else {
 		strictAccessEntitlementProvisioning = nil
 	}
+	updatedAt := new(time.Time)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt, _ = time.Parse(time.RFC3339Nano, r.UpdatedAt.ValueString())
+	} else {
+		updatedAt = nil
+	}
 	out := shared.AppInput{
 		CertifyPolicyID:                     certifyPolicyID,
 		ConnectorVersion:                    connectorVersion,
+		CreatedAt:                           createdAt,
 		DefaultRequestCatalogID:             defaultRequestCatalogID,
+		DeletedAt:                           deletedAt,
 		Description:                         description,
 		DisplayName:                         displayName,
 		GrantPolicyID:                       grantPolicyID,
@@ -180,6 +210,7 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 		MonthlyCostUsd:                      monthlyCostUsd,
 		RevokePolicyID:                      revokePolicyID,
 		StrictAccessEntitlementProvisioning: strictAccessEntitlementProvisioning,
+		UpdatedAt:                           updatedAt,
 	}
 
 	return &out, diags

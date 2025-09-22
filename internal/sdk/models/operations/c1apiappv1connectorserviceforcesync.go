@@ -8,21 +8,21 @@ import (
 )
 
 type C1APIAppV1ConnectorServiceForceSyncRequest struct {
-	AppID            string                   `pathParam:"style=simple,explode=false,name=app_id"`
-	ConnectorID      string                   `pathParam:"style=simple,explode=false,name=connector_id"`
+	AppID            *string                  `pathParam:"style=simple,explode=false,name=app_id"`
+	ConnectorID      *string                  `pathParam:"style=simple,explode=false,name=connector_id"`
 	ForceSyncRequest *shared.ForceSyncRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1ConnectorServiceForceSyncRequest) GetAppID() string {
+func (c *C1APIAppV1ConnectorServiceForceSyncRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1ConnectorServiceForceSyncRequest) GetConnectorID() string {
+func (c *C1APIAppV1ConnectorServiceForceSyncRequest) GetConnectorID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ConnectorID
 }

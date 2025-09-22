@@ -8,28 +8,28 @@ import (
 )
 
 type C1APIAppV1ConnectorServiceGetCredentialsRequest struct {
-	AppID       string `pathParam:"style=simple,explode=false,name=app_id"`
-	ConnectorID string `pathParam:"style=simple,explode=false,name=connector_id"`
-	ID          string `pathParam:"style=simple,explode=false,name=id"`
+	AppID       *string `pathParam:"style=simple,explode=false,name=app_id"`
+	ConnectorID *string `pathParam:"style=simple,explode=false,name=connector_id"`
+	ID          *string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (c *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetAppID() string {
+func (c *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetConnectorID() string {
+func (c *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetConnectorID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ConnectorID
 }
 
-func (c *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetID() string {
+func (c *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

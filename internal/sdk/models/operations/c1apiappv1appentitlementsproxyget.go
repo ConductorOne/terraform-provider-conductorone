@@ -8,36 +8,36 @@ import (
 )
 
 type C1APIAppV1AppEntitlementsProxyGetRequest struct {
-	SrcAppID            string `pathParam:"style=simple,explode=false,name=src_app_id"`
-	SrcAppEntitlementID string `pathParam:"style=simple,explode=false,name=src_app_entitlement_id"`
-	DstAppID            string `pathParam:"style=simple,explode=false,name=dst_app_id"`
-	DstAppEntitlementID string `pathParam:"style=simple,explode=false,name=dst_app_entitlement_id"`
+	SrcAppID            *string `pathParam:"style=simple,explode=false,name=src_app_id"`
+	SrcAppEntitlementID *string `pathParam:"style=simple,explode=false,name=src_app_entitlement_id"`
+	DstAppID            *string `pathParam:"style=simple,explode=false,name=dst_app_id"`
+	DstAppEntitlementID *string `pathParam:"style=simple,explode=false,name=dst_app_entitlement_id"`
 }
 
-func (c *C1APIAppV1AppEntitlementsProxyGetRequest) GetSrcAppID() string {
+func (c *C1APIAppV1AppEntitlementsProxyGetRequest) GetSrcAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.SrcAppID
 }
 
-func (c *C1APIAppV1AppEntitlementsProxyGetRequest) GetSrcAppEntitlementID() string {
+func (c *C1APIAppV1AppEntitlementsProxyGetRequest) GetSrcAppEntitlementID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.SrcAppEntitlementID
 }
 
-func (c *C1APIAppV1AppEntitlementsProxyGetRequest) GetDstAppID() string {
+func (c *C1APIAppV1AppEntitlementsProxyGetRequest) GetDstAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.DstAppID
 }
 
-func (c *C1APIAppV1AppEntitlementsProxyGetRequest) GetDstAppEntitlementID() string {
+func (c *C1APIAppV1AppEntitlementsProxyGetRequest) GetDstAppEntitlementID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.DstAppEntitlementID
 }

@@ -48,8 +48,7 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 		MarkdownDescription: "AccessProfileRequestableEntries Resource",
 		Attributes: map[string]schema.Attribute{
 			"app_entitlements": schema.ListNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
 						speakeasy_objectvalidators.NotNull(),
@@ -70,7 +69,7 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 				Description: `List of entitlements to add to the request catalog.`,
 			},
 			"catalog_id": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 			},
 			"create_requests": schema.BoolAttribute{
 				Optional: true,

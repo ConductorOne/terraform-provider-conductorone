@@ -42,10 +42,10 @@ func (r *AppEntitlementOwnerResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "AppEntitlementOwner Resource",
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 			},
 			"entitlement_id": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 			},
 			"user_ids": schema.ListAttribute{
 				Optional:    true,

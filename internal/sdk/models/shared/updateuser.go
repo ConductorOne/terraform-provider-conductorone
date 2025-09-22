@@ -57,9 +57,8 @@ type UpdateUser struct {
 	// The userIdCel field.
 	// This field is part of the `user` oneof.
 	// See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
-	UserIDCel *string `json:"userIdCel,omitempty"`
-	// A reference to a user.
-	UserRef *UserRef `json:"userRef,omitempty"`
+	UserIDCel *string  `json:"userIdCel,omitempty"`
+	UserRef   *UserRef `json:"userRef,omitempty"`
 	// The userStatusCel field.
 	// This field is part of the `user_status` oneof.
 	// See the documentation for `c1.api.automations.v1.UpdateUser` for more details.

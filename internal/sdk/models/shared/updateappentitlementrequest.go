@@ -4,23 +4,17 @@ package shared
 
 // The UpdateAppEntitlementRequest message contains the app entitlement and the fields to be updated.
 type UpdateAppEntitlementRequest struct {
-	// The app entitlement represents one permission in a downstream App (SAAS) that can be granted. For example, GitHub Read vs GitHub Write.
-	//
-	// This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
-	//   - durationUnset
-	//   - durationGrant
-	//
-	AppEntitlement *AppEntitlementInput `json:"entitlement,omitempty"`
+	Entitlement *AppEntitlementInput `json:"entitlement,omitempty"`
 	// Flag to indicate that access request defaults, if any are applied to these entitlements, should be overridden.
 	OverrideAccessRequestsDefaults *bool   `json:"overrideAccessRequestsDefaults,omitempty"`
 	UpdateMask                     *string `json:"updateMask,omitempty"`
 }
 
-func (u *UpdateAppEntitlementRequest) GetAppEntitlement() *AppEntitlementInput {
+func (u *UpdateAppEntitlementRequest) GetEntitlement() *AppEntitlementInput {
 	if u == nil {
 		return nil
 	}
-	return u.AppEntitlement
+	return u.Entitlement
 }
 
 func (u *UpdateAppEntitlementRequest) GetOverrideAccessRequestsDefaults() *bool {

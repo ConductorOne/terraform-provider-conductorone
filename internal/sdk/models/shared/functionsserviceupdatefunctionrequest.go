@@ -4,12 +4,11 @@ package shared
 
 // The FunctionsServiceUpdateFunctionRequest message.
 type FunctionsServiceUpdateFunctionRequest struct {
-	// Function represents a customer-provided code extension in the API
-	Function   *FunctionInput `json:"function,omitempty"`
-	UpdateMask *string        `json:"updateMask,omitempty"`
+	Function   *Function `json:"function,omitempty"`
+	UpdateMask *string   `json:"updateMask,omitempty"`
 }
 
-func (f *FunctionsServiceUpdateFunctionRequest) GetFunction() *FunctionInput {
+func (f *FunctionsServiceUpdateFunctionRequest) GetFunction() *Function {
 	if f == nil {
 		return nil
 	}

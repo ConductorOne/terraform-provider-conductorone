@@ -8,20 +8,20 @@ import (
 )
 
 type C1APIAppV1ConnectorServiceGetRequest struct {
-	AppID string `pathParam:"style=simple,explode=false,name=app_id"`
-	ID    string `pathParam:"style=simple,explode=false,name=id"`
+	AppID *string `pathParam:"style=simple,explode=false,name=app_id"`
+	ID    *string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (c *C1APIAppV1ConnectorServiceGetRequest) GetAppID() string {
+func (c *C1APIAppV1ConnectorServiceGetRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1ConnectorServiceGetRequest) GetID() string {
+func (c *C1APIAppV1ConnectorServiceGetRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

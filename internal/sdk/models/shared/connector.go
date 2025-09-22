@@ -7,38 +7,6 @@ import (
 	"time"
 )
 
-// Config - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type Config struct {
-	// The type of the serialized message.
-	AtType               *string `json:"@type,omitempty"`
-	AdditionalProperties any     `additionalProperties:"true" json:"-"`
-}
-
-func (c Config) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *Config) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Config) GetAtType() *string {
-	if c == nil {
-		return nil
-	}
-	return c.AtType
-}
-
-func (c *Config) GetAdditionalProperties() any {
-	if c == nil {
-		return nil
-	}
-	return c.AdditionalProperties
-}
-
 // A Connector is used to sync objects into Apps
 type Connector struct {
 	// The id of the app the connector is associated with.
@@ -46,11 +14,10 @@ type Connector struct {
 	// The canResumeSync field.
 	CanResumeSync *bool `json:"canResumeSync,omitempty"`
 	// The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
-	CatalogID *string `json:"catalogId,omitempty"`
-	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-	Config    *Config    `json:"config,omitempty"`
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	CatalogID *string        `json:"catalogId,omitempty"`
+	Config    map[string]any `json:"config,omitempty"`
+	CreatedAt *time.Time     `json:"createdAt,omitempty"`
+	DeletedAt *time.Time     `json:"deletedAt,omitempty"`
 	// The description of the connector.
 	Description *string `json:"description,omitempty"`
 	// The disableCheckBadSync field.
@@ -60,16 +27,14 @@ type Connector struct {
 	// The downloadUrl for a spreadsheet if the connector was created from uploading a file.
 	DownloadURL *string `json:"downloadUrl,omitempty"`
 	// The id of the connector.
-	ID *string `json:"id,omitempty"`
-	// OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
-	OAuth2AuthorizedAs *OAuth2AuthorizedAs `json:"oauthAuthorizedAs,omitempty"`
+	ID                *string             `json:"id,omitempty"`
+	OauthAuthorizedAs *OAuth2AuthorizedAs `json:"oauthAuthorizedAs,omitempty"`
 	// List of profile attributes to sync, when set only these attributes will be synced
 	ProfileAllowList []string `json:"profileAllowList,omitempty"`
 	// List of profile attributes to ignore (not sync), when set other attributes will be synced, but these will not.
-	ProfileIgnoreList []string `json:"profileIgnoreList,omitempty"`
-	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
-	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
-	SyncDisabledAt  *time.Time       `json:"syncDisabledAt,omitempty"`
+	ProfileIgnoreList []string         `json:"profileIgnoreList,omitempty"`
+	Status            *ConnectorStatus `json:"status,omitempty"`
+	SyncDisabledAt    *time.Time       `json:"syncDisabledAt,omitempty"`
 	// The category of the connector sync that was disabled.
 	SyncDisabledCategory *string `json:"syncDisabledCategory,omitempty"`
 	// The reason the connector sync was disabled.
@@ -111,7 +76,7 @@ func (c *Connector) GetCatalogID() *string {
 	return c.CatalogID
 }
 
-func (c *Connector) GetConfig() *Config {
+func (c *Connector) GetConfig() map[string]any {
 	if c == nil {
 		return nil
 	}
@@ -167,11 +132,11 @@ func (c *Connector) GetID() *string {
 	return c.ID
 }
 
-func (c *Connector) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAs {
+func (c *Connector) GetOauthAuthorizedAs() *OAuth2AuthorizedAs {
 	if c == nil {
 		return nil
 	}
-	return c.OAuth2AuthorizedAs
+	return c.OauthAuthorizedAs
 }
 
 func (c *Connector) GetProfileAllowList() []string {
@@ -188,11 +153,11 @@ func (c *Connector) GetProfileIgnoreList() []string {
 	return c.ProfileIgnoreList
 }
 
-func (c *Connector) GetConnectorStatus() *ConnectorStatus {
+func (c *Connector) GetStatus() *ConnectorStatus {
 	if c == nil {
 		return nil
 	}
-	return c.ConnectorStatus
+	return c.Status
 }
 
 func (c *Connector) GetSyncDisabledAt() *time.Time {
@@ -224,145 +189,6 @@ func (c *Connector) GetUpdatedAt() *time.Time {
 }
 
 func (c *Connector) GetUserIds() []string {
-	if c == nil {
-		return nil
-	}
-	return c.UserIds
-}
-
-// ConnectorInput - A Connector is used to sync objects into Apps
-type ConnectorInput struct {
-	// The id of the app the connector is associated with.
-	AppID *string `json:"appId,omitempty"`
-	// The canResumeSync field.
-	CanResumeSync *bool `json:"canResumeSync,omitempty"`
-	// The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
-	CatalogID *string `json:"catalogId,omitempty"`
-	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-	Config *Config `json:"config,omitempty"`
-	// The description of the connector.
-	Description *string `json:"description,omitempty"`
-	// The disableCheckBadSync field.
-	DisableCheckBadSync *bool `json:"disableCheckBadSync,omitempty"`
-	// The display name of the connector.
-	DisplayName *string `json:"displayName,omitempty"`
-	// The id of the connector.
-	ID *string `json:"id,omitempty"`
-	// OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
-	OAuth2AuthorizedAs *OAuth2AuthorizedAsInput `json:"oauthAuthorizedAs,omitempty"`
-	// List of profile attributes to sync, when set only these attributes will be synced
-	ProfileAllowList []string `json:"profileAllowList,omitempty"`
-	// List of profile attributes to ignore (not sync), when set other attributes will be synced, but these will not.
-	ProfileIgnoreList []string `json:"profileIgnoreList,omitempty"`
-	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
-	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
-	// The category of the connector sync that was disabled.
-	SyncDisabledCategory *string `json:"syncDisabledCategory,omitempty"`
-	// The reason the connector sync was disabled.
-	SyncDisabledReason *string `json:"syncDisabledReason,omitempty"`
-	// The userIds field is used to define the integration owners of the connector.
-	UserIds []string `json:"userIds,omitempty"`
-}
-
-func (c *ConnectorInput) GetAppID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.AppID
-}
-
-func (c *ConnectorInput) GetCanResumeSync() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.CanResumeSync
-}
-
-func (c *ConnectorInput) GetCatalogID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.CatalogID
-}
-
-func (c *ConnectorInput) GetConfig() *Config {
-	if c == nil {
-		return nil
-	}
-	return c.Config
-}
-
-func (c *ConnectorInput) GetDescription() *string {
-	if c == nil {
-		return nil
-	}
-	return c.Description
-}
-
-func (c *ConnectorInput) GetDisableCheckBadSync() *bool {
-	if c == nil {
-		return nil
-	}
-	return c.DisableCheckBadSync
-}
-
-func (c *ConnectorInput) GetDisplayName() *string {
-	if c == nil {
-		return nil
-	}
-	return c.DisplayName
-}
-
-func (c *ConnectorInput) GetID() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ID
-}
-
-func (c *ConnectorInput) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAsInput {
-	if c == nil {
-		return nil
-	}
-	return c.OAuth2AuthorizedAs
-}
-
-func (c *ConnectorInput) GetProfileAllowList() []string {
-	if c == nil {
-		return nil
-	}
-	return c.ProfileAllowList
-}
-
-func (c *ConnectorInput) GetProfileIgnoreList() []string {
-	if c == nil {
-		return nil
-	}
-	return c.ProfileIgnoreList
-}
-
-func (c *ConnectorInput) GetConnectorStatus() *ConnectorStatus {
-	if c == nil {
-		return nil
-	}
-	return c.ConnectorStatus
-}
-
-func (c *ConnectorInput) GetSyncDisabledCategory() *string {
-	if c == nil {
-		return nil
-	}
-	return c.SyncDisabledCategory
-}
-
-func (c *ConnectorInput) GetSyncDisabledReason() *string {
-	if c == nil {
-		return nil
-	}
-	return c.SyncDisabledReason
-}
-
-func (c *ConnectorInput) GetUserIds() []string {
 	if c == nil {
 		return nil
 	}

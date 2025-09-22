@@ -2,12 +2,45 @@
 
 package shared
 
+import (
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
+)
+
 // AppResourceTypeInput - The AppResourceType is referenced by an app entitlement defining its resource types. Commonly things like Group or Role.
 type AppResourceTypeInput struct {
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	DeletedAt *time.Time `json:"deletedAt,omitempty"`
 	// The display name of the app resource type.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Associated trait ids
-	TraitIds []string `json:"traitIds,omitempty"`
+	TraitIds  []string   `json:"traitIds,omitempty"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+}
+
+func (a AppResourceTypeInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppResourceTypeInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AppResourceTypeInput) GetCreatedAt() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.CreatedAt
+}
+
+func (a *AppResourceTypeInput) GetDeletedAt() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.DeletedAt
 }
 
 func (a *AppResourceTypeInput) GetDisplayName() *string {
@@ -22,4 +55,11 @@ func (a *AppResourceTypeInput) GetTraitIds() []string {
 		return nil
 	}
 	return a.TraitIds
+}
+
+func (a *AppResourceTypeInput) GetUpdatedAt() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.UpdatedAt
 }

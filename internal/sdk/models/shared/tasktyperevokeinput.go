@@ -2,22 +2,38 @@
 
 package shared
 
+import (
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
+)
+
 // TaskTypeRevokeInput - The TaskTypeRevoke message indicates that a task is a revoke task and all related details.
 type TaskTypeRevokeInput struct {
-	// The TaskRevokeSource message indicates the source of the revoke task is one of expired, nonUsage, request, or review.
-	//
-	// This message contains a oneof named origin. Only a single field of the following list may be set at a time:
-	//   - review
-	//   - request
-	//   - expired
-	//   - nonUsage
-	//
-	TaskRevokeSource *TaskRevokeSource `json:"source,omitempty"`
+	OutcomeTime *time.Time        `json:"outcomeTime,omitempty"`
+	Source      *TaskRevokeSource `json:"source,omitempty"`
 }
 
-func (t *TaskTypeRevokeInput) GetTaskRevokeSource() *TaskRevokeSource {
+func (t TaskTypeRevokeInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TaskTypeRevokeInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *TaskTypeRevokeInput) GetOutcomeTime() *time.Time {
 	if t == nil {
 		return nil
 	}
-	return t.TaskRevokeSource
+	return t.OutcomeTime
+}
+
+func (t *TaskTypeRevokeInput) GetSource() *TaskRevokeSource {
+	if t == nil {
+		return nil
+	}
+	return t.Source
 }

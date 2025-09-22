@@ -4,16 +4,15 @@ package shared
 
 // RequestCatalogManagementServiceUpdateRequest - Update a request catalog object by ID.
 type RequestCatalogManagementServiceUpdateRequest struct {
-	// The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
-	RequestCatalog *RequestCatalogInput `json:"catalog,omitempty"`
-	UpdateMask     *string              `json:"updateMask,omitempty"`
+	Catalog    *RequestCatalog `json:"catalog,omitempty"`
+	UpdateMask *string         `json:"updateMask,omitempty"`
 }
 
-func (r *RequestCatalogManagementServiceUpdateRequest) GetRequestCatalog() *RequestCatalogInput {
+func (r *RequestCatalogManagementServiceUpdateRequest) GetCatalog() *RequestCatalog {
 	if r == nil {
 		return nil
 	}
-	return r.RequestCatalog
+	return r.Catalog
 }
 
 func (r *RequestCatalogManagementServiceUpdateRequest) GetUpdateMask() *string {

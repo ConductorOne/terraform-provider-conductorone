@@ -4,13 +4,12 @@ package shared
 
 // The CreateComplianceFrameworkAttributeValueResponse message.
 type CreateComplianceFrameworkAttributeValueResponse struct {
-	// AttributeValue is the value of an attribute of a defined type.
-	AttributeValue *AttributeValue `json:"value,omitempty"`
+	Value *AttributeValue `json:"value,omitempty"`
 }
 
-func (c *CreateComplianceFrameworkAttributeValueResponse) GetAttributeValue() *AttributeValue {
+func (c *CreateComplianceFrameworkAttributeValueResponse) GetValue() *AttributeValue {
 	if c == nil {
 		return nil
 	}
-	return c.AttributeValue
+	return c.Value
 }

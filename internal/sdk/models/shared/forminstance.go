@@ -48,26 +48,21 @@ func (e *FormInstanceState) UnmarshalJSON(data []byte) error {
 //   - reassigned
 //   - skipped
 type FormInstance struct {
-	// The FormCompletedAction message.
-	FormCompletedAction *FormCompletedAction `json:"completed,omitempty"`
-	Data                *FormInstanceData    `json:"data,omitempty"`
-	// A form is a collection of fields to be filled out by a user
-	Form *Form `json:"form,omitempty"`
-	// The ReassignedAction object describes the outcome of a policy step that has been reassigned.
-	ReassignedAction *ReassignedAction `json:"reassigned,omitempty"`
-	// The restart action describes the outcome of policy steps for when the task was restarted. This can be applied to multiple steps since restart skips all pending next steps.
-	RestartAction *RestartAction `json:"restarted,omitempty"`
-	// The SkippedAction object describes the outcome of a policy step that has been skipped.
-	SkippedAction *SkippedAction `json:"skipped,omitempty"`
+	Completed  *FormCompletedAction `json:"completed,omitempty"`
+	Data       *FormInstanceData    `json:"data,omitempty"`
+	Form       *Form                `json:"form,omitempty"`
+	Reassigned *ReassignedAction    `json:"reassigned,omitempty"`
+	Restarted  *RestartAction       `json:"restarted,omitempty"`
+	Skipped    *SkippedAction       `json:"skipped,omitempty"`
 	// The state field.
 	State *FormInstanceState `json:"state,omitempty"`
 }
 
-func (f *FormInstance) GetFormCompletedAction() *FormCompletedAction {
+func (f *FormInstance) GetCompleted() *FormCompletedAction {
 	if f == nil {
 		return nil
 	}
-	return f.FormCompletedAction
+	return f.Completed
 }
 
 func (f *FormInstance) GetData() *FormInstanceData {
@@ -84,25 +79,25 @@ func (f *FormInstance) GetForm() *Form {
 	return f.Form
 }
 
-func (f *FormInstance) GetReassignedAction() *ReassignedAction {
+func (f *FormInstance) GetReassigned() *ReassignedAction {
 	if f == nil {
 		return nil
 	}
-	return f.ReassignedAction
+	return f.Reassigned
 }
 
-func (f *FormInstance) GetRestartAction() *RestartAction {
+func (f *FormInstance) GetRestarted() *RestartAction {
 	if f == nil {
 		return nil
 	}
-	return f.RestartAction
+	return f.Restarted
 }
 
-func (f *FormInstance) GetSkippedAction() *SkippedAction {
+func (f *FormInstance) GetSkipped() *SkippedAction {
 	if f == nil {
 		return nil
 	}
-	return f.SkippedAction
+	return f.Skipped
 }
 
 func (f *FormInstance) GetState() *FormInstanceState {

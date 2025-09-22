@@ -2,14 +2,47 @@
 
 package shared
 
+import (
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
+)
+
 // RoleInput - Role is a role that can be assigned to a user in ConductorOne.
 type RoleInput struct {
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	DeletedAt *time.Time `json:"deletedAt,omitempty"`
 	// The display name of the role.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The list of permissions this role has.
 	Permissions []string `json:"permissions,omitempty"`
 	// The list of serviceRoles that this role has.
-	ServiceRoles []string `json:"serviceRoles,omitempty"`
+	ServiceRoles []string   `json:"serviceRoles,omitempty"`
+	UpdatedAt    *time.Time `json:"updatedAt,omitempty"`
+}
+
+func (r RoleInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RoleInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *RoleInput) GetCreatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.CreatedAt
+}
+
+func (r *RoleInput) GetDeletedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.DeletedAt
 }
 
 func (r *RoleInput) GetDisplayName() *string {
@@ -31,4 +64,11 @@ func (r *RoleInput) GetServiceRoles() []string {
 		return nil
 	}
 	return r.ServiceRoles
+}
+
+func (r *RoleInput) GetUpdatedAt() *time.Time {
+	if r == nil {
+		return nil
+	}
+	return r.UpdatedAt
 }

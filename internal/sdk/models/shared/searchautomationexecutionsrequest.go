@@ -64,9 +64,8 @@ type SearchAutomationExecutionsRequest struct {
 	// The executionId field.
 	ExecutionID *string `json:"executionId,omitempty"`
 	// The executionStepStates field.
-	ExecutionStepStates []ExecutionStepStates `json:"executionStepStates,omitempty"`
-	// The AutomationExecutionExpandMask message.
-	AutomationExecutionExpandMask *AutomationExecutionExpandMask `json:"expandMask,omitempty"`
+	ExecutionStepStates []ExecutionStepStates          `json:"executionStepStates,omitempty"`
+	ExpandMask          *AutomationExecutionExpandMask `json:"expandMask,omitempty"`
 	// The pageSize field.
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
@@ -98,11 +97,11 @@ func (s *SearchAutomationExecutionsRequest) GetExecutionStepStates() []Execution
 	return s.ExecutionStepStates
 }
 
-func (s *SearchAutomationExecutionsRequest) GetAutomationExecutionExpandMask() *AutomationExecutionExpandMask {
+func (s *SearchAutomationExecutionsRequest) GetExpandMask() *AutomationExecutionExpandMask {
 	if s == nil {
 		return nil
 	}
-	return s.AutomationExecutionExpandMask
+	return s.ExpandMask
 }
 
 func (s *SearchAutomationExecutionsRequest) GetPageSize() *int {

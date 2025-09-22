@@ -16,7 +16,7 @@ func (r *FunctionTagDataSourceModel) RefreshFromSharedFunctionsServiceListTagsRe
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if len(resp.Tags) > 0 {
+		if resp.Tags != nil {
 			r.Tags = make(map[string]tfTypes.FunctionCommit, len(resp.Tags))
 			for functionCommitKey, functionCommitValue := range resp.Tags {
 				var functionCommitResult tfTypes.FunctionCommit
@@ -37,9 +37,12 @@ func (r *FunctionTagDataSourceModel) RefreshFromSharedFunctionsServiceListTagsRe
 func (r *FunctionTagDataSourceModel) ToOperationsC1APIFunctionsV1FunctionsServiceListTagsRequest(ctx context.Context) (*operations.C1APIFunctionsV1FunctionsServiceListTagsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var functionID string
-	functionID = r.FunctionID.ValueString()
-
+	functionID := new(string)
+	if !r.FunctionID.IsUnknown() && !r.FunctionID.IsNull() {
+		*functionID = r.FunctionID.ValueString()
+	} else {
+		functionID = nil
+	}
 	out := operations.C1APIFunctionsV1FunctionsServiceListTagsRequest{
 		FunctionID: functionID,
 	}

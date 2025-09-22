@@ -8,12 +8,12 @@ import (
 )
 
 type C1APISystemlogV1ExportServiceGetRequest struct {
-	ExportID string `pathParam:"style=simple,explode=false,name=export_id"`
+	ExportID *string `pathParam:"style=simple,explode=false,name=export_id"`
 }
 
-func (c *C1APISystemlogV1ExportServiceGetRequest) GetExportID() string {
+func (c *C1APISystemlogV1ExportServiceGetRequest) GetExportID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ExportID
 }

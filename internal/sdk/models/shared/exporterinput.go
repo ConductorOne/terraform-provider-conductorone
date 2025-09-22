@@ -2,22 +2,54 @@
 
 package shared
 
+import (
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
+)
+
 // ExporterInput - The Exporter message.
 //
 // This message contains a oneof named export_to. Only a single field of the following list may be set at a time:
 //   - datasource
 type ExporterInput struct {
-	// The ExportToDatasource message.
-	ExportToDatasource *ExportToDatasource `json:"datasource,omitempty"`
+	CreatedAt  *time.Time          `json:"createdAt,omitempty"`
+	Datasource *ExportToDatasource `json:"datasource,omitempty"`
+	DeletedAt  *time.Time          `json:"deletedAt,omitempty"`
 	// The displayName field.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string    `json:"displayName,omitempty"`
+	UpdatedAt   *time.Time `json:"updatedAt,omitempty"`
 }
 
-func (e *ExporterInput) GetExportToDatasource() *ExportToDatasource {
+func (e ExporterInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExporterInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e *ExporterInput) GetCreatedAt() *time.Time {
 	if e == nil {
 		return nil
 	}
-	return e.ExportToDatasource
+	return e.CreatedAt
+}
+
+func (e *ExporterInput) GetDatasource() *ExportToDatasource {
+	if e == nil {
+		return nil
+	}
+	return e.Datasource
+}
+
+func (e *ExporterInput) GetDeletedAt() *time.Time {
+	if e == nil {
+		return nil
+	}
+	return e.DeletedAt
 }
 
 func (e *ExporterInput) GetDisplayName() *string {
@@ -25,4 +57,11 @@ func (e *ExporterInput) GetDisplayName() *string {
 		return nil
 	}
 	return e.DisplayName
+}
+
+func (e *ExporterInput) GetUpdatedAt() *time.Time {
+	if e == nil {
+		return nil
+	}
+	return e.UpdatedAt
 }

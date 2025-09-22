@@ -8,27 +8,25 @@ package shared
 //   - complete
 //   - errored
 type ResponseProvisionStep struct {
-	// The ResponseProvisionStepComplete message.
-	ResponseProvisionStepComplete *ResponseProvisionStepComplete `json:"complete,omitempty"`
-	// The ResponseProvisionStepErrored message.
-	ResponseProvisionStepErrored *ResponseProvisionStepErrored `json:"errored,omitempty"`
+	Complete *ResponseProvisionStepComplete `json:"complete,omitempty"`
+	Errored  *ResponseProvisionStepErrored  `json:"errored,omitempty"`
 	// version contains the constant value "v1". Future versions of the Webhook Response
 	//  will use a different string.
 	Version *string `json:"version,omitempty"`
 }
 
-func (r *ResponseProvisionStep) GetResponseProvisionStepComplete() *ResponseProvisionStepComplete {
+func (r *ResponseProvisionStep) GetComplete() *ResponseProvisionStepComplete {
 	if r == nil {
 		return nil
 	}
-	return r.ResponseProvisionStepComplete
+	return r.Complete
 }
 
-func (r *ResponseProvisionStep) GetResponseProvisionStepErrored() *ResponseProvisionStepErrored {
+func (r *ResponseProvisionStep) GetErrored() *ResponseProvisionStepErrored {
 	if r == nil {
 		return nil
 	}
-	return r.ResponseProvisionStepErrored
+	return r.Errored
 }
 
 func (r *ResponseProvisionStep) GetVersion() *string {

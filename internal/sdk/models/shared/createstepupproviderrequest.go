@@ -15,19 +15,9 @@ type CreateStepUpProviderRequest struct {
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The issuerUrl field.
-	IssuerURL *string `json:"issuerUrl,omitempty"`
-	// StepUpMicrosoftSettings represents a Microsoft Entra Provider using Conditional Access Policies to enforce step-up authentication.
-	StepUpMicrosoftSettings *StepUpMicrosoftSettings `json:"microsoft,omitempty"`
-	// StepUpOAuth2Settings repersents an OAuth2 provider that supports RFC 9470 <https://www.rfc-editor.org/rfc/rfc9470>
-	//
-	//  Common ACR values for OAuth2 providers include:
-	//    - "urn:okta:loa:1fa:any" (okta)
-	//    - "urn:okta:loa:1fa:pwd" (okta)
-	//    - "urn:okta:loa:2fa:any" (okta)
-	//    - "urn:okta:loa:2fa:any:ifpossible" (okta)
-	//    - "phr" (okta)
-	//    - "phrh" (okta)
-	StepUpOAuth2Settings *StepUpOAuth2Settings `json:"oauth2,omitempty"`
+	IssuerURL *string                  `json:"issuerUrl,omitempty"`
+	Microsoft *StepUpMicrosoftSettings `json:"microsoft,omitempty"`
+	Oauth2    *StepUpOAuth2Settings    `json:"oauth2,omitempty"`
 }
 
 func (c *CreateStepUpProviderRequest) GetClientID() *string {
@@ -58,16 +48,16 @@ func (c *CreateStepUpProviderRequest) GetIssuerURL() *string {
 	return c.IssuerURL
 }
 
-func (c *CreateStepUpProviderRequest) GetStepUpMicrosoftSettings() *StepUpMicrosoftSettings {
+func (c *CreateStepUpProviderRequest) GetMicrosoft() *StepUpMicrosoftSettings {
 	if c == nil {
 		return nil
 	}
-	return c.StepUpMicrosoftSettings
+	return c.Microsoft
 }
 
-func (c *CreateStepUpProviderRequest) GetStepUpOAuth2Settings() *StepUpOAuth2Settings {
+func (c *CreateStepUpProviderRequest) GetOauth2() *StepUpOAuth2Settings {
 	if c == nil {
 		return nil
 	}
-	return c.StepUpOAuth2Settings
+	return c.Oauth2
 }

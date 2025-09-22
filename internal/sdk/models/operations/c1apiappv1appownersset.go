@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIAppV1AppOwnersSetRequest struct {
-	AppID               string                      `pathParam:"style=simple,explode=false,name=app_id"`
+	AppID               *string                     `pathParam:"style=simple,explode=false,name=app_id"`
 	SetAppOwnersRequest *shared.SetAppOwnersRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppOwnersSetRequest) GetAppID() string {
+func (c *C1APIAppV1AppOwnersSetRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }

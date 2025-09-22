@@ -34,18 +34,18 @@ type BundleAutomationResource struct {
 
 // BundleAutomationResourceModel describes the resource data model.
 type BundleAutomationResourceModel struct {
-	BundleAutomationCircuitBreaker  *tfTypes.BundleAutomationCircuitBreaker  `tfsdk:"bundle_automation_circuit_breaker"`
-	BundleAutomationLastRunState    *tfTypes.BundleAutomationLastRunState    `tfsdk:"bundle_automation_last_run_state"`
-	BundleAutomationRuleEntitlement *tfTypes.BundleAutomationRuleEntitlement `tfsdk:"bundle_automation_rule_entitlement"`
-	CreateTasks                     types.Bool                               `tfsdk:"create_tasks"`
-	CreatedAt                       types.String                             `tfsdk:"created_at"`
-	DeleteBundleAutomationRequest   *tfTypes.DeleteBundleAutomationRequest   `tfsdk:"delete_bundle_automation_request"`
-	DeletedAt                       types.String                             `tfsdk:"-"`
-	DisableCircuitBreaker           types.Bool                               `tfsdk:"disable_circuit_breaker"`
-	Enabled                         types.Bool                               `tfsdk:"enabled"`
-	RequestCatalogID                types.String                             `tfsdk:"request_catalog_id"`
-	TenantID                        types.String                             `tfsdk:"tenant_id"`
-	UpdatedAt                       types.String                             `tfsdk:"updated_at"`
+	CircuitBreaker                *tfTypes.BundleAutomationCircuitBreaker  `tfsdk:"circuit_breaker"`
+	CreateTasks                   types.Bool                               `tfsdk:"create_tasks"`
+	CreatedAt                     types.String                             `tfsdk:"created_at"`
+	DeleteBundleAutomationRequest *tfTypes.DeleteBundleAutomationRequest   `tfsdk:"delete_bundle_automation_request"`
+	DeletedAt                     types.String                             `tfsdk:"-"`
+	DisableCircuitBreaker         types.Bool                               `tfsdk:"disable_circuit_breaker"`
+	Enabled                       types.Bool                               `tfsdk:"enabled"`
+	Entitlements                  *tfTypes.BundleAutomationRuleEntitlement `tfsdk:"entitlements"`
+	RequestCatalogID              types.String                             `tfsdk:"request_catalog_id"`
+	State                         *tfTypes.BundleAutomationLastRunState    `tfsdk:"state"`
+	TenantID                      types.String                             `tfsdk:"tenant_id"`
+	UpdatedAt                     types.String                             `tfsdk:"updated_at"`
 }
 
 func (r *BundleAutomationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -56,7 +56,7 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "BundleAutomation Resource",
 		Attributes: map[string]schema.Attribute{
-			"bundle_automation_circuit_breaker": schema.SingleNestedAttribute{
+			"circuit_breaker": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"removed_members_threshold_percentage": schema.StringAttribute{
@@ -93,36 +93,32 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 				},
 				Description: `The BundleAutomationCircuitBreaker message.`,
 			},
-			"bundle_automation_last_run_state": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"error_message": schema.StringAttribute{
-						Computed:    true,
-						Description: `The errorMessage field.`,
-					},
-					"last_run_at": schema.StringAttribute{
-						Computed: true,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-					"status": schema.StringAttribute{
-						Computed:    true,
-						Description: `The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED", "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS", "BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED",
-								"BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS",
-								"BUNDLE_AUTOMATION_RUN_STATUS_FAILURE",
-								"BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS",
-								"BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL",
-							),
-						},
-					},
-				},
-				Description: `The BundleAutomationLastRunState message.`,
+			"create_tasks": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The createTasks field.`,
 			},
-			"bundle_automation_rule_entitlement": schema.SingleNestedAttribute{
+			"created_at": schema.StringAttribute{
+				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
+			},
+			"delete_bundle_automation_request": schema.SingleNestedAttribute{
+				Optional:    true,
+				Description: `The DeleteBundleAutomationRequest message.`,
+			},
+			"disable_circuit_breaker": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The disableCircuitBreaker field.`,
+			},
+			"enabled": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The enabled field.`,
+			},
+			"entitlements": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
@@ -151,33 +147,38 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 				},
 				Description: `The BundleAutomationRuleEntitlement message.`,
 			},
-			"create_tasks": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The createTasks field.`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
-			},
-			"delete_bundle_automation_request": schema.SingleNestedAttribute{
-				Optional:    true,
-				Description: `The DeleteBundleAutomationRequest message.`,
-			},
-			"disable_circuit_breaker": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The disableCircuitBreaker field.`,
-			},
-			"enabled": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The enabled field.`,
-			},
 			"request_catalog_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
+			},
+			"state": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"error_message": schema.StringAttribute{
+						Computed:    true,
+						Description: `The errorMessage field.`,
+					},
+					"last_run_at": schema.StringAttribute{
+						Computed: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"status": schema.StringAttribute{
+						Computed:    true,
+						Description: `The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED", "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS", "BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED",
+								"BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS",
+								"BUNDLE_AUTOMATION_RUN_STATUS_FAILURE",
+								"BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS",
+								"BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL",
+							),
+						},
+					},
+				},
+				Description: `The BundleAutomationLastRunState message.`,
 			},
 			"tenant_id": schema.StringAttribute{
 				Computed:    true,

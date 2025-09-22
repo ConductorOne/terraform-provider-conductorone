@@ -8,12 +8,12 @@ import (
 )
 
 type C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest struct {
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	ID *string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (c *C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest) GetID() string {
+func (c *C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

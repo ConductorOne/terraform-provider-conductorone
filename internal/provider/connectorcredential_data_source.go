@@ -53,7 +53,8 @@ func (r *ConnectorCredentialDataSource) Schema(ctx context.Context, req datasour
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"client_id": schema.StringAttribute{
 				Computed:    true,
@@ -65,7 +66,8 @@ func (r *ConnectorCredentialDataSource) Schema(ctx context.Context, req datasour
 				Description: `The client secret of the ConnectorCredential. It's only returned on creation.`,
 			},
 			"connector_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -81,7 +83,8 @@ func (r *ConnectorCredentialDataSource) Schema(ctx context.Context, req datasour
 				Computed: true,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"last_used_at": schema.StringAttribute{
 				Computed: true,
@@ -153,11 +156,11 @@ func (r *ConnectorCredentialDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ConnectorServiceGetCredentialsResponse != nil && res.ConnectorServiceGetCredentialsResponse.ConnectorCredential != nil) {
+	if !(res.ConnectorServiceGetCredentialsResponse != nil && res.ConnectorServiceGetCredentialsResponse.Credential != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res.ConnectorServiceGetCredentialsResponse.Credential)...)
 
 	if resp.Diagnostics.HasError() {
 		return

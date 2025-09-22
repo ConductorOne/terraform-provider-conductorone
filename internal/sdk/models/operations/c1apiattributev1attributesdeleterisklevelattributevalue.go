@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest struct {
-	ID                                   string                                       `pathParam:"style=simple,explode=false,name=id"`
+	ID                                   *string                                      `pathParam:"style=simple,explode=false,name=id"`
 	DeleteRiskLevelAttributeValueRequest *shared.DeleteRiskLevelAttributeValueRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest) GetID() string {
+func (c *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

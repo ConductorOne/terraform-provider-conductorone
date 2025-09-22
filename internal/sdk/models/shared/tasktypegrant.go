@@ -62,8 +62,7 @@ type TaskTypeGrant struct {
 	// The outcome of the grant.
 	Outcome     *TaskTypeGrantOutcome `json:"outcome,omitempty"`
 	OutcomeTime *time.Time            `json:"outcomeTime,omitempty"`
-	// The TaskGrantSource message tracks which external URL was the source of the specificed grant ticket.
-	TaskGrantSource *TaskGrantSource `json:"source,omitempty"`
+	Source      *TaskGrantSource      `json:"source,omitempty"`
 }
 
 func (t TaskTypeGrant) MarshalJSON() ([]byte, error) {
@@ -126,9 +125,9 @@ func (t *TaskTypeGrant) GetOutcomeTime() *time.Time {
 	return t.OutcomeTime
 }
 
-func (t *TaskTypeGrant) GetTaskGrantSource() *TaskGrantSource {
+func (t *TaskTypeGrant) GetSource() *TaskGrantSource {
 	if t == nil {
 		return nil
 	}
-	return t.TaskGrantSource
+	return t.Source
 }

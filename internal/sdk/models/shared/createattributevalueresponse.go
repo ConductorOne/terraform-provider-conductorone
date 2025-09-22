@@ -4,13 +4,12 @@ package shared
 
 // CreateAttributeValueResponse is the response for creating an attribute value.
 type CreateAttributeValueResponse struct {
-	// AttributeValue is the value of an attribute of a defined type.
-	AttributeValue *AttributeValue `json:"value,omitempty"`
+	Value *AttributeValue `json:"value,omitempty"`
 }
 
-func (c *CreateAttributeValueResponse) GetAttributeValue() *AttributeValue {
+func (c *CreateAttributeValueResponse) GetValue() *AttributeValue {
 	if c == nil {
 		return nil
 	}
-	return c.AttributeValue
+	return c.Value
 }

@@ -29,9 +29,9 @@ type FunctionCommitDataSource struct {
 
 // FunctionCommitDataSourceModel describes the data model.
 type FunctionCommitDataSourceModel struct {
-	Content        map[string]types.String `tfsdk:"content"`
-	FunctionCommit *tfTypes.FunctionCommit `tfsdk:"function_commit"`
-	FunctionID     types.String            `tfsdk:"function_id"`
+	Commit     *tfTypes.FunctionCommit `tfsdk:"commit"`
+	Content    map[string]types.String `tfsdk:"content"`
+	FunctionID types.String            `tfsdk:"function_id"`
 }
 
 // Metadata returns the data source type name.
@@ -45,12 +45,7 @@ func (r *FunctionCommitDataSource) Schema(ctx context.Context, req datasource.Sc
 		MarkdownDescription: "FunctionCommit DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"content": schema.MapAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				Description: `The content field.`,
-			},
-			"function_commit": schema.SingleNestedAttribute{
+			"commit": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"author": schema.StringAttribute{
@@ -75,8 +70,13 @@ func (r *FunctionCommitDataSource) Schema(ctx context.Context, req datasource.Sc
 				},
 				Description: `FunctionCommit represents a single commit in a function's history`,
 			},
+			"content": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `The content field.`,
+			},
 			"function_id": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 			},
 		},
 	}

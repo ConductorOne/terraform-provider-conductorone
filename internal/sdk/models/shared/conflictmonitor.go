@@ -22,8 +22,7 @@ type ConflictMonitor struct {
 	// The entitlementSetBId field.
 	EntitlementSetBID *string `json:"entitlementSetBId,omitempty"`
 	// The id field.
-	ID *string `json:"id,omitempty"`
-	// The NotificationConfig message.
+	ID                 *string             `json:"id,omitempty"`
 	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 	UpdatedAt          *time.Time          `json:"updatedAt,omitempty"`
 }

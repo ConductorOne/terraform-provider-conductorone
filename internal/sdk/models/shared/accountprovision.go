@@ -2,7 +2,7 @@
 
 package shared
 
-type AccountProvisionConfig struct {
+type Config struct {
 }
 
 // The AccountProvision message.
@@ -11,18 +11,16 @@ type AccountProvisionConfig struct {
 //   - saveToVault
 //   - doNotSave
 type AccountProvision struct {
-	Config *AccountProvisionConfig `json:"config,omitempty"`
+	Config *Config `json:"config,omitempty"`
 	// The connectorId field.
-	ConnectorID *string `json:"connectorId,omitempty"`
-	// The DoNotSave message.
-	DoNotSave *DoNotSave `json:"doNotSave,omitempty"`
-	// The SaveToVault message.
+	ConnectorID *string      `json:"connectorId,omitempty"`
+	DoNotSave   *DoNotSave   `json:"doNotSave,omitempty"`
 	SaveToVault *SaveToVault `json:"saveToVault,omitempty"`
 	// The schemaId field.
 	SchemaID *string `json:"schemaId,omitempty"`
 }
 
-func (a *AccountProvision) GetConfig() *AccountProvisionConfig {
+func (a *AccountProvision) GetConfig() *Config {
 	if a == nil {
 		return nil
 	}

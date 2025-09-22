@@ -143,11 +143,11 @@ func (r *RiskLevelResource) Create(ctx context.Context, req resource.CreateReque
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateRiskLevelAttributeValueResponse != nil && res.CreateRiskLevelAttributeValueResponse.AttributeValue != nil) {
+	if !(res.CreateRiskLevelAttributeValueResponse != nil && res.CreateRiskLevelAttributeValueResponse.Value != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.CreateRiskLevelAttributeValueResponse.AttributeValue)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.CreateRiskLevelAttributeValueResponse.Value)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -207,11 +207,11 @@ func (r *RiskLevelResource) Read(ctx context.Context, req resource.ReadRequest, 
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetRiskLevelAttributeValueResponse != nil && res.GetRiskLevelAttributeValueResponse.AttributeValue != nil) {
+	if !(res.GetRiskLevelAttributeValueResponse != nil && res.GetRiskLevelAttributeValueResponse.Value != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetRiskLevelAttributeValueResponse.AttributeValue)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetRiskLevelAttributeValueResponse.Value)...)
 
 	if resp.Diagnostics.HasError() {
 		return

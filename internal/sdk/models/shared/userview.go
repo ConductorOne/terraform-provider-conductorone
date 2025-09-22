@@ -12,8 +12,7 @@ type UserView struct {
 	ManagersPath *string `json:"managersPath,omitempty"`
 	// JSONPATH expression indicating the location of the roles of the current user in the expanded array.
 	RolesPath *string `json:"rolesPath,omitempty"`
-	// The User object provides all of the details for an user, as well as some configuration.
-	User *User `json:"user,omitempty"`
+	User      *User   `json:"user,omitempty"`
 }
 
 func (u *UserView) GetDelegatedUserPath() *string {

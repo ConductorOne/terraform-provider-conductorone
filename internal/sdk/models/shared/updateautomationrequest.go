@@ -4,11 +4,6 @@ package shared
 
 // The UpdateAutomationRequest message.
 type UpdateAutomationRequest struct {
-	// The Automation message.
-	//
-	// This message contains a oneof named disabled_reason. Only a single field of the following list may be set at a time:
-	//   - circuitBreaker
-	//
 	Automation *AutomationInput `json:"automation,omitempty"`
 	UpdateMask *string          `json:"updateMask,omitempty"`
 }

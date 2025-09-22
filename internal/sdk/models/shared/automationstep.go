@@ -21,86 +21,27 @@ package shared
 //   - sendSlackMessage
 //   - callFunction
 type AutomationStep struct {
-	// The CallFunction message.
-	CallFunction *CallFunction `json:"callFunction,omitempty"`
-	// The ConnectorAction message.
-	//
-	// This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:
-	//   - connectorRef
-	//
-	ConnectorAction *ConnectorAction `json:"connectorAction,omitempty"`
-	// The ConnectorCreateAccount message.
-	//
-	// This message contains a oneof named create_account_arguments. Only a single field of the following list may be set at a time:
-	//   - userIdCel
-	//   - userProperties
-	//
+	CallFunction           *CallFunction           `json:"callFunction,omitempty"`
+	ConnectorAction        *ConnectorAction        `json:"connectorAction,omitempty"`
 	ConnectorCreateAccount *ConnectorCreateAccount `json:"connectorCreateAccount,omitempty"`
-	// The CreateAccessReview message.
-	CreateAccessReview *CreateAccessReview `json:"createAccessReview,omitempty"`
-	// The CreateRevokeTasks message.
-	CreateRevokeTasks *CreateRevokeTasks `json:"createRevokeTasks,omitempty"`
-	// The GrantEntitlements message.
-	GrantEntitlements *GrantEntitlements `json:"grantEntitlements,omitempty"`
-	// RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
-	//
-	// This message contains a oneof named replacement_user. Only a single field of the following list may be set at a time:
-	//   - replacementUserIdCel
-	//   - replacementUserRef
-	//
-	RemoveFromDelegation *RemoveFromDelegation `json:"removeFromDelegation,omitempty"`
-	// RunAutomation: kick off the execution of an automation template.
-	//
-	// This message contains a oneof named automation_template. Only a single field of the following list may be set at a time:
-	//   - automationTemplateRef
-	//   - automationTemplateIdCel
-	//
-	RunAutomation *RunAutomation `json:"runAutomation,omitempty"`
-	// The SendEmail message.
-	SendEmail *SendEmail `json:"sendEmail,omitempty"`
-	// The SendSlackMessage message.
-	//
-	// This message contains a oneof named channel. Only a single field of the following list may be set at a time:
-	//   - channelName
-	//   - channelNameCel
-	//
-	SendSlackMessage *SendSlackMessage `json:"sendSlackMessage,omitempty"`
+	CreateAccessReview     *CreateAccessReview     `json:"createAccessReview,omitempty"`
+	CreateRevokeTasks      *CreateRevokeTasks      `json:"createRevokeTasks,omitempty"`
+	GrantEntitlements      *GrantEntitlements      `json:"grantEntitlements,omitempty"`
+	RemoveFromDelegation   *RemoveFromDelegation   `json:"removeFromDelegation,omitempty"`
+	RunAutomation          *RunAutomation          `json:"runAutomation,omitempty"`
+	SendEmail              *SendEmail              `json:"sendEmail,omitempty"`
+	SendSlackMessage       *SendSlackMessage       `json:"sendSlackMessage,omitempty"`
 	// The skipIfTrueCel field.
 	SkipIfTrueCel *string `json:"skipIfTrueCel,omitempty"`
 	// The stepDisplayName field.
 	StepDisplayName *string `json:"stepDisplayName,omitempty"`
 	// The stepName field.
-	StepName *string `json:"stepName,omitempty"`
-	// The TaskAction message.
-	//
-	// This message contains a oneof named action. Only a single field of the following list may be set at a time:
-	//   - close
-	//   - reassign
-	//
-	TaskAction *TaskAction `json:"taskAction,omitempty"`
-	// The UnenrollFromAllAccessProfiles message.
+	StepName                      *string                        `json:"stepName,omitempty"`
+	TaskAction                    *TaskAction                    `json:"taskAction,omitempty"`
 	UnenrollFromAllAccessProfiles *UnenrollFromAllAccessProfiles `json:"unenrollFromAllAccessProfiles,omitempty"`
-	// The UpdateUser message.
-	//
-	// This message contains a oneof named user. Only a single field of the following list may be set at a time:
-	//   - userIdCel
-	//   - userRef
-	//
-	//
-	// This message contains a oneof named user_status. Only a single field of the following list may be set at a time:
-	//   - userStatusEnum
-	//   - userStatusCel
-	//
-	UpdateUser *UpdateUser `json:"updateUser,omitempty"`
-	// The WaitForDuration message.
-	WaitForDuration *WaitForDuration `json:"waitForDuration,omitempty"`
-	// The Webhook message.
-	//
-	// This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
-	//   - webhookId
-	//   - webhookIdCel
-	//
-	Webhook *Webhook `json:"webhook,omitempty"`
+	UpdateUser                    *UpdateUser                    `json:"updateUser,omitempty"`
+	WaitForDuration               *WaitForDuration               `json:"waitForDuration,omitempty"`
+	Webhook                       *Webhook                       `json:"webhook,omitempty"`
 }
 
 func (a *AutomationStep) GetCallFunction() *CallFunction {

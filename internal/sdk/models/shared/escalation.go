@@ -11,11 +11,9 @@ type Escalation struct {
 	// The escalationComment field.
 	EscalationComment *string `json:"escalationComment,omitempty"`
 	// The expiration field.
-	Expiration *string `json:"expiration,omitempty"`
-	// The ReassignToApprovers message.
+	Expiration          *string              `json:"expiration,omitempty"`
 	ReassignToApprovers *ReassignToApprovers `json:"reassignToApprovers,omitempty"`
-	// The ReplacePolicy message.
-	ReplacePolicy *ReplacePolicy `json:"replacePolicy,omitempty"`
+	ReplacePolicy       *ReplacePolicy       `json:"replacePolicy,omitempty"`
 }
 
 func (e *Escalation) GetEscalationComment() *string {

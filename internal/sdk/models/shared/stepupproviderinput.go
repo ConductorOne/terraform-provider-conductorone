@@ -2,6 +2,11 @@
 
 package shared
 
+import (
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
+)
+
 // StepUpProviderInput - The StepUpProvider message.
 //
 // This message contains a oneof named settings. Only a single field of the following list may be set at a time:
@@ -9,25 +14,29 @@ package shared
 //   - microsoft
 type StepUpProviderInput struct {
 	// The clientId field.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID  *string    `json:"clientId,omitempty"`
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The issuerUrl field.
-	IssuerURL *string `json:"issuerUrl,omitempty"`
-	// StepUpMicrosoftSettings represents a Microsoft Entra Provider using Conditional Access Policies to enforce step-up authentication.
-	StepUpMicrosoftSettings *StepUpMicrosoftSettings `json:"microsoft,omitempty"`
-	// StepUpOAuth2Settings repersents an OAuth2 provider that supports RFC 9470 <https://www.rfc-editor.org/rfc/rfc9470>
-	//
-	//  Common ACR values for OAuth2 providers include:
-	//    - "urn:okta:loa:1fa:any" (okta)
-	//    - "urn:okta:loa:1fa:pwd" (okta)
-	//    - "urn:okta:loa:2fa:any" (okta)
-	//    - "urn:okta:loa:2fa:any:ifpossible" (okta)
-	//    - "phr" (okta)
-	//    - "phrh" (okta)
-	StepUpOAuth2Settings *StepUpOAuth2Settings `json:"oauth2,omitempty"`
+	IssuerURL    *string                  `json:"issuerUrl,omitempty"`
+	LastTestedAt *time.Time               `json:"lastTestedAt,omitempty"`
+	Microsoft    *StepUpMicrosoftSettings `json:"microsoft,omitempty"`
+	Oauth2       *StepUpOAuth2Settings    `json:"oauth2,omitempty"`
+	UpdatedAt    *time.Time               `json:"updatedAt,omitempty"`
+}
+
+func (s StepUpProviderInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StepUpProviderInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *StepUpProviderInput) GetClientID() *string {
@@ -35,6 +44,13 @@ func (s *StepUpProviderInput) GetClientID() *string {
 		return nil
 	}
 	return s.ClientID
+}
+
+func (s *StepUpProviderInput) GetCreatedAt() *time.Time {
+	if s == nil {
+		return nil
+	}
+	return s.CreatedAt
 }
 
 func (s *StepUpProviderInput) GetDisplayName() *string {
@@ -58,16 +74,30 @@ func (s *StepUpProviderInput) GetIssuerURL() *string {
 	return s.IssuerURL
 }
 
-func (s *StepUpProviderInput) GetStepUpMicrosoftSettings() *StepUpMicrosoftSettings {
+func (s *StepUpProviderInput) GetLastTestedAt() *time.Time {
 	if s == nil {
 		return nil
 	}
-	return s.StepUpMicrosoftSettings
+	return s.LastTestedAt
 }
 
-func (s *StepUpProviderInput) GetStepUpOAuth2Settings() *StepUpOAuth2Settings {
+func (s *StepUpProviderInput) GetMicrosoft() *StepUpMicrosoftSettings {
 	if s == nil {
 		return nil
 	}
-	return s.StepUpOAuth2Settings
+	return s.Microsoft
+}
+
+func (s *StepUpProviderInput) GetOauth2() *StepUpOAuth2Settings {
+	if s == nil {
+		return nil
+	}
+	return s.Oauth2
+}
+
+func (s *StepUpProviderInput) GetUpdatedAt() *time.Time {
+	if s == nil {
+		return nil
+	}
+	return s.UpdatedAt
 }

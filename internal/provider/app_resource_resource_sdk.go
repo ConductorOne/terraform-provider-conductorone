@@ -71,15 +71,24 @@ func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceCreat
 func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var appResourceTypeID string
-	appResourceTypeID = r.AppResourceTypeID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
+	appResourceTypeID := new(string)
+	if !r.AppResourceTypeID.IsUnknown() && !r.AppResourceTypeID.IsNull() {
+		*appResourceTypeID = r.AppResourceTypeID.ValueString()
+	} else {
+		appResourceTypeID = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest{
 		AppID:             appID,
 		AppResourceTypeID: appResourceTypeID,
@@ -92,15 +101,24 @@ func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceDelet
 func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceGetRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var appResourceTypeID string
-	appResourceTypeID = r.AppResourceTypeID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
+	appResourceTypeID := new(string)
+	if !r.AppResourceTypeID.IsUnknown() && !r.AppResourceTypeID.IsNull() {
+		*appResourceTypeID = r.AppResourceTypeID.ValueString()
+	} else {
+		appResourceTypeID = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAppV1AppResourceServiceGetRequest{
 		AppID:             appID,
 		AppResourceTypeID: appResourceTypeID,
@@ -113,15 +131,24 @@ func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceGetRe
 func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceUpdateRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var appResourceTypeID string
-	appResourceTypeID = r.AppResourceTypeID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
+	appResourceTypeID := new(string)
+	if !r.AppResourceTypeID.IsUnknown() && !r.AppResourceTypeID.IsNull() {
+		*appResourceTypeID = r.AppResourceTypeID.ValueString()
+	} else {
+		appResourceTypeID = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	appResourceServiceUpdateRequest, appResourceServiceUpdateRequestDiags := r.ToSharedAppResourceServiceUpdateRequest(ctx)
 	diags.Append(appResourceServiceUpdateRequestDiags...)
 
@@ -139,7 +166,7 @@ func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceUpdat
 	return &out, diags
 }
 
-func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context) (*shared.AppResourceInput, diag.Diagnostics) {
+func (r *AppResourceResourceModel) ToSharedAppResource(ctx context.Context) (*shared.AppResource, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	appID := new(string)
@@ -153,6 +180,18 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context)
 		*appResourceTypeID = r.AppResourceTypeID.ValueString()
 	} else {
 		appResourceTypeID = nil
+	}
+	createdAt := new(time.Time)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt, _ = time.Parse(time.RFC3339Nano, r.CreatedAt.ValueString())
+	} else {
+		createdAt = nil
+	}
+	deletedAt := new(time.Time)
+	if !r.DeletedAt.IsUnknown() && !r.DeletedAt.IsNull() {
+		*deletedAt, _ = time.Parse(time.RFC3339Nano, r.DeletedAt.ValueString())
+	} else {
+		deletedAt = nil
 	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
@@ -229,9 +268,17 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context)
 			SecretExpiresAt:   secretExpiresAt,
 		}
 	}
-	out := shared.AppResourceInput{
+	updatedAt := new(time.Time)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt, _ = time.Parse(time.RFC3339Nano, r.UpdatedAt.ValueString())
+	} else {
+		updatedAt = nil
+	}
+	out := shared.AppResource{
 		AppID:                   appID,
 		AppResourceTypeID:       appResourceTypeID,
+		CreatedAt:               createdAt,
+		DeletedAt:               deletedAt,
 		Description:             description,
 		DisplayName:             displayName,
 		GrantCount:              grantCount,
@@ -240,6 +287,7 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context)
 		ParentAppResourceID:     parentAppResourceID,
 		ParentAppResourceTypeID: parentAppResourceTypeID,
 		SecretTrait:             secretTrait,
+		UpdatedAt:               updatedAt,
 	}
 
 	return &out, diags
@@ -248,7 +296,7 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context)
 func (r *AppResourceResourceModel) ToSharedAppResourceServiceUpdateRequest(ctx context.Context) (*shared.AppResourceServiceUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	appResource, appResourceDiags := r.ToSharedAppResourceInput(ctx)
+	appResource, appResourceDiags := r.ToSharedAppResource(ctx)
 	diags.Append(appResourceDiags...)
 
 	if diags.HasError() {

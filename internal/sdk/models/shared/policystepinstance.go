@@ -47,82 +47,39 @@ func (e *PolicyStepInstanceState) UnmarshalJSON(data []byte) error {
 //   - wait
 //   - form
 type PolicyStepInstance struct {
-	// This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
-	//  The instance is just a marker for it being copied into an active policy.
-	AcceptInstance *AcceptInstance `json:"accept,omitempty"`
-	// The approval instance object describes the way a policy step should be approved as well as its outcomes and state.
-	//
-	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
-	//   - approved
-	//   - denied
-	//   - reassigned
-	//   - restarted
-	//   - reassignedByError
-	//   - skipped
-	//
-	ApprovalInstance *ApprovalInstance `json:"approval,omitempty"`
-	// The FormInstance message.
-	//
-	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
-	//   - completed
-	//   - restarted
-	//   - reassigned
-	//   - skipped
-	//
-	FormInstance *FormInstance `json:"form,omitempty"`
+	Accept   *AcceptInstance   `json:"accept,omitempty"`
+	Approval *ApprovalInstance `json:"approval,omitempty"`
+	Form     *FormInstance     `json:"form,omitempty"`
 	// The ID of the PolicyStepInstance. This is required by many action submission endpoints to indicate what step you're approving.
 	ID *string `json:"id,omitempty"`
 	// The policy generation id refers to the version of the policy that this step was created from.
-	PolicyGenerationID *string `json:"policyGenerationId,omitempty"`
-	// A provision instance describes the specific configuration of an executing provision policy step including actions taken and notification id.
-	//
-	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
-	//   - completed
-	//   - cancelled
-	//   - errored
-	//   - reassignedByError
-	//   - skipped
-	//
-	ProvisionInstance *ProvisionInstance `json:"provision,omitempty"`
-	// This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
-	//  The instance is just a marker for it being copied into an active policy.
-	RejectInstance *RejectInstance `json:"reject,omitempty"`
+	PolicyGenerationID *string            `json:"policyGenerationId,omitempty"`
+	Provision          *ProvisionInstance `json:"provision,omitempty"`
+	Reject             *RejectInstance    `json:"reject,omitempty"`
 	// The state of the step, which is either active or done.
 	State *PolicyStepInstanceState `json:"state,omitempty"`
-	// Used by the policy engine to describe an instantiated wait step.
-	//
-	// This message contains a oneof named until. Only a single field of the following list may be set at a time:
-	//   - condition
-	//   - untilTime
-	//
-	//
-	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
-	//   - succeeded
-	//   - timedOut
-	//   - skipped
-	//
-	WaitInstance *WaitInstance `json:"wait,omitempty"`
+	Wait  *WaitInstance            `json:"wait,omitempty"`
 }
 
-func (p *PolicyStepInstance) GetAcceptInstance() *AcceptInstance {
+func (p *PolicyStepInstance) GetAccept() *AcceptInstance {
 	if p == nil {
 		return nil
 	}
-	return p.AcceptInstance
+	return p.Accept
 }
 
-func (p *PolicyStepInstance) GetApprovalInstance() *ApprovalInstance {
+func (p *PolicyStepInstance) GetApproval() *ApprovalInstance {
 	if p == nil {
 		return nil
 	}
-	return p.ApprovalInstance
+	return p.Approval
 }
 
-func (p *PolicyStepInstance) GetFormInstance() *FormInstance {
+func (p *PolicyStepInstance) GetForm() *FormInstance {
 	if p == nil {
 		return nil
 	}
-	return p.FormInstance
+	return p.Form
 }
 
 func (p *PolicyStepInstance) GetID() *string {
@@ -139,18 +96,18 @@ func (p *PolicyStepInstance) GetPolicyGenerationID() *string {
 	return p.PolicyGenerationID
 }
 
-func (p *PolicyStepInstance) GetProvisionInstance() *ProvisionInstance {
+func (p *PolicyStepInstance) GetProvision() *ProvisionInstance {
 	if p == nil {
 		return nil
 	}
-	return p.ProvisionInstance
+	return p.Provision
 }
 
-func (p *PolicyStepInstance) GetRejectInstance() *RejectInstance {
+func (p *PolicyStepInstance) GetReject() *RejectInstance {
 	if p == nil {
 		return nil
 	}
-	return p.RejectInstance
+	return p.Reject
 }
 
 func (p *PolicyStepInstance) GetState() *PolicyStepInstanceState {
@@ -160,9 +117,9 @@ func (p *PolicyStepInstance) GetState() *PolicyStepInstanceState {
 	return p.State
 }
 
-func (p *PolicyStepInstance) GetWaitInstance() *WaitInstance {
+func (p *PolicyStepInstance) GetWait() *WaitInstance {
 	if p == nil {
 		return nil
 	}
-	return p.WaitInstance
+	return p.Wait
 }

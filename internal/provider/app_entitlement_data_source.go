@@ -40,6 +40,7 @@ type AppEntitlementDataSourceModel struct {
 	CertifyPolicyID                types.String                         `tfsdk:"certify_policy_id"`
 	ComplianceFrameworkIds         []types.String                       `tfsdk:"compliance_framework_ids"`
 	ComplianceFrameworkValueIds    []types.String                       `tfsdk:"compliance_framework_value_ids"`
+	Count                          types.String                         `tfsdk:"count"`
 	CreatedAt                      types.String                         `tfsdk:"created_at"`
 	DefaultValuesApplied           types.Bool                           `tfsdk:"default_values_applied"`
 	DeletedAt                      types.String                         `tfsdk:"deleted_at"`
@@ -55,8 +56,10 @@ type AppEntitlementDataSourceModel struct {
 	ExcludeImmutable               types.Bool                           `tfsdk:"exclude_immutable"`
 	ExcludeResourceTypeIds         []types.String                       `tfsdk:"exclude_resource_type_ids"`
 	ExcludedEntitlementRefs        []tfTypes.AppEntitlementRef          `tfsdk:"excluded_entitlement_refs"`
+	From                           types.String                         `tfsdk:"from"`
 	GrantCount                     types.String                         `tfsdk:"grant_count"`
 	GrantPolicyID                  types.String                         `tfsdk:"grant_policy_id"`
+	IconURL                        types.String                         `tfsdk:"icon_url"`
 	ID                             types.String                         `tfsdk:"id"`
 	IncludeDeleted                 types.Bool                           `tfsdk:"include_deleted"`
 	IsAutomated                    types.Bool                           `tfsdk:"is_automated"`
@@ -69,8 +72,9 @@ type AppEntitlementDataSourceModel struct {
 	OverrideAccessRequestsDefaults types.Bool                           `tfsdk:"override_access_requests_defaults"`
 	PageSize                       types.Int32                          `tfsdk:"page_size"`
 	PageToken                      types.String                         `tfsdk:"page_token"`
+	Param                          types.String                         `tfsdk:"param"`
 	PolicyRefs                     []tfTypes.PolicyRef                  `tfsdk:"policy_refs"`
-	ProvisionPolicy                *tfTypes.ProvisionPolicy             `tfsdk:"provision_policy" tfPlanOnly:"true"`
+	ProvisionerPolicy              *tfTypes.ProvisionPolicy             `tfsdk:"provisioner_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                         `tfsdk:"purpose"`
 	Query                          types.String                         `tfsdk:"query"`
 	Refs                           []tfTypes.AppEntitlementRef          `tfsdk:"refs"`
@@ -85,7 +89,9 @@ type AppEntitlementDataSourceModel struct {
 	SourceConnectorID              types.String                         `tfsdk:"source_connector_id"`
 	SourceConnectorIds             map[string]types.String              `tfsdk:"source_connector_ids"`
 	SystemBuiltin                  types.Bool                           `tfsdk:"system_builtin"`
+	To                             types.String                         `tfsdk:"to"`
 	UpdatedAt                      types.String                         `tfsdk:"updated_at"`
+	Value                          types.String                         `tfsdk:"value"`
 }
 
 // Metadata returns the data source type name.
@@ -144,6 +150,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				ElementType: types.StringType,
 				Description: `The IDs of different compliance frameworks associated with this app entitlement ex (SOX, HIPAA, PCI, etc.)`,
 			},
+			"count": schema.StringAttribute{
+				Computed:    true,
+				Description: `The count of items in this facet.`,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},
@@ -157,10 +167,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"deprovisioner_policy": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
-					"connector_provision": schema.SingleNestedAttribute{
+					"connector": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"account_provision": schema.SingleNestedAttribute{
+							"account": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"config": schema.SingleNestedAttribute{
@@ -225,7 +235,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 							`  - account` + "\n" +
 							`  - deleteAccount`,
 					},
-					"delegated_provision": schema.SingleNestedAttribute{
+					"delegated": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
@@ -239,7 +249,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						},
 						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 					},
-					"external_ticket_provision": schema.SingleNestedAttribute{
+					"external_ticket": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
@@ -261,7 +271,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						},
 						Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
 					},
-					"manual_provision": schema.SingleNestedAttribute{
+					"manual": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"instructions": schema.StringAttribute{
@@ -279,13 +289,13 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 					"multi_step": schema.StringAttribute{
 						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
-						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+						Description: `Parsed as JSON.`,
 					},
-					"unconfigured_provision": schema.SingleNestedAttribute{
+					"unconfigured": schema.SingleNestedAttribute{
 						Computed:    true,
 						Description: `The UnconfiguredProvision message.`,
 					},
-					"webhook_provision": schema.SingleNestedAttribute{
+					"webhook": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"webhook_id": schema.StringAttribute{
@@ -365,6 +375,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				},
 				Description: `The excludedEntitlementRefs field.`,
 			},
+			"from": schema.StringAttribute{
+				Computed:    true,
+				Description: `The starting value of the range.`,
+			},
 			"grant_count": schema.StringAttribute{
 				Computed:    true,
 				Description: `The amount of grants open for this entitlement`,
@@ -372,6 +386,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"grant_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the policy that will be used for grant tickets related to the app entitlement.`,
+			},
+			"icon_url": schema.StringAttribute{
+				Computed:    true,
+				Description: `An icon for the category.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -422,6 +440,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				Optional:    true,
 				Description: `The pageToken field.`,
 			},
+			"param": schema.StringAttribute{
+				Computed:    true,
+				Description: `The param that is being set when checking a facet in this category.`,
+			},
 			"policy_refs": schema.ListNestedAttribute{
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
@@ -434,13 +456,13 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				},
 				Description: `Search for app entitlements that use any of these policies.`,
 			},
-			"provision_policy": schema.SingleNestedAttribute{
+			"provisioner_policy": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
-					"connector_provision": schema.SingleNestedAttribute{
+					"connector": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"account_provision": schema.SingleNestedAttribute{
+							"account": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"config": schema.SingleNestedAttribute{
@@ -505,7 +527,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 							`  - account` + "\n" +
 							`  - deleteAccount`,
 					},
-					"delegated_provision": schema.SingleNestedAttribute{
+					"delegated": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
@@ -519,7 +541,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						},
 						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 					},
-					"external_ticket_provision": schema.SingleNestedAttribute{
+					"external_ticket": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
@@ -541,7 +563,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						},
 						Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
 					},
-					"manual_provision": schema.SingleNestedAttribute{
+					"manual": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"instructions": schema.StringAttribute{
@@ -559,13 +581,13 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 					"multi_step": schema.StringAttribute{
 						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
-						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+						Description: `Parsed as JSON.`,
 					},
-					"unconfigured_provision": schema.SingleNestedAttribute{
+					"unconfigured": schema.SingleNestedAttribute{
 						Computed:    true,
 						Description: `The UnconfiguredProvision message.`,
 					},
-					"webhook_provision": schema.SingleNestedAttribute{
+					"webhook": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"webhook_id": schema.StringAttribute{
@@ -660,8 +682,16 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				Computed:    true,
 				Description: `This field indicates if this is a system builtin entitlement.`,
 			},
+			"to": schema.StringAttribute{
+				Computed:    true,
+				Description: `The ending value of the range.`,
+			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
+			},
+			"value": schema.StringAttribute{
+				Computed:    true,
+				Description: `The value of this facet.`,
 			},
 		},
 	}

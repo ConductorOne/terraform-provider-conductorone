@@ -62,20 +62,10 @@ type WebhookInstance struct {
 	CreatedAt   *time.Time `json:"createdAt,omitempty"`
 	ExpiresAt   *time.Time `json:"expiresAt,omitempty"`
 	// The id field.
-	ID              *string    `json:"id,omitempty"`
-	LastAttemptedAt *time.Time `json:"lastAttemptedAt,omitempty"`
-	// The WebhookSource message.
-	//
-	// This message contains a oneof named source. Only a single field of the following list may be set at a time:
-	//   - test
-	//   - policyPostAction
-	//   - approvalStep
-	//   - provisionStep
-	//   - workflowStep
-	//
-	WebhookSource *WebhookSource `json:"source,omitempty"`
-	// The WebhookSpec message.
-	WebhookSpec *WebhookSpec `json:"spec,omitempty"`
+	ID              *string        `json:"id,omitempty"`
+	LastAttemptedAt *time.Time     `json:"lastAttemptedAt,omitempty"`
+	Source          *WebhookSource `json:"source,omitempty"`
+	Spec            *WebhookSpec   `json:"spec,omitempty"`
 	// The state field.
 	State     *WebhookInstanceState `json:"state,omitempty"`
 	UpdatedAt *time.Time            `json:"updatedAt,omitempty"`
@@ -136,18 +126,18 @@ func (w *WebhookInstance) GetLastAttemptedAt() *time.Time {
 	return w.LastAttemptedAt
 }
 
-func (w *WebhookInstance) GetWebhookSource() *WebhookSource {
+func (w *WebhookInstance) GetSource() *WebhookSource {
 	if w == nil {
 		return nil
 	}
-	return w.WebhookSource
+	return w.Source
 }
 
-func (w *WebhookInstance) GetWebhookSpec() *WebhookSpec {
+func (w *WebhookInstance) GetSpec() *WebhookSpec {
 	if w == nil {
 		return nil
 	}
-	return w.WebhookSpec
+	return w.Spec
 }
 
 func (w *WebhookInstance) GetState() *WebhookInstanceState {

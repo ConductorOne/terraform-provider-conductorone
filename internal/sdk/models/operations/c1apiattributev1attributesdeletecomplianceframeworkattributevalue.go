@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest struct {
-	ID                                             string                                                 `pathParam:"style=simple,explode=false,name=id"`
+	ID                                             *string                                                `pathParam:"style=simple,explode=false,name=id"`
 	DeleteComplianceFrameworkAttributeValueRequest *shared.DeleteComplianceFrameworkAttributeValueRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest) GetID() string {
+func (c *C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

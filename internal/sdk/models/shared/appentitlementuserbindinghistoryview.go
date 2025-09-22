@@ -9,9 +9,8 @@ type AppEntitlementUserBindingHistoryView struct {
 	// The appUserPath field.
 	AppUserPath *string `json:"appUserPath,omitempty"`
 	// The entitlementPath field.
-	EntitlementPath *string `json:"entitlementPath,omitempty"`
-	// The AppEntitlementUserBindingHistory message.
-	AppEntitlementUserBindingHistory *AppEntitlementUserBindingHistory `json:"history,omitempty"`
+	EntitlementPath *string                           `json:"entitlementPath,omitempty"`
+	History         *AppEntitlementUserBindingHistory `json:"history,omitempty"`
 }
 
 func (a *AppEntitlementUserBindingHistoryView) GetAppPath() *string {
@@ -35,9 +34,9 @@ func (a *AppEntitlementUserBindingHistoryView) GetEntitlementPath() *string {
 	return a.EntitlementPath
 }
 
-func (a *AppEntitlementUserBindingHistoryView) GetAppEntitlementUserBindingHistory() *AppEntitlementUserBindingHistory {
+func (a *AppEntitlementUserBindingHistoryView) GetHistory() *AppEntitlementUserBindingHistory {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementUserBindingHistory
+	return a.History
 }

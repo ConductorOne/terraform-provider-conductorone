@@ -7,7 +7,8 @@ type TaskActionsServiceUpdateRequestDataRequestData struct {
 
 // The TaskActionsServiceUpdateRequestDataRequest message.
 type TaskActionsServiceUpdateRequestDataRequest struct {
-	Data *TaskActionsServiceUpdateRequestDataRequestData `json:"data,omitempty"`
+	Data       *TaskActionsServiceUpdateRequestDataRequestData `json:"data,omitempty"`
+	ExpandMask *TaskExpandMask                                 `json:"expandMask,omitempty"`
 }
 
 func (t *TaskActionsServiceUpdateRequestDataRequest) GetData() *TaskActionsServiceUpdateRequestDataRequestData {
@@ -15,4 +16,11 @@ func (t *TaskActionsServiceUpdateRequestDataRequest) GetData() *TaskActionsServi
 		return nil
 	}
 	return t.Data
+}
+
+func (t *TaskActionsServiceUpdateRequestDataRequest) GetExpandMask() *TaskExpandMask {
+	if t == nil {
+		return nil
+	}
+	return t.ExpandMask
 }

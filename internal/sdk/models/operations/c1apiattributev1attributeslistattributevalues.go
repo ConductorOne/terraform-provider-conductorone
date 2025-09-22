@@ -8,14 +8,14 @@ import (
 )
 
 type C1APIAttributeV1AttributesListAttributeValuesRequest struct {
-	AttributeTypeID string  `pathParam:"style=simple,explode=false,name=attribute_type_id"`
+	AttributeTypeID *string `pathParam:"style=simple,explode=false,name=attribute_type_id"`
 	PageSize        *int    `queryParam:"style=form,explode=true,name=page_size"`
 	PageToken       *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (c *C1APIAttributeV1AttributesListAttributeValuesRequest) GetAttributeTypeID() string {
+func (c *C1APIAttributeV1AttributesListAttributeValuesRequest) GetAttributeTypeID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AttributeTypeID
 }

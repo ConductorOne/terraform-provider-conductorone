@@ -8,21 +8,21 @@ import (
 )
 
 type C1APIAppV1AppEntitlementsDeleteAutomationRequest struct {
-	AppID                   string                          `pathParam:"style=simple,explode=false,name=app_id"`
-	AppEntitlementID        string                          `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
+	AppID                   *string                         `pathParam:"style=simple,explode=false,name=app_id"`
+	AppEntitlementID        *string                         `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
 	DeleteAutomationRequest *shared.DeleteAutomationRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppEntitlementsDeleteAutomationRequest) GetAppID() string {
+func (c *C1APIAppV1AppEntitlementsDeleteAutomationRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppEntitlementsDeleteAutomationRequest) GetAppEntitlementID() string {
+func (c *C1APIAppV1AppEntitlementsDeleteAutomationRequest) GetAppEntitlementID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppEntitlementID
 }

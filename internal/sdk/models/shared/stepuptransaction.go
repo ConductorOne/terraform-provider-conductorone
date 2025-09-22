@@ -51,10 +51,9 @@ func (e *StepUpTransactionState) UnmarshalJSON(data []byte) error {
 //   - approveTask
 //   - test
 type StepUpTransaction struct {
-	// Target for approving a task
-	TargetTask *TargetTask `json:"approveTask,omitempty"`
-	Claims     *Claims     `json:"claims,omitempty"`
-	CreatedAt  *time.Time  `json:"createdAt,omitempty"`
+	ApproveTask *TargetTask `json:"approveTask,omitempty"`
+	Claims      *Claims     `json:"claims,omitempty"`
+	CreatedAt   *time.Time  `json:"createdAt,omitempty"`
 	// Error message if the transaction failed
 	ErrorMessage *string    `json:"errorMessage,omitempty"`
 	ExpiresAt    *time.Time `json:"expiresAt,omitempty"`
@@ -63,10 +62,9 @@ type StepUpTransaction struct {
 	// ID of the provider used for this step-up authentication
 	ProviderID *string `json:"providerId,omitempty"`
 	// Current state of the transaction
-	State *StepUpTransactionState `json:"state,omitempty"`
-	// Target for testing a provider
-	TargetTest *TargetTest `json:"test,omitempty"`
-	UpdatedAt  *time.Time  `json:"updatedAt,omitempty"`
+	State     *StepUpTransactionState `json:"state,omitempty"`
+	Test      *TargetTest             `json:"test,omitempty"`
+	UpdatedAt *time.Time              `json:"updatedAt,omitempty"`
 	// ID of the user who performed the step-up authentication
 	UserID *string `json:"userId,omitempty"`
 }
@@ -82,11 +80,11 @@ func (s *StepUpTransaction) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (s *StepUpTransaction) GetTargetTask() *TargetTask {
+func (s *StepUpTransaction) GetApproveTask() *TargetTask {
 	if s == nil {
 		return nil
 	}
-	return s.TargetTask
+	return s.ApproveTask
 }
 
 func (s *StepUpTransaction) GetClaims() *Claims {
@@ -138,11 +136,11 @@ func (s *StepUpTransaction) GetState() *StepUpTransactionState {
 	return s.State
 }
 
-func (s *StepUpTransaction) GetTargetTest() *TargetTest {
+func (s *StepUpTransaction) GetTest() *TargetTest {
 	if s == nil {
 		return nil
 	}
-	return s.TargetTest
+	return s.Test
 }
 
 func (s *StepUpTransaction) GetUpdatedAt() *time.Time {

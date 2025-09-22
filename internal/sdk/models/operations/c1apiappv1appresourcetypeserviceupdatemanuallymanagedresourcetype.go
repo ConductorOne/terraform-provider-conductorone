@@ -8,21 +8,21 @@ import (
 )
 
 type C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest struct {
-	AppID                                    string                                           `pathParam:"style=simple,explode=false,name=app_id"`
-	ID                                       string                                           `pathParam:"style=simple,explode=false,name=id"`
+	AppID                                    *string                                          `pathParam:"style=simple,explode=false,name=app_id"`
+	ID                                       *string                                          `pathParam:"style=simple,explode=false,name=id"`
 	UpdateManuallyManagedResourceTypeRequest *shared.UpdateManuallyManagedResourceTypeRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest) GetAppID() string {
+func (c *C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest) GetID() string {
+func (c *C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

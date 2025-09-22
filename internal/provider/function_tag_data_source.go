@@ -45,7 +45,7 @@ func (r *FunctionTagDataSource) Schema(ctx context.Context, req datasource.Schem
 
 		Attributes: map[string]schema.Attribute{
 			"function_id": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 			},
 			"tags": schema.MapNestedAttribute{
 				Computed: true,

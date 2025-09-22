@@ -7,17 +7,16 @@ package shared
 // This message contains a oneof named export_to. Only a single field of the following list may be set at a time:
 //   - datasource
 type ExportServiceCreateRequest struct {
-	// The ExportToDatasource message.
-	ExportToDatasource *ExportToDatasource `json:"datasource,omitempty"`
+	Datasource *ExportToDatasource `json:"datasource,omitempty"`
 	// The display name of the new policy.
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-func (e *ExportServiceCreateRequest) GetExportToDatasource() *ExportToDatasource {
+func (e *ExportServiceCreateRequest) GetDatasource() *ExportToDatasource {
 	if e == nil {
 		return nil
 	}
-	return e.ExportToDatasource
+	return e.Datasource
 }
 
 func (e *ExportServiceCreateRequest) GetDisplayName() *string {

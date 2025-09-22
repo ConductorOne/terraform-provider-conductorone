@@ -38,10 +38,10 @@ type FunctionCommitResource struct {
 
 // FunctionCommitResourceModel describes the resource data model.
 type FunctionCommitResourceModel struct {
-	CommitMessage  types.String            `tfsdk:"commit_message"`
-	Content        map[string]types.String `tfsdk:"content"`
-	FunctionCommit *tfTypes.FunctionCommit `tfsdk:"function_commit"`
-	FunctionID     types.String            `tfsdk:"function_id"`
+	Commit        *tfTypes.FunctionCommit `tfsdk:"commit"`
+	CommitMessage types.String            `tfsdk:"commit_message"`
+	Content       map[string]types.String `tfsdk:"content"`
+	FunctionID    types.String            `tfsdk:"function_id"`
 }
 
 func (r *FunctionCommitResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -52,24 +52,7 @@ func (r *FunctionCommitResource) Schema(ctx context.Context, req resource.Schema
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "FunctionCommit Resource",
 		Attributes: map[string]schema.Attribute{
-			"commit_message": schema.StringAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `The commitMessage field. Requires replacement if changed.`,
-			},
-			"content": schema.MapAttribute{
-				Computed: true,
-				Optional: true,
-				PlanModifiers: []planmodifier.Map{
-					mapplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
-				},
-				ElementType: types.StringType,
-				Description: `The content field. Requires replacement if changed.`,
-			},
-			"function_commit": schema.SingleNestedAttribute{
+			"commit": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"author": schema.StringAttribute{
@@ -97,8 +80,25 @@ func (r *FunctionCommitResource) Schema(ctx context.Context, req resource.Schema
 				},
 				Description: `FunctionCommit represents a single commit in a function's history`,
 			},
+			"commit_message": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The commitMessage field. Requires replacement if changed.`,
+			},
+			"content": schema.MapAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.Map{
+					mapplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
+				},
+				ElementType: types.StringType,
+				Description: `The content field. Requires replacement if changed.`,
+			},
 			"function_id": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
@@ -328,23 +328,23 @@ func (r *FunctionCommitResource) ImportState(ctx context.Context, req resource.I
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		FunctionID       string `json:"function_id"`
-		FunctionCommitID string `json:"function_commit_id"`
+		FunctionID *string `json:"function_id"`
+		CommitID   *string `json:"commit_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"function_commit_id": "...", "function_id": "..."}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"commit_id": "...", "function_id": "..."}': `+err.Error())
 		return
 	}
 
-	if len(data.FunctionID) == 0 {
+	if data.FunctionID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field function_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("function_id"), data.FunctionID)...)
-	if len(data.FunctionCommitID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field function_commit_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+	if data.CommitID == nil {
+		resp.Diagnostics.AddError("Missing required field", `The field commit_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("function_commit_id"), data.FunctionCommitID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("commit_id"), data.CommitID)...)
 }

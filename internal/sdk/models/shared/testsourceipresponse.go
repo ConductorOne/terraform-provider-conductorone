@@ -8,14 +8,7 @@ type TestSourceIPResponse struct {
 	Allowed *bool `json:"allowed,omitempty"`
 	// The checkedIp field.
 	CheckedIP *string `json:"checkedIp,omitempty"`
-	// The `Status` type defines a logical error model that is suitable for
-	//  different programming environments, including REST APIs and RPC APIs. It is
-	//  used by [gRPC](https://github.com/grpc). Each `Status` message contains
-	//  three pieces of data: error code, error message, and error details.
-	//
-	//  You can find out more about this error model and how to work with it in the
-	//  [API Design Guide](https://cloud.google.com/apis/design/errors).
-	Status *Status `json:"details,omitempty"`
+	Details   *Status `json:"details,omitempty"`
 }
 
 func (t *TestSourceIPResponse) GetAllowed() *bool {
@@ -32,9 +25,9 @@ func (t *TestSourceIPResponse) GetCheckedIP() *string {
 	return t.CheckedIP
 }
 
-func (t *TestSourceIPResponse) GetStatus() *Status {
+func (t *TestSourceIPResponse) GetDetails() *Status {
 	if t == nil {
 		return nil
 	}
-	return t.Status
+	return t.Details
 }

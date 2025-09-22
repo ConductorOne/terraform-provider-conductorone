@@ -12,8 +12,7 @@ import (
 // This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
 //   - entitlements
 type BundleAutomation struct {
-	// The BundleAutomationCircuitBreaker message.
-	BundleAutomationCircuitBreaker *BundleAutomationCircuitBreaker `json:"circuitBreaker,omitempty"`
+	CircuitBreaker *BundleAutomationCircuitBreaker `json:"circuitBreaker,omitempty"`
 	// The createTasks field.
 	CreateTasks *bool      `json:"createTasks,omitempty"`
 	CreatedAt   *time.Time `json:"createdAt,omitempty"`
@@ -21,13 +20,11 @@ type BundleAutomation struct {
 	// The disableCircuitBreaker field.
 	DisableCircuitBreaker *bool `json:"disableCircuitBreaker,omitempty"`
 	// The enabled field.
-	Enabled *bool `json:"enabled,omitempty"`
-	// The BundleAutomationRuleEntitlement message.
-	BundleAutomationRuleEntitlement *BundleAutomationRuleEntitlement `json:"entitlements,omitempty"`
+	Enabled      *bool                            `json:"enabled,omitempty"`
+	Entitlements *BundleAutomationRuleEntitlement `json:"entitlements,omitempty"`
 	// The requestCatalogId field.
-	RequestCatalogID *string `json:"requestCatalogId,omitempty"`
-	// The BundleAutomationLastRunState message.
-	BundleAutomationLastRunState *BundleAutomationLastRunState `json:"state,omitempty"`
+	RequestCatalogID *string                       `json:"requestCatalogId,omitempty"`
+	State            *BundleAutomationLastRunState `json:"state,omitempty"`
 	// The tenantId field.
 	TenantID  *string    `json:"tenantId,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -44,11 +41,11 @@ func (b *BundleAutomation) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (b *BundleAutomation) GetBundleAutomationCircuitBreaker() *BundleAutomationCircuitBreaker {
+func (b *BundleAutomation) GetCircuitBreaker() *BundleAutomationCircuitBreaker {
 	if b == nil {
 		return nil
 	}
-	return b.BundleAutomationCircuitBreaker
+	return b.CircuitBreaker
 }
 
 func (b *BundleAutomation) GetCreateTasks() *bool {
@@ -86,11 +83,11 @@ func (b *BundleAutomation) GetEnabled() *bool {
 	return b.Enabled
 }
 
-func (b *BundleAutomation) GetBundleAutomationRuleEntitlement() *BundleAutomationRuleEntitlement {
+func (b *BundleAutomation) GetEntitlements() *BundleAutomationRuleEntitlement {
 	if b == nil {
 		return nil
 	}
-	return b.BundleAutomationRuleEntitlement
+	return b.Entitlements
 }
 
 func (b *BundleAutomation) GetRequestCatalogID() *string {
@@ -100,11 +97,11 @@ func (b *BundleAutomation) GetRequestCatalogID() *string {
 	return b.RequestCatalogID
 }
 
-func (b *BundleAutomation) GetBundleAutomationLastRunState() *BundleAutomationLastRunState {
+func (b *BundleAutomation) GetState() *BundleAutomationLastRunState {
 	if b == nil {
 		return nil
 	}
-	return b.BundleAutomationLastRunState
+	return b.State
 }
 
 func (b *BundleAutomation) GetTenantID() *string {

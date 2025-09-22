@@ -15,10 +15,9 @@ type AppUserCredential struct {
 	// The ID of the application.
 	AppID *string `json:"appId,omitempty"`
 	// A unique identifier of the application user.
-	AppUserID *string    `json:"appUserId,omitempty"`
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
-	// EncryptedData is a message that contains encrypted bytes and metadata.
+	AppUserID     *string        `json:"appUserId,omitempty"`
+	CreatedAt     *time.Time     `json:"createdAt,omitempty"`
+	DeletedAt     *time.Time     `json:"deletedAt,omitempty"`
 	EncryptedData *EncryptedData `json:"encryptedData,omitempty"`
 	ExpiresAt     *time.Time     `json:"expiresAt,omitempty"`
 	// A unique identifier of the credential.

@@ -16,12 +16,10 @@ type EscalationInstance struct {
 	// The alreadyEscalated field.
 	AlreadyEscalated *bool `json:"alreadyEscalated,omitempty"`
 	// The escalationComment field.
-	EscalationComment *string    `json:"escalationComment,omitempty"`
-	ExpiresAt         *time.Time `json:"expiresAt,omitempty"`
-	// The ReassignToApprovers message.
+	EscalationComment   *string              `json:"escalationComment,omitempty"`
+	ExpiresAt           *time.Time           `json:"expiresAt,omitempty"`
 	ReassignToApprovers *ReassignToApprovers `json:"reassignToApprovers,omitempty"`
-	// The ReplacePolicy message.
-	ReplacePolicy *ReplacePolicy `json:"replacePolicy,omitempty"`
+	ReplacePolicy       *ReplacePolicy       `json:"replacePolicy,omitempty"`
 }
 
 func (e EscalationInstance) MarshalJSON() ([]byte, error) {

@@ -4,7 +4,6 @@ package shared
 
 // RequestCatalogView - The request catalog view contains the serialized request catalog and paths to objects referenced by the request catalog.
 type RequestCatalogView struct {
-	// The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
 	RequestCatalog *RequestCatalog `json:"requestCatalog,omitempty"`
 }
 

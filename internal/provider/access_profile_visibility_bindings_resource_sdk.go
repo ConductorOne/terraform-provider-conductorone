@@ -21,9 +21,12 @@ func (r *AccessProfileVisibilityBindingsResourceModel) RefreshFromSharedRequestC
 func (r *AccessProfileVisibilityBindingsResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var catalogID string
-	catalogID = r.CatalogID.ValueString()
-
+	catalogID := new(string)
+	if !r.CatalogID.IsUnknown() && !r.CatalogID.IsNull() {
+		*catalogID = r.CatalogID.ValueString()
+	} else {
+		catalogID = nil
+	}
 	requestCatalogManagementServiceAddAccessEntitlementsRequest, requestCatalogManagementServiceAddAccessEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceAddAccessEntitlementsRequest(ctx)
 	diags.Append(requestCatalogManagementServiceAddAccessEntitlementsRequestDiags...)
 
@@ -42,9 +45,12 @@ func (r *AccessProfileVisibilityBindingsResourceModel) ToOperationsC1APIRequestc
 func (r *AccessProfileVisibilityBindingsResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var catalogID string
-	catalogID = r.CatalogID.ValueString()
-
+	catalogID := new(string)
+	if !r.CatalogID.IsUnknown() && !r.CatalogID.IsNull() {
+		*catalogID = r.CatalogID.ValueString()
+	} else {
+		catalogID = nil
+	}
 	requestCatalogManagementServiceRemoveAccessEntitlementsRequest, requestCatalogManagementServiceRemoveAccessEntitlementsRequestDiags := r.ToSharedRequestCatalogManagementServiceRemoveAccessEntitlementsRequest(ctx)
 	diags.Append(requestCatalogManagementServiceRemoveAccessEntitlementsRequestDiags...)
 
@@ -63,27 +69,24 @@ func (r *AccessProfileVisibilityBindingsResourceModel) ToOperationsC1APIRequestc
 func (r *AccessProfileVisibilityBindingsResourceModel) ToSharedRequestCatalogManagementServiceAddAccessEntitlementsRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceAddAccessEntitlementsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var accessEntitlements []shared.AppEntitlementRef
-	if r.AccessEntitlements != nil {
-		accessEntitlements = make([]shared.AppEntitlementRef, 0, len(r.AccessEntitlements))
-		for _, accessEntitlementsItem := range r.AccessEntitlements {
-			appID := new(string)
-			if !accessEntitlementsItem.AppID.IsUnknown() && !accessEntitlementsItem.AppID.IsNull() {
-				*appID = accessEntitlementsItem.AppID.ValueString()
-			} else {
-				appID = nil
-			}
-			id := new(string)
-			if !accessEntitlementsItem.ID.IsUnknown() && !accessEntitlementsItem.ID.IsNull() {
-				*id = accessEntitlementsItem.ID.ValueString()
-			} else {
-				id = nil
-			}
-			accessEntitlements = append(accessEntitlements, shared.AppEntitlementRef{
-				AppID: appID,
-				ID:    id,
-			})
+	accessEntitlements := make([]shared.AppEntitlementRef, 0, len(r.AccessEntitlements))
+	for _, accessEntitlementsItem := range r.AccessEntitlements {
+		appID := new(string)
+		if !accessEntitlementsItem.AppID.IsUnknown() && !accessEntitlementsItem.AppID.IsNull() {
+			*appID = accessEntitlementsItem.AppID.ValueString()
+		} else {
+			appID = nil
 		}
+		id := new(string)
+		if !accessEntitlementsItem.ID.IsUnknown() && !accessEntitlementsItem.ID.IsNull() {
+			*id = accessEntitlementsItem.ID.ValueString()
+		} else {
+			id = nil
+		}
+		accessEntitlements = append(accessEntitlements, shared.AppEntitlementRef{
+			AppID: appID,
+			ID:    id,
+		})
 	}
 	out := shared.RequestCatalogManagementServiceAddAccessEntitlementsRequest{
 		AccessEntitlements: accessEntitlements,

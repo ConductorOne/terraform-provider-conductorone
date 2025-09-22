@@ -172,6 +172,8 @@ func (p *Policy) GetUpdatedAt() *time.Time {
 
 // PolicyInput - A policy describes the behavior of the ConductorOne system when processing a task. You can describe the type, approvers, fallback behavior, and escalation processes.
 type PolicyInput struct {
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	DeletedAt *time.Time `json:"deletedAt,omitempty"`
 	// The description of the Policy.
 	Description *string `json:"description,omitempty"`
 	// The display name of the Policy.
@@ -187,7 +189,33 @@ type PolicyInput struct {
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
 	// The rules field.
-	Rules []Rule `json:"rules,omitempty"`
+	Rules     []Rule     `json:"rules,omitempty"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+}
+
+func (p PolicyInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PolicyInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *PolicyInput) GetCreatedAt() *time.Time {
+	if p == nil {
+		return nil
+	}
+	return p.CreatedAt
+}
+
+func (p *PolicyInput) GetDeletedAt() *time.Time {
+	if p == nil {
+		return nil
+	}
+	return p.DeletedAt
 }
 
 func (p *PolicyInput) GetDescription() *string {
@@ -237,4 +265,11 @@ func (p *PolicyInput) GetRules() []Rule {
 		return nil
 	}
 	return p.Rules
+}
+
+func (p *PolicyInput) GetUpdatedAt() *time.Time {
+	if p == nil {
+		return nil
+	}
+	return p.UpdatedAt
 }

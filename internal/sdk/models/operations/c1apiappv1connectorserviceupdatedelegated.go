@@ -8,21 +8,21 @@ import (
 )
 
 type C1APIAppV1ConnectorServiceUpdateDelegatedRequest struct {
-	ConnectorAppID                         string                                         `pathParam:"style=simple,explode=false,name=connector_app_id"`
-	ConnectorID                            string                                         `pathParam:"style=simple,explode=false,name=connector_id"`
+	ConnectorAppID                         *string                                        `pathParam:"style=simple,explode=false,name=connector_app_id"`
+	ConnectorID                            *string                                        `pathParam:"style=simple,explode=false,name=connector_id"`
 	ConnectorServiceUpdateDelegatedRequest *shared.ConnectorServiceUpdateDelegatedRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1ConnectorServiceUpdateDelegatedRequest) GetConnectorAppID() string {
+func (c *C1APIAppV1ConnectorServiceUpdateDelegatedRequest) GetConnectorAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ConnectorAppID
 }
 
-func (c *C1APIAppV1ConnectorServiceUpdateDelegatedRequest) GetConnectorID() string {
+func (c *C1APIAppV1ConnectorServiceUpdateDelegatedRequest) GetConnectorID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ConnectorID
 }

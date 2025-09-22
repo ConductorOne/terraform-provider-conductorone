@@ -61,15 +61,7 @@ type TaskTypeRevoke struct {
 	// The outcome of the revoke.
 	Outcome     *TaskTypeRevokeOutcome `json:"outcome,omitempty"`
 	OutcomeTime *time.Time             `json:"outcomeTime,omitempty"`
-	// The TaskRevokeSource message indicates the source of the revoke task is one of expired, nonUsage, request, or review.
-	//
-	// This message contains a oneof named origin. Only a single field of the following list may be set at a time:
-	//   - review
-	//   - request
-	//   - expired
-	//   - nonUsage
-	//
-	TaskRevokeSource *TaskRevokeSource `json:"source,omitempty"`
+	Source      *TaskRevokeSource      `json:"source,omitempty"`
 }
 
 func (t TaskTypeRevoke) MarshalJSON() ([]byte, error) {
@@ -125,9 +117,9 @@ func (t *TaskTypeRevoke) GetOutcomeTime() *time.Time {
 	return t.OutcomeTime
 }
 
-func (t *TaskTypeRevoke) GetTaskRevokeSource() *TaskRevokeSource {
+func (t *TaskTypeRevoke) GetSource() *TaskRevokeSource {
 	if t == nil {
 		return nil
 	}
-	return t.TaskRevokeSource
+	return t.Source
 }

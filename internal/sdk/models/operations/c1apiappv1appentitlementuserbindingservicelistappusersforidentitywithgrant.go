@@ -8,28 +8,28 @@ import (
 )
 
 type C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest struct {
-	AppID            string `pathParam:"style=simple,explode=false,name=app_id"`
-	AppEntitlementID string `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
-	IdentityUserID   string `pathParam:"style=simple,explode=false,name=identity_user_id"`
+	AppID            *string `pathParam:"style=simple,explode=false,name=app_id"`
+	AppEntitlementID *string `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
+	IdentityUserID   *string `pathParam:"style=simple,explode=false,name=identity_user_id"`
 }
 
-func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppID() string {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppEntitlementID() string {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetAppEntitlementID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppEntitlementID
 }
 
-func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetIdentityUserID() string {
+func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantRequest) GetIdentityUserID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.IdentityUserID
 }

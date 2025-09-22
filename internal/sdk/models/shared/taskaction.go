@@ -75,43 +75,26 @@ func (e *TaskUserRelation) UnmarshalJSON(data []byte) error {
 //   - close
 //   - reassign
 type TaskAction struct {
-	// The CloseAction message.
-	//
-	// This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:
-	//   - userIdCel
-	//   - userRef
-	//
-	CloseAction *CloseAction `json:"close,omitempty"`
-	// The ReassignAction message.
-	//
-	// This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:
-	//   - assigneeUserIdCel
-	//   - assigneeUserRef
-	//
-	//
-	// This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:
-	//   - subjectUserIdCel
-	//   - subjectUserRef
-	//
-	ReassignAction *ReassignAction `json:"reassign,omitempty"`
+	Close    *CloseAction    `json:"close,omitempty"`
+	Reassign *ReassignAction `json:"reassign,omitempty"`
 	// The taskTypes field.
 	TaskTypes []TaskTypes `json:"taskTypes,omitempty"`
 	// The taskUserRelation field.
 	TaskUserRelation *TaskUserRelation `json:"taskUserRelation,omitempty"`
 }
 
-func (t *TaskAction) GetCloseAction() *CloseAction {
+func (t *TaskAction) GetClose() *CloseAction {
 	if t == nil {
 		return nil
 	}
-	return t.CloseAction
+	return t.Close
 }
 
-func (t *TaskAction) GetReassignAction() *ReassignAction {
+func (t *TaskAction) GetReassign() *ReassignAction {
 	if t == nil {
 		return nil
 	}
-	return t.ReassignAction
+	return t.Reassign
 }
 
 func (t *TaskAction) GetTaskTypes() []TaskTypes {

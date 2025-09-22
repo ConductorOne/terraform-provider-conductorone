@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsRequest struct {
-	AppID                    string                            `pathParam:"style=simple,explode=false,name=app_id"`
+	AppID                    *string                           `pathParam:"style=simple,explode=false,name=app_id"`
 	AppAccessRequestDefaults *shared.AppAccessRequestDefaults1 `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsRequest) GetAppID() string {
+func (c *C1APIAppV1AppAccessRequestsDefaultsServiceCreateAppAccessRequestsDefaultsRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }

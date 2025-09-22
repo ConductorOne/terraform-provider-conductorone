@@ -1,10 +1,5 @@
 resource "conductorone_automation" "my_automation" {
   app_id = "...my_app_id..."
-  automation_context = {
-    context = {
-      # ...
-    }
-  }
   automation_steps = [
     {
       call_function = {
@@ -79,24 +74,24 @@ resource "conductorone_automation" "my_automation" {
       }
       remove_from_delegation = {
         replacement_user_id_cel = "...my_replacement_user_id_cel..."
-        use_subject_user        = true
-        user_id_cel             = "...my_user_id_cel..."
-        user_ref = {
+        replacement_user_ref = {
           id = "...my_id..."
         }
-        user_ref1 = {
+        use_subject_user = true
+        user_id_cel      = "...my_user_id_cel..."
+        user_ref = {
           id = "...my_id..."
         }
       }
       run_automation = {
-        automation_context = {
-          context = {
-            # ...
-          }
-        }
         automation_template_id_cel = "...my_automation_template_id_cel..."
         automation_template_ref = {
           id = "...my_id..."
+        }
+        context = {
+          context = {
+            # ...
+          }
         }
       }
       send_email = {
@@ -120,23 +115,23 @@ resource "conductorone_automation" "my_automation" {
       step_display_name = "...my_step_display_name..."
       step_name         = "...my_step_name..."
       task_action = {
-        close_action = {
+        close = {
           use_subject_user = false
           user_id_cel      = "...my_user_id_cel..."
           user_ref = {
             id = "...my_id..."
           }
         }
-        reassign_action = {
+        reassign = {
           assignee_user_id_cel = "...my_assignee_user_id_cel..."
-          subject_user_id_cel  = "...my_subject_user_id_cel..."
-          use_subject_user     = false
-          user_ref = {
+          assignee_user_ref = {
             id = "...my_id..."
           }
-          user_ref1 = {
+          subject_user_id_cel = "...my_subject_user_id_cel..."
+          subject_user_ref = {
             id = "...my_id..."
           }
+          use_subject_user = false
         }
         task_types = [
           "TASK_TYPE_REVOKE"
@@ -177,6 +172,11 @@ resource "conductorone_automation" "my_automation" {
       }
     }
   ]
+  context = {
+    context = {
+      # ...
+    }
+  }
   description  = "...my_description..."
   display_name = "...my_display_name..."
   draft_automation_steps = [
@@ -253,24 +253,24 @@ resource "conductorone_automation" "my_automation" {
       }
       remove_from_delegation = {
         replacement_user_id_cel = "...my_replacement_user_id_cel..."
-        use_subject_user        = true
-        user_id_cel             = "...my_user_id_cel..."
-        user_ref = {
+        replacement_user_ref = {
           id = "...my_id..."
         }
-        user_ref1 = {
+        use_subject_user = true
+        user_id_cel      = "...my_user_id_cel..."
+        user_ref = {
           id = "...my_id..."
         }
       }
       run_automation = {
-        automation_context = {
-          context = {
-            # ...
-          }
-        }
         automation_template_id_cel = "...my_automation_template_id_cel..."
         automation_template_ref = {
           id = "...my_id..."
+        }
+        context = {
+          context = {
+            # ...
+          }
         }
       }
       send_email = {
@@ -294,23 +294,23 @@ resource "conductorone_automation" "my_automation" {
       step_display_name = "...my_step_display_name..."
       step_name         = "...my_step_name..."
       task_action = {
-        close_action = {
+        close = {
           use_subject_user = false
           user_id_cel      = "...my_user_id_cel..."
           user_ref = {
             id = "...my_id..."
           }
         }
-        reassign_action = {
+        reassign = {
           assignee_user_id_cel = "...my_assignee_user_id_cel..."
-          subject_user_id_cel  = "...my_subject_user_id_cel..."
-          use_subject_user     = false
-          user_ref = {
+          assignee_user_ref = {
             id = "...my_id..."
           }
-          user_ref1 = {
+          subject_user_id_cel = "...my_subject_user_id_cel..."
+          subject_user_ref = {
             id = "...my_id..."
           }
+          use_subject_user = true
         }
         task_types = [
           "TASK_TYPE_UNSPECIFIED"
@@ -353,138 +353,21 @@ resource "conductorone_automation" "my_automation" {
   ]
   draft_triggers = [
     {
-      app_user_created_trigger = {
+      app_user_created = {
         app_id     = "...my_app_id..."
         app_id_cel = "...my_app_id_cel..."
         condition  = "...my_condition..."
       }
-      app_user_updated_trigger = {
+      app_user_updated = {
         app_id     = "...my_app_id..."
         app_id_cel = "...my_app_id_cel..."
         condition  = "...my_condition..."
       }
-      form_trigger = "{ \"see\": \"documentation\" }"
-      grant_deleted_trigger = {
+      form = "{ \"see\": \"documentation\" }"
+      grant_deleted = {
         grant_trigger_filter = {
           account_filter = {
             account_type = "APP_USER_TYPE_UNSPECIFIED"
-          }
-          entitlement_filter = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-            app_id                   = "...my_app_id..."
-          }
-          grant_filter = {
-            grant_filter_type        = "GRANT_FILTER_TYPE_TEMPORARY"
-            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_UNSPECIFIED"
-            grant_source_filter      = "GRANT_SOURCE_FILTER_DIRECT"
-          }
-        }
-      }
-      grant_found_trigger = {
-        grant_trigger_filter = {
-          account_filter = {
-            account_type = "APP_USER_TYPE_UNSPECIFIED"
-          }
-          entitlement_filter = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-            app_id                   = "...my_app_id..."
-          }
-          grant_filter = {
-            grant_filter_type        = "GRANT_FILTER_TYPE_TEMPORARY"
-            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_DIRECT"
-            grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
-          }
-        }
-      }
-      manual_automation_trigger = {
-        # ...
-      }
-      schedule_trigger = {
-        advanced         = false
-        cron_spec        = "...my_cron_spec..."
-        skip_if_true_cel = "...my_skip_if_true_cel..."
-        start            = "2022-11-05T06:51:06.048Z"
-      }
-      usage_based_revocation_trigger = {
-        app_id     = "...my_app_id..."
-        enabled_at = "2021-08-03T22:56:50.306Z"
-        excluded_group_refs = [
-          {
-            app_id = "...my_app_id..."
-            id     = "...my_id..."
-          }
-        ]
-        excluded_user_refs = [
-          {
-            id = "...my_id..."
-          }
-        ]
-        include_users_with_no_activity = false
-        run_delayed = {
-          cold_start_delay_days = 8
-        }
-        run_immediately = {
-          # ...
-        }
-        targeted_app_user_types = [
-          "APP_USER_TYPE_UNSPECIFIED"
-        ]
-        targeted_entitlement_refs = [
-          {
-            app_id = "...my_app_id..."
-            id     = "...my_id..."
-          }
-        ]
-        unused_for_days = 8
-      }
-      user_created_trigger = {
-        condition = "...my_condition..."
-      }
-      user_profile_change_trigger = {
-        condition = "...my_condition..."
-      }
-      webhook_automation_trigger = {
-        listener_id = "...my_listener_id..."
-        webhook_listener_auth_hmac = {
-          # ...
-        }
-        webhook_listener_auth_jwt = {
-          jwks_url = "...my_jwks_url..."
-        }
-      }
-    }
-  ]
-  enabled  = false
-  is_draft = true
-  triggers = [
-    {
-      app_user_created_trigger = {
-        app_id     = "...my_app_id..."
-        app_id_cel = "...my_app_id_cel..."
-        condition  = "...my_condition..."
-      }
-      app_user_updated_trigger = {
-        app_id     = "...my_app_id..."
-        app_id_cel = "...my_app_id_cel..."
-        condition  = "...my_condition..."
-      }
-      form_trigger = "{ \"see\": \"documentation\" }"
-      grant_deleted_trigger = {
-        grant_trigger_filter = {
-          account_filter = {
-            account_type = "APP_USER_TYPE_SERVICE_ACCOUNT"
           }
           entitlement_filter = {
             app_entitlement_refs = [
@@ -503,7 +386,7 @@ resource "conductorone_automation" "my_automation" {
           }
         }
       }
-      grant_found_trigger = {
+      grant_found = {
         grant_trigger_filter = {
           account_filter = {
             account_type = "APP_USER_TYPE_UNSPECIFIED"
@@ -519,24 +402,24 @@ resource "conductorone_automation" "my_automation" {
             app_id                   = "...my_app_id..."
           }
           grant_filter = {
-            grant_filter_type        = "GRANT_FILTER_TYPE_PERMANENT"
-            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_UNSPECIFIED"
+            grant_filter_type        = "GRANT_FILTER_TYPE_TEMPORARY"
+            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE"
             grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
           }
         }
       }
-      manual_automation_trigger = {
+      manual = {
         # ...
       }
-      schedule_trigger = {
-        advanced         = false
+      schedule = {
+        advanced         = true
         cron_spec        = "...my_cron_spec..."
         skip_if_true_cel = "...my_skip_if_true_cel..."
-        start            = "2022-01-25T09:55:20.150Z"
+        start            = "2021-04-30T19:00:50.170Z"
       }
-      usage_based_revocation_trigger = {
+      usage_based_revocation = {
         app_id     = "...my_app_id..."
-        enabled_at = "2022-01-14T07:38:09.864Z"
+        enabled_at = "2021-05-11T12:49:25.031Z"
         excluded_group_refs = [
           {
             app_id = "...my_app_id..."
@@ -548,9 +431,126 @@ resource "conductorone_automation" "my_automation" {
             id = "...my_id..."
           }
         ]
-        include_users_with_no_activity = false
+        include_users_with_no_activity = true
         run_delayed = {
-          cold_start_delay_days = 1
+          cold_start_delay_days = 9
+        }
+        run_immediately = {
+          # ...
+        }
+        targeted_app_user_types = [
+          "APP_USER_TYPE_UNSPECIFIED"
+        ]
+        targeted_entitlement_refs = [
+          {
+            app_id = "...my_app_id..."
+            id     = "...my_id..."
+          }
+        ]
+        unused_for_days = 1
+      }
+      user_created = {
+        condition = "...my_condition..."
+      }
+      user_profile_change = {
+        condition = "...my_condition..."
+      }
+      webhook = {
+        hmac = {
+          # ...
+        }
+        jwt = {
+          jwks_url = "...my_jwks_url..."
+        }
+        listener_id = "...my_listener_id..."
+      }
+    }
+  ]
+  enabled  = false
+  is_draft = true
+  triggers = [
+    {
+      app_user_created = {
+        app_id     = "...my_app_id..."
+        app_id_cel = "...my_app_id_cel..."
+        condition  = "...my_condition..."
+      }
+      app_user_updated = {
+        app_id     = "...my_app_id..."
+        app_id_cel = "...my_app_id_cel..."
+        condition  = "...my_condition..."
+      }
+      form = "{ \"see\": \"documentation\" }"
+      grant_deleted = {
+        grant_trigger_filter = {
+          account_filter = {
+            account_type = "APP_USER_TYPE_SERVICE_ACCOUNT"
+          }
+          entitlement_filter = {
+            app_entitlement_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
+            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+            app_id                   = "...my_app_id..."
+          }
+          grant_filter = {
+            grant_filter_type        = "GRANT_FILTER_TYPE_UNSPECIFIED"
+            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_DIRECT"
+            grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
+          }
+        }
+      }
+      grant_found = {
+        grant_trigger_filter = {
+          account_filter = {
+            account_type = "APP_USER_TYPE_SERVICE_ACCOUNT"
+          }
+          entitlement_filter = {
+            app_entitlement_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
+            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+            app_id                   = "...my_app_id..."
+          }
+          grant_filter = {
+            grant_filter_type        = "GRANT_FILTER_TYPE_TEMPORARY"
+            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE"
+            grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
+          }
+        }
+      }
+      manual = {
+        # ...
+      }
+      schedule = {
+        advanced         = true
+        cron_spec        = "...my_cron_spec..."
+        skip_if_true_cel = "...my_skip_if_true_cel..."
+        start            = "2022-09-11T15:40:46.002Z"
+      }
+      usage_based_revocation = {
+        app_id     = "...my_app_id..."
+        enabled_at = "2022-08-29T08:08:12.512Z"
+        excluded_group_refs = [
+          {
+            app_id = "...my_app_id..."
+            id     = "...my_id..."
+          }
+        ]
+        excluded_user_refs = [
+          {
+            id = "...my_id..."
+          }
+        ]
+        include_users_with_no_activity = true
+        run_delayed = {
+          cold_start_delay_days = 0
         }
         run_immediately = {
           # ...
@@ -566,20 +566,20 @@ resource "conductorone_automation" "my_automation" {
         ]
         unused_for_days = 0
       }
-      user_created_trigger = {
+      user_created = {
         condition = "...my_condition..."
       }
-      user_profile_change_trigger = {
+      user_profile_change = {
         condition = "...my_condition..."
       }
-      webhook_automation_trigger = {
-        listener_id = "...my_listener_id..."
-        webhook_listener_auth_hmac = {
+      webhook = {
+        hmac = {
           # ...
         }
-        webhook_listener_auth_jwt = {
+        jwt = {
           jwks_url = "...my_jwks_url..."
         }
+        listener_id = "...my_listener_id..."
       }
     }
   ]

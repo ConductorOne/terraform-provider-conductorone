@@ -21,12 +21,18 @@ func (r *AppEntitlementOwnerResourceModel) RefreshFromSharedSetAppEntitlementOwn
 func (r *AppEntitlementOwnerResourceModel) ToOperationsC1APIAppV1AppEntitlementOwnersSetRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementOwnersSetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var entitlementID string
-	entitlementID = r.EntitlementID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
+	entitlementID := new(string)
+	if !r.EntitlementID.IsUnknown() && !r.EntitlementID.IsNull() {
+		*entitlementID = r.EntitlementID.ValueString()
+	} else {
+		entitlementID = nil
+	}
 	setAppEntitlementOwnersRequest, setAppEntitlementOwnersRequestDiags := r.ToSharedSetAppEntitlementOwnersRequest(ctx)
 	diags.Append(setAppEntitlementOwnersRequestDiags...)
 

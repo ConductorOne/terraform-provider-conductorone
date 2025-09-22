@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest struct {
-	RequestCatalogID           string                             `pathParam:"style=simple,explode=false,name=request_catalog_id"`
+	RequestCatalogID           *string                            `pathParam:"style=simple,explode=false,name=request_catalog_id"`
 	SetBundleAutomationRequest *shared.SetBundleAutomationRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest) GetRequestCatalogID() string {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest) GetRequestCatalogID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.RequestCatalogID
 }

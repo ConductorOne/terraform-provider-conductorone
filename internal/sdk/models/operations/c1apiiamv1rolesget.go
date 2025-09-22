@@ -8,12 +8,12 @@ import (
 )
 
 type C1APIIamV1RolesGetRequest struct {
-	RoleID string `pathParam:"style=simple,explode=false,name=role_id"`
+	RoleID *string `pathParam:"style=simple,explode=false,name=role_id"`
 }
 
-func (c *C1APIIamV1RolesGetRequest) GetRoleID() string {
+func (c *C1APIIamV1RolesGetRequest) GetRoleID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.RoleID
 }

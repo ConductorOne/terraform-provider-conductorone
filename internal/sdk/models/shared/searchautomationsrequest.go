@@ -71,7 +71,7 @@ type SearchAutomationsRequest struct {
 	// The query field.
 	Query *string `json:"query,omitempty"`
 	// The refs field.
-	Refs []*AutomationTemplateRef `json:"refs,omitempty"`
+	Refs []AutomationTemplateRef `json:"refs,omitempty"`
 	// The triggerTypes field.
 	TriggerTypes []TriggerTypes `json:"triggerTypes,omitempty"`
 }
@@ -104,7 +104,7 @@ func (s *SearchAutomationsRequest) GetQuery() *string {
 	return s.Query
 }
 
-func (s *SearchAutomationsRequest) GetRefs() []*AutomationTemplateRef {
+func (s *SearchAutomationsRequest) GetRefs() []AutomationTemplateRef {
 	if s == nil {
 		return nil
 	}

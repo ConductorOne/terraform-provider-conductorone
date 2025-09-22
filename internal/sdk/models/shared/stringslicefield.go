@@ -10,14 +10,12 @@ package shared
 // This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
 //   - rules
 type StringSliceField struct {
-	// The ChipsField message.
 	ChipsField *ChipsField `json:"chipsField,omitempty"`
 	// The defaultValues field.
 	DefaultValues []string `json:"defaultValues,omitempty"`
 	// The placeholder field.
-	Placeholder *string `json:"placeholder,omitempty"`
-	// RepeatedRules describe the constraints applied to `repeated` values
-	RepeatedRules *RepeatedRules `json:"rules,omitempty"`
+	Placeholder *string        `json:"placeholder,omitempty"`
+	Rules       *RepeatedRules `json:"rules,omitempty"`
 }
 
 func (s *StringSliceField) GetChipsField() *ChipsField {
@@ -41,9 +39,9 @@ func (s *StringSliceField) GetPlaceholder() *string {
 	return s.Placeholder
 }
 
-func (s *StringSliceField) GetRepeatedRules() *RepeatedRules {
+func (s *StringSliceField) GetRules() *RepeatedRules {
 	if s == nil {
 		return nil
 	}
-	return s.RepeatedRules
+	return s.Rules
 }

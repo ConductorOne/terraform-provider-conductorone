@@ -4,11 +4,6 @@ package shared
 
 // The ExportServiceUpdateRequest message.
 type ExportServiceUpdateRequest struct {
-	// The Exporter message.
-	//
-	// This message contains a oneof named export_to. Only a single field of the following list may be set at a time:
-	//   - datasource
-	//
 	Exporter   *ExporterInput `json:"exporter,omitempty"`
 	UpdateMask *string        `json:"updateMask,omitempty"`
 }
