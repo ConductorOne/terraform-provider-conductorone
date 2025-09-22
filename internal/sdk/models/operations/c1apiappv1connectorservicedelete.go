@@ -8,21 +8,21 @@ import (
 )
 
 type C1APIAppV1ConnectorServiceDeleteRequest struct {
-	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
-	ID                            string                                `pathParam:"style=simple,explode=false,name=id"`
+	AppID                         *string                               `pathParam:"style=simple,explode=false,name=app_id"`
+	ID                            *string                               `pathParam:"style=simple,explode=false,name=id"`
 	ConnectorServiceDeleteRequest *shared.ConnectorServiceDeleteRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1ConnectorServiceDeleteRequest) GetAppID() string {
+func (c *C1APIAppV1ConnectorServiceDeleteRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1ConnectorServiceDeleteRequest) GetID() string {
+func (c *C1APIAppV1ConnectorServiceDeleteRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

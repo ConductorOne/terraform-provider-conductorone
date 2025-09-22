@@ -8,14 +8,14 @@ import (
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsForAccessRequest struct {
-	CatalogID string  `pathParam:"style=simple,explode=false,name=catalog_id"`
+	CatalogID *string `pathParam:"style=simple,explode=false,name=catalog_id"`
 	PageSize  *int    `queryParam:"style=form,explode=true,name=page_size"`
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsForAccessRequest) GetCatalogID() string {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsForAccessRequest) GetCatalogID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.CatalogID
 }

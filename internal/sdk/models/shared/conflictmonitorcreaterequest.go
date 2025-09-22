@@ -7,8 +7,7 @@ type ConflictMonitorCreateRequest struct {
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
-	DisplayName string `json:"displayName"`
-	// The NotificationConfig message.
+	DisplayName        string              `json:"displayName"`
 	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 }
 

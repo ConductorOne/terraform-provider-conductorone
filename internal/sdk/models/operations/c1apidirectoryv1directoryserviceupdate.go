@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIDirectoryV1DirectoryServiceUpdateRequest struct {
-	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
+	AppID                         *string                               `pathParam:"style=simple,explode=false,name=app_id"`
 	DirectoryServiceUpdateRequest *shared.DirectoryServiceUpdateRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIDirectoryV1DirectoryServiceUpdateRequest) GetAppID() string {
+func (c *C1APIDirectoryV1DirectoryServiceUpdateRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }

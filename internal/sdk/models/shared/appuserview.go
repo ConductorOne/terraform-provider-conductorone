@@ -5,8 +5,7 @@ package shared
 // The AppUserView contains an app user as well as paths for apps, identity users, and last usage in expanded arrays.
 type AppUserView struct {
 	// JSONPATH expression indicating where the app is expanded in expanded arrays indicated in the request.
-	AppPath *string `json:"appPath,omitempty"`
-	// Application User that represents an account in the application.
+	AppPath *string  `json:"appPath,omitempty"`
 	AppUser *AppUser `json:"appUser,omitempty"`
 	// JSONPATH expression indicating where the identity user is expanded in expanded arrays indicated in the request.
 	IdentityUserPath *string `json:"identityUserPath,omitempty"`

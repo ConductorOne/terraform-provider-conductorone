@@ -2,6 +2,30 @@
 
 package shared
 
+import (
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
+)
+
 // TaskTypeOffboardingInput - The TaskTypeOffboarding message.
 type TaskTypeOffboardingInput struct {
+	OutcomeTime *time.Time `json:"outcomeTime,omitempty"`
+}
+
+func (t TaskTypeOffboardingInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TaskTypeOffboardingInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *TaskTypeOffboardingInput) GetOutcomeTime() *time.Time {
+	if t == nil {
+		return nil
+	}
+	return t.OutcomeTime
 }

@@ -2,5 +2,6 @@
 
 package types
 
-type AccountProvisionConfig struct {
+type FacetRangeItem struct {
+	Ranges []FacetRange `tfsdk:"ranges"`
 }

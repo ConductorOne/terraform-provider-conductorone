@@ -20,8 +20,7 @@ type TaskView struct {
 	InsightsPath *string `json:"insightsPath,omitempty"`
 	// JSONPATH expression indicating the location of the StepApproverUsers objects in the expanded array
 	StepApproversPath *string `json:"stepApproversPath,omitempty"`
-	// A fully-fleged task object. Includes its policy, references to external apps, its type, its processing history, and more.
-	Task *Task `json:"task,omitempty"`
+	Task              *Task   `json:"task,omitempty"`
 	// JSONPATH expression indicating the location of the User object in the expanded array. This is the user that is a direct target of the ticket without a specific relationship to a potentially non-existent app user.
 	UserPath *string `json:"userPath,omitempty"`
 }

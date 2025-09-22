@@ -9,6 +9,7 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
 func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, resp *shared.Function) diag.Diagnostics {
@@ -37,9 +38,12 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 func (r *FunctionResourceModel) ToOperationsC1APIFunctionsV1FunctionsServiceDeleteFunctionRequest(ctx context.Context) (*operations.C1APIFunctionsV1FunctionsServiceDeleteFunctionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	var functionsServiceDeleteFunctionRequest *shared.FunctionsServiceDeleteFunctionRequest
 	if r.FunctionsServiceDeleteFunctionRequest != nil {
 		functionsServiceDeleteFunctionRequest = &shared.FunctionsServiceDeleteFunctionRequest{}
@@ -55,9 +59,12 @@ func (r *FunctionResourceModel) ToOperationsC1APIFunctionsV1FunctionsServiceDele
 func (r *FunctionResourceModel) ToOperationsC1APIFunctionsV1FunctionsServiceGetFunctionRequest(ctx context.Context) (*operations.C1APIFunctionsV1FunctionsServiceGetFunctionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIFunctionsV1FunctionsServiceGetFunctionRequest{
 		ID: id,
 	}
@@ -65,9 +72,21 @@ func (r *FunctionResourceModel) ToOperationsC1APIFunctionsV1FunctionsServiceGetF
 	return &out, diags
 }
 
-func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*shared.FunctionInput, diag.Diagnostics) {
+func (r *FunctionResourceModel) ToSharedFunction(ctx context.Context) (*shared.Function, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	createdAt := new(time.Time)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt, _ = time.Parse(time.RFC3339Nano, r.CreatedAt.ValueString())
+	} else {
+		createdAt = nil
+	}
+	deletedAt := new(time.Time)
+	if !r.DeletedAt.IsUnknown() && !r.DeletedAt.IsNull() {
+		*deletedAt, _ = time.Parse(time.RFC3339Nano, r.DeletedAt.ValueString())
+	} else {
+		deletedAt = nil
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -110,7 +129,15 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 	} else {
 		publishedCommitID = nil
 	}
-	out := shared.FunctionInput{
+	updatedAt := new(time.Time)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt, _ = time.Parse(time.RFC3339Nano, r.UpdatedAt.ValueString())
+	} else {
+		updatedAt = nil
+	}
+	out := shared.Function{
+		CreatedAt:         createdAt,
+		DeletedAt:         deletedAt,
 		Description:       description,
 		DisplayName:       displayName,
 		FunctionType:      functionType,
@@ -118,6 +145,7 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 		ID:                id,
 		IsDraft:           isDraft,
 		PublishedCommitID: publishedCommitID,
+		UpdatedAt:         updatedAt,
 	}
 
 	return &out, diags
@@ -179,7 +207,7 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceDeleteFunctionRequest(ct
 func (r *FunctionResourceModel) ToSharedFunctionsServiceUpdateFunctionRequest(ctx context.Context) (*shared.FunctionsServiceUpdateFunctionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	function, functionDiags := r.ToSharedFunctionInput(ctx)
+	function, functionDiags := r.ToSharedFunction(ctx)
 	diags.Append(functionDiags...)
 
 	if diags.HasError() {

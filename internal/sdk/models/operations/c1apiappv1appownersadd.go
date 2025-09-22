@@ -8,21 +8,21 @@ import (
 )
 
 type C1APIAppV1AppOwnersAddRequest struct {
-	AppID              string                     `pathParam:"style=simple,explode=false,name=app_id"`
-	UserID             string                     `pathParam:"style=simple,explode=false,name=user_id"`
+	AppID              *string                    `pathParam:"style=simple,explode=false,name=app_id"`
+	UserID             *string                    `pathParam:"style=simple,explode=false,name=user_id"`
 	AddAppOwnerRequest *shared.AddAppOwnerRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppOwnersAddRequest) GetAppID() string {
+func (c *C1APIAppV1AppOwnersAddRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppOwnersAddRequest) GetUserID() string {
+func (c *C1APIAppV1AppOwnersAddRequest) GetUserID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.UserID
 }

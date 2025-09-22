@@ -17,123 +17,92 @@ package shared
 //   - schedule
 //   - form
 type AutomationTrigger struct {
-	// The AppUserCreatedTrigger message.
-	//
-	// This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
-	//   - appId
-	//   - appIdCel
-	//
-	AppUserCreatedTrigger *AppUserCreatedTrigger `json:"appUserCreated,omitempty"`
-	// The AppUserUpdatedTrigger message.
-	//
-	// This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
-	//   - appId
-	//   - appIdCel
-	//
-	AppUserUpdatedTrigger *AppUserUpdatedTrigger `json:"appUserUpdated,omitempty"`
-	// The FormTrigger message.
-	FormTrigger any `json:"form,omitempty"`
-	// The GrantDeletedTrigger message.
-	GrantDeletedTrigger *GrantDeletedTrigger `json:"grantDeleted,omitempty"`
-	// The GrantFoundTrigger message.
-	GrantFoundTrigger *GrantFoundTrigger `json:"grantFound,omitempty"`
-	// The ManualAutomationTrigger message.
-	ManualAutomationTrigger *ManualAutomationTrigger `json:"manual,omitempty"`
-	// The ScheduleTrigger message.
-	ScheduleTrigger *ScheduleTrigger `json:"schedule,omitempty"`
-	// The UsageBasedRevocationTrigger message.
-	//
-	// This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
-	//   - runImmediately
-	//   - runDelayed
-	//
-	UsageBasedRevocationTrigger *UsageBasedRevocationTrigger `json:"usageBasedRevocation,omitempty"`
-	// The UserCreatedTrigger message.
-	UserCreatedTrigger *UserCreatedTrigger `json:"userCreated,omitempty"`
-	// The UserProfileChangeTrigger message.
-	UserProfileChangeTrigger *UserProfileChangeTrigger `json:"userProfileChange,omitempty"`
-	// The WebhookAutomationTrigger message.
-	//
-	// This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:
-	//   - jwt
-	//   - hmac
-	//
-	WebhookAutomationTrigger *WebhookAutomationTrigger `json:"webhook,omitempty"`
+	AppUserCreated       *AppUserCreatedTrigger       `json:"appUserCreated,omitempty"`
+	AppUserUpdated       *AppUserUpdatedTrigger       `json:"appUserUpdated,omitempty"`
+	Form                 any                          `json:"form,omitempty"`
+	GrantDeleted         *GrantDeletedTrigger         `json:"grantDeleted,omitempty"`
+	GrantFound           *GrantFoundTrigger           `json:"grantFound,omitempty"`
+	Manual               *ManualAutomationTrigger     `json:"manual,omitempty"`
+	Schedule             *ScheduleTrigger             `json:"schedule,omitempty"`
+	UsageBasedRevocation *UsageBasedRevocationTrigger `json:"usageBasedRevocation,omitempty"`
+	UserCreated          *UserCreatedTrigger          `json:"userCreated,omitempty"`
+	UserProfileChange    *UserProfileChangeTrigger    `json:"userProfileChange,omitempty"`
+	Webhook              *WebhookAutomationTrigger    `json:"webhook,omitempty"`
 }
 
-func (a *AutomationTrigger) GetAppUserCreatedTrigger() *AppUserCreatedTrigger {
+func (a *AutomationTrigger) GetAppUserCreated() *AppUserCreatedTrigger {
 	if a == nil {
 		return nil
 	}
-	return a.AppUserCreatedTrigger
+	return a.AppUserCreated
 }
 
-func (a *AutomationTrigger) GetAppUserUpdatedTrigger() *AppUserUpdatedTrigger {
+func (a *AutomationTrigger) GetAppUserUpdated() *AppUserUpdatedTrigger {
 	if a == nil {
 		return nil
 	}
-	return a.AppUserUpdatedTrigger
+	return a.AppUserUpdated
 }
 
-func (a *AutomationTrigger) GetFormTrigger() any {
+func (a *AutomationTrigger) GetForm() any {
 	if a == nil {
 		return nil
 	}
-	return a.FormTrigger
+	return a.Form
 }
 
-func (a *AutomationTrigger) GetGrantDeletedTrigger() *GrantDeletedTrigger {
+func (a *AutomationTrigger) GetGrantDeleted() *GrantDeletedTrigger {
 	if a == nil {
 		return nil
 	}
-	return a.GrantDeletedTrigger
+	return a.GrantDeleted
 }
 
-func (a *AutomationTrigger) GetGrantFoundTrigger() *GrantFoundTrigger {
+func (a *AutomationTrigger) GetGrantFound() *GrantFoundTrigger {
 	if a == nil {
 		return nil
 	}
-	return a.GrantFoundTrigger
+	return a.GrantFound
 }
 
-func (a *AutomationTrigger) GetManualAutomationTrigger() *ManualAutomationTrigger {
+func (a *AutomationTrigger) GetManual() *ManualAutomationTrigger {
 	if a == nil {
 		return nil
 	}
-	return a.ManualAutomationTrigger
+	return a.Manual
 }
 
-func (a *AutomationTrigger) GetScheduleTrigger() *ScheduleTrigger {
+func (a *AutomationTrigger) GetSchedule() *ScheduleTrigger {
 	if a == nil {
 		return nil
 	}
-	return a.ScheduleTrigger
+	return a.Schedule
 }
 
-func (a *AutomationTrigger) GetUsageBasedRevocationTrigger() *UsageBasedRevocationTrigger {
+func (a *AutomationTrigger) GetUsageBasedRevocation() *UsageBasedRevocationTrigger {
 	if a == nil {
 		return nil
 	}
-	return a.UsageBasedRevocationTrigger
+	return a.UsageBasedRevocation
 }
 
-func (a *AutomationTrigger) GetUserCreatedTrigger() *UserCreatedTrigger {
+func (a *AutomationTrigger) GetUserCreated() *UserCreatedTrigger {
 	if a == nil {
 		return nil
 	}
-	return a.UserCreatedTrigger
+	return a.UserCreated
 }
 
-func (a *AutomationTrigger) GetUserProfileChangeTrigger() *UserProfileChangeTrigger {
+func (a *AutomationTrigger) GetUserProfileChange() *UserProfileChangeTrigger {
 	if a == nil {
 		return nil
 	}
-	return a.UserProfileChangeTrigger
+	return a.UserProfileChange
 }
 
-func (a *AutomationTrigger) GetWebhookAutomationTrigger() *WebhookAutomationTrigger {
+func (a *AutomationTrigger) GetWebhook() *WebhookAutomationTrigger {
 	if a == nil {
 		return nil
 	}
-	return a.WebhookAutomationTrigger
+	return a.Webhook
 }

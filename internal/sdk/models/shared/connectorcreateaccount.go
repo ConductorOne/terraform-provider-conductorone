@@ -8,13 +8,11 @@ package shared
 //   - userIdCel
 //   - userProperties
 type ConnectorCreateAccount struct {
-	// The ConnectorRef message.
 	ConnectorRef *ConnectorRef `json:"connectorRef,omitempty"`
 	// The userIdCel field.
 	// This field is part of the `create_account_arguments` oneof.
 	// See the documentation for `c1.api.automations.v1.ConnectorCreateAccount` for more details.
-	UserIDCel *string `json:"userIdCel,omitempty"`
-	// The UserProperties message.
+	UserIDCel      *string         `json:"userIdCel,omitempty"`
 	UserProperties *UserProperties `json:"userProperties,omitempty"`
 }
 

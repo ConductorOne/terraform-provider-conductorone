@@ -29,9 +29,12 @@ func (r *RiskLevelResourceModel) RefreshFromSharedAttributeValue(ctx context.Con
 func (r *RiskLevelResourceModel) ToOperationsC1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest{
 		ID: id,
 	}
@@ -42,9 +45,12 @@ func (r *RiskLevelResourceModel) ToOperationsC1APIAttributeV1AttributesDeleteRis
 func (r *RiskLevelResourceModel) ToOperationsC1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest{
 		ID: id,
 	}

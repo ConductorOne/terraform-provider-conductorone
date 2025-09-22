@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest struct {
-	ID                           string                               `pathParam:"style=simple,explode=false,name=id"`
+	ID                           *string                              `pathParam:"style=simple,explode=false,name=id"`
 	ConflictMonitorDeleteRequest *shared.ConflictMonitorDeleteRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest) GetID() string {
+func (c *C1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

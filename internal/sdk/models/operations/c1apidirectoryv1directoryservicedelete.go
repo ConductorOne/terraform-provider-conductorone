@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIDirectoryV1DirectoryServiceDeleteRequest struct {
-	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
+	AppID                         *string                               `pathParam:"style=simple,explode=false,name=app_id"`
 	DirectoryServiceDeleteRequest *shared.DirectoryServiceDeleteRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIDirectoryV1DirectoryServiceDeleteRequest) GetAppID() string {
+func (c *C1APIDirectoryV1DirectoryServiceDeleteRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }

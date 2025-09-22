@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest struct {
-	CatalogID                                                   string                                                              `pathParam:"style=simple,explode=false,name=catalog_id"`
+	CatalogID                                                   *string                                                             `pathParam:"style=simple,explode=false,name=catalog_id"`
 	RequestCatalogManagementServiceUpdateAppEntitlementsRequest *shared.RequestCatalogManagementServiceUpdateAppEntitlementsRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest) GetCatalogID() string {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest) GetCatalogID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.CatalogID
 }

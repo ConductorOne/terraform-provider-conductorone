@@ -23,21 +23,11 @@ type StepUpProvider struct {
 	// The id field.
 	ID *string `json:"id,omitempty"`
 	// The issuerUrl field.
-	IssuerURL    *string    `json:"issuerUrl,omitempty"`
-	LastTestedAt *time.Time `json:"lastTestedAt,omitempty"`
-	// StepUpMicrosoftSettings represents a Microsoft Entra Provider using Conditional Access Policies to enforce step-up authentication.
-	StepUpMicrosoftSettings *StepUpMicrosoftSettings `json:"microsoft,omitempty"`
-	// StepUpOAuth2Settings repersents an OAuth2 provider that supports RFC 9470 <https://www.rfc-editor.org/rfc/rfc9470>
-	//
-	//  Common ACR values for OAuth2 providers include:
-	//    - "urn:okta:loa:1fa:any" (okta)
-	//    - "urn:okta:loa:1fa:pwd" (okta)
-	//    - "urn:okta:loa:2fa:any" (okta)
-	//    - "urn:okta:loa:2fa:any:ifpossible" (okta)
-	//    - "phr" (okta)
-	//    - "phrh" (okta)
-	StepUpOAuth2Settings *StepUpOAuth2Settings `json:"oauth2,omitempty"`
-	UpdatedAt            *time.Time            `json:"updatedAt,omitempty"`
+	IssuerURL    *string                  `json:"issuerUrl,omitempty"`
+	LastTestedAt *time.Time               `json:"lastTestedAt,omitempty"`
+	Microsoft    *StepUpMicrosoftSettings `json:"microsoft,omitempty"`
+	Oauth2       *StepUpOAuth2Settings    `json:"oauth2,omitempty"`
+	UpdatedAt    *time.Time               `json:"updatedAt,omitempty"`
 }
 
 func (s StepUpProvider) MarshalJSON() ([]byte, error) {
@@ -100,18 +90,18 @@ func (s *StepUpProvider) GetLastTestedAt() *time.Time {
 	return s.LastTestedAt
 }
 
-func (s *StepUpProvider) GetStepUpMicrosoftSettings() *StepUpMicrosoftSettings {
+func (s *StepUpProvider) GetMicrosoft() *StepUpMicrosoftSettings {
 	if s == nil {
 		return nil
 	}
-	return s.StepUpMicrosoftSettings
+	return s.Microsoft
 }
 
-func (s *StepUpProvider) GetStepUpOAuth2Settings() *StepUpOAuth2Settings {
+func (s *StepUpProvider) GetOauth2() *StepUpOAuth2Settings {
 	if s == nil {
 		return nil
 	}
-	return s.StepUpOAuth2Settings
+	return s.Oauth2
 }
 
 func (s *StepUpProvider) GetUpdatedAt() *time.Time {

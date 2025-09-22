@@ -2,6 +2,30 @@
 
 package shared
 
+import (
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
+)
+
 // AppEntitlementAutomationLastRunStatusInput - The AppEntitlementAutomationLastRunStatus message.
 type AppEntitlementAutomationLastRunStatusInput struct {
+	LastCompletedAt *time.Time `json:"lastCompletedAt,omitempty"`
+}
+
+func (a AppEntitlementAutomationLastRunStatusInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppEntitlementAutomationLastRunStatusInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AppEntitlementAutomationLastRunStatusInput) GetLastCompletedAt() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.LastCompletedAt
 }

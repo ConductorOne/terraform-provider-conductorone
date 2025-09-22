@@ -13,7 +13,6 @@ type ConnectorAction struct {
 	// The actionName field.
 	ActionName   *string       `json:"actionName,omitempty"`
 	ArgsTemplate *ArgsTemplate `json:"argsTemplate,omitempty"`
-	// The ConnectorRef message.
 	ConnectorRef *ConnectorRef `json:"connectorRef,omitempty"`
 }
 

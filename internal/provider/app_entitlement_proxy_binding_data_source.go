@@ -58,10 +58,12 @@ func (r *AppEntitlementProxyBindingDataSource) Schema(ctx context.Context, req d
 				Computed: true,
 			},
 			"dst_app_entitlement_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"dst_app_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
@@ -71,10 +73,12 @@ func (r *AppEntitlementProxyBindingDataSource) Schema(ctx context.Context, req d
 				Description: `The expanded field.`,
 			},
 			"src_app_entitlement_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"src_app_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"system_builtin": schema.BoolAttribute{
 				Computed:    true,
@@ -147,11 +151,11 @@ func (r *AppEntitlementProxyBindingDataSource) Read(ctx context.Context, req dat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetAppEntitlementProxyResponse != nil && res.GetAppEntitlementProxyResponse.AppEntitlementProxyView != nil && res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy != nil) {
+	if !(res.GetAppEntitlementProxyResponse != nil && res.GetAppEntitlementProxyResponse.AppProxyEntitlementView != nil && res.GetAppEntitlementProxyResponse.AppProxyEntitlementView.AppProxyEntitlement != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.GetAppEntitlementProxyResponse.AppProxyEntitlementView.AppProxyEntitlement)...)
 
 	if resp.Diagnostics.HasError() {
 		return

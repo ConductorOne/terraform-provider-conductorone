@@ -11,9 +11,8 @@ type TaskActionsServiceCloseResponse struct {
 	// List of serialized related objects.
 	Expanded []TaskActionsServiceCloseResponseExpanded `json:"expanded,omitempty"`
 	// The ID of the task close action created by this request.
-	TaskActionID *string `json:"taskActionId,omitempty"`
-	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
-	TaskView *TaskView `json:"taskView,omitempty"`
+	TaskActionID *string   `json:"taskActionId,omitempty"`
+	TaskView     *TaskView `json:"taskView,omitempty"`
 }
 
 func (t *TaskActionsServiceCloseResponse) GetExpanded() []TaskActionsServiceCloseResponseExpanded {

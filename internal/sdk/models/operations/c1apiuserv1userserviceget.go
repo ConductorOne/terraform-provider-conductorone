@@ -8,12 +8,12 @@ import (
 )
 
 type C1APIUserV1UserServiceGetRequest struct {
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	ID *string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (c *C1APIUserV1UserServiceGetRequest) GetID() string {
+func (c *C1APIUserV1UserServiceGetRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

@@ -8,21 +8,21 @@ import (
 )
 
 type C1APIAppV1AppEntitlementsAddAutomationExclusionRequest struct {
-	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
-	AppEntitlementID              string                                `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
+	AppID                         *string                               `pathParam:"style=simple,explode=false,name=app_id"`
+	AppEntitlementID              *string                               `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
 	AddAutomationExclusionRequest *shared.AddAutomationExclusionRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppEntitlementsAddAutomationExclusionRequest) GetAppID() string {
+func (c *C1APIAppV1AppEntitlementsAddAutomationExclusionRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppEntitlementsAddAutomationExclusionRequest) GetAppEntitlementID() string {
+func (c *C1APIAppV1AppEntitlementsAddAutomationExclusionRequest) GetAppEntitlementID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppEntitlementID
 }

@@ -8,29 +8,29 @@ import (
 )
 
 type C1APIAppV1ConnectorServiceRevokeCredentialRequest struct {
-	AppID                                   string                                          `pathParam:"style=simple,explode=false,name=app_id"`
-	ConnectorID                             string                                          `pathParam:"style=simple,explode=false,name=connector_id"`
-	ID                                      string                                          `pathParam:"style=simple,explode=false,name=id"`
+	AppID                                   *string                                         `pathParam:"style=simple,explode=false,name=app_id"`
+	ConnectorID                             *string                                         `pathParam:"style=simple,explode=false,name=connector_id"`
+	ID                                      *string                                         `pathParam:"style=simple,explode=false,name=id"`
 	ConnectorServiceRevokeCredentialRequest *shared.ConnectorServiceRevokeCredentialRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetAppID() string {
+func (c *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetConnectorID() string {
+func (c *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetConnectorID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ConnectorID
 }
 
-func (c *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetID() string {
+func (c *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

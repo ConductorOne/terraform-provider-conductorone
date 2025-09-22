@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIPolicyV1PoliciesUpdateRequest struct {
-	ID                  string                      `pathParam:"style=simple,explode=false,name=id"`
+	ID                  *string                     `pathParam:"style=simple,explode=false,name=id"`
 	UpdatePolicyRequest *shared.UpdatePolicyRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIPolicyV1PoliciesUpdateRequest) GetID() string {
+func (c *C1APIPolicyV1PoliciesUpdateRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

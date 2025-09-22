@@ -4,16 +4,11 @@ package shared
 
 // The AppResourceServiceUpdateRequest message.
 type AppResourceServiceUpdateRequest struct {
-	// The app resource message is a single resource that can have entitlements.
-	//
-	// This message contains a oneof named metadata. Only a single field of the following list may be set at a time:
-	//   - secretTrait
-	//
-	AppResource *AppResourceInput `json:"appResource,omitempty"`
-	UpdateMask  *string           `json:"updateMask,omitempty"`
+	AppResource *AppResource `json:"appResource,omitempty"`
+	UpdateMask  *string      `json:"updateMask,omitempty"`
 }
 
-func (a *AppResourceServiceUpdateRequest) GetAppResource() *AppResourceInput {
+func (a *AppResourceServiceUpdateRequest) GetAppResource() *AppResource {
 	if a == nil {
 		return nil
 	}

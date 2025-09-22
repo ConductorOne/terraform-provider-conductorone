@@ -9,6 +9,7 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
 func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context.Context, resp *shared.RequestCatalog) diag.Diagnostics {
@@ -48,9 +49,12 @@ func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context
 func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest{
 		ID: id,
 	}
@@ -61,9 +65,12 @@ func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCat
 func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest{
 		ID: id,
 	}
@@ -74,9 +81,12 @@ func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCat
 func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	requestCatalogManagementServiceUpdateRequest, requestCatalogManagementServiceUpdateRequestDiags := r.ToSharedRequestCatalogManagementServiceUpdateRequest(ctx)
 	diags.Append(requestCatalogManagementServiceUpdateRequestDiags...)
 
@@ -92,14 +102,26 @@ func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCat
 	return &out, diags
 }
 
-func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Context) (*shared.RequestCatalogInput, diag.Diagnostics) {
+func (r *AccessProfileResourceModel) ToSharedRequestCatalog(ctx context.Context) (*shared.RequestCatalog, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	createdAt := new(time.Time)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt, _ = time.Parse(time.RFC3339Nano, r.CreatedAt.ValueString())
+	} else {
+		createdAt = nil
+	}
 	createdByUserID := new(string)
 	if !r.CreatedByUserID.IsUnknown() && !r.CreatedByUserID.IsNull() {
 		*createdByUserID = r.CreatedByUserID.ValueString()
 	} else {
 		createdByUserID = nil
+	}
+	deletedAt := new(time.Time)
+	if !r.DeletedAt.IsUnknown() && !r.DeletedAt.IsNull() {
+		*deletedAt, _ = time.Parse(time.RFC3339Nano, r.DeletedAt.ValueString())
+	} else {
+		deletedAt = nil
 	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
@@ -149,14 +171,22 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 	} else {
 		unenrollmentEntitlementBehavior = nil
 	}
+	updatedAt := new(time.Time)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt, _ = time.Parse(time.RFC3339Nano, r.UpdatedAt.ValueString())
+	} else {
+		updatedAt = nil
+	}
 	visibleToEveryone := new(bool)
 	if !r.VisibleToEveryone.IsUnknown() && !r.VisibleToEveryone.IsNull() {
 		*visibleToEveryone = r.VisibleToEveryone.ValueBool()
 	} else {
 		visibleToEveryone = nil
 	}
-	out := shared.RequestCatalogInput{
+	out := shared.RequestCatalog{
+		CreatedAt:                       createdAt,
 		CreatedByUserID:                 createdByUserID,
+		DeletedAt:                       deletedAt,
 		Description:                     description,
 		DisplayName:                     displayName,
 		EnrollmentBehavior:              enrollmentBehavior,
@@ -165,6 +195,7 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 		RequestBundle:                   requestBundle,
 		UnenrollmentBehavior:            unenrollmentBehavior,
 		UnenrollmentEntitlementBehavior: unenrollmentEntitlementBehavior,
+		UpdatedAt:                       updatedAt,
 		VisibleToEveryone:               visibleToEveryone,
 	}
 
@@ -236,15 +267,15 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceUpdateRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	requestCatalog, requestCatalogDiags := r.ToSharedRequestCatalogInput(ctx)
-	diags.Append(requestCatalogDiags...)
+	catalog, catalogDiags := r.ToSharedRequestCatalog(ctx)
+	diags.Append(catalogDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := shared.RequestCatalogManagementServiceUpdateRequest{
-		RequestCatalog: requestCatalog,
+		Catalog: catalog,
 	}
 
 	return &out, diags

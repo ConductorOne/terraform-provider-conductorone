@@ -9,9 +9,8 @@ type RequestCatalogManagementServiceGetResponseExpanded struct {
 // RequestCatalogManagementServiceGetResponse - The request catalog management service get response returns a request catalog view with the expanded items in the expanded array indicated by the expand mask in the request.
 type RequestCatalogManagementServiceGetResponse struct {
 	// List of serialized related objects.
-	Expanded []RequestCatalogManagementServiceGetResponseExpanded `json:"expanded,omitempty"`
-	// The request catalog view contains the serialized request catalog and paths to objects referenced by the request catalog.
-	RequestCatalogView *RequestCatalogView `json:"requestCatalogView,omitempty"`
+	Expanded           []RequestCatalogManagementServiceGetResponseExpanded `json:"expanded,omitempty"`
+	RequestCatalogView *RequestCatalogView                                  `json:"requestCatalogView,omitempty"`
 }
 
 func (r *RequestCatalogManagementServiceGetResponse) GetExpanded() []RequestCatalogManagementServiceGetResponseExpanded {

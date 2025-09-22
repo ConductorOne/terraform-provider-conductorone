@@ -71,12 +71,10 @@ type Automation struct {
 	// the app id this workflow_template belongs to
 	AppID *string `json:"appId,omitempty"`
 	// The automationSteps field.
-	AutomationSteps []AutomationStep `json:"automationSteps,omitempty"`
-	// The DisabledReasonCircuitBreaker message.
-	DisabledReasonCircuitBreaker *DisabledReasonCircuitBreaker `json:"circuitBreaker,omitempty"`
-	// The AutomationContext message.
-	AutomationContext *AutomationContext `json:"context,omitempty"`
-	CreatedAt         *time.Time         `json:"createdAt,omitempty"`
+	AutomationSteps []AutomationStep              `json:"automationSteps,omitempty"`
+	CircuitBreaker  *DisabledReasonCircuitBreaker `json:"circuitBreaker,omitempty"`
+	Context         *AutomationContext            `json:"context,omitempty"`
+	CreatedAt       *time.Time                    `json:"createdAt,omitempty"`
 	// The currentVersion field.
 	CurrentVersion *string `json:"currentVersion,omitempty"`
 	// The description field.
@@ -127,18 +125,18 @@ func (a *Automation) GetAutomationSteps() []AutomationStep {
 	return a.AutomationSteps
 }
 
-func (a *Automation) GetDisabledReasonCircuitBreaker() *DisabledReasonCircuitBreaker {
+func (a *Automation) GetCircuitBreaker() *DisabledReasonCircuitBreaker {
 	if a == nil {
 		return nil
 	}
-	return a.DisabledReasonCircuitBreaker
+	return a.CircuitBreaker
 }
 
-func (a *Automation) GetAutomationContext() *AutomationContext {
+func (a *Automation) GetContext() *AutomationContext {
 	if a == nil {
 		return nil
 	}
-	return a.AutomationContext
+	return a.Context
 }
 
 func (a *Automation) GetCreatedAt() *time.Time {
@@ -240,12 +238,10 @@ type AutomationInput struct {
 	// the app id this workflow_template belongs to
 	AppID *string `json:"appId,omitempty"`
 	// The automationSteps field.
-	AutomationSteps []AutomationStep `json:"automationSteps,omitempty"`
-	// The DisabledReasonCircuitBreaker message.
-	DisabledReasonCircuitBreaker *DisabledReasonCircuitBreaker `json:"circuitBreaker,omitempty"`
-	// The AutomationContext message.
-	AutomationContext *AutomationContext `json:"context,omitempty"`
-	CreatedAt         *time.Time         `json:"createdAt,omitempty"`
+	AutomationSteps []AutomationStep              `json:"automationSteps,omitempty"`
+	CircuitBreaker  *DisabledReasonCircuitBreaker `json:"circuitBreaker,omitempty"`
+	Context         *AutomationContext            `json:"context,omitempty"`
+	CreatedAt       *time.Time                    `json:"createdAt,omitempty"`
 	// The currentVersion field.
 	CurrentVersion *string `json:"currentVersion,omitempty"`
 	// The description field.
@@ -294,18 +290,18 @@ func (a *AutomationInput) GetAutomationSteps() []AutomationStep {
 	return a.AutomationSteps
 }
 
-func (a *AutomationInput) GetDisabledReasonCircuitBreaker() *DisabledReasonCircuitBreaker {
+func (a *AutomationInput) GetCircuitBreaker() *DisabledReasonCircuitBreaker {
 	if a == nil {
 		return nil
 	}
-	return a.DisabledReasonCircuitBreaker
+	return a.CircuitBreaker
 }
 
-func (a *AutomationInput) GetAutomationContext() *AutomationContext {
+func (a *AutomationInput) GetContext() *AutomationContext {
 	if a == nil {
 		return nil
 	}
-	return a.AutomationContext
+	return a.Context
 }
 
 func (a *AutomationInput) GetCreatedAt() *time.Time {

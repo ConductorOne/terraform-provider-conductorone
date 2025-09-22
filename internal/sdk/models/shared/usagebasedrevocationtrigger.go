@@ -55,11 +55,9 @@ type UsageBasedRevocationTrigger struct {
 	// The excludedUserRefs field.
 	ExcludedUserRefs []UserRef `json:"excludedUserRefs,omitempty"`
 	// The includeUsersWithNoActivity field.
-	IncludeUsersWithNoActivity *bool `json:"includeUsersWithNoActivity,omitempty"`
-	// The RunDelayed message.
-	RunDelayed *RunDelayed `json:"runDelayed,omitempty"`
-	// No fields needed; this just indicates the trigger should run immediately
-	RunImmediately *RunImmediately `json:"runImmediately,omitempty"`
+	IncludeUsersWithNoActivity *bool           `json:"includeUsersWithNoActivity,omitempty"`
+	RunDelayed                 *RunDelayed     `json:"runDelayed,omitempty"`
+	RunImmediately             *RunImmediately `json:"runImmediately,omitempty"`
 	// The targetedAppUserTypes field.
 	TargetedAppUserTypes []TargetedAppUserTypes `json:"targetedAppUserTypes,omitempty"`
 	// The targetedEntitlementRefs field.

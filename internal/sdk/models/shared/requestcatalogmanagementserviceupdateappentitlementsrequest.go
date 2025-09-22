@@ -10,7 +10,7 @@ type RequestCatalogManagementServiceUpdateAppEntitlementsRequest struct {
 
 func (r *RequestCatalogManagementServiceUpdateAppEntitlementsRequest) GetAppEntitlements() []AppEntitlementRef {
 	if r == nil {
-		return nil
+		return []AppEntitlementRef{}
 	}
 	return r.AppEntitlements
 }

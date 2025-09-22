@@ -8,12 +8,12 @@ import (
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest struct {
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	ID *string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest) GetID() string {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

@@ -8,12 +8,12 @@ import (
 )
 
 type C1APIFunctionsV1FunctionsServiceListCommitsRequest struct {
-	FunctionID string `pathParam:"style=simple,explode=false,name=function_id"`
+	FunctionID *string `pathParam:"style=simple,explode=false,name=function_id"`
 }
 
-func (c *C1APIFunctionsV1FunctionsServiceListCommitsRequest) GetFunctionID() string {
+func (c *C1APIFunctionsV1FunctionsServiceListCommitsRequest) GetFunctionID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.FunctionID
 }

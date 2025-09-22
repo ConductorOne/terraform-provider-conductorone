@@ -13,15 +13,13 @@ import (
 //   - all
 //   - celExpression
 type Directory struct {
-	// The DirectoryAccountFilterAll message.
-	DirectoryAccountFilterAll *DirectoryAccountFilterAll `json:"all,omitempty"`
+	All *DirectoryAccountFilterAll `json:"all,omitempty"`
 	// The ID of the app associated with the directory.
-	AppID *string `json:"appId,omitempty"`
-	// The DirectoryAccountFilterCel message.
-	DirectoryAccountFilterCel *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
-	CreatedAt                 *time.Time                 `json:"createdAt,omitempty"`
-	DeletedAt                 *time.Time                 `json:"deletedAt,omitempty"`
-	UpdatedAt                 *time.Time                 `json:"updatedAt,omitempty"`
+	AppID         *string                    `json:"appId,omitempty"`
+	CelExpression *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
+	CreatedAt     *time.Time                 `json:"createdAt,omitempty"`
+	DeletedAt     *time.Time                 `json:"deletedAt,omitempty"`
+	UpdatedAt     *time.Time                 `json:"updatedAt,omitempty"`
 }
 
 func (d Directory) MarshalJSON() ([]byte, error) {
@@ -35,11 +33,11 @@ func (d *Directory) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (d *Directory) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
+func (d *Directory) GetAll() *DirectoryAccountFilterAll {
 	if d == nil {
 		return nil
 	}
-	return d.DirectoryAccountFilterAll
+	return d.All
 }
 
 func (d *Directory) GetAppID() *string {
@@ -49,11 +47,11 @@ func (d *Directory) GetAppID() *string {
 	return d.AppID
 }
 
-func (d *Directory) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
+func (d *Directory) GetCelExpression() *DirectoryAccountFilterCel {
 	if d == nil {
 		return nil
 	}
-	return d.DirectoryAccountFilterCel
+	return d.CelExpression
 }
 
 func (d *Directory) GetCreatedAt() *time.Time {

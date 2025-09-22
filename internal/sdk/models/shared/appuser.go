@@ -68,9 +68,8 @@ type AppUser struct {
 	// The isExternal field.
 	IsExternal *bool           `json:"isExternal,omitempty"`
 	Profile    *AppUserProfile `json:"profile,omitempty"`
-	// The satus of the applicaiton user.
-	AppUserStatus *AppUserStatus `json:"status,omitempty"`
-	UpdatedAt     *time.Time     `json:"updatedAt,omitempty"`
+	Status     *AppUserStatus  `json:"status,omitempty"`
+	UpdatedAt  *time.Time      `json:"updatedAt,omitempty"`
 	// The username field of the application user.
 	Username *string `json:"username,omitempty"`
 	// The usernames field of the application user.
@@ -172,11 +171,11 @@ func (a *AppUser) GetProfile() *AppUserProfile {
 	return a.Profile
 }
 
-func (a *AppUser) GetAppUserStatus() *AppUserStatus {
+func (a *AppUser) GetStatus() *AppUserStatus {
 	if a == nil {
 		return nil
 	}
-	return a.AppUserStatus
+	return a.Status
 }
 
 func (a *AppUser) GetUpdatedAt() *time.Time {
@@ -203,9 +202,23 @@ func (a *AppUser) GetUsernames() []string {
 // AppUserInput - Application User that represents an account in the application.
 type AppUserInput struct {
 	// The appplication user type. Type can be user, system or service.
-	AppUserType *AppUserType `json:"appUserType,omitempty"`
-	// The satus of the applicaiton user.
-	AppUserStatus *AppUserStatusInput `json:"status,omitempty"`
+	AppUserType *AppUserType        `json:"appUserType,omitempty"`
+	CreatedAt   *time.Time          `json:"createdAt,omitempty"`
+	DeletedAt   *time.Time          `json:"deletedAt,omitempty"`
+	Profile     *AppUserProfile     `json:"profile,omitempty"`
+	Status      *AppUserStatusInput `json:"status,omitempty"`
+	UpdatedAt   *time.Time          `json:"updatedAt,omitempty"`
+}
+
+func (a AppUserInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppUserInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AppUserInput) GetAppUserType() *AppUserType {
@@ -215,9 +228,37 @@ func (a *AppUserInput) GetAppUserType() *AppUserType {
 	return a.AppUserType
 }
 
-func (a *AppUserInput) GetAppUserStatus() *AppUserStatusInput {
+func (a *AppUserInput) GetCreatedAt() *time.Time {
 	if a == nil {
 		return nil
 	}
-	return a.AppUserStatus
+	return a.CreatedAt
+}
+
+func (a *AppUserInput) GetDeletedAt() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.DeletedAt
+}
+
+func (a *AppUserInput) GetProfile() *AppUserProfile {
+	if a == nil {
+		return nil
+	}
+	return a.Profile
+}
+
+func (a *AppUserInput) GetStatus() *AppUserStatusInput {
+	if a == nil {
+		return nil
+	}
+	return a.Status
+}
+
+func (a *AppUserInput) GetUpdatedAt() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.UpdatedAt
 }

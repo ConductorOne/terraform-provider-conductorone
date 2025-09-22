@@ -10,40 +10,36 @@ package shared
 //   - certify
 //   - offboarding
 type TaskTypeInput struct {
-	// The TaskTypeCertify message indicates that a task is a certify task and all related details.
-	TaskTypeCertify *TaskTypeCertifyInput `json:"certify,omitempty"`
-	// The TaskTypeGrant message indicates that a task is a grant task and all related details.
-	TaskTypeGrant *TaskTypeGrantInput `json:"grant,omitempty"`
-	// The TaskTypeOffboarding message.
-	TaskTypeOffboarding *TaskTypeOffboardingInput `json:"offboarding,omitempty"`
-	// The TaskTypeRevoke message indicates that a task is a revoke task and all related details.
-	TaskTypeRevoke *TaskTypeRevokeInput `json:"revoke,omitempty"`
+	Certify     *TaskTypeCertifyInput     `json:"certify,omitempty"`
+	Grant       *TaskTypeGrantInput       `json:"grant,omitempty"`
+	Offboarding *TaskTypeOffboardingInput `json:"offboarding,omitempty"`
+	Revoke      *TaskTypeRevokeInput      `json:"revoke,omitempty"`
 }
 
-func (t *TaskTypeInput) GetTaskTypeCertify() *TaskTypeCertifyInput {
+func (t *TaskTypeInput) GetCertify() *TaskTypeCertifyInput {
 	if t == nil {
 		return nil
 	}
-	return t.TaskTypeCertify
+	return t.Certify
 }
 
-func (t *TaskTypeInput) GetTaskTypeGrant() *TaskTypeGrantInput {
+func (t *TaskTypeInput) GetGrant() *TaskTypeGrantInput {
 	if t == nil {
 		return nil
 	}
-	return t.TaskTypeGrant
+	return t.Grant
 }
 
-func (t *TaskTypeInput) GetTaskTypeOffboarding() *TaskTypeOffboardingInput {
+func (t *TaskTypeInput) GetOffboarding() *TaskTypeOffboardingInput {
 	if t == nil {
 		return nil
 	}
-	return t.TaskTypeOffboarding
+	return t.Offboarding
 }
 
-func (t *TaskTypeInput) GetTaskTypeRevoke() *TaskTypeRevokeInput {
+func (t *TaskTypeInput) GetRevoke() *TaskTypeRevokeInput {
 	if t == nil {
 		return nil
 	}
-	return t.TaskTypeRevoke
+	return t.Revoke
 }

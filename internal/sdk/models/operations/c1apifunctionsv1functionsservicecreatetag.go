@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIFunctionsV1FunctionsServiceCreateTagRequest struct {
-	FunctionID                       string                                   `pathParam:"style=simple,explode=false,name=function_id"`
+	FunctionID                       *string                                  `pathParam:"style=simple,explode=false,name=function_id"`
 	FunctionsServiceCreateTagRequest *shared.FunctionsServiceCreateTagRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIFunctionsV1FunctionsServiceCreateTagRequest) GetFunctionID() string {
+func (c *C1APIFunctionsV1FunctionsServiceCreateTagRequest) GetFunctionID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.FunctionID
 }

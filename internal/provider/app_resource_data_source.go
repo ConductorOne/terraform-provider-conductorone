@@ -57,10 +57,12 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"app_resource_type_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -88,7 +90,8 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 				Description: `The number of grants to this resource.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"match_baton_id": schema.StringAttribute{
 				Computed:    true,

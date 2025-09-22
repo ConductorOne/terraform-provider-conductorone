@@ -29,9 +29,12 @@ func (r *RiskLevelDataSourceModel) RefreshFromSharedAttributeValue(ctx context.C
 func (r *RiskLevelDataSourceModel) ToOperationsC1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest{
 		ID: id,
 	}

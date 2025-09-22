@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIAppV1AppsDeleteRequest struct {
-	ID               string                   `pathParam:"style=simple,explode=false,name=id"`
+	ID               *string                  `pathParam:"style=simple,explode=false,name=id"`
 	DeleteAppRequest *shared.DeleteAppRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppsDeleteRequest) GetID() string {
+func (c *C1APIAppV1AppsDeleteRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

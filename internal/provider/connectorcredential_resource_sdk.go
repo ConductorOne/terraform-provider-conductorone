@@ -34,15 +34,24 @@ func (r *ConnectorCredentialResourceModel) RefreshFromSharedConnectorCredential(
 func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceGetCredentialsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var connectorID string
-	connectorID = r.ConnectorID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
+	connectorID := new(string)
+	if !r.ConnectorID.IsUnknown() && !r.ConnectorID.IsNull() {
+		*connectorID = r.ConnectorID.ValueString()
+	} else {
+		connectorID = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAppV1ConnectorServiceGetCredentialsRequest{
 		AppID:       appID,
 		ConnectorID: connectorID,
@@ -55,15 +64,24 @@ func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServic
 func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServiceRevokeCredentialRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var connectorID string
-	connectorID = r.ConnectorID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
+	connectorID := new(string)
+	if !r.ConnectorID.IsUnknown() && !r.ConnectorID.IsNull() {
+		*connectorID = r.ConnectorID.ValueString()
+	} else {
+		connectorID = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest{
 		AppID:       appID,
 		ConnectorID: connectorID,

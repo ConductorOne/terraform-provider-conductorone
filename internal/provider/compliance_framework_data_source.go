@@ -58,7 +58,8 @@ func (r *ComplianceFrameworkDataSource) Schema(ctx context.Context, req datasour
 				Computed: true,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -131,11 +132,11 @@ func (r *ComplianceFrameworkDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetComplianceFrameworkAttributeValueResponse != nil && res.GetComplianceFrameworkAttributeValueResponse.AttributeValue != nil) {
+	if !(res.GetComplianceFrameworkAttributeValueResponse != nil && res.GetComplianceFrameworkAttributeValueResponse.Value != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetComplianceFrameworkAttributeValueResponse.AttributeValue)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetComplianceFrameworkAttributeValueResponse.Value)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -4,7 +4,6 @@ package shared
 
 // The ConnectorServiceUpdateRequest message contains the fields required to update a connector.
 type ConnectorServiceUpdateRequest struct {
-	// A Connector is used to sync objects into Apps
 	Connector  *ConnectorInput `json:"connector,omitempty"`
 	UpdateMask *string         `json:"updateMask,omitempty"`
 }

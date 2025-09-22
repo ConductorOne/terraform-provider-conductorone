@@ -17,6 +17,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -65,6 +67,7 @@ type CustomAppEntitlementResourceModel struct {
 	MatchBatonID                   types.String                                      `tfsdk:"match_baton_id"`
 	OverrideAccessRequestsDefaults types.Bool                                        `tfsdk:"override_access_requests_defaults"`
 	ProvisionPolicy                *tfTypes.ProvisionPolicy                          `tfsdk:"provision_policy" tfPlanOnly:"true"`
+	ProvisionerPolicy              *tfTypes.ProvisionPolicy                          `tfsdk:"provisioner_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                                      `tfsdk:"purpose"`
 	RequestSchemaID                types.String                                      `tfsdk:"request_schema_id"`
 	RevokePolicyID                 types.String                                      `tfsdk:"revoke_policy_id"`
@@ -89,7 +92,8 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				Description: `The alias field.`,
 			},
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 			},
 			"app_resource_id": schema.StringAttribute{
 				Computed: true,
@@ -133,10 +137,10 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"deprovisioner_policy": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
-					"connector_provision": schema.SingleNestedAttribute{
+					"connector": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"account_provision": schema.SingleNestedAttribute{
+							"account": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"config": schema.SingleNestedAttribute{
@@ -210,7 +214,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							}...),
 						},
 					},
-					"delegated_provision": schema.SingleNestedAttribute{
+					"delegated": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
@@ -233,7 +237,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							}...),
 						},
 					},
-					"external_ticket_provision": schema.SingleNestedAttribute{
+					"external_ticket": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
@@ -264,7 +268,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							}...),
 						},
 					},
-					"manual_provision": schema.SingleNestedAttribute{
+					"manual": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"instructions": schema.StringAttribute{
@@ -291,7 +295,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 					"multi_step": schema.StringAttribute{
 						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
-						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+						Description: `Parsed as JSON.`,
 						Validators: []validator.String{
 							stringvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("connector_provision"),
@@ -302,11 +306,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							}...),
 						},
 					},
-					"unconfigured_provision": schema.SingleNestedAttribute{
+					"unconfigured": schema.SingleNestedAttribute{
 						Computed:    true,
 						Description: `The UnconfiguredProvision message.`,
 					},
-					"webhook_provision": schema.SingleNestedAttribute{
+					"webhook": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"webhook_id": schema.StringAttribute{
@@ -416,38 +420,326 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				Description: `The overrideAccessRequestsDefaults field.`,
 			},
 			"provision_policy": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Attributes: map[string]schema.Attribute{
-					"connector_provision": schema.SingleNestedAttribute{
-						Computed: true,
+					"connector": schema.SingleNestedAttribute{
 						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
 						Attributes: map[string]schema.Attribute{
-							"account_provision": schema.SingleNestedAttribute{
-								Computed: true,
+							"account": schema.SingleNestedAttribute{
 								Optional: true,
+								PlanModifiers: []planmodifier.Object{
+									objectplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Attributes: map[string]schema.Attribute{
+									"config": schema.SingleNestedAttribute{
+										Optional: true,
+										PlanModifiers: []planmodifier.Object{
+											objectplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Description: `Requires replacement if changed.`,
+									},
+									"connector_id": schema.StringAttribute{
+										Optional: true,
+										PlanModifiers: []planmodifier.String{
+											stringplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Description: `The connectorId field. Requires replacement if changed.`,
+									},
+									"do_not_save": schema.SingleNestedAttribute{
+										Optional: true,
+										PlanModifiers: []planmodifier.Object{
+											objectplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Description: `The DoNotSave message. Requires replacement if changed.`,
+									},
+									"save_to_vault": schema.SingleNestedAttribute{
+										Optional: true,
+										PlanModifiers: []planmodifier.Object{
+											objectplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Attributes: map[string]schema.Attribute{
+											"vault_ids": schema.ListAttribute{
+												Optional: true,
+												PlanModifiers: []planmodifier.List{
+													listplanmodifier.RequiresReplaceIfConfigured(),
+												},
+												ElementType: types.StringType,
+												Description: `The vaultIds field. Requires replacement if changed.`,
+											},
+										},
+										Description: `The SaveToVault message. Requires replacement if changed.`,
+									},
+									"schema_id": schema.StringAttribute{
+										Optional: true,
+										PlanModifiers: []planmodifier.String{
+											stringplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Description: `The schemaId field. Requires replacement if changed.`,
+									},
+								},
+								MarkdownDescription: `The AccountProvision message.` + "\n" +
+									`` + "\n" +
+									`This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:` + "\n" +
+									`  - saveToVault` + "\n" +
+									`  - doNotSave` + "\n" +
+									`Requires replacement if changed.`,
+							},
+							"default_behavior": schema.SingleNestedAttribute{
+								Optional: true,
+								PlanModifiers: []planmodifier.Object{
+									objectplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Optional: true,
+										PlanModifiers: []planmodifier.String{
+											stringplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										MarkdownDescription: `this checks if the entitlement is enabled by provisioning in a specific connector` + "\n" +
+											` this can happen automatically and doesn't need any extra info` + "\n" +
+											`Requires replacement if changed.`,
+									},
+								},
+								Description: `The DefaultBehavior message. Requires replacement if changed.`,
+							},
+							"delete_account": schema.SingleNestedAttribute{
+								Optional: true,
+								PlanModifiers: []planmodifier.Object{
+									objectplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Optional: true,
+										PlanModifiers: []planmodifier.String{
+											stringplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Description: `The connectorId field. Requires replacement if changed.`,
+									},
+								},
+								Description: `The DeleteAccount message. Requires replacement if changed.`,
+							},
+						},
+						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
+							`` + "\n" +
+							`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
+							`  - defaultBehavior` + "\n" +
+							`  - account` + "\n" +
+							`  - deleteAccount` + "\n" +
+							`Requires replacement if changed.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"delegated": schema.SingleNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `The AppID of the entitlement to delegate provisioning to. Requires replacement if changed.`,
+							},
+							"entitlement_id": schema.StringAttribute{
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `The ID of the entitlement we are delegating provisioning to. Requires replacement if changed.`,
+							},
+						},
+						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. Requires replacement if changed.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"external_ticket": schema.SingleNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `The appId field. Requires replacement if changed.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `The connectorId field. Requires replacement if changed.`,
+							},
+							"external_ticket_provisioner_config_id": schema.StringAttribute{
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `The externalTicketProvisionerConfigId field. Requires replacement if changed.`,
+							},
+							"instructions": schema.StringAttribute{
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `This field indicates a text body of instructions for the provisioner to indicate. Requires replacement if changed.`,
+							},
+						},
+						Description: `This provision step indicates that we should check an external ticket to provision this entitlement. Requires replacement if changed.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"manual": schema.SingleNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"instructions": schema.StringAttribute{
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `This field indicates a text body of instructions for the provisioner to indicate. Requires replacement if changed.`,
+							},
+							"user_ids": schema.ListAttribute{
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									listplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								ElementType: types.StringType,
+								Description: `An array of users that are required to provision during this step. Requires replacement if changed.`,
+							},
+						},
+						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step. Requires replacement if changed.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"multi_step": schema.StringAttribute{
+						CustomType: jsontypes.NormalizedType{},
+						Optional:   true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Description: `Requires replacement if changed.; Parsed as JSON.`,
+						Validators: []validator.String{
+							stringvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"unconfigured": schema.SingleNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Description: `The UnconfiguredProvision message. Requires replacement if changed.`,
+					},
+					"webhook": schema.SingleNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"webhook_id": schema.StringAttribute{
+								Optional: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `The ID of the webhook to call for provisioning. Requires replacement if changed.`,
+							},
+						},
+						Description: `This provision step indicates that a webhook should be called to provision this entitlement. Requires replacement if changed.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+							}...),
+						},
+					},
+				},
+				MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - connector` + "\n" +
+					`  - manual` + "\n" +
+					`  - delegated` + "\n" +
+					`  - webhook` + "\n" +
+					`  - multiStep` + "\n" +
+					`  - externalTicket` + "\n" +
+					`  - unconfigured` + "\n" +
+					`Requires replacement if changed.`,
+			},
+			"provisioner_policy": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"connector": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"account": schema.SingleNestedAttribute{
+								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"config": schema.SingleNestedAttribute{
 										Computed: true,
-										Optional: true,
 									},
 									"connector_id": schema.StringAttribute{
 										Computed:    true,
-										Optional:    true,
 										Description: `The connectorId field.`,
 									},
 									"do_not_save": schema.SingleNestedAttribute{
 										Computed:    true,
-										Optional:    true,
 										Description: `The DoNotSave message.`,
 									},
 									"save_to_vault": schema.SingleNestedAttribute{
 										Computed: true,
-										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"vault_ids": schema.ListAttribute{
 												Computed:    true,
-												Optional:    true,
 												ElementType: types.StringType,
 												Description: `The vaultIds field.`,
 											},
@@ -456,7 +748,6 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 									},
 									"schema_id": schema.StringAttribute{
 										Computed:    true,
-										Optional:    true,
 										Description: `The schemaId field.`,
 									},
 								},
@@ -468,11 +759,9 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							},
 							"default_behavior": schema.SingleNestedAttribute{
 								Computed: true,
-								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"connector_id": schema.StringAttribute{
 										Computed: true,
-										Optional: true,
 										MarkdownDescription: `this checks if the entitlement is enabled by provisioning in a specific connector` + "\n" +
 											` this can happen automatically and doesn't need any extra info`,
 									},
@@ -481,11 +770,9 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							},
 							"delete_account": schema.SingleNestedAttribute{
 								Computed: true,
-								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"connector_id": schema.StringAttribute{
 										Computed:    true,
-										Optional:    true,
 										Description: `The connectorId field.`,
 									},
 								},
@@ -508,18 +795,15 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							}...),
 						},
 					},
-					"delegated_provision": schema.SingleNestedAttribute{
+					"delegated": schema.SingleNestedAttribute{
 						Computed: true,
-						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
 								Computed:    true,
-								Optional:    true,
 								Description: `The AppID of the entitlement to delegate provisioning to.`,
 							},
 							"entitlement_id": schema.StringAttribute{
 								Computed:    true,
-								Optional:    true,
 								Description: `The ID of the entitlement we are delegating provisioning to.`,
 							},
 						},
@@ -534,28 +818,23 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							}...),
 						},
 					},
-					"external_ticket_provision": schema.SingleNestedAttribute{
+					"external_ticket": schema.SingleNestedAttribute{
 						Computed: true,
-						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
 								Computed:    true,
-								Optional:    true,
 								Description: `The appId field.`,
 							},
 							"connector_id": schema.StringAttribute{
 								Computed:    true,
-								Optional:    true,
 								Description: `The connectorId field.`,
 							},
 							"external_ticket_provisioner_config_id": schema.StringAttribute{
 								Computed:    true,
-								Optional:    true,
 								Description: `The externalTicketProvisionerConfigId field.`,
 							},
 							"instructions": schema.StringAttribute{
 								Computed:    true,
-								Optional:    true,
 								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 							},
 						},
@@ -570,18 +849,15 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							}...),
 						},
 					},
-					"manual_provision": schema.SingleNestedAttribute{
+					"manual": schema.SingleNestedAttribute{
 						Computed: true,
-						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"instructions": schema.StringAttribute{
 								Computed:    true,
-								Optional:    true,
 								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 							},
 							"user_ids": schema.ListAttribute{
 								Computed:    true,
-								Optional:    true,
 								ElementType: types.StringType,
 								Description: `An array of users that are required to provision during this step.`,
 							},
@@ -600,8 +876,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 					"multi_step": schema.StringAttribute{
 						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
-						Optional:    true,
-						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+						Description: `Parsed as JSON.`,
 						Validators: []validator.String{
 							stringvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("connector_provision"),
@@ -612,18 +887,15 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							}...),
 						},
 					},
-					"unconfigured_provision": schema.SingleNestedAttribute{
+					"unconfigured": schema.SingleNestedAttribute{
 						Computed:    true,
-						Optional:    true,
 						Description: `The UnconfiguredProvision message.`,
 					},
-					"webhook_provision": schema.SingleNestedAttribute{
+					"webhook": schema.SingleNestedAttribute{
 						Computed: true,
-						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"webhook_id": schema.StringAttribute{
 								Computed:    true,
-								Optional:    true,
 								Description: `The ID of the webhook to call for provisioning.`,
 							},
 						},
@@ -765,6 +1037,43 @@ func (r *CustomAppEntitlementResource) Create(ctx context.Context, req resource.
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.CreateAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsC1APIAppV1AppEntitlementsGetRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.AppEntitlements.Get(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.GetAppEntitlementResponse != nil && res1.GetAppEntitlementResponse.AppEntitlementView != nil && res1.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res1.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -983,8 +1292,8 @@ func (r *CustomAppEntitlementResource) ImportState(ctx context.Context, req reso
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		AppID string `json:"app_id"`
-		ID    string `json:"id"`
+		AppID *string `json:"app_id"`
+		ID    *string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -992,12 +1301,12 @@ func (r *CustomAppEntitlementResource) ImportState(ctx context.Context, req reso
 		return
 	}
 
-	if len(data.AppID) == 0 {
+	if data.AppID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field app_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), data.AppID)...)
-	if len(data.ID) == 0 {
+	if data.ID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}

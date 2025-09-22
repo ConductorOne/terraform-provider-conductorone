@@ -2,6 +2,30 @@
 
 package shared
 
+import (
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
+)
+
 // OAuth2AuthorizedAsInput - OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
 type OAuth2AuthorizedAsInput struct {
+	AuthorizedAt *time.Time `json:"authorizedAt,omitempty"`
+}
+
+func (o OAuth2AuthorizedAsInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OAuth2AuthorizedAsInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OAuth2AuthorizedAsInput) GetAuthorizedAt() *time.Time {
+	if o == nil {
+		return nil
+	}
+	return o.AuthorizedAt
 }

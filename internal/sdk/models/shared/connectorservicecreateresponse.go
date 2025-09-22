@@ -8,7 +8,6 @@ type ConnectorServiceCreateResponseExpanded struct {
 
 // The ConnectorServiceCreateResponse is the response returned from creating a connector.
 type ConnectorServiceCreateResponse struct {
-	// The ConnectorView object provides a connector response object, as well as JSONPATHs to related objects provided by expanders.
 	ConnectorView *ConnectorView `json:"connectorView,omitempty"`
 	// The array of expanded items indicated by the request.
 	Expanded []ConnectorServiceCreateResponseExpanded `json:"expanded,omitempty"`

@@ -4,13 +4,12 @@ package shared
 
 // The GetRiskLevelAttributeValueResponse message.
 type GetRiskLevelAttributeValueResponse struct {
-	// AttributeValue is the value of an attribute of a defined type.
-	AttributeValue *AttributeValue `json:"value,omitempty"`
+	Value *AttributeValue `json:"value,omitempty"`
 }
 
-func (g *GetRiskLevelAttributeValueResponse) GetAttributeValue() *AttributeValue {
+func (g *GetRiskLevelAttributeValueResponse) GetValue() *AttributeValue {
 	if g == nil {
 		return nil
 	}
-	return g.AttributeValue
+	return g.Value
 }

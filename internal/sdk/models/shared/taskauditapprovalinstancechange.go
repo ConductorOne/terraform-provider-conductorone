@@ -4,22 +4,12 @@ package shared
 
 // The TaskAuditApprovalInstanceChange message.
 type TaskAuditApprovalInstanceChange struct {
-	// The approval instance object describes the way a policy step should be approved as well as its outcomes and state.
-	//
-	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
-	//   - approved
-	//   - denied
-	//   - reassigned
-	//   - restarted
-	//   - reassignedByError
-	//   - skipped
-	//
-	ApprovalInstance *ApprovalInstance `json:"instance,omitempty"`
+	Instance *ApprovalInstance `json:"instance,omitempty"`
 }
 
-func (t *TaskAuditApprovalInstanceChange) GetApprovalInstance() *ApprovalInstance {
+func (t *TaskAuditApprovalInstanceChange) GetInstance() *ApprovalInstance {
 	if t == nil {
 		return nil
 	}
-	return t.ApprovalInstance
+	return t.Instance
 }

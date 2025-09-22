@@ -36,23 +36,23 @@ type AutomationResource struct {
 
 // AutomationResourceModel describes the resource data model.
 type AutomationResourceModel struct {
-	AppID                        types.String                          `tfsdk:"app_id"`
-	AutomationContext            *tfTypes.AutomationContext            `tfsdk:"automation_context"`
-	AutomationSteps              []tfTypes.AutomationStep              `tfsdk:"automation_steps"`
-	CreatedAt                    types.String                          `tfsdk:"created_at"`
-	CurrentVersion               types.String                          `tfsdk:"current_version"`
-	Description                  types.String                          `tfsdk:"description"`
-	DisabledReasonCircuitBreaker *tfTypes.DisabledReasonCircuitBreaker `tfsdk:"disabled_reason_circuit_breaker"`
-	DisplayName                  types.String                          `tfsdk:"display_name"`
-	DraftAutomationSteps         []tfTypes.AutomationStep              `tfsdk:"draft_automation_steps"`
-	DraftTriggers                []tfTypes.AutomationTrigger           `tfsdk:"draft_triggers"`
-	Enabled                      types.Bool                            `tfsdk:"enabled"`
-	ID                           types.String                          `tfsdk:"id"`
-	IsDraft                      types.Bool                            `tfsdk:"is_draft"`
-	LastExecutedAt               types.String                          `tfsdk:"last_executed_at"`
-	PrimaryTriggerType           types.String                          `tfsdk:"primary_trigger_type"`
-	Triggers                     []tfTypes.AutomationTrigger           `tfsdk:"triggers"`
-	WebhookHmacSecret            types.String                          `tfsdk:"webhook_hmac_secret"`
+	AppID                types.String                          `tfsdk:"app_id"`
+	AutomationSteps      []tfTypes.AutomationStep              `tfsdk:"automation_steps"`
+	CircuitBreaker       *tfTypes.DisabledReasonCircuitBreaker `tfsdk:"circuit_breaker"`
+	Context              *tfTypes.AutomationContext            `tfsdk:"context"`
+	CreatedAt            types.String                          `tfsdk:"created_at"`
+	CurrentVersion       types.String                          `tfsdk:"current_version"`
+	Description          types.String                          `tfsdk:"description"`
+	DisplayName          types.String                          `tfsdk:"display_name"`
+	DraftAutomationSteps []tfTypes.AutomationStep              `tfsdk:"draft_automation_steps"`
+	DraftTriggers        []tfTypes.AutomationTrigger           `tfsdk:"draft_triggers"`
+	Enabled              types.Bool                            `tfsdk:"enabled"`
+	ID                   types.String                          `tfsdk:"id"`
+	IsDraft              types.Bool                            `tfsdk:"is_draft"`
+	LastExecutedAt       types.String                          `tfsdk:"last_executed_at"`
+	PrimaryTriggerType   types.String                          `tfsdk:"primary_trigger_type"`
+	Triggers             []tfTypes.AutomationTrigger           `tfsdk:"triggers"`
+	WebhookHmacSecret    types.String                          `tfsdk:"webhook_hmac_secret"`
 }
 
 func (r *AutomationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -67,17 +67,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:    true,
 				Optional:    true,
 				Description: `the app id this workflow_template belongs to`,
-			},
-			"automation_context": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"context": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-					},
-				},
-				Description: `The AutomationContext message.`,
 			},
 			"automation_steps": schema.ListNestedAttribute{
 				Computed: true,
@@ -381,6 +370,18 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`This field is part of the ` + "`" + `replacement_user` + "`" + ` oneof.` + "\n" +
 										`See the documentation for ` + "`" + `c1.api.automations.v1.RemoveFromDelegation` + "`" + ` for more details.`,
 								},
+								"replacement_user_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The id of the user.`,
+										},
+									},
+									Description: `A reference to a user.`,
+								},
 								"use_subject_user": schema.BoolAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -403,18 +404,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `A reference to a user.`,
 								},
-								"user_ref1": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"id": schema.StringAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `The id of the user.`,
-										},
-									},
-									Description: `A reference to a user.`,
-								},
 							},
 							MarkdownDescription: `RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.` + "\n" +
 								`` + "\n" +
@@ -426,17 +415,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"automation_context": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"context": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-										},
-									},
-									Description: `The AutomationContext message.`,
-								},
 								"automation_template_id_cel": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
@@ -455,6 +433,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The AutomationTemplateRef message.`,
+								},
+								"context": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"context": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+										},
+									},
+									Description: `The AutomationContext message.`,
 								},
 							},
 							MarkdownDescription: `RunAutomation: kick off the execution of an automation template.` + "\n" +
@@ -561,7 +550,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"close_action": schema.SingleNestedAttribute{
+								"close": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -596,7 +585,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`  - userIdCel` + "\n" +
 										`  - userRef`,
 								},
-								"reassign_action": schema.SingleNestedAttribute{
+								"reassign": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -607,6 +596,18 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
 												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
 										},
+										"assignee_user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
 										"subject_user_id_cel": schema.StringAttribute{
 											Computed: true,
 											Optional: true,
@@ -614,34 +615,22 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
 												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
 										},
+										"subject_user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
 										"use_subject_user": schema.BoolAttribute{
 											Computed:    true,
 											Optional:    true,
 											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-										"user_ref1": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
 										},
 									},
 									MarkdownDescription: `The ReassignAction message.` + "\n" +
@@ -832,6 +821,21 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 				Description: `The automationSteps field.`,
 			},
+			"circuit_breaker": schema.SingleNestedAttribute{
+				Computed:    true,
+				Description: `The DisabledReasonCircuitBreaker message.`,
+			},
+			"context": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"context": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+					},
+				},
+				Description: `The AutomationContext message.`,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				Validators: []validator.String{
@@ -846,10 +850,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:    true,
 				Optional:    true,
 				Description: `The description field.`,
-			},
-			"disabled_reason_circuit_breaker": schema.SingleNestedAttribute{
-				Computed:    true,
-				Description: `The DisabledReasonCircuitBreaker message.`,
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
@@ -1158,6 +1158,18 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`This field is part of the ` + "`" + `replacement_user` + "`" + ` oneof.` + "\n" +
 										`See the documentation for ` + "`" + `c1.api.automations.v1.RemoveFromDelegation` + "`" + ` for more details.`,
 								},
+								"replacement_user_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The id of the user.`,
+										},
+									},
+									Description: `A reference to a user.`,
+								},
 								"use_subject_user": schema.BoolAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -1180,18 +1192,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `A reference to a user.`,
 								},
-								"user_ref1": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"id": schema.StringAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `The id of the user.`,
-										},
-									},
-									Description: `A reference to a user.`,
-								},
 							},
 							MarkdownDescription: `RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.` + "\n" +
 								`` + "\n" +
@@ -1203,17 +1203,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"automation_context": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"context": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-										},
-									},
-									Description: `The AutomationContext message.`,
-								},
 								"automation_template_id_cel": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
@@ -1232,6 +1221,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The AutomationTemplateRef message.`,
+								},
+								"context": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"context": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+										},
+									},
+									Description: `The AutomationContext message.`,
 								},
 							},
 							MarkdownDescription: `RunAutomation: kick off the execution of an automation template.` + "\n" +
@@ -1338,7 +1338,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"close_action": schema.SingleNestedAttribute{
+								"close": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -1373,7 +1373,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`  - userIdCel` + "\n" +
 										`  - userRef`,
 								},
-								"reassign_action": schema.SingleNestedAttribute{
+								"reassign": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -1384,6 +1384,18 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
 												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
 										},
+										"assignee_user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
 										"subject_user_id_cel": schema.StringAttribute{
 											Computed: true,
 											Optional: true,
@@ -1391,34 +1403,22 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
 												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
 										},
+										"subject_user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
 										"use_subject_user": schema.BoolAttribute{
 											Computed:    true,
 											Optional:    true,
 											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-										"user_ref1": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
 										},
 									},
 									MarkdownDescription: `The ReassignAction message.` + "\n" +
@@ -1617,7 +1617,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 						speakeasy_objectvalidators.NotNull(),
 					},
 					Attributes: map[string]schema.Attribute{
-						"app_user_created_trigger": schema.SingleNestedAttribute{
+						"app_user_created": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -1647,7 +1647,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"app_user_updated_trigger": schema.SingleNestedAttribute{
+						"app_user_updated": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -1677,13 +1677,13 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"form_trigger": schema.StringAttribute{
+						"form": schema.StringAttribute{
 							CustomType:  jsontypes.NormalizedType{},
 							Computed:    true,
 							Optional:    true,
-							Description: `The FormTrigger message. Parsed as JSON.`,
+							Description: `Parsed as JSON.`,
 						},
-						"grant_deleted_trigger": schema.SingleNestedAttribute{
+						"grant_deleted": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -1800,7 +1800,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The GrantDeletedTrigger message.`,
 						},
-						"grant_found_trigger": schema.SingleNestedAttribute{
+						"grant_found": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -1917,12 +1917,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The GrantFoundTrigger message.`,
 						},
-						"manual_automation_trigger": schema.SingleNestedAttribute{
+						"manual": schema.SingleNestedAttribute{
 							Computed:    true,
 							Optional:    true,
 							Description: `The ManualAutomationTrigger message.`,
 						},
-						"schedule_trigger": schema.SingleNestedAttribute{
+						"schedule": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -1951,7 +1951,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The ScheduleTrigger message.`,
 						},
-						"usage_based_revocation_trigger": schema.SingleNestedAttribute{
+						"usage_based_revocation": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -2071,7 +2071,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - runImmediately` + "\n" +
 								`  - runDelayed`,
 						},
-						"user_created_trigger": schema.SingleNestedAttribute{
+						"user_created": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -2083,7 +2083,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The UserCreatedTrigger message.`,
 						},
-						"user_profile_change_trigger": schema.SingleNestedAttribute{
+						"user_profile_change": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -2095,21 +2095,16 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The UserProfileChangeTrigger message.`,
 						},
-						"webhook_automation_trigger": schema.SingleNestedAttribute{
+						"webhook": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"listener_id": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `Optional existing listener ID (hidden field from frontend)`,
-								},
-								"webhook_listener_auth_hmac": schema.SingleNestedAttribute{
+								"hmac": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The WebhookListenerAuthHMAC message.`,
 								},
-								"webhook_listener_auth_jwt": schema.SingleNestedAttribute{
+								"jwt": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2120,6 +2115,11 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The WebhookListenerAuthJWT message.`,
+								},
+								"listener_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Optional existing listener ID (hidden field from frontend)`,
 								},
 							},
 							MarkdownDescription: `The WebhookAutomationTrigger message.` + "\n" +
@@ -2179,7 +2179,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 						speakeasy_objectvalidators.NotNull(),
 					},
 					Attributes: map[string]schema.Attribute{
-						"app_user_created_trigger": schema.SingleNestedAttribute{
+						"app_user_created": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -2209,7 +2209,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"app_user_updated_trigger": schema.SingleNestedAttribute{
+						"app_user_updated": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -2239,13 +2239,13 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"form_trigger": schema.StringAttribute{
+						"form": schema.StringAttribute{
 							CustomType:  jsontypes.NormalizedType{},
 							Computed:    true,
 							Optional:    true,
-							Description: `The FormTrigger message. Parsed as JSON.`,
+							Description: `Parsed as JSON.`,
 						},
-						"grant_deleted_trigger": schema.SingleNestedAttribute{
+						"grant_deleted": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -2362,7 +2362,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The GrantDeletedTrigger message.`,
 						},
-						"grant_found_trigger": schema.SingleNestedAttribute{
+						"grant_found": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -2479,12 +2479,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The GrantFoundTrigger message.`,
 						},
-						"manual_automation_trigger": schema.SingleNestedAttribute{
+						"manual": schema.SingleNestedAttribute{
 							Computed:    true,
 							Optional:    true,
 							Description: `The ManualAutomationTrigger message.`,
 						},
-						"schedule_trigger": schema.SingleNestedAttribute{
+						"schedule": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -2513,7 +2513,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The ScheduleTrigger message.`,
 						},
-						"usage_based_revocation_trigger": schema.SingleNestedAttribute{
+						"usage_based_revocation": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -2633,7 +2633,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - runImmediately` + "\n" +
 								`  - runDelayed`,
 						},
-						"user_created_trigger": schema.SingleNestedAttribute{
+						"user_created": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -2645,7 +2645,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The UserCreatedTrigger message.`,
 						},
-						"user_profile_change_trigger": schema.SingleNestedAttribute{
+						"user_profile_change": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -2657,21 +2657,16 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The UserProfileChangeTrigger message.`,
 						},
-						"webhook_automation_trigger": schema.SingleNestedAttribute{
+						"webhook": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"listener_id": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `Optional existing listener ID (hidden field from frontend)`,
-								},
-								"webhook_listener_auth_hmac": schema.SingleNestedAttribute{
+								"hmac": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The WebhookListenerAuthHMAC message.`,
 								},
-								"webhook_listener_auth_jwt": schema.SingleNestedAttribute{
+								"jwt": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2682,6 +2677,11 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The WebhookListenerAuthJWT message.`,
+								},
+								"listener_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Optional existing listener ID (hidden field from frontend)`,
 								},
 							},
 							MarkdownDescription: `The WebhookAutomationTrigger message.` + "\n" +

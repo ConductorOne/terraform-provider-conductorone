@@ -4,7 +4,6 @@ package shared
 
 // The GetSessionSettingsResponse message.
 type GetSessionSettingsResponse struct {
-	// The SessionSettings message.
 	SessionSettings *SessionSettings `json:"sessionSettings,omitempty"`
 }
 

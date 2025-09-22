@@ -29,9 +29,12 @@ func (r *ComplianceFrameworkDataSourceModel) RefreshFromSharedAttributeValue(ctx
 func (r *ComplianceFrameworkDataSourceModel) ToOperationsC1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
-
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest{
 		ID: id,
 	}

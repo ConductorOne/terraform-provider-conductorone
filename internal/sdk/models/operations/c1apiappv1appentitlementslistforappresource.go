@@ -8,30 +8,30 @@ import (
 )
 
 type C1APIAppV1AppEntitlementsListForAppResourceRequest struct {
-	AppID             string  `pathParam:"style=simple,explode=false,name=app_id"`
-	AppResourceTypeID string  `pathParam:"style=simple,explode=false,name=app_resource_type_id"`
-	AppResourceID     string  `pathParam:"style=simple,explode=false,name=app_resource_id"`
+	AppID             *string `pathParam:"style=simple,explode=false,name=app_id"`
+	AppResourceTypeID *string `pathParam:"style=simple,explode=false,name=app_resource_type_id"`
+	AppResourceID     *string `pathParam:"style=simple,explode=false,name=app_resource_id"`
 	PageSize          *int    `queryParam:"style=form,explode=true,name=page_size"`
 	PageToken         *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppID() string {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppResourceTypeID() string {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppResourceTypeID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppResourceTypeID
 }
 
-func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppResourceID() string {
+func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetAppResourceID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppResourceID
 }

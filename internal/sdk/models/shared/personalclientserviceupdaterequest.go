@@ -4,16 +4,15 @@ package shared
 
 // The PersonalClientServiceUpdateRequest message.
 type PersonalClientServiceUpdateRequest struct {
-	// The PersonalClient message contains information about a presonal client credential.
-	PersonalClient *PersonalClientInput `json:"client,omitempty"`
-	UpdateMask     *string              `json:"updateMask,omitempty"`
+	Client     *PersonalClientInput `json:"client,omitempty"`
+	UpdateMask *string              `json:"updateMask,omitempty"`
 }
 
-func (p *PersonalClientServiceUpdateRequest) GetPersonalClient() *PersonalClientInput {
+func (p *PersonalClientServiceUpdateRequest) GetClient() *PersonalClientInput {
 	if p == nil {
 		return nil
 	}
-	return p.PersonalClient
+	return p.Client
 }
 
 func (p *PersonalClientServiceUpdateRequest) GetUpdateMask() *string {

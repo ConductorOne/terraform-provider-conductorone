@@ -4,7 +4,6 @@ package shared
 
 // The UpdateSessionSettingsResponse message.
 type UpdateSessionSettingsResponse struct {
-	// The SessionSettings message.
 	SessionSettings *SessionSettings `json:"sessionSettings,omitempty"`
 }
 

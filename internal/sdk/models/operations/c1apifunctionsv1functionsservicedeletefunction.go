@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIFunctionsV1FunctionsServiceDeleteFunctionRequest struct {
-	ID                                    string                                        `pathParam:"style=simple,explode=false,name=id"`
+	ID                                    *string                                       `pathParam:"style=simple,explode=false,name=id"`
 	FunctionsServiceDeleteFunctionRequest *shared.FunctionsServiceDeleteFunctionRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIFunctionsV1FunctionsServiceDeleteFunctionRequest) GetID() string {
+func (c *C1APIFunctionsV1FunctionsServiceDeleteFunctionRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

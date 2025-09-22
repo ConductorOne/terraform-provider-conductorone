@@ -8,21 +8,21 @@ import (
 )
 
 type C1APIAppV1AppEntitlementOwnersSetRequest struct {
-	AppID                          string                                 `pathParam:"style=simple,explode=false,name=app_id"`
-	EntitlementID                  string                                 `pathParam:"style=simple,explode=false,name=entitlement_id"`
+	AppID                          *string                                `pathParam:"style=simple,explode=false,name=app_id"`
+	EntitlementID                  *string                                `pathParam:"style=simple,explode=false,name=entitlement_id"`
 	SetAppEntitlementOwnersRequest *shared.SetAppEntitlementOwnersRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppEntitlementOwnersSetRequest) GetAppID() string {
+func (c *C1APIAppV1AppEntitlementOwnersSetRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppEntitlementOwnersSetRequest) GetEntitlementID() string {
+func (c *C1APIAppV1AppEntitlementOwnersSetRequest) GetEntitlementID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.EntitlementID
 }

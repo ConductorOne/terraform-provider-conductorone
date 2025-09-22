@@ -46,7 +46,7 @@ func (r *AccessProfileVisibilityBindingsResource) Schema(ctx context.Context, re
 		MarkdownDescription: "AccessProfileVisibilityBindings Resource",
 		Attributes: map[string]schema.Attribute{
 			"access_entitlements": schema.ListNestedAttribute{
-				Optional: true,
+				Required: true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
 				},
@@ -74,7 +74,7 @@ func (r *AccessProfileVisibilityBindingsResource) Schema(ctx context.Context, re
 				Description: `List of entitlements to add to the request catalog as access entitlements. Requires replacement if changed.`,
 			},
 			"catalog_id": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},

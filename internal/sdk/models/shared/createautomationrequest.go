@@ -7,9 +7,8 @@ type CreateAutomationRequest struct {
 	// the app id this workflow_template belongs to
 	AppID *string `json:"appId,omitempty"`
 	// The automationSteps field.
-	AutomationSteps []AutomationStep `json:"automationSteps,omitempty"`
-	// The AutomationContext message.
-	AutomationContext *AutomationContext `json:"context,omitempty"`
+	AutomationSteps []AutomationStep   `json:"automationSteps,omitempty"`
+	Context         *AutomationContext `json:"context,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
@@ -40,11 +39,11 @@ func (c *CreateAutomationRequest) GetAutomationSteps() []AutomationStep {
 	return c.AutomationSteps
 }
 
-func (c *CreateAutomationRequest) GetAutomationContext() *AutomationContext {
+func (c *CreateAutomationRequest) GetContext() *AutomationContext {
 	if c == nil {
 		return nil
 	}
-	return c.AutomationContext
+	return c.Context
 }
 
 func (c *CreateAutomationRequest) GetDescription() *string {

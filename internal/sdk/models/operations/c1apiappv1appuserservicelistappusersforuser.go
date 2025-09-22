@@ -8,22 +8,22 @@ import (
 )
 
 type C1APIAppV1AppUserServiceListAppUsersForUserRequest struct {
-	AppID     string  `pathParam:"style=simple,explode=false,name=app_id"`
-	UserID    string  `pathParam:"style=simple,explode=false,name=user_id"`
+	AppID     *string `pathParam:"style=simple,explode=false,name=app_id"`
+	UserID    *string `pathParam:"style=simple,explode=false,name=user_id"`
 	PageSize  *int    `queryParam:"style=form,explode=true,name=page_size"`
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
 }
 
-func (c *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetAppID() string {
+func (c *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetUserID() string {
+func (c *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetUserID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.UserID
 }

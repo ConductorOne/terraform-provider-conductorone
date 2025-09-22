@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIWebhooksV1WebhooksServiceDeleteRequest struct {
-	ID                           string                               `pathParam:"style=simple,explode=false,name=id"`
+	ID                           *string                              `pathParam:"style=simple,explode=false,name=id"`
 	WebhooksServiceDeleteRequest *shared.WebhooksServiceDeleteRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIWebhooksV1WebhooksServiceDeleteRequest) GetID() string {
+func (c *C1APIWebhooksV1WebhooksServiceDeleteRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

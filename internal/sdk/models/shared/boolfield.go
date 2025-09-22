@@ -10,12 +10,10 @@ package shared
 // This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
 //   - rules
 type BoolField struct {
-	// The CheckboxField message.
 	CheckboxField *CheckboxField `json:"checkboxField,omitempty"`
 	// The defaultValue field.
-	DefaultValue *bool `json:"defaultValue,omitempty"`
-	// BoolRules describes the constraints applied to `bool` values
-	BoolRules *BoolRules `json:"rules,omitempty"`
+	DefaultValue *bool      `json:"defaultValue,omitempty"`
+	Rules        *BoolRules `json:"rules,omitempty"`
 }
 
 func (b *BoolField) GetCheckboxField() *CheckboxField {
@@ -32,9 +30,9 @@ func (b *BoolField) GetDefaultValue() *bool {
 	return b.DefaultValue
 }
 
-func (b *BoolField) GetBoolRules() *BoolRules {
+func (b *BoolField) GetRules() *BoolRules {
 	if b == nil {
 		return nil
 	}
-	return b.BoolRules
+	return b.Rules
 }

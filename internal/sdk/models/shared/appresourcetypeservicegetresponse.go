@@ -10,7 +10,6 @@ type AppResourceTypeServiceGetResponseExpanded struct {
 //
 //	in the request and an app resource type view containing the resource type and JSONPATHs indicating which objects are where in the expand mask.
 type AppResourceTypeServiceGetResponse struct {
-	// The AppResourceTypeView message.
 	AppResourceTypeView *AppResourceTypeView `json:"appResourceTypeView,omitempty"`
 	// List of serialized related objects.
 	Expanded []AppResourceTypeServiceGetResponseExpanded `json:"expanded,omitempty"`

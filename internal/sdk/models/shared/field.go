@@ -10,57 +10,15 @@ package shared
 //   - stringSliceField
 //   - int64Field
 type Field struct {
-	// The BoolField message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - checkboxField
-	//
-	//
-	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-	//   - rules
-	//
 	BoolField *BoolField `json:"boolField,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
-	DisplayName *string `json:"displayName,omitempty"`
-	// The Int64Field message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - numberField
-	//
-	//
-	// This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:
-	//   - defaultValue
-	//
-	//
-	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-	//   - rules
-	//
-	Int64Field *Int64Field `json:"int64Field,omitempty"`
+	DisplayName *string     `json:"displayName,omitempty"`
+	Int64Field  *Int64Field `json:"int64Field,omitempty"`
 	// The name field.
-	Name *string `json:"name,omitempty"`
-	// The StringField message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - textField
-	//   - passwordField
-	//   - selectField
-	//
-	//
-	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-	//   - rules
-	//
-	StringField *StringField `json:"stringField,omitempty"`
-	// The StringSliceField message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - chipsField
-	//
-	//
-	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-	//   - rules
-	//
+	Name             *string           `json:"name,omitempty"`
+	StringField      *StringField      `json:"stringField,omitempty"`
 	StringSliceField *StringSliceField `json:"stringSliceField,omitempty"`
 }
 

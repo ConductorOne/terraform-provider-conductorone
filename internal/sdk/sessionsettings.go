@@ -161,7 +161,7 @@ func (s *SessionSettings) Get(ctx context.Context, opts ...operations.Option) (*
 }
 
 // Update
-// Invokes the c1.api.settings.v1.SessionSettingsService.Update method.
+// Invokes the c1.api.stepup.v1.StepUpProviderService.Update method.
 func (s *SessionSettings) Update(ctx context.Context, request *shared.UpdateSessionSettingsRequest, opts ...operations.Option) (*operations.C1APISettingsV1SessionSettingsServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

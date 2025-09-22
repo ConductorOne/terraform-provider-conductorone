@@ -53,40 +53,14 @@ func (e *ApprovalInstanceState) UnmarshalJSON(data []byte) error {
 //   - reassignedByError
 //   - skipped
 type ApprovalInstance struct {
-	// The Approval message.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - users
-	//   - manager
-	//   - appOwners
-	//   - group
-	//   - self
-	//   - entitlementOwners
-	//   - expression
-	//   - webhook
-	//   - resourceOwners
-	//   - agent
-	//
-	Approval *Approval `json:"approval,omitempty"`
-	// The approved action indicates that the approvalinstance had an outcome of approved.
-	ApprovedAction *ApprovedAction `json:"approved,omitempty"`
-	// The denied action indicates that the c1.api.policy.v1.ApprovalInstance had an outcome of denied.
-	DeniedAction *DeniedAction `json:"denied,omitempty"`
-	// The EscalationInstance message.
-	//
-	// This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:
-	//   - replacePolicy
-	//   - reassignToApprovers
-	//
-	EscalationInstance *EscalationInstance `json:"escalationInstance,omitempty"`
-	// The ReassignedAction object describes the outcome of a policy step that has been reassigned.
-	ReassignedAction *ReassignedAction `json:"reassigned,omitempty"`
-	// The ReassignedByErrorAction object describes the outcome of a policy step that has been reassigned because it had an error provisioning.
-	ReassignedByErrorAction *ReassignedByErrorAction `json:"reassignedByError,omitempty"`
-	// The restart action describes the outcome of policy steps for when the task was restarted. This can be applied to multiple steps since restart skips all pending next steps.
-	RestartAction *RestartAction `json:"restarted,omitempty"`
-	// The SkippedAction object describes the outcome of a policy step that has been skipped.
-	SkippedAction *SkippedAction `json:"skipped,omitempty"`
+	Approval           *Approval                `json:"approval,omitempty"`
+	Approved           *ApprovedAction          `json:"approved,omitempty"`
+	Denied             *DeniedAction            `json:"denied,omitempty"`
+	EscalationInstance *EscalationInstance      `json:"escalationInstance,omitempty"`
+	Reassigned         *ReassignedAction        `json:"reassigned,omitempty"`
+	ReassignedByError  *ReassignedByErrorAction `json:"reassignedByError,omitempty"`
+	Restarted          *RestartAction           `json:"restarted,omitempty"`
+	Skipped            *SkippedAction           `json:"skipped,omitempty"`
 	// The state of the approval instance
 	State *ApprovalInstanceState `json:"state,omitempty"`
 }
@@ -98,18 +72,18 @@ func (a *ApprovalInstance) GetApproval() *Approval {
 	return a.Approval
 }
 
-func (a *ApprovalInstance) GetApprovedAction() *ApprovedAction {
+func (a *ApprovalInstance) GetApproved() *ApprovedAction {
 	if a == nil {
 		return nil
 	}
-	return a.ApprovedAction
+	return a.Approved
 }
 
-func (a *ApprovalInstance) GetDeniedAction() *DeniedAction {
+func (a *ApprovalInstance) GetDenied() *DeniedAction {
 	if a == nil {
 		return nil
 	}
-	return a.DeniedAction
+	return a.Denied
 }
 
 func (a *ApprovalInstance) GetEscalationInstance() *EscalationInstance {
@@ -119,32 +93,32 @@ func (a *ApprovalInstance) GetEscalationInstance() *EscalationInstance {
 	return a.EscalationInstance
 }
 
-func (a *ApprovalInstance) GetReassignedAction() *ReassignedAction {
+func (a *ApprovalInstance) GetReassigned() *ReassignedAction {
 	if a == nil {
 		return nil
 	}
-	return a.ReassignedAction
+	return a.Reassigned
 }
 
-func (a *ApprovalInstance) GetReassignedByErrorAction() *ReassignedByErrorAction {
+func (a *ApprovalInstance) GetReassignedByError() *ReassignedByErrorAction {
 	if a == nil {
 		return nil
 	}
-	return a.ReassignedByErrorAction
+	return a.ReassignedByError
 }
 
-func (a *ApprovalInstance) GetRestartAction() *RestartAction {
+func (a *ApprovalInstance) GetRestarted() *RestartAction {
 	if a == nil {
 		return nil
 	}
-	return a.RestartAction
+	return a.Restarted
 }
 
-func (a *ApprovalInstance) GetSkippedAction() *SkippedAction {
+func (a *ApprovalInstance) GetSkipped() *SkippedAction {
 	if a == nil {
 		return nil
 	}
-	return a.SkippedAction
+	return a.Skipped
 }
 
 func (a *ApprovalInstance) GetState() *ApprovalInstanceState {

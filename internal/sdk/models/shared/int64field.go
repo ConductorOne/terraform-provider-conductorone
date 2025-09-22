@@ -16,13 +16,11 @@ type Int64Field struct {
 	// The defaultValue field.
 	// This field is part of the `_default_value` oneof.
 	// See the documentation for `c1.api.form.v1.Int64Field` for more details.
-	DefaultValue *string `json:"defaultValue,omitempty"`
-	// The NumberField message.
-	NumberField *NumberField `json:"numberField,omitempty"`
+	DefaultValue *string      `json:"defaultValue,omitempty"`
+	NumberField  *NumberField `json:"numberField,omitempty"`
 	// The placeholder field.
-	Placeholder *string `json:"placeholder,omitempty"`
-	// Int64Rules describes the constraints applied to `int64` values
-	Int64Rules *Int64Rules `json:"rules,omitempty"`
+	Placeholder *string     `json:"placeholder,omitempty"`
+	Rules       *Int64Rules `json:"rules,omitempty"`
 }
 
 func (i *Int64Field) GetDefaultValue() *string {
@@ -46,9 +44,9 @@ func (i *Int64Field) GetPlaceholder() *string {
 	return i.Placeholder
 }
 
-func (i *Int64Field) GetInt64Rules() *Int64Rules {
+func (i *Int64Field) GetRules() *Int64Rules {
 	if i == nil {
 		return nil
 	}
-	return i.Int64Rules
+	return i.Rules
 }

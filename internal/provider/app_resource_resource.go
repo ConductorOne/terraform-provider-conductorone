@@ -436,9 +436,9 @@ func (r *AppResourceResource) ImportState(ctx context.Context, req resource.Impo
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		AppID             string `json:"app_id"`
-		AppResourceTypeID string `json:"app_resource_type_id"`
-		ID                string `json:"id"`
+		AppID             *string `json:"app_id"`
+		AppResourceTypeID *string `json:"app_resource_type_id"`
+		ID                *string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -446,17 +446,17 @@ func (r *AppResourceResource) ImportState(ctx context.Context, req resource.Impo
 		return
 	}
 
-	if len(data.AppID) == 0 {
+	if data.AppID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field app_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), data.AppID)...)
-	if len(data.AppResourceTypeID) == 0 {
+	if data.AppResourceTypeID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field app_resource_type_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_resource_type_id"), data.AppResourceTypeID)...)
-	if len(data.ID) == 0 {
+	if data.ID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}

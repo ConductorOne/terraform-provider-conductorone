@@ -4,13 +4,12 @@ package shared
 
 // The GetAWSExternalIDResponse message.
 type GetAWSExternalIDResponse struct {
-	// The AWSExternalID message.
-	AWSExternalID *AWSExternalID `json:"awsExternalId,omitempty"`
+	AwsExternalID *AWSExternalID `json:"awsExternalId,omitempty"`
 }
 
-func (g *GetAWSExternalIDResponse) GetAWSExternalID() *AWSExternalID {
+func (g *GetAWSExternalIDResponse) GetAwsExternalID() *AWSExternalID {
 	if g == nil {
 		return nil
 	}
-	return g.AWSExternalID
+	return g.AwsExternalID
 }

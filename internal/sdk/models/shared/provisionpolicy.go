@@ -13,54 +13,41 @@ package shared
 //   - externalTicket
 //   - unconfigured
 type ProvisionPolicy struct {
-	// Indicates that a connector should perform the provisioning. This object has no fields.
-	//
-	// This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
-	//   - defaultBehavior
-	//   - account
-	//   - deleteAccount
-	//
-	ConnectorProvision *ConnectorProvision `json:"connector,omitempty"`
-	// This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.
-	DelegatedProvision *DelegatedProvision `json:"delegated,omitempty"`
-	// This provision step indicates that we should check an external ticket to provision this entitlement
-	ExternalTicketProvision *ExternalTicketProvision `json:"externalTicket,omitempty"`
-	// Manual provisioning indicates that a human must intervene for the provisioning of this step.
-	ManualProvision *ManualProvision `json:"manual,omitempty"`
-	// MultiStep indicates that this provision step has multiple steps to process.
-	MultiStep any `json:"multiStep,omitempty"`
-	// The UnconfiguredProvision message.
-	UnconfiguredProvision *UnconfiguredProvision `json:"unconfigured,omitempty"`
-	// This provision step indicates that a webhook should be called to provision this entitlement.
-	WebhookProvision *WebhookProvision `json:"webhook,omitempty"`
+	Connector      *ConnectorProvision      `json:"connector,omitempty"`
+	Delegated      *DelegatedProvision      `json:"delegated,omitempty"`
+	ExternalTicket *ExternalTicketProvision `json:"externalTicket,omitempty"`
+	Manual         *ManualProvision         `json:"manual,omitempty"`
+	MultiStep      any                      `json:"multiStep,omitempty"`
+	Unconfigured   *UnconfiguredProvision   `json:"unconfigured,omitempty"`
+	Webhook        *WebhookProvision        `json:"webhook,omitempty"`
 }
 
-func (p *ProvisionPolicy) GetConnectorProvision() *ConnectorProvision {
+func (p *ProvisionPolicy) GetConnector() *ConnectorProvision {
 	if p == nil {
 		return nil
 	}
-	return p.ConnectorProvision
+	return p.Connector
 }
 
-func (p *ProvisionPolicy) GetDelegatedProvision() *DelegatedProvision {
+func (p *ProvisionPolicy) GetDelegated() *DelegatedProvision {
 	if p == nil {
 		return nil
 	}
-	return p.DelegatedProvision
+	return p.Delegated
 }
 
-func (p *ProvisionPolicy) GetExternalTicketProvision() *ExternalTicketProvision {
+func (p *ProvisionPolicy) GetExternalTicket() *ExternalTicketProvision {
 	if p == nil {
 		return nil
 	}
-	return p.ExternalTicketProvision
+	return p.ExternalTicket
 }
 
-func (p *ProvisionPolicy) GetManualProvision() *ManualProvision {
+func (p *ProvisionPolicy) GetManual() *ManualProvision {
 	if p == nil {
 		return nil
 	}
-	return p.ManualProvision
+	return p.Manual
 }
 
 func (p *ProvisionPolicy) GetMultiStep() any {
@@ -70,16 +57,16 @@ func (p *ProvisionPolicy) GetMultiStep() any {
 	return p.MultiStep
 }
 
-func (p *ProvisionPolicy) GetUnconfiguredProvision() *UnconfiguredProvision {
+func (p *ProvisionPolicy) GetUnconfigured() *UnconfiguredProvision {
 	if p == nil {
 		return nil
 	}
-	return p.UnconfiguredProvision
+	return p.Unconfigured
 }
 
-func (p *ProvisionPolicy) GetWebhookProvision() *WebhookProvision {
+func (p *ProvisionPolicy) GetWebhook() *WebhookProvision {
 	if p == nil {
 		return nil
 	}
-	return p.WebhookProvision
+	return p.Webhook
 }

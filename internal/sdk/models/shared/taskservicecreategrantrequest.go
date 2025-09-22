@@ -19,10 +19,9 @@ type TaskServiceCreateGrantRequest struct {
 	EmergencyAccess *bool   `json:"emergencyAccess,omitempty"`
 	GrantDuration   *string `json:"grantDuration,omitempty"`
 	// The ID of the user associated with the app user we are granting access for. This field cannot be set if appUserID is also set.
-	IdentityUserID *string      `json:"identityUserId,omitempty"`
-	RequestData    *RequestData `json:"requestData,omitempty"`
-	// The TaskGrantSource message tracks which external URL was the source of the specificed grant ticket.
-	TaskGrantSource *TaskGrantSource `json:"source,omitempty"`
+	IdentityUserID *string          `json:"identityUserId,omitempty"`
+	RequestData    *RequestData     `json:"requestData,omitempty"`
+	Source         *TaskGrantSource `json:"source,omitempty"`
 }
 
 func (t *TaskServiceCreateGrantRequest) GetAppEntitlementID() string {
@@ -81,9 +80,9 @@ func (t *TaskServiceCreateGrantRequest) GetRequestData() *RequestData {
 	return t.RequestData
 }
 
-func (t *TaskServiceCreateGrantRequest) GetTaskGrantSource() *TaskGrantSource {
+func (t *TaskServiceCreateGrantRequest) GetSource() *TaskGrantSource {
 	if t == nil {
 		return nil
 	}
-	return t.TaskGrantSource
+	return t.Source
 }

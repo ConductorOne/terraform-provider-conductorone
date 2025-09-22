@@ -16,15 +16,15 @@ func (r *FunctionCommitResourceModel) RefreshFromSharedFunctionsServiceCommitRes
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.FunctionCommit == nil {
-			r.FunctionCommit = nil
+		if resp.Commit == nil {
+			r.Commit = nil
 		} else {
-			r.FunctionCommit = &tfTypes.FunctionCommit{}
-			r.FunctionCommit.Author = types.StringPointerValue(resp.FunctionCommit.Author)
-			r.FunctionCommit.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.FunctionCommit.CreatedAt))
-			r.FunctionCommit.FunctionID = types.StringPointerValue(resp.FunctionCommit.FunctionID)
-			r.FunctionCommit.ID = types.StringPointerValue(resp.FunctionCommit.ID)
-			r.FunctionCommit.Message = types.StringPointerValue(resp.FunctionCommit.Message)
+			r.Commit = &tfTypes.FunctionCommit{}
+			r.Commit.Author = types.StringPointerValue(resp.Commit.Author)
+			r.Commit.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Commit.CreatedAt))
+			r.Commit.FunctionID = types.StringPointerValue(resp.Commit.FunctionID)
+			r.Commit.ID = types.StringPointerValue(resp.Commit.ID)
+			r.Commit.Message = types.StringPointerValue(resp.Commit.Message)
 		}
 	}
 
@@ -35,21 +35,21 @@ func (r *FunctionCommitResourceModel) RefreshFromSharedFunctionsServiceGetCommit
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if len(resp.Content) > 0 {
+		if resp.Commit == nil {
+			r.Commit = nil
+		} else {
+			r.Commit = &tfTypes.FunctionCommit{}
+			r.Commit.Author = types.StringPointerValue(resp.Commit.Author)
+			r.Commit.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Commit.CreatedAt))
+			r.Commit.FunctionID = types.StringPointerValue(resp.Commit.FunctionID)
+			r.Commit.ID = types.StringPointerValue(resp.Commit.ID)
+			r.Commit.Message = types.StringPointerValue(resp.Commit.Message)
+		}
+		if resp.Content != nil {
 			r.Content = make(map[string]types.String, len(resp.Content))
 			for key, value := range resp.Content {
 				r.Content[key] = types.StringValue(value)
 			}
-		}
-		if resp.FunctionCommit == nil {
-			r.FunctionCommit = nil
-		} else {
-			r.FunctionCommit = &tfTypes.FunctionCommit{}
-			r.FunctionCommit.Author = types.StringPointerValue(resp.FunctionCommit.Author)
-			r.FunctionCommit.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.FunctionCommit.CreatedAt))
-			r.FunctionCommit.FunctionID = types.StringPointerValue(resp.FunctionCommit.FunctionID)
-			r.FunctionCommit.ID = types.StringPointerValue(resp.FunctionCommit.ID)
-			r.FunctionCommit.Message = types.StringPointerValue(resp.FunctionCommit.Message)
 		}
 	}
 
@@ -59,9 +59,12 @@ func (r *FunctionCommitResourceModel) RefreshFromSharedFunctionsServiceGetCommit
 func (r *FunctionCommitResourceModel) ToOperationsC1APIFunctionsV1FunctionsServiceCommitRequest(ctx context.Context) (*operations.C1APIFunctionsV1FunctionsServiceCommitRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var functionID string
-	functionID = r.FunctionID.ValueString()
-
+	functionID := new(string)
+	if !r.FunctionID.IsUnknown() && !r.FunctionID.IsNull() {
+		*functionID = r.FunctionID.ValueString()
+	} else {
+		functionID = nil
+	}
 	functionsServiceCommitRequest, functionsServiceCommitRequestDiags := r.ToSharedFunctionsServiceCommitRequest(ctx)
 	diags.Append(functionsServiceCommitRequestDiags...)
 
@@ -80,12 +83,18 @@ func (r *FunctionCommitResourceModel) ToOperationsC1APIFunctionsV1FunctionsServi
 func (r *FunctionCommitResourceModel) ToOperationsC1APIFunctionsV1FunctionsServiceGetCommitRequest(ctx context.Context) (*operations.C1APIFunctionsV1FunctionsServiceGetCommitRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var functionID string
-	functionID = r.FunctionID.ValueString()
-
-	var id string
-	id = r.FunctionCommit.ID.ValueString()
-
+	functionID := new(string)
+	if !r.FunctionID.IsUnknown() && !r.FunctionID.IsNull() {
+		*functionID = r.FunctionID.ValueString()
+	} else {
+		functionID = nil
+	}
+	id := new(string)
+	if !r.Commit.ID.IsUnknown() && !r.Commit.ID.IsNull() {
+		*id = r.Commit.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIFunctionsV1FunctionsServiceGetCommitRequest{
 		FunctionID: functionID,
 		ID:         id,

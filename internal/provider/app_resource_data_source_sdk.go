@@ -45,15 +45,24 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 func (r *AppResourceDataSourceModel) ToOperationsC1APIAppV1AppResourceServiceGetRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var appResourceTypeID string
-	appResourceTypeID = r.AppResourceTypeID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
+	appResourceTypeID := new(string)
+	if !r.AppResourceTypeID.IsUnknown() && !r.AppResourceTypeID.IsNull() {
+		*appResourceTypeID = r.AppResourceTypeID.ValueString()
+	} else {
+		appResourceTypeID = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAppV1AppResourceServiceGetRequest{
 		AppID:             appID,
 		AppResourceTypeID: appResourceTypeID,

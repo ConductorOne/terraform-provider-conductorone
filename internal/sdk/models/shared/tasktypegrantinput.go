@@ -2,15 +2,46 @@
 
 package shared
 
+import (
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
+)
+
 // TaskTypeGrantInput - The TaskTypeGrant message indicates that a task is a grant task and all related details.
 type TaskTypeGrantInput struct {
-	// The TaskGrantSource message tracks which external URL was the source of the specificed grant ticket.
-	TaskGrantSource *TaskGrantSource `json:"source,omitempty"`
+	GrantDuration *string          `json:"grantDuration,omitempty"`
+	OutcomeTime   *time.Time       `json:"outcomeTime,omitempty"`
+	Source        *TaskGrantSource `json:"source,omitempty"`
 }
 
-func (t *TaskTypeGrantInput) GetTaskGrantSource() *TaskGrantSource {
+func (t TaskTypeGrantInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TaskTypeGrantInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *TaskTypeGrantInput) GetGrantDuration() *string {
 	if t == nil {
 		return nil
 	}
-	return t.TaskGrantSource
+	return t.GrantDuration
+}
+
+func (t *TaskTypeGrantInput) GetOutcomeTime() *time.Time {
+	if t == nil {
+		return nil
+	}
+	return t.OutcomeTime
+}
+
+func (t *TaskTypeGrantInput) GetSource() *TaskGrantSource {
+	if t == nil {
+		return nil
+	}
+	return t.Source
 }

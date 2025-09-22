@@ -49,80 +49,80 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 						list.AppEntitlement.DeprovisionerPolicy = nil
 					} else {
 						list.AppEntitlement.DeprovisionerPolicy = &tfTypes.DeprovisionerPolicy{}
-						if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision == nil {
-							list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision = nil
+						if listItem.AppEntitlement.DeprovisionerPolicy.Connector == nil {
+							list.AppEntitlement.DeprovisionerPolicy.Connector = nil
 						} else {
-							list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision = &tfTypes.ConnectorProvision{}
-							if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision == nil {
-								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision = nil
+							list.AppEntitlement.DeprovisionerPolicy.Connector = &tfTypes.ConnectorProvision{}
+							if listItem.AppEntitlement.DeprovisionerPolicy.Connector.Account == nil {
+								list.AppEntitlement.DeprovisionerPolicy.Connector.Account = nil
 							} else {
-								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
-								if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config == nil {
-									list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = nil
+								list.AppEntitlement.DeprovisionerPolicy.Connector.Account = &tfTypes.AccountProvision{}
+								if listItem.AppEntitlement.DeprovisionerPolicy.Connector.Account.Config == nil {
+									list.AppEntitlement.DeprovisionerPolicy.Connector.Account.Config = nil
 								} else {
-									list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+									list.AppEntitlement.DeprovisionerPolicy.Connector.Account.Config = &tfTypes.Config{}
 								}
-								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID)
-								if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
-									list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
+								list.AppEntitlement.DeprovisionerPolicy.Connector.Account.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.Connector.Account.ConnectorID)
+								if listItem.AppEntitlement.DeprovisionerPolicy.Connector.Account.DoNotSave == nil {
+									list.AppEntitlement.DeprovisionerPolicy.Connector.Account.DoNotSave = nil
 								} else {
-									list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
+									list.AppEntitlement.DeprovisionerPolicy.Connector.Account.DoNotSave = &tfTypes.DoNotSave{}
 								}
-								if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
-									list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
+								if listItem.AppEntitlement.DeprovisionerPolicy.Connector.Account.SaveToVault == nil {
+									list.AppEntitlement.DeprovisionerPolicy.Connector.Account.SaveToVault = nil
 								} else {
-									list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
-									if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-										if list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds == nil {
-											list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+									list.AppEntitlement.DeprovisionerPolicy.Connector.Account.SaveToVault = &tfTypes.SaveToVault{}
+									if listItem.AppEntitlement.DeprovisionerPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+										if list.AppEntitlement.DeprovisionerPolicy.Connector.Account.SaveToVault.VaultIds == nil {
+											list.AppEntitlement.DeprovisionerPolicy.Connector.Account.SaveToVault.VaultIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.Connector.Account.SaveToVault.VaultIds))
 										}
-										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-											list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
+										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.Connector.Account.SaveToVault.VaultIds {
+											list.AppEntitlement.DeprovisionerPolicy.Connector.Account.SaveToVault.VaultIds = append(list.AppEntitlement.DeprovisionerPolicy.Connector.Account.SaveToVault.VaultIds, types.StringValue(v))
 										}
 									}
 								}
-								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SchemaID)
+								list.AppEntitlement.DeprovisionerPolicy.Connector.Account.SchemaID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.Connector.Account.SchemaID)
 							}
-							if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior == nil {
-								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior = nil
+							if listItem.AppEntitlement.DeprovisionerPolicy.Connector.DefaultBehavior == nil {
+								list.AppEntitlement.DeprovisionerPolicy.Connector.DefaultBehavior = nil
 							} else {
-								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
-								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+								list.AppEntitlement.DeprovisionerPolicy.Connector.DefaultBehavior = &tfTypes.DefaultBehavior{}
+								list.AppEntitlement.DeprovisionerPolicy.Connector.DefaultBehavior.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.Connector.DefaultBehavior.ConnectorID)
 							}
-							if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DeleteAccount == nil {
-								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DeleteAccount = nil
+							if listItem.AppEntitlement.DeprovisionerPolicy.Connector.DeleteAccount == nil {
+								list.AppEntitlement.DeprovisionerPolicy.Connector.DeleteAccount = nil
 							} else {
-								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
-								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
+								list.AppEntitlement.DeprovisionerPolicy.Connector.DeleteAccount = &tfTypes.DeleteAccount{}
+								list.AppEntitlement.DeprovisionerPolicy.Connector.DeleteAccount.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.Connector.DeleteAccount.ConnectorID)
 							}
 						}
-						if listItem.AppEntitlement.DeprovisionerPolicy.DelegatedProvision == nil {
-							list.AppEntitlement.DeprovisionerPolicy.DelegatedProvision = nil
+						if listItem.AppEntitlement.DeprovisionerPolicy.Delegated == nil {
+							list.AppEntitlement.DeprovisionerPolicy.Delegated = nil
 						} else {
-							list.AppEntitlement.DeprovisionerPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
-							list.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.AppID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.AppID)
-							list.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.EntitlementID)
+							list.AppEntitlement.DeprovisionerPolicy.Delegated = &tfTypes.DelegatedProvision{}
+							list.AppEntitlement.DeprovisionerPolicy.Delegated.AppID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.Delegated.AppID)
+							list.AppEntitlement.DeprovisionerPolicy.Delegated.EntitlementID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.Delegated.EntitlementID)
 						}
-						if listItem.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision == nil {
-							list.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision = nil
+						if listItem.AppEntitlement.DeprovisionerPolicy.ExternalTicket == nil {
+							list.AppEntitlement.DeprovisionerPolicy.ExternalTicket = nil
 						} else {
-							list.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
-							list.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision.AppID)
-							list.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision.ConnectorID)
-							list.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
-							list.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision.Instructions)
+							list.AppEntitlement.DeprovisionerPolicy.ExternalTicket = &tfTypes.ExternalTicketProvision{}
+							list.AppEntitlement.DeprovisionerPolicy.ExternalTicket.AppID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ExternalTicket.AppID)
+							list.AppEntitlement.DeprovisionerPolicy.ExternalTicket.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ExternalTicket.ConnectorID)
+							list.AppEntitlement.DeprovisionerPolicy.ExternalTicket.ExternalTicketProvisionerConfigID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ExternalTicket.ExternalTicketProvisionerConfigID)
+							list.AppEntitlement.DeprovisionerPolicy.ExternalTicket.Instructions = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ExternalTicket.Instructions)
 						}
-						if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision == nil {
-							list.AppEntitlement.DeprovisionerPolicy.ManualProvision = nil
+						if listItem.AppEntitlement.DeprovisionerPolicy.Manual == nil {
+							list.AppEntitlement.DeprovisionerPolicy.Manual = nil
 						} else {
-							list.AppEntitlement.DeprovisionerPolicy.ManualProvision = &tfTypes.ManualProvision{}
-							list.AppEntitlement.DeprovisionerPolicy.ManualProvision.Instructions = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.Instructions)
-							if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds != nil {
-								if list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds == nil {
-									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds))
+							list.AppEntitlement.DeprovisionerPolicy.Manual = &tfTypes.ManualProvision{}
+							list.AppEntitlement.DeprovisionerPolicy.Manual.Instructions = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.Manual.Instructions)
+							if listItem.AppEntitlement.DeprovisionerPolicy.Manual.UserIds != nil {
+								if list.AppEntitlement.DeprovisionerPolicy.Manual.UserIds == nil {
+									list.AppEntitlement.DeprovisionerPolicy.Manual.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.Manual.UserIds))
 								}
-								for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds {
-									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds, types.StringValue(v))
+								for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.Manual.UserIds {
+									list.AppEntitlement.DeprovisionerPolicy.Manual.UserIds = append(list.AppEntitlement.DeprovisionerPolicy.Manual.UserIds, types.StringValue(v))
 								}
 							}
 						}
@@ -132,16 +132,16 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							multiStepResult, _ := json.Marshal(listItem.AppEntitlement.DeprovisionerPolicy.MultiStep)
 							list.AppEntitlement.DeprovisionerPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
 						}
-						if listItem.AppEntitlement.DeprovisionerPolicy.UnconfiguredProvision == nil {
-							list.AppEntitlement.DeprovisionerPolicy.UnconfiguredProvision = nil
+						if listItem.AppEntitlement.DeprovisionerPolicy.Unconfigured == nil {
+							list.AppEntitlement.DeprovisionerPolicy.Unconfigured = nil
 						} else {
-							list.AppEntitlement.DeprovisionerPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
+							list.AppEntitlement.DeprovisionerPolicy.Unconfigured = &tfTypes.UnconfiguredProvision{}
 						}
-						if listItem.AppEntitlement.DeprovisionerPolicy.WebhookProvision == nil {
-							list.AppEntitlement.DeprovisionerPolicy.WebhookProvision = nil
+						if listItem.AppEntitlement.DeprovisionerPolicy.Webhook == nil {
+							list.AppEntitlement.DeprovisionerPolicy.Webhook = nil
 						} else {
-							list.AppEntitlement.DeprovisionerPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
-							list.AppEntitlement.DeprovisionerPolicy.WebhookProvision.WebhookID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.WebhookProvision.WebhookID)
+							list.AppEntitlement.DeprovisionerPolicy.Webhook = &tfTypes.WebhookProvision{}
+							list.AppEntitlement.DeprovisionerPolicy.Webhook.WebhookID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.Webhook.WebhookID)
 						}
 					}
 					list.AppEntitlement.Description = types.StringPointerValue(listItem.AppEntitlement.Description)
@@ -161,103 +161,103 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 					list.AppEntitlement.IsManuallyManaged = types.BoolPointerValue(listItem.AppEntitlement.IsManuallyManaged)
 					list.AppEntitlement.MatchBatonID = types.StringPointerValue(listItem.AppEntitlement.MatchBatonID)
 					list.AppEntitlement.OverrideAccessRequestsDefaults = types.BoolPointerValue(listItem.AppEntitlement.OverrideAccessRequestsDefaults)
-					if listItem.AppEntitlement.ProvisionPolicy == nil {
-						list.AppEntitlement.ProvisionPolicy = nil
+					if listItem.AppEntitlement.ProvisionerPolicy == nil {
+						list.AppEntitlement.ProvisionerPolicy = nil
 					} else {
-						list.AppEntitlement.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
-						if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision == nil {
-							list.AppEntitlement.ProvisionPolicy.ConnectorProvision = nil
+						list.AppEntitlement.ProvisionerPolicy = &tfTypes.ProvisionPolicy{}
+						if listItem.AppEntitlement.ProvisionerPolicy.Connector == nil {
+							list.AppEntitlement.ProvisionerPolicy.Connector = nil
 						} else {
-							list.AppEntitlement.ProvisionPolicy.ConnectorProvision = &tfTypes.ConnectorProvision{}
-							if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision == nil {
-								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision = nil
+							list.AppEntitlement.ProvisionerPolicy.Connector = &tfTypes.ConnectorProvision{}
+							if listItem.AppEntitlement.ProvisionerPolicy.Connector.Account == nil {
+								list.AppEntitlement.ProvisionerPolicy.Connector.Account = nil
 							} else {
-								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
-								if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
-									list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = nil
+								list.AppEntitlement.ProvisionerPolicy.Connector.Account = &tfTypes.AccountProvision{}
+								if listItem.AppEntitlement.ProvisionerPolicy.Connector.Account.Config == nil {
+									list.AppEntitlement.ProvisionerPolicy.Connector.Account.Config = nil
 								} else {
-									list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+									list.AppEntitlement.ProvisionerPolicy.Connector.Account.Config = &tfTypes.Config{}
 								}
-								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
-								if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
-									list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
+								list.AppEntitlement.ProvisionerPolicy.Connector.Account.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.Connector.Account.ConnectorID)
+								if listItem.AppEntitlement.ProvisionerPolicy.Connector.Account.DoNotSave == nil {
+									list.AppEntitlement.ProvisionerPolicy.Connector.Account.DoNotSave = nil
 								} else {
-									list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
+									list.AppEntitlement.ProvisionerPolicy.Connector.Account.DoNotSave = &tfTypes.DoNotSave{}
 								}
-								if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
-									list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
+								if listItem.AppEntitlement.ProvisionerPolicy.Connector.Account.SaveToVault == nil {
+									list.AppEntitlement.ProvisionerPolicy.Connector.Account.SaveToVault = nil
 								} else {
-									list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
-									if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-										if list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds == nil {
-											list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+									list.AppEntitlement.ProvisionerPolicy.Connector.Account.SaveToVault = &tfTypes.SaveToVault{}
+									if listItem.AppEntitlement.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+										if list.AppEntitlement.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds == nil {
+											list.AppEntitlement.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds))
 										}
-										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-											list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
+										for _, v := range listItem.AppEntitlement.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds {
+											list.AppEntitlement.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds = append(list.AppEntitlement.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds, types.StringValue(v))
 										}
 									}
 								}
-								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
+								list.AppEntitlement.ProvisionerPolicy.Connector.Account.SchemaID = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.Connector.Account.SchemaID)
 							}
-							if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
-								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.DefaultBehavior = nil
+							if listItem.AppEntitlement.ProvisionerPolicy.Connector.DefaultBehavior == nil {
+								list.AppEntitlement.ProvisionerPolicy.Connector.DefaultBehavior = nil
 							} else {
-								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
-								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+								list.AppEntitlement.ProvisionerPolicy.Connector.DefaultBehavior = &tfTypes.DefaultBehavior{}
+								list.AppEntitlement.ProvisionerPolicy.Connector.DefaultBehavior.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.Connector.DefaultBehavior.ConnectorID)
 							}
-							if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
-								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
+							if listItem.AppEntitlement.ProvisionerPolicy.Connector.DeleteAccount == nil {
+								list.AppEntitlement.ProvisionerPolicy.Connector.DeleteAccount = nil
 							} else {
-								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
-								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
+								list.AppEntitlement.ProvisionerPolicy.Connector.DeleteAccount = &tfTypes.DeleteAccount{}
+								list.AppEntitlement.ProvisionerPolicy.Connector.DeleteAccount.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.Connector.DeleteAccount.ConnectorID)
 							}
 						}
-						if listItem.AppEntitlement.ProvisionPolicy.DelegatedProvision == nil {
-							list.AppEntitlement.ProvisionPolicy.DelegatedProvision = nil
+						if listItem.AppEntitlement.ProvisionerPolicy.Delegated == nil {
+							list.AppEntitlement.ProvisionerPolicy.Delegated = nil
 						} else {
-							list.AppEntitlement.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
-							list.AppEntitlement.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.DelegatedProvision.AppID)
-							list.AppEntitlement.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.DelegatedProvision.EntitlementID)
+							list.AppEntitlement.ProvisionerPolicy.Delegated = &tfTypes.DelegatedProvision{}
+							list.AppEntitlement.ProvisionerPolicy.Delegated.AppID = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.Delegated.AppID)
+							list.AppEntitlement.ProvisionerPolicy.Delegated.EntitlementID = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.Delegated.EntitlementID)
 						}
-						if listItem.AppEntitlement.ProvisionPolicy.ExternalTicketProvision == nil {
-							list.AppEntitlement.ProvisionPolicy.ExternalTicketProvision = nil
+						if listItem.AppEntitlement.ProvisionerPolicy.ExternalTicket == nil {
+							list.AppEntitlement.ProvisionerPolicy.ExternalTicket = nil
 						} else {
-							list.AppEntitlement.ProvisionPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
-							list.AppEntitlement.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ExternalTicketProvision.AppID)
-							list.AppEntitlement.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
-							list.AppEntitlement.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
-							list.AppEntitlement.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ExternalTicketProvision.Instructions)
+							list.AppEntitlement.ProvisionerPolicy.ExternalTicket = &tfTypes.ExternalTicketProvision{}
+							list.AppEntitlement.ProvisionerPolicy.ExternalTicket.AppID = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.ExternalTicket.AppID)
+							list.AppEntitlement.ProvisionerPolicy.ExternalTicket.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.ExternalTicket.ConnectorID)
+							list.AppEntitlement.ProvisionerPolicy.ExternalTicket.ExternalTicketProvisionerConfigID = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.ExternalTicket.ExternalTicketProvisionerConfigID)
+							list.AppEntitlement.ProvisionerPolicy.ExternalTicket.Instructions = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.ExternalTicket.Instructions)
 						}
-						if listItem.AppEntitlement.ProvisionPolicy.ManualProvision == nil {
-							list.AppEntitlement.ProvisionPolicy.ManualProvision = nil
+						if listItem.AppEntitlement.ProvisionerPolicy.Manual == nil {
+							list.AppEntitlement.ProvisionerPolicy.Manual = nil
 						} else {
-							list.AppEntitlement.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
-							list.AppEntitlement.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.Instructions)
-							if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds != nil {
-								if list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds == nil {
-									list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds))
+							list.AppEntitlement.ProvisionerPolicy.Manual = &tfTypes.ManualProvision{}
+							list.AppEntitlement.ProvisionerPolicy.Manual.Instructions = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.Manual.Instructions)
+							if listItem.AppEntitlement.ProvisionerPolicy.Manual.UserIds != nil {
+								if list.AppEntitlement.ProvisionerPolicy.Manual.UserIds == nil {
+									list.AppEntitlement.ProvisionerPolicy.Manual.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionerPolicy.Manual.UserIds))
 								}
-								for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds {
-									list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
+								for _, v := range listItem.AppEntitlement.ProvisionerPolicy.Manual.UserIds {
+									list.AppEntitlement.ProvisionerPolicy.Manual.UserIds = append(list.AppEntitlement.ProvisionerPolicy.Manual.UserIds, types.StringValue(v))
 								}
 							}
 						}
-						if listItem.AppEntitlement.ProvisionPolicy.MultiStep == nil {
-							list.AppEntitlement.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
+						if listItem.AppEntitlement.ProvisionerPolicy.MultiStep == nil {
+							list.AppEntitlement.ProvisionerPolicy.MultiStep = jsontypes.NewNormalizedNull()
 						} else {
-							multiStepResult1, _ := json.Marshal(listItem.AppEntitlement.ProvisionPolicy.MultiStep)
-							list.AppEntitlement.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
+							multiStepResult1, _ := json.Marshal(listItem.AppEntitlement.ProvisionerPolicy.MultiStep)
+							list.AppEntitlement.ProvisionerPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
 						}
-						if listItem.AppEntitlement.ProvisionPolicy.UnconfiguredProvision == nil {
-							list.AppEntitlement.ProvisionPolicy.UnconfiguredProvision = nil
+						if listItem.AppEntitlement.ProvisionerPolicy.Unconfigured == nil {
+							list.AppEntitlement.ProvisionerPolicy.Unconfigured = nil
 						} else {
-							list.AppEntitlement.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
+							list.AppEntitlement.ProvisionerPolicy.Unconfigured = &tfTypes.UnconfiguredProvision{}
 						}
-						if listItem.AppEntitlement.ProvisionPolicy.WebhookProvision == nil {
-							list.AppEntitlement.ProvisionPolicy.WebhookProvision = nil
+						if listItem.AppEntitlement.ProvisionerPolicy.Webhook == nil {
+							list.AppEntitlement.ProvisionerPolicy.Webhook = nil
 						} else {
-							list.AppEntitlement.ProvisionPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
-							list.AppEntitlement.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.WebhookProvision.WebhookID)
+							list.AppEntitlement.ProvisionerPolicy.Webhook = &tfTypes.WebhookProvision{}
+							list.AppEntitlement.ProvisionerPolicy.Webhook.WebhookID = types.StringPointerValue(listItem.AppEntitlement.ProvisionerPolicy.Webhook.WebhookID)
 						}
 					}
 					if listItem.AppEntitlement.Purpose != nil {
@@ -269,7 +269,7 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 					list.AppEntitlement.RevokePolicyID = types.StringPointerValue(listItem.AppEntitlement.RevokePolicyID)
 					list.AppEntitlement.RiskLevelValueID = types.StringPointerValue(listItem.AppEntitlement.RiskLevelValueID)
 					list.AppEntitlement.Slug = types.StringPointerValue(listItem.AppEntitlement.Slug)
-					if len(listItem.AppEntitlement.SourceConnectorIds) > 0 {
+					if listItem.AppEntitlement.SourceConnectorIds != nil {
 						list.AppEntitlement.SourceConnectorIds = make(map[string]types.String, len(listItem.AppEntitlement.SourceConnectorIds))
 						for key, value := range listItem.AppEntitlement.SourceConnectorIds {
 							list.AppEntitlement.SourceConnectorIds[key] = types.StringValue(value)

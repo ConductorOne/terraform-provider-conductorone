@@ -12,7 +12,7 @@ type RequestCatalogManagementServiceAddAccessEntitlementsRequest struct {
 
 func (r *RequestCatalogManagementServiceAddAccessEntitlementsRequest) GetAccessEntitlements() []AppEntitlementRef {
 	if r == nil {
-		return nil
+		return []AppEntitlementRef{}
 	}
 	return r.AccessEntitlements
 }

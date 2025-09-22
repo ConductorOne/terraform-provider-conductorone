@@ -8,12 +8,12 @@ import (
 )
 
 type C1APIDirectoryV1DirectoryServiceGetRequest struct {
-	AppID string `pathParam:"style=simple,explode=false,name=app_id"`
+	AppID *string `pathParam:"style=simple,explode=false,name=app_id"`
 }
 
-func (c *C1APIDirectoryV1DirectoryServiceGetRequest) GetAppID() string {
+func (c *C1APIDirectoryV1DirectoryServiceGetRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }

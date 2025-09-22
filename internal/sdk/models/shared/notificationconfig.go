@@ -4,9 +4,7 @@ package shared
 
 // The NotificationConfig message.
 type NotificationConfig struct {
-	// The EmailNotifications message.
 	EmailNotifications *EmailNotifications `json:"emailNotifications,omitempty"`
-	// The SlackNotifications message.
 	SlackNotifications *SlackNotifications `json:"slackNotifications,omitempty"`
 }
 

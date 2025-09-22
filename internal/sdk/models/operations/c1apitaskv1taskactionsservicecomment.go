@@ -8,13 +8,13 @@ import (
 )
 
 type C1APITaskV1TaskActionsServiceCommentRequest struct {
-	TaskID                           string                                   `pathParam:"style=simple,explode=false,name=task_id"`
+	TaskID                           *string                                  `pathParam:"style=simple,explode=false,name=task_id"`
 	TaskActionsServiceCommentRequest *shared.TaskActionsServiceCommentRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APITaskV1TaskActionsServiceCommentRequest) GetTaskID() string {
+func (c *C1APITaskV1TaskActionsServiceCommentRequest) GetTaskID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.TaskID
 }

@@ -8,29 +8,29 @@ import (
 )
 
 type C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest struct {
-	AppID                                   string                                          `pathParam:"style=simple,explode=false,name=app_id"`
-	AppResourceTypeID                       string                                          `pathParam:"style=simple,explode=false,name=app_resource_type_id"`
-	ID                                      string                                          `pathParam:"style=simple,explode=false,name=id"`
+	AppID                                   *string                                         `pathParam:"style=simple,explode=false,name=app_id"`
+	AppResourceTypeID                       *string                                         `pathParam:"style=simple,explode=false,name=app_resource_type_id"`
+	ID                                      *string                                         `pathParam:"style=simple,explode=false,name=id"`
 	DeleteManuallyManagedAppResourceRequest *shared.DeleteManuallyManagedAppResourceRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest) GetAppID() string {
+func (c *C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest) GetAppResourceTypeID() string {
+func (c *C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest) GetAppResourceTypeID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppResourceTypeID
 }
 
-func (c *C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest) GetID() string {
+func (c *C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

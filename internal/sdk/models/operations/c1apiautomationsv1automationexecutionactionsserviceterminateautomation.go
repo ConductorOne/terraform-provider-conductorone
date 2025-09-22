@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIAutomationsV1AutomationExecutionActionsServiceTerminateAutomationRequest struct {
-	ID                         string                             `pathParam:"style=simple,explode=false,name=id"`
+	ID                         *string                            `pathParam:"style=simple,explode=false,name=id"`
 	TerminateAutomationRequest *shared.TerminateAutomationRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAutomationsV1AutomationExecutionActionsServiceTerminateAutomationRequest) GetID() string {
+func (c *C1APIAutomationsV1AutomationExecutionActionsServiceTerminateAutomationRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

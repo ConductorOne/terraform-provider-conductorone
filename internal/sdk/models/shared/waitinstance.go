@@ -56,24 +56,19 @@ type WaitInstance struct {
 	// The comment to post on first failed check.
 	CommentOnFirstWait *string `json:"commentOnFirstWait,omitempty"`
 	// The comment to post if we timeout.
-	CommentOnTimeout *string `json:"commentOnTimeout,omitempty"`
-	// Used by the policy engine to describe an instantiated condition to wait on.
-	WaitConditionInstance *WaitConditionInstance `json:"condition,omitempty"`
+	CommentOnTimeout *string                `json:"commentOnTimeout,omitempty"`
+	Condition        *WaitConditionInstance `json:"condition,omitempty"`
 	// The name field.
-	Name *string `json:"name,omitempty"`
-	// The SkippedAction object describes the outcome of a policy step that has been skipped.
-	SkippedAction    *SkippedAction `json:"skipped,omitempty"`
+	Name             *string        `json:"name,omitempty"`
+	Skipped          *SkippedAction `json:"skipped,omitempty"`
 	StartedWaitingAt *time.Time     `json:"startedWaitingAt,omitempty"`
 	// The state field.
-	State *WaitInstanceState `json:"state,omitempty"`
-	// The ConditionSucceeded message.
-	ConditionSucceeded *ConditionSucceeded `json:"succeeded,omitempty"`
-	// The ConditionTimedOut message.
-	ConditionTimedOut *ConditionTimedOut `json:"timedOut,omitempty"`
-	Timeout           *time.Time         `json:"timeout,omitempty"`
-	TimeoutDuration   *string            `json:"timeoutDuration,omitempty"`
-	// The WaitUntilTimeInstance message.
-	WaitUntilTimeInstance *WaitUntilTimeInstance `json:"untilTime,omitempty"`
+	State           *WaitInstanceState     `json:"state,omitempty"`
+	Succeeded       *ConditionSucceeded    `json:"succeeded,omitempty"`
+	TimedOut        *ConditionTimedOut     `json:"timedOut,omitempty"`
+	Timeout         *time.Time             `json:"timeout,omitempty"`
+	TimeoutDuration *string                `json:"timeoutDuration,omitempty"`
+	UntilTime       *WaitUntilTimeInstance `json:"untilTime,omitempty"`
 }
 
 func (w WaitInstance) MarshalJSON() ([]byte, error) {
@@ -101,11 +96,11 @@ func (w *WaitInstance) GetCommentOnTimeout() *string {
 	return w.CommentOnTimeout
 }
 
-func (w *WaitInstance) GetWaitConditionInstance() *WaitConditionInstance {
+func (w *WaitInstance) GetCondition() *WaitConditionInstance {
 	if w == nil {
 		return nil
 	}
-	return w.WaitConditionInstance
+	return w.Condition
 }
 
 func (w *WaitInstance) GetName() *string {
@@ -115,11 +110,11 @@ func (w *WaitInstance) GetName() *string {
 	return w.Name
 }
 
-func (w *WaitInstance) GetSkippedAction() *SkippedAction {
+func (w *WaitInstance) GetSkipped() *SkippedAction {
 	if w == nil {
 		return nil
 	}
-	return w.SkippedAction
+	return w.Skipped
 }
 
 func (w *WaitInstance) GetStartedWaitingAt() *time.Time {
@@ -136,18 +131,18 @@ func (w *WaitInstance) GetState() *WaitInstanceState {
 	return w.State
 }
 
-func (w *WaitInstance) GetConditionSucceeded() *ConditionSucceeded {
+func (w *WaitInstance) GetSucceeded() *ConditionSucceeded {
 	if w == nil {
 		return nil
 	}
-	return w.ConditionSucceeded
+	return w.Succeeded
 }
 
-func (w *WaitInstance) GetConditionTimedOut() *ConditionTimedOut {
+func (w *WaitInstance) GetTimedOut() *ConditionTimedOut {
 	if w == nil {
 		return nil
 	}
-	return w.ConditionTimedOut
+	return w.TimedOut
 }
 
 func (w *WaitInstance) GetTimeout() *time.Time {
@@ -164,9 +159,9 @@ func (w *WaitInstance) GetTimeoutDuration() *string {
 	return w.TimeoutDuration
 }
 
-func (w *WaitInstance) GetWaitUntilTimeInstance() *WaitUntilTimeInstance {
+func (w *WaitInstance) GetUntilTime() *WaitUntilTimeInstance {
 	if w == nil {
 		return nil
 	}
-	return w.WaitUntilTimeInstance
+	return w.UntilTime
 }

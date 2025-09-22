@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest struct {
-	ID                                           string                                               `pathParam:"style=simple,explode=false,name=id"`
+	ID                                           *string                                              `pathParam:"style=simple,explode=false,name=id"`
 	RequestCatalogManagementServiceDeleteRequest *shared.RequestCatalogManagementServiceDeleteRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest) GetID() string {
+func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

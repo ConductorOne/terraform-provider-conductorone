@@ -10,15 +10,19 @@ import (
 // PersonalClientInput - The PersonalClient message contains information about a presonal client credential.
 type PersonalClientInput struct {
 	// If set, only allows the CIDRs in the array to use the credential.
-	AllowSourceCidr []string `json:"allowSourceCidr,omitempty"`
+	AllowSourceCidr []string   `json:"allowSourceCidr,omitempty"`
+	CreatedAt       *time.Time `json:"createdAt,omitempty"`
+	DeletedAt       *time.Time `json:"deletedAt,omitempty"`
 	// The display name of the personal client credential.
 	DisplayName *string    `json:"displayName,omitempty"`
 	ExpiresTime *time.Time `json:"expiresTime,omitempty"`
+	LastUsedAt  *time.Time `json:"lastUsedAt,omitempty"`
 	// scoped_roles provides a list of IAM Roles
 	//  that this OAuth2 Client's API permissions
 	//  are reduced to. The permissions granted to OAuth2 Client
 	//  are AND'ed against the owning User's own permissions.
-	ScopedRoles []string `json:"scopedRoles,omitempty"`
+	ScopedRoles []string   `json:"scopedRoles,omitempty"`
+	UpdatedAt   *time.Time `json:"updatedAt,omitempty"`
 }
 
 func (p PersonalClientInput) MarshalJSON() ([]byte, error) {
@@ -39,6 +43,20 @@ func (p *PersonalClientInput) GetAllowSourceCidr() []string {
 	return p.AllowSourceCidr
 }
 
+func (p *PersonalClientInput) GetCreatedAt() *time.Time {
+	if p == nil {
+		return nil
+	}
+	return p.CreatedAt
+}
+
+func (p *PersonalClientInput) GetDeletedAt() *time.Time {
+	if p == nil {
+		return nil
+	}
+	return p.DeletedAt
+}
+
 func (p *PersonalClientInput) GetDisplayName() *string {
 	if p == nil {
 		return nil
@@ -53,9 +71,23 @@ func (p *PersonalClientInput) GetExpiresTime() *time.Time {
 	return p.ExpiresTime
 }
 
+func (p *PersonalClientInput) GetLastUsedAt() *time.Time {
+	if p == nil {
+		return nil
+	}
+	return p.LastUsedAt
+}
+
 func (p *PersonalClientInput) GetScopedRoles() []string {
 	if p == nil {
 		return nil
 	}
 	return p.ScopedRoles
+}
+
+func (p *PersonalClientInput) GetUpdatedAt() *time.Time {
+	if p == nil {
+		return nil
+	}
+	return p.UpdatedAt
 }

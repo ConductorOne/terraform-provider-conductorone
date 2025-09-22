@@ -8,20 +8,20 @@ import (
 )
 
 type C1APIFunctionsV1FunctionsServiceGetCommitRequest struct {
-	FunctionID string `pathParam:"style=simple,explode=false,name=function_id"`
-	ID         string `pathParam:"style=simple,explode=false,name=id"`
+	FunctionID *string `pathParam:"style=simple,explode=false,name=function_id"`
+	ID         *string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (c *C1APIFunctionsV1FunctionsServiceGetCommitRequest) GetFunctionID() string {
+func (c *C1APIFunctionsV1FunctionsServiceGetCommitRequest) GetFunctionID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.FunctionID
 }
 
-func (c *C1APIFunctionsV1FunctionsServiceGetCommitRequest) GetID() string {
+func (c *C1APIFunctionsV1FunctionsServiceGetCommitRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

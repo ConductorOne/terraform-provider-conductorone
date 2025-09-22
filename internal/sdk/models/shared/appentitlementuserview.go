@@ -9,10 +9,9 @@ import (
 
 // The AppEntitlementUserView (aka grant view) describes the relationship between an app user and an entitlement. They have more recently been referred to as grants.
 type AppEntitlementUserView struct {
-	AppEntitlementUserBindingCreatedAt     *time.Time `json:"appEntitlementUserBindingCreatedAt,omitempty"`
-	AppEntitlementUserBindingDeprovisionAt *time.Time `json:"appEntitlementUserBindingDeprovisionAt,omitempty"`
-	// The AppUserView contains an app user as well as paths for apps, identity users, and last usage in expanded arrays.
-	AppUserView *AppUserView `json:"appUser,omitempty"`
+	AppEntitlementUserBindingCreatedAt     *time.Time   `json:"appEntitlementUserBindingCreatedAt,omitempty"`
+	AppEntitlementUserBindingDeprovisionAt *time.Time   `json:"appEntitlementUserBindingDeprovisionAt,omitempty"`
+	AppUser                                *AppUserView `json:"appUser,omitempty"`
 	// List of sources for the grant, ie. groups, roles, etc.
 	GrantSources []AppEntitlementRef `json:"grantSources,omitempty"`
 }
@@ -42,11 +41,11 @@ func (a *AppEntitlementUserView) GetAppEntitlementUserBindingDeprovisionAt() *ti
 	return a.AppEntitlementUserBindingDeprovisionAt
 }
 
-func (a *AppEntitlementUserView) GetAppUserView() *AppUserView {
+func (a *AppEntitlementUserView) GetAppUser() *AppUserView {
 	if a == nil {
 		return nil
 	}
-	return a.AppUserView
+	return a.AppUser
 }
 
 func (a *AppEntitlementUserView) GetGrantSources() []AppEntitlementRef {

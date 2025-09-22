@@ -4,7 +4,8 @@ package shared
 
 // The TaskActionsServiceUpdateGrantDurationRequest message.
 type TaskActionsServiceUpdateGrantDurationRequest struct {
-	Duration string `json:"duration"`
+	Duration   string          `json:"duration"`
+	ExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 }
 
 func (t *TaskActionsServiceUpdateGrantDurationRequest) GetDuration() string {
@@ -12,4 +13,11 @@ func (t *TaskActionsServiceUpdateGrantDurationRequest) GetDuration() string {
 		return ""
 	}
 	return t.Duration
+}
+
+func (t *TaskActionsServiceUpdateGrantDurationRequest) GetExpandMask() *TaskExpandMask {
+	if t == nil {
+		return nil
+	}
+	return t.ExpandMask
 }

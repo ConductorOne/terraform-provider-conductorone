@@ -44,7 +44,7 @@ func (r *AppOwnerResource) Schema(ctx context.Context, req resource.SchemaReques
 		MarkdownDescription: "AppOwner Resource",
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},

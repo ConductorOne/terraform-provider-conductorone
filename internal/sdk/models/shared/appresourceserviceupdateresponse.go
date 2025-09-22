@@ -8,7 +8,6 @@ type AppResourceServiceUpdateResponseExpanded struct {
 
 // The AppResourceServiceUpdateResponse message.
 type AppResourceServiceUpdateResponse struct {
-	// The app resource view returns an app resource with paths for items in the expand mask filled in when this response is returned and a request expand mask has "*" or "app_id" or "resource_type_id".
 	AppResourceView *AppResourceView `json:"appResourceView,omitempty"`
 	// The expanded field.
 	Expanded []AppResourceServiceUpdateResponseExpanded `json:"expanded,omitempty"`

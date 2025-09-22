@@ -2,48 +2,11 @@
 
 package shared
 
-import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
-)
-
-// ConnectorServiceCreateRequestConfig - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-type ConnectorServiceCreateRequestConfig struct {
-	// The type of the serialized message.
-	AtType               *string `json:"@type,omitempty"`
-	AdditionalProperties any     `additionalProperties:"true" json:"-"`
-}
-
-func (c ConnectorServiceCreateRequestConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *ConnectorServiceCreateRequestConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *ConnectorServiceCreateRequestConfig) GetAtType() *string {
-	if c == nil {
-		return nil
-	}
-	return c.AtType
-}
-
-func (c *ConnectorServiceCreateRequestConfig) GetAdditionalProperties() any {
-	if c == nil {
-		return nil
-	}
-	return c.AdditionalProperties
-}
-
 // The ConnectorServiceCreateRequest message.
 type ConnectorServiceCreateRequest struct {
 	// The catalogId field.
-	CatalogID *string `json:"catalogId,omitempty"`
-	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-	Config *ConnectorServiceCreateRequestConfig `json:"config,omitempty"`
+	CatalogID *string        `json:"catalogId,omitempty"`
+	Config    map[string]any `json:"config,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The userIds field.
@@ -57,7 +20,7 @@ func (c *ConnectorServiceCreateRequest) GetCatalogID() *string {
 	return c.CatalogID
 }
 
-func (c *ConnectorServiceCreateRequest) GetConfig() *ConnectorServiceCreateRequestConfig {
+func (c *ConnectorServiceCreateRequest) GetConfig() map[string]any {
 	if c == nil {
 		return nil
 	}

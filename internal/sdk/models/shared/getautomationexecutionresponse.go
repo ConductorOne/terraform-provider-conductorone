@@ -4,7 +4,6 @@ package shared
 
 // The GetAutomationExecutionResponse message.
 type GetAutomationExecutionResponse struct {
-	// The AutomationExecution message.
 	AutomationExecution *AutomationExecution `json:"automationExecution,omitempty"`
 }
 

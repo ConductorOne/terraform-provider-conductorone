@@ -8,19 +8,17 @@ package shared
 //   - all
 //   - celExpression
 type DirectoryServiceCreateRequest struct {
-	// The DirectoryAccountFilterAll message.
-	DirectoryAccountFilterAll *DirectoryAccountFilterAll `json:"all,omitempty"`
+	All *DirectoryAccountFilterAll `json:"all,omitempty"`
 	// The AppID to make into a directory, providing identities and more for the C1 app.
-	AppID *string `json:"appId,omitempty"`
-	// The DirectoryAccountFilterCel message.
-	DirectoryAccountFilterCel *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
+	AppID         *string                    `json:"appId,omitempty"`
+	CelExpression *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
 }
 
-func (d *DirectoryServiceCreateRequest) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
+func (d *DirectoryServiceCreateRequest) GetAll() *DirectoryAccountFilterAll {
 	if d == nil {
 		return nil
 	}
-	return d.DirectoryAccountFilterAll
+	return d.All
 }
 
 func (d *DirectoryServiceCreateRequest) GetAppID() *string {
@@ -30,9 +28,9 @@ func (d *DirectoryServiceCreateRequest) GetAppID() *string {
 	return d.AppID
 }
 
-func (d *DirectoryServiceCreateRequest) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
+func (d *DirectoryServiceCreateRequest) GetCelExpression() *DirectoryAccountFilterCel {
 	if d == nil {
 		return nil
 	}
-	return d.DirectoryAccountFilterCel
+	return d.CelExpression
 }

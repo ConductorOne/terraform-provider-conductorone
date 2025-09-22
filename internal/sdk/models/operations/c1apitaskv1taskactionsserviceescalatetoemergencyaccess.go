@@ -8,13 +8,13 @@ import (
 )
 
 type C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessRequest struct {
-	TaskID                                             string                                                     `pathParam:"style=simple,explode=false,name=task_id"`
+	TaskID                                             *string                                                    `pathParam:"style=simple,explode=false,name=task_id"`
 	TaskActionsServiceEscalateToEmergencyAccessRequest *shared.TaskActionsServiceEscalateToEmergencyAccessRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessRequest) GetTaskID() string {
+func (c *C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessRequest) GetTaskID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.TaskID
 }

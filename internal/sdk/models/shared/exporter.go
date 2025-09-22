@@ -47,10 +47,9 @@ func (e *ExporterState) UnmarshalJSON(data []byte) error {
 // This message contains a oneof named export_to. Only a single field of the following list may be set at a time:
 //   - datasource
 type Exporter struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	// The ExportToDatasource message.
-	ExportToDatasource *ExportToDatasource `json:"datasource,omitempty"`
-	DeletedAt          *time.Time          `json:"deletedAt,omitempty"`
+	CreatedAt  *time.Time          `json:"createdAt,omitempty"`
+	Datasource *ExportToDatasource `json:"datasource,omitempty"`
+	DeletedAt  *time.Time          `json:"deletedAt,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The exportId field.
@@ -80,11 +79,11 @@ func (e *Exporter) GetCreatedAt() *time.Time {
 	return e.CreatedAt
 }
 
-func (e *Exporter) GetExportToDatasource() *ExportToDatasource {
+func (e *Exporter) GetDatasource() *ExportToDatasource {
 	if e == nil {
 		return nil
 	}
-	return e.ExportToDatasource
+	return e.Datasource
 }
 
 func (e *Exporter) GetDeletedAt() *time.Time {

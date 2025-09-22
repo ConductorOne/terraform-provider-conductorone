@@ -30,7 +30,7 @@ type AppEntitlement struct {
 	IsManuallyManaged              types.Bool                   `tfsdk:"is_manually_managed"`
 	MatchBatonID                   types.String                 `tfsdk:"match_baton_id"`
 	OverrideAccessRequestsDefaults types.Bool                   `tfsdk:"override_access_requests_defaults"`
-	ProvisionPolicy                *ProvisionPolicy             `tfsdk:"provision_policy" tfPlanOnly:"true"`
+	ProvisionerPolicy              *ProvisionPolicy             `tfsdk:"provisioner_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                 `tfsdk:"purpose"`
 	RequestSchemaID                types.String                 `tfsdk:"request_schema_id"`
 	RevokePolicyID                 types.String                 `tfsdk:"revoke_policy_id"`

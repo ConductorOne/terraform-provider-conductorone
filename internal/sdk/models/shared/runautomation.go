@@ -11,11 +11,9 @@ type RunAutomation struct {
 	// The automationTemplateIdCel field.
 	// This field is part of the `automation_template` oneof.
 	// See the documentation for `c1.api.automations.v1.RunAutomation` for more details.
-	AutomationTemplateIDCel *string `json:"automationTemplateIdCel,omitempty"`
-	// The AutomationTemplateRef message.
-	AutomationTemplateRef *AutomationTemplateRef `json:"automationTemplateRef,omitempty"`
-	// The AutomationContext message.
-	AutomationContext *AutomationContext `json:"context,omitempty"`
+	AutomationTemplateIDCel *string                `json:"automationTemplateIdCel,omitempty"`
+	AutomationTemplateRef   *AutomationTemplateRef `json:"automationTemplateRef,omitempty"`
+	Context                 *AutomationContext     `json:"context,omitempty"`
 }
 
 func (r *RunAutomation) GetAutomationTemplateIDCel() *string {
@@ -32,9 +30,9 @@ func (r *RunAutomation) GetAutomationTemplateRef() *AutomationTemplateRef {
 	return r.AutomationTemplateRef
 }
 
-func (r *RunAutomation) GetAutomationContext() *AutomationContext {
+func (r *RunAutomation) GetContext() *AutomationContext {
 	if r == nil {
 		return nil
 	}
-	return r.AutomationContext
+	return r.Context
 }

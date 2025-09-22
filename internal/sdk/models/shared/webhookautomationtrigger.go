@@ -8,26 +8,24 @@ package shared
 //   - jwt
 //   - hmac
 type WebhookAutomationTrigger struct {
-	// The WebhookListenerAuthHMAC message.
-	WebhookListenerAuthHMAC *WebhookListenerAuthHMAC `json:"hmac,omitempty"`
-	// The WebhookListenerAuthJWT message.
-	WebhookListenerAuthJWT *WebhookListenerAuthJWT `json:"jwt,omitempty"`
+	Hmac *WebhookListenerAuthHMAC `json:"hmac,omitempty"`
+	Jwt  *WebhookListenerAuthJWT  `json:"jwt,omitempty"`
 	// Optional existing listener ID (hidden field from frontend)
 	ListenerID *string `json:"listenerId,omitempty"`
 }
 
-func (w *WebhookAutomationTrigger) GetWebhookListenerAuthHMAC() *WebhookListenerAuthHMAC {
+func (w *WebhookAutomationTrigger) GetHmac() *WebhookListenerAuthHMAC {
 	if w == nil {
 		return nil
 	}
-	return w.WebhookListenerAuthHMAC
+	return w.Hmac
 }
 
-func (w *WebhookAutomationTrigger) GetWebhookListenerAuthJWT() *WebhookListenerAuthJWT {
+func (w *WebhookAutomationTrigger) GetJwt() *WebhookListenerAuthJWT {
 	if w == nil {
 		return nil
 	}
-	return w.WebhookListenerAuthJWT
+	return w.Jwt
 }
 
 func (w *WebhookAutomationTrigger) GetListenerID() *string {

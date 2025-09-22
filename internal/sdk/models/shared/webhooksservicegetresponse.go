@@ -4,7 +4,6 @@ package shared
 
 // The WebhooksServiceGetResponse message.
 type WebhooksServiceGetResponse struct {
-	// The Webhook message.
 	Webhook *Webhook1 `json:"webhook,omitempty"`
 }
 

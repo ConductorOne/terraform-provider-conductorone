@@ -9,6 +9,7 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
 func (r *AppResourceTypeResourceModel) RefreshFromSharedAppResourceType(ctx context.Context, resp *shared.AppResourceType) diag.Diagnostics {
@@ -35,9 +36,12 @@ func (r *AppResourceTypeResourceModel) RefreshFromSharedAppResourceType(ctx cont
 func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
 	createManuallyManagedResourceTypeRequest, createManuallyManagedResourceTypeRequestDiags := r.ToSharedCreateManuallyManagedResourceTypeRequest(ctx)
 	diags.Append(createManuallyManagedResourceTypeRequestDiags...)
 
@@ -56,12 +60,18 @@ func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServ
 func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest{
 		AppID: appID,
 		ID:    id,
@@ -73,12 +83,18 @@ func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServ
 func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServiceGetRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceTypeServiceGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	out := operations.C1APIAppV1AppResourceTypeServiceGetRequest{
 		AppID: appID,
 		ID:    id,
@@ -90,12 +106,18 @@ func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServ
 func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var id string
-	id = r.ID.ValueString()
-
+	appID := new(string)
+	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
+		*appID = r.AppID.ValueString()
+	} else {
+		appID = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	updateManuallyManagedResourceTypeRequest, updateManuallyManagedResourceTypeRequestDiags := r.ToSharedUpdateManuallyManagedResourceTypeRequest(ctx)
 	diags.Append(updateManuallyManagedResourceTypeRequestDiags...)
 
@@ -115,6 +137,18 @@ func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServ
 func (r *AppResourceTypeResourceModel) ToSharedAppResourceTypeInput(ctx context.Context) (*shared.AppResourceTypeInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	createdAt := new(time.Time)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt, _ = time.Parse(time.RFC3339Nano, r.CreatedAt.ValueString())
+	} else {
+		createdAt = nil
+	}
+	deletedAt := new(time.Time)
+	if !r.DeletedAt.IsUnknown() && !r.DeletedAt.IsNull() {
+		*deletedAt, _ = time.Parse(time.RFC3339Nano, r.DeletedAt.ValueString())
+	} else {
+		deletedAt = nil
+	}
 	displayName := new(string)
 	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
 		*displayName = r.DisplayName.ValueString()
@@ -128,9 +162,18 @@ func (r *AppResourceTypeResourceModel) ToSharedAppResourceTypeInput(ctx context.
 			traitIds = append(traitIds, traitIdsItem.ValueString())
 		}
 	}
+	updatedAt := new(time.Time)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt, _ = time.Parse(time.RFC3339Nano, r.UpdatedAt.ValueString())
+	} else {
+		updatedAt = nil
+	}
 	out := shared.AppResourceTypeInput{
+		CreatedAt:   createdAt,
+		DeletedAt:   deletedAt,
 		DisplayName: displayName,
 		TraitIds:    traitIds,
+		UpdatedAt:   updatedAt,
 	}
 
 	return &out, diags

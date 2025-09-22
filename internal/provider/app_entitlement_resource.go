@@ -433,14 +433,14 @@ func (r *AppEntitlementResource) Create(ctx context.Context, req resource.Create
 	appEntitlement := data.ToUpdateSDKType()
 
 	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
-		AppEntitlement: appEntitlement,
+		Entitlement: appEntitlement,
 	}
 	appID := data.AppID.ValueString()
 	id := data.ID.ValueString()
 	request := operations.C1APIAppV1AppEntitlementsUpdateRequest{
 		UpdateAppEntitlementRequest: updateAppEntitlementRequest,
-		AppID:                       appID,
-		ID:                          id,
+		AppID:                       &appID,
+		ID:                          &id,
 	}
 
 	res, err := r.client.AppEntitlements.Update(ctx, request)
@@ -487,8 +487,8 @@ func (r *AppEntitlementResource) Read(ctx context.Context, req resource.ReadRequ
 	appID := data.AppID.ValueString()
 	id := data.ID.ValueString()
 	request := operations.C1APIAppV1AppEntitlementsGetRequest{
-		AppID: appID,
-		ID:    id,
+		AppID: &appID,
+		ID:    &id,
 	}
 	res, err := r.client.AppEntitlements.Get(ctx, request)
 	if err != nil {
@@ -548,14 +548,14 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		overrideAccessRequestsDefaults = nil
 	}
 	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
-		AppEntitlement:                 appEntitlement,
+		Entitlement:                 appEntitlement,
 		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
 	}
 
 	request := operations.C1APIAppV1AppEntitlementsUpdateRequest{
 		UpdateAppEntitlementRequest: updateAppEntitlementRequest,
-		AppID:                       appID,
-		ID:                          id,
+		AppID:                       &appID,
+		ID:                          &id,
 	}
 
 	res, err := r.client.AppEntitlements.Update(ctx, request)

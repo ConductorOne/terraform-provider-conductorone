@@ -63,7 +63,8 @@ func (r *AppEntitlementProxyBindingResource) Schema(ctx context.Context, req res
 				},
 			},
 			"dst_app_entitlement_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
@@ -71,7 +72,8 @@ func (r *AppEntitlementProxyBindingResource) Schema(ctx context.Context, req res
 				Description: `Requires replacement if changed.`,
 			},
 			"dst_app_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
@@ -86,7 +88,8 @@ func (r *AppEntitlementProxyBindingResource) Schema(ctx context.Context, req res
 				Description: `The expanded field.`,
 			},
 			"src_app_entitlement_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
@@ -94,7 +97,8 @@ func (r *AppEntitlementProxyBindingResource) Schema(ctx context.Context, req res
 				Description: `Requires replacement if changed.`,
 			},
 			"src_app_id": schema.StringAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
@@ -175,11 +179,11 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateAppEntitlementProxyResponse != nil && res.CreateAppEntitlementProxyResponse.AppEntitlementProxyView != nil && res.CreateAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy != nil) {
+	if !(res.CreateAppEntitlementProxyResponse != nil && res.CreateAppEntitlementProxyResponse.AppProxyEntitlementView != nil && res.CreateAppEntitlementProxyResponse.AppProxyEntitlementView.AppProxyEntitlement != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.CreateAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.CreateAppEntitlementProxyResponse.AppProxyEntitlementView.AppProxyEntitlement)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -212,11 +216,11 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.GetAppEntitlementProxyResponse != nil && res1.GetAppEntitlementProxyResponse.AppEntitlementProxyView != nil && res1.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy != nil) {
+	if !(res1.GetAppEntitlementProxyResponse != nil && res1.GetAppEntitlementProxyResponse.AppProxyEntitlementView != nil && res1.GetAppEntitlementProxyResponse.AppProxyEntitlementView.AppProxyEntitlement != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res1.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res1.GetAppEntitlementProxyResponse.AppProxyEntitlementView.AppProxyEntitlement)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -276,11 +280,11 @@ func (r *AppEntitlementProxyBindingResource) Read(ctx context.Context, req resou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetAppEntitlementProxyResponse != nil && res.GetAppEntitlementProxyResponse.AppEntitlementProxyView != nil && res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy != nil) {
+	if !(res.GetAppEntitlementProxyResponse != nil && res.GetAppEntitlementProxyResponse.AppProxyEntitlementView != nil && res.GetAppEntitlementProxyResponse.AppProxyEntitlementView.AppProxyEntitlement != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.GetAppEntitlementProxyResponse.AppProxyEntitlementView.AppProxyEntitlement)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -362,10 +366,10 @@ func (r *AppEntitlementProxyBindingResource) ImportState(ctx context.Context, re
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		DstAppEntitlementID string `json:"dst_app_entitlement_id"`
-		DstAppID            string `json:"dst_app_id"`
-		SrcAppEntitlementID string `json:"src_app_entitlement_id"`
-		SrcAppID            string `json:"src_app_id"`
+		DstAppEntitlementID *string `json:"dst_app_entitlement_id"`
+		DstAppID            *string `json:"dst_app_id"`
+		SrcAppEntitlementID *string `json:"src_app_entitlement_id"`
+		SrcAppID            *string `json:"src_app_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -373,22 +377,22 @@ func (r *AppEntitlementProxyBindingResource) ImportState(ctx context.Context, re
 		return
 	}
 
-	if len(data.DstAppEntitlementID) == 0 {
+	if data.DstAppEntitlementID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field dst_app_entitlement_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("dst_app_entitlement_id"), data.DstAppEntitlementID)...)
-	if len(data.DstAppID) == 0 {
+	if data.DstAppID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field dst_app_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("dst_app_id"), data.DstAppID)...)
-	if len(data.SrcAppEntitlementID) == 0 {
+	if data.SrcAppEntitlementID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field src_app_entitlement_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("src_app_entitlement_id"), data.SrcAppEntitlementID)...)
-	if len(data.SrcAppID) == 0 {
+	if data.SrcAppID == nil {
 		resp.Diagnostics.AddError("Missing required field", `The field src_app_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}

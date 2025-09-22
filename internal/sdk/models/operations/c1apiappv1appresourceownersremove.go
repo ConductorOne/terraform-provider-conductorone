@@ -8,29 +8,29 @@ import (
 )
 
 type C1APIAppV1AppResourceOwnersRemoveRequest struct {
-	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
-	ResourceTypeID                string                                `pathParam:"style=simple,explode=false,name=resource_type_id"`
-	ResourceID                    string                                `pathParam:"style=simple,explode=false,name=resource_id"`
+	AppID                         *string                               `pathParam:"style=simple,explode=false,name=app_id"`
+	ResourceTypeID                *string                               `pathParam:"style=simple,explode=false,name=resource_type_id"`
+	ResourceID                    *string                               `pathParam:"style=simple,explode=false,name=resource_id"`
 	RemoveAppResourceOwnerRequest *shared.RemoveAppResourceOwnerRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetAppID() string {
+func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }
 
-func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetResourceTypeID() string {
+func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetResourceTypeID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ResourceTypeID
 }
 
-func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetResourceID() string {
+func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetResourceID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ResourceID
 }

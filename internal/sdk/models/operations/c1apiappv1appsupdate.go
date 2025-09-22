@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIAppV1AppsUpdateRequest struct {
-	ID               string                   `pathParam:"style=simple,explode=false,name=id"`
+	ID               *string                  `pathParam:"style=simple,explode=false,name=id"`
 	UpdateAppRequest *shared.UpdateAppRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppsUpdateRequest) GetID() string {
+func (c *C1APIAppV1AppsUpdateRequest) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

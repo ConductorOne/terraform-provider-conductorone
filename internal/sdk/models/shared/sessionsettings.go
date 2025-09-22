@@ -4,24 +4,19 @@ package shared
 
 // The SessionSettings message.
 type SessionSettings struct {
-	// The CIDRRestriction message.
-	CIDRRestriction  *CIDRRestriction `json:"connectorSource,omitempty"`
+	ConnectorSource  *CIDRRestriction `json:"connectorSource,omitempty"`
 	MaxSessionLength *string          `json:"maxSessionLength,omitempty"`
-	// The CIDRRestriction message.
-	CIDRRestriction1 *CIDRRestriction `json:"pccAdminSource,omitempty"`
-	// The CIDRRestriction message.
-	CIDRRestriction2 *CIDRRestriction `json:"pccUserSource,omitempty"`
-	// The CIDRRestriction message.
-	CIDRRestriction3 *CIDRRestriction `json:"ssoAdminSource,omitempty"`
-	// The CIDRRestriction message.
-	CIDRRestriction4 *CIDRRestriction `json:"ssoUserSource,omitempty"`
+	PccAdminSource   *CIDRRestriction `json:"pccAdminSource,omitempty"`
+	PccUserSource    *CIDRRestriction `json:"pccUserSource,omitempty"`
+	SsoAdminSource   *CIDRRestriction `json:"ssoAdminSource,omitempty"`
+	SsoUserSource    *CIDRRestriction `json:"ssoUserSource,omitempty"`
 }
 
-func (s *SessionSettings) GetCIDRRestriction() *CIDRRestriction {
+func (s *SessionSettings) GetConnectorSource() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
-	return s.CIDRRestriction
+	return s.ConnectorSource
 }
 
 func (s *SessionSettings) GetMaxSessionLength() *string {
@@ -31,30 +26,30 @@ func (s *SessionSettings) GetMaxSessionLength() *string {
 	return s.MaxSessionLength
 }
 
-func (s *SessionSettings) GetCIDRRestriction1() *CIDRRestriction {
+func (s *SessionSettings) GetPccAdminSource() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
-	return s.CIDRRestriction1
+	return s.PccAdminSource
 }
 
-func (s *SessionSettings) GetCIDRRestriction2() *CIDRRestriction {
+func (s *SessionSettings) GetPccUserSource() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
-	return s.CIDRRestriction2
+	return s.PccUserSource
 }
 
-func (s *SessionSettings) GetCIDRRestriction3() *CIDRRestriction {
+func (s *SessionSettings) GetSsoAdminSource() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
-	return s.CIDRRestriction3
+	return s.SsoAdminSource
 }
 
-func (s *SessionSettings) GetCIDRRestriction4() *CIDRRestriction {
+func (s *SessionSettings) GetSsoUserSource() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
-	return s.CIDRRestriction4
+	return s.SsoUserSource
 }

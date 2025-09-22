@@ -31,18 +31,30 @@ func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedAppEntitlemen
 func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyCreateRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyCreateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var srcAppID string
-	srcAppID = r.SrcAppID.ValueString()
-
-	var srcAppEntitlementID string
-	srcAppEntitlementID = r.SrcAppEntitlementID.ValueString()
-
-	var dstAppID string
-	dstAppID = r.DstAppID.ValueString()
-
-	var dstAppEntitlementID string
-	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
-
+	srcAppID := new(string)
+	if !r.SrcAppID.IsUnknown() && !r.SrcAppID.IsNull() {
+		*srcAppID = r.SrcAppID.ValueString()
+	} else {
+		srcAppID = nil
+	}
+	srcAppEntitlementID := new(string)
+	if !r.SrcAppEntitlementID.IsUnknown() && !r.SrcAppEntitlementID.IsNull() {
+		*srcAppEntitlementID = r.SrcAppEntitlementID.ValueString()
+	} else {
+		srcAppEntitlementID = nil
+	}
+	dstAppID := new(string)
+	if !r.DstAppID.IsUnknown() && !r.DstAppID.IsNull() {
+		*dstAppID = r.DstAppID.ValueString()
+	} else {
+		dstAppID = nil
+	}
+	dstAppEntitlementID := new(string)
+	if !r.DstAppEntitlementID.IsUnknown() && !r.DstAppEntitlementID.IsNull() {
+		*dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
+	} else {
+		dstAppEntitlementID = nil
+	}
 	out := operations.C1APIAppV1AppEntitlementsProxyCreateRequest{
 		SrcAppID:            srcAppID,
 		SrcAppEntitlementID: srcAppEntitlementID,
@@ -56,18 +68,30 @@ func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntit
 func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyDeleteRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyDeleteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var srcAppID string
-	srcAppID = r.SrcAppID.ValueString()
-
-	var srcAppEntitlementID string
-	srcAppEntitlementID = r.SrcAppEntitlementID.ValueString()
-
-	var dstAppID string
-	dstAppID = r.DstAppID.ValueString()
-
-	var dstAppEntitlementID string
-	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
-
+	srcAppID := new(string)
+	if !r.SrcAppID.IsUnknown() && !r.SrcAppID.IsNull() {
+		*srcAppID = r.SrcAppID.ValueString()
+	} else {
+		srcAppID = nil
+	}
+	srcAppEntitlementID := new(string)
+	if !r.SrcAppEntitlementID.IsUnknown() && !r.SrcAppEntitlementID.IsNull() {
+		*srcAppEntitlementID = r.SrcAppEntitlementID.ValueString()
+	} else {
+		srcAppEntitlementID = nil
+	}
+	dstAppID := new(string)
+	if !r.DstAppID.IsUnknown() && !r.DstAppID.IsNull() {
+		*dstAppID = r.DstAppID.ValueString()
+	} else {
+		dstAppID = nil
+	}
+	dstAppEntitlementID := new(string)
+	if !r.DstAppEntitlementID.IsUnknown() && !r.DstAppEntitlementID.IsNull() {
+		*dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
+	} else {
+		dstAppEntitlementID = nil
+	}
 	out := operations.C1APIAppV1AppEntitlementsProxyDeleteRequest{
 		SrcAppID:            srcAppID,
 		SrcAppEntitlementID: srcAppEntitlementID,
@@ -81,18 +105,30 @@ func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntit
 func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var srcAppID string
-	srcAppID = r.SrcAppID.ValueString()
-
-	var srcAppEntitlementID string
-	srcAppEntitlementID = r.SrcAppEntitlementID.ValueString()
-
-	var dstAppID string
-	dstAppID = r.DstAppID.ValueString()
-
-	var dstAppEntitlementID string
-	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
-
+	srcAppID := new(string)
+	if !r.SrcAppID.IsUnknown() && !r.SrcAppID.IsNull() {
+		*srcAppID = r.SrcAppID.ValueString()
+	} else {
+		srcAppID = nil
+	}
+	srcAppEntitlementID := new(string)
+	if !r.SrcAppEntitlementID.IsUnknown() && !r.SrcAppEntitlementID.IsNull() {
+		*srcAppEntitlementID = r.SrcAppEntitlementID.ValueString()
+	} else {
+		srcAppEntitlementID = nil
+	}
+	dstAppID := new(string)
+	if !r.DstAppID.IsUnknown() && !r.DstAppID.IsNull() {
+		*dstAppID = r.DstAppID.ValueString()
+	} else {
+		dstAppID = nil
+	}
+	dstAppEntitlementID := new(string)
+	if !r.DstAppEntitlementID.IsUnknown() && !r.DstAppEntitlementID.IsNull() {
+		*dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
+	} else {
+		dstAppEntitlementID = nil
+	}
 	out := operations.C1APIAppV1AppEntitlementsProxyGetRequest{
 		SrcAppID:            srcAppID,
 		SrcAppEntitlementID: srcAppEntitlementID,

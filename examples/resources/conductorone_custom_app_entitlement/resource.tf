@@ -19,8 +19,8 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
   match_baton_id                    = "...my_match_baton_id..."
   override_access_requests_defaults = true
   provision_policy = {
-    connector_provision = {
-      account_provision = {
+    connector = {
+      account = {
         config = {
           # ...
         }
@@ -42,27 +42,27 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
         connector_id = "...my_connector_id..."
       }
     }
-    delegated_provision = {
+    delegated = {
       app_id         = "...my_app_id..."
       entitlement_id = "...my_entitlement_id..."
     }
-    external_ticket_provision = {
+    external_ticket = {
       app_id                                = "...my_app_id..."
       connector_id                          = "...my_connector_id..."
       external_ticket_provisioner_config_id = "...my_external_ticket_provisioner_config_id..."
       instructions                          = "...my_instructions..."
     }
-    manual_provision = {
+    manual = {
       instructions = "...my_instructions..."
       user_ids = [
         "..."
       ]
     }
     multi_step = "{ \"see\": \"documentation\" }"
-    unconfigured_provision = {
+    unconfigured = {
       # ...
     }
-    webhook_provision = {
+    webhook = {
       webhook_id = "...my_webhook_id..."
     }
   }

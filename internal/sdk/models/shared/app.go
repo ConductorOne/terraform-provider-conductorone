@@ -280,13 +280,16 @@ type AppInput struct {
 	// The ID of the Certify Policy associated with this App.
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
 	// The connectorVersion field.
-	ConnectorVersion *int64 `json:"connectorVersion,omitempty"`
+	ConnectorVersion *int64     `json:"connectorVersion,omitempty"`
+	CreatedAt        *time.Time `json:"createdAt,omitempty"`
 	// The ID for the default request catalog for this app.
-	DefaultRequestCatalogID *string `json:"defaultRequestCatalogId,omitempty"`
+	DefaultRequestCatalogID *string    `json:"defaultRequestCatalogId,omitempty"`
+	DeletedAt               *time.Time `json:"deletedAt,omitempty"`
 	// The app's description.
 	Description *string `json:"description,omitempty"`
 	// The app's display name.
 	DisplayName *string `json:"displayName,omitempty"`
+	FieldMask   *string `json:"fieldMask,omitempty"`
 	// The ID of the Grant Policy associated with this App.
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// The URL of an icon to display for the app.
@@ -302,7 +305,19 @@ type AppInput struct {
 	// The ID of the Revoke Policy associated with this App.
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
 	// The strictAccessEntitlementProvisioning field.
-	StrictAccessEntitlementProvisioning *bool `json:"strictAccessEntitlementProvisioning,omitempty"`
+	StrictAccessEntitlementProvisioning *bool      `json:"strictAccessEntitlementProvisioning,omitempty"`
+	UpdatedAt                           *time.Time `json:"updatedAt,omitempty"`
+}
+
+func (a AppInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AppInput) GetCertifyPolicyID() *string {
@@ -319,11 +334,25 @@ func (a *AppInput) GetConnectorVersion() *int64 {
 	return a.ConnectorVersion
 }
 
+func (a *AppInput) GetCreatedAt() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.CreatedAt
+}
+
 func (a *AppInput) GetDefaultRequestCatalogID() *string {
 	if a == nil {
 		return nil
 	}
 	return a.DefaultRequestCatalogID
+}
+
+func (a *AppInput) GetDeletedAt() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.DeletedAt
 }
 
 func (a *AppInput) GetDescription() *string {
@@ -338,6 +367,13 @@ func (a *AppInput) GetDisplayName() *string {
 		return nil
 	}
 	return a.DisplayName
+}
+
+func (a *AppInput) GetFieldMask() *string {
+	if a == nil {
+		return nil
+	}
+	return a.FieldMask
 }
 
 func (a *AppInput) GetGrantPolicyID() *string {
@@ -394,4 +430,11 @@ func (a *AppInput) GetStrictAccessEntitlementProvisioning() *bool {
 		return nil
 	}
 	return a.StrictAccessEntitlementProvisioning
+}
+
+func (a *AppInput) GetUpdatedAt() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.UpdatedAt
 }

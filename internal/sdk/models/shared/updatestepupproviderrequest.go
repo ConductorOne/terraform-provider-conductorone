@@ -4,12 +4,6 @@ package shared
 
 // The UpdateStepUpProviderRequest message.
 type UpdateStepUpProviderRequest struct {
-	// The StepUpProvider message.
-	//
-	// This message contains a oneof named settings. Only a single field of the following list may be set at a time:
-	//   - oauth2
-	//   - microsoft
-	//
 	StepUpProvider *StepUpProviderInput `json:"stepUpProvider,omitempty"`
 	UpdateMask     *string              `json:"updateMask,omitempty"`
 }

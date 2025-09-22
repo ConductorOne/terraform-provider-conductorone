@@ -2,6 +2,30 @@
 
 package shared
 
+import (
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
+)
+
 // TaskTypeCertifyInput - The TaskTypeCertify message indicates that a task is a certify task and all related details.
 type TaskTypeCertifyInput struct {
+	OutcomeTime *time.Time `json:"outcomeTime,omitempty"`
+}
+
+func (t TaskTypeCertifyInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TaskTypeCertifyInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *TaskTypeCertifyInput) GetOutcomeTime() *time.Time {
+	if t == nil {
+		return nil
+	}
+	return t.OutcomeTime
 }

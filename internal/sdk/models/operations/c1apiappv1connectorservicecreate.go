@@ -8,13 +8,13 @@ import (
 )
 
 type C1APIAppV1ConnectorServiceCreateRequest struct {
-	AppID                         string                                `pathParam:"style=simple,explode=false,name=app_id"`
+	AppID                         *string                               `pathParam:"style=simple,explode=false,name=app_id"`
 	ConnectorServiceCreateRequest *shared.ConnectorServiceCreateRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1ConnectorServiceCreateRequest) GetAppID() string {
+func (c *C1APIAppV1ConnectorServiceCreateRequest) GetAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.AppID
 }

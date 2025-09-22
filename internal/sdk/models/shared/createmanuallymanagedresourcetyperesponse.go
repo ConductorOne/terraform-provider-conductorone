@@ -8,7 +8,6 @@ type CreateManuallyManagedResourceTypeResponseExpanded struct {
 
 // The CreateManuallyManagedResourceTypeResponse message.
 type CreateManuallyManagedResourceTypeResponse struct {
-	// The AppResourceType is referenced by an app entitlement defining its resource types. Commonly things like Group or Role.
 	AppResourceType *AppResourceType `json:"appResourceType,omitempty"`
 	// The expanded field.
 	Expanded []CreateManuallyManagedResourceTypeResponseExpanded `json:"expanded,omitempty"`

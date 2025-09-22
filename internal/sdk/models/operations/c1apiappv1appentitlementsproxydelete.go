@@ -8,37 +8,37 @@ import (
 )
 
 type C1APIAppV1AppEntitlementsProxyDeleteRequest struct {
-	SrcAppID                         string                                   `pathParam:"style=simple,explode=false,name=src_app_id"`
-	SrcAppEntitlementID              string                                   `pathParam:"style=simple,explode=false,name=src_app_entitlement_id"`
-	DstAppID                         string                                   `pathParam:"style=simple,explode=false,name=dst_app_id"`
-	DstAppEntitlementID              string                                   `pathParam:"style=simple,explode=false,name=dst_app_entitlement_id"`
+	SrcAppID                         *string                                  `pathParam:"style=simple,explode=false,name=src_app_id"`
+	SrcAppEntitlementID              *string                                  `pathParam:"style=simple,explode=false,name=src_app_entitlement_id"`
+	DstAppID                         *string                                  `pathParam:"style=simple,explode=false,name=dst_app_id"`
+	DstAppEntitlementID              *string                                  `pathParam:"style=simple,explode=false,name=dst_app_entitlement_id"`
 	DeleteAppEntitlementProxyRequest *shared.DeleteAppEntitlementProxyRequest `request:"mediaType=application/json"`
 }
 
-func (c *C1APIAppV1AppEntitlementsProxyDeleteRequest) GetSrcAppID() string {
+func (c *C1APIAppV1AppEntitlementsProxyDeleteRequest) GetSrcAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.SrcAppID
 }
 
-func (c *C1APIAppV1AppEntitlementsProxyDeleteRequest) GetSrcAppEntitlementID() string {
+func (c *C1APIAppV1AppEntitlementsProxyDeleteRequest) GetSrcAppEntitlementID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.SrcAppEntitlementID
 }
 
-func (c *C1APIAppV1AppEntitlementsProxyDeleteRequest) GetDstAppID() string {
+func (c *C1APIAppV1AppEntitlementsProxyDeleteRequest) GetDstAppID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.DstAppID
 }
 
-func (c *C1APIAppV1AppEntitlementsProxyDeleteRequest) GetDstAppEntitlementID() string {
+func (c *C1APIAppV1AppEntitlementsProxyDeleteRequest) GetDstAppEntitlementID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.DstAppEntitlementID
 }

@@ -5,20 +5,8 @@ package shared
 // Provision - The provision step references a provision policy for this step.
 type Provision struct {
 	// A field indicating whether this step is assigned.
-	Assigned *bool `json:"assigned,omitempty"`
-	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - connector
-	//   - manual
-	//   - delegated
-	//   - webhook
-	//   - multiStep
-	//   - externalTicket
-	//   - unconfigured
-	//
+	Assigned        *bool            `json:"assigned,omitempty"`
 	ProvisionPolicy *ProvisionPolicy `json:"provisionPolicy,omitempty"`
-	// ProvisionTarget indicates the specific app, app entitlement, and if known, the app user and grant duration of this provision step
 	ProvisionTarget *ProvisionTarget `json:"provisionTarget,omitempty"`
 }
 

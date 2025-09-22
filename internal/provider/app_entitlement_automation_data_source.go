@@ -29,18 +29,18 @@ type AppEntitlementAutomationDataSource struct {
 
 // AppEntitlementAutomationDataSourceModel describes the data model.
 type AppEntitlementAutomationDataSourceModel struct {
-	AppEntitlementAutomationLastRunStatus   *tfTypes.AppEntitlementAutomationLastRunStatus   `tfsdk:"app_entitlement_automation_last_run_status"`
-	AppEntitlementAutomationRuleBasic       *tfTypes.AppEntitlementAutomationRuleBasic       `tfsdk:"app_entitlement_automation_rule_basic" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleCEL         *tfTypes.AppEntitlementAutomationRuleCEL         `tfsdk:"app_entitlement_automation_rule_cel" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleEntitlement *tfTypes.AppEntitlementAutomationRuleEntitlement `tfsdk:"app_entitlement_automation_rule_entitlement" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleNone        *tfTypes.AppEntitlementAutomationRuleNone        `tfsdk:"app_entitlement_automation_rule_none" tfPlanOnly:"true"`
-	AppEntitlementID                        types.String                                     `tfsdk:"app_entitlement_id"`
-	AppID                                   types.String                                     `tfsdk:"app_id"`
-	CreatedAt                               types.String                                     `tfsdk:"created_at"`
-	DeletedAt                               types.String                                     `tfsdk:"deleted_at"`
-	Description                             types.String                                     `tfsdk:"description"`
-	DisplayName                             types.String                                     `tfsdk:"display_name"`
-	UpdatedAt                               types.String                                     `tfsdk:"updated_at"`
+	AppEntitlementID types.String                                     `tfsdk:"app_entitlement_id"`
+	AppID            types.String                                     `tfsdk:"app_id"`
+	Basic            *tfTypes.AppEntitlementAutomationRuleBasic       `tfsdk:"basic" tfPlanOnly:"true"`
+	Cel              *tfTypes.AppEntitlementAutomationRuleCEL         `tfsdk:"cel" tfPlanOnly:"true"`
+	CreatedAt        types.String                                     `tfsdk:"created_at"`
+	DeletedAt        types.String                                     `tfsdk:"deleted_at"`
+	Description      types.String                                     `tfsdk:"description"`
+	DisplayName      types.String                                     `tfsdk:"display_name"`
+	Entitlements     *tfTypes.AppEntitlementAutomationRuleEntitlement `tfsdk:"entitlements" tfPlanOnly:"true"`
+	LastRunStatus    *tfTypes.AppEntitlementAutomationLastRunStatus   `tfsdk:"last_run_status"`
+	None             *tfTypes.AppEntitlementAutomationRuleNone        `tfsdk:"none" tfPlanOnly:"true"`
+	UpdatedAt        types.String                                     `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -54,24 +54,15 @@ func (r *AppEntitlementAutomationDataSource) Schema(ctx context.Context, req dat
 		MarkdownDescription: "AppEntitlementAutomation DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"app_entitlement_automation_last_run_status": schema.SingleNestedAttribute{
+			"app_entitlement_id": schema.StringAttribute{
 				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"error_message": schema.StringAttribute{
-						Computed:    true,
-						Description: `The errorMessage field.`,
-					},
-					"last_completed_at": schema.StringAttribute{
-						Computed: true,
-					},
-					"status": schema.StringAttribute{
-						Computed:    true,
-						Description: `The status field.`,
-					},
-				},
-				Description: `The AppEntitlementAutomationLastRunStatus message.`,
+				Optional: true,
 			},
-			"app_entitlement_automation_rule_basic": schema.SingleNestedAttribute{
+			"app_id": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+			},
+			"basic": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"expression": schema.StringAttribute{
@@ -81,7 +72,7 @@ func (r *AppEntitlementAutomationDataSource) Schema(ctx context.Context, req dat
 				},
 				Description: `The AppEntitlementAutomationRuleBasic message.`,
 			},
-			"app_entitlement_automation_rule_cel": schema.SingleNestedAttribute{
+			"cel": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"expression": schema.StringAttribute{
@@ -91,7 +82,21 @@ func (r *AppEntitlementAutomationDataSource) Schema(ctx context.Context, req dat
 				},
 				Description: `The AppEntitlementAutomationRuleCEL message.`,
 			},
-			"app_entitlement_automation_rule_entitlement": schema.SingleNestedAttribute{
+			"created_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"deleted_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Description: `The description of the app entitlement.`,
+			},
+			"display_name": schema.StringAttribute{
+				Computed:    true,
+				Description: `The display name of the app entitlement.`,
+			},
+			"entitlements": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"entitlement_refs": schema.ListNestedAttribute{
@@ -113,29 +118,26 @@ func (r *AppEntitlementAutomationDataSource) Schema(ctx context.Context, req dat
 				},
 				Description: `The AppEntitlementAutomationRuleEntitlement message.`,
 			},
-			"app_entitlement_automation_rule_none": schema.SingleNestedAttribute{
+			"last_run_status": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"error_message": schema.StringAttribute{
+						Computed:    true,
+						Description: `The errorMessage field.`,
+					},
+					"last_completed_at": schema.StringAttribute{
+						Computed: true,
+					},
+					"status": schema.StringAttribute{
+						Computed:    true,
+						Description: `The status field.`,
+					},
+				},
+				Description: `The AppEntitlementAutomationLastRunStatus message.`,
+			},
+			"none": schema.SingleNestedAttribute{
 				Computed:    true,
 				Description: `The AppEntitlementAutomationRuleNone message.`,
-			},
-			"app_entitlement_id": schema.StringAttribute{
-				Required: true,
-			},
-			"app_id": schema.StringAttribute{
-				Required: true,
-			},
-			"created_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"deleted_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"description": schema.StringAttribute{
-				Computed:    true,
-				Description: `The description of the app entitlement.`,
-			},
-			"display_name": schema.StringAttribute{
-				Computed:    true,
-				Description: `The display name of the app entitlement.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
