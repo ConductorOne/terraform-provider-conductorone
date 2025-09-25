@@ -7,7 +7,23 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+func (r *AppEntitlementOwnerResourceModel) RefreshFromSharedListAppEntitlementOwnerIDsResponse(ctx context.Context, resp *shared.ListAppEntitlementOwnerIDsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.UserIds != nil {
+			r.UserIds = make([]types.String, 0, len(resp.UserIds))
+			for _, v := range resp.UserIds {
+				r.UserIds = append(r.UserIds, types.StringValue(v))
+			}
+		}
+	}
+
+	return diags
+}
 
 func (r *AppEntitlementOwnerResourceModel) RefreshFromSharedSetAppEntitlementOwnersResponse(ctx context.Context, resp *shared.SetAppEntitlementOwnersResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
@@ -16,6 +32,40 @@ func (r *AppEntitlementOwnerResourceModel) RefreshFromSharedSetAppEntitlementOwn
 	}
 
 	return diags
+}
+
+func (r *AppEntitlementOwnerResourceModel) ToOperationsC1APIAppV1AppEntitlementOwnersDeleteRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementOwnersDeleteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var entitlementID string
+	entitlementID = r.EntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementOwnersDeleteRequest{
+		AppID:         appID,
+		EntitlementID: entitlementID,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementOwnerResourceModel) ToOperationsC1APIAppV1AppEntitlementOwnersListOwnerIDsRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementOwnersListOwnerIDsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	var entitlementID string
+	entitlementID = r.EntitlementID.ValueString()
+
+	out := operations.C1APIAppV1AppEntitlementOwnersListOwnerIDsRequest{
+		AppID:         appID,
+		EntitlementID: entitlementID,
+	}
+
+	return &out, diags
 }
 
 func (r *AppEntitlementOwnerResourceModel) ToOperationsC1APIAppV1AppEntitlementOwnersSetRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementOwnersSetRequest, diag.Diagnostics) {

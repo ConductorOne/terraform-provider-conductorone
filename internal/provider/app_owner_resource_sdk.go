@@ -7,7 +7,23 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+func (r *AppOwnerResourceModel) RefreshFromSharedListAppOwnerIDsResponse(ctx context.Context, resp *shared.ListAppOwnerIDsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.UserIds != nil {
+			r.UserIds = make([]types.String, 0, len(resp.UserIds))
+			for _, v := range resp.UserIds {
+				r.UserIds = append(r.UserIds, types.StringValue(v))
+			}
+		}
+	}
+
+	return diags
+}
 
 func (r *AppOwnerResourceModel) RefreshFromSharedSetAppOwnersResponse(ctx context.Context, resp *shared.SetAppOwnersResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
@@ -16,6 +32,40 @@ func (r *AppOwnerResourceModel) RefreshFromSharedSetAppOwnersResponse(ctx contex
 	}
 
 	return diags
+}
+
+func (r *AppOwnerResourceModel) ToOperationsC1APIAppV1AppOwnersDeleteRequest(ctx context.Context) (*operations.C1APIAppV1AppOwnersDeleteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	deleteAppOwnersRequest, deleteAppOwnersRequestDiags := r.ToSharedDeleteAppOwnersRequest(ctx)
+	diags.Append(deleteAppOwnersRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIAppV1AppOwnersDeleteRequest{
+		AppID:                  appID,
+		DeleteAppOwnersRequest: deleteAppOwnersRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AppOwnerResourceModel) ToOperationsC1APIAppV1AppOwnersListOwnerIDsRequest(ctx context.Context) (*operations.C1APIAppV1AppOwnersListOwnerIDsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appID string
+	appID = r.AppID.ValueString()
+
+	out := operations.C1APIAppV1AppOwnersListOwnerIDsRequest{
+		AppID: appID,
+	}
+
+	return &out, diags
 }
 
 func (r *AppOwnerResourceModel) ToOperationsC1APIAppV1AppOwnersSetRequest(ctx context.Context) (*operations.C1APIAppV1AppOwnersSetRequest, diag.Diagnostics) {
@@ -34,6 +84,23 @@ func (r *AppOwnerResourceModel) ToOperationsC1APIAppV1AppOwnersSetRequest(ctx co
 	out := operations.C1APIAppV1AppOwnersSetRequest{
 		AppID:               appID,
 		SetAppOwnersRequest: setAppOwnersRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AppOwnerResourceModel) ToSharedDeleteAppOwnersRequest(ctx context.Context) (*shared.DeleteAppOwnersRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var userIds []string
+	if r.UserIds != nil {
+		userIds = make([]string, 0, len(r.UserIds))
+		for _, userIdsItem := range r.UserIds {
+			userIds = append(userIds, userIdsItem.ValueString())
+		}
+	}
+	out := shared.DeleteAppOwnersRequest{
+		UserIds: userIds,
 	}
 
 	return &out, diags

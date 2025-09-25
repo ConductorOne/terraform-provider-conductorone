@@ -71,9 +71,16 @@ resource "conductorone_automation" "my_automation" {
           }
         ]
         app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-        revoke_all               = false
-        use_subject_user         = false
-        user_id_cel              = "...my_user_id_cel..."
+        excluded_app_entitlement_refs = [
+          {
+            app_id = "...my_app_id..."
+            id     = "...my_id..."
+          }
+        ]
+        excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        revoke_all                        = false
+        use_subject_user                  = false
+        user_id_cel                       = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
@@ -245,9 +252,16 @@ resource "conductorone_automation" "my_automation" {
           }
         ]
         app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-        revoke_all               = true
-        use_subject_user         = true
-        user_id_cel              = "...my_user_id_cel..."
+        excluded_app_entitlement_refs = [
+          {
+            app_id = "...my_app_id..."
+            id     = "...my_id..."
+          }
+        ]
+        excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        revoke_all                        = true
+        use_subject_user                  = true
+        user_id_cel                       = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
@@ -791,13 +805,24 @@ Optional:
 
 - `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks--app_entitlement_refs))
 - `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
-- `revoke_all` (Boolean, Deprecated) The revokeAll field.
+- `excluded_app_entitlement_refs` (Attributes List) The excludedAppEntitlementRefs field. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks--excluded_app_entitlement_refs))
+- `excluded_app_entitlement_refs_cel` (String) The excludedAppEntitlementRefsCel field.
+- `revoke_all` (Boolean) The revokeAll field.
 - `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
 - `user_id_cel` (String) The userIdCel field.
 - `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks--user_ref))
 
 <a id="nestedatt--automation_steps--create_revoke_tasks--app_entitlement_refs"></a>
 ### Nested Schema for `automation_steps.create_revoke_tasks.app_entitlement_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+<a id="nestedatt--automation_steps--create_revoke_tasks--excluded_app_entitlement_refs"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks.excluded_app_entitlement_refs`
 
 Optional:
 
@@ -1242,13 +1267,24 @@ Optional:
 
 - `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks--app_entitlement_refs))
 - `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
-- `revoke_all` (Boolean, Deprecated) The revokeAll field.
+- `excluded_app_entitlement_refs` (Attributes List) The excludedAppEntitlementRefs field. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks--excluded_app_entitlement_refs))
+- `excluded_app_entitlement_refs_cel` (String) The excludedAppEntitlementRefsCel field.
+- `revoke_all` (Boolean) The revokeAll field.
 - `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
 - `user_id_cel` (String) The userIdCel field.
 - `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks--user_ref))
 
 <a id="nestedatt--draft_automation_steps--create_revoke_tasks--app_entitlement_refs"></a>
 ### Nested Schema for `draft_automation_steps.create_revoke_tasks.app_entitlement_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks--excluded_app_entitlement_refs"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks.excluded_app_entitlement_refs`
 
 Optional:
 

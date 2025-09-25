@@ -56,9 +56,16 @@ resource "conductorone_automation" "my_automation" {
           }
         ]
         app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-        revoke_all               = false
-        use_subject_user         = false
-        user_id_cel              = "...my_user_id_cel..."
+        excluded_app_entitlement_refs = [
+          {
+            app_id = "...my_app_id..."
+            id     = "...my_id..."
+          }
+        ]
+        excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        revoke_all                        = false
+        use_subject_user                  = false
+        user_id_cel                       = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
@@ -230,9 +237,16 @@ resource "conductorone_automation" "my_automation" {
           }
         ]
         app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-        revoke_all               = true
-        use_subject_user         = true
-        user_id_cel              = "...my_user_id_cel..."
+        excluded_app_entitlement_refs = [
+          {
+            app_id = "...my_app_id..."
+            id     = "...my_id..."
+          }
+        ]
+        excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        revoke_all                        = true
+        use_subject_user                  = true
+        user_id_cel                       = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }

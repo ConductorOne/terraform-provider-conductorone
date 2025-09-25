@@ -8,9 +8,11 @@ type CreateRevokeTasks struct {
 	AppEntitlementRefs []AppEntitlementRef `json:"appEntitlementRefs,omitempty"`
 	// The appEntitlementRefsCel field.
 	AppEntitlementRefsCel *string `json:"appEntitlementRefsCel,omitempty"`
+	// The excludedAppEntitlementRefs field.
+	ExcludedAppEntitlementRefs []AppEntitlementRef `json:"excludedAppEntitlementRefs,omitempty"`
+	// The excludedAppEntitlementRefsCel field.
+	ExcludedAppEntitlementRefsCel *string `json:"excludedAppEntitlementRefsCel,omitempty"`
 	// The revokeAll field.
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	RevokeAll *bool `json:"revokeAll,omitempty"`
 	// If true, the step will use the subject user of the automation as the subject.
 	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
@@ -32,6 +34,20 @@ func (c *CreateRevokeTasks) GetAppEntitlementRefsCel() *string {
 		return nil
 	}
 	return c.AppEntitlementRefsCel
+}
+
+func (c *CreateRevokeTasks) GetExcludedAppEntitlementRefs() []AppEntitlementRef {
+	if c == nil {
+		return nil
+	}
+	return c.ExcludedAppEntitlementRefs
+}
+
+func (c *CreateRevokeTasks) GetExcludedAppEntitlementRefsCel() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ExcludedAppEntitlementRefsCel
 }
 
 func (c *CreateRevokeTasks) GetRevokeAll() *bool {

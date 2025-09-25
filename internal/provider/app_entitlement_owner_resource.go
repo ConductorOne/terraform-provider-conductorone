@@ -3,9 +3,12 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -48,6 +51,7 @@ func (r *AppEntitlementOwnerResource) Schema(ctx context.Context, req resource.S
 				Required: true,
 			},
 			"user_ids": schema.ListAttribute{
+				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The user_ids field for the users to set as an owner of the app entitlement.`,
@@ -154,7 +158,41 @@ func (r *AppEntitlementOwnerResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
-	// Not Implemented; we rely entirely on CREATE API request response
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementOwnersListOwnerIDsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.AppEntitlementOwners.ListOwnerIDs(ctx, *request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.ListAppEntitlementOwnerIDsResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedListAppEntitlementOwnerIDsResponse(ctx, res.ListAppEntitlementOwnerIDsResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -234,9 +272,52 @@ func (r *AppEntitlementOwnerResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	// Not Implemented; entity does not have a configured DELETE operation
+	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementOwnersDeleteRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.AppEntitlementOwners.Delete(ctx, *request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+
 }
 
 func (r *AppEntitlementOwnerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource app_entitlement_owner.")
+	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
+	dec.DisallowUnknownFields()
+	var data struct {
+		AppID         string `json:"app_id"`
+		EntitlementID string `json:"entitlement_id"`
+	}
+
+	if err := dec.Decode(&data); err != nil {
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"app_id": "...", "entitlement_id": "..."}': `+err.Error())
+		return
+	}
+
+	if len(data.AppID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field app_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), data.AppID)...)
+	if len(data.EntitlementID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field entitlement_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("entitlement_id"), data.EntitlementID)...)
 }

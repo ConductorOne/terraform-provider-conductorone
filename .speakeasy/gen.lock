@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: ff5e444a23f3dfb975a22aa6eb83ad94
+  docChecksum: faf44566bc7b0f9cb994601576ffcd22
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.620.0
-  generationVersion: 2.706.1
-  releaseVersion: 1.6.7
-  configChecksum: b63e07d10ff3b3f1b1fc1c52ca522363
+  speakeasyVersion: 1.628.7
+  generationVersion: 2.716.9
+  releaseVersion: 1.6.8
+  configChecksum: 2d1473e0e18187b8b4b781df68e55f1c
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
-    core: 3.45.0
+    core: 3.45.1
     deprecations: 2.82.0
     devContainers: 0.0.0
     globalSecurity: 2.82.1
@@ -74,10 +74,14 @@ generatedFiles:
   - examples/resources/conductorone_app_entitlement_automation/import.sh
   - examples/resources/conductorone_app_entitlement_automation/resource.tf
   - examples/resources/conductorone_app_entitlement_monitor_binding/resource.tf
+  - examples/resources/conductorone_app_entitlement_owner/import-by-string-id.tf
+  - examples/resources/conductorone_app_entitlement_owner/import.sh
   - examples/resources/conductorone_app_entitlement_owner/resource.tf
   - examples/resources/conductorone_app_entitlement_proxy_binding/import-by-string-id.tf
   - examples/resources/conductorone_app_entitlement_proxy_binding/import.sh
   - examples/resources/conductorone_app_entitlement_proxy_binding/resource.tf
+  - examples/resources/conductorone_app_owner/import-by-string-id.tf
+  - examples/resources/conductorone_app_owner/import.sh
   - examples/resources/conductorone_app_owner/resource.tf
   - examples/resources/conductorone_app_resource/import-by-string-id.tf
   - examples/resources/conductorone_app_resource/import.sh
@@ -418,6 +422,7 @@ generatedFiles:
   - internal/sdk/awsexternalidsettings.go
   - internal/sdk/conductoroneapi.go
   - internal/sdk/connector.go
+  - internal/sdk/connectorcatalog.go
   - internal/sdk/directory.go
   - internal/sdk/export.go
   - internal/sdk/exportssearch.go
@@ -448,7 +453,9 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicecreateappaccessrequestsdefaults.go
   - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicegetappaccessrequestsdefaults.go
   - internal/sdk/models/operations/c1apiappv1appentitlementownersadd.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementownersdelete.go
   - internal/sdk/models/operations/c1apiappv1appentitlementownerslist.go
+  - internal/sdk/models/operations/c1apiappv1appentitlementownerslistownerids.go
   - internal/sdk/models/operations/c1apiappv1appentitlementownersremove.go
   - internal/sdk/models/operations/c1apiappv1appentitlementownersset.go
   - internal/sdk/models/operations/c1apiappv1appentitlementsaddautomationexclusion.go
@@ -481,7 +488,9 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1appentitlementuserbindingservicesearchpastgrants.go
   - internal/sdk/models/operations/c1apiappv1appentitlementuserbindingserviceupdategrantduration.go
   - internal/sdk/models/operations/c1apiappv1appownersadd.go
+  - internal/sdk/models/operations/c1apiappv1appownersdelete.go
   - internal/sdk/models/operations/c1apiappv1appownerslist.go
+  - internal/sdk/models/operations/c1apiappv1appownerslistownerids.go
   - internal/sdk/models/operations/c1apiappv1appownersremove.go
   - internal/sdk/models/operations/c1apiappv1appownersset.go
   - internal/sdk/models/operations/c1apiappv1appreportactionservicegeneratereport.go
@@ -582,6 +591,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiiamv1rolesget.go
   - internal/sdk/models/operations/c1apiiamv1roleslist.go
   - internal/sdk/models/operations/c1apiiamv1rolesupdate.go
+  - internal/sdk/models/operations/c1apiintegrationconnectorv1connectorcatalogserviceconfigurationschema.go
   - internal/sdk/models/operations/c1apipolicyv1accountprovisionpolicytesttest.go
   - internal/sdk/models/operations/c1apipolicyv1policiescreate.go
   - internal/sdk/models/operations/c1apipolicyv1policiesdelete.go
@@ -655,6 +665,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apitaskv1taskserviceget.go
   - internal/sdk/models/operations/c1apiuserv1usersearchsearch.go
   - internal/sdk/models/operations/c1apiuserv1userserviceget.go
+  - internal/sdk/models/operations/c1apiuserv1userservicegetuserprofiletypes.go
   - internal/sdk/models/operations/c1apiuserv1userservicelist.go
   - internal/sdk/models/operations/c1apiwebhooksv1webhookssearchsearch.go
   - internal/sdk/models/operations/c1apiwebhooksv1webhooksservicecreate.go
@@ -786,6 +797,7 @@ generatedFiles:
   - internal/sdk/models/shared/completedaction.go
   - internal/sdk/models/shared/conditionsucceeded.go
   - internal/sdk/models/shared/conditiontimedout.go
+  - internal/sdk/models/shared/configschema.go
   - internal/sdk/models/shared/confirmsyncvalidrequest.go
   - internal/sdk/models/shared/confirmsyncvalidresponse.go
   - internal/sdk/models/shared/conflictmonitor.go
@@ -795,6 +807,8 @@ generatedFiles:
   - internal/sdk/models/shared/conflictmonitorupdaterequest.go
   - internal/sdk/models/shared/connector.go
   - internal/sdk/models/shared/connectoraction.go
+  - internal/sdk/models/shared/connectorcatalogserviceconfigurationschemarequest.go
+  - internal/sdk/models/shared/connectorcatalogserviceconfigurationschemaresponse.go
   - internal/sdk/models/shared/connectorcreateaccount.go
   - internal/sdk/models/shared/connectorcredential.go
   - internal/sdk/models/shared/connectorprovision.go
@@ -849,10 +863,14 @@ generatedFiles:
   - internal/sdk/models/shared/deleteaccount.go
   - internal/sdk/models/shared/deleteappentitlementmonitorbindingrequest.go
   - internal/sdk/models/shared/deleteappentitlementmonitorbindingresponse.go
+  - internal/sdk/models/shared/deleteappentitlementownersrequest.go
+  - internal/sdk/models/shared/deleteappentitlementownersresponse.go
   - internal/sdk/models/shared/deleteappentitlementproxyrequest.go
   - internal/sdk/models/shared/deleteappentitlementproxyresponse.go
   - internal/sdk/models/shared/deleteappentitlementrequest.go
   - internal/sdk/models/shared/deleteappentitlementresponse.go
+  - internal/sdk/models/shared/deleteappownersrequest.go
+  - internal/sdk/models/shared/deleteappownersresponse.go
   - internal/sdk/models/shared/deleteapprequest.go
   - internal/sdk/models/shared/deleteappresponse.go
   - internal/sdk/models/shared/deleteattributevaluerequest.go
@@ -924,6 +942,7 @@ generatedFiles:
   - internal/sdk/models/shared/externalref.go
   - internal/sdk/models/shared/externalticketprovision.go
   - internal/sdk/models/shared/field.go
+  - internal/sdk/models/shared/fieldgroup.go
   - internal/sdk/models/shared/fieldrelationship.go
   - internal/sdk/models/shared/fieldrules.go
   - internal/sdk/models/shared/fixed32rules.go
@@ -973,6 +992,7 @@ generatedFiles:
   - internal/sdk/models/shared/getsessionsettingsresponse.go
   - internal/sdk/models/shared/getstepupproviderresponse.go
   - internal/sdk/models/shared/getstepuptransactionresponse.go
+  - internal/sdk/models/shared/getuserprofiletypesresponse.go
   - internal/sdk/models/shared/grantdeletedtrigger.go
   - internal/sdk/models/shared/grantentitlements.go
   - internal/sdk/models/shared/grantfilter.go
@@ -983,9 +1003,11 @@ generatedFiles:
   - internal/sdk/models/shared/int64field.go
   - internal/sdk/models/shared/int64rules.go
   - internal/sdk/models/shared/introspectresponse.go
+  - internal/sdk/models/shared/listappentitlementowneridsresponse.go
   - internal/sdk/models/shared/listappentitlementownersresponse.go
   - internal/sdk/models/shared/listappentitlementsresponse.go
   - internal/sdk/models/shared/listappentitlementusersresponse.go
+  - internal/sdk/models/shared/listappowneridsresponse.go
   - internal/sdk/models/shared/listappownersresponse.go
   - internal/sdk/models/shared/listappresourceownersresponse.go
   - internal/sdk/models/shared/listappsresponse.go
@@ -1043,6 +1065,7 @@ generatedFiles:
   - internal/sdk/models/shared/policystepinstance.go
   - internal/sdk/models/shared/policysteps.go
   - internal/sdk/models/shared/policystepsinput.go
+  - internal/sdk/models/shared/profiletype.go
   - internal/sdk/models/shared/provision.go
   - internal/sdk/models/shared/provisioninstance.go
   - internal/sdk/models/shared/provisionpolicy.go
@@ -1402,7 +1425,6 @@ generatedFiles:
   - internal/sdk/types/bigint.go
   - internal/sdk/types/date.go
   - internal/sdk/types/datetime.go
-  - internal/sdk/types/decimal.go
   - internal/sdk/types/pointers.go
   - internal/sdk/user.go
   - internal/sdk/usersearch.go
@@ -3099,6 +3121,53 @@ examples:
       parameters:
         path:
           app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementOwners.ListOwnerIDs:
+    speakeasy-default-c1-api-app-v1-app-entitlement-owners-list-owner-I-ds:
+      parameters:
+        path:
+          app_id: "<id>"
+          entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppEntitlementOwners.Delete:
+    speakeasy-default-c1-api-app-v1-app-entitlement-owners-delete:
+      parameters:
+        path:
+          app_id: "<id>"
+          entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppOwners.ListOwnerIDs:
+    speakeasy-default-c1-api-app-v1-app-owners-list-owner-I-ds:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppOwners.Delete:
+    speakeasy-default-c1-api-app-v1-app-owners-delete:
+      parameters:
+        path:
+          app_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.integration.connector.v1.ConnectorCatalogService.ConfigurationSchema:
+    speakeasy-default-c1-api-integration-connector-v1-connector-catalog-service-configuration-schema:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.user.v1.UserService.GetUserProfileTypes:
+    speakeasy-default-c1-api-user-v1-user-service-get-user-profile-types:
+      parameters:
+        path:
+          user_id: "<id>"
       responses:
         "200":
           application/json: {}

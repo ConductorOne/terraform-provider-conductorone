@@ -3221,6 +3221,16 @@ components:
             title: Create Manually Managed Resource Type Response
             type: object
             x-speakeasy-name-override: CreateManuallyManagedResourceTypeResponse
+        c1.api.app.v1.DeleteAppEntitlementOwnersRequestInput:
+            description: The request message for deleting app entitlement owners.
+            title: Delete App Entitlement Owners Request
+            type: object
+            x-speakeasy-name-override: DeleteAppEntitlementOwnersRequest
+        c1.api.app.v1.DeleteAppEntitlementOwnersResponse:
+            description: the empty response message for deleting app entitlement owners.
+            title: Delete App Entitlement Owners Response
+            type: object
+            x-speakeasy-name-override: DeleteAppEntitlementOwnersResponse
         c1.api.app.v1.DeleteAppEntitlementProxyRequestInput:
             description: The DeleteAppEntitlementProxyRequest message.
             title: Delete App Entitlement Proxy Request
@@ -3241,6 +3251,24 @@ components:
             title: Delete App Entitlement Response
             type: object
             x-speakeasy-name-override: DeleteAppEntitlementResponse
+        c1.api.app.v1.DeleteAppOwnersRequestInput:
+            description: The request message for deleting app owners.
+            properties:
+                userIds:
+                    description: The user_ids field for the users to set as an owner of the app.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Delete App Owners Request
+            type: object
+            x-speakeasy-name-override: DeleteAppOwnersRequest
+        c1.api.app.v1.DeleteAppOwnersResponse:
+            description: the empty response message for deleting app owners.
+            title: Delete App Owners Response
+            type: object
+            x-speakeasy-name-override: DeleteAppOwnersResponse
         c1.api.app.v1.DeleteAppRequestInput:
             description: Empty request body
             title: Delete App Request
@@ -3464,6 +3492,19 @@ components:
             title: Grant Reason
             type: object
             x-speakeasy-name-override: GrantReason
+        c1.api.app.v1.ListAppEntitlementOwnerIDsResponse:
+            description: The response message for listing app entitlement owners IDs.
+            properties:
+                userIds:
+                    description: The list of owner IDs for the app entitlement.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: List App Entitlement Owner I Ds Response
+            type: object
+            x-speakeasy-name-override: ListAppEntitlementOwnerIDsResponse
         c1.api.app.v1.ListAppEntitlementOwnersResponse:
             description: The response message for listing app entitlement owners.
             properties:
@@ -3546,6 +3587,19 @@ components:
             title: List App Entitlements Response
             type: object
             x-speakeasy-name-override: ListAppEntitlementsResponse
+        c1.api.app.v1.ListAppOwnerIDsResponse:
+            description: The response message for listing app owners IDs.
+            properties:
+                userIds:
+                    description: The list of owner IDs for the app.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: List App Owner I Ds Response
+            type: object
+            x-speakeasy-name-override: ListAppOwnerIDsResponse
         c1.api.app.v1.ListAppOwnersResponse:
             description: The ListAppOwnersResponse message.
             properties:
@@ -5428,8 +5482,18 @@ components:
                     description: The appEntitlementRefsCel field.
                     readOnly: false
                     type: string
+                excludedAppEntitlementRefs:
+                    description: The excludedAppEntitlementRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                excludedAppEntitlementRefsCel:
+                    description: The excludedAppEntitlementRefsCel field.
+                    readOnly: false
+                    type: string
                 revokeAll:
-                    deprecated: true
                     description: The revokeAll field.
                     readOnly: false
                     type: boolean
@@ -7645,6 +7709,337 @@ components:
             title: Update Roles Response
             type: object
             x-speakeasy-name-override: UpdateRolesResponse
+        c1.api.integration.connector.v1.CheckboxField:
+            description: The CheckboxField message.
+            nullable: true
+            properties:
+                checked:
+                    description: The checked field.
+                    readOnly: false
+                    type: boolean
+            title: Checkbox Field
+            type: object
+            x-speakeasy-name-override: CheckboxField
+        c1.api.integration.connector.v1.ConfigSchema:
+            description: The ConfigSchema message.
+            properties:
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                fieldGroups:
+                    description: Optional. Metadata for displaying fields in the UI.
+                    items:
+                        $ref: '#/components/schemas/c1.api.integration.connector.v1.FieldGroup'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                fields:
+                    description: The fields field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.integration.connector.v1.Field'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                helpUrl:
+                    description: The helpUrl field.
+                    readOnly: false
+                    type: string
+                iconUrl:
+                    deprecated: true
+                    description: The iconUrl field.
+                    readOnly: false
+                    type: string
+                isOauth2:
+                    description: The isOauth2 field.
+                    readOnly: false
+                    type: boolean
+                requiresExternalConnector:
+                    description: The requiresExternalConnector field.
+                    readOnly: false
+                    type: boolean
+                supportsExternalResources:
+                    description: The supportsExternalResources field.
+                    readOnly: false
+                    type: boolean
+            title: Config Schema
+            type: object
+            x-speakeasy-name-override: ConfigSchema
+        c1.api.integration.connector.v1.ConnectorCatalogServiceConfigurationSchemaRequest:
+            description: The ConnectorCatalogServiceConfigurationSchemaRequest message.
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                catalogId:
+                    description: The catalogId field.
+                    readOnly: false
+                    type: string
+                connectorId:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
+            title: Connector Catalog Service Configuration Schema Request
+            type: object
+            x-speakeasy-name-override: ConnectorCatalogServiceConfigurationSchemaRequest
+        c1.api.integration.connector.v1.ConnectorCatalogServiceConfigurationSchemaResponse:
+            description: The ConnectorCatalogServiceConfigurationSchemaResponse message.
+            properties:
+                formSchema:
+                    $ref: '#/components/schemas/c1.api.form.v1.Form'
+                schema:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.ConfigSchema'
+            title: Connector Catalog Service Configuration Schema Response
+            type: object
+            x-speakeasy-name-override: ConnectorCatalogServiceConfigurationSchemaResponse
+        c1.api.integration.connector.v1.Field:
+            description: |
+                The Field message.
+
+                This message contains a oneof named field. Only a single field of the following list may be set at a time:
+                  - str
+                  - select
+                  - random
+                  - import
+                  - oauth2
+                  - readOnly
+                  - options
+                  - checkbox
+                  - secret
+                  - strList
+                  - text
+                  - keyValue
+                  - stringMap
+            properties:
+                additionalPlaceholder:
+                    description: |-
+                        Optional. Additional placeholder text for the field
+                         In cases where a single placeholder is not enough to describe the field
+                    readOnly: false
+                    type: string
+                checkbox:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.CheckboxField'
+                dependsOnFields:
+                    description: The dependsOnFields field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                displayName:
+                    description: Human-readable label for this Field
+                    readOnly: false
+                    type: string
+                helpUrl:
+                    description: empty or https URL
+                    readOnly: false
+                    type: string
+                import:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.ImportField'
+                keyValue:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.KeyValueField'
+                name:
+                    description: Must not start with `C1_` and match [a-zA-Z0-9_]{2,64}.  Must be unique within a connector.
+                    readOnly: false
+                    type: string
+                oauth2:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.OAuth2Field'
+                options:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.OptionsField'
+                placeholder:
+                    description: The placeholder field.
+                    readOnly: false
+                    type: string
+                postCreate:
+                    description: The postCreate field.
+                    readOnly: false
+                    type: boolean
+                random:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.RandomStringField'
+                readOnly:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.ReadOnlyField'
+                secret:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.RotatableSecretField'
+                select:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.SelectField'
+                str:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.StringField'
+                strList:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.StringListField'
+                stringMap:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.StringMapField'
+                text:
+                    $ref: '#/components/schemas/c1.api.integration.connector.v1.TextField'
+            title: Field
+            type: object
+            x-speakeasy-name-override: Field
+        c1.api.integration.connector.v1.FieldGroup:
+            description: The FieldGroup message.
+            properties:
+                displayName:
+                    description: Nice name this group (e.g. renders as a Tab label)
+                    readOnly: false
+                    type: string
+                fieldNames:
+                    description: Field names are "guaranteed" to be unique, but can be repeated in and between lists.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                helpText:
+                    description: Optional. User-facing help text.
+                    readOnly: false
+                    type: string
+                name:
+                    description: Unique ID.
+                    readOnly: false
+                    type: string
+            title: Field Group
+            type: object
+            x-speakeasy-name-override: FieldGroup
+        c1.api.integration.connector.v1.ImportField:
+            description: The ImportField message.
+            nullable: true
+            properties:
+                allowedExtensions:
+                    description: The allowedExtensions field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                secret:
+                    description: The secret field.
+                    readOnly: false
+                    type: boolean
+                valueValidator:
+                    $ref: '#/components/schemas/validate.StringRules'
+            title: Import Field
+            type: object
+            x-speakeasy-name-override: ImportField
+        c1.api.integration.connector.v1.KeyValueField:
+            description: The KeyValueField message.
+            nullable: true
+            properties:
+                secret:
+                    description: The secret field.
+                    readOnly: false
+                    type: boolean
+            title: Key Value Field
+            type: object
+            x-speakeasy-name-override: KeyValueField
+        c1.api.integration.connector.v1.OAuth2Field:
+            description: The OAuth2Field message.
+            nullable: true
+            title: O Auth 2 Field
+            type: object
+            x-speakeasy-name-override: OAuth2Field
+        c1.api.integration.connector.v1.OptionsField:
+            description: The OptionsField message.
+            nullable: true
+            title: Options Field
+            type: object
+            x-speakeasy-name-override: OptionsField
+        c1.api.integration.connector.v1.RandomStringField:
+            description: The RandomStringField message.
+            nullable: true
+            properties:
+                length:
+                    description: The length field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+            title: Random String Field
+            type: object
+            x-speakeasy-name-override: RandomStringField
+        c1.api.integration.connector.v1.ReadOnlyField:
+            description: The ReadOnlyField message.
+            nullable: true
+            title: Read Only Field
+            type: object
+            x-speakeasy-name-override: ReadOnlyField
+        c1.api.integration.connector.v1.RotatableSecretField:
+            description: The RotatableSecretField message.
+            nullable: true
+            title: Rotatable Secret Field
+            type: object
+            x-speakeasy-name-override: RotatableSecretField
+        c1.api.integration.connector.v1.SelectField:
+            description: The SelectField message.
+            nullable: true
+            properties:
+                items:
+                    description: list of items that are selected from
+                    items:
+                        $ref: '#/components/schemas/c1.api.integration.connector.v1.SelectField.Item'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Select Field
+            type: object
+            x-speakeasy-name-override: SelectField
+        c1.api.integration.connector.v1.SelectField.Item:
+            description: The Item message.
+            properties:
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                value:
+                    description: The value field.
+                    readOnly: false
+                    type: string
+            title: Item
+            type: object
+            x-speakeasy-name-override: Item
+        c1.api.integration.connector.v1.StringField:
+            description: The StringField message.
+            nullable: true
+            properties:
+                secret:
+                    description: If secret, value is write-only in UI and a password-type form is used.
+                    readOnly: false
+                    type: boolean
+                valueValidator:
+                    $ref: '#/components/schemas/validate.StringRules'
+            title: String Field
+            type: object
+            x-speakeasy-name-override: StringField
+        c1.api.integration.connector.v1.StringListField:
+            description: The StringListField message.
+            nullable: true
+            properties:
+                valueValidator:
+                    $ref: '#/components/schemas/validate.StringRules'
+            title: String List Field
+            type: object
+            x-speakeasy-name-override: StringListField
+        c1.api.integration.connector.v1.StringMapField:
+            description: The StringMapField message.
+            nullable: true
+            properties:
+                optional:
+                    description: The optional field.
+                    readOnly: false
+                    type: boolean
+            title: String Map Field
+            type: object
+            x-speakeasy-name-override: StringMapField
+        c1.api.integration.connector.v1.TextField:
+            description: The TextField message.
+            nullable: true
+            properties:
+                secret:
+                    description: The secret field.
+                    readOnly: false
+                    type: boolean
+                valueValidator:
+                    $ref: '#/components/schemas/validate.StringRules'
+            title: Text Field
+            type: object
+            x-speakeasy-name-override: TextField
         c1.api.policy.v1.Accept:
             description: This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
             nullable: true
@@ -9405,6 +9800,41 @@ components:
             title: Webhook Provision
             type: object
             x-speakeasy-name-override: WebhookProvision
+        c1.api.profiletype.v1.ProfileType:
+            description: ProfileType represents a type of profile in the system
+            properties:
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                iconUrl:
+                    description: The iconUrl field.
+                    readOnly: false
+                    type: string
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+                name:
+                    description: The name field.
+                    readOnly: false
+                    type: string
+                priority:
+                    description: The priority field.
+                    format: uint32
+                    readOnly: false
+                    type: integer
+                sizes:
+                    description: icon sizes
+                    items:
+                        format: int32
+                        type: integer
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Profile Type
+            type: object
+            x-speakeasy-name-override: ProfileType
         c1.api.requestcatalog.v1.AppEntitlementWithUserBindings:
             description: The AppEntitlementWithUserBindings message represents an app entitlement and its associated user bindings.
             properties:
@@ -13880,6 +14310,19 @@ components:
             title: Task View
             type: object
             x-speakeasy-name-override: TaskView
+        c1.api.user.v1.GetUserProfileTypesResponse:
+            description: The GetUserProfileTypesResponse message.
+            properties:
+                profileTypes:
+                    description: The profileTypes field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.profiletype.v1.ProfileType'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Get User Profile Types Response
+            type: object
+            x-speakeasy-name-override: GetUserProfileTypesResponse
         c1.api.user.v1.SearchUsersRequest:
             description: Search for users based on some filters.
             properties:
@@ -17976,7 +18419,78 @@ paths:
                 - App Entitlement User Binding
             x-speakeasy-group: AppEntitlementUserBinding
             x-speakeasy-name-override: ListAppUsersForIdentityWithGrant
+    /api/v1/apps/{app_id}/entitlements/{entitlement_id}/ownerids:
+        get:
+            description: ListUserIDs lists owner IDs for a given app entitlement.
+            operationId: c1.api.app.v1.AppEntitlementOwners.ListOwnerIDs
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The app_id field for the app entitlement to list owners of.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: entitlement_id
+                  required: true
+                  schema:
+                    description: The entitlement_id field for the app entitlement to list owners of.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.ListAppEntitlementOwnerIDsResponse'
+                    description: The response message for listing app entitlement owners IDs.
+            summary: List Owner I Ds
+            tags:
+                - App Entitlement Owner
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: App_Entitlement_Owner#read
+            x-speakeasy-group: AppEntitlementOwners
+            x-speakeasy-name-override: ListOwnerIDs
     /api/v1/apps/{app_id}/entitlements/{entitlement_id}/owners:
+        delete:
+            description: Delete deletes the owners from a given app entitlement.
+            operationId: c1.api.app.v1.AppEntitlementOwners.Delete
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The app_id field for the app entitlement to remove the owner of.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: entitlement_id
+                  required: true
+                  schema:
+                    description: The entitlement_id field for the app entitlement to remove the owner of.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.DeleteAppEntitlementOwnersRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.DeleteAppEntitlementOwnersResponse'
+                    description: the empty response message for deleting app entitlement owners.
+            summary: Delete
+            tags:
+                - App Entitlement Owner
+            x-speakeasy-entity-operation:
+                terraform-resource: App_Entitlement_Owner#delete
+            x-speakeasy-group: AppEntitlementOwners
+            x-speakeasy-name-override: Delete
         get:
             description: List owners for a given app entitlement.
             operationId: c1.api.app.v1.AppEntitlementOwners.List
@@ -18338,7 +18852,64 @@ paths:
                 - App Entitlement
             x-speakeasy-group: AppEntitlements
             x-speakeasy-name-override: ListForAppUser
+    /api/v1/apps/{app_id}/ownerids:
+        get:
+            description: ListOwnerIDs lists owner IDs for a given app.
+            operationId: c1.api.app.v1.AppOwners.ListOwnerIDs
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The app_id field for the app to list owners of.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.ListAppOwnerIDsResponse'
+                    description: The response message for listing app owners IDs.
+            summary: List Owner I Ds
+            tags:
+                - App Owner
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: App_Owner#read
+            x-speakeasy-group: AppOwners
+            x-speakeasy-name-override: ListOwnerIDs
     /api/v1/apps/{app_id}/owners:
+        delete:
+            description: Delete deletes the owners from a given app.
+            operationId: c1.api.app.v1.AppOwners.Delete
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The app_id field for the app to remove the owner of.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.DeleteAppOwnersRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.DeleteAppOwnersResponse'
+                    description: the empty response message for deleting app owners.
+            summary: Delete
+            tags:
+                - App Owner
+            x-speakeasy-entity-operation:
+                terraform-resource: App_Owner#delete
+            x-speakeasy-group: AppOwners
+            x-speakeasy-name-override: Delete
         get:
             description: List owners of an app.
             operationId: c1.api.app.v1.AppOwners.List
@@ -20755,6 +21326,27 @@ paths:
                 - Request Catalog
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: ForceRunBundleAutomation
+    /api/v1/connectorcatalog:
+        post:
+            description: Invokes the c1.api.integration.connector.v1.ConnectorCatalogService.ConfigurationSchema method.
+            operationId: c1.api.integration.connector.v1.ConnectorCatalogService.ConfigurationSchema
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.integration.connector.v1.ConnectorCatalogServiceConfigurationSchemaRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.integration.connector.v1.ConnectorCatalogServiceConfigurationSchemaResponse'
+                    description: Successful response
+            summary: Configuration Schema
+            tags:
+                - Connector Catalog
+            x-speakeasy-group: ConnectorCatalog
+            x-speakeasy-name-override: ConfigurationSchema
     /api/v1/directories:
         get:
             description: List directories.
@@ -23140,6 +23732,30 @@ paths:
                 - User
             x-speakeasy-group: User
             x-speakeasy-name-override: Get
+    /api/v1/users/{user_id}/profile-types:
+        get:
+            description: Invokes the c1.api.user.v1.UserService.GetUserProfileTypes method.
+            operationId: c1.api.user.v1.UserService.GetUserProfileTypes
+            parameters:
+                - in: path
+                  name: user_id
+                  required: true
+                  schema:
+                    description: The userId field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.user.v1.GetUserProfileTypesResponse'
+                    description: Successful response
+            summary: Get User Profile Types
+            tags:
+                - User
+            x-speakeasy-group: User
+            x-speakeasy-name-override: GetUserProfileTypes
     /api/v1/webhooks:
         get:
             description: Invokes the c1.api.webhooks.v1.WebhooksService.List method.
