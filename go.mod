@@ -2,10 +2,7 @@ module github.com/conductorone/terraform-provider-conductorone
 
 go 1.24.0
 
-toolchain go1.24.7
-
 require (
-	github.com/ericlagergren/decimal v0.0.0-20221120152707-495c53812d05
 	github.com/go-jose/go-jose/v3 v3.0.4
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
@@ -16,7 +13,7 @@ require (
 	github.com/hashicorp/terraform-plugin-framework-validators v0.18.0
 	github.com/hashicorp/terraform-plugin-go v0.29.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.38.0
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.38.1
 	github.com/hashicorp/terraform-plugin-testing v1.13.3
 	github.com/pquerna/xjwt v0.3.0
 	github.com/spyzhov/ajson v0.9.0

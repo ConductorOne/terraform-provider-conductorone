@@ -283,11 +283,37 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `The appEntitlementRefsCel field.`,
 								},
+								"excluded_app_entitlement_refs": schema.ListNestedAttribute{
+									Computed: true,
+									Optional: true,
+									NestedObject: schema.NestedAttributeObject{
+										Validators: []validator.Object{
+											speakeasy_objectvalidators.NotNull(),
+										},
+										Attributes: map[string]schema.Attribute{
+											"app_id": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The appId field.`,
+											},
+											"id": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The id field.`,
+											},
+										},
+									},
+									Description: `The excludedAppEntitlementRefs field.`,
+								},
+								"excluded_app_entitlement_refs_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The excludedAppEntitlementRefsCel field.`,
+								},
 								"revoke_all": schema.BoolAttribute{
-									Computed:           true,
-									Optional:           true,
-									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-									Description:        `The revokeAll field.`,
+									Computed:    true,
+									Optional:    true,
+									Description: `The revokeAll field.`,
 								},
 								"use_subject_user": schema.BoolAttribute{
 									Computed:    true,
@@ -1060,11 +1086,37 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `The appEntitlementRefsCel field.`,
 								},
+								"excluded_app_entitlement_refs": schema.ListNestedAttribute{
+									Computed: true,
+									Optional: true,
+									NestedObject: schema.NestedAttributeObject{
+										Validators: []validator.Object{
+											speakeasy_objectvalidators.NotNull(),
+										},
+										Attributes: map[string]schema.Attribute{
+											"app_id": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The appId field.`,
+											},
+											"id": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The id field.`,
+											},
+										},
+									},
+									Description: `The excludedAppEntitlementRefs field.`,
+								},
+								"excluded_app_entitlement_refs_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The excludedAppEntitlementRefsCel field.`,
+								},
 								"revoke_all": schema.BoolAttribute{
-									Computed:           true,
-									Optional:           true,
-									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-									Description:        `The revokeAll field.`,
+									Computed:    true,
+									Optional:    true,
+									Description: `The revokeAll field.`,
 								},
 								"use_subject_user": schema.BoolAttribute{
 									Computed:    true,
