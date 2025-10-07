@@ -17,7 +17,7 @@ type StringSliceField struct {
 	// The placeholder field.
 	Placeholder *string `json:"placeholder,omitempty"`
 	// RepeatedRules describe the constraints applied to `repeated` values
-	RepeatedRules *RepeatedRules `json:"rules,omitempty"`
+	RepeatedRules any `json:"rules,omitempty"`
 }
 
 func (s *StringSliceField) GetChipsField() *ChipsField {
@@ -41,7 +41,7 @@ func (s *StringSliceField) GetPlaceholder() *string {
 	return s.Placeholder
 }
 
-func (s *StringSliceField) GetRepeatedRules() *RepeatedRules {
+func (s *StringSliceField) GetRepeatedRules() any {
 	if s == nil {
 		return nil
 	}

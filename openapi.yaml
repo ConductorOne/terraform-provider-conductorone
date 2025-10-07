@@ -3275,6 +3275,24 @@ components:
             type: object
             x-speakeasy-entity: App
             x-speakeasy-name-override: DeleteAppRequest
+        c1.api.app.v1.DeleteAppResourceOwnersRequestInput:
+            description: The request message for deleting app resource owners.
+            properties:
+                userIds:
+                    description: The user_ids field for the users to set as an owner of the app resource.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Delete App Resource Owners Request
+            type: object
+            x-speakeasy-name-override: DeleteAppResourceOwnersRequest
+        c1.api.app.v1.DeleteAppResourceOwnersResponse:
+            description: the empty response message for deleting app resource owners.
+            title: Delete App Resource Owners Response
+            type: object
+            x-speakeasy-name-override: DeleteAppResourceOwnersResponse
         c1.api.app.v1.DeleteAppResponse:
             description: Empty response body. Status code indicates success.
             title: Delete App Response
@@ -3617,6 +3635,19 @@ components:
             title: List App Owners Response
             type: object
             x-speakeasy-name-override: ListAppOwnersResponse
+        c1.api.app.v1.ListAppResourceOwnerIDsResponse:
+            description: The response message for listing app resource owners IDs.
+            properties:
+                userIds:
+                    description: The list of owner IDs for the app resource.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: List App Resource Owner I Ds Response
+            type: object
+            x-speakeasy-name-override: ListAppResourceOwnerIDsResponse
         c1.api.app.v1.ListAppResourceOwnersResponse:
             description: The ListAppResourceOwnersResponse message contains a list of results and a nextPageToken if applicable
             properties:
@@ -4320,6 +4351,25 @@ components:
             title: Set App Owners Response
             type: object
             x-speakeasy-name-override: SetAppOwnersResponse
+        c1.api.app.v1.SetAppResourceOwnersRequestInput:
+            description: The SetAppResourceOwnersRequest message.
+            properties:
+                userIds:
+                    description: The userIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Set App Resource Owners Request
+            type: object
+            x-speakeasy-entity: App_Resource_Owner
+            x-speakeasy-name-override: SetAppResourceOwnersRequest
+        c1.api.app.v1.SetAppResourceOwnersResponse:
+            description: The empty response message for setting the app resource owners.
+            title: Set App Resource Owners Response
+            type: object
+            x-speakeasy-name-override: SetAppResourceOwnersResponse
         c1.api.app.v1.TaskAuditCancelledResult:
             description: The TaskAuditCancelledResult message.
             nullable: true
@@ -4844,6 +4894,45 @@ components:
             title: Introspect Response
             type: object
             x-speakeasy-name-override: IntrospectResponse
+        c1.api.automations.v1.AccountInContext:
+            description: The AccountInContext message.
+            nullable: true
+            title: Account In Context
+            type: object
+            x-speakeasy-name-override: AccountInContext
+        c1.api.automations.v1.AccountLifecycleAction:
+            description: |
+                The AccountLifecycleAction message.
+
+                This message contains a oneof named account_identifier. Only a single field of the following list may be set at a time:
+                  - accountRef
+                  - accountInContext
+            nullable: true
+            properties:
+                accountInContext:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AccountInContext'
+                accountRef:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AccountRef'
+                actionName:
+                    description: The actionName field.
+                    readOnly: false
+                    type: string
+                connectorRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.ConnectorRef'
+            title: Account Lifecycle Action
+            type: object
+            x-speakeasy-name-override: AccountLifecycleAction
+        c1.api.automations.v1.AccountRef:
+            description: The AccountRef message.
+            nullable: true
+            properties:
+                accountIdCel:
+                    description: The accountIdCel field.
+                    readOnly: false
+                    type: string
+            title: Account Ref
+            type: object
+            x-speakeasy-name-override: AccountRef
         c1.api.automations.v1.AppUserCreatedTrigger:
             description: |
                 The AppUserCreatedTrigger message.
@@ -5137,7 +5226,10 @@ components:
                   - grantEntitlements
                   - sendSlackMessage
                   - callFunction
+                  - accountLifecycleAction
             properties:
+                accountLifecycleAction:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AccountLifecycleAction'
                 callFunction:
                     $ref: '#/components/schemas/c1.api.automations.v1.CallFunction'
                 connectorAction:
@@ -5864,11 +5956,16 @@ components:
                     description: The advanced field.
                     readOnly: false
                     type: boolean
+                condition:
+                    description: The condition field.
+                    readOnly: false
+                    type: string
                 cronSpec:
                     description: The cronSpec field.
                     readOnly: false
                     type: string
                 skipIfTrueCel:
+                    deprecated: true
                     description: The skipIfTrueCel field.
                     readOnly: false
                     type: string
@@ -19499,6 +19596,91 @@ paths:
                 terraform-resource: App Resource Type#update
             x-speakeasy-group: AppResourceType
             x-speakeasy-name-override: UpdateManuallyManagedResourceType
+    /api/v1/apps/{app_id}/resource_types/{resource_type_id}/resource/{resource_id}/ownerids:
+        delete:
+            description: Delete deletes the owners from a given app resource.
+            operationId: c1.api.app.v1.AppResourceOwners.Delete
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_type_id
+                  required: true
+                  schema:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_id
+                  required: true
+                  schema:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.DeleteAppResourceOwnersRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.DeleteAppResourceOwnersResponse'
+                    description: the empty response message for deleting app resource owners.
+            summary: Delete
+            tags:
+                - App Resource Owner
+            x-speakeasy-entity-operation:
+                terraform-resource: App_Resource_Owner#delete
+            x-speakeasy-group: AppResourceOwners
+            x-speakeasy-name-override: Delete
+        get:
+            description: ListOwnerIDs lists owner IDs for a given app resource.
+            operationId: c1.api.app.v1.AppResourceOwners.ListOwnerIDs
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_type_id
+                  required: true
+                  schema:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_id
+                  required: true
+                  schema:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.ListAppResourceOwnerIDsResponse'
+                    description: The response message for listing app resource owners IDs.
+            summary: List Owner I Ds
+            tags:
+                - App Resource Owner
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: App_Resource_Owner#read
+            x-speakeasy-group: AppResourceOwners
+            x-speakeasy-name-override: ListOwnerIDs
     /api/v1/apps/{app_id}/resource_types/{resource_type_id}/resource/{resource_id}/owners:
         delete:
             description: Invokes the c1.api.app.v1.AppResourceOwners.Remove method.
@@ -19634,6 +19816,50 @@ paths:
                 - App Resource Owner
             x-speakeasy-group: AppResourceOwners
             x-speakeasy-name-override: Add
+        put:
+            description: Sets the owners for a given app resource to the specified list of users.
+            operationId: c1.api.app.v1.AppResourceOwners.Set
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_type_id
+                  required: true
+                  schema:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_id
+                  required: true
+                  schema:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.SetAppResourceOwnersRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.SetAppResourceOwnersResponse'
+                    description: The empty response message for setting the app resource owners.
+            summary: Set
+            tags:
+                - App Resource Owner
+            x-speakeasy-entity-operation:
+                terraform-resource: App_Resource_Owner#create
+            x-speakeasy-group: AppResourceOwners
+            x-speakeasy-name-override: Set
     /api/v1/apps/{app_id}/usage_controls:
         get:
             description: Get usage controls, as an AppUsageControls object which describes some peripheral configuration, for an app.
