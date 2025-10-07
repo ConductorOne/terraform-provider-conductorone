@@ -548,7 +548,7 @@ actions:
       x-speakeasy-type-override: any
   - target: $["components"]["schemas"]["c1.api.automations.v1.FormTrigger"]
     update:
-      x-speakeasy-type-override: any
+      x-speakeasy-type-override: any 
   - target: $["paths"]["/api/v1/functions/{function_id}/commits/{id}"]["get"]["parameters"][1]
     update:
       x-speakeasy-match: function_commit.id 
@@ -570,7 +570,11 @@ actions:
   - target: $["components"]["schemas"]["c1.api.automations.v1.CreateAutomationResponse"]["properties"]["webhookHmacSecret"]
     update:
       x-speakeasy-ignore: true
-
+  # App_Entitlement_Owner. 
   - target: $["components"]["schemas"]["c1.api.app.v1.DeleteAppEntitlementOwnersRequestInput"]
     update:
       x-speakeasy-ignore: true
+  - target: $["paths"]["/api/v1/apps/{app_id}/resource_types/{resource_type_id}/resource/{resource_id}/owners"]["put"]["x-speakeasy-entity-operation"]["terraform-resource"]
+    update:
+      - App_Resource_Owner#create
+      - App_Resource_Owner#update
