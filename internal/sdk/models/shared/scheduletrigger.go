@@ -11,9 +11,13 @@ import (
 type ScheduleTrigger struct {
 	// The advanced field.
 	Advanced *bool `json:"advanced,omitempty"`
+	// The condition field.
+	Condition *string `json:"condition,omitempty"`
 	// The cronSpec field.
 	CronSpec *string `json:"cronSpec,omitempty"`
 	// The skipIfTrueCel field.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	SkipIfTrueCel *string    `json:"skipIfTrueCel,omitempty"`
 	Start         *time.Time `json:"start,omitempty"`
 }
@@ -34,6 +38,13 @@ func (s *ScheduleTrigger) GetAdvanced() *bool {
 		return nil
 	}
 	return s.Advanced
+}
+
+func (s *ScheduleTrigger) GetCondition() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Condition
 }
 
 func (s *ScheduleTrigger) GetCronSpec() *string {

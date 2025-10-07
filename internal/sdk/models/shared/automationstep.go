@@ -20,7 +20,15 @@ package shared
 //   - grantEntitlements
 //   - sendSlackMessage
 //   - callFunction
+//   - accountLifecycleAction
 type AutomationStep struct {
+	// The AccountLifecycleAction message.
+	//
+	// This message contains a oneof named account_identifier. Only a single field of the following list may be set at a time:
+	//   - accountRef
+	//   - accountInContext
+	//
+	AccountLifecycleAction *AccountLifecycleAction `json:"accountLifecycleAction,omitempty"`
 	// The CallFunction message.
 	CallFunction *CallFunction `json:"callFunction,omitempty"`
 	// The ConnectorAction message.
@@ -101,6 +109,13 @@ type AutomationStep struct {
 	//   - webhookIdCel
 	//
 	Webhook *Webhook `json:"webhook,omitempty"`
+}
+
+func (a *AutomationStep) GetAccountLifecycleAction() *AccountLifecycleAction {
+	if a == nil {
+		return nil
+	}
+	return a.AccountLifecycleAction
 }
 
 func (a *AutomationStep) GetCallFunction() *CallFunction {

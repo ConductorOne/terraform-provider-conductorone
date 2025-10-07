@@ -22,6 +22,19 @@ resource "conductorone_automation" "my_automation" {
   }
   automation_steps = [
     {
+      account_lifecycle_action = {
+        account_in_context = {
+          # ...
+        }
+        account_ref = {
+          account_id_cel = "...my_account_id_cel..."
+        }
+        action_name = "...my_action_name..."
+        connector_ref = {
+          app_id = "...my_app_id..."
+          id     = "...my_id..."
+        }
+      }
       call_function = {
         args = {
           key = "value"
@@ -203,6 +216,19 @@ resource "conductorone_automation" "my_automation" {
   display_name = "...my_display_name..."
   draft_automation_steps = [
     {
+      account_lifecycle_action = {
+        account_in_context = {
+          # ...
+        }
+        account_ref = {
+          account_id_cel = "...my_account_id_cel..."
+        }
+        action_name = "...my_action_name..."
+        connector_ref = {
+          app_id = "...my_app_id..."
+          id     = "...my_id..."
+        }
+      }
       call_function = {
         args = {
           key = "value"
@@ -442,6 +468,7 @@ resource "conductorone_automation" "my_automation" {
       }
       schedule_trigger = {
         advanced         = false
+        condition        = "...my_condition..."
         cron_spec        = "...my_cron_spec..."
         skip_if_true_cel = "...my_skip_if_true_cel..."
         start            = "2022-11-05T06:51:06.048Z"
@@ -559,6 +586,7 @@ resource "conductorone_automation" "my_automation" {
       }
       schedule_trigger = {
         advanced         = false
+        condition        = "...my_condition..."
         cron_spec        = "...my_cron_spec..."
         skip_if_true_cel = "...my_skip_if_true_cel..."
         start            = "2022-01-25T09:55:20.150Z"
@@ -658,6 +686,11 @@ Optional:
 
 Optional:
 
+- `account_lifecycle_action` (Attributes) The AccountLifecycleAction message.
+
+This message contains a oneof named account_identifier. Only a single field of the following list may be set at a time:
+  - accountRef
+  - accountInContext (see [below for nested schema](#nestedatt--automation_steps--account_lifecycle_action))
 - `call_function` (Attributes) The CallFunction message. (see [below for nested schema](#nestedatt--automation_steps--call_function))
 - `connector_action` (Attributes) The ConnectorAction message.
 
@@ -712,6 +745,38 @@ This message contains a oneof named user_status. Only a single field of the foll
 This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
   - webhookId
   - webhookIdCel (see [below for nested schema](#nestedatt--automation_steps--webhook))
+
+<a id="nestedatt--automation_steps--account_lifecycle_action"></a>
+### Nested Schema for `automation_steps.account_lifecycle_action`
+
+Optional:
+
+- `account_in_context` (Attributes) The AccountInContext message. (see [below for nested schema](#nestedatt--automation_steps--account_lifecycle_action--account_in_context))
+- `account_ref` (Attributes) The AccountRef message. (see [below for nested schema](#nestedatt--automation_steps--account_lifecycle_action--account_ref))
+- `action_name` (String) The actionName field.
+- `connector_ref` (Attributes) The ConnectorRef message. (see [below for nested schema](#nestedatt--automation_steps--account_lifecycle_action--connector_ref))
+
+<a id="nestedatt--automation_steps--account_lifecycle_action--account_in_context"></a>
+### Nested Schema for `automation_steps.account_lifecycle_action.account_in_context`
+
+
+<a id="nestedatt--automation_steps--account_lifecycle_action--account_ref"></a>
+### Nested Schema for `automation_steps.account_lifecycle_action.account_ref`
+
+Optional:
+
+- `account_id_cel` (String) The accountIdCel field.
+
+
+<a id="nestedatt--automation_steps--account_lifecycle_action--connector_ref"></a>
+### Nested Schema for `automation_steps.account_lifecycle_action.connector_ref`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
 
 <a id="nestedatt--automation_steps--call_function"></a>
 ### Nested Schema for `automation_steps.call_function`
@@ -1120,6 +1185,11 @@ See the documentation for `c1.api.automations.v1.Webhook` for more details.
 
 Optional:
 
+- `account_lifecycle_action` (Attributes) The AccountLifecycleAction message.
+
+This message contains a oneof named account_identifier. Only a single field of the following list may be set at a time:
+  - accountRef
+  - accountInContext (see [below for nested schema](#nestedatt--draft_automation_steps--account_lifecycle_action))
 - `call_function` (Attributes) The CallFunction message. (see [below for nested schema](#nestedatt--draft_automation_steps--call_function))
 - `connector_action` (Attributes) The ConnectorAction message.
 
@@ -1174,6 +1244,38 @@ This message contains a oneof named user_status. Only a single field of the foll
 This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
   - webhookId
   - webhookIdCel (see [below for nested schema](#nestedatt--draft_automation_steps--webhook))
+
+<a id="nestedatt--draft_automation_steps--account_lifecycle_action"></a>
+### Nested Schema for `draft_automation_steps.account_lifecycle_action`
+
+Optional:
+
+- `account_in_context` (Attributes) The AccountInContext message. (see [below for nested schema](#nestedatt--draft_automation_steps--account_lifecycle_action--account_in_context))
+- `account_ref` (Attributes) The AccountRef message. (see [below for nested schema](#nestedatt--draft_automation_steps--account_lifecycle_action--account_ref))
+- `action_name` (String) The actionName field.
+- `connector_ref` (Attributes) The ConnectorRef message. (see [below for nested schema](#nestedatt--draft_automation_steps--account_lifecycle_action--connector_ref))
+
+<a id="nestedatt--draft_automation_steps--account_lifecycle_action--account_in_context"></a>
+### Nested Schema for `draft_automation_steps.account_lifecycle_action.account_in_context`
+
+
+<a id="nestedatt--draft_automation_steps--account_lifecycle_action--account_ref"></a>
+### Nested Schema for `draft_automation_steps.account_lifecycle_action.account_ref`
+
+Optional:
+
+- `account_id_cel` (String) The accountIdCel field.
+
+
+<a id="nestedatt--draft_automation_steps--account_lifecycle_action--connector_ref"></a>
+### Nested Schema for `draft_automation_steps.account_lifecycle_action.connector_ref`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
 
 <a id="nestedatt--draft_automation_steps--call_function"></a>
 ### Nested Schema for `draft_automation_steps.call_function`
@@ -1758,8 +1860,9 @@ Optional:
 Optional:
 
 - `advanced` (Boolean) The advanced field.
+- `condition` (String) The condition field.
 - `cron_spec` (String) The cronSpec field.
-- `skip_if_true_cel` (String) The skipIfTrueCel field.
+- `skip_if_true_cel` (String, Deprecated) The skipIfTrueCel field.
 - `start` (String)
 
 
@@ -2038,8 +2141,9 @@ Optional:
 Optional:
 
 - `advanced` (Boolean) The advanced field.
+- `condition` (String) The condition field.
 - `cron_spec` (String) The cronSpec field.
-- `skip_if_true_cel` (String) The skipIfTrueCel field.
+- `skip_if_true_cel` (String, Deprecated) The skipIfTrueCel field.
 - `start` (String)
 
 
