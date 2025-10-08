@@ -546,6 +546,12 @@ actions:
   - target: $["components"]["schemas"]["c1.api.policy.v1.Form"]
     update:
       x-speakeasy-type-override: any
+  - target: $["components"]["schemas"]["validate.FieldRules"]
+    update:
+      x-speakeasy-type-override: any
+  - target: $["components"]["schemas"]["validate.StringRules"]
+    update:
+      x-speakeasy-type-override: any
   - target: $["components"]["schemas"]["c1.api.automations.v1.FormTrigger"]
     update:
       x-speakeasy-type-override: any

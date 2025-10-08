@@ -32,7 +32,7 @@ type StringField struct {
 	//   - uuid
 	//   - wellKnownRegex
 	//
-	StringRules *StringRules `json:"rules,omitempty"`
+	StringRules any `json:"rules,omitempty"`
 	// The SelectField message.
 	SelectField *SelectField `json:"selectField,omitempty"`
 	// The TextField message.
@@ -60,7 +60,7 @@ func (s *StringField) GetPlaceholder() *string {
 	return s.Placeholder
 }
 
-func (s *StringField) GetStringRules() *StringRules {
+func (s *StringField) GetStringRules() any {
 	if s == nil {
 		return nil
 	}
