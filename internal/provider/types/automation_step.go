@@ -7,6 +7,7 @@ import (
 )
 
 type AutomationStep struct {
+	AccountLifecycleAction        *AccountLifecycleAction        `tfsdk:"account_lifecycle_action"`
 	CallFunction                  *CallFunction                  `tfsdk:"call_function"`
 	ConnectorAction               *ConnectorAction               `tfsdk:"connector_action"`
 	ConnectorCreateAccount        *ConnectorCreateAccount        `tfsdk:"connector_create_account"`

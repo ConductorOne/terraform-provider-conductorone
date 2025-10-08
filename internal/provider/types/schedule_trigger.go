@@ -8,6 +8,7 @@ import (
 
 type ScheduleTrigger struct {
 	Advanced      types.Bool   `tfsdk:"advanced"`
+	Condition     types.String `tfsdk:"condition"`
 	CronSpec      types.String `tfsdk:"cron_spec"`
 	SkipIfTrueCel types.String `tfsdk:"skip_if_true_cel"`
 	Start         types.String `tfsdk:"start"`

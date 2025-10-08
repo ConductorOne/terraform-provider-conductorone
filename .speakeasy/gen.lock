@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: faf44566bc7b0f9cb994601576ffcd22
+  docChecksum: 4f5d16b86b934c3d29a827b2651ca037
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.628.7
   generationVersion: 2.716.9
-  releaseVersion: 1.6.8
-  configChecksum: 2d1473e0e18187b8b4b781df68e55f1c
+  releaseVersion: 1.6.13
+  configChecksum: 0676eea9dc3fd6780e2bda0fdd1bc06b
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -86,6 +86,9 @@ generatedFiles:
   - examples/resources/conductorone_app_resource/import-by-string-id.tf
   - examples/resources/conductorone_app_resource/import.sh
   - examples/resources/conductorone_app_resource/resource.tf
+  - examples/resources/conductorone_app_resource_owner/import-by-string-id.tf
+  - examples/resources/conductorone_app_resource_owner/import.sh
+  - examples/resources/conductorone_app_resource_owner/resource.tf
   - examples/resources/conductorone_app_resource_type/import-by-string-id.tf
   - examples/resources/conductorone_app_resource_type/import.sh
   - examples/resources/conductorone_app_resource_type/resource.tf
@@ -171,6 +174,8 @@ generatedFiles:
   - internal/provider/app_resource.go
   - internal/provider/app_resource_data_source.go
   - internal/provider/app_resource_data_source_sdk.go
+  - internal/provider/app_resource_owner_resource.go
+  - internal/provider/app_resource_owner_resource_sdk.go
   - internal/provider/app_resource_resource.go
   - internal/provider/app_resource_resource_sdk.go
   - internal/provider/app_resource_sdk.go
@@ -249,8 +254,11 @@ generatedFiles:
   - internal/provider/typeconvert/int.go
   - internal/provider/types/accept.go
   - internal/provider/types/account_filter.go
+  - internal/provider/types/account_in_context.go
+  - internal/provider/types/account_lifecycle_action.go
   - internal/provider/types/account_provision.go
   - internal/provider/types/account_provision_config.go
+  - internal/provider/types/account_ref.go
   - internal/provider/types/agent_approval.go
   - internal/provider/types/app.go
   - internal/provider/types/app_entitlement.go
@@ -496,8 +504,11 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1appreportactionservicegeneratereport.go
   - internal/sdk/models/operations/c1apiappv1appreportservicelist.go
   - internal/sdk/models/operations/c1apiappv1appresourceownersadd.go
+  - internal/sdk/models/operations/c1apiappv1appresourceownersdelete.go
   - internal/sdk/models/operations/c1apiappv1appresourceownerslist.go
+  - internal/sdk/models/operations/c1apiappv1appresourceownerslistownerids.go
   - internal/sdk/models/operations/c1apiappv1appresourceownersremove.go
+  - internal/sdk/models/operations/c1apiappv1appresourceownersset.go
   - internal/sdk/models/operations/c1apiappv1appresourcesearchsearchappresources.go
   - internal/sdk/models/operations/c1apiappv1appresourcesearchsearchappresourcetypes.go
   - internal/sdk/models/operations/c1apiappv1appresourceservicecreatemanuallymanagedappresource.go
@@ -678,7 +689,10 @@ generatedFiles:
   - internal/sdk/models/shared/accept.go
   - internal/sdk/models/shared/acceptinstance.go
   - internal/sdk/models/shared/accountfilter.go
+  - internal/sdk/models/shared/accountincontext.go
+  - internal/sdk/models/shared/accountlifecycleaction.go
   - internal/sdk/models/shared/accountprovision.go
+  - internal/sdk/models/shared/accountref.go
   - internal/sdk/models/shared/addappentitlementownerrequest.go
   - internal/sdk/models/shared/addappentitlementownerresponse.go
   - internal/sdk/models/shared/addappownerrequest.go
@@ -872,6 +886,8 @@ generatedFiles:
   - internal/sdk/models/shared/deleteappownersrequest.go
   - internal/sdk/models/shared/deleteappownersresponse.go
   - internal/sdk/models/shared/deleteapprequest.go
+  - internal/sdk/models/shared/deleteappresourceownersrequest.go
+  - internal/sdk/models/shared/deleteappresourceownersresponse.go
   - internal/sdk/models/shared/deleteappresponse.go
   - internal/sdk/models/shared/deleteattributevaluerequest.go
   - internal/sdk/models/shared/deleteattributevalueresponse.go
@@ -1009,6 +1025,7 @@ generatedFiles:
   - internal/sdk/models/shared/listappentitlementusersresponse.go
   - internal/sdk/models/shared/listappowneridsresponse.go
   - internal/sdk/models/shared/listappownersresponse.go
+  - internal/sdk/models/shared/listappresourceowneridsresponse.go
   - internal/sdk/models/shared/listappresourceownersresponse.go
   - internal/sdk/models/shared/listappsresponse.go
   - internal/sdk/models/shared/listappusersforidentitywithgrantresponse.go
@@ -1180,6 +1197,8 @@ generatedFiles:
   - internal/sdk/models/shared/setappentitlementownersresponse.go
   - internal/sdk/models/shared/setappownersrequest.go
   - internal/sdk/models/shared/setappownersresponse.go
+  - internal/sdk/models/shared/setappresourceownersrequest.go
+  - internal/sdk/models/shared/setappresourceownersresponse.go
   - internal/sdk/models/shared/setbundleautomationrequest.go
   - internal/sdk/models/shared/sfixed32rules.go
   - internal/sdk/models/shared/sfixed64rules.go
@@ -3168,6 +3187,36 @@ examples:
       parameters:
         path:
           user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceOwners.Delete:
+    speakeasy-default-c1-api-app-v1-app-resource-owners-delete:
+      parameters:
+        path:
+          app_id: "<id>"
+          resource_type_id: "<id>"
+          resource_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceOwners.ListOwnerIDs:
+    speakeasy-default-c1-api-app-v1-app-resource-owners-list-owner-I-ds:
+      parameters:
+        path:
+          app_id: "<id>"
+          resource_type_id: "<id>"
+          resource_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.AppResourceOwners.Set:
+    speakeasy-default-c1-api-app-v1-app-resource-owners-set:
+      parameters:
+        path:
+          app_id: "<id>"
+          resource_type_id: "<id>"
+          resource_id: "<id>"
       responses:
         "200":
           application/json: {}

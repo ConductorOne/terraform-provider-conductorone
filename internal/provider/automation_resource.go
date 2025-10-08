@@ -87,6 +87,56 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 						speakeasy_objectvalidators.NotNull(),
 					},
 					Attributes: map[string]schema.Attribute{
+						"account_lifecycle_action": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"account_in_context": schema.SingleNestedAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The AccountInContext message.`,
+								},
+								"account_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"account_id_cel": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The accountIdCel field.`,
+										},
+									},
+									Description: `The AccountRef message.`,
+								},
+								"action_name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The actionName field.`,
+								},
+								"connector_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The appId field.`,
+										},
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The id field.`,
+										},
+									},
+									Description: `The ConnectorRef message.`,
+								},
+							},
+							MarkdownDescription: `The AccountLifecycleAction message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named account_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - accountRef` + "\n" +
+								`  - accountInContext`,
+						},
 						"call_function": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -890,6 +940,56 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 						speakeasy_objectvalidators.NotNull(),
 					},
 					Attributes: map[string]schema.Attribute{
+						"account_lifecycle_action": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"account_in_context": schema.SingleNestedAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The AccountInContext message.`,
+								},
+								"account_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"account_id_cel": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The accountIdCel field.`,
+										},
+									},
+									Description: `The AccountRef message.`,
+								},
+								"action_name": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The actionName field.`,
+								},
+								"connector_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The appId field.`,
+										},
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The id field.`,
+										},
+									},
+									Description: `The ConnectorRef message.`,
+								},
+							},
+							MarkdownDescription: `The AccountLifecycleAction message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named account_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - accountRef` + "\n" +
+								`  - accountInContext`,
+						},
 						"call_function": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -1983,15 +2083,21 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `The advanced field.`,
 								},
+								"condition": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The condition field.`,
+								},
 								"cron_spec": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The cronSpec field.`,
 								},
 								"skip_if_true_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The skipIfTrueCel field.`,
+									Computed:           true,
+									Optional:           true,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									Description:        `The skipIfTrueCel field.`,
 								},
 								"start": schema.StringAttribute{
 									Computed: true,
@@ -2545,15 +2651,21 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `The advanced field.`,
 								},
+								"condition": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The condition field.`,
+								},
 								"cron_spec": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The cronSpec field.`,
 								},
 								"skip_if_true_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The skipIfTrueCel field.`,
+									Computed:           true,
+									Optional:           true,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									Description:        `The skipIfTrueCel field.`,
 								},
 								"start": schema.StringAttribute{
 									Computed: true,

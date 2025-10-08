@@ -7,6 +7,19 @@ resource "conductorone_automation" "my_automation" {
   }
   automation_steps = [
     {
+      account_lifecycle_action = {
+        account_in_context = {
+          # ...
+        }
+        account_ref = {
+          account_id_cel = "...my_account_id_cel..."
+        }
+        action_name = "...my_action_name..."
+        connector_ref = {
+          app_id = "...my_app_id..."
+          id     = "...my_id..."
+        }
+      }
       call_function = {
         args = {
           key = "value"
@@ -188,6 +201,19 @@ resource "conductorone_automation" "my_automation" {
   display_name = "...my_display_name..."
   draft_automation_steps = [
     {
+      account_lifecycle_action = {
+        account_in_context = {
+          # ...
+        }
+        account_ref = {
+          account_id_cel = "...my_account_id_cel..."
+        }
+        action_name = "...my_action_name..."
+        connector_ref = {
+          app_id = "...my_app_id..."
+          id     = "...my_id..."
+        }
+      }
       call_function = {
         args = {
           key = "value"
@@ -427,6 +453,7 @@ resource "conductorone_automation" "my_automation" {
       }
       schedule_trigger = {
         advanced         = false
+        condition        = "...my_condition..."
         cron_spec        = "...my_cron_spec..."
         skip_if_true_cel = "...my_skip_if_true_cel..."
         start            = "2022-11-05T06:51:06.048Z"
@@ -544,6 +571,7 @@ resource "conductorone_automation" "my_automation" {
       }
       schedule_trigger = {
         advanced         = false
+        condition        = "...my_condition..."
         cron_spec        = "...my_cron_spec..."
         skip_if_true_cel = "...my_skip_if_true_cel..."
         start            = "2022-01-25T09:55:20.150Z"
