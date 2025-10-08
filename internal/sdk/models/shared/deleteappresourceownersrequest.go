@@ -4,13 +4,4 @@ package shared
 
 // DeleteAppResourceOwnersRequest - The request message for deleting app resource owners.
 type DeleteAppResourceOwnersRequest struct {
-	// The user_ids field for the users to set as an owner of the app resource.
-	UserIds []string `json:"userIds,omitempty"`
-}
-
-func (d *DeleteAppResourceOwnersRequest) GetUserIds() []string {
-	if d == nil {
-		return nil
-	}
-	return d.UserIds
 }

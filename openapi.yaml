@@ -3277,14 +3277,6 @@ components:
             x-speakeasy-name-override: DeleteAppRequest
         c1.api.app.v1.DeleteAppResourceOwnersRequestInput:
             description: The request message for deleting app resource owners.
-            properties:
-                userIds:
-                    description: The user_ids field for the users to set as an owner of the app resource.
-                    items:
-                        type: string
-                    nullable: true
-                    readOnly: false
-                    type: array
             title: Delete App Resource Owners Request
             type: object
             x-speakeasy-name-override: DeleteAppResourceOwnersRequest
