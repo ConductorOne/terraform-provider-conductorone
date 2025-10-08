@@ -33,7 +33,7 @@ type RepeatedRules struct {
 	//   - duration
 	//   - timestamp
 	//
-	FieldRules any `json:"items,omitempty"`
+	FieldRules *FieldRules `json:"items,omitempty"`
 	// MaxItems specifies that this field must have the specified number of
 	//  items at a maximum
 	MaxItems *string `json:"maxItems,omitempty"`
@@ -53,7 +53,7 @@ func (r *RepeatedRules) GetIgnoreEmpty() *bool {
 	return r.IgnoreEmpty
 }
 
-func (r *RepeatedRules) GetFieldRules() any {
+func (r *RepeatedRules) GetFieldRules() *FieldRules {
 	if r == nil {
 		return nil
 	}

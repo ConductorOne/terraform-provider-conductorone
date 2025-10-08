@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 68b4c0d0b151d5ef34afbac225ded6fe
+  docChecksum: 4f5d16b86b934c3d29a827b2651ca037
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.628.7
   generationVersion: 2.716.9
-  releaseVersion: 1.6.12
-  configChecksum: fe66efba32265a5b8eb4a2e057d8e85a
+  releaseVersion: 1.6.13
+  configChecksum: 0676eea9dc3fd6780e2bda0fdd1bc06b
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -703,6 +703,7 @@ generatedFiles:
   - internal/sdk/models/shared/addautomationexclusionresponse.go
   - internal/sdk/models/shared/addmanuallymanagedusersrequest.go
   - internal/sdk/models/shared/agentapproval.go
+  - internal/sdk/models/shared/anyrules.go
   - internal/sdk/models/shared/app.go
   - internal/sdk/models/shared/appaccessrequestdefaults.go
   - internal/sdk/models/shared/appactionsservicegeneratereportrequest.go
@@ -799,6 +800,7 @@ generatedFiles:
   - internal/sdk/models/shared/bundleautomationcircuitbreaker.go
   - internal/sdk/models/shared/bundleautomationlastrunstate.go
   - internal/sdk/models/shared/bundleautomationruleentitlement.go
+  - internal/sdk/models/shared/bytesrules.go
   - internal/sdk/models/shared/callfunction.go
   - internal/sdk/models/shared/cancelaccessrequestdefaultsrequest.go
   - internal/sdk/models/shared/cancelledaction.go
@@ -920,6 +922,8 @@ generatedFiles:
   - internal/sdk/models/shared/directoryview.go
   - internal/sdk/models/shared/disabledreasoncircuitbreaker.go
   - internal/sdk/models/shared/donotsave.go
+  - internal/sdk/models/shared/doublerules.go
+  - internal/sdk/models/shared/durationrules.go
   - internal/sdk/models/shared/editormarker.go
   - internal/sdk/models/shared/editorvalidaterequest.go
   - internal/sdk/models/shared/editorvalidateresponse.go
@@ -927,6 +931,7 @@ generatedFiles:
   - internal/sdk/models/shared/encrypteddata.go
   - internal/sdk/models/shared/entitlementfilter.go
   - internal/sdk/models/shared/entitlementownerapproval.go
+  - internal/sdk/models/shared/enumrules.go
   - internal/sdk/models/shared/erroredaction.go
   - internal/sdk/models/shared/escalation.go
   - internal/sdk/models/shared/escalationinstance.go
@@ -955,6 +960,10 @@ generatedFiles:
   - internal/sdk/models/shared/field.go
   - internal/sdk/models/shared/fieldgroup.go
   - internal/sdk/models/shared/fieldrelationship.go
+  - internal/sdk/models/shared/fieldrules.go
+  - internal/sdk/models/shared/fixed32rules.go
+  - internal/sdk/models/shared/fixed64rules.go
+  - internal/sdk/models/shared/floatrules.go
   - internal/sdk/models/shared/forcerunbundleautomationrequest.go
   - internal/sdk/models/shared/forcerunbundleautomationresponse.go
   - internal/sdk/models/shared/forcesyncrequest.go
@@ -1006,6 +1015,7 @@ generatedFiles:
   - internal/sdk/models/shared/grantfoundtrigger.go
   - internal/sdk/models/shared/grantreason.go
   - internal/sdk/models/shared/granttriggerfilter.go
+  - internal/sdk/models/shared/int32rules.go
   - internal/sdk/models/shared/int64field.go
   - internal/sdk/models/shared/int64rules.go
   - internal/sdk/models/shared/introspectresponse.go
@@ -1035,6 +1045,8 @@ generatedFiles:
   - internal/sdk/models/shared/manualautomationtrigger.go
   - internal/sdk/models/shared/manuallymanagedusersresponse.go
   - internal/sdk/models/shared/manualprovision.go
+  - internal/sdk/models/shared/maprules.go
+  - internal/sdk/models/shared/messagerules.go
   - internal/sdk/models/shared/mutuallyexclusive.go
   - internal/sdk/models/shared/notificationconfig.go
   - internal/sdk/models/shared/numberfield.go
@@ -1188,6 +1200,10 @@ generatedFiles:
   - internal/sdk/models/shared/setappresourceownersrequest.go
   - internal/sdk/models/shared/setappresourceownersresponse.go
   - internal/sdk/models/shared/setbundleautomationrequest.go
+  - internal/sdk/models/shared/sfixed32rules.go
+  - internal/sdk/models/shared/sfixed64rules.go
+  - internal/sdk/models/shared/sint32rules.go
+  - internal/sdk/models/shared/sint64rules.go
   - internal/sdk/models/shared/skippedaction.go
   - internal/sdk/models/shared/slacknotifications.go
   - internal/sdk/models/shared/status.go
@@ -1326,6 +1342,9 @@ generatedFiles:
   - internal/sdk/models/shared/teststepupproviderrequest.go
   - internal/sdk/models/shared/teststepupproviderresponse.go
   - internal/sdk/models/shared/textfield.go
+  - internal/sdk/models/shared/timestamprules.go
+  - internal/sdk/models/shared/uint32rules.go
+  - internal/sdk/models/shared/uint64rules.go
   - internal/sdk/models/shared/unconfiguredprovision.go
   - internal/sdk/models/shared/unenrollfromallaccessprofiles.go
   - internal/sdk/models/shared/updateappentitlementrequest.go

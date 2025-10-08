@@ -548,10 +548,7 @@ actions:
       x-speakeasy-type-override: any
   - target: $["components"]["schemas"]["c1.api.automations.v1.FormTrigger"]
     update:
-      x-speakeasy-type-override: any 
-  - target: $["components"]["schemas"]["validate.FieldRules"]
-    update:
-      x-speakeasy-type-override: any 
+      x-speakeasy-type-override: any
   - target: $["paths"]["/api/v1/functions/{function_id}/commits/{id}"]["get"]["parameters"][1]
     update:
       x-speakeasy-match: function_commit.id 
