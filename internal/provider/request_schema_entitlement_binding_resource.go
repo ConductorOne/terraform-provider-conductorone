@@ -8,12 +8,9 @@ import (
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -37,6 +34,8 @@ type RequestSchemaEntitlementBindingResource struct {
 type RequestSchemaEntitlementBindingResourceModel struct {
 	EntitlementBindings []tfTypes.RequestSchemaEntitlementBinding `tfsdk:"entitlement_bindings"`
 	EntitlementRefs     []tfTypes.AppEntitlementRef               `tfsdk:"entitlement_refs"`
+	List                []tfTypes.RequestSchemaEntitlementBinding `tfsdk:"list"`
+	NextPageToken       types.String                              `tfsdk:"next_page_token"`
 	RequestSchemaID     types.String                              `tfsdk:"request_schema_id"`
 }
 
@@ -82,38 +81,59 @@ func (r *RequestSchemaEntitlementBindingResource) Schema(ctx context.Context, re
 			},
 			"entitlement_refs": schema.ListNestedAttribute{
 				Optional: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				NestedObject: schema.NestedAttributeObject{
-					PlanModifiers: []planmodifier.Object{
-						objectplanmodifier.RequiresReplaceIfConfigured(),
-					},
 					Attributes: map[string]schema.Attribute{
 						"app_id": schema.StringAttribute{
-							Optional: true,
-							PlanModifiers: []planmodifier.String{
-								stringplanmodifier.RequiresReplaceIfConfigured(),
-							},
-							Description: `The appId field. Requires replacement if changed.`,
+							Optional:    true,
+							Description: `The appId field.`,
 						},
 						"id": schema.StringAttribute{
-							Optional: true,
-							PlanModifiers: []planmodifier.String{
-								stringplanmodifier.RequiresReplaceIfConfigured(),
-							},
-							Description: `The id field. Requires replacement if changed.`,
+							Optional:    true,
+							Description: `The id field.`,
 						},
 					},
 				},
-				Description: `The entitlementRefs field. Requires replacement if changed.`,
+				Description: `The entitlementRefs field.`,
+			},
+			"list": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"app_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The appId field.`,
+						},
+						"created_at": schema.StringAttribute{
+							Computed: true,
+							Validators: []validator.String{
+								validators.IsRFC3339(),
+							},
+						},
+						"entitlement_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The entitlementId field.`,
+						},
+						"request_schema_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The requestSchemaId field.`,
+						},
+						"updated_at": schema.StringAttribute{
+							Computed: true,
+							Validators: []validator.String{
+								validators.IsRFC3339(),
+							},
+						},
+					},
+				},
+				Description: `The list field.`,
+			},
+			"next_page_token": schema.StringAttribute{
+				Computed:    true,
+				Description: `The nextPageToken field.`,
 			},
 			"request_schema_id": schema.StringAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `The requestSchemaId field. Requires replacement if changed.`,
+				Optional:    true,
+				Description: `The requestSchemaId field.`,
 			},
 		},
 	}
@@ -194,6 +214,43 @@ func (r *RequestSchemaEntitlementBindingResource) Create(ctx context.Context, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	request1, request1Diags := data.ToOperationsC1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.RequestSchema.ListBindings(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.RequestSchemaServiceListBindingsResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceListBindingsResponse(ctx, res1.RequestSchemaServiceListBindingsResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -217,7 +274,41 @@ func (r *RequestSchemaEntitlementBindingResource) Read(ctx context.Context, req 
 		return
 	}
 
-	// Not Implemented; we rely entirely on CREATE API request response
+	request, requestDiags := data.ToOperationsC1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.RequestSchema.ListBindings(ctx, *request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.RequestSchemaServiceListBindingsResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceListBindingsResponse(ctx, res.RequestSchemaServiceListBindingsResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -237,7 +328,80 @@ func (r *RequestSchemaEntitlementBindingResource) Update(ctx context.Context, re
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	request, requestDiags := data.ToOperationsC1APIRequestSchemaV1RequestSchemaServiceUpdateBindingsRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.RequestSchema.UpdateBindings(ctx, *request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.RequestSchemaServiceUpdateBindingsResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceUpdateBindingsResponse(ctx, res.RequestSchemaServiceUpdateBindingsResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsC1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.RequestSchema.ListBindings(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.RequestSchemaServiceListBindingsResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceListBindingsResponse(ctx, res1.RequestSchemaServiceListBindingsResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -287,5 +451,5 @@ func (r *RequestSchemaEntitlementBindingResource) Delete(ctx context.Context, re
 }
 
 func (r *RequestSchemaEntitlementBindingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource request_schema_entitlement_binding.")
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("request_schema_id"), req.ID)...)
 }

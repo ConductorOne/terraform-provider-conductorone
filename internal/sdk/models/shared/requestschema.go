@@ -16,6 +16,8 @@ type RequestSchema struct {
 	// The id field.
 	ID         *string    `json:"id,omitempty"`
 	ModifiedAt *time.Time `json:"modifiedAt,omitempty"`
+	// The requestSchemaId field.
+	RequestSchemaID *string `json:"request_schema_id,omitempty"`
 }
 
 func (r RequestSchema) MarshalJSON() ([]byte, error) {
@@ -62,4 +64,11 @@ func (r *RequestSchema) GetModifiedAt() *time.Time {
 		return nil
 	}
 	return r.ModifiedAt
+}
+
+func (r *RequestSchema) GetRequestSchemaID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.RequestSchemaID
 }

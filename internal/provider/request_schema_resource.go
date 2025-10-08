@@ -37,12 +37,15 @@ type RequestSchemaResource struct {
 
 // RequestSchemaResourceModel describes the resource data model.
 type RequestSchemaResourceModel struct {
-	Description                       types.String                               `tfsdk:"description"`
-	Fields                            []tfTypes.Field                            `tfsdk:"fields"`
-	Name                              types.String                               `tfsdk:"name"`
-	RequestSchema                     *tfTypes.RequestSchema                     `tfsdk:"request_schema"`
-	RequestSchemaID                   types.String                               `tfsdk:"request_schema_id"`
-	RequestSchemaServiceDeleteRequest *tfTypes.RequestSchemaServiceDeleteRequest `tfsdk:"request_schema_service_delete_request"`
+	CreatedAt       types.String    `tfsdk:"created_at"`
+	DeletedAt       types.String    `tfsdk:"-"`
+	Description     types.String    `tfsdk:"description"`
+	Fields          []tfTypes.Field `tfsdk:"fields"`
+	Form            *tfTypes.Form   `tfsdk:"form"`
+	ID              types.String    `tfsdk:"id"`
+	ModifiedAt      types.String    `tfsdk:"modified_at"`
+	Name            types.String    `tfsdk:"name"`
+	RequestSchemaID types.String    `tfsdk:"request_schema_id"`
 }
 
 func (r *RequestSchemaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -53,6 +56,12 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "RequestSchema Resource",
 		Attributes: map[string]schema.Attribute{
+			"created_at": schema.StringAttribute{
+				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
+			},
 			"description": schema.StringAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
@@ -525,6 +534,364 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 				Description: `The fields field. Requires replacement if changed.`,
 			},
+			"form": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"description": schema.StringAttribute{
+						Computed:    true,
+						Description: `The description field.`,
+					},
+					"display_name": schema.StringAttribute{
+						Computed:    true,
+						Description: `The displayName field.`,
+					},
+					"field_relationships": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"at_least_one": schema.SingleNestedAttribute{
+									Computed:    true,
+									Description: `The AtLeastOne message.`,
+								},
+								"field_names": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `The names of the fields that share this relationship`,
+								},
+								"mutually_exclusive": schema.SingleNestedAttribute{
+									Computed:    true,
+									Description: `The MutuallyExclusive message.`,
+								},
+								"required_together": schema.SingleNestedAttribute{
+									Computed:    true,
+									Description: `The RequiredTogether message.`,
+								},
+							},
+						},
+						Description: `The fieldRelationships field.`,
+					},
+					"fields": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"bool_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"bool_rules": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"const": schema.BoolAttribute{
+													Computed:    true,
+													Description: `Const specifies that this field must be exactly the specified value`,
+												},
+											},
+											Description: `BoolRules describes the constraints applied to ` + "`" + `bool` + "`" + ` values`,
+										},
+										"checkbox_field": schema.SingleNestedAttribute{
+											Computed:    true,
+											Description: `The CheckboxField message.`,
+										},
+										"default_value": schema.BoolAttribute{
+											Computed:    true,
+											Description: `The defaultValue field.`,
+										},
+									},
+									MarkdownDescription: `The BoolField message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - checkboxField` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - rules`,
+								},
+								"description": schema.StringAttribute{
+									Computed:    true,
+									Description: `The description field.`,
+								},
+								"display_name": schema.StringAttribute{
+									Computed:    true,
+									Description: `The displayName field.`,
+								},
+								"int64_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"default_value": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `The defaultValue field.` + "\n" +
+												`This field is part of the ` + "`" + `_default_value` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.form.v1.Int64Field` + "`" + ` for more details.`,
+										},
+										"int64_rules": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"const": schema.StringAttribute{
+													Computed:    true,
+													Description: `Const specifies that this field must be exactly the specified value`,
+												},
+												"gt": schema.StringAttribute{
+													Computed: true,
+													MarkdownDescription: `Gt specifies that this field must be greater than the specified value,` + "\n" +
+														` exclusive. If the value of Gt is larger than a specified Lt or Lte, the` + "\n" +
+														` range is reversed.`,
+												},
+												"gte": schema.StringAttribute{
+													Computed: true,
+													MarkdownDescription: `Gte specifies that this field must be greater than or equal to the` + "\n" +
+														` specified value, inclusive. If the value of Gte is larger than a` + "\n" +
+														` specified Lt or Lte, the range is reversed.`,
+												},
+												"ignore_empty": schema.BoolAttribute{
+													Computed: true,
+													MarkdownDescription: `IgnoreEmpty specifies that the validation rules of this field should be` + "\n" +
+														` evaluated only if the field is not empty`,
+												},
+												"in": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `In specifies that this field must be equal to one of the specified` + "\n" +
+														` values`,
+												},
+												"lt": schema.StringAttribute{
+													Computed: true,
+													MarkdownDescription: `Lt specifies that this field must be less than the specified value,` + "\n" +
+														` exclusive`,
+												},
+												"lte": schema.StringAttribute{
+													Computed: true,
+													MarkdownDescription: `Lte specifies that this field must be less than or equal to the` + "\n" +
+														` specified value, inclusive`,
+												},
+												"not_in": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `NotIn specifies that this field cannot be equal to one of the specified` + "\n" +
+														` values`,
+												},
+											},
+											Description: `Int64Rules describes the constraints applied to ` + "`" + `int64` + "`" + ` values`,
+										},
+										"number_field": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"max_value": schema.StringAttribute{
+													Computed:    true,
+													Description: `The maxValue field.`,
+												},
+												"min_value": schema.StringAttribute{
+													Computed:    true,
+													Description: `The minValue field.`,
+												},
+												"step": schema.StringAttribute{
+													Computed:    true,
+													Description: `The step field.`,
+												},
+											},
+											Description: `The NumberField message.`,
+										},
+										"placeholder": schema.StringAttribute{
+											Computed:    true,
+											Description: `The placeholder field.`,
+										},
+									},
+									MarkdownDescription: `The Int64Field message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - numberField` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - defaultValue` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - rules`,
+								},
+								"name": schema.StringAttribute{
+									Computed:    true,
+									Description: `The name field.`,
+								},
+								"string_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"default_value": schema.StringAttribute{
+											Computed:    true,
+											Description: `The defaultValue field.`,
+										},
+										"password_field": schema.SingleNestedAttribute{
+											Computed:    true,
+											Description: `The PasswordField message.`,
+										},
+										"placeholder": schema.StringAttribute{
+											Computed:    true,
+											Description: `The placeholder field.`,
+										},
+										"select_field": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"options": schema.ListNestedAttribute{
+													Computed: true,
+													NestedObject: schema.NestedAttributeObject{
+														Attributes: map[string]schema.Attribute{
+															"display_name": schema.StringAttribute{
+																Computed:    true,
+																Description: `The displayName field.`,
+															},
+															"value": schema.StringAttribute{
+																Computed:    true,
+																Description: `The value field.`,
+															},
+														},
+													},
+													Description: `The options field.`,
+												},
+											},
+											Description: `The SelectField message.`,
+										},
+										"string_rules": schema.StringAttribute{
+											CustomType: jsontypes.NormalizedType{},
+											Computed:   true,
+											MarkdownDescription: `StringRules describe the constraints applied to ` + "`" + `string` + "`" + ` values` + "\n" +
+												`` + "\n" +
+												`This message contains a oneof named well_known. Only a single field of the following list may be set at a time:` + "\n" +
+												`  - email` + "\n" +
+												`  - hostname` + "\n" +
+												`  - ip` + "\n" +
+												`  - ipv4` + "\n" +
+												`  - ipv6` + "\n" +
+												`  - uri` + "\n" +
+												`  - uriRef` + "\n" +
+												`  - address` + "\n" +
+												`  - uuid` + "\n" +
+												`  - wellKnownRegex` + "\n" +
+												`Parsed as JSON.`,
+										},
+										"text_field": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"multiline": schema.BoolAttribute{
+													Computed:    true,
+													Description: `The multiline field.`,
+												},
+											},
+											Description: `The TextField message.`,
+										},
+									},
+									MarkdownDescription: `The StringField message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - textField` + "\n" +
+										`  - passwordField` + "\n" +
+										`  - selectField` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - rules`,
+								},
+								"string_slice_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"chips_field": schema.SingleNestedAttribute{
+											Computed:    true,
+											Description: `The ChipsField message.`,
+										},
+										"default_values": schema.ListAttribute{
+											Computed:    true,
+											ElementType: types.StringType,
+											Description: `The defaultValues field.`,
+										},
+										"placeholder": schema.StringAttribute{
+											Computed:    true,
+											Description: `The placeholder field.`,
+										},
+										"repeated_rules": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"field_rules": schema.StringAttribute{
+													CustomType: jsontypes.NormalizedType{},
+													Computed:   true,
+													MarkdownDescription: `FieldRules encapsulates the rules for each type of field. Depending on the` + "\n" +
+														` field, the correct set should be used to ensure proper validations.` + "\n" +
+														`` + "\n" +
+														`This message contains a oneof named type. Only a single field of the following list may be set at a time:` + "\n" +
+														`  - float` + "\n" +
+														`  - double` + "\n" +
+														`  - int32` + "\n" +
+														`  - int64` + "\n" +
+														`  - uint32` + "\n" +
+														`  - uint64` + "\n" +
+														`  - sint32` + "\n" +
+														`  - sint64` + "\n" +
+														`  - fixed32` + "\n" +
+														`  - fixed64` + "\n" +
+														`  - sfixed32` + "\n" +
+														`  - sfixed64` + "\n" +
+														`  - bool` + "\n" +
+														`  - string` + "\n" +
+														`  - bytes` + "\n" +
+														`  - enum` + "\n" +
+														`  - repeated` + "\n" +
+														`  - map` + "\n" +
+														`  - any` + "\n" +
+														`  - duration` + "\n" +
+														`  - timestamp` + "\n" +
+														`Parsed as JSON.`,
+												},
+												"ignore_empty": schema.BoolAttribute{
+													Computed: true,
+													MarkdownDescription: `IgnoreEmpty specifies that the validation rules of this field should be` + "\n" +
+														` evaluated only if the field is not empty`,
+												},
+												"max_items": schema.StringAttribute{
+													Computed: true,
+													MarkdownDescription: `MaxItems specifies that this field must have the specified number of` + "\n" +
+														` items at a maximum`,
+												},
+												"min_items": schema.StringAttribute{
+													Computed: true,
+													MarkdownDescription: `MinItems specifies that this field must have the specified number of` + "\n" +
+														` items at a minimum`,
+												},
+												"unique": schema.BoolAttribute{
+													Computed: true,
+													MarkdownDescription: `Unique specifies that all elements in this field must be unique. This` + "\n" +
+														` contraint is only applicable to scalar and enum types (messages are not` + "\n" +
+														` supported).`,
+												},
+											},
+											Description: `RepeatedRules describe the constraints applied to ` + "`" + `repeated` + "`" + ` values`,
+										},
+									},
+									MarkdownDescription: `The StringSliceField message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - chipsField` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - rules`,
+								},
+							},
+						},
+						Description: `The fields field.`,
+					},
+					"id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The id field.`,
+					},
+				},
+				Description: `A form is a collection of fields to be filled out by a user`,
+			},
+			"id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The id field.`,
+			},
+			"modified_at": schema.StringAttribute{
+				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
+			},
 			"name": schema.StringAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
@@ -532,382 +899,9 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 				Description: `The name field. Requires replacement if changed.`,
 			},
-			"request_schema": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-					"form": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"description": schema.StringAttribute{
-								Computed:    true,
-								Description: `The description field.`,
-							},
-							"display_name": schema.StringAttribute{
-								Computed:    true,
-								Description: `The displayName field.`,
-							},
-							"field_relationships": schema.ListNestedAttribute{
-								Computed: true,
-								NestedObject: schema.NestedAttributeObject{
-									Attributes: map[string]schema.Attribute{
-										"at_least_one": schema.SingleNestedAttribute{
-											Computed:    true,
-											Description: `The AtLeastOne message.`,
-										},
-										"field_names": schema.ListAttribute{
-											Computed:    true,
-											ElementType: types.StringType,
-											Description: `The names of the fields that share this relationship`,
-										},
-										"mutually_exclusive": schema.SingleNestedAttribute{
-											Computed:    true,
-											Description: `The MutuallyExclusive message.`,
-										},
-										"required_together": schema.SingleNestedAttribute{
-											Computed:    true,
-											Description: `The RequiredTogether message.`,
-										},
-									},
-								},
-								Description: `The fieldRelationships field.`,
-							},
-							"fields": schema.ListNestedAttribute{
-								Computed: true,
-								NestedObject: schema.NestedAttributeObject{
-									Attributes: map[string]schema.Attribute{
-										"bool_field": schema.SingleNestedAttribute{
-											Computed: true,
-											Attributes: map[string]schema.Attribute{
-												"bool_rules": schema.SingleNestedAttribute{
-													Computed: true,
-													Attributes: map[string]schema.Attribute{
-														"const": schema.BoolAttribute{
-															Computed:    true,
-															Description: `Const specifies that this field must be exactly the specified value`,
-														},
-													},
-													Description: `BoolRules describes the constraints applied to ` + "`" + `bool` + "`" + ` values`,
-												},
-												"checkbox_field": schema.SingleNestedAttribute{
-													Computed:    true,
-													Description: `The CheckboxField message.`,
-												},
-												"default_value": schema.BoolAttribute{
-													Computed:    true,
-													Description: `The defaultValue field.`,
-												},
-											},
-											MarkdownDescription: `The BoolField message.` + "\n" +
-												`` + "\n" +
-												`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-												`  - checkboxField` + "\n" +
-												`` + "\n" +
-												`` + "\n" +
-												`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-												`  - rules`,
-										},
-										"description": schema.StringAttribute{
-											Computed:    true,
-											Description: `The description field.`,
-										},
-										"display_name": schema.StringAttribute{
-											Computed:    true,
-											Description: `The displayName field.`,
-										},
-										"int64_field": schema.SingleNestedAttribute{
-											Computed: true,
-											Attributes: map[string]schema.Attribute{
-												"default_value": schema.StringAttribute{
-													Computed: true,
-													MarkdownDescription: `The defaultValue field.` + "\n" +
-														`This field is part of the ` + "`" + `_default_value` + "`" + ` oneof.` + "\n" +
-														`See the documentation for ` + "`" + `c1.api.form.v1.Int64Field` + "`" + ` for more details.`,
-												},
-												"int64_rules": schema.SingleNestedAttribute{
-													Computed: true,
-													Attributes: map[string]schema.Attribute{
-														"const": schema.StringAttribute{
-															Computed:    true,
-															Description: `Const specifies that this field must be exactly the specified value`,
-														},
-														"gt": schema.StringAttribute{
-															Computed: true,
-															MarkdownDescription: `Gt specifies that this field must be greater than the specified value,` + "\n" +
-																` exclusive. If the value of Gt is larger than a specified Lt or Lte, the` + "\n" +
-																` range is reversed.`,
-														},
-														"gte": schema.StringAttribute{
-															Computed: true,
-															MarkdownDescription: `Gte specifies that this field must be greater than or equal to the` + "\n" +
-																` specified value, inclusive. If the value of Gte is larger than a` + "\n" +
-																` specified Lt or Lte, the range is reversed.`,
-														},
-														"ignore_empty": schema.BoolAttribute{
-															Computed: true,
-															MarkdownDescription: `IgnoreEmpty specifies that the validation rules of this field should be` + "\n" +
-																` evaluated only if the field is not empty`,
-														},
-														"in": schema.ListAttribute{
-															Computed:    true,
-															ElementType: types.StringType,
-															MarkdownDescription: `In specifies that this field must be equal to one of the specified` + "\n" +
-																` values`,
-														},
-														"lt": schema.StringAttribute{
-															Computed: true,
-															MarkdownDescription: `Lt specifies that this field must be less than the specified value,` + "\n" +
-																` exclusive`,
-														},
-														"lte": schema.StringAttribute{
-															Computed: true,
-															MarkdownDescription: `Lte specifies that this field must be less than or equal to the` + "\n" +
-																` specified value, inclusive`,
-														},
-														"not_in": schema.ListAttribute{
-															Computed:    true,
-															ElementType: types.StringType,
-															MarkdownDescription: `NotIn specifies that this field cannot be equal to one of the specified` + "\n" +
-																` values`,
-														},
-													},
-													Description: `Int64Rules describes the constraints applied to ` + "`" + `int64` + "`" + ` values`,
-												},
-												"number_field": schema.SingleNestedAttribute{
-													Computed: true,
-													Attributes: map[string]schema.Attribute{
-														"max_value": schema.StringAttribute{
-															Computed:    true,
-															Description: `The maxValue field.`,
-														},
-														"min_value": schema.StringAttribute{
-															Computed:    true,
-															Description: `The minValue field.`,
-														},
-														"step": schema.StringAttribute{
-															Computed:    true,
-															Description: `The step field.`,
-														},
-													},
-													Description: `The NumberField message.`,
-												},
-												"placeholder": schema.StringAttribute{
-													Computed:    true,
-													Description: `The placeholder field.`,
-												},
-											},
-											MarkdownDescription: `The Int64Field message.` + "\n" +
-												`` + "\n" +
-												`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-												`  - numberField` + "\n" +
-												`` + "\n" +
-												`` + "\n" +
-												`This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:` + "\n" +
-												`  - defaultValue` + "\n" +
-												`` + "\n" +
-												`` + "\n" +
-												`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-												`  - rules`,
-										},
-										"name": schema.StringAttribute{
-											Computed:    true,
-											Description: `The name field.`,
-										},
-										"string_field": schema.SingleNestedAttribute{
-											Computed: true,
-											Attributes: map[string]schema.Attribute{
-												"default_value": schema.StringAttribute{
-													Computed:    true,
-													Description: `The defaultValue field.`,
-												},
-												"password_field": schema.SingleNestedAttribute{
-													Computed:    true,
-													Description: `The PasswordField message.`,
-												},
-												"placeholder": schema.StringAttribute{
-													Computed:    true,
-													Description: `The placeholder field.`,
-												},
-												"select_field": schema.SingleNestedAttribute{
-													Computed: true,
-													Attributes: map[string]schema.Attribute{
-														"options": schema.ListNestedAttribute{
-															Computed: true,
-															NestedObject: schema.NestedAttributeObject{
-																Attributes: map[string]schema.Attribute{
-																	"display_name": schema.StringAttribute{
-																		Computed:    true,
-																		Description: `The displayName field.`,
-																	},
-																	"value": schema.StringAttribute{
-																		Computed:    true,
-																		Description: `The value field.`,
-																	},
-																},
-															},
-															Description: `The options field.`,
-														},
-													},
-													Description: `The SelectField message.`,
-												},
-												"string_rules": schema.StringAttribute{
-													CustomType: jsontypes.NormalizedType{},
-													Computed:   true,
-													MarkdownDescription: `StringRules describe the constraints applied to ` + "`" + `string` + "`" + ` values` + "\n" +
-														`` + "\n" +
-														`This message contains a oneof named well_known. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - email` + "\n" +
-														`  - hostname` + "\n" +
-														`  - ip` + "\n" +
-														`  - ipv4` + "\n" +
-														`  - ipv6` + "\n" +
-														`  - uri` + "\n" +
-														`  - uriRef` + "\n" +
-														`  - address` + "\n" +
-														`  - uuid` + "\n" +
-														`  - wellKnownRegex` + "\n" +
-														`Parsed as JSON.`,
-												},
-												"text_field": schema.SingleNestedAttribute{
-													Computed: true,
-													Attributes: map[string]schema.Attribute{
-														"multiline": schema.BoolAttribute{
-															Computed:    true,
-															Description: `The multiline field.`,
-														},
-													},
-													Description: `The TextField message.`,
-												},
-											},
-											MarkdownDescription: `The StringField message.` + "\n" +
-												`` + "\n" +
-												`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-												`  - textField` + "\n" +
-												`  - passwordField` + "\n" +
-												`  - selectField` + "\n" +
-												`` + "\n" +
-												`` + "\n" +
-												`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-												`  - rules`,
-										},
-										"string_slice_field": schema.SingleNestedAttribute{
-											Computed: true,
-											Attributes: map[string]schema.Attribute{
-												"chips_field": schema.SingleNestedAttribute{
-													Computed:    true,
-													Description: `The ChipsField message.`,
-												},
-												"default_values": schema.ListAttribute{
-													Computed:    true,
-													ElementType: types.StringType,
-													Description: `The defaultValues field.`,
-												},
-												"placeholder": schema.StringAttribute{
-													Computed:    true,
-													Description: `The placeholder field.`,
-												},
-												"repeated_rules": schema.SingleNestedAttribute{
-													Computed: true,
-													Attributes: map[string]schema.Attribute{
-														"field_rules": schema.StringAttribute{
-															CustomType: jsontypes.NormalizedType{},
-															Computed:   true,
-															MarkdownDescription: `FieldRules encapsulates the rules for each type of field. Depending on the` + "\n" +
-																` field, the correct set should be used to ensure proper validations.` + "\n" +
-																`` + "\n" +
-																`This message contains a oneof named type. Only a single field of the following list may be set at a time:` + "\n" +
-																`  - float` + "\n" +
-																`  - double` + "\n" +
-																`  - int32` + "\n" +
-																`  - int64` + "\n" +
-																`  - uint32` + "\n" +
-																`  - uint64` + "\n" +
-																`  - sint32` + "\n" +
-																`  - sint64` + "\n" +
-																`  - fixed32` + "\n" +
-																`  - fixed64` + "\n" +
-																`  - sfixed32` + "\n" +
-																`  - sfixed64` + "\n" +
-																`  - bool` + "\n" +
-																`  - string` + "\n" +
-																`  - bytes` + "\n" +
-																`  - enum` + "\n" +
-																`  - repeated` + "\n" +
-																`  - map` + "\n" +
-																`  - any` + "\n" +
-																`  - duration` + "\n" +
-																`  - timestamp` + "\n" +
-																`Parsed as JSON.`,
-														},
-														"ignore_empty": schema.BoolAttribute{
-															Computed: true,
-															MarkdownDescription: `IgnoreEmpty specifies that the validation rules of this field should be` + "\n" +
-																` evaluated only if the field is not empty`,
-														},
-														"max_items": schema.StringAttribute{
-															Computed: true,
-															MarkdownDescription: `MaxItems specifies that this field must have the specified number of` + "\n" +
-																` items at a maximum`,
-														},
-														"min_items": schema.StringAttribute{
-															Computed: true,
-															MarkdownDescription: `MinItems specifies that this field must have the specified number of` + "\n" +
-																` items at a minimum`,
-														},
-														"unique": schema.BoolAttribute{
-															Computed: true,
-															MarkdownDescription: `Unique specifies that all elements in this field must be unique. This` + "\n" +
-																` contraint is only applicable to scalar and enum types (messages are not` + "\n" +
-																` supported).`,
-														},
-													},
-													Description: `RepeatedRules describe the constraints applied to ` + "`" + `repeated` + "`" + ` values`,
-												},
-											},
-											MarkdownDescription: `The StringSliceField message.` + "\n" +
-												`` + "\n" +
-												`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-												`  - chipsField` + "\n" +
-												`` + "\n" +
-												`` + "\n" +
-												`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-												`  - rules`,
-										},
-									},
-								},
-								Description: `The fields field.`,
-							},
-							"id": schema.StringAttribute{
-								Computed:    true,
-								Description: `The id field.`,
-							},
-						},
-						Description: `A form is a collection of fields to be filled out by a user`,
-					},
-					"id": schema.StringAttribute{
-						Computed:    true,
-						Description: `The id field.`,
-					},
-					"modified_at": schema.StringAttribute{
-						Computed: true,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-				},
-				Description: `The RequestSchema message.`,
-			},
 			"request_schema_id": schema.StringAttribute{
-				Required: true,
-			},
-			"request_schema_service_delete_request": schema.SingleNestedAttribute{
-				Optional:    true,
-				Description: `The RequestSchemaServiceDeleteRequest message.`,
+				Computed:    true,
+				Description: `The requestSchemaId field.`,
 			},
 		},
 	}
@@ -973,11 +967,11 @@ func (r *RequestSchemaResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestSchemaServiceCreateResponse != nil) {
+	if !(res.RequestSchemaServiceCreateResponse != nil && res.RequestSchemaServiceCreateResponse.RequestSchema != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceCreateResponse(ctx, res.RequestSchemaServiceCreateResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res.RequestSchemaServiceCreateResponse.RequestSchema)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -1053,11 +1047,11 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestSchemaServiceUpdateResponse != nil) {
+	if !(res.RequestSchemaServiceUpdateResponse != nil && res.RequestSchemaServiceUpdateResponse.RequestSchema != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceUpdateResponse(ctx, res.RequestSchemaServiceUpdateResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res.RequestSchemaServiceUpdateResponse.RequestSchema)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -29,20 +29,22 @@ resource "conductorone_request_schema_entitlement_binding" "my_request_schema_en
 
 ### Optional
 
-- `entitlement_refs` (Attributes List) The entitlementRefs field. Requires replacement if changed. (see [below for nested schema](#nestedatt--entitlement_refs))
-- `request_schema_id` (String) The requestSchemaId field. Requires replacement if changed.
+- `entitlement_refs` (Attributes List) The entitlementRefs field. (see [below for nested schema](#nestedatt--entitlement_refs))
+- `request_schema_id` (String) The requestSchemaId field.
 
 ### Read-Only
 
 - `entitlement_bindings` (Attributes List) The entitlementBindings field. (see [below for nested schema](#nestedatt--entitlement_bindings))
+- `list` (Attributes List) The list field. (see [below for nested schema](#nestedatt--list))
+- `next_page_token` (String) The nextPageToken field.
 
 <a id="nestedatt--entitlement_refs"></a>
 ### Nested Schema for `entitlement_refs`
 
 Optional:
 
-- `app_id` (String) The appId field. Requires replacement if changed.
-- `id` (String) The id field. Requires replacement if changed.
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
 
 
 <a id="nestedatt--entitlement_bindings"></a>
@@ -55,3 +57,34 @@ Read-Only:
 - `entitlement_id` (String) The entitlementId field.
 - `request_schema_id` (String) The requestSchemaId field.
 - `updated_at` (String)
+
+
+<a id="nestedatt--list"></a>
+### Nested Schema for `list`
+
+Read-Only:
+
+- `app_id` (String) The appId field.
+- `created_at` (String)
+- `entitlement_id` (String) The entitlementId field.
+- `request_schema_id` (String) The requestSchemaId field.
+- `updated_at` (String)
+
+## Import
+
+Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = conductorone_request_schema_entitlement_binding.my_conductorone_request_schema_entitlement_binding
+  id = "..."
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import conductorone_request_schema_entitlement_binding.my_conductorone_request_schema_entitlement_binding "..."
+```

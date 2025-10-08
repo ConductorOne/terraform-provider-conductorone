@@ -9,7 +9,7 @@ import (
 type RequestSchemaEntitlementBinding struct {
 	AppID           types.String `tfsdk:"app_id"`
 	CreatedAt       types.String `tfsdk:"created_at"`
-	DeletedAt       types.String `tfsdk:"-"`
+	DeletedAt       types.String `tfsdk:"deleted_at"`
 	EntitlementID   types.String `tfsdk:"entitlement_id"`
 	RequestSchemaID types.String `tfsdk:"request_schema_id"`
 	UpdatedAt       types.String `tfsdk:"updated_at"`

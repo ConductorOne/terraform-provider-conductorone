@@ -576,7 +576,16 @@ actions:
   - target: $["components"]["schemas"]["c1.api.automations.v1.CreateAutomationResponse"]["properties"]["webhookHmacSecret"]
     update:
       x-speakeasy-ignore: true
-
   - target: $["components"]["schemas"]["c1.api.app.v1.DeleteAppEntitlementOwnersRequestInput"]
     update:
       x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceDeleteRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]
+    update:
+      request_schema_id:
+        description: The requestSchemaId field.
+        readOnly: false
+        type: string
+        x-speakeasy-alias: id

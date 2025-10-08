@@ -74,9 +74,5 @@ resource "conductorone_request_schema" "my_request_schema" {
       }
     }
   ]
-  name              = "...my_name..."
-  request_schema_id = "...my_request_schema_id..."
-  request_schema_service_delete_request = {
-    # ...
-  }
+  name = "...my_name..."
 }

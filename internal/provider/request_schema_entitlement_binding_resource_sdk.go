@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -34,6 +35,75 @@ func (r *RequestSchemaEntitlementBindingResourceModel) RefreshFromSharedRequestS
 	}
 
 	return diags
+}
+
+func (r *RequestSchemaEntitlementBindingResourceModel) RefreshFromSharedRequestSchemaServiceListBindingsResponse(ctx context.Context, resp *shared.RequestSchemaServiceListBindingsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.List != nil {
+			r.List = []tfTypes.RequestSchemaEntitlementBinding{}
+
+			for _, listItem := range resp.List {
+				var list tfTypes.RequestSchemaEntitlementBinding
+
+				list.AppID = types.StringPointerValue(listItem.AppID)
+				list.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.CreatedAt))
+				list.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.DeletedAt))
+				list.EntitlementID = types.StringPointerValue(listItem.EntitlementID)
+				list.RequestSchemaID = types.StringPointerValue(listItem.RequestSchemaID)
+				list.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.UpdatedAt))
+
+				r.List = append(r.List, list)
+			}
+		}
+		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
+	}
+
+	return diags
+}
+
+func (r *RequestSchemaEntitlementBindingResourceModel) RefreshFromSharedRequestSchemaServiceUpdateBindingsResponse(ctx context.Context, resp *shared.RequestSchemaServiceUpdateBindingsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+	}
+
+	return diags
+}
+
+func (r *RequestSchemaEntitlementBindingResourceModel) ToOperationsC1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest(ctx context.Context) (*operations.C1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestSchemaID string
+	requestSchemaID = r.RequestSchemaID.ValueString()
+
+	out := operations.C1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest{
+		RequestSchemaID: requestSchemaID,
+	}
+
+	return &out, diags
+}
+
+func (r *RequestSchemaEntitlementBindingResourceModel) ToOperationsC1APIRequestSchemaV1RequestSchemaServiceUpdateBindingsRequest(ctx context.Context) (*operations.C1APIRequestSchemaV1RequestSchemaServiceUpdateBindingsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var requestSchemaID string
+	requestSchemaID = r.RequestSchemaID.ValueString()
+
+	requestSchemaServiceUpdateBindingsRequest, requestSchemaServiceUpdateBindingsRequestDiags := r.ToSharedRequestSchemaServiceUpdateBindingsRequest(ctx)
+	diags.Append(requestSchemaServiceUpdateBindingsRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.C1APIRequestSchemaV1RequestSchemaServiceUpdateBindingsRequest{
+		RequestSchemaID: requestSchemaID,
+		RequestSchemaServiceUpdateBindingsRequest: requestSchemaServiceUpdateBindingsRequest,
+	}
+
+	return &out, diags
 }
 
 func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServiceCreateEntitlementBindingsRequest(ctx context.Context) (*shared.RequestSchemaServiceCreateEntitlementBindingsRequest, diag.Diagnostics) {
@@ -109,6 +179,38 @@ func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServ
 	out := shared.RequestSchemaServiceRemoveEntitlementBindingsRequest{
 		EntitlementRefs: entitlementRefs,
 		RequestSchemaID: requestSchemaID,
+	}
+
+	return &out, diags
+}
+
+func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServiceUpdateBindingsRequest(ctx context.Context) (*shared.RequestSchemaServiceUpdateBindingsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var entitlementRefs []shared.AppEntitlementRef
+	if r.EntitlementRefs != nil {
+		entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.EntitlementRefs))
+		for _, entitlementRefsItem := range r.EntitlementRefs {
+			appID := new(string)
+			if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
+				*appID = entitlementRefsItem.AppID.ValueString()
+			} else {
+				appID = nil
+			}
+			id := new(string)
+			if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
+				*id = entitlementRefsItem.ID.ValueString()
+			} else {
+				id = nil
+			}
+			entitlementRefs = append(entitlementRefs, shared.AppEntitlementRef{
+				AppID: appID,
+				ID:    id,
+			})
+		}
+	}
+	out := shared.RequestSchemaServiceUpdateBindingsRequest{
+		EntitlementRefs: entitlementRefs,
 	}
 
 	return &out, diags
