@@ -581,3 +581,97 @@ actions:
     update:
       - App_Resource_Owner#create
       - App_Resource_Owner#update
+  # RequestSchema
+  - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["stringSliceField"]
+    remove: true
+  ## len is a builtin function in golang, we have to rename `len` with a different name.
+  - target: $["components"]["schemas"]["validate.StringRules"]["properties"]["len"]
+    update: 
+      x-speakeasy-name-override: length 
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceDeleteRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Form"]["properties"]["id"]
+    update: 
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Form"]["properties"]["displayName"]
+    update:
+      x-speakeasy-name-override: name 
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceCreateRequest"]["properties"]["description"]
+  #   update: 
+  #     x-speakeasy-match: form.description
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceCreateRequest"]["properties"]["fields"]
+  #   update: 
+  #     x-speakeasy-match: form.fields
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceCreateRequest"]["properties"]["name"]
+  #   update: 
+  #     x-speakeasy-match: form.displayName
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["form"]
+  #   remove: true
+  
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["id"]
+  #   update:
+  #     x-speakeasy-name-override: requestSchemaId
+  - target: $["paths"]["/api/v1/request_schemas/{request_schema_id}"]["delete"]["parameters"][0]
+    update:
+      x-speakeasy-name-override: id
+  - target: $["paths"]["/api/v1/request_schemas/{request_schema_id}"]["get"]["parameters"][0]
+    update:
+      x-speakeasy-name-override: id
+  - target: $["paths"]["/api/v1/request_schemas/{request_schema_id}"]["post"]["parameters"][0]
+    update:
+      x-speakeasy-name-override: id
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceCreateResponse"]["properties"]["description"]
+  #   update: 
+  #     x-speakeasy-match: form.description
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceCreateResponse"]["properties"]["fields"]
+  #   update: 
+  #     x-speakeasy-match: form.fields
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceCreateResponse"]["properties"]["name"]
+  #   update: 
+  #     x-speakeasy-match: form.displayName 
+  
+  # - target: $["paths"]["/api/v1/functions/{function_id}/commits/{id}"]["get"]["parameters"][1]
+  #   update:
+  #     x-speakeasy-match: function_commit.id 
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["createdAt"]
+  #   update: 
+  #     x-speakeasy-ignore: true
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["modifiedAt"]
+  #   update: 
+  #     x-speakeasy-ignore: true
+
+
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaEntitlementBinding"]["properties"]["requestSchemaId"]
+  #   update: 
+  #     x-speakeasy-ignore: true
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaEntitlementBinding"]["properties"]["createdAt"]
+  #   update: 
+  #     x-speakeasy-ignore: true
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaEntitlementBinding"]["properties"]["deletedAt"]
+  #   update: 
+  #     x-speakeasy-ignore: true
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaEntitlementBinding"]["properties"]["updatedAt"]
+  #   update: 
+  #     x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceListBindingsResponse"]["properties"]["list"]
+    update: 
+      x-speakeasy-name-override: entitlementBindings
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceUpdateBindingsResponse"]["properties"]["requestSchemaEntitlementBindings"]
+    update: 
+      x-speakeasy-name-override: entitlementBindings
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["modifiedAt"]
+    update:
+      x-speakeasy-ignore: true
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaEntitlementBinding"]["properties"]["deletedAt"]
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceCreateEntitlementBindingsResponse"]["properties"]["entitlementBindings"]
+  #   update: 
+  #     x-speakeasy-name-override: entitlement_refs 
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaEntitlementBinding"]["properties"]["entitlementId"]
+  #   update: 
+  #     x-speakeasy-name-override: id
+  # - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceListBindingsResponse"]["properties"]["nextPageToken"]
+  #   update: 
+  #     x-speakeasy-ignore: true
+  
+  
