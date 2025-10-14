@@ -24,6 +24,7 @@ const (
 	PrimaryTriggerTypeTriggerTypeWebhook           PrimaryTriggerType = "TRIGGER_TYPE_WEBHOOK"
 	PrimaryTriggerTypeTriggerTypeSchedule          PrimaryTriggerType = "TRIGGER_TYPE_SCHEDULE"
 	PrimaryTriggerTypeTriggerTypeForm              PrimaryTriggerType = "TRIGGER_TYPE_FORM"
+	PrimaryTriggerTypeTriggerTypeScheduleAppUser   PrimaryTriggerType = "TRIGGER_TYPE_SCHEDULE_APP_USER"
 )
 
 func (e PrimaryTriggerType) ToPointer() *PrimaryTriggerType {
@@ -56,6 +57,8 @@ func (e *PrimaryTriggerType) UnmarshalJSON(data []byte) error {
 	case "TRIGGER_TYPE_SCHEDULE":
 		fallthrough
 	case "TRIGGER_TYPE_FORM":
+		fallthrough
+	case "TRIGGER_TYPE_SCHEDULE_APP_USER":
 		*e = PrimaryTriggerType(v)
 		return nil
 	default:

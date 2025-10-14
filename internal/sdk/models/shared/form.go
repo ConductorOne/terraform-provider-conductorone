@@ -7,13 +7,11 @@ type Form struct {
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
-	DisplayName *string `json:"displayName,omitempty"`
+	Name *string `json:"displayName,omitempty"`
 	// The fieldRelationships field.
 	FieldRelationships []FieldRelationship `json:"fieldRelationships,omitempty"`
 	// The fields field.
 	Fields []Field `json:"fields,omitempty"`
-	// The id field.
-	ID *string `json:"id,omitempty"`
 }
 
 func (f *Form) GetDescription() *string {
@@ -23,11 +21,11 @@ func (f *Form) GetDescription() *string {
 	return f.Description
 }
 
-func (f *Form) GetDisplayName() *string {
+func (f *Form) GetName() *string {
 	if f == nil {
 		return nil
 	}
-	return f.DisplayName
+	return f.Name
 }
 
 func (f *Form) GetFieldRelationships() []FieldRelationship {
@@ -42,11 +40,4 @@ func (f *Form) GetFields() []Field {
 		return nil
 	}
 	return f.Fields
-}
-
-func (f *Form) GetID() *string {
-	if f == nil {
-		return nil
-	}
-	return f.ID
 }

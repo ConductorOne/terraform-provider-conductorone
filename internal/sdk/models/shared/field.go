@@ -52,16 +52,6 @@ type Field struct {
 	//   - rules
 	//
 	StringField *StringField `json:"stringField,omitempty"`
-	// The StringSliceField message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - chipsField
-	//
-	//
-	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-	//   - rules
-	//
-	StringSliceField *StringSliceField `json:"stringSliceField,omitempty"`
 }
 
 func (f *Field) GetBoolField() *BoolField {
@@ -104,11 +94,4 @@ func (f *Field) GetStringField() *StringField {
 		return nil
 	}
 	return f.StringField
-}
-
-func (f *Field) GetStringSliceField() *StringSliceField {
-	if f == nil {
-		return nil
-	}
-	return f.StringSliceField
 }

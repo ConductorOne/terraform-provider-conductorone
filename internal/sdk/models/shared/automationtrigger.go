@@ -16,6 +16,7 @@ package shared
 //   - webhook
 //   - schedule
 //   - form
+//   - scheduleAppUser
 type AutomationTrigger struct {
 	// The AppUserCreatedTrigger message.
 	//
@@ -41,6 +42,8 @@ type AutomationTrigger struct {
 	ManualAutomationTrigger *ManualAutomationTrigger `json:"manual,omitempty"`
 	// The ScheduleTrigger message.
 	ScheduleTrigger *ScheduleTrigger `json:"schedule,omitempty"`
+	// The ScheduleTriggerAppUser message.
+	ScheduleTriggerAppUser *ScheduleTriggerAppUser `json:"scheduleAppUser,omitempty"`
 	// The UsageBasedRevocationTrigger message.
 	//
 	// This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
@@ -108,6 +111,13 @@ func (a *AutomationTrigger) GetScheduleTrigger() *ScheduleTrigger {
 		return nil
 	}
 	return a.ScheduleTrigger
+}
+
+func (a *AutomationTrigger) GetScheduleTriggerAppUser() *ScheduleTriggerAppUser {
+	if a == nil {
+		return nil
+	}
+	return a.ScheduleTriggerAppUser
 }
 
 func (a *AutomationTrigger) GetUsageBasedRevocationTrigger() *UsageBasedRevocationTrigger {
