@@ -581,3 +581,35 @@ actions:
     update:
       - App_Resource_Owner#create
       - App_Resource_Owner#update
+  # RequestSchema
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["id"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
+  - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["stringSliceField"]
+    remove: true
+  ## len is a builtin function in golang, we have to rename `len` with a different name.
+  - target: $["components"]["schemas"]["validate.StringRules"]["properties"]["len"]
+    update: 
+      x-speakeasy-name-override: length 
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceDeleteRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Form"]["properties"]["id"]
+    update: 
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Form"]["properties"]["displayName"]
+    update:
+      x-speakeasy-name-override: name 
+  - target: $["paths"]["/api/v1/request_schemas/{request_schema_id}"]["delete"]["parameters"][0]
+    update:
+      x-speakeasy-name-override: id
+  - target: $["paths"]["/api/v1/request_schemas/{request_schema_id}"]["get"]["parameters"][0]
+    update:
+      x-speakeasy-name-override: id
+  - target: $["paths"]["/api/v1/request_schemas/{request_schema_id}"]["post"]["parameters"][0]
+    update:
+      x-speakeasy-name-override: id 
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["modifiedAt"]
+    update:
+      x-speakeasy-ignore: true
+  

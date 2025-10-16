@@ -37,6 +37,14 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 			r.DeprovisionerPolicy = nil
 		} else {
 			r.DeprovisionerPolicy = &tfTypes.DeprovisionerPolicy{}
+			if resp.DeprovisionerPolicy.ActionProvision == nil {
+				r.DeprovisionerPolicy.ActionProvision = nil
+			} else {
+				r.DeprovisionerPolicy.ActionProvision = &tfTypes.ActionProvision{}
+				r.DeprovisionerPolicy.ActionProvision.ActionName = types.StringPointerValue(resp.DeprovisionerPolicy.ActionProvision.ActionName)
+				r.DeprovisionerPolicy.ActionProvision.AppID = types.StringPointerValue(resp.DeprovisionerPolicy.ActionProvision.AppID)
+				r.DeprovisionerPolicy.ActionProvision.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ActionProvision.ConnectorID)
+			}
 			if resp.DeprovisionerPolicy.ConnectorProvision == nil {
 				r.DeprovisionerPolicy.ConnectorProvision = nil
 			} else {
@@ -153,6 +161,14 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 			r.ProvisionPolicy = nil
 		} else {
 			r.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
+			if resp.ProvisionPolicy.ActionProvision == nil {
+				r.ProvisionPolicy.ActionProvision = nil
+			} else {
+				r.ProvisionPolicy.ActionProvision = &tfTypes.ActionProvision{}
+				r.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(resp.ProvisionPolicy.ActionProvision.ActionName)
+				r.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.ActionProvision.AppID)
+				r.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ActionProvision.ConnectorID)
+			}
 			if resp.ProvisionPolicy.ConnectorProvision == nil {
 				r.ProvisionPolicy.ConnectorProvision = nil
 			} else {

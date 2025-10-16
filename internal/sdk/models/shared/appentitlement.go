@@ -52,7 +52,10 @@ func (e *Purpose) UnmarshalJSON(data []byte) error {
 //   - multiStep
 //   - externalTicket
 //   - unconfigured
+//   - action
 type DeprovisionerPolicy struct {
+	// This provision step indicates that account lifecycle action should be called to provision this entitlement.
+	ActionProvision *ActionProvision `json:"action,omitempty"`
 	// Indicates that a connector should perform the provisioning. This object has no fields.
 	//
 	// This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
@@ -73,6 +76,13 @@ type DeprovisionerPolicy struct {
 	UnconfiguredProvision *UnconfiguredProvision `json:"unconfigured,omitempty"`
 	// This provision step indicates that a webhook should be called to provision this entitlement.
 	WebhookProvision *WebhookProvision `json:"webhook,omitempty"`
+}
+
+func (d *DeprovisionerPolicy) GetActionProvision() *ActionProvision {
+	if d == nil {
+		return nil
+	}
+	return d.ActionProvision
 }
 
 func (d *DeprovisionerPolicy) GetConnectorProvision() *ConnectorProvision {
@@ -180,6 +190,7 @@ type AppEntitlement struct {
 	//   - multiStep
 	//   - externalTicket
 	//   - unconfigured
+	//   - action
 	//
 	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The purpose field.
@@ -483,6 +494,7 @@ type AppEntitlementInput struct {
 	//   - multiStep
 	//   - externalTicket
 	//   - unconfigured
+	//   - action
 	//
 	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The purpose field.

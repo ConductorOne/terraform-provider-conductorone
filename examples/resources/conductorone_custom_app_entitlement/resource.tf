@@ -19,6 +19,11 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
   match_baton_id                    = "...my_match_baton_id..."
   override_access_requests_defaults = true
   provision_policy = {
+    action_provision = {
+      action_name  = "...my_action_name..."
+      app_id       = "...my_app_id..."
+      connector_id = "...my_connector_id..."
+    }
     connector_provision = {
       account_provision = {
         config = {

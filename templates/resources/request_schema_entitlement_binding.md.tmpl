@@ -1,0 +1,19 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This resource allows you to create and configure a request schema entitlement bindings in ConductorOne.
+When creating a policy you must provide request_schema_id, app_entitlement_ref. 
+
+## Example Usage
+
+{{ tffile "examples/resources/conductorone_request_schema_entitlement_binding/resource.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

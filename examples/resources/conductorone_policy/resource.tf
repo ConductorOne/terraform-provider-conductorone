@@ -113,6 +113,11 @@ resource "conductorone_policy" "my_policy" {
           provision = {
             assigned = true
             provision_policy = {
+              action_provision = {
+                action_name  = "...my_action_name..."
+                app_id       = "...my_app_id..."
+                connector_id = "...my_connector_id..."
+              }
               connector_provision = {
                 account_provision = {
                   config = {

@@ -915,6 +915,17 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					draftTriggers.ScheduleTrigger.CronSpec = types.StringPointerValue(draftTriggersItem.ScheduleTrigger.CronSpec)
 					draftTriggers.ScheduleTrigger.SkipIfTrueCel = types.StringPointerValue(draftTriggersItem.ScheduleTrigger.SkipIfTrueCel)
 					draftTriggers.ScheduleTrigger.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.ScheduleTrigger.Start))
+					draftTriggers.ScheduleTrigger.Timezone = types.StringPointerValue(draftTriggersItem.ScheduleTrigger.Timezone)
+				}
+				if draftTriggersItem.ScheduleTriggerAppUser == nil {
+					draftTriggers.ScheduleTriggerAppUser = nil
+				} else {
+					draftTriggers.ScheduleTriggerAppUser = &tfTypes.ScheduleTriggerAppUser{}
+					draftTriggers.ScheduleTriggerAppUser.AppID = types.StringPointerValue(draftTriggersItem.ScheduleTriggerAppUser.AppID)
+					draftTriggers.ScheduleTriggerAppUser.Condition = types.StringPointerValue(draftTriggersItem.ScheduleTriggerAppUser.Condition)
+					draftTriggers.ScheduleTriggerAppUser.CronSpec = types.StringPointerValue(draftTriggersItem.ScheduleTriggerAppUser.CronSpec)
+					draftTriggers.ScheduleTriggerAppUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.ScheduleTriggerAppUser.Start))
+					draftTriggers.ScheduleTriggerAppUser.Timezone = types.StringPointerValue(draftTriggersItem.ScheduleTriggerAppUser.Timezone)
 				}
 				if draftTriggersItem.UsageBasedRevocationTrigger == nil {
 					draftTriggers.UsageBasedRevocationTrigger = nil
@@ -1179,6 +1190,17 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					triggers.ScheduleTrigger.CronSpec = types.StringPointerValue(triggersItem.ScheduleTrigger.CronSpec)
 					triggers.ScheduleTrigger.SkipIfTrueCel = types.StringPointerValue(triggersItem.ScheduleTrigger.SkipIfTrueCel)
 					triggers.ScheduleTrigger.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.ScheduleTrigger.Start))
+					triggers.ScheduleTrigger.Timezone = types.StringPointerValue(triggersItem.ScheduleTrigger.Timezone)
+				}
+				if triggersItem.ScheduleTriggerAppUser == nil {
+					triggers.ScheduleTriggerAppUser = nil
+				} else {
+					triggers.ScheduleTriggerAppUser = &tfTypes.ScheduleTriggerAppUser{}
+					triggers.ScheduleTriggerAppUser.AppID = types.StringPointerValue(triggersItem.ScheduleTriggerAppUser.AppID)
+					triggers.ScheduleTriggerAppUser.Condition = types.StringPointerValue(triggersItem.ScheduleTriggerAppUser.Condition)
+					triggers.ScheduleTriggerAppUser.CronSpec = types.StringPointerValue(triggersItem.ScheduleTriggerAppUser.CronSpec)
+					triggers.ScheduleTriggerAppUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.ScheduleTriggerAppUser.Start))
+					triggers.ScheduleTriggerAppUser.Timezone = types.StringPointerValue(triggersItem.ScheduleTriggerAppUser.Timezone)
 				}
 				if triggersItem.UsageBasedRevocationTrigger == nil {
 					triggers.UsageBasedRevocationTrigger = nil
@@ -3344,21 +3366,68 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					start = nil
 				}
+				timezone := new(string)
+				if !draftTriggersItem.ScheduleTrigger.Timezone.IsUnknown() && !draftTriggersItem.ScheduleTrigger.Timezone.IsNull() {
+					*timezone = draftTriggersItem.ScheduleTrigger.Timezone.ValueString()
+				} else {
+					timezone = nil
+				}
 				scheduleTrigger = &shared.ScheduleTrigger{
 					Advanced:      advanced,
 					Condition:     condition2,
 					CronSpec:      cronSpec,
 					SkipIfTrueCel: skipIfTrueCel2,
 					Start:         start,
+					Timezone:      timezone,
+				}
+			}
+			var scheduleTriggerAppUser *shared.ScheduleTriggerAppUser
+			if draftTriggersItem.ScheduleTriggerAppUser != nil {
+				appId19 := new(string)
+				if !draftTriggersItem.ScheduleTriggerAppUser.AppID.IsUnknown() && !draftTriggersItem.ScheduleTriggerAppUser.AppID.IsNull() {
+					*appId19 = draftTriggersItem.ScheduleTriggerAppUser.AppID.ValueString()
+				} else {
+					appId19 = nil
+				}
+				condition3 := new(string)
+				if !draftTriggersItem.ScheduleTriggerAppUser.Condition.IsUnknown() && !draftTriggersItem.ScheduleTriggerAppUser.Condition.IsNull() {
+					*condition3 = draftTriggersItem.ScheduleTriggerAppUser.Condition.ValueString()
+				} else {
+					condition3 = nil
+				}
+				cronSpec1 := new(string)
+				if !draftTriggersItem.ScheduleTriggerAppUser.CronSpec.IsUnknown() && !draftTriggersItem.ScheduleTriggerAppUser.CronSpec.IsNull() {
+					*cronSpec1 = draftTriggersItem.ScheduleTriggerAppUser.CronSpec.ValueString()
+				} else {
+					cronSpec1 = nil
+				}
+				start1 := new(time.Time)
+				if !draftTriggersItem.ScheduleTriggerAppUser.Start.IsUnknown() && !draftTriggersItem.ScheduleTriggerAppUser.Start.IsNull() {
+					*start1, _ = time.Parse(time.RFC3339Nano, draftTriggersItem.ScheduleTriggerAppUser.Start.ValueString())
+				} else {
+					start1 = nil
+				}
+				timezone1 := new(string)
+				if !draftTriggersItem.ScheduleTriggerAppUser.Timezone.IsUnknown() && !draftTriggersItem.ScheduleTriggerAppUser.Timezone.IsNull() {
+					*timezone1 = draftTriggersItem.ScheduleTriggerAppUser.Timezone.ValueString()
+				} else {
+					timezone1 = nil
+				}
+				scheduleTriggerAppUser = &shared.ScheduleTriggerAppUser{
+					AppID:     appId19,
+					Condition: condition3,
+					CronSpec:  cronSpec1,
+					Start:     start1,
+					Timezone:  timezone1,
 				}
 			}
 			var usageBasedRevocationTrigger *shared.UsageBasedRevocationTrigger
 			if draftTriggersItem.UsageBasedRevocationTrigger != nil {
-				appId19 := new(string)
+				appId20 := new(string)
 				if !draftTriggersItem.UsageBasedRevocationTrigger.AppID.IsUnknown() && !draftTriggersItem.UsageBasedRevocationTrigger.AppID.IsNull() {
-					*appId19 = draftTriggersItem.UsageBasedRevocationTrigger.AppID.ValueString()
+					*appId20 = draftTriggersItem.UsageBasedRevocationTrigger.AppID.ValueString()
 				} else {
-					appId19 = nil
+					appId20 = nil
 				}
 				enabledAt := new(time.Time)
 				if !draftTriggersItem.UsageBasedRevocationTrigger.EnabledAt.IsUnknown() && !draftTriggersItem.UsageBasedRevocationTrigger.EnabledAt.IsNull() {
@@ -3370,11 +3439,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				if draftTriggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs != nil {
 					excludedGroupRefs = make([]shared.AppEntitlementRef, 0, len(draftTriggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs))
 					for _, excludedGroupRefsItem := range draftTriggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs {
-						appId20 := new(string)
+						appId21 := new(string)
 						if !excludedGroupRefsItem.AppID.IsUnknown() && !excludedGroupRefsItem.AppID.IsNull() {
-							*appId20 = excludedGroupRefsItem.AppID.ValueString()
+							*appId21 = excludedGroupRefsItem.AppID.ValueString()
 						} else {
-							appId20 = nil
+							appId21 = nil
 						}
 						id38 := new(string)
 						if !excludedGroupRefsItem.ID.IsUnknown() && !excludedGroupRefsItem.ID.IsNull() {
@@ -3383,7 +3452,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							id38 = nil
 						}
 						excludedGroupRefs = append(excludedGroupRefs, shared.AppEntitlementRef{
-							AppID: appId20,
+							AppID: appId21,
 							ID:    id38,
 						})
 					}
@@ -3433,11 +3502,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				if draftTriggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
 					targetedEntitlementRefs = make([]shared.AppEntitlementRef, 0, len(draftTriggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs))
 					for _, targetedEntitlementRefsItem := range draftTriggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs {
-						appId21 := new(string)
+						appId22 := new(string)
 						if !targetedEntitlementRefsItem.AppID.IsUnknown() && !targetedEntitlementRefsItem.AppID.IsNull() {
-							*appId21 = targetedEntitlementRefsItem.AppID.ValueString()
+							*appId22 = targetedEntitlementRefsItem.AppID.ValueString()
 						} else {
-							appId21 = nil
+							appId22 = nil
 						}
 						id40 := new(string)
 						if !targetedEntitlementRefsItem.ID.IsUnknown() && !targetedEntitlementRefsItem.ID.IsNull() {
@@ -3446,7 +3515,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							id40 = nil
 						}
 						targetedEntitlementRefs = append(targetedEntitlementRefs, shared.AppEntitlementRef{
-							AppID: appId21,
+							AppID: appId22,
 							ID:    id40,
 						})
 					}
@@ -3458,7 +3527,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					unusedForDays = nil
 				}
 				usageBasedRevocationTrigger = &shared.UsageBasedRevocationTrigger{
-					AppID:                      appId19,
+					AppID:                      appId20,
 					EnabledAt:                  enabledAt,
 					ExcludedGroupRefs:          excludedGroupRefs,
 					ExcludedUserRefs:           excludedUserRefs,
@@ -3472,26 +3541,26 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			}
 			var userCreatedTrigger *shared.UserCreatedTrigger
 			if draftTriggersItem.UserCreatedTrigger != nil {
-				condition3 := new(string)
+				condition4 := new(string)
 				if !draftTriggersItem.UserCreatedTrigger.Condition.IsUnknown() && !draftTriggersItem.UserCreatedTrigger.Condition.IsNull() {
-					*condition3 = draftTriggersItem.UserCreatedTrigger.Condition.ValueString()
+					*condition4 = draftTriggersItem.UserCreatedTrigger.Condition.ValueString()
 				} else {
-					condition3 = nil
+					condition4 = nil
 				}
 				userCreatedTrigger = &shared.UserCreatedTrigger{
-					Condition: condition3,
+					Condition: condition4,
 				}
 			}
 			var userProfileChangeTrigger *shared.UserProfileChangeTrigger
 			if draftTriggersItem.UserProfileChangeTrigger != nil {
-				condition4 := new(string)
+				condition5 := new(string)
 				if !draftTriggersItem.UserProfileChangeTrigger.Condition.IsUnknown() && !draftTriggersItem.UserProfileChangeTrigger.Condition.IsNull() {
-					*condition4 = draftTriggersItem.UserProfileChangeTrigger.Condition.ValueString()
+					*condition5 = draftTriggersItem.UserProfileChangeTrigger.Condition.ValueString()
 				} else {
-					condition4 = nil
+					condition5 = nil
 				}
 				userProfileChangeTrigger = &shared.UserProfileChangeTrigger{
-					Condition: condition4,
+					Condition: condition5,
 				}
 			}
 			var webhookAutomationTrigger *shared.WebhookAutomationTrigger
@@ -3532,6 +3601,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				GrantFoundTrigger:           grantFoundTrigger,
 				ManualAutomationTrigger:     manualAutomationTrigger,
 				ScheduleTrigger:             scheduleTrigger,
+				ScheduleTriggerAppUser:      scheduleTriggerAppUser,
 				UsageBasedRevocationTrigger: usageBasedRevocationTrigger,
 				UserCreatedTrigger:          userCreatedTrigger,
 				UserProfileChangeTrigger:    userProfileChangeTrigger,
@@ -3569,11 +3639,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 		for _, triggersItem := range r.Triggers {
 			var appUserCreatedTrigger1 *shared.AppUserCreatedTrigger
 			if triggersItem.AppUserCreatedTrigger != nil {
-				appId22 := new(string)
+				appId23 := new(string)
 				if !triggersItem.AppUserCreatedTrigger.AppID.IsUnknown() && !triggersItem.AppUserCreatedTrigger.AppID.IsNull() {
-					*appId22 = triggersItem.AppUserCreatedTrigger.AppID.ValueString()
+					*appId23 = triggersItem.AppUserCreatedTrigger.AppID.ValueString()
 				} else {
-					appId22 = nil
+					appId23 = nil
 				}
 				appIDCel2 := new(string)
 				if !triggersItem.AppUserCreatedTrigger.AppIDCel.IsUnknown() && !triggersItem.AppUserCreatedTrigger.AppIDCel.IsNull() {
@@ -3581,25 +3651,25 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					appIDCel2 = nil
 				}
-				condition5 := new(string)
+				condition6 := new(string)
 				if !triggersItem.AppUserCreatedTrigger.Condition.IsUnknown() && !triggersItem.AppUserCreatedTrigger.Condition.IsNull() {
-					*condition5 = triggersItem.AppUserCreatedTrigger.Condition.ValueString()
+					*condition6 = triggersItem.AppUserCreatedTrigger.Condition.ValueString()
 				} else {
-					condition5 = nil
+					condition6 = nil
 				}
 				appUserCreatedTrigger1 = &shared.AppUserCreatedTrigger{
-					AppID:     appId22,
+					AppID:     appId23,
 					AppIDCel:  appIDCel2,
-					Condition: condition5,
+					Condition: condition6,
 				}
 			}
 			var appUserUpdatedTrigger1 *shared.AppUserUpdatedTrigger
 			if triggersItem.AppUserUpdatedTrigger != nil {
-				appId23 := new(string)
+				appId24 := new(string)
 				if !triggersItem.AppUserUpdatedTrigger.AppID.IsUnknown() && !triggersItem.AppUserUpdatedTrigger.AppID.IsNull() {
-					*appId23 = triggersItem.AppUserUpdatedTrigger.AppID.ValueString()
+					*appId24 = triggersItem.AppUserUpdatedTrigger.AppID.ValueString()
 				} else {
-					appId23 = nil
+					appId24 = nil
 				}
 				appIDCel3 := new(string)
 				if !triggersItem.AppUserUpdatedTrigger.AppIDCel.IsUnknown() && !triggersItem.AppUserUpdatedTrigger.AppIDCel.IsNull() {
@@ -3607,16 +3677,16 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					appIDCel3 = nil
 				}
-				condition6 := new(string)
+				condition7 := new(string)
 				if !triggersItem.AppUserUpdatedTrigger.Condition.IsUnknown() && !triggersItem.AppUserUpdatedTrigger.Condition.IsNull() {
-					*condition6 = triggersItem.AppUserUpdatedTrigger.Condition.ValueString()
+					*condition7 = triggersItem.AppUserUpdatedTrigger.Condition.ValueString()
 				} else {
-					condition6 = nil
+					condition7 = nil
 				}
 				appUserUpdatedTrigger1 = &shared.AppUserUpdatedTrigger{
-					AppID:     appId23,
+					AppID:     appId24,
 					AppIDCel:  appIDCel3,
-					Condition: condition6,
+					Condition: condition7,
 				}
 			}
 			var formTrigger1 interface{}
@@ -3645,11 +3715,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs != nil {
 							appEntitlementRefs6 = make([]shared.AppEntitlementRef, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs))
 							for _, appEntitlementRefsItem6 := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs {
-								appId24 := new(string)
+								appId25 := new(string)
 								if !appEntitlementRefsItem6.AppID.IsUnknown() && !appEntitlementRefsItem6.AppID.IsNull() {
-									*appId24 = appEntitlementRefsItem6.AppID.ValueString()
+									*appId25 = appEntitlementRefsItem6.AppID.ValueString()
 								} else {
-									appId24 = nil
+									appId25 = nil
 								}
 								id41 := new(string)
 								if !appEntitlementRefsItem6.ID.IsUnknown() && !appEntitlementRefsItem6.ID.IsNull() {
@@ -3658,7 +3728,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 									id41 = nil
 								}
 								appEntitlementRefs6 = append(appEntitlementRefs6, shared.AppEntitlementRef{
-									AppID: appId24,
+									AppID: appId25,
 									ID:    id41,
 								})
 							}
@@ -3669,16 +3739,16 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							appEntitlementRefsCel6 = nil
 						}
-						appId25 := new(string)
+						appId26 := new(string)
 						if !triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppID.IsUnknown() && !triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppID.IsNull() {
-							*appId25 = triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppID.ValueString()
+							*appId26 = triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppID.ValueString()
 						} else {
-							appId25 = nil
+							appId26 = nil
 						}
 						entitlementFilter2 = &shared.EntitlementFilter{
 							AppEntitlementRefs:    appEntitlementRefs6,
 							AppEntitlementRefsCel: appEntitlementRefsCel6,
-							AppID:                 appId25,
+							AppID:                 appId26,
 						}
 					}
 					var grantFilter2 *shared.GrantFilter
@@ -3739,11 +3809,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs != nil {
 							appEntitlementRefs7 = make([]shared.AppEntitlementRef, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs))
 							for _, appEntitlementRefsItem7 := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs {
-								appId26 := new(string)
+								appId27 := new(string)
 								if !appEntitlementRefsItem7.AppID.IsUnknown() && !appEntitlementRefsItem7.AppID.IsNull() {
-									*appId26 = appEntitlementRefsItem7.AppID.ValueString()
+									*appId27 = appEntitlementRefsItem7.AppID.ValueString()
 								} else {
-									appId26 = nil
+									appId27 = nil
 								}
 								id42 := new(string)
 								if !appEntitlementRefsItem7.ID.IsUnknown() && !appEntitlementRefsItem7.ID.IsNull() {
@@ -3752,7 +3822,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 									id42 = nil
 								}
 								appEntitlementRefs7 = append(appEntitlementRefs7, shared.AppEntitlementRef{
-									AppID: appId26,
+									AppID: appId27,
 									ID:    id42,
 								})
 							}
@@ -3763,16 +3833,16 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							appEntitlementRefsCel7 = nil
 						}
-						appId27 := new(string)
+						appId28 := new(string)
 						if !triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppID.IsUnknown() && !triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppID.IsNull() {
-							*appId27 = triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppID.ValueString()
+							*appId28 = triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppID.ValueString()
 						} else {
-							appId27 = nil
+							appId28 = nil
 						}
 						entitlementFilter3 = &shared.EntitlementFilter{
 							AppEntitlementRefs:    appEntitlementRefs7,
 							AppEntitlementRefsCel: appEntitlementRefsCel7,
-							AppID:                 appId27,
+							AppID:                 appId28,
 						}
 					}
 					var grantFilter3 *shared.GrantFilter
@@ -3823,17 +3893,17 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					advanced1 = nil
 				}
-				condition7 := new(string)
+				condition8 := new(string)
 				if !triggersItem.ScheduleTrigger.Condition.IsUnknown() && !triggersItem.ScheduleTrigger.Condition.IsNull() {
-					*condition7 = triggersItem.ScheduleTrigger.Condition.ValueString()
+					*condition8 = triggersItem.ScheduleTrigger.Condition.ValueString()
 				} else {
-					condition7 = nil
+					condition8 = nil
 				}
-				cronSpec1 := new(string)
+				cronSpec2 := new(string)
 				if !triggersItem.ScheduleTrigger.CronSpec.IsUnknown() && !triggersItem.ScheduleTrigger.CronSpec.IsNull() {
-					*cronSpec1 = triggersItem.ScheduleTrigger.CronSpec.ValueString()
+					*cronSpec2 = triggersItem.ScheduleTrigger.CronSpec.ValueString()
 				} else {
-					cronSpec1 = nil
+					cronSpec2 = nil
 				}
 				skipIfTrueCel3 := new(string)
 				if !triggersItem.ScheduleTrigger.SkipIfTrueCel.IsUnknown() && !triggersItem.ScheduleTrigger.SkipIfTrueCel.IsNull() {
@@ -3841,27 +3911,74 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					skipIfTrueCel3 = nil
 				}
-				start1 := new(time.Time)
+				start2 := new(time.Time)
 				if !triggersItem.ScheduleTrigger.Start.IsUnknown() && !triggersItem.ScheduleTrigger.Start.IsNull() {
-					*start1, _ = time.Parse(time.RFC3339Nano, triggersItem.ScheduleTrigger.Start.ValueString())
+					*start2, _ = time.Parse(time.RFC3339Nano, triggersItem.ScheduleTrigger.Start.ValueString())
 				} else {
-					start1 = nil
+					start2 = nil
+				}
+				timezone2 := new(string)
+				if !triggersItem.ScheduleTrigger.Timezone.IsUnknown() && !triggersItem.ScheduleTrigger.Timezone.IsNull() {
+					*timezone2 = triggersItem.ScheduleTrigger.Timezone.ValueString()
+				} else {
+					timezone2 = nil
 				}
 				scheduleTrigger1 = &shared.ScheduleTrigger{
 					Advanced:      advanced1,
-					Condition:     condition7,
-					CronSpec:      cronSpec1,
+					Condition:     condition8,
+					CronSpec:      cronSpec2,
 					SkipIfTrueCel: skipIfTrueCel3,
-					Start:         start1,
+					Start:         start2,
+					Timezone:      timezone2,
+				}
+			}
+			var scheduleTriggerAppUser1 *shared.ScheduleTriggerAppUser
+			if triggersItem.ScheduleTriggerAppUser != nil {
+				appId29 := new(string)
+				if !triggersItem.ScheduleTriggerAppUser.AppID.IsUnknown() && !triggersItem.ScheduleTriggerAppUser.AppID.IsNull() {
+					*appId29 = triggersItem.ScheduleTriggerAppUser.AppID.ValueString()
+				} else {
+					appId29 = nil
+				}
+				condition9 := new(string)
+				if !triggersItem.ScheduleTriggerAppUser.Condition.IsUnknown() && !triggersItem.ScheduleTriggerAppUser.Condition.IsNull() {
+					*condition9 = triggersItem.ScheduleTriggerAppUser.Condition.ValueString()
+				} else {
+					condition9 = nil
+				}
+				cronSpec3 := new(string)
+				if !triggersItem.ScheduleTriggerAppUser.CronSpec.IsUnknown() && !triggersItem.ScheduleTriggerAppUser.CronSpec.IsNull() {
+					*cronSpec3 = triggersItem.ScheduleTriggerAppUser.CronSpec.ValueString()
+				} else {
+					cronSpec3 = nil
+				}
+				start3 := new(time.Time)
+				if !triggersItem.ScheduleTriggerAppUser.Start.IsUnknown() && !triggersItem.ScheduleTriggerAppUser.Start.IsNull() {
+					*start3, _ = time.Parse(time.RFC3339Nano, triggersItem.ScheduleTriggerAppUser.Start.ValueString())
+				} else {
+					start3 = nil
+				}
+				timezone3 := new(string)
+				if !triggersItem.ScheduleTriggerAppUser.Timezone.IsUnknown() && !triggersItem.ScheduleTriggerAppUser.Timezone.IsNull() {
+					*timezone3 = triggersItem.ScheduleTriggerAppUser.Timezone.ValueString()
+				} else {
+					timezone3 = nil
+				}
+				scheduleTriggerAppUser1 = &shared.ScheduleTriggerAppUser{
+					AppID:     appId29,
+					Condition: condition9,
+					CronSpec:  cronSpec3,
+					Start:     start3,
+					Timezone:  timezone3,
 				}
 			}
 			var usageBasedRevocationTrigger1 *shared.UsageBasedRevocationTrigger
 			if triggersItem.UsageBasedRevocationTrigger != nil {
-				appId28 := new(string)
+				appId30 := new(string)
 				if !triggersItem.UsageBasedRevocationTrigger.AppID.IsUnknown() && !triggersItem.UsageBasedRevocationTrigger.AppID.IsNull() {
-					*appId28 = triggersItem.UsageBasedRevocationTrigger.AppID.ValueString()
+					*appId30 = triggersItem.UsageBasedRevocationTrigger.AppID.ValueString()
 				} else {
-					appId28 = nil
+					appId30 = nil
 				}
 				enabledAt1 := new(time.Time)
 				if !triggersItem.UsageBasedRevocationTrigger.EnabledAt.IsUnknown() && !triggersItem.UsageBasedRevocationTrigger.EnabledAt.IsNull() {
@@ -3873,11 +3990,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				if triggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs != nil {
 					excludedGroupRefs1 = make([]shared.AppEntitlementRef, 0, len(triggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs))
 					for _, excludedGroupRefsItem1 := range triggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs {
-						appId29 := new(string)
+						appId31 := new(string)
 						if !excludedGroupRefsItem1.AppID.IsUnknown() && !excludedGroupRefsItem1.AppID.IsNull() {
-							*appId29 = excludedGroupRefsItem1.AppID.ValueString()
+							*appId31 = excludedGroupRefsItem1.AppID.ValueString()
 						} else {
-							appId29 = nil
+							appId31 = nil
 						}
 						id43 := new(string)
 						if !excludedGroupRefsItem1.ID.IsUnknown() && !excludedGroupRefsItem1.ID.IsNull() {
@@ -3886,7 +4003,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							id43 = nil
 						}
 						excludedGroupRefs1 = append(excludedGroupRefs1, shared.AppEntitlementRef{
-							AppID: appId29,
+							AppID: appId31,
 							ID:    id43,
 						})
 					}
@@ -3936,11 +4053,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				if triggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
 					targetedEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(triggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs))
 					for _, targetedEntitlementRefsItem1 := range triggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs {
-						appId30 := new(string)
+						appId32 := new(string)
 						if !targetedEntitlementRefsItem1.AppID.IsUnknown() && !targetedEntitlementRefsItem1.AppID.IsNull() {
-							*appId30 = targetedEntitlementRefsItem1.AppID.ValueString()
+							*appId32 = targetedEntitlementRefsItem1.AppID.ValueString()
 						} else {
-							appId30 = nil
+							appId32 = nil
 						}
 						id45 := new(string)
 						if !targetedEntitlementRefsItem1.ID.IsUnknown() && !targetedEntitlementRefsItem1.ID.IsNull() {
@@ -3949,7 +4066,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							id45 = nil
 						}
 						targetedEntitlementRefs1 = append(targetedEntitlementRefs1, shared.AppEntitlementRef{
-							AppID: appId30,
+							AppID: appId32,
 							ID:    id45,
 						})
 					}
@@ -3961,7 +4078,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					unusedForDays1 = nil
 				}
 				usageBasedRevocationTrigger1 = &shared.UsageBasedRevocationTrigger{
-					AppID:                      appId28,
+					AppID:                      appId30,
 					EnabledAt:                  enabledAt1,
 					ExcludedGroupRefs:          excludedGroupRefs1,
 					ExcludedUserRefs:           excludedUserRefs1,
@@ -3975,26 +4092,26 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			}
 			var userCreatedTrigger1 *shared.UserCreatedTrigger
 			if triggersItem.UserCreatedTrigger != nil {
-				condition8 := new(string)
+				condition10 := new(string)
 				if !triggersItem.UserCreatedTrigger.Condition.IsUnknown() && !triggersItem.UserCreatedTrigger.Condition.IsNull() {
-					*condition8 = triggersItem.UserCreatedTrigger.Condition.ValueString()
+					*condition10 = triggersItem.UserCreatedTrigger.Condition.ValueString()
 				} else {
-					condition8 = nil
+					condition10 = nil
 				}
 				userCreatedTrigger1 = &shared.UserCreatedTrigger{
-					Condition: condition8,
+					Condition: condition10,
 				}
 			}
 			var userProfileChangeTrigger1 *shared.UserProfileChangeTrigger
 			if triggersItem.UserProfileChangeTrigger != nil {
-				condition9 := new(string)
+				condition11 := new(string)
 				if !triggersItem.UserProfileChangeTrigger.Condition.IsUnknown() && !triggersItem.UserProfileChangeTrigger.Condition.IsNull() {
-					*condition9 = triggersItem.UserProfileChangeTrigger.Condition.ValueString()
+					*condition11 = triggersItem.UserProfileChangeTrigger.Condition.ValueString()
 				} else {
-					condition9 = nil
+					condition11 = nil
 				}
 				userProfileChangeTrigger1 = &shared.UserProfileChangeTrigger{
-					Condition: condition9,
+					Condition: condition11,
 				}
 			}
 			var webhookAutomationTrigger1 *shared.WebhookAutomationTrigger
@@ -4035,6 +4152,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				GrantFoundTrigger:           grantFoundTrigger1,
 				ManualAutomationTrigger:     manualAutomationTrigger1,
 				ScheduleTrigger:             scheduleTrigger1,
+				ScheduleTriggerAppUser:      scheduleTriggerAppUser1,
 				UsageBasedRevocationTrigger: usageBasedRevocationTrigger1,
 				UserCreatedTrigger:          userCreatedTrigger1,
 				UserProfileChangeTrigger:    userProfileChangeTrigger1,
@@ -6071,21 +6189,68 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					start = nil
 				}
+				timezone := new(string)
+				if !draftTriggersItem.ScheduleTrigger.Timezone.IsUnknown() && !draftTriggersItem.ScheduleTrigger.Timezone.IsNull() {
+					*timezone = draftTriggersItem.ScheduleTrigger.Timezone.ValueString()
+				} else {
+					timezone = nil
+				}
 				scheduleTrigger = &shared.ScheduleTrigger{
 					Advanced:      advanced,
 					Condition:     condition2,
 					CronSpec:      cronSpec,
 					SkipIfTrueCel: skipIfTrueCel2,
 					Start:         start,
+					Timezone:      timezone,
+				}
+			}
+			var scheduleTriggerAppUser *shared.ScheduleTriggerAppUser
+			if draftTriggersItem.ScheduleTriggerAppUser != nil {
+				appId19 := new(string)
+				if !draftTriggersItem.ScheduleTriggerAppUser.AppID.IsUnknown() && !draftTriggersItem.ScheduleTriggerAppUser.AppID.IsNull() {
+					*appId19 = draftTriggersItem.ScheduleTriggerAppUser.AppID.ValueString()
+				} else {
+					appId19 = nil
+				}
+				condition3 := new(string)
+				if !draftTriggersItem.ScheduleTriggerAppUser.Condition.IsUnknown() && !draftTriggersItem.ScheduleTriggerAppUser.Condition.IsNull() {
+					*condition3 = draftTriggersItem.ScheduleTriggerAppUser.Condition.ValueString()
+				} else {
+					condition3 = nil
+				}
+				cronSpec1 := new(string)
+				if !draftTriggersItem.ScheduleTriggerAppUser.CronSpec.IsUnknown() && !draftTriggersItem.ScheduleTriggerAppUser.CronSpec.IsNull() {
+					*cronSpec1 = draftTriggersItem.ScheduleTriggerAppUser.CronSpec.ValueString()
+				} else {
+					cronSpec1 = nil
+				}
+				start1 := new(time.Time)
+				if !draftTriggersItem.ScheduleTriggerAppUser.Start.IsUnknown() && !draftTriggersItem.ScheduleTriggerAppUser.Start.IsNull() {
+					*start1, _ = time.Parse(time.RFC3339Nano, draftTriggersItem.ScheduleTriggerAppUser.Start.ValueString())
+				} else {
+					start1 = nil
+				}
+				timezone1 := new(string)
+				if !draftTriggersItem.ScheduleTriggerAppUser.Timezone.IsUnknown() && !draftTriggersItem.ScheduleTriggerAppUser.Timezone.IsNull() {
+					*timezone1 = draftTriggersItem.ScheduleTriggerAppUser.Timezone.ValueString()
+				} else {
+					timezone1 = nil
+				}
+				scheduleTriggerAppUser = &shared.ScheduleTriggerAppUser{
+					AppID:     appId19,
+					Condition: condition3,
+					CronSpec:  cronSpec1,
+					Start:     start1,
+					Timezone:  timezone1,
 				}
 			}
 			var usageBasedRevocationTrigger *shared.UsageBasedRevocationTrigger
 			if draftTriggersItem.UsageBasedRevocationTrigger != nil {
-				appId19 := new(string)
+				appId20 := new(string)
 				if !draftTriggersItem.UsageBasedRevocationTrigger.AppID.IsUnknown() && !draftTriggersItem.UsageBasedRevocationTrigger.AppID.IsNull() {
-					*appId19 = draftTriggersItem.UsageBasedRevocationTrigger.AppID.ValueString()
+					*appId20 = draftTriggersItem.UsageBasedRevocationTrigger.AppID.ValueString()
 				} else {
-					appId19 = nil
+					appId20 = nil
 				}
 				enabledAt := new(time.Time)
 				if !draftTriggersItem.UsageBasedRevocationTrigger.EnabledAt.IsUnknown() && !draftTriggersItem.UsageBasedRevocationTrigger.EnabledAt.IsNull() {
@@ -6097,11 +6262,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				if draftTriggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs != nil {
 					excludedGroupRefs = make([]shared.AppEntitlementRef, 0, len(draftTriggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs))
 					for _, excludedGroupRefsItem := range draftTriggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs {
-						appId20 := new(string)
+						appId21 := new(string)
 						if !excludedGroupRefsItem.AppID.IsUnknown() && !excludedGroupRefsItem.AppID.IsNull() {
-							*appId20 = excludedGroupRefsItem.AppID.ValueString()
+							*appId21 = excludedGroupRefsItem.AppID.ValueString()
 						} else {
-							appId20 = nil
+							appId21 = nil
 						}
 						id38 := new(string)
 						if !excludedGroupRefsItem.ID.IsUnknown() && !excludedGroupRefsItem.ID.IsNull() {
@@ -6110,7 +6275,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 							id38 = nil
 						}
 						excludedGroupRefs = append(excludedGroupRefs, shared.AppEntitlementRef{
-							AppID: appId20,
+							AppID: appId21,
 							ID:    id38,
 						})
 					}
@@ -6160,11 +6325,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				if draftTriggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
 					targetedEntitlementRefs = make([]shared.AppEntitlementRef, 0, len(draftTriggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs))
 					for _, targetedEntitlementRefsItem := range draftTriggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs {
-						appId21 := new(string)
+						appId22 := new(string)
 						if !targetedEntitlementRefsItem.AppID.IsUnknown() && !targetedEntitlementRefsItem.AppID.IsNull() {
-							*appId21 = targetedEntitlementRefsItem.AppID.ValueString()
+							*appId22 = targetedEntitlementRefsItem.AppID.ValueString()
 						} else {
-							appId21 = nil
+							appId22 = nil
 						}
 						id40 := new(string)
 						if !targetedEntitlementRefsItem.ID.IsUnknown() && !targetedEntitlementRefsItem.ID.IsNull() {
@@ -6173,7 +6338,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 							id40 = nil
 						}
 						targetedEntitlementRefs = append(targetedEntitlementRefs, shared.AppEntitlementRef{
-							AppID: appId21,
+							AppID: appId22,
 							ID:    id40,
 						})
 					}
@@ -6185,7 +6350,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					unusedForDays = nil
 				}
 				usageBasedRevocationTrigger = &shared.UsageBasedRevocationTrigger{
-					AppID:                      appId19,
+					AppID:                      appId20,
 					EnabledAt:                  enabledAt,
 					ExcludedGroupRefs:          excludedGroupRefs,
 					ExcludedUserRefs:           excludedUserRefs,
@@ -6199,26 +6364,26 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 			}
 			var userCreatedTrigger *shared.UserCreatedTrigger
 			if draftTriggersItem.UserCreatedTrigger != nil {
-				condition3 := new(string)
+				condition4 := new(string)
 				if !draftTriggersItem.UserCreatedTrigger.Condition.IsUnknown() && !draftTriggersItem.UserCreatedTrigger.Condition.IsNull() {
-					*condition3 = draftTriggersItem.UserCreatedTrigger.Condition.ValueString()
+					*condition4 = draftTriggersItem.UserCreatedTrigger.Condition.ValueString()
 				} else {
-					condition3 = nil
+					condition4 = nil
 				}
 				userCreatedTrigger = &shared.UserCreatedTrigger{
-					Condition: condition3,
+					Condition: condition4,
 				}
 			}
 			var userProfileChangeTrigger *shared.UserProfileChangeTrigger
 			if draftTriggersItem.UserProfileChangeTrigger != nil {
-				condition4 := new(string)
+				condition5 := new(string)
 				if !draftTriggersItem.UserProfileChangeTrigger.Condition.IsUnknown() && !draftTriggersItem.UserProfileChangeTrigger.Condition.IsNull() {
-					*condition4 = draftTriggersItem.UserProfileChangeTrigger.Condition.ValueString()
+					*condition5 = draftTriggersItem.UserProfileChangeTrigger.Condition.ValueString()
 				} else {
-					condition4 = nil
+					condition5 = nil
 				}
 				userProfileChangeTrigger = &shared.UserProfileChangeTrigger{
-					Condition: condition4,
+					Condition: condition5,
 				}
 			}
 			var webhookAutomationTrigger *shared.WebhookAutomationTrigger
@@ -6259,6 +6424,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				GrantFoundTrigger:           grantFoundTrigger,
 				ManualAutomationTrigger:     manualAutomationTrigger,
 				ScheduleTrigger:             scheduleTrigger,
+				ScheduleTriggerAppUser:      scheduleTriggerAppUser,
 				UsageBasedRevocationTrigger: usageBasedRevocationTrigger,
 				UserCreatedTrigger:          userCreatedTrigger,
 				UserProfileChangeTrigger:    userProfileChangeTrigger,
@@ -6284,11 +6450,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 		for _, triggersItem := range r.Triggers {
 			var appUserCreatedTrigger1 *shared.AppUserCreatedTrigger
 			if triggersItem.AppUserCreatedTrigger != nil {
-				appId22 := new(string)
+				appId23 := new(string)
 				if !triggersItem.AppUserCreatedTrigger.AppID.IsUnknown() && !triggersItem.AppUserCreatedTrigger.AppID.IsNull() {
-					*appId22 = triggersItem.AppUserCreatedTrigger.AppID.ValueString()
+					*appId23 = triggersItem.AppUserCreatedTrigger.AppID.ValueString()
 				} else {
-					appId22 = nil
+					appId23 = nil
 				}
 				appIDCel2 := new(string)
 				if !triggersItem.AppUserCreatedTrigger.AppIDCel.IsUnknown() && !triggersItem.AppUserCreatedTrigger.AppIDCel.IsNull() {
@@ -6296,25 +6462,25 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					appIDCel2 = nil
 				}
-				condition5 := new(string)
+				condition6 := new(string)
 				if !triggersItem.AppUserCreatedTrigger.Condition.IsUnknown() && !triggersItem.AppUserCreatedTrigger.Condition.IsNull() {
-					*condition5 = triggersItem.AppUserCreatedTrigger.Condition.ValueString()
+					*condition6 = triggersItem.AppUserCreatedTrigger.Condition.ValueString()
 				} else {
-					condition5 = nil
+					condition6 = nil
 				}
 				appUserCreatedTrigger1 = &shared.AppUserCreatedTrigger{
-					AppID:     appId22,
+					AppID:     appId23,
 					AppIDCel:  appIDCel2,
-					Condition: condition5,
+					Condition: condition6,
 				}
 			}
 			var appUserUpdatedTrigger1 *shared.AppUserUpdatedTrigger
 			if triggersItem.AppUserUpdatedTrigger != nil {
-				appId23 := new(string)
+				appId24 := new(string)
 				if !triggersItem.AppUserUpdatedTrigger.AppID.IsUnknown() && !triggersItem.AppUserUpdatedTrigger.AppID.IsNull() {
-					*appId23 = triggersItem.AppUserUpdatedTrigger.AppID.ValueString()
+					*appId24 = triggersItem.AppUserUpdatedTrigger.AppID.ValueString()
 				} else {
-					appId23 = nil
+					appId24 = nil
 				}
 				appIDCel3 := new(string)
 				if !triggersItem.AppUserUpdatedTrigger.AppIDCel.IsUnknown() && !triggersItem.AppUserUpdatedTrigger.AppIDCel.IsNull() {
@@ -6322,16 +6488,16 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					appIDCel3 = nil
 				}
-				condition6 := new(string)
+				condition7 := new(string)
 				if !triggersItem.AppUserUpdatedTrigger.Condition.IsUnknown() && !triggersItem.AppUserUpdatedTrigger.Condition.IsNull() {
-					*condition6 = triggersItem.AppUserUpdatedTrigger.Condition.ValueString()
+					*condition7 = triggersItem.AppUserUpdatedTrigger.Condition.ValueString()
 				} else {
-					condition6 = nil
+					condition7 = nil
 				}
 				appUserUpdatedTrigger1 = &shared.AppUserUpdatedTrigger{
-					AppID:     appId23,
+					AppID:     appId24,
 					AppIDCel:  appIDCel3,
-					Condition: condition6,
+					Condition: condition7,
 				}
 			}
 			var formTrigger1 interface{}
@@ -6360,11 +6526,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs != nil {
 							appEntitlementRefs6 = make([]shared.AppEntitlementRef, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs))
 							for _, appEntitlementRefsItem6 := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs {
-								appId24 := new(string)
+								appId25 := new(string)
 								if !appEntitlementRefsItem6.AppID.IsUnknown() && !appEntitlementRefsItem6.AppID.IsNull() {
-									*appId24 = appEntitlementRefsItem6.AppID.ValueString()
+									*appId25 = appEntitlementRefsItem6.AppID.ValueString()
 								} else {
-									appId24 = nil
+									appId25 = nil
 								}
 								id41 := new(string)
 								if !appEntitlementRefsItem6.ID.IsUnknown() && !appEntitlementRefsItem6.ID.IsNull() {
@@ -6373,7 +6539,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 									id41 = nil
 								}
 								appEntitlementRefs6 = append(appEntitlementRefs6, shared.AppEntitlementRef{
-									AppID: appId24,
+									AppID: appId25,
 									ID:    id41,
 								})
 							}
@@ -6384,16 +6550,16 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						} else {
 							appEntitlementRefsCel6 = nil
 						}
-						appId25 := new(string)
+						appId26 := new(string)
 						if !triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppID.IsUnknown() && !triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppID.IsNull() {
-							*appId25 = triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppID.ValueString()
+							*appId26 = triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter.AppID.ValueString()
 						} else {
-							appId25 = nil
+							appId26 = nil
 						}
 						entitlementFilter2 = &shared.EntitlementFilter{
 							AppEntitlementRefs:    appEntitlementRefs6,
 							AppEntitlementRefsCel: appEntitlementRefsCel6,
-							AppID:                 appId25,
+							AppID:                 appId26,
 						}
 					}
 					var grantFilter2 *shared.GrantFilter
@@ -6454,11 +6620,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs != nil {
 							appEntitlementRefs7 = make([]shared.AppEntitlementRef, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs))
 							for _, appEntitlementRefsItem7 := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppEntitlementRefs {
-								appId26 := new(string)
+								appId27 := new(string)
 								if !appEntitlementRefsItem7.AppID.IsUnknown() && !appEntitlementRefsItem7.AppID.IsNull() {
-									*appId26 = appEntitlementRefsItem7.AppID.ValueString()
+									*appId27 = appEntitlementRefsItem7.AppID.ValueString()
 								} else {
-									appId26 = nil
+									appId27 = nil
 								}
 								id42 := new(string)
 								if !appEntitlementRefsItem7.ID.IsUnknown() && !appEntitlementRefsItem7.ID.IsNull() {
@@ -6467,7 +6633,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 									id42 = nil
 								}
 								appEntitlementRefs7 = append(appEntitlementRefs7, shared.AppEntitlementRef{
-									AppID: appId26,
+									AppID: appId27,
 									ID:    id42,
 								})
 							}
@@ -6478,16 +6644,16 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						} else {
 							appEntitlementRefsCel7 = nil
 						}
-						appId27 := new(string)
+						appId28 := new(string)
 						if !triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppID.IsUnknown() && !triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppID.IsNull() {
-							*appId27 = triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppID.ValueString()
+							*appId28 = triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementFilter.AppID.ValueString()
 						} else {
-							appId27 = nil
+							appId28 = nil
 						}
 						entitlementFilter3 = &shared.EntitlementFilter{
 							AppEntitlementRefs:    appEntitlementRefs7,
 							AppEntitlementRefsCel: appEntitlementRefsCel7,
-							AppID:                 appId27,
+							AppID:                 appId28,
 						}
 					}
 					var grantFilter3 *shared.GrantFilter
@@ -6538,17 +6704,17 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					advanced1 = nil
 				}
-				condition7 := new(string)
+				condition8 := new(string)
 				if !triggersItem.ScheduleTrigger.Condition.IsUnknown() && !triggersItem.ScheduleTrigger.Condition.IsNull() {
-					*condition7 = triggersItem.ScheduleTrigger.Condition.ValueString()
+					*condition8 = triggersItem.ScheduleTrigger.Condition.ValueString()
 				} else {
-					condition7 = nil
+					condition8 = nil
 				}
-				cronSpec1 := new(string)
+				cronSpec2 := new(string)
 				if !triggersItem.ScheduleTrigger.CronSpec.IsUnknown() && !triggersItem.ScheduleTrigger.CronSpec.IsNull() {
-					*cronSpec1 = triggersItem.ScheduleTrigger.CronSpec.ValueString()
+					*cronSpec2 = triggersItem.ScheduleTrigger.CronSpec.ValueString()
 				} else {
-					cronSpec1 = nil
+					cronSpec2 = nil
 				}
 				skipIfTrueCel3 := new(string)
 				if !triggersItem.ScheduleTrigger.SkipIfTrueCel.IsUnknown() && !triggersItem.ScheduleTrigger.SkipIfTrueCel.IsNull() {
@@ -6556,27 +6722,74 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					skipIfTrueCel3 = nil
 				}
-				start1 := new(time.Time)
+				start2 := new(time.Time)
 				if !triggersItem.ScheduleTrigger.Start.IsUnknown() && !triggersItem.ScheduleTrigger.Start.IsNull() {
-					*start1, _ = time.Parse(time.RFC3339Nano, triggersItem.ScheduleTrigger.Start.ValueString())
+					*start2, _ = time.Parse(time.RFC3339Nano, triggersItem.ScheduleTrigger.Start.ValueString())
 				} else {
-					start1 = nil
+					start2 = nil
+				}
+				timezone2 := new(string)
+				if !triggersItem.ScheduleTrigger.Timezone.IsUnknown() && !triggersItem.ScheduleTrigger.Timezone.IsNull() {
+					*timezone2 = triggersItem.ScheduleTrigger.Timezone.ValueString()
+				} else {
+					timezone2 = nil
 				}
 				scheduleTrigger1 = &shared.ScheduleTrigger{
 					Advanced:      advanced1,
-					Condition:     condition7,
-					CronSpec:      cronSpec1,
+					Condition:     condition8,
+					CronSpec:      cronSpec2,
 					SkipIfTrueCel: skipIfTrueCel3,
-					Start:         start1,
+					Start:         start2,
+					Timezone:      timezone2,
+				}
+			}
+			var scheduleTriggerAppUser1 *shared.ScheduleTriggerAppUser
+			if triggersItem.ScheduleTriggerAppUser != nil {
+				appId29 := new(string)
+				if !triggersItem.ScheduleTriggerAppUser.AppID.IsUnknown() && !triggersItem.ScheduleTriggerAppUser.AppID.IsNull() {
+					*appId29 = triggersItem.ScheduleTriggerAppUser.AppID.ValueString()
+				} else {
+					appId29 = nil
+				}
+				condition9 := new(string)
+				if !triggersItem.ScheduleTriggerAppUser.Condition.IsUnknown() && !triggersItem.ScheduleTriggerAppUser.Condition.IsNull() {
+					*condition9 = triggersItem.ScheduleTriggerAppUser.Condition.ValueString()
+				} else {
+					condition9 = nil
+				}
+				cronSpec3 := new(string)
+				if !triggersItem.ScheduleTriggerAppUser.CronSpec.IsUnknown() && !triggersItem.ScheduleTriggerAppUser.CronSpec.IsNull() {
+					*cronSpec3 = triggersItem.ScheduleTriggerAppUser.CronSpec.ValueString()
+				} else {
+					cronSpec3 = nil
+				}
+				start3 := new(time.Time)
+				if !triggersItem.ScheduleTriggerAppUser.Start.IsUnknown() && !triggersItem.ScheduleTriggerAppUser.Start.IsNull() {
+					*start3, _ = time.Parse(time.RFC3339Nano, triggersItem.ScheduleTriggerAppUser.Start.ValueString())
+				} else {
+					start3 = nil
+				}
+				timezone3 := new(string)
+				if !triggersItem.ScheduleTriggerAppUser.Timezone.IsUnknown() && !triggersItem.ScheduleTriggerAppUser.Timezone.IsNull() {
+					*timezone3 = triggersItem.ScheduleTriggerAppUser.Timezone.ValueString()
+				} else {
+					timezone3 = nil
+				}
+				scheduleTriggerAppUser1 = &shared.ScheduleTriggerAppUser{
+					AppID:     appId29,
+					Condition: condition9,
+					CronSpec:  cronSpec3,
+					Start:     start3,
+					Timezone:  timezone3,
 				}
 			}
 			var usageBasedRevocationTrigger1 *shared.UsageBasedRevocationTrigger
 			if triggersItem.UsageBasedRevocationTrigger != nil {
-				appId28 := new(string)
+				appId30 := new(string)
 				if !triggersItem.UsageBasedRevocationTrigger.AppID.IsUnknown() && !triggersItem.UsageBasedRevocationTrigger.AppID.IsNull() {
-					*appId28 = triggersItem.UsageBasedRevocationTrigger.AppID.ValueString()
+					*appId30 = triggersItem.UsageBasedRevocationTrigger.AppID.ValueString()
 				} else {
-					appId28 = nil
+					appId30 = nil
 				}
 				enabledAt1 := new(time.Time)
 				if !triggersItem.UsageBasedRevocationTrigger.EnabledAt.IsUnknown() && !triggersItem.UsageBasedRevocationTrigger.EnabledAt.IsNull() {
@@ -6588,11 +6801,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				if triggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs != nil {
 					excludedGroupRefs1 = make([]shared.AppEntitlementRef, 0, len(triggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs))
 					for _, excludedGroupRefsItem1 := range triggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs {
-						appId29 := new(string)
+						appId31 := new(string)
 						if !excludedGroupRefsItem1.AppID.IsUnknown() && !excludedGroupRefsItem1.AppID.IsNull() {
-							*appId29 = excludedGroupRefsItem1.AppID.ValueString()
+							*appId31 = excludedGroupRefsItem1.AppID.ValueString()
 						} else {
-							appId29 = nil
+							appId31 = nil
 						}
 						id43 := new(string)
 						if !excludedGroupRefsItem1.ID.IsUnknown() && !excludedGroupRefsItem1.ID.IsNull() {
@@ -6601,7 +6814,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 							id43 = nil
 						}
 						excludedGroupRefs1 = append(excludedGroupRefs1, shared.AppEntitlementRef{
-							AppID: appId29,
+							AppID: appId31,
 							ID:    id43,
 						})
 					}
@@ -6651,11 +6864,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				if triggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
 					targetedEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(triggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs))
 					for _, targetedEntitlementRefsItem1 := range triggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs {
-						appId30 := new(string)
+						appId32 := new(string)
 						if !targetedEntitlementRefsItem1.AppID.IsUnknown() && !targetedEntitlementRefsItem1.AppID.IsNull() {
-							*appId30 = targetedEntitlementRefsItem1.AppID.ValueString()
+							*appId32 = targetedEntitlementRefsItem1.AppID.ValueString()
 						} else {
-							appId30 = nil
+							appId32 = nil
 						}
 						id45 := new(string)
 						if !targetedEntitlementRefsItem1.ID.IsUnknown() && !targetedEntitlementRefsItem1.ID.IsNull() {
@@ -6664,7 +6877,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 							id45 = nil
 						}
 						targetedEntitlementRefs1 = append(targetedEntitlementRefs1, shared.AppEntitlementRef{
-							AppID: appId30,
+							AppID: appId32,
 							ID:    id45,
 						})
 					}
@@ -6676,7 +6889,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					unusedForDays1 = nil
 				}
 				usageBasedRevocationTrigger1 = &shared.UsageBasedRevocationTrigger{
-					AppID:                      appId28,
+					AppID:                      appId30,
 					EnabledAt:                  enabledAt1,
 					ExcludedGroupRefs:          excludedGroupRefs1,
 					ExcludedUserRefs:           excludedUserRefs1,
@@ -6690,26 +6903,26 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 			}
 			var userCreatedTrigger1 *shared.UserCreatedTrigger
 			if triggersItem.UserCreatedTrigger != nil {
-				condition8 := new(string)
+				condition10 := new(string)
 				if !triggersItem.UserCreatedTrigger.Condition.IsUnknown() && !triggersItem.UserCreatedTrigger.Condition.IsNull() {
-					*condition8 = triggersItem.UserCreatedTrigger.Condition.ValueString()
+					*condition10 = triggersItem.UserCreatedTrigger.Condition.ValueString()
 				} else {
-					condition8 = nil
+					condition10 = nil
 				}
 				userCreatedTrigger1 = &shared.UserCreatedTrigger{
-					Condition: condition8,
+					Condition: condition10,
 				}
 			}
 			var userProfileChangeTrigger1 *shared.UserProfileChangeTrigger
 			if triggersItem.UserProfileChangeTrigger != nil {
-				condition9 := new(string)
+				condition11 := new(string)
 				if !triggersItem.UserProfileChangeTrigger.Condition.IsUnknown() && !triggersItem.UserProfileChangeTrigger.Condition.IsNull() {
-					*condition9 = triggersItem.UserProfileChangeTrigger.Condition.ValueString()
+					*condition11 = triggersItem.UserProfileChangeTrigger.Condition.ValueString()
 				} else {
-					condition9 = nil
+					condition11 = nil
 				}
 				userProfileChangeTrigger1 = &shared.UserProfileChangeTrigger{
-					Condition: condition9,
+					Condition: condition11,
 				}
 			}
 			var webhookAutomationTrigger1 *shared.WebhookAutomationTrigger
@@ -6750,6 +6963,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				GrantFoundTrigger:           grantFoundTrigger1,
 				ManualAutomationTrigger:     manualAutomationTrigger1,
 				ScheduleTrigger:             scheduleTrigger1,
+				ScheduleTriggerAppUser:      scheduleTriggerAppUser1,
 				UsageBasedRevocationTrigger: usageBasedRevocationTrigger1,
 				UserCreatedTrigger:          userCreatedTrigger1,
 				UserProfileChangeTrigger:    userProfileChangeTrigger1,

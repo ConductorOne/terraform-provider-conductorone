@@ -7,6 +7,7 @@ import (
 )
 
 type DeprovisionerPolicy struct {
+	ActionProvision         *ActionProvision         `tfsdk:"action_provision"`
 	ConnectorProvision      *ConnectorProvision      `tfsdk:"connector_provision"`
 	DelegatedProvision      *DelegatedProvision      `tfsdk:"delegated_provision"`
 	ExternalTicketProvision *ExternalTicketProvision `tfsdk:"external_ticket_provision"`

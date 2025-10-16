@@ -108,14 +108,15 @@ func (e *EmergencyStatus) UnmarshalJSON(data []byte) error {
 type SortBy string
 
 const (
-	SortByTaskSearchSortByUnspecified      SortBy = "TASK_SEARCH_SORT_BY_UNSPECIFIED"
-	SortByTaskSearchSortByAccount          SortBy = "TASK_SEARCH_SORT_BY_ACCOUNT"
-	SortByTaskSearchSortByResource         SortBy = "TASK_SEARCH_SORT_BY_RESOURCE"
-	SortByTaskSearchSortByAccountOwner     SortBy = "TASK_SEARCH_SORT_BY_ACCOUNT_OWNER"
-	SortByTaskSearchSortByReverseTicketID  SortBy = "TASK_SEARCH_SORT_BY_REVERSE_TICKET_ID"
-	SortByTaskSearchSortByTicketID         SortBy = "TASK_SEARCH_SORT_BY_TICKET_ID"
-	SortByTaskSearchSortByCreatedAt        SortBy = "TASK_SEARCH_SORT_BY_CREATED_AT"
-	SortByTaskSearchSortByReverseCreatedAt SortBy = "TASK_SEARCH_SORT_BY_REVERSE_CREATED_AT"
+	SortByTaskSearchSortByUnspecified                    SortBy = "TASK_SEARCH_SORT_BY_UNSPECIFIED"
+	SortByTaskSearchSortByAccount                        SortBy = "TASK_SEARCH_SORT_BY_ACCOUNT"
+	SortByTaskSearchSortByResource                       SortBy = "TASK_SEARCH_SORT_BY_RESOURCE"
+	SortByTaskSearchSortByAccountOwner                   SortBy = "TASK_SEARCH_SORT_BY_ACCOUNT_OWNER"
+	SortByTaskSearchSortByReverseTicketID                SortBy = "TASK_SEARCH_SORT_BY_REVERSE_TICKET_ID"
+	SortByTaskSearchSortByTicketID                       SortBy = "TASK_SEARCH_SORT_BY_TICKET_ID"
+	SortByTaskSearchSortByCreatedAt                      SortBy = "TASK_SEARCH_SORT_BY_CREATED_AT"
+	SortByTaskSearchSortByReverseCreatedAt               SortBy = "TASK_SEARCH_SORT_BY_REVERSE_CREATED_AT"
+	SortByTaskSearchSortByAppResourceIDAndAppEntitlement SortBy = "TASK_SEARCH_SORT_BY_APP_RESOURCE_ID_AND_APP_ENTITLEMENT"
 )
 
 func (e SortBy) ToPointer() *SortBy {
@@ -142,6 +143,8 @@ func (e *SortBy) UnmarshalJSON(data []byte) error {
 	case "TASK_SEARCH_SORT_BY_CREATED_AT":
 		fallthrough
 	case "TASK_SEARCH_SORT_BY_REVERSE_CREATED_AT":
+		fallthrough
+	case "TASK_SEARCH_SORT_BY_APP_RESOURCE_ID_AND_APP_ENTITLEMENT":
 		*e = SortBy(v)
 		return nil
 	default:
@@ -266,7 +269,8 @@ type TaskSearchRequest struct {
 	// Search tasks that do not have any of these app resource type IDs.
 	ExcludeAppResourceTypeIds []string `json:"excludeAppResourceTypeIds,omitempty"`
 	// Exclude Specific TaskIDs from this serach result.
-	ExcludeIds []string `json:"excludeIds,omitempty"`
+	ExcludeIds        []string   `json:"excludeIds,omitempty"`
+	IncludeActedAfter *time.Time `json:"includeActedAfter,omitempty"`
 	// Whether or not to include deleted tasks.
 	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
 	// Search tasks where the user would see this task in the My Work section
@@ -435,6 +439,13 @@ func (t *TaskSearchRequest) GetExcludeIds() []string {
 		return nil
 	}
 	return t.ExcludeIds
+}
+
+func (t *TaskSearchRequest) GetIncludeActedAfter() *time.Time {
+	if t == nil {
+		return nil
+	}
+	return t.IncludeActedAfter
 }
 
 func (t *TaskSearchRequest) GetIncludeDeleted() *bool {

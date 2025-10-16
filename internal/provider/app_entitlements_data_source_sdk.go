@@ -49,6 +49,14 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 						list.AppEntitlement.DeprovisionerPolicy = nil
 					} else {
 						list.AppEntitlement.DeprovisionerPolicy = &tfTypes.DeprovisionerPolicy{}
+						if listItem.AppEntitlement.DeprovisionerPolicy.ActionProvision == nil {
+							list.AppEntitlement.DeprovisionerPolicy.ActionProvision = nil
+						} else {
+							list.AppEntitlement.DeprovisionerPolicy.ActionProvision = &tfTypes.ActionProvision{}
+							list.AppEntitlement.DeprovisionerPolicy.ActionProvision.ActionName = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ActionProvision.ActionName)
+							list.AppEntitlement.DeprovisionerPolicy.ActionProvision.AppID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ActionProvision.AppID)
+							list.AppEntitlement.DeprovisionerPolicy.ActionProvision.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ActionProvision.ConnectorID)
+						}
 						if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision == nil {
 							list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision = nil
 						} else {
@@ -165,6 +173,14 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 						list.AppEntitlement.ProvisionPolicy = nil
 					} else {
 						list.AppEntitlement.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
+						if listItem.AppEntitlement.ProvisionPolicy.ActionProvision == nil {
+							list.AppEntitlement.ProvisionPolicy.ActionProvision = nil
+						} else {
+							list.AppEntitlement.ProvisionPolicy.ActionProvision = &tfTypes.ActionProvision{}
+							list.AppEntitlement.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ActionProvision.ActionName)
+							list.AppEntitlement.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ActionProvision.AppID)
+							list.AppEntitlement.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ActionProvision.ConnectorID)
+						}
 						if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision == nil {
 							list.AppEntitlement.ProvisionPolicy.ConnectorProvision = nil
 						} else {

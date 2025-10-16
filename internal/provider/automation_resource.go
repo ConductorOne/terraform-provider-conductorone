@@ -2106,8 +2106,47 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										validators.IsRFC3339(),
 									},
 								},
+								"timezone": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The timezone field.`,
+								},
 							},
 							Description: `The ScheduleTrigger message.`,
+						},
+						"schedule_trigger_app_user": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The appId field.`,
+								},
+								"condition": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The condition field.`,
+								},
+								"cron_spec": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The cronSpec field.`,
+								},
+								"start": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									Validators: []validator.String{
+										validators.IsRFC3339(),
+									},
+								},
+								"timezone": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The timezone field.`,
+								},
+							},
+							Description: `The ScheduleTriggerAppUser message.`,
 						},
 						"usage_based_revocation_trigger": schema.SingleNestedAttribute{
 							Computed: true,
@@ -2312,7 +2351,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"primary_trigger_type": schema.StringAttribute{
 				Computed:    true,
-				Description: `The primaryTriggerType field. must be one of ["TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_USER_PROFILE_CHANGE", "TRIGGER_TYPE_APP_USER_CREATE", "TRIGGER_TYPE_APP_USER_UPDATE", "TRIGGER_TYPE_UNUSED_ACCESS", "TRIGGER_TYPE_USER_CREATED", "TRIGGER_TYPE_GRANT_FOUND", "TRIGGER_TYPE_GRANT_DELETED", "TRIGGER_TYPE_WEBHOOK", "TRIGGER_TYPE_SCHEDULE", "TRIGGER_TYPE_FORM"]`,
+				Description: `The primaryTriggerType field. must be one of ["TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_USER_PROFILE_CHANGE", "TRIGGER_TYPE_APP_USER_CREATE", "TRIGGER_TYPE_APP_USER_UPDATE", "TRIGGER_TYPE_UNUSED_ACCESS", "TRIGGER_TYPE_USER_CREATED", "TRIGGER_TYPE_GRANT_FOUND", "TRIGGER_TYPE_GRANT_DELETED", "TRIGGER_TYPE_WEBHOOK", "TRIGGER_TYPE_SCHEDULE", "TRIGGER_TYPE_FORM", "TRIGGER_TYPE_SCHEDULE_APP_USER"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"TRIGGER_TYPE_UNSPECIFIED",
@@ -2326,6 +2365,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 						"TRIGGER_TYPE_WEBHOOK",
 						"TRIGGER_TYPE_SCHEDULE",
 						"TRIGGER_TYPE_FORM",
+						"TRIGGER_TYPE_SCHEDULE_APP_USER",
 					),
 				},
 			},
@@ -2674,8 +2714,47 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										validators.IsRFC3339(),
 									},
 								},
+								"timezone": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The timezone field.`,
+								},
 							},
 							Description: `The ScheduleTrigger message.`,
+						},
+						"schedule_trigger_app_user": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The appId field.`,
+								},
+								"condition": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The condition field.`,
+								},
+								"cron_spec": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The cronSpec field.`,
+								},
+								"start": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									Validators: []validator.String{
+										validators.IsRFC3339(),
+									},
+								},
+								"timezone": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The timezone field.`,
+								},
+							},
+							Description: `The ScheduleTriggerAppUser message.`,
 						},
 						"usage_based_revocation_trigger": schema.SingleNestedAttribute{
 							Computed: true,

@@ -266,6 +266,14 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Provision.ProvisionPolicy = nil
 							} else {
 								steps.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
+								if stepsItem.Provision.ProvisionPolicy.ActionProvision == nil {
+									steps.Provision.ProvisionPolicy.ActionProvision = nil
+								} else {
+									steps.Provision.ProvisionPolicy.ActionProvision = &tfTypes.ActionProvision{}
+									steps.Provision.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName)
+									steps.Provision.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID)
+									steps.Provision.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID)
+								}
 								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision == nil {
 									steps.Provision.ProvisionPolicy.ConnectorProvision = nil
 								} else {
@@ -956,6 +964,32 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					}
 					var provisionPolicy *shared.ProvisionPolicy
 					if stepsItem.Provision.ProvisionPolicy != nil {
+						var actionProvision *shared.ActionProvision
+						if stepsItem.Provision.ProvisionPolicy.ActionProvision != nil {
+							actionName := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName.IsNull() {
+								*actionName = stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName.ValueString()
+							} else {
+								actionName = nil
+							}
+							appId2 := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID.IsNull() {
+								*appId2 = stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID.ValueString()
+							} else {
+								appId2 = nil
+							}
+							connectorID := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsNull() {
+								*connectorID = stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID.ValueString()
+							} else {
+								connectorID = nil
+							}
+							actionProvision = &shared.ActionProvision{
+								ActionName:  actionName,
+								AppID:       appId2,
+								ConnectorID: connectorID,
+							}
+						}
 						var connectorProvision *shared.ConnectorProvision
 						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision != nil {
 							var accountProvision *shared.AccountProvision
@@ -964,11 +998,11 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config != nil {
 									config = &shared.AccountProvisionConfig{}
 								}
-								connectorID := new(string)
+								connectorId1 := new(string)
 								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
-									*connectorID = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
+									*connectorId1 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
 								} else {
-									connectorID = nil
+									connectorId1 = nil
 								}
 								var doNotSave *shared.DoNotSave
 								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave != nil {
@@ -995,7 +1029,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								}
 								accountProvision = &shared.AccountProvision{
 									Config:      config,
-									ConnectorID: connectorID,
+									ConnectorID: connectorId1,
 									DoNotSave:   doNotSave,
 									SaveToVault: saveToVault,
 									SchemaID:    schemaID,
@@ -1003,26 +1037,26 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 							var defaultBehavior *shared.DefaultBehavior
 							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior != nil {
-								connectorId1 := new(string)
+								connectorId2 := new(string)
 								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
-									*connectorId1 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
+									*connectorId2 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
 								} else {
-									connectorId1 = nil
+									connectorId2 = nil
 								}
 								defaultBehavior = &shared.DefaultBehavior{
-									ConnectorID: connectorId1,
+									ConnectorID: connectorId2,
 								}
 							}
 							var deleteAccount *shared.DeleteAccount
 							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount != nil {
-								connectorId2 := new(string)
+								connectorId3 := new(string)
 								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsNull() {
-									*connectorId2 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
+									*connectorId3 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
 								} else {
-									connectorId2 = nil
+									connectorId3 = nil
 								}
 								deleteAccount = &shared.DeleteAccount{
-									ConnectorID: connectorId2,
+									ConnectorID: connectorId3,
 								}
 							}
 							connectorProvision = &shared.ConnectorProvision{
@@ -1033,11 +1067,11 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						}
 						var delegatedProvision *shared.DelegatedProvision
 						if stepsItem.Provision.ProvisionPolicy.DelegatedProvision != nil {
-							appId2 := new(string)
+							appId3 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-								*appId2 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+								*appId3 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
 							} else {
-								appId2 = nil
+								appId3 = nil
 							}
 							entitlementID := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
@@ -1046,23 +1080,23 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								entitlementID = nil
 							}
 							delegatedProvision = &shared.DelegatedProvision{
-								AppID:         appId2,
+								AppID:         appId3,
 								EntitlementID: entitlementID,
 							}
 						}
 						var externalTicketProvision *shared.ExternalTicketProvision
 						if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision != nil {
-							appId3 := new(string)
+							appId4 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
-								*appId3 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
+								*appId4 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
 							} else {
-								appId3 = nil
+								appId4 = nil
 							}
-							connectorId3 := new(string)
+							connectorId4 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-								*connectorId3 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+								*connectorId4 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
 							} else {
-								connectorId3 = nil
+								connectorId4 = nil
 							}
 							externalTicketProvisionerConfigID := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
@@ -1077,8 +1111,8 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								instructions1 = nil
 							}
 							externalTicketProvision = &shared.ExternalTicketProvision{
-								AppID:                             appId3,
-								ConnectorID:                       connectorId3,
+								AppID:                             appId4,
+								ConnectorID:                       connectorId4,
 								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 								Instructions:                      instructions1,
 							}
@@ -1124,6 +1158,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 						}
 						provisionPolicy = &shared.ProvisionPolicy{
+							ActionProvision:         actionProvision,
 							ConnectorProvision:      connectorProvision,
 							DelegatedProvision:      delegatedProvision,
 							ExternalTicketProvision: externalTicketProvision,
@@ -1141,11 +1176,11 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							appEntitlementId1 = nil
 						}
-						appId4 := new(string)
+						appId5 := new(string)
 						if !stepsItem.Provision.ProvisionTarget.AppID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppID.IsNull() {
-							*appId4 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
+							*appId5 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
 						} else {
-							appId4 = nil
+							appId5 = nil
 						}
 						appUserID := new(string)
 						if !stepsItem.Provision.ProvisionTarget.AppUserID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppUserID.IsNull() {
@@ -1161,7 +1196,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						}
 						provisionTarget = &shared.ProvisionTarget{
 							AppEntitlementID: appEntitlementId1,
-							AppID:            appId4,
+							AppID:            appId5,
 							AppUserID:        appUserID,
 							GrantDuration:    grantDuration,
 						}
@@ -1813,6 +1848,32 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					}
 					var provisionPolicy *shared.ProvisionPolicy
 					if stepsItem.Provision.ProvisionPolicy != nil {
+						var actionProvision *shared.ActionProvision
+						if stepsItem.Provision.ProvisionPolicy.ActionProvision != nil {
+							actionName := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName.IsNull() {
+								*actionName = stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName.ValueString()
+							} else {
+								actionName = nil
+							}
+							appId2 := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID.IsNull() {
+								*appId2 = stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID.ValueString()
+							} else {
+								appId2 = nil
+							}
+							connectorID := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsNull() {
+								*connectorID = stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID.ValueString()
+							} else {
+								connectorID = nil
+							}
+							actionProvision = &shared.ActionProvision{
+								ActionName:  actionName,
+								AppID:       appId2,
+								ConnectorID: connectorID,
+							}
+						}
 						var connectorProvision *shared.ConnectorProvision
 						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision != nil {
 							var accountProvision *shared.AccountProvision
@@ -1821,11 +1882,11 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config != nil {
 									config = &shared.AccountProvisionConfig{}
 								}
-								connectorID := new(string)
+								connectorId1 := new(string)
 								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
-									*connectorID = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
+									*connectorId1 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
 								} else {
-									connectorID = nil
+									connectorId1 = nil
 								}
 								var doNotSave *shared.DoNotSave
 								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave != nil {
@@ -1852,7 +1913,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								}
 								accountProvision = &shared.AccountProvision{
 									Config:      config,
-									ConnectorID: connectorID,
+									ConnectorID: connectorId1,
 									DoNotSave:   doNotSave,
 									SaveToVault: saveToVault,
 									SchemaID:    schemaID,
@@ -1860,26 +1921,26 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 							var defaultBehavior *shared.DefaultBehavior
 							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior != nil {
-								connectorId1 := new(string)
+								connectorId2 := new(string)
 								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
-									*connectorId1 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
+									*connectorId2 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
 								} else {
-									connectorId1 = nil
+									connectorId2 = nil
 								}
 								defaultBehavior = &shared.DefaultBehavior{
-									ConnectorID: connectorId1,
+									ConnectorID: connectorId2,
 								}
 							}
 							var deleteAccount *shared.DeleteAccount
 							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount != nil {
-								connectorId2 := new(string)
+								connectorId3 := new(string)
 								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsNull() {
-									*connectorId2 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
+									*connectorId3 = stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
 								} else {
-									connectorId2 = nil
+									connectorId3 = nil
 								}
 								deleteAccount = &shared.DeleteAccount{
-									ConnectorID: connectorId2,
+									ConnectorID: connectorId3,
 								}
 							}
 							connectorProvision = &shared.ConnectorProvision{
@@ -1890,11 +1951,11 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						}
 						var delegatedProvision *shared.DelegatedProvision
 						if stepsItem.Provision.ProvisionPolicy.DelegatedProvision != nil {
-							appId2 := new(string)
+							appId3 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-								*appId2 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+								*appId3 = stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
 							} else {
-								appId2 = nil
+								appId3 = nil
 							}
 							entitlementID := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
@@ -1903,23 +1964,23 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								entitlementID = nil
 							}
 							delegatedProvision = &shared.DelegatedProvision{
-								AppID:         appId2,
+								AppID:         appId3,
 								EntitlementID: entitlementID,
 							}
 						}
 						var externalTicketProvision *shared.ExternalTicketProvision
 						if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision != nil {
-							appId3 := new(string)
+							appId4 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
-								*appId3 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
+								*appId4 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
 							} else {
-								appId3 = nil
+								appId4 = nil
 							}
-							connectorId3 := new(string)
+							connectorId4 := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-								*connectorId3 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+								*connectorId4 = stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
 							} else {
-								connectorId3 = nil
+								connectorId4 = nil
 							}
 							externalTicketProvisionerConfigID := new(string)
 							if !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
@@ -1934,8 +1995,8 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								instructions1 = nil
 							}
 							externalTicketProvision = &shared.ExternalTicketProvision{
-								AppID:                             appId3,
-								ConnectorID:                       connectorId3,
+								AppID:                             appId4,
+								ConnectorID:                       connectorId4,
 								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 								Instructions:                      instructions1,
 							}
@@ -1981,6 +2042,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 						}
 						provisionPolicy = &shared.ProvisionPolicy{
+							ActionProvision:         actionProvision,
 							ConnectorProvision:      connectorProvision,
 							DelegatedProvision:      delegatedProvision,
 							ExternalTicketProvision: externalTicketProvision,
@@ -1998,11 +2060,11 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							appEntitlementId1 = nil
 						}
-						appId4 := new(string)
+						appId5 := new(string)
 						if !stepsItem.Provision.ProvisionTarget.AppID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppID.IsNull() {
-							*appId4 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
+							*appId5 = stepsItem.Provision.ProvisionTarget.AppID.ValueString()
 						} else {
-							appId4 = nil
+							appId5 = nil
 						}
 						appUserID := new(string)
 						if !stepsItem.Provision.ProvisionTarget.AppUserID.IsUnknown() && !stepsItem.Provision.ProvisionTarget.AppUserID.IsNull() {
@@ -2018,7 +2080,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						}
 						provisionTarget = &shared.ProvisionTarget{
 							AppEntitlementID: appEntitlementId1,
-							AppID:            appId4,
+							AppID:            appId5,
 							AppUserID:        appUserID,
 							GrantDuration:    grantDuration,
 						}
