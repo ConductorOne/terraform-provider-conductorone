@@ -63,6 +63,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_function_commit](docs/resources/function_commit.md)
 * [conductorone_function_tag](docs/resources/function_tag.md)
 * [conductorone_policy](docs/resources/policy.md)
+* [conductorone_request_schema](docs/resources/request_schema.md)
+* [conductorone_request_schema_entitlement_binding](docs/resources/request_schema_entitlement_binding.md)
 * [conductorone_risk_level](docs/resources/risk_level.md)
 * [conductorone_webhook](docs/resources/webhook.md)
 ### Data Sources
@@ -90,6 +92,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_policies](docs/data-sources/policies.md)
 * [conductorone_policy](docs/data-sources/policy.md)
 * [conductorone_request_catalogs](docs/data-sources/request_catalogs.md)
+* [conductorone_request_schema](docs/data-sources/request_schema.md)
+* [conductorone_request_schema_entitlement_binding](docs/data-sources/request_schema_entitlement_binding.md)
 * [conductorone_risk_level](docs/data-sources/risk_level.md)
 * [conductorone_risk_levels](docs/data-sources/risk_levels.md)
 * [conductorone_user](docs/data-sources/user.md)
@@ -174,7 +178,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.6.13"
+      version = "1.6.19"
     }
   }
 }

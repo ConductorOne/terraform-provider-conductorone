@@ -98,7 +98,7 @@ type StringRules struct {
 	// Len specifies that this field must be the specified number of
 	//  characters (Unicode code points). Note that the number of
 	//  characters may differ from the number of bytes in the string.
-	Len *string `json:"len,omitempty"`
+	Length *string `json:"len,omitempty"`
 	// LenBytes specifies that this field must be the specified number of bytes
 	//  at a minimum
 	LenBytes *string `json:"lenBytes,omitempty"`
@@ -229,11 +229,11 @@ func (s *StringRules) GetIpv6() *bool {
 	return s.Ipv6
 }
 
-func (s *StringRules) GetLen() *string {
+func (s *StringRules) GetLength() *string {
 	if s == nil {
 		return nil
 	}
-	return s.Len
+	return s.Length
 }
 
 func (s *StringRules) GetLenBytes() *string {

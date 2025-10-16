@@ -28,6 +28,7 @@ func newGlob(opts ...GlobOption) *glob {
 // encountered. Note that if the glob pattern references a path that does not
 // exist (such as `nonexistent/path/*`), this is _not_ considered an IO error:
 // it is considered a pattern with no matches.
+//
 func WithFailOnIOErrors() GlobOption {
 	return func(g *glob) {
 		g.failOnIOErrors = true
@@ -41,6 +42,7 @@ func WithFailOnIOErrors() GlobOption {
 // `{...}`) are expanded before this check. In other words, a pattern such as
 // `{a,b}/*` may fail if either `a` or `b` do not exist but `*/{a,b}` will
 // never fail because the star may match nothing.
+//
 func WithFailOnPatternNotExist() GlobOption {
 	return func(g *glob) {
 		g.failOnPatternNotExist = true
@@ -54,6 +56,7 @@ func WithFailOnPatternNotExist() GlobOption {
 // Note: if combined with the WithNoFollow option, symlinks to directories
 // _will_ be included in the result since no attempt is made to follow the
 // symlink.
+//
 func WithFilesOnly() GlobOption {
 	return func(g *glob) {
 		g.filesOnly = true
@@ -73,6 +76,7 @@ func WithFilesOnly() GlobOption {
 // Note: if combined with the WithFilesOnly option, symlinks to directories
 // _will_ be included in the result since no attempt is made to follow the
 // symlink.
+//
 func WithNoFollow() GlobOption {
 	return func(g *glob) {
 		g.noFollow = true
@@ -82,6 +86,7 @@ func WithNoFollow() GlobOption {
 // forwardErrIfFailOnIOErrors is used to wrap the return values of I/O
 // functions. When failOnIOErrors is enabled, it will return err; otherwise, it
 // always returns nil.
+//
 func (g *glob) forwardErrIfFailOnIOErrors(err error) error {
 	if g.failOnIOErrors {
 		return err
@@ -92,6 +97,7 @@ func (g *glob) forwardErrIfFailOnIOErrors(err error) error {
 // handleErrNotExist handles fs.ErrNotExist errors. If
 // WithFailOnPatternNotExist has been enabled and canFail is true, this will
 // return ErrPatternNotExist. Otherwise, it will return nil.
+//
 func (g *glob) handlePatternNotExist(canFail bool) error {
 	if canFail && g.failOnPatternNotExist {
 		return ErrPatternNotExist
