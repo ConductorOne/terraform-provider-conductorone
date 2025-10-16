@@ -27,6 +27,23 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 				} else {
 					connectorID = nil
 				}
+				var doNotSave *shared.DoNotSave
+				if r.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave != nil {
+					doNotSave = &shared.DoNotSave{}
+				}
+				var saveToVault *shared.SaveToVault
+				if r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault != nil {
+					var vaultIds []string
+					if r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
+						vaultIds = make([]string, 0, len(r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+						for _, vaultIdsItem := range r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+							vaultIds = append(vaultIds, vaultIdsItem.ValueString())
+						}
+					}
+					saveToVault = &shared.SaveToVault{
+						VaultIds: vaultIds,
+					}
+				}
 				schemaID := new(string)
 				if !r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsNull() {
 					*schemaID = r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.ValueString()
@@ -36,6 +53,8 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 				accountProvision = &shared.AccountProvision{
 					Config:      config,
 					ConnectorID: connectorID,
+					DoNotSave:   doNotSave,
+					SaveToVault: saveToVault,
 					SchemaID:    schemaID,
 				}
 			}
@@ -96,11 +115,11 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 			} else {
 				appId2 = nil
 			}
-			connectorId2 := new(string)
+			connectorId3 := new(string)
 			if !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-				*connectorId2 = r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+				*connectorId3 = r.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
 			} else {
-				connectorId2 = nil
+				connectorId3 = nil
 			}
 			externalTicketProvisionerConfigID := new(string)
 			if !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
@@ -116,7 +135,7 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 			}
 			externalTicketProvision = &shared.ExternalTicketProvision{
 				AppID:                             appId2,
-				ConnectorID:                       connectorId2,
+				ConnectorID:                       connectorId3,
 				ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 				Instructions:                      instructions,
 			}
@@ -129,9 +148,12 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 			} else {
 				instructions1 = nil
 			}
-			var userIds []string = []string{}
-			for _, userIdsItem := range r.ProvisionPolicy.ManualProvision.UserIds {
-				userIds = append(userIds, userIdsItem.ValueString())
+			var userIds []string
+			if r.ProvisionPolicy.ManualProvision.UserIds != nil {
+				userIds = make([]string, 0, len(r.ProvisionPolicy.ManualProvision.UserIds))
+				for _, userIdsItem := range r.ProvisionPolicy.ManualProvision.UserIds {
+					userIds = append(userIds, userIdsItem.ValueString())
+				}
 			}
 			manualProvision = &shared.ManualProvision{
 				Instructions: instructions1,
@@ -144,7 +166,7 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 		}
 		var unconfiguredProvision *shared.UnconfiguredProvision
 		if r.ProvisionPolicy.UnconfiguredProvision != nil {
-			unconfiguredProvision = (*shared.UnconfiguredProvision)(r.ProvisionPolicy.UnconfiguredProvision)
+			unconfiguredProvision = &shared.UnconfiguredProvision{}
 		}
 		var webhookProvision *shared.WebhookProvision
 		if r.ProvisionPolicy.WebhookProvision != nil {
@@ -201,6 +223,185 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 	complianceFrameworkValueIds := make([]string, 0)
 	for _, complianceFrameworkValueIdsItem := range r.ComplianceFrameworkValueIds {
 		complianceFrameworkValueIds = append(complianceFrameworkValueIds, complianceFrameworkValueIdsItem.ValueString())
+	}
+	var deprovisionerPolicy *shared.DeprovisionerPolicy
+	if r.DeprovisionerPolicy != nil {
+		var connectorProvision1 *shared.ConnectorProvision
+		if r.DeprovisionerPolicy.ConnectorProvision != nil {
+			var accountProvision1 *shared.AccountProvision
+			if r.DeprovisionerPolicy.ConnectorProvision.AccountProvision != nil {
+				var config1 *shared.AccountProvisionConfig
+				if r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config != nil {
+					config1 = &shared.AccountProvisionConfig{}
+				}
+				connectorId4 := new(string)
+				if !r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
+					*connectorId4 = r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
+				} else {
+					connectorId4 = nil
+				}
+				var doNotSave1 *shared.DoNotSave
+				if r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave != nil {
+					doNotSave1 = &shared.DoNotSave{}
+				}
+				var saveToVault1 *shared.SaveToVault
+				if r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault != nil {
+					var vaultIds1 []string
+					if r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
+						vaultIds1 = make([]string, 0, len(r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+						for _, vaultIdsItem1 := range r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+							vaultIds1 = append(vaultIds1, vaultIdsItem1.ValueString())
+						}
+					}
+					saveToVault1 = &shared.SaveToVault{
+						VaultIds: vaultIds1,
+					}
+				}
+				schemaId1 := new(string)
+				if !r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SchemaID.IsUnknown() && !r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SchemaID.IsNull() {
+					*schemaId1 = r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SchemaID.ValueString()
+				} else {
+					schemaId1 = nil
+				}
+				accountProvision1 = &shared.AccountProvision{
+					Config:      config1,
+					ConnectorID: connectorId4,
+					DoNotSave:   doNotSave1,
+					SaveToVault: saveToVault1,
+					SchemaID:    schemaId1,
+				}
+			}
+			var defaultBehavior1 *shared.DefaultBehavior
+			if r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior != nil {
+				connectorId5 := new(string)
+				if !r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
+					*connectorId5 = r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
+				} else {
+					connectorId5 = nil
+				}
+				defaultBehavior1 = &shared.DefaultBehavior{
+					ConnectorID: connectorId5,
+				}
+			}
+			var deleteAccount1 *shared.DeleteAccount
+			if r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount != nil {
+				connectorId6 := new(string)
+				if !r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsUnknown() && !r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsNull() {
+					*connectorId6 = r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
+				} else {
+					connectorId6 = nil
+				}
+				deleteAccount1 = &shared.DeleteAccount{
+					ConnectorID: connectorId6,
+				}
+			}
+			connectorProvision1 = &shared.ConnectorProvision{
+				AccountProvision: accountProvision1,
+				DefaultBehavior:  defaultBehavior1,
+				DeleteAccount:    deleteAccount1,
+			}
+		}
+		var delegatedProvision1 *shared.DelegatedProvision
+		if r.DeprovisionerPolicy.DelegatedProvision != nil {
+			appId3 := new(string)
+			if !r.DeprovisionerPolicy.DelegatedProvision.AppID.IsUnknown() && !r.DeprovisionerPolicy.DelegatedProvision.AppID.IsNull() {
+				*appId3 = r.DeprovisionerPolicy.DelegatedProvision.AppID.ValueString()
+			} else {
+				appId3 = nil
+			}
+			entitlementId1 := new(string)
+			if !r.DeprovisionerPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !r.DeprovisionerPolicy.DelegatedProvision.EntitlementID.IsNull() {
+				*entitlementId1 = r.DeprovisionerPolicy.DelegatedProvision.EntitlementID.ValueString()
+			} else {
+				entitlementId1 = nil
+			}
+			delegatedProvision1 = &shared.DelegatedProvision{
+				AppID:         appId3,
+				EntitlementID: entitlementId1,
+			}
+		}
+		var externalTicketProvision1 *shared.ExternalTicketProvision
+		if r.DeprovisionerPolicy.ExternalTicketProvision != nil {
+			appId4 := new(string)
+			if !r.DeprovisionerPolicy.ExternalTicketProvision.AppID.IsUnknown() && !r.DeprovisionerPolicy.ExternalTicketProvision.AppID.IsNull() {
+				*appId4 = r.DeprovisionerPolicy.ExternalTicketProvision.AppID.ValueString()
+			} else {
+				appId4 = nil
+			}
+			connectorId7 := new(string)
+			if !r.DeprovisionerPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.DeprovisionerPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
+				*connectorId7 = r.DeprovisionerPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+			} else {
+				connectorId7 = nil
+			}
+			externalTicketProvisionerConfigId1 := new(string)
+			if !r.DeprovisionerPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !r.DeprovisionerPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
+				*externalTicketProvisionerConfigId1 = r.DeprovisionerPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.ValueString()
+			} else {
+				externalTicketProvisionerConfigId1 = nil
+			}
+			instructions2 := new(string)
+			if !r.DeprovisionerPolicy.ExternalTicketProvision.Instructions.IsUnknown() && !r.DeprovisionerPolicy.ExternalTicketProvision.Instructions.IsNull() {
+				*instructions2 = r.DeprovisionerPolicy.ExternalTicketProvision.Instructions.ValueString()
+			} else {
+				instructions2 = nil
+			}
+			externalTicketProvision1 = &shared.ExternalTicketProvision{
+				AppID:                             appId4,
+				ConnectorID:                       connectorId7,
+				ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigId1,
+				Instructions:                      instructions2,
+			}
+		}
+		var manualProvision1 *shared.ManualProvision
+		if r.DeprovisionerPolicy.ManualProvision != nil {
+			instructions3 := new(string)
+			if !r.DeprovisionerPolicy.ManualProvision.Instructions.IsUnknown() && !r.DeprovisionerPolicy.ManualProvision.Instructions.IsNull() {
+				*instructions3 = r.DeprovisionerPolicy.ManualProvision.Instructions.ValueString()
+			} else {
+				instructions3 = nil
+			}
+			var userIds1 []string
+			if r.DeprovisionerPolicy.ManualProvision.UserIds != nil {
+				userIds1 = make([]string, 0, len(r.DeprovisionerPolicy.ManualProvision.UserIds))
+				for _, userIdsItem1 := range r.DeprovisionerPolicy.ManualProvision.UserIds {
+					userIds1 = append(userIds1, userIdsItem1.ValueString())
+				}
+			}
+			manualProvision1 = &shared.ManualProvision{
+				Instructions: instructions3,
+				UserIds:      userIds1,
+			}
+		}
+		var multiStep1 interface{}
+		if !r.DeprovisionerPolicy.MultiStep.IsUnknown() && !r.DeprovisionerPolicy.MultiStep.IsNull() {
+			_ = json.Unmarshal([]byte(r.DeprovisionerPolicy.MultiStep.ValueString()), &multiStep1)
+		}
+		var unconfiguredProvision1 *shared.UnconfiguredProvision
+		if r.DeprovisionerPolicy.UnconfiguredProvision != nil {
+			unconfiguredProvision1 = &shared.UnconfiguredProvision{}
+		}
+		var webhookProvision1 *shared.WebhookProvision
+		if r.DeprovisionerPolicy.WebhookProvision != nil {
+			webhookId1 := new(string)
+			if !r.DeprovisionerPolicy.WebhookProvision.WebhookID.IsUnknown() && !r.DeprovisionerPolicy.WebhookProvision.WebhookID.IsNull() {
+				*webhookId1 = r.DeprovisionerPolicy.WebhookProvision.WebhookID.ValueString()
+			} else {
+				webhookId1 = nil
+			}
+			webhookProvision1 = &shared.WebhookProvision{
+				WebhookID: webhookId1,
+			}
+		}
+		deprovisionerPolicy = &shared.DeprovisionerPolicy{
+			ConnectorProvision:      connectorProvision1,
+			DelegatedProvision:      delegatedProvision1,
+			ExternalTicketProvision: externalTicketProvision1,
+			ManualProvision:         manualProvision1,
+			MultiStep:               multiStep1,
+			UnconfiguredProvision:   unconfiguredProvision1,
+			WebhookProvision:        webhookProvision1,
+		}
 	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
@@ -275,6 +476,7 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 		AppResourceTypeID:              appResourceTypeID,
 		CertifyPolicyID:                certifyPolicyID,
 		ComplianceFrameworkValueIds:    complianceFrameworkValueIds,
+		DeprovisionerPolicy:            deprovisionerPolicy,
 		Description:                    description,
 		DisplayName:                    displayName,
 		DurationGrant:                  durationGrant,
@@ -329,6 +531,101 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 		r.DeletedAt = types.StringValue(resp.DeletedAt.Format(time.RFC3339))
 	} else {
 		r.DeletedAt = types.StringNull()
+	}
+	if resp.DeprovisionerPolicy == nil {
+		r.DeprovisionerPolicy = nil
+	} else {
+		r.DeprovisionerPolicy = &tfTypes.DeprovisionerPolicy{}
+		if resp.DeprovisionerPolicy.ConnectorProvision == nil {
+			r.DeprovisionerPolicy.ConnectorProvision = nil
+		} else {
+			r.DeprovisionerPolicy.ConnectorProvision = &tfTypes.ConnectorProvision{}
+			if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision == nil {
+				r.DeprovisionerPolicy.ConnectorProvision.AccountProvision = nil
+			} else {
+				r.DeprovisionerPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
+				if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config == nil {
+					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = nil
+				} else {
+					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+				}
+				r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID)
+				if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
+					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
+				} else {
+					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
+				}
+				if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
+					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
+				} else {
+					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
+					if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
+						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+						for _, v := range resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+							r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
+						}
+					}
+				}
+				r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SchemaID)
+			}
+			if resp.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior == nil {
+				r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior = nil
+			} else {
+				r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
+				r.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+			}
+			if resp.DeprovisionerPolicy.ConnectorProvision.DeleteAccount == nil {
+				r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount = nil
+			} else {
+				r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
+				r.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
+			}
+		}
+		if resp.DeprovisionerPolicy.DelegatedProvision == nil {
+			r.DeprovisionerPolicy.DelegatedProvision = nil
+		} else {
+			r.DeprovisionerPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
+			r.DeprovisionerPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.DeprovisionerPolicy.DelegatedProvision.AppID)
+			r.DeprovisionerPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.DeprovisionerPolicy.DelegatedProvision.EntitlementID)
+		}
+		if resp.DeprovisionerPolicy.ExternalTicketProvision == nil {
+			r.DeprovisionerPolicy.ExternalTicketProvision = nil
+		} else {
+			r.DeprovisionerPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
+			r.DeprovisionerPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(resp.DeprovisionerPolicy.ExternalTicketProvision.AppID)
+			r.DeprovisionerPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ExternalTicketProvision.ConnectorID)
+			r.DeprovisionerPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.DeprovisionerPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
+			r.DeprovisionerPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(resp.DeprovisionerPolicy.ExternalTicketProvision.Instructions)
+		}
+		if resp.DeprovisionerPolicy.ManualProvision == nil {
+			r.DeprovisionerPolicy.ManualProvision = nil
+		} else {
+			r.DeprovisionerPolicy.ManualProvision = &tfTypes.ManualProvision{}
+			r.DeprovisionerPolicy.ManualProvision.Instructions = types.StringPointerValue(resp.DeprovisionerPolicy.ManualProvision.Instructions)
+			if resp.DeprovisionerPolicy.ManualProvision.UserIds != nil {
+				r.DeprovisionerPolicy.ManualProvision.UserIds = make([]types.String, 0, len(resp.DeprovisionerPolicy.ManualProvision.UserIds))
+				for _, v := range resp.DeprovisionerPolicy.ManualProvision.UserIds {
+					r.DeprovisionerPolicy.ManualProvision.UserIds = append(r.DeprovisionerPolicy.ManualProvision.UserIds, types.StringValue(v))
+				}
+			}
+		}
+		if resp.DeprovisionerPolicy.MultiStep == nil {
+			r.DeprovisionerPolicy.MultiStep = jsontypes.NewNormalizedNull()
+		} else {
+			multiStepResult, _ := json.Marshal(resp.DeprovisionerPolicy.MultiStep)
+			r.DeprovisionerPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
+		}
+		if resp.DeprovisionerPolicy.UnconfiguredProvision == nil {
+			r.DeprovisionerPolicy.UnconfiguredProvision = nil
+		} else {
+			r.DeprovisionerPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
+		}
+		if resp.DeprovisionerPolicy.WebhookProvision == nil {
+			r.DeprovisionerPolicy.WebhookProvision = nil
+		} else {
+			r.DeprovisionerPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
+			r.DeprovisionerPolicy.WebhookProvision.WebhookID = types.StringPointerValue(resp.DeprovisionerPolicy.WebhookProvision.WebhookID)
+		}
 	}
 	if resp.Description != nil {
 		r.Description = types.StringValue(*resp.Description)
@@ -389,6 +686,22 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 					r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
 				}
 				r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
+				if resp.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
+					r.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
+				} else {
+					r.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
+				}
+				if resp.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
+					r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
+				} else {
+					r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
+					if resp.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
+						r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
+						for _, v := range resp.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+							r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
+						}
+					}
+				}
 				r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
 			}
 			if resp.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
@@ -436,12 +749,12 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 			r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
 		} else {
 			multiStepResult1, _ := json.Marshal(resp.ProvisionPolicy.MultiStep)
-			r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue((string(multiStepResult1)))
+			r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
 		}
 		if resp.ProvisionPolicy.UnconfiguredProvision == nil {
 			r.ProvisionPolicy.UnconfiguredProvision = nil
 		} else {
-			r.ProvisionPolicy.UnconfiguredProvision = (*tfTypes.UnconfiguredProvision)(resp.ProvisionPolicy.UnconfiguredProvision)
+			r.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
 		}
 		if resp.ProvisionPolicy.WebhookProvision == nil {
 			r.ProvisionPolicy.WebhookProvision = nil
