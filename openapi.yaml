@@ -9985,66 +9985,30 @@ components:
             title: Request Schema
             type: object
             x-speakeasy-name-override: RequestSchema
-        c1.api.request_schema.v1.RequestSchemaEntitlementBinding:
-            description: The RequestSchemaEntitlementBinding message.
+        c1.api.request_schema.v1.RequestSchemaServiceCreateEntitlementBindingRequest:
+            description: The RequestSchemaServiceCreateEntitlementBindingRequest message.
             properties:
-                appId:
-                    description: The appId field.
-                    readOnly: false
-                    type: string
-                createdAt:
-                    format: date-time
-                    readOnly: false
-                    type: string
-                deletedAt:
-                    format: date-time
-                    readOnly: false
-                    type: string
-                entitlementId:
-                    description: The entitlementId field.
-                    readOnly: false
-                    type: string
+                entitlementRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
                 requestSchemaId:
                     description: The requestSchemaId field.
                     readOnly: false
                     type: string
-                updatedAt:
-                    format: date-time
-                    readOnly: false
-                    type: string
-            title: Request Schema Entitlement Binding
+            title: Request Schema Service Create Entitlement Binding Request
             type: object
-            x-speakeasy-name-override: RequestSchemaEntitlementBinding
-        c1.api.request_schema.v1.RequestSchemaServiceCreateEntitlementBindingsRequest:
-            description: The RequestSchemaServiceCreateEntitlementBindingsRequest message.
+            x-speakeasy-name-override: RequestSchemaServiceCreateEntitlementBindingRequest
+        c1.api.request_schema.v1.RequestSchemaServiceCreateEntitlementBindingResponse:
+            description: The RequestSchemaServiceCreateEntitlementBindingResponse message.
             properties:
-                entitlementRefs:
-                    description: The entitlementRefs field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
-                    nullable: true
-                    readOnly: false
-                    type: array
+                entitlementRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
                 requestSchemaId:
                     description: The requestSchemaId field.
                     readOnly: false
                     type: string
-            title: Request Schema Service Create Entitlement Bindings Request
+            title: Request Schema Service Create Entitlement Binding Response
             type: object
-            x-speakeasy-name-override: RequestSchemaServiceCreateEntitlementBindingsRequest
-        c1.api.request_schema.v1.RequestSchemaServiceCreateEntitlementBindingsResponse:
-            description: The RequestSchemaServiceCreateEntitlementBindingsResponse message.
-            properties:
-                entitlementBindings:
-                    description: The entitlementBindings field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaEntitlementBinding'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Request Schema Service Create Entitlement Bindings Response
-            type: object
-            x-speakeasy-name-override: RequestSchemaServiceCreateEntitlementBindingsResponse
+            x-speakeasy-name-override: RequestSchemaServiceCreateEntitlementBindingResponse
         c1.api.request_schema.v1.RequestSchemaServiceCreateRequest:
             description: The RequestSchemaServiceCreateRequest message.
             properties:
@@ -10084,6 +10048,26 @@ components:
             title: Request Schema Service Delete Response
             type: object
             x-speakeasy-name-override: RequestSchemaServiceDeleteResponse
+        c1.api.request_schema.v1.RequestSchemaServiceFindBindingForAppEntitlementRequest:
+            description: The RequestSchemaServiceFindBindingForAppEntitlementRequest message.
+            properties:
+                entitlementRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+            title: Request Schema Service Find Binding For App Entitlement Request
+            type: object
+            x-speakeasy-name-override: RequestSchemaServiceFindBindingForAppEntitlementRequest
+        c1.api.request_schema.v1.RequestSchemaServiceFindBindingForAppEntitlementResponse:
+            description: The RequestSchemaServiceFindBindingForAppEntitlementResponse message.
+            properties:
+                entitlementRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                requestSchemaId:
+                    description: The requestSchemaId field.
+                    readOnly: false
+                    type: string
+            title: Request Schema Service Find Binding For App Entitlement Response
+            type: object
+            x-speakeasy-name-override: RequestSchemaServiceFindBindingForAppEntitlementResponse
         c1.api.request_schema.v1.RequestSchemaServiceGetResponse:
             description: The RequestSchemaServiceGetResponse message.
             properties:
@@ -10092,75 +10076,23 @@ components:
             title: Request Schema Service Get Response
             type: object
             x-speakeasy-name-override: RequestSchemaServiceGetResponse
-        c1.api.request_schema.v1.RequestSchemaServiceListBindingsResponse:
-            description: The RequestSchemaServiceListBindingsResponse message.
+        c1.api.request_schema.v1.RequestSchemaServiceRemoveEntitlementBindingRequest:
+            description: The RequestSchemaServiceRemoveEntitlementBindingRequest message.
             properties:
-                list:
-                    description: The list field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaEntitlementBinding'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Request Schema Service List Bindings Response
-            type: object
-            x-speakeasy-name-override: RequestSchemaServiceListBindingsResponse
-        c1.api.request_schema.v1.RequestSchemaServiceRemoveEntitlementBindingsRequest:
-            description: The RequestSchemaServiceRemoveEntitlementBindingsRequest message.
-            properties:
-                entitlementRefs:
-                    description: The entitlementRefs field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
-                    nullable: true
-                    readOnly: false
-                    type: array
+                entitlementRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
                 requestSchemaId:
                     description: The requestSchemaId field.
                     readOnly: false
                     type: string
-            title: Request Schema Service Remove Entitlement Bindings Request
+            title: Request Schema Service Remove Entitlement Binding Request
             type: object
-            x-speakeasy-name-override: RequestSchemaServiceRemoveEntitlementBindingsRequest
-        c1.api.request_schema.v1.RequestSchemaServiceRemoveEntitlementBindingsResponse:
-            description: The RequestSchemaServiceRemoveEntitlementBindingsResponse message.
-            properties:
-                entitlementBindings:
-                    description: The entitlementBindings field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaEntitlementBinding'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Request Schema Service Remove Entitlement Bindings Response
+            x-speakeasy-name-override: RequestSchemaServiceRemoveEntitlementBindingRequest
+        c1.api.request_schema.v1.RequestSchemaServiceRemoveEntitlementBindingResponse:
+            description: The RequestSchemaServiceRemoveEntitlementBindingResponse message.
+            title: Request Schema Service Remove Entitlement Binding Response
             type: object
-            x-speakeasy-name-override: RequestSchemaServiceRemoveEntitlementBindingsResponse
-        c1.api.request_schema.v1.RequestSchemaServiceUpdateBindingsRequestInput:
-            description: The RequestSchemaServiceUpdateBindingsRequest message.
-            properties:
-                entitlementRefs:
-                    description: The entitlementRefs field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Request Schema Service Update Bindings Request
-            type: object
-            x-speakeasy-name-override: RequestSchemaServiceUpdateBindingsRequest
-        c1.api.request_schema.v1.RequestSchemaServiceUpdateBindingsResponse:
-            description: The RequestSchemaServiceUpdateBindingsResponse message.
-            properties:
-                requestSchemaEntitlementBindings:
-                    description: The requestSchemaEntitlementBindings field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaEntitlementBinding'
-                    nullable: true
-                    readOnly: false
-                    type: array
-            title: Request Schema Service Update Bindings Response
-            type: object
-            x-speakeasy-name-override: RequestSchemaServiceUpdateBindingsResponse
+            x-speakeasy-name-override: RequestSchemaServiceRemoveEntitlementBindingResponse
         c1.api.request_schema.v1.RequestSchemaServiceUpdateRequestInput:
             description: The RequestSchemaServiceUpdateRequest message.
             properties:
@@ -22646,51 +22578,74 @@ paths:
                 - Policy
             x-speakeasy-group: PolicyValidate
             x-speakeasy-name-override: ValidateCEL
-    /api/v1/request_schema_entitlement_bindings:
+    /api/v1/request_schema_entitlement_binding:
         delete:
-            description: Invokes the c1.api.request_schema.v1.RequestSchemaService.RemoveEntitlementBindings method.
-            operationId: c1.api.request_schema.v1.RequestSchemaService.RemoveEntitlementBindings
+            description: Invokes the c1.api.request_schema.v1.RequestSchemaService.RemoveEntitlementBinding method.
+            operationId: c1.api.request_schema.v1.RequestSchemaService.RemoveEntitlementBinding
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceRemoveEntitlementBindingsRequest'
+                            $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceRemoveEntitlementBindingRequest'
             responses:
                 "200":
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceRemoveEntitlementBindingsResponse'
+                                $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceRemoveEntitlementBindingResponse'
                     description: Successful response
-            summary: Remove Entitlement Bindings
+            summary: Remove Entitlement Binding
             tags:
                 - Request Schema Entitlement Binding
             x-speakeasy-entity-operation:
                 terraform-resource: Request Schema Entitlement Binding#delete
             x-speakeasy-group: RequestSchema
-            x-speakeasy-name-override: RemoveEntitlementBindings
+            x-speakeasy-name-override: RemoveEntitlementBinding
         post:
-            description: Invokes the c1.api.request_schema.v1.RequestSchemaService.CreateEntitlementBindings method.
-            operationId: c1.api.request_schema.v1.RequestSchemaService.CreateEntitlementBindings
+            description: Invokes the c1.api.request_schema.v1.RequestSchemaService.CreateEntitlementBinding method.
+            operationId: c1.api.request_schema.v1.RequestSchemaService.CreateEntitlementBinding
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceCreateEntitlementBindingsRequest'
+                            $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceCreateEntitlementBindingRequest'
             responses:
                 "200":
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceCreateEntitlementBindingsResponse'
+                                $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceCreateEntitlementBindingResponse'
                     description: Successful response
-            summary: Create Entitlement Bindings
+            summary: Create Entitlement Binding
             tags:
                 - Request Schema Entitlement Binding
             x-speakeasy-entity-operation:
                 terraform-resource: Request Schema Entitlement Binding#create
             x-speakeasy-group: RequestSchema
-            x-speakeasy-name-override: CreateEntitlementBindings
+            x-speakeasy-name-override: CreateEntitlementBinding
+        put:
+            description: Invokes the c1.api.request_schema.v1.RequestSchemaService.FindBindingForAppEntitlement method.
+            operationId: c1.api.request_schema.v1.RequestSchemaService.FindBindingForAppEntitlement
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceFindBindingForAppEntitlementRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceFindBindingForAppEntitlementResponse'
+                    description: Successful response
+            summary: Find Binding For App Entitlement
+            tags:
+                - Request Schema Entitlement Binding
+            x-speakeasy-entity-operation:
+                terraform-datasource: Request Schema Entitlement Binding#read
+                terraform-resource: Request Schema Entitlement Binding#read
+            x-speakeasy-group: RequestSchema
+            x-speakeasy-name-override: FindBindingForAppEntitlement
     /api/v1/request_schemas:
         post:
             description: Invokes the c1.api.request_schema.v1.RequestSchemaService.Create method.
@@ -22801,63 +22756,6 @@ paths:
                 terraform-resource: Request Schema#update
             x-speakeasy-group: RequestSchema
             x-speakeasy-name-override: Update
-    /api/v1/request_schemas/{request_schema_id}/entitlement_bindings:
-        get:
-            description: Invokes the c1.api.request_schema.v1.RequestSchemaService.ListBindings method.
-            operationId: c1.api.request_schema.v1.RequestSchemaService.ListBindings
-            parameters:
-                - in: path
-                  name: request_schema_id
-                  required: true
-                  schema:
-                    description: The requestSchemaId field.
-                    readOnly: false
-                    type: string
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceListBindingsResponse'
-                    description: Successful response
-            summary: List Bindings
-            tags:
-                - Request Schema Entitlement Binding
-            x-speakeasy-entity-operation:
-                terraform-datasource: null
-                terraform-resource: Request Schema Entitlement Binding#read
-            x-speakeasy-group: RequestSchema
-            x-speakeasy-name-override: ListBindings
-        put:
-            description: Invokes the c1.api.request_schema.v1.RequestSchemaService.UpdateBindings method.
-            operationId: c1.api.request_schema.v1.RequestSchemaService.UpdateBindings
-            parameters:
-                - in: path
-                  name: request_schema_id
-                  required: true
-                  schema:
-                    description: The requestSchemaId field.
-                    readOnly: false
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceUpdateBindingsRequestInput'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.request_schema.v1.RequestSchemaServiceUpdateBindingsResponse'
-                    description: Successful response
-            summary: Update Bindings
-            tags:
-                - Request Schema Entitlement Binding
-            x-speakeasy-entity-operation:
-                terraform-resource: Request Schema Entitlement Binding#update
-            x-speakeasy-group: RequestSchema
-            x-speakeasy-name-override: UpdateBindings
     /api/v1/search/app_resource_types:
         post:
             description: Search app resources based on filters specified in the request body.

@@ -5,13 +5,15 @@ package provider
 import (
 	"context"
 	"fmt"
+	speakeasy_objectplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/objectplanmodifier"
+	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -32,9 +34,8 @@ type RequestSchemaEntitlementBindingResource struct {
 
 // RequestSchemaEntitlementBindingResourceModel describes the resource data model.
 type RequestSchemaEntitlementBindingResourceModel struct {
-	EntitlementBindings []tfTypes.RequestSchemaEntitlementBinding `tfsdk:"entitlement_bindings"`
-	EntitlementRefs     []tfTypes.AppEntitlementRef               `tfsdk:"entitlement_refs"`
-	RequestSchemaID     types.String                              `tfsdk:"request_schema_id"`
+	AppEntitlementRef *tfTypes.AppEntitlementRef `tfsdk:"app_entitlement_ref"`
+	RequestSchemaID   types.String               `tfsdk:"request_schema_id"`
 }
 
 func (r *RequestSchemaEntitlementBindingResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -45,57 +46,43 @@ func (r *RequestSchemaEntitlementBindingResource) Schema(ctx context.Context, re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "RequestSchemaEntitlementBinding Resource",
 		Attributes: map[string]schema.Attribute{
-			"entitlement_bindings": schema.ListNestedAttribute{
+			"app_entitlement_ref": schema.SingleNestedAttribute{
 				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"app_id": schema.StringAttribute{
-							Computed:    true,
-							Description: `The appId field.`,
-						},
-						"created_at": schema.StringAttribute{
-							Computed: true,
-							Validators: []validator.String{
-								validators.IsRFC3339(),
-							},
-						},
-						"entitlement_id": schema.StringAttribute{
-							Computed:    true,
-							Description: `The entitlementId field.`,
-						},
-						"request_schema_id": schema.StringAttribute{
-							Computed:    true,
-							Description: `The requestSchemaId field.`,
-						},
-						"updated_at": schema.StringAttribute{
-							Computed: true,
-							Validators: []validator.String{
-								validators.IsRFC3339(),
-							},
-						},
-					},
-				},
-				Description: `The entitlementBindings field.`,
-			},
-			"entitlement_refs": schema.ListNestedAttribute{
 				Optional: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"app_id": schema.StringAttribute{
-							Optional:    true,
-							Description: `The appId field.`,
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
+				Attributes: map[string]schema.Attribute{
+					"app_id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						"id": schema.StringAttribute{
-							Optional:    true,
-							Description: `The id field.`,
+						Description: `The appId field. Requires replacement if changed.`,
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
+						Description: `The id field. Requires replacement if changed.`,
 					},
 				},
-				Description: `The entitlementRefs field.`,
+				Description: `The AppEntitlementRef message. Requires replacement if changed.`,
 			},
 			"request_schema_id": schema.StringAttribute{
-				Optional:    true,
-				Description: `The requestSchemaId field.`,
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `The requestSchemaId field. Requires replacement if changed.`,
 			},
 		},
 	}
@@ -139,13 +126,13 @@ func (r *RequestSchemaEntitlementBindingResource) Create(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToSharedRequestSchemaServiceCreateEntitlementBindingsRequest(ctx)
+	request, requestDiags := data.ToSharedRequestSchemaServiceCreateEntitlementBindingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.RequestSchema.CreateEntitlementBindings(ctx, request)
+	res, err := r.client.RequestSchema.CreateEntitlementBinding(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -161,48 +148,11 @@ func (r *RequestSchemaEntitlementBindingResource) Create(ctx context.Context, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestSchemaServiceCreateEntitlementBindingsResponse != nil) {
+	if !(res.RequestSchemaServiceCreateEntitlementBindingResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceCreateEntitlementBindingsResponse(ctx, res.RequestSchemaServiceCreateEntitlementBindingsResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.RequestSchema.ListBindings(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.RequestSchemaServiceListBindingsResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceListBindingsResponse(ctx, res1.RequestSchemaServiceListBindingsResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceCreateEntitlementBindingResponse(ctx, res.RequestSchemaServiceCreateEntitlementBindingResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -236,13 +186,13 @@ func (r *RequestSchemaEntitlementBindingResource) Read(ctx context.Context, req 
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest(ctx)
+	request, requestDiags := data.ToSharedRequestSchemaServiceFindBindingForAppEntitlementRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.RequestSchema.ListBindings(ctx, *request)
+	res, err := r.client.RequestSchema.FindBindingForAppEntitlement(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -262,11 +212,11 @@ func (r *RequestSchemaEntitlementBindingResource) Read(ctx context.Context, req 
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestSchemaServiceListBindingsResponse != nil) {
+	if !(res.RequestSchemaServiceFindBindingForAppEntitlementResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceListBindingsResponse(ctx, res.RequestSchemaServiceListBindingsResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceFindBindingForAppEntitlementResponse(ctx, res.RequestSchemaServiceFindBindingForAppEntitlementResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -290,80 +240,7 @@ func (r *RequestSchemaEntitlementBindingResource) Update(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestSchemaV1RequestSchemaServiceUpdateBindingsRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res, err := r.client.RequestSchema.UpdateBindings(ctx, *request)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
-		}
-		return
-	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
-		return
-	}
-	if !(res.RequestSchemaServiceUpdateBindingsResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceUpdateBindingsResponse(ctx, res.RequestSchemaServiceUpdateBindingsResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.RequestSchema.ListBindings(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.RequestSchemaServiceListBindingsResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceListBindingsResponse(ctx, res1.RequestSchemaServiceListBindingsResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	// Not Implemented; all attributes marked as RequiresReplace
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -387,13 +264,13 @@ func (r *RequestSchemaEntitlementBindingResource) Delete(ctx context.Context, re
 		return
 	}
 
-	request, requestDiags := data.ToSharedRequestSchemaServiceRemoveEntitlementBindingsRequest(ctx)
+	request, requestDiags := data.ToSharedRequestSchemaServiceRemoveEntitlementBindingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.RequestSchema.RemoveEntitlementBindings(ctx, request)
+	res, err := r.client.RequestSchema.RemoveEntitlementBinding(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -413,5 +290,5 @@ func (r *RequestSchemaEntitlementBindingResource) Delete(ctx context.Context, re
 }
 
 func (r *RequestSchemaEntitlementBindingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("request_schema_id"), req.ID)...)
+	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource request_schema_entitlement_binding. Reason: no ID fields found")
 }

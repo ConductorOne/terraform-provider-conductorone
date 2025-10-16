@@ -4,146 +4,66 @@ package provider
 
 import (
 	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *RequestSchemaEntitlementBindingResourceModel) RefreshFromSharedRequestSchemaServiceCreateEntitlementBindingsResponse(ctx context.Context, resp *shared.RequestSchemaServiceCreateEntitlementBindingsResponse) diag.Diagnostics {
+func (r *RequestSchemaEntitlementBindingResourceModel) RefreshFromSharedRequestSchemaServiceCreateEntitlementBindingResponse(ctx context.Context, resp *shared.RequestSchemaServiceCreateEntitlementBindingResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.EntitlementBindings != nil {
-			r.EntitlementBindings = []tfTypes.RequestSchemaEntitlementBinding{}
-
-			for _, entitlementBindingsItem := range resp.EntitlementBindings {
-				var entitlementBindings tfTypes.RequestSchemaEntitlementBinding
-
-				entitlementBindings.AppID = types.StringPointerValue(entitlementBindingsItem.AppID)
-				entitlementBindings.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(entitlementBindingsItem.CreatedAt))
-				entitlementBindings.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(entitlementBindingsItem.DeletedAt))
-				entitlementBindings.EntitlementID = types.StringPointerValue(entitlementBindingsItem.EntitlementID)
-				entitlementBindings.RequestSchemaID = types.StringPointerValue(entitlementBindingsItem.RequestSchemaID)
-				entitlementBindings.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(entitlementBindingsItem.UpdatedAt))
-
-				r.EntitlementBindings = append(r.EntitlementBindings, entitlementBindings)
-			}
+		if resp.AppEntitlementRef == nil {
+			r.AppEntitlementRef = nil
+		} else {
+			r.AppEntitlementRef = &tfTypes.AppEntitlementRef{}
+			r.AppEntitlementRef.AppID = types.StringPointerValue(resp.AppEntitlementRef.AppID)
+			r.AppEntitlementRef.ID = types.StringPointerValue(resp.AppEntitlementRef.ID)
 		}
+		r.RequestSchemaID = types.StringPointerValue(resp.RequestSchemaID)
 	}
 
 	return diags
 }
 
-func (r *RequestSchemaEntitlementBindingResourceModel) RefreshFromSharedRequestSchemaServiceListBindingsResponse(ctx context.Context, resp *shared.RequestSchemaServiceListBindingsResponse) diag.Diagnostics {
+func (r *RequestSchemaEntitlementBindingResourceModel) RefreshFromSharedRequestSchemaServiceFindBindingForAppEntitlementResponse(ctx context.Context, resp *shared.RequestSchemaServiceFindBindingForAppEntitlementResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.EntitlementBindings != nil {
-			r.EntitlementBindings = []tfTypes.RequestSchemaEntitlementBinding{}
-
-			for _, entitlementBindingsItem := range resp.EntitlementBindings {
-				var entitlementBindings tfTypes.RequestSchemaEntitlementBinding
-
-				entitlementBindings.AppID = types.StringPointerValue(entitlementBindingsItem.AppID)
-				entitlementBindings.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(entitlementBindingsItem.CreatedAt))
-				entitlementBindings.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(entitlementBindingsItem.DeletedAt))
-				entitlementBindings.EntitlementID = types.StringPointerValue(entitlementBindingsItem.EntitlementID)
-				entitlementBindings.RequestSchemaID = types.StringPointerValue(entitlementBindingsItem.RequestSchemaID)
-				entitlementBindings.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(entitlementBindingsItem.UpdatedAt))
-
-				r.EntitlementBindings = append(r.EntitlementBindings, entitlementBindings)
-			}
+		if resp.AppEntitlementRef == nil {
+			r.AppEntitlementRef = nil
+		} else {
+			r.AppEntitlementRef = &tfTypes.AppEntitlementRef{}
+			r.AppEntitlementRef.AppID = types.StringPointerValue(resp.AppEntitlementRef.AppID)
+			r.AppEntitlementRef.ID = types.StringPointerValue(resp.AppEntitlementRef.ID)
 		}
+		r.RequestSchemaID = types.StringPointerValue(resp.RequestSchemaID)
 	}
 
 	return diags
 }
 
-func (r *RequestSchemaEntitlementBindingResourceModel) RefreshFromSharedRequestSchemaServiceUpdateBindingsResponse(ctx context.Context, resp *shared.RequestSchemaServiceUpdateBindingsResponse) diag.Diagnostics {
+func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServiceCreateEntitlementBindingRequest(ctx context.Context) (*shared.RequestSchemaServiceCreateEntitlementBindingRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		if resp.EntitlementBindings != nil {
-			r.EntitlementBindings = []tfTypes.RequestSchemaEntitlementBinding{}
-
-			for _, entitlementBindingsItem := range resp.EntitlementBindings {
-				var entitlementBindings tfTypes.RequestSchemaEntitlementBinding
-
-				entitlementBindings.AppID = types.StringPointerValue(entitlementBindingsItem.AppID)
-				entitlementBindings.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(entitlementBindingsItem.CreatedAt))
-				entitlementBindings.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(entitlementBindingsItem.DeletedAt))
-				entitlementBindings.EntitlementID = types.StringPointerValue(entitlementBindingsItem.EntitlementID)
-				entitlementBindings.RequestSchemaID = types.StringPointerValue(entitlementBindingsItem.RequestSchemaID)
-				entitlementBindings.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(entitlementBindingsItem.UpdatedAt))
-
-				r.EntitlementBindings = append(r.EntitlementBindings, entitlementBindings)
-			}
+	var appEntitlementRef *shared.AppEntitlementRef
+	if r.AppEntitlementRef != nil {
+		appID := new(string)
+		if !r.AppEntitlementRef.AppID.IsUnknown() && !r.AppEntitlementRef.AppID.IsNull() {
+			*appID = r.AppEntitlementRef.AppID.ValueString()
+		} else {
+			appID = nil
 		}
-	}
-
-	return diags
-}
-
-func (r *RequestSchemaEntitlementBindingResourceModel) ToOperationsC1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest(ctx context.Context) (*operations.C1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var requestSchemaID string
-	requestSchemaID = r.RequestSchemaID.ValueString()
-
-	out := operations.C1APIRequestSchemaV1RequestSchemaServiceListBindingsRequest{
-		RequestSchemaID: requestSchemaID,
-	}
-
-	return &out, diags
-}
-
-func (r *RequestSchemaEntitlementBindingResourceModel) ToOperationsC1APIRequestSchemaV1RequestSchemaServiceUpdateBindingsRequest(ctx context.Context) (*operations.C1APIRequestSchemaV1RequestSchemaServiceUpdateBindingsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var requestSchemaID string
-	requestSchemaID = r.RequestSchemaID.ValueString()
-
-	requestSchemaServiceUpdateBindingsRequest, requestSchemaServiceUpdateBindingsRequestDiags := r.ToSharedRequestSchemaServiceUpdateBindingsRequest(ctx)
-	diags.Append(requestSchemaServiceUpdateBindingsRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := operations.C1APIRequestSchemaV1RequestSchemaServiceUpdateBindingsRequest{
-		RequestSchemaID: requestSchemaID,
-		RequestSchemaServiceUpdateBindingsRequest: requestSchemaServiceUpdateBindingsRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServiceCreateEntitlementBindingsRequest(ctx context.Context) (*shared.RequestSchemaServiceCreateEntitlementBindingsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var entitlementRefs []shared.AppEntitlementRef
-	if r.EntitlementRefs != nil {
-		entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.EntitlementRefs))
-		for _, entitlementRefsItem := range r.EntitlementRefs {
-			appID := new(string)
-			if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
-				*appID = entitlementRefsItem.AppID.ValueString()
-			} else {
-				appID = nil
-			}
-			id := new(string)
-			if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
-				*id = entitlementRefsItem.ID.ValueString()
-			} else {
-				id = nil
-			}
-			entitlementRefs = append(entitlementRefs, shared.AppEntitlementRef{
-				AppID: appID,
-				ID:    id,
-			})
+		id := new(string)
+		if !r.AppEntitlementRef.ID.IsUnknown() && !r.AppEntitlementRef.ID.IsNull() {
+			*id = r.AppEntitlementRef.ID.ValueString()
+		} else {
+			id = nil
+		}
+		appEntitlementRef = &shared.AppEntitlementRef{
+			AppID: appID,
+			ID:    id,
 		}
 	}
 	requestSchemaID := new(string)
@@ -152,37 +72,63 @@ func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServ
 	} else {
 		requestSchemaID = nil
 	}
-	out := shared.RequestSchemaServiceCreateEntitlementBindingsRequest{
-		EntitlementRefs: entitlementRefs,
-		RequestSchemaID: requestSchemaID,
+	out := shared.RequestSchemaServiceCreateEntitlementBindingRequest{
+		AppEntitlementRef: appEntitlementRef,
+		RequestSchemaID:   requestSchemaID,
 	}
 
 	return &out, diags
 }
 
-func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServiceRemoveEntitlementBindingsRequest(ctx context.Context) (*shared.RequestSchemaServiceRemoveEntitlementBindingsRequest, diag.Diagnostics) {
+func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServiceFindBindingForAppEntitlementRequest(ctx context.Context) (*shared.RequestSchemaServiceFindBindingForAppEntitlementRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var entitlementRefs []shared.AppEntitlementRef
-	if r.EntitlementRefs != nil {
-		entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.EntitlementRefs))
-		for _, entitlementRefsItem := range r.EntitlementRefs {
-			appID := new(string)
-			if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
-				*appID = entitlementRefsItem.AppID.ValueString()
-			} else {
-				appID = nil
-			}
-			id := new(string)
-			if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
-				*id = entitlementRefsItem.ID.ValueString()
-			} else {
-				id = nil
-			}
-			entitlementRefs = append(entitlementRefs, shared.AppEntitlementRef{
-				AppID: appID,
-				ID:    id,
-			})
+	var appEntitlementRef *shared.AppEntitlementRef
+	if r.AppEntitlementRef != nil {
+		appID := new(string)
+		if !r.AppEntitlementRef.AppID.IsUnknown() && !r.AppEntitlementRef.AppID.IsNull() {
+			*appID = r.AppEntitlementRef.AppID.ValueString()
+		} else {
+			appID = nil
+		}
+		id := new(string)
+		if !r.AppEntitlementRef.ID.IsUnknown() && !r.AppEntitlementRef.ID.IsNull() {
+			*id = r.AppEntitlementRef.ID.ValueString()
+		} else {
+			id = nil
+		}
+		appEntitlementRef = &shared.AppEntitlementRef{
+			AppID: appID,
+			ID:    id,
+		}
+	}
+	out := shared.RequestSchemaServiceFindBindingForAppEntitlementRequest{
+		AppEntitlementRef: appEntitlementRef,
+	}
+
+	return &out, diags
+}
+
+func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServiceRemoveEntitlementBindingRequest(ctx context.Context) (*shared.RequestSchemaServiceRemoveEntitlementBindingRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var appEntitlementRef *shared.AppEntitlementRef
+	if r.AppEntitlementRef != nil {
+		appID := new(string)
+		if !r.AppEntitlementRef.AppID.IsUnknown() && !r.AppEntitlementRef.AppID.IsNull() {
+			*appID = r.AppEntitlementRef.AppID.ValueString()
+		} else {
+			appID = nil
+		}
+		id := new(string)
+		if !r.AppEntitlementRef.ID.IsUnknown() && !r.AppEntitlementRef.ID.IsNull() {
+			*id = r.AppEntitlementRef.ID.ValueString()
+		} else {
+			id = nil
+		}
+		appEntitlementRef = &shared.AppEntitlementRef{
+			AppID: appID,
+			ID:    id,
 		}
 	}
 	requestSchemaID := new(string)
@@ -191,41 +137,9 @@ func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServ
 	} else {
 		requestSchemaID = nil
 	}
-	out := shared.RequestSchemaServiceRemoveEntitlementBindingsRequest{
-		EntitlementRefs: entitlementRefs,
-		RequestSchemaID: requestSchemaID,
-	}
-
-	return &out, diags
-}
-
-func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServiceUpdateBindingsRequest(ctx context.Context) (*shared.RequestSchemaServiceUpdateBindingsRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var entitlementRefs []shared.AppEntitlementRef
-	if r.EntitlementRefs != nil {
-		entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.EntitlementRefs))
-		for _, entitlementRefsItem := range r.EntitlementRefs {
-			appID := new(string)
-			if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
-				*appID = entitlementRefsItem.AppID.ValueString()
-			} else {
-				appID = nil
-			}
-			id := new(string)
-			if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
-				*id = entitlementRefsItem.ID.ValueString()
-			} else {
-				id = nil
-			}
-			entitlementRefs = append(entitlementRefs, shared.AppEntitlementRef{
-				AppID: appID,
-				ID:    id,
-			})
-		}
-	}
-	out := shared.RequestSchemaServiceUpdateBindingsRequest{
-		EntitlementRefs: entitlementRefs,
+	out := shared.RequestSchemaServiceRemoveEntitlementBindingRequest{
+		AppEntitlementRef: appEntitlementRef,
+		RequestSchemaID:   requestSchemaID,
 	}
 
 	return &out, diags

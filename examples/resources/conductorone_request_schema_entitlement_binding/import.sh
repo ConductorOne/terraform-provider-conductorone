@@ -1,1 +1,0 @@
-terraform import conductorone_request_schema_entitlement_binding.my_conductorone_request_schema_entitlement_binding "..."

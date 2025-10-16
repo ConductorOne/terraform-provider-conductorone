@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
@@ -620,6 +621,11 @@ func (r *RequestSchemaResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
+
+	// ManualChange. We store the requestSchema into the terraform state.
+	// Once speakeasy team fixes it, we can remove it.
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res.RequestSchemaServiceCreateResponse.RequestSchema)...)
+
 	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceCreateResponse.RequestSchema.Form)...)
 
 	if resp.Diagnostics.HasError() {
@@ -684,6 +690,11 @@ func (r *RequestSchemaResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
+
+	// ManualChange. We store the requestSchema into the terraform state.
+	// Once speakeasy team fixes it, we can remove it.
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res.RequestSchemaServiceGetResponse.RequestSchema)...)
+
 	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceGetResponse.RequestSchema.Form)...)
 
 	if resp.Diagnostics.HasError() {
@@ -739,6 +750,11 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
+
+	// ManualChange. We store the requestSchema into the terraform state.
+	// Once speakeasy team fixes it, we can remove it.
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res.RequestSchemaServiceUpdateResponse.RequestSchema)...)
+
 	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceUpdateResponse.RequestSchema.Form)...)
 
 	if resp.Diagnostics.HasError() {
@@ -776,6 +792,11 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
+
+	// ManualChange. We store the requestSchema into the terraform state.
+	// Once speakeasy team fixes it, we can remove it.
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res1.RequestSchemaServiceGetResponse.RequestSchema)...)
+
 	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res1.RequestSchemaServiceGetResponse.RequestSchema.Form)...)
 
 	if resp.Diagnostics.HasError() {

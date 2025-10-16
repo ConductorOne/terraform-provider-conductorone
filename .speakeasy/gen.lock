@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: f5409db8969b2f626cdf097e725321c5
+  docChecksum: 67c4b92c9383e35fc78f0a7efe9e7dd0
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.628.7
   generationVersion: 2.716.9
-  releaseVersion: 1.6.14
-  configChecksum: 8f3d877809e73b434b4e3bb5d026b0d6
+  releaseVersion: 1.6.18
+  configChecksum: 307442924b1914999894c6bfc7733c1f
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -51,6 +51,7 @@ generatedFiles:
   - examples/data-sources/conductorone_policy/data-source.tf
   - examples/data-sources/conductorone_request_catalogs/data-source.tf
   - examples/data-sources/conductorone_request_schema/data-source.tf
+  - examples/data-sources/conductorone_request_schema_entitlement_binding/data-source.tf
   - examples/data-sources/conductorone_risk_level/data-source.tf
   - examples/data-sources/conductorone_risk_levels/data-source.tf
   - examples/data-sources/conductorone_user/data-source.tf
@@ -123,8 +124,6 @@ generatedFiles:
   - examples/resources/conductorone_request_schema/import-by-string-id.tf
   - examples/resources/conductorone_request_schema/import.sh
   - examples/resources/conductorone_request_schema/resource.tf
-  - examples/resources/conductorone_request_schema_entitlement_binding/import-by-string-id.tf
-  - examples/resources/conductorone_request_schema_entitlement_binding/import.sh
   - examples/resources/conductorone_request_schema_entitlement_binding/resource.tf
   - examples/resources/conductorone_risk_level/import-by-string-id.tf
   - examples/resources/conductorone_risk_level/import.sh
@@ -250,10 +249,12 @@ generatedFiles:
   - internal/provider/reflect/struct.go
   - internal/provider/request_catalogs_data_source.go
   - internal/provider/request_catalogs_data_source_sdk.go
+  - internal/provider/request_schema_data_source.go
+  - internal/provider/request_schema_data_source_sdk.go
+  - internal/provider/request_schema_entitlement_binding_data_source.go
+  - internal/provider/request_schema_entitlement_binding_data_source_sdk.go
   - internal/provider/request_schema_entitlement_binding_resource.go
   - internal/provider/request_schema_entitlement_binding_resource_sdk.go
-  - internal/provider/request_schema_resource.go
-  - internal/provider/request_schema_resource_sdk.go
   - internal/provider/risk_level_data_source.go
   - internal/provider/risk_level_data_source_sdk.go
   - internal/provider/risk_level_resource.go
@@ -369,7 +370,6 @@ generatedFiles:
   - internal/provider/types/request_catalog_management_service_get_response_expanded.go
   - internal/provider/types/request_catalog_management_service_list_response_expanded.go
   - internal/provider/types/request_catalog_view.go
-  - internal/provider/types/request_schema_entitlement_binding.go
   - internal/provider/types/required_together.go
   - internal/provider/types/resource_owner_approval.go
   - internal/provider/types/rule.go
@@ -662,13 +662,12 @@ generatedFiles:
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceupdateappentitlements.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogsearchservicesearchentitlements.go
   - internal/sdk/models/operations/c1apirequestschemav1requestschemaservicecreate.go
-  - internal/sdk/models/operations/c1apirequestschemav1requestschemaservicecreateentitlementbindings.go
+  - internal/sdk/models/operations/c1apirequestschemav1requestschemaservicecreateentitlementbinding.go
   - internal/sdk/models/operations/c1apirequestschemav1requestschemaservicedelete.go
+  - internal/sdk/models/operations/c1apirequestschemav1requestschemaservicefindbindingforappentitlement.go
   - internal/sdk/models/operations/c1apirequestschemav1requestschemaserviceget.go
-  - internal/sdk/models/operations/c1apirequestschemav1requestschemaservicelistbindings.go
-  - internal/sdk/models/operations/c1apirequestschemav1requestschemaserviceremoveentitlementbindings.go
+  - internal/sdk/models/operations/c1apirequestschemav1requestschemaserviceremoveentitlementbinding.go
   - internal/sdk/models/operations/c1apirequestschemav1requestschemaserviceupdate.go
-  - internal/sdk/models/operations/c1apirequestschemav1requestschemaserviceupdatebindings.go
   - internal/sdk/models/operations/c1apisettingsv1awsexternalidsettingsget.go
   - internal/sdk/models/operations/c1apisettingsv1orgdomainservicelist.go
   - internal/sdk/models/operations/c1apisettingsv1orgdomainserviceupdate.go
@@ -1156,19 +1155,17 @@ generatedFiles:
   - internal/sdk/models/shared/requestcatalogsearchservicesearchentitlementsresponse.go
   - internal/sdk/models/shared/requestcatalogview.go
   - internal/sdk/models/shared/requestschema.go
-  - internal/sdk/models/shared/requestschemaentitlementbinding.go
-  - internal/sdk/models/shared/requestschemaservicecreateentitlementbindingsrequest.go
-  - internal/sdk/models/shared/requestschemaservicecreateentitlementbindingsresponse.go
+  - internal/sdk/models/shared/requestschemaservicecreateentitlementbindingrequest.go
+  - internal/sdk/models/shared/requestschemaservicecreateentitlementbindingresponse.go
   - internal/sdk/models/shared/requestschemaservicecreaterequest.go
   - internal/sdk/models/shared/requestschemaservicecreateresponse.go
   - internal/sdk/models/shared/requestschemaservicedeleterequest.go
   - internal/sdk/models/shared/requestschemaservicedeleteresponse.go
+  - internal/sdk/models/shared/requestschemaservicefindbindingforappentitlementrequest.go
+  - internal/sdk/models/shared/requestschemaservicefindbindingforappentitlementresponse.go
   - internal/sdk/models/shared/requestschemaservicegetresponse.go
-  - internal/sdk/models/shared/requestschemaservicelistbindingsresponse.go
-  - internal/sdk/models/shared/requestschemaserviceremoveentitlementbindingsrequest.go
-  - internal/sdk/models/shared/requestschemaserviceremoveentitlementbindingsresponse.go
-  - internal/sdk/models/shared/requestschemaserviceupdatebindingsrequest.go
-  - internal/sdk/models/shared/requestschemaserviceupdatebindingsresponse.go
+  - internal/sdk/models/shared/requestschemaserviceremoveentitlementbindingrequest.go
+  - internal/sdk/models/shared/requestschemaserviceremoveentitlementbindingresponse.go
   - internal/sdk/models/shared/requestschemaserviceupdaterequest.go
   - internal/sdk/models/shared/requestschemaserviceupdateresponse.go
   - internal/sdk/models/shared/requiredtogether.go
@@ -3306,6 +3303,21 @@ examples:
       parameters:
         path:
           request_schema_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.request_schema.v1.RequestSchemaService.RemoveEntitlementBinding:
+    speakeasy-default-c1-api-request-schema-v1-request-schema-service-remove-entitlement-binding:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.request_schema.v1.RequestSchemaService.CreateEntitlementBinding:
+    speakeasy-default-c1-api-request-schema-v1-request-schema-service-create-entitlement-binding:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.request_schema.v1.RequestSchemaService.FindBindingForAppEntitlement:
+    speakeasy-default-c1-api-request-schema-v1-request-schema-service-find-binding-for-app-entitlement:
       responses:
         "200":
           application/json: {}

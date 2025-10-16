@@ -4,13 +4,23 @@ package provider
 
 import (
 	"context"
+	"time"
+
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"time"
 )
+
+func (r *RequestSchemaResourceModel) RefreshFromSharedRequestSchema(ctx context.Context, resp *shared.RequestSchema) diag.Diagnostics {
+	var diags diag.Diagnostics
+	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+	r.ID = types.StringPointerValue(resp.ID)
+	return diags
+}
 
 func (r *RequestSchemaResourceModel) RefreshFromSharedForm(ctx context.Context, resp *shared.Form) diag.Diagnostics {
 	var diags diag.Diagnostics
