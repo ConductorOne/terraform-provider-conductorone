@@ -457,6 +457,14 @@ resource "conductorone_automation" "my_automation" {
         cron_spec        = "...my_cron_spec..."
         skip_if_true_cel = "...my_skip_if_true_cel..."
         start            = "2022-11-05T06:51:06.048Z"
+        timezone         = "...my_timezone..."
+      }
+      schedule_trigger_app_user = {
+        app_id    = "...my_app_id..."
+        condition = "...my_condition..."
+        cron_spec = "...my_cron_spec..."
+        start     = "2022-01-16T12:05:57.834Z"
+        timezone  = "...my_timezone..."
       }
       usage_based_revocation_trigger = {
         app_id     = "...my_app_id..."
@@ -575,6 +583,14 @@ resource "conductorone_automation" "my_automation" {
         cron_spec        = "...my_cron_spec..."
         skip_if_true_cel = "...my_skip_if_true_cel..."
         start            = "2022-01-25T09:55:20.150Z"
+        timezone         = "...my_timezone..."
+      }
+      schedule_trigger_app_user = {
+        app_id    = "...my_app_id..."
+        condition = "...my_condition..."
+        cron_spec = "...my_cron_spec..."
+        start     = "2021-11-11T16:22:31.994Z"
+        timezone  = "...my_timezone..."
       }
       usage_based_revocation_trigger = {
         app_id     = "...my_app_id..."

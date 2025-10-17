@@ -298,6 +298,14 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							steps.Provision.ProvisionPolicy = nil
 						} else {
 							steps.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
+							if stepsItem.Provision.ProvisionPolicy.ActionProvision == nil {
+								steps.Provision.ProvisionPolicy.ActionProvision = nil
+							} else {
+								steps.Provision.ProvisionPolicy.ActionProvision = &tfTypes.ActionProvision{}
+								steps.Provision.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName)
+								steps.Provision.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID)
+								steps.Provision.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID)
+							}
 							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision == nil {
 								steps.Provision.ProvisionPolicy.ConnectorProvision = nil
 							} else {

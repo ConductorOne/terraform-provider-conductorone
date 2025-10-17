@@ -148,7 +148,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - webhook
   - multiStep
   - externalTicket
-  - unconfigured (see [below for nested schema](#nestedatt--deprovisioner_policy))
+  - unconfigured
+  - action (see [below for nested schema](#nestedatt--deprovisioner_policy))
 - `description` (String) The description of the app entitlement.
 - `duration_grant` (String)
 - `duration_unset` (Attributes) (see [below for nested schema](#nestedatt--duration_unset))
@@ -171,7 +172,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - webhook
   - multiStep
   - externalTicket
-  - unconfigured (see [below for nested schema](#nestedatt--provision_policy))
+  - unconfigured
+  - action (see [below for nested schema](#nestedatt--provision_policy))
 - `purpose` (String) The purpose field.
 - `request_schema_id` (String) The ID of the request schema associated with this app entitlement.
 - `revoke_policy_id` (String) The ID of the policy that will be used for revoke tickets related to the app entitlement
@@ -212,6 +214,7 @@ Optional:
 
 Read-Only:
 
+- `action_provision` (Attributes) This provision step indicates that account lifecycle action should be called to provision this entitlement. (see [below for nested schema](#nestedatt--deprovisioner_policy--action_provision))
 - `connector_provision` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
 
 This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
@@ -224,6 +227,16 @@ This message contains a oneof named provision_type. Only a single field of the f
 - `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
 - `unconfigured_provision` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--deprovisioner_policy--unconfigured_provision))
 - `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--deprovisioner_policy--webhook_provision))
+
+<a id="nestedatt--deprovisioner_policy--action_provision"></a>
+### Nested Schema for `deprovisioner_policy.action_provision`
+
+Read-Only:
+
+- `action_name` (String) The actionName field.
+- `app_id` (String) The appId field.
+- `connector_id` (String) The connectorId field.
+
 
 <a id="nestedatt--deprovisioner_policy--connector_provision"></a>
 ### Nested Schema for `deprovisioner_policy.connector_provision`
@@ -335,6 +348,7 @@ Read-Only:
 
 Read-Only:
 
+- `action_provision` (Attributes) This provision step indicates that account lifecycle action should be called to provision this entitlement. (see [below for nested schema](#nestedatt--provision_policy--action_provision))
 - `connector_provision` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
 
 This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
@@ -347,6 +361,16 @@ This message contains a oneof named provision_type. Only a single field of the f
 - `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
 - `unconfigured_provision` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--provision_policy--unconfigured_provision))
 - `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--provision_policy--webhook_provision))
+
+<a id="nestedatt--provision_policy--action_provision"></a>
+### Nested Schema for `provision_policy.action_provision`
+
+Read-Only:
+
+- `action_name` (String) The actionName field.
+- `app_id` (String) The appId field.
+- `connector_id` (String) The connectorId field.
+
 
 <a id="nestedatt--provision_policy--connector_provision"></a>
 ### Nested Schema for `provision_policy.connector_provision`

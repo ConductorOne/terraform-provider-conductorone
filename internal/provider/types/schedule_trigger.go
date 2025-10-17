@@ -12,4 +12,5 @@ type ScheduleTrigger struct {
 	CronSpec      types.String `tfsdk:"cron_spec"`
 	SkipIfTrueCel types.String `tfsdk:"skip_if_true_cel"`
 	Start         types.String `tfsdk:"start"`
+	Timezone      types.String `tfsdk:"timezone"`
 }

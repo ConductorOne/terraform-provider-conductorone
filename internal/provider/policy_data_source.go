@@ -456,6 +456,24 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											"provision_policy": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
+													"action_provision": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"action_name": schema.StringAttribute{
+																Computed:    true,
+																Description: `The actionName field.`,
+															},
+															"app_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The appId field.`,
+															},
+															"connector_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The connectorId field.`,
+															},
+														},
+														Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
+													},
 													"connector_provision": schema.SingleNestedAttribute{
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
@@ -604,7 +622,8 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													`  - webhook` + "\n" +
 													`  - multiStep` + "\n" +
 													`  - externalTicket` + "\n" +
-													`  - unconfigured`,
+													`  - unconfigured` + "\n" +
+													`  - action`,
 											},
 											"provision_target": schema.SingleNestedAttribute{
 												Computed: true,

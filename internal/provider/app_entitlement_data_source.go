@@ -157,6 +157,24 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"deprovisioner_policy": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"action_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"action_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `The actionName field.`,
+							},
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The appId field.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The connectorId field.`,
+							},
+						},
+						Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
+					},
 					"connector_provision": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -305,7 +323,8 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 					`  - webhook` + "\n" +
 					`  - multiStep` + "\n" +
 					`  - externalTicket` + "\n" +
-					`  - unconfigured`,
+					`  - unconfigured` + "\n" +
+					`  - action`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -437,6 +456,24 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"provision_policy": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"action_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"action_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `The actionName field.`,
+							},
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The appId field.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The connectorId field.`,
+							},
+						},
+						Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
+					},
 					"connector_provision": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -585,7 +622,8 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 					`  - webhook` + "\n" +
 					`  - multiStep` + "\n" +
 					`  - externalTicket` + "\n" +
-					`  - unconfigured`,
+					`  - unconfigured` + "\n" +
+					`  - action`,
 			},
 			"purpose": schema.StringAttribute{
 				Computed:    true,

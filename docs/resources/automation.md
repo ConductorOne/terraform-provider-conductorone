@@ -472,6 +472,14 @@ resource "conductorone_automation" "my_automation" {
         cron_spec        = "...my_cron_spec..."
         skip_if_true_cel = "...my_skip_if_true_cel..."
         start            = "2022-11-05T06:51:06.048Z"
+        timezone         = "...my_timezone..."
+      }
+      schedule_trigger_app_user = {
+        app_id    = "...my_app_id..."
+        condition = "...my_condition..."
+        cron_spec = "...my_cron_spec..."
+        start     = "2022-01-16T12:05:57.834Z"
+        timezone  = "...my_timezone..."
       }
       usage_based_revocation_trigger = {
         app_id     = "...my_app_id..."
@@ -590,6 +598,14 @@ resource "conductorone_automation" "my_automation" {
         cron_spec        = "...my_cron_spec..."
         skip_if_true_cel = "...my_skip_if_true_cel..."
         start            = "2022-01-25T09:55:20.150Z"
+        timezone         = "...my_timezone..."
+      }
+      schedule_trigger_app_user = {
+        app_id    = "...my_app_id..."
+        condition = "...my_condition..."
+        cron_spec = "...my_cron_spec..."
+        start     = "2021-11-11T16:22:31.994Z"
+        timezone  = "...my_timezone..."
       }
       usage_based_revocation_trigger = {
         app_id     = "...my_app_id..."
@@ -666,7 +682,7 @@ resource "conductorone_automation" "my_automation" {
 - `disabled_reason_circuit_breaker` (Attributes) The DisabledReasonCircuitBreaker message. (see [below for nested schema](#nestedatt--disabled_reason_circuit_breaker))
 - `id` (String) The id field.
 - `last_executed_at` (String)
-- `primary_trigger_type` (String) The primaryTriggerType field. must be one of ["TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_USER_PROFILE_CHANGE", "TRIGGER_TYPE_APP_USER_CREATE", "TRIGGER_TYPE_APP_USER_UPDATE", "TRIGGER_TYPE_UNUSED_ACCESS", "TRIGGER_TYPE_USER_CREATED", "TRIGGER_TYPE_GRANT_FOUND", "TRIGGER_TYPE_GRANT_DELETED", "TRIGGER_TYPE_WEBHOOK", "TRIGGER_TYPE_SCHEDULE", "TRIGGER_TYPE_FORM"]
+- `primary_trigger_type` (String) The primaryTriggerType field. must be one of ["TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_USER_PROFILE_CHANGE", "TRIGGER_TYPE_APP_USER_CREATE", "TRIGGER_TYPE_APP_USER_UPDATE", "TRIGGER_TYPE_UNUSED_ACCESS", "TRIGGER_TYPE_USER_CREATED", "TRIGGER_TYPE_GRANT_FOUND", "TRIGGER_TYPE_GRANT_DELETED", "TRIGGER_TYPE_WEBHOOK", "TRIGGER_TYPE_SCHEDULE", "TRIGGER_TYPE_FORM", "TRIGGER_TYPE_SCHEDULE_APP_USER"]
 - `webhook_hmac_secret` (String) If we create a new trigger with an HMAC secret we return the HMAC on this field
 
 <a id="nestedatt--automation_context"></a>
@@ -1699,6 +1715,7 @@ This message contains a oneof named app_identifier. Only a single field of the f
 - `grant_found_trigger` (Attributes) The GrantFoundTrigger message. (see [below for nested schema](#nestedatt--draft_triggers--grant_found_trigger))
 - `manual_automation_trigger` (Attributes) The ManualAutomationTrigger message. (see [below for nested schema](#nestedatt--draft_triggers--manual_automation_trigger))
 - `schedule_trigger` (Attributes) The ScheduleTrigger message. (see [below for nested schema](#nestedatt--draft_triggers--schedule_trigger))
+- `schedule_trigger_app_user` (Attributes) The ScheduleTriggerAppUser message. (see [below for nested schema](#nestedatt--draft_triggers--schedule_trigger_app_user))
 - `usage_based_revocation_trigger` (Attributes) The UsageBasedRevocationTrigger message.
 
 This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
@@ -1864,6 +1881,19 @@ Optional:
 - `cron_spec` (String) The cronSpec field.
 - `skip_if_true_cel` (String, Deprecated) The skipIfTrueCel field.
 - `start` (String)
+- `timezone` (String) The timezone field.
+
+
+<a id="nestedatt--draft_triggers--schedule_trigger_app_user"></a>
+### Nested Schema for `draft_triggers.schedule_trigger_app_user`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `condition` (String) The condition field.
+- `cron_spec` (String) The cronSpec field.
+- `start` (String)
+- `timezone` (String) The timezone field.
 
 
 <a id="nestedatt--draft_triggers--usage_based_revocation_trigger"></a>
@@ -1980,6 +2010,7 @@ This message contains a oneof named app_identifier. Only a single field of the f
 - `grant_found_trigger` (Attributes) The GrantFoundTrigger message. (see [below for nested schema](#nestedatt--triggers--grant_found_trigger))
 - `manual_automation_trigger` (Attributes) The ManualAutomationTrigger message. (see [below for nested schema](#nestedatt--triggers--manual_automation_trigger))
 - `schedule_trigger` (Attributes) The ScheduleTrigger message. (see [below for nested schema](#nestedatt--triggers--schedule_trigger))
+- `schedule_trigger_app_user` (Attributes) The ScheduleTriggerAppUser message. (see [below for nested schema](#nestedatt--triggers--schedule_trigger_app_user))
 - `usage_based_revocation_trigger` (Attributes) The UsageBasedRevocationTrigger message.
 
 This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
@@ -2145,6 +2176,19 @@ Optional:
 - `cron_spec` (String) The cronSpec field.
 - `skip_if_true_cel` (String, Deprecated) The skipIfTrueCel field.
 - `start` (String)
+- `timezone` (String) The timezone field.
+
+
+<a id="nestedatt--triggers--schedule_trigger_app_user"></a>
+### Nested Schema for `triggers.schedule_trigger_app_user`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `condition` (String) The condition field.
+- `cron_spec` (String) The cronSpec field.
+- `start` (String)
+- `timezone` (String) The timezone field.
 
 
 <a id="nestedatt--triggers--usage_based_revocation_trigger"></a>

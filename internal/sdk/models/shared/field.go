@@ -9,6 +9,7 @@ package shared
 //   - boolField
 //   - stringSliceField
 //   - int64Field
+//   - fileField
 type Field struct {
 	// The BoolField message.
 	//
@@ -24,6 +25,16 @@ type Field struct {
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The FileField message.
+	//
+	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
+	//   - fileInputField
+	//
+	//
+	// This message contains a oneof named _max_file_size. Only a single field of the following list may be set at a time:
+	//   - maxFileSize
+	//
+	FileField *FileField `json:"fileField,omitempty"`
 	// The Int64Field message.
 	//
 	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
@@ -52,16 +63,6 @@ type Field struct {
 	//   - rules
 	//
 	StringField *StringField `json:"stringField,omitempty"`
-	// The StringSliceField message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - chipsField
-	//
-	//
-	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-	//   - rules
-	//
-	StringSliceField *StringSliceField `json:"stringSliceField,omitempty"`
 }
 
 func (f *Field) GetBoolField() *BoolField {
@@ -85,6 +86,13 @@ func (f *Field) GetDisplayName() *string {
 	return f.DisplayName
 }
 
+func (f *Field) GetFileField() *FileField {
+	if f == nil {
+		return nil
+	}
+	return f.FileField
+}
+
 func (f *Field) GetInt64Field() *Int64Field {
 	if f == nil {
 		return nil
@@ -104,11 +112,4 @@ func (f *Field) GetStringField() *StringField {
 		return nil
 	}
 	return f.StringField
-}
-
-func (f *Field) GetStringSliceField() *StringSliceField {
-	if f == nil {
-		return nil
-	}
-	return f.StringSliceField
 }

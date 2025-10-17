@@ -20,6 +20,8 @@ type ScheduleTrigger struct {
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	SkipIfTrueCel *string    `json:"skipIfTrueCel,omitempty"`
 	Start         *time.Time `json:"start,omitempty"`
+	// The timezone field.
+	Timezone *string `json:"timezone,omitempty"`
 }
 
 func (s ScheduleTrigger) MarshalJSON() ([]byte, error) {
@@ -66,4 +68,11 @@ func (s *ScheduleTrigger) GetStart() *time.Time {
 		return nil
 	}
 	return s.Start
+}
+
+func (s *ScheduleTrigger) GetTimezone() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Timezone
 }

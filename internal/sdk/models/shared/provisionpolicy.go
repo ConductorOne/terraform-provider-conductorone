@@ -12,7 +12,10 @@ package shared
 //   - multiStep
 //   - externalTicket
 //   - unconfigured
+//   - action
 type ProvisionPolicy struct {
+	// This provision step indicates that account lifecycle action should be called to provision this entitlement.
+	ActionProvision *ActionProvision `json:"action,omitempty"`
 	// Indicates that a connector should perform the provisioning. This object has no fields.
 	//
 	// This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
@@ -33,6 +36,13 @@ type ProvisionPolicy struct {
 	UnconfiguredProvision *UnconfiguredProvision `json:"unconfigured,omitempty"`
 	// This provision step indicates that a webhook should be called to provision this entitlement.
 	WebhookProvision *WebhookProvision `json:"webhook,omitempty"`
+}
+
+func (p *ProvisionPolicy) GetActionProvision() *ActionProvision {
+	if p == nil {
+		return nil
+	}
+	return p.ActionProvision
 }
 
 func (p *ProvisionPolicy) GetConnectorProvision() *ConnectorProvision {

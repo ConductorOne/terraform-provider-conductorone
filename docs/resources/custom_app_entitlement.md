@@ -37,6 +37,11 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
   match_baton_id                    = "...my_match_baton_id..."
   override_access_requests_defaults = true
   provision_policy = {
+    action_provision = {
+      action_name  = "...my_action_name..."
+      app_id       = "...my_app_id..."
+      connector_id = "...my_connector_id..."
+    }
     connector_provision = {
       account_provision = {
         config = {
@@ -123,7 +128,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - webhook
   - multiStep
   - externalTicket
-  - unconfigured (see [below for nested schema](#nestedatt--provision_policy))
+  - unconfigured
+  - action (see [below for nested schema](#nestedatt--provision_policy))
 - `purpose` (String) The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"]
 - `revoke_policy_id` (String) The revokePolicyId field.
 - `risk_level_value_id` (String) The riskLevelValueId field.
@@ -142,7 +148,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - webhook
   - multiStep
   - externalTicket
-  - unconfigured (see [below for nested schema](#nestedatt--deprovisioner_policy))
+  - unconfigured
+  - action (see [below for nested schema](#nestedatt--deprovisioner_policy))
 - `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
 - `grant_count` (String) The amount of grants open for this entitlement
 - `id` (String) The unique ID for the App Entitlement.
@@ -162,6 +169,7 @@ This message contains a oneof named typ. Only a single field of the following li
 
 Optional:
 
+- `action_provision` (Attributes) This provision step indicates that account lifecycle action should be called to provision this entitlement. (see [below for nested schema](#nestedatt--provision_policy--action_provision))
 - `connector_provision` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
 
 This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
@@ -174,6 +182,16 @@ This message contains a oneof named provision_type. Only a single field of the f
 - `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
 - `unconfigured_provision` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--provision_policy--unconfigured_provision))
 - `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--provision_policy--webhook_provision))
+
+<a id="nestedatt--provision_policy--action_provision"></a>
+### Nested Schema for `provision_policy.action_provision`
+
+Optional:
+
+- `action_name` (String) The actionName field.
+- `app_id` (String) The appId field.
+- `connector_id` (String) The connectorId field.
+
 
 <a id="nestedatt--provision_policy--connector_provision"></a>
 ### Nested Schema for `provision_policy.connector_provision`
@@ -281,6 +299,7 @@ Optional:
 
 Read-Only:
 
+- `action_provision` (Attributes) This provision step indicates that account lifecycle action should be called to provision this entitlement. (see [below for nested schema](#nestedatt--deprovisioner_policy--action_provision))
 - `connector_provision` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
 
 This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
@@ -293,6 +312,16 @@ This message contains a oneof named provision_type. Only a single field of the f
 - `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
 - `unconfigured_provision` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--deprovisioner_policy--unconfigured_provision))
 - `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--deprovisioner_policy--webhook_provision))
+
+<a id="nestedatt--deprovisioner_policy--action_provision"></a>
+### Nested Schema for `deprovisioner_policy.action_provision`
+
+Read-Only:
+
+- `action_name` (String) The actionName field.
+- `app_id` (String) The appId field.
+- `connector_id` (String) The connectorId field.
+
 
 <a id="nestedatt--deprovisioner_policy--connector_provision"></a>
 ### Nested Schema for `deprovisioner_policy.connector_provision`

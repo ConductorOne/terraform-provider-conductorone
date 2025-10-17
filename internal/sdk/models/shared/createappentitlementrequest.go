@@ -82,6 +82,7 @@ type CreateAppEntitlementRequest struct {
 	//   - multiStep
 	//   - externalTicket
 	//   - unconfigured
+	//   - action
 	//
 	ProvisionPolicy *ProvisionPolicy `json:"provisionPolicy,omitempty"`
 	// The purpose field.
