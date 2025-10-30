@@ -350,8 +350,7 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 	}
 	sourceConnectorIds := make(map[string]string)
 	for sourceConnectorIdsKey, sourceConnectorIdsValue := range r.SourceConnectorIds {
-		var sourceConnectorIdsInst string
-		sourceConnectorIdsInst = sourceConnectorIdsValue.ValueString()
+		sourceConnectorIdsInst := sourceConnectorIdsValue.ValueString()
 
 		sourceConnectorIds[sourceConnectorIdsKey] = sourceConnectorIdsInst
 	}
