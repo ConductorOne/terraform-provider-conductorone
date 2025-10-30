@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
@@ -17,8 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -397,7 +394,7 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Description: `The grantPolicyId field is the policy that will be used for access request grant tasks.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
 				Description: `The unique ID for the App Entitlement.`,
 			},
 			"is_automation_enabled": schema.BoolAttribute{
