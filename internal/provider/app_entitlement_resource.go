@@ -43,21 +43,31 @@ type AppEntitlementResourceModel struct {
 	CertifyPolicyID                types.String                                      `tfsdk:"certify_policy_id"`
 	ComplianceFrameworkValueIds    []types.String                                    `tfsdk:"compliance_framework_value_ids"`
 	CreatedAt                      types.String                                      `tfsdk:"created_at"`
-	DeletedAt                      types.String                                      `tfsdk:"deleted_at"`
+	DefaultValuesApplied           types.Bool                                        `tfsdk:"default_values_applied"`
+	DeletedAt                      types.String                                      `tfsdk:"-"`
 	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy                      `tfsdk:"deprovisioner_policy" tfPlanOnly:"true"`
 	Description                    types.String                                      `tfsdk:"description"`
 	DisplayName                    types.String                                      `tfsdk:"display_name"`
-	DurationGrant                  types.String                                      `tfsdk:"duration_grant"`
-	DurationUnset                  *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset"`
+	DurationGrant                  types.String                                      `tfsdk:"duration_grant" tfPlanOnly:"true"`
+	DurationUnset                  *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset" tfPlanOnly:"true"`
 	EmergencyGrantEnabled          types.Bool                                        `tfsdk:"emergency_grant_enabled"`
 	EmergencyGrantPolicyID         types.String                                      `tfsdk:"emergency_grant_policy_id"`
+	Expanded                       []tfTypes.GetAppEntitlementResponseExpanded       `tfsdk:"expanded"`
+	GrantCount                     types.String                                      `tfsdk:"grant_count"`
 	GrantPolicyID                  types.String                                      `tfsdk:"grant_policy_id"`
 	ID                             types.String                                      `tfsdk:"id"`
+	IsAutomationEnabled            types.Bool                                        `tfsdk:"is_automation_enabled"`
+	IsManuallyManaged              types.Bool                                        `tfsdk:"is_manually_managed"`
+	MatchBatonID                   types.String                                      `tfsdk:"match_baton_id"`
 	OverrideAccessRequestsDefaults types.Bool                                        `tfsdk:"override_access_requests_defaults"`
 	ProvisionPolicy                *tfTypes.ProvisionPolicy                          `tfsdk:"provision_policy" tfPlanOnly:"true"`
+	Purpose                        types.String                                      `tfsdk:"purpose"`
+	RequestSchemaID                types.String                                      `tfsdk:"request_schema_id"`
 	RevokePolicyID                 types.String                                      `tfsdk:"revoke_policy_id"`
 	RiskLevelValueID               types.String                                      `tfsdk:"risk_level_value_id"`
 	Slug                           types.String                                      `tfsdk:"slug"`
+	SourceConnectorIds             map[string]types.String                           `tfsdk:"source_connector_ids"`
+	SystemBuiltin                  types.Bool                                        `tfsdk:"system_builtin"`
 	UpdatedAt                      types.String                                      `tfsdk:"updated_at"`
 }
 
@@ -104,15 +114,31 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					validators.IsRFC3339(),
 				},
 			},
-			"deleted_at": schema.StringAttribute{
-				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
+			"default_values_applied": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
 			},
 			"deprovisioner_policy": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"action_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"action_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `The actionName field.`,
+							},
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The appId field.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The connectorId field.`,
+							},
+						},
+						Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
+					},
 					"connector_provision": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -315,7 +341,8 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					`  - webhook` + "\n" +
 					`  - multiStep` + "\n" +
 					`  - externalTicket` + "\n" +
-					`  - unconfigured`,
+					`  - unconfigured` + "\n" +
+					`  - action`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -350,6 +377,17 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Description: `The emergencyGrantPolicyId field is the ID of the grant policy that will be used for emergency grant tasks. 
 				To set this field, emergencyGrantEnabled must be set to true.`,
 			},
+			"expanded": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{},
+				},
+				Description: `The expanded field.`,
+			},
+			"grant_count": schema.StringAttribute{
+				Computed:    true,
+				Description: `The amount of grants open for this entitlement`,
+			},
 			"grant_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -357,7 +395,20 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"id": schema.StringAttribute{
 				Required:    true,
-				Description: `The id field.`,
+				Description: `The unique ID for the App Entitlement.`,
+			},
+			"is_automation_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Flag to indicate whether automation (for adding users to entitlement based on rules) has been enabled.`,
+			},
+			"is_manually_managed": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Flag to indicate if the app entitlement is manually managed.`,
+			},
+			"match_baton_id": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `If supplied, it's implied that the entitlement is created before sync and needs to be merged with connector entitlement.`,
 			},
 			"override_access_requests_defaults": schema.BoolAttribute{
 				Computed:    true,
@@ -368,6 +419,28 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"action_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"action_name": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The actionName field.`,
+							},
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The appId field.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The connectorId field.`,
+							},
+						},
+						Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
+					},
 					"connector_provision": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -597,7 +670,24 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					`  - webhook` + "\n" +
 					`  - multiStep` + "\n" +
 					`  - externalTicket` + "\n" +
-					`  - unconfigured`,
+					`  - unconfigured` + "\n" +
+					`  - action`,
+			},
+			"purpose": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED",
+						"APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT",
+						"APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION",
+					),
+				},
+			},
+			"request_schema_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The ID of the request schema associated with this app entitlement.`,
 			},
 			"revoke_policy_id": schema.StringAttribute{
 				Computed:    true,
@@ -613,6 +703,15 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Computed:    true,
 				Optional:    true,
 				Description: `The slug field.`,
+			},
+			"source_connector_ids": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `Map to tell us which connector the entitlement came from.`,
+			},
+			"system_builtin": schema.BoolAttribute{
+				Computed:    true,
+				Description: `This field indicates if this is a system builtin entitlement.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
