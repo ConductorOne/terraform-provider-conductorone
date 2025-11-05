@@ -61,7 +61,7 @@ func (s *Functions) ListFunctions(ctx context.Context, opts ...operations.Option
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.functions.v1.FunctionsService.ListFunctions",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -191,7 +191,7 @@ func (s *Functions) CreateFunction(ctx context.Context, request *shared.Function
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.functions.v1.FunctionsService.CreateFunction",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -328,7 +328,7 @@ func (s *Functions) ListCommits(ctx context.Context, request operations.C1APIFun
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.functions.v1.FunctionsService.ListCommits",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -458,7 +458,7 @@ func (s *Functions) Commit(ctx context.Context, request operations.C1APIFunction
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.functions.v1.FunctionsService.Commit",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "FunctionsServiceCommitRequest", "json", `request:"mediaType=application/json"`)
@@ -595,7 +595,7 @@ func (s *Functions) GetCommit(ctx context.Context, request operations.C1APIFunct
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.functions.v1.FunctionsService.GetCommit",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -725,7 +725,7 @@ func (s *Functions) Invoke(ctx context.Context, request operations.C1APIFunction
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.functions.v1.FunctionsService.Invoke",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "FunctionsServiceInvokeRequest", "json", `request:"mediaType=application/json"`)
@@ -862,7 +862,7 @@ func (s *Functions) ListTags(ctx context.Context, request operations.C1APIFuncti
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.functions.v1.FunctionsService.ListTags",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -992,7 +992,7 @@ func (s *Functions) CreateTag(ctx context.Context, request operations.C1APIFunct
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.functions.v1.FunctionsService.CreateTag",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "FunctionsServiceCreateTagRequest", "json", `request:"mediaType=application/json"`)
@@ -1129,7 +1129,7 @@ func (s *Functions) DeleteFunction(ctx context.Context, request operations.C1API
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.functions.v1.FunctionsService.DeleteFunction",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "FunctionsServiceDeleteFunctionRequest", "json", `request:"mediaType=application/json"`)
@@ -1266,7 +1266,7 @@ func (s *Functions) GetFunction(ctx context.Context, request operations.C1APIFun
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.functions.v1.FunctionsService.GetFunction",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1396,7 +1396,7 @@ func (s *Functions) UpdateFunction(ctx context.Context, request *shared.Function
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.functions.v1.FunctionsService.UpdateFunction",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

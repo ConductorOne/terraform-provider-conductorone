@@ -32,8 +32,8 @@ type BundleAutomationDataSourceModel struct {
 	BundleAutomationCircuitBreaker  *tfTypes.BundleAutomationCircuitBreaker  `tfsdk:"bundle_automation_circuit_breaker"`
 	BundleAutomationLastRunState    *tfTypes.BundleAutomationLastRunState    `tfsdk:"bundle_automation_last_run_state"`
 	BundleAutomationRuleEntitlement *tfTypes.BundleAutomationRuleEntitlement `tfsdk:"bundle_automation_rule_entitlement"`
-	CreateTasks                     types.Bool                               `tfsdk:"create_tasks"`
 	CreatedAt                       types.String                             `tfsdk:"created_at"`
+	CreateTasks                     types.Bool                               `tfsdk:"create_tasks"`
 	DeletedAt                       types.String                             `tfsdk:"deleted_at"`
 	DisableCircuitBreaker           types.Bool                               `tfsdk:"disable_circuit_breaker"`
 	Enabled                         types.Bool                               `tfsdk:"enabled"`

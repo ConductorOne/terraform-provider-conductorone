@@ -61,7 +61,7 @@ func (s *AppEntitlementMonitorBinding) DeleteAppEntitlementMonitorBinding(ctx co
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.DeleteAppEntitlementMonitorBinding",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -198,7 +198,7 @@ func (s *AppEntitlementMonitorBinding) CreateAppEntitlementMonitorBinding(ctx co
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.CreateAppEntitlementMonitorBinding",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -335,7 +335,7 @@ func (s *AppEntitlementMonitorBinding) GetAppEntitlementMonitorBinding(ctx conte
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.GetAppEntitlementMonitorBinding",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

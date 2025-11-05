@@ -174,11 +174,11 @@ func (r *AppResourceTypeResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateManuallyManagedResourceTypeResponse != nil && res.CreateManuallyManagedResourceTypeResponse.AppResourceType != nil) {
+	if !(res.CreateManuallyManagedResourceTypeResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res.CreateManuallyManagedResourceTypeResponse.AppResourceType)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreateManuallyManagedResourceTypeResponse(ctx, res.CreateManuallyManagedResourceTypeResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -211,11 +211,11 @@ func (r *AppResourceTypeResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.AppResourceTypeServiceGetResponse != nil && res1.AppResourceTypeServiceGetResponse.AppResourceTypeView != nil && res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType != nil) {
+	if !(res1.AppResourceTypeServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceTypeServiceGetResponse(ctx, res1.AppResourceTypeServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -275,11 +275,11 @@ func (r *AppResourceTypeResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AppResourceTypeServiceGetResponse != nil && res.AppResourceTypeServiceGetResponse.AppResourceTypeView != nil && res.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType != nil) {
+	if !(res.AppResourceTypeServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceTypeServiceGetResponse(ctx, res.AppResourceTypeServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -330,11 +330,11 @@ func (r *AppResourceTypeResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.UpdateManuallyManagedResourceTypeResponse != nil && res.UpdateManuallyManagedResourceTypeResponse.AppResourceType != nil) {
+	if !(res.UpdateManuallyManagedResourceTypeResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res.UpdateManuallyManagedResourceTypeResponse.AppResourceType)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpdateManuallyManagedResourceTypeResponse(ctx, res.UpdateManuallyManagedResourceTypeResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -367,11 +367,11 @@ func (r *AppResourceTypeResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.AppResourceTypeServiceGetResponse != nil && res1.AppResourceTypeServiceGetResponse.AppResourceTypeView != nil && res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType != nil) {
+	if !(res1.AppResourceTypeServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, res1.AppResourceTypeServiceGetResponse.AppResourceTypeView.AppResourceType)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceTypeServiceGetResponse(ctx, res1.AppResourceTypeServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

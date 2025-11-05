@@ -188,11 +188,11 @@ func (r *AppResourceDataSource) Read(ctx context.Context, req datasource.ReadReq
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AppResourceServiceGetResponse != nil && res.AppResourceServiceGetResponse.AppResourceView != nil && res.AppResourceServiceGetResponse.AppResourceView.AppResource != nil) {
+	if !(res.AppResourceServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResource(ctx, res.AppResourceServiceGetResponse.AppResourceView.AppResource)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceServiceGetResponse(ctx, res.AppResourceServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

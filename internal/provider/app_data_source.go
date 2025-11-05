@@ -261,11 +261,11 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.SearchAppsResponse != nil && res.SearchAppsResponse.List != nil && len(res.SearchAppsResponse.List) > 0) {
+	if !(res.SearchAppsResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, &res.SearchAppsResponse.List[0])...)
+	resp.Diagnostics.Append(data.RefreshFromSharedSearchAppsResponse(ctx, res.SearchAppsResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -284,7 +284,7 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 			break
 		}
 
-		resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, &res.SearchAppsResponse.List[0])...)
+		resp.Diagnostics.Append(data.RefreshFromSharedSearchAppsResponse(ctx, res.SearchAppsResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return

@@ -24,6 +24,27 @@ func (r *WebhookDataSourceModel) RefreshFromSharedWebhook1(ctx context.Context, 
 	return diags
 }
 
+func (r *WebhookDataSourceModel) RefreshFromSharedWebhooksSearchResponse(ctx context.Context, resp *shared.WebhooksSearchResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if len(resp.List) == 0 {
+			diags.AddError("Unexpected response from API", "Missing response body array data.")
+			return diags
+		}
+
+		diags.Append(r.RefreshFromSharedWebhook1(ctx, &resp.List[0])...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
+	}
+
+	return diags
+}
+
 func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest(ctx context.Context) (*shared.WebhooksSearchRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

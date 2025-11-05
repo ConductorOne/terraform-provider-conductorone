@@ -26,14 +26,52 @@ func (r *ComplianceFrameworkResourceModel) RefreshFromSharedAttributeValue(ctx c
 	return diags
 }
 
+func (r *ComplianceFrameworkResourceModel) RefreshFromSharedCreateComplianceFrameworkAttributeValueResponse(ctx context.Context, resp *shared.CreateComplianceFrameworkAttributeValueResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAttributeValue(ctx, resp.AttributeValue)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *ComplianceFrameworkResourceModel) RefreshFromSharedGetComplianceFrameworkAttributeValueResponse(ctx context.Context, resp *shared.GetComplianceFrameworkAttributeValueResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAttributeValue(ctx, resp.AttributeValue)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *ComplianceFrameworkResourceModel) ToOperationsC1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var id string
 	id = r.ID.ValueString()
 
+	deleteComplianceFrameworkAttributeValueRequest, deleteComplianceFrameworkAttributeValueRequestDiags := r.ToSharedDeleteComplianceFrameworkAttributeValueRequest(ctx)
+	diags.Append(deleteComplianceFrameworkAttributeValueRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest{
 		ID: id,
+		DeleteComplianceFrameworkAttributeValueRequest: deleteComplianceFrameworkAttributeValueRequest,
 	}
 
 	return &out, diags
@@ -64,6 +102,14 @@ func (r *ComplianceFrameworkResourceModel) ToSharedCreateComplianceFrameworkAttr
 	out := shared.CreateComplianceFrameworkAttributeValueRequest{
 		Value: value,
 	}
+
+	return &out, diags
+}
+
+func (r *ComplianceFrameworkResourceModel) ToSharedDeleteComplianceFrameworkAttributeValueRequest(ctx context.Context) (*shared.DeleteComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeleteComplianceFrameworkAttributeValueRequest{}
 
 	return &out, diags
 }

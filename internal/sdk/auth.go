@@ -61,7 +61,7 @@ func (s *Auth) Introspect(ctx context.Context, opts ...operations.Option) (*oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.auth.v1.Auth.Introspect",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

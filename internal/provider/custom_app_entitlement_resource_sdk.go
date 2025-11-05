@@ -277,6 +277,72 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 	return diags
 }
 
+func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlementView(ctx context.Context, resp *shared.AppEntitlementView) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppEntitlement(ctx, resp.AppEntitlement)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *CustomAppEntitlementResourceModel) RefreshFromSharedCreateAppEntitlementResponse(ctx context.Context, resp *shared.CreateAppEntitlementResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppEntitlementView(ctx, resp.AppEntitlementView)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		if resp.Expanded != nil {
+		}
+	}
+
+	return diags
+}
+
+func (r *CustomAppEntitlementResourceModel) RefreshFromSharedGetAppEntitlementResponse(ctx context.Context, resp *shared.GetAppEntitlementResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppEntitlementView(ctx, resp.AppEntitlementView)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		if resp.Expanded != nil {
+		}
+	}
+
+	return diags
+}
+
+func (r *CustomAppEntitlementResourceModel) RefreshFromSharedUpdateAppEntitlementResponse(ctx context.Context, resp *shared.UpdateAppEntitlementResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppEntitlementView(ctx, resp.AppEntitlementView)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		if resp.Expanded != nil {
+		}
+	}
+
+	return diags
+}
+
 func (r *CustomAppEntitlementResourceModel) ToOperationsC1APIAppV1AppEntitlementsCreateRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsCreateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -307,9 +373,17 @@ func (r *CustomAppEntitlementResourceModel) ToOperationsC1APIAppV1AppEntitlement
 	var id string
 	id = r.ID.ValueString()
 
+	deleteAppEntitlementRequest, deleteAppEntitlementRequestDiags := r.ToSharedDeleteAppEntitlementRequest(ctx)
+	diags.Append(deleteAppEntitlementRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIAppV1AppEntitlementsDeleteRequest{
-		AppID: appID,
-		ID:    id,
+		AppID:                       appID,
+		ID:                          id,
+		DeleteAppEntitlementRequest: deleteAppEntitlementRequest,
 	}
 
 	return &out, diags
@@ -1275,6 +1349,14 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 		RiskLevelValueID:               riskLevelValueID,
 		Slug:                           slug,
 	}
+
+	return &out, diags
+}
+
+func (r *CustomAppEntitlementResourceModel) ToSharedDeleteAppEntitlementRequest(ctx context.Context) (*shared.DeleteAppEntitlementRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeleteAppEntitlementRequest{}
 
 	return &out, diags
 }

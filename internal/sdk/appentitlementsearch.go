@@ -64,7 +64,7 @@ func (s *AppEntitlementSearch) SearchAppEntitlementsWithExpired(ctx context.Cont
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppEntitlementSearchService.SearchAppEntitlementsWithExpired",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -198,7 +198,7 @@ func (s *AppEntitlementSearch) SearchAppEntitlementsForAppUser(ctx context.Conte
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppEntitlementSearchService.SearchAppEntitlementsForAppUser",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -332,7 +332,7 @@ func (s *AppEntitlementSearch) Search(ctx context.Context, request *shared.AppEn
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppEntitlementSearchService.Search",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -537,7 +537,7 @@ func (s *AppEntitlementSearch) SearchGrants(ctx context.Context, request *shared
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppEntitlementSearchService.SearchGrants",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

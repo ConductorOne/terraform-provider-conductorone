@@ -44,6 +44,7 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_access_conflict](docs/resources/access_conflict.md)
 * [conductorone_access_profile](docs/resources/access_profile.md)
 * [conductorone_access_profile_requestable_entries](docs/resources/access_profile_requestable_entries.md)
+* [conductorone_access_profile_requestable_entry](docs/resources/access_profile_requestable_entry.md)
 * [conductorone_access_profile_visibility_bindings](docs/resources/access_profile_visibility_bindings.md)
 * [conductorone_app](docs/resources/app.md)
 * [conductorone_app_entitlement_automation](docs/resources/app_entitlement_automation.md)
@@ -70,6 +71,7 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 ### Data Sources
 
 * [conductorone_access_profile](docs/data-sources/access_profile.md)
+* [conductorone_access_profile_requestable_entries](docs/data-sources/access_profile_requestable_entries.md)
 * [conductorone_app](docs/data-sources/app.md)
 * [conductorone_app_entitlement](docs/data-sources/app_entitlement.md)
 * [conductorone_app_entitlement_automation](docs/data-sources/app_entitlement_automation.md)
@@ -178,7 +180,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.6.15"
+      version = "1.7.1"
     }
   }
 }

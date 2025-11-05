@@ -43,8 +43,8 @@ type FunctionResourceModel struct {
 	Description                           types.String                                   `tfsdk:"description"`
 	DisplayName                           types.String                                   `tfsdk:"display_name"`
 	FunctionID                            types.String                                   `tfsdk:"function_id"`
-	FunctionType                          types.String                                   `tfsdk:"function_type"`
 	FunctionsServiceDeleteFunctionRequest *tfTypes.FunctionsServiceDeleteFunctionRequest `tfsdk:"functions_service_delete_function_request"`
+	FunctionType                          types.String                                   `tfsdk:"function_type"`
 	Head                                  types.String                                   `tfsdk:"head"`
 	ID                                    types.String                                   `tfsdk:"id"`
 	InitialContent                        map[string]types.String                        `tfsdk:"initial_content"`
@@ -206,11 +206,11 @@ func (r *FunctionResource) Create(ctx context.Context, req resource.CreateReques
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.FunctionsServiceCreateFunctionResponse != nil && res.FunctionsServiceCreateFunctionResponse.Function != nil) {
+	if !(res.FunctionsServiceCreateFunctionResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedFunction(ctx, res.FunctionsServiceCreateFunctionResponse.Function)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedFunctionsServiceCreateFunctionResponse(ctx, res.FunctionsServiceCreateFunctionResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -243,11 +243,11 @@ func (r *FunctionResource) Create(ctx context.Context, req resource.CreateReques
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.FunctionsServiceGetFunctionResponse != nil && res1.FunctionsServiceGetFunctionResponse.Function != nil) {
+	if !(res1.FunctionsServiceGetFunctionResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedFunction(ctx, res1.FunctionsServiceGetFunctionResponse.Function)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedFunctionsServiceGetFunctionResponse(ctx, res1.FunctionsServiceGetFunctionResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -307,11 +307,11 @@ func (r *FunctionResource) Read(ctx context.Context, req resource.ReadRequest, r
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.FunctionsServiceGetFunctionResponse != nil && res.FunctionsServiceGetFunctionResponse.Function != nil) {
+	if !(res.FunctionsServiceGetFunctionResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedFunction(ctx, res.FunctionsServiceGetFunctionResponse.Function)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedFunctionsServiceGetFunctionResponse(ctx, res.FunctionsServiceGetFunctionResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -362,11 +362,11 @@ func (r *FunctionResource) Update(ctx context.Context, req resource.UpdateReques
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.FunctionsServiceUpdateFunctionResponse != nil && res.FunctionsServiceUpdateFunctionResponse.Function != nil) {
+	if !(res.FunctionsServiceUpdateFunctionResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedFunction(ctx, res.FunctionsServiceUpdateFunctionResponse.Function)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedFunctionsServiceUpdateFunctionResponse(ctx, res.FunctionsServiceUpdateFunctionResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -399,11 +399,11 @@ func (r *FunctionResource) Update(ctx context.Context, req resource.UpdateReques
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.FunctionsServiceGetFunctionResponse != nil && res1.FunctionsServiceGetFunctionResponse.Function != nil) {
+	if !(res1.FunctionsServiceGetFunctionResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedFunction(ctx, res1.FunctionsServiceGetFunctionResponse.Function)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedFunctionsServiceGetFunctionResponse(ctx, res1.FunctionsServiceGetFunctionResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

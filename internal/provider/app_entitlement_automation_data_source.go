@@ -204,11 +204,11 @@ func (r *AppEntitlementAutomationDataSource) Read(ctx context.Context, req datas
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AppEntitlementServiceGetAutomationResponse != nil && res.AppEntitlementServiceGetAutomationResponse.AppEntitlementAutomation != nil) {
+	if !(res.AppEntitlementServiceGetAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementAutomation(ctx, res.AppEntitlementServiceGetAutomationResponse.AppEntitlementAutomation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementServiceGetAutomationResponse(ctx, res.AppEntitlementServiceGetAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

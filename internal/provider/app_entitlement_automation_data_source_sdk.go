@@ -16,8 +16,6 @@ func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlemen
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.AppEntitlementID = types.StringPointerValue(resp.AppEntitlementID)
-		r.AppID = types.StringPointerValue(resp.AppID)
 		if resp.AppEntitlementAutomationLastRunStatus == nil {
 			r.AppEntitlementAutomationLastRunStatus = nil
 		} else {
@@ -64,11 +62,28 @@ func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlemen
 		} else {
 			r.AppEntitlementAutomationRuleNone = &tfTypes.AppEntitlementAutomationRuleNone{}
 		}
+		r.AppEntitlementID = types.StringPointerValue(resp.AppEntitlementID)
+		r.AppID = types.StringPointerValue(resp.AppID)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
+}
+
+func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlementServiceGetAutomationResponse(ctx context.Context, resp *shared.AppEntitlementServiceGetAutomationResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppEntitlementAutomation(ctx, resp.AppEntitlementAutomation)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
 	}
 
 	return diags

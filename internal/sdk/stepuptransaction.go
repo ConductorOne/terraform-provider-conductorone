@@ -61,7 +61,7 @@ func (s *StepUpTransaction) Search(ctx context.Context, request *shared.SearchSt
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.stepup.v1.StepUpTransactionService.Search",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -198,7 +198,7 @@ func (s *StepUpTransaction) Get(ctx context.Context, request operations.C1APISte
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.stepup.v1.StepUpTransactionService.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

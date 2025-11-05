@@ -26,14 +26,52 @@ func (r *RiskLevelResourceModel) RefreshFromSharedAttributeValue(ctx context.Con
 	return diags
 }
 
+func (r *RiskLevelResourceModel) RefreshFromSharedCreateRiskLevelAttributeValueResponse(ctx context.Context, resp *shared.CreateRiskLevelAttributeValueResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAttributeValue(ctx, resp.AttributeValue)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *RiskLevelResourceModel) RefreshFromSharedGetRiskLevelAttributeValueResponse(ctx context.Context, resp *shared.GetRiskLevelAttributeValueResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAttributeValue(ctx, resp.AttributeValue)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *RiskLevelResourceModel) ToOperationsC1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var id string
 	id = r.ID.ValueString()
 
+	deleteRiskLevelAttributeValueRequest, deleteRiskLevelAttributeValueRequestDiags := r.ToSharedDeleteRiskLevelAttributeValueRequest(ctx)
+	diags.Append(deleteRiskLevelAttributeValueRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest{
-		ID: id,
+		ID:                                   id,
+		DeleteRiskLevelAttributeValueRequest: deleteRiskLevelAttributeValueRequest,
 	}
 
 	return &out, diags
@@ -64,6 +102,14 @@ func (r *RiskLevelResourceModel) ToSharedCreateRiskLevelAttributeValueRequest(ct
 	out := shared.CreateRiskLevelAttributeValueRequest{
 		Value: value,
 	}
+
+	return &out, diags
+}
+
+func (r *RiskLevelResourceModel) ToSharedDeleteRiskLevelAttributeValueRequest(ctx context.Context) (*shared.DeleteRiskLevelAttributeValueRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeleteRiskLevelAttributeValueRequest{}
 
 	return &out, diags
 }

@@ -61,7 +61,7 @@ func (s *TaskAudit) List(ctx context.Context, request *shared.TaskAuditListReque
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskAudit.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

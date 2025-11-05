@@ -60,7 +60,7 @@ func (s *TaskActions) Approve(ctx context.Context, request operations.C1APITaskV
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.Approve",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceApproveRequest", "json", `request:"mediaType=application/json"`)
@@ -197,7 +197,7 @@ func (s *TaskActions) ApproveWithStepUp(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.ApproveWithStepUp",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceApproveWithStepUpRequest", "json", `request:"mediaType=application/json"`)
@@ -334,7 +334,7 @@ func (s *TaskActions) Close(ctx context.Context, request operations.C1APITaskV1T
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.Close",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceCloseRequest", "json", `request:"mediaType=application/json"`)
@@ -471,7 +471,7 @@ func (s *TaskActions) Comment(ctx context.Context, request operations.C1APITaskV
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.Comment",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceCommentRequest", "json", `request:"mediaType=application/json"`)
@@ -608,7 +608,7 @@ func (s *TaskActions) Deny(ctx context.Context, request operations.C1APITaskV1Ta
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.Deny",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceDenyRequest", "json", `request:"mediaType=application/json"`)
@@ -745,7 +745,7 @@ func (s *TaskActions) EscalateToEmergencyAccess(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.EscalateToEmergencyAccess",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceEscalateToEmergencyAccessRequest", "json", `request:"mediaType=application/json"`)
@@ -882,7 +882,7 @@ func (s *TaskActions) ProcessNow(ctx context.Context, request operations.C1APITa
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.ProcessNow",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceProcessNowRequest", "json", `request:"mediaType=application/json"`)
@@ -1019,7 +1019,7 @@ func (s *TaskActions) Reassign(ctx context.Context, request operations.C1APITask
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.Reassign",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceReassignRequest", "json", `request:"mediaType=application/json"`)
@@ -1156,7 +1156,7 @@ func (s *TaskActions) HardReset(ctx context.Context, request operations.C1APITas
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.HardReset",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceHardResetRequest", "json", `request:"mediaType=application/json"`)
@@ -1293,7 +1293,7 @@ func (s *TaskActions) Restart(ctx context.Context, request operations.C1APITaskV
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.Restart",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceRestartRequest", "json", `request:"mediaType=application/json"`)
@@ -1430,7 +1430,7 @@ func (s *TaskActions) SkipStep(ctx context.Context, request operations.C1APITask
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.SkipStep",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceSkipStepRequest", "json", `request:"mediaType=application/json"`)
@@ -1567,7 +1567,7 @@ func (s *TaskActions) UpdateGrantDuration(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.UpdateGrantDuration",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceUpdateGrantDurationRequest", "json", `request:"mediaType=application/json"`)
@@ -1704,7 +1704,7 @@ func (s *TaskActions) UpdateRequestData(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskActionsService.UpdateRequestData",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TaskActionsServiceUpdateRequestDataRequest", "json", `request:"mediaType=application/json"`)

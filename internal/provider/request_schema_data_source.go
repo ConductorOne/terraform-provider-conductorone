@@ -563,11 +563,11 @@ func (r *RequestSchemaDataSource) Read(ctx context.Context, req datasource.ReadR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestSchemaServiceGetResponse != nil && res.RequestSchemaServiceGetResponse.RequestSchema != nil && res.RequestSchemaServiceGetResponse.RequestSchema.Form != nil) {
+	if !(res.RequestSchemaServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceGetResponse.RequestSchema.Form)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceGetResponse(ctx, res.RequestSchemaServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

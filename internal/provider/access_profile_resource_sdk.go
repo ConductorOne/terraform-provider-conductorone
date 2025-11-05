@@ -45,14 +45,54 @@ func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context
 	return diags
 }
 
+func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalogManagementServiceGetResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceGetResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Expanded != nil {
+		}
+		diags.Append(r.RefreshFromSharedRequestCatalogView(ctx, resp.RequestCatalogView)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalogView(ctx context.Context, resp *shared.RequestCatalogView) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedRequestCatalog(ctx, resp.RequestCatalog)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var id string
 	id = r.ID.ValueString()
 
+	requestCatalogManagementServiceDeleteRequest, requestCatalogManagementServiceDeleteRequestDiags := r.ToSharedRequestCatalogManagementServiceDeleteRequest(ctx)
+	diags.Append(requestCatalogManagementServiceDeleteRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest{
 		ID: id,
+		RequestCatalogManagementServiceDeleteRequest: requestCatalogManagementServiceDeleteRequest,
 	}
 
 	return &out, diags
@@ -229,6 +269,14 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 		UnenrollmentEntitlementBehavior: unenrollmentEntitlementBehavior,
 		VisibleToEveryone:               visibleToEveryone,
 	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceDeleteRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceDeleteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.RequestCatalogManagementServiceDeleteRequest{}
 
 	return &out, diags
 }

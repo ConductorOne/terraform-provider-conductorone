@@ -42,6 +42,38 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 	return diags
 }
 
+func (r *AppResourceDataSourceModel) RefreshFromSharedAppResourceServiceGetResponse(ctx context.Context, resp *shared.AppResourceServiceGetResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppResourceView(ctx, resp.AppResourceView)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		if resp.Expanded != nil {
+		}
+	}
+
+	return diags
+}
+
+func (r *AppResourceDataSourceModel) RefreshFromSharedAppResourceView(ctx context.Context, resp *shared.AppResourceView) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppResource(ctx, resp.AppResource)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *AppResourceDataSourceModel) ToOperationsC1APIAppV1AppResourceServiceGetRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

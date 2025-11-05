@@ -43,6 +43,70 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResource(ctx context.Cont
 	return diags
 }
 
+func (r *AppResourceResourceModel) RefreshFromSharedAppResourceServiceGetResponse(ctx context.Context, resp *shared.AppResourceServiceGetResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppResourceView(ctx, resp.AppResourceView)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		if resp.Expanded != nil {
+		}
+	}
+
+	return diags
+}
+
+func (r *AppResourceResourceModel) RefreshFromSharedAppResourceServiceUpdateResponse(ctx context.Context, resp *shared.AppResourceServiceUpdateResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppResourceView(ctx, resp.AppResourceView)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		if resp.Expanded != nil {
+		}
+	}
+
+	return diags
+}
+
+func (r *AppResourceResourceModel) RefreshFromSharedAppResourceView(ctx context.Context, resp *shared.AppResourceView) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppResource(ctx, resp.AppResource)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *AppResourceResourceModel) RefreshFromSharedCreateManuallyManagedAppResourceResponse(ctx context.Context, resp *shared.CreateManuallyManagedAppResourceResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppResource(ctx, resp.AppResource)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -80,10 +144,18 @@ func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceDelet
 	var id string
 	id = r.ID.ValueString()
 
+	deleteManuallyManagedAppResourceRequest, deleteManuallyManagedAppResourceRequestDiags := r.ToSharedDeleteManuallyManagedAppResourceRequest(ctx)
+	diags.Append(deleteManuallyManagedAppResourceRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest{
-		AppID:             appID,
-		AppResourceTypeID: appResourceTypeID,
-		ID:                id,
+		AppID:                                   appID,
+		AppResourceTypeID:                       appResourceTypeID,
+		ID:                                      id,
+		DeleteManuallyManagedAppResourceRequest: deleteManuallyManagedAppResourceRequest,
 	}
 
 	return &out, diags
@@ -285,6 +357,14 @@ func (r *AppResourceResourceModel) ToSharedCreateManuallyManagedAppResourceReque
 		DisplayName:  displayName,
 		MatchBatonID: matchBatonID,
 	}
+
+	return &out, diags
+}
+
+func (r *AppResourceResourceModel) ToSharedDeleteManuallyManagedAppResourceRequest(ctx context.Context) (*shared.DeleteManuallyManagedAppResourceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeleteManuallyManagedAppResourceRequest{}
 
 	return &out, diags
 }

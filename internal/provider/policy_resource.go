@@ -1187,11 +1187,11 @@ func (r *PolicyResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreatePolicyResponse != nil && res.CreatePolicyResponse.Policy != nil) {
+	if !(res.CreatePolicyResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res.CreatePolicyResponse.Policy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreatePolicyResponse(ctx, res.CreatePolicyResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -1251,11 +1251,11 @@ func (r *PolicyResource) Read(ctx context.Context, req resource.ReadRequest, res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetPolicyResponse != nil && res.GetPolicyResponse.Policy != nil) {
+	if !(res.GetPolicyResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res.GetPolicyResponse.Policy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetPolicyResponse(ctx, res.GetPolicyResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -1306,11 +1306,11 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.UpdatePolicyResponse != nil && res.UpdatePolicyResponse.Policy != nil) {
+	if !(res.UpdatePolicyResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res.UpdatePolicyResponse.Policy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpdatePolicyResponse(ctx, res.UpdatePolicyResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -1343,11 +1343,11 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.GetPolicyResponse != nil && res1.GetPolicyResponse.Policy != nil) {
+	if !(res1.GetPolicyResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, res1.GetPolicyResponse.Policy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetPolicyResponse(ctx, res1.GetPolicyResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

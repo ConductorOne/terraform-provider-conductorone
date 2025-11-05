@@ -60,7 +60,7 @@ func (s *AppReportAction) GenerateReport(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppReportActionService.GenerateReport",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AppActionsServiceGenerateReportRequest", "json", `request:"mediaType=application/json"`)

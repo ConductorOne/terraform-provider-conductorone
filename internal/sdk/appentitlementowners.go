@@ -60,7 +60,7 @@ func (s *AppEntitlementOwners) ListOwnerIDs(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppEntitlementOwners.ListOwnerIDs",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -190,7 +190,7 @@ func (s *AppEntitlementOwners) Delete(ctx context.Context, request operations.C1
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppEntitlementOwners.Delete",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteAppEntitlementOwnersRequest", "json", `request:"mediaType=application/json"`)
@@ -327,7 +327,7 @@ func (s *AppEntitlementOwners) List(ctx context.Context, request operations.C1AP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppEntitlementOwners.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -461,7 +461,7 @@ func (s *AppEntitlementOwners) Add(ctx context.Context, request operations.C1API
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppEntitlementOwners.Add",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AddAppEntitlementOwnerRequest", "json", `request:"mediaType=application/json"`)
@@ -598,7 +598,7 @@ func (s *AppEntitlementOwners) Set(ctx context.Context, request operations.C1API
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppEntitlementOwners.Set",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "SetAppEntitlementOwnersRequest", "json", `request:"mediaType=application/json"`)
@@ -735,7 +735,7 @@ func (s *AppEntitlementOwners) Remove(ctx context.Context, request operations.C1
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppEntitlementOwners.Remove",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "RemoveAppEntitlementOwnerRequest", "json", `request:"mediaType=application/json"`)

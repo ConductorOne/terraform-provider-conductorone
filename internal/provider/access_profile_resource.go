@@ -209,11 +209,11 @@ func (r *AccessProfileResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestCatalogManagementServiceGetResponse != nil && res.RequestCatalogManagementServiceGetResponse.RequestCatalogView != nil && res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog != nil) {
+	if !(res.RequestCatalogManagementServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalog(ctx, res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceGetResponse(ctx, res.RequestCatalogManagementServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -273,11 +273,11 @@ func (r *AccessProfileResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestCatalogManagementServiceGetResponse != nil && res.RequestCatalogManagementServiceGetResponse.RequestCatalogView != nil && res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog != nil) {
+	if !(res.RequestCatalogManagementServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalog(ctx, res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceGetResponse(ctx, res.RequestCatalogManagementServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -328,11 +328,11 @@ func (r *AccessProfileResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestCatalogManagementServiceGetResponse != nil && res.RequestCatalogManagementServiceGetResponse.RequestCatalogView != nil && res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog != nil) {
+	if !(res.RequestCatalogManagementServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalog(ctx, res.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceGetResponse(ctx, res.RequestCatalogManagementServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -365,11 +365,11 @@ func (r *AccessProfileResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.RequestCatalogManagementServiceGetResponse != nil && res1.RequestCatalogManagementServiceGetResponse.RequestCatalogView != nil && res1.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog != nil) {
+	if !(res1.RequestCatalogManagementServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalog(ctx, res1.RequestCatalogManagementServiceGetResponse.RequestCatalogView.RequestCatalog)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceGetResponse(ctx, res1.RequestCatalogManagementServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

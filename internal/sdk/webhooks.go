@@ -61,7 +61,7 @@ func (s *Webhooks) List(ctx context.Context, request operations.C1APIWebhooksV1W
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.webhooks.v1.WebhooksService.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -195,7 +195,7 @@ func (s *Webhooks) Create(ctx context.Context, request *shared.WebhooksServiceCr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.webhooks.v1.WebhooksService.Create",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -332,7 +332,7 @@ func (s *Webhooks) Delete(ctx context.Context, request operations.C1APIWebhooksV
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.webhooks.v1.WebhooksService.Delete",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "WebhooksServiceDeleteRequest", "json", `request:"mediaType=application/json"`)
@@ -469,7 +469,7 @@ func (s *Webhooks) Get(ctx context.Context, request operations.C1APIWebhooksV1We
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.webhooks.v1.WebhooksService.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -599,7 +599,7 @@ func (s *Webhooks) Update(ctx context.Context, request operations.C1APIWebhooksV
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.webhooks.v1.WebhooksService.Update",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "WebhooksServiceUpdateRequest", "json", `request:"mediaType=application/json"`)
@@ -736,7 +736,7 @@ func (s *Webhooks) Test(ctx context.Context, request operations.C1APIWebhooksV1W
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.webhooks.v1.WebhooksService.Test",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "WebhooksServiceTestRequest", "json", `request:"mediaType=application/json"`)

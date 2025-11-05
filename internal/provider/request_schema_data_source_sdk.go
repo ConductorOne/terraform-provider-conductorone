@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
@@ -213,6 +214,39 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 			}
 		}
 		r.Name = types.StringPointerValue(resp.Name)
+	}
+
+	return diags
+}
+
+func (r *RequestSchemaDataSourceModel) RefreshFromSharedRequestSchema(ctx context.Context, resp *shared.RequestSchema) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		diags.Append(r.RefreshFromSharedForm(ctx, resp.Form)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		r.ID = types.StringPointerValue(resp.ID)
+	}
+
+	return diags
+}
+
+func (r *RequestSchemaDataSourceModel) RefreshFromSharedRequestSchemaServiceGetResponse(ctx context.Context, resp *shared.RequestSchemaServiceGetResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedRequestSchema(ctx, resp.RequestSchema)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
 	}
 
 	return diags

@@ -60,7 +60,7 @@ func (s *AppResourceOwners) Delete(ctx context.Context, request operations.C1API
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppResourceOwners.Delete",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteAppResourceOwnersRequest", "json", `request:"mediaType=application/json"`)
@@ -197,7 +197,7 @@ func (s *AppResourceOwners) ListOwnerIDs(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppResourceOwners.ListOwnerIDs",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -327,7 +327,7 @@ func (s *AppResourceOwners) Remove(ctx context.Context, request operations.C1API
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppResourceOwners.Remove",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "RemoveAppResourceOwnerRequest", "json", `request:"mediaType=application/json"`)
@@ -464,7 +464,7 @@ func (s *AppResourceOwners) List(ctx context.Context, request operations.C1APIAp
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppResourceOwners.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -598,7 +598,7 @@ func (s *AppResourceOwners) Add(ctx context.Context, request operations.C1APIApp
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppResourceOwners.Add",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AddAppResourceOwnerRequest", "json", `request:"mediaType=application/json"`)
@@ -735,7 +735,7 @@ func (s *AppResourceOwners) Set(ctx context.Context, request operations.C1APIApp
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppResourceOwners.Set",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "SetAppResourceOwnersRequest", "json", `request:"mediaType=application/json"`)

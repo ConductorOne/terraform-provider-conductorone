@@ -60,7 +60,7 @@ func (s *AppReport) List(ctx context.Context, request operations.C1APIAppV1AppRe
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppReportService.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

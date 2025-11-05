@@ -61,7 +61,7 @@ func (s *Export) List(ctx context.Context, request operations.C1APISystemlogV1Ex
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.systemlog.v1.ExportService.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -195,7 +195,7 @@ func (s *Export) Create(ctx context.Context, request *shared.ExportServiceCreate
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.systemlog.v1.ExportService.Create",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -332,7 +332,7 @@ func (s *Export) Delete(ctx context.Context, request operations.C1APISystemlogV1
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.systemlog.v1.ExportService.Delete",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ExportServiceDeleteRequest", "json", `request:"mediaType=application/json"`)
@@ -469,7 +469,7 @@ func (s *Export) Get(ctx context.Context, request operations.C1APISystemlogV1Exp
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.systemlog.v1.ExportService.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -599,7 +599,7 @@ func (s *Export) Update(ctx context.Context, request operations.C1APISystemlogV1
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.systemlog.v1.ExportService.Update",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ExportServiceUpdateRequest", "json", `request:"mediaType=application/json"`)
@@ -736,7 +736,7 @@ func (s *Export) ListEvents(ctx context.Context, request operations.C1APISysteml
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.systemlog.v1.ExportService.ListEvents",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ExportServiceListEventsRequest", "json", `request:"mediaType=application/json"`)

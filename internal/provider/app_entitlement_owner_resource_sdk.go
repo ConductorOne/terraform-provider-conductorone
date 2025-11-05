@@ -43,9 +43,17 @@ func (r *AppEntitlementOwnerResourceModel) ToOperationsC1APIAppV1AppEntitlementO
 	var entitlementID string
 	entitlementID = r.EntitlementID.ValueString()
 
+	deleteAppEntitlementOwnersRequest, deleteAppEntitlementOwnersRequestDiags := r.ToSharedDeleteAppEntitlementOwnersRequest(ctx)
+	diags.Append(deleteAppEntitlementOwnersRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIAppV1AppEntitlementOwnersDeleteRequest{
-		AppID:         appID,
-		EntitlementID: entitlementID,
+		AppID:                             appID,
+		EntitlementID:                     entitlementID,
+		DeleteAppEntitlementOwnersRequest: deleteAppEntitlementOwnersRequest,
 	}
 
 	return &out, diags
@@ -89,6 +97,14 @@ func (r *AppEntitlementOwnerResourceModel) ToOperationsC1APIAppV1AppEntitlementO
 		EntitlementID:                  entitlementID,
 		SetAppEntitlementOwnersRequest: setAppEntitlementOwnersRequest,
 	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementOwnerResourceModel) ToSharedDeleteAppEntitlementOwnersRequest(ctx context.Context) (*shared.DeleteAppEntitlementOwnersRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeleteAppEntitlementOwnersRequest{}
 
 	return &out, diags
 }

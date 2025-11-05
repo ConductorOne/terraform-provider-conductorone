@@ -61,7 +61,7 @@ func (s *AWSExternalIDSettings) Get(ctx context.Context, opts ...operations.Opti
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.settings.v1.AWSExternalIDSettings.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

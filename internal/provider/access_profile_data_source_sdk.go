@@ -45,6 +45,38 @@ func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalog(ctx conte
 	return diags
 }
 
+func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalogManagementServiceGetResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceGetResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Expanded != nil {
+		}
+		diags.Append(r.RefreshFromSharedRequestCatalogView(ctx, resp.RequestCatalogView)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalogView(ctx context.Context, resp *shared.RequestCatalogView) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedRequestCatalog(ctx, resp.RequestCatalog)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *AccessProfileDataSourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

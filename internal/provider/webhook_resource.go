@@ -141,11 +141,11 @@ func (r *WebhookResource) Create(ctx context.Context, req resource.CreateRequest
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.WebhooksServiceCreateResponse != nil && res.WebhooksServiceCreateResponse.Webhook != nil) {
+	if !(res.WebhooksServiceCreateResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedWebhook1(ctx, res.WebhooksServiceCreateResponse.Webhook)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedWebhooksServiceCreateResponse(ctx, res.WebhooksServiceCreateResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -205,11 +205,11 @@ func (r *WebhookResource) Read(ctx context.Context, req resource.ReadRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.WebhooksServiceGetResponse != nil && res.WebhooksServiceGetResponse.Webhook != nil) {
+	if !(res.WebhooksServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedWebhook1(ctx, res.WebhooksServiceGetResponse.Webhook)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedWebhooksServiceGetResponse(ctx, res.WebhooksServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -260,11 +260,11 @@ func (r *WebhookResource) Update(ctx context.Context, req resource.UpdateRequest
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.WebhooksServiceUpdateResponse != nil && res.WebhooksServiceUpdateResponse.Webhook != nil) {
+	if !(res.WebhooksServiceUpdateResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedWebhook1(ctx, res.WebhooksServiceUpdateResponse.Webhook)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedWebhooksServiceUpdateResponse(ctx, res.WebhooksServiceUpdateResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -297,11 +297,11 @@ func (r *WebhookResource) Update(ctx context.Context, req resource.UpdateRequest
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.WebhooksServiceGetResponse != nil && res1.WebhooksServiceGetResponse.Webhook != nil) {
+	if !(res1.WebhooksServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedWebhook1(ctx, res1.WebhooksServiceGetResponse.Webhook)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedWebhooksServiceGetResponse(ctx, res1.WebhooksServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

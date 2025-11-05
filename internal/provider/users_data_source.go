@@ -577,6 +577,8 @@ func (r *UsersDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
+	data.Expanded = nil
+	data.List = nil
 	resp.Diagnostics.Append(data.RefreshFromSharedSearchUsersResponse(ctx, res.SearchUsersResponse)...)
 
 	if resp.Diagnostics.HasError() {

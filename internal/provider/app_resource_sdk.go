@@ -45,14 +45,67 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 	return diags
 }
 
+func (r *AppResourceModel) RefreshFromSharedCreateAppResponse(ctx context.Context, resp *shared.CreateAppResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedApp(ctx, resp.App)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *AppResourceModel) RefreshFromSharedGetAppResponse(ctx context.Context, resp *shared.GetAppResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedApp(ctx, resp.App)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *AppResourceModel) RefreshFromSharedUpdateAppResponse(ctx context.Context, resp *shared.UpdateAppResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedApp(ctx, resp.App)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *AppResourceModel) ToOperationsC1APIAppV1AppsDeleteRequest(ctx context.Context) (*operations.C1APIAppV1AppsDeleteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var id string
 	id = r.ID.ValueString()
 
+	deleteAppRequest, deleteAppRequestDiags := r.ToSharedDeleteAppRequest(ctx)
+	diags.Append(deleteAppRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIAppV1AppsDeleteRequest{
-		ID: id,
+		ID:               id,
+		DeleteAppRequest: deleteAppRequest,
 	}
 
 	return &out, diags
@@ -243,6 +296,14 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 		RevokePolicyID:                      revokePolicyID,
 		StrictAccessEntitlementProvisioning: strictAccessEntitlementProvisioning,
 	}
+
+	return &out, diags
+}
+
+func (r *AppResourceModel) ToSharedDeleteAppRequest(ctx context.Context) (*shared.DeleteAppRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeleteAppRequest{}
 
 	return &out, diags
 }

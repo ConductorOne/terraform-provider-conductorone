@@ -14,6 +14,36 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *PolicyResourceModel) RefreshFromSharedCreatePolicyResponse(ctx context.Context, resp *shared.CreatePolicyResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedPolicy(ctx, resp.Policy)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *PolicyResourceModel) RefreshFromSharedGetPolicyResponse(ctx context.Context, resp *shared.GetPolicyResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedPolicy(ctx, resp.Policy)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp *shared.Policy) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -454,14 +484,37 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 	return diags
 }
 
+func (r *PolicyResourceModel) RefreshFromSharedUpdatePolicyResponse(ctx context.Context, resp *shared.UpdatePolicyResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedPolicy(ctx, resp.Policy)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *PolicyResourceModel) ToOperationsC1APIPolicyV1PoliciesDeleteRequest(ctx context.Context) (*operations.C1APIPolicyV1PoliciesDeleteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var id string
 	id = r.ID.ValueString()
 
+	deletePolicyRequest, deletePolicyRequestDiags := r.ToSharedDeletePolicyRequest(ctx)
+	diags.Append(deletePolicyRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIPolicyV1PoliciesDeleteRequest{
-		ID: id,
+		ID:                  id,
+		DeletePolicyRequest: deletePolicyRequest,
 	}
 
 	return &out, diags
@@ -1378,6 +1431,14 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 		ReassignTasksToDelegates: reassignTasksToDelegates,
 		Rules:                    rules,
 	}
+
+	return &out, diags
+}
+
+func (r *PolicyResourceModel) ToSharedDeletePolicyRequest(ctx context.Context) (*shared.DeletePolicyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeletePolicyRequest{}
 
 	return &out, diags
 }

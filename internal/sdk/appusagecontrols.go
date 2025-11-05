@@ -60,7 +60,7 @@ func (s *AppUsageControls) Get(ctx context.Context, request operations.C1APIAppV
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppUsageControlsService.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -190,7 +190,7 @@ func (s *AppUsageControls) Update(ctx context.Context, request operations.C1APIA
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppUsageControlsService.Update",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateAppUsageControlsRequest", "json", `request:"mediaType=application/json"`)

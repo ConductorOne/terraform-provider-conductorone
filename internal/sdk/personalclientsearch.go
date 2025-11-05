@@ -61,7 +61,7 @@ func (s *PersonalClientSearch) Search(ctx context.Context, request *shared.Perso
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.iam.v1.PersonalClientSearchService.Search",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

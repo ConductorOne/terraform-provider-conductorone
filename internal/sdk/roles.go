@@ -61,7 +61,7 @@ func (s *Roles) List(ctx context.Context, request operations.C1APIIamV1RolesList
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.iam.v1.Roles.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -195,7 +195,7 @@ func (s *Roles) Get(ctx context.Context, request operations.C1APIIamV1RolesGetRe
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.iam.v1.Roles.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -325,7 +325,7 @@ func (s *Roles) Update(ctx context.Context, request operations.C1APIIamV1RolesUp
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.iam.v1.Roles.Update",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateRoleRequest", "json", `request:"mediaType=application/json"`)

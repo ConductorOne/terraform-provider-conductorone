@@ -61,7 +61,7 @@ func (s *Attributes) DeleteAttributeValue(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.DeleteAttributeValue",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteAttributeValueRequest", "json", `request:"mediaType=application/json"`)
@@ -198,7 +198,7 @@ func (s *Attributes) CreateAttributeValue(ctx context.Context, request *shared.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.CreateAttributeValue",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -335,7 +335,7 @@ func (s *Attributes) GetAttributeValue(ctx context.Context, request operations.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.GetAttributeValue",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -465,7 +465,7 @@ func (s *Attributes) ListComplianceFrameworks(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.ListComplianceFrameworks",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -599,7 +599,7 @@ func (s *Attributes) CreateComplianceFrameworkAttributeValue(ctx context.Context
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.CreateComplianceFrameworkAttributeValue",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -736,7 +736,7 @@ func (s *Attributes) DeleteComplianceFrameworkAttributeValue(ctx context.Context
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.DeleteComplianceFrameworkAttributeValue",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteComplianceFrameworkAttributeValueRequest", "json", `request:"mediaType=application/json"`)
@@ -873,7 +873,7 @@ func (s *Attributes) GetComplianceFrameworkAttributeValue(ctx context.Context, r
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.GetComplianceFrameworkAttributeValue",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1003,7 +1003,7 @@ func (s *Attributes) ListRiskLevels(ctx context.Context, request operations.C1AP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.ListRiskLevels",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1137,7 +1137,7 @@ func (s *Attributes) CreateRiskLevelAttributeValue(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.CreateRiskLevelAttributeValue",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -1274,7 +1274,7 @@ func (s *Attributes) DeleteRiskLevelAttributeValue(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.DeleteRiskLevelAttributeValue",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteRiskLevelAttributeValueRequest", "json", `request:"mediaType=application/json"`)
@@ -1411,7 +1411,7 @@ func (s *Attributes) GetRiskLevelAttributeValue(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.GetRiskLevelAttributeValue",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1541,7 +1541,7 @@ func (s *Attributes) ListAttributeTypes(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.ListAttributeTypes",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1675,7 +1675,7 @@ func (s *Attributes) ListAttributeValues(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.attribute.v1.Attributes.ListAttributeValues",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

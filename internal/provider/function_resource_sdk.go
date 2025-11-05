@@ -34,6 +34,51 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 	return diags
 }
 
+func (r *FunctionResourceModel) RefreshFromSharedFunctionsServiceCreateFunctionResponse(ctx context.Context, resp *shared.FunctionsServiceCreateFunctionResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedFunction(ctx, resp.Function)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *FunctionResourceModel) RefreshFromSharedFunctionsServiceGetFunctionResponse(ctx context.Context, resp *shared.FunctionsServiceGetFunctionResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedFunction(ctx, resp.Function)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *FunctionResourceModel) RefreshFromSharedFunctionsServiceUpdateFunctionResponse(ctx context.Context, resp *shared.FunctionsServiceUpdateFunctionResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedFunction(ctx, resp.Function)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *FunctionResourceModel) ToOperationsC1APIFunctionsV1FunctionsServiceDeleteFunctionRequest(ctx context.Context) (*operations.C1APIFunctionsV1FunctionsServiceDeleteFunctionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

@@ -862,11 +862,11 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.SearchPoliciesResponse != nil && res.SearchPoliciesResponse.List != nil && len(res.SearchPoliciesResponse.List) > 0) {
+	if !(res.SearchPoliciesResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, &res.SearchPoliciesResponse.List[0])...)
+	resp.Diagnostics.Append(data.RefreshFromSharedSearchPoliciesResponse(ctx, res.SearchPoliciesResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -885,7 +885,7 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 			break
 		}
 
-		resp.Diagnostics.Append(data.RefreshFromSharedPolicy(ctx, &res.SearchPoliciesResponse.List[0])...)
+		resp.Diagnostics.Append(data.RefreshFromSharedSearchPoliciesResponse(ctx, res.SearchPoliciesResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return

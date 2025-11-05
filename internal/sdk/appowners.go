@@ -60,7 +60,7 @@ func (s *AppOwners) ListOwnerIDs(ctx context.Context, request operations.C1APIAp
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppOwners.ListOwnerIDs",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -190,7 +190,7 @@ func (s *AppOwners) Delete(ctx context.Context, request operations.C1APIAppV1App
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppOwners.Delete",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteAppOwnersRequest", "json", `request:"mediaType=application/json"`)
@@ -327,7 +327,7 @@ func (s *AppOwners) List(ctx context.Context, request operations.C1APIAppV1AppOw
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppOwners.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -461,7 +461,7 @@ func (s *AppOwners) Set(ctx context.Context, request operations.C1APIAppV1AppOwn
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppOwners.Set",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "SetAppOwnersRequest", "json", `request:"mediaType=application/json"`)
@@ -598,7 +598,7 @@ func (s *AppOwners) Remove(ctx context.Context, request operations.C1APIAppV1App
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppOwners.Remove",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "RemoveAppOwnerRequest", "json", `request:"mediaType=application/json"`)
@@ -735,7 +735,7 @@ func (s *AppOwners) Add(ctx context.Context, request operations.C1APIAppV1AppOwn
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppOwners.Add",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AddAppOwnerRequest", "json", `request:"mediaType=application/json"`)

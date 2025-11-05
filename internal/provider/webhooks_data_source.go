@@ -177,6 +177,7 @@ func (r *WebhooksDataSource) Read(ctx context.Context, req datasource.ReadReques
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
+	data.List = nil
 	resp.Diagnostics.Append(data.RefreshFromSharedWebhooksSearchResponse(ctx, res.WebhooksSearchResponse)...)
 
 	if resp.Diagnostics.HasError() {

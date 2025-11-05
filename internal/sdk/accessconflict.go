@@ -61,7 +61,7 @@ func (s *AccessConflict) CreateMonitor(ctx context.Context, request *shared.Conf
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.accessconflict.v1.AccessConflictService.CreateMonitor",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -198,7 +198,7 @@ func (s *AccessConflict) DeleteMonitor(ctx context.Context, request operations.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.accessconflict.v1.AccessConflictService.DeleteMonitor",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ConflictMonitorDeleteRequest", "json", `request:"mediaType=application/json"`)
@@ -335,7 +335,7 @@ func (s *AccessConflict) GetMonitor(ctx context.Context, request operations.C1AP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.accessconflict.v1.AccessConflictService.GetMonitor",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -465,7 +465,7 @@ func (s *AccessConflict) UpdateMonitor(ctx context.Context, request operations.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.accessconflict.v1.AccessConflictService.UpdateMonitor",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ConflictMonitorUpdateRequest", "json", `request:"mediaType=application/json"`)

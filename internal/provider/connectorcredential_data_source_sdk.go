@@ -31,6 +31,21 @@ func (r *ConnectorCredentialDataSourceModel) RefreshFromSharedConnectorCredentia
 	return diags
 }
 
+func (r *ConnectorCredentialDataSourceModel) RefreshFromSharedConnectorServiceGetCredentialsResponse(ctx context.Context, resp *shared.ConnectorServiceGetCredentialsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedConnectorCredential(ctx, resp.ConnectorCredential)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *ConnectorCredentialDataSourceModel) ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceGetCredentialsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

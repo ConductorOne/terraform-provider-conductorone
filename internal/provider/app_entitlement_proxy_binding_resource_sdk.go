@@ -28,6 +28,55 @@ func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedAppEntitlemen
 	return diags
 }
 
+func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedAppEntitlementProxyView(ctx context.Context, resp *shared.AppEntitlementProxyView) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppEntitlementProxy(ctx, resp.AppEntitlementProxy)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedCreateAppEntitlementProxyResponse(ctx context.Context, resp *shared.CreateAppEntitlementProxyResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppEntitlementProxyView(ctx, resp.AppEntitlementProxyView)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		if resp.Expanded != nil {
+		}
+	}
+
+	return diags
+}
+
+func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedGetAppEntitlementProxyResponse(ctx context.Context, resp *shared.GetAppEntitlementProxyResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppEntitlementProxyView(ctx, resp.AppEntitlementProxyView)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		if resp.Expanded != nil {
+		}
+	}
+
+	return diags
+}
+
 func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyCreateRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyCreateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -43,11 +92,19 @@ func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntit
 	var dstAppEntitlementID string
 	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
 
+	createAppEntitlementProxyRequest, createAppEntitlementProxyRequestDiags := r.ToSharedCreateAppEntitlementProxyRequest(ctx)
+	diags.Append(createAppEntitlementProxyRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIAppV1AppEntitlementsProxyCreateRequest{
-		SrcAppID:            srcAppID,
-		SrcAppEntitlementID: srcAppEntitlementID,
-		DstAppID:            dstAppID,
-		DstAppEntitlementID: dstAppEntitlementID,
+		SrcAppID:                         srcAppID,
+		SrcAppEntitlementID:              srcAppEntitlementID,
+		DstAppID:                         dstAppID,
+		DstAppEntitlementID:              dstAppEntitlementID,
+		CreateAppEntitlementProxyRequest: createAppEntitlementProxyRequest,
 	}
 
 	return &out, diags
@@ -68,11 +125,19 @@ func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntit
 	var dstAppEntitlementID string
 	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
 
+	deleteAppEntitlementProxyRequest, deleteAppEntitlementProxyRequestDiags := r.ToSharedDeleteAppEntitlementProxyRequest(ctx)
+	diags.Append(deleteAppEntitlementProxyRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIAppV1AppEntitlementsProxyDeleteRequest{
-		SrcAppID:            srcAppID,
-		SrcAppEntitlementID: srcAppEntitlementID,
-		DstAppID:            dstAppID,
-		DstAppEntitlementID: dstAppEntitlementID,
+		SrcAppID:                         srcAppID,
+		SrcAppEntitlementID:              srcAppEntitlementID,
+		DstAppID:                         dstAppID,
+		DstAppEntitlementID:              dstAppEntitlementID,
+		DeleteAppEntitlementProxyRequest: deleteAppEntitlementProxyRequest,
 	}
 
 	return &out, diags
@@ -99,6 +164,22 @@ func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntit
 		DstAppID:            dstAppID,
 		DstAppEntitlementID: dstAppEntitlementID,
 	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementProxyBindingResourceModel) ToSharedCreateAppEntitlementProxyRequest(ctx context.Context) (*shared.CreateAppEntitlementProxyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.CreateAppEntitlementProxyRequest{}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementProxyBindingResourceModel) ToSharedDeleteAppEntitlementProxyRequest(ctx context.Context) (*shared.DeleteAppEntitlementProxyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeleteAppEntitlementProxyRequest{}
 
 	return &out, diags
 }

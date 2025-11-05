@@ -61,7 +61,7 @@ func (s *RequestSchema) RemoveEntitlementBinding(ctx context.Context, request *s
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.request_schema.v1.RequestSchemaService.RemoveEntitlementBinding",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -198,7 +198,7 @@ func (s *RequestSchema) CreateEntitlementBinding(ctx context.Context, request *s
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.request_schema.v1.RequestSchemaService.CreateEntitlementBinding",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -335,7 +335,7 @@ func (s *RequestSchema) FindBindingForAppEntitlement(ctx context.Context, reques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.request_schema.v1.RequestSchemaService.FindBindingForAppEntitlement",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -472,7 +472,7 @@ func (s *RequestSchema) Create(ctx context.Context, request *shared.RequestSchem
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.request_schema.v1.RequestSchemaService.Create",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -609,7 +609,7 @@ func (s *RequestSchema) Delete(ctx context.Context, request operations.C1APIRequ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.request_schema.v1.RequestSchemaService.Delete",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "RequestSchemaServiceDeleteRequest", "json", `request:"mediaType=application/json"`)
@@ -746,7 +746,7 @@ func (s *RequestSchema) Get(ctx context.Context, request operations.C1APIRequest
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.request_schema.v1.RequestSchemaService.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -876,7 +876,7 @@ func (s *RequestSchema) Update(ctx context.Context, request operations.C1APIRequ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.request_schema.v1.RequestSchemaService.Update",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "RequestSchemaServiceUpdateRequest", "json", `request:"mediaType=application/json"`)

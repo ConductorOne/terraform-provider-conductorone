@@ -61,7 +61,7 @@ func (s *Connector) List(ctx context.Context, request operations.C1APIAppV1Conne
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -195,7 +195,7 @@ func (s *Connector) CreateDelegated(ctx context.Context, request operations.C1AP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.CreateDelegated",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ConnectorServiceCreateDelegatedRequest", "json", `request:"mediaType=application/json"`)
@@ -332,7 +332,7 @@ func (s *Connector) ConfirmSyncValid(ctx context.Context, request operations.C1A
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.ConfirmSyncValid",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ConfirmSyncValidRequest", "json", `request:"mediaType=application/json"`)
@@ -469,7 +469,7 @@ func (s *Connector) GetCredentials(ctx context.Context, request operations.C1API
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.GetCredentials",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -599,7 +599,7 @@ func (s *Connector) RevokeCredential(ctx context.Context, request operations.C1A
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.RevokeCredential",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ConnectorServiceRevokeCredentialRequest", "json", `request:"mediaType=application/json"`)
@@ -736,7 +736,7 @@ func (s *Connector) ForceSync(ctx context.Context, request operations.C1APIAppV1
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.ForceSync",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ForceSyncRequest", "json", `request:"mediaType=application/json"`)
@@ -873,7 +873,7 @@ func (s *Connector) PauseSync(ctx context.Context, request operations.C1APIAppV1
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.PauseSync",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PauseSyncRequest", "json", `request:"mediaType=application/json"`)
@@ -1010,7 +1010,7 @@ func (s *Connector) ResumeSync(ctx context.Context, request operations.C1APIAppV
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.ResumeSync",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ResumeSyncRequest", "json", `request:"mediaType=application/json"`)
@@ -1147,7 +1147,7 @@ func (s *Connector) Delete(ctx context.Context, request operations.C1APIAppV1Con
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.Delete",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ConnectorServiceDeleteRequest", "json", `request:"mediaType=application/json"`)
@@ -1284,7 +1284,7 @@ func (s *Connector) Get(ctx context.Context, request operations.C1APIAppV1Connec
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1414,7 +1414,7 @@ func (s *Connector) Update(ctx context.Context, request operations.C1APIAppV1Con
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.Update",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ConnectorServiceUpdateRequest", "json", `request:"mediaType=application/json"`)
@@ -1551,7 +1551,7 @@ func (s *Connector) Create(ctx context.Context, request operations.C1APIAppV1Con
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.Create",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ConnectorServiceCreateRequest", "json", `request:"mediaType=application/json"`)
@@ -1688,7 +1688,7 @@ func (s *Connector) UpdateDelegated(ctx context.Context, request operations.C1AP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.UpdateDelegated",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ConnectorServiceUpdateDelegatedRequest", "json", `request:"mediaType=application/json"`)
@@ -1825,7 +1825,7 @@ func (s *Connector) RotateCredential(ctx context.Context, request *shared.Connec
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.RotateCredential",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -1962,7 +1962,7 @@ func (s *Connector) ValidateHTTPConnectorConfig(ctx context.Context, request *sh
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.ConnectorService.ValidateHTTPConnectorConfig",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

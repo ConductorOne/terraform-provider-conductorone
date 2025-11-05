@@ -42,6 +42,27 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 	return diags
 }
 
+func (r *AppDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Context, resp *shared.SearchAppsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if len(resp.List) == 0 {
+			diags.AddError("Unexpected response from API", "Missing response body array data.")
+			return diags
+		}
+
+		diags.Append(r.RefreshFromSharedApp(ctx, &resp.List[0])...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
+	}
+
+	return diags
+}
+
 func (r *AppDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*shared.SearchAppsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

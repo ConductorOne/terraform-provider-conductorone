@@ -31,6 +31,27 @@ func (r *FunctionDataSourceModel) RefreshFromSharedFunction(ctx context.Context,
 	return diags
 }
 
+func (r *FunctionDataSourceModel) RefreshFromSharedFunctionsSearchResponse(ctx context.Context, resp *shared.FunctionsSearchResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if len(resp.List) == 0 {
+			diags.AddError("Unexpected response from API", "Missing response body array data.")
+			return diags
+		}
+
+		diags.Append(r.RefreshFromSharedFunction(ctx, &resp.List[0])...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
+	}
+
+	return diags
+}
+
 func (r *FunctionDataSourceModel) ToSharedFunctionsSearchRequest(ctx context.Context) (*shared.FunctionsSearchRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
