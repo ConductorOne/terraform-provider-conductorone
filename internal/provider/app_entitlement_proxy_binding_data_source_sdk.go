@@ -28,6 +28,38 @@ func (r *AppEntitlementProxyBindingDataSourceModel) RefreshFromSharedAppEntitlem
 	return diags
 }
 
+func (r *AppEntitlementProxyBindingDataSourceModel) RefreshFromSharedAppEntitlementProxyView(ctx context.Context, resp *shared.AppEntitlementProxyView) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppEntitlementProxy(ctx, resp.AppEntitlementProxy)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *AppEntitlementProxyBindingDataSourceModel) RefreshFromSharedGetAppEntitlementProxyResponse(ctx context.Context, resp *shared.GetAppEntitlementProxyResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppEntitlementProxyView(ctx, resp.AppEntitlementProxyView)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		if resp.Expanded != nil {
+		}
+	}
+
+	return diags
+}
+
 func (r *AppEntitlementProxyBindingDataSourceModel) ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsProxyGetRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

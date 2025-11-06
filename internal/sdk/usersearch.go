@@ -64,7 +64,7 @@ func (s *UserSearch) Search(ctx context.Context, request *shared.SearchUsersRequ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.user.v1.UserSearch.Search",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

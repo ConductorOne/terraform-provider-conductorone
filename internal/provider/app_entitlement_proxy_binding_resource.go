@@ -175,11 +175,11 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateAppEntitlementProxyResponse != nil && res.CreateAppEntitlementProxyResponse.AppEntitlementProxyView != nil && res.CreateAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy != nil) {
+	if !(res.CreateAppEntitlementProxyResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.CreateAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppEntitlementProxyResponse(ctx, res.CreateAppEntitlementProxyResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -212,11 +212,11 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.GetAppEntitlementProxyResponse != nil && res1.GetAppEntitlementProxyResponse.AppEntitlementProxyView != nil && res1.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy != nil) {
+	if !(res1.GetAppEntitlementProxyResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res1.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAppEntitlementProxyResponse(ctx, res1.GetAppEntitlementProxyResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -276,11 +276,11 @@ func (r *AppEntitlementProxyBindingResource) Read(ctx context.Context, req resou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetAppEntitlementProxyResponse != nil && res.GetAppEntitlementProxyResponse.AppEntitlementProxyView != nil && res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy != nil) {
+	if !(res.GetAppEntitlementProxyResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementProxy(ctx, res.GetAppEntitlementProxyResponse.AppEntitlementProxyView.AppEntitlementProxy)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAppEntitlementProxyResponse(ctx, res.GetAppEntitlementProxyResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -64,7 +64,7 @@ func (s *SystemLog) ListEvents(ctx context.Context, request *shared.SystemLogSer
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.systemlog.v1.SystemLogService.ListEvents",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

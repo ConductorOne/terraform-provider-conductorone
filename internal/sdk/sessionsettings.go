@@ -61,7 +61,7 @@ func (s *SessionSettings) Get(ctx context.Context, opts ...operations.Option) (*
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.settings.v1.SessionSettingsService.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -191,7 +191,7 @@ func (s *SessionSettings) Update(ctx context.Context, request *shared.UpdateSess
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.settings.v1.SessionSettingsService.Update",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -328,7 +328,7 @@ func (s *SessionSettings) TestSourceIP(ctx context.Context, request *shared.Test
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.settings.v1.SessionSettingsService.TestSourceIP",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

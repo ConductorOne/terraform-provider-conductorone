@@ -61,7 +61,7 @@ func (s *AutomationExecutionSearch) SearchAutomationExecutions(ctx context.Conte
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.automations.v1.AutomationExecutionSearchService.SearchAutomationExecutions",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

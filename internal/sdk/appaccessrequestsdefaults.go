@@ -60,7 +60,7 @@ func (s *AppAccessRequestsDefaults) GetAppAccessRequestsDefaults(ctx context.Con
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppAccessRequestsDefaultsService.GetAppAccessRequestsDefaults",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -190,7 +190,7 @@ func (s *AppAccessRequestsDefaults) CreateAppAccessRequestsDefaults(ctx context.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppAccessRequestsDefaultsService.CreateAppAccessRequestsDefaults",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AppAccessRequestDefaults", "json", `request:"mediaType=application/json"`)
@@ -327,7 +327,7 @@ func (s *AppAccessRequestsDefaults) CancelAppAccessRequestsDefaults(ctx context.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppAccessRequestsDefaultsService.CancelAppAccessRequestsDefaults",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CancelAccessRequestDefaultsRequest", "json", `request:"mediaType=application/json"`)

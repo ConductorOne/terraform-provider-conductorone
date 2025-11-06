@@ -11,6 +11,29 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *UserDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.Context, resp *shared.SearchUsersResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.Expanded != nil {
+		}
+		if len(resp.List) == 0 {
+			diags.AddError("Unexpected response from API", "Missing response body array data.")
+			return diags
+		}
+
+		diags.Append(r.RefreshFromSharedUserView(ctx, &resp.List[0])...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
+	}
+
+	return diags
+}
+
 func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *shared.User) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -248,6 +271,22 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.UsernameSources = append(r.UsernameSources, usernameSources)
 			}
 		}
+	}
+
+	return diags
+}
+
+func (r *UserDataSourceModel) RefreshFromSharedUserView(ctx context.Context, resp *shared.UserView) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	r.DelegatedUserPath = types.StringPointerValue(resp.DelegatedUserPath)
+	r.DirectoriesPath = types.StringPointerValue(resp.DirectoriesPath)
+	r.ManagersPath = types.StringPointerValue(resp.ManagersPath)
+	r.RolesPath = types.StringPointerValue(resp.RolesPath)
+	diags.Append(r.RefreshFromSharedUser(ctx, resp.User)...)
+
+	if diags.HasError() {
+		return diags
 	}
 
 	return diags

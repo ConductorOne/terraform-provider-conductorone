@@ -64,7 +64,7 @@ func (s *WebhooksSearch) Search(ctx context.Context, request *shared.WebhooksSea
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.webhooks.v1.WebhooksSearch.Search",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

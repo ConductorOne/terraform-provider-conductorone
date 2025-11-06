@@ -52,9 +52,9 @@ type AppEntitlementDataSourceModel struct {
 	EmergencyGrantPolicyID         types.String                         `tfsdk:"emergency_grant_policy_id"`
 	ExcludeAppIds                  []types.String                       `tfsdk:"exclude_app_ids"`
 	ExcludeAppUserIds              []types.String                       `tfsdk:"exclude_app_user_ids"`
+	ExcludedEntitlementRefs        []tfTypes.AppEntitlementRef          `tfsdk:"excluded_entitlement_refs"`
 	ExcludeImmutable               types.Bool                           `tfsdk:"exclude_immutable"`
 	ExcludeResourceTypeIds         []types.String                       `tfsdk:"exclude_resource_type_ids"`
-	ExcludedEntitlementRefs        []tfTypes.AppEntitlementRef          `tfsdk:"excluded_entitlement_refs"`
 	GrantCount                     types.String                         `tfsdk:"grant_count"`
 	GrantPolicyID                  types.String                         `tfsdk:"grant_policy_id"`
 	ID                             types.String                         `tfsdk:"id"`
@@ -765,11 +765,11 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AppEntitlementSearchServiceSearchResponse != nil && res.AppEntitlementSearchServiceSearchResponse.List != nil && len(res.AppEntitlementSearchServiceSearchResponse.List) > 0 && res.AppEntitlementSearchServiceSearchResponse.List[0].AppEntitlement != nil) {
+	if !(res.AppEntitlementSearchServiceSearchResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.AppEntitlementSearchServiceSearchResponse.List[0].AppEntitlement)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx, res.AppEntitlementSearchServiceSearchResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -788,7 +788,7 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 			break
 		}
 
-		resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.AppEntitlementSearchServiceSearchResponse.List[0].AppEntitlement)...)
+		resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx, res.AppEntitlementSearchServiceSearchResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return

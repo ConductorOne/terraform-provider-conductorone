@@ -37,8 +37,8 @@ type BundleAutomationResourceModel struct {
 	BundleAutomationCircuitBreaker  *tfTypes.BundleAutomationCircuitBreaker  `tfsdk:"bundle_automation_circuit_breaker"`
 	BundleAutomationLastRunState    *tfTypes.BundleAutomationLastRunState    `tfsdk:"bundle_automation_last_run_state"`
 	BundleAutomationRuleEntitlement *tfTypes.BundleAutomationRuleEntitlement `tfsdk:"bundle_automation_rule_entitlement"`
-	CreateTasks                     types.Bool                               `tfsdk:"create_tasks"`
 	CreatedAt                       types.String                             `tfsdk:"created_at"`
+	CreateTasks                     types.Bool                               `tfsdk:"create_tasks"`
 	DeleteBundleAutomationRequest   *tfTypes.DeleteBundleAutomationRequest   `tfsdk:"delete_bundle_automation_request"`
 	DeletedAt                       types.String                             `tfsdk:"-"`
 	DisableCircuitBreaker           types.Bool                               `tfsdk:"disable_circuit_breaker"`

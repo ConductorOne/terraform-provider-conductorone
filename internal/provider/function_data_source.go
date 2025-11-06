@@ -178,11 +178,11 @@ func (r *FunctionDataSource) Read(ctx context.Context, req datasource.ReadReques
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.FunctionsSearchResponse != nil && res.FunctionsSearchResponse.List != nil && len(res.FunctionsSearchResponse.List) > 0) {
+	if !(res.FunctionsSearchResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedFunction(ctx, &res.FunctionsSearchResponse.List[0])...)
+	resp.Diagnostics.Append(data.RefreshFromSharedFunctionsSearchResponse(ctx, res.FunctionsSearchResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -61,7 +61,7 @@ func (s *AutomationSearch) SearchAutomationTemplateVersions(ctx context.Context,
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.automations.v1.AutomationSearchService.SearchAutomationTemplateVersions",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -198,7 +198,7 @@ func (s *AutomationSearch) SearchAutomations(ctx context.Context, request *share
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.automations.v1.AutomationSearchService.SearchAutomations",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

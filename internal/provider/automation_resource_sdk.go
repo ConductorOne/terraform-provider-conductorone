@@ -1302,14 +1302,68 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 	return diags
 }
 
+func (r *AutomationResourceModel) RefreshFromSharedCreateAutomationResponse1(ctx context.Context, resp *shared.CreateAutomationResponse1) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAutomation(ctx, resp.Automation)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *AutomationResourceModel) RefreshFromSharedGetAutomationResponse(ctx context.Context, resp *shared.GetAutomationResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAutomation(ctx, resp.Automation)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *AutomationResourceModel) RefreshFromSharedUpdateAutomationResponse(ctx context.Context, resp *shared.UpdateAutomationResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAutomation(ctx, resp.Automation)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		r.WebhookHmacSecret = types.StringPointerValue(resp.WebhookHmacSecret)
+	}
+
+	return diags
+}
+
 func (r *AutomationResourceModel) ToOperationsC1APIAutomationsV1AutomationServiceDeleteAutomationRequest(ctx context.Context) (*operations.C1APIAutomationsV1AutomationServiceDeleteAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var id string
 	id = r.ID.ValueString()
 
+	deleteAutomationRequest, deleteAutomationRequestDiags := r.ToSharedDeleteAutomationRequest(ctx)
+	diags.Append(deleteAutomationRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIAutomationsV1AutomationServiceDeleteAutomationRequest{
-		ID: id,
+		ID:                      id,
+		DeleteAutomationRequest: deleteAutomationRequest,
 	}
 
 	return &out, diags
@@ -6983,6 +7037,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 		IsDraft:              isDraft,
 		Triggers:             triggers,
 	}
+
+	return &out, diags
+}
+
+func (r *AutomationResourceModel) ToSharedDeleteAutomationRequest(ctx context.Context) (*shared.DeleteAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeleteAutomationRequest{}
 
 	return &out, diags
 }

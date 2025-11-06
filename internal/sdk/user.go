@@ -61,7 +61,7 @@ func (s *User) List(ctx context.Context, request operations.C1APIUserV1UserServi
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.user.v1.UserService.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -195,7 +195,7 @@ func (s *User) Get(ctx context.Context, request operations.C1APIUserV1UserServic
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.user.v1.UserService.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -325,7 +325,7 @@ func (s *User) GetUserProfileTypes(ctx context.Context, request operations.C1API
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.user.v1.UserService.GetUserProfileTypes",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

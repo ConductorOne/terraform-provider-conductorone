@@ -283,11 +283,11 @@ func (r *AppEntitlementAutomationResource) Create(ctx context.Context, req resou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateAutomationResponse != nil && res.CreateAutomationResponse.AppEntitlementAutomation != nil) {
+	if !(res.CreateAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementAutomation(ctx, res.CreateAutomationResponse.AppEntitlementAutomation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreateAutomationResponse(ctx, res.CreateAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -347,11 +347,11 @@ func (r *AppEntitlementAutomationResource) Read(ctx context.Context, req resourc
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AppEntitlementServiceGetAutomationResponse != nil && res.AppEntitlementServiceGetAutomationResponse.AppEntitlementAutomation != nil) {
+	if !(res.AppEntitlementServiceGetAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementAutomation(ctx, res.AppEntitlementServiceGetAutomationResponse.AppEntitlementAutomation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementServiceGetAutomationResponse(ctx, res.AppEntitlementServiceGetAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -402,11 +402,11 @@ func (r *AppEntitlementAutomationResource) Update(ctx context.Context, req resou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AppEntitlementServiceUpdateAutomationResponse != nil && res.AppEntitlementServiceUpdateAutomationResponse.AppEntitlementAutomation != nil) {
+	if !(res.AppEntitlementServiceUpdateAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementAutomation(ctx, res.AppEntitlementServiceUpdateAutomationResponse.AppEntitlementAutomation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementServiceUpdateAutomationResponse(ctx, res.AppEntitlementServiceUpdateAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -439,11 +439,11 @@ func (r *AppEntitlementAutomationResource) Update(ctx context.Context, req resou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.AppEntitlementServiceGetAutomationResponse != nil && res1.AppEntitlementServiceGetAutomationResponse.AppEntitlementAutomation != nil) {
+	if !(res1.AppEntitlementServiceGetAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementAutomation(ctx, res1.AppEntitlementServiceGetAutomationResponse.AppEntitlementAutomation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementServiceGetAutomationResponse(ctx, res1.AppEntitlementServiceGetAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

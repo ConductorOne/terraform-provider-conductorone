@@ -225,11 +225,11 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateAppResponse != nil && res.CreateAppResponse.App != nil) {
+	if !(res.CreateAppResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, res.CreateAppResponse.App)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppResponse(ctx, res.CreateAppResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -262,11 +262,11 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.GetAppResponse != nil && res1.GetAppResponse.App != nil) {
+	if !(res1.GetAppResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, res1.GetAppResponse.App)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAppResponse(ctx, res1.GetAppResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -326,11 +326,11 @@ func (r *AppResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetAppResponse != nil && res.GetAppResponse.App != nil) {
+	if !(res.GetAppResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, res.GetAppResponse.App)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAppResponse(ctx, res.GetAppResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -381,11 +381,11 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.UpdateAppResponse != nil && res.UpdateAppResponse.App != nil) {
+	if !(res.UpdateAppResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, res.UpdateAppResponse.App)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpdateAppResponse(ctx, res.UpdateAppResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -418,11 +418,11 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.GetAppResponse != nil && res1.GetAppResponse.App != nil) {
+	if !(res1.GetAppResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedApp(ctx, res1.GetAppResponse.App)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAppResponse(ctx, res1.GetAppResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

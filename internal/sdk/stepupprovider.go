@@ -61,7 +61,7 @@ func (s *StepUpProvider) Search(ctx context.Context, request *shared.SearchStepU
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.stepup.v1.StepUpProviderService.Search",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -198,7 +198,7 @@ func (s *StepUpProvider) List(ctx context.Context, opts ...operations.Option) (*
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.stepup.v1.StepUpProviderService.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -328,7 +328,7 @@ func (s *StepUpProvider) Create(ctx context.Context, request *shared.CreateStepU
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.stepup.v1.StepUpProviderService.Create",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -465,7 +465,7 @@ func (s *StepUpProvider) Delete(ctx context.Context, request operations.C1APISte
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.stepup.v1.StepUpProviderService.Delete",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteStepUpProviderRequest", "json", `request:"mediaType=application/json"`)
@@ -602,7 +602,7 @@ func (s *StepUpProvider) Get(ctx context.Context, request operations.C1APIStepup
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.stepup.v1.StepUpProviderService.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -732,7 +732,7 @@ func (s *StepUpProvider) Update(ctx context.Context, request operations.C1APISte
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.stepup.v1.StepUpProviderService.Update",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateStepUpProviderRequest", "json", `request:"mediaType=application/json"`)
@@ -869,7 +869,7 @@ func (s *StepUpProvider) UpdateSecret(ctx context.Context, request operations.C1
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.stepup.v1.StepUpProviderService.UpdateSecret",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateStepUpProviderSecretRequest", "json", `request:"mediaType=application/json"`)
@@ -1006,7 +1006,7 @@ func (s *StepUpProvider) Test(ctx context.Context, request operations.C1APIStepu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.stepup.v1.StepUpProviderService.Test",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "TestStepUpProviderRequest", "json", `request:"mediaType=application/json"`)

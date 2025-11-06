@@ -21,6 +21,8 @@ generation:
     oAuth2ClientCredentialsEnabled: false
     oAuth2PasswordEnabled: false
     hoistGlobalSecurity: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
   mockServer:
     disabled: true
   tests:
@@ -28,7 +30,7 @@ generation:
     generateNewTests: false
     skipResponseBodyAssertions: false
 terraform:
-  version: 1.6.15
+  version: 1.7.1
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []
@@ -42,6 +44,10 @@ terraform:
   author: conductorone
   baseErrorName: ConductoroneAPIError
   defaultErrorName: SDKError
+  enableOperationSecurity: false
+  enableOperationServers: false
   enableTypeDeduplication: false
   environmentVariables: []
+  includeEmptyObjects: false
   packageName: conductorone
+  unionDeserializationStrategy: populated-fields

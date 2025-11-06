@@ -493,6 +493,27 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 	return diags
 }
 
+func (r *PolicyDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx context.Context, resp *shared.SearchPoliciesResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if len(resp.List) == 0 {
+			diags.AddError("Unexpected response from API", "Missing response body array data.")
+			return diags
+		}
+
+		diags.Append(r.RefreshFromSharedPolicy(ctx, &resp.List[0])...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
+	}
+
+	return diags
+}
+
 func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Context) (*shared.SearchPoliciesRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

@@ -46,10 +46,18 @@ func (r *AppResourceOwnerResourceModel) ToOperationsC1APIAppV1AppResourceOwnersD
 	var resourceID string
 	resourceID = r.ResourceID.ValueString()
 
+	deleteAppResourceOwnersRequest, deleteAppResourceOwnersRequestDiags := r.ToSharedDeleteAppResourceOwnersRequest(ctx)
+	diags.Append(deleteAppResourceOwnersRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIAppV1AppResourceOwnersDeleteRequest{
-		AppID:          appID,
-		ResourceTypeID: resourceTypeID,
-		ResourceID:     resourceID,
+		AppID:                          appID,
+		ResourceTypeID:                 resourceTypeID,
+		ResourceID:                     resourceID,
+		DeleteAppResourceOwnersRequest: deleteAppResourceOwnersRequest,
 	}
 
 	return &out, diags
@@ -101,6 +109,14 @@ func (r *AppResourceOwnerResourceModel) ToOperationsC1APIAppV1AppResourceOwnersS
 		ResourceID:                  resourceID,
 		SetAppResourceOwnersRequest: setAppResourceOwnersRequest,
 	}
+
+	return &out, diags
+}
+
+func (r *AppResourceOwnerResourceModel) ToSharedDeleteAppResourceOwnersRequest(ctx context.Context) (*shared.DeleteAppResourceOwnersRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeleteAppResourceOwnersRequest{}
 
 	return &out, diags
 }

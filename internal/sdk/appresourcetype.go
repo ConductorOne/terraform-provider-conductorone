@@ -60,7 +60,7 @@ func (s *AppResourceType) List(ctx context.Context, request operations.C1APIAppV
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppResourceTypeService.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -194,7 +194,7 @@ func (s *AppResourceType) CreateManuallyManagedResourceType(ctx context.Context,
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppResourceTypeService.CreateManuallyManagedResourceType",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateManuallyManagedResourceTypeRequest", "json", `request:"mediaType=application/json"`)
@@ -331,7 +331,7 @@ func (s *AppResourceType) DeleteManuallyManagedResourceType(ctx context.Context,
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppResourceTypeService.DeleteManuallyManagedResourceType",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteManuallyManagedResourceTypeRequest", "json", `request:"mediaType=application/json"`)
@@ -468,7 +468,7 @@ func (s *AppResourceType) Get(ctx context.Context, request operations.C1APIAppV1
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppResourceTypeService.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -598,7 +598,7 @@ func (s *AppResourceType) UpdateManuallyManagedResourceType(ctx context.Context,
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.app.v1.AppResourceTypeService.UpdateManuallyManagedResourceType",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateManuallyManagedResourceTypeRequest", "json", `request:"mediaType=application/json"`)

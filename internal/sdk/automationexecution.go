@@ -61,7 +61,7 @@ func (s *AutomationExecution) ListAutomationExecutions(ctx context.Context, opts
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.automations.v1.AutomationExecutionService.ListAutomationExecutions",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -191,7 +191,7 @@ func (s *AutomationExecution) GetAutomationExecution(ctx context.Context, reques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.automations.v1.AutomationExecutionService.GetAutomationExecution",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

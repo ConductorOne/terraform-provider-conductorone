@@ -34,18 +34,18 @@ type UserDataSourceModel struct {
 	DelegatedUserPath       types.String                          `tfsdk:"delegated_user_path"`
 	DeletedAt               types.String                          `tfsdk:"deleted_at"`
 	Department              types.String                          `tfsdk:"department"`
-	DepartmentSources       []tfTypes.UserAttributeMappingSource  `tfsdk:"department_sources"`
 	Departments             []types.String                        `tfsdk:"departments"`
+	DepartmentSources       []tfTypes.UserAttributeMappingSource  `tfsdk:"department_sources"`
 	DirectoriesPath         types.String                          `tfsdk:"directories_path"`
 	DirectoryIds            []types.String                        `tfsdk:"directory_ids"`
 	DirectoryStatus         types.String                          `tfsdk:"directory_status"`
 	DirectoryStatusSources  []tfTypes.UserAttributeMappingSource  `tfsdk:"directory_status_sources"`
 	DisplayName             types.String                          `tfsdk:"display_name"`
 	Email                   types.String                          `tfsdk:"email"`
-	EmailSources            []tfTypes.UserAttributeMappingSource  `tfsdk:"email_sources"`
 	Emails                  []types.String                        `tfsdk:"emails"`
-	EmployeeIDSources       []tfTypes.UserAttributeMappingSource  `tfsdk:"employee_id_sources"`
+	EmailSources            []tfTypes.UserAttributeMappingSource  `tfsdk:"email_sources"`
 	EmployeeIds             []types.String                        `tfsdk:"employee_ids"`
+	EmployeeIDSources       []tfTypes.UserAttributeMappingSource  `tfsdk:"employee_id_sources"`
 	EmploymentStatus        types.String                          `tfsdk:"employment_status"`
 	EmploymentStatusSources []tfTypes.UserAttributeMappingSource  `tfsdk:"employment_status_sources"`
 	EmploymentType          types.String                          `tfsdk:"employment_type"`
@@ -56,8 +56,8 @@ type UserDataSourceModel struct {
 	ID                      types.String                          `tfsdk:"id"`
 	Ids                     []types.String                        `tfsdk:"ids"`
 	JobTitle                types.String                          `tfsdk:"job_title"`
-	JobTitleSources         []tfTypes.UserAttributeMappingSource  `tfsdk:"job_title_sources"`
 	JobTitles               []types.String                        `tfsdk:"job_titles"`
+	JobTitleSources         []tfTypes.UserAttributeMappingSource  `tfsdk:"job_title_sources"`
 	ManagerIds              []types.String                        `tfsdk:"manager_ids"`
 	ManagerSources          []tfTypes.UserAttributeMappingSource  `tfsdk:"manager_sources"`
 	ManagersPath            types.String                          `tfsdk:"managers_path"`
@@ -72,10 +72,10 @@ type UserDataSourceModel struct {
 	Status                  types.String                          `tfsdk:"status"`
 	Type                    types.String                          `tfsdk:"type"`
 	UpdatedAt               types.String                          `tfsdk:"updated_at"`
-	UserStatuses            []types.String                        `tfsdk:"user_statuses"`
 	Username                types.String                          `tfsdk:"username"`
-	UsernameSources         []tfTypes.UserAttributeMappingSource  `tfsdk:"username_sources"`
 	Usernames               []types.String                        `tfsdk:"usernames"`
+	UsernameSources         []tfTypes.UserAttributeMappingSource  `tfsdk:"username_sources"`
+	UserStatuses            []types.String                        `tfsdk:"user_statuses"`
 }
 
 // Metadata returns the data source type name.
@@ -579,11 +579,12 @@ func (r *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.SearchUsersResponse != nil && res.SearchUsersResponse.List != nil && len(res.SearchUsersResponse.List) > 0 && res.SearchUsersResponse.List[0].User != nil) {
+	if !(res.SearchUsersResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedUser(ctx, res.SearchUsersResponse.List[0].User)...)
+	data.Expanded = nil
+	resp.Diagnostics.Append(data.RefreshFromSharedSearchUsersResponse(ctx, res.SearchUsersResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -602,7 +603,7 @@ func (r *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 			break
 		}
 
-		resp.Diagnostics.Append(data.RefreshFromSharedUser(ctx, res.SearchUsersResponse.List[0].User)...)
+		resp.Diagnostics.Append(data.RefreshFromSharedSearchUsersResponse(ctx, res.SearchUsersResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return

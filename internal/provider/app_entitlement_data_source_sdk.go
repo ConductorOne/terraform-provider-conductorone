@@ -286,6 +286,39 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 	return diags
 }
 
+func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx context.Context, resp *shared.AppEntitlementSearchServiceSearchResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if len(resp.List) == 0 {
+			diags.AddError("Unexpected response from API", "Missing response body array data.")
+			return diags
+		}
+
+		diags.Append(r.RefreshFromSharedAppEntitlementView(ctx, &resp.List[0])...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
+	}
+
+	return diags
+}
+
+func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlementView(ctx context.Context, resp *shared.AppEntitlementView) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	diags.Append(r.RefreshFromSharedAppEntitlement(ctx, resp.AppEntitlement)...)
+
+	if diags.HasError() {
+		return diags
+	}
+
+	return diags
+}
+
 func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearchRequest(ctx context.Context) (*shared.AppEntitlementSearchServiceSearchRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

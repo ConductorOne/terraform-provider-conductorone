@@ -171,11 +171,11 @@ func (r *WebhookDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.WebhooksSearchResponse != nil && res.WebhooksSearchResponse.List != nil && len(res.WebhooksSearchResponse.List) > 0) {
+	if !(res.WebhooksSearchResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedWebhook1(ctx, &res.WebhooksSearchResponse.List[0])...)
+	resp.Diagnostics.Append(data.RefreshFromSharedWebhooksSearchResponse(ctx, res.WebhooksSearchResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -194,7 +194,7 @@ func (r *WebhookDataSource) Read(ctx context.Context, req datasource.ReadRequest
 			break
 		}
 
-		resp.Diagnostics.Append(data.RefreshFromSharedWebhook1(ctx, &res.WebhooksSearchResponse.List[0])...)
+		resp.Diagnostics.Append(data.RefreshFromSharedWebhooksSearchResponse(ctx, res.WebhooksSearchResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return

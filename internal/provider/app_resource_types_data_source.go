@@ -208,6 +208,7 @@ func (r *AppResourceTypesDataSource) Read(ctx context.Context, req datasource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
+	data.List = nil
 	resp.Diagnostics.Append(data.RefreshFromSharedSearchAppResourceTypesResponse(ctx, res.SearchAppResourceTypesResponse)...)
 
 	if resp.Diagnostics.HasError() {

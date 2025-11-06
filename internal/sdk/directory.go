@@ -61,7 +61,7 @@ func (s *Directory) List(ctx context.Context, request operations.C1APIDirectoryV
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.directory.v1.DirectoryService.List",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -195,7 +195,7 @@ func (s *Directory) Create(ctx context.Context, request *shared.DirectoryService
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.directory.v1.DirectoryService.Create",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -332,7 +332,7 @@ func (s *Directory) Delete(ctx context.Context, request operations.C1APIDirector
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.directory.v1.DirectoryService.Delete",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DirectoryServiceDeleteRequest", "json", `request:"mediaType=application/json"`)
@@ -469,7 +469,7 @@ func (s *Directory) Get(ctx context.Context, request operations.C1APIDirectoryV1
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.directory.v1.DirectoryService.Get",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -599,7 +599,7 @@ func (s *Directory) Update(ctx context.Context, request operations.C1APIDirector
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.directory.v1.DirectoryService.Update",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DirectoryServiceUpdateRequest", "json", `request:"mediaType=application/json"`)

@@ -38,9 +38,9 @@ type AppEntitlementsDataSourceModel struct {
 	DisplayName             types.String                 `tfsdk:"display_name"`
 	ExcludeAppIds           []types.String               `tfsdk:"exclude_app_ids"`
 	ExcludeAppUserIds       []types.String               `tfsdk:"exclude_app_user_ids"`
+	ExcludedEntitlementRefs []tfTypes.AppEntitlementRef  `tfsdk:"excluded_entitlement_refs"`
 	ExcludeImmutable        types.Bool                   `tfsdk:"exclude_immutable"`
 	ExcludeResourceTypeIds  []types.String               `tfsdk:"exclude_resource_type_ids"`
-	ExcludedEntitlementRefs []tfTypes.AppEntitlementRef  `tfsdk:"excluded_entitlement_refs"`
 	IncludeDeleted          types.Bool                   `tfsdk:"include_deleted"`
 	IsAutomated             types.Bool                   `tfsdk:"is_automated"`
 	List                    []tfTypes.AppEntitlementView `tfsdk:"list"`
@@ -764,6 +764,7 @@ func (r *AppEntitlementsDataSource) Read(ctx context.Context, req datasource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
+	data.List = nil
 	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx, res.AppEntitlementSearchServiceSearchResponse)...)
 
 	if resp.Diagnostics.HasError() {

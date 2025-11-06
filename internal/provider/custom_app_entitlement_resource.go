@@ -802,11 +802,11 @@ func (r *CustomAppEntitlementResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateAppEntitlementResponse != nil && res.CreateAppEntitlementResponse.AppEntitlementView != nil && res.CreateAppEntitlementResponse.AppEntitlementView.AppEntitlement != nil) {
+	if !(res.CreateAppEntitlementResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.CreateAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppEntitlementResponse(ctx, res.CreateAppEntitlementResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -866,11 +866,11 @@ func (r *CustomAppEntitlementResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetAppEntitlementResponse != nil && res.GetAppEntitlementResponse.AppEntitlementView != nil && res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement != nil) {
+	if !(res.GetAppEntitlementResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAppEntitlementResponse(ctx, res.GetAppEntitlementResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -921,11 +921,11 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.UpdateAppEntitlementResponse != nil && res.UpdateAppEntitlementResponse.AppEntitlementView != nil && res.UpdateAppEntitlementResponse.AppEntitlementView.AppEntitlement != nil) {
+	if !(res.UpdateAppEntitlementResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res.UpdateAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpdateAppEntitlementResponse(ctx, res.UpdateAppEntitlementResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -958,11 +958,11 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.GetAppEntitlementResponse != nil && res1.GetAppEntitlementResponse.AppEntitlementView != nil && res1.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement != nil) {
+	if !(res1.GetAppEntitlementResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlement(ctx, res1.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAppEntitlementResponse(ctx, res1.GetAppEntitlementResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

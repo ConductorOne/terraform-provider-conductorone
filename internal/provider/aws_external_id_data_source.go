@@ -104,11 +104,11 @@ func (r *AwsExternalIDDataSource) Read(ctx context.Context, req datasource.ReadR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetAWSExternalIDResponse != nil && res.GetAWSExternalIDResponse.AWSExternalID != nil) {
+	if !(res.GetAWSExternalIDResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAWSExternalID(ctx, res.GetAWSExternalIDResponse.AWSExternalID)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAWSExternalIDResponse(ctx, res.GetAWSExternalIDResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

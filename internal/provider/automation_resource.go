@@ -3005,11 +3005,11 @@ func (r *AutomationResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateAutomationResponse != nil && res.CreateAutomationResponse.Automation != nil) {
+	if !(res.CreateAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAutomation(ctx, res.CreateAutomationResponse.Automation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreateAutomationResponse1(ctx, res.CreateAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -3069,11 +3069,11 @@ func (r *AutomationResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetAutomationResponse != nil && res.GetAutomationResponse.Automation != nil) {
+	if !(res.GetAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAutomation(ctx, res.GetAutomationResponse.Automation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAutomationResponse(ctx, res.GetAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -3119,11 +3119,11 @@ func (r *AutomationResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.UpdateAutomationResponse != nil && res.UpdateAutomationResponse.Automation != nil) {
+	if !(res.UpdateAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAutomation(ctx, res.UpdateAutomationResponse.Automation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpdateAutomationResponse(ctx, res.UpdateAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -3156,11 +3156,11 @@ func (r *AutomationResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.GetAutomationResponse != nil && res1.GetAutomationResponse.Automation != nil) {
+	if !(res1.GetAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAutomation(ctx, res1.GetAutomationResponse.Automation)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAutomationResponse(ctx, res1.GetAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

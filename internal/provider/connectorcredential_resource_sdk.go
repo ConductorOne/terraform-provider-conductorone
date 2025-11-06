@@ -31,6 +31,36 @@ func (r *ConnectorCredentialResourceModel) RefreshFromSharedConnectorCredential(
 	return diags
 }
 
+func (r *ConnectorCredentialResourceModel) RefreshFromSharedConnectorServiceGetCredentialsResponse(ctx context.Context, resp *shared.ConnectorServiceGetCredentialsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedConnectorCredential(ctx, resp.ConnectorCredential)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *ConnectorCredentialResourceModel) RefreshFromSharedConnectorServiceRotateCredentialResponse(ctx context.Context, resp *shared.ConnectorServiceRotateCredentialResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedConnectorCredential(ctx, resp.ConnectorCredential)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServiceGetCredentialsRequest(ctx context.Context) (*operations.C1APIAppV1ConnectorServiceGetCredentialsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -64,11 +94,27 @@ func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServic
 	var id string
 	id = r.ID.ValueString()
 
-	out := operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest{
-		AppID:       appID,
-		ConnectorID: connectorID,
-		ID:          id,
+	connectorServiceRevokeCredentialRequest, connectorServiceRevokeCredentialRequestDiags := r.ToSharedConnectorServiceRevokeCredentialRequest(ctx)
+	diags.Append(connectorServiceRevokeCredentialRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
 	}
+
+	out := operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest{
+		AppID:                                   appID,
+		ConnectorID:                             connectorID,
+		ID:                                      id,
+		ConnectorServiceRevokeCredentialRequest: connectorServiceRevokeCredentialRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *ConnectorCredentialResourceModel) ToSharedConnectorServiceRevokeCredentialRequest(ctx context.Context) (*shared.ConnectorServiceRevokeCredentialRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.ConnectorServiceRevokeCredentialRequest{}
 
 	return &out, diags
 }

@@ -26,6 +26,21 @@ func (r *ComplianceFrameworkDataSourceModel) RefreshFromSharedAttributeValue(ctx
 	return diags
 }
 
+func (r *ComplianceFrameworkDataSourceModel) RefreshFromSharedGetComplianceFrameworkAttributeValueResponse(ctx context.Context, resp *shared.GetComplianceFrameworkAttributeValueResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAttributeValue(ctx, resp.AttributeValue)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *ComplianceFrameworkDataSourceModel) ToOperationsC1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

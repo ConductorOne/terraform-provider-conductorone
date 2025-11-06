@@ -18,3 +18,18 @@ func (r *AwsExternalIDDataSourceModel) RefreshFromSharedAWSExternalID(ctx contex
 
 	return diags
 }
+
+func (r *AwsExternalIDDataSourceModel) RefreshFromSharedGetAWSExternalIDResponse(ctx context.Context, resp *shared.GetAWSExternalIDResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAWSExternalID(ctx, resp.AWSExternalID)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}

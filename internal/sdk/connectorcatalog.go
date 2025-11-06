@@ -61,7 +61,7 @@ func (s *ConnectorCatalog) ConfigurationSchema(ctx context.Context, request *sha
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.integration.connector.v1.ConnectorCatalogService.ConfigurationSchema",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

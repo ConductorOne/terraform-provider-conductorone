@@ -10882,6 +10882,64 @@ components:
             title: Request Catalog View
             type: object
             x-speakeasy-name-override: RequestCatalogView
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequestableEntryRequestInput:
+            description: Create a single requestable entry
+            properties:
+                createRequests:
+                    description: |-
+                        Whether or not to create requests for newly added entitlement for users in the catalog.
+                         By default, this is false and no requests are created.
+                    readOnly: false
+                    type: boolean
+            title: Request Catalog Management Service Create Requestable Entry Request
+            type: object
+            x-speakeasy-entity: Access_Profile_Requestable_Entry
+            x-speakeasy-name-override: RequestCatalogManagementServiceCreateRequestableEntryRequest
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequestableEntryResponse:
+            description: Response containing the created requestable entry
+            properties:
+                requestableEntry:
+                    $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestableEntry'
+            title: Request Catalog Management Service Create Requestable Entry Response
+            type: object
+            x-speakeasy-name-override: RequestCatalogManagementServiceCreateRequestableEntryResponse
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestableEntryRequestInput:
+            description: Delete a single requestable entry
+            title: Request Catalog Management Service Delete Requestable Entry Request
+            type: object
+            x-speakeasy-entity: Access_Profile_Requestable_Entry
+            x-speakeasy-name-override: RequestCatalogManagementServiceDeleteRequestableEntryRequest
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestableEntryResponse:
+            description: Empty response for delete operation
+            title: Request Catalog Management Service Delete Requestable Entry Response
+            type: object
+            x-speakeasy-name-override: RequestCatalogManagementServiceDeleteRequestableEntryResponse
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceGetRequestableEntryResponse:
+            description: Response containing the requested entry
+            properties:
+                requestableEntry:
+                    $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestableEntry'
+            title: Request Catalog Management Service Get Requestable Entry Response
+            type: object
+            x-speakeasy-name-override: RequestCatalogManagementServiceGetRequestableEntryResponse
+        c1.api.requestcatalog.v1.RequestableEntry:
+            description: A requestable entry in a catalog
+            properties:
+                appId:
+                    description: The ID of the app that contains the entitlement
+                    readOnly: false
+                    type: string
+                catalogId:
+                    description: The ID of the access profile (catalog)
+                    readOnly: false
+                    type: string
+                entitlementId:
+                    description: The ID of the entitlement
+                    readOnly: false
+                    type: string
+            title: Requestable Entry
+            type: object
+            x-speakeasy-name-override: RequestableEntry
         c1.api.requestcatalog.v1.ResumePausedBundleAutomationRequestInput:
             description: The ResumePausedBundleAutomationRequest message.
             title: Resume Paused Bundle Automation Request
@@ -21308,8 +21366,8 @@ paths:
             tags:
                 - Request Catalog
             x-speakeasy-entity-operation:
-                terraform-datasource: null
-                terraform-resource: Access_Profile_Requestable_Entries#read
+                terraform-datasource: Access_Profile_Requestable_Entries#read
+                terraform-resource: null
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: ListAllEntitlementIdsPerApp
     /api/v1/catalogs/{catalog_id}/requestable_entitlements:
@@ -21441,6 +21499,135 @@ paths:
                 terraform-resource: Access_Profile_Requestable_Entries#create
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: AddAppEntitlements
+    /api/v1/catalogs/{catalog_id}/requestable_entries/{app_id}/{entitlement_id}:
+        delete:
+            description: Delete a single requestable entry
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.DeleteRequestableEntry
+            parameters:
+                - in: path
+                  name: catalog_id
+                  required: true
+                  schema:
+                    description: The ID of the access profile (catalog)
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The ID of the app that contains the entitlement
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: entitlement_id
+                  required: true
+                  schema:
+                    description: The ID of the entitlement
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestableEntryRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestableEntryResponse'
+                    description: Empty response for delete operation
+            summary: Delete Requestable Entry
+            tags:
+                - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-resource: Access_Profile_Requestable_Entry#delete
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: DeleteRequestableEntry
+        get:
+            description: Get a single requestable entry
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.GetRequestableEntry
+            parameters:
+                - in: path
+                  name: catalog_id
+                  required: true
+                  schema:
+                    description: The ID of the access profile (catalog)
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The ID of the app that contains the entitlement
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: entitlement_id
+                  required: true
+                  schema:
+                    description: The ID of the entitlement
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceGetRequestableEntryResponse'
+                    description: Response containing the requested entry
+            summary: Get Requestable Entry
+            tags:
+                - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: Access_Profile_Requestable_Entry#read
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: GetRequestableEntry
+        put:
+            description: Create a single requestable entry
+            operationId: c1.api.requestcatalog.v1.RequestCatalogManagementService.CreateRequestableEntry
+            parameters:
+                - in: path
+                  name: catalog_id
+                  required: true
+                  schema:
+                    description: The ID of the access profile (catalog) to add the entitlement to
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The ID of the app that contains the entitlement
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: entitlement_id
+                  required: true
+                  schema:
+                    description: The ID of the entitlement to add to the request catalog
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequestableEntryRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequestableEntryResponse'
+                    description: Response containing the created requestable entry
+            summary: Create Requestable Entry
+            tags:
+                - Request Catalog
+            x-speakeasy-entity-operation:
+                terraform-resource: Access_Profile_Requestable_Entry#create
+            x-speakeasy-group: RequestCatalogManagement
+            x-speakeasy-name-override: CreateRequestableEntry
     /api/v1/catalogs/{catalog_id}/visibility_bindings:
         delete:
             description: Remove visibility bindings (access entitlements) to a catalog.

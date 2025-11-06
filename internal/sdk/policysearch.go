@@ -64,7 +64,7 @@ func (s *PolicySearch) Search(ctx context.Context, request *shared.SearchPolicie
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.policy.v1.PolicySearch.Search",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

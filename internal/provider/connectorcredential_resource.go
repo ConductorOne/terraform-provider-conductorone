@@ -180,11 +180,11 @@ func (r *ConnectorCredentialResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ConnectorServiceRotateCredentialResponse != nil && res.ConnectorServiceRotateCredentialResponse.ConnectorCredential != nil) {
+	if !(res.ConnectorServiceRotateCredentialResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res.ConnectorServiceRotateCredentialResponse.ConnectorCredential)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedConnectorServiceRotateCredentialResponse(ctx, res.ConnectorServiceRotateCredentialResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -244,11 +244,11 @@ func (r *ConnectorCredentialResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ConnectorServiceGetCredentialsResponse != nil && res.ConnectorServiceGetCredentialsResponse.ConnectorCredential != nil) {
+	if !(res.ConnectorServiceGetCredentialsResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedConnectorCredential(ctx, res.ConnectorServiceGetCredentialsResponse.ConnectorCredential)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedConnectorServiceGetCredentialsResponse(ctx, res.ConnectorServiceGetCredentialsResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -117,6 +117,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 	resources := []func() resource.Resource{
 		NewAccessProfileResource,
 		NewAccessProfileRequestableEntriesResource,
+		NewAccessProfileRequestableEntryResource,
 		NewAccessProfileVisibilityBindingsResource,
 		NewAppResource,
 		NewAppEntitlementResource,

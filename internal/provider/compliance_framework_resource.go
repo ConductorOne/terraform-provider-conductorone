@@ -143,11 +143,11 @@ func (r *ComplianceFrameworkResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateComplianceFrameworkAttributeValueResponse != nil && res.CreateComplianceFrameworkAttributeValueResponse.AttributeValue != nil) {
+	if !(res.CreateComplianceFrameworkAttributeValueResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.CreateComplianceFrameworkAttributeValueResponse.AttributeValue)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreateComplianceFrameworkAttributeValueResponse(ctx, res.CreateComplianceFrameworkAttributeValueResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -207,11 +207,11 @@ func (r *ComplianceFrameworkResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetComplianceFrameworkAttributeValueResponse != nil && res.GetComplianceFrameworkAttributeValueResponse.AttributeValue != nil) {
+	if !(res.GetComplianceFrameworkAttributeValueResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetComplianceFrameworkAttributeValueResponse.AttributeValue)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetComplianceFrameworkAttributeValueResponse(ctx, res.GetComplianceFrameworkAttributeValueResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

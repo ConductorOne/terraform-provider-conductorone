@@ -27,14 +27,67 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhook1(ctx context.Context, re
 	return diags
 }
 
+func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceCreateResponse(ctx context.Context, resp *shared.WebhooksServiceCreateResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedWebhook1(ctx, resp.Webhook)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceGetResponse(ctx context.Context, resp *shared.WebhooksServiceGetResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedWebhook1(ctx, resp.Webhook)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceUpdateResponse(ctx context.Context, resp *shared.WebhooksServiceUpdateResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedWebhook1(ctx, resp.Webhook)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceDeleteRequest(ctx context.Context) (*operations.C1APIWebhooksV1WebhooksServiceDeleteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var id string
 	id = r.ID.ValueString()
 
+	webhooksServiceDeleteRequest, webhooksServiceDeleteRequestDiags := r.ToSharedWebhooksServiceDeleteRequest(ctx)
+	diags.Append(webhooksServiceDeleteRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
 	out := operations.C1APIWebhooksV1WebhooksServiceDeleteRequest{
-		ID: id,
+		ID:                           id,
+		WebhooksServiceDeleteRequest: webhooksServiceDeleteRequest,
 	}
 
 	return &out, diags
@@ -131,6 +184,14 @@ func (r *WebhookResourceModel) ToSharedWebhooksServiceCreateRequest(ctx context.
 		DisplayName: displayName,
 		URL:         url,
 	}
+
+	return &out, diags
+}
+
+func (r *WebhookResourceModel) ToSharedWebhooksServiceDeleteRequest(ctx context.Context) (*shared.WebhooksServiceDeleteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.WebhooksServiceDeleteRequest{}
 
 	return &out, diags
 }

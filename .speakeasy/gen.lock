@@ -1,33 +1,34 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 3092eddf421bdfec79296edf76f4c327
+  docChecksum: dd1be6ff0533f0c8fb13f9f975907227
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.628.7
-  generationVersion: 2.716.9
-  releaseVersion: 1.6.15
-  configChecksum: 8d7ca7606c4a6909b2f6268a2c255b2f
+  speakeasyVersion: 1.649.0
+  generationVersion: 2.739.1
+  releaseVersion: 1.7.1
+  configChecksum: 3af38028314335aa1f36ca7c9ae33d52
 features:
   terraform:
     additionalDependencies: 0.1.0
-    additionalProperties: 0.1.2
-    core: 3.45.1
+    additionalProperties: 0.1.3
+    core: 3.46.5
     deprecations: 2.82.0
     devContainers: 0.0.0
     globalSecurity: 2.82.1
     globalServerURLs: 2.83.0
-    groups: 2.81.2
+    groups: 2.81.3
     ignores: 2.81.1
     includes: 2.81.1
     inputOutputModels: 2.83.0
     nameOverrides: 2.81.3
     nullables: 0.0.0
-    pagination: 2.83.1
+    pagination: 2.83.4
     typeOverrides: 2.81.1
 generatedFiles:
   - .gitattributes
   - USAGE.md
   - examples/data-sources/conductorone_access_profile/data-source.tf
+  - examples/data-sources/conductorone_access_profile_requestable_entries/data-source.tf
   - examples/data-sources/conductorone_app/data-source.tf
   - examples/data-sources/conductorone_app_entitlement/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_automation/data-source.tf
@@ -65,9 +66,10 @@ generatedFiles:
   - examples/resources/conductorone_access_profile/import-by-string-id.tf
   - examples/resources/conductorone_access_profile/import.sh
   - examples/resources/conductorone_access_profile/resource.tf
-  - examples/resources/conductorone_access_profile_requestable_entries/import-by-string-id.tf
-  - examples/resources/conductorone_access_profile_requestable_entries/import.sh
   - examples/resources/conductorone_access_profile_requestable_entries/resource.tf
+  - examples/resources/conductorone_access_profile_requestable_entry/import-by-string-id.tf
+  - examples/resources/conductorone_access_profile_requestable_entry/import.sh
+  - examples/resources/conductorone_access_profile_requestable_entry/resource.tf
   - examples/resources/conductorone_access_profile_visibility_bindings/resource.tf
   - examples/resources/conductorone_app/import-by-string-id.tf
   - examples/resources/conductorone_app/import.sh
@@ -149,8 +151,12 @@ generatedFiles:
   - internal/provider/access_conflict_resource_sdk.go
   - internal/provider/access_profile_data_source.go
   - internal/provider/access_profile_data_source_sdk.go
+  - internal/provider/access_profile_requestable_entries_data_source.go
+  - internal/provider/access_profile_requestable_entries_data_source_sdk.go
   - internal/provider/access_profile_requestable_entries_resource.go
   - internal/provider/access_profile_requestable_entries_resource_sdk.go
+  - internal/provider/access_profile_requestable_entry_resource.go
+  - internal/provider/access_profile_requestable_entry_resource_sdk.go
   - internal/provider/access_profile_resource.go
   - internal/provider/access_profile_resource_sdk.go
   - internal/provider/access_profile_visibility_bindings_resource.go
@@ -255,8 +261,6 @@ generatedFiles:
   - internal/provider/request_schema_entitlement_binding_data_source_sdk.go
   - internal/provider/request_schema_entitlement_binding_resource.go
   - internal/provider/request_schema_entitlement_binding_resource_sdk.go
-  - internal/provider/request_schema_resource.go
-  - internal/provider/request_schema_resource_sdk.go
   - internal/provider/risk_level_data_source.go
   - internal/provider/risk_level_data_source_sdk.go
   - internal/provider/risk_level_resource.go
@@ -375,6 +379,7 @@ generatedFiles:
   - internal/provider/types/request_catalog_management_service_get_response_expanded.go
   - internal/provider/types/request_catalog_management_service_list_response_expanded.go
   - internal/provider/types/request_catalog_view.go
+  - internal/provider/types/requestable_entry.go
   - internal/provider/types/required_together.go
   - internal/provider/types/resource_owner_approval.go
   - internal/provider/types/rule.go
@@ -650,11 +655,14 @@ generatedFiles:
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceaddappentitlements.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicecreate.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicecreatebundleautomation.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicecreaterequestableentry.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicedelete.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicedeletebundleautomation.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicedeleterequestableentry.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceforcerunbundleautomation.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementserviceget.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicegetbundleautomation.go
+  - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicegetrequestableentry.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelist.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelistallentitlementidsperapp.go
   - internal/sdk/models/operations/c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementsforaccess.go
@@ -1139,14 +1147,20 @@ generatedFiles:
   - internal/sdk/models/shared/removegrantdurationrequest.go
   - internal/sdk/models/shared/removegrantdurationresponse.go
   - internal/sdk/models/shared/replacepolicy.go
+  - internal/sdk/models/shared/requestableentry.go
   - internal/sdk/models/shared/requestcatalog.go
   - internal/sdk/models/shared/requestcatalogmanagementserviceaddaccessentitlementsrequest.go
   - internal/sdk/models/shared/requestcatalogmanagementserviceaddaccessentitlementsresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementserviceaddappentitlementsrequest.go
   - internal/sdk/models/shared/requestcatalogmanagementserviceaddappentitlementsresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicecreaterequest.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicecreaterequestableentryrequest.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicecreaterequestableentryresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicedeleterequest.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicedeleterequestableentryrequest.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicedeleterequestableentryresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicedeleteresponse.go
+  - internal/sdk/models/shared/requestcatalogmanagementservicegetrequestableentryresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicegetresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicelistallentitlementidspercatalogresponse.go
   - internal/sdk/models/shared/requestcatalogmanagementservicelistentitlementsforaccessresponse.go
@@ -3300,6 +3314,36 @@ examples:
       parameters:
         path:
           request_schema_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.DeleteRequestableEntry:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-delete-requestable-entry:
+      parameters:
+        path:
+          catalog_id: "<id>"
+          app_id: "<id>"
+          entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.GetRequestableEntry:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-get-requestable-entry:
+      parameters:
+        path:
+          catalog_id: "<id>"
+          app_id: "<id>"
+          entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.requestcatalog.v1.RequestCatalogManagementService.CreateRequestableEntry:
+    speakeasy-default-c1-api-requestcatalog-v1-request-catalog-management-service-create-requestable-entry:
+      parameters:
+        path:
+          catalog_id: "<id>"
+          app_id: "<id>"
+          entitlement_id: "<id>"
       responses:
         "200":
           application/json: {}

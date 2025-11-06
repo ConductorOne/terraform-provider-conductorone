@@ -197,11 +197,11 @@ func (r *AppResourceTypeDataSource) Read(ctx context.Context, req datasource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.SearchAppResourceTypesResponse != nil && res.SearchAppResourceTypesResponse.List != nil && len(res.SearchAppResourceTypesResponse.List) > 0) {
+	if !(res.SearchAppResourceTypesResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, &res.SearchAppResourceTypesResponse.List[0])...)
+	resp.Diagnostics.Append(data.RefreshFromSharedSearchAppResourceTypesResponse(ctx, res.SearchAppResourceTypesResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -220,7 +220,7 @@ func (r *AppResourceTypeDataSource) Read(ctx context.Context, req datasource.Rea
 			break
 		}
 
-		resp.Diagnostics.Append(data.RefreshFromSharedAppResourceType(ctx, &res.SearchAppResourceTypesResponse.List[0])...)
+		resp.Diagnostics.Append(data.RefreshFromSharedSearchAppResourceTypesResponse(ctx, res.SearchAppResourceTypesResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return

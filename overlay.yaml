@@ -612,4 +612,7 @@ actions:
   - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["modifiedAt"]
     update:
       x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestableEntryRequestInput"]
+    update:
+      x-speakeasy-terraform-ignore: true
   

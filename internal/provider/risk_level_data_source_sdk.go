@@ -26,6 +26,21 @@ func (r *RiskLevelDataSourceModel) RefreshFromSharedAttributeValue(ctx context.C
 	return diags
 }
 
+func (r *RiskLevelDataSourceModel) RefreshFromSharedGetRiskLevelAttributeValueResponse(ctx context.Context, resp *shared.GetRiskLevelAttributeValueResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAttributeValue(ctx, resp.AttributeValue)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *RiskLevelDataSourceModel) ToOperationsC1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest(ctx context.Context) (*operations.C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

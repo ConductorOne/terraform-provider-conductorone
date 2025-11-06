@@ -61,7 +61,7 @@ func (s *TaskSearch) Search(ctx context.Context, request *shared.TaskSearchReque
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "c1.api.task.v1.TaskSearchService.Search",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
