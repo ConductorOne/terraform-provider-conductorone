@@ -10,6 +10,8 @@ type ActionProvision struct {
 	AppID *string `json:"appId,omitempty"`
 	// The connectorId field.
 	ConnectorID *string `json:"connectorId,omitempty"`
+	// The displayName field.
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 func (a *ActionProvision) GetActionName() *string {
@@ -31,4 +33,11 @@ func (a *ActionProvision) GetConnectorID() *string {
 		return nil
 	}
 	return a.ConnectorID
+}
+
+func (a *ActionProvision) GetDisplayName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.DisplayName
 }

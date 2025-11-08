@@ -148,6 +148,10 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 								Computed:    true,
 								Description: `The connectorId field.`,
 							},
+							"display_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `The displayName field.`,
+							},
 						},
 						Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
 					},
@@ -456,6 +460,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 								Computed:    true,
 								Optional:    true,
 								Description: `The connectorId field.`,
+							},
+							"display_name": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The displayName field.`,
 							},
 						},
 						Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,

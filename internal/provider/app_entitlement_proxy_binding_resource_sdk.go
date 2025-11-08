@@ -17,6 +17,7 @@ func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedAppEntitlemen
 	if resp != nil {
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.DisabledAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DisabledAt))
 		r.DstAppEntitlementID = types.StringPointerValue(resp.DstAppEntitlementID)
 		r.DstAppID = types.StringPointerValue(resp.DstAppID)
 		r.SrcAppEntitlementID = types.StringPointerValue(resp.SrcAppEntitlementID)

@@ -13,6 +13,7 @@ type PolicyInstance struct {
 	//   - reject
 	//   - wait
 	//   - form
+	//   - action
 	//
 	PolicyStepInstance *PolicyStepInstance `json:"current,omitempty"`
 	// An array of steps that were previously processed by the ticket with their outcomes set, in order.

@@ -48,6 +48,17 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 									steps.Accept = &tfTypes.Accept{}
 									steps.Accept.AcceptMessage = types.StringPointerValue(stepsItem.Accept.AcceptMessage)
 								}
+								if stepsItem.Action == nil {
+									steps.Action = nil
+								} else {
+									steps.Action = &tfTypes.Action{}
+									if stepsItem.Action.ActionTargetAutomation == nil {
+										steps.Action.ActionTargetAutomation = nil
+									} else {
+										steps.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
+										steps.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(stepsItem.Action.ActionTargetAutomation.AutomationTemplateID)
+									}
+								}
 								if stepsItem.Approval == nil {
 									steps.Approval = nil
 								} else {
@@ -126,12 +137,14 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 											}
 										}
 										steps.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
+										steps.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers)
 									}
 									if stepsItem.Approval.AppOwnerApproval == nil {
 										steps.Approval.AppOwnerApproval = nil
 									} else {
 										steps.Approval.AppOwnerApproval = &tfTypes.AppOwnerApproval{}
 										steps.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.AllowSelfApproval)
+										steps.Approval.AppOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers)
 									}
 									steps.Approval.Assigned = types.BoolPointerValue(stepsItem.Approval.Assigned)
 									if stepsItem.Approval.EntitlementOwnerApproval == nil {
@@ -148,6 +161,7 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 												steps.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 											}
 										}
+										steps.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
 									}
 									if stepsItem.Approval.Escalation == nil {
 										steps.Approval.Escalation = nil
@@ -206,6 +220,7 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 												steps.Approval.ExpressionApproval.FallbackUserIds = append(steps.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 											}
 										}
+										steps.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers)
 									}
 									if stepsItem.Approval.ManagerApproval == nil {
 										steps.Approval.ManagerApproval = nil
@@ -229,6 +244,7 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 												steps.Approval.ManagerApproval.FallbackUserIds = append(steps.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 											}
 										}
+										steps.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.RequireDistinctApprovers)
 									}
 									steps.Approval.RequireApprovalReason = types.BoolPointerValue(stepsItem.Approval.RequireApprovalReason)
 									steps.Approval.RequireDenialReason = types.BoolPointerValue(stepsItem.Approval.RequireDenialReason)
@@ -248,6 +264,7 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 												steps.Approval.ResourceOwnerApproval.FallbackUserIds = append(steps.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 											}
 										}
+										steps.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
 									}
 									if stepsItem.Approval.SelfApproval == nil {
 										steps.Approval.SelfApproval = nil
@@ -276,6 +293,7 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 									} else {
 										steps.Approval.UserApproval = &tfTypes.UserApproval{}
 										steps.Approval.UserApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.UserApproval.AllowSelfApproval)
+										steps.Approval.UserApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.UserApproval.RequireDistinctApprovers)
 										if stepsItem.Approval.UserApproval.UserIds != nil {
 											if steps.Approval.UserApproval.UserIds == nil {
 												steps.Approval.UserApproval.UserIds = make([]types.String, 0, len(stepsItem.Approval.UserApproval.UserIds))
@@ -314,6 +332,7 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 											steps.Provision.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName)
 											steps.Provision.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID)
 											steps.Provision.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID)
+											steps.Provision.ProvisionPolicy.ActionProvision.DisplayName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.DisplayName)
 										}
 										if stepsItem.Provision.ProvisionPolicy.ConnectorProvision == nil {
 											steps.Provision.ProvisionPolicy.ConnectorProvision = nil

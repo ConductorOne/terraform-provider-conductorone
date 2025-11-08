@@ -36,6 +36,7 @@ resource "conductorone_app_entitlement_proxy_binding" "my_app_entitlement_proxy_
 ### Read-Only
 
 - `created_at` (String)
+- `disabled_at` (String)
 - `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
 - `system_builtin` (Boolean) The systemBuiltin field.
 - `updated_at` (String)

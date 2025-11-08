@@ -56,6 +56,7 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							list.AppEntitlement.DeprovisionerPolicy.ActionProvision.ActionName = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ActionProvision.ActionName)
 							list.AppEntitlement.DeprovisionerPolicy.ActionProvision.AppID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ActionProvision.AppID)
 							list.AppEntitlement.DeprovisionerPolicy.ActionProvision.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ActionProvision.ConnectorID)
+							list.AppEntitlement.DeprovisionerPolicy.ActionProvision.DisplayName = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ActionProvision.DisplayName)
 						}
 						if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision == nil {
 							list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision = nil
@@ -180,6 +181,7 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							list.AppEntitlement.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ActionProvision.ActionName)
 							list.AppEntitlement.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ActionProvision.AppID)
 							list.AppEntitlement.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ActionProvision.ConnectorID)
+							list.AppEntitlement.ProvisionPolicy.ActionProvision.DisplayName = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ActionProvision.DisplayName)
 						}
 						if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision == nil {
 							list.AppEntitlement.ProvisionPolicy.ConnectorProvision = nil

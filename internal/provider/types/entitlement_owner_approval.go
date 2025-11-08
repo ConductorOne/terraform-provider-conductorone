@@ -7,7 +7,8 @@ import (
 )
 
 type EntitlementOwnerApproval struct {
-	AllowSelfApproval types.Bool     `tfsdk:"allow_self_approval"`
-	Fallback          types.Bool     `tfsdk:"fallback"`
-	FallbackUserIds   []types.String `tfsdk:"fallback_user_ids"`
+	AllowSelfApproval        types.Bool     `tfsdk:"allow_self_approval"`
+	Fallback                 types.Bool     `tfsdk:"fallback"`
+	FallbackUserIds          []types.String `tfsdk:"fallback_user_ids"`
+	RequireDistinctApprovers types.Bool     `tfsdk:"require_distinct_approvers"`
 }

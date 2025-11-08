@@ -8,6 +8,11 @@ resource "conductorone_policy" "my_policy" {
           accept = {
             accept_message = "...my_accept_message..."
           }
+          action = {
+            action_target_automation = {
+              automation_template_id = "...my_automation_template_id..."
+            }
+          }
           approval = {
             agent_approval = {
               agent_failure_action = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS"
@@ -40,10 +45,12 @@ resource "conductorone_policy" "my_policy" {
               fallback_user_ids = [
                 "..."
               ]
-              is_group_fallback_enabled = false
+              is_group_fallback_enabled  = false
+              require_distinct_approvers = false
             }
             app_owner_approval = {
-              allow_self_approval = true
+              allow_self_approval        = true
+              require_distinct_approvers = true
             }
             entitlement_owner_approval = {
               allow_self_approval = false
@@ -51,6 +58,7 @@ resource "conductorone_policy" "my_policy" {
               fallback_user_ids = [
                 "..."
               ]
+              require_distinct_approvers = false
             }
             escalation = {
               escalation_comment = "...my_escalation_comment..."
@@ -74,6 +82,7 @@ resource "conductorone_policy" "my_policy" {
               fallback_user_ids = [
                 "..."
               ]
+              require_distinct_approvers = true
             }
             manager_approval = {
               allow_self_approval = true
@@ -81,6 +90,7 @@ resource "conductorone_policy" "my_policy" {
               fallback_user_ids = [
                 "..."
               ]
+              require_distinct_approvers = true
             }
             require_approval_reason      = true
             require_denial_reason        = true
@@ -92,6 +102,7 @@ resource "conductorone_policy" "my_policy" {
               fallback_user_ids = [
                 "..."
               ]
+              require_distinct_approvers = true
             }
             self_approval = {
               fallback = false
@@ -100,7 +111,8 @@ resource "conductorone_policy" "my_policy" {
               ]
             }
             user_approval = {
-              allow_self_approval = false
+              allow_self_approval        = false
+              require_distinct_approvers = false
               user_ids = [
                 "..."
               ]
@@ -117,6 +129,7 @@ resource "conductorone_policy" "my_policy" {
                 action_name  = "...my_action_name..."
                 app_id       = "...my_app_id..."
                 connector_id = "...my_connector_id..."
+                display_name = "...my_display_name..."
               }
               connector_provision = {
                 account_provision = {

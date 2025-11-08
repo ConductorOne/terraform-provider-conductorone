@@ -160,9 +160,16 @@ func (e *Source) UnmarshalJSON(data []byte) error {
 //   - grantDurationUpdated
 //   - waitStepUntilTime
 //   - webhookApprovalFatalError
+//   - accountLifecycleActionCreated
+//   - accountLifecycleActionFailed
+//   - provisionCancelled
 type TaskAuditView struct {
 	// The TaskAuditAccessRequestOutcome message.
 	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
+	// The TaskAuditAccountLifecycleActionCreated message.
+	TaskAuditAccountLifecycleActionCreated *TaskAuditAccountLifecycleActionCreated `json:"accountLifecycleActionCreated,omitempty"`
+	// The TaskAuditAccountLifecycleActionFailed message.
+	TaskAuditAccountLifecycleActionFailed *TaskAuditAccountLifecycleActionFailed `json:"accountLifecycleActionFailed,omitempty"`
 	// The TaskAuditConnectorActionResult message.
 	//
 	// This message contains a oneof named result. Only a single field of the following list may be set at a time:
@@ -226,6 +233,8 @@ type TaskAuditView struct {
 	TaskAuditPolicyChanged *TaskAuditPolicyChanged `json:"policyChanged,omitempty"`
 	// The TaskAuditPolicyEvaluationStep message.
 	TaskAuditPolicyEvaluationStep *TaskAuditPolicyEvaluationStep `json:"policyEvaluationStep,omitempty"`
+	// The TaskAuditPolicyProvisionCancelled message.
+	TaskAuditPolicyProvisionCancelled *TaskAuditPolicyProvisionCancelled `json:"provisionCancelled,omitempty"`
 	// The TaskAuditPolicyProvisionError message.
 	TaskAuditPolicyProvisionError *TaskAuditPolicyProvisionError `json:"provisionError,omitempty"`
 	// The TaskAuditPolicyProvisionReassigned message.
@@ -306,6 +315,20 @@ func (t *TaskAuditView) GetTaskAuditAccessRequestOutcome() *TaskAuditAccessReque
 		return nil
 	}
 	return t.TaskAuditAccessRequestOutcome
+}
+
+func (t *TaskAuditView) GetTaskAuditAccountLifecycleActionCreated() *TaskAuditAccountLifecycleActionCreated {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditAccountLifecycleActionCreated
+}
+
+func (t *TaskAuditView) GetTaskAuditAccountLifecycleActionFailed() *TaskAuditAccountLifecycleActionFailed {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditAccountLifecycleActionFailed
 }
 
 func (t *TaskAuditView) GetTaskAuditConnectorActionResult() *TaskAuditConnectorActionResult {
@@ -509,6 +532,13 @@ func (t *TaskAuditView) GetTaskAuditPolicyEvaluationStep() *TaskAuditPolicyEvalu
 		return nil
 	}
 	return t.TaskAuditPolicyEvaluationStep
+}
+
+func (t *TaskAuditView) GetTaskAuditPolicyProvisionCancelled() *TaskAuditPolicyProvisionCancelled {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditPolicyProvisionCancelled
 }
 
 func (t *TaskAuditView) GetTaskAuditPolicyProvisionError() *TaskAuditPolicyProvisionError {

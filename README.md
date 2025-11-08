@@ -67,11 +67,12 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_request_schema_entitlement_binding](docs/resources/request_schema_entitlement_binding.md)
 * [conductorone_request_schema](docs/resources/request_schema.md)
 * [conductorone_risk_level](docs/resources/risk_level.md)
+* [conductorone_vault](docs/resources/vault.md)
 * [conductorone_webhook](docs/resources/webhook.md)
 ### Data Sources
 
 * [conductorone_access_profile](docs/data-sources/access_profile.md)
-* [conductorone_access_profile_requestable_entries](docs/data-sources/access_profile_requestable_entries.md)
+* [conductorone_access_profile_requestable_entry](docs/data-sources/access_profile_requestable_entry.md)
 * [conductorone_app](docs/data-sources/app.md)
 * [conductorone_app_entitlement](docs/data-sources/app_entitlement.md)
 * [conductorone_app_entitlement_automation](docs/data-sources/app_entitlement_automation.md)
@@ -180,7 +181,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.7.1"
+      version = "1.7.2"
     }
   }
 }

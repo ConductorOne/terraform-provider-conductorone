@@ -23,6 +23,7 @@ generation:
     hoistGlobalSecurity: true
   schemas:
     allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: ""
   mockServer:
     disabled: true
   tests:
@@ -30,7 +31,7 @@ generation:
     generateNewTests: false
     skipResponseBodyAssertions: false
 terraform:
-  version: 1.7.1
+  version: 1.7.2
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []

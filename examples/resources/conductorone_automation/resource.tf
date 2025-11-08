@@ -83,6 +83,63 @@ resource "conductorone_automation" "my_automation" {
           id = "...my_id..."
         }
       }
+      create_revoke_tasks_v2 = {
+        entitlement_exclusion_criteria = {
+          excluded_app_ids = [
+            "..."
+          ]
+          excluded_compliance_framework_ids = [
+            "..."
+          ]
+          excluded_resource_type_ids = [
+            "..."
+          ]
+          excluded_risk_level_ids = [
+            "..."
+          ]
+        }
+        entitlement_exclusion_list = {
+          excluded_app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        entitlement_exclusion_none = {
+          # ...
+        }
+        entitlement_inclusion_all = {
+          # ...
+        }
+        entitlement_inclusion_criteria = {
+          app_ids = [
+            "..."
+          ]
+          compliance_framework_ids = [
+            "..."
+          ]
+          resource_type_ids = [
+            "..."
+          ]
+          risk_level_ids = [
+            "..."
+          ]
+        }
+        entitlement_inclusion_list = {
+          app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        use_subject_user = false
+        user_id_cel      = "...my_user_id_cel..."
+        user_ref = {
+          id = "...my_id..."
+        }
+      }
       grant_entitlements = {
         app_entitlement_refs = [
           {
@@ -277,6 +334,63 @@ resource "conductorone_automation" "my_automation" {
           id = "...my_id..."
         }
       }
+      create_revoke_tasks_v2 = {
+        entitlement_exclusion_criteria = {
+          excluded_app_ids = [
+            "..."
+          ]
+          excluded_compliance_framework_ids = [
+            "..."
+          ]
+          excluded_resource_type_ids = [
+            "..."
+          ]
+          excluded_risk_level_ids = [
+            "..."
+          ]
+        }
+        entitlement_exclusion_list = {
+          excluded_app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        entitlement_exclusion_none = {
+          # ...
+        }
+        entitlement_inclusion_all = {
+          # ...
+        }
+        entitlement_inclusion_criteria = {
+          app_ids = [
+            "..."
+          ]
+          compliance_framework_ids = [
+            "..."
+          ]
+          resource_type_ids = [
+            "..."
+          ]
+          risk_level_ids = [
+            "..."
+          ]
+        }
+        entitlement_inclusion_list = {
+          app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        use_subject_user = false
+        user_id_cel      = "...my_user_id_cel..."
+        user_ref = {
+          id = "...my_id..."
+        }
+      }
       grant_entitlements = {
         app_entitlement_refs = [
           {
@@ -393,6 +507,16 @@ resource "conductorone_automation" "my_automation" {
   ]
   draft_triggers = [
     {
+      access_conflict_trigger = {
+        all_conflict_monitors = true
+        conflict_monitor_refs = {
+          conflict_monitor_refs = [
+            {
+              id = "...my_id..."
+            }
+          ]
+        }
+      }
       app_user_created_trigger = {
         app_id     = "...my_app_id..."
         app_id_cel = "...my_app_id_cel..."
@@ -519,6 +643,16 @@ resource "conductorone_automation" "my_automation" {
   is_draft = true
   triggers = [
     {
+      access_conflict_trigger = {
+        all_conflict_monitors = false
+        conflict_monitor_refs = {
+          conflict_monitor_refs = [
+            {
+              id = "...my_id..."
+            }
+          ]
+        }
+      }
       app_user_created_trigger = {
         app_id     = "...my_app_id..."
         app_id_cel = "...my_app_id_cel..."

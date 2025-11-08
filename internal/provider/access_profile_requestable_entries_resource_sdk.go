@@ -4,15 +4,38 @@ package provider
 
 import (
 	"context"
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceAddAppEntitlementsResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
+	}
+
+	return diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.AppEntitlements != nil {
+			r.AppEntitlements = []tfTypes.AppEntitlementRef{}
+
+			for _, appEntitlementsItem := range resp.AppEntitlements {
+				var appEntitlements tfTypes.AppEntitlementRef
+
+				appEntitlements.AppID = types.StringPointerValue(appEntitlementsItem.AppID)
+				appEntitlements.ID = types.StringPointerValue(appEntitlementsItem.ID)
+
+				r.AppEntitlements = append(r.AppEntitlements, appEntitlements)
+			}
+		}
 	}
 
 	return diags
@@ -43,6 +66,19 @@ func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestc
 	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest{
 		CatalogID: catalogID,
 		RequestCatalogManagementServiceAddAppEntitlementsRequest: requestCatalogManagementServiceAddAppEntitlementsRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *AccessProfileRequestableEntriesResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var catalogID string
+	catalogID = r.CatalogID.ValueString()
+
+	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest{
+		CatalogID: catalogID,
 	}
 
 	return &out, diags

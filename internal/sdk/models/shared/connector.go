@@ -69,7 +69,9 @@ type Connector struct {
 	ProfileIgnoreList []string `json:"profileIgnoreList,omitempty"`
 	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
 	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
-	SyncDisabledAt  *time.Time       `json:"syncDisabledAt,omitempty"`
+	// The SyncConfig message.
+	SyncConfig     *SyncConfig `json:"syncConfig,omitempty"`
+	SyncDisabledAt *time.Time  `json:"syncDisabledAt,omitempty"`
 	// The category of the connector sync that was disabled.
 	SyncDisabledCategory *string `json:"syncDisabledCategory,omitempty"`
 	// The reason the connector sync was disabled.
@@ -195,6 +197,13 @@ func (c *Connector) GetConnectorStatus() *ConnectorStatus {
 	return c.ConnectorStatus
 }
 
+func (c *Connector) GetSyncConfig() *SyncConfig {
+	if c == nil {
+		return nil
+	}
+	return c.SyncConfig
+}
+
 func (c *Connector) GetSyncDisabledAt() *time.Time {
 	if c == nil {
 		return nil
@@ -256,6 +265,8 @@ type ConnectorInput struct {
 	ProfileIgnoreList []string `json:"profileIgnoreList,omitempty"`
 	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
 	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
+	// The SyncConfig message.
+	SyncConfig *SyncConfig `json:"syncConfig,omitempty"`
 	// The category of the connector sync that was disabled.
 	SyncDisabledCategory *string `json:"syncDisabledCategory,omitempty"`
 	// The reason the connector sync was disabled.
@@ -346,6 +357,13 @@ func (c *ConnectorInput) GetConnectorStatus() *ConnectorStatus {
 		return nil
 	}
 	return c.ConnectorStatus
+}
+
+func (c *ConnectorInput) GetSyncConfig() *SyncConfig {
+	if c == nil {
+		return nil
+	}
+	return c.SyncConfig
 }
 
 func (c *ConnectorInput) GetSyncDisabledCategory() *string {

@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: dd1be6ff0533f0c8fb13f9f975907227
+  docChecksum: 45687eb558869a8f2957a03084da4b70
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.649.0
-  generationVersion: 2.739.1
-  releaseVersion: 1.7.1
-  configChecksum: 3af38028314335aa1f36ca7c9ae33d52
+  speakeasyVersion: 1.651.0
+  generationVersion: 2.745.2
+  releaseVersion: 1.7.2
+  configChecksum: 6ad6f8203cb299b364045009314a0fd2
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.3
-    core: 3.46.5
+    core: 3.46.8
     deprecations: 2.82.0
     devContainers: 0.0.0
     globalSecurity: 2.82.1
@@ -28,7 +28,7 @@ generatedFiles:
   - .gitattributes
   - USAGE.md
   - examples/data-sources/conductorone_access_profile/data-source.tf
-  - examples/data-sources/conductorone_access_profile_requestable_entries/data-source.tf
+  - examples/data-sources/conductorone_access_profile_requestable_entry/data-source.tf
   - examples/data-sources/conductorone_app/data-source.tf
   - examples/data-sources/conductorone_app_entitlement/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_automation/data-source.tf
@@ -66,9 +66,9 @@ generatedFiles:
   - examples/resources/conductorone_access_profile/import-by-string-id.tf
   - examples/resources/conductorone_access_profile/import.sh
   - examples/resources/conductorone_access_profile/resource.tf
+  - examples/resources/conductorone_access_profile_requestable_entries/import-by-string-id.tf
+  - examples/resources/conductorone_access_profile_requestable_entries/import.sh
   - examples/resources/conductorone_access_profile_requestable_entries/resource.tf
-  - examples/resources/conductorone_access_profile_requestable_entry/import-by-string-id.tf
-  - examples/resources/conductorone_access_profile_requestable_entry/import.sh
   - examples/resources/conductorone_access_profile_requestable_entry/resource.tf
   - examples/resources/conductorone_access_profile_visibility_bindings/resource.tf
   - examples/resources/conductorone_app/import-by-string-id.tf
@@ -130,6 +130,9 @@ generatedFiles:
   - examples/resources/conductorone_risk_level/import-by-string-id.tf
   - examples/resources/conductorone_risk_level/import.sh
   - examples/resources/conductorone_risk_level/resource.tf
+  - examples/resources/conductorone_vault/import-by-string-id.tf
+  - examples/resources/conductorone_vault/import.sh
+  - examples/resources/conductorone_vault/resource.tf
   - examples/resources/conductorone_webhook/import-by-string-id.tf
   - examples/resources/conductorone_webhook/import.sh
   - examples/resources/conductorone_webhook/resource.tf
@@ -151,10 +154,10 @@ generatedFiles:
   - internal/provider/access_conflict_resource_sdk.go
   - internal/provider/access_profile_data_source.go
   - internal/provider/access_profile_data_source_sdk.go
-  - internal/provider/access_profile_requestable_entries_data_source.go
-  - internal/provider/access_profile_requestable_entries_data_source_sdk.go
   - internal/provider/access_profile_requestable_entries_resource.go
   - internal/provider/access_profile_requestable_entries_resource_sdk.go
+  - internal/provider/access_profile_requestable_entry_data_source.go
+  - internal/provider/access_profile_requestable_entry_data_source_sdk.go
   - internal/provider/access_profile_requestable_entry_resource.go
   - internal/provider/access_profile_requestable_entry_resource_sdk.go
   - internal/provider/access_profile_resource.go
@@ -271,13 +274,16 @@ generatedFiles:
   - internal/provider/typeconvert/datetime.go
   - internal/provider/typeconvert/int.go
   - internal/provider/types/accept.go
+  - internal/provider/types/access_conflict_trigger.go
   - internal/provider/types/account_filter.go
   - internal/provider/types/account_in_context.go
   - internal/provider/types/account_lifecycle_action.go
   - internal/provider/types/account_provision.go
   - internal/provider/types/account_provision_config.go
   - internal/provider/types/account_ref.go
+  - internal/provider/types/action.go
   - internal/provider/types/action_provision.go
+  - internal/provider/types/action_target_automation.go
   - internal/provider/types/agent_approval.go
   - internal/provider/types/app.go
   - internal/provider/types/app_entitlement.go
@@ -317,6 +323,8 @@ generatedFiles:
   - internal/provider/types/checkbox_field.go
   - internal/provider/types/close_action.go
   - internal/provider/types/conflict_monitor_delete_request.go
+  - internal/provider/types/conflict_monitor_ref.go
+  - internal/provider/types/conflict_monitor_refs.go
   - internal/provider/types/connector_action.go
   - internal/provider/types/connector_create_account.go
   - internal/provider/types/connector_provision.go
@@ -325,6 +333,7 @@ generatedFiles:
   - internal/provider/types/create_access_review.go
   - internal/provider/types/create_app_entitlement_request_duration_unset.go
   - internal/provider/types/create_revoke_tasks.go
+  - internal/provider/types/create_revoke_tasks_v2.go
   - internal/provider/types/default_behavior.go
   - internal/provider/types/delegated_provision.go
   - internal/provider/types/delete_account.go
@@ -333,7 +342,13 @@ generatedFiles:
   - internal/provider/types/disabled_reason_circuit_breaker.go
   - internal/provider/types/do_not_save.go
   - internal/provider/types/email_notifications.go
+  - internal/provider/types/entitlement_exclusion_criteria.go
+  - internal/provider/types/entitlement_exclusion_list.go
+  - internal/provider/types/entitlement_exclusion_none.go
   - internal/provider/types/entitlement_filter.go
+  - internal/provider/types/entitlement_inclusion_all.go
+  - internal/provider/types/entitlement_inclusion_criteria.go
+  - internal/provider/types/entitlement_inclusion_list.go
   - internal/provider/types/entitlement_owner_approval.go
   - internal/provider/types/escalation.go
   - internal/provider/types/expression_approval.go
@@ -351,8 +366,10 @@ generatedFiles:
   - internal/provider/types/grant_filter.go
   - internal/provider/types/grant_found_trigger.go
   - internal/provider/types/grant_trigger_filter.go
+  - internal/provider/types/group_authz_vault.go
   - internal/provider/types/int64_field.go
   - internal/provider/types/int64_rules.go
+  - internal/provider/types/magic_vault.go
   - internal/provider/types/manager_approval.go
   - internal/provider/types/manual_automation_trigger.go
   - internal/provider/types/manual_provision.go
@@ -432,6 +449,8 @@ generatedFiles:
   - internal/provider/users_data_source.go
   - internal/provider/users_data_source_sdk.go
   - internal/provider/utils.go
+  - internal/provider/vault_resource.go
+  - internal/provider/vault_resource_sdk.go
   - internal/provider/webhook_data_source.go
   - internal/provider/webhook_data_source_sdk.go
   - internal/provider/webhook_resource.go
@@ -728,6 +747,11 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiuserv1userserviceget.go
   - internal/sdk/models/operations/c1apiuserv1userservicegetuserprofiletypes.go
   - internal/sdk/models/operations/c1apiuserv1userservicelist.go
+  - internal/sdk/models/operations/c1apiuserv1userservicesetexpiringuserdelegationbindingbyadmin.go
+  - internal/sdk/models/operations/c1apivaultv1vaultservicecreate.go
+  - internal/sdk/models/operations/c1apivaultv1vaultservicedelete.go
+  - internal/sdk/models/operations/c1apivaultv1vaultserviceget.go
+  - internal/sdk/models/operations/c1apivaultv1vaultserviceupdate.go
   - internal/sdk/models/operations/c1apiwebhooksv1webhookssearchsearch.go
   - internal/sdk/models/operations/c1apiwebhooksv1webhooksservicecreate.go
   - internal/sdk/models/operations/c1apiwebhooksv1webhooksservicedelete.go
@@ -738,12 +762,21 @@ generatedFiles:
   - internal/sdk/models/operations/options.go
   - internal/sdk/models/shared/accept.go
   - internal/sdk/models/shared/acceptinstance.go
+  - internal/sdk/models/shared/accessconflicttrigger.go
   - internal/sdk/models/shared/accountfilter.go
   - internal/sdk/models/shared/accountincontext.go
   - internal/sdk/models/shared/accountlifecycleaction.go
   - internal/sdk/models/shared/accountprovision.go
   - internal/sdk/models/shared/accountref.go
+  - internal/sdk/models/shared/action.go
+  - internal/sdk/models/shared/actioninstance.go
+  - internal/sdk/models/shared/actionoutcomecancelled.go
+  - internal/sdk/models/shared/actionoutcomedenied.go
+  - internal/sdk/models/shared/actionoutcomeerror.go
+  - internal/sdk/models/shared/actionoutcomesuccess.go
   - internal/sdk/models/shared/actionprovision.go
+  - internal/sdk/models/shared/actiontargetautomation.go
+  - internal/sdk/models/shared/actiontargetautomationinstance.go
   - internal/sdk/models/shared/addappentitlementownerrequest.go
   - internal/sdk/models/shared/addappentitlementownerresponse.go
   - internal/sdk/models/shared/addappownerrequest.go
@@ -866,6 +899,8 @@ generatedFiles:
   - internal/sdk/models/shared/conflictmonitorcreaterequest.go
   - internal/sdk/models/shared/conflictmonitordeleterequest.go
   - internal/sdk/models/shared/conflictmonitordeleteresponse.go
+  - internal/sdk/models/shared/conflictmonitorref.go
+  - internal/sdk/models/shared/conflictmonitorrefs.go
   - internal/sdk/models/shared/conflictmonitorupdaterequest.go
   - internal/sdk/models/shared/connector.go
   - internal/sdk/models/shared/connectoraction.go
@@ -916,6 +951,7 @@ generatedFiles:
   - internal/sdk/models/shared/createpolicyrequest.go
   - internal/sdk/models/shared/createpolicyresponse.go
   - internal/sdk/models/shared/createrevoketasks.go
+  - internal/sdk/models/shared/createrevoketasksv2.go
   - internal/sdk/models/shared/createrisklevelattributevaluerequest.go
   - internal/sdk/models/shared/createrisklevelattributevalueresponse.go
   - internal/sdk/models/shared/createstepupproviderrequest.go
@@ -975,13 +1011,20 @@ generatedFiles:
   - internal/sdk/models/shared/editorvalidateresponse.go
   - internal/sdk/models/shared/emailnotifications.go
   - internal/sdk/models/shared/encrypteddata.go
+  - internal/sdk/models/shared/entitlementexclusioncriteria.go
+  - internal/sdk/models/shared/entitlementexclusionlist.go
+  - internal/sdk/models/shared/entitlementexclusionnone.go
   - internal/sdk/models/shared/entitlementfilter.go
+  - internal/sdk/models/shared/entitlementinclusionall.go
+  - internal/sdk/models/shared/entitlementinclusioncriteria.go
+  - internal/sdk/models/shared/entitlementinclusionlist.go
   - internal/sdk/models/shared/entitlementownerapproval.go
   - internal/sdk/models/shared/erroredaction.go
   - internal/sdk/models/shared/escalation.go
   - internal/sdk/models/shared/escalationinstance.go
   - internal/sdk/models/shared/executeautomationrequest.go
   - internal/sdk/models/shared/executeautomationresponse.go
+  - internal/sdk/models/shared/expiringuserdelegationbinding.go
   - internal/sdk/models/shared/exporter.go
   - internal/sdk/models/shared/exporterinput.go
   - internal/sdk/models/shared/exporterref.go
@@ -1058,6 +1101,7 @@ generatedFiles:
   - internal/sdk/models/shared/grantfoundtrigger.go
   - internal/sdk/models/shared/grantreason.go
   - internal/sdk/models/shared/granttriggerfilter.go
+  - internal/sdk/models/shared/groupauthzvault.go
   - internal/sdk/models/shared/int64field.go
   - internal/sdk/models/shared/int64rules.go
   - internal/sdk/models/shared/introspectresponse.go
@@ -1082,6 +1126,7 @@ generatedFiles:
   - internal/sdk/models/shared/listrisklevelsresponse.go
   - internal/sdk/models/shared/listrolesresponse.go
   - internal/sdk/models/shared/liststepupprovidersresponse.go
+  - internal/sdk/models/shared/magicvault.go
   - internal/sdk/models/shared/managerapproval.go
   - internal/sdk/models/shared/managerapprovalinput.go
   - internal/sdk/models/shared/manualautomationtrigger.go
@@ -1260,6 +1305,8 @@ generatedFiles:
   - internal/sdk/models/shared/setappresourceownersrequest.go
   - internal/sdk/models/shared/setappresourceownersresponse.go
   - internal/sdk/models/shared/setbundleautomationrequest.go
+  - internal/sdk/models/shared/setexpiringuserdelegationbindingbyadminrequest.go
+  - internal/sdk/models/shared/setexpiringuserdelegationbindingbyadminresponse.go
   - internal/sdk/models/shared/skippedaction.go
   - internal/sdk/models/shared/slacknotifications.go
   - internal/sdk/models/shared/status.go
@@ -1271,6 +1318,7 @@ generatedFiles:
   - internal/sdk/models/shared/stepuptransaction.go
   - internal/sdk/models/shared/stringfield.go
   - internal/sdk/models/shared/stringrules.go
+  - internal/sdk/models/shared/syncconfig.go
   - internal/sdk/models/shared/systemlogservicelisteventsrequest.go
   - internal/sdk/models/shared/systemlogservicelisteventsresponse.go
   - internal/sdk/models/shared/targettask.go
@@ -1301,6 +1349,8 @@ generatedFiles:
   - internal/sdk/models/shared/taskactionsserviceupdategrantdurationrequest.go
   - internal/sdk/models/shared/taskactionsserviceupdaterequestdatarequest.go
   - internal/sdk/models/shared/taskauditaccessrequestoutcome.go
+  - internal/sdk/models/shared/taskauditaccountlifecycleactioncreated.go
+  - internal/sdk/models/shared/taskauditaccountlifecycleactionfailed.go
   - internal/sdk/models/shared/taskauditactionsubmitted.go
   - internal/sdk/models/shared/taskauditapprovalautoacceptedbypolicy.go
   - internal/sdk/models/shared/taskauditapprovalautorejectedbypolicy.go
@@ -1331,6 +1381,7 @@ generatedFiles:
   - internal/sdk/models/shared/taskauditpolicyapprovalreassigned.go
   - internal/sdk/models/shared/taskauditpolicychanged.go
   - internal/sdk/models/shared/taskauditpolicyevaluationstep.go
+  - internal/sdk/models/shared/taskauditpolicyprovisioncancelled.go
   - internal/sdk/models/shared/taskauditpolicyprovisionerror.go
   - internal/sdk/models/shared/taskauditpolicyprovisionreassigned.go
   - internal/sdk/models/shared/taskauditreassignedtodelegate.go
@@ -1378,6 +1429,8 @@ generatedFiles:
   - internal/sdk/models/shared/taskservicecreaterevokeresponse.go
   - internal/sdk/models/shared/taskservicegetresponse.go
   - internal/sdk/models/shared/tasktype.go
+  - internal/sdk/models/shared/tasktypeaction.go
+  - internal/sdk/models/shared/tasktypeactioninput.go
   - internal/sdk/models/shared/tasktypecertify.go
   - internal/sdk/models/shared/tasktypecertifyinput.go
   - internal/sdk/models/shared/tasktypegrant.go
@@ -1436,6 +1489,15 @@ generatedFiles:
   - internal/sdk/models/shared/userservicelistresponse.go
   - internal/sdk/models/shared/userview.go
   - internal/sdk/models/shared/userwithappentitlementuserbindingview.go
+  - internal/sdk/models/shared/vault.go
+  - internal/sdk/models/shared/vaultinput.go
+  - internal/sdk/models/shared/vaultservicecreaterequest.go
+  - internal/sdk/models/shared/vaultservicecreateresponse.go
+  - internal/sdk/models/shared/vaultservicedeleterequest.go
+  - internal/sdk/models/shared/vaultservicedeleteresponse.go
+  - internal/sdk/models/shared/vaultservicegetresponse.go
+  - internal/sdk/models/shared/vaultserviceupdaterequest.go
+  - internal/sdk/models/shared/vaultserviceupdateresponse.go
   - internal/sdk/models/shared/wait.go
   - internal/sdk/models/shared/waitcondition.go
   - internal/sdk/models/shared/waitconditioninstance.go
@@ -1500,6 +1562,7 @@ generatedFiles:
   - internal/sdk/types/pointers.go
   - internal/sdk/user.go
   - internal/sdk/usersearch.go
+  - internal/sdk/vault.go
   - internal/sdk/webhooks.go
   - internal/sdk/webhookssearch.go
   - internal/validators/DateValidator.go
@@ -3344,6 +3407,43 @@ examples:
           catalog_id: "<id>"
           app_id: "<id>"
           entitlement_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.user.v1.UserService.SetExpiringUserDelegationBindingByAdmin:
+    speakeasy-default-c1-api-user-v1-user-service-set-expiring-user-delegation-binding-by-admin:
+      parameters:
+        path:
+          user_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.vault.v1.VaultService.Create:
+    speakeasy-default-c1-api-vault-v1-vault-service-create:
+      responses:
+        "200":
+          application/json: {}
+  c1.api.vault.v1.VaultService.Delete:
+    speakeasy-default-c1-api-vault-v1-vault-service-delete:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.vault.v1.VaultService.Get:
+    speakeasy-default-c1-api-vault-v1-vault-service-get:
+      parameters:
+        path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.vault.v1.VaultService.Update:
+    speakeasy-default-c1-api-vault-v1-vault-service-update:
+      parameters:
+        path:
+          id: "<id>"
       responses:
         "200":
           application/json: {}

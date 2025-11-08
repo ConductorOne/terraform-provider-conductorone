@@ -7,5 +7,6 @@ import (
 )
 
 type AppOwnerApproval struct {
-	AllowSelfApproval types.Bool `tfsdk:"allow_self_approval"`
+	AllowSelfApproval        types.Bool `tfsdk:"allow_self_approval"`
+	RequireDistinctApprovers types.Bool `tfsdk:"require_distinct_approvers"`
 }

@@ -89,6 +89,10 @@ Read-Only:
 Read-Only:
 
 - `accept` (Attributes) This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--policy_steps--steps--accept))
+- `action` (Attributes) The Action message.
+
+This message contains a oneof named target. Only a single field of the following list may be set at a time:
+  - automation (see [below for nested schema](#nestedatt--policy_steps--steps--action))
 - `approval` (Attributes) The Approval message.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -118,6 +122,22 @@ This message contains a oneof named until. Only a single field of the following 
 Read-Only:
 
 - `accept_message` (String) An optional message to include in the comments when a task is automatically accepted.
+
+
+<a id="nestedatt--policy_steps--steps--action"></a>
+### Nested Schema for `policy_steps.steps.action`
+
+Read-Only:
+
+- `action_target_automation` (Attributes) The ActionTargetAutomation message. (see [below for nested schema](#nestedatt--policy_steps--steps--action--action_target_automation))
+
+<a id="nestedatt--policy_steps--steps--action--action_target_automation"></a>
+### Nested Schema for `policy_steps.steps.action.action_target_automation`
+
+Read-Only:
+
+- `automation_template_id` (String) The automationTemplateId field.
+
 
 
 <a id="nestedatt--policy_steps--steps--approval"></a>
@@ -176,6 +196,7 @@ Read-Only:
 - `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the group is empty. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--app_group_approval--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the group is empty.
 - `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
+- `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
 <a id="nestedatt--policy_steps--steps--approval--app_group_approval--fallback_group_ids"></a>
 ### Nested Schema for `policy_steps.steps.approval.app_group_approval.fallback_group_ids`
@@ -193,6 +214,7 @@ Read-Only:
 Read-Only:
 
 - `allow_self_approval` (Boolean) Configuration that allows a user to self approve if they are an app owner during this approval step.
+- `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
 
 <a id="nestedatt--policy_steps--steps--approval--entitlement_owner_approval"></a>
@@ -203,6 +225,7 @@ Read-Only:
 - `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is an entitlement owner during this step.
 - `fallback` (Boolean) Configuration to allow a fallback if the entitlement owner cannot be identified.
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.
+- `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
 
 <a id="nestedatt--policy_steps--steps--approval--escalation"></a>
@@ -242,6 +265,7 @@ Read-Only:
 - `expressions` (List of String) Array of dynamic expressions to determine the approvers.  The first expression to return a non-empty list of users will be used.
 - `fallback` (Boolean) Configuration to allow a fallback if the expression does not return a valid list of users.
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if and the expression does not return a valid list of users.
+- `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
 
 <a id="nestedatt--policy_steps--steps--approval--manager_approval"></a>
@@ -253,6 +277,7 @@ Read-Only:
 - `assigned_user_ids` (List of String) The array of users determined to be the manager during processing time.
 - `fallback` (Boolean) Configuration to allow a fallback if no manager is found.
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and no manager is found.
+- `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
 
 <a id="nestedatt--policy_steps--steps--approval--resource_owner_approval"></a>
@@ -263,6 +288,7 @@ Read-Only:
 - `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is an resource owner during this step.
 - `fallback` (Boolean) Configuration to allow a fallback if the resource owner cannot be identified.
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the resource owner cannot be identified.
+- `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
 
 <a id="nestedatt--policy_steps--steps--approval--self_approval"></a>
@@ -281,6 +307,7 @@ Read-Only:
 Read-Only:
 
 - `allow_self_approval` (Boolean) Configuration to allow self approval of if the user is specified and also the target of the ticket.
+- `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 - `user_ids` (List of String) Array of users configured for approval.
 
 
@@ -339,6 +366,7 @@ Read-Only:
 - `action_name` (String) The actionName field.
 - `app_id` (String) The appId field.
 - `connector_id` (String) The connectorId field.
+- `display_name` (String) The displayName field.
 
 
 <a id="nestedatt--policy_steps--steps--provision--provision_policy--connector_provision"></a>

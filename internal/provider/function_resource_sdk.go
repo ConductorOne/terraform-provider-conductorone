@@ -44,6 +44,13 @@ func (r *FunctionResourceModel) RefreshFromSharedFunctionsServiceCreateFunctionR
 			return diags
 		}
 
+		if resp.FunctionCommit != nil {
+			r.Author = types.StringPointerValue(resp.FunctionCommit.Author)
+			r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.FunctionCommit.CreatedAt))
+			r.FunctionID = types.StringPointerValue(resp.FunctionCommit.FunctionID)
+			r.ID = types.StringPointerValue(resp.FunctionCommit.ID)
+			r.Message = types.StringPointerValue(resp.FunctionCommit.Message)
+		}
 	}
 
 	return diags

@@ -325,6 +325,7 @@ type Task struct {
 	//   - revoke
 	//   - certify
 	//   - offboarding
+	//   - action
 	//
 	TaskType  *TaskType  `json:"type,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`

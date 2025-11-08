@@ -7,9 +7,10 @@ import (
 )
 
 type ExpressionApproval struct {
-	AllowSelfApproval types.Bool     `tfsdk:"allow_self_approval"`
-	AssignedUserIds   []types.String `tfsdk:"assigned_user_ids"`
-	Expressions       []types.String `tfsdk:"expressions"`
-	Fallback          types.Bool     `tfsdk:"fallback"`
-	FallbackUserIds   []types.String `tfsdk:"fallback_user_ids"`
+	AllowSelfApproval        types.Bool     `tfsdk:"allow_self_approval"`
+	AssignedUserIds          []types.String `tfsdk:"assigned_user_ids"`
+	Expressions              []types.String `tfsdk:"expressions"`
+	Fallback                 types.Bool     `tfsdk:"fallback"`
+	FallbackUserIds          []types.String `tfsdk:"fallback_user_ids"`
+	RequireDistinctApprovers types.Bool     `tfsdk:"require_distinct_approvers"`
 }

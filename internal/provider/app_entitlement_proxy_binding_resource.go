@@ -39,6 +39,7 @@ type AppEntitlementProxyBindingResource struct {
 type AppEntitlementProxyBindingResourceModel struct {
 	CreatedAt           types.String                                     `tfsdk:"created_at"`
 	DeletedAt           types.String                                     `tfsdk:"-"`
+	DisabledAt          types.String                                     `tfsdk:"disabled_at"`
 	DstAppEntitlementID types.String                                     `tfsdk:"dst_app_entitlement_id"`
 	DstAppID            types.String                                     `tfsdk:"dst_app_id"`
 	Expanded            []tfTypes.GetAppEntitlementProxyResponseExpanded `tfsdk:"expanded"`
@@ -57,6 +58,12 @@ func (r *AppEntitlementProxyBindingResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "AppEntitlementProxyBinding Resource",
 		Attributes: map[string]schema.Attribute{
 			"created_at": schema.StringAttribute{
+				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
+			},
+			"disabled_at": schema.StringAttribute{
 				Computed: true,
 				Validators: []validator.String{
 					validators.IsRFC3339(),

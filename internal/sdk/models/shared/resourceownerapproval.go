@@ -10,6 +10,8 @@ type ResourceOwnerApproval struct {
 	Fallback *bool `json:"fallback,omitempty"`
 	// Configuration to specific which users to fallback to if fallback is enabled and the resource owner cannot be identified.
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
+	// Configuration to require distinct approvers across approval steps of a rule.
+	RequireDistinctApprovers *bool `json:"requireDistinctApprovers,omitempty"`
 }
 
 func (r *ResourceOwnerApproval) GetAllowSelfApproval() *bool {
@@ -31,4 +33,11 @@ func (r *ResourceOwnerApproval) GetFallbackUserIds() []string {
 		return nil
 	}
 	return r.FallbackUserIds
+}
+
+func (r *ResourceOwnerApproval) GetRequireDistinctApprovers() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.RequireDistinctApprovers
 }

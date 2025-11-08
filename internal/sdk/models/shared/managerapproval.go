@@ -12,6 +12,8 @@ type ManagerApproval struct {
 	Fallback *bool `json:"fallback,omitempty"`
 	// Configuration to specific which users to fallback to if fallback is enabled and no manager is found.
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
+	// Configuration to require distinct approvers across approval steps of a rule.
+	RequireDistinctApprovers *bool `json:"requireDistinctApprovers,omitempty"`
 }
 
 func (m *ManagerApproval) GetAllowSelfApproval() *bool {
@@ -40,4 +42,11 @@ func (m *ManagerApproval) GetFallbackUserIds() []string {
 		return nil
 	}
 	return m.FallbackUserIds
+}
+
+func (m *ManagerApproval) GetRequireDistinctApprovers() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.RequireDistinctApprovers
 }

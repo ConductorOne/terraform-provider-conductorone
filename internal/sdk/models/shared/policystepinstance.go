@@ -46,10 +46,24 @@ func (e *PolicyStepInstanceState) UnmarshalJSON(data []byte) error {
 //   - reject
 //   - wait
 //   - form
+//   - action
 type PolicyStepInstance struct {
 	// This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
 	//  The instance is just a marker for it being copied into an active policy.
 	AcceptInstance *AcceptInstance `json:"accept,omitempty"`
+	// The ActionInstance message.
+	//
+	// This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:
+	//   - automation
+	//
+	//
+	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
+	//   - success
+	//   - denied
+	//   - error
+	//   - cancelled
+	//
+	ActionInstance *ActionInstance `json:"action,omitempty"`
 	// The approval instance object describes the way a policy step should be approved as well as its outcomes and state.
 	//
 	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
@@ -109,6 +123,13 @@ func (p *PolicyStepInstance) GetAcceptInstance() *AcceptInstance {
 		return nil
 	}
 	return p.AcceptInstance
+}
+
+func (p *PolicyStepInstance) GetActionInstance() *ActionInstance {
+	if p == nil {
+		return nil
+	}
+	return p.ActionInstance
 }
 
 func (p *PolicyStepInstance) GetApprovalInstance() *ApprovalInstance {

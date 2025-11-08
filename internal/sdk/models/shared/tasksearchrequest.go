@@ -41,6 +41,44 @@ func (e *AccountTypes) UnmarshalJSON(data []byte) error {
 	}
 }
 
+type CertifyOutcomes string
+
+const (
+	CertifyOutcomesCertifyOutcomeUnspecified  CertifyOutcomes = "CERTIFY_OUTCOME_UNSPECIFIED"
+	CertifyOutcomesCertifyOutcomeCertified    CertifyOutcomes = "CERTIFY_OUTCOME_CERTIFIED"
+	CertifyOutcomesCertifyOutcomeDecertified  CertifyOutcomes = "CERTIFY_OUTCOME_DECERTIFIED"
+	CertifyOutcomesCertifyOutcomeError        CertifyOutcomes = "CERTIFY_OUTCOME_ERROR"
+	CertifyOutcomesCertifyOutcomeCancelled    CertifyOutcomes = "CERTIFY_OUTCOME_CANCELLED"
+	CertifyOutcomesCertifyOutcomeWaitTimedOut CertifyOutcomes = "CERTIFY_OUTCOME_WAIT_TIMED_OUT"
+)
+
+func (e CertifyOutcomes) ToPointer() *CertifyOutcomes {
+	return &e
+}
+func (e *CertifyOutcomes) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "CERTIFY_OUTCOME_UNSPECIFIED":
+		fallthrough
+	case "CERTIFY_OUTCOME_CERTIFIED":
+		fallthrough
+	case "CERTIFY_OUTCOME_DECERTIFIED":
+		fallthrough
+	case "CERTIFY_OUTCOME_ERROR":
+		fallthrough
+	case "CERTIFY_OUTCOME_CANCELLED":
+		fallthrough
+	case "CERTIFY_OUTCOME_WAIT_TIMED_OUT":
+		*e = CertifyOutcomes(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CertifyOutcomes: %v", v)
+	}
+}
+
 // CurrentStep - Search tasks that have this type of step as the current step.
 type CurrentStep string
 
@@ -101,6 +139,82 @@ func (e *EmergencyStatus) UnmarshalJSON(data []byte) error {
 		return nil
 	default:
 		return fmt.Errorf("invalid value for EmergencyStatus: %v", v)
+	}
+}
+
+type GrantOutcomes string
+
+const (
+	GrantOutcomesGrantOutcomeUnspecified  GrantOutcomes = "GRANT_OUTCOME_UNSPECIFIED"
+	GrantOutcomesGrantOutcomeGranted      GrantOutcomes = "GRANT_OUTCOME_GRANTED"
+	GrantOutcomesGrantOutcomeDenied       GrantOutcomes = "GRANT_OUTCOME_DENIED"
+	GrantOutcomesGrantOutcomeError        GrantOutcomes = "GRANT_OUTCOME_ERROR"
+	GrantOutcomesGrantOutcomeCancelled    GrantOutcomes = "GRANT_OUTCOME_CANCELLED"
+	GrantOutcomesGrantOutcomeWaitTimedOut GrantOutcomes = "GRANT_OUTCOME_WAIT_TIMED_OUT"
+)
+
+func (e GrantOutcomes) ToPointer() *GrantOutcomes {
+	return &e
+}
+func (e *GrantOutcomes) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "GRANT_OUTCOME_UNSPECIFIED":
+		fallthrough
+	case "GRANT_OUTCOME_GRANTED":
+		fallthrough
+	case "GRANT_OUTCOME_DENIED":
+		fallthrough
+	case "GRANT_OUTCOME_ERROR":
+		fallthrough
+	case "GRANT_OUTCOME_CANCELLED":
+		fallthrough
+	case "GRANT_OUTCOME_WAIT_TIMED_OUT":
+		*e = GrantOutcomes(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for GrantOutcomes: %v", v)
+	}
+}
+
+type RevokeOutcomes string
+
+const (
+	RevokeOutcomesRevokeOutcomeUnspecified  RevokeOutcomes = "REVOKE_OUTCOME_UNSPECIFIED"
+	RevokeOutcomesRevokeOutcomeRevoked      RevokeOutcomes = "REVOKE_OUTCOME_REVOKED"
+	RevokeOutcomesRevokeOutcomeDenied       RevokeOutcomes = "REVOKE_OUTCOME_DENIED"
+	RevokeOutcomesRevokeOutcomeError        RevokeOutcomes = "REVOKE_OUTCOME_ERROR"
+	RevokeOutcomesRevokeOutcomeCancelled    RevokeOutcomes = "REVOKE_OUTCOME_CANCELLED"
+	RevokeOutcomesRevokeOutcomeWaitTimedOut RevokeOutcomes = "REVOKE_OUTCOME_WAIT_TIMED_OUT"
+)
+
+func (e RevokeOutcomes) ToPointer() *RevokeOutcomes {
+	return &e
+}
+func (e *RevokeOutcomes) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "REVOKE_OUTCOME_UNSPECIFIED":
+		fallthrough
+	case "REVOKE_OUTCOME_REVOKED":
+		fallthrough
+	case "REVOKE_OUTCOME_DENIED":
+		fallthrough
+	case "REVOKE_OUTCOME_ERROR":
+		fallthrough
+	case "REVOKE_OUTCOME_CANCELLED":
+		fallthrough
+	case "REVOKE_OUTCOME_WAIT_TIMED_OUT":
+		*e = RevokeOutcomes(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for RevokeOutcomes: %v", v)
 	}
 }
 
@@ -257,9 +371,11 @@ type TaskSearchRequest struct {
 	// Search tasks that are currently assigned to this user, or that are closed and were previously approved by this user.
 	AssignedOrStepApproverUserID *string `json:"assignedOrStepApproverUserId,omitempty"`
 	// Search tasks by  List of UserIDs which are currently assigned these Tasks
-	AssigneesInIds []string   `json:"assigneesInIds,omitempty"`
-	CreatedAfter   *time.Time `json:"createdAfter,omitempty"`
-	CreatedBefore  *time.Time `json:"createdBefore,omitempty"`
+	AssigneesInIds []string `json:"assigneesInIds,omitempty"`
+	// Search tasks by certify outcome
+	CertifyOutcomes []CertifyOutcomes `json:"certifyOutcomes,omitempty"`
+	CreatedAfter    *time.Time        `json:"createdAfter,omitempty"`
+	CreatedBefore   *time.Time        `json:"createdBefore,omitempty"`
 	// Search tasks that have this type of step as the current step.
 	CurrentStep *CurrentStep `json:"currentStep,omitempty"`
 	// Search tasks that are or are not emergency access.
@@ -269,8 +385,10 @@ type TaskSearchRequest struct {
 	// Search tasks that do not have any of these app resource type IDs.
 	ExcludeAppResourceTypeIds []string `json:"excludeAppResourceTypeIds,omitempty"`
 	// Exclude Specific TaskIDs from this serach result.
-	ExcludeIds        []string   `json:"excludeIds,omitempty"`
-	IncludeActedAfter *time.Time `json:"includeActedAfter,omitempty"`
+	ExcludeIds []string `json:"excludeIds,omitempty"`
+	// Search tasks by grant outcome
+	GrantOutcomes     []GrantOutcomes `json:"grantOutcomes,omitempty"`
+	IncludeActedAfter *time.Time      `json:"includeActedAfter,omitempty"`
 	// Whether or not to include deleted tasks.
 	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
 	// Search tasks where the user would see this task in the My Work section
@@ -279,7 +397,9 @@ type TaskSearchRequest struct {
 	// Search tasks that were created by any of the users in this array.
 	OpenerIds []string `json:"openerIds,omitempty"`
 	// Search tasks that were opened by this user, or that the user is the subject of.
-	OpenerOrSubjectUserID *string `json:"openerOrSubjectUserId,omitempty"`
+	OpenerOrSubjectUserID *string    `json:"openerOrSubjectUserId,omitempty"`
+	OutcomeAfter          *time.Time `json:"outcomeAfter,omitempty"`
+	OutcomeBefore         *time.Time `json:"outcomeBefore,omitempty"`
 	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
@@ -290,6 +410,8 @@ type TaskSearchRequest struct {
 	Query *string `json:"query,omitempty"`
 	// Query tasks by display name, description, or numeric ID.
 	Refs []TaskRef `json:"refs,omitempty"`
+	// Search tasks by revoke outcome
+	RevokeOutcomes []RevokeOutcomes `json:"revokeOutcomes,omitempty"`
 	// Sort tasks in a specific order.
 	SortBy *SortBy `json:"sortBy,omitempty"`
 	// Search tasks that have a current policy step of this type
@@ -392,6 +514,13 @@ func (t *TaskSearchRequest) GetAssigneesInIds() []string {
 	return t.AssigneesInIds
 }
 
+func (t *TaskSearchRequest) GetCertifyOutcomes() []CertifyOutcomes {
+	if t == nil {
+		return nil
+	}
+	return t.CertifyOutcomes
+}
+
 func (t *TaskSearchRequest) GetCreatedAfter() *time.Time {
 	if t == nil {
 		return nil
@@ -441,6 +570,13 @@ func (t *TaskSearchRequest) GetExcludeIds() []string {
 	return t.ExcludeIds
 }
 
+func (t *TaskSearchRequest) GetGrantOutcomes() []GrantOutcomes {
+	if t == nil {
+		return nil
+	}
+	return t.GrantOutcomes
+}
+
 func (t *TaskSearchRequest) GetIncludeActedAfter() *time.Time {
 	if t == nil {
 		return nil
@@ -483,6 +619,20 @@ func (t *TaskSearchRequest) GetOpenerOrSubjectUserID() *string {
 	return t.OpenerOrSubjectUserID
 }
 
+func (t *TaskSearchRequest) GetOutcomeAfter() *time.Time {
+	if t == nil {
+		return nil
+	}
+	return t.OutcomeAfter
+}
+
+func (t *TaskSearchRequest) GetOutcomeBefore() *time.Time {
+	if t == nil {
+		return nil
+	}
+	return t.OutcomeBefore
+}
+
 func (t *TaskSearchRequest) GetPageSize() *int {
 	if t == nil {
 		return nil
@@ -516,6 +666,13 @@ func (t *TaskSearchRequest) GetRefs() []TaskRef {
 		return nil
 	}
 	return t.Refs
+}
+
+func (t *TaskSearchRequest) GetRevokeOutcomes() []RevokeOutcomes {
+	if t == nil {
+		return nil
+	}
+	return t.RevokeOutcomes
 }
 
 func (t *TaskSearchRequest) GetSortBy() *SortBy {

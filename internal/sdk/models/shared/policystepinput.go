@@ -11,9 +11,16 @@ package shared
 //   - reject
 //   - wait
 //   - form
+//   - action
 type PolicyStepInput struct {
 	// This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
 	Accept *Accept `json:"accept,omitempty"`
+	// The Action message.
+	//
+	// This message contains a oneof named target. Only a single field of the following list may be set at a time:
+	//   - automation
+	//
+	Action *Action `json:"action,omitempty"`
 	// The Approval message.
 	//
 	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -50,6 +57,13 @@ func (p *PolicyStepInput) GetAccept() *Accept {
 		return nil
 	}
 	return p.Accept
+}
+
+func (p *PolicyStepInput) GetAction() *Action {
+	if p == nil {
+		return nil
+	}
+	return p.Action
 }
 
 func (p *PolicyStepInput) GetApproval() *ApprovalInput {
