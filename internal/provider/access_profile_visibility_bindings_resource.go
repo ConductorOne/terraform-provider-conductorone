@@ -148,11 +148,6 @@ func (r *AccessProfileVisibilityBindingsResource) Create(ctx context.Context, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceAddAccessEntitlementsResponse(ctx, res.RequestCatalogManagementServiceAddAccessEntitlementsResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
 

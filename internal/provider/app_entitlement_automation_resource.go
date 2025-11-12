@@ -11,10 +11,8 @@ import (
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -83,24 +81,13 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"status": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The status field. must be one of ["APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED",
-								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS",
-								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED",
-								"APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS",
-							),
-						},
+						Description: `The status field.`,
 					},
 				},
 				Description: `The AppEntitlementAutomationLastRunStatus message. Requires replacement if changed.`,
@@ -199,9 +186,6 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -215,9 +199,6 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}

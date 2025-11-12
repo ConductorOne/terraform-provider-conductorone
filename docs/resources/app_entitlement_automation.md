@@ -78,7 +78,7 @@ Read-Only:
 
 - `error_message` (String) The errorMessage field.
 - `last_completed_at` (String)
-- `status` (String) The status field. must be one of ["APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS"]
+- `status` (String) The status field.
 
 
 <a id="nestedatt--app_entitlement_automation_rule_basic"></a>

@@ -1090,9 +1090,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"current_version": schema.StringAttribute{
 				Computed:    true,
@@ -2747,30 +2744,10 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"last_executed_at": schema.StringAttribute{
 				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"primary_trigger_type": schema.StringAttribute{
 				Computed:    true,
-				Description: `The primaryTriggerType field. must be one of ["TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_USER_PROFILE_CHANGE", "TRIGGER_TYPE_APP_USER_CREATE", "TRIGGER_TYPE_APP_USER_UPDATE", "TRIGGER_TYPE_UNUSED_ACCESS", "TRIGGER_TYPE_USER_CREATED", "TRIGGER_TYPE_GRANT_FOUND", "TRIGGER_TYPE_GRANT_DELETED", "TRIGGER_TYPE_WEBHOOK", "TRIGGER_TYPE_SCHEDULE", "TRIGGER_TYPE_FORM", "TRIGGER_TYPE_SCHEDULE_APP_USER", "TRIGGER_TYPE_ACCESS_CONFLICT"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"TRIGGER_TYPE_UNSPECIFIED",
-						"TRIGGER_TYPE_USER_PROFILE_CHANGE",
-						"TRIGGER_TYPE_APP_USER_CREATE",
-						"TRIGGER_TYPE_APP_USER_UPDATE",
-						"TRIGGER_TYPE_UNUSED_ACCESS",
-						"TRIGGER_TYPE_USER_CREATED",
-						"TRIGGER_TYPE_GRANT_FOUND",
-						"TRIGGER_TYPE_GRANT_DELETED",
-						"TRIGGER_TYPE_WEBHOOK",
-						"TRIGGER_TYPE_SCHEDULE",
-						"TRIGGER_TYPE_FORM",
-						"TRIGGER_TYPE_SCHEDULE_APP_USER",
-						"TRIGGER_TYPE_ACCESS_CONFLICT",
-					),
-				},
+				Description: `The primaryTriggerType field.`,
 			},
 			"triggers": schema.ListNestedAttribute{
 				Computed: true,

@@ -7,9 +7,7 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -65,20 +63,10 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 					},
 					"state": schema.StringAttribute{
 						Computed:    true,
-						Description: `The state field. must be one of ["CIRCUIT_BREAKER_STATE_UNSPECIFIED", "CIRCUIT_BREAKER_STATE_TRIGGERED", "CIRCUIT_BREAKER_STATE_BYPASS"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"CIRCUIT_BREAKER_STATE_UNSPECIFIED",
-								"CIRCUIT_BREAKER_STATE_TRIGGERED",
-								"CIRCUIT_BREAKER_STATE_BYPASS",
-							),
-						},
+						Description: `The state field.`,
 					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"user_ref": schema.SingleNestedAttribute{
 						Computed: true,
@@ -102,22 +90,10 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 					},
 					"last_run_at": schema.StringAttribute{
 						Computed: true,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"status": schema.StringAttribute{
 						Computed:    true,
-						Description: `The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED", "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS", "BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED",
-								"BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS",
-								"BUNDLE_AUTOMATION_RUN_STATUS_FAILURE",
-								"BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS",
-								"BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL",
-							),
-						},
+						Description: `The status field.`,
 					},
 				},
 				Description: `The BundleAutomationLastRunState message.`,
@@ -158,9 +134,6 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"delete_bundle_automation_request": schema.SingleNestedAttribute{
 				Optional:    true,
@@ -185,9 +158,6 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}

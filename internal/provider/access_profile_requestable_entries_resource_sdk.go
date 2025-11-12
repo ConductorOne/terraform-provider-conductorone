@@ -11,15 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceAddAppEntitlementsResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-	}
-
-	return diags
-}
-
 func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -36,15 +27,6 @@ func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestC
 				r.AppEntitlements = append(r.AppEntitlements, appEntitlements)
 			}
 		}
-	}
-
-	return diags
-}
-
-func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceUpdateAppEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceUpdateAppEntitlementsResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
 	}
 
 	return diags

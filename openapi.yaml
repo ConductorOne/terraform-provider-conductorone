@@ -25431,6 +25431,7 @@ paths:
                 terraform-resource: Vault#create
             x-speakeasy-group: Vault
             x-speakeasy-name-override: Create
+            x-stability-level: draft
     /api/v1/vaults/{id}:
         delete:
             description: Invokes the c1.api.vault.v1.VaultService.Delete method.
@@ -25462,6 +25463,7 @@ paths:
                 terraform-resource: Vault#delete
             x-speakeasy-group: Vault
             x-speakeasy-name-override: Delete
+            x-stability-level: draft
         get:
             description: Invokes the c1.api.vault.v1.VaultService.Get method.
             operationId: c1.api.vault.v1.VaultService.Get
@@ -25488,6 +25490,7 @@ paths:
                 terraform-resource: Vault#read
             x-speakeasy-group: Vault
             x-speakeasy-name-override: Get
+            x-stability-level: draft
         post:
             description: Invokes the c1.api.vault.v1.VaultService.Update method.
             operationId: c1.api.vault.v1.VaultService.Update
@@ -25518,6 +25521,7 @@ paths:
                 terraform-resource: Vault#update
             x-speakeasy-group: Vault
             x-speakeasy-name-override: Update
+            x-stability-level: draft
     /api/v1/webhooks:
         get:
             description: Invokes the c1.api.webhooks.v1.WebhooksService.List method.

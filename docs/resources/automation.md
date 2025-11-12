@@ -816,7 +816,7 @@ resource "conductorone_automation" "my_automation" {
 - `disabled_reason_circuit_breaker` (Attributes) The DisabledReasonCircuitBreaker message. (see [below for nested schema](#nestedatt--disabled_reason_circuit_breaker))
 - `id` (String) The id field.
 - `last_executed_at` (String)
-- `primary_trigger_type` (String) The primaryTriggerType field. must be one of ["TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_USER_PROFILE_CHANGE", "TRIGGER_TYPE_APP_USER_CREATE", "TRIGGER_TYPE_APP_USER_UPDATE", "TRIGGER_TYPE_UNUSED_ACCESS", "TRIGGER_TYPE_USER_CREATED", "TRIGGER_TYPE_GRANT_FOUND", "TRIGGER_TYPE_GRANT_DELETED", "TRIGGER_TYPE_WEBHOOK", "TRIGGER_TYPE_SCHEDULE", "TRIGGER_TYPE_FORM", "TRIGGER_TYPE_SCHEDULE_APP_USER", "TRIGGER_TYPE_ACCESS_CONFLICT"]
+- `primary_trigger_type` (String) The primaryTriggerType field.
 - `webhook_hmac_secret` (String) If we create a new trigger with an HMAC secret we return the HMAC on this field
 
 <a id="nestedatt--automation_context"></a>
