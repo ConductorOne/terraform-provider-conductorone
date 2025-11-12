@@ -10,4 +10,5 @@ type ActionProvision struct {
 	ActionName  types.String `tfsdk:"action_name"`
 	AppID       types.String `tfsdk:"app_id"`
 	ConnectorID types.String `tfsdk:"connector_id"`
+	DisplayName types.String `tfsdk:"display_name"`
 }

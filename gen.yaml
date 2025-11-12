@@ -23,6 +23,7 @@ generation:
     hoistGlobalSecurity: true
   schemas:
     allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: ""
   mockServer:
     disabled: true
   tests:
@@ -30,7 +31,7 @@ generation:
     generateNewTests: false
     skipResponseBodyAssertions: false
 terraform:
-  version: 1.7.1
+  version: 1.7.3
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []
@@ -44,10 +45,12 @@ terraform:
   author: conductorone
   baseErrorName: ConductoroneAPIError
   defaultErrorName: SDKError
+  enableCustomCodeRegions: false
   enableOperationSecurity: false
   enableOperationServers: false
   enableTypeDeduplication: false
   environmentVariables: []
+  excludeEmptyObjectSchemas: false
   includeEmptyObjects: false
   packageName: conductorone
   unionDeserializationStrategy: populated-fields

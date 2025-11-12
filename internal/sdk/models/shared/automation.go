@@ -25,6 +25,7 @@ const (
 	PrimaryTriggerTypeTriggerTypeSchedule          PrimaryTriggerType = "TRIGGER_TYPE_SCHEDULE"
 	PrimaryTriggerTypeTriggerTypeForm              PrimaryTriggerType = "TRIGGER_TYPE_FORM"
 	PrimaryTriggerTypeTriggerTypeScheduleAppUser   PrimaryTriggerType = "TRIGGER_TYPE_SCHEDULE_APP_USER"
+	PrimaryTriggerTypeTriggerTypeAccessConflict    PrimaryTriggerType = "TRIGGER_TYPE_ACCESS_CONFLICT"
 )
 
 func (e PrimaryTriggerType) ToPointer() *PrimaryTriggerType {
@@ -59,6 +60,8 @@ func (e *PrimaryTriggerType) UnmarshalJSON(data []byte) error {
 	case "TRIGGER_TYPE_FORM":
 		fallthrough
 	case "TRIGGER_TYPE_SCHEDULE_APP_USER":
+		fallthrough
+	case "TRIGGER_TYPE_ACCESS_CONFLICT":
 		*e = PrimaryTriggerType(v)
 		return nil
 	default:

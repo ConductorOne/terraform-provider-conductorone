@@ -256,6 +256,7 @@ Read-Only:
 - `action_name` (String) The actionName field.
 - `app_id` (String) The appId field.
 - `connector_id` (String) The connectorId field.
+- `display_name` (String) The displayName field.
 
 
 <a id="nestedatt--list--app_entitlement--deprovisioner_policy--connector_provision"></a>
@@ -390,6 +391,7 @@ Read-Only:
 - `action_name` (String) The actionName field.
 - `app_id` (String) The appId field.
 - `connector_id` (String) The connectorId field.
+- `display_name` (String) The displayName field.
 
 
 <a id="nestedatt--list--app_entitlement--provision_policy--connector_provision"></a>

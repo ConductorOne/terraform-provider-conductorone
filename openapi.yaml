@@ -111,6 +111,16 @@ components:
             title: Conflict Monitor Delete Response
             type: object
             x-speakeasy-name-override: ConflictMonitorDeleteResponse
+        c1.api.accessconflict.v1.ConflictMonitorRef:
+            description: The ConflictMonitorRef message.
+            properties:
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            title: Conflict Monitor Ref
+            type: object
+            x-speakeasy-name-override: ConflictMonitorRef
         c1.api.accessconflict.v1.ConflictMonitorUpdateRequestInput:
             description: The ConflictMonitorUpdateRequest message.
             properties:
@@ -881,6 +891,10 @@ components:
                 deletedAt:
                     format: date-time
                     readOnly: true
+                    type: string
+                disabledAt:
+                    format: date-time
+                    readOnly: false
                     type: string
                 dstAppEntitlementId:
                     description: The dstAppEntitlementId field.
@@ -2506,6 +2520,8 @@ components:
                     type: array
                 status:
                     $ref: '#/components/schemas/c1.api.app.v1.ConnectorStatus'
+                syncConfig:
+                    $ref: '#/components/schemas/c1.api.app.v1.SyncConfig'
                 syncDisabledAt:
                     format: date-time
                     readOnly: true
@@ -4362,6 +4378,19 @@ components:
             title: Set App Resource Owners Response
             type: object
             x-speakeasy-name-override: SetAppResourceOwnersResponse
+        c1.api.app.v1.SyncConfig:
+            description: The SyncConfig message.
+            properties:
+                syncResourceTypeIds:
+                    description: The syncResourceTypeIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Sync Config
+            type: object
+            x-speakeasy-name-override: SyncConfig
         c1.api.app.v1.TaskAuditCancelledResult:
             description: The TaskAuditCancelledResult message.
             nullable: true
@@ -4886,6 +4915,28 @@ components:
             title: Introspect Response
             type: object
             x-speakeasy-name-override: IntrospectResponse
+        c1.api.automations.v1.AccessConflictTrigger:
+            description: |
+                The AccessConflictTrigger message.
+
+                This message contains a oneof named conflict_monitor_selector. Only a single field of the following list may be set at a time:
+                  - conflictMonitorRefs
+                  - allConflictMonitors
+            nullable: true
+            properties:
+                allConflictMonitors:
+                    description: |-
+                        The allConflictMonitors field.
+                        This field is part of the `conflict_monitor_selector` oneof.
+                        See the documentation for `c1.api.automations.v1.AccessConflictTrigger` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: boolean
+                conflictMonitorRefs:
+                    $ref: '#/components/schemas/c1.api.automations.v1.ConflictMonitorRefs'
+            title: Access Conflict Trigger
+            type: object
+            x-speakeasy-name-override: AccessConflictTrigger
         c1.api.automations.v1.AccountInContext:
             description: The AccountInContext message.
             nullable: true
@@ -5073,6 +5124,7 @@ components:
                         - TRIGGER_TYPE_SCHEDULE
                         - TRIGGER_TYPE_FORM
                         - TRIGGER_TYPE_SCHEDULE_APP_USER
+                        - TRIGGER_TYPE_ACCESS_CONFLICT
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
@@ -5208,6 +5260,7 @@ components:
                   - waitForDuration
                   - unenrollFromAllAccessProfiles
                   - createRevokeTasks
+                  - createRevokeTasksV2
                   - sendEmail
                   - removeFromDelegation
                   - runAutomation
@@ -5233,6 +5286,8 @@ components:
                     $ref: '#/components/schemas/c1.api.automations.v1.CreateAccessReview'
                 createRevokeTasks:
                     $ref: '#/components/schemas/c1.api.automations.v1.CreateRevokeTasks'
+                createRevokeTasksV2:
+                    $ref: '#/components/schemas/c1.api.automations.v1.CreateRevokeTasksV2'
                 grantEntitlements:
                     $ref: '#/components/schemas/c1.api.automations.v1.GrantEntitlements'
                 removeFromDelegation:
@@ -5337,7 +5392,10 @@ components:
                   - schedule
                   - form
                   - scheduleAppUser
+                  - accessConflict
             properties:
+                accessConflict:
+                    $ref: '#/components/schemas/c1.api.automations.v1.AccessConflictTrigger'
                 appUserCreated:
                     $ref: '#/components/schemas/c1.api.automations.v1.AppUserCreatedTrigger'
                 appUserUpdated:
@@ -5408,6 +5466,20 @@ components:
             title: Close Action
             type: object
             x-speakeasy-name-override: CloseAction
+        c1.api.automations.v1.ConflictMonitorRefs:
+            description: The ConflictMonitorRefs message.
+            nullable: true
+            properties:
+                conflictMonitorRefs:
+                    description: The conflictMonitorRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.accessconflict.v1.ConflictMonitorRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Conflict Monitor Refs
+            type: object
+            x-speakeasy-name-override: ConflictMonitorRefs
         c1.api.automations.v1.ConnectorAction:
             description: |
                 The ConnectorAction message.
@@ -5598,6 +5670,61 @@ components:
             title: Create Revoke Tasks
             type: object
             x-speakeasy-name-override: CreateRevokeTasks
+        c1.api.automations.v1.CreateRevokeTasksV2:
+            description: |
+                The CreateRevokeTasksV2 message.
+
+                This message contains a oneof named user. Only a single field of the following list may be set at a time:
+                  - userIdCel
+                  - userRef
+                  - useSubjectUser
+
+
+                This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:
+                  - inclusionList
+                  - inclusionAll
+                  - inclusionCriteria
+
+
+                This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
+                  - exclusionNone
+                  - exclusionList
+                  - exclusionCriteria
+            nullable: true
+            properties:
+                exclusionCriteria:
+                    $ref: '#/components/schemas/c1.api.automations.v1.EntitlementExclusionCriteria'
+                exclusionList:
+                    $ref: '#/components/schemas/c1.api.automations.v1.EntitlementExclusionList'
+                exclusionNone:
+                    $ref: '#/components/schemas/c1.api.automations.v1.EntitlementExclusionNone'
+                inclusionAll:
+                    $ref: '#/components/schemas/c1.api.automations.v1.EntitlementInclusionAll'
+                inclusionCriteria:
+                    $ref: '#/components/schemas/c1.api.automations.v1.EntitlementInclusionCriteria'
+                inclusionList:
+                    $ref: '#/components/schemas/c1.api.automations.v1.EntitlementInclusionList'
+                useSubjectUser:
+                    description: |-
+                        The useSubjectUser field.
+                        This field is part of the `user` oneof.
+                        See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: boolean
+                userIdCel:
+                    description: |-
+                        The userIdCel field.
+                        This field is part of the `user` oneof.
+                        See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Create Revoke Tasks V 2
+            type: object
+            x-speakeasy-name-override: CreateRevokeTasksV2
         c1.api.automations.v1.DeleteAutomationRequestInput:
             description: The DeleteAutomationRequest message.
             title: Delete Automation Request
@@ -5614,6 +5741,116 @@ components:
             title: Disabled Reason Circuit Breaker
             type: object
             x-speakeasy-name-override: DisabledReasonCircuitBreaker
+        c1.api.automations.v1.EntitlementExclusionCriteria:
+            description: The EntitlementExclusionCriteria message.
+            nullable: true
+            properties:
+                excludedAppIds:
+                    description: The excludedAppIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                excludedComplianceFrameworkIds:
+                    description: The excludedComplianceFrameworkIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                excludedResourceTypeIds:
+                    description: The excludedResourceTypeIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                excludedRiskLevelIds:
+                    description: The excludedRiskLevelIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Entitlement Exclusion Criteria
+            type: object
+            x-speakeasy-name-override: EntitlementExclusionCriteria
+        c1.api.automations.v1.EntitlementExclusionList:
+            description: The EntitlementExclusionList message.
+            nullable: true
+            properties:
+                excludedAppEntitlementRefs:
+                    description: The excludedAppEntitlementRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Entitlement Exclusion List
+            type: object
+            x-speakeasy-name-override: EntitlementExclusionList
+        c1.api.automations.v1.EntitlementExclusionNone:
+            description: The EntitlementExclusionNone message.
+            nullable: true
+            title: Entitlement Exclusion None
+            type: object
+            x-speakeasy-name-override: EntitlementExclusionNone
+        c1.api.automations.v1.EntitlementInclusionAll:
+            description: The EntitlementInclusionAll message.
+            nullable: true
+            title: Entitlement Inclusion All
+            type: object
+            x-speakeasy-name-override: EntitlementInclusionAll
+        c1.api.automations.v1.EntitlementInclusionCriteria:
+            description: The EntitlementInclusionCriteria message.
+            nullable: true
+            properties:
+                appIds:
+                    description: The appIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                complianceFrameworkIds:
+                    description: The complianceFrameworkIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                resourceTypeIds:
+                    description: The resourceTypeIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                riskLevelIds:
+                    description: The riskLevelIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Entitlement Inclusion Criteria
+            type: object
+            x-speakeasy-name-override: EntitlementInclusionCriteria
+        c1.api.automations.v1.EntitlementInclusionList:
+            description: The EntitlementInclusionList message.
+            nullable: true
+            properties:
+                appEntitlementRefs:
+                    description: The appEntitlementRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Entitlement Inclusion List
+            type: object
+            x-speakeasy-name-override: EntitlementInclusionList
         c1.api.automations.v1.ExecuteAutomationRequestInput:
             description: The ExecuteAutomationRequest message.
             properties:
@@ -6169,6 +6406,7 @@ components:
                             - TRIGGER_TYPE_SCHEDULE
                             - TRIGGER_TYPE_FORM
                             - TRIGGER_TYPE_SCHEDULE_APP_USER
+                            - TRIGGER_TYPE_ACCESS_CONFLICT
                         type: string
                         x-speakeasy-unknown-values: allow
                     nullable: true
@@ -8232,6 +8470,112 @@ components:
             title: Accept Instance
             type: object
             x-speakeasy-name-override: AcceptInstance
+        c1.api.policy.v1.Action:
+            description: |
+                The Action message.
+
+                This message contains a oneof named target. Only a single field of the following list may be set at a time:
+                  - automation
+            nullable: true
+            properties:
+                automation:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ActionTargetAutomation'
+            title: Action
+            type: object
+            x-speakeasy-name-override: Action
+        c1.api.policy.v1.ActionInstance:
+            description: |
+                The ActionInstance message.
+
+                This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:
+                  - automation
+
+
+                This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
+                  - success
+                  - denied
+                  - error
+                  - cancelled
+            nullable: true
+            properties:
+                action:
+                    $ref: '#/components/schemas/c1.api.policy.v1.Action'
+                automation:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ActionTargetAutomationInstance'
+                cancelled:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ActionOutcomeCancelled'
+                denied:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ActionOutcomeDenied'
+                error:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ActionOutcomeError'
+                state:
+                    description: The current state of the action execution.
+                    enum:
+                        - ACTION_INSTANCE_STATE_UNSPECIFIED
+                        - ACTION_INSTANCE_STATE_INIT
+                        - ACTION_INSTANCE_STATE_RUNNING
+                        - ACTION_INSTANCE_STATE_DONE
+                        - ACTION_INSTANCE_STATE_ERROR
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                success:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ActionOutcomeSuccess'
+            title: Action Instance
+            type: object
+            x-speakeasy-name-override: ActionInstance
+        c1.api.policy.v1.ActionOutcomeCancelled:
+            description: The ActionOutcomeCancelled message.
+            nullable: true
+            properties:
+                outcomeTime:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Action Outcome Cancelled
+            type: object
+            x-speakeasy-name-override: ActionOutcomeCancelled
+        c1.api.policy.v1.ActionOutcomeDenied:
+            description: The ActionOutcomeDenied message.
+            nullable: true
+            properties:
+                outcomeTime:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Action Outcome Denied
+            type: object
+            x-speakeasy-name-override: ActionOutcomeDenied
+        c1.api.policy.v1.ActionOutcomeError:
+            description: The ActionOutcomeError message.
+            nullable: true
+            properties:
+                errorCode:
+                    description: The errorCode field.
+                    readOnly: false
+                    type: string
+                errorMessage:
+                    description: The errorMessage field.
+                    readOnly: false
+                    type: string
+                outcomeTime:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Action Outcome Error
+            type: object
+            x-speakeasy-name-override: ActionOutcomeError
+        c1.api.policy.v1.ActionOutcomeSuccess:
+            description: The ActionOutcomeSuccess message.
+            nullable: true
+            properties:
+                outcomeTime:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Action Outcome Success
+            type: object
+            x-speakeasy-name-override: ActionOutcomeSuccess
         c1.api.policy.v1.ActionProvision:
             description: This provision step indicates that account lifecycle action should be called to provision this entitlement.
             nullable: true
@@ -8248,9 +8592,35 @@ components:
                     description: The connectorId field.
                     readOnly: false
                     type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
             title: Action Provision
             type: object
             x-speakeasy-name-override: ActionProvision
+        c1.api.policy.v1.ActionTargetAutomation:
+            description: The ActionTargetAutomation message.
+            nullable: true
+            properties:
+                automationTemplateId:
+                    description: The automationTemplateId field.
+                    readOnly: false
+                    type: string
+            title: Action Target Automation
+            type: object
+            x-speakeasy-name-override: ActionTargetAutomation
+        c1.api.policy.v1.ActionTargetAutomationInstance:
+            description: The ActionTargetAutomationInstance message.
+            nullable: true
+            properties:
+                automationExecutionId:
+                    description: The automationExecutionId field.
+                    readOnly: false
+                    type: string
+            title: Action Target Automation Instance
+            type: object
+            x-speakeasy-name-override: ActionTargetAutomationInstance
         c1.api.policy.v1.AgentApproval:
             description: The agent to assign the task to.
             nullable: true
@@ -8352,6 +8722,10 @@ components:
                     description: Configuration to enable fallback for group fallback.
                     readOnly: false
                     type: boolean
+                requireDistinctApprovers:
+                    description: Configuration to require distinct approvers across approval steps of a rule.
+                    readOnly: false
+                    type: boolean
             title: App Group Approval
             type: object
             x-speakeasy-name-override: AppGroupApproval
@@ -8361,6 +8735,10 @@ components:
             properties:
                 allowSelfApproval:
                     description: Configuration that allows a user to self approve if they are an app owner during this approval step.
+                    readOnly: false
+                    type: boolean
+                requireDistinctApprovers:
+                    description: Configuration to require distinct approvers across approval steps of a rule.
                     readOnly: false
                     type: boolean
             title: App Owner Approval
@@ -8795,6 +9173,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                requireDistinctApprovers:
+                    description: Configuration to require distinct approvers across approval steps of a rule.
+                    readOnly: false
+                    type: boolean
             title: Entitlement Owner Approval
             type: object
             x-speakeasy-name-override: EntitlementOwnerApproval
@@ -8951,6 +9333,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                requireDistinctApprovers:
+                    description: Configuration to require distinct approvers across approval steps of a rule.
+                    readOnly: false
+                    type: boolean
             title: Expression Approval
             type: object
             x-speakeasy-name-override: ExpressionApproval
@@ -9089,6 +9475,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                requireDistinctApprovers:
+                    description: Configuration to require distinct approvers across approval steps of a rule.
+                    readOnly: false
+                    type: boolean
             title: Manager Approval
             type: object
             x-speakeasy-name-override: ManagerApproval
@@ -9260,9 +9650,12 @@ components:
                   - reject
                   - wait
                   - form
+                  - action
             properties:
                 accept:
                     $ref: '#/components/schemas/c1.api.policy.v1.Accept'
+                action:
+                    $ref: '#/components/schemas/c1.api.policy.v1.Action'
                 approval:
                     $ref: '#/components/schemas/c1.api.policy.v1.Approval'
                 form:
@@ -9287,9 +9680,12 @@ components:
                   - reject
                   - wait
                   - form
+                  - action
             properties:
                 accept:
                     $ref: '#/components/schemas/c1.api.policy.v1.AcceptInstance'
+                action:
+                    $ref: '#/components/schemas/c1.api.policy.v1.ActionInstance'
                 approval:
                     $ref: '#/components/schemas/c1.api.policy.v1.ApprovalInstance'
                 form:
@@ -9360,6 +9756,10 @@ components:
                   - skipped
             nullable: true
             properties:
+                batonActionInvocationId:
+                    description: This indicates the account lifecycle action id for this step.
+                    readOnly: false
+                    type: string
                 cancelled:
                     $ref: '#/components/schemas/c1.api.policy.v1.CancelledAction'
                 completed:
@@ -9396,6 +9796,8 @@ components:
                         - PROVISION_INSTANCE_STATE_WEBHOOK_WAITING
                         - PROVISION_INSTANCE_STATE_EXTERNAL_TICKET
                         - PROVISION_INSTANCE_STATE_EXTERNAL_TICKET_WAITING
+                        - PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS
+                        - PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS_WAITING
                         - PROVISION_INSTANCE_STATE_DONE
                     readOnly: false
                     type: string
@@ -9559,6 +9961,10 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                requireDistinctApprovers:
+                    description: Configuration to require distinct approvers across approval steps of a rule.
+                    readOnly: false
+                    type: boolean
             title: Resource Owner Approval
             type: object
             x-speakeasy-name-override: ResourceOwnerApproval
@@ -9768,6 +10174,10 @@ components:
             properties:
                 allowSelfApproval:
                     description: Configuration to allow self approval of if the user is specified and also the target of the ticket.
+                    readOnly: false
+                    type: boolean
+                requireDistinctApprovers:
+                    description: Configuration to require distinct approvers across approval steps of a rule.
                     readOnly: false
                     type: boolean
                 userIds:
@@ -10561,17 +10971,57 @@ components:
             type: object
             x-speakeasy-entity: Access_Profile
             x-speakeasy-name-override: RequestCatalogManagementServiceCreateRequest
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequestableEntryRequestInput:
+            description: Create a single requestable entry
+            properties:
+                createRequests:
+                    description: |-
+                        Whether or not to create requests for newly added entitlement for users in the catalog.
+                         By default, this is false and no requests are created.
+                    readOnly: false
+                    type: boolean
+            title: Request Catalog Management Service Create Requestable Entry Request
+            type: object
+            x-speakeasy-entity: Access_Profile_Requestable_Entry
+            x-speakeasy-name-override: RequestCatalogManagementServiceCreateRequestableEntryRequest
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequestableEntryResponse:
+            description: Response containing the created requestable entry
+            properties:
+                requestableEntry:
+                    $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestableEntry'
+            title: Request Catalog Management Service Create Requestable Entry Response
+            type: object
+            x-speakeasy-name-override: RequestCatalogManagementServiceCreateRequestableEntryResponse
         c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestInput:
             description: Delete a request catalog by Id. It uses URL value for input.
             title: Request Catalog Management Service Delete Request
             type: object
             x-speakeasy-entity: Access_Profile
             x-speakeasy-name-override: RequestCatalogManagementServiceDeleteRequest
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestableEntryRequestInput:
+            description: Delete a single requestable entry
+            title: Request Catalog Management Service Delete Requestable Entry Request
+            type: object
+            x-speakeasy-entity: Access_Profile_Requestable_Entry
+            x-speakeasy-name-override: RequestCatalogManagementServiceDeleteRequestableEntryRequest
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestableEntryResponse:
+            description: Empty response for delete operation
+            title: Request Catalog Management Service Delete Requestable Entry Response
+            type: object
+            x-speakeasy-name-override: RequestCatalogManagementServiceDeleteRequestableEntryResponse
         c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteResponse:
             description: Empty response with a status code indicating success.
             title: Request Catalog Management Service Delete Response
             type: object
             x-speakeasy-name-override: RequestCatalogManagementServiceDeleteResponse
+        c1.api.requestcatalog.v1.RequestCatalogManagementServiceGetRequestableEntryResponse:
+            description: Response containing the requested entry
+            properties:
+                requestableEntry:
+                    $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestableEntry'
+            title: Request Catalog Management Service Get Requestable Entry Response
+            type: object
+            x-speakeasy-name-override: RequestCatalogManagementServiceGetRequestableEntryResponse
         c1.api.requestcatalog.v1.RequestCatalogManagementServiceGetResponse:
             description: The request catalog management service get response returns a request catalog view with the expanded items in the expanded array indicated by the expand mask in the request.
             properties:
@@ -10882,46 +11332,6 @@ components:
             title: Request Catalog View
             type: object
             x-speakeasy-name-override: RequestCatalogView
-        c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequestableEntryRequestInput:
-            description: Create a single requestable entry
-            properties:
-                createRequests:
-                    description: |-
-                        Whether or not to create requests for newly added entitlement for users in the catalog.
-                         By default, this is false and no requests are created.
-                    readOnly: false
-                    type: boolean
-            title: Request Catalog Management Service Create Requestable Entry Request
-            type: object
-            x-speakeasy-entity: Access_Profile_Requestable_Entry
-            x-speakeasy-name-override: RequestCatalogManagementServiceCreateRequestableEntryRequest
-        c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequestableEntryResponse:
-            description: Response containing the created requestable entry
-            properties:
-                requestableEntry:
-                    $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestableEntry'
-            title: Request Catalog Management Service Create Requestable Entry Response
-            type: object
-            x-speakeasy-name-override: RequestCatalogManagementServiceCreateRequestableEntryResponse
-        c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestableEntryRequestInput:
-            description: Delete a single requestable entry
-            title: Request Catalog Management Service Delete Requestable Entry Request
-            type: object
-            x-speakeasy-entity: Access_Profile_Requestable_Entry
-            x-speakeasy-name-override: RequestCatalogManagementServiceDeleteRequestableEntryRequest
-        c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestableEntryResponse:
-            description: Empty response for delete operation
-            title: Request Catalog Management Service Delete Requestable Entry Response
-            type: object
-            x-speakeasy-name-override: RequestCatalogManagementServiceDeleteRequestableEntryResponse
-        c1.api.requestcatalog.v1.RequestCatalogManagementServiceGetRequestableEntryResponse:
-            description: Response containing the requested entry
-            properties:
-                requestableEntry:
-                    $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestableEntry'
-            title: Request Catalog Management Service Get Requestable Entry Response
-            type: object
-            x-speakeasy-name-override: RequestCatalogManagementServiceGetRequestableEntryResponse
         c1.api.requestcatalog.v1.RequestableEntry:
             description: A requestable entry in a catalog
             properties:
@@ -12743,6 +13153,64 @@ components:
             title: Task Audit Access Request Outcome
             type: object
             x-speakeasy-name-override: TaskAuditAccessRequestOutcome
+        c1.api.task.v1.TaskAuditAccountLifecycleActionCreated:
+            description: The TaskAuditAccountLifecycleActionCreated message.
+            nullable: true
+            properties:
+                batonActionDisplayName:
+                    description: The batonActionDisplayName field.
+                    readOnly: false
+                    type: string
+                batonActionInvocationId:
+                    description: The batonActionInvocationId field.
+                    readOnly: false
+                    type: string
+                batonActionName:
+                    description: The batonActionName field.
+                    readOnly: false
+                    type: string
+                batonAppId:
+                    description: The batonAppId field.
+                    readOnly: false
+                    type: string
+                batonConnectorId:
+                    description: The batonConnectorId field.
+                    readOnly: false
+                    type: string
+            title: Task Audit Account Lifecycle Action Created
+            type: object
+            x-speakeasy-name-override: TaskAuditAccountLifecycleActionCreated
+        c1.api.task.v1.TaskAuditAccountLifecycleActionFailed:
+            description: The TaskAuditAccountLifecycleActionFailed message.
+            nullable: true
+            properties:
+                batonActionDisplayName:
+                    description: The batonActionDisplayName field.
+                    readOnly: false
+                    type: string
+                batonActionInvocationId:
+                    description: The batonActionInvocationId field.
+                    readOnly: false
+                    type: string
+                batonActionName:
+                    description: The batonActionName field.
+                    readOnly: false
+                    type: string
+                batonAppId:
+                    description: The batonAppId field.
+                    readOnly: false
+                    type: string
+                batonConnectorId:
+                    description: The batonConnectorId field.
+                    readOnly: false
+                    type: string
+                error:
+                    description: The error field.
+                    readOnly: false
+                    type: string
+            title: Task Audit Account Lifecycle Action Failed
+            type: object
+            x-speakeasy-name-override: TaskAuditAccountLifecycleActionFailed
         c1.api.task.v1.TaskAuditActionSubmitted:
             description: The TaskAuditActionSubmitted message.
             nullable: true
@@ -13187,6 +13655,17 @@ components:
             title: Task Audit Policy Evaluation Step
             type: object
             x-speakeasy-name-override: TaskAuditPolicyEvaluationStep
+        c1.api.task.v1.TaskAuditPolicyProvisionCancelled:
+            description: The TaskAuditPolicyProvisionCancelled message.
+            nullable: true
+            properties:
+                cancelReason:
+                    description: The cancelReason field.
+                    readOnly: false
+                    type: string
+            title: Task Audit Policy Provision Cancelled
+            type: object
+            x-speakeasy-name-override: TaskAuditPolicyProvisionCancelled
         c1.api.task.v1.TaskAuditPolicyProvisionError:
             description: The TaskAuditPolicyProvisionError message.
             nullable: true
@@ -13404,9 +13883,16 @@ components:
                   - grantDurationUpdated
                   - waitStepUntilTime
                   - webhookApprovalFatalError
+                  - accountLifecycleActionCreated
+                  - accountLifecycleActionFailed
+                  - provisionCancelled
             properties:
                 accessRequestOutcome:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditAccessRequestOutcome'
+                accountLifecycleActionCreated:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskAuditAccountLifecycleActionCreated'
+                accountLifecycleActionFailed:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskAuditAccountLifecycleActionFailed'
                 actionResult:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditConnectorActionResult'
                 actionSubmitted:
@@ -13483,6 +13969,8 @@ components:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditPolicyChanged'
                 policyEvaluationStep:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditPolicyEvaluationStep'
+                provisionCancelled:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskAuditPolicyProvisionCancelled'
                 provisionError:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskAuditPolicyProvisionError'
                 provisionReassigned:
@@ -13879,7 +14367,7 @@ components:
             description: The task expand mask is an array of strings that specifes the related objects the requester wishes to have returned when making a request where the expand mask is part of the input. Use '*' to view all possible responses.
             properties:
                 paths:
-                    description: A list of paths to expand in the response. May be any combination of "*", "access_review_id", "user_id", "created_by_user_id", "app_id", "app_user_id", "app_entitlement_ids", "step_approver_ids", "identity_user_id", and "insight_ids".
+                    description: A list of paths to expand in the response. May be any combination of "*", "access_review_id", "user_id", "created_by_user_id", "app_id", "app_user_id", "app_entitlement_ids", "step_approver_ids", "identity_user_id", "insight_ids", and "app_user_last_usage".
                     items:
                         type: string
                     nullable: true
@@ -14073,6 +14561,21 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                certifyOutcomes:
+                    description: Search tasks by certify outcome
+                    items:
+                        enum:
+                            - CERTIFY_OUTCOME_UNSPECIFIED
+                            - CERTIFY_OUTCOME_CERTIFIED
+                            - CERTIFY_OUTCOME_DECERTIFIED
+                            - CERTIFY_OUTCOME_ERROR
+                            - CERTIFY_OUTCOME_CANCELLED
+                            - CERTIFY_OUTCOME_WAIT_TIMED_OUT
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
                 createdAfter:
                     format: date-time
                     readOnly: false
@@ -14123,6 +14626,21 @@ components:
                     type: array
                 expandMask:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskExpandMask'
+                grantOutcomes:
+                    description: Search tasks by grant outcome
+                    items:
+                        enum:
+                            - GRANT_OUTCOME_UNSPECIFIED
+                            - GRANT_OUTCOME_GRANTED
+                            - GRANT_OUTCOME_DENIED
+                            - GRANT_OUTCOME_ERROR
+                            - GRANT_OUTCOME_CANCELLED
+                            - GRANT_OUTCOME_WAIT_TIMED_OUT
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
                 includeActedAfter:
                     format: date-time
                     readOnly: false
@@ -14153,6 +14671,14 @@ components:
                     description: Search tasks that were opened by this user, or that the user is the subject of.
                     readOnly: false
                     type: string
+                outcomeAfter:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                outcomeBefore:
+                    format: date-time
+                    readOnly: false
+                    type: string
                 pageSize:
                     description: The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
                     format: int32
@@ -14177,6 +14703,21 @@ components:
                     description: Query tasks by display name, description, or numeric ID.
                     items:
                         $ref: '#/components/schemas/c1.api.task.v1.TaskRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                revokeOutcomes:
+                    description: Search tasks by revoke outcome
+                    items:
+                        enum:
+                            - REVOKE_OUTCOME_UNSPECIFIED
+                            - REVOKE_OUTCOME_REVOKED
+                            - REVOKE_OUTCOME_DENIED
+                            - REVOKE_OUTCOME_ERROR
+                            - REVOKE_OUTCOME_CANCELLED
+                            - REVOKE_OUTCOME_WAIT_TIMED_OUT
+                        type: string
+                        x-speakeasy-unknown-values: allow
                     nullable: true
                     readOnly: false
                     type: array
@@ -14500,7 +15041,10 @@ components:
                   - revoke
                   - certify
                   - offboarding
+                  - action
             properties:
+                action:
+                    $ref: '#/components/schemas/c1.api.task.v1.TaskTypeAction'
                 certify:
                     $ref: '#/components/schemas/c1.api.task.v1.TaskTypeCertify'
                 grant:
@@ -14512,6 +15056,36 @@ components:
             title: Task Type
             type: object
             x-speakeasy-name-override: TaskType
+        c1.api.task.v1.TaskTypeAction:
+            description: The TaskTypeAction message.
+            nullable: true
+            properties:
+                actionId:
+                    description: The ID of the action to execute.
+                    readOnly: true
+                    type: string
+                formValues:
+                    additionalProperties: true
+                    readOnly: true
+                    type: object
+                outcome:
+                    description: The outcome field.
+                    enum:
+                        - ACTION_OUTCOME_UNSPECIFIED
+                        - ACTION_OUTCOME_SUCCESS
+                        - ACTION_OUTCOME_DENIED
+                        - ACTION_OUTCOME_ERROR
+                        - ACTION_OUTCOME_CANCELLED
+                    readOnly: true
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                outcomeTime:
+                    format: date-time
+                    readOnly: true
+                    type: string
+            title: Task Type Action
+            type: object
+            x-speakeasy-name-override: TaskTypeAction
         c1.api.task.v1.TaskTypeCertify:
             description: The TaskTypeCertify message indicates that a task is a certify task and all related details.
             nullable: true
@@ -14682,6 +15256,10 @@ components:
                     description: JSONPATH expression indicating the location of the App object in the expanded array
                     readOnly: true
                     type: string
+                appUserLastUsagePath:
+                    description: JSONPATH expression indicating the location of the AppUser last usage timestamp in the expanded array
+                    readOnly: true
+                    type: string
                 appUserPath:
                     description: JSONPATH expression indicating the location of the AppUser object in the expanded array
                     readOnly: true
@@ -14715,6 +15293,40 @@ components:
             title: Task View
             type: object
             x-speakeasy-name-override: TaskView
+        c1.api.user.v1.ExpiringUserDelegationBinding:
+            description: The ExpiringUserDelegationBinding message.
+            properties:
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                delegatedUserId:
+                    description: The delegatedUserId field.
+                    readOnly: false
+                    type: string
+                deletedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                expirationAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                startAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                updatedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                userId:
+                    description: The userId field.
+                    readOnly: false
+                    type: string
+            title: Expiring User Delegation Binding
+            type: object
+            x-speakeasy-name-override: ExpiringUserDelegationBinding
         c1.api.user.v1.GetUserProfileTypesResponse:
             description: The GetUserProfileTypesResponse message.
             properties:
@@ -14860,6 +15472,32 @@ components:
             title: Search Users Response
             type: object
             x-speakeasy-name-override: SearchUsersResponse
+        c1.api.user.v1.SetExpiringUserDelegationBindingByAdminRequestInput:
+            description: The SetExpiringUserDelegationBindingByAdminRequest message.
+            properties:
+                delegatedUserId:
+                    description: The delegatedUserId field.
+                    readOnly: false
+                    type: string
+                delegationExpireAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                delegationStartAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Set Expiring User Delegation Binding By Admin Request
+            type: object
+            x-speakeasy-name-override: SetExpiringUserDelegationBindingByAdminRequest
+        c1.api.user.v1.SetExpiringUserDelegationBindingByAdminResponse:
+            description: The SetExpiringUserDelegationBindingByAdminResponse message.
+            properties:
+                item:
+                    $ref: '#/components/schemas/c1.api.user.v1.ExpiringUserDelegationBinding'
+            title: Set Expiring User Delegation Binding By Admin Response
+            type: object
+            x-speakeasy-name-override: SetExpiringUserDelegationBindingByAdminResponse
         c1.api.user.v1.User:
             description: The User object provides all of the details for an user, as well as some configuration.
             properties:
@@ -15185,6 +15823,150 @@ components:
             title: User View
             type: object
             x-speakeasy-name-override: UserView
+        c1.api.vault.v1.GroupAuthzVault:
+            description: The GroupAuthzVault message.
+            nullable: true
+            title: Group Authz Vault
+            type: object
+            x-speakeasy-name-override: GroupAuthzVault
+        c1.api.vault.v1.MagicVault:
+            description: The MagicVault message.
+            nullable: true
+            properties:
+                allowUnauthedViews:
+                    description: The allowUnauthedViews field.
+                    readOnly: false
+                    type: boolean
+                allowedViews:
+                    description: The allowedViews field.
+                    format: uint32
+                    readOnly: false
+                    type: integer
+            title: Magic Vault
+            type: object
+            x-speakeasy-name-override: MagicVault
+        c1.api.vault.v1.Vault:
+            description: |
+                The Vault message.
+
+                This message contains a oneof named vault. Only a single field of the following list may be set at a time:
+                  - groupAuthzVault
+                  - magicVault
+            properties:
+                createdAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                credentialExpirationDuration:
+                    format: duration
+                    readOnly: false
+                    type: string
+                deletedAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                groupAuthzVault:
+                    $ref: '#/components/schemas/c1.api.vault.v1.GroupAuthzVault'
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+                magicVault:
+                    $ref: '#/components/schemas/c1.api.vault.v1.MagicVault'
+                updatedAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+            title: Vault
+            type: object
+            x-speakeasy-entity: Vault
+            x-speakeasy-name-override: Vault
+        c1.api.vault.v1.VaultServiceCreateRequest:
+            description: |
+                The VaultServiceCreateRequest message.
+
+                This message contains a oneof named vault. Only a single field of the following list may be set at a time:
+                  - groupAuthzVault
+                  - magicVault
+            properties:
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                groupAuthzVault:
+                    $ref: '#/components/schemas/c1.api.vault.v1.GroupAuthzVault'
+                magicVault:
+                    $ref: '#/components/schemas/c1.api.vault.v1.MagicVault'
+                ownerIds:
+                    description: The ownerIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            required:
+                - displayName
+            title: Vault Service Create Request
+            type: object
+            x-speakeasy-name-override: VaultServiceCreateRequest
+        c1.api.vault.v1.VaultServiceCreateResponse:
+            description: The VaultServiceCreateResponse message.
+            properties:
+                vault:
+                    $ref: '#/components/schemas/c1.api.vault.v1.Vault'
+            title: Vault Service Create Response
+            type: object
+            x-speakeasy-name-override: VaultServiceCreateResponse
+        c1.api.vault.v1.VaultServiceDeleteRequestInput:
+            description: The VaultServiceDeleteRequest message.
+            title: Vault Service Delete Request
+            type: object
+            x-speakeasy-name-override: VaultServiceDeleteRequest
+        c1.api.vault.v1.VaultServiceDeleteResponse:
+            description: Empty response body. Status code indicates success.
+            title: Vault Service Delete Response
+            type: object
+            x-speakeasy-name-override: VaultServiceDeleteResponse
+        c1.api.vault.v1.VaultServiceGetResponse:
+            description: The VaultServiceGetResponse message.
+            properties:
+                vault:
+                    $ref: '#/components/schemas/c1.api.vault.v1.Vault'
+            title: Vault Service Get Response
+            type: object
+            x-speakeasy-name-override: VaultServiceGetResponse
+        c1.api.vault.v1.VaultServiceUpdateRequestInput:
+            description: The VaultServiceUpdateRequest message contains the vault object to update and a field mask to indicate which fields to update.
+            properties:
+                updateMask:
+                    nullable: true
+                    readOnly: false
+                    type: string
+                vault:
+                    $ref: '#/components/schemas/c1.api.vault.v1.Vault'
+            title: Vault Service Update Request
+            type: object
+            x-speakeasy-name-override: VaultServiceUpdateRequest
+        c1.api.vault.v1.VaultServiceUpdateResponse:
+            description: The VaultServiceUpdateResponse message.
+            properties:
+                vault:
+                    $ref: '#/components/schemas/c1.api.vault.v1.Vault'
+            title: Vault Service Update Response
+            type: object
+            x-speakeasy-name-override: VaultServiceUpdateResponse
         c1.api.webhooks.v1.Webhook:
             description: The Webhook message.
             properties:
@@ -21366,8 +22148,8 @@ paths:
             tags:
                 - Request Catalog
             x-speakeasy-entity-operation:
-                terraform-datasource: Access_Profile_Requestable_Entries#read
-                terraform-resource: null
+                terraform-datasource: null
+                terraform-resource: Access_Profile_Requestable_Entries#read
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: ListAllEntitlementIdsPerApp
     /api/v1/catalogs/{catalog_id}/requestable_entitlements:
@@ -21580,8 +22362,8 @@ paths:
             tags:
                 - Request Catalog
             x-speakeasy-entity-operation:
-                terraform-datasource: null
-                terraform-resource: Access_Profile_Requestable_Entry#read
+                terraform-datasource: Access_Profile_Requestable_Entry#read
+                terraform-resource: null
             x-speakeasy-group: RequestCatalogManagement
             x-speakeasy-name-override: GetRequestableEntry
         put:
@@ -24597,6 +25379,149 @@ paths:
                 - User
             x-speakeasy-group: User
             x-speakeasy-name-override: GetUserProfileTypes
+    /api/v1/users/{user_id}/set-delegation-by-admin:
+        post:
+            description: Invokes the c1.api.user.v1.UserService.SetExpiringUserDelegationBindingByAdmin method.
+            operationId: c1.api.user.v1.UserService.SetExpiringUserDelegationBindingByAdmin
+            parameters:
+                - in: path
+                  name: user_id
+                  required: true
+                  schema:
+                    description: The userId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.user.v1.SetExpiringUserDelegationBindingByAdminRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.user.v1.SetExpiringUserDelegationBindingByAdminResponse'
+                    description: Successful response
+            summary: Set Expiring User Delegation Binding By Admin
+            tags:
+                - User
+            x-speakeasy-group: User
+            x-speakeasy-name-override: SetExpiringUserDelegationBindingByAdmin
+    /api/v1/vaults:
+        post:
+            description: Invokes the c1.api.vault.v1.VaultService.Create method.
+            operationId: c1.api.vault.v1.VaultService.Create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.vault.v1.VaultServiceCreateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.vault.v1.VaultServiceCreateResponse'
+                    description: Successful response
+            summary: Create
+            tags:
+                - Vault
+            x-speakeasy-entity-operation:
+                terraform-resource: Vault#create
+            x-speakeasy-group: Vault
+            x-speakeasy-name-override: Create
+            x-stability-level: draft
+    /api/v1/vaults/{id}:
+        delete:
+            description: Invokes the c1.api.vault.v1.VaultService.Delete method.
+            operationId: c1.api.vault.v1.VaultService.Delete
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.vault.v1.VaultServiceDeleteRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.vault.v1.VaultServiceDeleteResponse'
+                    description: Empty response body. Status code indicates success.
+            summary: Delete
+            tags:
+                - Vault
+            x-speakeasy-entity-operation:
+                terraform-resource: Vault#delete
+            x-speakeasy-group: Vault
+            x-speakeasy-name-override: Delete
+            x-stability-level: draft
+        get:
+            description: Invokes the c1.api.vault.v1.VaultService.Get method.
+            operationId: c1.api.vault.v1.VaultService.Get
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.vault.v1.VaultServiceGetResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Vault
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: Vault#read
+            x-speakeasy-group: Vault
+            x-speakeasy-name-override: Get
+            x-stability-level: draft
+        post:
+            description: Invokes the c1.api.vault.v1.VaultService.Update method.
+            operationId: c1.api.vault.v1.VaultService.Update
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.vault.v1.VaultServiceUpdateRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.vault.v1.VaultServiceUpdateResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - Vault
+            x-speakeasy-entity-operation:
+                terraform-resource: Vault#update
+            x-speakeasy-group: Vault
+            x-speakeasy-name-override: Update
+            x-stability-level: draft
     /api/v1/webhooks:
         get:
             description: Invokes the c1.api.webhooks.v1.WebhooksService.List method.

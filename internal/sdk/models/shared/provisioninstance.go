@@ -20,6 +20,8 @@ const (
 	ProvisionInstanceStateProvisionInstanceStateWebhookWaiting                  ProvisionInstanceState = "PROVISION_INSTANCE_STATE_WEBHOOK_WAITING"
 	ProvisionInstanceStateProvisionInstanceStateExternalTicket                  ProvisionInstanceState = "PROVISION_INSTANCE_STATE_EXTERNAL_TICKET"
 	ProvisionInstanceStateProvisionInstanceStateExternalTicketWaiting           ProvisionInstanceState = "PROVISION_INSTANCE_STATE_EXTERNAL_TICKET_WAITING"
+	ProvisionInstanceStateProvisionInstanceStateAccountLifecycleActions         ProvisionInstanceState = "PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS"
+	ProvisionInstanceStateProvisionInstanceStateAccountLifecycleActionsWaiting  ProvisionInstanceState = "PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS_WAITING"
 	ProvisionInstanceStateProvisionInstanceStateDone                            ProvisionInstanceState = "PROVISION_INSTANCE_STATE_DONE"
 )
 
@@ -50,6 +52,10 @@ func (e *ProvisionInstanceState) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "PROVISION_INSTANCE_STATE_EXTERNAL_TICKET_WAITING":
 		fallthrough
+	case "PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS":
+		fallthrough
+	case "PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS_WAITING":
+		fallthrough
 	case "PROVISION_INSTANCE_STATE_DONE":
 		*e = ProvisionInstanceState(v)
 		return nil
@@ -67,6 +73,8 @@ func (e *ProvisionInstanceState) UnmarshalJSON(data []byte) error {
 //   - reassignedByError
 //   - skipped
 type ProvisionInstance struct {
+	// This indicates the account lifecycle action id for this step.
+	BatonActionInvocationID *string `json:"batonActionInvocationId,omitempty"`
 	// The outcome of a provision instance that is cancelled.
 	CancelledAction *CancelledAction `json:"cancelled,omitempty"`
 	// The outcome of a provision instance that has been completed succesfully.
@@ -91,6 +99,13 @@ type ProvisionInstance struct {
 	WebhookID *string `json:"webhookId,omitempty"`
 	// This indicates the webhook instance id for this step.
 	WebhookInstanceID *string `json:"webhookInstanceId,omitempty"`
+}
+
+func (p *ProvisionInstance) GetBatonActionInvocationID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.BatonActionInvocationID
 }
 
 func (p *ProvisionInstance) GetCancelledAction() *CancelledAction {

@@ -7,6 +7,7 @@ import (
 )
 
 type AutomationTrigger struct {
+	AccessConflictTrigger       *AccessConflictTrigger       `tfsdk:"access_conflict_trigger"`
 	AppUserCreatedTrigger       *AppUserCreatedTrigger       `tfsdk:"app_user_created_trigger"`
 	AppUserUpdatedTrigger       *AppUserUpdatedTrigger       `tfsdk:"app_user_updated_trigger"`
 	FormTrigger                 jsontypes.Normalized         `tfsdk:"form_trigger"`

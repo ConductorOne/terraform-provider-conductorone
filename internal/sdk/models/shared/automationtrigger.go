@@ -17,7 +17,15 @@ package shared
 //   - schedule
 //   - form
 //   - scheduleAppUser
+//   - accessConflict
 type AutomationTrigger struct {
+	// The AccessConflictTrigger message.
+	//
+	// This message contains a oneof named conflict_monitor_selector. Only a single field of the following list may be set at a time:
+	//   - conflictMonitorRefs
+	//   - allConflictMonitors
+	//
+	AccessConflictTrigger *AccessConflictTrigger `json:"accessConflict,omitempty"`
 	// The AppUserCreatedTrigger message.
 	//
 	// This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
@@ -62,6 +70,13 @@ type AutomationTrigger struct {
 	//   - hmac
 	//
 	WebhookAutomationTrigger *WebhookAutomationTrigger `json:"webhook,omitempty"`
+}
+
+func (a *AutomationTrigger) GetAccessConflictTrigger() *AccessConflictTrigger {
+	if a == nil {
+		return nil
+	}
+	return a.AccessConflictTrigger
 }
 
 func (a *AutomationTrigger) GetAppUserCreatedTrigger() *AppUserCreatedTrigger {

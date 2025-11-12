@@ -390,6 +390,186 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The CreateRevokeTasks message.`,
 						},
+						"create_revoke_tasks_v2": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"entitlement_exclusion_criteria": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"excluded_app_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedAppIds field.`,
+										},
+										"excluded_compliance_framework_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedComplianceFrameworkIds field.`,
+										},
+										"excluded_resource_type_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedResourceTypeIds field.`,
+										},
+										"excluded_risk_level_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedRiskLevelIds field.`,
+										},
+									},
+									Description: `The EntitlementExclusionCriteria message.`,
+								},
+								"entitlement_exclusion_list": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"excluded_app_entitlement_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											Description: `The excludedAppEntitlementRefs field.`,
+										},
+									},
+									Description: `The EntitlementExclusionList message.`,
+								},
+								"entitlement_exclusion_none": schema.SingleNestedAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The EntitlementExclusionNone message.`,
+								},
+								"entitlement_inclusion_all": schema.SingleNestedAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The EntitlementInclusionAll message.`,
+								},
+								"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The appIds field.`,
+										},
+										"compliance_framework_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The complianceFrameworkIds field.`,
+										},
+										"resource_type_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The resourceTypeIds field.`,
+										},
+										"risk_level_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The riskLevelIds field.`,
+										},
+									},
+									Description: `The EntitlementInclusionCriteria message.`,
+								},
+								"entitlement_inclusion_list": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_entitlement_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											Description: `The appEntitlementRefs field.`,
+										},
+									},
+									Description: `The EntitlementInclusionList message.`,
+								},
+								"use_subject_user": schema.BoolAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The useSubjectUser field.` + "\n" +
+										`This field is part of the ` + "`" + `user` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.CreateRevokeTasksV2` + "`" + ` for more details.`,
+								},
+								"user_id_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The userIdCel field.` + "\n" +
+										`This field is part of the ` + "`" + `user` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.CreateRevokeTasksV2` + "`" + ` for more details.`,
+								},
+								"user_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The id of the user.`,
+										},
+									},
+									Description: `A reference to a user.`,
+								},
+							},
+							MarkdownDescription: `The CreateRevokeTasksV2 message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named user. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - userIdCel` + "\n" +
+								`  - userRef` + "\n" +
+								`  - useSubjectUser` + "\n" +
+								`` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - inclusionList` + "\n" +
+								`  - inclusionAll` + "\n" +
+								`  - inclusionCriteria` + "\n" +
+								`` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - exclusionNone` + "\n" +
+								`  - exclusionList` + "\n" +
+								`  - exclusionCriteria`,
+						},
 						"grant_entitlements": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -910,9 +1090,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"current_version": schema.StringAttribute{
 				Computed:    true,
@@ -1242,6 +1419,186 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								},
 							},
 							Description: `The CreateRevokeTasks message.`,
+						},
+						"create_revoke_tasks_v2": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"entitlement_exclusion_criteria": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"excluded_app_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedAppIds field.`,
+										},
+										"excluded_compliance_framework_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedComplianceFrameworkIds field.`,
+										},
+										"excluded_resource_type_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedResourceTypeIds field.`,
+										},
+										"excluded_risk_level_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedRiskLevelIds field.`,
+										},
+									},
+									Description: `The EntitlementExclusionCriteria message.`,
+								},
+								"entitlement_exclusion_list": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"excluded_app_entitlement_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											Description: `The excludedAppEntitlementRefs field.`,
+										},
+									},
+									Description: `The EntitlementExclusionList message.`,
+								},
+								"entitlement_exclusion_none": schema.SingleNestedAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The EntitlementExclusionNone message.`,
+								},
+								"entitlement_inclusion_all": schema.SingleNestedAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The EntitlementInclusionAll message.`,
+								},
+								"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The appIds field.`,
+										},
+										"compliance_framework_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The complianceFrameworkIds field.`,
+										},
+										"resource_type_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The resourceTypeIds field.`,
+										},
+										"risk_level_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The riskLevelIds field.`,
+										},
+									},
+									Description: `The EntitlementInclusionCriteria message.`,
+								},
+								"entitlement_inclusion_list": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_entitlement_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											Description: `The appEntitlementRefs field.`,
+										},
+									},
+									Description: `The EntitlementInclusionList message.`,
+								},
+								"use_subject_user": schema.BoolAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The useSubjectUser field.` + "\n" +
+										`This field is part of the ` + "`" + `user` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.CreateRevokeTasksV2` + "`" + ` for more details.`,
+								},
+								"user_id_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The userIdCel field.` + "\n" +
+										`This field is part of the ` + "`" + `user` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.CreateRevokeTasksV2` + "`" + ` for more details.`,
+								},
+								"user_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The id of the user.`,
+										},
+									},
+									Description: `A reference to a user.`,
+								},
+							},
+							MarkdownDescription: `The CreateRevokeTasksV2 message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named user. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - userIdCel` + "\n" +
+								`  - userRef` + "\n" +
+								`  - useSubjectUser` + "\n" +
+								`` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - inclusionList` + "\n" +
+								`  - inclusionAll` + "\n" +
+								`  - inclusionCriteria` + "\n" +
+								`` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - exclusionNone` + "\n" +
+								`  - exclusionList` + "\n" +
+								`  - exclusionCriteria`,
 						},
 						"grant_entitlements": schema.SingleNestedAttribute{
 							Computed: true,
@@ -1769,6 +2126,48 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 						speakeasy_objectvalidators.NotNull(),
 					},
 					Attributes: map[string]schema.Attribute{
+						"access_conflict_trigger": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"all_conflict_monitors": schema.BoolAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The allConflictMonitors field.` + "\n" +
+										`This field is part of the ` + "`" + `conflict_monitor_selector` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.AccessConflictTrigger` + "`" + ` for more details.`,
+								},
+								"conflict_monitor_refs": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"conflict_monitor_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											Description: `The conflictMonitorRefs field.`,
+										},
+									},
+									Description: `The ConflictMonitorRefs message.`,
+								},
+							},
+							MarkdownDescription: `The AccessConflictTrigger message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named conflict_monitor_selector. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - conflictMonitorRefs` + "\n" +
+								`  - allConflictMonitors`,
+						},
 						"app_user_created_trigger": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -2345,29 +2744,10 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"last_executed_at": schema.StringAttribute{
 				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"primary_trigger_type": schema.StringAttribute{
 				Computed:    true,
-				Description: `The primaryTriggerType field. must be one of ["TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_USER_PROFILE_CHANGE", "TRIGGER_TYPE_APP_USER_CREATE", "TRIGGER_TYPE_APP_USER_UPDATE", "TRIGGER_TYPE_UNUSED_ACCESS", "TRIGGER_TYPE_USER_CREATED", "TRIGGER_TYPE_GRANT_FOUND", "TRIGGER_TYPE_GRANT_DELETED", "TRIGGER_TYPE_WEBHOOK", "TRIGGER_TYPE_SCHEDULE", "TRIGGER_TYPE_FORM", "TRIGGER_TYPE_SCHEDULE_APP_USER"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"TRIGGER_TYPE_UNSPECIFIED",
-						"TRIGGER_TYPE_USER_PROFILE_CHANGE",
-						"TRIGGER_TYPE_APP_USER_CREATE",
-						"TRIGGER_TYPE_APP_USER_UPDATE",
-						"TRIGGER_TYPE_UNUSED_ACCESS",
-						"TRIGGER_TYPE_USER_CREATED",
-						"TRIGGER_TYPE_GRANT_FOUND",
-						"TRIGGER_TYPE_GRANT_DELETED",
-						"TRIGGER_TYPE_WEBHOOK",
-						"TRIGGER_TYPE_SCHEDULE",
-						"TRIGGER_TYPE_FORM",
-						"TRIGGER_TYPE_SCHEDULE_APP_USER",
-					),
-				},
+				Description: `The primaryTriggerType field.`,
 			},
 			"triggers": schema.ListNestedAttribute{
 				Computed: true,
@@ -2377,6 +2757,48 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 						speakeasy_objectvalidators.NotNull(),
 					},
 					Attributes: map[string]schema.Attribute{
+						"access_conflict_trigger": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"all_conflict_monitors": schema.BoolAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The allConflictMonitors field.` + "\n" +
+										`This field is part of the ` + "`" + `conflict_monitor_selector` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.AccessConflictTrigger` + "`" + ` for more details.`,
+								},
+								"conflict_monitor_refs": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"conflict_monitor_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											Description: `The conflictMonitorRefs field.`,
+										},
+									},
+									Description: `The ConflictMonitorRefs message.`,
+								},
+							},
+							MarkdownDescription: `The AccessConflictTrigger message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named conflict_monitor_selector. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - conflictMonitorRefs` + "\n" +
+								`  - allConflictMonitors`,
+						},
 						"app_user_created_trigger": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,

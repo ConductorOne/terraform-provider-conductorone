@@ -106,6 +106,25 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 													},
 													Description: `This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.`,
 												},
+												"action": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"action_target_automation": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"automation_template_id": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The automationTemplateId field.`,
+																},
+															},
+															Description: `The ActionTargetAutomation message.`,
+														},
+													},
+													MarkdownDescription: `The Action message.` + "\n" +
+														`` + "\n" +
+														`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
+														`  - automation`,
+												},
 												"approval": schema.SingleNestedAttribute{
 													Computed: true,
 													Attributes: map[string]schema.Attribute{
@@ -198,6 +217,10 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																	Computed:    true,
 																	Description: `Configuration to enable fallback for group fallback.`,
 																},
+																"require_distinct_approvers": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to require distinct approvers across approval steps of a rule.`,
+																},
 															},
 															Description: `The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step.`,
 														},
@@ -207,6 +230,10 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																"allow_self_approval": schema.BoolAttribute{
 																	Computed:    true,
 																	Description: `Configuration that allows a user to self approve if they are an app owner during this approval step.`,
+																},
+																"require_distinct_approvers": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to require distinct approvers across approval steps of a rule.`,
 																},
 															},
 															Description: `App owner approval provides the configuration for an approval step when the app owner is the target.`,
@@ -230,6 +257,10 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																	Computed:    true,
 																	ElementType: types.StringType,
 																	Description: `Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+																},
+																"require_distinct_approvers": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to require distinct approvers across approval steps of a rule.`,
 																},
 															},
 															Description: `The entitlement owner approval allows configuration of the approval step when the target approvers are the entitlement owners.`,
@@ -303,6 +334,10 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																	ElementType: types.StringType,
 																	Description: `Configuration to specific which users to fallback to if and the expression does not return a valid list of users.`,
 																},
+																"require_distinct_approvers": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to require distinct approvers across approval steps of a rule.`,
+																},
 															},
 															Description: `The ExpressionApproval message.`,
 														},
@@ -326,6 +361,10 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																	Computed:    true,
 																	ElementType: types.StringType,
 																	Description: `Configuration to specific which users to fallback to if fallback is enabled and no manager is found.`,
+																},
+																"require_distinct_approvers": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to require distinct approvers across approval steps of a rule.`,
 																},
 															},
 															Description: `The manager approval object provides configuration options for approval when the target of the approval is the manager of the user in the task.`,
@@ -363,6 +402,10 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																	ElementType: types.StringType,
 																	Description: `Configuration to specific which users to fallback to if fallback is enabled and the resource owner cannot be identified.`,
 																},
+																"require_distinct_approvers": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to require distinct approvers across approval steps of a rule.`,
+																},
 															},
 															Description: `The resource owner approval allows configuration of the approval step when the target approvers are the resource owners.`,
 														},
@@ -392,6 +435,10 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																"allow_self_approval": schema.BoolAttribute{
 																	Computed:    true,
 																	Description: `Configuration to allow self approval of if the user is specified and also the target of the ticket.`,
+																},
+																"require_distinct_approvers": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to require distinct approvers across approval steps of a rule.`,
 																},
 																"user_ids": schema.ListAttribute{
 																	Computed:    true,
@@ -455,6 +502,10 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																		"connector_id": schema.StringAttribute{
 																			Computed:    true,
 																			Description: `The connectorId field.`,
+																		},
+																		"display_name": schema.StringAttribute{
+																			Computed:    true,
+																			Description: `The displayName field.`,
 																		},
 																	},
 																	Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,

@@ -9,7 +9,10 @@ package shared
 //   - revoke
 //   - certify
 //   - offboarding
+//   - action
 type TaskType struct {
+	// The TaskTypeAction message.
+	TaskTypeAction *TaskTypeAction `json:"action,omitempty"`
 	// The TaskTypeCertify message indicates that a task is a certify task and all related details.
 	TaskTypeCertify *TaskTypeCertify `json:"certify,omitempty"`
 	// The TaskTypeGrant message indicates that a task is a grant task and all related details.
@@ -18,6 +21,13 @@ type TaskType struct {
 	TaskTypeOffboarding *TaskTypeOffboarding `json:"offboarding,omitempty"`
 	// The TaskTypeRevoke message indicates that a task is a revoke task and all related details.
 	TaskTypeRevoke *TaskTypeRevoke `json:"revoke,omitempty"`
+}
+
+func (t *TaskType) GetTaskTypeAction() *TaskTypeAction {
+	if t == nil {
+		return nil
+	}
+	return t.TaskTypeAction
 }
 
 func (t *TaskType) GetTaskTypeCertify() *TaskTypeCertify {

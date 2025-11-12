@@ -10,6 +10,8 @@ type EntitlementOwnerApproval struct {
 	Fallback *bool `json:"fallback,omitempty"`
 	// Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
+	// Configuration to require distinct approvers across approval steps of a rule.
+	RequireDistinctApprovers *bool `json:"requireDistinctApprovers,omitempty"`
 }
 
 func (e *EntitlementOwnerApproval) GetAllowSelfApproval() *bool {
@@ -31,4 +33,11 @@ func (e *EntitlementOwnerApproval) GetFallbackUserIds() []string {
 		return nil
 	}
 	return e.FallbackUserIds
+}
+
+func (e *EntitlementOwnerApproval) GetRequireDistinctApprovers() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.RequireDistinctApprovers
 }

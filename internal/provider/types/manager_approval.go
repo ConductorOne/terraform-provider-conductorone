@@ -7,8 +7,9 @@ import (
 )
 
 type ManagerApproval struct {
-	AllowSelfApproval types.Bool     `tfsdk:"allow_self_approval"`
-	AssignedUserIds   []types.String `tfsdk:"assigned_user_ids"`
-	Fallback          types.Bool     `tfsdk:"fallback"`
-	FallbackUserIds   []types.String `tfsdk:"fallback_user_ids"`
+	AllowSelfApproval        types.Bool     `tfsdk:"allow_self_approval"`
+	AssignedUserIds          []types.String `tfsdk:"assigned_user_ids"`
+	Fallback                 types.Bool     `tfsdk:"fallback"`
+	FallbackUserIds          []types.String `tfsdk:"fallback_user_ids"`
+	RequireDistinctApprovers types.Bool     `tfsdk:"require_distinct_approvers"`
 }

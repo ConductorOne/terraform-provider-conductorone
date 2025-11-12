@@ -7,6 +7,7 @@ import (
 )
 
 type UserApproval struct {
-	AllowSelfApproval types.Bool     `tfsdk:"allow_self_approval"`
-	UserIds           []types.String `tfsdk:"user_ids"`
+	AllowSelfApproval        types.Bool     `tfsdk:"allow_self_approval"`
+	RequireDistinctApprovers types.Bool     `tfsdk:"require_distinct_approvers"`
+	UserIds                  []types.String `tfsdk:"user_ids"`
 }

@@ -69,6 +69,17 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 							steps.Accept = &tfTypes.Accept{}
 							steps.Accept.AcceptMessage = types.StringPointerValue(stepsItem.Accept.AcceptMessage)
 						}
+						if stepsItem.Action == nil {
+							steps.Action = nil
+						} else {
+							steps.Action = &tfTypes.Action{}
+							if stepsItem.Action.ActionTargetAutomation == nil {
+								steps.Action.ActionTargetAutomation = nil
+							} else {
+								steps.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
+								steps.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(stepsItem.Action.ActionTargetAutomation.AutomationTemplateID)
+							}
+						}
 						if stepsItem.Approval == nil {
 							steps.Approval = nil
 						} else {
@@ -137,12 +148,14 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									}
 								}
 								steps.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
+								steps.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers)
 							}
 							if stepsItem.Approval.AppOwnerApproval == nil {
 								steps.Approval.AppOwnerApproval = nil
 							} else {
 								steps.Approval.AppOwnerApproval = &tfTypes.AppOwnerApproval{}
 								steps.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.AllowSelfApproval)
+								steps.Approval.AppOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers)
 							}
 							steps.Approval.Assigned = types.BoolPointerValue(stepsItem.Approval.Assigned)
 							if stepsItem.Approval.EntitlementOwnerApproval == nil {
@@ -157,6 +170,7 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 										steps.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
+								steps.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
 							}
 							if stepsItem.Approval.Escalation == nil {
 								steps.Approval.Escalation = nil
@@ -207,6 +221,7 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 										steps.Approval.ExpressionApproval.FallbackUserIds = append(steps.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
+								steps.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers)
 							}
 							if stepsItem.Approval.ManagerApproval == nil {
 								steps.Approval.ManagerApproval = nil
@@ -226,6 +241,7 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 										steps.Approval.ManagerApproval.FallbackUserIds = append(steps.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
+								steps.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.RequireDistinctApprovers)
 							}
 							steps.Approval.RequireApprovalReason = types.BoolPointerValue(stepsItem.Approval.RequireApprovalReason)
 							steps.Approval.RequireDenialReason = types.BoolPointerValue(stepsItem.Approval.RequireDenialReason)
@@ -243,6 +259,7 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 										steps.Approval.ResourceOwnerApproval.FallbackUserIds = append(steps.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
+								steps.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
 							}
 							if stepsItem.Approval.SelfApproval == nil {
 								steps.Approval.SelfApproval = nil
@@ -267,6 +284,7 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 							} else {
 								steps.Approval.UserApproval = &tfTypes.UserApproval{}
 								steps.Approval.UserApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.UserApproval.AllowSelfApproval)
+								steps.Approval.UserApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.UserApproval.RequireDistinctApprovers)
 								if stepsItem.Approval.UserApproval.UserIds != nil {
 									steps.Approval.UserApproval.UserIds = make([]types.String, 0, len(stepsItem.Approval.UserApproval.UserIds))
 									for _, v := range stepsItem.Approval.UserApproval.UserIds {
@@ -303,6 +321,7 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									steps.Provision.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName)
 									steps.Provision.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID)
 									steps.Provision.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID)
+									steps.Provision.ProvisionPolicy.ActionProvision.DisplayName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.DisplayName)
 								}
 								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision == nil {
 									steps.Provision.ProvisionPolicy.ConnectorProvision = nil
@@ -584,6 +603,24 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						AcceptMessage: acceptMessage,
 					}
 				}
+				var action *shared.Action
+				if stepsItem.Action != nil {
+					var actionTargetAutomation *shared.ActionTargetAutomation
+					if stepsItem.Action.ActionTargetAutomation != nil {
+						automationTemplateID := new(string)
+						if !stepsItem.Action.ActionTargetAutomation.AutomationTemplateID.IsUnknown() && !stepsItem.Action.ActionTargetAutomation.AutomationTemplateID.IsNull() {
+							*automationTemplateID = stepsItem.Action.ActionTargetAutomation.AutomationTemplateID.ValueString()
+						} else {
+							automationTemplateID = nil
+						}
+						actionTargetAutomation = &shared.ActionTargetAutomation{
+							AutomationTemplateID: automationTemplateID,
+						}
+					}
+					action = &shared.Action{
+						ActionTargetAutomation: actionTargetAutomation,
+					}
+				}
 				var approval *shared.ApprovalInput
 				if stepsItem.Approval != nil {
 					var agentApproval *shared.AgentApproval
@@ -662,8 +699,15 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							allowSelfApproval = nil
 						}
+						requireDistinctApprovers := new(bool)
+						if !stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers = stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers = nil
+						}
 						appOwnerApproval = &shared.AppOwnerApproval{
-							AllowSelfApproval: allowSelfApproval,
+							AllowSelfApproval:        allowSelfApproval,
+							RequireDistinctApprovers: requireDistinctApprovers,
 						}
 					}
 					var entitlementOwnerApproval *shared.EntitlementOwnerApproval
@@ -687,10 +731,17 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								fallbackUserIds = append(fallbackUserIds, fallbackUserIdsItem.ValueString())
 							}
 						}
+						requireDistinctApprovers1 := new(bool)
+						if !stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers1 = stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers1 = nil
+						}
 						entitlementOwnerApproval = &shared.EntitlementOwnerApproval{
-							AllowSelfApproval: allowSelfApproval1,
-							Fallback:          fallback,
-							FallbackUserIds:   fallbackUserIds,
+							AllowSelfApproval:        allowSelfApproval1,
+							Fallback:                 fallback,
+							FallbackUserIds:          fallbackUserIds,
+							RequireDistinctApprovers: requireDistinctApprovers1,
 						}
 					}
 					var escalation *shared.Escalation
@@ -773,11 +824,18 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								fallbackUserIds1 = append(fallbackUserIds1, fallbackUserIdsItem1.ValueString())
 							}
 						}
+						requireDistinctApprovers2 := new(bool)
+						if !stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers2 = stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers2 = nil
+						}
 						expressionApproval = &shared.ExpressionApprovalInput{
-							AllowSelfApproval: allowSelfApproval2,
-							Expressions:       expressions,
-							Fallback:          fallback1,
-							FallbackUserIds:   fallbackUserIds1,
+							AllowSelfApproval:        allowSelfApproval2,
+							Expressions:              expressions,
+							Fallback:                 fallback1,
+							FallbackUserIds:          fallbackUserIds1,
+							RequireDistinctApprovers: requireDistinctApprovers2,
 						}
 					}
 					var appGroupApproval *shared.AppGroupApproval
@@ -841,14 +899,21 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							isGroupFallbackEnabled = nil
 						}
+						requireDistinctApprovers3 := new(bool)
+						if !stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers3 = stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers3 = nil
+						}
 						appGroupApproval = &shared.AppGroupApproval{
-							AllowSelfApproval:      allowSelfApproval3,
-							AppGroupID:             appGroupID,
-							AppID:                  appID,
-							Fallback:               fallback2,
-							FallbackGroupIds:       fallbackGroupIds,
-							FallbackUserIds:        fallbackUserIds2,
-							IsGroupFallbackEnabled: isGroupFallbackEnabled,
+							AllowSelfApproval:        allowSelfApproval3,
+							AppGroupID:               appGroupID,
+							AppID:                    appID,
+							Fallback:                 fallback2,
+							FallbackGroupIds:         fallbackGroupIds,
+							FallbackUserIds:          fallbackUserIds2,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled,
+							RequireDistinctApprovers: requireDistinctApprovers3,
 						}
 					}
 					var managerApproval *shared.ManagerApprovalInput
@@ -872,10 +937,17 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								fallbackUserIds3 = append(fallbackUserIds3, fallbackUserIdsItem3.ValueString())
 							}
 						}
+						requireDistinctApprovers4 := new(bool)
+						if !stepsItem.Approval.ManagerApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.ManagerApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers4 = stepsItem.Approval.ManagerApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers4 = nil
+						}
 						managerApproval = &shared.ManagerApprovalInput{
-							AllowSelfApproval: allowSelfApproval4,
-							Fallback:          fallback3,
-							FallbackUserIds:   fallbackUserIds3,
+							AllowSelfApproval:        allowSelfApproval4,
+							Fallback:                 fallback3,
+							FallbackUserIds:          fallbackUserIds3,
+							RequireDistinctApprovers: requireDistinctApprovers4,
 						}
 					}
 					requireApprovalReason := new(bool)
@@ -923,10 +995,17 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								fallbackUserIds4 = append(fallbackUserIds4, fallbackUserIdsItem4.ValueString())
 							}
 						}
+						requireDistinctApprovers5 := new(bool)
+						if !stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers5 = stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers5 = nil
+						}
 						resourceOwnerApproval = &shared.ResourceOwnerApproval{
-							AllowSelfApproval: allowSelfApproval5,
-							Fallback:          fallback4,
-							FallbackUserIds:   fallbackUserIds4,
+							AllowSelfApproval:        allowSelfApproval5,
+							Fallback:                 fallback4,
+							FallbackUserIds:          fallbackUserIds4,
+							RequireDistinctApprovers: requireDistinctApprovers5,
 						}
 					}
 					var selfApproval *shared.SelfApprovalInput
@@ -957,6 +1036,12 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							allowSelfApproval6 = nil
 						}
+						requireDistinctApprovers6 := new(bool)
+						if !stepsItem.Approval.UserApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.UserApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers6 = stepsItem.Approval.UserApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers6 = nil
+						}
 						var userIds []string
 						if stepsItem.Approval.UserApproval.UserIds != nil {
 							userIds = make([]string, 0, len(stepsItem.Approval.UserApproval.UserIds))
@@ -965,8 +1050,9 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 						}
 						userApproval = &shared.UserApproval{
-							AllowSelfApproval: allowSelfApproval6,
-							UserIds:           userIds,
+							AllowSelfApproval:        allowSelfApproval6,
+							RequireDistinctApprovers: requireDistinctApprovers6,
+							UserIds:                  userIds,
 						}
 					}
 					var webhookApproval *shared.WebhookApproval
@@ -1037,10 +1123,17 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							} else {
 								connectorID = nil
 							}
+							displayName1 := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ActionProvision.DisplayName.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ActionProvision.DisplayName.IsNull() {
+								*displayName1 = stepsItem.Provision.ProvisionPolicy.ActionProvision.DisplayName.ValueString()
+							} else {
+								displayName1 = nil
+							}
 							actionProvision = &shared.ActionProvision{
 								ActionName:  actionName,
 								AppID:       appId2,
 								ConnectorID: connectorID,
+								DisplayName: displayName1,
 							}
 						}
 						var connectorProvision *shared.ConnectorProvision
@@ -1360,6 +1453,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 				}
 				steps = append(steps, shared.PolicyStepInput{
 					Accept:    accept,
+					Action:    action,
 					Approval:  approval,
 					Form:      form,
 					Provision: provision,
@@ -1476,6 +1570,24 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						AcceptMessage: acceptMessage,
 					}
 				}
+				var action *shared.Action
+				if stepsItem.Action != nil {
+					var actionTargetAutomation *shared.ActionTargetAutomation
+					if stepsItem.Action.ActionTargetAutomation != nil {
+						automationTemplateID := new(string)
+						if !stepsItem.Action.ActionTargetAutomation.AutomationTemplateID.IsUnknown() && !stepsItem.Action.ActionTargetAutomation.AutomationTemplateID.IsNull() {
+							*automationTemplateID = stepsItem.Action.ActionTargetAutomation.AutomationTemplateID.ValueString()
+						} else {
+							automationTemplateID = nil
+						}
+						actionTargetAutomation = &shared.ActionTargetAutomation{
+							AutomationTemplateID: automationTemplateID,
+						}
+					}
+					action = &shared.Action{
+						ActionTargetAutomation: actionTargetAutomation,
+					}
+				}
 				var approval *shared.ApprovalInput
 				if stepsItem.Approval != nil {
 					var agentApproval *shared.AgentApproval
@@ -1554,8 +1666,15 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							allowSelfApproval = nil
 						}
+						requireDistinctApprovers := new(bool)
+						if !stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers = stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers = nil
+						}
 						appOwnerApproval = &shared.AppOwnerApproval{
-							AllowSelfApproval: allowSelfApproval,
+							AllowSelfApproval:        allowSelfApproval,
+							RequireDistinctApprovers: requireDistinctApprovers,
 						}
 					}
 					var entitlementOwnerApproval *shared.EntitlementOwnerApproval
@@ -1579,10 +1698,17 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								fallbackUserIds = append(fallbackUserIds, fallbackUserIdsItem.ValueString())
 							}
 						}
+						requireDistinctApprovers1 := new(bool)
+						if !stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers1 = stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers1 = nil
+						}
 						entitlementOwnerApproval = &shared.EntitlementOwnerApproval{
-							AllowSelfApproval: allowSelfApproval1,
-							Fallback:          fallback,
-							FallbackUserIds:   fallbackUserIds,
+							AllowSelfApproval:        allowSelfApproval1,
+							Fallback:                 fallback,
+							FallbackUserIds:          fallbackUserIds,
+							RequireDistinctApprovers: requireDistinctApprovers1,
 						}
 					}
 					var escalation *shared.Escalation
@@ -1665,11 +1791,18 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								fallbackUserIds1 = append(fallbackUserIds1, fallbackUserIdsItem1.ValueString())
 							}
 						}
+						requireDistinctApprovers2 := new(bool)
+						if !stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers2 = stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers2 = nil
+						}
 						expressionApproval = &shared.ExpressionApprovalInput{
-							AllowSelfApproval: allowSelfApproval2,
-							Expressions:       expressions,
-							Fallback:          fallback1,
-							FallbackUserIds:   fallbackUserIds1,
+							AllowSelfApproval:        allowSelfApproval2,
+							Expressions:              expressions,
+							Fallback:                 fallback1,
+							FallbackUserIds:          fallbackUserIds1,
+							RequireDistinctApprovers: requireDistinctApprovers2,
 						}
 					}
 					var appGroupApproval *shared.AppGroupApproval
@@ -1733,14 +1866,21 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							isGroupFallbackEnabled = nil
 						}
+						requireDistinctApprovers3 := new(bool)
+						if !stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers3 = stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers3 = nil
+						}
 						appGroupApproval = &shared.AppGroupApproval{
-							AllowSelfApproval:      allowSelfApproval3,
-							AppGroupID:             appGroupID,
-							AppID:                  appID,
-							Fallback:               fallback2,
-							FallbackGroupIds:       fallbackGroupIds,
-							FallbackUserIds:        fallbackUserIds2,
-							IsGroupFallbackEnabled: isGroupFallbackEnabled,
+							AllowSelfApproval:        allowSelfApproval3,
+							AppGroupID:               appGroupID,
+							AppID:                    appID,
+							Fallback:                 fallback2,
+							FallbackGroupIds:         fallbackGroupIds,
+							FallbackUserIds:          fallbackUserIds2,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled,
+							RequireDistinctApprovers: requireDistinctApprovers3,
 						}
 					}
 					var managerApproval *shared.ManagerApprovalInput
@@ -1764,10 +1904,17 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								fallbackUserIds3 = append(fallbackUserIds3, fallbackUserIdsItem3.ValueString())
 							}
 						}
+						requireDistinctApprovers4 := new(bool)
+						if !stepsItem.Approval.ManagerApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.ManagerApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers4 = stepsItem.Approval.ManagerApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers4 = nil
+						}
 						managerApproval = &shared.ManagerApprovalInput{
-							AllowSelfApproval: allowSelfApproval4,
-							Fallback:          fallback3,
-							FallbackUserIds:   fallbackUserIds3,
+							AllowSelfApproval:        allowSelfApproval4,
+							Fallback:                 fallback3,
+							FallbackUserIds:          fallbackUserIds3,
+							RequireDistinctApprovers: requireDistinctApprovers4,
 						}
 					}
 					requireApprovalReason := new(bool)
@@ -1815,10 +1962,17 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								fallbackUserIds4 = append(fallbackUserIds4, fallbackUserIdsItem4.ValueString())
 							}
 						}
+						requireDistinctApprovers5 := new(bool)
+						if !stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers5 = stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers5 = nil
+						}
 						resourceOwnerApproval = &shared.ResourceOwnerApproval{
-							AllowSelfApproval: allowSelfApproval5,
-							Fallback:          fallback4,
-							FallbackUserIds:   fallbackUserIds4,
+							AllowSelfApproval:        allowSelfApproval5,
+							Fallback:                 fallback4,
+							FallbackUserIds:          fallbackUserIds4,
+							RequireDistinctApprovers: requireDistinctApprovers5,
 						}
 					}
 					var selfApproval *shared.SelfApprovalInput
@@ -1849,6 +2003,12 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							allowSelfApproval6 = nil
 						}
+						requireDistinctApprovers6 := new(bool)
+						if !stepsItem.Approval.UserApproval.RequireDistinctApprovers.IsUnknown() && !stepsItem.Approval.UserApproval.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers6 = stepsItem.Approval.UserApproval.RequireDistinctApprovers.ValueBool()
+						} else {
+							requireDistinctApprovers6 = nil
+						}
 						var userIds []string
 						if stepsItem.Approval.UserApproval.UserIds != nil {
 							userIds = make([]string, 0, len(stepsItem.Approval.UserApproval.UserIds))
@@ -1857,8 +2017,9 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 						}
 						userApproval = &shared.UserApproval{
-							AllowSelfApproval: allowSelfApproval6,
-							UserIds:           userIds,
+							AllowSelfApproval:        allowSelfApproval6,
+							RequireDistinctApprovers: requireDistinctApprovers6,
+							UserIds:                  userIds,
 						}
 					}
 					var webhookApproval *shared.WebhookApproval
@@ -1929,10 +2090,17 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							} else {
 								connectorID = nil
 							}
+							displayName1 := new(string)
+							if !stepsItem.Provision.ProvisionPolicy.ActionProvision.DisplayName.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ActionProvision.DisplayName.IsNull() {
+								*displayName1 = stepsItem.Provision.ProvisionPolicy.ActionProvision.DisplayName.ValueString()
+							} else {
+								displayName1 = nil
+							}
 							actionProvision = &shared.ActionProvision{
 								ActionName:  actionName,
 								AppID:       appId2,
 								ConnectorID: connectorID,
+								DisplayName: displayName1,
 							}
 						}
 						var connectorProvision *shared.ConnectorProvision
@@ -2252,6 +2420,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 				}
 				steps = append(steps, shared.PolicyStepInput{
 					Accept:    accept,
+					Action:    action,
 					Approval:  approval,
 					Form:      form,
 					Provision: provision,

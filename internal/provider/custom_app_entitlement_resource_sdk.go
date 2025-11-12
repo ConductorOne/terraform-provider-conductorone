@@ -43,6 +43,7 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 				r.DeprovisionerPolicy.ActionProvision.ActionName = types.StringPointerValue(resp.DeprovisionerPolicy.ActionProvision.ActionName)
 				r.DeprovisionerPolicy.ActionProvision.AppID = types.StringPointerValue(resp.DeprovisionerPolicy.ActionProvision.AppID)
 				r.DeprovisionerPolicy.ActionProvision.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ActionProvision.ConnectorID)
+				r.DeprovisionerPolicy.ActionProvision.DisplayName = types.StringPointerValue(resp.DeprovisionerPolicy.ActionProvision.DisplayName)
 			}
 			if resp.DeprovisionerPolicy.ConnectorProvision == nil {
 				r.DeprovisionerPolicy.ConnectorProvision = nil
@@ -163,6 +164,7 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 				r.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(resp.ProvisionPolicy.ActionProvision.ActionName)
 				r.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.ActionProvision.AppID)
 				r.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ActionProvision.ConnectorID)
+				r.ProvisionPolicy.ActionProvision.DisplayName = types.StringPointerValue(resp.ProvisionPolicy.ActionProvision.DisplayName)
 			}
 			if resp.ProvisionPolicy.ConnectorProvision == nil {
 				r.ProvisionPolicy.ConnectorProvision = nil
@@ -557,10 +559,17 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			} else {
 				connectorID = nil
 			}
+			displayName1 := new(string)
+			if !r.ProvisionPolicy.ActionProvision.DisplayName.IsUnknown() && !r.ProvisionPolicy.ActionProvision.DisplayName.IsNull() {
+				*displayName1 = r.ProvisionPolicy.ActionProvision.DisplayName.ValueString()
+			} else {
+				displayName1 = nil
+			}
 			actionProvision = &shared.ActionProvision{
 				ActionName:  actionName,
 				AppID:       appId1,
 				ConnectorID: connectorID,
+				DisplayName: displayName1,
 			}
 		}
 		var connectorProvision *shared.ConnectorProvision
@@ -800,10 +809,17 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			} else {
 				connectorId5 = nil
 			}
+			displayName2 := new(string)
+			if !r.DeprovisionerPolicy.ActionProvision.DisplayName.IsUnknown() && !r.DeprovisionerPolicy.ActionProvision.DisplayName.IsNull() {
+				*displayName2 = r.DeprovisionerPolicy.ActionProvision.DisplayName.ValueString()
+			} else {
+				displayName2 = nil
+			}
 			actionProvision1 = &shared.ActionProvision{
 				ActionName:  actionName1,
 				AppID:       appId4,
 				ConnectorID: connectorId5,
+				DisplayName: displayName2,
 			}
 		}
 		var connectorProvision1 *shared.ConnectorProvision
@@ -1120,10 +1136,17 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 			} else {
 				connectorID = nil
 			}
+			displayName1 := new(string)
+			if !r.ProvisionPolicy.ActionProvision.DisplayName.IsUnknown() && !r.ProvisionPolicy.ActionProvision.DisplayName.IsNull() {
+				*displayName1 = r.ProvisionPolicy.ActionProvision.DisplayName.ValueString()
+			} else {
+				displayName1 = nil
+			}
 			actionProvision = &shared.ActionProvision{
 				ActionName:  actionName,
 				AppID:       appID,
 				ConnectorID: connectorID,
+				DisplayName: displayName1,
 			}
 		}
 		var connectorProvision *shared.ConnectorProvision

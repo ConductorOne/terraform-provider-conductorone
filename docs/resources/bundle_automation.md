@@ -82,7 +82,7 @@ Optional:
 Read-Only:
 
 - `removed_members_threshold_percentage` (String) The removedMembersThresholdPercentage field.
-- `state` (String) The state field. must be one of ["CIRCUIT_BREAKER_STATE_UNSPECIFIED", "CIRCUIT_BREAKER_STATE_TRIGGERED", "CIRCUIT_BREAKER_STATE_BYPASS"]
+- `state` (String) The state field.
 - `updated_at` (String)
 - `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--bundle_automation_circuit_breaker--user_ref))
 
@@ -102,7 +102,7 @@ Read-Only:
 
 - `error_message` (String) The errorMessage field.
 - `last_run_at` (String)
-- `status` (String) The status field. must be one of ["BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED", "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS", "BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL"]
+- `status` (String) The status field.
 
 ## Import
 

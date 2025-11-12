@@ -12,8 +12,9 @@ import (
 // This message contains a oneof named _implicit. Only a single field of the following list may be set at a time:
 //   - implicit
 type AppEntitlementProxy struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	CreatedAt  *time.Time `json:"createdAt,omitempty"`
+	DeletedAt  *time.Time `json:"deletedAt,omitempty"`
+	DisabledAt *time.Time `json:"disabledAt,omitempty"`
 	// The dstAppEntitlementId field.
 	DstAppEntitlementID *string `json:"dstAppEntitlementId,omitempty"`
 	// The dstAppId field.
@@ -50,6 +51,13 @@ func (a *AppEntitlementProxy) GetDeletedAt() *time.Time {
 		return nil
 	}
 	return a.DeletedAt
+}
+
+func (a *AppEntitlementProxy) GetDisabledAt() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.DisabledAt
 }
 
 func (a *AppEntitlementProxy) GetDstAppEntitlementID() *string {

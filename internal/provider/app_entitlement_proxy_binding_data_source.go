@@ -31,6 +31,7 @@ type AppEntitlementProxyBindingDataSource struct {
 type AppEntitlementProxyBindingDataSourceModel struct {
 	CreatedAt           types.String                                     `tfsdk:"created_at"`
 	DeletedAt           types.String                                     `tfsdk:"deleted_at"`
+	DisabledAt          types.String                                     `tfsdk:"disabled_at"`
 	DstAppEntitlementID types.String                                     `tfsdk:"dst_app_entitlement_id"`
 	DstAppID            types.String                                     `tfsdk:"dst_app_id"`
 	Expanded            []tfTypes.GetAppEntitlementProxyResponseExpanded `tfsdk:"expanded"`
@@ -55,6 +56,9 @@ func (r *AppEntitlementProxyBindingDataSource) Schema(ctx context.Context, req d
 				Computed: true,
 			},
 			"deleted_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"disabled_at": schema.StringAttribute{
 				Computed: true,
 			},
 			"dst_app_entitlement_id": schema.StringAttribute{

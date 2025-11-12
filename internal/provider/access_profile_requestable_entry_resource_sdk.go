@@ -28,23 +28,6 @@ func (r *AccessProfileRequestableEntryResourceModel) RefreshFromSharedRequestCat
 	return diags
 }
 
-func (r *AccessProfileRequestableEntryResourceModel) RefreshFromSharedRequestCatalogManagementServiceGetRequestableEntryResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceGetRequestableEntryResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		if resp.RequestableEntry == nil {
-			r.RequestableEntry = nil
-		} else {
-			r.RequestableEntry = &tfTypes.RequestableEntry{}
-			r.RequestableEntry.AppID = types.StringPointerValue(resp.RequestableEntry.AppID)
-			r.RequestableEntry.CatalogID = types.StringPointerValue(resp.RequestableEntry.CatalogID)
-			r.RequestableEntry.EntitlementID = types.StringPointerValue(resp.RequestableEntry.EntitlementID)
-		}
-	}
-
-	return diags
-}
-
 func (r *AccessProfileRequestableEntryResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceCreateRequestableEntryRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateRequestableEntryRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -98,27 +81,6 @@ func (r *AccessProfileRequestableEntryResourceModel) ToOperationsC1APIRequestcat
 		AppID:         appID,
 		EntitlementID: entitlementID,
 		RequestCatalogManagementServiceDeleteRequestableEntryRequest: requestCatalogManagementServiceDeleteRequestableEntryRequest,
-	}
-
-	return &out, diags
-}
-
-func (r *AccessProfileRequestableEntryResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetRequestableEntryRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequestableEntryRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	var catalogID string
-	catalogID = r.CatalogID.ValueString()
-
-	var appID string
-	appID = r.AppID.ValueString()
-
-	var entitlementID string
-	entitlementID = r.EntitlementID.ValueString()
-
-	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequestableEntryRequest{
-		CatalogID:     catalogID,
-		AppID:         appID,
-		EntitlementID: entitlementID,
 	}
 
 	return &out, diags

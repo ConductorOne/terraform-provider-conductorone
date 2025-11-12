@@ -9,6 +9,7 @@ package shared
 //   - waitForDuration
 //   - unenrollFromAllAccessProfiles
 //   - createRevokeTasks
+//   - createRevokeTasksV2
 //   - sendEmail
 //   - removeFromDelegation
 //   - runAutomation
@@ -48,6 +49,26 @@ type AutomationStep struct {
 	CreateAccessReview *CreateAccessReview `json:"createAccessReview,omitempty"`
 	// The CreateRevokeTasks message.
 	CreateRevokeTasks *CreateRevokeTasks `json:"createRevokeTasks,omitempty"`
+	// The CreateRevokeTasksV2 message.
+	//
+	// This message contains a oneof named user. Only a single field of the following list may be set at a time:
+	//   - userIdCel
+	//   - userRef
+	//   - useSubjectUser
+	//
+	//
+	// This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:
+	//   - inclusionList
+	//   - inclusionAll
+	//   - inclusionCriteria
+	//
+	//
+	// This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
+	//   - exclusionNone
+	//   - exclusionList
+	//   - exclusionCriteria
+	//
+	CreateRevokeTasksV2 *CreateRevokeTasksV2 `json:"createRevokeTasksV2,omitempty"`
 	// The GrantEntitlements message.
 	GrantEntitlements *GrantEntitlements `json:"grantEntitlements,omitempty"`
 	// RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
@@ -151,6 +172,13 @@ func (a *AutomationStep) GetCreateRevokeTasks() *CreateRevokeTasks {
 		return nil
 	}
 	return a.CreateRevokeTasks
+}
+
+func (a *AutomationStep) GetCreateRevokeTasksV2() *CreateRevokeTasksV2 {
+	if a == nil {
+		return nil
+	}
+	return a.CreateRevokeTasksV2
 }
 
 func (a *AutomationStep) GetGrantEntitlements() *GrantEntitlements {

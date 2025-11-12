@@ -98,6 +98,63 @@ resource "conductorone_automation" "my_automation" {
           id = "...my_id..."
         }
       }
+      create_revoke_tasks_v2 = {
+        entitlement_exclusion_criteria = {
+          excluded_app_ids = [
+            "..."
+          ]
+          excluded_compliance_framework_ids = [
+            "..."
+          ]
+          excluded_resource_type_ids = [
+            "..."
+          ]
+          excluded_risk_level_ids = [
+            "..."
+          ]
+        }
+        entitlement_exclusion_list = {
+          excluded_app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        entitlement_exclusion_none = {
+          # ...
+        }
+        entitlement_inclusion_all = {
+          # ...
+        }
+        entitlement_inclusion_criteria = {
+          app_ids = [
+            "..."
+          ]
+          compliance_framework_ids = [
+            "..."
+          ]
+          resource_type_ids = [
+            "..."
+          ]
+          risk_level_ids = [
+            "..."
+          ]
+        }
+        entitlement_inclusion_list = {
+          app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        use_subject_user = false
+        user_id_cel      = "...my_user_id_cel..."
+        user_ref = {
+          id = "...my_id..."
+        }
+      }
       grant_entitlements = {
         app_entitlement_refs = [
           {
@@ -292,6 +349,63 @@ resource "conductorone_automation" "my_automation" {
           id = "...my_id..."
         }
       }
+      create_revoke_tasks_v2 = {
+        entitlement_exclusion_criteria = {
+          excluded_app_ids = [
+            "..."
+          ]
+          excluded_compliance_framework_ids = [
+            "..."
+          ]
+          excluded_resource_type_ids = [
+            "..."
+          ]
+          excluded_risk_level_ids = [
+            "..."
+          ]
+        }
+        entitlement_exclusion_list = {
+          excluded_app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        entitlement_exclusion_none = {
+          # ...
+        }
+        entitlement_inclusion_all = {
+          # ...
+        }
+        entitlement_inclusion_criteria = {
+          app_ids = [
+            "..."
+          ]
+          compliance_framework_ids = [
+            "..."
+          ]
+          resource_type_ids = [
+            "..."
+          ]
+          risk_level_ids = [
+            "..."
+          ]
+        }
+        entitlement_inclusion_list = {
+          app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        use_subject_user = false
+        user_id_cel      = "...my_user_id_cel..."
+        user_ref = {
+          id = "...my_id..."
+        }
+      }
       grant_entitlements = {
         app_entitlement_refs = [
           {
@@ -408,6 +522,16 @@ resource "conductorone_automation" "my_automation" {
   ]
   draft_triggers = [
     {
+      access_conflict_trigger = {
+        all_conflict_monitors = true
+        conflict_monitor_refs = {
+          conflict_monitor_refs = [
+            {
+              id = "...my_id..."
+            }
+          ]
+        }
+      }
       app_user_created_trigger = {
         app_id     = "...my_app_id..."
         app_id_cel = "...my_app_id_cel..."
@@ -534,6 +658,16 @@ resource "conductorone_automation" "my_automation" {
   is_draft = true
   triggers = [
     {
+      access_conflict_trigger = {
+        all_conflict_monitors = false
+        conflict_monitor_refs = {
+          conflict_monitor_refs = [
+            {
+              id = "...my_id..."
+            }
+          ]
+        }
+      }
       app_user_created_trigger = {
         app_id     = "...my_app_id..."
         app_id_cel = "...my_app_id_cel..."
@@ -682,7 +816,7 @@ resource "conductorone_automation" "my_automation" {
 - `disabled_reason_circuit_breaker` (Attributes) The DisabledReasonCircuitBreaker message. (see [below for nested schema](#nestedatt--disabled_reason_circuit_breaker))
 - `id` (String) The id field.
 - `last_executed_at` (String)
-- `primary_trigger_type` (String) The primaryTriggerType field. must be one of ["TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_USER_PROFILE_CHANGE", "TRIGGER_TYPE_APP_USER_CREATE", "TRIGGER_TYPE_APP_USER_UPDATE", "TRIGGER_TYPE_UNUSED_ACCESS", "TRIGGER_TYPE_USER_CREATED", "TRIGGER_TYPE_GRANT_FOUND", "TRIGGER_TYPE_GRANT_DELETED", "TRIGGER_TYPE_WEBHOOK", "TRIGGER_TYPE_SCHEDULE", "TRIGGER_TYPE_FORM", "TRIGGER_TYPE_SCHEDULE_APP_USER"]
+- `primary_trigger_type` (String) The primaryTriggerType field.
 - `webhook_hmac_secret` (String) If we create a new trigger with an HMAC secret we return the HMAC on this field
 
 <a id="nestedatt--automation_context"></a>
@@ -719,6 +853,24 @@ This message contains a oneof named create_account_arguments. Only a single fiel
   - userProperties (see [below for nested schema](#nestedatt--automation_steps--connector_create_account))
 - `create_access_review` (Attributes) The CreateAccessReview message. (see [below for nested schema](#nestedatt--automation_steps--create_access_review))
 - `create_revoke_tasks` (Attributes) The CreateRevokeTasks message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks))
+- `create_revoke_tasks_v2` (Attributes) The CreateRevokeTasksV2 message.
+
+This message contains a oneof named user. Only a single field of the following list may be set at a time:
+  - userIdCel
+  - userRef
+  - useSubjectUser
+
+
+This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:
+  - inclusionList
+  - inclusionAll
+  - inclusionCriteria
+
+
+This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
+  - exclusionNone
+  - exclusionList
+  - exclusionCriteria (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2))
 - `grant_entitlements` (Attributes) The GrantEntitlements message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements))
 - `remove_from_delegation` (Attributes) RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
 
@@ -913,6 +1065,98 @@ Optional:
 
 <a id="nestedatt--automation_steps--create_revoke_tasks--user_ref"></a>
 ### Nested Schema for `automation_steps.create_revoke_tasks.user_ref`
+
+Optional:
+
+- `id` (String) The id of the user.
+
+
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2`
+
+Optional:
+
+- `entitlement_exclusion_criteria` (Attributes) The EntitlementExclusionCriteria message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_criteria))
+- `entitlement_exclusion_list` (Attributes) The EntitlementExclusionList message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list))
+- `entitlement_exclusion_none` (Attributes) The EntitlementExclusionNone message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none))
+- `entitlement_inclusion_all` (Attributes) The EntitlementInclusionAll message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_all))
+- `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_criteria))
+- `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list))
+- `use_subject_user` (Boolean) The useSubjectUser field.
+This field is part of the `user` oneof.
+See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
+- `user_id_cel` (String) The userIdCel field.
+This field is part of the `user` oneof.
+See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
+- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--user_ref))
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_criteria"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_exclusion_criteria`
+
+Optional:
+
+- `excluded_app_ids` (List of String) The excludedAppIds field.
+- `excluded_compliance_framework_ids` (List of String) The excludedComplianceFrameworkIds field.
+- `excluded_resource_type_ids` (List of String) The excludedResourceTypeIds field.
+- `excluded_risk_level_ids` (List of String) The excludedRiskLevelIds field.
+
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_exclusion_list`
+
+Optional:
+
+- `excluded_app_entitlement_refs` (Attributes List) The excludedAppEntitlementRefs field. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list--excluded_app_entitlement_refs))
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list--excluded_app_entitlement_refs"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_exclusion_list.excluded_app_entitlement_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_exclusion_none`
+
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_all"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_inclusion_all`
+
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_criteria"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_inclusion_criteria`
+
+Optional:
+
+- `app_ids` (List of String) The appIds field.
+- `compliance_framework_ids` (List of String) The complianceFrameworkIds field.
+- `resource_type_ids` (List of String) The resourceTypeIds field.
+- `risk_level_ids` (List of String) The riskLevelIds field.
+
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_inclusion_list`
+
+Optional:
+
+- `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list--app_entitlement_refs))
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list--app_entitlement_refs"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_inclusion_list.app_entitlement_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--user_ref"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.user_ref`
 
 Optional:
 
@@ -1218,6 +1462,24 @@ This message contains a oneof named create_account_arguments. Only a single fiel
   - userProperties (see [below for nested schema](#nestedatt--draft_automation_steps--connector_create_account))
 - `create_access_review` (Attributes) The CreateAccessReview message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_access_review))
 - `create_revoke_tasks` (Attributes) The CreateRevokeTasks message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks))
+- `create_revoke_tasks_v2` (Attributes) The CreateRevokeTasksV2 message.
+
+This message contains a oneof named user. Only a single field of the following list may be set at a time:
+  - userIdCel
+  - userRef
+  - useSubjectUser
+
+
+This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:
+  - inclusionList
+  - inclusionAll
+  - inclusionCriteria
+
+
+This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
+  - exclusionNone
+  - exclusionList
+  - exclusionCriteria (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2))
 - `grant_entitlements` (Attributes) The GrantEntitlements message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements))
 - `remove_from_delegation` (Attributes) RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
 
@@ -1412,6 +1674,98 @@ Optional:
 
 <a id="nestedatt--draft_automation_steps--create_revoke_tasks--user_ref"></a>
 ### Nested Schema for `draft_automation_steps.create_revoke_tasks.user_ref`
+
+Optional:
+
+- `id` (String) The id of the user.
+
+
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2`
+
+Optional:
+
+- `entitlement_exclusion_criteria` (Attributes) The EntitlementExclusionCriteria message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_criteria))
+- `entitlement_exclusion_list` (Attributes) The EntitlementExclusionList message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list))
+- `entitlement_exclusion_none` (Attributes) The EntitlementExclusionNone message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none))
+- `entitlement_inclusion_all` (Attributes) The EntitlementInclusionAll message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_all))
+- `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_criteria))
+- `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list))
+- `use_subject_user` (Boolean) The useSubjectUser field.
+This field is part of the `user` oneof.
+See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
+- `user_id_cel` (String) The userIdCel field.
+This field is part of the `user` oneof.
+See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
+- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--user_ref))
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_criteria"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_exclusion_criteria`
+
+Optional:
+
+- `excluded_app_ids` (List of String) The excludedAppIds field.
+- `excluded_compliance_framework_ids` (List of String) The excludedComplianceFrameworkIds field.
+- `excluded_resource_type_ids` (List of String) The excludedResourceTypeIds field.
+- `excluded_risk_level_ids` (List of String) The excludedRiskLevelIds field.
+
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_exclusion_list`
+
+Optional:
+
+- `excluded_app_entitlement_refs` (Attributes List) The excludedAppEntitlementRefs field. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list--excluded_app_entitlement_refs))
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list--excluded_app_entitlement_refs"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_exclusion_list.excluded_app_entitlement_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_exclusion_none`
+
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_all"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_inclusion_all`
+
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_criteria"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_inclusion_criteria`
+
+Optional:
+
+- `app_ids` (List of String) The appIds field.
+- `compliance_framework_ids` (List of String) The complianceFrameworkIds field.
+- `resource_type_ids` (List of String) The resourceTypeIds field.
+- `risk_level_ids` (List of String) The riskLevelIds field.
+
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_inclusion_list`
+
+Optional:
+
+- `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list--app_entitlement_refs))
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list--app_entitlement_refs"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_inclusion_list.app_entitlement_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--user_ref"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.user_ref`
 
 Optional:
 
@@ -1700,6 +2054,11 @@ See the documentation for `c1.api.automations.v1.Webhook` for more details.
 
 Optional:
 
+- `access_conflict_trigger` (Attributes) The AccessConflictTrigger message.
+
+This message contains a oneof named conflict_monitor_selector. Only a single field of the following list may be set at a time:
+  - conflictMonitorRefs
+  - allConflictMonitors (see [below for nested schema](#nestedatt--draft_triggers--access_conflict_trigger))
 - `app_user_created_trigger` (Attributes) The AppUserCreatedTrigger message.
 
 This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
@@ -1728,6 +2087,33 @@ This message contains a oneof named cold_start_schedule. Only a single field of 
 This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:
   - jwt
   - hmac (see [below for nested schema](#nestedatt--draft_triggers--webhook_automation_trigger))
+
+<a id="nestedatt--draft_triggers--access_conflict_trigger"></a>
+### Nested Schema for `draft_triggers.access_conflict_trigger`
+
+Optional:
+
+- `all_conflict_monitors` (Boolean) The allConflictMonitors field.
+This field is part of the `conflict_monitor_selector` oneof.
+See the documentation for `c1.api.automations.v1.AccessConflictTrigger` for more details.
+- `conflict_monitor_refs` (Attributes) The ConflictMonitorRefs message. (see [below for nested schema](#nestedatt--draft_triggers--access_conflict_trigger--conflict_monitor_refs))
+
+<a id="nestedatt--draft_triggers--access_conflict_trigger--conflict_monitor_refs"></a>
+### Nested Schema for `draft_triggers.access_conflict_trigger.conflict_monitor_refs`
+
+Optional:
+
+- `conflict_monitor_refs` (Attributes List) The conflictMonitorRefs field. (see [below for nested schema](#nestedatt--draft_triggers--access_conflict_trigger--conflict_monitor_refs--conflict_monitor_refs))
+
+<a id="nestedatt--draft_triggers--access_conflict_trigger--conflict_monitor_refs--conflict_monitor_refs"></a>
+### Nested Schema for `draft_triggers.access_conflict_trigger.conflict_monitor_refs.conflict_monitor_refs`
+
+Optional:
+
+- `id` (String) The id field.
+
+
+
 
 <a id="nestedatt--draft_triggers--app_user_created_trigger"></a>
 ### Nested Schema for `draft_triggers.app_user_created_trigger`
@@ -1995,6 +2381,11 @@ Optional:
 
 Optional:
 
+- `access_conflict_trigger` (Attributes) The AccessConflictTrigger message.
+
+This message contains a oneof named conflict_monitor_selector. Only a single field of the following list may be set at a time:
+  - conflictMonitorRefs
+  - allConflictMonitors (see [below for nested schema](#nestedatt--triggers--access_conflict_trigger))
 - `app_user_created_trigger` (Attributes) The AppUserCreatedTrigger message.
 
 This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
@@ -2023,6 +2414,33 @@ This message contains a oneof named cold_start_schedule. Only a single field of 
 This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:
   - jwt
   - hmac (see [below for nested schema](#nestedatt--triggers--webhook_automation_trigger))
+
+<a id="nestedatt--triggers--access_conflict_trigger"></a>
+### Nested Schema for `triggers.access_conflict_trigger`
+
+Optional:
+
+- `all_conflict_monitors` (Boolean) The allConflictMonitors field.
+This field is part of the `conflict_monitor_selector` oneof.
+See the documentation for `c1.api.automations.v1.AccessConflictTrigger` for more details.
+- `conflict_monitor_refs` (Attributes) The ConflictMonitorRefs message. (see [below for nested schema](#nestedatt--triggers--access_conflict_trigger--conflict_monitor_refs))
+
+<a id="nestedatt--triggers--access_conflict_trigger--conflict_monitor_refs"></a>
+### Nested Schema for `triggers.access_conflict_trigger.conflict_monitor_refs`
+
+Optional:
+
+- `conflict_monitor_refs` (Attributes List) The conflictMonitorRefs field. (see [below for nested schema](#nestedatt--triggers--access_conflict_trigger--conflict_monitor_refs--conflict_monitor_refs))
+
+<a id="nestedatt--triggers--access_conflict_trigger--conflict_monitor_refs--conflict_monitor_refs"></a>
+### Nested Schema for `triggers.access_conflict_trigger.conflict_monitor_refs.conflict_monitor_refs`
+
+Optional:
+
+- `id` (String) The id field.
+
+
+
 
 <a id="nestedatt--triggers--app_user_created_trigger"></a>
 ### Nested Schema for `triggers.app_user_created_trigger`

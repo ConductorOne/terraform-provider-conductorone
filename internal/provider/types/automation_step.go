@@ -13,6 +13,7 @@ type AutomationStep struct {
 	ConnectorCreateAccount        *ConnectorCreateAccount        `tfsdk:"connector_create_account"`
 	CreateAccessReview            *CreateAccessReview            `tfsdk:"create_access_review"`
 	CreateRevokeTasks             *CreateRevokeTasks             `tfsdk:"create_revoke_tasks"`
+	CreateRevokeTasksV2           *CreateRevokeTasksV2           `tfsdk:"create_revoke_tasks_v2"`
 	GrantEntitlements             *GrantEntitlements             `tfsdk:"grant_entitlements"`
 	RemoveFromDelegation          *RemoveFromDelegation          `tfsdk:"remove_from_delegation"`
 	RunAutomation                 *RunAutomation                 `tfsdk:"run_automation"`

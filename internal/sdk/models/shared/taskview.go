@@ -8,6 +8,8 @@ type TaskView struct {
 	AccessReviewPath *string `json:"accessReviewPath,omitempty"`
 	// JSONPATH expression indicating the location of the App object in the expanded array
 	AppPath *string `json:"appPath,omitempty"`
+	// JSONPATH expression indicating the location of the AppUser last usage timestamp in the expanded array
+	AppUserLastUsagePath *string `json:"appUserLastUsagePath,omitempty"`
 	// JSONPATH expression indicating the location of the AppUser object in the expanded array
 	AppUserPath *string `json:"appUserPath,omitempty"`
 	// JSONPATH expression indicating the location of the object of the User that created the ticket in the expanded array
@@ -38,6 +40,13 @@ func (t *TaskView) GetAppPath() *string {
 		return nil
 	}
 	return t.AppPath
+}
+
+func (t *TaskView) GetAppUserLastUsagePath() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AppUserLastUsagePath
 }
 
 func (t *TaskView) GetAppUserPath() *string {

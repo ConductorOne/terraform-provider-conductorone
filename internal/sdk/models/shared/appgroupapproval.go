@@ -18,6 +18,8 @@ type AppGroupApproval struct {
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
 	// Configuration to enable fallback for group fallback.
 	IsGroupFallbackEnabled *bool `json:"isGroupFallbackEnabled,omitempty"`
+	// Configuration to require distinct approvers across approval steps of a rule.
+	RequireDistinctApprovers *bool `json:"requireDistinctApprovers,omitempty"`
 }
 
 func (a *AppGroupApproval) GetAllowSelfApproval() *bool {
@@ -67,4 +69,11 @@ func (a *AppGroupApproval) GetIsGroupFallbackEnabled() *bool {
 		return nil
 	}
 	return a.IsGroupFallbackEnabled
+}
+
+func (a *AppGroupApproval) GetRequireDistinctApprovers() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.RequireDistinctApprovers
 }

@@ -12,6 +12,8 @@ type ExpressionApprovalInput struct {
 	Fallback *bool `json:"fallback,omitempty"`
 	// Configuration to specific which users to fallback to if and the expression does not return a valid list of users.
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
+	// Configuration to require distinct approvers across approval steps of a rule.
+	RequireDistinctApprovers *bool `json:"requireDistinctApprovers,omitempty"`
 }
 
 func (e *ExpressionApprovalInput) GetAllowSelfApproval() *bool {
@@ -40,4 +42,11 @@ func (e *ExpressionApprovalInput) GetFallbackUserIds() []string {
 		return nil
 	}
 	return e.FallbackUserIds
+}
+
+func (e *ExpressionApprovalInput) GetRequireDistinctApprovers() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.RequireDistinctApprovers
 }
