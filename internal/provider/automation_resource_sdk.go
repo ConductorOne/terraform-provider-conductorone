@@ -1616,6 +1616,7 @@ func (r *AutomationResourceModel) RefreshFromSharedUpdateAutomationResponse(ctx 
 			return diags
 		}
 
+		r.WebhookHmacSecret = types.StringPointerValue(resp.WebhookHmacSecret)
 	}
 
 	return diags

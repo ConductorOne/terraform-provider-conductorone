@@ -7,6 +7,7 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -58,6 +59,9 @@ func (r *AccessProfileResource) Schema(ctx context.Context, req resource.SchemaR
 		Attributes: map[string]schema.Attribute{
 			"created_at": schema.StringAttribute{
 				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 			"created_by_user_id": schema.StringAttribute{
 				Computed:    true,
@@ -132,6 +136,9 @@ func (r *AccessProfileResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 			"visible_to_everyone": schema.BoolAttribute{
 				Computed:    true,

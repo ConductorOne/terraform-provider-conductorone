@@ -9,6 +9,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
+func (r *AccessProfileVisibilityBindingsResourceModel) RefreshFromSharedRequestCatalogManagementServiceAddAccessEntitlementsResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceAddAccessEntitlementsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+	}
+
+	return diags
+}
+
 func (r *AccessProfileVisibilityBindingsResourceModel) ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest(ctx context.Context) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceAddAccessEntitlementsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

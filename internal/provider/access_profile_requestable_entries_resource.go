@@ -149,6 +149,11 @@ func (r *AccessProfileRequestableEntriesResource) Create(ctx context.Context, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceAddAppEntitlementsResponse(ctx, res.RequestCatalogManagementServiceAddAppEntitlementsResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
 
@@ -293,6 +298,11 @@ func (r *AccessProfileRequestableEntriesResource) Update(ctx context.Context, re
 	}
 	if !(res.RequestCatalogManagementServiceUpdateAppEntitlementsResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceUpdateAppEntitlementsResponse(ctx, res.RequestCatalogManagementServiceUpdateAppEntitlementsResponse)...)
+
+	if resp.Diagnostics.HasError() {
 		return
 	}
 

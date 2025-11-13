@@ -25,6 +25,15 @@ func (r *AppResourceOwnerResourceModel) RefreshFromSharedListAppResourceOwnerIDs
 	return diags
 }
 
+func (r *AppResourceOwnerResourceModel) RefreshFromSharedSetAppResourceOwnersResponse(ctx context.Context, resp *shared.SetAppResourceOwnersResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+	}
+
+	return diags
+}
+
 func (r *AppResourceOwnerResourceModel) ToOperationsC1APIAppV1AppResourceOwnersDeleteRequest(ctx context.Context) (*operations.C1APIAppV1AppResourceOwnersDeleteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

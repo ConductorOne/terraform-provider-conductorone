@@ -10,11 +10,13 @@ import (
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -72,6 +74,9 @@ func (r *AppResourceResource) Schema(ctx context.Context, req resource.SchemaReq
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -119,18 +124,30 @@ func (r *AppResourceResource) Schema(ctx context.Context, req resource.SchemaReq
 					},
 					"last_used_at": schema.StringAttribute{
 						Computed: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
 					},
 					"secret_created_at": schema.StringAttribute{
 						Computed: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
 					},
 					"secret_expires_at": schema.StringAttribute{
 						Computed: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
 					},
 				},
 				Description: `The SecretTrait message.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 		},
 	}
