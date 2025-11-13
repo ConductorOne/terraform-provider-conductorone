@@ -7,9 +7,11 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -57,6 +59,9 @@ func (r *AccessConflictResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -132,6 +137,9 @@ func (r *AccessConflictResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 		},
 	}

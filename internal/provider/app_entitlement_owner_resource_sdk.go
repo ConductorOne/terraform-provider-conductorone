@@ -25,6 +25,15 @@ func (r *AppEntitlementOwnerResourceModel) RefreshFromSharedListAppEntitlementOw
 	return diags
 }
 
+func (r *AppEntitlementOwnerResourceModel) RefreshFromSharedSetAppEntitlementOwnersResponse(ctx context.Context, resp *shared.SetAppEntitlementOwnersResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+	}
+
+	return diags
+}
+
 func (r *AppEntitlementOwnerResourceModel) ToOperationsC1APIAppV1AppEntitlementOwnersDeleteRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementOwnersDeleteRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

@@ -12,6 +12,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+func (r *FunctionTagResourceModel) RefreshFromSharedFunctionsServiceCreateTagResponse(ctx context.Context, resp *shared.FunctionsServiceCreateTagResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+	}
+
+	return diags
+}
+
 func (r *FunctionTagResourceModel) RefreshFromSharedFunctionsServiceListTagsResponse(ctx context.Context, resp *shared.FunctionsServiceListTagsResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
