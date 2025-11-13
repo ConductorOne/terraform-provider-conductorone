@@ -137,7 +137,7 @@ func NewWithCredentials(ctx context.Context, cred *ClientCredentials, opts ...Cu
 	for _, opt := range opts {
 		opt(options)
 	}
-	if options.GetServerURL() == "" {
+	if options.ClientConfig == nil || options.GetServerURL() == "" {
 		resp, err := ParseClientID(cred.ClientID)
 		if err != nil {
 			return nil, err
