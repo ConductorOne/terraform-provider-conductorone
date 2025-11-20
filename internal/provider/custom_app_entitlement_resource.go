@@ -10,6 +10,7 @@ import (
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -121,6 +122,9 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 			"default_values_applied": schema.BoolAttribute{
 				Computed:    true,
@@ -218,6 +222,15 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							`  - defaultBehavior` + "\n" +
 							`  - account` + "\n" +
 							`  - deleteAccount`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
 					},
 					"delegated_provision": schema.SingleNestedAttribute{
 						Computed: true,
@@ -232,6 +245,15 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							},
 						},
 						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
 					},
 					"external_ticket_provision": schema.SingleNestedAttribute{
 						Computed: true,
@@ -254,6 +276,15 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							},
 						},
 						Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
 					},
 					"manual_provision": schema.SingleNestedAttribute{
 						Computed: true,
@@ -269,11 +300,29 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							},
 						},
 						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
 					},
 					"multi_step": schema.StringAttribute{
 						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
 						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+						Validators: []validator.String{
+							stringvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
 					},
 					"unconfigured_provision": schema.SingleNestedAttribute{
 						Computed:    true,
@@ -288,6 +337,15 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							},
 						},
 						Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+							}...),
+						},
 					},
 				},
 				MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
@@ -685,6 +743,9 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 		},
 	}

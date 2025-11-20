@@ -7,6 +7,7 @@ import (
 	"fmt"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -70,6 +71,9 @@ func (r *AppEntitlementMonitorBindingResource) Schema(ctx context.Context, req r
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 			"entitlement_group": schema.StringAttribute{
 				Computed: true,
@@ -98,6 +102,9 @@ func (r *AppEntitlementMonitorBindingResource) Schema(ctx context.Context, req r
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
+				Validators: []validator.String{
+					validators.IsRFC3339(),
+				},
 			},
 		},
 	}

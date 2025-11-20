@@ -3,6 +3,14 @@ info:
   title: Overlay prod-openapi.yaml => openapinew.yaml
   version: 0.0.0
 actions:
+  # Configure error handling: exclude 404 from being treated as an SDK error for entity operations
+  # Using x-speakeasy-entity-missing-codes to mark 404 as a "missing entity" response rather than an error
+  # This applies to all operations that have x-speakeasy-entity-operation defined
+  # Using recursive descent to find all operation objects with x-speakeasy-entity-operation property
+  - target: $..[?(@["x-speakeasy-entity-operation"])]
+    update:
+      x-speakeasy-entity-missing-codes:
+        - 404
   - target: $..[?(@.additionalProperties == true)]
     update:
       additionalProperties: false

@@ -124,6 +124,11 @@ func (r *AppEntitlementOwnerResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
+	resp.Diagnostics.Append(data.RefreshFromSharedSetAppEntitlementOwnersResponse(ctx, res.SetAppEntitlementOwnersResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
 
@@ -231,6 +236,11 @@ func (r *AppEntitlementOwnerResource) Update(ctx context.Context, req resource.U
 	}
 	if !(res.SetAppEntitlementOwnersResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedSetAppEntitlementOwnersResponse(ctx, res.SetAppEntitlementOwnersResponse)...)
+
+	if resp.Diagnostics.HasError() {
 		return
 	}
 

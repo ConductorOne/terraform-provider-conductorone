@@ -10,12 +10,14 @@ import (
 	speakeasy_mapplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/mapplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -76,6 +78,9 @@ func (r *FunctionCommitResource) Schema(ctx context.Context, req resource.Schema
 					},
 					"created_at": schema.StringAttribute{
 						Computed: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
 					},
 					"function_id": schema.StringAttribute{
 						Computed:    true,
@@ -341,5 +346,5 @@ func (r *FunctionCommitResource) ImportState(ctx context.Context, req resource.I
 		resp.Diagnostics.AddError("Missing required field", `The field function_commit_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("function_commit").AtName("id"), data.FunctionCommitID)...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("function_commit_id"), data.FunctionCommitID)...)
 }
