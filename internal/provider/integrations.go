@@ -8,6 +8,7 @@ import (
 func getIntegrationResources() []func() resource.Resource {
 	return []func() resource.Resource{
 		NewIntegrationAirbyteResource,
+		NewIntegrationArtifactoryResource,
 		NewIntegrationAsanaResource,
 		NewIntegrationAtlassianResource,
 		NewIntegrationAuth0Resource,
