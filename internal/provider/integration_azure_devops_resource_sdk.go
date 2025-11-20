@@ -4,12 +4,14 @@ package provider
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 const azureDevopsCatalogID = "2wmS6lkqSQTsdLi4INON2oOr2Ai"
@@ -66,7 +68,12 @@ func (r *IntegrationAzureDevopsResourceModel) ToUpdateSDKType() (*shared.Connect
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -89,22 +96,54 @@ func (r *IntegrationAzureDevopsResourceModel) ToUpdateSDKType() (*shared.Connect
 func (r *IntegrationAzureDevopsResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
 
-	organizationUrl := new(string)
-	if !r.OrganizationUrl.IsUnknown() && !r.OrganizationUrl.IsNull() {
-		*organizationUrl = r.OrganizationUrl.ValueString()
-		configValues["organization_url"] = organizationUrl
+	if !r.AzureDevopsGroupOauth.IsUnknown() && !r.AzureDevopsGroupOauth.IsNull() {
+		configValues["C1_selected_field_group_name"] = "azure_devops_group_oauth"
+		for k, v := range r.AzureDevopsGroupOauth.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
 
-	personalAccessToken := new(string)
-	if !r.PersonalAccessToken.IsUnknown() && !r.PersonalAccessToken.IsNull() {
-		*personalAccessToken = r.PersonalAccessToken.ValueString()
-		configValues["personal_access_token"] = personalAccessToken
-	}
-
-	syncGrantSources := new(string)
-	if !r.SyncGrantSources.IsUnknown() && !r.SyncGrantSources.IsNull() {
-		*syncGrantSources = strconv.FormatBool(r.SyncGrantSources.ValueBool())
-		configValues["sync_grant_sources"] = syncGrantSources
+	if !r.AzureDevopsGroupPat.IsUnknown() && !r.AzureDevopsGroupPat.IsNull() {
+		configValues["C1_selected_field_group_name"] = "azure_devops_group_pat"
+		for k, v := range r.AzureDevopsGroupPat.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
 
 	return configValues
@@ -117,7 +156,12 @@ func (r *IntegrationAzureDevopsResourceModel) getConfig() (map[string]interface{
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -176,16 +220,101 @@ func (r *IntegrationAzureDevopsResourceModel) RefreshFromGetResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "organization_url"); ok {
-					r.OrganizationUrl = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "azure_devops_group_oauth" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "organization_url"); ok {
+							attributeTypes["organization_url"] = types.StringType
+							attributeValues["organization_url"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "azure_devops_tenant_id"); ok {
+							attributeTypes["azure_devops_tenant_id"] = types.StringType
+							attributeValues["azure_devops_tenant_id"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
+							attributeTypes["oauth2_client_cred_grant_client_id"] = types.StringType
+							attributeValues["oauth2_client_cred_grant_client_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["oauth2_client_cred_grant_client_secret"] = types.StringType
+						if sv, ok := configValues["oauth2_client_cred_grant_client_secret"].(string); ok {
+							attributeValues["oauth2_client_cred_grant_client_secret"] = types.StringValue(sv)
+						} else {
+							attributeValues["oauth2_client_cred_grant_client_secret"] = types.StringNull()
+						}
+						if _, ok := configValues["sync_teams"]; ok {
+							if val, ok := getStringValue(values, "sync_teams"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync_teams"] = types.BoolType
+									attributeValues["sync_teams"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync_teams"] = types.BoolType
+							attributeValues["sync_teams"] = types.BoolNull()
+						}
+						if _, ok := configValues["sync_organization"]; ok {
+							if val, ok := getStringValue(values, "sync_organization"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync_organization"] = types.BoolType
+									attributeValues["sync_organization"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync_organization"] = types.BoolType
+							attributeValues["sync_organization"] = types.BoolNull()
+						}
+						r.AzureDevopsGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
-				if _, ok := configValues["sync_grant_sources"]; ok {
-					if val, ok := getStringValue(values, "sync_grant_sources"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SyncGrantSources = types.BoolValue(bv)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "azure_devops_group_pat" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "organization_url"); ok {
+							attributeTypes["organization_url"] = types.StringType
+							attributeValues["organization_url"] = types.StringValue(val)
 						}
+
+						attributeTypes["personal_access_token"] = types.StringType
+						if sv, ok := configValues["personal_access_token"].(string); ok {
+							attributeValues["personal_access_token"] = types.StringValue(sv)
+						} else {
+							attributeValues["personal_access_token"] = types.StringNull()
+						}
+						if _, ok := configValues["sync_teams"]; ok {
+							if val, ok := getStringValue(values, "sync_teams"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync_teams"] = types.BoolType
+									attributeValues["sync_teams"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync_teams"] = types.BoolType
+							attributeValues["sync_teams"] = types.BoolNull()
+						}
+						if _, ok := configValues["sync_organization"]; ok {
+							if val, ok := getStringValue(values, "sync_organization"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync_organization"] = types.BoolType
+									attributeValues["sync_organization"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync_organization"] = types.BoolType
+							attributeValues["sync_organization"] = types.BoolNull()
+						}
+						r.AzureDevopsGroupPat = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
 				}
 
@@ -233,16 +362,101 @@ func (r *IntegrationAzureDevopsResourceModel) RefreshFromCreateResponse(resp *sh
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "organization_url"); ok {
-					r.OrganizationUrl = types.StringValue(val)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "azure_devops_group_oauth" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "organization_url"); ok {
+							attributeTypes["organization_url"] = types.StringType
+							attributeValues["organization_url"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "azure_devops_tenant_id"); ok {
+							attributeTypes["azure_devops_tenant_id"] = types.StringType
+							attributeValues["azure_devops_tenant_id"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
+							attributeTypes["oauth2_client_cred_grant_client_id"] = types.StringType
+							attributeValues["oauth2_client_cred_grant_client_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["oauth2_client_cred_grant_client_secret"] = types.StringType
+						if sv, ok := configValues["oauth2_client_cred_grant_client_secret"].(string); ok {
+							attributeValues["oauth2_client_cred_grant_client_secret"] = types.StringValue(sv)
+						} else {
+							attributeValues["oauth2_client_cred_grant_client_secret"] = types.StringNull()
+						}
+						if _, ok := configValues["sync_teams"]; ok {
+							if val, ok := getStringValue(values, "sync_teams"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync_teams"] = types.BoolType
+									attributeValues["sync_teams"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync_teams"] = types.BoolType
+							attributeValues["sync_teams"] = types.BoolNull()
+						}
+						if _, ok := configValues["sync_organization"]; ok {
+							if val, ok := getStringValue(values, "sync_organization"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync_organization"] = types.BoolType
+									attributeValues["sync_organization"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync_organization"] = types.BoolType
+							attributeValues["sync_organization"] = types.BoolNull()
+						}
+						r.AzureDevopsGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
 				}
 
-				if _, ok := configValues["sync_grant_sources"]; ok {
-					if val, ok := getStringValue(values, "sync_grant_sources"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SyncGrantSources = types.BoolValue(bv)
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "azure_devops_group_pat" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "organization_url"); ok {
+							attributeTypes["organization_url"] = types.StringType
+							attributeValues["organization_url"] = types.StringValue(val)
 						}
+
+						attributeTypes["personal_access_token"] = types.StringType
+						if sv, ok := configValues["personal_access_token"].(string); ok {
+							attributeValues["personal_access_token"] = types.StringValue(sv)
+						} else {
+							attributeValues["personal_access_token"] = types.StringNull()
+						}
+						if _, ok := configValues["sync_teams"]; ok {
+							if val, ok := getStringValue(values, "sync_teams"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync_teams"] = types.BoolType
+									attributeValues["sync_teams"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync_teams"] = types.BoolType
+							attributeValues["sync_teams"] = types.BoolNull()
+						}
+						if _, ok := configValues["sync_organization"]; ok {
+							if val, ok := getStringValue(values, "sync_organization"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync_organization"] = types.BoolType
+									attributeValues["sync_organization"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync_organization"] = types.BoolType
+							attributeValues["sync_organization"] = types.BoolNull()
+						}
+						r.AzureDevopsGroupPat = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
 				}
 
