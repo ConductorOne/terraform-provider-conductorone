@@ -21,9 +21,20 @@ resource "conductorone_integration_azure_devops" "azure_devops" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  organization_url      = "..."
-  personal_access_token = "..."
-  sync_grant_sources    = false
+  azure_devops_group_oauth = {
+    organization_url                       = "..."
+    azure_devops_tenant_id                 = "..."
+    oauth2_client_cred_grant_client_id     = "..."
+    oauth2_client_cred_grant_client_secret = "..."
+    sync_teams                             = false
+    sync_organization                      = false
+  }
+  azure_devops_group_pat = {
+    organization_url      = "..."
+    personal_access_token = "..."
+    sync_teams            = false
+    sync_organization     = false
+  }
 }
 ```
 
@@ -36,9 +47,8 @@ resource "conductorone_integration_azure_devops" "azure_devops" {
 
 ### Optional
 
-- `organization_url` (String) Organization URL
-- `personal_access_token` (String, Sensitive) Personal access token
-- `sync_grant_sources` (Boolean) Sync grant sources
+- `azure_devops_group_oauth` (Attributes) OAuth (see [below for nested schema](#nestedatt--azure_devops_group_oauth))
+- `azure_devops_group_pat` (Attributes) Personal access token (see [below for nested schema](#nestedatt--azure_devops_group_pat))
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only
@@ -47,3 +57,26 @@ resource "conductorone_integration_azure_devops" "azure_devops" {
 - `deleted_at` (String) The time this integration was deleted.
 - `id` (String) The ID of this integration.
 - `updated_at` (String) The time this integration was last updated.
+
+<a id="nestedatt--azure_devops_group_oauth"></a>
+### Nested Schema for `azure_devops_group_oauth`
+
+Optional:
+
+- `azure_devops_tenant_id` (String) Azure tenant ID
+- `oauth2_client_cred_grant_client_id` (String) OAuth client ID
+- `oauth2_client_cred_grant_client_secret` (String, Sensitive) OAuth client secret
+- `organization_url` (String) Organization URL
+- `sync_organization` (Boolean) Sync organization
+- `sync_teams` (Boolean) Sync teams
+
+
+<a id="nestedatt--azure_devops_group_pat"></a>
+### Nested Schema for `azure_devops_group_pat`
+
+Optional:
+
+- `organization_url` (String) Organization URL
+- `personal_access_token` (String, Sensitive) Personal access token
+- `sync_organization` (Boolean) Sync organization
+- `sync_teams` (Boolean) Sync teams

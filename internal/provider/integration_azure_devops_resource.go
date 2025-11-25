@@ -35,15 +35,14 @@ type IntegrationAzureDevopsResource struct {
 
 // IntegrationAzureDevopsResourceModel describes the resource data model.
 type IntegrationAzureDevopsResourceModel struct {
-	AppID               types.String   `tfsdk:"app_id"`
-	CreatedAt           types.String   `tfsdk:"created_at"`
-	DeletedAt           types.String   `tfsdk:"deleted_at"`
-	ID                  types.String   `tfsdk:"id"`
-	UpdatedAt           types.String   `tfsdk:"updated_at"`
-	UserIds             []types.String `tfsdk:"user_ids"`
-	OrganizationUrl     types.String   `tfsdk:"organization_url"`
-	PersonalAccessToken types.String   `tfsdk:"personal_access_token"`
-	SyncGrantSources    types.Bool     `tfsdk:"sync_grant_sources"`
+	AppID                 types.String   `tfsdk:"app_id"`
+	CreatedAt             types.String   `tfsdk:"created_at"`
+	DeletedAt             types.String   `tfsdk:"deleted_at"`
+	ID                    types.String   `tfsdk:"id"`
+	UpdatedAt             types.String   `tfsdk:"updated_at"`
+	UserIds               []types.String `tfsdk:"user_ids"`
+	AzureDevopsGroupOauth types.Object   `tfsdk:"azure_devops_group_oauth"`
+	AzureDevopsGroupPat   types.Object   `tfsdk:"azure_devops_group_pat"`
 }
 
 func (r *IntegrationAzureDevopsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -93,18 +92,59 @@ func (r *IntegrationAzureDevopsResource) Schema(ctx context.Context, req resourc
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"organization_url": &schema.StringAttribute{
+			"azure_devops_group_oauth": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `Organization URL`,
+				Description: `OAuth`,
+				Attributes: map[string]schema.Attribute{
+					"organization_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Organization URL`,
+					},
+					"azure_devops_tenant_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Azure tenant ID`,
+					},
+					"oauth2_client_cred_grant_client_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `OAuth client ID`,
+					},
+					"oauth2_client_cred_grant_client_secret": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `OAuth client secret`,
+					},
+					"sync_teams": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Sync teams`,
+					},
+					"sync_organization": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Sync organization`,
+					},
+				},
 			},
-			"personal_access_token": &schema.StringAttribute{
+			"azure_devops_group_pat": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Sensitive:   true,
 				Description: `Personal access token`,
-			},
-			"sync_grant_sources": &schema.BoolAttribute{
-				Optional:    true,
-				Description: `Sync grant sources`,
+				Attributes: map[string]schema.Attribute{
+					"organization_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Organization URL`,
+					},
+					"personal_access_token": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Personal access token`,
+					},
+					"sync_teams": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Sync teams`,
+					},
+					"sync_organization": &schema.BoolAttribute{
+						Optional:    true,
+						Description: `Sync organization`,
+					},
+				},
 			},
 		},
 	}
