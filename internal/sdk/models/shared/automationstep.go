@@ -61,12 +61,14 @@ type AutomationStep struct {
 	//   - inclusionList
 	//   - inclusionAll
 	//   - inclusionCriteria
+	//   - inclusionListCel
 	//
 	//
 	// This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
 	//   - exclusionNone
 	//   - exclusionList
 	//   - exclusionCriteria
+	//   - exclusionListCel
 	//
 	CreateRevokeTasksV2 *CreateRevokeTasksV2 `json:"createRevokeTasksV2,omitempty"`
 	// The GrantEntitlements message.

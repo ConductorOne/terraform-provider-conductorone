@@ -13,16 +13,20 @@ package shared
 //   - inclusionList
 //   - inclusionAll
 //   - inclusionCriteria
+//   - inclusionListCel
 //
 // This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
 //   - exclusionNone
 //   - exclusionList
 //   - exclusionCriteria
+//   - exclusionListCel
 type CreateRevokeTasksV2 struct {
 	// The EntitlementExclusionCriteria message.
 	EntitlementExclusionCriteria *EntitlementExclusionCriteria `json:"exclusionCriteria,omitempty"`
 	// The EntitlementExclusionList message.
 	EntitlementExclusionList *EntitlementExclusionList `json:"exclusionList,omitempty"`
+	// The EntitlementExclusionListCel message.
+	EntitlementExclusionListCel *EntitlementExclusionListCel `json:"exclusionListCel,omitempty"`
 	// The EntitlementExclusionNone message.
 	EntitlementExclusionNone *EntitlementExclusionNone `json:"exclusionNone,omitempty"`
 	// The EntitlementInclusionAll message.
@@ -31,6 +35,8 @@ type CreateRevokeTasksV2 struct {
 	EntitlementInclusionCriteria *EntitlementInclusionCriteria `json:"inclusionCriteria,omitempty"`
 	// The EntitlementInclusionList message.
 	EntitlementInclusionList *EntitlementInclusionList `json:"inclusionList,omitempty"`
+	// The EntitlementInclusionListCel message.
+	EntitlementInclusionListCel *EntitlementInclusionListCel `json:"inclusionListCel,omitempty"`
 	// The useSubjectUser field.
 	// This field is part of the `user` oneof.
 	// See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
@@ -55,6 +61,13 @@ func (c *CreateRevokeTasksV2) GetEntitlementExclusionList() *EntitlementExclusio
 		return nil
 	}
 	return c.EntitlementExclusionList
+}
+
+func (c *CreateRevokeTasksV2) GetEntitlementExclusionListCel() *EntitlementExclusionListCel {
+	if c == nil {
+		return nil
+	}
+	return c.EntitlementExclusionListCel
 }
 
 func (c *CreateRevokeTasksV2) GetEntitlementExclusionNone() *EntitlementExclusionNone {
@@ -83,6 +96,13 @@ func (c *CreateRevokeTasksV2) GetEntitlementInclusionList() *EntitlementInclusio
 		return nil
 	}
 	return c.EntitlementInclusionList
+}
+
+func (c *CreateRevokeTasksV2) GetEntitlementInclusionListCel() *EntitlementInclusionListCel {
+	if c == nil {
+		return nil
+	}
+	return c.EntitlementInclusionListCel
 }
 
 func (c *CreateRevokeTasksV2) GetUseSubjectUser() *bool {

@@ -618,5 +618,12 @@ actions:
   - target: $["components"]["schemas"]["c1.api.vault.v1.VaultServiceDeleteRequestInput"]
     update:
       x-speakeasy-terraform-ignore: true
-      
-  
+  - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewServiceDeleteRequestInput"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewTemplateServiceDeleteRequestInput"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewExpandMask"]
+    update:
+      x-speakeasy-ignore: true

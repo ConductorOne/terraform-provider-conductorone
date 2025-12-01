@@ -106,6 +106,9 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
+        entitlement_exclusion_list_cel = {
+          excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        }
         entitlement_exclusion_none = {
           # ...
         }
@@ -133,6 +136,9 @@ resource "conductorone_automation" "my_automation" {
               id     = "...my_id..."
             }
           ]
+        }
+        entitlement_inclusion_list_cel = {
+          app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         }
         use_subject_user = false
         user_id_cel      = "...my_user_id_cel..."
@@ -357,6 +363,9 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
+        entitlement_exclusion_list_cel = {
+          excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        }
         entitlement_exclusion_none = {
           # ...
         }
@@ -384,6 +393,9 @@ resource "conductorone_automation" "my_automation" {
               id     = "...my_id..."
             }
           ]
+        }
+        entitlement_inclusion_list_cel = {
+          app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         }
         use_subject_user = false
         user_id_cel      = "...my_user_id_cel..."

@@ -9,19 +9,19 @@ import (
 	"time"
 )
 
-type AccountTypes string
+type TaskSearchRequestAccountTypes string
 
 const (
-	AccountTypesAppUserTypeUnspecified    AccountTypes = "APP_USER_TYPE_UNSPECIFIED"
-	AccountTypesAppUserTypeUser           AccountTypes = "APP_USER_TYPE_USER"
-	AccountTypesAppUserTypeServiceAccount AccountTypes = "APP_USER_TYPE_SERVICE_ACCOUNT"
-	AccountTypesAppUserTypeSystemAccount  AccountTypes = "APP_USER_TYPE_SYSTEM_ACCOUNT"
+	TaskSearchRequestAccountTypesAppUserTypeUnspecified    TaskSearchRequestAccountTypes = "APP_USER_TYPE_UNSPECIFIED"
+	TaskSearchRequestAccountTypesAppUserTypeUser           TaskSearchRequestAccountTypes = "APP_USER_TYPE_USER"
+	TaskSearchRequestAccountTypesAppUserTypeServiceAccount TaskSearchRequestAccountTypes = "APP_USER_TYPE_SERVICE_ACCOUNT"
+	TaskSearchRequestAccountTypesAppUserTypeSystemAccount  TaskSearchRequestAccountTypes = "APP_USER_TYPE_SYSTEM_ACCOUNT"
 )
 
-func (e AccountTypes) ToPointer() *AccountTypes {
+func (e TaskSearchRequestAccountTypes) ToPointer() *TaskSearchRequestAccountTypes {
 	return &e
 }
-func (e *AccountTypes) UnmarshalJSON(data []byte) error {
+func (e *TaskSearchRequestAccountTypes) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -34,10 +34,10 @@ func (e *AccountTypes) UnmarshalJSON(data []byte) error {
 	case "APP_USER_TYPE_SERVICE_ACCOUNT":
 		fallthrough
 	case "APP_USER_TYPE_SYSTEM_ACCOUNT":
-		*e = AccountTypes(v)
+		*e = TaskSearchRequestAccountTypes(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AccountTypes: %v", v)
+		return fmt.Errorf("invalid value for TaskSearchRequestAccountTypes: %v", v)
 	}
 }
 
@@ -355,7 +355,7 @@ type TaskSearchRequest struct {
 	// Search tasks that have any of these account owners.
 	AccountOwnerIds []string `json:"accountOwnerIds,omitempty"`
 	// The accountTypes field.
-	AccountTypes []AccountTypes `json:"accountTypes,omitempty"`
+	AccountTypes []TaskSearchRequestAccountTypes `json:"accountTypes,omitempty"`
 	// Search tasks that have this actor ID.
 	ActorID *string `json:"actorId,omitempty"`
 	// Search tasks that have any of these app entitlement IDs.
@@ -451,7 +451,7 @@ func (t *TaskSearchRequest) GetAccountOwnerIds() []string {
 	return t.AccountOwnerIds
 }
 
-func (t *TaskSearchRequest) GetAccountTypes() []AccountTypes {
+func (t *TaskSearchRequest) GetAccountTypes() []TaskSearchRequestAccountTypes {
 	if t == nil {
 		return nil
 	}

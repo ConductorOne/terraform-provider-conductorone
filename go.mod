@@ -20,7 +20,7 @@ require (
 	github.com/pquerna/xjwt v0.3.0
 	github.com/spyzhov/ajson v0.9.0
 	github.com/stretchr/testify v1.10.0
-	go.uber.org/zap v1.27.0
+	go.uber.org/zap v1.27.1
 	golang.org/x/net v0.43.0
 	golang.org/x/oauth2 v0.30.0
 	google.golang.org/grpc v1.75.1

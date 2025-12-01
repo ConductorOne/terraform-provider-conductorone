@@ -39,7 +39,7 @@ type AccessConflictResourceModel struct {
 	EntitlementSetAID            types.String                          `tfsdk:"entitlement_set_a_id"`
 	EntitlementSetBID            types.String                          `tfsdk:"entitlement_set_b_id"`
 	ID                           types.String                          `tfsdk:"id"`
-	NotificationConfig           *tfTypes.NotificationConfig           `tfsdk:"notification_config"`
+	NotificationConfig           *tfTypes.NotificationConfig1          `tfsdk:"notification_config"`
 	UpdatedAt                    types.String                          `tfsdk:"updated_at"`
 }
 
@@ -372,7 +372,10 @@ func (r *AccessConflictResource) Delete(ctx context.Context, req resource.Delete
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

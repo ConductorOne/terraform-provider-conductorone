@@ -28,21 +28,23 @@ type FunctionDataSource struct {
 
 // FunctionDataSourceModel describes the data model.
 type FunctionDataSourceModel struct {
-	CreatedAt         types.String   `tfsdk:"created_at"`
-	DeletedAt         types.String   `tfsdk:"deleted_at"`
-	Description       types.String   `tfsdk:"description"`
-	DisplayName       types.String   `tfsdk:"display_name"`
-	FunctionType      types.String   `tfsdk:"function_type"`
-	FunctionTypes     []types.String `tfsdk:"function_types"`
-	Head              types.String   `tfsdk:"head"`
-	ID                types.String   `tfsdk:"id"`
-	IsDraft           types.Bool     `tfsdk:"is_draft"`
-	NextPageToken     types.String   `tfsdk:"next_page_token"`
-	PageSize          types.Int32    `tfsdk:"page_size"`
-	PageToken         types.String   `tfsdk:"page_token"`
-	PublishedCommitID types.String   `tfsdk:"published_commit_id"`
-	Query             types.String   `tfsdk:"query"`
-	UpdatedAt         types.String   `tfsdk:"updated_at"`
+	CreatedAt                types.String            `tfsdk:"created_at"`
+	DeletedAt                types.String            `tfsdk:"deleted_at"`
+	Description              types.String            `tfsdk:"description"`
+	DisplayName              types.String            `tfsdk:"display_name"`
+	EncryptedValues          map[string]types.String `tfsdk:"encrypted_values"`
+	FunctionType             types.String            `tfsdk:"function_type"`
+	FunctionTypes            []types.String          `tfsdk:"function_types"`
+	Head                     types.String            `tfsdk:"head"`
+	ID                       types.String            `tfsdk:"id"`
+	IsDraft                  types.Bool              `tfsdk:"is_draft"`
+	NextPageToken            types.String            `tfsdk:"next_page_token"`
+	OutboundNetworkAllowlist []types.String          `tfsdk:"outbound_network_allowlist"`
+	PageSize                 types.Int32             `tfsdk:"page_size"`
+	PageToken                types.String            `tfsdk:"page_token"`
+	PublishedCommitID        types.String            `tfsdk:"published_commit_id"`
+	Query                    types.String            `tfsdk:"query"`
+	UpdatedAt                types.String            `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -70,6 +72,11 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				Computed:    true,
 				Description: `The displayName field.`,
 			},
+			"encrypted_values": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `The encryptedValues field.`,
+			},
 			"function_type": schema.StringAttribute{
 				Computed:    true,
 				Description: `The functionType field.`,
@@ -94,6 +101,11 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
 				Description: `The nextPageToken field.`,
+			},
+			"outbound_network_allowlist": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `The outboundNetworkAllowlist field.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,

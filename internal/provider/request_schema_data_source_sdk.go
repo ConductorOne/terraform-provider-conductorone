@@ -17,6 +17,25 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 
 	if resp != nil {
 		r.Description = types.StringPointerValue(resp.Description)
+		if resp.FieldGroups != nil {
+			r.FieldGroups = []tfTypes.FieldGroup{}
+
+			for _, fieldGroupsItem := range resp.FieldGroups {
+				var fieldGroups tfTypes.FieldGroup
+
+				fieldGroups.DisplayName = types.StringPointerValue(fieldGroupsItem.DisplayName)
+				if fieldGroupsItem.Fields != nil {
+					fieldGroups.Fields = make([]types.String, 0, len(fieldGroupsItem.Fields))
+					for _, v := range fieldGroupsItem.Fields {
+						fieldGroups.Fields = append(fieldGroups.Fields, types.StringValue(v))
+					}
+				}
+				fieldGroups.HelpText = types.StringPointerValue(fieldGroupsItem.HelpText)
+				fieldGroups.Name = types.StringPointerValue(fieldGroupsItem.Name)
+
+				r.FieldGroups = append(r.FieldGroups, fieldGroups)
+			}
+		}
 		if resp.FieldRelationships != nil {
 			r.FieldRelationships = []tfTypes.FieldRelationship{}
 
@@ -129,6 +148,16 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 					fields.Int64Field.Placeholder = types.StringPointerValue(fieldsItem.Int64Field.Placeholder)
 				}
 				fields.Name = types.StringPointerValue(fieldsItem.Name)
+				if fieldsItem.Oauth2Field == nil {
+					fields.Oauth2Field = nil
+				} else {
+					fields.Oauth2Field = &tfTypes.Oauth2Field{}
+					if fieldsItem.Oauth2Field.Oauth2FieldView == nil {
+						fields.Oauth2Field.Oauth2FieldView = nil
+					} else {
+						fields.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
+					}
+				}
 				if fieldsItem.StringField == nil {
 					fields.StringField = nil
 				} else {

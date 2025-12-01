@@ -93,7 +93,6 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				Description: `The AppEntitlementAutomationLastRunStatus message. Requires replacement if changed.`,
 			},
 			"app_entitlement_automation_rule_basic": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"expression": schema.StringAttribute{
@@ -112,7 +111,6 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"app_entitlement_automation_rule_cel": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"expression": schema.StringAttribute{
@@ -131,7 +129,6 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"app_entitlement_automation_rule_entitlement": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"entitlement_refs": schema.ListNestedAttribute{
@@ -167,7 +164,6 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"app_entitlement_automation_rule_none": schema.SingleNestedAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The AppEntitlementAutomationRuleNone message.`,
 				Validators: []validator.Object{
@@ -476,7 +472,10 @@ func (r *AppEntitlementAutomationResource) Delete(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

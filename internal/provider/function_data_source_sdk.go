@@ -17,6 +17,12 @@ func (r *FunctionDataSourceModel) RefreshFromSharedFunction(ctx context.Context,
 	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 	r.Description = types.StringPointerValue(resp.Description)
 	r.DisplayName = types.StringPointerValue(resp.DisplayName)
+	if len(resp.EncryptedValues) > 0 {
+		r.EncryptedValues = make(map[string]types.String, len(resp.EncryptedValues))
+		for key, value := range resp.EncryptedValues {
+			r.EncryptedValues[key] = types.StringValue(value)
+		}
+	}
 	if resp.FunctionType != nil {
 		r.FunctionType = types.StringValue(string(*resp.FunctionType))
 	} else {
@@ -25,6 +31,12 @@ func (r *FunctionDataSourceModel) RefreshFromSharedFunction(ctx context.Context,
 	r.Head = types.StringPointerValue(resp.Head)
 	r.ID = types.StringPointerValue(resp.ID)
 	r.IsDraft = types.BoolPointerValue(resp.IsDraft)
+	if resp.OutboundNetworkAllowlist != nil {
+		r.OutboundNetworkAllowlist = make([]types.String, 0, len(resp.OutboundNetworkAllowlist))
+		for _, v := range resp.OutboundNetworkAllowlist {
+			r.OutboundNetworkAllowlist = append(r.OutboundNetworkAllowlist, types.StringValue(v))
+		}
+	}
 	r.PublishedCommitID = types.StringPointerValue(resp.PublishedCommitID)
 	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 

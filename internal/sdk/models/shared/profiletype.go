@@ -16,6 +16,8 @@ type ProfileType struct {
 	Priority *int64 `json:"priority,omitempty"`
 	// icon sizes
 	Sizes []int `json:"sizes,omitempty"`
+	// The slug field.
+	Slug *string `json:"slug,omitempty"`
 }
 
 func (p *ProfileType) GetDescription() *string {
@@ -58,4 +60,11 @@ func (p *ProfileType) GetSizes() []int {
 		return nil
 	}
 	return p.Sizes
+}
+
+func (p *ProfileType) GetSlug() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Slug
 }

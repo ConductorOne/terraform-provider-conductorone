@@ -9,10 +9,12 @@ import (
 type CreateRevokeTasksV2 struct {
 	EntitlementExclusionCriteria *EntitlementExclusionCriteria `tfsdk:"entitlement_exclusion_criteria"`
 	EntitlementExclusionList     *EntitlementExclusionList     `tfsdk:"entitlement_exclusion_list"`
+	EntitlementExclusionListCel  *EntitlementExclusionListCel  `tfsdk:"entitlement_exclusion_list_cel"`
 	EntitlementExclusionNone     *EntitlementExclusionNone     `tfsdk:"entitlement_exclusion_none"`
 	EntitlementInclusionAll      *EntitlementInclusionAll      `tfsdk:"entitlement_inclusion_all"`
 	EntitlementInclusionCriteria *EntitlementInclusionCriteria `tfsdk:"entitlement_inclusion_criteria"`
 	EntitlementInclusionList     *EntitlementInclusionList     `tfsdk:"entitlement_inclusion_list"`
+	EntitlementInclusionListCel  *EntitlementInclusionListCel  `tfsdk:"entitlement_inclusion_list_cel"`
 	UserIDCel                    types.String                  `tfsdk:"user_id_cel"`
 	UserRef                      *UserRef                      `tfsdk:"user_ref"`
 	UseSubjectUser               types.Bool                    `tfsdk:"use_subject_user"`
