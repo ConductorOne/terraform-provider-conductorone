@@ -6472,6 +6472,8 @@ components:
                   - sendSlackMessage
                   - callFunction
                   - accountLifecycleAction
+                  - generatePassword
+                  - evaluateExpressions
             properties:
                 accountLifecycleAction:
                     $ref: '#/components/schemas/c1.api.automations.v1.AccountLifecycleAction'
@@ -6487,6 +6489,10 @@ components:
                     $ref: '#/components/schemas/c1.api.automations.v1.CreateRevokeTasks'
                 createRevokeTasksV2:
                     $ref: '#/components/schemas/c1.api.automations.v1.CreateRevokeTasksV2'
+                evaluateExpressions:
+                    $ref: '#/components/schemas/c1.api.automations.v1.EvaluateExpressions'
+                generatePassword:
+                    $ref: '#/components/schemas/c1.api.automations.v1.GeneratePassword'
                 grantEntitlements:
                     $ref: '#/components/schemas/c1.api.automations.v1.GrantEntitlements'
                 removeFromDelegation:
@@ -7078,6 +7084,20 @@ components:
             title: Entitlement Inclusion List Cel
             type: object
             x-speakeasy-name-override: EntitlementInclusionListCel
+        c1.api.automations.v1.EvaluateExpressions:
+            description: The EvaluateExpressions message.
+            nullable: true
+            properties:
+                expressions:
+                    description: The expressions field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.automations.v1.Expression'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Evaluate Expressions
+            type: object
+            x-speakeasy-name-override: EvaluateExpressions
         c1.api.automations.v1.ExecuteAutomationRequestInput:
             description: The ExecuteAutomationRequest message.
             properties:
@@ -7097,6 +7117,24 @@ components:
             title: Execute Automation Response
             type: object
             x-speakeasy-name-override: ExecuteAutomationResponse
+        c1.api.automations.v1.Expression:
+            description: The Expression message.
+            properties:
+                expressionCel:
+                    description: The expressionCel field.
+                    readOnly: false
+                    type: string
+                isSecret:
+                    description: The isSecret field.
+                    readOnly: false
+                    type: boolean
+                key:
+                    description: The key field.
+                    readOnly: false
+                    type: string
+            title: Expression
+            type: object
+            x-speakeasy-name-override: Expression
         c1.api.automations.v1.FormTrigger:
             description: The FormTrigger message.
             nullable: true
@@ -7106,6 +7144,12 @@ components:
             title: Form Trigger
             type: object
             x-speakeasy-name-override: FormTrigger
+        c1.api.automations.v1.GeneratePassword:
+            description: The GeneratePassword message.
+            nullable: true
+            title: Generate Password
+            type: object
+            x-speakeasy-name-override: GeneratePassword
         c1.api.automations.v1.GetAutomationExecutionResponse:
             description: The GetAutomationExecutionResponse message.
             properties:

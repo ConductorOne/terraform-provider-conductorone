@@ -596,6 +596,45 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - exclusionCriteria` + "\n" +
 								`  - exclusionListCel`,
 						},
+						"evaluate_expressions": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"expressions": schema.ListNestedAttribute{
+									Computed: true,
+									Optional: true,
+									NestedObject: schema.NestedAttributeObject{
+										Validators: []validator.Object{
+											speakeasy_objectvalidators.NotNull(),
+										},
+										Attributes: map[string]schema.Attribute{
+											"expression_cel": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The expressionCel field.`,
+											},
+											"is_secret": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The isSecret field.`,
+											},
+											"key": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The key field.`,
+											},
+										},
+									},
+									Description: `The expressions field.`,
+								},
+							},
+							Description: `The EvaluateExpressions message.`,
+						},
+						"generate_password": schema.SingleNestedAttribute{
+							Computed:    true,
+							Optional:    true,
+							Description: `The GeneratePassword message.`,
+						},
 						"grant_entitlements": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -1651,6 +1690,45 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - exclusionList` + "\n" +
 								`  - exclusionCriteria` + "\n" +
 								`  - exclusionListCel`,
+						},
+						"evaluate_expressions": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"expressions": schema.ListNestedAttribute{
+									Computed: true,
+									Optional: true,
+									NestedObject: schema.NestedAttributeObject{
+										Validators: []validator.Object{
+											speakeasy_objectvalidators.NotNull(),
+										},
+										Attributes: map[string]schema.Attribute{
+											"expression_cel": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The expressionCel field.`,
+											},
+											"is_secret": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The isSecret field.`,
+											},
+											"key": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The key field.`,
+											},
+										},
+									},
+									Description: `The expressions field.`,
+								},
+							},
+							Description: `The EvaluateExpressions message.`,
+						},
+						"generate_password": schema.SingleNestedAttribute{
+							Computed:    true,
+							Optional:    true,
+							Description: `The GeneratePassword message.`,
 						},
 						"grant_entitlements": schema.SingleNestedAttribute{
 							Computed: true,

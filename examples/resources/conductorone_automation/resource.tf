@@ -146,6 +146,18 @@ resource "conductorone_automation" "my_automation" {
           id = "...my_id..."
         }
       }
+      evaluate_expressions = {
+        expressions = [
+          {
+            expression_cel = "...my_expression_cel..."
+            is_secret      = false
+            key            = "...my_key..."
+          }
+        ]
+      }
+      generate_password = {
+        # ...
+      }
       grant_entitlements = {
         app_entitlement_refs = [
           {
@@ -402,6 +414,18 @@ resource "conductorone_automation" "my_automation" {
         user_ref = {
           id = "...my_id..."
         }
+      }
+      evaluate_expressions = {
+        expressions = [
+          {
+            expression_cel = "...my_expression_cel..."
+            is_secret      = true
+            key            = "...my_key..."
+          }
+        ]
+      }
+      generate_password = {
+        # ...
       }
       grant_entitlements = {
         app_entitlement_refs = [

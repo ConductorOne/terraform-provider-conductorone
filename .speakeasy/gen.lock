@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 5a4f046f21a102000178faa69c65a20c
+  docChecksum: 4e9bdf9695a8940d49ae7e33f5d48236
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.666.0
-  generationVersion: 2.768.0
-  releaseVersion: 1.7.6
-  configChecksum: 80f0e75d24cd855e0f2fdd45b820954e
+  speakeasyVersion: 1.666.2
+  generationVersion: 2.768.1
+  releaseVersion: 1.7.7
+  configChecksum: 72d794ed9879ff264abe0f263db0db7f
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -384,7 +384,9 @@ generatedFiles:
   - internal/provider/types/entitlement_owner_approval.go
   - internal/provider/types/entitlement_to_details.go
   - internal/provider/types/escalation.go
+  - internal/provider/types/evaluate_expressions.go
   - internal/provider/types/expanded.go
+  - internal/provider/types/expression.go
   - internal/provider/types/expression_approval.go
   - internal/provider/types/external_ticket_provision.go
   - internal/provider/types/field.go
@@ -394,6 +396,7 @@ generatedFiles:
   - internal/provider/types/file_input_field.go
   - internal/provider/types/function_commit.go
   - internal/provider/types/functions_service_delete_function_request.go
+  - internal/provider/types/generate_password.go
   - internal/provider/types/get_app_entitlement_proxy_response_expanded.go
   - internal/provider/types/get_app_entitlement_response_expanded.go
   - internal/provider/types/grant_access_profile_filter.go
@@ -1126,6 +1129,7 @@ generatedFiles:
   - internal/sdk/models/shared/erroredaction.go
   - internal/sdk/models/shared/escalation.go
   - internal/sdk/models/shared/escalationinstance.go
+  - internal/sdk/models/shared/evaluateexpressions.go
   - internal/sdk/models/shared/executeautomationrequest.go
   - internal/sdk/models/shared/executeautomationresponse.go
   - internal/sdk/models/shared/expiringuserdelegationbinding.go
@@ -1145,6 +1149,7 @@ generatedFiles:
   - internal/sdk/models/shared/exportssearchservicesearchrequest.go
   - internal/sdk/models/shared/exportssearchservicesearchresponse.go
   - internal/sdk/models/shared/exporttodatasource.go
+  - internal/sdk/models/shared/expression.go
   - internal/sdk/models/shared/expressionapproval.go
   - internal/sdk/models/shared/expressionapprovalinput.go
   - internal/sdk/models/shared/externalref.go
@@ -1183,6 +1188,7 @@ generatedFiles:
   - internal/sdk/models/shared/functionsservicelisttagsresponse.go
   - internal/sdk/models/shared/functionsserviceupdatefunctionrequest.go
   - internal/sdk/models/shared/functionsserviceupdatefunctionresponse.go
+  - internal/sdk/models/shared/generatepassword.go
   - internal/sdk/models/shared/getappentitlementmonitorbindingrequest.go
   - internal/sdk/models/shared/getappentitlementproxyresponse.go
   - internal/sdk/models/shared/getappentitlementresponse.go

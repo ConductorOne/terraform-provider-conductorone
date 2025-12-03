@@ -161,6 +161,18 @@ resource "conductorone_automation" "my_automation" {
           id = "...my_id..."
         }
       }
+      evaluate_expressions = {
+        expressions = [
+          {
+            expression_cel = "...my_expression_cel..."
+            is_secret      = false
+            key            = "...my_key..."
+          }
+        ]
+      }
+      generate_password = {
+        # ...
+      }
       grant_entitlements = {
         app_entitlement_refs = [
           {
@@ -417,6 +429,18 @@ resource "conductorone_automation" "my_automation" {
         user_ref = {
           id = "...my_id..."
         }
+      }
+      evaluate_expressions = {
+        expressions = [
+          {
+            expression_cel = "...my_expression_cel..."
+            is_secret      = true
+            key            = "...my_key..."
+          }
+        ]
+      }
+      generate_password = {
+        # ...
       }
       grant_entitlements = {
         app_entitlement_refs = [
@@ -885,6 +909,8 @@ This message contains a oneof named exclusion. Only a single field of the follow
   - exclusionList
   - exclusionCriteria
   - exclusionListCel (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2))
+- `evaluate_expressions` (Attributes) The EvaluateExpressions message. (see [below for nested schema](#nestedatt--automation_steps--evaluate_expressions))
+- `generate_password` (Attributes) The GeneratePassword message. (see [below for nested schema](#nestedatt--automation_steps--generate_password))
 - `grant_entitlements` (Attributes) The GrantEntitlements message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements))
 - `remove_from_delegation` (Attributes) RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
 
@@ -1194,6 +1220,28 @@ Optional:
 
 - `id` (String) The id of the user.
 
+
+
+<a id="nestedatt--automation_steps--evaluate_expressions"></a>
+### Nested Schema for `automation_steps.evaluate_expressions`
+
+Optional:
+
+- `expressions` (Attributes List) The expressions field. (see [below for nested schema](#nestedatt--automation_steps--evaluate_expressions--expressions))
+
+<a id="nestedatt--automation_steps--evaluate_expressions--expressions"></a>
+### Nested Schema for `automation_steps.evaluate_expressions.expressions`
+
+Optional:
+
+- `expression_cel` (String) The expressionCel field.
+- `is_secret` (Boolean) The isSecret field.
+- `key` (String) The key field.
+
+
+
+<a id="nestedatt--automation_steps--generate_password"></a>
+### Nested Schema for `automation_steps.generate_password`
 
 
 <a id="nestedatt--automation_steps--grant_entitlements"></a>
@@ -1514,6 +1562,8 @@ This message contains a oneof named exclusion. Only a single field of the follow
   - exclusionList
   - exclusionCriteria
   - exclusionListCel (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2))
+- `evaluate_expressions` (Attributes) The EvaluateExpressions message. (see [below for nested schema](#nestedatt--draft_automation_steps--evaluate_expressions))
+- `generate_password` (Attributes) The GeneratePassword message. (see [below for nested schema](#nestedatt--draft_automation_steps--generate_password))
 - `grant_entitlements` (Attributes) The GrantEntitlements message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements))
 - `remove_from_delegation` (Attributes) RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
 
@@ -1823,6 +1873,28 @@ Optional:
 
 - `id` (String) The id of the user.
 
+
+
+<a id="nestedatt--draft_automation_steps--evaluate_expressions"></a>
+### Nested Schema for `draft_automation_steps.evaluate_expressions`
+
+Optional:
+
+- `expressions` (Attributes List) The expressions field. (see [below for nested schema](#nestedatt--draft_automation_steps--evaluate_expressions--expressions))
+
+<a id="nestedatt--draft_automation_steps--evaluate_expressions--expressions"></a>
+### Nested Schema for `draft_automation_steps.evaluate_expressions.expressions`
+
+Optional:
+
+- `expression_cel` (String) The expressionCel field.
+- `is_secret` (Boolean) The isSecret field.
+- `key` (String) The key field.
+
+
+
+<a id="nestedatt--draft_automation_steps--generate_password"></a>
+### Nested Schema for `draft_automation_steps.generate_password`
 
 
 <a id="nestedatt--draft_automation_steps--grant_entitlements"></a>

@@ -300,6 +300,29 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					}
 					automationSteps.CreateRevokeTasksV2.UseSubjectUser = types.BoolPointerValue(automationStepsItem.CreateRevokeTasksV2.UseSubjectUser)
 				}
+				if automationStepsItem.EvaluateExpressions == nil {
+					automationSteps.EvaluateExpressions = nil
+				} else {
+					automationSteps.EvaluateExpressions = &tfTypes.EvaluateExpressions{}
+					if automationStepsItem.EvaluateExpressions.Expressions != nil {
+						automationSteps.EvaluateExpressions.Expressions = []tfTypes.Expression{}
+
+						for _, expressionsItem := range automationStepsItem.EvaluateExpressions.Expressions {
+							var expressions tfTypes.Expression
+
+							expressions.ExpressionCel = types.StringPointerValue(expressionsItem.ExpressionCel)
+							expressions.IsSecret = types.BoolPointerValue(expressionsItem.IsSecret)
+							expressions.Key = types.StringPointerValue(expressionsItem.Key)
+
+							automationSteps.EvaluateExpressions.Expressions = append(automationSteps.EvaluateExpressions.Expressions, expressions)
+						}
+					}
+				}
+				if automationStepsItem.GeneratePassword == nil {
+					automationSteps.GeneratePassword = nil
+				} else {
+					automationSteps.GeneratePassword = &tfTypes.GeneratePassword{}
+				}
 				if automationStepsItem.GrantEntitlements == nil {
 					automationSteps.GrantEntitlements = nil
 				} else {
@@ -793,6 +816,29 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						draftAutomationSteps.CreateRevokeTasksV2.UserRef.ID = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasksV2.UserRef.ID)
 					}
 					draftAutomationSteps.CreateRevokeTasksV2.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.CreateRevokeTasksV2.UseSubjectUser)
+				}
+				if draftAutomationStepsItem.EvaluateExpressions == nil {
+					draftAutomationSteps.EvaluateExpressions = nil
+				} else {
+					draftAutomationSteps.EvaluateExpressions = &tfTypes.EvaluateExpressions{}
+					if draftAutomationStepsItem.EvaluateExpressions.Expressions != nil {
+						draftAutomationSteps.EvaluateExpressions.Expressions = []tfTypes.Expression{}
+
+						for _, expressionsItem1 := range draftAutomationStepsItem.EvaluateExpressions.Expressions {
+							var expressions1 tfTypes.Expression
+
+							expressions1.ExpressionCel = types.StringPointerValue(expressionsItem1.ExpressionCel)
+							expressions1.IsSecret = types.BoolPointerValue(expressionsItem1.IsSecret)
+							expressions1.Key = types.StringPointerValue(expressionsItem1.Key)
+
+							draftAutomationSteps.EvaluateExpressions.Expressions = append(draftAutomationSteps.EvaluateExpressions.Expressions, expressions1)
+						}
+					}
+				}
+				if draftAutomationStepsItem.GeneratePassword == nil {
+					draftAutomationSteps.GeneratePassword = nil
+				} else {
+					draftAutomationSteps.GeneratePassword = &tfTypes.GeneratePassword{}
 				}
 				if draftAutomationStepsItem.GrantEntitlements == nil {
 					draftAutomationSteps.GrantEntitlements = nil
@@ -2243,6 +2289,45 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					UserRef:                      userRef1,
 				}
 			}
+			var evaluateExpressions *shared.EvaluateExpressions
+			if r.AutomationSteps[automationStepsIndex].EvaluateExpressions != nil {
+				var expressions []shared.Expression
+				if r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions != nil {
+					expressions = make([]shared.Expression, 0, len(r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions))
+					for expressionsIndex := range r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions {
+						expressionCel := new(string)
+						if !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].ExpressionCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].ExpressionCel.IsNull() {
+							*expressionCel = r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].ExpressionCel.ValueString()
+						} else {
+							expressionCel = nil
+						}
+						isSecret := new(bool)
+						if !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].IsSecret.IsUnknown() && !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].IsSecret.IsNull() {
+							*isSecret = r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].IsSecret.ValueBool()
+						} else {
+							isSecret = nil
+						}
+						key := new(string)
+						if !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].Key.IsUnknown() && !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].Key.IsNull() {
+							*key = r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].Key.ValueString()
+						} else {
+							key = nil
+						}
+						expressions = append(expressions, shared.Expression{
+							ExpressionCel: expressionCel,
+							IsSecret:      isSecret,
+							Key:           key,
+						})
+					}
+				}
+				evaluateExpressions = &shared.EvaluateExpressions{
+					Expressions: expressions,
+				}
+			}
+			var generatePassword *shared.GeneratePassword
+			if r.AutomationSteps[automationStepsIndex].GeneratePassword != nil {
+				generatePassword = &shared.GeneratePassword{}
+			}
 			var grantEntitlements *shared.GrantEntitlements
 			if r.AutomationSteps[automationStepsIndex].GrantEntitlements != nil {
 				var appEntitlementRefs2 []shared.AppEntitlementRef
@@ -2739,6 +2824,8 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				CreateAccessReview:            createAccessReview,
 				CreateRevokeTasks:             createRevokeTasks,
 				CreateRevokeTasksV2:           createRevokeTasksV2,
+				EvaluateExpressions:           evaluateExpressions,
+				GeneratePassword:              generatePassword,
 				GrantEntitlements:             grantEntitlements,
 				RemoveFromDelegation:          removeFromDelegation,
 				RunAutomation:                 runAutomation,
@@ -3327,6 +3414,45 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					UserRef:                      userRef8,
 				}
 			}
+			var evaluateExpressions1 *shared.EvaluateExpressions
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions != nil {
+				var expressions1 []shared.Expression
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions != nil {
+					expressions1 = make([]shared.Expression, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions))
+					for expressionsIndex1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions {
+						expressionCel1 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].ExpressionCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].ExpressionCel.IsNull() {
+							*expressionCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].ExpressionCel.ValueString()
+						} else {
+							expressionCel1 = nil
+						}
+						isSecret1 := new(bool)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].IsSecret.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].IsSecret.IsNull() {
+							*isSecret1 = r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].IsSecret.ValueBool()
+						} else {
+							isSecret1 = nil
+						}
+						key1 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].Key.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].Key.IsNull() {
+							*key1 = r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].Key.ValueString()
+						} else {
+							key1 = nil
+						}
+						expressions1 = append(expressions1, shared.Expression{
+							ExpressionCel: expressionCel1,
+							IsSecret:      isSecret1,
+							Key:           key1,
+						})
+					}
+				}
+				evaluateExpressions1 = &shared.EvaluateExpressions{
+					Expressions: expressions1,
+				}
+			}
+			var generatePassword1 *shared.GeneratePassword
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword != nil {
+				generatePassword1 = &shared.GeneratePassword{}
+			}
 			var grantEntitlements1 *shared.GrantEntitlements
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements != nil {
 				var appEntitlementRefs5 []shared.AppEntitlementRef
@@ -3823,6 +3949,8 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				CreateAccessReview:            createAccessReview1,
 				CreateRevokeTasks:             createRevokeTasks1,
 				CreateRevokeTasksV2:           createRevokeTasksV21,
+				EvaluateExpressions:           evaluateExpressions1,
+				GeneratePassword:              generatePassword1,
 				GrantEntitlements:             grantEntitlements1,
 				RemoveFromDelegation:          removeFromDelegation1,
 				RunAutomation:                 runAutomation1,
@@ -5558,6 +5686,45 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					UserRef:                      userRef1,
 				}
 			}
+			var evaluateExpressions *shared.EvaluateExpressions
+			if r.AutomationSteps[automationStepsIndex].EvaluateExpressions != nil {
+				var expressions []shared.Expression
+				if r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions != nil {
+					expressions = make([]shared.Expression, 0, len(r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions))
+					for expressionsIndex := range r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions {
+						expressionCel := new(string)
+						if !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].ExpressionCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].ExpressionCel.IsNull() {
+							*expressionCel = r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].ExpressionCel.ValueString()
+						} else {
+							expressionCel = nil
+						}
+						isSecret := new(bool)
+						if !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].IsSecret.IsUnknown() && !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].IsSecret.IsNull() {
+							*isSecret = r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].IsSecret.ValueBool()
+						} else {
+							isSecret = nil
+						}
+						key := new(string)
+						if !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].Key.IsUnknown() && !r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].Key.IsNull() {
+							*key = r.AutomationSteps[automationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex].Key.ValueString()
+						} else {
+							key = nil
+						}
+						expressions = append(expressions, shared.Expression{
+							ExpressionCel: expressionCel,
+							IsSecret:      isSecret,
+							Key:           key,
+						})
+					}
+				}
+				evaluateExpressions = &shared.EvaluateExpressions{
+					Expressions: expressions,
+				}
+			}
+			var generatePassword *shared.GeneratePassword
+			if r.AutomationSteps[automationStepsIndex].GeneratePassword != nil {
+				generatePassword = &shared.GeneratePassword{}
+			}
 			var grantEntitlements *shared.GrantEntitlements
 			if r.AutomationSteps[automationStepsIndex].GrantEntitlements != nil {
 				var appEntitlementRefs2 []shared.AppEntitlementRef
@@ -6054,6 +6221,8 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				CreateAccessReview:            createAccessReview,
 				CreateRevokeTasks:             createRevokeTasks,
 				CreateRevokeTasksV2:           createRevokeTasksV2,
+				EvaluateExpressions:           evaluateExpressions,
+				GeneratePassword:              generatePassword,
 				GrantEntitlements:             grantEntitlements,
 				RemoveFromDelegation:          removeFromDelegation,
 				RunAutomation:                 runAutomation,
@@ -6626,6 +6795,45 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					UserRef:                      userRef8,
 				}
 			}
+			var evaluateExpressions1 *shared.EvaluateExpressions
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions != nil {
+				var expressions1 []shared.Expression
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions != nil {
+					expressions1 = make([]shared.Expression, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions))
+					for expressionsIndex1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions {
+						expressionCel1 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].ExpressionCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].ExpressionCel.IsNull() {
+							*expressionCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].ExpressionCel.ValueString()
+						} else {
+							expressionCel1 = nil
+						}
+						isSecret1 := new(bool)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].IsSecret.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].IsSecret.IsNull() {
+							*isSecret1 = r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].IsSecret.ValueBool()
+						} else {
+							isSecret1 = nil
+						}
+						key1 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].Key.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].Key.IsNull() {
+							*key1 = r.DraftAutomationSteps[draftAutomationStepsIndex].EvaluateExpressions.Expressions[expressionsIndex1].Key.ValueString()
+						} else {
+							key1 = nil
+						}
+						expressions1 = append(expressions1, shared.Expression{
+							ExpressionCel: expressionCel1,
+							IsSecret:      isSecret1,
+							Key:           key1,
+						})
+					}
+				}
+				evaluateExpressions1 = &shared.EvaluateExpressions{
+					Expressions: expressions1,
+				}
+			}
+			var generatePassword1 *shared.GeneratePassword
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword != nil {
+				generatePassword1 = &shared.GeneratePassword{}
+			}
 			var grantEntitlements1 *shared.GrantEntitlements
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements != nil {
 				var appEntitlementRefs5 []shared.AppEntitlementRef
@@ -7122,6 +7330,8 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				CreateAccessReview:            createAccessReview1,
 				CreateRevokeTasks:             createRevokeTasks1,
 				CreateRevokeTasksV2:           createRevokeTasksV21,
+				EvaluateExpressions:           evaluateExpressions1,
+				GeneratePassword:              generatePassword1,
 				GrantEntitlements:             grantEntitlements1,
 				RemoveFromDelegation:          removeFromDelegation1,
 				RunAutomation:                 runAutomation1,

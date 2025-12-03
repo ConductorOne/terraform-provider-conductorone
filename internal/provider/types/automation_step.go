@@ -14,6 +14,8 @@ type AutomationStep struct {
 	CreateAccessReview            *CreateAccessReview            `tfsdk:"create_access_review"`
 	CreateRevokeTasks             *CreateRevokeTasks             `tfsdk:"create_revoke_tasks"`
 	CreateRevokeTasksV2           *CreateRevokeTasksV2           `tfsdk:"create_revoke_tasks_v2"`
+	EvaluateExpressions           *EvaluateExpressions           `tfsdk:"evaluate_expressions"`
+	GeneratePassword              *GeneratePassword              `tfsdk:"generate_password"`
 	GrantEntitlements             *GrantEntitlements             `tfsdk:"grant_entitlements"`
 	RemoveFromDelegation          *RemoveFromDelegation          `tfsdk:"remove_from_delegation"`
 	RunAutomation                 *RunAutomation                 `tfsdk:"run_automation"`
