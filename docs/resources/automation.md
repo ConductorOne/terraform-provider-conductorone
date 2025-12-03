@@ -121,6 +121,9 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
+        entitlement_exclusion_list_cel = {
+          excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        }
         entitlement_exclusion_none = {
           # ...
         }
@@ -149,11 +152,26 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
+        entitlement_inclusion_list_cel = {
+          app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+        }
         use_subject_user = false
         user_id_cel      = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
+      }
+      evaluate_expressions = {
+        expressions = [
+          {
+            expression_cel = "...my_expression_cel..."
+            is_secret      = false
+            key            = "...my_key..."
+          }
+        ]
+      }
+      generate_password = {
+        # ...
       }
       grant_entitlements = {
         app_entitlement_refs = [
@@ -372,6 +390,9 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
+        entitlement_exclusion_list_cel = {
+          excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        }
         entitlement_exclusion_none = {
           # ...
         }
@@ -400,11 +421,26 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
+        entitlement_inclusion_list_cel = {
+          app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+        }
         use_subject_user = false
         user_id_cel      = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
+      }
+      evaluate_expressions = {
+        expressions = [
+          {
+            expression_cel = "...my_expression_cel..."
+            is_secret      = true
+            key            = "...my_key..."
+          }
+        ]
+      }
+      generate_password = {
+        # ...
       }
       grant_entitlements = {
         app_entitlement_refs = [
@@ -865,12 +901,16 @@ This message contains a oneof named inclusion. Only a single field of the follow
   - inclusionList
   - inclusionAll
   - inclusionCriteria
+  - inclusionListCel
 
 
 This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
   - exclusionNone
   - exclusionList
-  - exclusionCriteria (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2))
+  - exclusionCriteria
+  - exclusionListCel (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2))
+- `evaluate_expressions` (Attributes) The EvaluateExpressions message. (see [below for nested schema](#nestedatt--automation_steps--evaluate_expressions))
+- `generate_password` (Attributes) The GeneratePassword message. (see [below for nested schema](#nestedatt--automation_steps--generate_password))
 - `grant_entitlements` (Attributes) The GrantEntitlements message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements))
 - `remove_from_delegation` (Attributes) RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
 
@@ -1079,10 +1119,12 @@ Optional:
 
 - `entitlement_exclusion_criteria` (Attributes) The EntitlementExclusionCriteria message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_criteria))
 - `entitlement_exclusion_list` (Attributes) The EntitlementExclusionList message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list))
+- `entitlement_exclusion_list_cel` (Attributes) The EntitlementExclusionListCel message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list_cel))
 - `entitlement_exclusion_none` (Attributes) The EntitlementExclusionNone message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none))
 - `entitlement_inclusion_all` (Attributes) The EntitlementInclusionAll message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_all))
 - `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_criteria))
 - `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list))
+- `entitlement_inclusion_list_cel` (Attributes) The EntitlementInclusionListCel message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list_cel))
 - `use_subject_user` (Boolean) The useSubjectUser field.
 This field is part of the `user` oneof.
 See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
@@ -1117,6 +1159,14 @@ Optional:
 - `app_id` (String) The appId field.
 - `id` (String) The id field.
 
+
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list_cel"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_exclusion_list_cel`
+
+Optional:
+
+- `excluded_app_entitlement_refs_cel` (String) The excludedAppEntitlementRefsCel field.
 
 
 <a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none"></a>
@@ -1155,6 +1205,14 @@ Optional:
 
 
 
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list_cel"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_inclusion_list_cel`
+
+Optional:
+
+- `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
+
+
 <a id="nestedatt--automation_steps--create_revoke_tasks_v2--user_ref"></a>
 ### Nested Schema for `automation_steps.create_revoke_tasks_v2.user_ref`
 
@@ -1162,6 +1220,28 @@ Optional:
 
 - `id` (String) The id of the user.
 
+
+
+<a id="nestedatt--automation_steps--evaluate_expressions"></a>
+### Nested Schema for `automation_steps.evaluate_expressions`
+
+Optional:
+
+- `expressions` (Attributes List) The expressions field. (see [below for nested schema](#nestedatt--automation_steps--evaluate_expressions--expressions))
+
+<a id="nestedatt--automation_steps--evaluate_expressions--expressions"></a>
+### Nested Schema for `automation_steps.evaluate_expressions.expressions`
+
+Optional:
+
+- `expression_cel` (String) The expressionCel field.
+- `is_secret` (Boolean) The isSecret field.
+- `key` (String) The key field.
+
+
+
+<a id="nestedatt--automation_steps--generate_password"></a>
+### Nested Schema for `automation_steps.generate_password`
 
 
 <a id="nestedatt--automation_steps--grant_entitlements"></a>
@@ -1474,12 +1554,16 @@ This message contains a oneof named inclusion. Only a single field of the follow
   - inclusionList
   - inclusionAll
   - inclusionCriteria
+  - inclusionListCel
 
 
 This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
   - exclusionNone
   - exclusionList
-  - exclusionCriteria (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2))
+  - exclusionCriteria
+  - exclusionListCel (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2))
+- `evaluate_expressions` (Attributes) The EvaluateExpressions message. (see [below for nested schema](#nestedatt--draft_automation_steps--evaluate_expressions))
+- `generate_password` (Attributes) The GeneratePassword message. (see [below for nested schema](#nestedatt--draft_automation_steps--generate_password))
 - `grant_entitlements` (Attributes) The GrantEntitlements message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements))
 - `remove_from_delegation` (Attributes) RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
 
@@ -1688,10 +1772,12 @@ Optional:
 
 - `entitlement_exclusion_criteria` (Attributes) The EntitlementExclusionCriteria message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_criteria))
 - `entitlement_exclusion_list` (Attributes) The EntitlementExclusionList message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list))
+- `entitlement_exclusion_list_cel` (Attributes) The EntitlementExclusionListCel message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list_cel))
 - `entitlement_exclusion_none` (Attributes) The EntitlementExclusionNone message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none))
 - `entitlement_inclusion_all` (Attributes) The EntitlementInclusionAll message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_all))
 - `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_criteria))
 - `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list))
+- `entitlement_inclusion_list_cel` (Attributes) The EntitlementInclusionListCel message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list_cel))
 - `use_subject_user` (Boolean) The useSubjectUser field.
 This field is part of the `user` oneof.
 See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
@@ -1726,6 +1812,14 @@ Optional:
 - `app_id` (String) The appId field.
 - `id` (String) The id field.
 
+
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list_cel"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_exclusion_list_cel`
+
+Optional:
+
+- `excluded_app_entitlement_refs_cel` (String) The excludedAppEntitlementRefsCel field.
 
 
 <a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none"></a>
@@ -1764,6 +1858,14 @@ Optional:
 
 
 
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list_cel"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_inclusion_list_cel`
+
+Optional:
+
+- `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
+
+
 <a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--user_ref"></a>
 ### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.user_ref`
 
@@ -1771,6 +1873,28 @@ Optional:
 
 - `id` (String) The id of the user.
 
+
+
+<a id="nestedatt--draft_automation_steps--evaluate_expressions"></a>
+### Nested Schema for `draft_automation_steps.evaluate_expressions`
+
+Optional:
+
+- `expressions` (Attributes List) The expressions field. (see [below for nested schema](#nestedatt--draft_automation_steps--evaluate_expressions--expressions))
+
+<a id="nestedatt--draft_automation_steps--evaluate_expressions--expressions"></a>
+### Nested Schema for `draft_automation_steps.evaluate_expressions.expressions`
+
+Optional:
+
+- `expression_cel` (String) The expressionCel field.
+- `is_secret` (Boolean) The isSecret field.
+- `key` (String) The key field.
+
+
+
+<a id="nestedatt--draft_automation_steps--generate_password"></a>
+### Nested Schema for `draft_automation_steps.generate_password`
 
 
 <a id="nestedatt--draft_automation_steps--grant_entitlements"></a>

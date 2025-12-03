@@ -298,8 +298,8 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 	var departments []string
 	if r.Departments != nil {
 		departments = make([]string, 0, len(r.Departments))
-		for _, departmentsItem := range r.Departments {
-			departments = append(departments, departmentsItem.ValueString())
+		for departmentsIndex := range r.Departments {
+			departments = append(departments, r.Departments[departmentsIndex].ValueString())
 		}
 	}
 	email := new(string)
@@ -311,8 +311,8 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 	var excludeIds []string
 	if r.ExcludeIds != nil {
 		excludeIds = make([]string, 0, len(r.ExcludeIds))
-		for _, excludeIdsItem := range r.ExcludeIds {
-			excludeIds = append(excludeIds, excludeIdsItem.ValueString())
+		for excludeIdsIndex := range r.ExcludeIds {
+			excludeIds = append(excludeIds, r.ExcludeIds[excludeIdsIndex].ValueString())
 		}
 	}
 	var excludeTypes []shared.ExcludeTypes
@@ -325,22 +325,22 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 	var ids []string
 	if r.Ids != nil {
 		ids = make([]string, 0, len(r.Ids))
-		for _, idsItem := range r.Ids {
-			ids = append(ids, idsItem.ValueString())
+		for idsIndex := range r.Ids {
+			ids = append(ids, r.Ids[idsIndex].ValueString())
 		}
 	}
 	var jobTitles []string
 	if r.JobTitles != nil {
 		jobTitles = make([]string, 0, len(r.JobTitles))
-		for _, jobTitlesItem := range r.JobTitles {
-			jobTitles = append(jobTitles, jobTitlesItem.ValueString())
+		for jobTitlesIndex := range r.JobTitles {
+			jobTitles = append(jobTitles, r.JobTitles[jobTitlesIndex].ValueString())
 		}
 	}
 	var managerIds []string
 	if r.ManagerIds != nil {
 		managerIds = make([]string, 0, len(r.ManagerIds))
-		for _, managerIdsItem := range r.ManagerIds {
-			managerIds = append(managerIds, managerIdsItem.ValueString())
+		for managerIdsIndex := range r.ManagerIds {
+			managerIds = append(managerIds, r.ManagerIds[managerIdsIndex].ValueString())
 		}
 	}
 	pageSize := new(int)
@@ -358,10 +358,10 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 	var refs []shared.UserRef
 	if r.Refs != nil {
 		refs = make([]shared.UserRef, 0, len(r.Refs))
-		for _, refsItem := range r.Refs {
+		for refsIndex := range r.Refs {
 			id := new(string)
-			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-				*id = refsItem.ID.ValueString()
+			if !r.Refs[refsIndex].ID.IsUnknown() && !r.Refs[refsIndex].ID.IsNull() {
+				*id = r.Refs[refsIndex].ID.ValueString()
 			} else {
 				id = nil
 			}
@@ -373,8 +373,8 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 	var roleIds []string
 	if r.RoleIds != nil {
 		roleIds = make([]string, 0, len(r.RoleIds))
-		for _, roleIdsItem := range r.RoleIds {
-			roleIds = append(roleIds, roleIdsItem.ValueString())
+		for roleIdsIndex := range r.RoleIds {
+			roleIds = append(roleIds, r.RoleIds[roleIdsIndex].ValueString())
 		}
 	}
 	var userStatuses []shared.UserStatuses

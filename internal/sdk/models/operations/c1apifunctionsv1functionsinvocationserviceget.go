@@ -7,26 +7,26 @@ import (
 	"net/http"
 )
 
-type C1APIFunctionsV1FunctionsServiceGetCommitRequest struct {
+type C1APIFunctionsV1FunctionsInvocationServiceGetRequest struct {
 	FunctionID string `pathParam:"style=simple,explode=false,name=function_id"`
 	ID         string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (c *C1APIFunctionsV1FunctionsServiceGetCommitRequest) GetFunctionID() string {
+func (c *C1APIFunctionsV1FunctionsInvocationServiceGetRequest) GetFunctionID() string {
 	if c == nil {
 		return ""
 	}
 	return c.FunctionID
 }
 
-func (c *C1APIFunctionsV1FunctionsServiceGetCommitRequest) GetID() string {
+func (c *C1APIFunctionsV1FunctionsInvocationServiceGetRequest) GetID() string {
 	if c == nil {
 		return ""
 	}
 	return c.ID
 }
 
-type C1APIFunctionsV1FunctionsServiceGetCommitResponse struct {
+type C1APIFunctionsV1FunctionsInvocationServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -34,33 +34,33 @@ type C1APIFunctionsV1FunctionsServiceGetCommitResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successful response
-	FunctionsServiceGetCommitResponse *shared.FunctionsServiceGetCommitResponse
+	FunctionsInvocationServiceGetResponse *shared.FunctionsInvocationServiceGetResponse
 }
 
-func (c *C1APIFunctionsV1FunctionsServiceGetCommitResponse) GetContentType() string {
+func (c *C1APIFunctionsV1FunctionsInvocationServiceGetResponse) GetContentType() string {
 	if c == nil {
 		return ""
 	}
 	return c.ContentType
 }
 
-func (c *C1APIFunctionsV1FunctionsServiceGetCommitResponse) GetStatusCode() int {
+func (c *C1APIFunctionsV1FunctionsInvocationServiceGetResponse) GetStatusCode() int {
 	if c == nil {
 		return 0
 	}
 	return c.StatusCode
 }
 
-func (c *C1APIFunctionsV1FunctionsServiceGetCommitResponse) GetRawResponse() *http.Response {
+func (c *C1APIFunctionsV1FunctionsInvocationServiceGetResponse) GetRawResponse() *http.Response {
 	if c == nil {
 		return nil
 	}
 	return c.RawResponse
 }
 
-func (c *C1APIFunctionsV1FunctionsServiceGetCommitResponse) GetFunctionsServiceGetCommitResponse() *shared.FunctionsServiceGetCommitResponse {
+func (c *C1APIFunctionsV1FunctionsInvocationServiceGetResponse) GetFunctionsInvocationServiceGetResponse() *shared.FunctionsInvocationServiceGetResponse {
 	if c == nil {
 		return nil
 	}
-	return c.FunctionsServiceGetCommitResponse
+	return c.FunctionsInvocationServiceGetResponse
 }

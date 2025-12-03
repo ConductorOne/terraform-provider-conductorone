@@ -13,5 +13,6 @@ type Field struct {
 	FileField   *FileField   `tfsdk:"file_field"`
 	Int64Field  *Int64Field  `tfsdk:"int64_field"`
 	Name        types.String `tfsdk:"name"`
+	Oauth2Field *Oauth2Field `tfsdk:"oauth2_field"`
 	StringField *StringField `tfsdk:"string_field"`
 }

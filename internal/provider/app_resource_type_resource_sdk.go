@@ -198,8 +198,8 @@ func (r *AppResourceTypeResourceModel) ToSharedAppResourceTypeInput(ctx context.
 	var traitIds []string
 	if r.TraitIds != nil {
 		traitIds = make([]string, 0, len(r.TraitIds))
-		for _, traitIdsItem := range r.TraitIds {
-			traitIds = append(traitIds, traitIdsItem.ValueString())
+		for traitIdsIndex := range r.TraitIds {
+			traitIds = append(traitIds, r.TraitIds[traitIdsIndex].ValueString())
 		}
 	}
 	out := shared.AppResourceTypeInput{

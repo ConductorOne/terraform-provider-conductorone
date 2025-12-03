@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: c45ec952e473ba9e365cd18b58e732a9
+  docChecksum: 2b29a7f510217b223613ad8aec92d247
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.655.0
-  generationVersion: 2.751.0
-  releaseVersion: 1.7.3
-  configChecksum: e2fbaca4aecb1645db639925ce7728fd
+  speakeasyVersion: 1.666.2
+  generationVersion: 2.768.1
+  releaseVersion: 1.7.4
+  configChecksum: b97beb3ad6847e87d73ea98302d3337e
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.3
-    core: 3.46.12
+    core: 3.46.18
     deprecations: 2.82.0
     devContainers: 0.0.0
     globalSecurity: 2.82.1
@@ -22,7 +22,7 @@ features:
     inputOutputModels: 2.83.0
     nameOverrides: 2.81.3
     nullables: 0.0.0
-    pagination: 2.83.4
+    pagination: 2.83.5
     typeOverrides: 2.81.1
 generatedFiles:
   - .gitattributes
@@ -46,7 +46,6 @@ generatedFiles:
   - examples/data-sources/conductorone_compliance_frameworks/data-source.tf
   - examples/data-sources/conductorone_connector_credential/data-source.tf
   - examples/data-sources/conductorone_function/data-source.tf
-  - examples/data-sources/conductorone_function_commit/data-source.tf
   - examples/data-sources/conductorone_function_tag/data-source.tf
   - examples/data-sources/conductorone_policies/data-source.tf
   - examples/data-sources/conductorone_policy/data-source.tf
@@ -114,9 +113,6 @@ generatedFiles:
   - examples/resources/conductorone_function/import-by-string-id.tf
   - examples/resources/conductorone_function/import.sh
   - examples/resources/conductorone_function/resource.tf
-  - examples/resources/conductorone_function_commit/import-by-string-id.tf
-  - examples/resources/conductorone_function_commit/import.sh
-  - examples/resources/conductorone_function_commit/resource.tf
   - examples/resources/conductorone_function_tag/import-by-string-id.tf
   - examples/resources/conductorone_function_tag/import.sh
   - examples/resources/conductorone_function_tag/resource.tf
@@ -224,10 +220,6 @@ generatedFiles:
   - internal/provider/connectorcredential_resource_sdk.go
   - internal/provider/custom_app_entitlement_resource.go
   - internal/provider/custom_app_entitlement_resource_sdk.go
-  - internal/provider/function_commit_data_source.go
-  - internal/provider/function_commit_data_source_sdk.go
-  - internal/provider/function_commit_resource.go
-  - internal/provider/function_commit_resource_sdk.go
   - internal/provider/function_data_source.go
   - internal/provider/function_data_source_sdk.go
   - internal/provider/function_resource.go
@@ -344,21 +336,27 @@ generatedFiles:
   - internal/provider/types/email_notifications.go
   - internal/provider/types/entitlement_exclusion_criteria.go
   - internal/provider/types/entitlement_exclusion_list.go
+  - internal/provider/types/entitlement_exclusion_list_cel.go
   - internal/provider/types/entitlement_exclusion_none.go
   - internal/provider/types/entitlement_filter.go
   - internal/provider/types/entitlement_inclusion_all.go
   - internal/provider/types/entitlement_inclusion_criteria.go
   - internal/provider/types/entitlement_inclusion_list.go
+  - internal/provider/types/entitlement_inclusion_list_cel.go
   - internal/provider/types/entitlement_owner_approval.go
   - internal/provider/types/escalation.go
+  - internal/provider/types/evaluate_expressions.go
+  - internal/provider/types/expression.go
   - internal/provider/types/expression_approval.go
   - internal/provider/types/external_ticket_provision.go
   - internal/provider/types/field.go
+  - internal/provider/types/field_group.go
   - internal/provider/types/field_relationship.go
   - internal/provider/types/file_field.go
   - internal/provider/types/file_input_field.go
   - internal/provider/types/function_commit.go
   - internal/provider/types/functions_service_delete_function_request.go
+  - internal/provider/types/generate_password.go
   - internal/provider/types/get_app_entitlement_proxy_response_expanded.go
   - internal/provider/types/get_app_entitlement_response_expanded.go
   - internal/provider/types/grant_deleted_trigger.go
@@ -376,6 +374,8 @@ generatedFiles:
   - internal/provider/types/mutually_exclusive.go
   - internal/provider/types/notification_config.go
   - internal/provider/types/number_field.go
+  - internal/provider/types/oauth2_field.go
+  - internal/provider/types/oauth2_field_view.go
   - internal/provider/types/password_field.go
   - internal/provider/types/payload.go
   - internal/provider/types/policy.go
@@ -494,6 +494,7 @@ generatedFiles:
   - internal/sdk/export.go
   - internal/sdk/exportssearch.go
   - internal/sdk/functions.go
+  - internal/sdk/functionsinvocation.go
   - internal/sdk/functionssearch.go
   - internal/sdk/internal/config/sdkconfiguration.go
   - internal/sdk/internal/hooks/hooks.go
@@ -599,6 +600,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1connectorservicedelete.go
   - internal/sdk/models/operations/c1apiappv1connectorserviceforcesync.go
   - internal/sdk/models/operations/c1apiappv1connectorserviceget.go
+  - internal/sdk/models/operations/c1apiappv1connectorservicegetconnectorsyncdownloadurl.go
   - internal/sdk/models/operations/c1apiappv1connectorservicegetcredentials.go
   - internal/sdk/models/operations/c1apiappv1connectorservicelist.go
   - internal/sdk/models/operations/c1apiappv1connectorservicepausesync.go
@@ -640,13 +642,14 @@ generatedFiles:
   - internal/sdk/models/operations/c1apidirectoryv1directoryserviceget.go
   - internal/sdk/models/operations/c1apidirectoryv1directoryservicelist.go
   - internal/sdk/models/operations/c1apidirectoryv1directoryserviceupdate.go
+  - internal/sdk/models/operations/c1apifunctionsv1functionsinvocationserviceget.go
+  - internal/sdk/models/operations/c1apifunctionsv1functionsinvocationservicelist.go
   - internal/sdk/models/operations/c1apifunctionsv1functionssearchsearch.go
-  - internal/sdk/models/operations/c1apifunctionsv1functionsservicecommit.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicecreatefunction.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicecreatetag.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicedeletefunction.go
-  - internal/sdk/models/operations/c1apifunctionsv1functionsservicegetcommit.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicegetfunction.go
+  - internal/sdk/models/operations/c1apifunctionsv1functionsservicegetfunctionsecretencryptionkey.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsserviceinvoke.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicelistcommits.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicelistfunctions.go
@@ -1013,15 +1016,18 @@ generatedFiles:
   - internal/sdk/models/shared/encrypteddata.go
   - internal/sdk/models/shared/entitlementexclusioncriteria.go
   - internal/sdk/models/shared/entitlementexclusionlist.go
+  - internal/sdk/models/shared/entitlementexclusionlistcel.go
   - internal/sdk/models/shared/entitlementexclusionnone.go
   - internal/sdk/models/shared/entitlementfilter.go
   - internal/sdk/models/shared/entitlementinclusionall.go
   - internal/sdk/models/shared/entitlementinclusioncriteria.go
   - internal/sdk/models/shared/entitlementinclusionlist.go
+  - internal/sdk/models/shared/entitlementinclusionlistcel.go
   - internal/sdk/models/shared/entitlementownerapproval.go
   - internal/sdk/models/shared/erroredaction.go
   - internal/sdk/models/shared/escalation.go
   - internal/sdk/models/shared/escalationinstance.go
+  - internal/sdk/models/shared/evaluateexpressions.go
   - internal/sdk/models/shared/executeautomationrequest.go
   - internal/sdk/models/shared/executeautomationresponse.go
   - internal/sdk/models/shared/expiringuserdelegationbinding.go
@@ -1041,6 +1047,7 @@ generatedFiles:
   - internal/sdk/models/shared/exportssearchservicesearchrequest.go
   - internal/sdk/models/shared/exportssearchservicesearchresponse.go
   - internal/sdk/models/shared/exporttodatasource.go
+  - internal/sdk/models/shared/expression.go
   - internal/sdk/models/shared/expressionapproval.go
   - internal/sdk/models/shared/expressionapprovalinput.go
   - internal/sdk/models/shared/externalref.go
@@ -1059,18 +1066,19 @@ generatedFiles:
   - internal/sdk/models/shared/forminstance.go
   - internal/sdk/models/shared/function.go
   - internal/sdk/models/shared/functioncommit.go
+  - internal/sdk/models/shared/functioninvocation.go
+  - internal/sdk/models/shared/functionsinvocationservicegetresponse.go
+  - internal/sdk/models/shared/functionsinvocationservicelistresponse.go
   - internal/sdk/models/shared/functionssearchrequest.go
   - internal/sdk/models/shared/functionssearchresponse.go
-  - internal/sdk/models/shared/functionsservicecommitrequest.go
-  - internal/sdk/models/shared/functionsservicecommitresponse.go
   - internal/sdk/models/shared/functionsservicecreatefunctionrequest.go
   - internal/sdk/models/shared/functionsservicecreatefunctionresponse.go
   - internal/sdk/models/shared/functionsservicecreatetagrequest.go
   - internal/sdk/models/shared/functionsservicecreatetagresponse.go
   - internal/sdk/models/shared/functionsservicedeletefunctionrequest.go
   - internal/sdk/models/shared/functionsservicedeletefunctionresponse.go
-  - internal/sdk/models/shared/functionsservicegetcommitresponse.go
   - internal/sdk/models/shared/functionsservicegetfunctionresponse.go
+  - internal/sdk/models/shared/functionsservicegetfunctionsecretencryptionkeyresponse.go
   - internal/sdk/models/shared/functionsserviceinvokerequest.go
   - internal/sdk/models/shared/functionsserviceinvokeresponse.go
   - internal/sdk/models/shared/functionsservicelistcommitsresponse.go
@@ -1078,6 +1086,7 @@ generatedFiles:
   - internal/sdk/models/shared/functionsservicelisttagsresponse.go
   - internal/sdk/models/shared/functionsserviceupdatefunctionrequest.go
   - internal/sdk/models/shared/functionsserviceupdatefunctionresponse.go
+  - internal/sdk/models/shared/generatepassword.go
   - internal/sdk/models/shared/getappentitlementmonitorbindingrequest.go
   - internal/sdk/models/shared/getappentitlementproxyresponse.go
   - internal/sdk/models/shared/getappentitlementresponse.go
@@ -1088,6 +1097,7 @@ generatedFiles:
   - internal/sdk/models/shared/getautomationresponse.go
   - internal/sdk/models/shared/getawsexternalidresponse.go
   - internal/sdk/models/shared/getcomplianceframeworkattributevalueresponse.go
+  - internal/sdk/models/shared/getconnectorsyncdownloadurlresponse.go
   - internal/sdk/models/shared/getpolicyresponse.go
   - internal/sdk/models/shared/getrisklevelattributevalueresponse.go
   - internal/sdk/models/shared/getrolesresponse.go
@@ -1137,6 +1147,8 @@ generatedFiles:
   - internal/sdk/models/shared/numberfield.go
   - internal/sdk/models/shared/oauth2authorizedas.go
   - internal/sdk/models/shared/oauth2authorizedasinput.go
+  - internal/sdk/models/shared/oauth2field.go
+  - internal/sdk/models/shared/oauth2fieldview.go
   - internal/sdk/models/shared/orgdomain.go
   - internal/sdk/models/shared/passwordfield.go
   - internal/sdk/models/shared/pausesyncrequest.go
@@ -3443,6 +3455,41 @@ examples:
     speakeasy-default-c1-api-vault-v1-vault-service-update:
       parameters:
         path:
+          id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.GetConnectorSyncDownloadURL:
+    speakeasy-default-c1-api-app-v1-connector-service-get-connector-sync-download-URL:
+      parameters:
+        path:
+          app_id: "<id>"
+          connector_id: "<id>"
+          sync_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.functions.v1.FunctionsService.GetFunctionSecretEncryptionKey:
+    speakeasy-default-c1-api-functions-v1-functions-service-get-function-secret-encryption-key:
+      parameters:
+        path:
+          function_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.functions.v1.FunctionsInvocationService.List:
+    speakeasy-default-c1-api-functions-v1-functions-invocation-service-list:
+      parameters:
+        path:
+          function_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.functions.v1.FunctionsInvocationService.Get:
+    speakeasy-default-c1-api-functions-v1-functions-invocation-service-get:
+      parameters:
+        path:
+          function_id: "<id>"
           id: "<id>"
       responses:
         "200":
