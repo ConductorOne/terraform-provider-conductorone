@@ -7,10 +7,21 @@ package shared
 // This message contains a oneof named resp. Only a single field of the following list may be set at a time:
 //   - json
 type FunctionsServiceInvokeResponse struct {
+	// The invocationId field.
+	InvocationID *string `json:"invocationId,omitempty"`
 	// The json field.
 	// This field is part of the `resp` oneof.
 	// See the documentation for `c1.api.functions.v1.FunctionsServiceInvokeResponse` for more details.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	JSON *string `json:"json,omitempty"`
+}
+
+func (f *FunctionsServiceInvokeResponse) GetInvocationID() *string {
+	if f == nil {
+		return nil
+	}
+	return f.InvocationID
 }
 
 func (f *FunctionsServiceInvokeResponse) GetJSON() *string {

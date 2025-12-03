@@ -10,6 +10,7 @@ package shared
 //   - stringSliceField
 //   - int64Field
 //   - fileField
+//   - oauth2Field
 type Field struct {
 	// The BoolField message.
 	//
@@ -51,6 +52,12 @@ type Field struct {
 	Int64Field *Int64Field `json:"int64Field,omitempty"`
 	// The name field.
 	Name *string `json:"name,omitempty"`
+	// The Oauth2Field message.
+	//
+	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
+	//   - oauth2FieldView
+	//
+	Oauth2Field *Oauth2Field `json:"oauth2Field,omitempty"`
 	// The StringField message.
 	//
 	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
@@ -105,6 +112,13 @@ func (f *Field) GetName() *string {
 		return nil
 	}
 	return f.Name
+}
+
+func (f *Field) GetOauth2Field() *Oauth2Field {
+	if f == nil {
+		return nil
+	}
+	return f.Oauth2Field
 }
 
 func (f *Field) GetStringField() *StringField {

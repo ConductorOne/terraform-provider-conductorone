@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.751.0
+// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.768.1
 
 import (
 	"context"
@@ -80,6 +80,7 @@ type ConductoroneAPI struct {
 	ConnectorCatalog             *ConnectorCatalog
 	Directory                    *Directory
 	Functions                    *Functions
+	FunctionsInvocation          *FunctionsInvocation
 	PersonalClient               *PersonalClient
 	Roles                        *Roles
 	Policies                     *Policies
@@ -198,9 +199,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.7.3",
+		SDKVersion: "1.7.4",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.7.3 2.751.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.7.4 2.768.1 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{
@@ -255,6 +256,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.ConnectorCatalog = newConnectorCatalog(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Directory = newDirectory(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Functions = newFunctions(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.FunctionsInvocation = newFunctionsInvocation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PersonalClient = newPersonalClient(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Roles = newRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Policies = newPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)

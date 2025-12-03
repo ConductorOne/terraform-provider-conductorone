@@ -255,16 +255,16 @@ func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementAutomation
 		var entitlementRefs []shared.AppEntitlementRef
 		if r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs != nil {
 			entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs))
-			for _, entitlementRefsItem := range r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
+			for entitlementRefsIndex := range r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
 				appID := new(string)
-				if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
-					*appID = entitlementRefsItem.AppID.ValueString()
+				if !r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.IsUnknown() && !r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.IsNull() {
+					*appID = r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.ValueString()
 				} else {
 					appID = nil
 				}
 				id := new(string)
-				if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
-					*id = entitlementRefsItem.ID.ValueString()
+				if !r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.IsUnknown() && !r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.IsNull() {
+					*id = r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.ValueString()
 				} else {
 					id = nil
 				}
@@ -343,16 +343,16 @@ func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementServiceUpd
 		var entitlementRefs []shared.AppEntitlementRef
 		if r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs != nil {
 			entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs))
-			for _, entitlementRefsItem := range r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
+			for entitlementRefsIndex := range r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs {
 				appID := new(string)
-				if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
-					*appID = entitlementRefsItem.AppID.ValueString()
+				if !r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.IsUnknown() && !r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.IsNull() {
+					*appID = r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.ValueString()
 				} else {
 					appID = nil
 				}
 				id := new(string)
-				if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
-					*id = entitlementRefsItem.ID.ValueString()
+				if !r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.IsUnknown() && !r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.IsNull() {
+					*id = r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.ValueString()
 				} else {
 					id = nil
 				}

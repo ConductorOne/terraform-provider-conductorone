@@ -2,10 +2,18 @@
 
 package shared
 
+// GetAutomationExecutionResponseExpanded - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+type GetAutomationExecutionResponseExpanded struct {
+}
+
 // The GetAutomationExecutionResponse message.
 type GetAutomationExecutionResponse struct {
 	// The AutomationExecution message.
 	AutomationExecution *AutomationExecution `json:"automationExecution,omitempty"`
+	// The expanded field.
+	Expanded []GetAutomationExecutionResponseExpanded `json:"expanded,omitempty"`
+	// The AutomationExecutionView message.
+	AutomationExecutionView *AutomationExecutionView `json:"view,omitempty"`
 }
 
 func (g *GetAutomationExecutionResponse) GetAutomationExecution() *AutomationExecution {
@@ -13,4 +21,18 @@ func (g *GetAutomationExecutionResponse) GetAutomationExecution() *AutomationExe
 		return nil
 	}
 	return g.AutomationExecution
+}
+
+func (g *GetAutomationExecutionResponse) GetExpanded() []GetAutomationExecutionResponseExpanded {
+	if g == nil {
+		return nil
+	}
+	return g.Expanded
+}
+
+func (g *GetAutomationExecutionResponse) GetAutomationExecutionView() *AutomationExecutionView {
+	if g == nil {
+		return nil
+	}
+	return g.AutomationExecutionView
 }

@@ -22,6 +22,8 @@ package shared
 //   - sendSlackMessage
 //   - callFunction
 //   - accountLifecycleAction
+//   - generatePassword
+//   - evaluateExpressions
 type AutomationStep struct {
 	// The AccountLifecycleAction message.
 	//
@@ -61,14 +63,20 @@ type AutomationStep struct {
 	//   - inclusionList
 	//   - inclusionAll
 	//   - inclusionCriteria
+	//   - inclusionListCel
 	//
 	//
 	// This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
 	//   - exclusionNone
 	//   - exclusionList
 	//   - exclusionCriteria
+	//   - exclusionListCel
 	//
 	CreateRevokeTasksV2 *CreateRevokeTasksV2 `json:"createRevokeTasksV2,omitempty"`
+	// The EvaluateExpressions message.
+	EvaluateExpressions *EvaluateExpressions `json:"evaluateExpressions,omitempty"`
+	// The GeneratePassword message.
+	GeneratePassword *GeneratePassword `json:"generatePassword,omitempty"`
 	// The GrantEntitlements message.
 	GrantEntitlements *GrantEntitlements `json:"grantEntitlements,omitempty"`
 	// RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
@@ -179,6 +187,20 @@ func (a *AutomationStep) GetCreateRevokeTasksV2() *CreateRevokeTasksV2 {
 		return nil
 	}
 	return a.CreateRevokeTasksV2
+}
+
+func (a *AutomationStep) GetEvaluateExpressions() *EvaluateExpressions {
+	if a == nil {
+		return nil
+	}
+	return a.EvaluateExpressions
+}
+
+func (a *AutomationStep) GetGeneratePassword() *GeneratePassword {
+	if a == nil {
+		return nil
+	}
+	return a.GeneratePassword
 }
 
 func (a *AutomationStep) GetGrantEntitlements() *GrantEntitlements {
