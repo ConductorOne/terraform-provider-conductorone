@@ -36,19 +36,19 @@ func (e *AppUserDomains) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type AppUserStatuses string
+type AppUserServiceSearchRequestAppUserStatuses string
 
 const (
-	AppUserStatusesStatusUnspecified AppUserStatuses = "STATUS_UNSPECIFIED"
-	AppUserStatusesStatusEnabled     AppUserStatuses = "STATUS_ENABLED"
-	AppUserStatusesStatusDisabled    AppUserStatuses = "STATUS_DISABLED"
-	AppUserStatusesStatusDeleted     AppUserStatuses = "STATUS_DELETED"
+	AppUserServiceSearchRequestAppUserStatusesStatusUnspecified AppUserServiceSearchRequestAppUserStatuses = "STATUS_UNSPECIFIED"
+	AppUserServiceSearchRequestAppUserStatusesStatusEnabled     AppUserServiceSearchRequestAppUserStatuses = "STATUS_ENABLED"
+	AppUserServiceSearchRequestAppUserStatusesStatusDisabled    AppUserServiceSearchRequestAppUserStatuses = "STATUS_DISABLED"
+	AppUserServiceSearchRequestAppUserStatusesStatusDeleted     AppUserServiceSearchRequestAppUserStatuses = "STATUS_DELETED"
 )
 
-func (e AppUserStatuses) ToPointer() *AppUserStatuses {
+func (e AppUserServiceSearchRequestAppUserStatuses) ToPointer() *AppUserServiceSearchRequestAppUserStatuses {
 	return &e
 }
-func (e *AppUserStatuses) UnmarshalJSON(data []byte) error {
+func (e *AppUserServiceSearchRequestAppUserStatuses) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -61,26 +61,26 @@ func (e *AppUserStatuses) UnmarshalJSON(data []byte) error {
 	case "STATUS_DISABLED":
 		fallthrough
 	case "STATUS_DELETED":
-		*e = AppUserStatuses(v)
+		*e = AppUserServiceSearchRequestAppUserStatuses(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AppUserStatuses: %v", v)
+		return fmt.Errorf("invalid value for AppUserServiceSearchRequestAppUserStatuses: %v", v)
 	}
 }
 
-type AppUserTypes string
+type AppUserServiceSearchRequestAppUserTypes string
 
 const (
-	AppUserTypesAppUserTypeUnspecified    AppUserTypes = "APP_USER_TYPE_UNSPECIFIED"
-	AppUserTypesAppUserTypeUser           AppUserTypes = "APP_USER_TYPE_USER"
-	AppUserTypesAppUserTypeServiceAccount AppUserTypes = "APP_USER_TYPE_SERVICE_ACCOUNT"
-	AppUserTypesAppUserTypeSystemAccount  AppUserTypes = "APP_USER_TYPE_SYSTEM_ACCOUNT"
+	AppUserServiceSearchRequestAppUserTypesAppUserTypeUnspecified    AppUserServiceSearchRequestAppUserTypes = "APP_USER_TYPE_UNSPECIFIED"
+	AppUserServiceSearchRequestAppUserTypesAppUserTypeUser           AppUserServiceSearchRequestAppUserTypes = "APP_USER_TYPE_USER"
+	AppUserServiceSearchRequestAppUserTypesAppUserTypeServiceAccount AppUserServiceSearchRequestAppUserTypes = "APP_USER_TYPE_SERVICE_ACCOUNT"
+	AppUserServiceSearchRequestAppUserTypesAppUserTypeSystemAccount  AppUserServiceSearchRequestAppUserTypes = "APP_USER_TYPE_SYSTEM_ACCOUNT"
 )
 
-func (e AppUserTypes) ToPointer() *AppUserTypes {
+func (e AppUserServiceSearchRequestAppUserTypes) ToPointer() *AppUserServiceSearchRequestAppUserTypes {
 	return &e
 }
-func (e *AppUserTypes) UnmarshalJSON(data []byte) error {
+func (e *AppUserServiceSearchRequestAppUserTypes) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -93,10 +93,10 @@ func (e *AppUserTypes) UnmarshalJSON(data []byte) error {
 	case "APP_USER_TYPE_SERVICE_ACCOUNT":
 		fallthrough
 	case "APP_USER_TYPE_SYSTEM_ACCOUNT":
-		*e = AppUserTypes(v)
+		*e = AppUserServiceSearchRequestAppUserTypes(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AppUserTypes: %v", v)
+		return fmt.Errorf("invalid value for AppUserServiceSearchRequestAppUserTypes: %v", v)
 	}
 }
 
@@ -111,9 +111,9 @@ type AppUserServiceSearchRequest struct {
 	// A list of app user status details to restrict the search to.
 	AppUserStatusDetails []string `json:"appUserStatusDetails,omitempty"`
 	// A list of app user statuses to restrict the search to.
-	AppUserStatuses []AppUserStatuses `json:"appUserStatuses,omitempty"`
+	AppUserStatuses []AppUserServiceSearchRequestAppUserStatuses `json:"appUserStatuses,omitempty"`
 	// A list of app user types to restrict the search to.
-	AppUserTypes []AppUserTypes `json:"appUserTypes,omitempty"`
+	AppUserTypes []AppUserServiceSearchRequestAppUserTypes `json:"appUserTypes,omitempty"`
 	// A list of app user IDs to remove from the results.
 	ExcludeAppUserIds []string `json:"excludeAppUserIds,omitempty"`
 	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
@@ -156,14 +156,14 @@ func (a *AppUserServiceSearchRequest) GetAppUserStatusDetails() []string {
 	return a.AppUserStatusDetails
 }
 
-func (a *AppUserServiceSearchRequest) GetAppUserStatuses() []AppUserStatuses {
+func (a *AppUserServiceSearchRequest) GetAppUserStatuses() []AppUserServiceSearchRequestAppUserStatuses {
 	if a == nil {
 		return nil
 	}
 	return a.AppUserStatuses
 }
 
-func (a *AppUserServiceSearchRequest) GetAppUserTypes() []AppUserTypes {
+func (a *AppUserServiceSearchRequest) GetAppUserTypes() []AppUserServiceSearchRequestAppUserTypes {
 	if a == nil {
 		return nil
 	}

@@ -106,6 +106,9 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
+        entitlement_exclusion_list_cel = {
+          excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        }
         entitlement_exclusion_none = {
           # ...
         }
@@ -134,11 +137,26 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
+        entitlement_inclusion_list_cel = {
+          app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+        }
         use_subject_user = false
         user_id_cel      = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
+      }
+      evaluate_expressions = {
+        expressions = [
+          {
+            expression_cel = "...my_expression_cel..."
+            is_secret      = false
+            key            = "...my_key..."
+          }
+        ]
+      }
+      generate_password = {
+        # ...
       }
       grant_entitlements = {
         app_entitlement_refs = [
@@ -357,6 +375,9 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
+        entitlement_exclusion_list_cel = {
+          excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        }
         entitlement_exclusion_none = {
           # ...
         }
@@ -385,11 +406,26 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
+        entitlement_inclusion_list_cel = {
+          app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+        }
         use_subject_user = false
         user_id_cel      = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
+      }
+      evaluate_expressions = {
+        expressions = [
+          {
+            expression_cel = "...my_expression_cel..."
+            is_secret      = true
+            key            = "...my_key..."
+          }
+        ]
+      }
+      generate_password = {
+        # ...
       }
       grant_entitlements = {
         app_entitlement_refs = [

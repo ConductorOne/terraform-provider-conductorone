@@ -8,6 +8,8 @@ type Form struct {
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	Name *string `json:"displayName,omitempty"`
+	// The fieldGroups field.
+	FieldGroups []FieldGroup `json:"fieldGroups,omitempty"`
 	// The fieldRelationships field.
 	FieldRelationships []FieldRelationship `json:"fieldRelationships,omitempty"`
 	// The fields field.
@@ -26,6 +28,13 @@ func (f *Form) GetName() *string {
 		return nil
 	}
 	return f.Name
+}
+
+func (f *Form) GetFieldGroups() []FieldGroup {
+	if f == nil {
+		return nil
+	}
+	return f.FieldGroups
 }
 
 func (f *Form) GetFieldRelationships() []FieldRelationship {

@@ -39,7 +39,7 @@ type AccessConflictResourceModel struct {
 	EntitlementSetAID            types.String                          `tfsdk:"entitlement_set_a_id"`
 	EntitlementSetBID            types.String                          `tfsdk:"entitlement_set_b_id"`
 	ID                           types.String                          `tfsdk:"id"`
-	NotificationConfig           *tfTypes.NotificationConfig           `tfsdk:"notification_config"`
+	NotificationConfig           *tfTypes.NotificationConfig1          `tfsdk:"notification_config"`
 	UpdatedAt                    types.String                          `tfsdk:"updated_at"`
 }
 

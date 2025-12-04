@@ -6,6 +6,8 @@ package shared
 type ProfileType struct {
 	// The description field.
 	Description *string `json:"description,omitempty"`
+	// Whether to display this profile type to users in profile page. Defaults to false if not set
+	DisplayToUser *bool `json:"displayToUser,omitempty"`
 	// The iconUrl field.
 	IconURL *string `json:"iconUrl,omitempty"`
 	// The id field.
@@ -16,6 +18,8 @@ type ProfileType struct {
 	Priority *int64 `json:"priority,omitempty"`
 	// icon sizes
 	Sizes []int `json:"sizes,omitempty"`
+	// Add this field to allow users to reference profile type in cel expressions
+	Slug *string `json:"slug,omitempty"`
 }
 
 func (p *ProfileType) GetDescription() *string {
@@ -23,6 +27,13 @@ func (p *ProfileType) GetDescription() *string {
 		return nil
 	}
 	return p.Description
+}
+
+func (p *ProfileType) GetDisplayToUser() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.DisplayToUser
 }
 
 func (p *ProfileType) GetIconURL() *string {
@@ -58,4 +69,11 @@ func (p *ProfileType) GetSizes() []int {
 		return nil
 	}
 	return p.Sizes
+}
+
+func (p *ProfileType) GetSlug() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Slug
 }

@@ -559,6 +559,12 @@ actions:
   - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["id"]
     update:
       x-speakeasy-param-suppress-computed-diff: allow
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResource"]["properties"]["id"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResourceType"]["properties"]["id"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
   # `webhookHmacSecret` is only returned on creation and terraform expects all the fields to be known throughout its lifecycle. 
   # To align with this, we should wrap `webhookHmacSecret` inside `Automation`, 
   - target: $["components"]["schemas"]["c1.api.automations.v1.Automation"]["properties"]

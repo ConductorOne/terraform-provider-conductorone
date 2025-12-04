@@ -41,6 +41,7 @@ type FunctionResourceModel struct {
 	DeletedAt                             types.String                                   `tfsdk:"-"`
 	Description                           types.String                                   `tfsdk:"description"`
 	DisplayName                           types.String                                   `tfsdk:"display_name"`
+	EncryptedValues                       map[string]types.String                        `tfsdk:"encrypted_values"`
 	FunctionID                            types.String                                   `tfsdk:"function_id"`
 	FunctionsServiceDeleteFunctionRequest *tfTypes.FunctionsServiceDeleteFunctionRequest `tfsdk:"functions_service_delete_function_request"`
 	FunctionType                          types.String                                   `tfsdk:"function_type"`
@@ -49,6 +50,7 @@ type FunctionResourceModel struct {
 	InitialContent                        map[string]types.String                        `tfsdk:"initial_content"`
 	IsDraft                               types.Bool                                     `tfsdk:"is_draft"`
 	Message                               types.String                                   `tfsdk:"message"`
+	OutboundNetworkAllowlist              []types.String                                 `tfsdk:"outbound_network_allowlist"`
 	PublishedCommitID                     types.String                                   `tfsdk:"published_commit_id"`
 	UpdatedAt                             types.String                                   `tfsdk:"updated_at"`
 }
@@ -84,6 +86,11 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:    true,
 				Optional:    true,
 				Description: `The displayName field.`,
+			},
+			"encrypted_values": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `The encryptedValues field.`,
 			},
 			"function_id": schema.StringAttribute{
 				Computed:    true,
@@ -127,6 +134,11 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 			"message": schema.StringAttribute{
 				Computed:    true,
 				Description: `The message field.`,
+			},
+			"outbound_network_allowlist": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `The outboundNetworkAllowlist field.`,
 			},
 			"published_commit_id": schema.StringAttribute{
 				Computed:    true,

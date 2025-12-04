@@ -377,11 +377,11 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 			roleIds = append(roleIds, roleIdsItem.ValueString())
 		}
 	}
-	var userStatuses []shared.UserStatuses
+	var userStatuses []shared.SearchUsersRequestUserStatuses
 	if r.UserStatuses != nil {
-		userStatuses = make([]shared.UserStatuses, 0, len(r.UserStatuses))
+		userStatuses = make([]shared.SearchUsersRequestUserStatuses, 0, len(r.UserStatuses))
 		for _, userStatusesItem := range r.UserStatuses {
-			userStatuses = append(userStatuses, shared.UserStatuses(userStatusesItem.ValueString()))
+			userStatuses = append(userStatuses, shared.SearchUsersRequestUserStatuses(userStatusesItem.ValueString()))
 		}
 	}
 	out := shared.SearchUsersRequest{

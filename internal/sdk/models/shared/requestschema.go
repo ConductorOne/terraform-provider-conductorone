@@ -3,9 +3,41 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
+
+// JustificationVisibility - The justificationVisibility field.
+type JustificationVisibility string
+
+const (
+	JustificationVisibilityJustificationVisibilityUnspecified JustificationVisibility = "JUSTIFICATION_VISIBILITY_UNSPECIFIED"
+	JustificationVisibilityJustificationVisibilityShow        JustificationVisibility = "JUSTIFICATION_VISIBILITY_SHOW"
+	JustificationVisibilityJustificationVisibilityHide        JustificationVisibility = "JUSTIFICATION_VISIBILITY_HIDE"
+)
+
+func (e JustificationVisibility) ToPointer() *JustificationVisibility {
+	return &e
+}
+func (e *JustificationVisibility) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "JUSTIFICATION_VISIBILITY_UNSPECIFIED":
+		fallthrough
+	case "JUSTIFICATION_VISIBILITY_SHOW":
+		fallthrough
+	case "JUSTIFICATION_VISIBILITY_HIDE":
+		*e = JustificationVisibility(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for JustificationVisibility: %v", v)
+	}
+}
 
 // The RequestSchema message.
 type RequestSchema struct {
@@ -15,6 +47,8 @@ type RequestSchema struct {
 	Form *Form `json:"form,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
+	// The justificationVisibility field.
+	JustificationVisibility *JustificationVisibility `json:"justificationVisibility,omitempty"`
 }
 
 func (r RequestSchema) MarshalJSON() ([]byte, error) {
@@ -54,4 +88,11 @@ func (r *RequestSchema) GetID() *string {
 		return nil
 	}
 	return r.ID
+}
+
+func (r *RequestSchema) GetJustificationVisibility() *JustificationVisibility {
+	if r == nil {
+		return nil
+	}
+	return r.JustificationVisibility
 }
