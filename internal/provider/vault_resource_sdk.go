@@ -240,8 +240,8 @@ func (r *VaultResourceModel) ToSharedVaultServiceCreateRequest(ctx context.Conte
 	var ownerIds []string
 	if r.OwnerIds != nil {
 		ownerIds = make([]string, 0, len(r.OwnerIds))
-		for _, ownerIdsItem := range r.OwnerIds {
-			ownerIds = append(ownerIds, ownerIdsItem.ValueString())
+		for ownerIdsIndex := range r.OwnerIds {
+			ownerIds = append(ownerIds, r.OwnerIds[ownerIdsIndex].ValueString())
 		}
 	}
 	out := shared.VaultServiceCreateRequest{

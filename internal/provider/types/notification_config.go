@@ -2,7 +2,11 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type NotificationConfig struct {
-	EmailNotifications *EmailNotifications `tfsdk:"email_notifications"`
-	SlackNotifications *SlackNotifications `tfsdk:"slack_notifications"`
+	SendClose     types.Bool `tfsdk:"send_close"`
+	SendReminders types.Bool `tfsdk:"send_reminders"`
 }

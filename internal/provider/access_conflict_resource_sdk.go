@@ -27,7 +27,7 @@ func (r *AccessConflictResourceModel) RefreshFromSharedConflictMonitor(ctx conte
 		if resp.NotificationConfig == nil {
 			r.NotificationConfig = nil
 		} else {
-			r.NotificationConfig = &tfTypes.NotificationConfig{}
+			r.NotificationConfig = &tfTypes.NotificationConfig1{}
 			if resp.NotificationConfig.EmailNotifications == nil {
 				r.NotificationConfig.EmailNotifications = nil
 			} else {
@@ -119,7 +119,7 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorCreateRequest(ctx c
 	var displayName string
 	displayName = r.DisplayName.ValueString()
 
-	var notificationConfig *shared.NotificationConfig
+	var notificationConfig *shared.NotificationConfig1
 	if r.NotificationConfig != nil {
 		var emailNotifications *shared.EmailNotifications
 		if r.NotificationConfig.EmailNotifications != nil {
@@ -132,8 +132,8 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorCreateRequest(ctx c
 			var identityUserIds []string
 			if r.NotificationConfig.EmailNotifications.IdentityUserIds != nil {
 				identityUserIds = make([]string, 0, len(r.NotificationConfig.EmailNotifications.IdentityUserIds))
-				for _, identityUserIdsItem := range r.NotificationConfig.EmailNotifications.IdentityUserIds {
-					identityUserIds = append(identityUserIds, identityUserIdsItem.ValueString())
+				for identityUserIdsIndex := range r.NotificationConfig.EmailNotifications.IdentityUserIds {
+					identityUserIds = append(identityUserIds, r.NotificationConfig.EmailNotifications.IdentityUserIds[identityUserIdsIndex].ValueString())
 				}
 			}
 			emailNotifications = &shared.EmailNotifications{
@@ -167,7 +167,7 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorCreateRequest(ctx c
 				Enabled:     enabled1,
 			}
 		}
-		notificationConfig = &shared.NotificationConfig{
+		notificationConfig = &shared.NotificationConfig1{
 			EmailNotifications: emailNotifications,
 			SlackNotifications: slackNotifications,
 		}
@@ -204,7 +204,7 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorUpdateRequest(ctx c
 	} else {
 		displayName = nil
 	}
-	var notificationConfig *shared.NotificationConfig
+	var notificationConfig *shared.NotificationConfig1
 	if r.NotificationConfig != nil {
 		var emailNotifications *shared.EmailNotifications
 		if r.NotificationConfig.EmailNotifications != nil {
@@ -217,8 +217,8 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorUpdateRequest(ctx c
 			var identityUserIds []string
 			if r.NotificationConfig.EmailNotifications.IdentityUserIds != nil {
 				identityUserIds = make([]string, 0, len(r.NotificationConfig.EmailNotifications.IdentityUserIds))
-				for _, identityUserIdsItem := range r.NotificationConfig.EmailNotifications.IdentityUserIds {
-					identityUserIds = append(identityUserIds, identityUserIdsItem.ValueString())
+				for identityUserIdsIndex := range r.NotificationConfig.EmailNotifications.IdentityUserIds {
+					identityUserIds = append(identityUserIds, r.NotificationConfig.EmailNotifications.IdentityUserIds[identityUserIdsIndex].ValueString())
 				}
 			}
 			emailNotifications = &shared.EmailNotifications{
@@ -252,7 +252,7 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorUpdateRequest(ctx c
 				Enabled:     enabled1,
 			}
 		}
-		notificationConfig = &shared.NotificationConfig{
+		notificationConfig = &shared.NotificationConfig1{
 			EmailNotifications: emailNotifications,
 			SlackNotifications: slackNotifications,
 		}
