@@ -9,7 +9,7 @@ type ConflictMonitorUpdateRequest struct {
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The NotificationConfig message.
-	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
+	NotificationConfig *NotificationConfig1 `json:"notificationConfig,omitempty"`
 }
 
 func (c *ConflictMonitorUpdateRequest) GetDescription() *string {
@@ -26,7 +26,7 @@ func (c *ConflictMonitorUpdateRequest) GetDisplayName() *string {
 	return c.DisplayName
 }
 
-func (c *ConflictMonitorUpdateRequest) GetNotificationConfig() *NotificationConfig {
+func (c *ConflictMonitorUpdateRequest) GetNotificationConfig() *NotificationConfig1 {
 	if c == nil {
 		return nil
 	}

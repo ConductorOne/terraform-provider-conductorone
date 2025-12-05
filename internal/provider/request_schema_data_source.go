@@ -29,13 +29,15 @@ type RequestSchemaDataSource struct {
 
 // RequestSchemaDataSourceModel describes the data model.
 type RequestSchemaDataSourceModel struct {
-	CreatedAt          types.String                `tfsdk:"created_at"`
-	DeletedAt          types.String                `tfsdk:"deleted_at"`
-	Description        types.String                `tfsdk:"description"`
-	FieldRelationships []tfTypes.FieldRelationship `tfsdk:"field_relationships"`
-	Fields             []tfTypes.Field             `tfsdk:"fields"`
-	ID                 types.String                `tfsdk:"id"`
-	Name               types.String                `tfsdk:"name"`
+	CreatedAt               types.String                `tfsdk:"created_at"`
+	DeletedAt               types.String                `tfsdk:"deleted_at"`
+	Description             types.String                `tfsdk:"description"`
+	FieldGroups             []tfTypes.FieldGroup        `tfsdk:"field_groups"`
+	FieldRelationships      []tfTypes.FieldRelationship `tfsdk:"field_relationships"`
+	Fields                  []tfTypes.Field             `tfsdk:"fields"`
+	ID                      types.String                `tfsdk:"id"`
+	JustificationVisibility types.String                `tfsdk:"justification_visibility"`
+	Name                    types.String                `tfsdk:"name"`
 }
 
 // Metadata returns the data source type name.
@@ -58,6 +60,35 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Description: `The description field.`,
+			},
+			"field_groups": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"default": schema.BoolAttribute{
+							Computed:    true,
+							Description: `The default field.`,
+						},
+						"display_name": schema.StringAttribute{
+							Computed:    true,
+							Description: `The displayName field.`,
+						},
+						"fields": schema.ListAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							Description: `The fields field.`,
+						},
+						"help_text": schema.StringAttribute{
+							Computed:    true,
+							Description: `The helpText field.`,
+						},
+						"name": schema.StringAttribute{
+							Computed:    true,
+							Description: `The name field.`,
+						},
+					},
+				},
+				Description: `The fieldGroups field.`,
 			},
 			"field_relationships": schema.ListNestedAttribute{
 				Computed: true,
@@ -252,6 +283,19 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 						"name": schema.StringAttribute{
 							Computed:    true,
 							Description: `The name field.`,
+						},
+						"oauth2_field": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"oauth2_field_view": schema.SingleNestedAttribute{
+									Computed:    true,
+									Description: `The Oauth2FieldView message.`,
+								},
+							},
+							MarkdownDescription: `The Oauth2Field message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - oauth2FieldView`,
 						},
 						"string_field": schema.SingleNestedAttribute{
 							Computed: true,
@@ -494,6 +538,10 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 			},
 			"id": schema.StringAttribute{
 				Required: true,
+			},
+			"justification_visibility": schema.StringAttribute{
+				Computed:    true,
+				Description: `The justificationVisibility field.`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,

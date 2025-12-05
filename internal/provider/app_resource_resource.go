@@ -94,7 +94,10 @@ func (r *AppResourceResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `The number of grants to this resource.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The id of the resource.`,
 			},
 			"match_baton_id": schema.StringAttribute{

@@ -41,6 +41,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 
 ### Resources
 
+* [conductorone_access_review](docs/resources/access_review.md)
+* [conductorone_access_review_template](docs/resources/access_review_template.md)
 * [conductorone_access_conflict](docs/resources/access_conflict.md)
 * [conductorone_access_profile](docs/resources/access_profile.md)
 * [conductorone_access_profile_requestable_entries](docs/resources/access_profile_requestable_entries.md)
@@ -61,7 +63,6 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_connector_credential](docs/resources/connector_credential.md)
 * [conductorone_custom_app_entitlement](docs/resources/custom_app_entitlement.md)
 * [conductorone_function](docs/resources/function.md)
-* [conductorone_function_commit](docs/resources/function_commit.md)
 * [conductorone_function_tag](docs/resources/function_tag.md)
 * [conductorone_policy](docs/resources/policy.md)
 * [conductorone_request_schema_entitlement_binding](docs/resources/request_schema_entitlement_binding.md)
@@ -71,6 +72,9 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_webhook](docs/resources/webhook.md)
 ### Data Sources
 
+* [conductorone_access_review](docs/data-sources/access_review.md)
+* [conductorone_access_review_template](docs/data-sources/access_review_template.md)
+* [conductorone_access_reviews](docs/data-sources/access_reviews.md)
 * [conductorone_access_profile](docs/data-sources/access_profile.md)
 * [conductorone_access_profile_requestable_entry](docs/data-sources/access_profile_requestable_entry.md)
 * [conductorone_app](docs/data-sources/app.md)
@@ -90,7 +94,6 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_compliance_frameworks](docs/data-sources/compliance_frameworks.md)
 * [conductorone_connector_credential](docs/data-sources/connector_credential.md)
 * [conductorone_function](docs/data-sources/function.md)
-* [conductorone_function_commit](docs/data-sources/function_commit.md)
 * [conductorone_function_tag](docs/data-sources/function_tag.md)
 * [conductorone_policies](docs/data-sources/policies.md)
 * [conductorone_policy](docs/data-sources/policy.md)
@@ -181,7 +184,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.7.3"
+      version = "1.7.4"
     }
   }
 }

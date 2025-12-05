@@ -4,14 +4,23 @@ package shared
 
 // The FieldGroup message.
 type FieldGroup struct {
-	// Nice name this group (e.g. renders as a Tab label)
+	// The default field.
+	Default *bool `json:"default,omitempty"`
+	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
-	// Field names are "guaranteed" to be unique, but can be repeated in and between lists.
-	FieldNames []string `json:"fieldNames,omitempty"`
-	// Optional. User-facing help text.
+	// The fields field.
+	Fields []string `json:"fields,omitempty"`
+	// The helpText field.
 	HelpText *string `json:"helpText,omitempty"`
-	// Unique ID.
+	// The name field.
 	Name *string `json:"name,omitempty"`
+}
+
+func (f *FieldGroup) GetDefault() *bool {
+	if f == nil {
+		return nil
+	}
+	return f.Default
 }
 
 func (f *FieldGroup) GetDisplayName() *string {
@@ -21,11 +30,11 @@ func (f *FieldGroup) GetDisplayName() *string {
 	return f.DisplayName
 }
 
-func (f *FieldGroup) GetFieldNames() []string {
+func (f *FieldGroup) GetFields() []string {
 	if f == nil {
 		return nil
 	}
-	return f.FieldNames
+	return f.Fields
 }
 
 func (f *FieldGroup) GetHelpText() *string {

@@ -163,6 +163,9 @@ func (e *Source) UnmarshalJSON(data []byte) error {
 //   - accountLifecycleActionCreated
 //   - accountLifecycleActionFailed
 //   - provisionCancelled
+//   - actionInstanceCreated
+//   - actionInstanceSucceeded
+//   - actionInstanceFailed
 type TaskAuditView struct {
 	// The TaskAuditAccessRequestOutcome message.
 	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
@@ -170,6 +173,12 @@ type TaskAuditView struct {
 	TaskAuditAccountLifecycleActionCreated *TaskAuditAccountLifecycleActionCreated `json:"accountLifecycleActionCreated,omitempty"`
 	// The TaskAuditAccountLifecycleActionFailed message.
 	TaskAuditAccountLifecycleActionFailed *TaskAuditAccountLifecycleActionFailed `json:"accountLifecycleActionFailed,omitempty"`
+	// The TaskAuditActionInstanceCreated message.
+	TaskAuditActionInstanceCreated *TaskAuditActionInstanceCreated `json:"actionInstanceCreated,omitempty"`
+	// The TaskAuditActionInstanceFailed message.
+	TaskAuditActionInstanceFailed *TaskAuditActionInstanceFailed `json:"actionInstanceFailed,omitempty"`
+	// The TaskAuditActionInstanceSucceeded message.
+	TaskAuditActionInstanceSucceeded *TaskAuditActionInstanceSucceeded `json:"actionInstanceSucceeded,omitempty"`
 	// The TaskAuditConnectorActionResult message.
 	//
 	// This message contains a oneof named result. Only a single field of the following list may be set at a time:
@@ -329,6 +338,27 @@ func (t *TaskAuditView) GetTaskAuditAccountLifecycleActionFailed() *TaskAuditAcc
 		return nil
 	}
 	return t.TaskAuditAccountLifecycleActionFailed
+}
+
+func (t *TaskAuditView) GetTaskAuditActionInstanceCreated() *TaskAuditActionInstanceCreated {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditActionInstanceCreated
+}
+
+func (t *TaskAuditView) GetTaskAuditActionInstanceFailed() *TaskAuditActionInstanceFailed {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditActionInstanceFailed
+}
+
+func (t *TaskAuditView) GetTaskAuditActionInstanceSucceeded() *TaskAuditActionInstanceSucceeded {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditActionInstanceSucceeded
 }
 
 func (t *TaskAuditView) GetTaskAuditConnectorActionResult() *TaskAuditConnectorActionResult {

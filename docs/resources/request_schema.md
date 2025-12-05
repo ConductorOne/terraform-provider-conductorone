@@ -63,6 +63,11 @@ resource "conductorone_request_schema" "my_request_schema" {
         placeholder = "...my_placeholder..."
       }
       name = "...my_name..."
+      oauth2_field = {
+        oauth2_field_view = {
+          # ...
+        }
+      }
       string_field = {
         default_value = "...my_default_value..."
         password_field = {

@@ -19,6 +19,12 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		if len(resp.EncryptedValues) > 0 {
+			r.EncryptedValues = make(map[string]types.String, len(resp.EncryptedValues))
+			for key, value := range resp.EncryptedValues {
+				r.EncryptedValues[key] = types.StringValue(value)
+			}
+		}
 		if resp.FunctionType != nil {
 			r.FunctionType = types.StringValue(string(*resp.FunctionType))
 		} else {
@@ -27,6 +33,12 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 		r.Head = types.StringPointerValue(resp.Head)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.IsDraft = types.BoolPointerValue(resp.IsDraft)
+		if resp.OutboundNetworkAllowlist != nil {
+			r.OutboundNetworkAllowlist = make([]types.String, 0, len(resp.OutboundNetworkAllowlist))
+			for _, v := range resp.OutboundNetworkAllowlist {
+				r.OutboundNetworkAllowlist = append(r.OutboundNetworkAllowlist, types.StringValue(v))
+			}
+		}
 		r.PublishedCommitID = types.StringPointerValue(resp.PublishedCommitID)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
@@ -132,6 +144,13 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 	} else {
 		displayName = nil
 	}
+	encryptedValues := make(map[string]string)
+	for encryptedValuesKey, encryptedValuesValue := range r.EncryptedValues {
+		var encryptedValuesInst string
+		encryptedValuesInst = encryptedValuesValue.ValueString()
+
+		encryptedValues[encryptedValuesKey] = encryptedValuesInst
+	}
 	functionType := new(shared.FunctionType)
 	if !r.FunctionType.IsUnknown() && !r.FunctionType.IsNull() {
 		*functionType = shared.FunctionType(r.FunctionType.ValueString())
@@ -156,6 +175,13 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 	} else {
 		isDraft = nil
 	}
+	var outboundNetworkAllowlist []string
+	if r.OutboundNetworkAllowlist != nil {
+		outboundNetworkAllowlist = make([]string, 0, len(r.OutboundNetworkAllowlist))
+		for _, outboundNetworkAllowlistItem := range r.OutboundNetworkAllowlist {
+			outboundNetworkAllowlist = append(outboundNetworkAllowlist, outboundNetworkAllowlistItem.ValueString())
+		}
+	}
 	publishedCommitID := new(string)
 	if !r.PublishedCommitID.IsUnknown() && !r.PublishedCommitID.IsNull() {
 		*publishedCommitID = r.PublishedCommitID.ValueString()
@@ -163,13 +189,15 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 		publishedCommitID = nil
 	}
 	out := shared.FunctionInput{
-		Description:       description,
-		DisplayName:       displayName,
-		FunctionType:      functionType,
-		Head:              head,
-		ID:                id,
-		IsDraft:           isDraft,
-		PublishedCommitID: publishedCommitID,
+		Description:              description,
+		DisplayName:              displayName,
+		EncryptedValues:          encryptedValues,
+		FunctionType:             functionType,
+		Head:                     head,
+		ID:                       id,
+		IsDraft:                  isDraft,
+		OutboundNetworkAllowlist: outboundNetworkAllowlist,
+		PublishedCommitID:        publishedCommitID,
 	}
 
 	return &out, diags

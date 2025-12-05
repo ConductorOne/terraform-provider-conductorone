@@ -45,20 +45,20 @@ func (e *DirectoryStatus) UnmarshalJSON(data []byte) error {
 type Profile struct {
 }
 
-// UserStatus - The status of the user in the system.
-type UserStatus string
+// UserStatus1 - The status of the user in the system.
+type UserStatus1 string
 
 const (
-	UserStatusUnknown  UserStatus = "UNKNOWN"
-	UserStatusEnabled  UserStatus = "ENABLED"
-	UserStatusDisabled UserStatus = "DISABLED"
-	UserStatusDeleted  UserStatus = "DELETED"
+	UserStatus1Unknown  UserStatus1 = "UNKNOWN"
+	UserStatus1Enabled  UserStatus1 = "ENABLED"
+	UserStatus1Disabled UserStatus1 = "DISABLED"
+	UserStatus1Deleted  UserStatus1 = "DELETED"
 )
 
-func (e UserStatus) ToPointer() *UserStatus {
+func (e UserStatus1) ToPointer() *UserStatus1 {
 	return &e
 }
-func (e *UserStatus) UnmarshalJSON(data []byte) error {
+func (e *UserStatus1) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -71,10 +71,10 @@ func (e *UserStatus) UnmarshalJSON(data []byte) error {
 	case "DISABLED":
 		fallthrough
 	case "DELETED":
-		*e = UserStatus(v)
+		*e = UserStatus1(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for UserStatus: %v", v)
+		return fmt.Errorf("invalid value for UserStatus1: %v", v)
 	}
 }
 
@@ -164,7 +164,7 @@ type User struct {
 	// A list of unique identifiers that maps to ConductorOne's user roles let you assign users permissions tailored to the work they do in the software.
 	RoleIds []string `json:"roleIds,omitempty"`
 	// The status of the user in the system.
-	Status *UserStatus `json:"status,omitempty"`
+	Status *UserStatus1 `json:"status,omitempty"`
 	// The type of the user.
 	Type      *Type      `json:"type,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -362,7 +362,7 @@ func (u *User) GetRoleIds() []string {
 	return u.RoleIds
 }
 
-func (u *User) GetStatus() *UserStatus {
+func (u *User) GetStatus() *UserStatus1 {
 	if u == nil {
 		return nil
 	}

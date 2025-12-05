@@ -44,6 +44,8 @@ type Function struct {
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The encryptedValues field.
+	EncryptedValues map[string]string `json:"encryptedValues,omitempty"`
 	// The functionType field.
 	FunctionType *FunctionType `json:"functionType,omitempty"`
 	// The head field.
@@ -52,6 +54,8 @@ type Function struct {
 	ID *string `json:"id,omitempty"`
 	// The isDraft field.
 	IsDraft *bool `json:"isDraft,omitempty"`
+	// The outboundNetworkAllowlist field.
+	OutboundNetworkAllowlist []string `json:"outboundNetworkAllowlist,omitempty"`
 	// The publishedCommitId field.
 	PublishedCommitID *string    `json:"publishedCommitId,omitempty"`
 	UpdatedAt         *time.Time `json:"updatedAt,omitempty"`
@@ -96,6 +100,13 @@ func (f *Function) GetDisplayName() *string {
 	return f.DisplayName
 }
 
+func (f *Function) GetEncryptedValues() map[string]string {
+	if f == nil {
+		return nil
+	}
+	return f.EncryptedValues
+}
+
 func (f *Function) GetFunctionType() *FunctionType {
 	if f == nil {
 		return nil
@@ -124,6 +135,13 @@ func (f *Function) GetIsDraft() *bool {
 	return f.IsDraft
 }
 
+func (f *Function) GetOutboundNetworkAllowlist() []string {
+	if f == nil {
+		return nil
+	}
+	return f.OutboundNetworkAllowlist
+}
+
 func (f *Function) GetPublishedCommitID() *string {
 	if f == nil {
 		return nil
@@ -144,6 +162,8 @@ type FunctionInput struct {
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The encryptedValues field.
+	EncryptedValues map[string]string `json:"encryptedValues,omitempty"`
 	// The functionType field.
 	FunctionType *FunctionType `json:"functionType,omitempty"`
 	// The head field.
@@ -152,6 +172,8 @@ type FunctionInput struct {
 	ID *string `json:"id,omitempty"`
 	// The isDraft field.
 	IsDraft *bool `json:"isDraft,omitempty"`
+	// The outboundNetworkAllowlist field.
+	OutboundNetworkAllowlist []string `json:"outboundNetworkAllowlist,omitempty"`
 	// The publishedCommitId field.
 	PublishedCommitID *string `json:"publishedCommitId,omitempty"`
 }
@@ -168,6 +190,13 @@ func (f *FunctionInput) GetDisplayName() *string {
 		return nil
 	}
 	return f.DisplayName
+}
+
+func (f *FunctionInput) GetEncryptedValues() map[string]string {
+	if f == nil {
+		return nil
+	}
+	return f.EncryptedValues
 }
 
 func (f *FunctionInput) GetFunctionType() *FunctionType {
@@ -196,6 +225,13 @@ func (f *FunctionInput) GetIsDraft() *bool {
 		return nil
 	}
 	return f.IsDraft
+}
+
+func (f *FunctionInput) GetOutboundNetworkAllowlist() []string {
+	if f == nil {
+		return nil
+	}
+	return f.OutboundNetworkAllowlist
 }
 
 func (f *FunctionInput) GetPublishedCommitID() *string {
