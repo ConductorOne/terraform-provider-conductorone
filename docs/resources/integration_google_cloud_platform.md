@@ -2,7 +2,7 @@
 page_title: "conductorone_integration_google_cloud_platform Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Googlecloudplatform Integration Resource
+  Google_cloud_platform Integration Resource
 ---
 
 # conductorone_integration_google_cloud_platform (Resource)
@@ -34,7 +34,7 @@ resource "conductorone_integration_google_cloud_platform" "google_cloud_platform
 
 ### Optional
 
-- `credentials_json` (String, Sensitive) Credentials JSON
+- `credentials_json` (String, Sensitive) Credentials (JSON)
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

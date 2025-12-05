@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,13 +35,14 @@ type IntegrationLinearResource struct {
 
 // IntegrationLinearResourceModel describes the resource data model.
 type IntegrationLinearResourceModel struct {
-	AppID        types.String   `tfsdk:"app_id"`
-	CreatedAt    types.String   `tfsdk:"created_at"`
-	DeletedAt    types.String   `tfsdk:"deleted_at"`
-	ID           types.String   `tfsdk:"id"`
-	UpdatedAt    types.String   `tfsdk:"updated_at"`
-	UserIds      []types.String `tfsdk:"user_ids"`
-	LinearApiKey types.String   `tfsdk:"linear_api_key"`
+	AppID                            types.String   `tfsdk:"app_id"`
+	CreatedAt                        types.String   `tfsdk:"created_at"`
+	DeletedAt                        types.String   `tfsdk:"deleted_at"`
+	ID                               types.String   `tfsdk:"id"`
+	UpdatedAt                        types.String   `tfsdk:"updated_at"`
+	UserIds                          []types.String `tfsdk:"user_ids"`
+	LinearApiKey                     types.String   `tfsdk:"linear_api_key"`
+	EnableExternalTicketProvisioning types.Bool     `tfsdk:"enable_external_ticket_provisioning"`
 }
 
 func (r *IntegrationLinearResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -94,7 +95,11 @@ func (r *IntegrationLinearResource) Schema(ctx context.Context, req resource.Sch
 			"linear_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Linear API Key`,
+				Description: `API key`,
+			},
+			"enable_external_ticket_provisioning": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Enable external ticket provisioning`,
 			},
 		},
 	}
@@ -273,7 +278,7 @@ func (r *IntegrationLinearResource) Update(ctx context.Context, req resource.Upd
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
 			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
 				Connector:  updateCon,
-				UpdateMask: "config",
+				UpdateMask: types.StringValue("config").ValueStringPointer(),
 			},
 			AppID: appID,
 			ID:    data.ID.ValueString(),
@@ -296,7 +301,7 @@ func (r *IntegrationLinearResource) Update(ctx context.Context, req resource.Upd
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
 			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
 				Connector:  updateCon,
-				UpdateMask: "displayName,userIds",
+				UpdateMask: types.StringValue("displayName,userIds").ValueStringPointer(),
 			},
 			ConnectorAppID: appID,
 			ConnectorID:    data.ID.ValueString(),

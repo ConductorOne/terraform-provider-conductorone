@@ -35,7 +35,7 @@ resource "conductorone_integration_salesforce" "salesforce" {
 
 ### Optional
 
-- `salesforce_instance_url` (String, Sensitive) Salesforce Domain
+- `salesforce_instance_url` (String) Domain
 - `salesforce_username_for_email` (Boolean) Use Salesforce usernames for email
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

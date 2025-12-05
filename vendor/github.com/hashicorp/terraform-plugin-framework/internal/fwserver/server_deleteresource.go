@@ -21,8 +21,10 @@ import (
 type DeleteResourceRequest struct {
 	PlannedPrivate *privatestate.Data
 	PriorState     *tfsdk.State
+	PriorIdentity  *tfsdk.ResourceIdentity
 	ProviderMeta   *tfsdk.Config
 	ResourceSchema fwschema.Schema
+	IdentitySchema fwschema.Schema
 	Resource       resource.Resource
 }
 
@@ -31,6 +33,7 @@ type DeleteResourceRequest struct {
 type DeleteResourceResponse struct {
 	Diagnostics diag.Diagnostics
 	NewState    *tfsdk.State
+	NewIdentity *tfsdk.ResourceIdentity
 	Private     *privatestate.Data
 }
 
@@ -82,8 +85,39 @@ func (s *Server) DeleteResource(ctx context.Context, req *DeleteResourceRequest,
 		deleteReq.ProviderMeta = *req.ProviderMeta
 	}
 
+	privateProviderData := privatestate.EmptyProviderData(ctx)
+
+	deleteReq.Private = privateProviderData
+	deleteResp.Private = privateProviderData
+
 	if req.PlannedPrivate != nil {
-		deleteReq.Private = req.PlannedPrivate.Provider
+		if req.PlannedPrivate.Provider != nil {
+			deleteReq.Private = req.PlannedPrivate.Provider
+			deleteResp.Private = req.PlannedPrivate.Provider
+		}
+
+		resp.Private = req.PlannedPrivate
+	}
+
+	if req.PriorIdentity == nil && req.IdentitySchema != nil {
+		nullIdentityTfValue := tftypes.NewValue(req.IdentitySchema.Type().TerraformType(ctx), nil)
+
+		req.PriorIdentity = &tfsdk.ResourceIdentity{
+			Schema: req.IdentitySchema,
+			Raw:    nullIdentityTfValue.Copy(),
+		}
+	}
+
+	if req.PriorIdentity != nil {
+		deleteReq.Identity = &tfsdk.ResourceIdentity{
+			Schema: req.PriorIdentity.Schema,
+			Raw:    req.PriorIdentity.Raw.Copy(),
+		}
+
+		deleteResp.Identity = &tfsdk.ResourceIdentity{
+			Schema: req.PriorIdentity.Schema,
+			Raw:    req.PriorIdentity.Raw.Copy(),
+		}
 	}
 
 	logging.FrameworkTrace(ctx, "Calling provider defined Resource Delete")
@@ -91,10 +125,44 @@ func (s *Server) DeleteResource(ctx context.Context, req *DeleteResourceRequest,
 	logging.FrameworkTrace(ctx, "Called provider defined Resource Delete")
 
 	if !deleteResp.Diagnostics.HasError() {
-		logging.FrameworkTrace(ctx, "No provider defined Delete errors detected, ensuring State is cleared")
+		logging.FrameworkTrace(ctx, "No provider defined Delete errors detected, ensuring State and Private are cleared")
 		deleteResp.State.RemoveResource(ctx)
+
+		// Preserve prior behavior of always returning nil.
+		// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/863
+		deleteResp.Private = nil
+		resp.Private = nil
+
+		// If the resource supports identity send a null value.
+		if req.IdentitySchema != nil {
+			nullIdentityTfValue := tftypes.NewValue(req.IdentitySchema.Type().TerraformType(ctx), nil)
+
+			deleteResp.Identity = &tfsdk.ResourceIdentity{
+				Schema: req.IdentitySchema,
+				Raw:    nullIdentityTfValue.Copy(),
+			}
+		}
 	}
 
 	resp.Diagnostics = deleteResp.Diagnostics
 	resp.NewState = &deleteResp.State
+	resp.NewIdentity = deleteResp.Identity
+
+	if deleteResp.Private != nil {
+		if resp.Private == nil {
+			resp.Private = &privatestate.Data{}
+		}
+
+		resp.Private.Provider = deleteResp.Private
+	}
+
+	if resp.NewIdentity != nil && req.IdentitySchema == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected Delete Response",
+			"An unexpected error was encountered when creating the apply response. New identity data was returned by the provider delete operation, but the resource does not indicate identity support.\n\n"+
+				"This is always a problem with the provider and should be reported to the provider developer.",
+		)
+
+		return
+	}
 }

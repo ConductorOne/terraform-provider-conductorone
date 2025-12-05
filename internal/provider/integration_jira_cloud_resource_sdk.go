@@ -3,11 +3,12 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
+	"strings"
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +54,7 @@ func (r *IntegrationJiraCloudResourceModel) ToCreateSDKType() (*shared.Connector
 	return &out, nil
 }
 
-func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +62,12 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +75,7 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Jira Cloud"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(jiraCloudCatalogID),
@@ -86,45 +87,58 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationJiraCloudResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationJiraCloudResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	jiracloudDomain := new(string)
 	if !r.JiracloudDomain.IsUnknown() && !r.JiracloudDomain.IsNull() {
 		*jiracloudDomain = r.JiracloudDomain.ValueString()
-	} else {
-		jiracloudDomain = nil
+		configValues["jiracloud_domain"] = jiracloudDomain
 	}
 
 	jiracloudUsername := new(string)
 	if !r.JiracloudUsername.IsUnknown() && !r.JiracloudUsername.IsNull() {
 		*jiracloudUsername = r.JiracloudUsername.ValueString()
-	} else {
-		jiracloudUsername = nil
+		configValues["jiracloud_username"] = jiracloudUsername
 	}
 
 	jiracloudApikey := new(string)
 	if !r.JiracloudApikey.IsUnknown() && !r.JiracloudApikey.IsNull() {
 		*jiracloudApikey = r.JiracloudApikey.ValueString()
-	} else {
-		jiracloudApikey = nil
+		configValues["jiracloud_apikey"] = jiracloudApikey
 	}
 
-	configValues := map[string]*string{
-		"jiracloud_domain":   jiracloudDomain,
-		"jiracloud_username": jiracloudUsername,
-		"jiracloud_apikey":   jiracloudApikey,
+	enableExternalTicketProvisioning := new(string)
+	if !r.EnableExternalTicketProvisioning.IsUnknown() && !r.EnableExternalTicketProvisioning.IsNull() {
+		*enableExternalTicketProvisioning = strconv.FormatBool(r.EnableExternalTicketProvisioning.ValueBool())
+		configValues["enable_external_ticket_provisioning"] = enableExternalTicketProvisioning
+	}
+
+	jiracloudProjectKeys := make([]string, 0)
+	for _, item := range r.JiracloudProjectKeys {
+		jiracloudProjectKeys = append(jiracloudProjectKeys, item.ValueString())
+	}
+	if len(jiracloudProjectKeys) > 0 {
+		configValues["jiracloud_project_keys"] = strings.Join(jiracloudProjectKeys, ",")
+	}
+
+	jiracloudSkipProjectParticipants := new(string)
+	if !r.JiracloudSkipProjectParticipants.IsUnknown() && !r.JiracloudSkipProjectParticipants.IsNull() {
+		*jiracloudSkipProjectParticipants = strconv.FormatBool(r.JiracloudSkipProjectParticipants.ValueBool())
+		configValues["jiracloud_skip_project_participants"] = jiracloudSkipProjectParticipants
 	}
 
 	return configValues
 }
 
-func (r *IntegrationJiraCloudResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationJiraCloudResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -179,15 +193,46 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["jiracloud_domain"]; ok {
-					r.JiracloudDomain = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "jiracloud_domain"); ok {
+					r.JiracloudDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["jiracloud_username"]; ok {
-					r.JiracloudUsername = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "jiracloud_username"); ok {
+					r.JiracloudUsername = types.StringValue(val)
+				}
+
+				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
+					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+						}
+					}
+				}
+
+				if val, ok := getStringValue(values, "jiracloud_project_keys"); ok {
+					var valLists []types.String
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
+							valLists = append(valLists, types.StringValue(item))
+						}
+					}
+					r.JiracloudProjectKeys = valLists
+				}
+
+				if _, ok := configValues["jiracloud_skip_project_participants"]; ok {
+					if val, ok := getStringValue(values, "jiracloud_skip_project_participants"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.JiracloudSkipProjectParticipants = types.BoolValue(bv)
+						}
+					}
 				}
 
 			}
@@ -230,15 +275,46 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["jiracloud_domain"]; ok {
-					r.JiracloudDomain = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "jiracloud_domain"); ok {
+					r.JiracloudDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["jiracloud_username"]; ok {
-					r.JiracloudUsername = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "jiracloud_username"); ok {
+					r.JiracloudUsername = types.StringValue(val)
+				}
+
+				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
+					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+						}
+					}
+				}
+
+				if val, ok := getStringValue(values, "jiracloud_project_keys"); ok {
+					var valLists []types.String
+					tmpList := strings.Split(val, ",")
+					for _, item := range tmpList {
+						item = strings.TrimSpace(item)
+						if item != "" {
+							valLists = append(valLists, types.StringValue(item))
+						}
+					}
+					r.JiracloudProjectKeys = valLists
+				}
+
+				if _, ok := configValues["jiracloud_skip_project_participants"]; ok {
+					if val, ok := getStringValue(values, "jiracloud_skip_project_participants"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.JiracloudSkipProjectParticipants = types.BoolValue(bv)
+						}
+					}
 				}
 
 			}

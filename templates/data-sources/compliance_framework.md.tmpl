@@ -9,11 +9,12 @@ description: |-
 
 {{ .Description | trimspace }}
 
-The Compliance Framework datasource allows you to retrieve a Compliance Framework Attribute by `value` (case insensitive), or `id` in ConductorOne.
-The `value` of a Compliance Framework Attribute is the name of the Attribute in ConductorOne.
+This data source enables you to retrieve ConductorOne compliance frameworks using the following search criteria:
+
+* `id` - The ID of the compliance framework attribute
 
 ## Example Usage
 
-{{ tffile "examples/data-sources/conductorone_compliance_framework/compliance_framework.tf" }}
+{{ tffile "examples/data-sources/conductorone_compliance_framework/data-source.tf" }}
 
 {{ .SchemaMarkdown | trimspace }}

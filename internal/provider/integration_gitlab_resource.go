@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -43,6 +43,7 @@ type IntegrationGitlabResourceModel struct {
 	UserIds           []types.String `tfsdk:"user_ids"`
 	GitlabGroup       types.String   `tfsdk:"gitlab_group"`
 	GitlabAccessToken types.String   `tfsdk:"gitlab_access_token"`
+	GitlabUrl         types.String   `tfsdk:"gitlab_url"`
 }
 
 func (r *IntegrationGitlabResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -94,12 +95,16 @@ func (r *IntegrationGitlabResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"gitlab_group": &schema.StringAttribute{
 				Optional:    true,
-				Description: `GitLab Group`,
+				Description: `Group`,
 			},
 			"gitlab_access_token": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `GitLab Personal Access Token`,
+				Description: `Personal access token`,
+			},
+			"gitlab_url": &schema.StringAttribute{
+				Optional:    true,
+				Description: `URL (optional)`,
 			},
 		},
 	}
@@ -278,7 +283,7 @@ func (r *IntegrationGitlabResource) Update(ctx context.Context, req resource.Upd
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
 			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
 				Connector:  updateCon,
-				UpdateMask: "config",
+				UpdateMask: types.StringValue("config").ValueStringPointer(),
 			},
 			AppID: appID,
 			ID:    data.ID.ValueString(),
@@ -301,7 +306,7 @@ func (r *IntegrationGitlabResource) Update(ctx context.Context, req resource.Upd
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
 			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
 				Connector:  updateCon,
-				UpdateMask: "displayName,userIds",
+				UpdateMask: types.StringValue("displayName,userIds").ValueStringPointer(),
 			},
 			ConnectorAppID: appID,
 			ConnectorID:    data.ID.ValueString(),

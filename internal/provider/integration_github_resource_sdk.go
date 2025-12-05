@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationGithubResourceModel) ToCreateSDKType() (*shared.ConnectorSer
 	return &out, nil
 }
 
-func (r *IntegrationGithubResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationGithubResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationGithubResourceModel) ToUpdateSDKType() (*shared.Connector, b
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationGithubResourceModel) ToUpdateSDKType() (*shared.Connector, b
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("GitHub"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(githubCatalogID),
@@ -86,37 +86,32 @@ func (r *IntegrationGithubResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	return &out, configSet
 }
 
-func (r *IntegrationGithubResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationGithubResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	githubOrg := new(string)
 	if !r.GithubOrg.IsUnknown() && !r.GithubOrg.IsNull() {
 		*githubOrg = r.GithubOrg.ValueString()
-	} else {
-		githubOrg = nil
+		configValues["github_org"] = githubOrg
 	}
 
 	githubAccessToken := new(string)
 	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
 		*githubAccessToken = r.GithubAccessToken.ValueString()
-	} else {
-		githubAccessToken = nil
-	}
-
-	configValues := map[string]*string{
-		"github_org":          githubOrg,
-		"github_access_token": githubAccessToken,
+		configValues["github_access_token"] = githubAccessToken
 	}
 
 	return configValues
 }
 
-func (r *IntegrationGithubResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationGithubResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -174,8 +169,8 @@ func (r *IntegrationGithubResourceModel) RefreshFromGetResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["github_org"]; ok {
-					r.GithubOrg = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "github_org"); ok {
+					r.GithubOrg = types.StringValue(val)
 				}
 
 			}
@@ -221,8 +216,8 @@ func (r *IntegrationGithubResourceModel) RefreshFromCreateResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["github_org"]; ok {
-					r.GithubOrg = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "github_org"); ok {
+					r.GithubOrg = types.StringValue(val)
 				}
 
 			}

@@ -36,8 +36,8 @@ resource "conductorone_integration_onelogin" "onelogin" {
 
 ### Optional
 
-- `oauth_client_cred_grant_client_id` (String) OneLogin Client ID
-- `oauth_client_cred_grant_client_secret` (String, Sensitive) OneLogin Client Secret
+- `oauth_client_cred_grant_client_id` (String) OneLogin client ID
+- `oauth_client_cred_grant_client_secret` (String, Sensitive) OneLogin client secret
 - `onelogin_domain` (String) OneLogin domain
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 

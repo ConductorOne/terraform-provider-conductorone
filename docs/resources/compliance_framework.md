@@ -2,12 +2,12 @@
 page_title: "conductorone_compliance_framework Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Compliance Framework Resource
+  ComplianceFramework Resource
 ---
 
 # conductorone_compliance_framework (Resource)
 
-Compliance Framework Resource
+ComplianceFramework Resource
 
 This resource allows you to create a new Compliance Framework attribute.
 When creating a Compliance Framework attribute you must provide a value. The value property is the name of the Compliance Framework attribute. This is the only property that can be set.
@@ -15,8 +15,8 @@ When creating a Compliance Framework attribute you must provide a value. The val
 ## Example Usage
 
 ```terraform
-resource "conductorone_compliance_framework" "example_compliance_framework" {
-  value = "example_compliance_framework"
+resource "conductorone_compliance_framework" "my_compliance_framework" {
+  value = "...my_value..."
 }
 ```
 
@@ -25,12 +25,11 @@ resource "conductorone_compliance_framework" "example_compliance_framework" {
 
 ### Optional
 
-- `value` (String) The value field is the value of the attribute. In this case it is the name of the Compliance Framework (e.g. SOC2, HIPAA, etc.).
+- `value` (String) The value field. Requires replacement if changed.
 
 ### Read-Only
 
-- `attribute_type_id` (String) The attributeTypeId field.
+- `attribute_type_id` (String) The ID of the AttributeType that this AttributeValue belongs to.
 - `created_at` (String)
-- `deleted_at` (String)
-- `id` (String) The id field.
+- `id` (String) The ID of the AttributeValue.
 - `updated_at` (String)

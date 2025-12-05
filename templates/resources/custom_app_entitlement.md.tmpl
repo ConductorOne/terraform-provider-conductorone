@@ -1,0 +1,20 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This resource allows you to create and manage a custom app entitlement.
+You must provide a displayName, app_id, app_resource_id and an app_resource_type_id.
+This is different than the App Entitlement resource which only allows you to update existing entitlements.
+
+## Example Usage
+
+{{ tffile "examples/resources/conductorone_custom_app_entitlement/resource.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

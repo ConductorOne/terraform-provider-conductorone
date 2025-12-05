@@ -1,0 +1,30 @@
+name: Check manual changes added intentionally to fix pagination
+
+on:
+  pull_request:
+    paths:
+      - 'internal/provider/app_entitlements_data_source.go'
+      - 'internal/provider/app_entitlements_data_source_sdk.go'
+      - 'internal/sdk/appentitlementsearch.go'
+      - 'internal/provider/app_resources_data_source.go'
+      - 'internal/provider/app_resources_data_source_sdk.go'
+      - 'internal/sdk/appresourcessearch.go'
+
+jobs:
+  notify-override-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Comment on PR about override changes
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "🚨 **Override for manual changes detected!** Please ensure these changes are not overriding [This fix](https://github.com/ConductorOne/terraform-provider-conductorone/pull/122#issue-3196710500) before merge your changes."
+            })

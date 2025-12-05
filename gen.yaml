@@ -1,18 +1,56 @@
-configVersion: 1.0.0
-management:
-  docChecksum: 6c2ecdd15e5497d75245f64b7e75a15c
-  docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.53.0
-  generationVersion: 2.58.0
+configVersion: 2.0.0
 generation:
-  comments:
-    disableComments: false
-    omitDescriptionIfSummaryPresent: false
-  baseServerURL: ""
-  sdkClassName: conductorone-sdk-terraform
-  singleTagPerOp: false
-  tagNamespacingDisabled: false
+  devContainers:
+    enabled: true
+    schemaPath: path/to/schema
+  baseServerUrl: speakeasy.bar/public/api/
+  sdkClassName: conductoroneAPI
+  maintainOpenAPIOrder: true
+  usageSnippets:
+    optionalPropertyRendering: withExample
+    sdkInitStyle: constructor
+  useClassNamesForArrayFields: true
+  fixes:
+    nameResolutionDec2023: true
+    nameResolutionFeb2025: false
+    parameterOrderingFeb2024: true
+    requestResponseComponentNamesFeb2024: true
+    securityFeb2025: false
+    sharedErrorComponentsApr2025: false
+  auth:
+    oAuth2ClientCredentialsEnabled: false
+    oAuth2PasswordEnabled: false
+    hoistGlobalSecurity: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: ""
+  mockServer:
+    disabled: true
+  tests:
+    generateTests: true
+    generateNewTests: false
+    skipResponseBodyAssertions: false
 terraform:
-  version: 1.0.0
-  author: ConductorOne
+  version: 1.7.4
+  additionalDataSources: []
+  additionalDependencies: {}
+  additionalEphemeralResources: []
+  additionalProviderAttributes:
+    httpHeaders: ""
+  additionalResources:
+    - importAlias: AppEntitlement
+      importLocation: /conductorone/internal/provider/app_entitlement_resource.go
+      resource: AppEntitlement
+  allowUnknownFieldsInWeakUnions: false
+  author: conductorone
+  baseErrorName: ConductoroneAPIError
+  defaultErrorName: SDKError
+  enableCustomCodeRegions: false
+  enableOperationSecurity: false
+  enableOperationServers: false
+  enableTypeDeduplication: false
+  environmentVariables: []
+  excludeEmptyObjectSchemas: false
+  includeEmptyObjects: false
   packageName: conductorone
+  unionDeserializationStrategy: populated-fields

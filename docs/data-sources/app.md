@@ -9,17 +9,34 @@ description: |-
 
 App DataSource
 
-The App datasource allows you to retrieve an App instance by `display_name` (case insensitive), or `id` in ConductorOne.
+This data source enables you to retrieve ConductorOne apps using the following search criteria:
+
+* `app_ids` - List of specific app IDs to include
+* `display_name` - Filter by display name (case insensitive)
+* `exclude_app_ids` - List of app IDs to exclude
+* `only_directories` - Filter to only return directory apps
+* `query` - Search query string
 
 ## Example Usage
 
 ```terraform
-data "conductorone_app" "test_okta" {
-  display_name = "Okta"
-}
-
-data "conductorone_app" "test_google_workspace" {
-  id = "<app_id>"
+data "conductorone_app" "my_app" {
+  app_ids = [
+    "..."
+  ]
+  display_name = "...my_display_name..."
+  exclude_app_ids = [
+    "..."
+  ]
+  only_directories = true
+  page_size        = 6
+  page_token       = "...my_page_token..."
+  policy_refs = [
+    {
+      id = "...my_id..."
+    }
+  ]
+  query = "...my_query..."
 }
 ```
 
@@ -28,24 +45,44 @@ data "conductorone_app" "test_google_workspace" {
 
 ### Optional
 
-- `display_name` (String) The displayName field.
-- `id` (String) The id field.
+- `app_ids` (List of String) A list of app IDs to restrict the search to.
+- `display_name` (String) Search for apps with a case insensitive match on the display name.
+- `exclude_app_ids` (List of String) A list of app IDs to remove from the results.
+- `only_directories` (Boolean) Only return apps which are directories
+- `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
+- `page_token` (String) The pageToken field.
+- `policy_refs` (Attributes List) Search for apps that use any of these policies. (see [below for nested schema](#nestedatt--policy_refs))
+- `query` (String) Query the apps with a fuzzy search on display name and description.
 
 ### Read-Only
 
-- `app_account_id` (String) The appAccountId field.
-- `app_account_name` (String) The appAccountName field.
-- `certify_policy_id` (String) The certifyPolicyId is the ID of the policy that will be used for access review certify tasks.
+- `app_account_id` (String) The ID of the Account named by AccountName.
+- `app_account_name` (String) The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
+- `certify_policy_id` (String) The ID of the Certify Policy associated with this App.
+- `connector_version` (Number) The connectorVersion field.
 - `created_at` (String)
+- `default_request_catalog_id` (String) The ID for the default request catalog for this app.
 - `deleted_at` (String)
-- `description` (String) The description field.
-- `field_mask` (String)
-- `grant_policy_id` (String) The grantPolicyId field is the policy that will be used for access request grant tasks.
-- `icon_url` (String) The iconUrl field.
-- `logo_uri` (String) The logoUri field.
-- `monthly_cost_usd` (Number) The monthlyCostUsd field is the monthly cost per seat for the given app.
-- `owners` (List of String) The owners field is a list of user IDs indicating the app owners.
-- `parent_app_id` (String) The parentAppId field is the ID of the parent app if one exists.
-- `revoke_policy_id` (String) The revokePolicyId is the ID of the policy that will be used for revoke access tasks.
+- `description` (String) The app's description.
+- `grant_policy_id` (String) The ID of the Grant Policy associated with this App.
+- `id` (String) The ID of the app.
+- `identity_matching` (String) The identityMatching field.
+- `instructions` (String) If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
+- `is_directory` (Boolean) Specifies if the app is a directory.
+- `is_manually_managed` (Boolean) The isManuallyManaged field.
+- `monthly_cost_usd` (Number) The cost of an app per-seat, so that total cost can be calculated by the grant count.
+- `next_page_token` (String) The nextPageToken is shown for the next page if the number of results is larger than the max page size.
+ The server returns one page of results and the nextPageToken until all results are retreived.
+ To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
+- `parent_app_id` (String) The ID of the app that created this app, if any.
+- `revoke_policy_id` (String) The ID of the Revoke Policy associated with this App.
+- `strict_access_entitlement_provisioning` (Boolean) The strictAccessEntitlementProvisioning field.
 - `updated_at` (String)
-- `user_count` (String) The userCount field is the number of app users that are associated with the app.
+- `user_count` (String) The number of users with grants to this app.
+
+<a id="nestedatt--policy_refs"></a>
+### Nested Schema for `policy_refs`
+
+Optional:
+
+- `id` (String) The id field.

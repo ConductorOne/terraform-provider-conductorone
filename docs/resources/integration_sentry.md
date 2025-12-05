@@ -35,8 +35,8 @@ resource "conductorone_integration_sentry" "sentry" {
 
 ### Optional
 
-- `sentry_org_slug` (String, Sensitive) Sentry Organization Slug
-- `sentry_token` (String, Sensitive) Sentry Token
+- `sentry_org_slug` (String) Organization slug
+- `sentry_token` (String, Sensitive) Token
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

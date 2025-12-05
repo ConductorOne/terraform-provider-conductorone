@@ -167,6 +167,16 @@ type SingleNestedAttribute struct {
 	// computed and the value could be altered by other changes then a default
 	// should be avoided and a plan modifier should be used instead.
 	Default defaults.Object
+
+	// WriteOnly indicates that Terraform will not store this attribute value
+	// in the plan or state artifacts.
+	// If WriteOnly is true, either Optional or Required must also be true.
+	// WriteOnly cannot be set with Computed.
+	//
+	// This functionality is only supported in Terraform 1.11 and later.
+	// Practitioners that choose a value for this attribute with older
+	// versions of Terraform will receive an error.
+	WriteOnly bool
 }
 
 // ApplyTerraform5AttributePathStep returns the Attributes field value if step
@@ -229,7 +239,7 @@ func (a SingleNestedAttribute) GetNestedObject() fwschema.NestedAttributeObject 
 	}
 }
 
-// GetNestingMode always returns NestingModeList.
+// GetNestingMode always returns NestingModeSingle.
 func (a SingleNestedAttribute) GetNestingMode() fwschema.NestingMode {
 	return fwschema.NestingModeSingle
 }
@@ -271,6 +281,23 @@ func (a SingleNestedAttribute) IsSensitive() bool {
 	return a.Sensitive
 }
 
+// IsWriteOnly returns the WriteOnly field value.
+func (a SingleNestedAttribute) IsWriteOnly() bool {
+	return a.WriteOnly
+}
+
+// IsRequiredForImport returns false as this behavior is only relevant
+// for managed resource identity schema attributes.
+func (a SingleNestedAttribute) IsRequiredForImport() bool {
+	return false
+}
+
+// IsOptionalForImport returns false as this behavior is only relevant
+// for managed resource identity schema attributes.
+func (a SingleNestedAttribute) IsOptionalForImport() bool {
+	return false
+}
+
 // ObjectDefaultValue returns the Default field value.
 func (a SingleNestedAttribute) ObjectDefaultValue() defaults.Object {
 	return a.Default
@@ -293,5 +320,40 @@ func (a SingleNestedAttribute) ObjectValidators() []validator.Object {
 func (a SingleNestedAttribute) ValidateImplementation(ctx context.Context, req fwschema.ValidateImplementationRequest, resp *fwschema.ValidateImplementationResponse) {
 	if !a.IsComputed() && a.ObjectDefaultValue() != nil {
 		resp.Diagnostics.Append(nonComputedAttributeWithDefaultDiag(req.Path))
+	}
+
+	if a.IsWriteOnly() && !fwschema.ContainsAllWriteOnlyChildAttributes(a) {
+		resp.Diagnostics.Append(fwschema.InvalidWriteOnlyNestedAttributeDiag(req.Path))
+	}
+
+	if a.IsComputed() && fwschema.ContainsAnyWriteOnlyChildAttributes(a) {
+		resp.Diagnostics.Append(fwschema.InvalidComputedNestedAttributeWithWriteOnlyDiag(req.Path))
+	}
+
+	if a.ObjectDefaultValue() != nil {
+		if !a.IsComputed() {
+			resp.Diagnostics.Append(nonComputedAttributeWithDefaultDiag(req.Path))
+		}
+
+		// Validate Default implementation. This is safe unless the framework
+		// ever allows more dynamic Default implementations at which the
+		// implementation would be required to be validated at runtime.
+		// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/930
+		defaultReq := defaults.ObjectRequest{
+			Path: req.Path,
+		}
+		defaultResp := &defaults.ObjectResponse{}
+
+		a.ObjectDefaultValue().DefaultObject(ctx, defaultReq, defaultResp)
+
+		resp.Diagnostics.Append(defaultResp.Diagnostics...)
+
+		if defaultResp.Diagnostics.HasError() {
+			return
+		}
+
+		if a.CustomType == nil && !a.GetType().Equal(defaultResp.PlanValue.Type(ctx)) {
+			resp.Diagnostics.Append(fwschema.AttributeDefaultTypeMismatchDiag(req.Path, a.GetType(), defaultResp.PlanValue.Type(ctx)))
+		}
 	}
 }

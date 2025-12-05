@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,15 +35,18 @@ type IntegrationJiraCloudResource struct {
 
 // IntegrationJiraCloudResourceModel describes the resource data model.
 type IntegrationJiraCloudResourceModel struct {
-	AppID             types.String   `tfsdk:"app_id"`
-	CreatedAt         types.String   `tfsdk:"created_at"`
-	DeletedAt         types.String   `tfsdk:"deleted_at"`
-	ID                types.String   `tfsdk:"id"`
-	UpdatedAt         types.String   `tfsdk:"updated_at"`
-	UserIds           []types.String `tfsdk:"user_ids"`
-	JiracloudDomain   types.String   `tfsdk:"jiracloud_domain"`
-	JiracloudUsername types.String   `tfsdk:"jiracloud_username"`
-	JiracloudApikey   types.String   `tfsdk:"jiracloud_apikey"`
+	AppID                            types.String   `tfsdk:"app_id"`
+	CreatedAt                        types.String   `tfsdk:"created_at"`
+	DeletedAt                        types.String   `tfsdk:"deleted_at"`
+	ID                               types.String   `tfsdk:"id"`
+	UpdatedAt                        types.String   `tfsdk:"updated_at"`
+	UserIds                          []types.String `tfsdk:"user_ids"`
+	JiracloudDomain                  types.String   `tfsdk:"jiracloud_domain"`
+	JiracloudUsername                types.String   `tfsdk:"jiracloud_username"`
+	JiracloudApikey                  types.String   `tfsdk:"jiracloud_apikey"`
+	EnableExternalTicketProvisioning types.Bool     `tfsdk:"enable_external_ticket_provisioning"`
+	JiracloudProjectKeys             []types.String `tfsdk:"jiracloud_project_keys"`
+	JiracloudSkipProjectParticipants types.Bool     `tfsdk:"jiracloud_skip_project_participants"`
 }
 
 func (r *IntegrationJiraCloudResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -95,16 +98,29 @@ func (r *IntegrationJiraCloudResource) Schema(ctx context.Context, req resource.
 			},
 			"jiracloud_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Jira Site Domain`,
+				Description: `Jira site domain`,
 			},
 			"jiracloud_username": &schema.StringAttribute{
 				Optional:    true,
-				Description: `Jira Username`,
+				Description: `Your Jira email address`,
 			},
 			"jiracloud_apikey": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Jira API Key`,
+				Description: `API token`,
+			},
+			"enable_external_ticket_provisioning": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Enable external ticket provisioning`,
+			},
+			"jiracloud_project_keys": &schema.ListAttribute{
+				Optional:    true,
+				Description: `Project keys (optional)`,
+				ElementType: types.StringType,
+			},
+			"jiracloud_skip_project_participants": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Skip project participants`,
 			},
 		},
 	}
@@ -283,7 +299,7 @@ func (r *IntegrationJiraCloudResource) Update(ctx context.Context, req resource.
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
 			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
 				Connector:  updateCon,
-				UpdateMask: "config",
+				UpdateMask: types.StringValue("config").ValueStringPointer(),
 			},
 			AppID: appID,
 			ID:    data.ID.ValueString(),
@@ -306,7 +322,7 @@ func (r *IntegrationJiraCloudResource) Update(ctx context.Context, req resource.
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
 			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
 				Connector:  updateCon,
-				UpdateMask: "displayName,userIds",
+				UpdateMask: types.StringValue("displayName,userIds").ValueStringPointer(),
 			},
 			ConnectorAppID: appID,
 			ConnectorID:    data.ID.ValueString(),

@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fwschema"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fwschema/fwxschema"
+	"github.com/hashicorp/terraform-plugin-framework/internal/fwtype"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/defaults"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -49,6 +50,10 @@ var (
 type ListAttribute struct {
 	// ElementType is the type for all elements of the list. This field must be
 	// set.
+	//
+	// Element types that contain a dynamic type (i.e. types.Dynamic) are not supported.
+	// If underlying dynamic values are required, replace this attribute definition with
+	// DynamicAttribute instead.
 	ElementType attr.Type
 
 	// CustomType enables the use of a custom attribute type in place of the
@@ -163,6 +168,16 @@ type ListAttribute struct {
 	// computed and the value could be altered by other changes then a default
 	// should be avoided and a plan modifier should be used instead.
 	Default defaults.List
+
+	// WriteOnly indicates that Terraform will not store this attribute value
+	// in the plan or state artifacts.
+	// If WriteOnly is true, either Optional or Required must also be true.
+	// WriteOnly cannot be set with Computed.
+	//
+	// This functionality is only supported in Terraform 1.11 and later.
+	// Practitioners that choose a value for this attribute with older
+	// versions of Terraform will receive an error.
+	WriteOnly bool
 }
 
 // ApplyTerraform5AttributePathStep returns the result of stepping into a list
@@ -227,6 +242,23 @@ func (a ListAttribute) IsSensitive() bool {
 	return a.Sensitive
 }
 
+// IsWriteOnly returns the WriteOnly field value.
+func (a ListAttribute) IsWriteOnly() bool {
+	return a.WriteOnly
+}
+
+// IsRequiredForImport returns false as this behavior is only relevant
+// for managed resource identity schema attributes.
+func (a ListAttribute) IsRequiredForImport() bool {
+	return false
+}
+
+// IsOptionalForImport returns false as this behavior is only relevant
+// for managed resource identity schema attributes.
+func (a ListAttribute) IsOptionalForImport() bool {
+	return false
+}
+
 // ListDefaultValue returns the Default field value.
 func (a ListAttribute) ListDefaultValue() defaults.List {
 	return a.Default
@@ -251,7 +283,34 @@ func (a ListAttribute) ValidateImplementation(ctx context.Context, req fwschema.
 		resp.Diagnostics.Append(fwschema.AttributeMissingElementTypeDiag(req.Path))
 	}
 
-	if !a.IsComputed() && a.ListDefaultValue() != nil {
-		resp.Diagnostics.Append(nonComputedAttributeWithDefaultDiag(req.Path))
+	if a.CustomType == nil && fwtype.ContainsCollectionWithDynamic(a.GetType()) {
+		resp.Diagnostics.Append(fwtype.AttributeCollectionWithDynamicTypeDiag(req.Path))
+	}
+
+	if a.ListDefaultValue() != nil {
+		if !a.IsComputed() {
+			resp.Diagnostics.Append(nonComputedAttributeWithDefaultDiag(req.Path))
+		}
+
+		// Validate Default implementation. This is safe unless the framework
+		// ever allows more dynamic Default implementations at which the
+		// implementation would be required to be validated at runtime.
+		// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/930
+		defaultReq := defaults.ListRequest{
+			Path: req.Path,
+		}
+		defaultResp := &defaults.ListResponse{}
+
+		a.ListDefaultValue().DefaultList(ctx, defaultReq, defaultResp)
+
+		resp.Diagnostics.Append(defaultResp.Diagnostics...)
+
+		if defaultResp.Diagnostics.HasError() {
+			return
+		}
+
+		if a.ElementType != nil && !a.ElementType.Equal(defaultResp.PlanValue.ElementType(ctx)) {
+			resp.Diagnostics.Append(fwschema.AttributeDefaultElementTypeMismatchDiag(req.Path, a.ElementType, defaultResp.PlanValue.ElementType(ctx)))
+		}
 	}
 }

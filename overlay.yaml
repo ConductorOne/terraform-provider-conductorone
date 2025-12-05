@@ -1,0 +1,628 @@
+overlay: 1.0.0
+info:
+  title: Overlay prod-openapi.yaml => openapinew.yaml
+  version: 0.0.0
+actions:
+  - target: $..[?(@.additionalProperties == true)]
+    update:
+      additionalProperties: false
+  - target: $["components"]["schemas"]["c1.api.app.v1.Connector"]["properties"]["config"]
+    update:
+      additionalProperties: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceCreateRequestInput"]["properties"]["config"]
+    update:
+      additionalProperties: true
+  - target: $..\@type
+    remove: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.DeleteAutomationRequestInput"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceCreateRequestInput"]["properties"]["config"]["properties"]
+    update:
+      '@type':
+        description: The type of the serialized message.
+        type: string
+  - target: $["components"]["schemas"]["c1.api.app.v1.Connector"]["properties"]["config"]["properties"]
+    update:
+      '@type':
+        description: The type of the serialized message.
+        type: string
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementSearchServiceSearchResponse"]["properties"]["expanded"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.search.v1.Facets"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $..deletedAt
+    update:
+      x-speakeasy-soft-delete-property: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["durationUnset"]
+    update:
+      x-speakeasy-terraform-plan-only: true
+  - target: $["components"]["schemas"]["c1.api.user.v1.User"]
+    update:
+      x-speakeasy-entity: User
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["deprovisionerPolicy"]
+    remove: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]
+    update:
+      deprovisionerPolicy:
+        allOf:
+          - $ref: '#/components/schemas/c1.api.policy.v1.ProvisionPolicy'
+          - x-speakeasy-name-override: deprovisionerPolicy
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["appResourceTypeId"]
+    update:
+      x-speakeasy-param-force-new: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]
+    update:
+      x-speakeasy-entity: [App Entitlement, Custom App Entitlement]
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["appResourceId"]
+    update:
+      x-speakeasy-param-force-new: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["durationGrant"]
+    update:
+      x-speakeasy-terraform-plan-only: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementAutomationRuleBasic"]
+    update:
+      x-speakeasy-terraform-plan-only: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementAutomationRuleCEL"]
+    update:
+      x-speakeasy-terraform-plan-only: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementAutomationRuleEntitlement"]
+    update:
+      x-speakeasy-terraform-plan-only: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementAutomationRuleNone"]
+    update:
+      x-speakeasy-terraform-plan-only: true
+  - target: $["components"]["schemas"]["c1.api.policy.v1.Approval"]
+    update:
+      x-speakeasy-terraform-plan-only: true
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ProvisionPolicy"]
+    update:
+      x-speakeasy-terraform-plan-only: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.App"]["properties"]["appOwners"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.App"]["properties"]["fieldMask"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.App"]["properties"]["iconUrl"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.App"]["properties"]["logoUri"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["durationGrant"]
+    update:
+      x-speakeasy-conflicts-with:
+        - durationUnset
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["durationUnset"]
+    update:
+      x-speakeasy-conflicts-with:
+        - durationGrant
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["userEditedMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementExpandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementProxy"]["properties"]["implicit"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementProxyExpandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementProxyView"]["properties"]["dstAppEntitlementPath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementProxyView"]["properties"]["dstAppPath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementProxyView"]["properties"]["srcAppEntitlementPath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementProxyView"]["properties"]["srcAppPath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementSearchServiceSearchRequest"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementView"]["properties"]["appPath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementView"]["properties"]["appResourcePath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementView"]["properties"]["appResourceTypePath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResource"]["properties"]["customDescription"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResource"]["properties"]["appResourceTypeId"]
+    update:
+      x-speakeasy-param-force-new: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResourceExpandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResourceServiceUpdateRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResourceTypeView"]["properties"]["appPath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResourceView"]["properties"]["appPath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResourceView"]["properties"]["parentResourcePath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResourceView"]["properties"]["parentResourceTypePath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResourceView"]["properties"]["resourceTypePath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResourceView"]
+    update:
+      x-speakaesy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppUserExpandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppUserServiceUpdateRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorExpandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceCreateDelegatedRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceCreateRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceRevokeCredentialRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceRotateCredentialRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorCredential"]["properties"]["clientSecret"]
+    update:
+      x-speakeasy-param-sensitive: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceUpdateDelegatedRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceUpdateRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.CreateAppEntitlementProxyRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.CreateAppEntitlementProxyRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.CreateAppEntitlementRequestInput"]["properties"]["appEntitlementOwnerIds"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.CreateAppEntitlementRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.CreateAppRequest"]["properties"]["owners"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.CreateManuallyManagedAppResourceRequestInput"]["properties"]["resourceOwnerUserIds"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.DeleteAppEntitlementProxyRequestInput"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.DeleteAppEntitlementRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.DeleteAppRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.DeleteManuallyManagedAppResourceRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.DeleteManuallyManagedResourceTypeRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.UpdateAppEntitlementRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.attribute.v1.AttributeValue"]
+    update:
+      x-speakeasy-entity: [Compliance Framework, Risk Level]
+  - target: $["components"]["schemas"]["c1.api.directory.v1.DirectoryExpandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.directory.v1.DirectoryServiceCreateRequest"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementAutomationRuleNone"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appEntitlementAutomationRuleBasic
+        - appEntitlementAutomationRuleCEL
+        - appEntitlementAutomationRuleEntitlement
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementAutomationRuleBasic"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appEntitlementAutomationRuleCEL
+        - appEntitlementAutomationRuleEntitlement
+        - appEntitlementAutomationRuleNone
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementAutomationRuleCEL"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appEntitlementAutomationRuleBasic
+        - appEntitlementAutomationRuleEntitlement
+        - appEntitlementAutomationRuleNone
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementAutomationRuleEntitlement"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appEntitlementAutomationRuleBasic
+        - appEntitlementAutomationRuleCEL
+        - appEntitlementAutomationRuleNone
+  - target: $["components"]["schemas"]["c1.api.policy.v1.AppOwnerApproval"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appGroupApproval
+        - entitlementOwnerApproval
+        - expressionApproval
+        - managerApproval
+        - resourceOwnerApproval
+        - selfApproval
+        - userApproval
+        - webhookApproval
+  - target: $["components"]["schemas"]["c1.api.policy.v1.AppGroupApproval"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appOwnerApproval
+        - entitlementOwnerApproval
+        - expressionApproval
+        - managerApproval
+        - resourceOwnerApproval
+        - selfApproval
+        - userApproval
+        - webhookApproval
+  - target: $["components"]["schemas"]["c1.api.policy.v1.EntitlementOwnerApproval"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appOwnerApproval
+        - appGroupApproval
+        - expressionApproval
+        - managerApproval
+        - resourceOwnerApproval
+        - selfApproval
+        - userApproval
+        - webhookApproval
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ExpressionApproval"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appOwnerApproval
+        - appGroupApproval
+        - entitlementOwnerApproval
+        - managerApproval
+        - resourceOwnerApproval
+        - selfApproval
+        - userApproval
+        - webhookApproval
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ManagerApproval"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appOwnerApproval
+        - appGroupApproval
+        - entitlementOwnerApproval
+        - expressionApproval
+        - resourceOwnerApproval
+        - selfApproval
+        - userApproval
+        - webhookApproval
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ResourceOwnerApproval"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appOwnerApproval
+        - appGroupApproval
+        - entitlementOwnerApproval
+        - expressionApproval
+        - managerApproval
+        - selfApproval
+        - userApproval
+        - webhookApproval
+  - target: $["components"]["schemas"]["c1.api.policy.v1.SelfApproval"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appOwnerApproval
+        - appGroupApproval
+        - entitlementOwnerApproval
+        - expressionApproval
+        - managerApproval
+        - resourceOwnerApproval
+        - userApproval
+        - webhookApproval
+  - target: $["components"]["schemas"]["c1.api.policy.v1.UserApproval"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appOwnerApproval
+        - appGroupApproval
+        - entitlementOwnerApproval
+        - expressionApproval
+        - managerApproval
+        - resourceOwnerApproval
+        - selfApproval
+        - webhookApproval
+  - target: $["components"]["schemas"]["c1.api.policy.v1.WebhookApproval"]
+    update:
+      x-speakeasy-conflicts-with:
+        - appOwnerApproval
+        - appGroupApproval
+        - entitlementOwnerApproval
+        - expressionApproval
+        - managerApproval
+        - resourceOwnerApproval
+        - selfApproval
+        - userApproval
+  - target: $["components"]["schemas"]["c1.api.policy.v1.DelegatedProvision"]["properties"]["implicit"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.policy.v1.DeletePolicyRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.policy.v1.MultiStep"]
+    update:
+      x-speakeasy-type-override: any
+  - target: $["components"]["schemas"]["c1.api.policy.v1.Accept"]
+    update:
+      x-speakeasy-conflicts-with:
+        - approval
+        - provision
+        - reject
+        - wait
+  - target: $["components"]["schemas"]["c1.api.policy.v1.Approval"]
+    update:
+      x-speakeasy-conflicts-with:
+        - accept
+        - provision
+        - reject
+        - wait
+  - target: $["components"]["schemas"]["c1.api.policy.v1.Provision"]
+    update:
+      x-speakeasy-conflicts-with:
+        - accept
+        - approval
+        - reject
+        - wait
+  - target: $["components"]["schemas"]["c1.api.policy.v1.Reject"]
+    update:
+      x-speakeasy-conflicts-with:
+        - accept
+        - approval
+        - provision
+        - wait
+  - target: $["components"]["schemas"]["c1.api.policy.v1.Wait"]
+    update:
+      x-speakeasy-conflicts-with:
+        - accept
+        - approval
+        - provision
+        - reject
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ConnectorProvision"]
+    update:
+      x-speakeasy-conflicts-with:
+        - delegatedProvision
+        - externalTicketProvision
+        - manualProvision
+        - multiStep
+        - webhookProvision
+  - target: $["components"]["schemas"]["c1.api.policy.v1.DelegatedProvision"]
+    update:
+      x-speakeasy-conflicts-with:
+        - connectorProvision
+        - externalTicketProvision
+        - manualProvision
+        - multiStep
+        - webhookProvision
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ExternalTicketProvision"]
+    update:
+      x-speakeasy-conflicts-with:
+        - connectorProvision
+        - delegatedProvision
+        - manualProvision
+        - multiStep
+        - webhookProvision
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ManualProvision"]
+    update:
+      x-speakeasy-conflicts-with:
+        - connectorProvision
+        - delegatedProvision
+        - externalTicketProvision
+        - multiStep
+        - webhookProvision
+  - target: $["components"]["schemas"]["c1.api.policy.v1.MultiStep"]
+    update:
+      x-speakeasy-conflicts-with:
+        - connectorProvision
+        - delegatedProvision
+        - externalTicketProvision
+        - manualProvision
+        - webhookProvision
+  - target: $["components"]["schemas"]["c1.api.policy.v1.WebhookProvision"]
+    update:
+      x-speakeasy-conflicts-with:
+        - connectorProvision
+        - delegatedProvision
+        - externalTicketProvision
+        - manualProvision
+        - multiStep
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalog"]["properties"]["accessEntitlements"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogExpandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequest"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceUpdateRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogSearchServiceSearchEntitlementsRequest"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogView"]["properties"]["accessEntitlementsPath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogView"]["properties"]["memberCount"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogView"]["properties"]["appPaths"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogView"]["properties"]["createdByUserPath"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskActionsServiceApproveRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskActionsServiceCommentRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskActionsServiceDenyRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskActionsServiceEscalateToEmergencyAccessRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskActionsServiceHardResetRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskActionsServiceProcessNowRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskActionsServiceReassignRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskActionsServiceRestartRequestInput"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskExpandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskSearchRequest"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskServiceCreateGrantRequest"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskServiceCreateOffboardingRequest"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.task.v1.TaskServiceCreateRevokeRequest"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.user.v1.SearchUsersRequest"]["properties"]["expandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.user.v1.UserExpandMask"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.webhooks.v1.WebhooksServiceDeleteRequestInput"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.attribute.v1.DeleteComplianceFrameworkAttributeValueRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.attribute.v1.DeleteRiskLevelAttributeValueRequestInput"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse"]["properties"]["refs"]
+    update:
+      x-speakeasy-name-override: app_entitlements
+  - target: $["components"]["schemas"]["c1.api.policy.v1.Form"]
+    update:
+      x-speakeasy-type-override: any
+  - target: $["components"]["schemas"]["c1.api.automations.v1.FormTrigger"]
+    update:
+      x-speakeasy-type-override: any
+  - target: $["paths"]["/api/v1/functions/{function_id}/commits/{id}"]["get"]["parameters"][1]
+    update:
+      x-speakeasy-match: function_commit.id 
+  - target: $["paths"]["/api/v1/apps/{app_id}/entitlements/{entitlement_id}/owners"]["put"]["x-speakeasy-entity-operation"]["terraform-resource"]
+    update:
+      - App_Entitlement_Owner#create
+      - App_Entitlement_Owner#update
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["id"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResource"]["properties"]["id"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppResourceType"]["properties"]["id"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
+  # `webhookHmacSecret` is only returned on creation and terraform expects all the fields to be known throughout its lifecycle. 
+  # To align with this, we should wrap `webhookHmacSecret` inside `Automation`, 
+  - target: $["components"]["schemas"]["c1.api.automations.v1.Automation"]["properties"]
+    update:
+      webhookHmacSecret:
+        description: If we create a new trigger with an HMAC secret we return the HMAC on this field
+        readOnly: false
+        type: string
+  - target: $["components"]["schemas"]["c1.api.automations.v1.CreateAutomationResponse"]["properties"]["webhookHmacSecret"]
+    update:
+      x-speakeasy-ignore: true
+  # App_Entitlement_Owner. 
+  - target: $["components"]["schemas"]["c1.api.app.v1.DeleteAppEntitlementOwnersRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.DeleteAppResourceOwnersRequestInput"]
+    update:
+      x-speakeasy-ignore: true 
+  - target: $["paths"]["/api/v1/apps/{app_id}/resource_types/{resource_type_id}/resource/{resource_id}/owners"]["put"]["x-speakeasy-entity-operation"]["terraform-resource"]
+    update:
+      - App_Resource_Owner#create
+      - App_Resource_Owner#update
+  # RequestSchema
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["id"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
+  - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["stringSliceField"]
+    remove: true
+  ## len is a builtin function in golang, we have to rename `len` with a different name.
+  - target: $["components"]["schemas"]["validate.StringRules"]["properties"]["len"]
+    update: 
+      x-speakeasy-name-override: length 
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchemaServiceDeleteRequestInput"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Form"]["properties"]["id"]
+    update: 
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Form"]["properties"]["displayName"]
+    update:
+      x-speakeasy-name-override: name 
+  - target: $["paths"]["/api/v1/request_schemas/{request_schema_id}"]["delete"]["parameters"][0]
+    update:
+      x-speakeasy-name-override: id
+  - target: $["paths"]["/api/v1/request_schemas/{request_schema_id}"]["get"]["parameters"][0]
+    update:
+      x-speakeasy-name-override: id
+  - target: $["paths"]["/api/v1/request_schemas/{request_schema_id}"]["post"]["parameters"][0]
+    update:
+      x-speakeasy-name-override: id 
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["modifiedAt"]
+    update:
+      x-speakeasy-ignore: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceDeleteRequestableEntryRequestInput"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.vault.v1.VaultServiceDeleteRequestInput"]
+    update:
+      x-speakeasy-terraform-ignore: true
+      
+  

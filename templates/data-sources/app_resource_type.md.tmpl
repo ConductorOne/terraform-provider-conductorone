@@ -1,0 +1,27 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This data source enables you to retrieve ConductorOne app resource types using the following search criteria:
+
+* `app_ids` - List of app IDs to filter by
+* `app_user_ids` - List of app user IDs to filter by
+* `display_name` - Filter by display name
+* `query` - Search query string
+* `resource_type_ids` - List of resource type IDs to include
+* `resource_type_trait_ids` - List of resource type trait IDs to include
+* `exclude_resource_type_ids` - List of resource type IDs to exclude
+* `exclude_resource_type_trait_ids` - List of resource type trait IDs to exclude
+
+## Example Usage
+
+{{ tffile "examples/data-sources/conductorone_app_resource_type/data-source.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

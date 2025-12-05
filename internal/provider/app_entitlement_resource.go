@@ -1,15 +1,18 @@
 package provider
 
 import (
-	"conductorone/internal/sdk"
 	"context"
 	"fmt"
+	"strings"
 
-	"conductorone/internal/sdk/pkg/models/operations"
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
-
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -33,26 +36,39 @@ type AppEntitlementResource struct {
 
 // AppEntitlementResourceModel describes the resource data model.
 type AppEntitlementResourceModel struct {
-	Alias                       types.String      `tfsdk:"alias"`
-	AppID                       types.String      `tfsdk:"app_id"`
-	AppResourceID               types.String      `tfsdk:"app_resource_id"`
-	AppResourceTypeID           types.String      `tfsdk:"app_resource_type_id"`
-	CertifyPolicyID             types.String      `tfsdk:"certify_policy_id"`
-	ComplianceFrameworkValueIds []types.String    `tfsdk:"compliance_framework_value_ids"`
-	CreatedAt                   types.String      `tfsdk:"created_at"`
-	DeletedAt                   types.String      `tfsdk:"deleted_at"`
-	Description                 types.String      `tfsdk:"description"`
-	DisplayName                 types.String      `tfsdk:"display_name"`
-	MaxGrantDuration            *MaxGrantDuration `tfsdk:"max_grant_duration"`
-	EmergencyGrantEnabled       types.Bool        `tfsdk:"emergency_grant_enabled"`
-	EmergencyGrantPolicyID      types.String      `tfsdk:"emergency_grant_policy_id"`
-	GrantPolicyID               types.String      `tfsdk:"grant_policy_id"`
-	ID                          types.String      `tfsdk:"id"`
-	ProvisionPolicy             *ProvisionPolicy  `tfsdk:"provision_policy"`
-	RevokePolicyID              types.String      `tfsdk:"revoke_policy_id"`
-	RiskLevelValueID            types.String      `tfsdk:"risk_level_value_id"`
-	Slug                        types.String      `tfsdk:"slug"`
-	UpdatedAt                   types.String      `tfsdk:"updated_at"`
+	Alias                          types.String                                      `tfsdk:"alias"`
+	AppID                          types.String                                      `tfsdk:"app_id"`
+	AppResourceID                  types.String                                      `tfsdk:"app_resource_id"`
+	AppResourceTypeID              types.String                                      `tfsdk:"app_resource_type_id"`
+	CertifyPolicyID                types.String                                      `tfsdk:"certify_policy_id"`
+	ComplianceFrameworkValueIds    []types.String                                    `tfsdk:"compliance_framework_value_ids"`
+	CreatedAt                      types.String                                      `tfsdk:"created_at"`
+	DefaultValuesApplied           types.Bool                                        `tfsdk:"default_values_applied"`
+	DeletedAt                      types.String                                      `tfsdk:"-"`
+	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy                      `tfsdk:"deprovisioner_policy" tfPlanOnly:"true"`
+	Description                    types.String                                      `tfsdk:"description"`
+	DisplayName                    types.String                                      `tfsdk:"display_name"`
+	DurationGrant                  types.String                                      `tfsdk:"duration_grant" tfPlanOnly:"true"`
+	DurationUnset                  *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset" tfPlanOnly:"true"`
+	EmergencyGrantEnabled          types.Bool                                        `tfsdk:"emergency_grant_enabled"`
+	EmergencyGrantPolicyID         types.String                                      `tfsdk:"emergency_grant_policy_id"`
+	Expanded                       []tfTypes.GetAppEntitlementResponseExpanded       `tfsdk:"expanded"`
+	GrantCount                     types.String                                      `tfsdk:"grant_count"`
+	GrantPolicyID                  types.String                                      `tfsdk:"grant_policy_id"`
+	ID                             types.String                                      `tfsdk:"id"`
+	IsAutomationEnabled            types.Bool                                        `tfsdk:"is_automation_enabled"`
+	IsManuallyManaged              types.Bool                                        `tfsdk:"is_manually_managed"`
+	MatchBatonID                   types.String                                      `tfsdk:"match_baton_id"`
+	OverrideAccessRequestsDefaults types.Bool                                        `tfsdk:"override_access_requests_defaults"`
+	ProvisionPolicy                *tfTypes.ProvisionPolicy                          `tfsdk:"provision_policy" tfPlanOnly:"true"`
+	Purpose                        types.String                                      `tfsdk:"purpose"`
+	RequestSchemaID                types.String                                      `tfsdk:"request_schema_id"`
+	RevokePolicyID                 types.String                                      `tfsdk:"revoke_policy_id"`
+	RiskLevelValueID               types.String                                      `tfsdk:"risk_level_value_id"`
+	Slug                           types.String                                      `tfsdk:"slug"`
+	SourceConnectorIds             map[string]types.String                           `tfsdk:"source_connector_ids"`
+	SystemBuiltin                  types.Bool                                        `tfsdk:"system_builtin"`
+	UpdatedAt                      types.String                                      `tfsdk:"updated_at"`
 }
 
 func (r *AppEntitlementResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -98,11 +114,235 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					validators.IsRFC3339(),
 				},
 			},
-			"deleted_at": schema.StringAttribute{
+			"default_values_applied": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
+			},
+			"deprovisioner_policy": schema.SingleNestedAttribute{
 				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
+				Attributes: map[string]schema.Attribute{
+					"action_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"action_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `The actionName field.`,
+							},
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The appId field.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The connectorId field.`,
+							},
+						},
+						Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
+					},
+					"connector_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"account_provision": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"config": schema.SingleNestedAttribute{
+										Computed: true,
+									},
+									"connector_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The connectorId field.`,
+									},
+									"do_not_save": schema.SingleNestedAttribute{
+										Computed:    true,
+										Description: `The DoNotSave message.`,
+									},
+									"save_to_vault": schema.SingleNestedAttribute{
+										Computed: true,
+										Attributes: map[string]schema.Attribute{
+											"vault_ids": schema.ListAttribute{
+												Computed:    true,
+												ElementType: types.StringType,
+												Description: `The vaultIds field.`,
+											},
+										},
+										Description: `The SaveToVault message.`,
+									},
+									"schema_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The schemaId field.`,
+									},
+								},
+								MarkdownDescription: `The AccountProvision message.` + "\n" +
+									`` + "\n" +
+									`This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:` + "\n" +
+									`  - saveToVault` + "\n" +
+									`  - doNotSave`,
+							},
+							"default_behavior": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Computed: true,
+										MarkdownDescription: `this checks if the entitlement is enabled by provisioning in a specific connector` + "\n" +
+											` this can happen automatically and doesn't need any extra info`,
+									},
+								},
+								Description: `The DefaultBehavior message.`,
+							},
+							"delete_account": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The connectorId field.`,
+									},
+								},
+								Description: `The DeleteAccount message.`,
+							},
+						},
+						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
+							`` + "\n" +
+							`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
+							`  - defaultBehavior` + "\n" +
+							`  - account` + "\n" +
+							`  - deleteAccount`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"delegated_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The AppID of the entitlement to delegate provisioning to.`,
+							},
+							"entitlement_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The ID of the entitlement we are delegating provisioning to.`,
+							},
+						},
+						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"external_ticket_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The appId field.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The connectorId field.`,
+							},
+							"external_ticket_provisioner_config_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The externalTicketProvisionerConfigId field.`,
+							},
+							"instructions": schema.StringAttribute{
+								Computed:    true,
+								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+							},
+						},
+						Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"manual_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"instructions": schema.StringAttribute{
+								Computed:    true,
+								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+							},
+							"user_ids": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+								Description: `An array of users that are required to provision during this step.`,
+							},
+						},
+						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"multi_step": schema.StringAttribute{
+						CustomType:  jsontypes.NormalizedType{},
+						Computed:    true,
+						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+						Validators: []validator.String{
+							stringvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"unconfigured_provision": schema.SingleNestedAttribute{
+						Computed:    true,
+						Description: `The UnconfiguredProvision message.`,
+					},
+					"webhook_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"webhook_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The ID of the webhook to call for provisioning.`,
+							},
+						},
+						Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+							}...),
+						},
+					},
 				},
+				MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - connector` + "\n" +
+					`  - manual` + "\n" +
+					`  - delegated` + "\n" +
+					`  - webhook` + "\n" +
+					`  - multiStep` + "\n" +
+					`  - externalTicket` + "\n" +
+					`  - unconfigured` + "\n" +
+					`  - action`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -114,32 +354,17 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Optional:    true,
 				Description: `The displayName field.`,
 			},
-			"max_grant_duration": schema.SingleNestedAttribute{
+			"duration_grant": schema.StringAttribute{
+				Computed: true,
 				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"duration_grant": schema.StringAttribute{
-						Optional: true,
-						Description: `The DurationGrant field is a string attribute that represents the maximum duration a grant to this entitlement can last. 
-						The format of this is <time in seconds>s. i.e. 1h = 3600s.`,
-					},
-					"duration_unset": schema.SingleNestedAttribute{
-						Optional:    true,
-						Attributes:  map[string]schema.Attribute{},
-						Description: `The DurationUnset field is set if there is no maximum duration a grant to this entitlement can last.`,
-						Validators: []validator.Object{
-							objectvalidator.ExactlyOneOf(path.Expressions{
-								path.MatchRoot("max_grant_duration").AtName("duration_grant"),
-							}...),
-						},
-					},
-				},
-				MarkdownDescription: `MaxGrantDuration is a one of.` + "\n" +
-					`` +
-					`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
-					`  - duration_unset` + "\n" +
-					`  - duration_grant` + "\n" +
-					"\n" +
-					``,
+				Description: `The DurationGrant field is a string attribute that represents the maximum duration a grant to this entitlement can last. 
+				The format of this is <time in seconds>s. i.e. 1h = 3600s.`,
+			},
+			"duration_unset": schema.SingleNestedAttribute{
+				Computed:    true,
+				Optional:    true,
+				Attributes:  map[string]schema.Attribute{},
+				Description: `The DurationUnset field is set if there is no maximum duration a grant to this entitlement can last.`,
 			},
 			"emergency_grant_enabled": schema.BoolAttribute{
 				Computed:    true,
@@ -152,6 +377,17 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Description: `The emergencyGrantPolicyId field is the ID of the grant policy that will be used for emergency grant tasks. 
 				To set this field, emergencyGrantEnabled must be set to true.`,
 			},
+			"expanded": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{},
+				},
+				Description: `The expanded field.`,
+			},
+			"grant_count": schema.StringAttribute{
+				Computed:    true,
+				Description: `The amount of grants open for this entitlement`,
+			},
 			"grant_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -159,55 +395,299 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"id": schema.StringAttribute{
 				Required:    true,
-				Description: `The id field.`,
+				Description: `The unique ID for the App Entitlement.`,
 			},
-			// TODO: this is a oneof
+			"is_automation_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Flag to indicate whether automation (for adding users to entitlement based on rules) has been enabled.`,
+			},
+			"is_manually_managed": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Flag to indicate if the app entitlement is manually managed.`,
+			},
+			"match_baton_id": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `If supplied, it's implied that the entitlement is created before sync and needs to be merged with connector entitlement.`,
+			},
+			"override_access_requests_defaults": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The overrideAccessRequestsDefaults field.`,
+			},
 			"provision_policy": schema.SingleNestedAttribute{
+				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"connector_provision": schema.SingleNestedAttribute{
-						Optional:    true,
-						Attributes:  map[string]schema.Attribute{},
-						Description: `The ConnectorProvision message.`,
-					},
-					"delegated_provision": schema.SingleNestedAttribute{
+					"action_provision": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"action_name": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The actionName field.`,
+							},
 							"app_id": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `The appId field.`,
 							},
-							"entitlement_id": schema.StringAttribute{
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
-								Description: `The entitlementId field.`,
+								Description: `The connectorId field.`,
 							},
 						},
-						Description: `The DelegatedProvision message.`,
+						Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
+					},
+					"connector_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"account_provision": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"config": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+									},
+									"connector_id": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The connectorId field.`,
+									},
+									"do_not_save": schema.SingleNestedAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The DoNotSave message.`,
+									},
+									"save_to_vault": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Attributes: map[string]schema.Attribute{
+											"vault_ids": schema.ListAttribute{
+												Computed:    true,
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `The vaultIds field.`,
+											},
+										},
+										Description: `The SaveToVault message.`,
+									},
+									"schema_id": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The schemaId field.`,
+									},
+								},
+								Description: `The AccountProvision message.` + "\n" +
+									`` + "\n" +
+									`This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:` + "\n" +
+									`  - saveToVault` + "\n" +
+									`  - doNotSave`,
+							},
+							"default_behavior": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Computed: true,
+										Optional: true,
+										MarkdownDescription: `this checks if the entitlement is enabled by provisioning in a specific connector` + "\n" +
+											` this can happen automatically and doesn't need any extra info`,
+									},
+								},
+								Description: `The DefaultBehavior message.`,
+							},
+							"delete_account": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"connector_id": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The connectorId field.`,
+									},
+								},
+								Description: `The DeleteAccount message.`,
+							},
+						},
+						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
+							`` + "\n" +
+							`This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:` + "\n" +
+							`  - defaultBehavior` + "\n" +
+							`  - account` + "\n" +
+							`  - deleteAccount`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"delegated_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The AppID of the entitlement to delegate provisioning to.`,
+							},
+							"entitlement_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The ID of the entitlement we are delegating provisioning to.`,
+							},
+						},
+						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"external_ticket_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"app_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The appId field.`,
+							},
+							"connector_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The connectorId field.`,
+							},
+							"external_ticket_provisioner_config_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The externalTicketProvisionerConfigId field.`,
+							},
+							"instructions": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+							},
+						},
+						Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
 					},
 					"manual_provision": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"instructions": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
-								Description: `The instructions field.`,
+								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 							},
 							"user_ids": schema.ListAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
-								Description: `The userIds field.`,
+								Description: `An array of users that are required to provision during this step.`,
 							},
 						},
-						Description: `The ManualProvision message.`,
+						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"multi_step": schema.StringAttribute{
+						CustomType:  jsontypes.NormalizedType{},
+						Computed:    true,
+						Optional:    true,
+						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+						Validators: []validator.String{
+							stringvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("webhook_provision"),
+							}...),
+						},
+					},
+					"unconfigured_provision": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The UnconfiguredProvision message.`,
+					},
+					"webhook_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"webhook_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The ID of the webhook to call for provisioning.`,
+							},
+						},
+						Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector_provision"),
+								path.MatchRelative().AtParent().AtName("delegated_provision"),
+								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+							}...),
+						},
 					},
 				},
-				MarkdownDescription: `The ProvisionPolicy message is the Provision strategy that will be used for granting access for this entitlement.` + "\n" +
-					`` +
-					`This message contains a oneof. Only a single field of the following list may be set at a time:` + "\n" +
+				MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
 					`  - connector` + "\n" +
 					`  - manual` + "\n" +
 					`  - delegated` + "\n" +
-					"\n" +
-					``,
+					`  - webhook` + "\n" +
+					`  - multiStep` + "\n" +
+					`  - externalTicket` + "\n" +
+					`  - unconfigured` + "\n" +
+					`  - action`,
+			},
+			"purpose": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED",
+						"APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT",
+						"APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION",
+					),
+				},
+			},
+			"request_schema_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The ID of the request schema associated with this app entitlement.`,
 			},
 			"revoke_policy_id": schema.StringAttribute{
 				Computed:    true,
@@ -223,6 +703,15 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 				Computed:    true,
 				Optional:    true,
 				Description: `The slug field.`,
+			},
+			"source_connector_ids": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `Map to tell us which connector the entitlement came from.`,
+			},
+			"system_builtin": schema.BoolAttribute{
+				Computed:    true,
+				Description: `This field indicates if this is a system builtin entitlement.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -268,6 +757,9 @@ func (r *AppEntitlementResource) Create(ctx context.Context, req resource.Create
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 	})...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	appEntitlement := data.ToUpdateSDKType()
 
@@ -281,6 +773,7 @@ func (r *AppEntitlementResource) Create(ctx context.Context, req resource.Create
 		AppID:                       appID,
 		ID:                          id,
 	}
+
 	res, err := r.client.AppEntitlements.Update(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -371,25 +864,23 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
+	cleanupDurationFields(ctx, req, resp, data)
+
 	var updateAppEntitlementRequest *shared.UpdateAppEntitlementRequest
 	appEntitlement := data.ToUpdateSDKType()
 
 	appID := data.AppID.ValueString()
 	id := data.ID.ValueString()
 
-	currentAppEntitlement, err := r.readAppEntitlementAndValidate(ctx, appID, id)
-	if err != nil {
-		resp.Diagnostics.AddError("failure reading app entitlement", err.Error())
-		return
+	overrideAccessRequestsDefaults := new(bool)
+	if !data.OverrideAccessRequestsDefaults.IsUnknown() && !data.OverrideAccessRequestsDefaults.IsNull() {
+		*overrideAccessRequestsDefaults = data.OverrideAccessRequestsDefaults.ValueBool()
+	} else {
+		overrideAccessRequestsDefaults = nil
 	}
-
-	// If no value was specified for the ProvisionPolicy, use the current value.
-	if appEntitlement.ProvisionPolicy == nil {
-		appEntitlement.ProvisionPolicy = currentAppEntitlement.ProvisionPolicy
-	}
-
 	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
-		AppEntitlement: appEntitlement,
+		AppEntitlement:                 appEntitlement,
+		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
 	}
 
 	request := operations.C1APIAppV1AppEntitlementsUpdateRequest{
@@ -397,6 +888,7 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		AppID:                       appID,
 		ID:                          id,
 	}
+
 	res, err := r.client.AppEntitlements.Update(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -442,31 +934,56 @@ func (r *AppEntitlementResource) Delete(ctx context.Context, req resource.Delete
 }
 
 func (r *AppEntitlementResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource app_entitlement.")
+	idParts := strings.Split(req.ID, "_")
+
+	if len(idParts) != 2 || idParts[0] == "" || idParts[1] == "" {
+		resp.Diagnostics.AddError(
+			"Unexpected Import Identifier",
+			fmt.Sprintf("Expected import identifier with format: id_appId. Got: %q", req.ID),
+		)
+		return
+	}
+
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), idParts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), idParts[1])...)
 }
 
-func (r *AppEntitlementResource) readAppEntitlementAndValidate(ctx context.Context, appID string, id string) (*shared.AppEntitlement, error) {
-	request := operations.C1APIAppV1AppEntitlementsGetRequest{
-		AppID: appID,
-		ID:    id,
-	}
-	res, err := r.client.AppEntitlements.Get(ctx, request)
-	if err != nil {
-		return nil, fmt.Errorf("failure to invoke API")
-	}
-	if res == nil {
-		return nil, fmt.Errorf("unexpected response from API")
-	}
-	if res.StatusCode != 200 {
-		return nil, fmt.Errorf("unexpected response from API. Got an unexpected response code %v", res.StatusCode)
+// cleanupDurationFields ensures that only one of the fields DurationGrant or DurationUnset is present in the final model (data),
+// using the plan as the source of truth.
+func cleanupDurationFields(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse, data *AppEntitlementResourceModel) {
+	var plan types.Object
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
 	}
 
-	if res.GetAppEntitlementResponse.AppEntitlementView == nil {
-		return nil, fmt.Errorf("unexpected response from API. No response body")
+	if data == nil {
+		return
 	}
 
-	if res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement == nil {
-		return nil, fmt.Errorf("unexpected response from API. No response body")
+	planHasGrant := false
+	planHasUnset := false
+	planAttributes := plan.Attributes()
+	if planAttributes != nil {
+		if planAttributes["duration_grant"] != nil {
+			if str, ok := planAttributes["duration_grant"].(types.String); ok && !str.IsNull() && !str.IsUnknown() && str.ValueString() != "" {
+				planHasGrant = true
+			}
+		}
+		if planAttributes["duration_unset"] != nil {
+			if obj, ok := planAttributes["duration_unset"].(types.Object); ok && !obj.IsNull() && !obj.IsUnknown() {
+				planHasUnset = true
+			}
+		}
 	}
-	return res.GetAppEntitlementResponse.AppEntitlementView.AppEntitlement, nil
+
+	switch {
+	case planHasGrant && !planHasUnset:
+		data.DurationUnset = nil
+	case !planHasGrant && planHasUnset:
+		data.DurationGrant = types.StringNull()
+	case !planHasGrant && !planHasUnset:
+		data.DurationGrant = types.StringNull()
+		data.DurationUnset = nil
+	}
 }

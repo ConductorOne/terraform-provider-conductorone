@@ -6,13 +6,13 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const coupaCatalogID = "2DEn2tGMGD2KR6uKAAAWS3VVJV6"
+const coupaCatalogID = "2rSHEoPoq5CS89JAUevDbYBS3uA"
 
 func (r *IntegrationCoupaResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(coupaCatalogID)
@@ -21,7 +21,7 @@ func (r *IntegrationCoupaResourceModel) ToCreateDelegatedSDKType() *shared.Conne
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("Coupa"),
+		DisplayName: sdk.String("Coupa v2"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -53,7 +53,7 @@ func (r *IntegrationCoupaResourceModel) ToCreateSDKType() (*shared.ConnectorServ
 	return &out, nil
 }
 
-func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,8 +74,8 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 		configOut = nil
 	}
 
-	out := shared.Connector{
-		DisplayName: sdk.String("Coupa"),
+	out := shared.ConnectorInput{
+		DisplayName: sdk.String("Coupa v2"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(coupaCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
@@ -86,45 +86,38 @@ func (r *IntegrationCoupaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	return &out, configSet
 }
 
-func (r *IntegrationCoupaResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationCoupaResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	coupaDomain := new(string)
 	if !r.CoupaDomain.IsUnknown() && !r.CoupaDomain.IsNull() {
 		*coupaDomain = r.CoupaDomain.ValueString()
-	} else {
-		coupaDomain = nil
+		configValues["coupa-domain"] = coupaDomain
 	}
 
 	oauth2ClientCredGrantClientId := new(string)
 	if !r.Oauth2ClientCredGrantClientId.IsUnknown() && !r.Oauth2ClientCredGrantClientId.IsNull() {
 		*oauth2ClientCredGrantClientId = r.Oauth2ClientCredGrantClientId.ValueString()
-	} else {
-		oauth2ClientCredGrantClientId = nil
+		configValues["oauth2_client_cred_grant_client_id"] = oauth2ClientCredGrantClientId
 	}
 
 	oauth2ClientCredGrantClientSecret := new(string)
 	if !r.Oauth2ClientCredGrantClientSecret.IsUnknown() && !r.Oauth2ClientCredGrantClientSecret.IsNull() {
 		*oauth2ClientCredGrantClientSecret = r.Oauth2ClientCredGrantClientSecret.ValueString()
-	} else {
-		oauth2ClientCredGrantClientSecret = nil
-	}
-
-	configValues := map[string]*string{
-		"coupa-domain":                           coupaDomain,
-		"oauth2_client_cred_grant_client_id":     oauth2ClientCredGrantClientId,
-		"oauth2_client_cred_grant_client_secret": oauth2ClientCredGrantClientSecret,
+		configValues["oauth2_client_cred_grant_client_secret"] = oauth2ClientCredGrantClientSecret
 	}
 
 	return configValues
 }
 
-func (r *IntegrationCoupaResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationCoupaResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -182,12 +175,12 @@ func (r *IntegrationCoupaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["coupa-domain"]; ok {
-					r.CoupaDomain = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "coupa-domain"); ok {
+					r.CoupaDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["oauth2_client_cred_grant_client_id"]; ok {
-					r.Oauth2ClientCredGrantClientId = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
+					r.Oauth2ClientCredGrantClientId = types.StringValue(val)
 				}
 
 			}
@@ -233,12 +226,12 @@ func (r *IntegrationCoupaResourceModel) RefreshFromCreateResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["coupa-domain"]; ok {
-					r.CoupaDomain = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "coupa-domain"); ok {
+					r.CoupaDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["oauth2_client_cred_grant_client_id"]; ok {
-					r.Oauth2ClientCredGrantClientId = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
+					r.Oauth2ClientCredGrantClientId = types.StringValue(val)
 				}
 
 			}

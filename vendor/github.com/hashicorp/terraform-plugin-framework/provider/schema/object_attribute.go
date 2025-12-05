@@ -6,13 +6,15 @@ package schema
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
+
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fwschema"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fwschema/fwxschema"
+	"github.com/hashicorp/terraform-plugin-framework/internal/fwtype"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 // Ensure the implementation satisifies the desired interfaces.
@@ -46,6 +48,10 @@ var (
 type ObjectAttribute struct {
 	// AttributeTypes is the mapping of underlying attribute names to attribute
 	// types. This field must be set.
+	//
+	// Attribute types that contain a collection with a nested dynamic type (i.e. types.List[types.Dynamic]) are not supported.
+	// If underlying dynamic collection values are required, replace this attribute definition with
+	// DynamicAttribute instead.
 	AttributeTypes map[string]attr.Type
 
 	// CustomType enables the use of a custom attribute type in place of the
@@ -192,6 +198,24 @@ func (a ObjectAttribute) IsSensitive() bool {
 	return a.Sensitive
 }
 
+// IsWriteOnly returns false as write-only attributes are not relevant to provider schemas,
+// as these schemas describe data explicitly not saved to any artifact.
+func (a ObjectAttribute) IsWriteOnly() bool {
+	return false
+}
+
+// IsRequiredForImport returns false as this behavior is only relevant
+// for managed resource identity schema attributes.
+func (a ObjectAttribute) IsRequiredForImport() bool {
+	return false
+}
+
+// IsOptionalForImport returns false as this behavior is only relevant
+// for managed resource identity schema attributes.
+func (a ObjectAttribute) IsOptionalForImport() bool {
+	return false
+}
+
 // ObjectValidators returns the Validators field value.
 func (a ObjectAttribute) ObjectValidators() []validator.Object {
 	return a.Validators
@@ -204,5 +228,9 @@ func (a ObjectAttribute) ObjectValidators() []validator.Object {
 func (a ObjectAttribute) ValidateImplementation(ctx context.Context, req fwschema.ValidateImplementationRequest, resp *fwschema.ValidateImplementationResponse) {
 	if a.AttributeTypes == nil && a.CustomType == nil {
 		resp.Diagnostics.Append(fwschema.AttributeMissingAttributeTypesDiag(req.Path))
+	}
+
+	if a.CustomType == nil && fwtype.ContainsCollectionWithDynamic(a.GetType()) {
+		resp.Diagnostics.Append(fwtype.AttributeCollectionWithDynamicTypeDiag(req.Path))
 	}
 }

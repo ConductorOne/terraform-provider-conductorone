@@ -1,0 +1,20 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This data source enables you to retrieve ConductorOne webhooks using the following search criteria:
+
+* `query` - Search query string
+
+## Example Usage
+
+{{ tffile "examples/data-sources/conductorone_webhook/data-source.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

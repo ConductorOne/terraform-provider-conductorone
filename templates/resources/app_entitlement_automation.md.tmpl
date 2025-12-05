@@ -1,0 +1,24 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This resource allows you to configure an App Entitlement Automation instance in ConductorOne.
+It enables automation rules for entitlements within the ConductorOne application, allowing for granular control of access.
+
+When creating an entitlement automation resource, you must specify the associated `app_entitlement_id` and `app_id`.
+You can define multiple rule types, including basic expressions, CEL expressions, and entitlement references.
+
+NOTE: This resource can only be created for an entitlement on the ConductorOne application.
+
+## Example Usage
+
+{{ tffile "examples/resources/conductorone_app_entitlement_automation/resource.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,14 +35,14 @@ type IntegrationGithubEnterpriseResource struct {
 
 // IntegrationGithubEnterpriseResourceModel describes the resource data model.
 type IntegrationGithubEnterpriseResourceModel struct {
-	AppID             types.String   `tfsdk:"app_id"`
-	CreatedAt         types.String   `tfsdk:"created_at"`
-	DeletedAt         types.String   `tfsdk:"deleted_at"`
-	ID                types.String   `tfsdk:"id"`
-	UpdatedAt         types.String   `tfsdk:"updated_at"`
-	UserIds           []types.String `tfsdk:"user_ids"`
-	GithubInstanceUrl types.String   `tfsdk:"github_instance_url"`
-	GithubAccessToken types.String   `tfsdk:"github_access_token"`
+	AppID                          types.String   `tfsdk:"app_id"`
+	CreatedAt                      types.String   `tfsdk:"created_at"`
+	DeletedAt                      types.String   `tfsdk:"deleted_at"`
+	ID                             types.String   `tfsdk:"id"`
+	UpdatedAt                      types.String   `tfsdk:"updated_at"`
+	UserIds                        []types.String `tfsdk:"user_ids"`
+	GithubPersonalAccessTokenGroup types.Object   `tfsdk:"github_personal_access_token_group"`
+	GithubAppGroup                 types.Object   `tfsdk:"github_app_group"`
 }
 
 func (r *IntegrationGithubEnterpriseResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -92,14 +92,48 @@ func (r *IntegrationGithubEnterpriseResource) Schema(ctx context.Context, req re
 				ElementType: types.StringType,
 				Description: `A list of user IDs of who owns this integration. It defaults to the user who created the integration.`,
 			},
-			"github_instance_url": &schema.StringAttribute{
+			"github_personal_access_token_group": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `GitHub Instance URL`,
+				Description: `Personal access token`,
+				Attributes: map[string]schema.Attribute{
+					"github_instance_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Instance URL`,
+					},
+					"github_access_token": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `Personal access token`,
+					},
+					"github_org_list": &schema.ListAttribute{
+						Optional:    true,
+						Description: `Organizations (optional)`,
+						ElementType: types.StringType,
+					},
+				},
 			},
-			"github_access_token": &schema.StringAttribute{
+			"github_app_group": &schema.SingleNestedAttribute{
 				Optional:    true,
-				Sensitive:   true,
-				Description: `GitHub Personal Access Token`,
+				Description: `GitHub app`,
+				Attributes: map[string]schema.Attribute{
+					"github_instance_url": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Instance URL`,
+					},
+					"github_app_id": &schema.StringAttribute{
+						Optional:    true,
+						Description: `GitHub app ID`,
+					},
+					"github_app_private_key": &schema.StringAttribute{
+						Optional:    true,
+						Sensitive:   true,
+						Description: `GitHub app private key (.pem)`,
+					},
+					"github_app_org": &schema.StringAttribute{
+						Optional:    true,
+						Description: `Github App Organization`,
+					},
+				},
 			},
 		},
 	}
@@ -278,7 +312,7 @@ func (r *IntegrationGithubEnterpriseResource) Update(ctx context.Context, req re
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
 			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
 				Connector:  updateCon,
-				UpdateMask: "config",
+				UpdateMask: types.StringValue("config").ValueStringPointer(),
 			},
 			AppID: appID,
 			ID:    data.ID.ValueString(),
@@ -301,7 +335,7 @@ func (r *IntegrationGithubEnterpriseResource) Update(ctx context.Context, req re
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
 			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
 				Connector:  updateCon,
-				UpdateMask: "displayName,userIds",
+				UpdateMask: types.StringValue("displayName,userIds").ValueStringPointer(),
 			},
 			ConnectorAppID: appID,
 			ConnectorID:    data.ID.ValueString(),

@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,16 +35,17 @@ type IntegrationOktaResource struct {
 
 // IntegrationOktaResourceModel describes the resource data model.
 type IntegrationOktaResourceModel struct {
-	AppID                    types.String   `tfsdk:"app_id"`
-	CreatedAt                types.String   `tfsdk:"created_at"`
-	DeletedAt                types.String   `tfsdk:"deleted_at"`
-	ID                       types.String   `tfsdk:"id"`
-	UpdatedAt                types.String   `tfsdk:"updated_at"`
-	UserIds                  []types.String `tfsdk:"user_ids"`
-	OktaDomain               types.String   `tfsdk:"okta_domain"`
-	OktaApiKey               types.String   `tfsdk:"okta_api_key"`
-	OktaDontSyncInactiveApps types.Bool     `tfsdk:"okta_dont_sync_inactive_apps"`
-	OktaExtractAwsSamlRoles  types.Bool     `tfsdk:"okta_extract_aws_saml_roles"`
+	AppID                      types.String   `tfsdk:"app_id"`
+	CreatedAt                  types.String   `tfsdk:"created_at"`
+	DeletedAt                  types.String   `tfsdk:"deleted_at"`
+	ID                         types.String   `tfsdk:"id"`
+	UpdatedAt                  types.String   `tfsdk:"updated_at"`
+	UserIds                    []types.String `tfsdk:"user_ids"`
+	OktaDomain                 types.String   `tfsdk:"okta_domain"`
+	OktaApiKey                 types.String   `tfsdk:"okta_api_key"`
+	OktaDontSyncInactiveApps   types.Bool     `tfsdk:"okta_dont_sync_inactive_apps"`
+	OktaExtractAwsSamlRoles    types.Bool     `tfsdk:"okta_extract_aws_saml_roles"`
+	OktaSyncDeprovisionedUsers types.Bool     `tfsdk:"okta_sync_deprovisioned_users"`
 }
 
 func (r *IntegrationOktaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -96,20 +97,24 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"okta_domain": &schema.StringAttribute{
 				Optional:    true,
-				Description: `The okta domain field.`,
+				Description: `Okta domain`,
 			},
 			"okta_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `The okta api key field.`,
+				Description: `API key`,
 			},
 			"okta_dont_sync_inactive_apps": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Don't include inactive apps in the sync. Defaults to false. If set to true, the integration will only sync active apps.`,
+				Description: `Do not sync inactive apps`,
 			},
 			"okta_extract_aws_saml_roles": &schema.BoolAttribute{
 				Optional:    true,
-				Description: `Extract AWS SAML roles from Okta SAML responses. Defaults to false. If set to true, the integration will extract AWS SAML roles from Okta SAML responses.`,
+				Description: `Extract SAML Role assignments in Okta AWS apps`,
+			},
+			"okta_sync_deprovisioned_users": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Sync deprovisioned users`,
 			},
 		},
 	}
@@ -288,7 +293,7 @@ func (r *IntegrationOktaResource) Update(ctx context.Context, req resource.Updat
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
 			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
 				Connector:  updateCon,
-				UpdateMask: "config",
+				UpdateMask: types.StringValue("config").ValueStringPointer(),
 			},
 			AppID: appID,
 			ID:    data.ID.ValueString(),
@@ -311,7 +316,7 @@ func (r *IntegrationOktaResource) Update(ctx context.Context, req resource.Updat
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
 			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
 				Connector:  updateCon,
-				UpdateMask: "displayName,userIds",
+				UpdateMask: types.StringValue("displayName,userIds").ValueStringPointer(),
 			},
 			ConnectorAppID: appID,
 			ConnectorID:    data.ID.ValueString(),

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationDuoResourceModel) ToCreateSDKType() (*shared.ConnectorServic
 	return &out, nil
 }
 
-func (r *IntegrationDuoResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationDuoResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationDuoResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationDuoResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Duo"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(duoCatalogID),
@@ -86,45 +86,38 @@ func (r *IntegrationDuoResourceModel) ToUpdateSDKType() (*shared.Connector, bool
 	return &out, configSet
 }
 
-func (r *IntegrationDuoResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationDuoResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	duoIntegrationKey := new(string)
 	if !r.DuoIntegrationKey.IsUnknown() && !r.DuoIntegrationKey.IsNull() {
 		*duoIntegrationKey = r.DuoIntegrationKey.ValueString()
-	} else {
-		duoIntegrationKey = nil
+		configValues["duo_integration_key"] = duoIntegrationKey
 	}
 
 	duoSecretKey := new(string)
 	if !r.DuoSecretKey.IsUnknown() && !r.DuoSecretKey.IsNull() {
 		*duoSecretKey = r.DuoSecretKey.ValueString()
-	} else {
-		duoSecretKey = nil
+		configValues["duo_secret_key"] = duoSecretKey
 	}
 
 	duoApiHostname := new(string)
 	if !r.DuoApiHostname.IsUnknown() && !r.DuoApiHostname.IsNull() {
 		*duoApiHostname = r.DuoApiHostname.ValueString()
-	} else {
-		duoApiHostname = nil
-	}
-
-	configValues := map[string]*string{
-		"duo_integration_key": duoIntegrationKey,
-		"duo_secret_key":      duoSecretKey,
-		"duo_api_hostname":    duoApiHostname,
+		configValues["duo_api_hostname"] = duoApiHostname
 	}
 
 	return configValues
 }
 
-func (r *IntegrationDuoResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationDuoResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationZendeskResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	return &out, nil
 }
 
-func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() (*shared.Connector, 
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() (*shared.Connector, 
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Zendesk"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(zendeskCatalogID),
@@ -86,45 +86,38 @@ func (r *IntegrationZendeskResourceModel) ToUpdateSDKType() (*shared.Connector, 
 	return &out, configSet
 }
 
-func (r *IntegrationZendeskResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationZendeskResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	email := new(string)
 	if !r.Email.IsUnknown() && !r.Email.IsNull() {
 		*email = r.Email.ValueString()
-	} else {
-		email = nil
+		configValues["email"] = email
 	}
 
 	subdomain := new(string)
 	if !r.Subdomain.IsUnknown() && !r.Subdomain.IsNull() {
 		*subdomain = r.Subdomain.ValueString()
-	} else {
-		subdomain = nil
+		configValues["subdomain"] = subdomain
 	}
 
 	apiToken := new(string)
 	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
 		*apiToken = r.ApiToken.ValueString()
-	} else {
-		apiToken = nil
-	}
-
-	configValues := map[string]*string{
-		"email":     email,
-		"subdomain": subdomain,
-		"api_token": apiToken,
+		configValues["api_token"] = apiToken
 	}
 
 	return configValues
 }
 
-func (r *IntegrationZendeskResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationZendeskResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -182,9 +175,12 @@ func (r *IntegrationZendeskResourceModel) RefreshFromGetResponse(resp *shared.Co
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if val, ok := getStringValue(values, "email"); ok {
+					r.Email = types.StringValue(val)
+				}
 
-				if v, ok := values["subdomain"]; ok {
-					r.Subdomain = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "subdomain"); ok {
+					r.Subdomain = types.StringValue(val)
 				}
 
 			}
@@ -230,9 +226,12 @@ func (r *IntegrationZendeskResourceModel) RefreshFromCreateResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if val, ok := getStringValue(values, "email"); ok {
+					r.Email = types.StringValue(val)
+				}
 
-				if v, ok := values["subdomain"]; ok {
-					r.Subdomain = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "subdomain"); ok {
+					r.Subdomain = types.StringValue(val)
 				}
 
 			}

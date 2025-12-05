@@ -2,7 +2,7 @@
 page_title: "conductorone_integration_google_identity_platform Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Googleidentityplatform Integration Resource
+  Google_identity_platform Integration Resource
 ---
 
 # conductorone_integration_google_identity_platform (Resource)
@@ -36,7 +36,7 @@ resource "conductorone_integration_google_identity_platform" "google_identity_pl
 
 ### Optional
 
-- `credentials_json` (String, Sensitive) Credentials JSON
+- `credentials_json` (String, Sensitive) Credentials (JSON)
 - `project_id` (String) Project ID
 - `tenant_id` (String) Tenant ID
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.

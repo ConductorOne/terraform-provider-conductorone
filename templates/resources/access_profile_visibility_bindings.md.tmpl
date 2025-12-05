@@ -1,0 +1,22 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This resource allows you to manage visibility bindings for a specific request access profile in ConductorOne.
+When creating a `access_profile_visbility_bindings` resource you must provide a `access_profile_id`, and specify the `app_id` and `id` of at least one app entitlement.
+The entitlements you define here will determine which users have access to the specified access profile.
+
+## Example Usage
+
+{{ tffile "examples/resources/conductorone_access_profile/resource.tf" }}
+
+{{ tffile "examples/resources/conductorone_access_profile_visibility_bindings/resource.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

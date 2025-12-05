@@ -3,11 +3,11 @@ package provider
 
 import (
 	"fmt"
-
+	"strconv"
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationAsanaResourceModel) ToCreateSDKType() (*shared.ConnectorServ
 	return &out, nil
 }
 
-func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Asana"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(asanaCatalogID),
@@ -86,29 +86,44 @@ func (r *IntegrationAsanaResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	return &out, configSet
 }
 
-func (r *IntegrationAsanaResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationAsanaResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	asanaApiKey := new(string)
 	if !r.AsanaApiKey.IsUnknown() && !r.AsanaApiKey.IsNull() {
 		*asanaApiKey = r.AsanaApiKey.ValueString()
-	} else {
-		asanaApiKey = nil
+		configValues["asana_api_key"] = asanaApiKey
 	}
 
-	configValues := map[string]*string{
-		"asana_api_key": asanaApiKey,
+	asanaIsServiceAccount := new(string)
+	if !r.AsanaIsServiceAccount.IsUnknown() && !r.AsanaIsServiceAccount.IsNull() {
+		*asanaIsServiceAccount = strconv.FormatBool(r.AsanaIsServiceAccount.ValueBool())
+		configValues["asana_is_service_account"] = asanaIsServiceAccount
+	}
+
+	asanaDefaultWorkspace := new(string)
+	if !r.AsanaDefaultWorkspace.IsUnknown() && !r.AsanaDefaultWorkspace.IsNull() {
+		*asanaDefaultWorkspace = r.AsanaDefaultWorkspace.ValueString()
+		configValues["asana_default_workspace"] = asanaDefaultWorkspace
+	}
+
+	asanaUseScimApi := new(string)
+	if !r.AsanaUseScimApi.IsUnknown() && !r.AsanaUseScimApi.IsNull() {
+		*asanaUseScimApi = strconv.FormatBool(r.AsanaUseScimApi.ValueBool())
+		configValues["asana_use_scim_api"] = asanaUseScimApi
 	}
 
 	return configValues
 }
 
-func (r *IntegrationAsanaResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationAsanaResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -163,6 +178,36 @@ func (r *IntegrationAsanaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if _, ok := configValues["asana_is_service_account"]; ok {
+					if val, ok := getStringValue(values, "asana_is_service_account"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.AsanaIsServiceAccount = types.BoolValue(bv)
+						}
+					}
+				}
+
+				if val, ok := getStringValue(values, "asana_default_workspace"); ok {
+					r.AsanaDefaultWorkspace = types.StringValue(val)
+				}
+
+				if _, ok := configValues["asana_use_scim_api"]; ok {
+					if val, ok := getStringValue(values, "asana_use_scim_api"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.AsanaUseScimApi = types.BoolValue(bv)
+						}
+					}
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationAsanaResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -200,4 +245,34 @@ func (r *IntegrationAsanaResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if _, ok := configValues["asana_is_service_account"]; ok {
+					if val, ok := getStringValue(values, "asana_is_service_account"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.AsanaIsServiceAccount = types.BoolValue(bv)
+						}
+					}
+				}
+
+				if val, ok := getStringValue(values, "asana_default_workspace"); ok {
+					r.AsanaDefaultWorkspace = types.StringValue(val)
+				}
+
+				if _, ok := configValues["asana_use_scim_api"]; ok {
+					if val, ok := getStringValue(values, "asana_use_scim_api"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.AsanaUseScimApi = types.BoolValue(bv)
+						}
+					}
+				}
+
+			}
+		}
+	}
 }

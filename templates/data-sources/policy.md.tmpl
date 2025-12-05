@@ -9,10 +9,15 @@ description: |-
 
 {{ .Description | trimspace }}
 
-The Policy datasource allows you to retrieve a Policy instance by `display_name` (case insensitive), or `id` in ConductorOne.
+This data source enables you to retrieve ConductorOne policies using the following search criteria:
+
+* `display_name` - Filter by display name (case insensitive)
+* `include_deleted` - Include deleted policies in results
+* `policy_types` - List of policy types to filter by (e.g. "POLICY_TYPE_ACCESS_REQUEST")
+* `query` - Search query string
 
 ## Example Usage
 
-{{ tffile "examples/data-sources/conductorone_policy/policy.tf" }}
+{{ tffile "examples/data-sources/conductorone_policy/data-source.tf" }}
 
 {{ .SchemaMarkdown | trimspace }}

@@ -10,21 +10,22 @@ description: |-
 App Resource
 
 This resource allows you to configure an App instance in ConductorOne.
-When creating an app you must provide a display name. Optionally, you can provide policies, owners, cost per seat, and a description.
-If owners are not specified, the app will be owned by the user who created the resource.
+When creating an app you must provide a display name. Optionally, you can provide policies, cost per seat, and a description.
+
+NOTE: To control appOwners you must use the `conductorone_app_owner` resource.
 
 ## Example Usage
 
 ```terraform
-resource "conductorone_app" "test_new_app" {
-  display_name = "Terraform Created App"
-  owners = [
-    data.conductorone_user.my_user.id
-  ]
-  certify_policy_id = data.conductorone_policy.default_review_policy.id
-  grant_policy_id   = data.conductorone_policy.default_request_policy.id
-  revoke_policy_id  = data.conductorone_policy.default_revoke_policy.id
-  monthly_cost_usd  = "10"
+resource "conductorone_app" "my_app" {
+  certify_policy_id                      = "...my_certify_policy_id..."
+  description                            = "...my_description..."
+  display_name                           = "...my_display_name..."
+  grant_policy_id                        = "...my_grant_policy_id..."
+  identity_matching                      = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
+  monthly_cost_usd                       = 1
+  revoke_policy_id                       = "...my_revoke_policy_id..."
+  strict_access_entitlement_provisioning = true
 }
 ```
 
@@ -33,27 +34,29 @@ resource "conductorone_app" "test_new_app" {
 
 ### Required
 
-- `display_name` (String) The displayName field.
+- `display_name` (String) Creates the app with this display name.
 
 ### Optional
 
-- `certify_policy_id` (String) The certifyPolicyId is the ID of the policy that will be used for access review certify tasks.
-- `description` (String) The description field.
-- `grant_policy_id` (String) The grantPolicyId field is the policy that will be used for access request grant tasks.
-- `monthly_cost_usd` (Number) The monthlyCostUsd field is the monthly cost per seat for the given app.
-- `owners` (List of String) The owners field is a list of user IDs indicating the app owners.
-- `revoke_policy_id` (String) The revokePolicyId is the ID of the policy that will be used for revoke access tasks.
+- `certify_policy_id` (String) Creates the app with this certify policy.
+- `description` (String) Creates the app with this description.
+- `grant_policy_id` (String) Creates the app with this grant policy.
+- `identity_matching` (String) Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"]
+- `monthly_cost_usd` (Number) Creates the app with this monthly cost per seat.
+- `revoke_policy_id` (String) Creates the app with this revoke policy.
+- `strict_access_entitlement_provisioning` (Boolean) This flag enforces a provisioning mode where the access entitlement is always included in the provisioning flow, if the app user doesn't exist
 
 ### Read-Only
 
-- `app_account_id` (String) The appAccountId field.
-- `app_account_name` (String) The appAccountName field.
+- `app_account_id` (String) The ID of the Account named by AccountName.
+- `app_account_name` (String) The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
+- `connector_version` (Number) The connectorVersion field.
 - `created_at` (String)
-- `deleted_at` (String)
-- `field_mask` (String)
-- `icon_url` (String) The iconUrl field.
-- `id` (String) The id field.
-- `logo_uri` (String) The logoUri field.
-- `parent_app_id` (String) The parentAppId field is the ID of the parent app if one exists.
+- `default_request_catalog_id` (String) The ID for the default request catalog for this app.
+- `id` (String) The ID of the app.
+- `instructions` (String) If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
+- `is_directory` (Boolean) Specifies if the app is a directory.
+- `is_manually_managed` (Boolean) The isManuallyManaged field.
+- `parent_app_id` (String) The ID of the app that created this app, if any.
 - `updated_at` (String)
-- `user_count` (String) The userCount field is the number of app users that are associated with the app.
+- `user_count` (String) The number of users with grants to this app.

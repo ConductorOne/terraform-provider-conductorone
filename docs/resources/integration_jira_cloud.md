@@ -21,9 +21,12 @@ resource "conductorone_integration_jira_cloud" "jira_cloud" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  jiracloud_domain   = "..."
-  jiracloud_username = "..."
-  jiracloud_apikey   = "..."
+  jiracloud_domain                    = "..."
+  jiracloud_username                  = "..."
+  jiracloud_apikey                    = "..."
+  enable_external_ticket_provisioning = false
+  jiracloud_project_keys              = ["..."]
+  jiracloud_skip_project_participants = false
 }
 ```
 
@@ -36,9 +39,12 @@ resource "conductorone_integration_jira_cloud" "jira_cloud" {
 
 ### Optional
 
-- `jiracloud_apikey` (String, Sensitive) Jira API Key
-- `jiracloud_domain` (String) Jira Site Domain
-- `jiracloud_username` (String) Jira Username
+- `enable_external_ticket_provisioning` (Boolean) Enable external ticket provisioning
+- `jiracloud_apikey` (String, Sensitive) API token
+- `jiracloud_domain` (String) Jira site domain
+- `jiracloud_project_keys` (List of String) Project keys (optional)
+- `jiracloud_skip_project_participants` (Boolean) Skip project participants
+- `jiracloud_username` (String) Your Jira email address
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

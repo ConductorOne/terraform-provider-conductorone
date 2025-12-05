@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationTailscaleResourceModel) ToCreateSDKType() (*shared.Connector
 	return &out, nil
 }
 
-func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Tailscale"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(tailscaleCatalogID),
@@ -86,37 +86,32 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	tailscaleApiKey := new(string)
 	if !r.TailscaleApiKey.IsUnknown() && !r.TailscaleApiKey.IsNull() {
 		*tailscaleApiKey = r.TailscaleApiKey.ValueString()
-	} else {
-		tailscaleApiKey = nil
+		configValues["tailscale_api_key"] = tailscaleApiKey
 	}
 
 	tailnet := new(string)
 	if !r.Tailnet.IsUnknown() && !r.Tailnet.IsNull() {
 		*tailnet = r.Tailnet.ValueString()
-	} else {
-		tailnet = nil
-	}
-
-	configValues := map[string]*string{
-		"tailscale_api_key": tailscaleApiKey,
-		"tailnet":           tailnet,
+		configValues["tailnet"] = tailnet
 	}
 
 	return configValues
 }
 
-func (r *IntegrationTailscaleResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationTailscaleResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -171,6 +166,17 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if val, ok := getStringValue(values, "tailnet"); ok {
+					r.Tailnet = types.StringValue(val)
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationTailscaleResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -208,4 +214,15 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if val, ok := getStringValue(values, "tailnet"); ok {
+					r.Tailnet = types.StringValue(val)
+				}
+
+			}
+		}
+	}
 }

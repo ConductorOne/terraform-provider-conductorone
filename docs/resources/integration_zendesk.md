@@ -36,9 +36,9 @@ resource "conductorone_integration_zendesk" "zendesk" {
 
 ### Optional
 
-- `api_token` (String, Sensitive) Zendesk API Token
-- `email` (String, Sensitive) Zendesk Email
-- `subdomain` (String) Zendesk Subdomain
+- `api_token` (String, Sensitive) API token
+- `email` (String) Email
+- `subdomain` (String) Subdomain
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

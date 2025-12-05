@@ -11,6 +11,7 @@ The ConductorOne provider allows you to configure important management objects i
 - Integrations
 - Entitlements
 - Applications
+- Access Profiles
 
 Use the navigation to the left to read about the available resources.
 
@@ -34,3 +35,18 @@ This includes the "secrets", that will be part of the state file *unencrypted*.
 
 Because of this, it's important to make sure that the state file is stored in a secure location. Better yet, it is possible
 to inject secrets using something like the [vault provider](https://registry.terraform.io/providers/hashicorp/vault).
+
+
+## Breaking changes
+
+### 1.0.0
+
+- The `request_catalog` resource and datasource are now the `access_profile` resource and datasource.
+- There are also breaking changes to many of the datasources, as we switched to using search endpoints to give more options on how to filter the result. This may require you to update your Terraform configurations to use the proper fields for the datasources as some of the field names have changed. 
+  The list of datasources that have been affected are:
+    - `conductorone_app`
+    - `conductorone_app_entitlement`
+    - `conductorone_policy`
+    - `conductorone_user`
+    - `conductorone_webhook`
+    - `conductorone_app_resource_type`

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationGoogleWorkspaceResourceModel) ToCreateSDKType() (*shared.Con
 	return &out, nil
 }
 
-func (r *IntegrationGoogleWorkspaceResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationGoogleWorkspaceResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationGoogleWorkspaceResourceModel) ToUpdateSDKType() (*shared.Con
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationGoogleWorkspaceResourceModel) ToUpdateSDKType() (*shared.Con
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Google Workspace"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(googleWorkspaceCatalogID),
@@ -86,53 +86,44 @@ func (r *IntegrationGoogleWorkspaceResourceModel) ToUpdateSDKType() (*shared.Con
 	return &out, configSet
 }
 
-func (r *IntegrationGoogleWorkspaceResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationGoogleWorkspaceResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	customerId := new(string)
 	if !r.CustomerId.IsUnknown() && !r.CustomerId.IsNull() {
 		*customerId = r.CustomerId.ValueString()
-	} else {
-		customerId = nil
+		configValues["customer_id"] = customerId
 	}
 
 	domain := new(string)
 	if !r.Domain.IsUnknown() && !r.Domain.IsNull() {
 		*domain = r.Domain.ValueString()
-	} else {
-		domain = nil
+		configValues["domain"] = domain
 	}
 
 	administratorEmail := new(string)
 	if !r.AdministratorEmail.IsUnknown() && !r.AdministratorEmail.IsNull() {
 		*administratorEmail = r.AdministratorEmail.ValueString()
-	} else {
-		administratorEmail = nil
+		configValues["administrator_email"] = administratorEmail
 	}
 
 	credentialsJson := new(string)
 	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
 		*credentialsJson = r.CredentialsJson.ValueString()
-	} else {
-		credentialsJson = nil
-	}
-
-	configValues := map[string]*string{
-		"customer_id":         customerId,
-		"domain":              domain,
-		"administrator_email": administratorEmail,
-		"credentials_json":    credentialsJson,
+		configValues["credentials_json"] = credentialsJson
 	}
 
 	return configValues
 }
 
-func (r *IntegrationGoogleWorkspaceResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationGoogleWorkspaceResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -190,16 +181,16 @@ func (r *IntegrationGoogleWorkspaceResourceModel) RefreshFromGetResponse(resp *s
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["customer_id"]; ok {
-					r.CustomerId = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "customer_id"); ok {
+					r.CustomerId = types.StringValue(val)
 				}
 
-				if v, ok := values["domain"]; ok {
-					r.Domain = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "domain"); ok {
+					r.Domain = types.StringValue(val)
 				}
 
-				if v, ok := values["administrator_email"]; ok {
-					r.AdministratorEmail = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "administrator_email"); ok {
+					r.AdministratorEmail = types.StringValue(val)
 				}
 
 			}
@@ -245,16 +236,16 @@ func (r *IntegrationGoogleWorkspaceResourceModel) RefreshFromCreateResponse(resp
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["customer_id"]; ok {
-					r.CustomerId = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "customer_id"); ok {
+					r.CustomerId = types.StringValue(val)
 				}
 
-				if v, ok := values["domain"]; ok {
-					r.Domain = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "domain"); ok {
+					r.Domain = types.StringValue(val)
 				}
 
-				if v, ok := values["administrator_email"]; ok {
-					r.AdministratorEmail = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "administrator_email"); ok {
+					r.AdministratorEmail = types.StringValue(val)
 				}
 
 			}

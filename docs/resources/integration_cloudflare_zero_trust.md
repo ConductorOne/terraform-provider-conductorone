@@ -2,7 +2,7 @@
 page_title: "conductorone_integration_cloudflare_zero_trust Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Cloudflarezerotrust Integration Resource
+  Cloudflare_zero_trust Integration Resource
 ---
 
 # conductorone_integration_cloudflare_zero_trust (Resource)
@@ -36,7 +36,7 @@ resource "conductorone_integration_cloudflare_zero_trust" "cloudflare_zero_trust
 ### Optional
 
 - `account_id` (String) Account ID
-- `api_key` (String, Sensitive) Your API Key
+- `api_key` (String, Sensitive) API key
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

@@ -6,13 +6,13 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const googleCloudPlatformCatalogID = "2MmyvKxWGE3Axgi03HtDIaZzRmW"
+const googleCloudPlatformCatalogID = "28fj8AZmzDkDonl2lqsGTikiQKV"
 
 func (r *IntegrationGoogleCloudPlatformResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(googleCloudPlatformCatalogID)
@@ -53,7 +53,7 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToCreateSDKType() (*shared
 	return &out, nil
 }
 
-func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Google Cloud Platform"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(googleCloudPlatformCatalogID),
@@ -86,29 +86,26 @@ func (r *IntegrationGoogleCloudPlatformResourceModel) ToUpdateSDKType() (*shared
 	return &out, configSet
 }
 
-func (r *IntegrationGoogleCloudPlatformResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationGoogleCloudPlatformResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	credentialsJson := new(string)
 	if !r.CredentialsJson.IsUnknown() && !r.CredentialsJson.IsNull() {
 		*credentialsJson = r.CredentialsJson.ValueString()
-	} else {
-		credentialsJson = nil
-	}
-
-	configValues := map[string]*string{
-		"credentials_json": credentialsJson,
+		configValues["credentials_json"] = credentialsJson
 	}
 
 	return configValues
 }
 
-func (r *IntegrationGoogleCloudPlatformResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationGoogleCloudPlatformResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

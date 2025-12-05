@@ -6,13 +6,13 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-const rampCatalogID = "2BmBJNkLkChmzbk9JI1SYHa6SrX"
+const rampCatalogID = "301AOhxbzA3Ov3aOPtcEqBQ4zNf"
 
 func (r *IntegrationRampResourceModel) ToCreateDelegatedSDKType() *shared.ConnectorServiceCreateDelegatedRequest {
 	catalogID := sdk.String(rampCatalogID)
@@ -21,7 +21,7 @@ func (r *IntegrationRampResourceModel) ToCreateDelegatedSDKType() *shared.Connec
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("Ramp"),
+		DisplayName: sdk.String("Ramp V2"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -53,7 +53,7 @@ func (r *IntegrationRampResourceModel) ToCreateSDKType() (*shared.ConnectorServi
 	return &out, nil
 }
 
-func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,8 +74,8 @@ func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 		configOut = nil
 	}
 
-	out := shared.Connector{
-		DisplayName: sdk.String("Ramp"),
+	out := shared.ConnectorInput{
+		DisplayName: sdk.String("Ramp V2"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(rampCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
@@ -86,21 +86,20 @@ func (r *IntegrationRampResourceModel) ToUpdateSDKType() (*shared.Connector, boo
 	return &out, configSet
 }
 
-func (r *IntegrationRampResourceModel) populateConfig() map[string]*string {
-
-	configValues := map[string]*string{}
+func (r *IntegrationRampResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
 
 	return configValues
 }
 
-func (r *IntegrationRampResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationRampResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fwschema"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fwschema/fwxschema"
+	"github.com/hashicorp/terraform-plugin-framework/internal/fwtype"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/defaults"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -53,6 +54,10 @@ var (
 type SetNestedAttribute struct {
 	// NestedObject is the underlying object that contains nested attributes.
 	// This field must be set.
+	//
+	// Nested attributes that contain a dynamic type (i.e. DynamicAttribute) are not supported.
+	// If underlying dynamic values are required, replace this attribute definition with
+	// DynamicAttribute instead.
 	NestedObject NestedAttributeObject
 
 	// CustomType enables the use of a custom attribute type in place of the
@@ -214,7 +219,7 @@ func (a SetNestedAttribute) GetNestedObject() fwschema.NestedAttributeObject {
 	return a.NestedObject
 }
 
-// GetNestingMode always returns NestingModeList.
+// GetNestingMode always returns NestingModeSet.
 func (a SetNestedAttribute) GetNestingMode() fwschema.NestingMode {
 	return fwschema.NestingModeSet
 }
@@ -250,6 +255,23 @@ func (a SetNestedAttribute) IsSensitive() bool {
 	return a.Sensitive
 }
 
+// IsWriteOnly returns false as write-only attributes are not supported for sets and set-based data.
+func (a SetNestedAttribute) IsWriteOnly() bool {
+	return false
+}
+
+// IsRequiredForImport returns false as this behavior is only relevant
+// for managed resource identity schema attributes.
+func (a SetNestedAttribute) IsRequiredForImport() bool {
+	return false
+}
+
+// IsOptionalForImport returns false as this behavior is only relevant
+// for managed resource identity schema attributes.
+func (a SetNestedAttribute) IsOptionalForImport() bool {
+	return false
+}
+
 // SetDefaultValue returns the Default field value.
 func (a SetNestedAttribute) SetDefaultValue() defaults.Set {
 	return a.Default
@@ -270,7 +292,38 @@ func (a SetNestedAttribute) SetValidators() []validator.Set {
 // errors or panics. This logic runs during the GetProviderSchema RPC and
 // should never include false positives.
 func (a SetNestedAttribute) ValidateImplementation(ctx context.Context, req fwschema.ValidateImplementationRequest, resp *fwschema.ValidateImplementationResponse) {
-	if !a.IsComputed() && a.SetDefaultValue() != nil {
-		resp.Diagnostics.Append(nonComputedAttributeWithDefaultDiag(req.Path))
+	if a.CustomType == nil && fwtype.ContainsCollectionWithDynamic(a.GetType()) {
+		resp.Diagnostics.Append(fwtype.AttributeCollectionWithDynamicTypeDiag(req.Path))
+	}
+
+	if fwschema.ContainsAnyWriteOnlyChildAttributes(a) {
+		resp.Diagnostics.Append(fwschema.InvalidSetNestedAttributeWithWriteOnlyDiag(req.Path))
+	}
+
+	if a.SetDefaultValue() != nil {
+		if !a.IsComputed() {
+			resp.Diagnostics.Append(nonComputedAttributeWithDefaultDiag(req.Path))
+		}
+
+		// Validate Default implementation. This is safe unless the framework
+		// ever allows more dynamic Default implementations at which the
+		// implementation would be required to be validated at runtime.
+		// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/930
+		defaultReq := defaults.SetRequest{
+			Path: req.Path,
+		}
+		defaultResp := &defaults.SetResponse{}
+
+		a.SetDefaultValue().DefaultSet(ctx, defaultReq, defaultResp)
+
+		resp.Diagnostics.Append(defaultResp.Diagnostics...)
+
+		if defaultResp.Diagnostics.HasError() {
+			return
+		}
+
+		if a.CustomType == nil && a.NestedObject.CustomType == nil && !a.NestedObject.Type().Equal(defaultResp.PlanValue.ElementType(ctx)) {
+			resp.Diagnostics.Append(fwschema.AttributeDefaultElementTypeMismatchDiag(req.Path, a.NestedObject.Type(), defaultResp.PlanValue.ElementType(ctx)))
+		}
 	}
 }

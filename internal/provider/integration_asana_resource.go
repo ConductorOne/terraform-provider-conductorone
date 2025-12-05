@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,13 +35,16 @@ type IntegrationAsanaResource struct {
 
 // IntegrationAsanaResourceModel describes the resource data model.
 type IntegrationAsanaResourceModel struct {
-	AppID       types.String   `tfsdk:"app_id"`
-	CreatedAt   types.String   `tfsdk:"created_at"`
-	DeletedAt   types.String   `tfsdk:"deleted_at"`
-	ID          types.String   `tfsdk:"id"`
-	UpdatedAt   types.String   `tfsdk:"updated_at"`
-	UserIds     []types.String `tfsdk:"user_ids"`
-	AsanaApiKey types.String   `tfsdk:"asana_api_key"`
+	AppID                 types.String   `tfsdk:"app_id"`
+	CreatedAt             types.String   `tfsdk:"created_at"`
+	DeletedAt             types.String   `tfsdk:"deleted_at"`
+	ID                    types.String   `tfsdk:"id"`
+	UpdatedAt             types.String   `tfsdk:"updated_at"`
+	UserIds               []types.String `tfsdk:"user_ids"`
+	AsanaApiKey           types.String   `tfsdk:"asana_api_key"`
+	AsanaIsServiceAccount types.Bool     `tfsdk:"asana_is_service_account"`
+	AsanaDefaultWorkspace types.String   `tfsdk:"asana_default_workspace"`
+	AsanaUseScimApi       types.Bool     `tfsdk:"asana_use_scim_api"`
 }
 
 func (r *IntegrationAsanaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -94,7 +97,19 @@ func (r *IntegrationAsanaResource) Schema(ctx context.Context, req resource.Sche
 			"asana_api_key": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Asana personal access token`,
+				Description: `Personal access token`,
+			},
+			"asana_is_service_account": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Is service account`,
+			},
+			"asana_default_workspace": &schema.StringAttribute{
+				Optional:    true,
+				Description: `Default workspace`,
+			},
+			"asana_use_scim_api": &schema.BoolAttribute{
+				Optional:    true,
+				Description: `Use SCIM API`,
 			},
 		},
 	}
@@ -273,7 +288,7 @@ func (r *IntegrationAsanaResource) Update(ctx context.Context, req resource.Upda
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
 			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
 				Connector:  updateCon,
-				UpdateMask: "config",
+				UpdateMask: types.StringValue("config").ValueStringPointer(),
 			},
 			AppID: appID,
 			ID:    data.ID.ValueString(),
@@ -296,7 +311,7 @@ func (r *IntegrationAsanaResource) Update(ctx context.Context, req resource.Upda
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
 			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
 				Connector:  updateCon,
-				UpdateMask: "displayName,userIds",
+				UpdateMask: types.StringValue("displayName,userIds").ValueStringPointer(),
 			},
 			ConnectorAppID: appID,
 			ConnectorID:    data.ID.ValueString(),

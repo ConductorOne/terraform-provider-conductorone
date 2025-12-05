@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"conductorone/internal/sdk/pkg/utils"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 )
 
 type ClientCredentials struct {
@@ -80,7 +80,7 @@ func newReq(ctx context.Context, method, url string, reader io.Reader) (*http.Re
 }
 
 func getDeviceCode(ctx context.Context, client *ConductoroneAPI, clientID string) (*DeviceCodeResponse, string, error) {
-	httpClient := client.sdkConfiguration.DefaultClient
+	httpClient := client.sdkConfiguration.Client
 	baseURL := utils.ReplaceParameters(client.sdkConfiguration.GetServerDetails())
 
 	deviceCodeURL, err := url.JoinPath(baseURL, "/auth/v1/device_authorization")
@@ -121,7 +121,7 @@ func getDeviceCode(ctx context.Context, client *ConductoroneAPI, clientID string
 }
 
 func doTokenRequest(ctx context.Context, client *ConductoroneAPI, clientID string, deviceCodeResp *DeviceCodeResponse) (*tokenResponse, error) {
-	httpClient := client.sdkConfiguration.DefaultClient
+	httpClient := client.sdkConfiguration.Client
 	baseURL := utils.ReplaceParameters(client.sdkConfiguration.GetServerDetails())
 
 	tokenURL, err := url.JoinPath(baseURL, "/auth/v1/token")
@@ -194,7 +194,7 @@ type clientDisplayName struct {
 }
 
 func doClientCredentialRequest(ctx context.Context, client *ConductoroneAPI, tokenResp *tokenResponse, personalClientCredentialDisplayName string) (*clientResp, error) {
-	httpClient := client.sdkConfiguration.DefaultClient
+	httpClient := client.sdkConfiguration.Client
 	baseURL := utils.ReplaceParameters(client.sdkConfiguration.GetServerDetails())
 
 	pccURL, err := url.JoinPath(baseURL, "/api/v1/iam/personal_clients")

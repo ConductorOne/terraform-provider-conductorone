@@ -1,0 +1,22 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This data source enables you to retrieve ConductorOne app resources using the following search criteria:
+
+* `app_id` - The ID of the app
+* `app_resource_type_id` - The ID of the app resource type
+* `id` - The ID of the app resource
+
+## Example Usage
+
+{{ tffile "examples/data-sources/conductorone_app_resource/data-source.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

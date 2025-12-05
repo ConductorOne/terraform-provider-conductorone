@@ -35,12 +35,17 @@ type ObjectRequest struct {
 
 	// ConfigValue contains the value of the attribute for validation from the configuration.
 	ConfigValue types.Object
+
+	// ClientCapabilities defines optionally supported protocol features for
+	// schema validation RPCs, such as forward-compatible Terraform
+	// behavior changes.
+	ClientCapabilities ValidateSchemaClientCapabilities
 }
 
 // ObjectResponse is a response to a ObjectRequest.
 type ObjectResponse struct {
-	// Diagnostics report errors or warnings related to validating the data
-	// source configuration. An empty slice indicates success, with no warnings
+	// Diagnostics report errors or warnings related to validating the data source, provider, or resource
+	// configuration. An empty slice indicates success, with no warnings
 	// or errors generated.
 	Diagnostics diag.Diagnostics
 }

@@ -1,16 +1,21 @@
 package uhttp
 
 import (
+	"bytes"
 	"context"
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
 	"net"
 	"net/http"
 	"net/http/httputil"
+	"strings"
 	"sync"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap/ctxzap"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"go.uber.org/zap"
 	"golang.org/x/net/http2"
 	"golang.org/x/oauth2"
@@ -92,16 +97,19 @@ type debugTripper struct {
 }
 
 func (uat *debugTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	transportID := uuid.New().String()
 	if !uat.debug {
 		return uat.next.RoundTrip(req)
 	}
 
+	ctx := tflog.NewSubsystem(req.Context(), subsystem)
 	requestBytes, err := httputil.DumpRequest(req, true)
 	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("[ERROR] Conductor One API Request error: %#v", err))
 		return nil, err
+	} else {
+		tflog.Debug(ctx, fmt.Sprintf("[DEBUG] "+logReqMsg, transportID, prettyPrintJsonLines(requestBytes)))
 	}
-	//nolint:forbidigo
-	fmt.Println(string(requestBytes))
 
 	resp, err := uat.next.RoundTrip(req)
 	if err != nil {
@@ -110,10 +118,11 @@ func (uat *debugTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 
 	responseBytes, err := httputil.DumpResponse(resp, true)
 	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("[ERROR] Conductor One API Response error: %#v", err))
 		return nil, err
+	} else {
+		tflog.Debug(ctx, fmt.Sprintf("[DEBUG] "+logRespMsg, transportID, prettyPrintJsonLines(responseBytes)))
 	}
-	//nolint:forbidigo
-	fmt.Println(string(responseBytes))
 
 	return resp, nil
 }
@@ -202,3 +211,34 @@ func (t *Transport) l(ctx context.Context) *zap.Logger {
 	}
 	return ctxzap.Extract(ctx)
 }
+
+// prettyPrintJsonLines processes each line of the input.
+// If the line is JSON, it will pretty-print it.
+// If the line contains an Authorization header, it will redact its value.
+func prettyPrintJsonLines(b []byte) string {
+	parts := strings.Split(string(b), "\n")
+	for i, p := range parts {
+		if strings.HasPrefix(strings.ToLower(p), "authorization:") {
+			parts[i] = "Authorization: (sensitive)"
+			continue
+		}
+
+		if json.Valid([]byte(p)) {
+			var out bytes.Buffer
+			if err := json.Indent(&out, []byte(p), "", "  "); err == nil {
+				parts[i] = out.String()
+			}
+		}
+	}
+	return strings.Join(parts, "\n")
+}
+
+const logReqMsg = `[%s] Conductor One API Request Details:
+---[ REQUEST ]---------------------------------------
+%s
+-----------------------------------------------------`
+
+const logRespMsg = `[%s] Conductor One API Response Details:
+---[ RESPONSE ]--------------------------------------
+%s
+-----------------------------------------------------`

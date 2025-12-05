@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationGitlabResourceModel) ToCreateSDKType() (*shared.ConnectorSer
 	return &out, nil
 }
 
-func (r *IntegrationGitlabResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationGitlabResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationGitlabResourceModel) ToUpdateSDKType() (*shared.Connector, b
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationGitlabResourceModel) ToUpdateSDKType() (*shared.Connector, b
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("GitLab"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(gitlabCatalogID),
@@ -86,37 +86,38 @@ func (r *IntegrationGitlabResourceModel) ToUpdateSDKType() (*shared.Connector, b
 	return &out, configSet
 }
 
-func (r *IntegrationGitlabResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationGitlabResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	gitlabGroup := new(string)
 	if !r.GitlabGroup.IsUnknown() && !r.GitlabGroup.IsNull() {
 		*gitlabGroup = r.GitlabGroup.ValueString()
-	} else {
-		gitlabGroup = nil
+		configValues["gitlab_group"] = gitlabGroup
 	}
 
 	gitlabAccessToken := new(string)
 	if !r.GitlabAccessToken.IsUnknown() && !r.GitlabAccessToken.IsNull() {
 		*gitlabAccessToken = r.GitlabAccessToken.ValueString()
-	} else {
-		gitlabAccessToken = nil
+		configValues["gitlab_access_token"] = gitlabAccessToken
 	}
 
-	configValues := map[string]*string{
-		"gitlab_group":        gitlabGroup,
-		"gitlab_access_token": gitlabAccessToken,
+	gitlabUrl := new(string)
+	if !r.GitlabUrl.IsUnknown() && !r.GitlabUrl.IsNull() {
+		*gitlabUrl = r.GitlabUrl.ValueString()
+		configValues["gitlab_url"] = gitlabUrl
 	}
 
 	return configValues
 }
 
-func (r *IntegrationGitlabResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationGitlabResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -174,8 +175,12 @@ func (r *IntegrationGitlabResourceModel) RefreshFromGetResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["gitlab_group"]; ok {
-					r.GitlabGroup = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "gitlab_group"); ok {
+					r.GitlabGroup = types.StringValue(val)
+				}
+
+				if val, ok := getStringValue(values, "gitlab_url"); ok {
+					r.GitlabUrl = types.StringValue(val)
 				}
 
 			}
@@ -221,8 +226,12 @@ func (r *IntegrationGitlabResourceModel) RefreshFromCreateResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["gitlab_group"]; ok {
-					r.GitlabGroup = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "gitlab_group"); ok {
+					r.GitlabGroup = types.StringValue(val)
+				}
+
+				if val, ok := getStringValue(values, "gitlab_url"); ok {
+					r.GitlabUrl = types.StringValue(val)
 				}
 
 			}

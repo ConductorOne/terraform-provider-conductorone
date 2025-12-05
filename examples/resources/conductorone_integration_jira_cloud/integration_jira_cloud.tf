@@ -3,7 +3,10 @@ resource "conductorone_integration_jira_cloud" "jira_cloud" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  jiracloud_domain   = "..."
-  jiracloud_username = "..."
-  jiracloud_apikey   = "..."
+  jiracloud_domain                    = "..."
+  jiracloud_username                  = "..."
+  jiracloud_apikey                    = "..."
+  enable_external_ticket_provisioning = false
+  jiracloud_project_keys              = ["..."]
+  jiracloud_skip_project_participants = false
 }

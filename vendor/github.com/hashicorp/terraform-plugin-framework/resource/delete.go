@@ -17,6 +17,10 @@ type DeleteRequest struct {
 	// operation.
 	State tfsdk.State
 
+	// Identity is the current identity of the resource prior to the Delete
+	// operation. If the resource does not support identity, this value will not be set.
+	Identity *tfsdk.ResourceIdentity
+
 	// ProviderMeta is metadata from the provider_meta block of the module.
 	ProviderMeta tfsdk.Config
 
@@ -33,9 +37,20 @@ type DeleteRequest struct {
 // should set values on the DeleteResponse as appropriate.
 type DeleteResponse struct {
 	// State is the state of the resource following the Delete operation.
-	// This field is pre-populated from UpdateResourceRequest.Plan and
-	// should be set during the resource's Update operation.
+	// This field is pre-populated from DeleteRequest.State and
+	// should be set during the resource's Delete operation.
 	State tfsdk.State
+
+	// Identity is the identity of the resource following the Delete operation.
+	Identity *tfsdk.ResourceIdentity
+
+	// Private is the private state resource data following the Delete
+	// operation. This field is pre-populated from DeleteRequest.Private and
+	// can be modified during the resource's Delete operation in cases where
+	// an error diagnostic is being returned. Otherwise if no error diagnostic
+	// is being returned, indicating that the resource was successfully deleted,
+	// this data will be automatically cleared to prevent Terraform errors.
+	Private *privatestate.ProviderData
 
 	// Diagnostics report errors or warnings related to deleting the
 	// resource. An empty slice indicates a successful operation with no

@@ -1,0 +1,20 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This data source enables you to retrieve ConductorOne bundle automations using the following search criteria:
+
+* `request_catalog_id` - The ID of the request catalog
+
+## Example Usage
+
+{{ tffile "examples/data-sources/conductorone_bundle_automation/data-source.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

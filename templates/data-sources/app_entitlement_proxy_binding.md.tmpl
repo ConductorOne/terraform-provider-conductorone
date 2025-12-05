@@ -1,0 +1,23 @@
+---
+page_title: "{{.Name}} {{.Type}} - {{.ProviderName}}"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.Name}} ({{.Type}})
+
+{{ .Description | trimspace }}
+
+This data source enables you to retrieve ConductorOne app entitlement proxy bindings using the following search criteria:
+
+* `src_app_entitlement_id` - Source app entitlement ID
+* `src_app_id` - Source app ID
+* `dst_app_entitlement_id` - Destination app entitlement ID
+* `dst_app_id` - Destination app ID
+
+## Example Usage
+
+{{ tffile "examples/data-sources/conductorone_app_entitlement_proxy_binding/data-source.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}

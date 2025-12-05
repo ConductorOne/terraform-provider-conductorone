@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -96,21 +96,20 @@ func (r *IntegrationUkgResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"ukg_customer_api_key": &schema.StringAttribute{
 				Optional:    true,
-				Sensitive:   true,
-				Description: `UKG Customer API Key`,
+				Description: `Customer API key`,
 			},
 			"ukg_username": &schema.StringAttribute{
 				Optional:    true,
-				Description: `UKG Username`,
+				Description: `Username`,
 			},
 			"ukg_password": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `UKG Password`,
+				Description: `Password`,
 			},
 			"ukg_service_endpoint": &schema.StringAttribute{
 				Optional:    true,
-				Description: `UKG Service Endpoint`,
+				Description: `Service endpoint`,
 			},
 		},
 	}
@@ -289,7 +288,7 @@ func (r *IntegrationUkgResource) Update(ctx context.Context, req resource.Update
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
 			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
 				Connector:  updateCon,
-				UpdateMask: "config",
+				UpdateMask: types.StringValue("config").ValueStringPointer(),
 			},
 			AppID: appID,
 			ID:    data.ID.ValueString(),
@@ -312,7 +311,7 @@ func (r *IntegrationUkgResource) Update(ctx context.Context, req resource.Update
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
 			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
 				Connector:  updateCon,
-				UpdateMask: "displayName,userIds",
+				UpdateMask: types.StringValue("displayName,userIds").ValueStringPointer(),
 			},
 			ConnectorAppID: appID,
 			ConnectorID:    data.ID.ValueString(),

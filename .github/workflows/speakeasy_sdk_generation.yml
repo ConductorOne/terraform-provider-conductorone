@@ -14,14 +14,10 @@ permissions:
     - cron: 0 0 * * *
 jobs:
   generate:
-    uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-generation.yaml@v14
+    uses: speakeasy-api/sdk-generation-action/.github/workflows/workflow-executor.yaml@v15
     with:
       force: ${{ github.event.inputs.force }}
-      languages: |
-        - terraform
-      mode: direct
-      openapi_docs: |
-        - https://insulator.conductor.one/api/v1/openapi.yaml
+      mode: pr
       speakeasy_version: latest
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,43 @@
+name: Acceptance Tests
+
+on:
+  push:
+    branches:
+      - terraform_v2
+  pull_request:
+    branches:
+      - terraform_v2
+
+jobs:
+  acceptance-tests:
+    name: Run Terraform Acceptance Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.5
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+
+      - name: Install Dependencies
+        run: |
+          go mod tidy
+          go mod download
+
+      - name: Run Acceptance Tests
+        run: |
+          go test -v ./internal/provider/... -timeout=5m
+        env:
+          TF_ACC: "1"  # Enables Terraform acceptance tests
+          PROVIDER_TEST_VAR: "example"  # Set necessary environment variables
+          CONDUCTORONE_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          CONDUCTORONE_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CONDUCTORONE_SERVER_URL: ${{ secrets.SERVER_URL }}

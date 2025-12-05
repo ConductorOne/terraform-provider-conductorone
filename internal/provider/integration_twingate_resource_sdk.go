@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationTwingateResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	return &out, nil
 }
 
-func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector,
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector,
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Twingate"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(twingateCatalogID),
@@ -86,37 +86,32 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.Connector,
 	return &out, configSet
 }
 
-func (r *IntegrationTwingateResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationTwingateResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	twingateApikey := new(string)
 	if !r.TwingateApikey.IsUnknown() && !r.TwingateApikey.IsNull() {
 		*twingateApikey = r.TwingateApikey.ValueString()
-	} else {
-		twingateApikey = nil
+		configValues["twingate_apikey"] = twingateApikey
 	}
 
 	twingateDomain := new(string)
 	if !r.TwingateDomain.IsUnknown() && !r.TwingateDomain.IsNull() {
 		*twingateDomain = r.TwingateDomain.ValueString()
-	} else {
-		twingateDomain = nil
-	}
-
-	configValues := map[string]*string{
-		"twingate_apikey": twingateApikey,
-		"twingate_domain": twingateDomain,
+		configValues["twingate_domain"] = twingateDomain
 	}
 
 	return configValues
 }
 
-func (r *IntegrationTwingateResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationTwingateResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -171,6 +166,17 @@ func (r *IntegrationTwingateResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if val, ok := getStringValue(values, "twingate_domain"); ok {
+					r.TwingateDomain = types.StringValue(val)
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationTwingateResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -208,4 +214,15 @@ func (r *IntegrationTwingateResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+
+				if val, ok := getStringValue(values, "twingate_domain"); ok {
+					r.TwingateDomain = types.StringValue(val)
+				}
+
+			}
+		}
+	}
 }

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationBuildkiteResourceModel) ToCreateSDKType() (*shared.Connector
 	return &out, nil
 }
 
-func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Buildkite"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(buildkiteCatalogID),
@@ -86,37 +86,32 @@ func (r *IntegrationBuildkiteResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationBuildkiteResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationBuildkiteResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	apiToken := new(string)
 	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
 		*apiToken = r.ApiToken.ValueString()
-	} else {
-		apiToken = nil
+		configValues["api_token"] = apiToken
 	}
 
 	organization := new(string)
 	if !r.Organization.IsUnknown() && !r.Organization.IsNull() {
 		*organization = r.Organization.ValueString()
-	} else {
-		organization = nil
-	}
-
-	configValues := map[string]*string{
-		"api_token":    apiToken,
-		"organization": organization,
+		configValues["organization"] = organization
 	}
 
 	return configValues
 }
 
-func (r *IntegrationBuildkiteResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationBuildkiteResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -175,8 +170,8 @@ func (r *IntegrationBuildkiteResourceModel) RefreshFromGetResponse(resp *shared.
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["organization"]; ok {
-					r.Organization = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "organization"); ok {
+					r.Organization = types.StringValue(val)
 				}
 
 			}
@@ -223,8 +218,8 @@ func (r *IntegrationBuildkiteResourceModel) RefreshFromCreateResponse(resp *shar
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if v, ok := values["organization"]; ok {
-					r.Organization = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "organization"); ok {
+					r.Organization = types.StringValue(val)
 				}
 
 			}

@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationConfluenceResourceModel) ToCreateSDKType() (*shared.Connecto
 	return &out, nil
 }
 
-func (r *IntegrationConfluenceResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationConfluenceResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationConfluenceResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationConfluenceResourceModel) ToUpdateSDKType() (*shared.Connecto
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Confluence"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(confluenceCatalogID),
@@ -86,45 +86,38 @@ func (r *IntegrationConfluenceResourceModel) ToUpdateSDKType() (*shared.Connecto
 	return &out, configSet
 }
 
-func (r *IntegrationConfluenceResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationConfluenceResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	confluenceDomain := new(string)
 	if !r.ConfluenceDomain.IsUnknown() && !r.ConfluenceDomain.IsNull() {
 		*confluenceDomain = r.ConfluenceDomain.ValueString()
-	} else {
-		confluenceDomain = nil
+		configValues["confluence_domain"] = confluenceDomain
 	}
 
 	confluenceUsername := new(string)
 	if !r.ConfluenceUsername.IsUnknown() && !r.ConfluenceUsername.IsNull() {
 		*confluenceUsername = r.ConfluenceUsername.ValueString()
-	} else {
-		confluenceUsername = nil
+		configValues["confluence_username"] = confluenceUsername
 	}
 
 	confluenceApikey := new(string)
 	if !r.ConfluenceApikey.IsUnknown() && !r.ConfluenceApikey.IsNull() {
 		*confluenceApikey = r.ConfluenceApikey.ValueString()
-	} else {
-		confluenceApikey = nil
-	}
-
-	configValues := map[string]*string{
-		"confluence_domain":   confluenceDomain,
-		"confluence_username": confluenceUsername,
-		"confluence_apikey":   confluenceApikey,
+		configValues["confluence_apikey"] = confluenceApikey
 	}
 
 	return configValues
 }
 
-func (r *IntegrationConfluenceResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationConfluenceResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -182,12 +175,12 @@ func (r *IntegrationConfluenceResourceModel) RefreshFromGetResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["confluence_domain"]; ok {
-					r.ConfluenceDomain = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "confluence_domain"); ok {
+					r.ConfluenceDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["confluence_username"]; ok {
-					r.ConfluenceUsername = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "confluence_username"); ok {
+					r.ConfluenceUsername = types.StringValue(val)
 				}
 
 			}
@@ -233,12 +226,12 @@ func (r *IntegrationConfluenceResourceModel) RefreshFromCreateResponse(resp *sha
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["confluence_domain"]; ok {
-					r.ConfluenceDomain = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "confluence_domain"); ok {
+					r.ConfluenceDomain = types.StringValue(val)
 				}
 
-				if v, ok := values["confluence_username"]; ok {
-					r.ConfluenceUsername = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "confluence_username"); ok {
+					r.ConfluenceUsername = types.StringValue(val)
 				}
 
 			}

@@ -21,7 +21,10 @@ resource "conductorone_integration_asana" "asana" {
   user_ids = [
     conductorone_user.admin.id
   ]
-  asana_api_key = "..."
+  asana_api_key            = "..."
+  asana_is_service_account = false
+  asana_default_workspace  = "..."
+  asana_use_scim_api       = false
 }
 ```
 
@@ -34,7 +37,10 @@ resource "conductorone_integration_asana" "asana" {
 
 ### Optional
 
-- `asana_api_key` (String, Sensitive) Asana personal access token
+- `asana_api_key` (String, Sensitive) Personal access token
+- `asana_default_workspace` (String) Default workspace
+- `asana_is_service_account` (Boolean) Is service account
+- `asana_use_scim_api` (Boolean) Use SCIM API
 - `user_ids` (List of String) A list of user IDs of who owns this integration. It defaults to the user who created the integration.
 
 ### Read-Only

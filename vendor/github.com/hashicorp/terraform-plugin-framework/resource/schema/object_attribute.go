@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fwschema"
 	"github.com/hashicorp/terraform-plugin-framework/internal/fwschema/fwxschema"
+	"github.com/hashicorp/terraform-plugin-framework/internal/fwtype"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/defaults"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -51,6 +52,10 @@ var (
 type ObjectAttribute struct {
 	// AttributeTypes is the mapping of underlying attribute names to attribute
 	// types. This field must be set.
+	//
+	// Attribute types that contain a collection with a nested dynamic type (i.e. types.List[types.Dynamic]) are not supported.
+	// If underlying dynamic collection values are required, replace this attribute definition with
+	// DynamicAttribute instead.
 	AttributeTypes map[string]attr.Type
 
 	// CustomType enables the use of a custom attribute type in place of the
@@ -165,6 +170,16 @@ type ObjectAttribute struct {
 	// computed and the value could be altered by other changes then a default
 	// should be avoided and a plan modifier should be used instead.
 	Default defaults.Object
+
+	// WriteOnly indicates that Terraform will not store this attribute value
+	// in the plan or state artifacts.
+	// If WriteOnly is true, either Optional or Required must also be true.
+	// WriteOnly cannot be set with Computed.
+	//
+	// This functionality is only supported in Terraform 1.11 and later.
+	// Practitioners that choose a value for this attribute with older
+	// versions of Terraform will receive an error.
+	WriteOnly bool
 }
 
 // ApplyTerraform5AttributePathStep returns the result of stepping into an
@@ -229,6 +244,23 @@ func (a ObjectAttribute) IsSensitive() bool {
 	return a.Sensitive
 }
 
+// IsWriteOnly returns the WriteOnly field value.
+func (a ObjectAttribute) IsWriteOnly() bool {
+	return a.WriteOnly
+}
+
+// IsRequiredForImport returns false as this behavior is only relevant
+// for managed resource identity schema attributes.
+func (a ObjectAttribute) IsRequiredForImport() bool {
+	return false
+}
+
+// IsOptionalForImport returns false as this behavior is only relevant
+// for managed resource identity schema attributes.
+func (a ObjectAttribute) IsOptionalForImport() bool {
+	return false
+}
+
 // ObjectDefaultValue returns the Default field value.
 func (a ObjectAttribute) ObjectDefaultValue() defaults.Object {
 	return a.Default
@@ -253,7 +285,34 @@ func (a ObjectAttribute) ValidateImplementation(ctx context.Context, req fwschem
 		resp.Diagnostics.Append(fwschema.AttributeMissingAttributeTypesDiag(req.Path))
 	}
 
-	if !a.IsComputed() && a.ObjectDefaultValue() != nil {
-		resp.Diagnostics.Append(nonComputedAttributeWithDefaultDiag(req.Path))
+	if a.CustomType == nil && fwtype.ContainsCollectionWithDynamic(a.GetType()) {
+		resp.Diagnostics.Append(fwtype.AttributeCollectionWithDynamicTypeDiag(req.Path))
+	}
+
+	if a.ObjectDefaultValue() != nil {
+		if !a.IsComputed() {
+			resp.Diagnostics.Append(nonComputedAttributeWithDefaultDiag(req.Path))
+		}
+
+		// Validate Default implementation. This is safe unless the framework
+		// ever allows more dynamic Default implementations at which the
+		// implementation would be required to be validated at runtime.
+		// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/930
+		defaultReq := defaults.ObjectRequest{
+			Path: req.Path,
+		}
+		defaultResp := &defaults.ObjectResponse{}
+
+		a.ObjectDefaultValue().DefaultObject(ctx, defaultReq, defaultResp)
+
+		resp.Diagnostics.Append(defaultResp.Diagnostics...)
+
+		if defaultResp.Diagnostics.HasError() {
+			return
+		}
+
+		if a.AttributeTypes != nil && !a.GetType().Equal(defaultResp.PlanValue.Type(ctx)) {
+			resp.Diagnostics.Append(fwschema.AttributeDefaultTypeMismatchDiag(req.Path, a.GetType(), defaultResp.PlanValue.Type(ctx)))
+		}
 	}
 }

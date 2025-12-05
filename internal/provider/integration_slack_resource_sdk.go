@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationSlackResourceModel) ToCreateSDKType() (*shared.ConnectorServ
 	return &out, nil
 }
 
-func (r *IntegrationSlackResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationSlackResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationSlackResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationSlackResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Slack"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(slackCatalogID),
@@ -86,29 +86,26 @@ func (r *IntegrationSlackResourceModel) ToUpdateSDKType() (*shared.Connector, bo
 	return &out, configSet
 }
 
-func (r *IntegrationSlackResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationSlackResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	slackApiKey := new(string)
 	if !r.SlackApiKey.IsUnknown() && !r.SlackApiKey.IsNull() {
 		*slackApiKey = r.SlackApiKey.ValueString()
-	} else {
-		slackApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"slack_api_key": slackApiKey,
+		configValues["slack_api_key"] = slackApiKey
 	}
 
 	return configValues
 }
 
-func (r *IntegrationSlackResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationSlackResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

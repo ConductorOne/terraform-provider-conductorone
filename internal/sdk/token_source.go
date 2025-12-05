@@ -9,7 +9,6 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 	"time"
 
@@ -22,7 +21,7 @@ import (
 	"gopkg.in/square/go-jose.v2/json"
 	"gopkg.in/square/go-jose.v2/jwt"
 
-	"conductorone/internal/sdk/uhttp"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/uhttp"
 )
 
 const (
@@ -47,22 +46,6 @@ type c1TokenSource struct {
 	clientSecret *jose.JSONWebKey
 	tokenHost    string
 	httpClient   *http.Client
-}
-
-func parseClientID(input string) (string, error) {
-	// split the input into 2 parts by @
-	items := strings.SplitN(input, "@", 2)
-	if len(items) != 2 {
-		return "", ErrInvalidClientID
-	}
-
-	// split the right part into 2 parts by /
-	items = strings.SplitN(items[1], "/", 2)
-	if len(items) != 2 {
-		return "", ErrInvalidClientID
-	}
-
-	return items[0], nil
 }
 
 func parseSecret(input []byte) (*jose.JSONWebKey, error) {
@@ -148,13 +131,9 @@ func (c *c1TokenSource) Token() (*oauth2.Token, error) {
 		"client_assertion":      []string{s},
 	}
 
-	tokenHost := c.tokenHost
-	if envHost, ok := os.LookupEnv("CONE_API_ENDPOINT"); ok {
-		tokenHost = envHost
-	}
 	tokenUrl := url.URL{
 		Scheme: "https",
-		Host:   tokenHost,
+		Host:   c.tokenHost,
 		Path:   "auth/v1/token",
 	}
 
@@ -190,12 +169,7 @@ func (c *c1TokenSource) Token() (*oauth2.Token, error) {
 	}, nil
 }
 
-func NewC1TokenSource(ctx context.Context, clientID string, clientSecret string) (oauth2.TokenSource, error) {
-	tokenHost, err := parseClientID(clientID)
-	if err != nil {
-		return nil, err
-	}
-
+func NewTokenSource(ctx context.Context, clientID string, clientSecret string, tokenHost string) (oauth2.TokenSource, error) {
 	secret, err := parseSecret([]byte(clientSecret))
 	if err != nil {
 		return nil, err
@@ -208,7 +182,13 @@ func NewC1TokenSource(ctx context.Context, clientID string, clientSecret string)
 	return oauth2.ReuseTokenSource(nil, &c1TokenSource{
 		clientID:     clientID,
 		clientSecret: secret,
-		tokenHost:    tokenHost,
+		tokenHost:    strings.TrimPrefix(tokenHost, "https://"),
 		httpClient:   httpClient,
 	}), nil
+}
+
+func NewStaticTokenSource(ctx context.Context, token string) oauth2.TokenSource {
+	return oauth2.StaticTokenSource(&oauth2.Token{
+		AccessToken: token,
+	})
 }

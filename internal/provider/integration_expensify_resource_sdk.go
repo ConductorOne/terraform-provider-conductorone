@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationExpensifyResourceModel) ToCreateSDKType() (*shared.Connector
 	return &out, nil
 }
 
-func (r *IntegrationExpensifyResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationExpensifyResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationExpensifyResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationExpensifyResourceModel) ToUpdateSDKType() (*shared.Connector
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("Expensify"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(expensifyCatalogID),
@@ -86,37 +86,32 @@ func (r *IntegrationExpensifyResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationExpensifyResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationExpensifyResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	expensifyUserId := new(string)
 	if !r.ExpensifyUserId.IsUnknown() && !r.ExpensifyUserId.IsNull() {
 		*expensifyUserId = r.ExpensifyUserId.ValueString()
-	} else {
-		expensifyUserId = nil
+		configValues["expensify_user_id"] = expensifyUserId
 	}
 
 	expensifyUserSecret := new(string)
 	if !r.ExpensifyUserSecret.IsUnknown() && !r.ExpensifyUserSecret.IsNull() {
 		*expensifyUserSecret = r.ExpensifyUserSecret.ValueString()
-	} else {
-		expensifyUserSecret = nil
-	}
-
-	configValues := map[string]*string{
-		"expensify_user_id":     expensifyUserId,
-		"expensify_user_secret": expensifyUserSecret,
+		configValues["expensify_user_secret"] = expensifyUserSecret
 	}
 
 	return configValues
 }
 
-func (r *IntegrationExpensifyResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationExpensifyResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

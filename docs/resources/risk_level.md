@@ -2,12 +2,12 @@
 page_title: "conductorone_risk_level Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
-  Risk Level Resource
+  RiskLevel Resource
 ---
 
 # conductorone_risk_level (Resource)
 
-Risk Level Resource
+RiskLevel Resource
 
 This resource allows you to create a new Risk Level attribute.
 When creating a Risk Level attribute you must provide a value. The value property is the name of the Risk Level attribute. This is the only property that can be set.
@@ -15,8 +15,8 @@ When creating a Risk Level attribute you must provide a value. The value propert
 ## Example Usage
 
 ```terraform
-resource "conductorone_risk_level" "test_risk_level" {
-  value = "test_risk_level"
+resource "conductorone_risk_level" "my_risk_level" {
+  value = "...my_value..."
 }
 ```
 
@@ -25,12 +25,11 @@ resource "conductorone_risk_level" "test_risk_level" {
 
 ### Optional
 
-- `value` (String) The value field is the value of the attribute. In this case it is the name of the Risk Level (e.g. High, Low, etc.).
+- `value` (String) The value field. Requires replacement if changed.
 
 ### Read-Only
 
-- `attribute_type_id` (String) The attributeTypeId field.
+- `attribute_type_id` (String) The ID of the AttributeType that this AttributeValue belongs to.
 - `created_at` (String)
-- `deleted_at` (String)
-- `id` (String) The id field.
+- `id` (String) The ID of the AttributeValue.
 - `updated_at` (String)

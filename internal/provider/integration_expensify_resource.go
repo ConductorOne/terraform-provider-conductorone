@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 
-	"conductorone/internal/sdk/pkg/models/shared"
-	"conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -95,12 +95,12 @@ func (r *IntegrationExpensifyResource) Schema(ctx context.Context, req resource.
 			"expensify_user_id": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Expensify User ID`,
+				Description: `User ID`,
 			},
 			"expensify_user_secret": &schema.StringAttribute{
 				Optional:    true,
 				Sensitive:   true,
-				Description: `Expensify User Secret`,
+				Description: `User secret`,
 			},
 		},
 	}
@@ -279,7 +279,7 @@ func (r *IntegrationExpensifyResource) Update(ctx context.Context, req resource.
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateRequest{
 			ConnectorServiceUpdateRequest: &shared.ConnectorServiceUpdateRequest{
 				Connector:  updateCon,
-				UpdateMask: "config",
+				UpdateMask: types.StringValue("config").ValueStringPointer(),
 			},
 			AppID: appID,
 			ID:    data.ID.ValueString(),
@@ -302,7 +302,7 @@ func (r *IntegrationExpensifyResource) Update(ctx context.Context, req resource.
 		configReq := operations.C1APIAppV1ConnectorServiceUpdateDelegatedRequest{
 			ConnectorServiceUpdateDelegatedRequest: &shared.ConnectorServiceUpdateDelegatedRequest{
 				Connector:  updateCon,
-				UpdateMask: "displayName,userIds",
+				UpdateMask: types.StringValue("displayName,userIds").ValueStringPointer(),
 			},
 			ConnectorAppID: appID,
 			ConnectorID:    data.ID.ValueString(),

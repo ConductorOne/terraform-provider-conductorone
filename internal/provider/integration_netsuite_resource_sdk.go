@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationNetsuiteResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	return &out, nil
 }
 
-func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.Connector,
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.Connector,
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("NetSuite"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(netsuiteCatalogID),
@@ -86,61 +86,50 @@ func (r *IntegrationNetsuiteResourceModel) ToUpdateSDKType() (*shared.Connector,
 	return &out, configSet
 }
 
-func (r *IntegrationNetsuiteResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationNetsuiteResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	netsuiteAccountId := new(string)
 	if !r.NetsuiteAccountId.IsUnknown() && !r.NetsuiteAccountId.IsNull() {
 		*netsuiteAccountId = r.NetsuiteAccountId.ValueString()
-	} else {
-		netsuiteAccountId = nil
+		configValues["netsuite_account_id"] = netsuiteAccountId
 	}
 
 	netsuiteConsumerKey := new(string)
 	if !r.NetsuiteConsumerKey.IsUnknown() && !r.NetsuiteConsumerKey.IsNull() {
 		*netsuiteConsumerKey = r.NetsuiteConsumerKey.ValueString()
-	} else {
-		netsuiteConsumerKey = nil
+		configValues["netsuite_consumer_key"] = netsuiteConsumerKey
 	}
 
 	netsuiteConsumerSecret := new(string)
 	if !r.NetsuiteConsumerSecret.IsUnknown() && !r.NetsuiteConsumerSecret.IsNull() {
 		*netsuiteConsumerSecret = r.NetsuiteConsumerSecret.ValueString()
-	} else {
-		netsuiteConsumerSecret = nil
+		configValues["netsuite_consumer_secret"] = netsuiteConsumerSecret
 	}
 
 	netsuiteTokenKey := new(string)
 	if !r.NetsuiteTokenKey.IsUnknown() && !r.NetsuiteTokenKey.IsNull() {
 		*netsuiteTokenKey = r.NetsuiteTokenKey.ValueString()
-	} else {
-		netsuiteTokenKey = nil
+		configValues["netsuite_token_key"] = netsuiteTokenKey
 	}
 
 	netsuiteTokenSecret := new(string)
 	if !r.NetsuiteTokenSecret.IsUnknown() && !r.NetsuiteTokenSecret.IsNull() {
 		*netsuiteTokenSecret = r.NetsuiteTokenSecret.ValueString()
-	} else {
-		netsuiteTokenSecret = nil
-	}
-
-	configValues := map[string]*string{
-		"netsuite_account_id":      netsuiteAccountId,
-		"netsuite_consumer_key":    netsuiteConsumerKey,
-		"netsuite_consumer_secret": netsuiteConsumerSecret,
-		"netsuite_token_key":       netsuiteTokenKey,
-		"netsuite_token_secret":    netsuiteTokenSecret,
+		configValues["netsuite_token_secret"] = netsuiteTokenSecret
 	}
 
 	return configValues
 }
 
-func (r *IntegrationNetsuiteResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationNetsuiteResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -198,16 +187,16 @@ func (r *IntegrationNetsuiteResourceModel) RefreshFromGetResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["netsuite_account_id"]; ok {
-					r.NetsuiteAccountId = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "netsuite_account_id"); ok {
+					r.NetsuiteAccountId = types.StringValue(val)
 				}
 
-				if v, ok := values["netsuite_consumer_key"]; ok {
-					r.NetsuiteConsumerKey = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "netsuite_consumer_key"); ok {
+					r.NetsuiteConsumerKey = types.StringValue(val)
 				}
 
-				if v, ok := values["netsuite_token_key"]; ok {
-					r.NetsuiteTokenKey = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "netsuite_token_key"); ok {
+					r.NetsuiteTokenKey = types.StringValue(val)
 				}
 
 			}
@@ -253,16 +242,16 @@ func (r *IntegrationNetsuiteResourceModel) RefreshFromCreateResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if v, ok := values["netsuite_account_id"]; ok {
-					r.NetsuiteAccountId = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "netsuite_account_id"); ok {
+					r.NetsuiteAccountId = types.StringValue(val)
 				}
 
-				if v, ok := values["netsuite_consumer_key"]; ok {
-					r.NetsuiteConsumerKey = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "netsuite_consumer_key"); ok {
+					r.NetsuiteConsumerKey = types.StringValue(val)
 				}
 
-				if v, ok := values["netsuite_token_key"]; ok {
-					r.NetsuiteTokenKey = types.StringValue(v.(string))
+				if val, ok := getStringValue(values, "netsuite_token_key"); ok {
+					r.NetsuiteTokenKey = types.StringValue(val)
 				}
 
 			}

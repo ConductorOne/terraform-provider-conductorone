@@ -6,8 +6,8 @@ import (
 
 	"time"
 
-	"conductorone/internal/sdk"
-	"conductorone/internal/sdk/pkg/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -53,7 +53,7 @@ func (r *IntegrationCloudamqpResourceModel) ToCreateSDKType() (*shared.Connector
 	return &out, nil
 }
 
-func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() (*shared.Connector, bool) {
+func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() (*shared.ConnectorInput, bool) {
 	userIds := make([]string, 0)
 	for _, userIdsItem := range r.UserIds {
 		userIds = append(userIds, userIdsItem.ValueString())
@@ -61,12 +61,12 @@ func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() (*shared.Connector
 
 	configValues := r.populateConfig()
 
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -74,7 +74,7 @@ func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() (*shared.Connector
 		configOut = nil
 	}
 
-	out := shared.Connector{
+	out := shared.ConnectorInput{
 		DisplayName: sdk.String("CloudAMQP"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(cloudamqpCatalogID),
@@ -86,29 +86,26 @@ func (r *IntegrationCloudamqpResourceModel) ToUpdateSDKType() (*shared.Connector
 	return &out, configSet
 }
 
-func (r *IntegrationCloudamqpResourceModel) populateConfig() map[string]*string {
+func (r *IntegrationCloudamqpResourceModel) populateConfig() map[string]interface{} {
+	configValues := make(map[string]interface{})
+
 	cloudamqpApiKey := new(string)
 	if !r.CloudamqpApiKey.IsUnknown() && !r.CloudamqpApiKey.IsNull() {
 		*cloudamqpApiKey = r.CloudamqpApiKey.ValueString()
-	} else {
-		cloudamqpApiKey = nil
-	}
-
-	configValues := map[string]*string{
-		"cloudamqp_api_key": cloudamqpApiKey,
+		configValues["cloudamqp_api_key"] = cloudamqpApiKey
 	}
 
 	return configValues
 }
 
-func (r *IntegrationCloudamqpResourceModel) getConfig() (map[string]string, bool) {
+func (r *IntegrationCloudamqpResourceModel) getConfig() (map[string]interface{}, bool) {
 	configValues := r.populateConfig()
-	configOut := make(map[string]string)
+	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = *configValue
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

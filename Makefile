@@ -12,7 +12,7 @@ install: build
 
 .PHONY: lint
 lint:
-	golangci-lint run
+	golangci-lint run --timeout=3m
 
 .PHONY: fmt
 fmt:
@@ -20,7 +20,14 @@ fmt:
 
 .PHONY: gen
 gen:
-	speakeasy generate sdk -s openapi.yaml -o . -l conductorone -d
+	@DATE=$$(date +%Y%m%d%H%M%S); \
+	FILENAME="openapi_$$DATE.yaml"; \
+	FILENAME2="combined_$$DATE.yaml"; \
+	trap 'rm -f $$FILENAME $$FILENAME2' EXIT; \
+	curl -sSL -o $$FILENAME https://insulator.conductor.one/api/v1/openapi.yaml && \
+	speakeasy overlay apply -s $$FILENAME -o overlays.yml >> $$FILENAME2 && \
+	speakeasy generate sdk -s $$FILENAME2 -o . -l terraform -d
+	
 
 .PHONY: test
 test:
