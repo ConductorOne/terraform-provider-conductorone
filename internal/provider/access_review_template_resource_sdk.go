@@ -375,10 +375,13 @@ func (r *AccessReviewTemplateResourceModel) ToOperationsC1APIAccessreviewV1Acces
 	var id string
 	id = r.ID.ValueString()
 
-	var accessReviewTemplateServiceDeleteRequest *shared.AccessReviewTemplateServiceDeleteRequest
-	if r.AccessReviewTemplateServiceDeleteRequest != nil {
-		accessReviewTemplateServiceDeleteRequest = &shared.AccessReviewTemplateServiceDeleteRequest{}
+	accessReviewTemplateServiceDeleteRequest, accessReviewTemplateServiceDeleteRequestDiags := r.ToSharedAccessReviewTemplateServiceDeleteRequest(ctx)
+	diags.Append(accessReviewTemplateServiceDeleteRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
 	}
+
 	out := operations.C1APIAccessreviewV1AccessReviewTemplateServiceDeleteRequest{
 		ID:                                       id,
 		AccessReviewTemplateServiceDeleteRequest: accessReviewTemplateServiceDeleteRequest,

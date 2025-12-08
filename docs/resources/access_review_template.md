@@ -15,11 +15,8 @@ AccessReviewTemplate Resource
 ```terraform
 resource "conductorone_access_review_template" "my_access_review_template" {
   access_review_duration = "...my_access_review_duration..."
-  access_review_template_service_delete_request = {
-    # ...
-  }
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
+  description            = "...my_description..."
+  display_name           = "...my_display_name..."
   notification_config = {
     send_close     = true
     send_reminders = false
@@ -38,7 +35,6 @@ resource "conductorone_access_review_template" "my_access_review_template" {
 ### Optional
 
 - `access_review_duration` (String)
-- `access_review_template_service_delete_request` (Attributes) The AccessReviewTemplateServiceDeleteRequest message. (see [below for nested schema](#nestedatt--access_review_template_service_delete_request))
 - `description` (String) The description field.
 - `display_name` (String) The displayName field.
 - `notification_config` (Attributes) The NotificationConfig message. (see [below for nested schema](#nestedatt--notification_config))
@@ -97,10 +93,6 @@ This message contains a oneof named end_condition. Only a single field of the fo
 - `slack_channel` (Attributes) The SlackChannel message. (see [below for nested schema](#nestedatt--slack_channel))
 - `updated_at` (String)
 - `use_policy_override` (Boolean) The usePolicyOverride field.
-
-<a id="nestedatt--access_review_template_service_delete_request"></a>
-### Nested Schema for `access_review_template_service_delete_request`
-
 
 <a id="nestedatt--notification_config"></a>
 ### Nested Schema for `notification_config`

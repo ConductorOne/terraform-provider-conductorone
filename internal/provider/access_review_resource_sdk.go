@@ -482,10 +482,13 @@ func (r *AccessReviewResourceModel) ToOperationsC1APIAccessreviewV1AccessReviewS
 	var id string
 	id = r.ID.ValueString()
 
-	var accessReviewServiceDeleteRequest *shared.AccessReviewServiceDeleteRequest
-	if r.AccessReviewServiceDeleteRequest != nil {
-		accessReviewServiceDeleteRequest = &shared.AccessReviewServiceDeleteRequest{}
+	accessReviewServiceDeleteRequest, accessReviewServiceDeleteRequestDiags := r.ToSharedAccessReviewServiceDeleteRequest(ctx)
+	diags.Append(accessReviewServiceDeleteRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
 	}
+
 	out := operations.C1APIAccessreviewV1AccessReviewServiceDeleteRequest{
 		ID:                               id,
 		AccessReviewServiceDeleteRequest: accessReviewServiceDeleteRequest,
@@ -1243,19 +1246,6 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 	} else {
 		duplicateFrom = nil
 	}
-	var accessReviewExpandMask *shared.AccessReviewExpandMask
-	if r.AccessReviewExpandMask != nil {
-		var paths []string
-		if r.AccessReviewExpandMask.Paths != nil {
-			paths = make([]string, 0, len(r.AccessReviewExpandMask.Paths))
-			for _, pathsItem := range r.AccessReviewExpandMask.Paths {
-				paths = append(paths, pathsItem.ValueString())
-			}
-		}
-		accessReviewExpandMask = &shared.AccessReviewExpandMask{
-			Paths: paths,
-		}
-	}
 	var notificationConfig *shared.NotificationConfig
 	if r.NotificationConfig != nil {
 		sendClose := new(bool)
@@ -1295,15 +1285,14 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 		scopeType = nil
 	}
 	out := shared.AccessReviewServiceCreateRequest{
-		CompletionDate:         completionDate,
-		Description:            description,
-		DisplayName:            displayName,
-		DuplicateFrom:          duplicateFrom,
-		AccessReviewExpandMask: accessReviewExpandMask,
-		NotificationConfig:     notificationConfig,
-		OwnerIds:               ownerIds,
-		PolicyID:               policyID,
-		ScopeType:              scopeType,
+		CompletionDate:     completionDate,
+		Description:        description,
+		DisplayName:        displayName,
+		DuplicateFrom:      duplicateFrom,
+		NotificationConfig: notificationConfig,
+		OwnerIds:           ownerIds,
+		PolicyID:           policyID,
+		ScopeType:          scopeType,
 	}
 
 	return &out, diags
@@ -1327,22 +1316,8 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceUpdateRequest(ctx
 		return nil, diags
 	}
 
-	var accessReviewExpandMask *shared.AccessReviewExpandMask
-	if r.AccessReviewExpandMask != nil {
-		var paths []string
-		if r.AccessReviewExpandMask.Paths != nil {
-			paths = make([]string, 0, len(r.AccessReviewExpandMask.Paths))
-			for _, pathsItem := range r.AccessReviewExpandMask.Paths {
-				paths = append(paths, pathsItem.ValueString())
-			}
-		}
-		accessReviewExpandMask = &shared.AccessReviewExpandMask{
-			Paths: paths,
-		}
-	}
 	out := shared.AccessReviewServiceUpdateRequest{
-		AccessReview:           accessReview,
-		AccessReviewExpandMask: accessReviewExpandMask,
+		AccessReview: accessReview,
 	}
 
 	return &out, diags

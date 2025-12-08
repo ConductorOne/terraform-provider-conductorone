@@ -14,14 +14,6 @@ AccessReview Resource
 
 ```terraform
 resource "conductorone_access_review" "my_access_review" {
-  access_review_expand_mask = {
-    paths = [
-      "..."
-    ]
-  }
-  access_review_service_delete_request = {
-    # ...
-  }
   completion_date = "2020-03-30T12:47:51.525Z"
   description     = "...my_description..."
   display_name    = "...my_display_name..."
@@ -43,8 +35,6 @@ resource "conductorone_access_review" "my_access_review" {
 
 ### Optional
 
-- `access_review_expand_mask` (Attributes) The AccessReviewExpandMask message. Requires replacement if changed. (see [below for nested schema](#nestedatt--access_review_expand_mask))
-- `access_review_service_delete_request` (Attributes) The AccessReviewServiceDeleteRequest message. (see [below for nested schema](#nestedatt--access_review_service_delete_request))
 - `completion_date` (String)
 - `description` (String) The description field.
 - `display_name` (String) The displayName field.
@@ -119,18 +109,6 @@ This message contains a oneof named access_conflicts_scope. Only a single field 
 - `updated_at` (String)
 - `use_policy_override` (Boolean) Determines the policy applied to the campaign. Default is false, using the campaign policy.
  If true, the order of precedence is entitlement → app → campaign policy.
-
-<a id="nestedatt--access_review_expand_mask"></a>
-### Nested Schema for `access_review_expand_mask`
-
-Optional:
-
-- `paths` (List of String) The paths field. Requires replacement if changed.
-
-
-<a id="nestedatt--access_review_service_delete_request"></a>
-### Nested Schema for `access_review_service_delete_request`
-
 
 <a id="nestedatt--notification_config"></a>
 ### Nested Schema for `notification_config`
