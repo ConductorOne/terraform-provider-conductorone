@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: e39aa81aedd8f2352911949a656dba02
+  docChecksum: 9463412129804a1370606579132e8b7b
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.654.0
   generationVersion: 2.750.0
-  releaseVersion: 1.7.4
-  configChecksum: f4e8666601e4e925bd61aeade2248010
+  releaseVersion: 1.7.5
+  configChecksum: 4d31d1450dcbae25d172646c3648baf7
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -288,14 +288,11 @@ generatedFiles:
   - internal/provider/types/access_conflict_trigger.go
   - internal/provider/types/access_review.go
   - internal/provider/types/access_review_exclusion_scope.go
-  - internal/provider/types/access_review_expand_mask.go
   - internal/provider/types/access_review_inclusion_scope.go
   - internal/provider/types/access_review_scope.go
   - internal/provider/types/access_review_scope_v2.go
-  - internal/provider/types/access_review_service_delete_request.go
   - internal/provider/types/access_review_service_get_response_expanded.go
   - internal/provider/types/access_review_service_list_response_expanded.go
-  - internal/provider/types/access_review_template_service_delete_request.go
   - internal/provider/types/access_review_view.go
   - internal/provider/types/account_criteria_scope.go
   - internal/provider/types/account_filter.go
@@ -839,7 +836,6 @@ generatedFiles:
   - internal/sdk/models/shared/accessconflicttrigger.go
   - internal/sdk/models/shared/accessreview.go
   - internal/sdk/models/shared/accessreviewexclusionscope.go
-  - internal/sdk/models/shared/accessreviewexpandmask.go
   - internal/sdk/models/shared/accessreviewinclusionscope.go
   - internal/sdk/models/shared/accessreviewscope.go
   - internal/sdk/models/shared/accessreviewscopev2.go

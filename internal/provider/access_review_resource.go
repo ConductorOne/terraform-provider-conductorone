@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -37,49 +36,47 @@ type AccessReviewResource struct {
 
 // AccessReviewResourceModel describes the resource data model.
 type AccessReviewResourceModel struct {
-	AccessReviewExclusionScope       *tfTypes.AccessReviewExclusionScope       `tfsdk:"access_review_exclusion_scope"`
-	AccessReviewExpandMask           *tfTypes.AccessReviewExpandMask           `tfsdk:"access_review_expand_mask"`
-	AccessReviewInclusionScope       *tfTypes.AccessReviewInclusionScope       `tfsdk:"access_review_inclusion_scope"`
-	AccessReviewScope                *tfTypes.AccessReviewScope                `tfsdk:"access_review_scope"`
-	AccessReviewScopeV2              *tfTypes.AccessReviewScopeV2              `tfsdk:"access_review_scope_v2"`
-	AccessReviewServiceDeleteRequest *tfTypes.AccessReviewServiceDeleteRequest `tfsdk:"access_review_service_delete_request"`
-	AccessReviewTemplateID           types.String                              `tfsdk:"access_review_template_id"`
-	AutoGenerateReport               types.Bool                                `tfsdk:"auto_generate_report"`
-	AutoResolve                      types.Bool                                `tfsdk:"auto_resolve"`
-	BindingObjectSetup               *tfTypes.BindingObjectSetup               `tfsdk:"binding_object_setup"`
-	ClosedAt                         types.String                              `tfsdk:"closed_at"`
-	CompletionDate                   types.String                              `tfsdk:"completion_date"`
-	ConnectorSourcesFrozenAt         types.String                              `tfsdk:"connector_sources_frozen_at"`
-	CreatedAt                        types.String                              `tfsdk:"created_at"`
-	CreatedByID                      types.String                              `tfsdk:"created_by_id"`
-	CreatedByUserPath                types.String                              `tfsdk:"created_by_user_path"`
-	DefaultView                      types.String                              `tfsdk:"default_view"`
-	Delete                           types.Bool                                `tfsdk:"delete"`
-	Description                      types.String                              `tfsdk:"description"`
-	DisplayName                      types.String                              `tfsdk:"display_name"`
-	DuplicateFrom                    types.String                              `tfsdk:"duplicate_from"`
-	Edit                             types.Bool                                `tfsdk:"edit"`
-	ExemptCertifiedAccessConflicts   types.Bool                                `tfsdk:"exempt_certified_access_conflicts"`
-	Expanded                         []tfTypes.Expanded                        `tfsdk:"expanded"`
-	ExpectedTicketCount              types.Int32                               `tfsdk:"expected_ticket_count"`
-	Extra                            map[string]types.Bool                     `tfsdk:"extra"`
-	HasAccuracySupport               types.Bool                                `tfsdk:"has_accuracy_support"`
-	ID                               types.String                              `tfsdk:"id"`
-	MultiAppSetup                    *tfTypes.MultiAppSetup                    `tfsdk:"multi_app_setup"`
-	NotificationConfig               *tfTypes.NotificationConfig               `tfsdk:"notification_config"`
-	OwnerIds                         []types.String                            `tfsdk:"owner_ids"`
-	PolicyID                         types.String                              `tfsdk:"policy_id"`
-	PolicyPath                       types.String                              `tfsdk:"policy_path"`
-	Read                             types.Bool                                `tfsdk:"read"`
-	ReviewInstructions               types.String                              `tfsdk:"review_instructions"`
-	ReviewSignatureConfig            *tfTypes.ReviewSignatureConfig            `tfsdk:"review_signature_config"`
-	ScopeType                        types.String                              `tfsdk:"scope_type"`
-	ScopingVersion                   types.String                              `tfsdk:"scoping_version"`
-	SingleAppSetup                   *tfTypes.SingleAppSetup                   `tfsdk:"single_app_setup"`
-	StartedAt                        types.String                              `tfsdk:"started_at"`
-	State                            types.String                              `tfsdk:"state"`
-	UpdatedAt                        types.String                              `tfsdk:"updated_at"`
-	UsePolicyOverride                types.Bool                                `tfsdk:"use_policy_override"`
+	AccessReviewExclusionScope     *tfTypes.AccessReviewExclusionScope `tfsdk:"access_review_exclusion_scope"`
+	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
+	AccessReviewScope              *tfTypes.AccessReviewScope          `tfsdk:"access_review_scope"`
+	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
+	AccessReviewTemplateID         types.String                        `tfsdk:"access_review_template_id"`
+	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
+	AutoResolve                    types.Bool                          `tfsdk:"auto_resolve"`
+	BindingObjectSetup             *tfTypes.BindingObjectSetup         `tfsdk:"binding_object_setup"`
+	ClosedAt                       types.String                        `tfsdk:"closed_at"`
+	CompletionDate                 types.String                        `tfsdk:"completion_date"`
+	ConnectorSourcesFrozenAt       types.String                        `tfsdk:"connector_sources_frozen_at"`
+	CreatedAt                      types.String                        `tfsdk:"created_at"`
+	CreatedByID                    types.String                        `tfsdk:"created_by_id"`
+	CreatedByUserPath              types.String                        `tfsdk:"created_by_user_path"`
+	DefaultView                    types.String                        `tfsdk:"default_view"`
+	Delete                         types.Bool                          `tfsdk:"delete"`
+	Description                    types.String                        `tfsdk:"description"`
+	DisplayName                    types.String                        `tfsdk:"display_name"`
+	DuplicateFrom                  types.String                        `tfsdk:"duplicate_from"`
+	Edit                           types.Bool                          `tfsdk:"edit"`
+	ExemptCertifiedAccessConflicts types.Bool                          `tfsdk:"exempt_certified_access_conflicts"`
+	Expanded                       []tfTypes.Expanded                  `tfsdk:"expanded"`
+	ExpectedTicketCount            types.Int32                         `tfsdk:"expected_ticket_count"`
+	Extra                          map[string]types.Bool               `tfsdk:"extra"`
+	HasAccuracySupport             types.Bool                          `tfsdk:"has_accuracy_support"`
+	ID                             types.String                        `tfsdk:"id"`
+	MultiAppSetup                  *tfTypes.MultiAppSetup              `tfsdk:"multi_app_setup"`
+	NotificationConfig             *tfTypes.NotificationConfig         `tfsdk:"notification_config"`
+	OwnerIds                       []types.String                      `tfsdk:"owner_ids"`
+	PolicyID                       types.String                        `tfsdk:"policy_id"`
+	PolicyPath                     types.String                        `tfsdk:"policy_path"`
+	Read                           types.Bool                          `tfsdk:"read"`
+	ReviewInstructions             types.String                        `tfsdk:"review_instructions"`
+	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig      `tfsdk:"review_signature_config"`
+	ScopeType                      types.String                        `tfsdk:"scope_type"`
+	ScopingVersion                 types.String                        `tfsdk:"scoping_version"`
+	SingleAppSetup                 *tfTypes.SingleAppSetup             `tfsdk:"single_app_setup"`
+	StartedAt                      types.String                        `tfsdk:"started_at"`
+	State                          types.String                        `tfsdk:"state"`
+	UpdatedAt                      types.String                        `tfsdk:"updated_at"`
+	UsePolicyOverride              types.Bool                          `tfsdk:"use_policy_override"`
 }
 
 func (r *AccessReviewResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -105,23 +102,6 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 				},
 				Description: `The AccessReviewExclusionScope message.`,
-			},
-			"access_review_expand_mask": schema.SingleNestedAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Attributes: map[string]schema.Attribute{
-					"paths": schema.ListAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.List{
-							listplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						ElementType: types.StringType,
-						Description: `The paths field. Requires replacement if changed.`,
-					},
-				},
-				Description: `The AccessReviewExpandMask message. Requires replacement if changed.`,
 			},
 			"access_review_inclusion_scope": schema.SingleNestedAttribute{
 				Computed: true,
@@ -426,10 +406,6 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					`This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:` + "\n" +
 					`  - allAccessConflicts` + "\n" +
 					`  - specificAccessConflicts`,
-			},
-			"access_review_service_delete_request": schema.SingleNestedAttribute{
-				Optional:    true,
-				Description: `The AccessReviewServiceDeleteRequest message.`,
 			},
 			"access_review_template_id": schema.StringAttribute{
 				Computed:    true,

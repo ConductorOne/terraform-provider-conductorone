@@ -48,8 +48,6 @@ type AccessReviewServiceCreateRequest struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// The duplicateFrom field.
 	DuplicateFrom *string `json:"duplicateFrom,omitempty"`
-	// The AccessReviewExpandMask message.
-	AccessReviewExpandMask *AccessReviewExpandMask `json:"expandMask,omitempty"`
 	// The NotificationConfig message.
 	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The ownerIds field.
@@ -97,13 +95,6 @@ func (a *AccessReviewServiceCreateRequest) GetDuplicateFrom() *string {
 		return nil
 	}
 	return a.DuplicateFrom
-}
-
-func (a *AccessReviewServiceCreateRequest) GetAccessReviewExpandMask() *AccessReviewExpandMask {
-	if a == nil {
-		return nil
-	}
-	return a.AccessReviewExpandMask
 }
 
 func (a *AccessReviewServiceCreateRequest) GetNotificationConfig() *NotificationConfig {
