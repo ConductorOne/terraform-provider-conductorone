@@ -30,8 +30,9 @@ generation:
     generateTests: true
     generateNewTests: false
     skipResponseBodyAssertions: false
+  persistentEdits: {}
 terraform:
-  version: 1.7.5
+  version: 1.7.6
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []
@@ -44,6 +45,7 @@ terraform:
   allowUnknownFieldsInWeakUnions: false
   author: conductorone
   baseErrorName: ConductoroneAPIError
+  debugLogging: {}
   defaultErrorName: SDKError
   enableCustomCodeRegions: false
   enableOperationSecurity: false
@@ -52,5 +54,7 @@ terraform:
   environmentVariables: []
   excludeEmptyObjectSchemas: false
   includeEmptyObjects: false
+  inferUnionDiscriminators: false
   packageName: conductorone
   unionDeserializationStrategy: populated-fields
+  unionStrategy: populated-fields

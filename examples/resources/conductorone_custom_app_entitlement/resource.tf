@@ -27,9 +27,7 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
     }
     connector_provision = {
       account_provision = {
-        config = {
-          # ...
-        }
+        config       = "{ \"see\": \"documentation\" }"
         connector_id = "...my_connector_id..."
         do_not_save = {
           # ...

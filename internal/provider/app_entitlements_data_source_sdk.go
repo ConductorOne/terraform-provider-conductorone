@@ -67,9 +67,10 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							} else {
 								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
 								if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config == nil {
-									list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = nil
+									list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
 								} else {
-									list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+									configResult, _ := json.Marshal(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config)
+									list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult))
 								}
 								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID)
 								if listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
@@ -192,9 +193,10 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							} else {
 								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
 								if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
-									list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = nil
+									list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
 								} else {
-									list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+									configResult1, _ := json.Marshal(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.Config)
+									list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult1))
 								}
 								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
 								if listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {

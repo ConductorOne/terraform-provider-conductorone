@@ -373,6 +373,9 @@ actions:
   - target: $["components"]["schemas"]["c1.api.policy.v1.MultiStep"]
     update:
       x-speakeasy-type-override: any
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ConnectorProvision.AccountProvision"]["properties"]["config"]
+    update:
+      x-speakeasy-type-override: any
   - target: $["components"]["schemas"]["c1.api.policy.v1.Accept"]
     update:
       x-speakeasy-conflicts-with:

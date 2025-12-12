@@ -133,9 +133,7 @@ resource "conductorone_policy" "my_policy" {
               }
               connector_provision = {
                 account_provision = {
-                  config = {
-                    # ...
-                  }
+                  config       = "{ \"see\": \"documentation\" }"
                   connector_id = "...my_connector_id..."
                   do_not_save = {
                     # ...

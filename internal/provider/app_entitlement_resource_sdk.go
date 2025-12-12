@@ -144,9 +144,9 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 		if r.ProvisionPolicy.ConnectorProvision != nil {
 			var accountProvision *shared.AccountProvision
 			if r.ProvisionPolicy.ConnectorProvision.AccountProvision != nil {
-				var config *shared.AccountProvisionConfig
-				if r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config != nil {
-					config = &shared.AccountProvisionConfig{}
+				var config any
+				if !r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.IsNull() {
+					_ = json.Unmarshal([]byte(r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.ValueString()), &config)
 				}
 				connectorId1 := new(string)
 				if !r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
@@ -386,9 +386,9 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 		if r.DeprovisionerPolicy.ConnectorProvision != nil {
 			var accountProvision1 *shared.AccountProvision
 			if r.DeprovisionerPolicy.ConnectorProvision.AccountProvision != nil {
-				var config1 *shared.AccountProvisionConfig
-				if r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config != nil {
-					config1 = &shared.AccountProvisionConfig{}
+				var config1 any
+				if !r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config.IsUnknown() && !r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config.IsNull() {
+					_ = json.Unmarshal([]byte(r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config.ValueString()), &config1)
 				}
 				connectorId6 := new(string)
 				if !r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
@@ -628,9 +628,10 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 				} else {
 					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
 					if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config == nil {
-						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = nil
+						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
 					} else {
-						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+						configResult, _ := json.Marshal(resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config)
+						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult))
 					}
 					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID)
 					if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
@@ -748,9 +749,10 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 				} else {
 					r.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
 					if resp.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
-						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = nil
+						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
 					} else {
-						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+						configResult1, _ := json.Marshal(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.Config)
+						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult1))
 					}
 					r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
 					if resp.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
