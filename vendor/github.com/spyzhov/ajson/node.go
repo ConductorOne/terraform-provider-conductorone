@@ -10,14 +10,14 @@ import (
 // Node is a main struct, presents any type of JSON node.
 // Available types are:
 //
-// 	const (
-// 		Null NodeType = iota
-// 		Numeric
-// 		String
-// 		Bool
-// 		Array
-// 		Object
-// 	)
+//	const (
+//		Null NodeType = iota
+//		Numeric
+//		String
+//		Bool
+//		Array
+//		Object
+//	)
 //
 // Every type has its own methods to be called.
 // Every Node contains link to a byte data, parent and children, also calculated type of value, atomic value and internal information.
@@ -38,13 +38,12 @@ type NodeType int32
 
 // Reflections:
 //
-// 	Null    = nil.(interface{})
-// 	Numeric = float64
-// 	String  = string
-// 	Bool    = bool
-// 	Array   = []*Node
-// 	Object  = map[string]*Node
-//
+//	Null    = nil.(interface{})
+//	Numeric = float64
+//	String  = string
+//	Bool    = bool
+//	Array   = []*Node
+//	Object  = map[string]*Node
 const (
 	// Null is reflection of nil.(interface{})
 	Null NodeType = iota
