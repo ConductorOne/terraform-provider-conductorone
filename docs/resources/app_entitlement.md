@@ -129,15 +129,11 @@ This message contains a oneof named storage_type. Only a single field of the fol
 
 Optional:
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--provision_policy--connector_provision--account_provision--config))
+- `config` (String) Parsed as JSON.
 - `connector_id` (String) The connectorId field.
 - `do_not_save` (Attributes) The DoNotSave message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision--account_provision--do_not_save))
 - `save_to_vault` (Attributes) The SaveToVault message. (see [below for nested schema](#nestedatt--provision_policy--connector_provision--account_provision--save_to_vault))
 - `schema_id` (String) The schemaId field.
-
-<a id="nestedatt--provision_policy--connector_provision--account_provision--config"></a>
-### Nested Schema for `provision_policy.connector_provision.account_provision.config`
-
 
 <a id="nestedatt--provision_policy--connector_provision--account_provision--do_not_save"></a>
 ### Nested Schema for `provision_policy.connector_provision.account_provision.do_not_save`
@@ -259,15 +255,11 @@ This message contains a oneof named storage_type. Only a single field of the fol
 
 Read-Only:
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision--account_provision--config))
+- `config` (String) Parsed as JSON.
 - `connector_id` (String) The connectorId field.
 - `do_not_save` (Attributes) The DoNotSave message. (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision--account_provision--do_not_save))
 - `save_to_vault` (Attributes) The SaveToVault message. (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision--account_provision--save_to_vault))
 - `schema_id` (String) The schemaId field.
-
-<a id="nestedatt--deprovisioner_policy--connector_provision--account_provision--config"></a>
-### Nested Schema for `deprovisioner_policy.connector_provision.account_provision.config`
-
 
 <a id="nestedatt--deprovisioner_policy--connector_provision--account_provision--do_not_save"></a>
 ### Nested Schema for `deprovisioner_policy.connector_provision.account_provision.do_not_save`
