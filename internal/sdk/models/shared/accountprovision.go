@@ -2,16 +2,13 @@
 
 package shared
 
-type AccountProvisionConfig struct {
-}
-
 // The AccountProvision message.
 //
 // This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:
 //   - saveToVault
 //   - doNotSave
 type AccountProvision struct {
-	Config *AccountProvisionConfig `json:"config,omitempty"`
+	Config any `json:"config,omitempty"`
 	// The connectorId field.
 	ConnectorID *string `json:"connectorId,omitempty"`
 	// The DoNotSave message.
@@ -22,7 +19,7 @@ type AccountProvision struct {
 	SchemaID *string `json:"schemaId,omitempty"`
 }
 
-func (a *AccountProvision) GetConfig() *AccountProvisionConfig {
+func (a *AccountProvision) GetConfig() any {
 	if a == nil {
 		return nil
 	}

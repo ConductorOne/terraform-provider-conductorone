@@ -735,9 +735,11 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
-																	"config": schema.SingleNestedAttribute{
-																		Computed: true,
-																		Optional: true,
+																	"config": schema.StringAttribute{
+																		CustomType:  jsontypes.NormalizedType{},
+																		Computed:    true,
+																		Optional:    true,
+																		Description: `Parsed as JSON.`,
 																	},
 																	"connector_id": schema.StringAttribute{
 																		Computed:    true,
