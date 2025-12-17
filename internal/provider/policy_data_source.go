@@ -531,8 +531,10 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 															"account_provision": schema.SingleNestedAttribute{
 																Computed: true,
 																Attributes: map[string]schema.Attribute{
-																	"config": schema.SingleNestedAttribute{
-																		Computed: true,
+																	"config": schema.StringAttribute{
+																		CustomType:  jsontypes.NormalizedType{},
+																		Computed:    true,
+																		Description: `Parsed as JSON.`,
 																	},
 																	"connector_id": schema.StringAttribute{
 																		Computed:    true,

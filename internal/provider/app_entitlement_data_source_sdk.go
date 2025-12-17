@@ -55,9 +55,10 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 				} else {
 					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
 					if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config == nil {
-						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = nil
+						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
 					} else {
-						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+						configResult, _ := json.Marshal(resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config)
+						r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult))
 					}
 					r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.ConnectorID)
 					if resp.DeprovisionerPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
@@ -180,9 +181,10 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 				} else {
 					r.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
 					if resp.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
-						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = nil
+						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
 					} else {
-						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+						configResult1, _ := json.Marshal(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.Config)
+						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult1))
 					}
 					r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
 					if resp.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {

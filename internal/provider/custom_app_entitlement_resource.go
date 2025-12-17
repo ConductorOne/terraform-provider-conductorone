@@ -157,8 +157,10 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							"account_provision": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
-									"config": schema.SingleNestedAttribute{
-										Computed: true,
+									"config": schema.StringAttribute{
+										CustomType:  jsontypes.NormalizedType{},
+										Computed:    true,
+										Description: `Parsed as JSON.`,
 									},
 									"connector_id": schema.StringAttribute{
 										Computed:    true,
@@ -419,9 +421,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"config": schema.SingleNestedAttribute{
-										Computed: true,
-										Optional: true,
+									"config": schema.StringAttribute{
+										CustomType:  jsontypes.NormalizedType{},
+										Computed:    true,
+										Optional:    true,
+										Description: `Parsed as JSON.`,
 									},
 									"connector_id": schema.StringAttribute{
 										Computed:    true,

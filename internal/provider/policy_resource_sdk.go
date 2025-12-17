@@ -332,9 +332,10 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									} else {
 										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
 										if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = nil
+											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
 										} else {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = &tfTypes.AccountProvisionConfig{}
+											configResult, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config)
+											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult))
 										}
 										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
 										if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
@@ -1140,9 +1141,9 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision != nil {
 							var accountProvision *shared.AccountProvision
 							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision != nil {
-								var config *shared.AccountProvisionConfig
-								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config != nil {
-									config = &shared.AccountProvisionConfig{}
+								var config interface{}
+								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.IsNull() {
+									_ = json.Unmarshal([]byte(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.ValueString()), &config)
 								}
 								connectorId1 := new(string)
 								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
@@ -2107,9 +2108,9 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						if stepsItem.Provision.ProvisionPolicy.ConnectorProvision != nil {
 							var accountProvision *shared.AccountProvision
 							if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision != nil {
-								var config *shared.AccountProvisionConfig
-								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config != nil {
-									config = &shared.AccountProvisionConfig{}
+								var config interface{}
+								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.IsNull() {
+									_ = json.Unmarshal([]byte(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.ValueString()), &config)
 								}
 								connectorId1 := new(string)
 								if !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
