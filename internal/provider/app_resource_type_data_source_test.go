@@ -41,6 +41,7 @@ func TestAccAppResourceTypeDataSource(t *testing.T) {
 
 				data "conductorone_app_resource_type" "by_id" {
 					resource_type_ids = [conductorone_app_resource_type.test.id]
+					app_ids = [conductorone_app.test.id]
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
