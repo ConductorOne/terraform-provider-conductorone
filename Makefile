@@ -16,7 +16,7 @@ lint:
 
 .PHONY: fmt
 fmt:
-	gofmt -s -w -e .
+	find . -name '*.go' -not -path './vendor/*' | xargs gofmt -s -w -e
 
 # vendor: Updates go.mod/go.sum and rebuilds the vendor directory.
 #
@@ -80,8 +80,8 @@ install-hooks:
 	git config core.hooksPath .githooks
 	chmod +x .githooks/*
 	@echo "Git hooks installed. Pre-push validation is now enabled."
-	@echo "Note: golangci-lint must be installed for 'make lint' to work."
-	@echo "      Install: https://golangci-lint.run/welcome/install/"
+	@echo "Note: golangci-lint v1.x (>= v1.63.0) is required for 'make lint' to work."
+	@echo "      Install: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8"
 
 .PHONY: generate
 generate: fmt
