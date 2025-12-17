@@ -23,6 +23,7 @@ resource "conductorone_app" "my_app" {
   display_name                           = "...my_display_name..."
   grant_policy_id                        = "...my_grant_policy_id..."
   identity_matching                      = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
+  instructions                           = "...my_instructions..."
   monthly_cost_usd                       = 1
   revoke_policy_id                       = "...my_revoke_policy_id..."
   strict_access_entitlement_provisioning = true
@@ -42,6 +43,7 @@ resource "conductorone_app" "my_app" {
 - `description` (String) Creates the app with this description.
 - `grant_policy_id` (String) Creates the app with this grant policy.
 - `identity_matching` (String) Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"]
+- `instructions` (String) Instructions shown to users in the access request form when requesting access for this app.
 - `monthly_cost_usd` (Number) Creates the app with this monthly cost per seat.
 - `revoke_policy_id` (String) Creates the app with this revoke policy.
 - `strict_access_entitlement_provisioning` (Boolean) This flag enforces a provisioning mode where the access entitlement is always included in the provisioning flow, if the app user doesn't exist
@@ -54,7 +56,6 @@ resource "conductorone_app" "my_app" {
 - `created_at` (String)
 - `default_request_catalog_id` (String) The ID for the default request catalog for this app.
 - `id` (String) The ID of the app.
-- `instructions` (String) If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
 - `is_directory` (Boolean) Specifies if the app is a directory.
 - `is_manually_managed` (Boolean) The isManuallyManaged field.
 - `parent_app_id` (String) The ID of the app that created this app, if any.
