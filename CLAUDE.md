@@ -14,7 +14,8 @@ make test          # Run unit tests (go test -v -cover -timeout=120s -parallel=4
 make testacc       # Run acceptance tests (requires TF_ACC=1, timeout 5m)
 make lint          # Run golangci-lint
 make fmt           # Format code with gofmt
-make gen           # Regenerate SDK from OpenAPI spec using Speakeasy
+make gen           # Regenerate SDK from OpenAPI spec using Speakeasy (includes vendor)
+make vendor        # Run go mod tidy && go mod vendor
 make pre-commit    # Run all validation checks (build, lint, test, generate)
 make install-hooks # Install git pre-push hook for automatic validation
 ```

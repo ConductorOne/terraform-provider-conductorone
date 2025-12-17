@@ -18,6 +18,15 @@ lint:
 fmt:
 	gofmt -s -w -e .
 
+# vendor: Updates go.mod/go.sum and rebuilds the vendor directory.
+#
+# Run this after 'make gen' or any change that affects dependencies.
+# The vendor directory must stay in sync with go.mod for builds to work.
+.PHONY: vendor
+vendor:
+	go mod tidy
+	go mod vendor
+
 .PHONY: gen
 gen:
 	@DATE=$$(date +%Y%m%d%H%M%S); \
@@ -27,6 +36,7 @@ gen:
 	curl -sSL -o $$FILENAME https://insulator.conductor.one/api/v1/openapi.yaml && \
 	speakeasy overlay apply -s $$FILENAME -o overlay.yaml >> $$FILENAME2 && \
 	speakeasy generate sdk -s $$FILENAME2 -o . -l terraform -d
+	$(MAKE) vendor
 	
 
 .PHONY: test
