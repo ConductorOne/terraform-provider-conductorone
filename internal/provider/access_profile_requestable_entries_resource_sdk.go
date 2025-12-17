@@ -114,16 +114,16 @@ func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogMan
 	var appEntitlements []shared.AppEntitlementRef
 	if r.AppEntitlements != nil {
 		appEntitlements = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlements))
-		for _, appEntitlementsItem := range r.AppEntitlements {
+		for appEntitlementsIndex := range r.AppEntitlements {
 			appID := new(string)
-			if !appEntitlementsItem.AppID.IsUnknown() && !appEntitlementsItem.AppID.IsNull() {
-				*appID = appEntitlementsItem.AppID.ValueString()
+			if !r.AppEntitlements[appEntitlementsIndex].AppID.IsUnknown() && !r.AppEntitlements[appEntitlementsIndex].AppID.IsNull() {
+				*appID = r.AppEntitlements[appEntitlementsIndex].AppID.ValueString()
 			} else {
 				appID = nil
 			}
 			id := new(string)
-			if !appEntitlementsItem.ID.IsUnknown() && !appEntitlementsItem.ID.IsNull() {
-				*id = appEntitlementsItem.ID.ValueString()
+			if !r.AppEntitlements[appEntitlementsIndex].ID.IsUnknown() && !r.AppEntitlements[appEntitlementsIndex].ID.IsNull() {
+				*id = r.AppEntitlements[appEntitlementsIndex].ID.ValueString()
 			} else {
 				id = nil
 			}
@@ -153,16 +153,16 @@ func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogMan
 	var appEntitlements []shared.AppEntitlementRef
 	if r.AppEntitlements != nil {
 		appEntitlements = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlements))
-		for _, appEntitlementsItem := range r.AppEntitlements {
+		for appEntitlementsIndex := range r.AppEntitlements {
 			appID := new(string)
-			if !appEntitlementsItem.AppID.IsUnknown() && !appEntitlementsItem.AppID.IsNull() {
-				*appID = appEntitlementsItem.AppID.ValueString()
+			if !r.AppEntitlements[appEntitlementsIndex].AppID.IsUnknown() && !r.AppEntitlements[appEntitlementsIndex].AppID.IsNull() {
+				*appID = r.AppEntitlements[appEntitlementsIndex].AppID.ValueString()
 			} else {
 				appID = nil
 			}
 			id := new(string)
-			if !appEntitlementsItem.ID.IsUnknown() && !appEntitlementsItem.ID.IsNull() {
-				*id = appEntitlementsItem.ID.ValueString()
+			if !r.AppEntitlements[appEntitlementsIndex].ID.IsUnknown() && !r.AppEntitlements[appEntitlementsIndex].ID.IsNull() {
+				*id = r.AppEntitlements[appEntitlementsIndex].ID.ValueString()
 			} else {
 				id = nil
 			}
@@ -185,16 +185,16 @@ func (r *AccessProfileRequestableEntriesResourceModel) ToSharedRequestCatalogMan
 	var appEntitlements []shared.AppEntitlementRef
 	if r.AppEntitlements != nil {
 		appEntitlements = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlements))
-		for _, appEntitlementsItem := range r.AppEntitlements {
+		for appEntitlementsIndex := range r.AppEntitlements {
 			appID := new(string)
-			if !appEntitlementsItem.AppID.IsUnknown() && !appEntitlementsItem.AppID.IsNull() {
-				*appID = appEntitlementsItem.AppID.ValueString()
+			if !r.AppEntitlements[appEntitlementsIndex].AppID.IsUnknown() && !r.AppEntitlements[appEntitlementsIndex].AppID.IsNull() {
+				*appID = r.AppEntitlements[appEntitlementsIndex].AppID.ValueString()
 			} else {
 				appID = nil
 			}
 			id := new(string)
-			if !appEntitlementsItem.ID.IsUnknown() && !appEntitlementsItem.ID.IsNull() {
-				*id = appEntitlementsItem.ID.ValueString()
+			if !r.AppEntitlements[appEntitlementsIndex].ID.IsUnknown() && !r.AppEntitlements[appEntitlementsIndex].ID.IsNull() {
+				*id = r.AppEntitlements[appEntitlementsIndex].ID.ValueString()
 			} else {
 				id = nil
 			}

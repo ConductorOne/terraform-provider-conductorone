@@ -154,6 +154,7 @@ func (s *AppResourceOwners) Delete(ctx context.Context, request operations.C1API
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -284,6 +285,7 @@ func (s *AppResourceOwners) ListOwnerIDs(ctx context.Context, request operations
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -434,7 +436,7 @@ func (s *AppResourceOwners) Remove(ctx context.Context, request operations.C1API
 }
 
 // List
-// List app resource types.
+// List all owners of an app resource.
 func (s *AppResourceOwners) List(ctx context.Context, request operations.C1APIAppV1AppResourceOwnersListRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceOwnersListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

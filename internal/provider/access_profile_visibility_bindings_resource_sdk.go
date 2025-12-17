@@ -57,16 +57,16 @@ func (r *AccessProfileVisibilityBindingsResourceModel) ToSharedRequestCatalogMan
 	var accessEntitlements []shared.AppEntitlementRef
 	if r.AccessEntitlements != nil {
 		accessEntitlements = make([]shared.AppEntitlementRef, 0, len(r.AccessEntitlements))
-		for _, accessEntitlementsItem := range r.AccessEntitlements {
+		for accessEntitlementsIndex := range r.AccessEntitlements {
 			appID := new(string)
-			if !accessEntitlementsItem.AppID.IsUnknown() && !accessEntitlementsItem.AppID.IsNull() {
-				*appID = accessEntitlementsItem.AppID.ValueString()
+			if !r.AccessEntitlements[accessEntitlementsIndex].AppID.IsUnknown() && !r.AccessEntitlements[accessEntitlementsIndex].AppID.IsNull() {
+				*appID = r.AccessEntitlements[accessEntitlementsIndex].AppID.ValueString()
 			} else {
 				appID = nil
 			}
 			id := new(string)
-			if !accessEntitlementsItem.ID.IsUnknown() && !accessEntitlementsItem.ID.IsNull() {
-				*id = accessEntitlementsItem.ID.ValueString()
+			if !r.AccessEntitlements[accessEntitlementsIndex].ID.IsUnknown() && !r.AccessEntitlements[accessEntitlementsIndex].ID.IsNull() {
+				*id = r.AccessEntitlements[accessEntitlementsIndex].ID.ValueString()
 			} else {
 				id = nil
 			}
@@ -89,16 +89,16 @@ func (r *AccessProfileVisibilityBindingsResourceModel) ToSharedRequestCatalogMan
 	var accessEntitlements []shared.AppEntitlementRef
 	if r.AccessEntitlements != nil {
 		accessEntitlements = make([]shared.AppEntitlementRef, 0, len(r.AccessEntitlements))
-		for _, accessEntitlementsItem := range r.AccessEntitlements {
+		for accessEntitlementsIndex := range r.AccessEntitlements {
 			appID := new(string)
-			if !accessEntitlementsItem.AppID.IsUnknown() && !accessEntitlementsItem.AppID.IsNull() {
-				*appID = accessEntitlementsItem.AppID.ValueString()
+			if !r.AccessEntitlements[accessEntitlementsIndex].AppID.IsUnknown() && !r.AccessEntitlements[accessEntitlementsIndex].AppID.IsNull() {
+				*appID = r.AccessEntitlements[accessEntitlementsIndex].AppID.ValueString()
 			} else {
 				appID = nil
 			}
 			id := new(string)
-			if !accessEntitlementsItem.ID.IsUnknown() && !accessEntitlementsItem.ID.IsNull() {
-				*id = accessEntitlementsItem.ID.ValueString()
+			if !r.AccessEntitlements[accessEntitlementsIndex].ID.IsUnknown() && !r.AccessEntitlements[accessEntitlementsIndex].ID.IsNull() {
+				*id = r.AccessEntitlements[accessEntitlementsIndex].ID.ValueString()
 			} else {
 				id = nil
 			}

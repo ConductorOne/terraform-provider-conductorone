@@ -5,6 +5,8 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
 )
 
 // ApprovalInstanceState - The state of the approval instance
@@ -70,6 +72,7 @@ type ApprovalInstance struct {
 	Approval *Approval `json:"approval,omitempty"`
 	// The approved action indicates that the approvalinstance had an outcome of approved.
 	ApprovedAction *ApprovedAction `json:"approved,omitempty"`
+	AssignedAt     *time.Time      `json:"assignedAt,omitempty"`
 	// The denied action indicates that the c1.api.policy.v1.ApprovalInstance had an outcome of denied.
 	DeniedAction *DeniedAction `json:"denied,omitempty"`
 	// The EscalationInstance message.
@@ -91,6 +94,17 @@ type ApprovalInstance struct {
 	State *ApprovalInstanceState `json:"state,omitempty"`
 }
 
+func (a ApprovalInstance) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *ApprovalInstance) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *ApprovalInstance) GetApproval() *Approval {
 	if a == nil {
 		return nil
@@ -103,6 +117,13 @@ func (a *ApprovalInstance) GetApprovedAction() *ApprovedAction {
 		return nil
 	}
 	return a.ApprovedAction
+}
+
+func (a *ApprovalInstance) GetAssignedAt() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.AssignedAt
 }
 
 func (a *ApprovalInstance) GetDeniedAction() *DeniedAction {
