@@ -540,8 +540,8 @@ func (r *PoliciesDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Cont
 	var excludePolicyIds []string
 	if r.ExcludePolicyIds != nil {
 		excludePolicyIds = make([]string, 0, len(r.ExcludePolicyIds))
-		for excludePolicyIdsIndex := range r.ExcludePolicyIds {
-			excludePolicyIds = append(excludePolicyIds, r.ExcludePolicyIds[excludePolicyIdsIndex].ValueString())
+		for _, excludePolicyIdsItem := range r.ExcludePolicyIds {
+			excludePolicyIds = append(excludePolicyIds, excludePolicyIdsItem.ValueString())
 		}
 	}
 	includeDeleted := new(bool)
@@ -572,10 +572,10 @@ func (r *PoliciesDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Cont
 	var refs []shared.PolicyRef
 	if r.Refs != nil {
 		refs = make([]shared.PolicyRef, 0, len(r.Refs))
-		for refsIndex := range r.Refs {
+		for _, refsItem := range r.Refs {
 			id := new(string)
-			if !r.Refs[refsIndex].ID.IsUnknown() && !r.Refs[refsIndex].ID.IsNull() {
-				*id = r.Refs[refsIndex].ID.ValueString()
+			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
+				*id = refsItem.ID.ValueString()
 			} else {
 				id = nil
 			}

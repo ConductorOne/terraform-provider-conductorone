@@ -662,19 +662,19 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 		var managerIds []string
 		if r.AccessReviewInclusionScope.ManagerIds != nil {
 			managerIds = make([]string, 0, len(r.AccessReviewInclusionScope.ManagerIds))
-			for managerIdsIndex := range r.AccessReviewInclusionScope.ManagerIds {
-				managerIds = append(managerIds, r.AccessReviewInclusionScope.ManagerIds[managerIdsIndex].ValueString())
+			for _, managerIdsItem := range r.AccessReviewInclusionScope.ManagerIds {
+				managerIds = append(managerIds, managerIdsItem.ValueString())
 			}
 		}
 		multiUserProfileAttributes := make(map[string]shared.IncludedUserAttributeValues)
-		for multiUserProfileAttributesKey := range r.AccessReviewInclusionScope.MultiUserProfileAttributes {
+		for multiUserProfileAttributesKey, multiUserProfileAttributesValue := range r.AccessReviewInclusionScope.MultiUserProfileAttributes {
 			var values []shared.IncludedUserAttributeValue
-			if r.AccessReviewInclusionScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values != nil {
-				values = make([]shared.IncludedUserAttributeValue, 0, len(r.AccessReviewInclusionScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values))
-				for valuesIndex := range r.AccessReviewInclusionScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values {
+			if multiUserProfileAttributesValue.Values != nil {
+				values = make([]shared.IncludedUserAttributeValue, 0, len(multiUserProfileAttributesValue.Values))
+				for _, valuesItem := range multiUserProfileAttributesValue.Values {
 					value := new(string)
-					if !r.AccessReviewInclusionScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values[valuesIndex].Value.IsUnknown() && !r.AccessReviewInclusionScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values[valuesIndex].Value.IsNull() {
-						*value = r.AccessReviewInclusionScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values[valuesIndex].Value.ValueString()
+					if !valuesItem.Value.IsUnknown() && !valuesItem.Value.IsNull() {
+						*value = valuesItem.Value.ValueString()
 					} else {
 						value = nil
 					}
@@ -697,8 +697,8 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 		var userIds []string
 		if r.AccessReviewInclusionScope.UserIds != nil {
 			userIds = make([]string, 0, len(r.AccessReviewInclusionScope.UserIds))
-			for userIdsIndex := range r.AccessReviewInclusionScope.UserIds {
-				userIds = append(userIds, r.AccessReviewInclusionScope.UserIds[userIdsIndex].ValueString())
+			for _, userIdsItem := range r.AccessReviewInclusionScope.UserIds {
+				userIds = append(userIds, userIdsItem.ValueString())
 			}
 		}
 		var userStatuses []shared.UserStatuses
@@ -721,24 +721,24 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 	var multiAppSetup *shared.MultiAppSetup
 	if r.MultiAppSetup != nil {
 		appEntitlementDetails := make(map[string]shared.EntitlementToDetails)
-		for appEntitlementDetailsKey := range r.MultiAppSetup.AppEntitlementDetails {
+		for appEntitlementDetailsKey, appEntitlementDetailsValue := range r.MultiAppSetup.AppEntitlementDetails {
 			entitlementDetails := make(map[string]shared.CampaignEntitlementDetails)
-			for entitlementDetailsKey := range r.MultiAppSetup.AppEntitlementDetails[appEntitlementDetailsKey].EntitlementDetails {
+			for entitlementDetailsKey, entitlementDetailsValue := range appEntitlementDetailsValue.EntitlementDetails {
 				appID := new(string)
-				if !r.MultiAppSetup.AppEntitlementDetails[appEntitlementDetailsKey].EntitlementDetails[entitlementDetailsKey].AppID.IsUnknown() && !r.MultiAppSetup.AppEntitlementDetails[appEntitlementDetailsKey].EntitlementDetails[entitlementDetailsKey].AppID.IsNull() {
-					*appID = r.MultiAppSetup.AppEntitlementDetails[appEntitlementDetailsKey].EntitlementDetails[entitlementDetailsKey].AppID.ValueString()
+				if !entitlementDetailsValue.AppID.IsUnknown() && !entitlementDetailsValue.AppID.IsNull() {
+					*appID = entitlementDetailsValue.AppID.ValueString()
 				} else {
 					appID = nil
 				}
 				entitlementID := new(string)
-				if !r.MultiAppSetup.AppEntitlementDetails[appEntitlementDetailsKey].EntitlementDetails[entitlementDetailsKey].EntitlementID.IsUnknown() && !r.MultiAppSetup.AppEntitlementDetails[appEntitlementDetailsKey].EntitlementDetails[entitlementDetailsKey].EntitlementID.IsNull() {
-					*entitlementID = r.MultiAppSetup.AppEntitlementDetails[appEntitlementDetailsKey].EntitlementDetails[entitlementDetailsKey].EntitlementID.ValueString()
+				if !entitlementDetailsValue.EntitlementID.IsUnknown() && !entitlementDetailsValue.EntitlementID.IsNull() {
+					*entitlementID = entitlementDetailsValue.EntitlementID.ValueString()
 				} else {
 					entitlementID = nil
 				}
 				policyID := new(string)
-				if !r.MultiAppSetup.AppEntitlementDetails[appEntitlementDetailsKey].EntitlementDetails[entitlementDetailsKey].PolicyID.IsUnknown() && !r.MultiAppSetup.AppEntitlementDetails[appEntitlementDetailsKey].EntitlementDetails[entitlementDetailsKey].PolicyID.IsNull() {
-					*policyID = r.MultiAppSetup.AppEntitlementDetails[appEntitlementDetailsKey].EntitlementDetails[entitlementDetailsKey].PolicyID.ValueString()
+				if !entitlementDetailsValue.PolicyID.IsUnknown() && !entitlementDetailsValue.PolicyID.IsNull() {
+					*policyID = entitlementDetailsValue.PolicyID.ValueString()
 				} else {
 					policyID = nil
 				}
@@ -755,18 +755,18 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 			appEntitlementDetails[appEntitlementDetailsKey] = appEntitlementDetailsInst
 		}
 		appEntitlements := make(map[string]shared.MultiAppEntitlement)
-		for appEntitlementsKey := range r.MultiAppSetup.AppEntitlements {
+		for appEntitlementsKey, appEntitlementsValue := range r.MultiAppSetup.AppEntitlements {
 			appId1 := new(string)
-			if !r.MultiAppSetup.AppEntitlements[appEntitlementsKey].AppID.IsUnknown() && !r.MultiAppSetup.AppEntitlements[appEntitlementsKey].AppID.IsNull() {
-				*appId1 = r.MultiAppSetup.AppEntitlements[appEntitlementsKey].AppID.ValueString()
+			if !appEntitlementsValue.AppID.IsUnknown() && !appEntitlementsValue.AppID.IsNull() {
+				*appId1 = appEntitlementsValue.AppID.ValueString()
 			} else {
 				appId1 = nil
 			}
 			var entitlementIds []string
-			if r.MultiAppSetup.AppEntitlements[appEntitlementsKey].EntitlementIds != nil {
-				entitlementIds = make([]string, 0, len(r.MultiAppSetup.AppEntitlements[appEntitlementsKey].EntitlementIds))
-				for entitlementIdsIndex := range r.MultiAppSetup.AppEntitlements[appEntitlementsKey].EntitlementIds {
-					entitlementIds = append(entitlementIds, r.MultiAppSetup.AppEntitlements[appEntitlementsKey].EntitlementIds[entitlementIdsIndex].ValueString())
+			if appEntitlementsValue.EntitlementIds != nil {
+				entitlementIds = make([]string, 0, len(appEntitlementsValue.EntitlementIds))
+				for _, entitlementIdsItem := range appEntitlementsValue.EntitlementIds {
+					entitlementIds = append(entitlementIds, entitlementIdsItem.ValueString())
 				}
 			}
 			appEntitlementsInst := shared.MultiAppEntitlement{
@@ -930,8 +930,8 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 				var excludedAccessProfileIds []string
 				if r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds != nil {
 					excludedAccessProfileIds = make([]string, 0, len(r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds))
-					for excludedAccessProfileIdsIndex := range r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds {
-						excludedAccessProfileIds = append(excludedAccessProfileIds, r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds[excludedAccessProfileIdsIndex].ValueString())
+					for _, excludedAccessProfileIdsItem := range r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds {
+						excludedAccessProfileIds = append(excludedAccessProfileIds, excludedAccessProfileIdsItem.ValueString())
 					}
 				}
 				filterType := new(shared.FilterType)
@@ -1013,8 +1013,8 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 			var userIds1 []string
 			if r.AccessReviewScopeV2.SelectedUsersScope.UserIds != nil {
 				userIds1 = make([]string, 0, len(r.AccessReviewScopeV2.SelectedUsersScope.UserIds))
-				for userIdsIndex1 := range r.AccessReviewScopeV2.SelectedUsersScope.UserIds {
-					userIds1 = append(userIds1, r.AccessReviewScopeV2.SelectedUsersScope.UserIds[userIdsIndex1].ValueString())
+				for _, userIdsItem1 := range r.AccessReviewScopeV2.SelectedUsersScope.UserIds {
+					userIds1 = append(userIds1, userIdsItem1.ValueString())
 				}
 			}
 			selectedUsersScope = &shared.SelectedUsersScope{
@@ -1034,16 +1034,16 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 			var groupAppEntitlementsRef []shared.AppEntitlementRef
 			if r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef != nil {
 				groupAppEntitlementsRef = make([]shared.AppEntitlementRef, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef))
-				for groupAppEntitlementsRefIndex := range r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef {
+				for _, groupAppEntitlementsRefItem := range r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef {
 					appId2 := new(string)
-					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsNull() {
-						*appId2 = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
+					if !groupAppEntitlementsRefItem.AppID.IsUnknown() && !groupAppEntitlementsRefItem.AppID.IsNull() {
+						*appId2 = groupAppEntitlementsRefItem.AppID.ValueString()
 					} else {
 						appId2 = nil
 					}
 					id1 := new(string)
-					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsNull() {
-						*id1 = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.ValueString()
+					if !groupAppEntitlementsRefItem.ID.IsUnknown() && !groupAppEntitlementsRefItem.ID.IsNull() {
+						*id1 = groupAppEntitlementsRefItem.ID.ValueString()
 					} else {
 						id1 = nil
 					}
@@ -1056,19 +1056,19 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 			var managerUserIds []string
 			if r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds != nil {
 				managerUserIds = make([]string, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds))
-				for managerUserIdsIndex := range r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds {
-					managerUserIds = append(managerUserIds, r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds[managerUserIdsIndex].ValueString())
+				for _, managerUserIdsItem := range r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds {
+					managerUserIds = append(managerUserIds, managerUserIdsItem.ValueString())
 				}
 			}
 			multiUserProfileAttributes1 := make(map[string]shared.IncludedUserAttributeValues)
-			for multiUserProfileAttributesKey1 := range r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes {
+			for multiUserProfileAttributesKey1, multiUserProfileAttributesValue1 := range r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes {
 				var values1 []shared.IncludedUserAttributeValue
-				if r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey1].Values != nil {
-					values1 = make([]shared.IncludedUserAttributeValue, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey1].Values))
-					for valuesIndex1 := range r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey1].Values {
+				if multiUserProfileAttributesValue1.Values != nil {
+					values1 = make([]shared.IncludedUserAttributeValue, 0, len(multiUserProfileAttributesValue1.Values))
+					for _, valuesItem1 := range multiUserProfileAttributesValue1.Values {
 						value1 := new(string)
-						if !r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey1].Values[valuesIndex1].Value.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey1].Values[valuesIndex1].Value.IsNull() {
-							*value1 = r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey1].Values[valuesIndex1].Value.ValueString()
+						if !valuesItem1.Value.IsUnknown() && !valuesItem1.Value.IsNull() {
+							*value1 = valuesItem1.Value.ValueString()
 						} else {
 							value1 = nil
 						}
@@ -1268,8 +1268,8 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 	var ownerIds []string
 	if r.OwnerIds != nil {
 		ownerIds = make([]string, 0, len(r.OwnerIds))
-		for ownerIdsIndex := range r.OwnerIds {
-			ownerIds = append(ownerIds, r.OwnerIds[ownerIdsIndex].ValueString())
+		for _, ownerIdsItem := range r.OwnerIds {
+			ownerIds = append(ownerIds, ownerIdsItem.ValueString())
 		}
 	}
 	policyID := new(string)

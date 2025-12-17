@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 6e379274bff3f6907b8efd79a9e674b8
+  docChecksum: 6509a8b9a25ad7e756f3ee4de8bf1a6d
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.661.0
-  generationVersion: 2.762.0
-  releaseVersion: 1.7.7
-  configChecksum: 24ddf8732ff326f4c302d0d9003235d8
+  speakeasyVersion: 1.655.0
+  generationVersion: 2.751.0
+  releaseVersion: 1.7.8
+  configChecksum: e5db70d119e3477f97d0d2612df2ab49
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.3
-    core: 3.46.17
+    core: 3.46.12
     deprecations: 2.82.0
     devContainers: 0.0.0
     globalSecurity: 2.82.1
@@ -36,13 +36,9 @@ generatedFiles:
   - examples/data-sources/conductorone_app_entitlement/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_automation/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_monitor_binding/data-source.tf
-  - examples/data-sources/conductorone_app_entitlement_owners/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_proxy_binding/data-source.tf
-  - examples/data-sources/conductorone_app_entitlement_users/data-source.tf
   - examples/data-sources/conductorone_app_entitlements/data-source.tf
-  - examples/data-sources/conductorone_app_owners/data-source.tf
   - examples/data-sources/conductorone_app_resource/data-source.tf
-  - examples/data-sources/conductorone_app_resource_owners/data-source.tf
   - examples/data-sources/conductorone_app_resource_type/data-source.tf
   - examples/data-sources/conductorone_app_resource_types/data-source.tf
   - examples/data-sources/conductorone_app_resources/data-source.tf
@@ -52,11 +48,8 @@ generatedFiles:
   - examples/data-sources/conductorone_compliance_framework/data-source.tf
   - examples/data-sources/conductorone_compliance_frameworks/data-source.tf
   - examples/data-sources/conductorone_connector_credential/data-source.tf
-  - examples/data-sources/conductorone_directories/data-source.tf
-  - examples/data-sources/conductorone_directory/data-source.tf
   - examples/data-sources/conductorone_function/data-source.tf
   - examples/data-sources/conductorone_function_tag/data-source.tf
-  - examples/data-sources/conductorone_org_domains/data-source.tf
   - examples/data-sources/conductorone_policies/data-source.tf
   - examples/data-sources/conductorone_policy/data-source.tf
   - examples/data-sources/conductorone_request_catalogs/data-source.tf
@@ -64,8 +57,6 @@ generatedFiles:
   - examples/data-sources/conductorone_request_schema_entitlement_binding/data-source.tf
   - examples/data-sources/conductorone_risk_level/data-source.tf
   - examples/data-sources/conductorone_risk_levels/data-source.tf
-  - examples/data-sources/conductorone_role/data-source.tf
-  - examples/data-sources/conductorone_roles/data-source.tf
   - examples/data-sources/conductorone_user/data-source.tf
   - examples/data-sources/conductorone_users/data-source.tf
   - examples/data-sources/conductorone_webhook/data-source.tf
@@ -128,9 +119,6 @@ generatedFiles:
   - examples/resources/conductorone_custom_app_entitlement/import-by-string-id.tf
   - examples/resources/conductorone_custom_app_entitlement/import.sh
   - examples/resources/conductorone_custom_app_entitlement/resource.tf
-  - examples/resources/conductorone_directory/import-by-string-id.tf
-  - examples/resources/conductorone_directory/import.sh
-  - examples/resources/conductorone_directory/resource.tf
   - examples/resources/conductorone_function/import-by-string-id.tf
   - examples/resources/conductorone_function/import.sh
   - examples/resources/conductorone_function/resource.tf
@@ -147,9 +135,6 @@ generatedFiles:
   - examples/resources/conductorone_risk_level/import-by-string-id.tf
   - examples/resources/conductorone_risk_level/import.sh
   - examples/resources/conductorone_risk_level/resource.tf
-  - examples/resources/conductorone_task_grant/resource.tf
-  - examples/resources/conductorone_task_offboarding/resource.tf
-  - examples/resources/conductorone_task_revoke/resource.tf
   - examples/resources/conductorone_vault/import-by-string-id.tf
   - examples/resources/conductorone_vault/import.sh
   - examples/resources/conductorone_vault/resource.tf
@@ -232,14 +217,6 @@ generatedFiles:
   - internal/provider/app_resource_types_data_source_sdk.go
   - internal/provider/app_resources_data_source.go
   - internal/provider/app_resources_data_source_sdk.go
-  - internal/provider/appentitlementowners_data_source.go
-  - internal/provider/appentitlementowners_data_source_sdk.go
-  - internal/provider/appentitlementusers_data_source.go
-  - internal/provider/appentitlementusers_data_source_sdk.go
-  - internal/provider/appowners_data_source.go
-  - internal/provider/appowners_data_source_sdk.go
-  - internal/provider/appresourceowners_data_source.go
-  - internal/provider/appresourceowners_data_source_sdk.go
   - internal/provider/apps_data_source.go
   - internal/provider/apps_data_source_sdk.go
   - internal/provider/automation_resource.go
@@ -262,12 +239,6 @@ generatedFiles:
   - internal/provider/connectorcredential_resource_sdk.go
   - internal/provider/custom_app_entitlement_resource.go
   - internal/provider/custom_app_entitlement_resource_sdk.go
-  - internal/provider/directories_data_source.go
-  - internal/provider/directories_data_source_sdk.go
-  - internal/provider/directory_data_source.go
-  - internal/provider/directory_data_source_sdk.go
-  - internal/provider/directory_resource.go
-  - internal/provider/directory_resource_sdk.go
   - internal/provider/function_data_source.go
   - internal/provider/function_data_source_sdk.go
   - internal/provider/function_resource.go
@@ -276,8 +247,6 @@ generatedFiles:
   - internal/provider/function_tag_data_source_sdk.go
   - internal/provider/function_tag_resource.go
   - internal/provider/function_tag_resource_sdk.go
-  - internal/provider/orgdomains_data_source.go
-  - internal/provider/orgdomains_data_source_sdk.go
   - internal/provider/policies_data_source.go
   - internal/provider/policies_data_source_sdk.go
   - internal/provider/policy_data_source.go
@@ -312,21 +281,10 @@ generatedFiles:
   - internal/provider/risk_level_resource_sdk.go
   - internal/provider/risk_levels_data_source.go
   - internal/provider/risk_levels_data_source_sdk.go
-  - internal/provider/role_data_source.go
-  - internal/provider/role_data_source_sdk.go
-  - internal/provider/roles_data_source.go
-  - internal/provider/roles_data_source_sdk.go
-  - internal/provider/taskgrant_resource.go
-  - internal/provider/taskgrant_resource_sdk.go
-  - internal/provider/taskoffboarding_resource.go
-  - internal/provider/taskoffboarding_resource_sdk.go
-  - internal/provider/taskrevoke_resource.go
-  - internal/provider/taskrevoke_resource_sdk.go
   - internal/provider/typeconvert/date.go
   - internal/provider/typeconvert/datetime.go
   - internal/provider/typeconvert/int.go
   - internal/provider/types/accept.go
-  - internal/provider/types/accept_instance.go
   - internal/provider/types/access_conflict_trigger.go
   - internal/provider/types/access_review.go
   - internal/provider/types/access_review_exclusion_scope.go
@@ -343,21 +301,14 @@ generatedFiles:
   - internal/provider/types/account_provision.go
   - internal/provider/types/account_ref.go
   - internal/provider/types/action.go
-  - internal/provider/types/action_instance.go
-  - internal/provider/types/action_outcome_cancelled.go
-  - internal/provider/types/action_outcome_denied.go
-  - internal/provider/types/action_outcome_error.go
-  - internal/provider/types/action_outcome_success.go
   - internal/provider/types/action_provision.go
   - internal/provider/types/action_target_automation.go
-  - internal/provider/types/action_target_automation_instance.go
   - internal/provider/types/actor_object_permissions.go
   - internal/provider/types/agent_approval.go
   - internal/provider/types/all_access_conflicts_scope.go
   - internal/provider/types/all_accounts_scope.go
   - internal/provider/types/all_grants_scope.go
   - internal/provider/types/all_users_scope.go
-  - internal/provider/types/annotations.go
   - internal/provider/types/app.go
   - internal/provider/types/app_entitlement.go
   - internal/provider/types/app_entitlement_automation_last_run_status.go
@@ -368,7 +319,6 @@ generatedFiles:
   - internal/provider/types/app_entitlement_duration_unset.go
   - internal/provider/types/app_entitlement_ref.go
   - internal/provider/types/app_entitlement_reference.go
-  - internal/provider/types/app_entitlement_user_view.go
   - internal/provider/types/app_entitlement_view.go
   - internal/provider/types/app_group_approval.go
   - internal/provider/types/app_owner_approval.go
@@ -379,16 +329,10 @@ generatedFiles:
   - internal/provider/types/app_resource_type_service_get_response_expanded.go
   - internal/provider/types/app_resource_view.go
   - internal/provider/types/app_selection_criteria_scope.go
-  - internal/provider/types/app_user.go
   - internal/provider/types/app_user_created_trigger.go
-  - internal/provider/types/app_user_profile.go
-  - internal/provider/types/app_user_status.go
   - internal/provider/types/app_user_updated_trigger.go
-  - internal/provider/types/app_user_view.go
   - internal/provider/types/application_access_scope.go
   - internal/provider/types/approval.go
-  - internal/provider/types/approval_instance.go
-  - internal/provider/types/approved_action.go
   - internal/provider/types/args_template.go
   - internal/provider/types/at_least_one.go
   - internal/provider/types/attribute_value.go
@@ -404,13 +348,9 @@ generatedFiles:
   - internal/provider/types/bundle_automation_rule_entitlement.go
   - internal/provider/types/call_function.go
   - internal/provider/types/campaign_entitlement_details.go
-  - internal/provider/types/cancelled_action.go
   - internal/provider/types/cel_expression_scope.go
   - internal/provider/types/checkbox_field.go
   - internal/provider/types/close_action.go
-  - internal/provider/types/completed_action.go
-  - internal/provider/types/condition_succeeded.go
-  - internal/provider/types/condition_timed_out.go
   - internal/provider/types/conflict_monitor_delete_request.go
   - internal/provider/types/conflict_monitor_ref.go
   - internal/provider/types/conflict_monitor_refs.go
@@ -423,19 +363,11 @@ generatedFiles:
   - internal/provider/types/create_app_entitlement_request_duration_unset.go
   - internal/provider/types/create_revoke_tasks.go
   - internal/provider/types/create_revoke_tasks_v2.go
-  - internal/provider/types/data.go
   - internal/provider/types/default_behavior.go
   - internal/provider/types/delegated_provision.go
   - internal/provider/types/delete_account.go
   - internal/provider/types/delete_bundle_automation_request.go
-  - internal/provider/types/denied_action.go
   - internal/provider/types/deprovisioner_policy.go
-  - internal/provider/types/directory.go
-  - internal/provider/types/directory_account_filter_all.go
-  - internal/provider/types/directory_account_filter_cel.go
-  - internal/provider/types/directory_service_get_response_expanded.go
-  - internal/provider/types/directory_service_list_response_expanded.go
-  - internal/provider/types/directory_view.go
   - internal/provider/types/disabled_reason_circuit_breaker.go
   - internal/provider/types/do_not_save.go
   - internal/provider/types/email_notifications.go
@@ -450,25 +382,17 @@ generatedFiles:
   - internal/provider/types/entitlement_inclusion_list_cel.go
   - internal/provider/types/entitlement_owner_approval.go
   - internal/provider/types/entitlement_to_details.go
-  - internal/provider/types/errored_action.go
   - internal/provider/types/escalation.go
-  - internal/provider/types/escalation_instance.go
   - internal/provider/types/evaluate_expressions.go
   - internal/provider/types/expanded.go
   - internal/provider/types/expression.go
   - internal/provider/types/expression_approval.go
-  - internal/provider/types/external_ref.go
   - internal/provider/types/external_ticket_provision.go
   - internal/provider/types/field.go
   - internal/provider/types/field_group.go
   - internal/provider/types/field_relationship.go
   - internal/provider/types/file_field.go
   - internal/provider/types/file_input_field.go
-  - internal/provider/types/form.go
-  - internal/provider/types/form_completed_action.go
-  - internal/provider/types/form_instance.go
-  - internal/provider/types/form_instance_data.go
-  - internal/provider/types/form_values.go
   - internal/provider/types/function_commit.go
   - internal/provider/types/functions_service_delete_function_request.go
   - internal/provider/types/generate_password.go
@@ -487,7 +411,6 @@ generatedFiles:
   - internal/provider/types/included_user_attribute_values.go
   - internal/provider/types/int64_field.go
   - internal/provider/types/int64_rules.go
-  - internal/provider/types/list_app_entitlement_users_response_expanded.go
   - internal/provider/types/magic_vault.go
   - internal/provider/types/manager_approval.go
   - internal/provider/types/manual_automation_trigger.go
@@ -500,42 +423,32 @@ generatedFiles:
   - internal/provider/types/number_field.go
   - internal/provider/types/oauth2_field.go
   - internal/provider/types/oauth2_field_view.go
-  - internal/provider/types/org_domain.go
   - internal/provider/types/password_field.go
   - internal/provider/types/payload.go
   - internal/provider/types/policy.go
-  - internal/provider/types/policy_instance.go
   - internal/provider/types/policy_post_actions.go
   - internal/provider/types/policy_ref.go
   - internal/provider/types/policy_step.go
-  - internal/provider/types/policy_step_instance.go
   - internal/provider/types/policy_steps.go
   - internal/provider/types/profile.go
   - internal/provider/types/provision.go
-  - internal/provider/types/provision_instance.go
   - internal/provider/types/provision_policy.go
   - internal/provider/types/provision_target.go
   - internal/provider/types/reassign_action.go
   - internal/provider/types/reassign_to_approvers.go
-  - internal/provider/types/reassigned_action.go
-  - internal/provider/types/reassigned_by_error_action.go
   - internal/provider/types/recurrence_rule.go
   - internal/provider/types/reject.go
-  - internal/provider/types/reject_instance.go
   - internal/provider/types/remove_from_delegation.go
   - internal/provider/types/replace_policy.go
   - internal/provider/types/request_catalog.go
   - internal/provider/types/request_catalog_management_service_get_response_expanded.go
   - internal/provider/types/request_catalog_management_service_list_response_expanded.go
   - internal/provider/types/request_catalog_view.go
-  - internal/provider/types/request_data.go
   - internal/provider/types/requestable_entry.go
   - internal/provider/types/required_together.go
   - internal/provider/types/resource_owner_approval.go
   - internal/provider/types/resource_type_selection_scope.go
-  - internal/provider/types/restart_action.go
   - internal/provider/types/review_signature_config.go
-  - internal/provider/types/role.go
   - internal/provider/types/rule.go
   - internal/provider/types/run_automation.go
   - internal/provider/types/run_delayed.go
@@ -553,31 +466,13 @@ generatedFiles:
   - internal/provider/types/send_email.go
   - internal/provider/types/send_slack_message.go
   - internal/provider/types/single_app_setup.go
-  - internal/provider/types/skipped_action.go
   - internal/provider/types/slack_channel.go
   - internal/provider/types/slack_notifications.go
   - internal/provider/types/specific_access_conflicts_scope.go
   - internal/provider/types/specific_resources_scope.go
   - internal/provider/types/string_field.go
   - internal/provider/types/string_rules.go
-  - internal/provider/types/task.go
   - internal/provider/types/task_action.go
-  - internal/provider/types/task_grant_source.go
-  - internal/provider/types/task_revoke_source.go
-  - internal/provider/types/task_revoke_source_expired.go
-  - internal/provider/types/task_revoke_source_non_usage.go
-  - internal/provider/types/task_revoke_source_request.go
-  - internal/provider/types/task_revoke_source_review.go
-  - internal/provider/types/task_service_create_grant_response_expanded.go
-  - internal/provider/types/task_service_create_offboarding_response_expanded.go
-  - internal/provider/types/task_service_create_revoke_response_expanded.go
-  - internal/provider/types/task_type.go
-  - internal/provider/types/task_type_action.go
-  - internal/provider/types/task_type_certify.go
-  - internal/provider/types/task_type_grant.go
-  - internal/provider/types/task_type_offboarding.go
-  - internal/provider/types/task_type_revoke.go
-  - internal/provider/types/task_view.go
   - internal/provider/types/text_field.go
   - internal/provider/types/unconfigured_provision.go
   - internal/provider/types/unenroll_from_all_access_profiles.go
@@ -594,12 +489,9 @@ generatedFiles:
   - internal/provider/types/user_view.go
   - internal/provider/types/wait.go
   - internal/provider/types/wait_condition.go
-  - internal/provider/types/wait_condition_instance.go
   - internal/provider/types/wait_duration.go
   - internal/provider/types/wait_for_duration.go
-  - internal/provider/types/wait_instance.go
   - internal/provider/types/wait_until_time.go
-  - internal/provider/types/wait_until_time_instance.go
   - internal/provider/types/webhook.go
   - internal/provider/types/webhook1.go
   - internal/provider/types/webhook_approval.go
@@ -3862,7 +3754,7 @@ trackedFiles:
   examples/data-sources/conductorone_webhooks/data-source.tf:
     last_write_checksum: sha1:8ab8015740fbf467afa9a663c65ad66aec27c69e
   examples/provider/provider.tf:
-    last_write_checksum: sha1:92366e9662ee91e42010530f035ee5d670242def
+    last_write_checksum: sha1:f371b1cef98c9eb1170629919498411738a094b3
   examples/resources/conductorone_access_conflict/import-by-string-id.tf:
     last_write_checksum: sha1:82d79ecc5a7d6ab27f4f9f9234e220e0e9f65914
   examples/resources/conductorone_access_conflict/import.sh:
@@ -4025,26 +3917,48 @@ trackedFiles:
     last_write_checksum: sha1:ccdf40701466135f93fb553f85c7270167d6183d
   internal/planmodifiers/boolplanmodifier/suppress_diff.go:
     last_write_checksum: sha1:dd46ab59ac03cebd72b7c570eca1c5ffa971caf4
+  internal/planmodifiers/boolplanmodifier/use_config_value.go:
+    last_write_checksum: sha1:506e2cac3ec4075a8837403860ef0b07e19bc337
   internal/planmodifiers/float32planmodifier/suppress_diff.go:
     last_write_checksum: sha1:9a1f3e88d0285fbf7b2a075ec1a84de36495a4f7
+  internal/planmodifiers/float32planmodifier/use_config_value.go:
+    last_write_checksum: sha1:2683d9de3605886cb01438a9015c8e8b02b4e069
   internal/planmodifiers/float64planmodifier/suppress_diff.go:
     last_write_checksum: sha1:c84d6656fc6d5c3bfa26e857266e8a4de705b67c
+  internal/planmodifiers/float64planmodifier/use_config_value.go:
+    last_write_checksum: sha1:cc1f1cadfd17a0b9b1e729029dccc03f17d734a5
   internal/planmodifiers/int32planmodifier/suppress_diff.go:
     last_write_checksum: sha1:3947f2b274bd5cad429f180c93c0c6e2627e846a
+  internal/planmodifiers/int32planmodifier/use_config_value.go:
+    last_write_checksum: sha1:019ba1949b00493bf1a866821f9331d50c8a1f09
   internal/planmodifiers/int64planmodifier/suppress_diff.go:
     last_write_checksum: sha1:88ae9770b3ea338861fe72f7ddaf8e493274a1d9
+  internal/planmodifiers/int64planmodifier/use_config_value.go:
+    last_write_checksum: sha1:b5a63f0c356cd72698e25e1b4f4fc3e29b35d482
   internal/planmodifiers/listplanmodifier/suppress_diff.go:
     last_write_checksum: sha1:5667f4808402a1ac7abbd1617367de97e49d1935
+  internal/planmodifiers/listplanmodifier/use_config_value.go:
+    last_write_checksum: sha1:c56e2d23520ac7023f800328bb7599e7eba2f202
   internal/planmodifiers/mapplanmodifier/suppress_diff.go:
     last_write_checksum: sha1:c8386f20c2f7deda0441413f826ff7b173a188ee
+  internal/planmodifiers/mapplanmodifier/use_config_value.go:
+    last_write_checksum: sha1:7c2163c8fa4be8e8f7e7499cdb08cc5ed1924b39
   internal/planmodifiers/numberplanmodifier/suppress_diff.go:
     last_write_checksum: sha1:5586b1e56567378486c9df696099a66bca6d0b46
+  internal/planmodifiers/numberplanmodifier/use_config_value.go:
+    last_write_checksum: sha1:9b92d53a4a5f57e211e6f41ebb6c36cb12357ae6
   internal/planmodifiers/objectplanmodifier/suppress_diff.go:
     last_write_checksum: sha1:2b0dae3f3273f06ba9597ee003805c4eef34e869
+  internal/planmodifiers/objectplanmodifier/use_config_value.go:
+    last_write_checksum: sha1:1f2b6727605c0b56ff2212ab2e2528046f05b157
   internal/planmodifiers/setplanmodifier/suppress_diff.go:
     last_write_checksum: sha1:f25bcb981731d3e9296a68f4ee334e9535ba354a
+  internal/planmodifiers/setplanmodifier/use_config_value.go:
+    last_write_checksum: sha1:fe02165f8fd260bbce09f34adfa378376363422f
   internal/planmodifiers/stringplanmodifier/suppress_diff.go:
     last_write_checksum: sha1:254624c837ae32fa96b214eedca07112ad780705
+  internal/planmodifiers/stringplanmodifier/use_config_value.go:
+    last_write_checksum: sha1:250673402508661f9d12cfa026dc029d5e7855d9
   internal/planmodifiers/utils/state_check.go:
     last_write_checksum: sha1:acc38ad698bf4fa8c51aa662076cf57b79024bd5
   internal/provider/access_conflict_resource.go:
@@ -4100,15 +4014,15 @@ trackedFiles:
   internal/provider/app_data_source_sdk.go:
     last_write_checksum: sha1:489ca9ddd2a6c137bbf8a6552f257bba919834b1
   internal/provider/app_entitlement_automation_data_source.go:
-    last_write_checksum: sha1:796234d9671d585f6e8d793b04b5c239da8e3159
+    last_write_checksum: sha1:5f54743720d3d4d7e1dcef239b1227281ae74df9
   internal/provider/app_entitlement_automation_data_source_sdk.go:
     last_write_checksum: sha1:70f416e1082d813618d58add465b591a0132aba7
   internal/provider/app_entitlement_automation_resource.go:
-    last_write_checksum: sha1:4b40b9fce58f3f464c1577ecbb0ed22b9ddd5082
+    last_write_checksum: sha1:f97c51208e3fec1b2158c5a90e157d32aca77ea7
   internal/provider/app_entitlement_automation_resource_sdk.go:
     last_write_checksum: sha1:3952bcd2ad5cc48352331a88cb97b1c1a90c3e8a
   internal/provider/app_entitlement_data_source.go:
-    last_write_checksum: sha1:f796c91fb4d46ea50946f1872ab29ca3023686d3
+    last_write_checksum: sha1:9295bf7a8295fd6cc2dd5b5aa902daf3eb1c9ce7
   internal/provider/app_entitlement_data_source_sdk.go:
     last_write_checksum: sha1:5638592ae0d92020ed887f8ce271acd30d8476e2
   internal/provider/app_entitlement_monitor_binding_data_source.go:
@@ -4212,7 +4126,7 @@ trackedFiles:
   internal/provider/connectorcredential_resource_sdk.go:
     last_write_checksum: sha1:45835f52e45fdb8e07dc9d3bbd1b2d641719ceb5
   internal/provider/custom_app_entitlement_resource.go:
-    last_write_checksum: sha1:d91000bf10fa41789bf571a44f3f89fcd06459fe
+    last_write_checksum: sha1:e2c7b14e7faf9b0adf607f591b1c6e2a9b7523cd
   internal/provider/custom_app_entitlement_resource_sdk.go:
     last_write_checksum: sha1:643f0e879ec31fc2e1e1632872417afd36f458a0
   internal/provider/function_data_source.go:
@@ -4240,7 +4154,7 @@ trackedFiles:
   internal/provider/policy_data_source_sdk.go:
     last_write_checksum: sha1:ee91f9faaf5ba1e82b3691102a85824f7589dae9
   internal/provider/policy_resource.go:
-    last_write_checksum: sha1:f751d3cdd1fa683ba37dc799f59ade625a17ead8
+    last_write_checksum: sha1:00b15fe7d0b8dbd41c1abc0dac6f81417377fe36
   internal/provider/policy_resource_sdk.go:
     last_write_checksum: sha1:ace7a83c5b577877c649c156024f7bf547a8fa8c
   internal/provider/reflect/diags.go:
@@ -4260,7 +4174,7 @@ trackedFiles:
   internal/provider/reflect/number.go:
     last_write_checksum: sha1:ff756986a30b648c423b9af8996584ffc5983514
   internal/provider/reflect/options.go:
-    last_write_checksum: sha1:a54c439da21ff032be6ebe8809de7cc77ff6f27c
+    last_write_checksum: sha1:735603671bc13388dca9edeb7fefc0b229196793
   internal/provider/reflect/outof.go:
     last_write_checksum: sha1:46f09acf317888545161fc1cd288113bd3836ead
   internal/provider/reflect/pointer.go:
@@ -4270,7 +4184,7 @@ trackedFiles:
   internal/provider/reflect/slice.go:
     last_write_checksum: sha1:70ce36709e204b74e3ded36c4683df7e48df294f
   internal/provider/reflect/struct.go:
-    last_write_checksum: sha1:7cf44d86acdd85737ace5d6a8f0aed448ddf94e4
+    last_write_checksum: sha1:504fa0ca7711df0887f8c265c7acb3774e89afe7
   internal/provider/request_catalogs_data_source.go:
     last_write_checksum: sha1:d0f174d72518c7257a5d13012266f982b7636607
   internal/provider/request_catalogs_data_source_sdk.go:
@@ -4358,7 +4272,7 @@ trackedFiles:
   internal/provider/types/app.go:
     last_write_checksum: sha1:db4f6ad8cacb23baffa91cb3ebd0d27be3f0cadf
   internal/provider/types/app_entitlement.go:
-    last_write_checksum: sha1:1e7bbbc5aa7278e3b5a5ad3afa0cc71de1793315
+    last_write_checksum: sha1:38e3f799a104bff0144f5bb72326ae7e56a6243f
   internal/provider/types/app_entitlement_automation_last_run_status.go:
     last_write_checksum: sha1:e00d5b5afd6743362341c344bdf9bee0558cdc8a
   internal/provider/types/app_entitlement_automation_rule_basic.go:
@@ -4594,13 +4508,13 @@ trackedFiles:
   internal/provider/types/policy_ref.go:
     last_write_checksum: sha1:e17061bc54674c1b41760cb997391238782f213a
   internal/provider/types/policy_step.go:
-    last_write_checksum: sha1:b5a6d68bef30651e8fcb1f7904ccb8e6de0da4f1
+    last_write_checksum: sha1:08f9c63f2774a27e3ecdcf0081467057680f0ca5
   internal/provider/types/policy_steps.go:
     last_write_checksum: sha1:b0e7a125c781c44d1956bb7a4caee08d1b227197
   internal/provider/types/profile.go:
     last_write_checksum: sha1:3d0aa8c6014c62339591c416a2a0059bc2bb8934
   internal/provider/types/provision.go:
-    last_write_checksum: sha1:80a6a2ccf75467e57bc2880143ca39f4e6d6953a
+    last_write_checksum: sha1:e35ad1a210e8442ffa01b7c44ebf816803797afc
   internal/provider/types/provision_policy.go:
     last_write_checksum: sha1:c2ea15759cbf8e1a3b395104baa63d96710111f1
   internal/provider/types/provision_target.go:
@@ -4746,7 +4660,7 @@ trackedFiles:
   internal/provider/users_data_source_sdk.go:
     last_write_checksum: sha1:b03f85a01e1b32228ce413d04d83f20f8b4fafc9
   internal/provider/utils.go:
-    last_write_checksum: sha1:601adf1c660f7d3fe674de77ee6e73a4c3044f1d
+    last_write_checksum: sha1:61e78ed444db1cef1d9fc133d41c282f08bf205d
   internal/provider/vault_resource.go:
     last_write_checksum: sha1:61c9ac1b6d15dba76ab595b0b82ff6b14bdb0912
   internal/provider/vault_resource_sdk.go:
@@ -4828,7 +4742,7 @@ trackedFiles:
   internal/sdk/awsexternalidsettings.go:
     last_write_checksum: sha1:cda2eb40a691ac3c35d669cc4449ea0ef600f7ce
   internal/sdk/conductoroneapi.go:
-    last_write_checksum: sha1:459ecfea8f58d14fbe0821baeac513f8bbe94197
+    last_write_checksum: sha1:448e53fb6133136f49922c1ad8245b36c27b2e25
   internal/sdk/connector.go:
     last_write_checksum: sha1:6ba56dd973208bf24878af1a248b71e49274cd6d
   internal/sdk/connectorcatalog.go:

@@ -64,8 +64,8 @@ func (r *AppsDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*s
 	var appIds []string
 	if r.AppIds != nil {
 		appIds = make([]string, 0, len(r.AppIds))
-		for appIdsIndex := range r.AppIds {
-			appIds = append(appIds, r.AppIds[appIdsIndex].ValueString())
+		for _, appIdsItem := range r.AppIds {
+			appIds = append(appIds, appIdsItem.ValueString())
 		}
 	}
 	displayName := new(string)
@@ -77,8 +77,8 @@ func (r *AppsDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*s
 	var excludeAppIds []string
 	if r.ExcludeAppIds != nil {
 		excludeAppIds = make([]string, 0, len(r.ExcludeAppIds))
-		for excludeAppIdsIndex := range r.ExcludeAppIds {
-			excludeAppIds = append(excludeAppIds, r.ExcludeAppIds[excludeAppIdsIndex].ValueString())
+		for _, excludeAppIdsItem := range r.ExcludeAppIds {
+			excludeAppIds = append(excludeAppIds, excludeAppIdsItem.ValueString())
 		}
 	}
 	onlyDirectories := new(bool)
@@ -96,10 +96,10 @@ func (r *AppsDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*s
 	var policyRefs []shared.PolicyRef
 	if r.PolicyRefs != nil {
 		policyRefs = make([]shared.PolicyRef, 0, len(r.PolicyRefs))
-		for policyRefsIndex := range r.PolicyRefs {
+		for _, policyRefsItem := range r.PolicyRefs {
 			id := new(string)
-			if !r.PolicyRefs[policyRefsIndex].ID.IsUnknown() && !r.PolicyRefs[policyRefsIndex].ID.IsNull() {
-				*id = r.PolicyRefs[policyRefsIndex].ID.ValueString()
+			if !policyRefsItem.ID.IsUnknown() && !policyRefsItem.ID.IsNull() {
+				*id = policyRefsItem.ID.ValueString()
 			} else {
 				id = nil
 			}

@@ -1219,7 +1219,7 @@ C1ApiTaskV1TaskSearchServiceSearchResponse (ContentType: string, StatusCode: int
         ActionOutcomeError (errorCode: string, errorMessage: string, outcomeTime: date-time)
         ActionInstanceState (enum: ACTION_INSTANCE_STATE_UNSPECIFIED, ACTION_INSTANCE_STATE_INIT, ACTION_INSTANCE_STATE_RUNNING ...)
         ActionOutcomeSuccess (outcomeTime: date-time)
-       ApprovalInstance (Approval: Approval, ApprovedAction: ApprovedAction, assignedAt: date-time ...)
+       ApprovalInstance (Approval: Approval, ApprovedAction: ApprovedAction, DeniedAction: DeniedAction ...)
         ApprovedAction (approvedAt: date-time, entitlements: array, stepUpTransactionId: string ...)
         DeniedAction (deniedAt: date-time, userId: string)
         EscalationInstance (alreadyEscalated: boolean, escalationComment: string, expiresAt: date-time ...)

@@ -145,9 +145,9 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 		displayName = nil
 	}
 	encryptedValues := make(map[string]string)
-	for encryptedValuesKey := range r.EncryptedValues {
+	for encryptedValuesKey, encryptedValuesValue := range r.EncryptedValues {
 		var encryptedValuesInst string
-		encryptedValuesInst = r.EncryptedValues[encryptedValuesKey].ValueString()
+		encryptedValuesInst = encryptedValuesValue.ValueString()
 
 		encryptedValues[encryptedValuesKey] = encryptedValuesInst
 	}
@@ -178,8 +178,8 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 	var outboundNetworkAllowlist []string
 	if r.OutboundNetworkAllowlist != nil {
 		outboundNetworkAllowlist = make([]string, 0, len(r.OutboundNetworkAllowlist))
-		for outboundNetworkAllowlistIndex := range r.OutboundNetworkAllowlist {
-			outboundNetworkAllowlist = append(outboundNetworkAllowlist, r.OutboundNetworkAllowlist[outboundNetworkAllowlistIndex].ValueString())
+		for _, outboundNetworkAllowlistItem := range r.OutboundNetworkAllowlist {
+			outboundNetworkAllowlist = append(outboundNetworkAllowlist, outboundNetworkAllowlistItem.ValueString())
 		}
 	}
 	publishedCommitID := new(string)
@@ -231,9 +231,9 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceCreateFunctionRequest(ct
 		functionType = nil
 	}
 	initialContent := make(map[string]string)
-	for initialContentKey := range r.InitialContent {
+	for initialContentKey, initialContentValue := range r.InitialContent {
 		var initialContentInst string
-		initialContentInst = r.InitialContent[initialContentKey].ValueString()
+		initialContentInst = initialContentValue.ValueString()
 
 		initialContent[initialContentKey] = initialContentInst
 	}

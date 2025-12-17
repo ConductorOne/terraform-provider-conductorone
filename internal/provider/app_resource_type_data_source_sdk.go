@@ -58,15 +58,15 @@ func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest(c
 	var appIds []string
 	if r.AppIds != nil {
 		appIds = make([]string, 0, len(r.AppIds))
-		for appIdsIndex := range r.AppIds {
-			appIds = append(appIds, r.AppIds[appIdsIndex].ValueString())
+		for _, appIdsItem := range r.AppIds {
+			appIds = append(appIds, appIdsItem.ValueString())
 		}
 	}
 	var appUserIds []string
 	if r.AppUserIds != nil {
 		appUserIds = make([]string, 0, len(r.AppUserIds))
-		for appUserIdsIndex := range r.AppUserIds {
-			appUserIds = append(appUserIds, r.AppUserIds[appUserIdsIndex].ValueString())
+		for _, appUserIdsItem := range r.AppUserIds {
+			appUserIds = append(appUserIds, appUserIdsItem.ValueString())
 		}
 	}
 	displayName := new(string)
@@ -78,15 +78,15 @@ func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest(c
 	var excludeResourceTypeIds []string
 	if r.ExcludeResourceTypeIds != nil {
 		excludeResourceTypeIds = make([]string, 0, len(r.ExcludeResourceTypeIds))
-		for excludeResourceTypeIdsIndex := range r.ExcludeResourceTypeIds {
-			excludeResourceTypeIds = append(excludeResourceTypeIds, r.ExcludeResourceTypeIds[excludeResourceTypeIdsIndex].ValueString())
+		for _, excludeResourceTypeIdsItem := range r.ExcludeResourceTypeIds {
+			excludeResourceTypeIds = append(excludeResourceTypeIds, excludeResourceTypeIdsItem.ValueString())
 		}
 	}
 	var excludeResourceTypeTraitIds []string
 	if r.ExcludeResourceTypeTraitIds != nil {
 		excludeResourceTypeTraitIds = make([]string, 0, len(r.ExcludeResourceTypeTraitIds))
-		for excludeResourceTypeTraitIdsIndex := range r.ExcludeResourceTypeTraitIds {
-			excludeResourceTypeTraitIds = append(excludeResourceTypeTraitIds, r.ExcludeResourceTypeTraitIds[excludeResourceTypeTraitIdsIndex].ValueString())
+		for _, excludeResourceTypeTraitIdsItem := range r.ExcludeResourceTypeTraitIds {
+			excludeResourceTypeTraitIds = append(excludeResourceTypeTraitIds, excludeResourceTypeTraitIdsItem.ValueString())
 		}
 	}
 	pageSize := new(int)
@@ -104,15 +104,15 @@ func (r *AppResourceTypeDataSourceModel) ToSharedSearchAppResourceTypesRequest(c
 	var resourceTypeIds []string
 	if r.ResourceTypeIds != nil {
 		resourceTypeIds = make([]string, 0, len(r.ResourceTypeIds))
-		for resourceTypeIdsIndex := range r.ResourceTypeIds {
-			resourceTypeIds = append(resourceTypeIds, r.ResourceTypeIds[resourceTypeIdsIndex].ValueString())
+		for _, resourceTypeIdsItem := range r.ResourceTypeIds {
+			resourceTypeIds = append(resourceTypeIds, resourceTypeIdsItem.ValueString())
 		}
 	}
 	var resourceTypeTraitIds []string
 	if r.ResourceTypeTraitIds != nil {
 		resourceTypeTraitIds = make([]string, 0, len(r.ResourceTypeTraitIds))
-		for resourceTypeTraitIdsIndex := range r.ResourceTypeTraitIds {
-			resourceTypeTraitIds = append(resourceTypeTraitIds, r.ResourceTypeTraitIds[resourceTypeTraitIdsIndex].ValueString())
+		for _, resourceTypeTraitIdsItem := range r.ResourceTypeTraitIds {
+			resourceTypeTraitIds = append(resourceTypeTraitIds, resourceTypeTraitIdsItem.ValueString())
 		}
 	}
 	out := shared.SearchAppResourceTypesRequest{

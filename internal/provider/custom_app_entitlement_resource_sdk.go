@@ -471,8 +471,8 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 	var complianceFrameworkValueIds []string
 	if r.ComplianceFrameworkValueIds != nil {
 		complianceFrameworkValueIds = make([]string, 0, len(r.ComplianceFrameworkValueIds))
-		for complianceFrameworkValueIdsIndex := range r.ComplianceFrameworkValueIds {
-			complianceFrameworkValueIds = append(complianceFrameworkValueIds, r.ComplianceFrameworkValueIds[complianceFrameworkValueIdsIndex].ValueString())
+		for _, complianceFrameworkValueIdsItem := range r.ComplianceFrameworkValueIds {
+			complianceFrameworkValueIds = append(complianceFrameworkValueIds, complianceFrameworkValueIdsItem.ValueString())
 		}
 	}
 	defaultValuesApplied := new(bool)
@@ -597,8 +597,8 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 					var vaultIds []string
 					if r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
 						vaultIds = make([]string, 0, len(r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-						for vaultIdsIndex := range r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-							vaultIds = append(vaultIds, r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds[vaultIdsIndex].ValueString())
+						for _, vaultIdsItem := range r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+							vaultIds = append(vaultIds, vaultIdsItem.ValueString())
 						}
 					}
 					saveToVault = &shared.SaveToVault{
@@ -712,8 +712,8 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			var userIds []string
 			if r.ProvisionPolicy.ManualProvision.UserIds != nil {
 				userIds = make([]string, 0, len(r.ProvisionPolicy.ManualProvision.UserIds))
-				for userIdsIndex := range r.ProvisionPolicy.ManualProvision.UserIds {
-					userIds = append(userIds, r.ProvisionPolicy.ManualProvision.UserIds[userIdsIndex].ValueString())
+				for _, userIdsItem := range r.ProvisionPolicy.ManualProvision.UserIds {
+					userIds = append(userIds, userIdsItem.ValueString())
 				}
 			}
 			manualProvision = &shared.ManualProvision{
@@ -783,9 +783,9 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 		slug = nil
 	}
 	sourceConnectorIds := make(map[string]string)
-	for sourceConnectorIdsKey := range r.SourceConnectorIds {
+	for sourceConnectorIdsKey, sourceConnectorIdsValue := range r.SourceConnectorIds {
 		var sourceConnectorIdsInst string
-		sourceConnectorIdsInst = r.SourceConnectorIds[sourceConnectorIdsKey].ValueString()
+		sourceConnectorIdsInst = sourceConnectorIdsValue.ValueString()
 
 		sourceConnectorIds[sourceConnectorIdsKey] = sourceConnectorIdsInst
 	}
@@ -847,8 +847,8 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 					var vaultIds1 []string
 					if r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
 						vaultIds1 = make([]string, 0, len(r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-						for vaultIdsIndex1 := range r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-							vaultIds1 = append(vaultIds1, r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds[vaultIdsIndex1].ValueString())
+						for _, vaultIdsItem1 := range r.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+							vaultIds1 = append(vaultIds1, vaultIdsItem1.ValueString())
 						}
 					}
 					saveToVault1 = &shared.SaveToVault{
@@ -962,8 +962,8 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			var userIds1 []string
 			if r.DeprovisionerPolicy.ManualProvision.UserIds != nil {
 				userIds1 = make([]string, 0, len(r.DeprovisionerPolicy.ManualProvision.UserIds))
-				for userIdsIndex1 := range r.DeprovisionerPolicy.ManualProvision.UserIds {
-					userIds1 = append(userIds1, r.DeprovisionerPolicy.ManualProvision.UserIds[userIdsIndex1].ValueString())
+				for _, userIdsItem1 := range r.DeprovisionerPolicy.ManualProvision.UserIds {
+					userIds1 = append(userIds1, userIdsItem1.ValueString())
 				}
 			}
 			manualProvision1 = &shared.ManualProvision{
@@ -1063,8 +1063,8 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 	var complianceFrameworkValueIds []string
 	if r.ComplianceFrameworkValueIds != nil {
 		complianceFrameworkValueIds = make([]string, 0, len(r.ComplianceFrameworkValueIds))
-		for complianceFrameworkValueIdsIndex := range r.ComplianceFrameworkValueIds {
-			complianceFrameworkValueIds = append(complianceFrameworkValueIds, r.ComplianceFrameworkValueIds[complianceFrameworkValueIdsIndex].ValueString())
+		for _, complianceFrameworkValueIdsItem := range r.ComplianceFrameworkValueIds {
+			complianceFrameworkValueIds = append(complianceFrameworkValueIds, complianceFrameworkValueIdsItem.ValueString())
 		}
 	}
 	description := new(string)
@@ -1174,8 +1174,8 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 					var vaultIds []string
 					if r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
 						vaultIds = make([]string, 0, len(r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-						for vaultIdsIndex := range r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-							vaultIds = append(vaultIds, r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds[vaultIdsIndex].ValueString())
+						for _, vaultIdsItem := range r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
+							vaultIds = append(vaultIds, vaultIdsItem.ValueString())
 						}
 					}
 					saveToVault = &shared.SaveToVault{
@@ -1289,8 +1289,8 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 			var userIds []string
 			if r.ProvisionPolicy.ManualProvision.UserIds != nil {
 				userIds = make([]string, 0, len(r.ProvisionPolicy.ManualProvision.UserIds))
-				for userIdsIndex := range r.ProvisionPolicy.ManualProvision.UserIds {
-					userIds = append(userIds, r.ProvisionPolicy.ManualProvision.UserIds[userIdsIndex].ValueString())
+				for _, userIdsItem := range r.ProvisionPolicy.ManualProvision.UserIds {
+					userIds = append(userIds, userIdsItem.ValueString())
 				}
 			}
 			manualProvision = &shared.ManualProvision{

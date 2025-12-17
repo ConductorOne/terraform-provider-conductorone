@@ -326,22 +326,22 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	var appIds []string
 	if r.AppIds != nil {
 		appIds = make([]string, 0, len(r.AppIds))
-		for appIdsIndex := range r.AppIds {
-			appIds = append(appIds, r.AppIds[appIdsIndex].ValueString())
+		for _, appIdsItem := range r.AppIds {
+			appIds = append(appIds, appIdsItem.ValueString())
 		}
 	}
 	var appUserIds []string
 	if r.AppUserIds != nil {
 		appUserIds = make([]string, 0, len(r.AppUserIds))
-		for appUserIdsIndex := range r.AppUserIds {
-			appUserIds = append(appUserIds, r.AppUserIds[appUserIdsIndex].ValueString())
+		for _, appUserIdsItem := range r.AppUserIds {
+			appUserIds = append(appUserIds, appUserIdsItem.ValueString())
 		}
 	}
 	var complianceFrameworkIds []string
 	if r.ComplianceFrameworkIds != nil {
 		complianceFrameworkIds = make([]string, 0, len(r.ComplianceFrameworkIds))
-		for complianceFrameworkIdsIndex := range r.ComplianceFrameworkIds {
-			complianceFrameworkIds = append(complianceFrameworkIds, r.ComplianceFrameworkIds[complianceFrameworkIdsIndex].ValueString())
+		for _, complianceFrameworkIdsItem := range r.ComplianceFrameworkIds {
+			complianceFrameworkIds = append(complianceFrameworkIds, complianceFrameworkIdsItem.ValueString())
 		}
 	}
 	displayName := new(string)
@@ -353,15 +353,15 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	var excludeAppIds []string
 	if r.ExcludeAppIds != nil {
 		excludeAppIds = make([]string, 0, len(r.ExcludeAppIds))
-		for excludeAppIdsIndex := range r.ExcludeAppIds {
-			excludeAppIds = append(excludeAppIds, r.ExcludeAppIds[excludeAppIdsIndex].ValueString())
+		for _, excludeAppIdsItem := range r.ExcludeAppIds {
+			excludeAppIds = append(excludeAppIds, excludeAppIdsItem.ValueString())
 		}
 	}
 	var excludeAppUserIds []string
 	if r.ExcludeAppUserIds != nil {
 		excludeAppUserIds = make([]string, 0, len(r.ExcludeAppUserIds))
-		for excludeAppUserIdsIndex := range r.ExcludeAppUserIds {
-			excludeAppUserIds = append(excludeAppUserIds, r.ExcludeAppUserIds[excludeAppUserIdsIndex].ValueString())
+		for _, excludeAppUserIdsItem := range r.ExcludeAppUserIds {
+			excludeAppUserIds = append(excludeAppUserIds, excludeAppUserIdsItem.ValueString())
 		}
 	}
 	excludeImmutable := new(bool)
@@ -373,23 +373,23 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	var excludeResourceTypeIds []string
 	if r.ExcludeResourceTypeIds != nil {
 		excludeResourceTypeIds = make([]string, 0, len(r.ExcludeResourceTypeIds))
-		for excludeResourceTypeIdsIndex := range r.ExcludeResourceTypeIds {
-			excludeResourceTypeIds = append(excludeResourceTypeIds, r.ExcludeResourceTypeIds[excludeResourceTypeIdsIndex].ValueString())
+		for _, excludeResourceTypeIdsItem := range r.ExcludeResourceTypeIds {
+			excludeResourceTypeIds = append(excludeResourceTypeIds, excludeResourceTypeIdsItem.ValueString())
 		}
 	}
 	var excludedEntitlementRefs []shared.AppEntitlementRef
 	if r.ExcludedEntitlementRefs != nil {
 		excludedEntitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.ExcludedEntitlementRefs))
-		for excludedEntitlementRefsIndex := range r.ExcludedEntitlementRefs {
+		for _, excludedEntitlementRefsItem := range r.ExcludedEntitlementRefs {
 			appID := new(string)
-			if !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].AppID.IsUnknown() && !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].AppID.IsNull() {
-				*appID = r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].AppID.ValueString()
+			if !excludedEntitlementRefsItem.AppID.IsUnknown() && !excludedEntitlementRefsItem.AppID.IsNull() {
+				*appID = excludedEntitlementRefsItem.AppID.ValueString()
 			} else {
 				appID = nil
 			}
 			id := new(string)
-			if !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].ID.IsUnknown() && !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].ID.IsNull() {
-				*id = r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].ID.ValueString()
+			if !excludedEntitlementRefsItem.ID.IsUnknown() && !excludedEntitlementRefsItem.ID.IsNull() {
+				*id = excludedEntitlementRefsItem.ID.ValueString()
 			} else {
 				id = nil
 			}
@@ -433,10 +433,10 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	var policyRefs []shared.PolicyRef
 	if r.PolicyRefs != nil {
 		policyRefs = make([]shared.PolicyRef, 0, len(r.PolicyRefs))
-		for policyRefsIndex := range r.PolicyRefs {
+		for _, policyRefsItem := range r.PolicyRefs {
 			id1 := new(string)
-			if !r.PolicyRefs[policyRefsIndex].ID.IsUnknown() && !r.PolicyRefs[policyRefsIndex].ID.IsNull() {
-				*id1 = r.PolicyRefs[policyRefsIndex].ID.ValueString()
+			if !policyRefsItem.ID.IsUnknown() && !policyRefsItem.ID.IsNull() {
+				*id1 = policyRefsItem.ID.ValueString()
 			} else {
 				id1 = nil
 			}
@@ -454,16 +454,16 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	var refs []shared.AppEntitlementRef
 	if r.Refs != nil {
 		refs = make([]shared.AppEntitlementRef, 0, len(r.Refs))
-		for refsIndex := range r.Refs {
+		for _, refsItem := range r.Refs {
 			appId1 := new(string)
-			if !r.Refs[refsIndex].AppID.IsUnknown() && !r.Refs[refsIndex].AppID.IsNull() {
-				*appId1 = r.Refs[refsIndex].AppID.ValueString()
+			if !refsItem.AppID.IsUnknown() && !refsItem.AppID.IsNull() {
+				*appId1 = refsItem.AppID.ValueString()
 			} else {
 				appId1 = nil
 			}
 			id2 := new(string)
-			if !r.Refs[refsIndex].ID.IsUnknown() && !r.Refs[refsIndex].ID.IsNull() {
-				*id2 = r.Refs[refsIndex].ID.ValueString()
+			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
+				*id2 = refsItem.ID.ValueString()
 			} else {
 				id2 = nil
 			}
@@ -476,29 +476,29 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	var resourceIds []string
 	if r.ResourceIds != nil {
 		resourceIds = make([]string, 0, len(r.ResourceIds))
-		for resourceIdsIndex := range r.ResourceIds {
-			resourceIds = append(resourceIds, r.ResourceIds[resourceIdsIndex].ValueString())
+		for _, resourceIdsItem := range r.ResourceIds {
+			resourceIds = append(resourceIds, resourceIdsItem.ValueString())
 		}
 	}
 	var resourceTraitIds []string
 	if r.ResourceTraitIds != nil {
 		resourceTraitIds = make([]string, 0, len(r.ResourceTraitIds))
-		for resourceTraitIdsIndex := range r.ResourceTraitIds {
-			resourceTraitIds = append(resourceTraitIds, r.ResourceTraitIds[resourceTraitIdsIndex].ValueString())
+		for _, resourceTraitIdsItem := range r.ResourceTraitIds {
+			resourceTraitIds = append(resourceTraitIds, resourceTraitIdsItem.ValueString())
 		}
 	}
 	var resourceTypeIds []string
 	if r.ResourceTypeIds != nil {
 		resourceTypeIds = make([]string, 0, len(r.ResourceTypeIds))
-		for resourceTypeIdsIndex := range r.ResourceTypeIds {
-			resourceTypeIds = append(resourceTypeIds, r.ResourceTypeIds[resourceTypeIdsIndex].ValueString())
+		for _, resourceTypeIdsItem := range r.ResourceTypeIds {
+			resourceTypeIds = append(resourceTypeIds, resourceTypeIdsItem.ValueString())
 		}
 	}
 	var riskLevelIds []string
 	if r.RiskLevelIds != nil {
 		riskLevelIds = make([]string, 0, len(r.RiskLevelIds))
-		for riskLevelIdsIndex := range r.RiskLevelIds {
-			riskLevelIds = append(riskLevelIds, r.RiskLevelIds[riskLevelIdsIndex].ValueString())
+		for _, riskLevelIdsItem := range r.RiskLevelIds {
+			riskLevelIds = append(riskLevelIds, riskLevelIdsItem.ValueString())
 		}
 	}
 	sourceConnectorID := new(string)

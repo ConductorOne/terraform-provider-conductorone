@@ -27,6 +27,13 @@ vendor:
 	go mod tidy
 	go mod vendor
 
+# gen: Regenerates the SDK from the live OpenAPI spec.
+#
+# IMPORTANT: Speakeasy version is pinned to 1.658.1 in .speakeasy/workflow.yaml.
+# Newer versions (as of Dec 2025) introduce a regression causing perpetual diffs
+# in Terraform state for fields like provision_policy. Do not upgrade Speakeasy
+# until the regression is fixed. After regeneration, verify the pagination fix
+# is intact (see CLAUDE.md for details).
 .PHONY: gen
 gen:
 	@DATE=$$(date +%Y%m%d%H%M%S); \

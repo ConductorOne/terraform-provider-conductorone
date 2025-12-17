@@ -73,8 +73,8 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 	var appUserIds []string
 	if r.AppUserIds != nil {
 		appUserIds = make([]string, 0, len(r.AppUserIds))
-		for appUserIdsIndex := range r.AppUserIds {
-			appUserIds = append(appUserIds, r.AppUserIds[appUserIdsIndex].ValueString())
+		for _, appUserIdsItem := range r.AppUserIds {
+			appUserIds = append(appUserIds, appUserIdsItem.ValueString())
 		}
 	}
 	excludeDeletedResourceBindings := new(bool)
@@ -86,15 +86,15 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 	var excludeResourceIds []string
 	if r.ExcludeResourceIds != nil {
 		excludeResourceIds = make([]string, 0, len(r.ExcludeResourceIds))
-		for excludeResourceIdsIndex := range r.ExcludeResourceIds {
-			excludeResourceIds = append(excludeResourceIds, r.ExcludeResourceIds[excludeResourceIdsIndex].ValueString())
+		for _, excludeResourceIdsItem := range r.ExcludeResourceIds {
+			excludeResourceIds = append(excludeResourceIds, excludeResourceIdsItem.ValueString())
 		}
 	}
 	var excludeResourceTypeTraitIds []string
 	if r.ExcludeResourceTypeTraitIds != nil {
 		excludeResourceTypeTraitIds = make([]string, 0, len(r.ExcludeResourceTypeTraitIds))
-		for excludeResourceTypeTraitIdsIndex := range r.ExcludeResourceTypeTraitIds {
-			excludeResourceTypeTraitIds = append(excludeResourceTypeTraitIds, r.ExcludeResourceTypeTraitIds[excludeResourceTypeTraitIdsIndex].ValueString())
+		for _, excludeResourceTypeTraitIdsItem := range r.ExcludeResourceTypeTraitIds {
+			excludeResourceTypeTraitIds = append(excludeResourceTypeTraitIds, excludeResourceTypeTraitIdsItem.ValueString())
 		}
 	}
 	pageSize := new(int)
@@ -112,22 +112,22 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 	var refs []shared.AppResourceRef
 	if r.Refs != nil {
 		refs = make([]shared.AppResourceRef, 0, len(r.Refs))
-		for refsIndex := range r.Refs {
+		for _, refsItem := range r.Refs {
 			appId1 := new(string)
-			if !r.Refs[refsIndex].AppID.IsUnknown() && !r.Refs[refsIndex].AppID.IsNull() {
-				*appId1 = r.Refs[refsIndex].AppID.ValueString()
+			if !refsItem.AppID.IsUnknown() && !refsItem.AppID.IsNull() {
+				*appId1 = refsItem.AppID.ValueString()
 			} else {
 				appId1 = nil
 			}
 			appResourceTypeID := new(string)
-			if !r.Refs[refsIndex].AppResourceTypeID.IsUnknown() && !r.Refs[refsIndex].AppResourceTypeID.IsNull() {
-				*appResourceTypeID = r.Refs[refsIndex].AppResourceTypeID.ValueString()
+			if !refsItem.AppResourceTypeID.IsUnknown() && !refsItem.AppResourceTypeID.IsNull() {
+				*appResourceTypeID = refsItem.AppResourceTypeID.ValueString()
 			} else {
 				appResourceTypeID = nil
 			}
 			id := new(string)
-			if !r.Refs[refsIndex].ID.IsUnknown() && !r.Refs[refsIndex].ID.IsNull() {
-				*id = r.Refs[refsIndex].ID.ValueString()
+			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
+				*id = refsItem.ID.ValueString()
 			} else {
 				id = nil
 			}
@@ -141,22 +141,22 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 	var resourceIds []string
 	if r.ResourceIds != nil {
 		resourceIds = make([]string, 0, len(r.ResourceIds))
-		for resourceIdsIndex := range r.ResourceIds {
-			resourceIds = append(resourceIds, r.ResourceIds[resourceIdsIndex].ValueString())
+		for _, resourceIdsItem := range r.ResourceIds {
+			resourceIds = append(resourceIds, resourceIdsItem.ValueString())
 		}
 	}
 	var resourceTypeIds []string
 	if r.ResourceTypeIds != nil {
 		resourceTypeIds = make([]string, 0, len(r.ResourceTypeIds))
-		for resourceTypeIdsIndex := range r.ResourceTypeIds {
-			resourceTypeIds = append(resourceTypeIds, r.ResourceTypeIds[resourceTypeIdsIndex].ValueString())
+		for _, resourceTypeIdsItem := range r.ResourceTypeIds {
+			resourceTypeIds = append(resourceTypeIds, resourceTypeIdsItem.ValueString())
 		}
 	}
 	var resourceTypeTraitIds []string
 	if r.ResourceTypeTraitIds != nil {
 		resourceTypeTraitIds = make([]string, 0, len(r.ResourceTypeTraitIds))
-		for resourceTypeTraitIdsIndex := range r.ResourceTypeTraitIds {
-			resourceTypeTraitIds = append(resourceTypeTraitIds, r.ResourceTypeTraitIds[resourceTypeTraitIdsIndex].ValueString())
+		for _, resourceTypeTraitIdsItem := range r.ResourceTypeTraitIds {
+			resourceTypeTraitIds = append(resourceTypeTraitIds, resourceTypeTraitIdsItem.ValueString())
 		}
 	}
 	out := shared.SearchAppResourcesRequest{
