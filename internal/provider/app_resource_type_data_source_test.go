@@ -25,7 +25,7 @@ func TestAccAppResourceTypeDataSource(t *testing.T) {
 				}
 				`,
 			},
-			// Test searching for the app resource type by display name
+			// Test searching for the app resource type by ID
 			{
 				Config: providerConfig + `
 				resource "conductorone_app" "test" {
@@ -39,15 +39,14 @@ func TestAccAppResourceTypeDataSource(t *testing.T) {
 					resource_type = "GROUP"
 				}
 
-				data "conductorone_app_resource_type" "by_name" {
-					display_name = "GROUP"
-					app_ids = [conductorone_app.test.id]
+				data "conductorone_app_resource_type" "by_id" {
+					resource_type_ids = [conductorone_app_resource_type.test.id]
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.conductorone_app_resource_type.by_name", "display_name", "GROUP"),
-					resource.TestCheckResourceAttrSet("data.conductorone_app_resource_type.by_name", "id"),
-					resource.TestCheckResourceAttrPair("data.conductorone_app_resource_type.by_name", "app_id", "conductorone_app.test", "id"),
+					resource.TestCheckResourceAttr("data.conductorone_app_resource_type.by_id", "display_name", "GROUP"),
+					resource.TestCheckResourceAttrSet("data.conductorone_app_resource_type.by_id", "id"),
+					resource.TestCheckResourceAttrPair("data.conductorone_app_resource_type.by_id", "app_id", "conductorone_app.test", "id"),
 				),
 			},
 		},
