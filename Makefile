@@ -80,6 +80,8 @@ install-hooks:
 	git config core.hooksPath .githooks
 	chmod +x .githooks/*
 	@echo "Git hooks installed. Pre-push validation is now enabled."
+	@echo "Note: golangci-lint must be installed for 'make lint' to work."
+	@echo "      Install: https://golangci-lint.run/welcome/install/"
 
 .PHONY: generate
 generate: fmt
