@@ -356,7 +356,7 @@ github.com/pmezard/go-difflib/difflib
 github.com/posener/complete
 github.com/posener/complete/cmd
 github.com/posener/complete/cmd/install
-# github.com/pquerna/xjwt v0.3.0
+# github.com/pquerna/xjwt v0.4.0
 ## explicit; go 1.23
 github.com/pquerna/xjwt
 # github.com/shopspring/decimal v1.3.1

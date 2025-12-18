@@ -434,7 +434,7 @@ func (s *AppResourceOwners) Remove(ctx context.Context, request operations.C1API
 }
 
 // List
-// List app resource types.
+// List all owners of an app resource.
 func (s *AppResourceOwners) List(ctx context.Context, request operations.C1APIAppV1AppResourceOwnersListRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceOwnersListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
