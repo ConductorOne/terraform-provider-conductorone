@@ -44,6 +44,7 @@ type FunctionDataSourceModel struct {
 	PageToken                types.String            `tfsdk:"page_token"`
 	PublishedCommitID        types.String            `tfsdk:"published_commit_id"`
 	Query                    types.String            `tfsdk:"query"`
+	ScopedRoleIds            []types.String          `tfsdk:"scoped_role_ids"`
 	UpdatedAt                types.String            `tfsdk:"updated_at"`
 }
 
@@ -122,6 +123,16 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			"query": schema.StringAttribute{
 				Optional:    true,
 				Description: `The query field.`,
+			},
+			"scoped_role_ids": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Scoped role IDs define the permissions granted to this function when calling` + "\n" +
+					` ConductorOne APIs. These are role IDs (not service roles) that get resolved` + "\n" +
+					` to their service roles at authentication time.` + "\n" +
+					`` + "\n" +
+					` Currently only the "Read-Only Administrator" role (system:viewer) is supported.` + "\n" +
+					` The role ID can be obtained from the roles API.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

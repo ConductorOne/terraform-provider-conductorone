@@ -175,16 +175,16 @@ func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ct
 		var entitlementRefs []shared.AppEntitlementRef
 		if r.BundleAutomationRuleEntitlement.EntitlementRefs != nil {
 			entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.BundleAutomationRuleEntitlement.EntitlementRefs))
-			for _, entitlementRefsItem := range r.BundleAutomationRuleEntitlement.EntitlementRefs {
+			for entitlementRefsIndex := range r.BundleAutomationRuleEntitlement.EntitlementRefs {
 				appID := new(string)
-				if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
-					*appID = entitlementRefsItem.AppID.ValueString()
+				if !r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.IsUnknown() && !r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.IsNull() {
+					*appID = r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.ValueString()
 				} else {
 					appID = nil
 				}
 				id := new(string)
-				if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
-					*id = entitlementRefsItem.ID.ValueString()
+				if !r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.IsUnknown() && !r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.IsNull() {
+					*id = r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.ValueString()
 				} else {
 					id = nil
 				}
@@ -242,16 +242,16 @@ func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest(ctx c
 		var entitlementRefs []shared.AppEntitlementRef
 		if r.BundleAutomationRuleEntitlement.EntitlementRefs != nil {
 			entitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.BundleAutomationRuleEntitlement.EntitlementRefs))
-			for _, entitlementRefsItem := range r.BundleAutomationRuleEntitlement.EntitlementRefs {
+			for entitlementRefsIndex := range r.BundleAutomationRuleEntitlement.EntitlementRefs {
 				appID := new(string)
-				if !entitlementRefsItem.AppID.IsUnknown() && !entitlementRefsItem.AppID.IsNull() {
-					*appID = entitlementRefsItem.AppID.ValueString()
+				if !r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.IsUnknown() && !r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.IsNull() {
+					*appID = r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].AppID.ValueString()
 				} else {
 					appID = nil
 				}
 				id := new(string)
-				if !entitlementRefsItem.ID.IsUnknown() && !entitlementRefsItem.ID.IsNull() {
-					*id = entitlementRefsItem.ID.ValueString()
+				if !r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.IsUnknown() && !r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.IsNull() {
+					*id = r.BundleAutomationRuleEntitlement.EntitlementRefs[entitlementRefsIndex].ID.ValueString()
 				} else {
 					id = nil
 				}

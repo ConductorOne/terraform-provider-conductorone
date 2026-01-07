@@ -132,8 +132,8 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorCreateRequest(ctx c
 			var identityUserIds []string
 			if r.NotificationConfig.EmailNotifications.IdentityUserIds != nil {
 				identityUserIds = make([]string, 0, len(r.NotificationConfig.EmailNotifications.IdentityUserIds))
-				for _, identityUserIdsItem := range r.NotificationConfig.EmailNotifications.IdentityUserIds {
-					identityUserIds = append(identityUserIds, identityUserIdsItem.ValueString())
+				for identityUserIdsIndex := range r.NotificationConfig.EmailNotifications.IdentityUserIds {
+					identityUserIds = append(identityUserIds, r.NotificationConfig.EmailNotifications.IdentityUserIds[identityUserIdsIndex].ValueString())
 				}
 			}
 			emailNotifications = &shared.EmailNotifications{
@@ -217,8 +217,8 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorUpdateRequest(ctx c
 			var identityUserIds []string
 			if r.NotificationConfig.EmailNotifications.IdentityUserIds != nil {
 				identityUserIds = make([]string, 0, len(r.NotificationConfig.EmailNotifications.IdentityUserIds))
-				for _, identityUserIdsItem := range r.NotificationConfig.EmailNotifications.IdentityUserIds {
-					identityUserIds = append(identityUserIds, identityUserIdsItem.ValueString())
+				for identityUserIdsIndex := range r.NotificationConfig.EmailNotifications.IdentityUserIds {
+					identityUserIds = append(identityUserIds, r.NotificationConfig.EmailNotifications.IdentityUserIds[identityUserIdsIndex].ValueString())
 				}
 			}
 			emailNotifications = &shared.EmailNotifications{

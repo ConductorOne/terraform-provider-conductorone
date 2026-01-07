@@ -40,6 +40,12 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 			}
 		}
 		r.PublishedCommitID = types.StringPointerValue(resp.PublishedCommitID)
+		if resp.ScopedRoleIds != nil {
+			r.ScopedRoleIds = make([]types.String, 0, len(resp.ScopedRoleIds))
+			for _, v := range resp.ScopedRoleIds {
+				r.ScopedRoleIds = append(r.ScopedRoleIds, types.StringValue(v))
+			}
+		}
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 
@@ -145,9 +151,9 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 		displayName = nil
 	}
 	encryptedValues := make(map[string]string)
-	for encryptedValuesKey, encryptedValuesValue := range r.EncryptedValues {
+	for encryptedValuesKey := range r.EncryptedValues {
 		var encryptedValuesInst string
-		encryptedValuesInst = encryptedValuesValue.ValueString()
+		encryptedValuesInst = r.EncryptedValues[encryptedValuesKey].ValueString()
 
 		encryptedValues[encryptedValuesKey] = encryptedValuesInst
 	}
@@ -178,8 +184,8 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 	var outboundNetworkAllowlist []string
 	if r.OutboundNetworkAllowlist != nil {
 		outboundNetworkAllowlist = make([]string, 0, len(r.OutboundNetworkAllowlist))
-		for _, outboundNetworkAllowlistItem := range r.OutboundNetworkAllowlist {
-			outboundNetworkAllowlist = append(outboundNetworkAllowlist, outboundNetworkAllowlistItem.ValueString())
+		for outboundNetworkAllowlistIndex := range r.OutboundNetworkAllowlist {
+			outboundNetworkAllowlist = append(outboundNetworkAllowlist, r.OutboundNetworkAllowlist[outboundNetworkAllowlistIndex].ValueString())
 		}
 	}
 	publishedCommitID := new(string)
@@ -187,6 +193,13 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 		*publishedCommitID = r.PublishedCommitID.ValueString()
 	} else {
 		publishedCommitID = nil
+	}
+	var scopedRoleIds []string
+	if r.ScopedRoleIds != nil {
+		scopedRoleIds = make([]string, 0, len(r.ScopedRoleIds))
+		for scopedRoleIdsIndex := range r.ScopedRoleIds {
+			scopedRoleIds = append(scopedRoleIds, r.ScopedRoleIds[scopedRoleIdsIndex].ValueString())
+		}
 	}
 	out := shared.FunctionInput{
 		Description:              description,
@@ -198,6 +211,7 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 		IsDraft:                  isDraft,
 		OutboundNetworkAllowlist: outboundNetworkAllowlist,
 		PublishedCommitID:        publishedCommitID,
+		ScopedRoleIds:            scopedRoleIds,
 	}
 
 	return &out, diags
@@ -231,9 +245,9 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceCreateFunctionRequest(ct
 		functionType = nil
 	}
 	initialContent := make(map[string]string)
-	for initialContentKey, initialContentValue := range r.InitialContent {
+	for initialContentKey := range r.InitialContent {
 		var initialContentInst string
-		initialContentInst = initialContentValue.ValueString()
+		initialContentInst = r.InitialContent[initialContentKey].ValueString()
 
 		initialContent[initialContentKey] = initialContentInst
 	}

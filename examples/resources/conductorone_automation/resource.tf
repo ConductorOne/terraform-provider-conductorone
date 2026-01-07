@@ -579,6 +579,34 @@ resource "conductorone_automation" "my_automation" {
             app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
             app_id                   = "...my_app_id..."
           }
+          entitlement_inclusion_all = {
+            # ...
+          }
+          entitlement_inclusion_criteria = {
+            app_ids = [
+              "..."
+            ]
+            compliance_framework_ids = [
+              "..."
+            ]
+            resource_type_ids = [
+              "..."
+            ]
+            risk_level_ids = [
+              "..."
+            ]
+          }
+          entitlement_inclusion_list = {
+            app_entitlement_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
+          }
+          entitlement_inclusion_list_cel = {
+            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+          }
           grant_filter = {
             grant_filter_type        = "GRANT_FILTER_TYPE_TEMPORARY"
             grant_justification_type = "GRANT_JUSTIFICATION_TYPE_UNSPECIFIED"
@@ -600,6 +628,34 @@ resource "conductorone_automation" "my_automation" {
             ]
             app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
             app_id                   = "...my_app_id..."
+          }
+          entitlement_inclusion_all = {
+            # ...
+          }
+          entitlement_inclusion_criteria = {
+            app_ids = [
+              "..."
+            ]
+            compliance_framework_ids = [
+              "..."
+            ]
+            resource_type_ids = [
+              "..."
+            ]
+            risk_level_ids = [
+              "..."
+            ]
+          }
+          entitlement_inclusion_list = {
+            app_entitlement_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
+          }
+          entitlement_inclusion_list_cel = {
+            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
           }
           grant_filter = {
             grant_filter_type        = "GRANT_FILTER_TYPE_TEMPORARY"
@@ -715,6 +771,34 @@ resource "conductorone_automation" "my_automation" {
             app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
             app_id                   = "...my_app_id..."
           }
+          entitlement_inclusion_all = {
+            # ...
+          }
+          entitlement_inclusion_criteria = {
+            app_ids = [
+              "..."
+            ]
+            compliance_framework_ids = [
+              "..."
+            ]
+            resource_type_ids = [
+              "..."
+            ]
+            risk_level_ids = [
+              "..."
+            ]
+          }
+          entitlement_inclusion_list = {
+            app_entitlement_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
+          }
+          entitlement_inclusion_list_cel = {
+            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+          }
           grant_filter = {
             grant_filter_type        = "GRANT_FILTER_TYPE_PERMANENT"
             grant_justification_type = "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE"
@@ -736,6 +820,34 @@ resource "conductorone_automation" "my_automation" {
             ]
             app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
             app_id                   = "...my_app_id..."
+          }
+          entitlement_inclusion_all = {
+            # ...
+          }
+          entitlement_inclusion_criteria = {
+            app_ids = [
+              "..."
+            ]
+            compliance_framework_ids = [
+              "..."
+            ]
+            resource_type_ids = [
+              "..."
+            ]
+            risk_level_ids = [
+              "..."
+            ]
+          }
+          entitlement_inclusion_list = {
+            app_entitlement_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
+          }
+          entitlement_inclusion_list_cel = {
+            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
           }
           grant_filter = {
             grant_filter_type        = "GRANT_FILTER_TYPE_PERMANENT"

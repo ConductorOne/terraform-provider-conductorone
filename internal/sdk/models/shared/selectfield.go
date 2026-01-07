@@ -2,10 +2,50 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+// SelectFieldType - The type field.
+type SelectFieldType string
+
+const (
+	SelectFieldTypeSelectTypeUnspecified SelectFieldType = "SELECT_TYPE_UNSPECIFIED"
+	SelectFieldTypeSelectTypeDropdown    SelectFieldType = "SELECT_TYPE_DROPDOWN"
+	SelectFieldTypeSelectTypeRadio       SelectFieldType = "SELECT_TYPE_RADIO"
+	SelectFieldTypeSelectTypeButtons     SelectFieldType = "SELECT_TYPE_BUTTONS"
+)
+
+func (e SelectFieldType) ToPointer() *SelectFieldType {
+	return &e
+}
+func (e *SelectFieldType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "SELECT_TYPE_UNSPECIFIED":
+		fallthrough
+	case "SELECT_TYPE_DROPDOWN":
+		fallthrough
+	case "SELECT_TYPE_RADIO":
+		fallthrough
+	case "SELECT_TYPE_BUTTONS":
+		*e = SelectFieldType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for SelectFieldType: %v", v)
+	}
+}
+
 // The SelectField message.
 type SelectField struct {
 	// The options field.
 	Options []SelectOption `json:"options,omitempty"`
+	// The type field.
+	Type *SelectFieldType `json:"type,omitempty"`
 }
 
 func (s *SelectField) GetOptions() []SelectOption {
@@ -13,4 +53,11 @@ func (s *SelectField) GetOptions() []SelectOption {
 		return nil
 	}
 	return s.Options
+}
+
+func (s *SelectField) GetType() *SelectFieldType {
+	if s == nil {
+		return nil
+	}
+	return s.Type
 }

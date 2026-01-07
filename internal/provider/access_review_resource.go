@@ -263,11 +263,20 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 									"excluded_access_profile_ids": schema.ListAttribute{
 										Computed:    true,
 										ElementType: types.StringType,
-										Description: `List of access profiles to exclude if type is EXCLUDE_SPECIFIC`,
+										MarkdownDescription: `Access profile IDs to EXCLUDE from the campaign` + "\n" +
+											` Used when filter_type = EXCLUDE_SPECIFIC` + "\n" +
+											` Max 32 profile IDs`,
 									},
 									"filter_type": schema.StringAttribute{
 										Computed:    true,
 										Description: `The filterType field.`,
+									},
+									"included_access_profile_ids": schema.ListAttribute{
+										Computed:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `Access profile IDs to INCLUDE in the campaign` + "\n" +
+											` Used when filter_type = INCLUDE_SPECIFIC` + "\n" +
+											` Max 32 profile IDs`,
 									},
 								},
 								Description: `The GrantAccessProfileFilter message.`,
@@ -968,7 +977,10 @@ func (r *AccessReviewResource) Delete(ctx context.Context, req resource.DeleteRe
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

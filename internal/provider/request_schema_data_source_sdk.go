@@ -74,6 +74,13 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 			for _, fieldsItem := range resp.Fields {
 				var fields tfTypes.Field
 
+				if fieldsItem.AdminProviderConfig == nil {
+					fields.AdminProviderConfig = nil
+				} else {
+					fields.AdminProviderConfig = &tfTypes.AdminProviderConfig{}
+					fields.AdminProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem.AdminProviderConfig.DefaultValueCel)
+					fields.AdminProviderConfig.ShowToUser = types.BoolPointerValue(fieldsItem.AdminProviderConfig.ShowToUser)
+				}
 				if fieldsItem.BoolField == nil {
 					fields.BoolField = nil
 				} else {
@@ -90,6 +97,11 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 						fields.BoolField.CheckboxField = &tfTypes.CheckboxField{}
 					}
 					fields.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem.BoolField.DefaultValue)
+					if fieldsItem.BoolField.ToggleField == nil {
+						fields.BoolField.ToggleField = nil
+					} else {
+						fields.BoolField.ToggleField = &tfTypes.ToggleField{}
+					}
 				}
 				fields.Description = types.StringPointerValue(fieldsItem.Description)
 				fields.DisplayName = types.StringPointerValue(fieldsItem.DisplayName)
@@ -159,6 +171,14 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 						fields.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
 					}
 				}
+				if fieldsItem.SharedProviderConfig == nil {
+					fields.SharedProviderConfig = nil
+				} else {
+					fields.SharedProviderConfig = &tfTypes.SharedProviderConfig{}
+					fields.SharedProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem.SharedProviderConfig.DefaultValueCel)
+					fields.SharedProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem.SharedProviderConfig.InputTransformationCel)
+					fields.SharedProviderConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem.SharedProviderConfig.LockDefaultValues)
+				}
 				if fieldsItem.StringField == nil {
 					fields.StringField = nil
 				} else {
@@ -168,6 +188,24 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 						fields.StringField.PasswordField = nil
 					} else {
 						fields.StringField.PasswordField = &tfTypes.PasswordField{}
+					}
+					if fieldsItem.StringField.PickerField == nil {
+						fields.StringField.PickerField = nil
+					} else {
+						fields.StringField.PickerField = &tfTypes.PickerField{}
+						if fieldsItem.StringField.PickerField.AppResourceFilter == nil {
+							fields.StringField.PickerField.AppResourceFilter = nil
+						} else {
+							fields.StringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
+							fields.StringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppResourceFilter.AppID)
+							fields.StringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppResourceFilter.ResourceTypeID)
+						}
+						if fieldsItem.StringField.PickerField.AppUserFilter == nil {
+							fields.StringField.PickerField.AppUserFilter = nil
+						} else {
+							fields.StringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
+							fields.StringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppUserFilter.AppID)
+						}
 					}
 					fields.StringField.Placeholder = types.StringPointerValue(fieldsItem.StringField.Placeholder)
 					if fieldsItem.StringField.SelectField == nil {
@@ -180,11 +218,17 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 							for _, optionsVarItem := range fieldsItem.StringField.SelectField.Options {
 								var optionsVar tfTypes.SelectOption
 
+								optionsVar.Description = types.StringPointerValue(optionsVarItem.Description)
 								optionsVar.DisplayName = types.StringPointerValue(optionsVarItem.DisplayName)
 								optionsVar.Value = types.StringPointerValue(optionsVarItem.Value)
 
 								fields.StringField.SelectField.Options = append(fields.StringField.SelectField.Options, optionsVar)
 							}
+						}
+						if fieldsItem.StringField.SelectField.Type != nil {
+							fields.StringField.SelectField.Type = types.StringValue(string(*fieldsItem.StringField.SelectField.Type))
+						} else {
+							fields.StringField.SelectField.Type = types.StringNull()
 						}
 					}
 					if fieldsItem.StringField.StringRules == nil {
@@ -238,6 +282,12 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 						fields.StringField.TextField = &tfTypes.TextField{}
 						fields.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem.StringField.TextField.Multiline)
 					}
+				}
+				if fieldsItem.UserProviderConfig == nil {
+					fields.UserProviderConfig = nil
+				} else {
+					fields.UserProviderConfig = &tfTypes.UserProviderConfig{}
+					fields.UserProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem.UserProviderConfig.InputTransformationCel)
 				}
 
 				r.Fields = append(r.Fields, fields)

@@ -158,6 +158,11 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							steps.Approval.Escalation = nil
 						} else {
 							steps.Approval.Escalation = &tfTypes.Escalation{}
+							if stepsItem.Approval.Escalation.CancelTicket == nil {
+								steps.Approval.Escalation.CancelTicket = nil
+							} else {
+								steps.Approval.Escalation.CancelTicket = &tfTypes.CancelTicket{}
+							}
 							steps.Approval.Escalation.EscalationComment = types.StringPointerValue(stepsItem.Approval.Escalation.EscalationComment)
 							steps.Approval.Escalation.Expiration = types.StringPointerValue(stepsItem.Approval.Escalation.Expiration)
 							if stepsItem.Approval.Escalation.ReassignToApprovers == nil {
@@ -178,6 +183,11 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								steps.Approval.Escalation.ReplacePolicy = &tfTypes.ReplacePolicy{}
 								steps.Approval.Escalation.ReplacePolicy.PolicyID = types.StringPointerValue(stepsItem.Approval.Escalation.ReplacePolicy.PolicyID)
+							}
+							if stepsItem.Approval.Escalation.SkipStep == nil {
+								steps.Approval.Escalation.SkipStep = nil
+							} else {
+								steps.Approval.Escalation.SkipStep = &tfTypes.SkipStep{}
 							}
 						}
 						steps.Approval.EscalationEnabled = types.BoolPointerValue(stepsItem.Approval.EscalationEnabled)
@@ -546,8 +556,8 @@ func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Contex
 	var excludePolicyIds []string
 	if r.ExcludePolicyIds != nil {
 		excludePolicyIds = make([]string, 0, len(r.ExcludePolicyIds))
-		for _, excludePolicyIdsItem := range r.ExcludePolicyIds {
-			excludePolicyIds = append(excludePolicyIds, excludePolicyIdsItem.ValueString())
+		for excludePolicyIdsIndex := range r.ExcludePolicyIds {
+			excludePolicyIds = append(excludePolicyIds, r.ExcludePolicyIds[excludePolicyIdsIndex].ValueString())
 		}
 	}
 	includeDeleted := new(bool)
@@ -578,10 +588,10 @@ func (r *PolicyDataSourceModel) ToSharedSearchPoliciesRequest(ctx context.Contex
 	var refs []shared.PolicyRef
 	if r.Refs != nil {
 		refs = make([]shared.PolicyRef, 0, len(r.Refs))
-		for _, refsItem := range r.Refs {
+		for refsIndex := range r.Refs {
 			id := new(string)
-			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-				*id = refsItem.ID.ValueString()
+			if !r.Refs[refsIndex].ID.IsUnknown() && !r.Refs[refsIndex].ID.IsNull() {
+				*id = r.Refs[refsIndex].ID.ValueString()
 			} else {
 				id = nil
 			}

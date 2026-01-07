@@ -61,6 +61,9 @@ resource "conductorone_policy" "my_policy" {
               require_distinct_approvers = false
             }
             escalation = {
+              cancel_ticket = {
+                # ...
+              }
               escalation_comment = "...my_escalation_comment..."
               expiration         = "...my_expiration..."
               reassign_to_approvers = {
@@ -70,6 +73,9 @@ resource "conductorone_policy" "my_policy" {
               }
               replace_policy = {
                 policy_id = "...my_policy_id..."
+              }
+              skip_step = {
+                # ...
               }
             }
             escalation_enabled = false

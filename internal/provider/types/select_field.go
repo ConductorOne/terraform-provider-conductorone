@@ -2,6 +2,11 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type SelectField struct {
 	Options []SelectOption `tfsdk:"options"`
+	Type    types.String   `tfsdk:"type"`
 }

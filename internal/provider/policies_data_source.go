@@ -268,6 +268,10 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 														"escalation": schema.SingleNestedAttribute{
 															Computed: true,
 															Attributes: map[string]schema.Attribute{
+																"cancel_ticket": schema.SingleNestedAttribute{
+																	Computed:    true,
+																	Description: `The CancelTicket message.`,
+																},
 																"escalation_comment": schema.StringAttribute{
 																	Computed:    true,
 																	Description: `The escalationComment field.`,
@@ -297,12 +301,18 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																	},
 																	Description: `The ReplacePolicy message.`,
 																},
+																"skip_step": schema.SingleNestedAttribute{
+																	Computed:    true,
+																	Description: `The SkipStep message.`,
+																},
 															},
 															MarkdownDescription: `The Escalation message.` + "\n" +
 																`` + "\n" +
 																`This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:` + "\n" +
 																`  - replacePolicy` + "\n" +
-																`  - reassignToApprovers`,
+																`  - reassignToApprovers` + "\n" +
+																`  - cancelTicket` + "\n" +
+																`  - skipStep`,
 														},
 														"escalation_enabled": schema.BoolAttribute{
 															Computed:    true,

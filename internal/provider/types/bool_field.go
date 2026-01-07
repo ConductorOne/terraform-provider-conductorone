@@ -10,4 +10,5 @@ type BoolField struct {
 	BoolRules     *BoolRules     `tfsdk:"bool_rules"`
 	CheckboxField *CheckboxField `tfsdk:"checkbox_field"`
 	DefaultValue  types.Bool     `tfsdk:"default_value"`
+	ToggleField   *ToggleField   `tfsdk:"toggle_field"`
 }

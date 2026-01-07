@@ -62,12 +62,16 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_compliance_framework](docs/resources/compliance_framework.md)
 * [conductorone_connector_credential](docs/resources/connector_credential.md)
 * [conductorone_custom_app_entitlement](docs/resources/custom_app_entitlement.md)
+* [conductorone_directory](docs/resources/directory.md)
 * [conductorone_function](docs/resources/function.md)
 * [conductorone_function_tag](docs/resources/function_tag.md)
 * [conductorone_policy](docs/resources/policy.md)
 * [conductorone_request_schema_entitlement_binding](docs/resources/request_schema_entitlement_binding.md)
 * [conductorone_request_schema](docs/resources/request_schema.md)
 * [conductorone_risk_level](docs/resources/risk_level.md)
+* [conductorone_task_grant](docs/resources/task_grant.md)
+* [conductorone_task_offboarding](docs/resources/task_offboarding.md)
+* [conductorone_task_revoke](docs/resources/task_revoke.md)
 * [conductorone_vault](docs/resources/vault.md)
 * [conductorone_webhook](docs/resources/webhook.md)
 ### Data Sources
@@ -87,14 +91,21 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_app_resource_types](docs/data-sources/app_resource_types.md)
 * [conductorone_app_resources](docs/data-sources/app_resources.md)
 * [conductorone_app_entitlement_monitor_binding](docs/data-sources/app_entitlement_monitor_binding.md)
+* [conductorone_app_entitlement_owners](docs/data-sources/app_entitlement_owners.md)
+* [conductorone_app_entitlement_users](docs/data-sources/app_entitlement_users.md)
+* [conductorone_app_owners](docs/data-sources/app_owners.md)
+* [conductorone_app_resource_owners](docs/data-sources/app_resource_owners.md)
 * [conductorone_apps](docs/data-sources/apps.md)
 * [conductorone_aws_external_id](docs/data-sources/aws_external_id.md)
 * [conductorone_bundle_automation](docs/data-sources/bundle_automation.md)
 * [conductorone_compliance_framework](docs/data-sources/compliance_framework.md)
 * [conductorone_compliance_frameworks](docs/data-sources/compliance_frameworks.md)
 * [conductorone_connector_credential](docs/data-sources/connector_credential.md)
+* [conductorone_directories](docs/data-sources/directories.md)
+* [conductorone_directory](docs/data-sources/directory.md)
 * [conductorone_function](docs/data-sources/function.md)
 * [conductorone_function_tag](docs/data-sources/function_tag.md)
+* [conductorone_org_domains](docs/data-sources/org_domains.md)
 * [conductorone_policies](docs/data-sources/policies.md)
 * [conductorone_policy](docs/data-sources/policy.md)
 * [conductorone_request_catalogs](docs/data-sources/request_catalogs.md)
@@ -102,6 +113,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_request_schema](docs/data-sources/request_schema.md)
 * [conductorone_risk_level](docs/data-sources/risk_level.md)
 * [conductorone_risk_levels](docs/data-sources/risk_levels.md)
+* [conductorone_role](docs/data-sources/role.md)
+* [conductorone_roles](docs/data-sources/roles.md)
 * [conductorone_user](docs/data-sources/user.md)
 * [conductorone_users](docs/data-sources/users.md)
 * [conductorone_webhook](docs/data-sources/webhook.md)
@@ -184,7 +197,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.7.8"
+      version = "1.7.9"
     }
   }
 }

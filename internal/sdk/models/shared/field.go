@@ -11,11 +11,19 @@ package shared
 //   - int64Field
 //   - fileField
 //   - oauth2Field
+//
+// This message contains a oneof named provider_config. Only a single field of the following list may be set at a time:
+//   - userConfig
+//   - adminConfig
+//   - sharedConfig
 type Field struct {
+	// The AdminProviderConfig message.
+	AdminProviderConfig *AdminProviderConfig `json:"adminConfig,omitempty"`
 	// The BoolField message.
 	//
 	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
 	//   - checkboxField
+	//   - toggleField
 	//
 	//
 	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
@@ -58,18 +66,30 @@ type Field struct {
 	//   - oauth2FieldView
 	//
 	Oauth2Field *Oauth2Field `json:"oauth2Field,omitempty"`
+	// The SharedProviderConfig message.
+	SharedProviderConfig *SharedProviderConfig `json:"sharedConfig,omitempty"`
 	// The StringField message.
 	//
 	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
 	//   - textField
 	//   - passwordField
 	//   - selectField
+	//   - pickerField
 	//
 	//
 	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
 	//   - rules
 	//
 	StringField *StringField `json:"stringField,omitempty"`
+	// The UserProviderConfig message.
+	UserProviderConfig *UserProviderConfig `json:"userConfig,omitempty"`
+}
+
+func (f *Field) GetAdminProviderConfig() *AdminProviderConfig {
+	if f == nil {
+		return nil
+	}
+	return f.AdminProviderConfig
 }
 
 func (f *Field) GetBoolField() *BoolField {
@@ -121,9 +141,23 @@ func (f *Field) GetOauth2Field() *Oauth2Field {
 	return f.Oauth2Field
 }
 
+func (f *Field) GetSharedProviderConfig() *SharedProviderConfig {
+	if f == nil {
+		return nil
+	}
+	return f.SharedProviderConfig
+}
+
 func (f *Field) GetStringField() *StringField {
 	if f == nil {
 		return nil
 	}
 	return f.StringField
+}
+
+func (f *Field) GetUserProviderConfig() *UserProviderConfig {
+	if f == nil {
+		return nil
+	}
+	return f.UserProviderConfig
 }

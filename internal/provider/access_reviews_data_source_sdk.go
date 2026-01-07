@@ -208,6 +208,12 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 								} else {
 									list.AccessReview.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType = types.StringNull()
 								}
+								if listItem.AccessReview.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds != nil {
+									list.AccessReview.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds = make([]types.String, 0, len(listItem.AccessReview.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds))
+									for _, v := range listItem.AccessReview.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds {
+										list.AccessReview.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds = append(list.AccessReview.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds, types.StringValue(v))
+									}
+								}
 							}
 							if listItem.AccessReview.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween == nil {
 								list.AccessReview.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween = nil

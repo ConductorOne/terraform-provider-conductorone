@@ -196,6 +196,12 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 					} else {
 						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType = types.StringNull()
 					}
+					if resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds != nil {
+						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds))
+						for _, v := range resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds {
+							r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds = append(r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds, types.StringValue(v))
+						}
+					}
 				}
 				if resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween == nil {
 					r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween = nil

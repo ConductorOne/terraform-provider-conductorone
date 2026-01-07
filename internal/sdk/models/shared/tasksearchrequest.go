@@ -406,7 +406,7 @@ type TaskSearchRequest struct {
 	PageToken *string `json:"pageToken,omitempty"`
 	// Search tasks that were acted on by any of these users.
 	PreviouslyActedOnIds []string `json:"previouslyActedOnIds,omitempty"`
-	// Fuzzy search tasks by display name or description. Also can search by numeric ID.
+	// Fuzzy search tasks by display name, description, or ID.
 	Query *string `json:"query,omitempty"`
 	// Query tasks by display name, description, or numeric ID.
 	Refs []TaskRef `json:"refs,omitempty"`

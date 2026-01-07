@@ -7,6 +7,7 @@ import (
 )
 
 type SelectOption struct {
+	Description types.String `tfsdk:"description"`
 	DisplayName types.String `tfsdk:"display_name"`
 	Value       types.String `tfsdk:"value"`
 }
