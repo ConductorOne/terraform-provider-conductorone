@@ -78,6 +78,9 @@ resource "conductorone_policy" "my_policy" {
               require_distinct_approvers = false
             }
             escalation = {
+              cancel_ticket = {
+                # ...
+              }
               escalation_comment = "...my_escalation_comment..."
               expiration         = "...my_expiration..."
               reassign_to_approvers = {
@@ -87,6 +90,9 @@ resource "conductorone_policy" "my_policy" {
               }
               replace_policy = {
                 policy_id = "...my_policy_id..."
+              }
+              skip_step = {
+                # ...
               }
             }
             escalation_enabled = false
@@ -343,7 +349,9 @@ Optional:
 
 This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:
   - replacePolicy
-  - reassignToApprovers (see [below for nested schema](#nestedatt--policy_steps--steps--approval--escalation))
+  - reassignToApprovers
+  - cancelTicket
+  - skipStep (see [below for nested schema](#nestedatt--policy_steps--steps--approval--escalation))
 - `escalation_enabled` (Boolean) Whether escalation is enabled for this step.
 - `expression_approval` (Attributes) The ExpressionApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--expression_approval))
 - `manager_approval` (Attributes) The manager approval object provides configuration options for approval when the target of the approval is the manager of the user in the task. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--manager_approval))
@@ -423,10 +431,16 @@ Optional:
 
 Optional:
 
+- `cancel_ticket` (Attributes) The CancelTicket message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--escalation--cancel_ticket))
 - `escalation_comment` (String) The escalationComment field.
 - `expiration` (String) The expiration field.
 - `reassign_to_approvers` (Attributes) The ReassignToApprovers message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--escalation--reassign_to_approvers))
 - `replace_policy` (Attributes) The ReplacePolicy message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--escalation--replace_policy))
+- `skip_step` (Attributes) The SkipStep message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--escalation--skip_step))
+
+<a id="nestedatt--policy_steps--steps--approval--escalation--cancel_ticket"></a>
+### Nested Schema for `policy_steps.steps.approval.escalation.cancel_ticket`
+
 
 <a id="nestedatt--policy_steps--steps--approval--escalation--reassign_to_approvers"></a>
 ### Nested Schema for `policy_steps.steps.approval.escalation.reassign_to_approvers`
@@ -442,6 +456,10 @@ Optional:
 Optional:
 
 - `policy_id` (String) The policyId field.
+
+
+<a id="nestedatt--policy_steps--steps--approval--escalation--skip_step"></a>
+### Nested Schema for `policy_steps.steps.approval.escalation.skip_step`
 
 
 

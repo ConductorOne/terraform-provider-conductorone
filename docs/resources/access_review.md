@@ -262,8 +262,13 @@ Read-Only:
 
 Read-Only:
 
-- `excluded_access_profile_ids` (List of String) List of access profiles to exclude if type is EXCLUDE_SPECIFIC
+- `excluded_access_profile_ids` (List of String) Access profile IDs to EXCLUDE from the campaign
+ Used when filter_type = EXCLUDE_SPECIFIC
+ Max 32 profile IDs
 - `filter_type` (String) The filterType field.
+- `included_access_profile_ids` (List of String) Access profile IDs to INCLUDE in the campaign
+ Used when filter_type = INCLUDE_SPECIFIC
+ Max 32 profile IDs
 
 
 <a id="nestedatt--access_review_scope_v2--grants_by_criteria_scope--grants_added_between"></a>
