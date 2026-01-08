@@ -5,3 +5,4 @@
 .idea/
 /examples/terraform config/
 .speakeasy/temp/
+/*.md
