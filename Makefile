@@ -29,14 +29,29 @@ vendor:
 
 # gen: Regenerates the SDK from the live OpenAPI spec.
 #
-# IMPORTANT: Speakeasy version is pinned to 1.658.1 in .speakeasy/workflow.yaml.
-# Newer versions (as of Dec 2025) introduce a regression causing perpetual diffs
-# in Terraform state for fields like provision_policy. Do not upgrade Speakeasy
-# until the regression is fixed. After regeneration, verify the pagination fix
-# is intact (see CLAUDE.md for details).
+# IMPORTANT: Speakeasy version is pinned in .speakeasy/workflow.yaml.
+# This target enforces the version check before generation. See KNOWN_ISSUES.md
+# for details on the perpetual diff regression in newer Speakeasy versions.
+#
+# After regeneration, verify the pagination fix is intact (see CLAUDE.md).
 .PHONY: gen
 gen:
-	@DATE=$$(date +%Y%m%d%H%M%S); \
+	@PINNED_VERSION=$$(grep 'speakeasyVersion:' .speakeasy/workflow.yaml | head -1 | awk '{print $$2}'); \
+	INSTALLED_VERSION=$$(speakeasy --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1); \
+	if [ -z "$$INSTALLED_VERSION" ]; then \
+		echo "ERROR: speakeasy not found. Install from https://speakeasy.com/docs/speakeasy-cli/getting-started"; \
+		exit 1; \
+	fi; \
+	if [ "$$INSTALLED_VERSION" != "$$PINNED_VERSION" ]; then \
+		echo "ERROR: Speakeasy version mismatch"; \
+		echo "  Installed: $$INSTALLED_VERSION"; \
+		echo "  Required:  $$PINNED_VERSION"; \
+		echo ""; \
+		echo "See KNOWN_ISSUES.md for why version matters."; \
+		echo "Either install the correct version or use 'speakeasy run' which respects workflow.yaml"; \
+		exit 1; \
+	fi; \
+	DATE=$$(date +%Y%m%d%H%M%S); \
 	FILENAME="openapi_$$DATE.yaml"; \
 	FILENAME2="combined_$$DATE.yaml"; \
 	trap 'rm -f $$FILENAME $$FILENAME2' EXIT; \
