@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 6509a8b9a25ad7e756f3ee4de8bf1a6d
+  docChecksum: 0d875e79cd8f46883cd7d24bdf73f144
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.655.0
-  generationVersion: 2.751.0
-  releaseVersion: 1.7.8
-  configChecksum: e5db70d119e3477f97d0d2612df2ab49
+  speakeasyVersion: 1.661.0
+  generationVersion: 2.762.0
+  releaseVersion: 1.7.9
+  configChecksum: a6737dedfbc61409539482dc77685789
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.3
-    core: 3.46.12
+    core: 3.46.17
     deprecations: 2.82.0
     devContainers: 0.0.0
     globalSecurity: 2.82.1
@@ -36,9 +36,13 @@ generatedFiles:
   - examples/data-sources/conductorone_app_entitlement/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_automation/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_monitor_binding/data-source.tf
+  - examples/data-sources/conductorone_app_entitlement_owners/data-source.tf
   - examples/data-sources/conductorone_app_entitlement_proxy_binding/data-source.tf
+  - examples/data-sources/conductorone_app_entitlement_users/data-source.tf
   - examples/data-sources/conductorone_app_entitlements/data-source.tf
+  - examples/data-sources/conductorone_app_owners/data-source.tf
   - examples/data-sources/conductorone_app_resource/data-source.tf
+  - examples/data-sources/conductorone_app_resource_owners/data-source.tf
   - examples/data-sources/conductorone_app_resource_type/data-source.tf
   - examples/data-sources/conductorone_app_resource_types/data-source.tf
   - examples/data-sources/conductorone_app_resources/data-source.tf
@@ -48,8 +52,11 @@ generatedFiles:
   - examples/data-sources/conductorone_compliance_framework/data-source.tf
   - examples/data-sources/conductorone_compliance_frameworks/data-source.tf
   - examples/data-sources/conductorone_connector_credential/data-source.tf
+  - examples/data-sources/conductorone_directories/data-source.tf
+  - examples/data-sources/conductorone_directory/data-source.tf
   - examples/data-sources/conductorone_function/data-source.tf
   - examples/data-sources/conductorone_function_tag/data-source.tf
+  - examples/data-sources/conductorone_org_domains/data-source.tf
   - examples/data-sources/conductorone_policies/data-source.tf
   - examples/data-sources/conductorone_policy/data-source.tf
   - examples/data-sources/conductorone_request_catalogs/data-source.tf
@@ -57,6 +64,8 @@ generatedFiles:
   - examples/data-sources/conductorone_request_schema_entitlement_binding/data-source.tf
   - examples/data-sources/conductorone_risk_level/data-source.tf
   - examples/data-sources/conductorone_risk_levels/data-source.tf
+  - examples/data-sources/conductorone_role/data-source.tf
+  - examples/data-sources/conductorone_roles/data-source.tf
   - examples/data-sources/conductorone_user/data-source.tf
   - examples/data-sources/conductorone_users/data-source.tf
   - examples/data-sources/conductorone_webhook/data-source.tf
@@ -119,6 +128,9 @@ generatedFiles:
   - examples/resources/conductorone_custom_app_entitlement/import-by-string-id.tf
   - examples/resources/conductorone_custom_app_entitlement/import.sh
   - examples/resources/conductorone_custom_app_entitlement/resource.tf
+  - examples/resources/conductorone_directory/import-by-string-id.tf
+  - examples/resources/conductorone_directory/import.sh
+  - examples/resources/conductorone_directory/resource.tf
   - examples/resources/conductorone_function/import-by-string-id.tf
   - examples/resources/conductorone_function/import.sh
   - examples/resources/conductorone_function/resource.tf
@@ -135,6 +147,9 @@ generatedFiles:
   - examples/resources/conductorone_risk_level/import-by-string-id.tf
   - examples/resources/conductorone_risk_level/import.sh
   - examples/resources/conductorone_risk_level/resource.tf
+  - examples/resources/conductorone_task_grant/resource.tf
+  - examples/resources/conductorone_task_offboarding/resource.tf
+  - examples/resources/conductorone_task_revoke/resource.tf
   - examples/resources/conductorone_vault/import-by-string-id.tf
   - examples/resources/conductorone_vault/import.sh
   - examples/resources/conductorone_vault/resource.tf
@@ -217,6 +232,14 @@ generatedFiles:
   - internal/provider/app_resource_types_data_source_sdk.go
   - internal/provider/app_resources_data_source.go
   - internal/provider/app_resources_data_source_sdk.go
+  - internal/provider/appentitlementowners_data_source.go
+  - internal/provider/appentitlementowners_data_source_sdk.go
+  - internal/provider/appentitlementusers_data_source.go
+  - internal/provider/appentitlementusers_data_source_sdk.go
+  - internal/provider/appowners_data_source.go
+  - internal/provider/appowners_data_source_sdk.go
+  - internal/provider/appresourceowners_data_source.go
+  - internal/provider/appresourceowners_data_source_sdk.go
   - internal/provider/apps_data_source.go
   - internal/provider/apps_data_source_sdk.go
   - internal/provider/automation_resource.go
@@ -239,6 +262,12 @@ generatedFiles:
   - internal/provider/connectorcredential_resource_sdk.go
   - internal/provider/custom_app_entitlement_resource.go
   - internal/provider/custom_app_entitlement_resource_sdk.go
+  - internal/provider/directories_data_source.go
+  - internal/provider/directories_data_source_sdk.go
+  - internal/provider/directory_data_source.go
+  - internal/provider/directory_data_source_sdk.go
+  - internal/provider/directory_resource.go
+  - internal/provider/directory_resource_sdk.go
   - internal/provider/function_data_source.go
   - internal/provider/function_data_source_sdk.go
   - internal/provider/function_resource.go
@@ -247,6 +276,8 @@ generatedFiles:
   - internal/provider/function_tag_data_source_sdk.go
   - internal/provider/function_tag_resource.go
   - internal/provider/function_tag_resource_sdk.go
+  - internal/provider/orgdomains_data_source.go
+  - internal/provider/orgdomains_data_source_sdk.go
   - internal/provider/policies_data_source.go
   - internal/provider/policies_data_source_sdk.go
   - internal/provider/policy_data_source.go
@@ -281,10 +312,21 @@ generatedFiles:
   - internal/provider/risk_level_resource_sdk.go
   - internal/provider/risk_levels_data_source.go
   - internal/provider/risk_levels_data_source_sdk.go
+  - internal/provider/role_data_source.go
+  - internal/provider/role_data_source_sdk.go
+  - internal/provider/roles_data_source.go
+  - internal/provider/roles_data_source_sdk.go
+  - internal/provider/taskgrant_resource.go
+  - internal/provider/taskgrant_resource_sdk.go
+  - internal/provider/taskoffboarding_resource.go
+  - internal/provider/taskoffboarding_resource_sdk.go
+  - internal/provider/taskrevoke_resource.go
+  - internal/provider/taskrevoke_resource_sdk.go
   - internal/provider/typeconvert/date.go
   - internal/provider/typeconvert/datetime.go
   - internal/provider/typeconvert/int.go
   - internal/provider/types/accept.go
+  - internal/provider/types/accept_instance.go
   - internal/provider/types/access_conflict_trigger.go
   - internal/provider/types/access_review.go
   - internal/provider/types/access_review_exclusion_scope.go
@@ -301,14 +343,22 @@ generatedFiles:
   - internal/provider/types/account_provision.go
   - internal/provider/types/account_ref.go
   - internal/provider/types/action.go
+  - internal/provider/types/action_instance.go
+  - internal/provider/types/action_outcome_cancelled.go
+  - internal/provider/types/action_outcome_denied.go
+  - internal/provider/types/action_outcome_error.go
+  - internal/provider/types/action_outcome_success.go
   - internal/provider/types/action_provision.go
   - internal/provider/types/action_target_automation.go
+  - internal/provider/types/action_target_automation_instance.go
   - internal/provider/types/actor_object_permissions.go
+  - internal/provider/types/admin_provider_config.go
   - internal/provider/types/agent_approval.go
   - internal/provider/types/all_access_conflicts_scope.go
   - internal/provider/types/all_accounts_scope.go
   - internal/provider/types/all_grants_scope.go
   - internal/provider/types/all_users_scope.go
+  - internal/provider/types/annotations.go
   - internal/provider/types/app.go
   - internal/provider/types/app_entitlement.go
   - internal/provider/types/app_entitlement_automation_last_run_status.go
@@ -319,20 +369,29 @@ generatedFiles:
   - internal/provider/types/app_entitlement_duration_unset.go
   - internal/provider/types/app_entitlement_ref.go
   - internal/provider/types/app_entitlement_reference.go
+  - internal/provider/types/app_entitlement_user_view.go
   - internal/provider/types/app_entitlement_view.go
   - internal/provider/types/app_group_approval.go
   - internal/provider/types/app_owner_approval.go
   - internal/provider/types/app_resource.go
+  - internal/provider/types/app_resource_filter.go
   - internal/provider/types/app_resource_ref.go
   - internal/provider/types/app_resource_service_get_response_expanded.go
   - internal/provider/types/app_resource_type.go
   - internal/provider/types/app_resource_type_service_get_response_expanded.go
   - internal/provider/types/app_resource_view.go
   - internal/provider/types/app_selection_criteria_scope.go
+  - internal/provider/types/app_user.go
   - internal/provider/types/app_user_created_trigger.go
+  - internal/provider/types/app_user_filter.go
+  - internal/provider/types/app_user_profile.go
+  - internal/provider/types/app_user_status.go
   - internal/provider/types/app_user_updated_trigger.go
+  - internal/provider/types/app_user_view.go
   - internal/provider/types/application_access_scope.go
   - internal/provider/types/approval.go
+  - internal/provider/types/approval_instance.go
+  - internal/provider/types/approved_action.go
   - internal/provider/types/args_template.go
   - internal/provider/types/at_least_one.go
   - internal/provider/types/attribute_value.go
@@ -348,9 +407,14 @@ generatedFiles:
   - internal/provider/types/bundle_automation_rule_entitlement.go
   - internal/provider/types/call_function.go
   - internal/provider/types/campaign_entitlement_details.go
+  - internal/provider/types/cancel_ticket.go
+  - internal/provider/types/cancelled_action.go
   - internal/provider/types/cel_expression_scope.go
   - internal/provider/types/checkbox_field.go
   - internal/provider/types/close_action.go
+  - internal/provider/types/completed_action.go
+  - internal/provider/types/condition_succeeded.go
+  - internal/provider/types/condition_timed_out.go
   - internal/provider/types/conflict_monitor_delete_request.go
   - internal/provider/types/conflict_monitor_ref.go
   - internal/provider/types/conflict_monitor_refs.go
@@ -363,11 +427,19 @@ generatedFiles:
   - internal/provider/types/create_app_entitlement_request_duration_unset.go
   - internal/provider/types/create_revoke_tasks.go
   - internal/provider/types/create_revoke_tasks_v2.go
+  - internal/provider/types/data.go
   - internal/provider/types/default_behavior.go
   - internal/provider/types/delegated_provision.go
   - internal/provider/types/delete_account.go
   - internal/provider/types/delete_bundle_automation_request.go
+  - internal/provider/types/denied_action.go
   - internal/provider/types/deprovisioner_policy.go
+  - internal/provider/types/directory.go
+  - internal/provider/types/directory_account_filter_all.go
+  - internal/provider/types/directory_account_filter_cel.go
+  - internal/provider/types/directory_service_get_response_expanded.go
+  - internal/provider/types/directory_service_list_response_expanded.go
+  - internal/provider/types/directory_view.go
   - internal/provider/types/disabled_reason_circuit_breaker.go
   - internal/provider/types/do_not_save.go
   - internal/provider/types/email_notifications.go
@@ -382,17 +454,25 @@ generatedFiles:
   - internal/provider/types/entitlement_inclusion_list_cel.go
   - internal/provider/types/entitlement_owner_approval.go
   - internal/provider/types/entitlement_to_details.go
+  - internal/provider/types/errored_action.go
   - internal/provider/types/escalation.go
+  - internal/provider/types/escalation_instance.go
   - internal/provider/types/evaluate_expressions.go
   - internal/provider/types/expanded.go
   - internal/provider/types/expression.go
   - internal/provider/types/expression_approval.go
+  - internal/provider/types/external_ref.go
   - internal/provider/types/external_ticket_provision.go
   - internal/provider/types/field.go
   - internal/provider/types/field_group.go
   - internal/provider/types/field_relationship.go
   - internal/provider/types/file_field.go
   - internal/provider/types/file_input_field.go
+  - internal/provider/types/form.go
+  - internal/provider/types/form_completed_action.go
+  - internal/provider/types/form_instance.go
+  - internal/provider/types/form_instance_data.go
+  - internal/provider/types/form_values.go
   - internal/provider/types/function_commit.go
   - internal/provider/types/functions_service_delete_function_request.go
   - internal/provider/types/generate_password.go
@@ -411,6 +491,7 @@ generatedFiles:
   - internal/provider/types/included_user_attribute_values.go
   - internal/provider/types/int64_field.go
   - internal/provider/types/int64_rules.go
+  - internal/provider/types/list_app_entitlement_users_response_expanded.go
   - internal/provider/types/magic_vault.go
   - internal/provider/types/manager_approval.go
   - internal/provider/types/manual_automation_trigger.go
@@ -423,32 +504,43 @@ generatedFiles:
   - internal/provider/types/number_field.go
   - internal/provider/types/oauth2_field.go
   - internal/provider/types/oauth2_field_view.go
+  - internal/provider/types/org_domain.go
   - internal/provider/types/password_field.go
   - internal/provider/types/payload.go
+  - internal/provider/types/picker_field.go
   - internal/provider/types/policy.go
+  - internal/provider/types/policy_instance.go
   - internal/provider/types/policy_post_actions.go
   - internal/provider/types/policy_ref.go
   - internal/provider/types/policy_step.go
+  - internal/provider/types/policy_step_instance.go
   - internal/provider/types/policy_steps.go
   - internal/provider/types/profile.go
   - internal/provider/types/provision.go
+  - internal/provider/types/provision_instance.go
   - internal/provider/types/provision_policy.go
   - internal/provider/types/provision_target.go
   - internal/provider/types/reassign_action.go
   - internal/provider/types/reassign_to_approvers.go
+  - internal/provider/types/reassigned_action.go
+  - internal/provider/types/reassigned_by_error_action.go
   - internal/provider/types/recurrence_rule.go
   - internal/provider/types/reject.go
+  - internal/provider/types/reject_instance.go
   - internal/provider/types/remove_from_delegation.go
   - internal/provider/types/replace_policy.go
   - internal/provider/types/request_catalog.go
   - internal/provider/types/request_catalog_management_service_get_response_expanded.go
   - internal/provider/types/request_catalog_management_service_list_response_expanded.go
   - internal/provider/types/request_catalog_view.go
+  - internal/provider/types/request_data.go
   - internal/provider/types/requestable_entry.go
   - internal/provider/types/required_together.go
   - internal/provider/types/resource_owner_approval.go
   - internal/provider/types/resource_type_selection_scope.go
+  - internal/provider/types/restart_action.go
   - internal/provider/types/review_signature_config.go
+  - internal/provider/types/role.go
   - internal/provider/types/rule.go
   - internal/provider/types/run_automation.go
   - internal/provider/types/run_delayed.go
@@ -465,15 +557,36 @@ generatedFiles:
   - internal/provider/types/self_approval.go
   - internal/provider/types/send_email.go
   - internal/provider/types/send_slack_message.go
+  - internal/provider/types/shared_provider_config.go
   - internal/provider/types/single_app_setup.go
+  - internal/provider/types/skip_step.go
+  - internal/provider/types/skipped_action.go
   - internal/provider/types/slack_channel.go
   - internal/provider/types/slack_notifications.go
   - internal/provider/types/specific_access_conflicts_scope.go
   - internal/provider/types/specific_resources_scope.go
   - internal/provider/types/string_field.go
   - internal/provider/types/string_rules.go
+  - internal/provider/types/task.go
   - internal/provider/types/task_action.go
+  - internal/provider/types/task_grant_source.go
+  - internal/provider/types/task_revoke_source.go
+  - internal/provider/types/task_revoke_source_expired.go
+  - internal/provider/types/task_revoke_source_non_usage.go
+  - internal/provider/types/task_revoke_source_request.go
+  - internal/provider/types/task_revoke_source_review.go
+  - internal/provider/types/task_service_create_grant_response_expanded.go
+  - internal/provider/types/task_service_create_offboarding_response_expanded.go
+  - internal/provider/types/task_service_create_revoke_response_expanded.go
+  - internal/provider/types/task_type.go
+  - internal/provider/types/task_type_action.go
+  - internal/provider/types/task_type_certify.go
+  - internal/provider/types/task_type_grant.go
+  - internal/provider/types/task_type_offboarding.go
+  - internal/provider/types/task_type_revoke.go
+  - internal/provider/types/task_view.go
   - internal/provider/types/text_field.go
+  - internal/provider/types/toggle_field.go
   - internal/provider/types/unconfigured_provision.go
   - internal/provider/types/unenroll_from_all_access_profiles.go
   - internal/provider/types/update_user.go
@@ -485,13 +598,17 @@ generatedFiles:
   - internal/provider/types/user_criteria_scope.go
   - internal/provider/types/user_profile_change_trigger.go
   - internal/provider/types/user_properties.go
+  - internal/provider/types/user_provider_config.go
   - internal/provider/types/user_ref.go
   - internal/provider/types/user_view.go
   - internal/provider/types/wait.go
   - internal/provider/types/wait_condition.go
+  - internal/provider/types/wait_condition_instance.go
   - internal/provider/types/wait_duration.go
   - internal/provider/types/wait_for_duration.go
+  - internal/provider/types/wait_instance.go
   - internal/provider/types/wait_until_time.go
+  - internal/provider/types/wait_until_time_instance.go
   - internal/provider/types/webhook.go
   - internal/provider/types/webhook1.go
   - internal/provider/types/webhook_approval.go
@@ -880,6 +997,7 @@ generatedFiles:
   - internal/sdk/models/shared/addautomationexclusionrequest.go
   - internal/sdk/models/shared/addautomationexclusionresponse.go
   - internal/sdk/models/shared/addmanuallymanagedusersrequest.go
+  - internal/sdk/models/shared/adminproviderconfig.go
   - internal/sdk/models/shared/agentapproval.go
   - internal/sdk/models/shared/allaccessconflictsscope.go
   - internal/sdk/models/shared/allaccountsscope.go
@@ -929,6 +1047,7 @@ generatedFiles:
   - internal/sdk/models/shared/appref.go
   - internal/sdk/models/shared/appreportservicelistresponse.go
   - internal/sdk/models/shared/appresource.go
+  - internal/sdk/models/shared/appresourcefilter.go
   - internal/sdk/models/shared/appresourceinput.go
   - internal/sdk/models/shared/appresourceref.go
   - internal/sdk/models/shared/appresourceservicegetresponse.go
@@ -950,6 +1069,7 @@ generatedFiles:
   - internal/sdk/models/shared/appuser.go
   - internal/sdk/models/shared/appusercreatedtrigger.go
   - internal/sdk/models/shared/appusercredential.go
+  - internal/sdk/models/shared/appuserfilter.go
   - internal/sdk/models/shared/appuserref.go
   - internal/sdk/models/shared/appuserservicelistcredentialsresponse.go
   - internal/sdk/models/shared/appuserservicelistresponse.go
@@ -988,6 +1108,7 @@ generatedFiles:
   - internal/sdk/models/shared/campaignentitlementdetails.go
   - internal/sdk/models/shared/cancelaccessrequestdefaultsrequest.go
   - internal/sdk/models/shared/cancelledaction.go
+  - internal/sdk/models/shared/cancelticket.go
   - internal/sdk/models/shared/celexpressionscope.go
   - internal/sdk/models/shared/checkboxfield.go
   - internal/sdk/models/shared/cidrrestriction.go
@@ -1279,6 +1400,7 @@ generatedFiles:
   - internal/sdk/models/shared/personalclientservicelistresponse.go
   - internal/sdk/models/shared/personalclientserviceupdaterequest.go
   - internal/sdk/models/shared/personalclientserviceupdateresponse.go
+  - internal/sdk/models/shared/pickerfield.go
   - internal/sdk/models/shared/policy.go
   - internal/sdk/models/shared/policyinstance.go
   - internal/sdk/models/shared/policypostactions.go
@@ -1432,8 +1554,10 @@ generatedFiles:
   - internal/sdk/models/shared/setbundleautomationrequest.go
   - internal/sdk/models/shared/setexpiringuserdelegationbindingbyadminrequest.go
   - internal/sdk/models/shared/setexpiringuserdelegationbindingbyadminresponse.go
+  - internal/sdk/models/shared/sharedproviderconfig.go
   - internal/sdk/models/shared/singleappsetup.go
   - internal/sdk/models/shared/skippedaction.go
+  - internal/sdk/models/shared/skipstep.go
   - internal/sdk/models/shared/slackchannel.go
   - internal/sdk/models/shared/slacknotifications.go
   - internal/sdk/models/shared/specificaccessconflictsscope.go
@@ -1582,6 +1706,7 @@ generatedFiles:
   - internal/sdk/models/shared/teststepupproviderrequest.go
   - internal/sdk/models/shared/teststepupproviderresponse.go
   - internal/sdk/models/shared/textfield.go
+  - internal/sdk/models/shared/togglefield.go
   - internal/sdk/models/shared/unconfiguredprovision.go
   - internal/sdk/models/shared/unenrollfromallaccessprofiles.go
   - internal/sdk/models/shared/updateappentitlementrequest.go
@@ -1617,6 +1742,7 @@ generatedFiles:
   - internal/sdk/models/shared/usercriteriascope.go
   - internal/sdk/models/shared/userprofilechangetrigger.go
   - internal/sdk/models/shared/userproperties.go
+  - internal/sdk/models/shared/userproviderconfig.go
   - internal/sdk/models/shared/userref.go
   - internal/sdk/models/shared/userservicegetresponse.go
   - internal/sdk/models/shared/userservicelistresponse.go

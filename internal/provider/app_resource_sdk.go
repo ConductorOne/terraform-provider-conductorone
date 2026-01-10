@@ -268,6 +268,12 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 	} else {
 		identityMatching = nil
 	}
+	instructions := new(string)
+	if !r.Instructions.IsUnknown() && !r.Instructions.IsNull() {
+		*instructions = r.Instructions.ValueString()
+	} else {
+		instructions = nil
+	}
 	monthlyCostUsd := new(int)
 	if !r.MonthlyCostUsd.IsUnknown() && !r.MonthlyCostUsd.IsNull() {
 		*monthlyCostUsd = int(r.MonthlyCostUsd.ValueInt32())
@@ -292,6 +298,7 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 		DisplayName:                         displayName,
 		GrantPolicyID:                       grantPolicyID,
 		IdentityMatching:                    identityMatching,
+		Instructions:                        instructions,
 		MonthlyCostUsd:                      monthlyCostUsd,
 		RevokePolicyID:                      revokePolicyID,
 		StrictAccessEntitlementProvisioning: strictAccessEntitlementProvisioning,

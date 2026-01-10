@@ -38,6 +38,12 @@ func (r *FunctionDataSourceModel) RefreshFromSharedFunction(ctx context.Context,
 		}
 	}
 	r.PublishedCommitID = types.StringPointerValue(resp.PublishedCommitID)
+	if resp.ScopedRoleIds != nil {
+		r.ScopedRoleIds = make([]types.String, 0, len(resp.ScopedRoleIds))
+		for _, v := range resp.ScopedRoleIds {
+			r.ScopedRoleIds = append(r.ScopedRoleIds, types.StringValue(v))
+		}
+	}
 	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 
 	return diags

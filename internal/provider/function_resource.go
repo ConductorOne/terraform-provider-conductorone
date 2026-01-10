@@ -52,6 +52,7 @@ type FunctionResourceModel struct {
 	Message                               types.String                                   `tfsdk:"message"`
 	OutboundNetworkAllowlist              []types.String                                 `tfsdk:"outbound_network_allowlist"`
 	PublishedCommitID                     types.String                                   `tfsdk:"published_commit_id"`
+	ScopedRoleIds                         []types.String                                 `tfsdk:"scoped_role_ids"`
 	UpdatedAt                             types.String                                   `tfsdk:"updated_at"`
 }
 
@@ -143,6 +144,16 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 			"published_commit_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The publishedCommitId field.`,
+			},
+			"scoped_role_ids": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Scoped role IDs define the permissions granted to this function when calling` + "\n" +
+					` ConductorOne APIs. These are role IDs (not service roles) that get resolved` + "\n" +
+					` to their service roles at authentication time.` + "\n" +
+					`` + "\n" +
+					` Currently only the "Read-Only Administrator" role (system:viewer) is supported.` + "\n" +
+					` The role ID can be obtained from the roles API.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -460,7 +471,10 @@ func (r *FunctionResource) Delete(ctx context.Context, req resource.DeleteReques
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

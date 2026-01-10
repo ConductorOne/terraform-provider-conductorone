@@ -237,11 +237,20 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 														"excluded_access_profile_ids": schema.ListAttribute{
 															Computed:    true,
 															ElementType: types.StringType,
-															Description: `List of access profiles to exclude if type is EXCLUDE_SPECIFIC`,
+															MarkdownDescription: `Access profile IDs to EXCLUDE from the campaign` + "\n" +
+																` Used when filter_type = EXCLUDE_SPECIFIC` + "\n" +
+																` Max 32 profile IDs`,
 														},
 														"filter_type": schema.StringAttribute{
 															Computed:    true,
 															Description: `The filterType field.`,
+														},
+														"included_access_profile_ids": schema.ListAttribute{
+															Computed:    true,
+															ElementType: types.StringType,
+															MarkdownDescription: `Access profile IDs to INCLUDE in the campaign` + "\n" +
+																` Used when filter_type = INCLUDE_SPECIFIC` + "\n" +
+																` Max 32 profile IDs`,
 														},
 													},
 													Description: `The GrantAccessProfileFilter message.`,

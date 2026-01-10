@@ -159,7 +159,9 @@ Read-Only:
 
 This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:
   - replacePolicy
-  - reassignToApprovers (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--escalation))
+  - reassignToApprovers
+  - cancelTicket
+  - skipStep (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--escalation))
 - `escalation_enabled` (Boolean) Whether escalation is enabled for this step.
 - `expression_approval` (Attributes) The ExpressionApproval message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--expression_approval))
 - `manager_approval` (Attributes) The manager approval object provides configuration options for approval when the target of the approval is the manager of the user in the task. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--manager_approval))
@@ -235,10 +237,16 @@ Read-Only:
 
 Read-Only:
 
+- `cancel_ticket` (Attributes) The CancelTicket message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--escalation--cancel_ticket))
 - `escalation_comment` (String) The escalationComment field.
 - `expiration` (String) The expiration field.
 - `reassign_to_approvers` (Attributes) The ReassignToApprovers message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--escalation--reassign_to_approvers))
 - `replace_policy` (Attributes) The ReplacePolicy message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--escalation--replace_policy))
+- `skip_step` (Attributes) The SkipStep message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--escalation--skip_step))
+
+<a id="nestedatt--list--policy_steps--steps--approval--escalation--cancel_ticket"></a>
+### Nested Schema for `list.policy_steps.steps.approval.escalation.cancel_ticket`
+
 
 <a id="nestedatt--list--policy_steps--steps--approval--escalation--reassign_to_approvers"></a>
 ### Nested Schema for `list.policy_steps.steps.approval.escalation.reassign_to_approvers`
@@ -254,6 +262,10 @@ Read-Only:
 Read-Only:
 
 - `policy_id` (String) The policyId field.
+
+
+<a id="nestedatt--list--policy_steps--steps--approval--escalation--skip_step"></a>
+### Nested Schema for `list.policy_steps.steps.approval.escalation.skip_step`
 
 
 

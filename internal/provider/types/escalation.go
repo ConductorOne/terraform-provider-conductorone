@@ -7,8 +7,10 @@ import (
 )
 
 type Escalation struct {
+	CancelTicket        *CancelTicket        `tfsdk:"cancel_ticket"`
 	EscalationComment   types.String         `tfsdk:"escalation_comment"`
 	Expiration          types.String         `tfsdk:"expiration"`
 	ReassignToApprovers *ReassignToApprovers `tfsdk:"reassign_to_approvers"`
 	ReplacePolicy       *ReplacePolicy       `tfsdk:"replace_policy"`
+	SkipStep            *SkipStep            `tfsdk:"skip_step"`
 }

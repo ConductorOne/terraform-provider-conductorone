@@ -35,6 +35,8 @@ type Approval struct {
 	// This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:
 	//   - replacePolicy
 	//   - reassignToApprovers
+	//   - cancelTicket
+	//   - skipStep
 	//
 	Escalation *Escalation `json:"escalation,omitempty"`
 	// Whether escalation is enabled for this step.

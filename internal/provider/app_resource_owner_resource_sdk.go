@@ -118,8 +118,8 @@ func (r *AppResourceOwnerResourceModel) ToSharedSetAppResourceOwnersRequest(ctx 
 	var userIds []string
 	if r.UserIds != nil {
 		userIds = make([]string, 0, len(r.UserIds))
-		for _, userIdsItem := range r.UserIds {
-			userIds = append(userIds, userIdsItem.ValueString())
+		for userIdsIndex := range r.UserIds {
+			userIds = append(userIds, r.UserIds[userIdsIndex].ValueString())
 		}
 	}
 	out := shared.SetAppResourceOwnersRequest{

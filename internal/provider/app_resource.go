@@ -118,7 +118,8 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			},
 			"instructions": schema.StringAttribute{
 				Computed:    true,
-				Description: `If you add instructions here, they will be shown to users in the access request form when requesting access for this app.`,
+				Optional:    true,
+				Description: `Instructions shown to users in the access request form when requesting access for this app.`,
 			},
 			"is_directory": schema.BoolAttribute{
 				Computed:    true,
@@ -467,7 +468,10 @@ func (r *AppResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

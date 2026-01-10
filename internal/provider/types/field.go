@@ -7,12 +7,15 @@ import (
 )
 
 type Field struct {
-	BoolField   *BoolField   `tfsdk:"bool_field"`
-	Description types.String `tfsdk:"description"`
-	DisplayName types.String `tfsdk:"display_name"`
-	FileField   *FileField   `tfsdk:"file_field"`
-	Int64Field  *Int64Field  `tfsdk:"int64_field"`
-	Name        types.String `tfsdk:"name"`
-	Oauth2Field *Oauth2Field `tfsdk:"oauth2_field"`
-	StringField *StringField `tfsdk:"string_field"`
+	AdminProviderConfig  *AdminProviderConfig  `tfsdk:"admin_provider_config"`
+	BoolField            *BoolField            `tfsdk:"bool_field"`
+	Description          types.String          `tfsdk:"description"`
+	DisplayName          types.String          `tfsdk:"display_name"`
+	FileField            *FileField            `tfsdk:"file_field"`
+	Int64Field           *Int64Field           `tfsdk:"int64_field"`
+	Name                 types.String          `tfsdk:"name"`
+	Oauth2Field          *Oauth2Field          `tfsdk:"oauth2_field"`
+	SharedProviderConfig *SharedProviderConfig `tfsdk:"shared_provider_config"`
+	StringField          *StringField          `tfsdk:"string_field"`
+	UserProviderConfig   *UserProviderConfig   `tfsdk:"user_provider_config"`
 }

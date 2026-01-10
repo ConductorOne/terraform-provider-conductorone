@@ -3,7 +3,11 @@
 package types
 
 type GrantTriggerFilter struct {
-	AccountFilter     *AccountFilter     `tfsdk:"account_filter"`
-	EntitlementFilter *EntitlementFilter `tfsdk:"entitlement_filter"`
-	GrantFilter       *GrantFilter       `tfsdk:"grant_filter"`
+	AccountFilter                *AccountFilter                `tfsdk:"account_filter"`
+	EntitlementFilter            *EntitlementFilter            `tfsdk:"entitlement_filter"`
+	EntitlementInclusionAll      *EntitlementInclusionAll      `tfsdk:"entitlement_inclusion_all"`
+	EntitlementInclusionCriteria *EntitlementInclusionCriteria `tfsdk:"entitlement_inclusion_criteria"`
+	EntitlementInclusionList     *EntitlementInclusionList     `tfsdk:"entitlement_inclusion_list"`
+	EntitlementInclusionListCel  *EntitlementInclusionListCel  `tfsdk:"entitlement_inclusion_list_cel"`
+	GrantFilter                  *GrantFilter                  `tfsdk:"grant_filter"`
 }

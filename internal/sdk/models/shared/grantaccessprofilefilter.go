@@ -15,6 +15,7 @@ const (
 	FilterTypeAccessProfileFilterTypeIncludeAll      FilterType = "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL"
 	FilterTypeAccessProfileFilterTypeExcludeAll      FilterType = "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL"
 	FilterTypeAccessProfileFilterTypeExcludeSpecific FilterType = "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC"
+	FilterTypeAccessProfileFilterTypeIncludeSpecific FilterType = "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"
 )
 
 func (e FilterType) ToPointer() *FilterType {
@@ -33,6 +34,8 @@ func (e *FilterType) UnmarshalJSON(data []byte) error {
 	case "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL":
 		fallthrough
 	case "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC":
+		fallthrough
+	case "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC":
 		*e = FilterType(v)
 		return nil
 	default:
@@ -42,10 +45,16 @@ func (e *FilterType) UnmarshalJSON(data []byte) error {
 
 // The GrantAccessProfileFilter message.
 type GrantAccessProfileFilter struct {
-	// List of access profiles to exclude if type is EXCLUDE_SPECIFIC
+	// Access profile IDs to EXCLUDE from the campaign
+	//  Used when filter_type = EXCLUDE_SPECIFIC
+	//  Max 32 profile IDs
 	ExcludedAccessProfileIds []string `json:"excludedAccessProfileIds,omitempty"`
 	// The filterType field.
 	FilterType *FilterType `json:"filterType,omitempty"`
+	// Access profile IDs to INCLUDE in the campaign
+	//  Used when filter_type = INCLUDE_SPECIFIC
+	//  Max 32 profile IDs
+	IncludedAccessProfileIds []string `json:"includedAccessProfileIds,omitempty"`
 }
 
 func (g *GrantAccessProfileFilter) GetExcludedAccessProfileIds() []string {
@@ -60,4 +69,11 @@ func (g *GrantAccessProfileFilter) GetFilterType() *FilterType {
 		return nil
 	}
 	return g.FilterType
+}
+
+func (g *GrantAccessProfileFilter) GetIncludedAccessProfileIds() []string {
+	if g == nil {
+		return nil
+	}
+	return g.IncludedAccessProfileIds
 }

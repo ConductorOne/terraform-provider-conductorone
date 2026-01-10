@@ -57,8 +57,15 @@ type Function struct {
 	// The outboundNetworkAllowlist field.
 	OutboundNetworkAllowlist []string `json:"outboundNetworkAllowlist,omitempty"`
 	// The publishedCommitId field.
-	PublishedCommitID *string    `json:"publishedCommitId,omitempty"`
-	UpdatedAt         *time.Time `json:"updatedAt,omitempty"`
+	PublishedCommitID *string `json:"publishedCommitId,omitempty"`
+	// Scoped role IDs define the permissions granted to this function when calling
+	//  ConductorOne APIs. These are role IDs (not service roles) that get resolved
+	//  to their service roles at authentication time.
+	//
+	//  Currently only the "Read-Only Administrator" role (system:viewer) is supported.
+	//  The role ID can be obtained from the roles API.
+	ScopedRoleIds []string   `json:"scopedRoleIds,omitempty"`
+	UpdatedAt     *time.Time `json:"updatedAt,omitempty"`
 }
 
 func (f Function) MarshalJSON() ([]byte, error) {
@@ -149,6 +156,13 @@ func (f *Function) GetPublishedCommitID() *string {
 	return f.PublishedCommitID
 }
 
+func (f *Function) GetScopedRoleIds() []string {
+	if f == nil {
+		return nil
+	}
+	return f.ScopedRoleIds
+}
+
 func (f *Function) GetUpdatedAt() *time.Time {
 	if f == nil {
 		return nil
@@ -176,6 +190,13 @@ type FunctionInput struct {
 	OutboundNetworkAllowlist []string `json:"outboundNetworkAllowlist,omitempty"`
 	// The publishedCommitId field.
 	PublishedCommitID *string `json:"publishedCommitId,omitempty"`
+	// Scoped role IDs define the permissions granted to this function when calling
+	//  ConductorOne APIs. These are role IDs (not service roles) that get resolved
+	//  to their service roles at authentication time.
+	//
+	//  Currently only the "Read-Only Administrator" role (system:viewer) is supported.
+	//  The role ID can be obtained from the roles API.
+	ScopedRoleIds []string `json:"scopedRoleIds,omitempty"`
 }
 
 func (f *FunctionInput) GetDescription() *string {
@@ -239,4 +260,11 @@ func (f *FunctionInput) GetPublishedCommitID() *string {
 		return nil
 	}
 	return f.PublishedCommitID
+}
+
+func (f *FunctionInput) GetScopedRoleIds() []string {
+	if f == nil {
+		return nil
+	}
+	return f.ScopedRoleIds
 }
