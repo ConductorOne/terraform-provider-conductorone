@@ -370,6 +370,7 @@ func (s *AppResourceSearch) SearchAppResources(ctx context.Context, request *sha
 				ExcludeDeletedResourceBindings: request.ExcludeDeletedResourceBindings,
 				ExcludeResourceIds:             request.ExcludeResourceIds,
 				ExcludeResourceTypeTraitIds:    request.ExcludeResourceTypeTraitIds,
+				OwnerUserIds:                   request.OwnerUserIds,
 				PageSize:                       request.PageSize,
 				PageToken:                      &nCVal,
 				Query:                          request.Query,

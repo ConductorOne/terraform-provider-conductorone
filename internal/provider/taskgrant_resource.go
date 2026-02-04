@@ -145,6 +145,13 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 						},
 						Description: `The integration id for the source of tickets. Requires replacement if changed.`,
 					},
+					"is_extension": schema.BoolAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Bool{
+							boolplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Description: `Whether the grant task is an extension task. Requires replacement if changed.`,
+					},
 					"request_id": schema.StringAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
@@ -302,6 +309,18 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 												"at_least_one": schema.SingleNestedAttribute{
 													Computed:    true,
 													Description: `The AtLeastOne message.`,
+												},
+												"dependent_on": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"dependency_field_names": schema.ListAttribute{
+															Computed:    true,
+															ElementType: types.StringType,
+															Description: `The fields that must be present for the primary field_names to be valid`,
+														},
+													},
+													MarkdownDescription: `DependentOn means the fields in field_names are only valid if all fields` + "\n" +
+														` in dependency_field_names are also present`,
 												},
 												"field_names": schema.ListAttribute{
 													Computed:    true,
@@ -521,6 +540,10 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 														`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 														`  - oauth2FieldView`,
 												},
+												"required": schema.BoolAttribute{
+													Computed:    true,
+													Description: `The required field.`,
+												},
 												"shared_provider_config": schema.SingleNestedAttribute{
 													Computed: true,
 													Attributes: map[string]schema.Attribute{
@@ -577,12 +600,18 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	},
 																	Description: `The AppUserFilter message.`,
 																},
+																"c1_user_filter": schema.SingleNestedAttribute{
+																	Computed: true,
+																	MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
+																		` This is distinct from AppUserFilter which selects accounts within a connected app.`,
+																},
 															},
 															MarkdownDescription: `The PickerField message.` + "\n" +
 																`` + "\n" +
 																`This message contains a oneof named type. Only a single field of the following list may be set at a time:` + "\n" +
 																`  - appUserPicker` + "\n" +
-																`  - resourcePicker`,
+																`  - resourcePicker` + "\n" +
+																`  - c1UserPicker`,
 														},
 														"placeholder": schema.StringAttribute{
 															Computed:    true,
@@ -891,13 +920,24 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																			Description: `The automationTemplateId field.`,
 																		},
 																	},
-																	Description: `The ActionTargetAutomation message.`,
+																	Description: `ActionTargetAutomation targets automation templates for policy actions.`,
+																},
+																"action_target_baton_resource_action": schema.SingleNestedAttribute{
+																	Computed: true,
+																	Attributes: map[string]schema.Attribute{
+																		"baton_resource_action_id": schema.StringAttribute{
+																			Computed:    true,
+																			Description: `The batonResourceActionId field.`,
+																		},
+																	},
+																	Description: `ActionTargetResource targets resource actions for policy actions.`,
 																},
 															},
 															MarkdownDescription: `The Action message.` + "\n" +
 																`` + "\n" +
 																`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
-																`  - automation`,
+																`  - automation` + "\n" +
+																`  - batonResourceAction`,
 														},
 														"action_outcome_cancelled": schema.SingleNestedAttribute{
 															Computed: true,
@@ -953,6 +993,16 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 															},
 															Description: `The ActionTargetAutomationInstance message.`,
 														},
+														"action_target_baton_resource_action_instance": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"baton_action_invocation_id": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The batonActionInvocationId field.`,
+																},
+															},
+															Description: `The ActionTargetBatonResourceActionInstance message.`,
+														},
 														"state": schema.StringAttribute{
 															Computed:    true,
 															Description: `The current state of the action execution.`,
@@ -962,6 +1012,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 														`` + "\n" +
 														`This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:` + "\n" +
 														`  - automation` + "\n" +
+														`  - batonResourceActionInstance` + "\n" +
 														`` + "\n" +
 														`` + "\n" +
 														`This message contains a oneof named outcome. Only a single field of the following list may be set at a time:` + "\n" +
@@ -1101,10 +1152,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																			Computed:    true,
 																			Description: `Configuration to allow a fallback if the entitlement owner cannot be identified.`,
 																		},
+																		"fallback_group_ids": schema.ListNestedAttribute{
+																			Computed: true,
+																			NestedObject: schema.NestedAttributeObject{
+																				Attributes: map[string]schema.Attribute{
+																					"app_entitlement_id": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `The ID of the Entitlement.`,
+																					},
+																					"app_id": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `The ID of the App this entitlement belongs to.`,
+																					},
+																				},
+																			},
+																			Description: `Configuration to specify which groups to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+																		},
 																		"fallback_user_ids": schema.ListAttribute{
 																			Computed:    true,
 																			ElementType: types.StringType,
 																			Description: `Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+																		},
+																		"is_group_fallback_enabled": schema.BoolAttribute{
+																			Computed:    true,
+																			Description: `Configuration to enable fallback for group fallback.`,
 																		},
 																		"require_distinct_approvers": schema.BoolAttribute{
 																			Computed:    true,
@@ -1187,10 +1258,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																			Computed:    true,
 																			Description: `Configuration to allow a fallback if the expression does not return a valid list of users.`,
 																		},
+																		"fallback_group_ids": schema.ListNestedAttribute{
+																			Computed: true,
+																			NestedObject: schema.NestedAttributeObject{
+																				Attributes: map[string]schema.Attribute{
+																					"app_entitlement_id": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `The ID of the Entitlement.`,
+																					},
+																					"app_id": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `The ID of the App this entitlement belongs to.`,
+																					},
+																				},
+																			},
+																			Description: `Configuration to specify which groups to fallback to if fallback is enabled and the expression does not return a valid list of users.`,
+																		},
 																		"fallback_user_ids": schema.ListAttribute{
 																			Computed:    true,
 																			ElementType: types.StringType,
 																			Description: `Configuration to specific which users to fallback to if and the expression does not return a valid list of users.`,
+																		},
+																		"is_group_fallback_enabled": schema.BoolAttribute{
+																			Computed:    true,
+																			Description: `Configuration to enable fallback for group fallback.`,
 																		},
 																		"require_distinct_approvers": schema.BoolAttribute{
 																			Computed:    true,
@@ -1215,10 +1306,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																			Computed:    true,
 																			Description: `Configuration to allow a fallback if no manager is found.`,
 																		},
+																		"fallback_group_ids": schema.ListNestedAttribute{
+																			Computed: true,
+																			NestedObject: schema.NestedAttributeObject{
+																				Attributes: map[string]schema.Attribute{
+																					"app_entitlement_id": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `The ID of the Entitlement.`,
+																					},
+																					"app_id": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `The ID of the App this entitlement belongs to.`,
+																					},
+																				},
+																			},
+																			Description: `Configuration to specify which groups to fallback to if fallback is enabled and no manager is found.`,
+																		},
 																		"fallback_user_ids": schema.ListAttribute{
 																			Computed:    true,
 																			ElementType: types.StringType,
 																			Description: `Configuration to specific which users to fallback to if fallback is enabled and no manager is found.`,
+																		},
+																		"is_group_fallback_enabled": schema.BoolAttribute{
+																			Computed:    true,
+																			Description: `Configuration to enable fallback for group fallback.`,
 																		},
 																		"require_distinct_approvers": schema.BoolAttribute{
 																			Computed:    true,
@@ -1255,10 +1366,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																			Computed:    true,
 																			Description: `Configuration to allow a fallback if the resource owner cannot be identified.`,
 																		},
+																		"fallback_group_ids": schema.ListNestedAttribute{
+																			Computed: true,
+																			NestedObject: schema.NestedAttributeObject{
+																				Attributes: map[string]schema.Attribute{
+																					"app_entitlement_id": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `The ID of the Entitlement.`,
+																					},
+																					"app_id": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `The ID of the App this entitlement belongs to.`,
+																					},
+																				},
+																			},
+																			Description: `Configuration to specify which groups to fallback to if fallback is enabled and the resource owner cannot be identified.`,
+																		},
 																		"fallback_user_ids": schema.ListAttribute{
 																			Computed:    true,
 																			ElementType: types.StringType,
 																			Description: `Configuration to specific which users to fallback to if fallback is enabled and the resource owner cannot be identified.`,
+																		},
+																		"is_group_fallback_enabled": schema.BoolAttribute{
+																			Computed:    true,
+																			Description: `Configuration to enable fallback for group fallback.`,
 																		},
 																		"require_distinct_approvers": schema.BoolAttribute{
 																			Computed:    true,
@@ -1279,10 +1410,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																			Computed:    true,
 																			Description: `Configuration to allow a fallback if the identity user of the target app user cannot be determined.`,
 																		},
+																		"fallback_group_ids": schema.ListNestedAttribute{
+																			Computed: true,
+																			NestedObject: schema.NestedAttributeObject{
+																				Attributes: map[string]schema.Attribute{
+																					"app_entitlement_id": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `The ID of the Entitlement.`,
+																					},
+																					"app_id": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `The ID of the App this entitlement belongs to.`,
+																					},
+																				},
+																			},
+																			Description: `Configuration to specify which groups to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.`,
+																		},
 																		"fallback_user_ids": schema.ListAttribute{
 																			Computed:    true,
 																			ElementType: types.StringType,
 																			Description: `Configuration to specific which users to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.`,
+																		},
+																		"is_group_fallback_enabled": schema.BoolAttribute{
+																			Computed:    true,
+																			Description: `Configuration to enable fallback for group fallback.`,
 																		},
 																	},
 																	Description: `The self approval object describes the configuration of a policy step that needs to be approved by the target of the request.`,
@@ -1576,6 +1727,18 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																				Computed:    true,
 																				Description: `The AtLeastOne message.`,
 																			},
+																			"dependent_on": schema.SingleNestedAttribute{
+																				Computed: true,
+																				Attributes: map[string]schema.Attribute{
+																					"dependency_field_names": schema.ListAttribute{
+																						Computed:    true,
+																						ElementType: types.StringType,
+																						Description: `The fields that must be present for the primary field_names to be valid`,
+																					},
+																				},
+																				MarkdownDescription: `DependentOn means the fields in field_names are only valid if all fields` + "\n" +
+																					` in dependency_field_names are also present`,
+																			},
 																			"field_names": schema.ListAttribute{
 																				Computed:    true,
 																				ElementType: types.StringType,
@@ -1794,6 +1957,10 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																					`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 																					`  - oauth2FieldView`,
 																			},
+																			"required": schema.BoolAttribute{
+																				Computed:    true,
+																				Description: `The required field.`,
+																			},
 																			"shared_provider_config": schema.SingleNestedAttribute{
 																				Computed: true,
 																				Attributes: map[string]schema.Attribute{
@@ -1850,12 +2017,18 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																								},
 																								Description: `The AppUserFilter message.`,
 																							},
+																							"c1_user_filter": schema.SingleNestedAttribute{
+																								Computed: true,
+																								MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
+																									` This is distinct from AppUserFilter which selects accounts within a connected app.`,
+																							},
 																						},
 																						MarkdownDescription: `The PickerField message.` + "\n" +
 																							`` + "\n" +
 																							`This message contains a oneof named type. Only a single field of the following list may be set at a time:` + "\n" +
 																							`  - appUserPicker` + "\n" +
-																							`  - resourcePicker`,
+																							`  - resourcePicker` + "\n" +
+																							`  - c1UserPicker`,
 																					},
 																					"placeholder": schema.StringAttribute{
 																						Computed:    true,
@@ -2692,13 +2865,24 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Description: `The automationTemplateId field.`,
 																},
 															},
-															Description: `The ActionTargetAutomation message.`,
+															Description: `ActionTargetAutomation targets automation templates for policy actions.`,
+														},
+														"action_target_baton_resource_action": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"baton_resource_action_id": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The batonResourceActionId field.`,
+																},
+															},
+															Description: `ActionTargetResource targets resource actions for policy actions.`,
 														},
 													},
 													MarkdownDescription: `The Action message.` + "\n" +
 														`` + "\n" +
 														`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - automation`,
+														`  - automation` + "\n" +
+														`  - batonResourceAction`,
 												},
 												"approval": schema.SingleNestedAttribute{
 													Computed: true,
@@ -2828,10 +3012,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Computed:    true,
 																	Description: `Configuration to allow a fallback if the entitlement owner cannot be identified.`,
 																},
+																"fallback_group_ids": schema.ListNestedAttribute{
+																	Computed: true,
+																	NestedObject: schema.NestedAttributeObject{
+																		Attributes: map[string]schema.Attribute{
+																			"app_entitlement_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the Entitlement.`,
+																			},
+																			"app_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the App this entitlement belongs to.`,
+																			},
+																		},
+																	},
+																	Description: `Configuration to specify which groups to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+																},
 																"fallback_user_ids": schema.ListAttribute{
 																	Computed:    true,
 																	ElementType: types.StringType,
 																	Description: `Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+																},
+																"is_group_fallback_enabled": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to enable fallback for group fallback.`,
 																},
 																"require_distinct_approvers": schema.BoolAttribute{
 																	Computed:    true,
@@ -2914,10 +3118,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Computed:    true,
 																	Description: `Configuration to allow a fallback if the expression does not return a valid list of users.`,
 																},
+																"fallback_group_ids": schema.ListNestedAttribute{
+																	Computed: true,
+																	NestedObject: schema.NestedAttributeObject{
+																		Attributes: map[string]schema.Attribute{
+																			"app_entitlement_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the Entitlement.`,
+																			},
+																			"app_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the App this entitlement belongs to.`,
+																			},
+																		},
+																	},
+																	Description: `Configuration to specify which groups to fallback to if fallback is enabled and the expression does not return a valid list of users.`,
+																},
 																"fallback_user_ids": schema.ListAttribute{
 																	Computed:    true,
 																	ElementType: types.StringType,
 																	Description: `Configuration to specific which users to fallback to if and the expression does not return a valid list of users.`,
+																},
+																"is_group_fallback_enabled": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to enable fallback for group fallback.`,
 																},
 																"require_distinct_approvers": schema.BoolAttribute{
 																	Computed:    true,
@@ -2942,10 +3166,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Computed:    true,
 																	Description: `Configuration to allow a fallback if no manager is found.`,
 																},
+																"fallback_group_ids": schema.ListNestedAttribute{
+																	Computed: true,
+																	NestedObject: schema.NestedAttributeObject{
+																		Attributes: map[string]schema.Attribute{
+																			"app_entitlement_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the Entitlement.`,
+																			},
+																			"app_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the App this entitlement belongs to.`,
+																			},
+																		},
+																	},
+																	Description: `Configuration to specify which groups to fallback to if fallback is enabled and no manager is found.`,
+																},
 																"fallback_user_ids": schema.ListAttribute{
 																	Computed:    true,
 																	ElementType: types.StringType,
 																	Description: `Configuration to specific which users to fallback to if fallback is enabled and no manager is found.`,
+																},
+																"is_group_fallback_enabled": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to enable fallback for group fallback.`,
 																},
 																"require_distinct_approvers": schema.BoolAttribute{
 																	Computed:    true,
@@ -2982,10 +3226,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Computed:    true,
 																	Description: `Configuration to allow a fallback if the resource owner cannot be identified.`,
 																},
+																"fallback_group_ids": schema.ListNestedAttribute{
+																	Computed: true,
+																	NestedObject: schema.NestedAttributeObject{
+																		Attributes: map[string]schema.Attribute{
+																			"app_entitlement_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the Entitlement.`,
+																			},
+																			"app_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the App this entitlement belongs to.`,
+																			},
+																		},
+																	},
+																	Description: `Configuration to specify which groups to fallback to if fallback is enabled and the resource owner cannot be identified.`,
+																},
 																"fallback_user_ids": schema.ListAttribute{
 																	Computed:    true,
 																	ElementType: types.StringType,
 																	Description: `Configuration to specific which users to fallback to if fallback is enabled and the resource owner cannot be identified.`,
+																},
+																"is_group_fallback_enabled": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to enable fallback for group fallback.`,
 																},
 																"require_distinct_approvers": schema.BoolAttribute{
 																	Computed:    true,
@@ -3006,10 +3270,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Computed:    true,
 																	Description: `Configuration to allow a fallback if the identity user of the target app user cannot be determined.`,
 																},
+																"fallback_group_ids": schema.ListNestedAttribute{
+																	Computed: true,
+																	NestedObject: schema.NestedAttributeObject{
+																		Attributes: map[string]schema.Attribute{
+																			"app_entitlement_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the Entitlement.`,
+																			},
+																			"app_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The ID of the App this entitlement belongs to.`,
+																			},
+																		},
+																	},
+																	Description: `Configuration to specify which groups to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.`,
+																},
 																"fallback_user_ids": schema.ListAttribute{
 																	Computed:    true,
 																	ElementType: types.StringType,
 																	Description: `Configuration to specific which users to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.`,
+																},
+																"is_group_fallback_enabled": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Configuration to enable fallback for group fallback.`,
 																},
 															},
 															Description: `The self approval object describes the configuration of a policy step that needs to be approved by the target of the request.`,
@@ -3396,13 +3680,24 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																						Description: `The automationTemplateId field.`,
 																					},
 																				},
-																				Description: `The ActionTargetAutomation message.`,
+																				Description: `ActionTargetAutomation targets automation templates for policy actions.`,
+																			},
+																			"action_target_baton_resource_action": schema.SingleNestedAttribute{
+																				Computed: true,
+																				Attributes: map[string]schema.Attribute{
+																					"baton_resource_action_id": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `The batonResourceActionId field.`,
+																					},
+																				},
+																				Description: `ActionTargetResource targets resource actions for policy actions.`,
 																			},
 																		},
 																		MarkdownDescription: `The Action message.` + "\n" +
 																			`` + "\n" +
 																			`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
-																			`  - automation`,
+																			`  - automation` + "\n" +
+																			`  - batonResourceAction`,
 																	},
 																	"approval": schema.SingleNestedAttribute{
 																		Computed: true,
@@ -3532,10 +3827,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																						Computed:    true,
 																						Description: `Configuration to allow a fallback if the entitlement owner cannot be identified.`,
 																					},
+																					"fallback_group_ids": schema.ListNestedAttribute{
+																						Computed: true,
+																						NestedObject: schema.NestedAttributeObject{
+																							Attributes: map[string]schema.Attribute{
+																								"app_entitlement_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The ID of the Entitlement.`,
+																								},
+																								"app_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The ID of the App this entitlement belongs to.`,
+																								},
+																							},
+																						},
+																						Description: `Configuration to specify which groups to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+																					},
 																					"fallback_user_ids": schema.ListAttribute{
 																						Computed:    true,
 																						ElementType: types.StringType,
 																						Description: `Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+																					},
+																					"is_group_fallback_enabled": schema.BoolAttribute{
+																						Computed:    true,
+																						Description: `Configuration to enable fallback for group fallback.`,
 																					},
 																					"require_distinct_approvers": schema.BoolAttribute{
 																						Computed:    true,
@@ -3618,10 +3933,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																						Computed:    true,
 																						Description: `Configuration to allow a fallback if the expression does not return a valid list of users.`,
 																					},
+																					"fallback_group_ids": schema.ListNestedAttribute{
+																						Computed: true,
+																						NestedObject: schema.NestedAttributeObject{
+																							Attributes: map[string]schema.Attribute{
+																								"app_entitlement_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The ID of the Entitlement.`,
+																								},
+																								"app_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The ID of the App this entitlement belongs to.`,
+																								},
+																							},
+																						},
+																						Description: `Configuration to specify which groups to fallback to if fallback is enabled and the expression does not return a valid list of users.`,
+																					},
 																					"fallback_user_ids": schema.ListAttribute{
 																						Computed:    true,
 																						ElementType: types.StringType,
 																						Description: `Configuration to specific which users to fallback to if and the expression does not return a valid list of users.`,
+																					},
+																					"is_group_fallback_enabled": schema.BoolAttribute{
+																						Computed:    true,
+																						Description: `Configuration to enable fallback for group fallback.`,
 																					},
 																					"require_distinct_approvers": schema.BoolAttribute{
 																						Computed:    true,
@@ -3646,10 +3981,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																						Computed:    true,
 																						Description: `Configuration to allow a fallback if no manager is found.`,
 																					},
+																					"fallback_group_ids": schema.ListNestedAttribute{
+																						Computed: true,
+																						NestedObject: schema.NestedAttributeObject{
+																							Attributes: map[string]schema.Attribute{
+																								"app_entitlement_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The ID of the Entitlement.`,
+																								},
+																								"app_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The ID of the App this entitlement belongs to.`,
+																								},
+																							},
+																						},
+																						Description: `Configuration to specify which groups to fallback to if fallback is enabled and no manager is found.`,
+																					},
 																					"fallback_user_ids": schema.ListAttribute{
 																						Computed:    true,
 																						ElementType: types.StringType,
 																						Description: `Configuration to specific which users to fallback to if fallback is enabled and no manager is found.`,
+																					},
+																					"is_group_fallback_enabled": schema.BoolAttribute{
+																						Computed:    true,
+																						Description: `Configuration to enable fallback for group fallback.`,
 																					},
 																					"require_distinct_approvers": schema.BoolAttribute{
 																						Computed:    true,
@@ -3686,10 +4041,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																						Computed:    true,
 																						Description: `Configuration to allow a fallback if the resource owner cannot be identified.`,
 																					},
+																					"fallback_group_ids": schema.ListNestedAttribute{
+																						Computed: true,
+																						NestedObject: schema.NestedAttributeObject{
+																							Attributes: map[string]schema.Attribute{
+																								"app_entitlement_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The ID of the Entitlement.`,
+																								},
+																								"app_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The ID of the App this entitlement belongs to.`,
+																								},
+																							},
+																						},
+																						Description: `Configuration to specify which groups to fallback to if fallback is enabled and the resource owner cannot be identified.`,
+																					},
 																					"fallback_user_ids": schema.ListAttribute{
 																						Computed:    true,
 																						ElementType: types.StringType,
 																						Description: `Configuration to specific which users to fallback to if fallback is enabled and the resource owner cannot be identified.`,
+																					},
+																					"is_group_fallback_enabled": schema.BoolAttribute{
+																						Computed:    true,
+																						Description: `Configuration to enable fallback for group fallback.`,
 																					},
 																					"require_distinct_approvers": schema.BoolAttribute{
 																						Computed:    true,
@@ -3710,10 +4085,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																						Computed:    true,
 																						Description: `Configuration to allow a fallback if the identity user of the target app user cannot be determined.`,
 																					},
+																					"fallback_group_ids": schema.ListNestedAttribute{
+																						Computed: true,
+																						NestedObject: schema.NestedAttributeObject{
+																							Attributes: map[string]schema.Attribute{
+																								"app_entitlement_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The ID of the Entitlement.`,
+																								},
+																								"app_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The ID of the App this entitlement belongs to.`,
+																								},
+																							},
+																						},
+																						Description: `Configuration to specify which groups to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.`,
+																					},
 																					"fallback_user_ids": schema.ListAttribute{
 																						Computed:    true,
 																						ElementType: types.StringType,
 																						Description: `Configuration to specific which users to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.`,
+																					},
+																					"is_group_fallback_enabled": schema.BoolAttribute{
+																						Computed:    true,
+																						Description: `Configuration to enable fallback for group fallback.`,
 																					},
 																				},
 																				Description: `The self approval object describes the configuration of a policy step that needs to be approved by the target of the request.`,
@@ -4135,13 +4530,24 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																		Description: `The automationTemplateId field.`,
 																	},
 																},
-																Description: `The ActionTargetAutomation message.`,
+																Description: `ActionTargetAutomation targets automation templates for policy actions.`,
+															},
+															"action_target_baton_resource_action": schema.SingleNestedAttribute{
+																Computed: true,
+																Attributes: map[string]schema.Attribute{
+																	"baton_resource_action_id": schema.StringAttribute{
+																		Computed:    true,
+																		Description: `The batonResourceActionId field.`,
+																	},
+																},
+																Description: `ActionTargetResource targets resource actions for policy actions.`,
 															},
 														},
 														MarkdownDescription: `The Action message.` + "\n" +
 															`` + "\n" +
 															`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
-															`  - automation`,
+															`  - automation` + "\n" +
+															`  - batonResourceAction`,
 													},
 													"action_outcome_cancelled": schema.SingleNestedAttribute{
 														Computed: true,
@@ -4197,6 +4603,16 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 														},
 														Description: `The ActionTargetAutomationInstance message.`,
 													},
+													"action_target_baton_resource_action_instance": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"baton_action_invocation_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The batonActionInvocationId field.`,
+															},
+														},
+														Description: `The ActionTargetBatonResourceActionInstance message.`,
+													},
 													"state": schema.StringAttribute{
 														Computed:    true,
 														Description: `The current state of the action execution.`,
@@ -4206,6 +4622,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 													`` + "\n" +
 													`This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:` + "\n" +
 													`  - automation` + "\n" +
+													`  - batonResourceActionInstance` + "\n" +
 													`` + "\n" +
 													`` + "\n" +
 													`This message contains a oneof named outcome. Only a single field of the following list may be set at a time:` + "\n" +
@@ -4345,10 +4762,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																		Computed:    true,
 																		Description: `Configuration to allow a fallback if the entitlement owner cannot be identified.`,
 																	},
+																	"fallback_group_ids": schema.ListNestedAttribute{
+																		Computed: true,
+																		NestedObject: schema.NestedAttributeObject{
+																			Attributes: map[string]schema.Attribute{
+																				"app_entitlement_id": schema.StringAttribute{
+																					Computed:    true,
+																					Description: `The ID of the Entitlement.`,
+																				},
+																				"app_id": schema.StringAttribute{
+																					Computed:    true,
+																					Description: `The ID of the App this entitlement belongs to.`,
+																				},
+																			},
+																		},
+																		Description: `Configuration to specify which groups to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+																	},
 																	"fallback_user_ids": schema.ListAttribute{
 																		Computed:    true,
 																		ElementType: types.StringType,
 																		Description: `Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+																	},
+																	"is_group_fallback_enabled": schema.BoolAttribute{
+																		Computed:    true,
+																		Description: `Configuration to enable fallback for group fallback.`,
 																	},
 																	"require_distinct_approvers": schema.BoolAttribute{
 																		Computed:    true,
@@ -4431,10 +4868,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																		Computed:    true,
 																		Description: `Configuration to allow a fallback if the expression does not return a valid list of users.`,
 																	},
+																	"fallback_group_ids": schema.ListNestedAttribute{
+																		Computed: true,
+																		NestedObject: schema.NestedAttributeObject{
+																			Attributes: map[string]schema.Attribute{
+																				"app_entitlement_id": schema.StringAttribute{
+																					Computed:    true,
+																					Description: `The ID of the Entitlement.`,
+																				},
+																				"app_id": schema.StringAttribute{
+																					Computed:    true,
+																					Description: `The ID of the App this entitlement belongs to.`,
+																				},
+																			},
+																		},
+																		Description: `Configuration to specify which groups to fallback to if fallback is enabled and the expression does not return a valid list of users.`,
+																	},
 																	"fallback_user_ids": schema.ListAttribute{
 																		Computed:    true,
 																		ElementType: types.StringType,
 																		Description: `Configuration to specific which users to fallback to if and the expression does not return a valid list of users.`,
+																	},
+																	"is_group_fallback_enabled": schema.BoolAttribute{
+																		Computed:    true,
+																		Description: `Configuration to enable fallback for group fallback.`,
 																	},
 																	"require_distinct_approvers": schema.BoolAttribute{
 																		Computed:    true,
@@ -4459,10 +4916,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																		Computed:    true,
 																		Description: `Configuration to allow a fallback if no manager is found.`,
 																	},
+																	"fallback_group_ids": schema.ListNestedAttribute{
+																		Computed: true,
+																		NestedObject: schema.NestedAttributeObject{
+																			Attributes: map[string]schema.Attribute{
+																				"app_entitlement_id": schema.StringAttribute{
+																					Computed:    true,
+																					Description: `The ID of the Entitlement.`,
+																				},
+																				"app_id": schema.StringAttribute{
+																					Computed:    true,
+																					Description: `The ID of the App this entitlement belongs to.`,
+																				},
+																			},
+																		},
+																		Description: `Configuration to specify which groups to fallback to if fallback is enabled and no manager is found.`,
+																	},
 																	"fallback_user_ids": schema.ListAttribute{
 																		Computed:    true,
 																		ElementType: types.StringType,
 																		Description: `Configuration to specific which users to fallback to if fallback is enabled and no manager is found.`,
+																	},
+																	"is_group_fallback_enabled": schema.BoolAttribute{
+																		Computed:    true,
+																		Description: `Configuration to enable fallback for group fallback.`,
 																	},
 																	"require_distinct_approvers": schema.BoolAttribute{
 																		Computed:    true,
@@ -4499,10 +4976,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																		Computed:    true,
 																		Description: `Configuration to allow a fallback if the resource owner cannot be identified.`,
 																	},
+																	"fallback_group_ids": schema.ListNestedAttribute{
+																		Computed: true,
+																		NestedObject: schema.NestedAttributeObject{
+																			Attributes: map[string]schema.Attribute{
+																				"app_entitlement_id": schema.StringAttribute{
+																					Computed:    true,
+																					Description: `The ID of the Entitlement.`,
+																				},
+																				"app_id": schema.StringAttribute{
+																					Computed:    true,
+																					Description: `The ID of the App this entitlement belongs to.`,
+																				},
+																			},
+																		},
+																		Description: `Configuration to specify which groups to fallback to if fallback is enabled and the resource owner cannot be identified.`,
+																	},
 																	"fallback_user_ids": schema.ListAttribute{
 																		Computed:    true,
 																		ElementType: types.StringType,
 																		Description: `Configuration to specific which users to fallback to if fallback is enabled and the resource owner cannot be identified.`,
+																	},
+																	"is_group_fallback_enabled": schema.BoolAttribute{
+																		Computed:    true,
+																		Description: `Configuration to enable fallback for group fallback.`,
 																	},
 																	"require_distinct_approvers": schema.BoolAttribute{
 																		Computed:    true,
@@ -4523,10 +5020,30 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																		Computed:    true,
 																		Description: `Configuration to allow a fallback if the identity user of the target app user cannot be determined.`,
 																	},
+																	"fallback_group_ids": schema.ListNestedAttribute{
+																		Computed: true,
+																		NestedObject: schema.NestedAttributeObject{
+																			Attributes: map[string]schema.Attribute{
+																				"app_entitlement_id": schema.StringAttribute{
+																					Computed:    true,
+																					Description: `The ID of the Entitlement.`,
+																				},
+																				"app_id": schema.StringAttribute{
+																					Computed:    true,
+																					Description: `The ID of the App this entitlement belongs to.`,
+																				},
+																			},
+																		},
+																		Description: `Configuration to specify which groups to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.`,
+																	},
 																	"fallback_user_ids": schema.ListAttribute{
 																		Computed:    true,
 																		ElementType: types.StringType,
 																		Description: `Configuration to specific which users to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.`,
+																	},
+																	"is_group_fallback_enabled": schema.BoolAttribute{
+																		Computed:    true,
+																		Description: `Configuration to enable fallback for group fallback.`,
 																	},
 																},
 																Description: `The self approval object describes the configuration of a policy step that needs to be approved by the target of the request.`,
@@ -4820,6 +5337,18 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																			Computed:    true,
 																			Description: `The AtLeastOne message.`,
 																		},
+																		"dependent_on": schema.SingleNestedAttribute{
+																			Computed: true,
+																			Attributes: map[string]schema.Attribute{
+																				"dependency_field_names": schema.ListAttribute{
+																					Computed:    true,
+																					ElementType: types.StringType,
+																					Description: `The fields that must be present for the primary field_names to be valid`,
+																				},
+																			},
+																			MarkdownDescription: `DependentOn means the fields in field_names are only valid if all fields` + "\n" +
+																				` in dependency_field_names are also present`,
+																		},
 																		"field_names": schema.ListAttribute{
 																			Computed:    true,
 																			ElementType: types.StringType,
@@ -5038,6 +5567,10 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																				`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 																				`  - oauth2FieldView`,
 																		},
+																		"required": schema.BoolAttribute{
+																			Computed:    true,
+																			Description: `The required field.`,
+																		},
 																		"shared_provider_config": schema.SingleNestedAttribute{
 																			Computed: true,
 																			Attributes: map[string]schema.Attribute{
@@ -5094,12 +5627,18 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																							},
 																							Description: `The AppUserFilter message.`,
 																						},
+																						"c1_user_filter": schema.SingleNestedAttribute{
+																							Computed: true,
+																							MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
+																								` This is distinct from AppUserFilter which selects accounts within a connected app.`,
+																						},
 																					},
 																					MarkdownDescription: `The PickerField message.` + "\n" +
 																						`` + "\n" +
 																						`This message contains a oneof named type. Only a single field of the following list may be set at a time:` + "\n" +
 																						`  - appUserPicker` + "\n" +
-																						`  - resourcePicker`,
+																						`  - resourcePicker` + "\n" +
+																						`  - c1UserPicker`,
 																				},
 																				"placeholder": schema.StringAttribute{
 																					Computed:    true,
@@ -6042,6 +6581,10 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 													"integration_id": schema.StringAttribute{
 														Computed:    true,
 														Description: `The integration id for the source of tickets.`,
+													},
+													"is_extension": schema.BoolAttribute{
+														Computed:    true,
+														Description: `Whether the grant task is an extension task.`,
 													},
 													"request_id": schema.StringAttribute{
 														Computed:    true,

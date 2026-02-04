@@ -48,6 +48,17 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 				} else {
 					fieldRelationships.AtLeastOne = &tfTypes.AtLeastOne{}
 				}
+				if fieldRelationshipsItem.DependentOn == nil {
+					fieldRelationships.DependentOn = nil
+				} else {
+					fieldRelationships.DependentOn = &tfTypes.DependentOn{}
+					if fieldRelationshipsItem.DependentOn.DependencyFieldNames != nil {
+						fieldRelationships.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem.DependentOn.DependencyFieldNames))
+						for _, v := range fieldRelationshipsItem.DependentOn.DependencyFieldNames {
+							fieldRelationships.DependentOn.DependencyFieldNames = append(fieldRelationships.DependentOn.DependencyFieldNames, types.StringValue(v))
+						}
+					}
+				}
 				if fieldRelationshipsItem.FieldNames != nil {
 					fieldRelationships.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem.FieldNames))
 					for _, v := range fieldRelationshipsItem.FieldNames {
@@ -171,6 +182,7 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 						fields.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
 					}
 				}
+				fields.Required = types.BoolPointerValue(fieldsItem.Required)
 				if fieldsItem.SharedProviderConfig == nil {
 					fields.SharedProviderConfig = nil
 				} else {
@@ -205,6 +217,11 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 						} else {
 							fields.StringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
 							fields.StringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppUserFilter.AppID)
+						}
+						if fieldsItem.StringField.PickerField.C1UserFilter == nil {
+							fields.StringField.PickerField.C1UserFilter = nil
+						} else {
+							fields.StringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
 						}
 					}
 					fields.StringField.Placeholder = types.StringPointerValue(fieldsItem.StringField.Placeholder)

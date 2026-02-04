@@ -6,8 +6,12 @@ package shared
 type SelfApprovalInput struct {
 	// Configuration to allow a fallback if the identity user of the target app user cannot be determined.
 	Fallback *bool `json:"fallback,omitempty"`
+	// Configuration to specify which groups to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.
+	FallbackGroupIds []AppEntitlementReference `json:"fallbackGroupIds,omitempty"`
 	// Configuration to specific which users to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
+	// Configuration to enable fallback for group fallback.
+	IsGroupFallbackEnabled *bool `json:"isGroupFallbackEnabled,omitempty"`
 }
 
 func (s *SelfApprovalInput) GetFallback() *bool {
@@ -17,9 +21,23 @@ func (s *SelfApprovalInput) GetFallback() *bool {
 	return s.Fallback
 }
 
+func (s *SelfApprovalInput) GetFallbackGroupIds() []AppEntitlementReference {
+	if s == nil {
+		return nil
+	}
+	return s.FallbackGroupIds
+}
+
 func (s *SelfApprovalInput) GetFallbackUserIds() []string {
 	if s == nil {
 		return nil
 	}
 	return s.FallbackUserIds
+}
+
+func (s *SelfApprovalInput) GetIsGroupFallbackEnabled() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.IsGroupFallbackEnabled
 }

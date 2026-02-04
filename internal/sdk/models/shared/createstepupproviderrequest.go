@@ -16,7 +16,7 @@ type CreateStepUpProviderRequest struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// The issuerUrl field.
 	IssuerURL *string `json:"issuerUrl,omitempty"`
-	// StepUpMicrosoftSettings represents a Microsoft Entra Provider using Conditional Access Policies to enforce step-up authentication.
+	// StepUpMicrosoftSettings configures a Microsoft Entra step-up provider using Conditional Access.
 	StepUpMicrosoftSettings *StepUpMicrosoftSettings `json:"microsoft,omitempty"`
 	// StepUpOAuth2Settings repersents an OAuth2 provider that supports RFC 9470 <https://www.rfc-editor.org/rfc/rfc9470>
 	//

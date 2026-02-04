@@ -98,6 +98,18 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 							Computed:    true,
 							Description: `The AtLeastOne message.`,
 						},
+						"dependent_on": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"dependency_field_names": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `The fields that must be present for the primary field_names to be valid`,
+								},
+							},
+							MarkdownDescription: `DependentOn means the fields in field_names are only valid if all fields` + "\n" +
+								` in dependency_field_names are also present`,
+						},
 						"field_names": schema.ListAttribute{
 							Computed:    true,
 							ElementType: types.StringType,
@@ -316,6 +328,10 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - oauth2FieldView`,
 						},
+						"required": schema.BoolAttribute{
+							Computed:    true,
+							Description: `The required field.`,
+						},
 						"shared_provider_config": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
@@ -372,12 +388,18 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 											},
 											Description: `The AppUserFilter message.`,
 										},
+										"c1_user_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
+												` This is distinct from AppUserFilter which selects accounts within a connected app.`,
+										},
 									},
 									MarkdownDescription: `The PickerField message.` + "\n" +
 										`` + "\n" +
 										`This message contains a oneof named type. Only a single field of the following list may be set at a time:` + "\n" +
 										`  - appUserPicker` + "\n" +
-										`  - resourcePicker`,
+										`  - resourcePicker` + "\n" +
+										`  - c1UserPicker`,
 								},
 								"placeholder": schema.StringAttribute{
 									Computed:    true,

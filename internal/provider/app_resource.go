@@ -40,6 +40,7 @@ type AppResourceModel struct {
 	DeletedAt                           types.String `tfsdk:"-"`
 	Description                         types.String `tfsdk:"description"`
 	DisplayName                         types.String `tfsdk:"display_name"`
+	EnableConnectorSourcedOwnership     types.Bool   `tfsdk:"enable_connector_sourced_ownership"`
 	GrantPolicyID                       types.String `tfsdk:"grant_policy_id"`
 	ID                                  types.String `tfsdk:"id"`
 	IdentityMatching                    types.String `tfsdk:"identity_matching"`
@@ -94,6 +95,10 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"display_name": schema.StringAttribute{
 				Required:    true,
 				Description: `Creates the app with this display name.`,
+			},
+			"enable_connector_sourced_ownership": schema.BoolAttribute{
+				Computed:    true,
+				Description: `When enabled, resource ownership is sourced from the connector.`,
 			},
 			"grant_policy_id": schema.StringAttribute{
 				Computed:    true,
@@ -468,10 +473,7 @@ func (r *AppResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	switch res.StatusCode {
-	case 200, 404:
-		break
-	default:
+	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

@@ -7,7 +7,9 @@ import (
 )
 
 type SelfApproval struct {
-	AssignedUserIds []types.String `tfsdk:"assigned_user_ids"`
-	Fallback        types.Bool     `tfsdk:"fallback"`
-	FallbackUserIds []types.String `tfsdk:"fallback_user_ids"`
+	AssignedUserIds        []types.String            `tfsdk:"assigned_user_ids"`
+	Fallback               types.Bool                `tfsdk:"fallback"`
+	FallbackGroupIds       []AppEntitlementReference `tfsdk:"fallback_group_ids"`
+	FallbackUserIds        []types.String            `tfsdk:"fallback_user_ids"`
+	IsGroupFallbackEnabled types.Bool                `tfsdk:"is_group_fallback_enabled"`
 }

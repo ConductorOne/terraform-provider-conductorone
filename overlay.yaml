@@ -636,5 +636,12 @@ actions:
   - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewExpandMask"]
     update:
       x-speakeasy-ignore: true
+  # Fix duplicate terraform-resource conflicts where two operations claim the same #update
+  # Both SetScopeAndEntitlements and SetScopeByResourceType endpoints exist for Access Review
+  # and Access Review Template. Remove the annotation from SetScopeByResourceType variants.
+  - target: $["paths"]["/api/v1/access_review/{access_review_id}/scope_by_resource_type"]["post"]["x-speakeasy-entity-operation"]
+    remove: true
+  - target: $["paths"]["/api/v1/access_review_template/{access_review_template_id}/scope_by_resource_type"]["post"]["x-speakeasy-entity-operation"]
+    remove: true
       
   

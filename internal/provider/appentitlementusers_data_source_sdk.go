@@ -100,6 +100,7 @@ func (r *AppEntitlementUsersDataSourceModel) RefreshFromSharedListAppEntitlement
 						list.GrantSources = append(list.GrantSources, grantSources)
 					}
 				}
+				list.OriginatingTicketID = types.StringPointerValue(listItem.OriginatingTicketID)
 
 				r.List = append(r.List, list)
 			}

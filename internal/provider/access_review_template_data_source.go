@@ -32,7 +32,11 @@ type AccessReviewTemplateDataSourceModel struct {
 	AccessReviewDuration           types.String                        `tfsdk:"access_review_duration"`
 	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
 	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
+	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
+	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
+	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
 	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
+	AutoStartCampaign              types.Bool                          `tfsdk:"auto_start_campaign"`
 	CreatedAt                      types.String                        `tfsdk:"created_at"`
 	DefaultView                    types.String                        `tfsdk:"default_view"`
 	DeletedAt                      types.String                        `tfsdk:"deleted_at"`
@@ -365,9 +369,27 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 					`  - allAccessConflicts` + "\n" +
 					`  - specificAccessConflicts`,
 			},
+			"accuracy_issue_action": schema.StringAttribute{
+				Computed:    true,
+				Description: `The accuracyIssueAction field.`,
+			},
+			"auto_close_campaign": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `Auto-close configuration` + "\n" +
+					` start date and access_review_duration will be used to calculate the scheduled close date`,
+			},
+			"auto_close_decision": schema.StringAttribute{
+				Computed:    true,
+				Description: `The autoCloseDecision field.`,
+			},
 			"auto_generate_report": schema.BoolAttribute{
 				Computed:    true,
 				Description: `auto generate report when campaign is closed`,
+			},
+			"auto_start_campaign": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `Auto-start configuration` + "\n" +
+					` next_scheduled_campaign_at will be used as the scheduled start date`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -407,6 +429,10 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 					"send_close": schema.BoolAttribute{
 						Computed:    true,
 						Description: `The sendClose field.`,
+					},
+					"send_kickoff": schema.BoolAttribute{
+						Computed:    true,
+						Description: `The sendKickoff field.`,
 					},
 					"send_reminders": schema.BoolAttribute{
 						Computed:    true,

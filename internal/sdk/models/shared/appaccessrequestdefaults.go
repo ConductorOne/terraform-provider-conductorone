@@ -72,6 +72,8 @@ type AppAccessRequestDefaults struct {
 	EmergencyGrantPolicyID *string `json:"emergencyGrantPolicyId,omitempty"`
 	// The requestPolicyId field.
 	RequestPolicyID *string `json:"requestPolicyId,omitempty"`
+	// The ID of the request schema to apply to entitlements matching this rule.
+	RequestSchemaID *string `json:"requestSchemaId,omitempty"`
 	// The app resource type ids for which the app access request defaults are applied.
 	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
 	// The last applied state of the app access request defaults.
@@ -134,6 +136,13 @@ func (a *AppAccessRequestDefaults) GetRequestPolicyID() *string {
 	return a.RequestPolicyID
 }
 
+func (a *AppAccessRequestDefaults) GetRequestSchemaID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RequestSchemaID
+}
+
 func (a *AppAccessRequestDefaults) GetResourceTypeIds() []string {
 	if a == nil {
 		return nil
@@ -166,6 +175,8 @@ type AppAccessRequestDefaults1 struct {
 	EmergencyGrantPolicyID *string `json:"emergencyGrantPolicyId,omitempty"`
 	// The requestPolicyId field.
 	RequestPolicyID *string `json:"requestPolicyId,omitempty"`
+	// The ID of the request schema to apply to entitlements matching this rule.
+	RequestSchemaID *string `json:"requestSchemaId,omitempty"`
 	// The app resource type ids for which the app access request defaults are applied.
 	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
 	// The last applied state of the app access request defaults.
@@ -219,6 +230,13 @@ func (a *AppAccessRequestDefaults1) GetRequestPolicyID() *string {
 		return nil
 	}
 	return a.RequestPolicyID
+}
+
+func (a *AppAccessRequestDefaults1) GetRequestSchemaID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RequestSchemaID
 }
 
 func (a *AppAccessRequestDefaults1) GetResourceTypeIds() []string {

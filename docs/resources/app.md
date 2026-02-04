@@ -55,6 +55,7 @@ resource "conductorone_app" "my_app" {
 - `connector_version` (Number) The connectorVersion field.
 - `created_at` (String)
 - `default_request_catalog_id` (String) The ID for the default request catalog for this app.
+- `enable_connector_sourced_ownership` (Boolean) When enabled, resource ownership is sourced from the connector.
 - `id` (String) The ID of the app.
 - `is_directory` (Boolean) Specifies if the app is a directory.
 - `is_manually_managed` (Boolean) The isManuallyManaged field.

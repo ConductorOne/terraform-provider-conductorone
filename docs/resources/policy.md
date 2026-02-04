@@ -29,6 +29,9 @@ resource "conductorone_policy" "my_policy" {
             action_target_automation = {
               automation_template_id = "...my_automation_template_id..."
             }
+            action_target_baton_resource_action = {
+              baton_resource_action_id = "...my_baton_resource_action_id..."
+            }
           }
           approval = {
             agent_approval = {
@@ -72,9 +75,16 @@ resource "conductorone_policy" "my_policy" {
             entitlement_owner_approval = {
               allow_self_approval = false
               fallback            = true
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled  = true
               require_distinct_approvers = false
             }
             escalation = {
@@ -102,17 +112,31 @@ resource "conductorone_policy" "my_policy" {
                 "..."
               ]
               fallback = false
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled  = false
               require_distinct_approvers = true
             }
             manager_approval = {
               allow_self_approval = true
               fallback            = true
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled  = false
               require_distinct_approvers = true
             }
             require_approval_reason      = true
@@ -122,16 +146,30 @@ resource "conductorone_policy" "my_policy" {
             resource_owner_approval = {
               allow_self_approval = true
               fallback            = false
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled  = false
               require_distinct_approvers = true
             }
             self_approval = {
               fallback = false
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled = false
             }
             user_approval = {
               allow_self_approval        = false
@@ -285,7 +323,8 @@ Optional:
 - `action` (Attributes) The Action message.
 
 This message contains a oneof named target. Only a single field of the following list may be set at a time:
-  - automation (see [below for nested schema](#nestedatt--policy_steps--steps--action))
+  - automation
+  - batonResourceAction (see [below for nested schema](#nestedatt--policy_steps--steps--action))
 - `approval` (Attributes) The Approval message.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -322,7 +361,8 @@ Optional:
 
 Optional:
 
-- `action_target_automation` (Attributes) The ActionTargetAutomation message. (see [below for nested schema](#nestedatt--policy_steps--steps--action--action_target_automation))
+- `action_target_automation` (Attributes) ActionTargetAutomation targets automation templates for policy actions. (see [below for nested schema](#nestedatt--policy_steps--steps--action--action_target_automation))
+- `action_target_baton_resource_action` (Attributes) ActionTargetResource targets resource actions for policy actions. (see [below for nested schema](#nestedatt--policy_steps--steps--action--action_target_baton_resource_action))
 
 <a id="nestedatt--policy_steps--steps--action--action_target_automation"></a>
 ### Nested Schema for `policy_steps.steps.action.action_target_automation`
@@ -330,6 +370,14 @@ Optional:
 Optional:
 
 - `automation_template_id` (String) The automationTemplateId field.
+
+
+<a id="nestedatt--policy_steps--steps--action--action_target_baton_resource_action"></a>
+### Nested Schema for `policy_steps.steps.action.action_target_baton_resource_action`
+
+Optional:
+
+- `baton_resource_action_id` (String) The batonResourceActionId field.
 
 
 
@@ -422,8 +470,19 @@ Optional:
 
 - `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is an entitlement owner during this step.
 - `fallback` (Boolean) Configuration to allow a fallback if the entitlement owner cannot be identified.
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the entitlement owner cannot be identified. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--entitlement_owner_approval--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.
+- `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
 - `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
+
+<a id="nestedatt--policy_steps--steps--approval--entitlement_owner_approval--fallback_group_ids"></a>
+### Nested Schema for `policy_steps.steps.approval.entitlement_owner_approval.fallback_group_ids`
+
+Optional:
+
+- `app_entitlement_id` (String) The ID of the Entitlement.
+- `app_id` (String) The ID of the App this entitlement belongs to.
+
 
 
 <a id="nestedatt--policy_steps--steps--approval--escalation"></a>
@@ -471,12 +530,23 @@ Optional:
 - `allow_self_approval` (Boolean) Configuration to allow self approval of if the user is specified and also the target of the ticket.
 - `expressions` (List of String) Array of dynamic expressions to determine the approvers.  The first expression to return a non-empty list of users will be used.
 - `fallback` (Boolean) Configuration to allow a fallback if the expression does not return a valid list of users.
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the expression does not return a valid list of users. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--expression_approval--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if and the expression does not return a valid list of users.
+- `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
 - `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
 Read-Only:
 
 - `assigned_user_ids` (List of String) The assignedUserIds field.
+
+<a id="nestedatt--policy_steps--steps--approval--expression_approval--fallback_group_ids"></a>
+### Nested Schema for `policy_steps.steps.approval.expression_approval.fallback_group_ids`
+
+Optional:
+
+- `app_entitlement_id` (String) The ID of the Entitlement.
+- `app_id` (String) The ID of the App this entitlement belongs to.
+
 
 
 <a id="nestedatt--policy_steps--steps--approval--manager_approval"></a>
@@ -486,12 +556,23 @@ Optional:
 
 - `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is their own manager. This may occur if a service account has an identity user and manager specified as the same person.
 - `fallback` (Boolean) Configuration to allow a fallback if no manager is found.
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and no manager is found. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--manager_approval--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and no manager is found.
+- `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
 - `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
 Read-Only:
 
 - `assigned_user_ids` (List of String) The array of users determined to be the manager during processing time.
+
+<a id="nestedatt--policy_steps--steps--approval--manager_approval--fallback_group_ids"></a>
+### Nested Schema for `policy_steps.steps.approval.manager_approval.fallback_group_ids`
+
+Optional:
+
+- `app_entitlement_id` (String) The ID of the Entitlement.
+- `app_id` (String) The ID of the App this entitlement belongs to.
+
 
 
 <a id="nestedatt--policy_steps--steps--approval--resource_owner_approval"></a>
@@ -501,8 +582,19 @@ Optional:
 
 - `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is an resource owner during this step.
 - `fallback` (Boolean) Configuration to allow a fallback if the resource owner cannot be identified.
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the resource owner cannot be identified. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--resource_owner_approval--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the resource owner cannot be identified.
+- `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
 - `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
+
+<a id="nestedatt--policy_steps--steps--approval--resource_owner_approval--fallback_group_ids"></a>
+### Nested Schema for `policy_steps.steps.approval.resource_owner_approval.fallback_group_ids`
+
+Optional:
+
+- `app_entitlement_id` (String) The ID of the Entitlement.
+- `app_id` (String) The ID of the App this entitlement belongs to.
+
 
 
 <a id="nestedatt--policy_steps--steps--approval--self_approval"></a>
@@ -511,11 +603,22 @@ Optional:
 Optional:
 
 - `fallback` (Boolean) Configuration to allow a fallback if the identity user of the target app user cannot be determined.
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the identity user of the target app user cannot be determined. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--self_approval--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.
+- `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
 
 Read-Only:
 
 - `assigned_user_ids` (List of String) The array of users determined to be themselves during approval. This should only ever be one person, but is saved because it may change if the owner of an app user changes while the ticket is open.
+
+<a id="nestedatt--policy_steps--steps--approval--self_approval--fallback_group_ids"></a>
+### Nested Schema for `policy_steps.steps.approval.self_approval.fallback_group_ids`
+
+Optional:
+
+- `app_entitlement_id` (String) The ID of the Entitlement.
+- `app_id` (String) The ID of the App this entitlement belongs to.
+
 
 
 <a id="nestedatt--policy_steps--steps--approval--user_approval"></a>

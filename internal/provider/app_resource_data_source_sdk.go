@@ -16,6 +16,7 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.AccessConfigID = types.StringPointerValue(resp.AccessConfigID)
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
@@ -27,6 +28,11 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
 		r.ParentAppResourceID = types.StringPointerValue(resp.ParentAppResourceID)
 		r.ParentAppResourceTypeID = types.StringPointerValue(resp.ParentAppResourceTypeID)
+		if resp.Profile == nil {
+			r.Profile = nil
+		} else {
+			r.Profile = &tfTypes.AppResourceProfile{}
+		}
 		if resp.SecretTrait == nil {
 			r.SecretTrait = nil
 		} else {
@@ -63,6 +69,17 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResourceView(ctx contex
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.ActorObjectPermissions != nil {
+			r.Delete = types.BoolPointerValue(resp.ActorObjectPermissions.Delete)
+			r.Edit = types.BoolPointerValue(resp.ActorObjectPermissions.Edit)
+			if len(resp.ActorObjectPermissions.Extra) > 0 {
+				r.Extra = make(map[string]types.Bool, len(resp.ActorObjectPermissions.Extra))
+				for key, value := range resp.ActorObjectPermissions.Extra {
+					r.Extra[key] = types.BoolValue(value)
+				}
+			}
+			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
+		}
 		diags.Append(r.RefreshFromSharedAppResource(ctx, resp.AppResource)...)
 
 		if diags.HasError() {

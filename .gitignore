@@ -6,3 +6,4 @@
 /examples/terraform config/
 .speakeasy/temp/
 /*.md
+.claude

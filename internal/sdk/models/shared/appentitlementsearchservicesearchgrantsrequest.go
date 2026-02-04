@@ -2,6 +2,43 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type AppEntitlementSearchServiceSearchGrantsRequestPurpose string
+
+const (
+	AppEntitlementSearchServiceSearchGrantsRequestPurposeAppEntitlementPurposeValueUnspecified AppEntitlementSearchServiceSearchGrantsRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED"
+	AppEntitlementSearchServiceSearchGrantsRequestPurposeAppEntitlementPurposeValueAssignment  AppEntitlementSearchServiceSearchGrantsRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
+	AppEntitlementSearchServiceSearchGrantsRequestPurposeAppEntitlementPurposeValuePermission  AppEntitlementSearchServiceSearchGrantsRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"
+	AppEntitlementSearchServiceSearchGrantsRequestPurposeAppEntitlementPurposeValueOwnership   AppEntitlementSearchServiceSearchGrantsRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"
+)
+
+func (e AppEntitlementSearchServiceSearchGrantsRequestPurpose) ToPointer() *AppEntitlementSearchServiceSearchGrantsRequestPurpose {
+	return &e
+}
+func (e *AppEntitlementSearchServiceSearchGrantsRequestPurpose) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED":
+		fallthrough
+	case "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT":
+		fallthrough
+	case "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION":
+		fallthrough
+	case "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
+		*e = AppEntitlementSearchServiceSearchGrantsRequestPurpose(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AppEntitlementSearchServiceSearchGrantsRequestPurpose: %v", v)
+	}
+}
+
 // The AppEntitlementSearchServiceSearchGrantsRequest message.
 type AppEntitlementSearchServiceSearchGrantsRequest struct {
 	// Search for grants contained in any of these apps.
@@ -14,6 +51,8 @@ type AppEntitlementSearchServiceSearchGrantsRequest struct {
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
+	// Filter for entitlements with these purposes (e.g., ASSIGNMENT for membership entitlements)
+	Purpose []AppEntitlementSearchServiceSearchGrantsRequestPurpose `json:"purpose,omitempty"`
 	// Search for grants within a resource.
 	ResourceIds []string `json:"resourceIds,omitempty"`
 	// Search grants for given resource types.
@@ -55,6 +94,13 @@ func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetPageToken() *string 
 		return nil
 	}
 	return a.PageToken
+}
+
+func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetPurpose() []AppEntitlementSearchServiceSearchGrantsRequestPurpose {
+	if a == nil {
+		return nil
+	}
+	return a.Purpose
 }
 
 func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetResourceIds() []string {

@@ -32,7 +32,6 @@ type FunctionDataSourceModel struct {
 	DeletedAt                types.String            `tfsdk:"deleted_at"`
 	Description              types.String            `tfsdk:"description"`
 	DisplayName              types.String            `tfsdk:"display_name"`
-	EncryptedValues          map[string]types.String `tfsdk:"encrypted_values"`
 	FunctionType             types.String            `tfsdk:"function_type"`
 	FunctionTypes            []types.String          `tfsdk:"function_types"`
 	Head                     types.String            `tfsdk:"head"`
@@ -45,6 +44,7 @@ type FunctionDataSourceModel struct {
 	PublishedCommitID        types.String            `tfsdk:"published_commit_id"`
 	Query                    types.String            `tfsdk:"query"`
 	ScopedRoleIds            []types.String          `tfsdk:"scoped_role_ids"`
+	Secret                   map[string]types.String `tfsdk:"secret"`
 	UpdatedAt                types.String            `tfsdk:"updated_at"`
 }
 
@@ -72,11 +72,6 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The displayName field.`,
-			},
-			"encrypted_values": schema.MapAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				Description: `The encryptedValues field.`,
 			},
 			"function_type": schema.StringAttribute{
 				Computed:    true,
@@ -133,6 +128,11 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 					`` + "\n" +
 					` Currently only the "Read-Only Administrator" role (system:viewer) is supported.` + "\n" +
 					` The role ID can be obtained from the roles API.`,
+			},
+			"secret": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `The secret field.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

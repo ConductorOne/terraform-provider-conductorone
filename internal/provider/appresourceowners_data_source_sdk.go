@@ -16,6 +16,12 @@ func (r *AppResourceOwnersDataSourceModel) RefreshFromSharedListAppResourceOwner
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.ImmutableUserIds != nil {
+			r.ImmutableUserIds = make([]types.String, 0, len(resp.ImmutableUserIds))
+			for _, v := range resp.ImmutableUserIds {
+				r.ImmutableUserIds = append(r.ImmutableUserIds, types.StringValue(v))
+			}
+		}
 		if resp.List != nil {
 			r.List = []tfTypes.User{}
 

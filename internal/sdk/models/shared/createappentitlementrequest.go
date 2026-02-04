@@ -17,6 +17,7 @@ const (
 	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValueUnspecified CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED"
 	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValueAssignment  CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT"
 	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValuePermission  CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"
+	CreateAppEntitlementRequestPurposeAppEntitlementPurposeValueOwnership   CreateAppEntitlementRequestPurpose = "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"
 )
 
 func (e CreateAppEntitlementRequestPurpose) ToPointer() *CreateAppEntitlementRequestPurpose {
@@ -33,6 +34,8 @@ func (e *CreateAppEntitlementRequestPurpose) UnmarshalJSON(data []byte) error {
 	case "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT":
 		fallthrough
 	case "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION":
+		fallthrough
+	case "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
 		*e = CreateAppEntitlementRequestPurpose(v)
 		return nil
 	default:

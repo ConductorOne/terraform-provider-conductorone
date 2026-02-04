@@ -3,5 +3,6 @@
 package types
 
 type Action struct {
-	ActionTargetAutomation *ActionTargetAutomation `tfsdk:"action_target_automation"`
+	ActionTargetAutomation          *ActionTargetAutomation          `tfsdk:"action_target_automation"`
+	ActionTargetBatonResourceAction *ActionTargetBatonResourceAction `tfsdk:"action_target_baton_resource_action"`
 }

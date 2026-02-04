@@ -15,6 +15,7 @@ type Field struct {
 	Int64Field           *Int64Field           `tfsdk:"int64_field"`
 	Name                 types.String          `tfsdk:"name"`
 	Oauth2Field          *Oauth2Field          `tfsdk:"oauth2_field"`
+	Required             types.Bool            `tfsdk:"required"`
 	SharedProviderConfig *SharedProviderConfig `tfsdk:"shared_provider_config"`
 	StringField          *StringField          `tfsdk:"string_field"`
 	UserProviderConfig   *UserProviderConfig   `tfsdk:"user_provider_config"`

@@ -185,6 +185,10 @@ func (r *AppEntitlementUsersDataSource) Schema(ctx context.Context, req datasour
 							},
 							Description: `List of sources for the grant, ie. groups, roles, etc.`,
 						},
+						"originating_ticket_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The originating ticket ID for the grant (e.g. from a request ticket).`,
+						},
 					},
 				},
 				Description: `The list of results containing up to X results, where X is the page size defined in the request.`,

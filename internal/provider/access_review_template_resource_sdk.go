@@ -264,7 +264,19 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 				}
 			}
 		}
+		if resp.AccuracyIssueAction != nil {
+			r.AccuracyIssueAction = types.StringValue(string(*resp.AccuracyIssueAction))
+		} else {
+			r.AccuracyIssueAction = types.StringNull()
+		}
+		r.AutoCloseCampaign = types.BoolPointerValue(resp.AutoCloseCampaign)
+		if resp.AutoCloseDecision != nil {
+			r.AutoCloseDecision = types.StringValue(string(*resp.AutoCloseDecision))
+		} else {
+			r.AutoCloseDecision = types.StringNull()
+		}
 		r.AutoGenerateReport = types.BoolPointerValue(resp.AutoGenerateReport)
+		r.AutoStartCampaign = types.BoolPointerValue(resp.AutoStartCampaign)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		if resp.DefaultView != nil {
 			r.DefaultView = types.StringValue(string(*resp.DefaultView))
@@ -283,6 +295,7 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 		} else {
 			r.NotificationConfig = &tfTypes.NotificationConfig{}
 			r.NotificationConfig.SendClose = types.BoolPointerValue(resp.NotificationConfig.SendClose)
+			r.NotificationConfig.SendKickoff = types.BoolPointerValue(resp.NotificationConfig.SendKickoff)
 			r.NotificationConfig.SendReminders = types.BoolPointerValue(resp.NotificationConfig.SendReminders)
 		}
 		r.Occurrences = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.Occurrences))
@@ -439,11 +452,35 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 	} else {
 		accessReviewDuration = nil
 	}
+	accuracyIssueAction := new(shared.AccessReviewTemplateAccuracyIssueAction)
+	if !r.AccuracyIssueAction.IsUnknown() && !r.AccuracyIssueAction.IsNull() {
+		*accuracyIssueAction = shared.AccessReviewTemplateAccuracyIssueAction(r.AccuracyIssueAction.ValueString())
+	} else {
+		accuracyIssueAction = nil
+	}
+	autoCloseCampaign := new(bool)
+	if !r.AutoCloseCampaign.IsUnknown() && !r.AutoCloseCampaign.IsNull() {
+		*autoCloseCampaign = r.AutoCloseCampaign.ValueBool()
+	} else {
+		autoCloseCampaign = nil
+	}
+	autoCloseDecision := new(shared.AccessReviewTemplateAutoCloseDecision)
+	if !r.AutoCloseDecision.IsUnknown() && !r.AutoCloseDecision.IsNull() {
+		*autoCloseDecision = shared.AccessReviewTemplateAutoCloseDecision(r.AutoCloseDecision.ValueString())
+	} else {
+		autoCloseDecision = nil
+	}
 	autoGenerateReport := new(bool)
 	if !r.AutoGenerateReport.IsUnknown() && !r.AutoGenerateReport.IsNull() {
 		*autoGenerateReport = r.AutoGenerateReport.ValueBool()
 	} else {
 		autoGenerateReport = nil
+	}
+	autoStartCampaign := new(bool)
+	if !r.AutoStartCampaign.IsUnknown() && !r.AutoStartCampaign.IsNull() {
+		*autoStartCampaign = r.AutoStartCampaign.ValueBool()
+	} else {
+		autoStartCampaign = nil
 	}
 	defaultView := new(shared.AccessReviewTemplateDefaultView)
 	if !r.DefaultView.IsUnknown() && !r.DefaultView.IsNull() {
@@ -570,6 +607,12 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		} else {
 			sendClose = nil
 		}
+		sendKickoff := new(bool)
+		if !r.NotificationConfig.SendKickoff.IsUnknown() && !r.NotificationConfig.SendKickoff.IsNull() {
+			*sendKickoff = r.NotificationConfig.SendKickoff.ValueBool()
+		} else {
+			sendKickoff = nil
+		}
 		sendReminders := new(bool)
 		if !r.NotificationConfig.SendReminders.IsUnknown() && !r.NotificationConfig.SendReminders.IsNull() {
 			*sendReminders = r.NotificationConfig.SendReminders.ValueBool()
@@ -578,6 +621,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		}
 		notificationConfig = &shared.NotificationConfig{
 			SendClose:     sendClose,
+			SendKickoff:   sendKickoff,
 			SendReminders: sendReminders,
 		}
 	}
@@ -668,11 +712,11 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 					accountTypes = append(accountTypes, shared.AccountTypes(accountTypesItem.ValueString()))
 				}
 			}
-			var appUserStatuses1 []shared.AccountCriteriaScopeAppUserStatuses
+			var appUserStatuses1 []shared.AppUserStatuses
 			if r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses != nil {
-				appUserStatuses1 = make([]shared.AccountCriteriaScopeAppUserStatuses, 0, len(r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses))
+				appUserStatuses1 = make([]shared.AppUserStatuses, 0, len(r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses))
 				for _, appUserStatusesItem1 := range r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses {
-					appUserStatuses1 = append(appUserStatuses1, shared.AccountCriteriaScopeAppUserStatuses(appUserStatusesItem1.ValueString()))
+					appUserStatuses1 = append(appUserStatuses1, shared.AppUserStatuses(appUserStatusesItem1.ValueString()))
 				}
 			}
 			noAccountOwner := new(bool)
@@ -989,7 +1033,11 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 	}
 	out := shared.AccessReviewTemplateInput{
 		AccessReviewDuration:           accessReviewDuration,
+		AccuracyIssueAction:            accuracyIssueAction,
+		AutoCloseCampaign:              autoCloseCampaign,
+		AutoCloseDecision:              autoCloseDecision,
 		AutoGenerateReport:             autoGenerateReport,
+		AutoStartCampaign:              autoStartCampaign,
 		DefaultView:                    defaultView,
 		Description:                    description,
 		DisplayName:                    displayName,
@@ -1042,6 +1090,12 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		} else {
 			sendClose = nil
 		}
+		sendKickoff := new(bool)
+		if !r.NotificationConfig.SendKickoff.IsUnknown() && !r.NotificationConfig.SendKickoff.IsNull() {
+			*sendKickoff = r.NotificationConfig.SendKickoff.ValueBool()
+		} else {
+			sendKickoff = nil
+		}
 		sendReminders := new(bool)
 		if !r.NotificationConfig.SendReminders.IsUnknown() && !r.NotificationConfig.SendReminders.IsNull() {
 			*sendReminders = r.NotificationConfig.SendReminders.ValueBool()
@@ -1050,6 +1104,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		}
 		notificationConfig = &shared.NotificationConfig{
 			SendClose:     sendClose,
+			SendKickoff:   sendKickoff,
 			SendReminders: sendReminders,
 		}
 	}
@@ -1066,6 +1121,290 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 	} else {
 		policyID = nil
 	}
+	var accessReviewScopeV2 *shared.AccessReviewScopeV2
+	if r.AccessReviewScopeV2 != nil {
+		var celExpressionScope *shared.CelExpressionScope
+		if r.AccessReviewScopeV2.CelExpressionScope != nil {
+			expression := new(string)
+			if !r.AccessReviewScopeV2.CelExpressionScope.Expression.IsUnknown() && !r.AccessReviewScopeV2.CelExpressionScope.Expression.IsNull() {
+				*expression = r.AccessReviewScopeV2.CelExpressionScope.Expression.ValueString()
+			} else {
+				expression = nil
+			}
+			celExpressionScope = &shared.CelExpressionScope{
+				Expression: expression,
+			}
+		}
+		var accountCriteriaScope *shared.AccountCriteriaScope
+		if r.AccessReviewScopeV2.AccountCriteriaScope != nil {
+			accountDomain := new(shared.AccountDomain)
+			if !r.AccessReviewScopeV2.AccountCriteriaScope.AccountDomain.IsUnknown() && !r.AccessReviewScopeV2.AccountCriteriaScope.AccountDomain.IsNull() {
+				*accountDomain = shared.AccountDomain(r.AccessReviewScopeV2.AccountCriteriaScope.AccountDomain.ValueString())
+			} else {
+				accountDomain = nil
+			}
+			var accountTypes []shared.AccountTypes
+			if r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes != nil {
+				accountTypes = make([]shared.AccountTypes, 0, len(r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes))
+				for _, accountTypesItem := range r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes {
+					accountTypes = append(accountTypes, shared.AccountTypes(accountTypesItem.ValueString()))
+				}
+			}
+			var appUserStatuses []shared.AppUserStatuses
+			if r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses != nil {
+				appUserStatuses = make([]shared.AppUserStatuses, 0, len(r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses))
+				for _, appUserStatusesItem := range r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses {
+					appUserStatuses = append(appUserStatuses, shared.AppUserStatuses(appUserStatusesItem.ValueString()))
+				}
+			}
+			noAccountOwner := new(bool)
+			if !r.AccessReviewScopeV2.AccountCriteriaScope.NoAccountOwner.IsUnknown() && !r.AccessReviewScopeV2.AccountCriteriaScope.NoAccountOwner.IsNull() {
+				*noAccountOwner = r.AccessReviewScopeV2.AccountCriteriaScope.NoAccountOwner.ValueBool()
+			} else {
+				noAccountOwner = nil
+			}
+			accountCriteriaScope = &shared.AccountCriteriaScope{
+				AccountDomain:   accountDomain,
+				AccountTypes:    accountTypes,
+				AppUserStatuses: appUserStatuses,
+				NoAccountOwner:  noAccountOwner,
+			}
+		}
+		var allAccessConflictsScope *shared.AllAccessConflictsScope
+		if r.AccessReviewScopeV2.AllAccessConflictsScope != nil {
+			allAccessConflictsScope = &shared.AllAccessConflictsScope{}
+		}
+		var allAccountsScope *shared.AllAccountsScope
+		if r.AccessReviewScopeV2.AllAccountsScope != nil {
+			allAccountsScope = &shared.AllAccountsScope{}
+		}
+		var allGrantsScope *shared.AllGrantsScope
+		if r.AccessReviewScopeV2.AllGrantsScope != nil {
+			allGrantsScope = &shared.AllGrantsScope{}
+		}
+		var allUsersScope *shared.AllUsersScope
+		if r.AccessReviewScopeV2.AllUsersScope != nil {
+			allUsersScope = &shared.AllUsersScope{}
+		}
+		var applicationAccessScope *shared.ApplicationAccessScope
+		if r.AccessReviewScopeV2.ApplicationAccessScope != nil {
+			applicationAccessScope = &shared.ApplicationAccessScope{}
+		}
+		var appSelectionCriteriaScope *shared.AppSelectionCriteriaScope
+		if r.AccessReviewScopeV2.AppSelectionCriteriaScope != nil {
+			appSelectionCriteriaScope = &shared.AppSelectionCriteriaScope{}
+		}
+		var celExpressionScope1 *shared.CelExpressionScope
+		if r.AccessReviewScopeV2.CelExpressionScope1 != nil {
+			expression1 := new(string)
+			if !r.AccessReviewScopeV2.CelExpressionScope1.Expression.IsUnknown() && !r.AccessReviewScopeV2.CelExpressionScope1.Expression.IsNull() {
+				*expression1 = r.AccessReviewScopeV2.CelExpressionScope1.Expression.ValueString()
+			} else {
+				expression1 = nil
+			}
+			celExpressionScope1 = &shared.CelExpressionScope{
+				Expression: expression1,
+			}
+		}
+		var grantsByCriteriaScope *shared.GrantsByCriteriaScope
+		if r.AccessReviewScopeV2.GrantsByCriteriaScope != nil {
+			var grantAccessProfileFilter *shared.GrantAccessProfileFilter
+			if r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter != nil {
+				var excludedAccessProfileIds []string
+				if r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds != nil {
+					excludedAccessProfileIds = make([]string, 0, len(r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds))
+					for excludedAccessProfileIdsIndex := range r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds {
+						excludedAccessProfileIds = append(excludedAccessProfileIds, r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds[excludedAccessProfileIdsIndex].ValueString())
+					}
+				}
+				filterType := new(shared.FilterType)
+				if !r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType.IsUnknown() && !r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType.IsNull() {
+					*filterType = shared.FilterType(r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType.ValueString())
+				} else {
+					filterType = nil
+				}
+				var includedAccessProfileIds []string
+				if r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds != nil {
+					includedAccessProfileIds = make([]string, 0, len(r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds))
+					for includedAccessProfileIdsIndex := range r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds {
+						includedAccessProfileIds = append(includedAccessProfileIds, r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds[includedAccessProfileIdsIndex].ValueString())
+					}
+				}
+				grantAccessProfileFilter = &shared.GrantAccessProfileFilter{
+					ExcludedAccessProfileIds: excludedAccessProfileIds,
+					FilterType:               filterType,
+					IncludedAccessProfileIds: includedAccessProfileIds,
+				}
+			}
+			daysSinceAdded := new(string)
+			if !r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceAdded.IsUnknown() && !r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceAdded.IsNull() {
+				*daysSinceAdded = r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceAdded.ValueString()
+			} else {
+				daysSinceAdded = nil
+			}
+			daysSinceLastUsed := new(string)
+			if !r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceLastUsed.IsUnknown() && !r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceLastUsed.IsNull() {
+				*daysSinceLastUsed = r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceLastUsed.ValueString()
+			} else {
+				daysSinceLastUsed = nil
+			}
+			daysSinceReviewed := new(string)
+			if !r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceReviewed.IsUnknown() && !r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceReviewed.IsNull() {
+				*daysSinceReviewed = r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceReviewed.ValueString()
+			} else {
+				daysSinceReviewed = nil
+			}
+			var grantsAddedBetween *shared.GrantsAddedBetween
+			if r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween != nil {
+				endDate := new(time.Time)
+				if !r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.EndDate.IsUnknown() && !r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.EndDate.IsNull() {
+					*endDate, _ = time.Parse(time.RFC3339Nano, r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.EndDate.ValueString())
+				} else {
+					endDate = nil
+				}
+				startDate := new(time.Time)
+				if !r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.StartDate.IsUnknown() && !r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.StartDate.IsNull() {
+					*startDate, _ = time.Parse(time.RFC3339Nano, r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.StartDate.ValueString())
+				} else {
+					startDate = nil
+				}
+				grantsAddedBetween = &shared.GrantsAddedBetween{
+					EndDate:   endDate,
+					StartDate: startDate,
+				}
+			}
+			sourceFilter := new(shared.SourceFilter)
+			if !r.AccessReviewScopeV2.GrantsByCriteriaScope.SourceFilter.IsUnknown() && !r.AccessReviewScopeV2.GrantsByCriteriaScope.SourceFilter.IsNull() {
+				*sourceFilter = shared.SourceFilter(r.AccessReviewScopeV2.GrantsByCriteriaScope.SourceFilter.ValueString())
+			} else {
+				sourceFilter = nil
+			}
+			typeFilter := new(shared.TypeFilter)
+			if !r.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter.IsUnknown() && !r.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter.IsNull() {
+				*typeFilter = shared.TypeFilter(r.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter.ValueString())
+			} else {
+				typeFilter = nil
+			}
+			grantsByCriteriaScope = &shared.GrantsByCriteriaScope{
+				GrantAccessProfileFilter: grantAccessProfileFilter,
+				DaysSinceAdded:           daysSinceAdded,
+				DaysSinceLastUsed:        daysSinceLastUsed,
+				DaysSinceReviewed:        daysSinceReviewed,
+				GrantsAddedBetween:       grantsAddedBetween,
+				SourceFilter:             sourceFilter,
+				TypeFilter:               typeFilter,
+			}
+		}
+		var resourceTypeSelectionScope *shared.ResourceTypeSelectionScope
+		if r.AccessReviewScopeV2.ResourceTypeSelectionScope != nil {
+			resourceTypeSelectionScope = &shared.ResourceTypeSelectionScope{}
+		}
+		var selectedUsersScope *shared.SelectedUsersScope
+		if r.AccessReviewScopeV2.SelectedUsersScope != nil {
+			var userIds []string
+			if r.AccessReviewScopeV2.SelectedUsersScope.UserIds != nil {
+				userIds = make([]string, 0, len(r.AccessReviewScopeV2.SelectedUsersScope.UserIds))
+				for userIdsIndex := range r.AccessReviewScopeV2.SelectedUsersScope.UserIds {
+					userIds = append(userIds, r.AccessReviewScopeV2.SelectedUsersScope.UserIds[userIdsIndex].ValueString())
+				}
+			}
+			selectedUsersScope = &shared.SelectedUsersScope{
+				UserIds: userIds,
+			}
+		}
+		var specificAccessConflictsScope *shared.SpecificAccessConflictsScope
+		if r.AccessReviewScopeV2.SpecificAccessConflictsScope != nil {
+			specificAccessConflictsScope = &shared.SpecificAccessConflictsScope{}
+		}
+		var specificResourcesScope *shared.SpecificResourcesScope
+		if r.AccessReviewScopeV2.SpecificResourcesScope != nil {
+			specificResourcesScope = &shared.SpecificResourcesScope{}
+		}
+		var userCriteriaScope *shared.UserCriteriaScope
+		if r.AccessReviewScopeV2.UserCriteriaScope != nil {
+			var groupAppEntitlementsRef []shared.AppEntitlementRef
+			if r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef != nil {
+				groupAppEntitlementsRef = make([]shared.AppEntitlementRef, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef))
+				for groupAppEntitlementsRefIndex := range r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef {
+					appID := new(string)
+					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsNull() {
+						*appID = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
+					} else {
+						appID = nil
+					}
+					id := new(string)
+					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsNull() {
+						*id = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.ValueString()
+					} else {
+						id = nil
+					}
+					groupAppEntitlementsRef = append(groupAppEntitlementsRef, shared.AppEntitlementRef{
+						AppID: appID,
+						ID:    id,
+					})
+				}
+			}
+			var managerUserIds []string
+			if r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds != nil {
+				managerUserIds = make([]string, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds))
+				for managerUserIdsIndex := range r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds {
+					managerUserIds = append(managerUserIds, r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds[managerUserIdsIndex].ValueString())
+				}
+			}
+			multiUserProfileAttributes := make(map[string]shared.IncludedUserAttributeValues)
+			for multiUserProfileAttributesKey := range r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes {
+				var values []shared.IncludedUserAttributeValue
+				if r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values != nil {
+					values = make([]shared.IncludedUserAttributeValue, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values))
+					for valuesIndex := range r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values {
+						value := new(string)
+						if !r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values[valuesIndex].Value.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values[valuesIndex].Value.IsNull() {
+							*value = r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[multiUserProfileAttributesKey].Values[valuesIndex].Value.ValueString()
+						} else {
+							value = nil
+						}
+						values = append(values, shared.IncludedUserAttributeValue{
+							Value: value,
+						})
+					}
+				}
+				multiUserProfileAttributesInst := shared.IncludedUserAttributeValues{
+					Values: values,
+				}
+				multiUserProfileAttributes[multiUserProfileAttributesKey] = multiUserProfileAttributesInst
+			}
+			var userStatus []shared.UserStatus
+			if r.AccessReviewScopeV2.UserCriteriaScope.UserStatus != nil {
+				userStatus = make([]shared.UserStatus, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.UserStatus))
+				for _, userStatusItem := range r.AccessReviewScopeV2.UserCriteriaScope.UserStatus {
+					userStatus = append(userStatus, shared.UserStatus(userStatusItem.ValueString()))
+				}
+			}
+			userCriteriaScope = &shared.UserCriteriaScope{
+				GroupAppEntitlementsRef:    groupAppEntitlementsRef,
+				ManagerUserIds:             managerUserIds,
+				MultiUserProfileAttributes: multiUserProfileAttributes,
+				UserStatus:                 userStatus,
+			}
+		}
+		accessReviewScopeV2 = &shared.AccessReviewScopeV2{
+			CelExpressionScope:           celExpressionScope,
+			AccountCriteriaScope:         accountCriteriaScope,
+			AllAccessConflictsScope:      allAccessConflictsScope,
+			AllAccountsScope:             allAccountsScope,
+			AllGrantsScope:               allGrantsScope,
+			AllUsersScope:                allUsersScope,
+			ApplicationAccessScope:       applicationAccessScope,
+			AppSelectionCriteriaScope:    appSelectionCriteriaScope,
+			CelExpressionScope1:          celExpressionScope1,
+			GrantsByCriteriaScope:        grantsByCriteriaScope,
+			ResourceTypeSelectionScope:   resourceTypeSelectionScope,
+			SelectedUsersScope:           selectedUsersScope,
+			SpecificAccessConflictsScope: specificAccessConflictsScope,
+			SpecificResourcesScope:       specificResourcesScope,
+			UserCriteriaScope:            userCriteriaScope,
+		}
+	}
 	scopeType := new(shared.AccessReviewTemplateServiceCreateRequestScopeType)
 	if !r.ScopeType.IsUnknown() && !r.ScopeType.IsNull() {
 		*scopeType = shared.AccessReviewTemplateServiceCreateRequestScopeType(r.ScopeType.ValueString())
@@ -1079,6 +1418,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		NotificationConfig:   notificationConfig,
 		OwnerIds:             ownerIds,
 		PolicyID:             policyID,
+		AccessReviewScopeV2:  accessReviewScopeV2,
 		ScopeType:            scopeType,
 	}
 

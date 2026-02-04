@@ -165,11 +165,23 @@ Optional:
 
 Read-Only:
 
+- `actor_object_permissions` (Attributes) The ActorObjectPermissions message. (see [below for nested schema](#nestedatt--list--actor_object_permissions))
 - `app_entitlement` (Attributes) The app entitlement represents one permission in a downstream App (SAAS) that can be granted. For example, GitHub Read vs GitHub Write.
 
 This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
   - durationUnset
   - durationGrant (see [below for nested schema](#nestedatt--list--app_entitlement))
+
+<a id="nestedatt--list--actor_object_permissions"></a>
+### Nested Schema for `list.actor_object_permissions`
+
+Read-Only:
+
+- `delete` (Boolean) The delete field.
+- `edit` (Boolean) The edit field.
+- `extra` (Map of Boolean) The extra field.
+- `read` (Boolean) The read field.
+
 
 <a id="nestedatt--list--app_entitlement"></a>
 ### Nested Schema for `list.app_entitlement`

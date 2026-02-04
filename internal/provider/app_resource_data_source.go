@@ -29,18 +29,24 @@ type AppResourceDataSource struct {
 
 // AppResourceDataSourceModel describes the data model.
 type AppResourceDataSourceModel struct {
+	AccessConfigID          types.String                                    `tfsdk:"access_config_id"`
 	AppID                   types.String                                    `tfsdk:"app_id"`
 	AppResourceTypeID       types.String                                    `tfsdk:"app_resource_type_id"`
 	CreatedAt               types.String                                    `tfsdk:"created_at"`
+	Delete                  types.Bool                                      `tfsdk:"delete"`
 	DeletedAt               types.String                                    `tfsdk:"deleted_at"`
 	Description             types.String                                    `tfsdk:"description"`
 	DisplayName             types.String                                    `tfsdk:"display_name"`
+	Edit                    types.Bool                                      `tfsdk:"edit"`
 	Expanded                []tfTypes.AppResourceServiceGetResponseExpanded `tfsdk:"expanded"`
+	Extra                   map[string]types.Bool                           `tfsdk:"extra"`
 	GrantCount              types.String                                    `tfsdk:"grant_count"`
 	ID                      types.String                                    `tfsdk:"id"`
 	MatchBatonID            types.String                                    `tfsdk:"match_baton_id"`
 	ParentAppResourceID     types.String                                    `tfsdk:"parent_app_resource_id"`
 	ParentAppResourceTypeID types.String                                    `tfsdk:"parent_app_resource_type_id"`
+	Profile                 *tfTypes.AppResourceProfile                     `tfsdk:"profile"`
+	Read                    types.Bool                                      `tfsdk:"read"`
 	SecretTrait             *tfTypes.SecretTrait                            `tfsdk:"secret_trait"`
 	UpdatedAt               types.String                                    `tfsdk:"updated_at"`
 }
@@ -56,6 +62,11 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 		MarkdownDescription: "AppResource DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"access_config_id": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `The access config ID for this resource. May be empty.` + "\n" +
+					` Must be one of the builtin access config IDs or empty.`,
+			},
 			"app_id": schema.StringAttribute{
 				Required: true,
 			},
@@ -64,6 +75,10 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
+			},
+			"delete": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The delete field.`,
 			},
 			"deleted_at": schema.StringAttribute{
 				Computed: true,
@@ -76,12 +91,21 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 				Computed:    true,
 				Description: `The display name for this resource.`,
 			},
+			"edit": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The edit field.`,
+			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{},
 				},
 				Description: `List of serialized related objects.`,
+			},
+			"extra": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.BoolType,
+				Description: `The extra field.`,
 			},
 			"grant_count": schema.StringAttribute{
 				Computed:    true,
@@ -101,6 +125,13 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 			"parent_app_resource_type_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The parent resource type id, if this resource is a child of another resource.`,
+			},
+			"profile": schema.SingleNestedAttribute{
+				Computed: true,
+			},
+			"read": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The read field.`,
 			},
 			"secret_trait": schema.SingleNestedAttribute{
 				Computed: true,

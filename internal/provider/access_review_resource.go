@@ -8,6 +8,7 @@ import (
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -41,8 +42,12 @@ type AccessReviewResourceModel struct {
 	AccessReviewScope              *tfTypes.AccessReviewScope          `tfsdk:"access_review_scope"`
 	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
 	AccessReviewTemplateID         types.String                        `tfsdk:"access_review_template_id"`
+	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
+	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
+	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
 	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
 	AutoResolve                    types.Bool                          `tfsdk:"auto_resolve"`
+	AutoStartCampaign              types.Bool                          `tfsdk:"auto_start_campaign"`
 	BindingObjectSetup             *tfTypes.BindingObjectSetup         `tfsdk:"binding_object_setup"`
 	ClosedAt                       types.String                        `tfsdk:"closed_at"`
 	CompletionDate                 types.String                        `tfsdk:"completion_date"`
@@ -70,6 +75,7 @@ type AccessReviewResourceModel struct {
 	Read                           types.Bool                          `tfsdk:"read"`
 	ReviewInstructions             types.String                        `tfsdk:"review_instructions"`
 	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig      `tfsdk:"review_signature_config"`
+	ScheduledStartDate             types.String                        `tfsdk:"scheduled_start_date"`
 	ScopeType                      types.String                        `tfsdk:"scope_type"`
 	ScopingVersion                 types.String                        `tfsdk:"scoping_version"`
 	SingleAppSetup                 *tfTypes.SingleAppSetup             `tfsdk:"single_app_setup"`
@@ -176,26 +182,39 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"access_review_scope_v2": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"account_criteria_scope": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"account_domain": schema.StringAttribute{
 								Computed:    true,
-								Description: `The accountDomain field.`,
+								Optional:    true,
+								Description: `The accountDomain field. must be one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"APP_USER_DOMAIN_UNSPECIFIED",
+										"APP_USER_DOMAIN_EXTERNAL",
+										"APP_USER_DOMAIN_TRUSTED",
+									),
+								},
 							},
 							"account_types": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The accountTypes field.`,
 							},
 							"app_user_statuses": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The appUserStatuses field.`,
 							},
 							"no_account_owner": schema.BoolAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The noAccountOwner field.`,
 							},
 						},
@@ -203,33 +222,41 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 					"all_access_conflicts_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The AllAccessConflictsScope message.`,
 					},
 					"all_accounts_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The AllAccountsScope message.`,
 					},
 					"all_grants_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The AllGrantsScope message.`,
 					},
 					"all_users_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The AllUsersScope message.`,
 					},
 					"app_selection_criteria_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The AppSelectionCriteriaScope message.`,
 					},
 					"application_access_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The ApplicationAccessScope message.`,
 					},
 					"cel_expression_scope": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"expression": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The expression field.`,
 							},
 						},
@@ -237,9 +264,11 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 					"cel_expression_scope1": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"expression": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The expression field.`,
 							},
 						},
@@ -247,21 +276,27 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 					"grants_by_criteria_scope": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"days_since_added": schema.StringAttribute{
 								Computed: true,
+								Optional: true,
 							},
 							"days_since_last_used": schema.StringAttribute{
 								Computed: true,
+								Optional: true,
 							},
 							"days_since_reviewed": schema.StringAttribute{
 								Computed: true,
+								Optional: true,
 							},
 							"grant_access_profile_filter": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"excluded_access_profile_ids": schema.ListAttribute{
 										Computed:    true,
+										Optional:    true,
 										ElementType: types.StringType,
 										MarkdownDescription: `Access profile IDs to EXCLUDE from the campaign` + "\n" +
 											` Used when filter_type = EXCLUDE_SPECIFIC` + "\n" +
@@ -269,10 +304,21 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 									},
 									"filter_type": schema.StringAttribute{
 										Computed:    true,
-										Description: `The filterType field.`,
+										Optional:    true,
+										Description: `The filterType field. must be one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]`,
+										Validators: []validator.String{
+											stringvalidator.OneOf(
+												"ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED",
+												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL",
+												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL",
+												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC",
+												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC",
+											),
+										},
 									},
 									"included_access_profile_ids": schema.ListAttribute{
 										Computed:    true,
+										Optional:    true,
 										ElementType: types.StringType,
 										MarkdownDescription: `Access profile IDs to INCLUDE in the campaign` + "\n" +
 											` Used when filter_type = INCLUDE_SPECIFIC` + "\n" +
@@ -283,23 +329,48 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 							},
 							"grants_added_between": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"end_date": schema.StringAttribute{
 										Computed: true,
+										Optional: true,
+										Validators: []validator.String{
+											validators.IsRFC3339(),
+										},
 									},
 									"start_date": schema.StringAttribute{
 										Computed: true,
+										Optional: true,
+										Validators: []validator.String{
+											validators.IsRFC3339(),
+										},
 									},
 								},
 								Description: `The GrantsAddedBetween message.`,
 							},
 							"source_filter": schema.StringAttribute{
 								Computed:    true,
-								Description: `The sourceFilter field.`,
+								Optional:    true,
+								Description: `The sourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"GRANT_SOURCE_FILTER_UNSPECIFIED",
+										"GRANT_SOURCE_FILTER_DIRECT",
+										"GRANT_SOURCE_FILTER_INHERITED",
+									),
+								},
 							},
 							"type_filter": schema.StringAttribute{
 								Computed:    true,
-								Description: `The typeFilter field.`,
+								Optional:    true,
+								Description: `The typeFilter field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"GRANT_FILTER_TYPE_UNSPECIFIED",
+										"GRANT_FILTER_TYPE_PERMANENT",
+										"GRANT_FILTER_TYPE_TEMPORARY",
+									),
+								},
 							},
 						},
 						MarkdownDescription: `The GrantsByCriteriaScope message.` + "\n" +
@@ -311,13 +382,16 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 					"resource_type_selection_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The ResourceTypeSelectionScope message.`,
 					},
 					"selected_users_scope": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"user_ids": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The userIds field.`,
 							},
@@ -326,25 +400,34 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 					"specific_access_conflicts_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The SpecificAccessConflictsScope message.`,
 					},
 					"specific_resources_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The SpecificResourcesScope message.`,
 					},
 					"user_criteria_scope": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"group_app_entitlements_ref": schema.ListNestedAttribute{
 								Computed: true,
+								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
 									Attributes: map[string]schema.Attribute{
 										"app_id": schema.StringAttribute{
 											Computed:    true,
+											Optional:    true,
 											Description: `The appId field.`,
 										},
 										"id": schema.StringAttribute{
 											Computed:    true,
+											Optional:    true,
 											Description: `The id field.`,
 										},
 									},
@@ -353,19 +436,29 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 							},
 							"manager_user_ids": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The managerUserIds field.`,
 							},
 							"multi_user_profile_attributes": schema.MapNestedAttribute{
 								Computed: true,
+								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
 									Attributes: map[string]schema.Attribute{
 										"values": schema.ListNestedAttribute{
 											Computed: true,
+											Optional: true,
 											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
 												Attributes: map[string]schema.Attribute{
 													"value": schema.StringAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `The value field.`,
 													},
 												},
@@ -378,6 +471,7 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 							},
 							"user_status": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The userStatus field.`,
 							},
@@ -420,6 +514,19 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 				Computed:    true,
 				Description: `The ID of the template if the campaign was created from one`,
 			},
+			"accuracy_issue_action": schema.StringAttribute{
+				Computed:    true,
+				Description: `The accuracyIssueAction field.`,
+			},
+			"auto_close_campaign": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `Auto-close configuration` + "\n" +
+					` completion_date is used as the scheduled close date`,
+			},
+			"auto_close_decision": schema.StringAttribute{
+				Computed:    true,
+				Description: `The autoCloseDecision field.`,
+			},
 			"auto_generate_report": schema.BoolAttribute{
 				Computed:    true,
 				Description: `The autoGenerateReport field.`,
@@ -427,6 +534,10 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			"auto_resolve": schema.BoolAttribute{
 				Computed:    true,
 				Description: `The autoResolve field.`,
+			},
+			"auto_start_campaign": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Auto-start configuration`,
 			},
 			"binding_object_setup": schema.SingleNestedAttribute{
 				Computed:    true,
@@ -573,6 +684,11 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 						Optional:    true,
 						Description: `The sendClose field.`,
 					},
+					"send_kickoff": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The sendKickoff field.`,
+					},
 					"send_reminders": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -627,6 +743,9 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 				},
 				Description: `Signature configuration for access review submissions`,
+			},
+			"scheduled_start_date": schema.StringAttribute{
+				Computed: true,
 			},
 			"scope_type": schema.StringAttribute{
 				Computed:    true,
@@ -977,10 +1096,7 @@ func (r *AccessReviewResource) Delete(ctx context.Context, req resource.DeleteRe
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	switch res.StatusCode {
-	case 200, 404:
-		break
-	default:
+	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

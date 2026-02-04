@@ -69,19 +69,19 @@ func (e *AccountTypes) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type AccountCriteriaScopeAppUserStatuses string
+type AppUserStatuses string
 
 const (
-	AccountCriteriaScopeAppUserStatusesAppUserStatusUnspecified AccountCriteriaScopeAppUserStatuses = "APP_USER_STATUS_UNSPECIFIED"
-	AccountCriteriaScopeAppUserStatusesAppUserStatusEnabled     AccountCriteriaScopeAppUserStatuses = "APP_USER_STATUS_ENABLED"
-	AccountCriteriaScopeAppUserStatusesAppUserStatusDisabled    AccountCriteriaScopeAppUserStatuses = "APP_USER_STATUS_DISABLED"
-	AccountCriteriaScopeAppUserStatusesAppUserStatusDeleted     AccountCriteriaScopeAppUserStatuses = "APP_USER_STATUS_DELETED"
+	AppUserStatusesAppUserStatusUnspecified AppUserStatuses = "APP_USER_STATUS_UNSPECIFIED"
+	AppUserStatusesAppUserStatusEnabled     AppUserStatuses = "APP_USER_STATUS_ENABLED"
+	AppUserStatusesAppUserStatusDisabled    AppUserStatuses = "APP_USER_STATUS_DISABLED"
+	AppUserStatusesAppUserStatusDeleted     AppUserStatuses = "APP_USER_STATUS_DELETED"
 )
 
-func (e AccountCriteriaScopeAppUserStatuses) ToPointer() *AccountCriteriaScopeAppUserStatuses {
+func (e AppUserStatuses) ToPointer() *AppUserStatuses {
 	return &e
 }
-func (e *AccountCriteriaScopeAppUserStatuses) UnmarshalJSON(data []byte) error {
+func (e *AppUserStatuses) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -94,10 +94,10 @@ func (e *AccountCriteriaScopeAppUserStatuses) UnmarshalJSON(data []byte) error {
 	case "APP_USER_STATUS_DISABLED":
 		fallthrough
 	case "APP_USER_STATUS_DELETED":
-		*e = AccountCriteriaScopeAppUserStatuses(v)
+		*e = AppUserStatuses(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AccountCriteriaScopeAppUserStatuses: %v", v)
+		return fmt.Errorf("invalid value for AppUserStatuses: %v", v)
 	}
 }
 
@@ -108,7 +108,7 @@ type AccountCriteriaScope struct {
 	// The accountTypes field.
 	AccountTypes []AccountTypes `json:"accountTypes,omitempty"`
 	// The appUserStatuses field.
-	AppUserStatuses []AccountCriteriaScopeAppUserStatuses `json:"appUserStatuses,omitempty"`
+	AppUserStatuses []AppUserStatuses `json:"appUserStatuses,omitempty"`
 	// The noAccountOwner field.
 	NoAccountOwner *bool `json:"noAccountOwner,omitempty"`
 }
@@ -127,7 +127,7 @@ func (a *AccountCriteriaScope) GetAccountTypes() []AccountTypes {
 	return a.AccountTypes
 }
 
-func (a *AccountCriteriaScope) GetAppUserStatuses() []AccountCriteriaScopeAppUserStatuses {
+func (a *AccountCriteriaScope) GetAppUserStatuses() []AppUserStatuses {
 	if a == nil {
 		return nil
 	}

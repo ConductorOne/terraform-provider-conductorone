@@ -15,6 +15,8 @@ type ConnectorAction struct {
 	ArgsTemplate *ArgsTemplate `json:"argsTemplate,omitempty"`
 	// The ConnectorRef message.
 	ConnectorRef *ConnectorRef `json:"connectorRef,omitempty"`
+	// The resourceTypeId field.
+	ResourceTypeID *string `json:"resourceTypeId,omitempty"`
 }
 
 func (c *ConnectorAction) GetActionName() *string {
@@ -36,4 +38,11 @@ func (c *ConnectorAction) GetConnectorRef() *ConnectorRef {
 		return nil
 	}
 	return c.ConnectorRef
+}
+
+func (c *ConnectorAction) GetResourceTypeID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ResourceTypeID
 }

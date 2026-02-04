@@ -13,6 +13,7 @@ resource "conductorone_task_grant" "my_taskgrant" {
     conversation_id = "...my_conversation_id..."
     external_url    = "...my_external_url..."
     integration_id  = "...my_integration_id..."
+    is_extension    = true
     request_id      = "...my_request_id..."
   }
 }

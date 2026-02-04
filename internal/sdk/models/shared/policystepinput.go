@@ -19,6 +19,7 @@ type PolicyStepInput struct {
 	//
 	// This message contains a oneof named target. Only a single field of the following list may be set at a time:
 	//   - automation
+	//   - batonResourceAction
 	//
 	Action *Action `json:"action,omitempty"`
 	// The Approval message.

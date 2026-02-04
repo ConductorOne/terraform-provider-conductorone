@@ -10,8 +10,12 @@ type ExpressionApprovalInput struct {
 	Expressions []string `json:"expressions,omitempty"`
 	// Configuration to allow a fallback if the expression does not return a valid list of users.
 	Fallback *bool `json:"fallback,omitempty"`
+	// Configuration to specify which groups to fallback to if fallback is enabled and the expression does not return a valid list of users.
+	FallbackGroupIds []AppEntitlementReference `json:"fallbackGroupIds,omitempty"`
 	// Configuration to specific which users to fallback to if and the expression does not return a valid list of users.
 	FallbackUserIds []string `json:"fallbackUserIds,omitempty"`
+	// Configuration to enable fallback for group fallback.
+	IsGroupFallbackEnabled *bool `json:"isGroupFallbackEnabled,omitempty"`
 	// Configuration to require distinct approvers across approval steps of a rule.
 	RequireDistinctApprovers *bool `json:"requireDistinctApprovers,omitempty"`
 }
@@ -37,11 +41,25 @@ func (e *ExpressionApprovalInput) GetFallback() *bool {
 	return e.Fallback
 }
 
+func (e *ExpressionApprovalInput) GetFallbackGroupIds() []AppEntitlementReference {
+	if e == nil {
+		return nil
+	}
+	return e.FallbackGroupIds
+}
+
 func (e *ExpressionApprovalInput) GetFallbackUserIds() []string {
 	if e == nil {
 		return nil
 	}
 	return e.FallbackUserIds
+}
+
+func (e *ExpressionApprovalInput) GetIsGroupFallbackEnabled() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.IsGroupFallbackEnabled
 }
 
 func (e *ExpressionApprovalInput) GetRequireDistinctApprovers() *bool {

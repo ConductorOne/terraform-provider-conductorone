@@ -11,6 +11,8 @@ type AppEntitlementView struct {
 	//   - durationGrant
 	//
 	AppEntitlement *AppEntitlement `json:"appEntitlement,omitempty"`
+	// The ActorObjectPermissions message.
+	ActorObjectPermissions *ActorObjectPermissions `json:"objectPermissions,omitempty"`
 }
 
 func (a *AppEntitlementView) GetAppEntitlement() *AppEntitlement {
@@ -18,4 +20,11 @@ func (a *AppEntitlementView) GetAppEntitlement() *AppEntitlement {
 		return nil
 	}
 	return a.AppEntitlement
+}
+
+func (a *AppEntitlementView) GetActorObjectPermissions() *ActorObjectPermissions {
+	if a == nil {
+		return nil
+	}
+	return a.ActorObjectPermissions
 }

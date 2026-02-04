@@ -15,6 +15,8 @@ type AppEntitlementUserView struct {
 	AppUserView *AppUserView `json:"appUser,omitempty"`
 	// List of sources for the grant, ie. groups, roles, etc.
 	GrantSources []AppEntitlementRef `json:"grantSources,omitempty"`
+	// The originating ticket ID for the grant (e.g. from a request ticket).
+	OriginatingTicketID *string `json:"originatingTicketId,omitempty"`
 }
 
 func (a AppEntitlementUserView) MarshalJSON() ([]byte, error) {
@@ -54,4 +56,11 @@ func (a *AppEntitlementUserView) GetGrantSources() []AppEntitlementRef {
 		return nil
 	}
 	return a.GrantSources
+}
+
+func (a *AppEntitlementUserView) GetOriginatingTicketID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.OriginatingTicketID
 }

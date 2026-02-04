@@ -35,6 +35,7 @@ resource "conductorone_automation" "my_automation" {
           app_id = "...my_app_id..."
           id     = "...my_id..."
         }
+        resource_type_id = "...my_resource_type_id..."
       }
       connector_create_account = {
         connector_ref = {
@@ -166,8 +167,55 @@ resource "conductorone_automation" "my_automation" {
           }
         ]
         app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-        use_subject_user         = true
-        user_id_cel              = "...my_user_id_cel..."
+        grant_entitlement_exclusion_criteria = {
+          excluded_app_ids = [
+            "..."
+          ]
+          excluded_compliance_framework_ids = [
+            "..."
+          ]
+          excluded_risk_level_ids = [
+            "..."
+          ]
+        }
+        grant_entitlement_exclusion_list = {
+          excluded_app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        grant_entitlement_exclusion_list_cel = {
+          excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        }
+        grant_entitlement_exclusion_none = {
+          # ...
+        }
+        grant_entitlement_inclusion_criteria = {
+          app_ids = [
+            "..."
+          ]
+          compliance_framework_ids = [
+            "..."
+          ]
+          risk_level_ids = [
+            "..."
+          ]
+        }
+        grant_entitlement_inclusion_list = {
+          app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        grant_entitlement_inclusion_list_cel = {
+          app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+        }
+        use_subject_user = true
+        user_id_cel      = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
@@ -304,6 +352,7 @@ resource "conductorone_automation" "my_automation" {
           app_id = "...my_app_id..."
           id     = "...my_id..."
         }
+        resource_type_id = "...my_resource_type_id..."
       }
       connector_create_account = {
         connector_ref = {
@@ -435,8 +484,55 @@ resource "conductorone_automation" "my_automation" {
           }
         ]
         app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-        use_subject_user         = true
-        user_id_cel              = "...my_user_id_cel..."
+        grant_entitlement_exclusion_criteria = {
+          excluded_app_ids = [
+            "..."
+          ]
+          excluded_compliance_framework_ids = [
+            "..."
+          ]
+          excluded_risk_level_ids = [
+            "..."
+          ]
+        }
+        grant_entitlement_exclusion_list = {
+          excluded_app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        grant_entitlement_exclusion_list_cel = {
+          excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        }
+        grant_entitlement_exclusion_none = {
+          # ...
+        }
+        grant_entitlement_inclusion_criteria = {
+          app_ids = [
+            "..."
+          ]
+          compliance_framework_ids = [
+            "..."
+          ]
+          risk_level_ids = [
+            "..."
+          ]
+        }
+        grant_entitlement_inclusion_list = {
+          app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        grant_entitlement_inclusion_list_cel = {
+          app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+        }
+        use_subject_user = true
+        user_id_cel      = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }

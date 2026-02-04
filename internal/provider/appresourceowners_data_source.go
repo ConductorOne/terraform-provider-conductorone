@@ -29,13 +29,14 @@ type AppResourceOwnersDataSource struct {
 
 // AppResourceOwnersDataSourceModel describes the data model.
 type AppResourceOwnersDataSourceModel struct {
-	AppID          types.String   `tfsdk:"app_id"`
-	List           []tfTypes.User `tfsdk:"list"`
-	NextPageToken  types.String   `tfsdk:"next_page_token"`
-	PageSize       types.Int32    `queryParam:"style=form,explode=true,name=page_size" tfsdk:"page_size"`
-	PageToken      types.String   `queryParam:"style=form,explode=true,name=page_token" tfsdk:"page_token"`
-	ResourceID     types.String   `tfsdk:"resource_id"`
-	ResourceTypeID types.String   `tfsdk:"resource_type_id"`
+	AppID            types.String   `tfsdk:"app_id"`
+	ImmutableUserIds []types.String `tfsdk:"immutable_user_ids"`
+	List             []tfTypes.User `tfsdk:"list"`
+	NextPageToken    types.String   `tfsdk:"next_page_token"`
+	PageSize         types.Int32    `queryParam:"style=form,explode=true,name=page_size" tfsdk:"page_size"`
+	PageToken        types.String   `queryParam:"style=form,explode=true,name=page_token" tfsdk:"page_token"`
+	ResourceID       types.String   `tfsdk:"resource_id"`
+	ResourceTypeID   types.String   `tfsdk:"resource_type_id"`
 }
 
 // Metadata returns the data source type name.
@@ -51,6 +52,12 @@ func (r *AppResourceOwnersDataSource) Schema(ctx context.Context, req datasource
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
 				Required: true,
+			},
+			"immutable_user_ids": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `User IDs of owners that are immutable and cannot be removed by the user.` + "\n" +
+					` These owners are managed by the system (e.g., connector-sourced) and will be updated automatically.`,
 			},
 			"list": schema.ListNestedAttribute{
 				Computed: true,

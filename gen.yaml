@@ -32,7 +32,7 @@ generation:
     skipResponseBodyAssertions: false
   persistentEdits: {}
 terraform:
-  version: 1.7.9
+  version: 1.7.10
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []
@@ -57,4 +57,5 @@ terraform:
   inferUnionDiscriminators: false
   packageName: conductorone
   respectRequiredFields: false
+  unionDeserializationStrategy: populated-fields
   unionStrategy: populated-fields

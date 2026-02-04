@@ -263,7 +263,19 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 				}
 			}
 		}
+		if resp.AccuracyIssueAction != nil {
+			r.AccuracyIssueAction = types.StringValue(string(*resp.AccuracyIssueAction))
+		} else {
+			r.AccuracyIssueAction = types.StringNull()
+		}
+		r.AutoCloseCampaign = types.BoolPointerValue(resp.AutoCloseCampaign)
+		if resp.AutoCloseDecision != nil {
+			r.AutoCloseDecision = types.StringValue(string(*resp.AutoCloseDecision))
+		} else {
+			r.AutoCloseDecision = types.StringNull()
+		}
 		r.AutoGenerateReport = types.BoolPointerValue(resp.AutoGenerateReport)
+		r.AutoStartCampaign = types.BoolPointerValue(resp.AutoStartCampaign)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		if resp.DefaultView != nil {
 			r.DefaultView = types.StringValue(string(*resp.DefaultView))
@@ -282,6 +294,7 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 		} else {
 			r.NotificationConfig = &tfTypes.NotificationConfig{}
 			r.NotificationConfig.SendClose = types.BoolPointerValue(resp.NotificationConfig.SendClose)
+			r.NotificationConfig.SendKickoff = types.BoolPointerValue(resp.NotificationConfig.SendKickoff)
 			r.NotificationConfig.SendReminders = types.BoolPointerValue(resp.NotificationConfig.SendReminders)
 		}
 		r.Occurrences = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.Occurrences))

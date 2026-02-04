@@ -17,6 +17,7 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResource(ctx context.Cont
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.AccessConfigID = types.StringPointerValue(resp.AccessConfigID)
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
@@ -28,6 +29,11 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResource(ctx context.Cont
 		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
 		r.ParentAppResourceID = types.StringPointerValue(resp.ParentAppResourceID)
 		r.ParentAppResourceTypeID = types.StringPointerValue(resp.ParentAppResourceTypeID)
+		if resp.Profile == nil {
+			r.Profile = nil
+		} else {
+			r.Profile = &tfTypes.AppResourceProfile{}
+		}
 		if resp.SecretTrait == nil {
 			r.SecretTrait = nil
 		} else {
@@ -81,6 +87,17 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceView(ctx context.
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.ActorObjectPermissions != nil {
+			r.Delete = types.BoolPointerValue(resp.ActorObjectPermissions.Delete)
+			r.Edit = types.BoolPointerValue(resp.ActorObjectPermissions.Edit)
+			if len(resp.ActorObjectPermissions.Extra) > 0 {
+				r.Extra = make(map[string]types.Bool, len(resp.ActorObjectPermissions.Extra))
+				for key, value := range resp.ActorObjectPermissions.Extra {
+					r.Extra[key] = types.BoolValue(value)
+				}
+			}
+			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
+		}
 		diags.Append(r.RefreshFromSharedAppResource(ctx, resp.AppResource)...)
 
 		if diags.HasError() {
@@ -214,6 +231,12 @@ func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceUpdat
 func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context) (*shared.AppResourceInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	accessConfigID := new(string)
+	if !r.AccessConfigID.IsUnknown() && !r.AccessConfigID.IsNull() {
+		*accessConfigID = r.AccessConfigID.ValueString()
+	} else {
+		accessConfigID = nil
+	}
 	appID := new(string)
 	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
 		*appID = r.AppID.ValueString()
@@ -302,6 +325,7 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context)
 		}
 	}
 	out := shared.AppResourceInput{
+		AccessConfigID:          accessConfigID,
 		AppID:                   appID,
 		AppResourceTypeID:       appResourceTypeID,
 		Description:             description,

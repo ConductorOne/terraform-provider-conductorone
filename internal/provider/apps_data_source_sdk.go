@@ -32,6 +32,7 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 				list.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.DeletedAt))
 				list.Description = types.StringPointerValue(listItem.Description)
 				list.DisplayName = types.StringPointerValue(listItem.DisplayName)
+				list.EnableConnectorSourcedOwnership = types.BoolPointerValue(listItem.EnableConnectorSourcedOwnership)
 				list.GrantPolicyID = types.StringPointerValue(listItem.GrantPolicyID)
 				list.ID = types.StringPointerValue(listItem.ID)
 				if listItem.IdentityMatching != nil {

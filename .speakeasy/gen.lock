@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 0d875e79cd8f46883cd7d24bdf73f144
+  docChecksum: 5ebf4451881afc403d132ade9a105c0f
   docVersion: 0.1.0-alpha
-  speakeasyVersion: 1.661.0
-  generationVersion: 2.762.0
-  releaseVersion: 1.7.9
-  configChecksum: a6737dedfbc61409539482dc77685789
+  speakeasyVersion: 1.658.1
+  generationVersion: 2.755.6
+  releaseVersion: 1.7.10
+  configChecksum: 104a880683175e28a0644e14b52246e8
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.3
-    core: 3.46.17
+    core: 3.46.16
     deprecations: 2.82.0
     devContainers: 0.0.0
     globalSecurity: 2.82.1
@@ -351,6 +351,8 @@ generatedFiles:
   - internal/provider/types/action_provision.go
   - internal/provider/types/action_target_automation.go
   - internal/provider/types/action_target_automation_instance.go
+  - internal/provider/types/action_target_baton_resource_action.go
+  - internal/provider/types/action_target_baton_resource_action_instance.go
   - internal/provider/types/actor_object_permissions.go
   - internal/provider/types/admin_provider_config.go
   - internal/provider/types/agent_approval.go
@@ -375,6 +377,7 @@ generatedFiles:
   - internal/provider/types/app_owner_approval.go
   - internal/provider/types/app_resource.go
   - internal/provider/types/app_resource_filter.go
+  - internal/provider/types/app_resource_profile.go
   - internal/provider/types/app_resource_ref.go
   - internal/provider/types/app_resource_service_get_response_expanded.go
   - internal/provider/types/app_resource_type.go
@@ -405,6 +408,7 @@ generatedFiles:
   - internal/provider/types/bundle_automation_circuit_breaker.go
   - internal/provider/types/bundle_automation_last_run_state.go
   - internal/provider/types/bundle_automation_rule_entitlement.go
+  - internal/provider/types/c1_user_filter.go
   - internal/provider/types/call_function.go
   - internal/provider/types/campaign_entitlement_details.go
   - internal/provider/types/cancel_ticket.go
@@ -433,6 +437,7 @@ generatedFiles:
   - internal/provider/types/delete_account.go
   - internal/provider/types/delete_bundle_automation_request.go
   - internal/provider/types/denied_action.go
+  - internal/provider/types/dependent_on.go
   - internal/provider/types/deprovisioner_policy.go
   - internal/provider/types/directory.go
   - internal/provider/types/directory_account_filter_all.go
@@ -480,6 +485,13 @@ generatedFiles:
   - internal/provider/types/get_app_entitlement_response_expanded.go
   - internal/provider/types/grant_access_profile_filter.go
   - internal/provider/types/grant_deleted_trigger.go
+  - internal/provider/types/grant_entitlement_exclusion_criteria.go
+  - internal/provider/types/grant_entitlement_exclusion_list.go
+  - internal/provider/types/grant_entitlement_exclusion_list_cel.go
+  - internal/provider/types/grant_entitlement_exclusion_none.go
+  - internal/provider/types/grant_entitlement_inclusion_criteria.go
+  - internal/provider/types/grant_entitlement_inclusion_list.go
+  - internal/provider/types/grant_entitlement_inclusion_list_cel.go
   - internal/provider/types/grant_entitlements.go
   - internal/provider/types/grant_filter.go
   - internal/provider/types/grant_found_trigger.go
@@ -633,7 +645,9 @@ generatedFiles:
   - internal/sdk/.gitattributes
   - internal/sdk/accessconflict.go
   - internal/sdk/accessreview.go
+  - internal/sdk/accessreviewsetupentitlement.go
   - internal/sdk/accessreviewtemplate.go
+  - internal/sdk/accessreviewtemplatesetupentitlement.go
   - internal/sdk/accountprovisionpolicytest.go
   - internal/sdk/appaccessrequestsdefaults.go
   - internal/sdk/appentitlementmonitorbinding.go
@@ -668,6 +682,7 @@ generatedFiles:
   - internal/sdk/directory.go
   - internal/sdk/export.go
   - internal/sdk/exportssearch.go
+  - internal/sdk/externalclientsearch.go
   - internal/sdk/functions.go
   - internal/sdk/functionsinvocation.go
   - internal/sdk/functionssearch.go
@@ -697,10 +712,14 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiaccessreviewv1accessreviewserviceget.go
   - internal/sdk/models/operations/c1apiaccessreviewv1accessreviewservicelist.go
   - internal/sdk/models/operations/c1apiaccessreviewv1accessreviewserviceupdate.go
+  - internal/sdk/models/operations/c1apiaccessreviewv1accessreviewsetupentitlementservicesetcampaignscopeandentitlements.go
+  - internal/sdk/models/operations/c1apiaccessreviewv1accessreviewsetupentitlementservicesetcampaignscopebyresourcetype.go
   - internal/sdk/models/operations/c1apiaccessreviewv1accessreviewtemplateservicecreate.go
   - internal/sdk/models/operations/c1apiaccessreviewv1accessreviewtemplateservicedelete.go
   - internal/sdk/models/operations/c1apiaccessreviewv1accessreviewtemplateserviceget.go
   - internal/sdk/models/operations/c1apiaccessreviewv1accessreviewtemplateserviceupdate.go
+  - internal/sdk/models/operations/c1apiaccessreviewv1accessreviewtemplatesetupentitlementservicesetscopeandentitlements.go
+  - internal/sdk/models/operations/c1apiaccessreviewv1accessreviewtemplatesetupentitlementservicesetscopebyresourcetype.go
   - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicecancelappaccessrequestsdefaults.go
   - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicecreateappaccessrequestsdefaults.go
   - internal/sdk/models/operations/c1apiappv1appaccessrequestsdefaultsservicegetappaccessrequestsdefaults.go
@@ -792,6 +811,7 @@ generatedFiles:
   - internal/sdk/models/operations/c1apiappv1connectorservicerevokecredential.go
   - internal/sdk/models/operations/c1apiappv1connectorservicerotatecredential.go
   - internal/sdk/models/operations/c1apiappv1connectorserviceupdate.go
+  - internal/sdk/models/operations/c1apiappv1connectorserviceupdateconnectorschedule.go
   - internal/sdk/models/operations/c1apiappv1connectorserviceupdatedelegated.go
   - internal/sdk/models/operations/c1apiappv1connectorservicevalidatehttpconnectorconfig.go
   - internal/sdk/models/operations/c1apiattributev1attributescreateattributevalue.go
@@ -833,12 +853,12 @@ generatedFiles:
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicecreatetag.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicedeletefunction.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicegetfunction.go
-  - internal/sdk/models/operations/c1apifunctionsv1functionsservicegetfunctionsecretencryptionkey.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsserviceinvoke.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicelistcommits.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicelistfunctions.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsservicelisttags.go
   - internal/sdk/models/operations/c1apifunctionsv1functionsserviceupdatefunction.go
+  - internal/sdk/models/operations/c1apiiamv1externalclientsearchservicesearch.go
   - internal/sdk/models/operations/c1apiiamv1personalclientsearchservicesearch.go
   - internal/sdk/models/operations/c1apiiamv1personalclientservicecreate.go
   - internal/sdk/models/operations/c1apiiamv1personalclientservicedelete.go
@@ -963,6 +983,14 @@ generatedFiles:
   - internal/sdk/models/shared/accessreviewservicelistresponse.go
   - internal/sdk/models/shared/accessreviewserviceupdaterequest.go
   - internal/sdk/models/shared/accessreviewserviceupdateresponse.go
+  - internal/sdk/models/shared/accessreviewsetscopebyresourcetyperequest.go
+  - internal/sdk/models/shared/accessreviewsetscopebyresourcetyperesponse.go
+  - internal/sdk/models/shared/accessreviewsetupentitlement.go
+  - internal/sdk/models/shared/accessreviewsetupentitlementandscopeservicesetrequest.go
+  - internal/sdk/models/shared/accessreviewsetupentitlementandscopeservicesetresponse.go
+  - internal/sdk/models/shared/accessreviewsetupentitlementexpandmask.go
+  - internal/sdk/models/shared/accessreviewsetupentitlementinput.go
+  - internal/sdk/models/shared/accessreviewsetupentitlementview.go
   - internal/sdk/models/shared/accessreviewtemplate.go
   - internal/sdk/models/shared/accessreviewtemplateservicecreaterequest.go
   - internal/sdk/models/shared/accessreviewtemplateservicecreateresponse.go
@@ -971,6 +999,14 @@ generatedFiles:
   - internal/sdk/models/shared/accessreviewtemplateservicegetresponse.go
   - internal/sdk/models/shared/accessreviewtemplateserviceupdaterequest.go
   - internal/sdk/models/shared/accessreviewtemplateserviceupdateresponse.go
+  - internal/sdk/models/shared/accessreviewtemplatesetscopebyresourcetyperequest.go
+  - internal/sdk/models/shared/accessreviewtemplatesetscopebyresourcetyperesponse.go
+  - internal/sdk/models/shared/accessreviewtemplatesetupentitlement.go
+  - internal/sdk/models/shared/accessreviewtemplatesetupentitlementexpandmask.go
+  - internal/sdk/models/shared/accessreviewtemplatesetupentitlementinput.go
+  - internal/sdk/models/shared/accessreviewtemplatesetupentitlementservicesetrequest.go
+  - internal/sdk/models/shared/accessreviewtemplatesetupentitlementservicesetresponse.go
+  - internal/sdk/models/shared/accessreviewtemplatesetupentitlementview.go
   - internal/sdk/models/shared/accessreviewview.go
   - internal/sdk/models/shared/accountcriteriascope.go
   - internal/sdk/models/shared/accountfilter.go
@@ -987,6 +1023,8 @@ generatedFiles:
   - internal/sdk/models/shared/actionprovision.go
   - internal/sdk/models/shared/actiontargetautomation.go
   - internal/sdk/models/shared/actiontargetautomationinstance.go
+  - internal/sdk/models/shared/actiontargetbatonresourceaction.go
+  - internal/sdk/models/shared/actiontargetbatonresourceactioninstance.go
   - internal/sdk/models/shared/actorobjectpermissions.go
   - internal/sdk/models/shared/addappentitlementownerrequest.go
   - internal/sdk/models/shared/addappentitlementownerresponse.go
@@ -1104,6 +1142,7 @@ generatedFiles:
   - internal/sdk/models/shared/bundleautomationcircuitbreaker.go
   - internal/sdk/models/shared/bundleautomationlastrunstate.go
   - internal/sdk/models/shared/bundleautomationruleentitlement.go
+  - internal/sdk/models/shared/c1userfilter.go
   - internal/sdk/models/shared/callfunction.go
   - internal/sdk/models/shared/campaignentitlementdetails.go
   - internal/sdk/models/shared/cancelaccessrequestdefaultsrequest.go
@@ -1134,6 +1173,7 @@ generatedFiles:
   - internal/sdk/models/shared/connectorcredential.go
   - internal/sdk/models/shared/connectorprovision.go
   - internal/sdk/models/shared/connectorref.go
+  - internal/sdk/models/shared/connectorschedulecron.go
   - internal/sdk/models/shared/connectorservicecreatedelegatedrequest.go
   - internal/sdk/models/shared/connectorservicecreaterequest.go
   - internal/sdk/models/shared/connectorservicecreateresponse.go
@@ -1150,6 +1190,7 @@ generatedFiles:
   - internal/sdk/models/shared/connectorserviceupdaterequest.go
   - internal/sdk/models/shared/connectorserviceupdateresponse.go
   - internal/sdk/models/shared/connectorstatus.go
+  - internal/sdk/models/shared/connectorsynccronschedule.go
   - internal/sdk/models/shared/connectorview.go
   - internal/sdk/models/shared/createaccessreview.go
   - internal/sdk/models/shared/createappentitlementmonitorbindingrequest.go
@@ -1216,6 +1257,7 @@ generatedFiles:
   - internal/sdk/models/shared/deletestepupproviderrequest.go
   - internal/sdk/models/shared/deletestepupproviderresponse.go
   - internal/sdk/models/shared/deniedaction.go
+  - internal/sdk/models/shared/dependenton.go
   - internal/sdk/models/shared/directory.go
   - internal/sdk/models/shared/directoryaccountfilterall.go
   - internal/sdk/models/shared/directoryaccountfiltercel.go
@@ -1272,6 +1314,9 @@ generatedFiles:
   - internal/sdk/models/shared/expression.go
   - internal/sdk/models/shared/expressionapproval.go
   - internal/sdk/models/shared/expressionapprovalinput.go
+  - internal/sdk/models/shared/externalclientinfo.go
+  - internal/sdk/models/shared/externalclientsearchservicesearchrequest.go
+  - internal/sdk/models/shared/externalclientsearchservicesearchresponse.go
   - internal/sdk/models/shared/externalref.go
   - internal/sdk/models/shared/externalticketprovision.go
   - internal/sdk/models/shared/field.go
@@ -1300,7 +1345,6 @@ generatedFiles:
   - internal/sdk/models/shared/functionsservicedeletefunctionrequest.go
   - internal/sdk/models/shared/functionsservicedeletefunctionresponse.go
   - internal/sdk/models/shared/functionsservicegetfunctionresponse.go
-  - internal/sdk/models/shared/functionsservicegetfunctionsecretencryptionkeyresponse.go
   - internal/sdk/models/shared/functionsserviceinvokerequest.go
   - internal/sdk/models/shared/functionsserviceinvokeresponse.go
   - internal/sdk/models/shared/functionsservicelistcommitsresponse.go
@@ -1329,6 +1373,13 @@ generatedFiles:
   - internal/sdk/models/shared/getuserprofiletypesresponse.go
   - internal/sdk/models/shared/grantaccessprofilefilter.go
   - internal/sdk/models/shared/grantdeletedtrigger.go
+  - internal/sdk/models/shared/grantentitlementexclusioncriteria.go
+  - internal/sdk/models/shared/grantentitlementexclusionlist.go
+  - internal/sdk/models/shared/grantentitlementexclusionlistcel.go
+  - internal/sdk/models/shared/grantentitlementexclusionnone.go
+  - internal/sdk/models/shared/grantentitlementinclusioncriteria.go
+  - internal/sdk/models/shared/grantentitlementinclusionlist.go
+  - internal/sdk/models/shared/grantentitlementinclusionlistcel.go
   - internal/sdk/models/shared/grantentitlements.go
   - internal/sdk/models/shared/grantfilter.go
   - internal/sdk/models/shared/grantfoundtrigger.go
@@ -1481,6 +1532,7 @@ generatedFiles:
   - internal/sdk/models/shared/requestschemaserviceupdateresponse.go
   - internal/sdk/models/shared/requiredtogether.go
   - internal/sdk/models/shared/resourceownerapproval.go
+  - internal/sdk/models/shared/resourcetypeidref.go
   - internal/sdk/models/shared/resourcetypeselectionscope.go
   - internal/sdk/models/shared/responsepolicyapprovalreplacepolicy.go
   - internal/sdk/models/shared/responsepolicyapprovalstep.go
@@ -1618,6 +1670,7 @@ generatedFiles:
   - internal/sdk/models/shared/taskauditcomment.go
   - internal/sdk/models/shared/taskauditconditionalpolicyexecutionresult.go
   - internal/sdk/models/shared/taskauditconnectoractionresult.go
+  - internal/sdk/models/shared/taskauditcreatedreplacementextensiongranttask.go
   - internal/sdk/models/shared/taskauditerrorresult.go
   - internal/sdk/models/shared/taskauditescalatetoemergencyaccess.go
   - internal/sdk/models/shared/taskauditexpressionpolicysteperror.go
@@ -1634,6 +1687,7 @@ generatedFiles:
   - internal/sdk/models/shared/taskauditlistresponse.go
   - internal/sdk/models/shared/taskauditmetadata.go
   - internal/sdk/models/shared/taskauditnewtask.go
+  - internal/sdk/models/shared/taskauditnewtaskcreatedfrom.go
   - internal/sdk/models/shared/taskauditpolicyapprovalreassigned.go
   - internal/sdk/models/shared/taskauditpolicychanged.go
   - internal/sdk/models/shared/taskauditpolicyevaluationstep.go
@@ -1641,6 +1695,7 @@ generatedFiles:
   - internal/sdk/models/shared/taskauditpolicyprovisionerror.go
   - internal/sdk/models/shared/taskauditpolicyprovisionreassigned.go
   - internal/sdk/models/shared/taskauditreassignedtodelegate.go
+  - internal/sdk/models/shared/taskauditreassignmentfallbacktoadmin.go
   - internal/sdk/models/shared/taskauditreassignmentlisterror.go
   - internal/sdk/models/shared/taskauditrestart.go
   - internal/sdk/models/shared/taskauditrevokeoutcome.go
@@ -1717,6 +1772,8 @@ generatedFiles:
   - internal/sdk/models/shared/updateappusagecontrolsresponse.go
   - internal/sdk/models/shared/updateautomationrequest.go
   - internal/sdk/models/shared/updateautomationresponse.go
+  - internal/sdk/models/shared/updateconnectorschedulerequest.go
+  - internal/sdk/models/shared/updateconnectorscheduleresponse.go
   - internal/sdk/models/shared/updategrantdurationrequest.go
   - internal/sdk/models/shared/updategrantdurationresponse.go
   - internal/sdk/models/shared/updatemanuallymanagedresourcetyperequest.go
@@ -3801,6 +3858,52 @@ examples:
         path:
           function_id: "<id>"
           id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.accessreview.v1.AccessReviewSetupEntitlementService.SetCampaignScopeAndEntitlements:
+    speakeasy-default-c1-api-accessreview-v1-access-review-setup-entitlement-service-set-campaign-scope-and-entitlements:
+      parameters:
+        path:
+          access_review_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.accessreview.v1.AccessReviewSetupEntitlementService.SetCampaignScopeByResourceType:
+    speakeasy-default-c1-api-accessreview-v1-access-review-setup-entitlement-service-set-campaign-scope-by-resource-type:
+      parameters:
+        path:
+          access_review_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlementService.SetScopeAndEntitlements:
+    speakeasy-default-c1-api-accessreview-v1-access-review-template-setup-entitlement-service-set-scope-and-entitlements:
+      parameters:
+        path:
+          access_review_template_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlementService.SetScopeByResourceType:
+    speakeasy-default-c1-api-accessreview-v1-access-review-template-setup-entitlement-service-set-scope-by-resource-type:
+      parameters:
+        path:
+          access_review_template_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.app.v1.ConnectorService.UpdateConnectorSchedule:
+    speakeasy-default-c1-api-app-v1-connector-service-update-connector-schedule:
+      parameters:
+        path:
+          app_id: "<id>"
+          connector_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+  c1.api.iam.v1.ExternalClientSearchService.Search:
+    speakeasy-default-c1-api-iam-v1-external-client-search-service-search:
       responses:
         "200":
           application/json: {}

@@ -17,12 +17,6 @@ func (r *FunctionDataSourceModel) RefreshFromSharedFunction(ctx context.Context,
 	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 	r.Description = types.StringPointerValue(resp.Description)
 	r.DisplayName = types.StringPointerValue(resp.DisplayName)
-	if len(resp.EncryptedValues) > 0 {
-		r.EncryptedValues = make(map[string]types.String, len(resp.EncryptedValues))
-		for key, value := range resp.EncryptedValues {
-			r.EncryptedValues[key] = types.StringValue(value)
-		}
-	}
 	if resp.FunctionType != nil {
 		r.FunctionType = types.StringValue(string(*resp.FunctionType))
 	} else {
@@ -42,6 +36,12 @@ func (r *FunctionDataSourceModel) RefreshFromSharedFunction(ctx context.Context,
 		r.ScopedRoleIds = make([]types.String, 0, len(resp.ScopedRoleIds))
 		for _, v := range resp.ScopedRoleIds {
 			r.ScopedRoleIds = append(r.ScopedRoleIds, types.StringValue(v))
+		}
+	}
+	if len(resp.Secret) > 0 {
+		r.Secret = make(map[string]types.String, len(resp.Secret))
+		for key, value := range resp.Secret {
+			r.Secret[key] = types.StringValue(value)
 		}
 	}
 	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))

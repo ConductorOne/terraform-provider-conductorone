@@ -144,6 +144,29 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						"actor_object_permissions": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"delete": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The delete field.`,
+								},
+								"edit": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The edit field.`,
+								},
+								"extra": schema.MapAttribute{
+									Computed:    true,
+									ElementType: types.BoolType,
+									Description: `The extra field.`,
+								},
+								"read": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The read field.`,
+								},
+							},
+							Description: `The ActorObjectPermissions message.`,
+						},
 						"app_entitlement": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{

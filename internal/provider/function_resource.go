@@ -41,7 +41,6 @@ type FunctionResourceModel struct {
 	DeletedAt                             types.String                                   `tfsdk:"-"`
 	Description                           types.String                                   `tfsdk:"description"`
 	DisplayName                           types.String                                   `tfsdk:"display_name"`
-	EncryptedValues                       map[string]types.String                        `tfsdk:"encrypted_values"`
 	FunctionID                            types.String                                   `tfsdk:"function_id"`
 	FunctionsServiceDeleteFunctionRequest *tfTypes.FunctionsServiceDeleteFunctionRequest `tfsdk:"functions_service_delete_function_request"`
 	FunctionType                          types.String                                   `tfsdk:"function_type"`
@@ -53,6 +52,7 @@ type FunctionResourceModel struct {
 	OutboundNetworkAllowlist              []types.String                                 `tfsdk:"outbound_network_allowlist"`
 	PublishedCommitID                     types.String                                   `tfsdk:"published_commit_id"`
 	ScopedRoleIds                         []types.String                                 `tfsdk:"scoped_role_ids"`
+	Secret                                map[string]types.String                        `tfsdk:"secret"`
 	UpdatedAt                             types.String                                   `tfsdk:"updated_at"`
 }
 
@@ -87,11 +87,6 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:    true,
 				Optional:    true,
 				Description: `The displayName field.`,
-			},
-			"encrypted_values": schema.MapAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				Description: `The encryptedValues field.`,
 			},
 			"function_id": schema.StringAttribute{
 				Computed:    true,
@@ -154,6 +149,11 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 					`` + "\n" +
 					` Currently only the "Read-Only Administrator" role (system:viewer) is supported.` + "\n" +
 					` The role ID can be obtained from the roles API.`,
+			},
+			"secret": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				Description: `The secret field.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -471,10 +471,7 @@ func (r *FunctionResource) Delete(ctx context.Context, req resource.DeleteReques
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	switch res.StatusCode {
-	case 200, 404:
-		break
-	default:
+	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

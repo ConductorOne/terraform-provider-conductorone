@@ -309,8 +309,20 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 						}
 					}
 					list.AccessReview.AccessReviewTemplateID = types.StringPointerValue(listItem.AccessReview.AccessReviewTemplateID)
+					if listItem.AccessReview.AccuracyIssueAction != nil {
+						list.AccessReview.AccuracyIssueAction = types.StringValue(string(*listItem.AccessReview.AccuracyIssueAction))
+					} else {
+						list.AccessReview.AccuracyIssueAction = types.StringNull()
+					}
+					list.AccessReview.AutoCloseCampaign = types.BoolPointerValue(listItem.AccessReview.AutoCloseCampaign)
+					if listItem.AccessReview.AutoCloseDecision != nil {
+						list.AccessReview.AutoCloseDecision = types.StringValue(string(*listItem.AccessReview.AutoCloseDecision))
+					} else {
+						list.AccessReview.AutoCloseDecision = types.StringNull()
+					}
 					list.AccessReview.AutoGenerateReport = types.BoolPointerValue(listItem.AccessReview.AutoGenerateReport)
 					list.AccessReview.AutoResolve = types.BoolPointerValue(listItem.AccessReview.AutoResolve)
+					list.AccessReview.AutoStartCampaign = types.BoolPointerValue(listItem.AccessReview.AutoStartCampaign)
 					if listItem.AccessReview.BindingObjectSetup == nil {
 						list.AccessReview.BindingObjectSetup = nil
 					} else {
@@ -376,6 +388,7 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 					} else {
 						list.AccessReview.NotificationConfig = &tfTypes.NotificationConfig{}
 						list.AccessReview.NotificationConfig.SendClose = types.BoolPointerValue(listItem.AccessReview.NotificationConfig.SendClose)
+						list.AccessReview.NotificationConfig.SendKickoff = types.BoolPointerValue(listItem.AccessReview.NotificationConfig.SendKickoff)
 						list.AccessReview.NotificationConfig.SendReminders = types.BoolPointerValue(listItem.AccessReview.NotificationConfig.SendReminders)
 					}
 					list.AccessReview.PolicyID = types.StringPointerValue(listItem.AccessReview.PolicyID)
@@ -389,6 +402,7 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 						list.AccessReview.ReviewSignatureConfig.StepUpProviderID = types.StringPointerValue(listItem.AccessReview.ReviewSignatureConfig.StepUpProviderID)
 						list.AccessReview.ReviewSignatureConfig.TspURL = types.StringPointerValue(listItem.AccessReview.ReviewSignatureConfig.TspURL)
 					}
+					list.AccessReview.ScheduledStartDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AccessReview.ScheduledStartDate))
 					if listItem.AccessReview.ScopeType != nil {
 						list.AccessReview.ScopeType = types.StringValue(string(*listItem.AccessReview.ScopeType))
 					} else {

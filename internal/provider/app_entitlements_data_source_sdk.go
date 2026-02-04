@@ -25,6 +25,20 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 			for _, listItem := range resp.List {
 				var list tfTypes.AppEntitlementView
 
+				if listItem.ActorObjectPermissions == nil {
+					list.ActorObjectPermissions = nil
+				} else {
+					list.ActorObjectPermissions = &tfTypes.ActorObjectPermissions{}
+					list.ActorObjectPermissions.Delete = types.BoolPointerValue(listItem.ActorObjectPermissions.Delete)
+					list.ActorObjectPermissions.Edit = types.BoolPointerValue(listItem.ActorObjectPermissions.Edit)
+					if len(listItem.ActorObjectPermissions.Extra) > 0 {
+						list.ActorObjectPermissions.Extra = make(map[string]types.Bool, len(listItem.ActorObjectPermissions.Extra))
+						for key, value := range listItem.ActorObjectPermissions.Extra {
+							list.ActorObjectPermissions.Extra[key] = types.BoolValue(value)
+						}
+					}
+					list.ActorObjectPermissions.Read = types.BoolPointerValue(listItem.ActorObjectPermissions.Read)
+				}
 				if listItem.AppEntitlement == nil {
 					list.AppEntitlement = nil
 				} else {
@@ -291,8 +305,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 					list.AppEntitlement.Slug = types.StringPointerValue(listItem.AppEntitlement.Slug)
 					if len(listItem.AppEntitlement.SourceConnectorIds) > 0 {
 						list.AppEntitlement.SourceConnectorIds = make(map[string]types.String, len(listItem.AppEntitlement.SourceConnectorIds))
-						for key, value := range listItem.AppEntitlement.SourceConnectorIds {
-							list.AppEntitlement.SourceConnectorIds[key] = types.StringValue(value)
+						for key1, value1 := range listItem.AppEntitlement.SourceConnectorIds {
+							list.AppEntitlement.SourceConnectorIds[key1] = types.StringValue(value1)
 						}
 					}
 					list.AppEntitlement.SystemBuiltin = types.BoolPointerValue(listItem.AppEntitlement.SystemBuiltin)

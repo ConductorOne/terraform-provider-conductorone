@@ -66,6 +66,8 @@ type Field struct {
 	//   - oauth2FieldView
 	//
 	Oauth2Field *Oauth2Field `json:"oauth2Field,omitempty"`
+	// The required field.
+	Required *bool `json:"required,omitempty"`
 	// The SharedProviderConfig message.
 	SharedProviderConfig *SharedProviderConfig `json:"sharedConfig,omitempty"`
 	// The StringField message.
@@ -139,6 +141,13 @@ func (f *Field) GetOauth2Field() *Oauth2Field {
 		return nil
 	}
 	return f.Oauth2Field
+}
+
+func (f *Field) GetRequired() *bool {
+	if f == nil {
+		return nil
+	}
+	return f.Required
 }
 
 func (f *Field) GetSharedProviderConfig() *SharedProviderConfig {
