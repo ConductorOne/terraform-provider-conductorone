@@ -486,8 +486,15 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReviewView(ctx contex
 				for key, value := range resp.ActorObjectPermissions.Extra {
 					r.Extra[key] = types.BoolValue(value)
 				}
+			} else {
+				r.Extra = nil
 			}
 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
+		} else {
+			r.Delete = types.BoolNull()
+			r.Edit = types.BoolNull()
+			r.Extra = nil
+			r.Read = types.BoolNull()
 		}
 		r.CreatedByUserPath = types.StringPointerValue(resp.CreatedByUserPath)
 		r.PolicyPath = types.StringPointerValue(resp.PolicyPath)
