@@ -394,6 +394,19 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 									Computed:    true,
 									Description: `The ID of the template if the campaign was created from one`,
 								},
+								"accuracy_issue_action": schema.StringAttribute{
+									Computed:    true,
+									Description: `The accuracyIssueAction field.`,
+								},
+								"auto_close_campaign": schema.BoolAttribute{
+									Computed: true,
+									MarkdownDescription: `Auto-close configuration` + "\n" +
+										` completion_date is used as the scheduled close date`,
+								},
+								"auto_close_decision": schema.StringAttribute{
+									Computed:    true,
+									Description: `The autoCloseDecision field.`,
+								},
 								"auto_generate_report": schema.BoolAttribute{
 									Computed:    true,
 									Description: `The autoGenerateReport field.`,
@@ -401,6 +414,10 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 								"auto_resolve": schema.BoolAttribute{
 									Computed:    true,
 									Description: `The autoResolve field.`,
+								},
+								"auto_start_campaign": schema.BoolAttribute{
+									Computed:    true,
+									Description: `Auto-start configuration`,
 								},
 								"binding_object_setup": schema.SingleNestedAttribute{
 									Computed:    true,
@@ -508,6 +525,10 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 											Computed:    true,
 											Description: `The sendClose field.`,
 										},
+										"send_kickoff": schema.BoolAttribute{
+											Computed:    true,
+											Description: `The sendKickoff field.`,
+										},
 										"send_reminders": schema.BoolAttribute{
 											Computed:    true,
 											Description: `The sendReminders field.`,
@@ -544,6 +565,9 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 										},
 									},
 									Description: `Signature configuration for access review submissions`,
+								},
+								"scheduled_start_date": schema.StringAttribute{
+									Computed: true,
 								},
 								"scope_type": schema.StringAttribute{
 									Computed:    true,

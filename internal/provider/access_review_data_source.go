@@ -34,8 +34,12 @@ type AccessReviewDataSourceModel struct {
 	AccessReviewScope              *tfTypes.AccessReviewScope                       `tfsdk:"access_review_scope"`
 	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2                     `tfsdk:"access_review_scope_v2"`
 	AccessReviewTemplateID         types.String                                     `tfsdk:"access_review_template_id"`
+	AccuracyIssueAction            types.String                                     `tfsdk:"accuracy_issue_action"`
+	AutoCloseCampaign              types.Bool                                       `tfsdk:"auto_close_campaign"`
+	AutoCloseDecision              types.String                                     `tfsdk:"auto_close_decision"`
 	AutoGenerateReport             types.Bool                                       `tfsdk:"auto_generate_report"`
 	AutoResolve                    types.Bool                                       `tfsdk:"auto_resolve"`
+	AutoStartCampaign              types.Bool                                       `tfsdk:"auto_start_campaign"`
 	BindingObjectSetup             *tfTypes.BindingObjectSetup                      `tfsdk:"binding_object_setup"`
 	ClosedAt                       types.String                                     `tfsdk:"closed_at"`
 	CompletionDate                 types.String                                     `tfsdk:"completion_date"`
@@ -61,6 +65,7 @@ type AccessReviewDataSourceModel struct {
 	Read                           types.Bool                                       `tfsdk:"read"`
 	ReviewInstructions             types.String                                     `tfsdk:"review_instructions"`
 	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig                   `tfsdk:"review_signature_config"`
+	ScheduledStartDate             types.String                                     `tfsdk:"scheduled_start_date"`
 	ScopeType                      types.String                                     `tfsdk:"scope_type"`
 	ScopingVersion                 types.String                                     `tfsdk:"scoping_version"`
 	SingleAppSetup                 *tfTypes.SingleAppSetup                          `tfsdk:"single_app_setup"`
@@ -414,6 +419,19 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 				Computed:    true,
 				Description: `The ID of the template if the campaign was created from one`,
 			},
+			"accuracy_issue_action": schema.StringAttribute{
+				Computed:    true,
+				Description: `The accuracyIssueAction field.`,
+			},
+			"auto_close_campaign": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `Auto-close configuration` + "\n" +
+					` completion_date is used as the scheduled close date`,
+			},
+			"auto_close_decision": schema.StringAttribute{
+				Computed:    true,
+				Description: `The autoCloseDecision field.`,
+			},
 			"auto_generate_report": schema.BoolAttribute{
 				Computed:    true,
 				Description: `The autoGenerateReport field.`,
@@ -421,6 +439,10 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 			"auto_resolve": schema.BoolAttribute{
 				Computed:    true,
 				Description: `The autoResolve field.`,
+			},
+			"auto_start_campaign": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Auto-start configuration`,
 			},
 			"binding_object_setup": schema.SingleNestedAttribute{
 				Computed:    true,
@@ -551,6 +573,10 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 						Computed:    true,
 						Description: `The sendClose field.`,
 					},
+					"send_kickoff": schema.BoolAttribute{
+						Computed:    true,
+						Description: `The sendKickoff field.`,
+					},
 					"send_reminders": schema.BoolAttribute{
 						Computed:    true,
 						Description: `The sendReminders field.`,
@@ -595,6 +621,9 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 					},
 				},
 				Description: `Signature configuration for access review submissions`,
+			},
+			"scheduled_start_date": schema.StringAttribute{
+				Computed: true,
 			},
 			"scope_type": schema.StringAttribute{
 				Computed:    true,

@@ -7,19 +7,19 @@ import (
 	"fmt"
 )
 
-type AppUserStatuses string
+type AccessReviewExclusionScopeAppUserStatuses string
 
 const (
-	AppUserStatusesAppUserStatusUnspecified AppUserStatuses = "APP_USER_STATUS_UNSPECIFIED"
-	AppUserStatusesAppUserStatusEnabled     AppUserStatuses = "APP_USER_STATUS_ENABLED"
-	AppUserStatusesAppUserStatusDisabled    AppUserStatuses = "APP_USER_STATUS_DISABLED"
-	AppUserStatusesAppUserStatusDeleted     AppUserStatuses = "APP_USER_STATUS_DELETED"
+	AccessReviewExclusionScopeAppUserStatusesAppUserStatusUnspecified AccessReviewExclusionScopeAppUserStatuses = "APP_USER_STATUS_UNSPECIFIED"
+	AccessReviewExclusionScopeAppUserStatusesAppUserStatusEnabled     AccessReviewExclusionScopeAppUserStatuses = "APP_USER_STATUS_ENABLED"
+	AccessReviewExclusionScopeAppUserStatusesAppUserStatusDisabled    AccessReviewExclusionScopeAppUserStatuses = "APP_USER_STATUS_DISABLED"
+	AccessReviewExclusionScopeAppUserStatusesAppUserStatusDeleted     AccessReviewExclusionScopeAppUserStatuses = "APP_USER_STATUS_DELETED"
 )
 
-func (e AppUserStatuses) ToPointer() *AppUserStatuses {
+func (e AccessReviewExclusionScopeAppUserStatuses) ToPointer() *AccessReviewExclusionScopeAppUserStatuses {
 	return &e
 }
-func (e *AppUserStatuses) UnmarshalJSON(data []byte) error {
+func (e *AccessReviewExclusionScopeAppUserStatuses) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -32,10 +32,10 @@ func (e *AppUserStatuses) UnmarshalJSON(data []byte) error {
 	case "APP_USER_STATUS_DISABLED":
 		fallthrough
 	case "APP_USER_STATUS_DELETED":
-		*e = AppUserStatuses(v)
+		*e = AccessReviewExclusionScopeAppUserStatuses(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AppUserStatuses: %v", v)
+		return fmt.Errorf("invalid value for AccessReviewExclusionScopeAppUserStatuses: %v", v)
 	}
 }
 
@@ -74,12 +74,12 @@ func (e *AppUserTypes) UnmarshalJSON(data []byte) error {
 // The AccessReviewExclusionScope message.
 type AccessReviewExclusionScope struct {
 	// The appUserStatuses field.
-	AppUserStatuses []AppUserStatuses `json:"appUserStatuses,omitempty"`
+	AppUserStatuses []AccessReviewExclusionScopeAppUserStatuses `json:"appUserStatuses,omitempty"`
 	// The appUserTypes field.
 	AppUserTypes []AppUserTypes `json:"appUserTypes,omitempty"`
 }
 
-func (a *AccessReviewExclusionScope) GetAppUserStatuses() []AppUserStatuses {
+func (a *AccessReviewExclusionScope) GetAppUserStatuses() []AccessReviewExclusionScopeAppUserStatuses {
 	if a == nil {
 		return nil
 	}

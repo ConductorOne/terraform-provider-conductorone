@@ -110,6 +110,17 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 							} else {
 								fieldRelationships.AtLeastOne = &tfTypes.AtLeastOne{}
 							}
+							if fieldRelationshipsItem.DependentOn == nil {
+								fieldRelationships.DependentOn = nil
+							} else {
+								fieldRelationships.DependentOn = &tfTypes.DependentOn{}
+								if fieldRelationshipsItem.DependentOn.DependencyFieldNames != nil {
+									fieldRelationships.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem.DependentOn.DependencyFieldNames))
+									for _, v := range fieldRelationshipsItem.DependentOn.DependencyFieldNames {
+										fieldRelationships.DependentOn.DependencyFieldNames = append(fieldRelationships.DependentOn.DependencyFieldNames, types.StringValue(v))
+									}
+								}
+							}
 							if fieldRelationshipsItem.FieldNames != nil {
 								fieldRelationships.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem.FieldNames))
 								for _, v := range fieldRelationshipsItem.FieldNames {
@@ -233,6 +244,7 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									fields.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
 								}
 							}
+							fields.Required = types.BoolPointerValue(fieldsItem.Required)
 							if fieldsItem.SharedProviderConfig == nil {
 								fields.SharedProviderConfig = nil
 							} else {
@@ -267,6 +279,11 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									} else {
 										fields.StringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
 										fields.StringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppUserFilter.AppID)
+									}
+									if fieldsItem.StringField.PickerField.C1UserFilter == nil {
+										fields.StringField.PickerField.C1UserFilter = nil
+									} else {
+										fields.StringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
 									}
 								}
 								fields.StringField.Placeholder = types.StringPointerValue(fieldsItem.StringField.Placeholder)
@@ -401,6 +418,12 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 										history.ActionInstance.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
 										history.ActionInstance.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(historyItem.ActionInstance.Action.ActionTargetAutomation.AutomationTemplateID)
 									}
+									if historyItem.ActionInstance.Action.ActionTargetBatonResourceAction == nil {
+										history.ActionInstance.Action.ActionTargetBatonResourceAction = nil
+									} else {
+										history.ActionInstance.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
+										history.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(historyItem.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+									}
 								}
 								if historyItem.ActionInstance.ActionOutcomeCancelled == nil {
 									history.ActionInstance.ActionOutcomeCancelled = nil
@@ -433,6 +456,12 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 								} else {
 									history.ActionInstance.ActionTargetAutomationInstance = &tfTypes.ActionTargetAutomationInstance{}
 									history.ActionInstance.ActionTargetAutomationInstance.AutomationExecutionID = types.StringPointerValue(historyItem.ActionInstance.ActionTargetAutomationInstance.AutomationExecutionID)
+								}
+								if historyItem.ActionInstance.ActionTargetBatonResourceActionInstance == nil {
+									history.ActionInstance.ActionTargetBatonResourceActionInstance = nil
+								} else {
+									history.ActionInstance.ActionTargetBatonResourceActionInstance = &tfTypes.ActionTargetBatonResourceActionInstance{}
+									history.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID = types.StringPointerValue(historyItem.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID)
 								}
 								if historyItem.ActionInstance.State != nil {
 									history.ActionInstance.State = types.StringValue(string(*historyItem.ActionInstance.State))
@@ -528,12 +557,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 										history.ApprovalInstance.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
 										history.ApprovalInstance.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.AllowSelfApproval)
 										history.ApprovalInstance.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.Fallback)
+										if historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
+											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+											for _, fallbackGroupIdsItem1 := range historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds {
+												var fallbackGroupIds1 tfTypes.AppEntitlementReference
+
+												fallbackGroupIds1.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem1.AppEntitlementID)
+												fallbackGroupIds1.AppID = types.StringPointerValue(fallbackGroupIdsItem1.AppID)
+
+												history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds1)
+											}
+										}
 										if historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 											}
 										}
+										history.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
 									}
 									if historyItem.ApprovalInstance.Approval.Escalation == nil {
@@ -589,12 +631,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 											}
 										}
 										history.ApprovalInstance.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.Fallback)
+										if historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds != nil {
+											history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+											for _, fallbackGroupIdsItem2 := range historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds {
+												var fallbackGroupIds2 tfTypes.AppEntitlementReference
+
+												fallbackGroupIds2.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem2.AppEntitlementID)
+												fallbackGroupIds2.AppID = types.StringPointerValue(fallbackGroupIdsItem2.AppID)
+
+												history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds2)
+											}
+										}
 										if historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 											}
 										}
+										history.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers)
 									}
 									if historyItem.ApprovalInstance.Approval.ManagerApproval == nil {
@@ -609,12 +664,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 											}
 										}
 										history.ApprovalInstance.Approval.ManagerApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.Fallback)
+										if historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds != nil {
+											history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+											for _, fallbackGroupIdsItem3 := range historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds {
+												var fallbackGroupIds3 tfTypes.AppEntitlementReference
+
+												fallbackGroupIds3.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem3.AppEntitlementID)
+												fallbackGroupIds3.AppID = types.StringPointerValue(fallbackGroupIdsItem3.AppID)
+
+												history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds3)
+											}
+										}
 										if historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 											}
 										}
+										history.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers)
 									}
 									history.ApprovalInstance.Approval.RequireApprovalReason = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.RequireApprovalReason)
@@ -627,12 +695,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 										history.ApprovalInstance.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
 										history.ApprovalInstance.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.AllowSelfApproval)
 										history.ApprovalInstance.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.Fallback)
+										if historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
+											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+											for _, fallbackGroupIdsItem4 := range historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds {
+												var fallbackGroupIds4 tfTypes.AppEntitlementReference
+
+												fallbackGroupIds4.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem4.AppEntitlementID)
+												fallbackGroupIds4.AppID = types.StringPointerValue(fallbackGroupIdsItem4.AppID)
+
+												history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds4)
+											}
+										}
 										if historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 											}
 										}
+										history.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
 									}
 									if historyItem.ApprovalInstance.Approval.SelfApproval == nil {
@@ -646,12 +727,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 											}
 										}
 										history.ApprovalInstance.Approval.SelfApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.SelfApproval.Fallback)
+										if historyItem.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds != nil {
+											history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+											for _, fallbackGroupIdsItem5 := range historyItem.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds {
+												var fallbackGroupIds5 tfTypes.AppEntitlementReference
+
+												fallbackGroupIds5.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem5.AppEntitlementID)
+												fallbackGroupIds5.AppID = types.StringPointerValue(fallbackGroupIdsItem5.AppID)
+
+												history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds5)
+											}
+										}
 										if historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 											}
 										}
+										history.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled)
 									}
 									if historyItem.ApprovalInstance.Approval.UserApproval == nil {
 										history.ApprovalInstance.Approval.UserApproval = nil
@@ -822,6 +916,17 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 											} else {
 												fieldRelationships1.AtLeastOne = &tfTypes.AtLeastOne{}
 											}
+											if fieldRelationshipsItem1.DependentOn == nil {
+												fieldRelationships1.DependentOn = nil
+											} else {
+												fieldRelationships1.DependentOn = &tfTypes.DependentOn{}
+												if fieldRelationshipsItem1.DependentOn.DependencyFieldNames != nil {
+													fieldRelationships1.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem1.DependentOn.DependencyFieldNames))
+													for _, v := range fieldRelationshipsItem1.DependentOn.DependencyFieldNames {
+														fieldRelationships1.DependentOn.DependencyFieldNames = append(fieldRelationships1.DependentOn.DependencyFieldNames, types.StringValue(v))
+													}
+												}
+											}
 											if fieldRelationshipsItem1.FieldNames != nil {
 												fieldRelationships1.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem1.FieldNames))
 												for _, v := range fieldRelationshipsItem1.FieldNames {
@@ -945,6 +1050,7 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 													fields1.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
 												}
 											}
+											fields1.Required = types.BoolPointerValue(fieldsItem1.Required)
 											if fieldsItem1.SharedProviderConfig == nil {
 												fields1.SharedProviderConfig = nil
 											} else {
@@ -979,6 +1085,11 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 													} else {
 														fields1.StringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
 														fields1.StringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem1.StringField.PickerField.AppUserFilter.AppID)
+													}
+													if fieldsItem1.StringField.PickerField.C1UserFilter == nil {
+														fields1.StringField.PickerField.C1UserFilter = nil
+													} else {
+														fields1.StringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
 													}
 												}
 												fields1.StringField.Placeholder = types.StringPointerValue(fieldsItem1.StringField.Placeholder)
@@ -1383,6 +1494,12 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									next.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
 									next.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(nextItem.Action.ActionTargetAutomation.AutomationTemplateID)
 								}
+								if nextItem.Action.ActionTargetBatonResourceAction == nil {
+									next.Action.ActionTargetBatonResourceAction = nil
+								} else {
+									next.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
+									next.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(nextItem.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+								}
 							}
 							if nextItem.Approval == nil {
 								next.Approval = nil
@@ -1436,13 +1553,13 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									if nextItem.Approval.AppGroupApproval.FallbackGroupIds != nil {
 										next.Approval.AppGroupApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
 
-										for _, fallbackGroupIdsItem1 := range nextItem.Approval.AppGroupApproval.FallbackGroupIds {
-											var fallbackGroupIds1 tfTypes.AppEntitlementReference
+										for _, fallbackGroupIdsItem6 := range nextItem.Approval.AppGroupApproval.FallbackGroupIds {
+											var fallbackGroupIds6 tfTypes.AppEntitlementReference
 
-											fallbackGroupIds1.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem1.AppEntitlementID)
-											fallbackGroupIds1.AppID = types.StringPointerValue(fallbackGroupIdsItem1.AppID)
+											fallbackGroupIds6.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem6.AppEntitlementID)
+											fallbackGroupIds6.AppID = types.StringPointerValue(fallbackGroupIdsItem6.AppID)
 
-											next.Approval.AppGroupApproval.FallbackGroupIds = append(next.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds1)
+											next.Approval.AppGroupApproval.FallbackGroupIds = append(next.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds6)
 										}
 									}
 									if nextItem.Approval.AppGroupApproval.FallbackUserIds != nil {
@@ -1468,12 +1585,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									next.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
 									next.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
 									next.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.Fallback)
+									if nextItem.Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
+										next.Approval.EntitlementOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem7 := range nextItem.Approval.EntitlementOwnerApproval.FallbackGroupIds {
+											var fallbackGroupIds7 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds7.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem7.AppEntitlementID)
+											fallbackGroupIds7.AppID = types.StringPointerValue(fallbackGroupIdsItem7.AppID)
+
+											next.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(next.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds7)
+										}
+									}
 									if nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 										next.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
 											next.Approval.EntitlementOwnerApproval.FallbackUserIds = append(next.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
 									}
+									next.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 									next.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
 								}
 								if nextItem.Approval.Escalation == nil {
@@ -1529,12 +1659,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 										}
 									}
 									next.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.Fallback)
+									if nextItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
+										next.Approval.ExpressionApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem8 := range nextItem.Approval.ExpressionApproval.FallbackGroupIds {
+											var fallbackGroupIds8 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds8.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem8.AppEntitlementID)
+											fallbackGroupIds8.AppID = types.StringPointerValue(fallbackGroupIdsItem8.AppID)
+
+											next.Approval.ExpressionApproval.FallbackGroupIds = append(next.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds8)
+										}
+									}
 									if nextItem.Approval.ExpressionApproval.FallbackUserIds != nil {
 										next.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ExpressionApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.ExpressionApproval.FallbackUserIds {
 											next.Approval.ExpressionApproval.FallbackUserIds = append(next.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 										}
 									}
+									next.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 									next.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.RequireDistinctApprovers)
 								}
 								if nextItem.Approval.ManagerApproval == nil {
@@ -1549,12 +1692,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 										}
 									}
 									next.Approval.ManagerApproval.Fallback = types.BoolPointerValue(nextItem.Approval.ManagerApproval.Fallback)
+									if nextItem.Approval.ManagerApproval.FallbackGroupIds != nil {
+										next.Approval.ManagerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem9 := range nextItem.Approval.ManagerApproval.FallbackGroupIds {
+											var fallbackGroupIds9 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds9.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem9.AppEntitlementID)
+											fallbackGroupIds9.AppID = types.StringPointerValue(fallbackGroupIdsItem9.AppID)
+
+											next.Approval.ManagerApproval.FallbackGroupIds = append(next.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds9)
+										}
+									}
 									if nextItem.Approval.ManagerApproval.FallbackUserIds != nil {
 										next.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ManagerApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.ManagerApproval.FallbackUserIds {
 											next.Approval.ManagerApproval.FallbackUserIds = append(next.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 										}
 									}
+									next.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
 									next.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ManagerApproval.RequireDistinctApprovers)
 								}
 								next.Approval.RequireApprovalReason = types.BoolPointerValue(nextItem.Approval.RequireApprovalReason)
@@ -1567,12 +1723,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									next.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
 									next.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.AllowSelfApproval)
 									next.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.Fallback)
+									if nextItem.Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
+										next.Approval.ResourceOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem10 := range nextItem.Approval.ResourceOwnerApproval.FallbackGroupIds {
+											var fallbackGroupIds10 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds10.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem10.AppEntitlementID)
+											fallbackGroupIds10.AppID = types.StringPointerValue(fallbackGroupIdsItem10.AppID)
+
+											next.Approval.ResourceOwnerApproval.FallbackGroupIds = append(next.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds10)
+										}
+									}
 									if nextItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 										next.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ResourceOwnerApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.ResourceOwnerApproval.FallbackUserIds {
 											next.Approval.ResourceOwnerApproval.FallbackUserIds = append(next.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
 									}
+									next.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 									next.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
 								}
 								if nextItem.Approval.SelfApproval == nil {
@@ -1586,12 +1755,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 										}
 									}
 									next.Approval.SelfApproval.Fallback = types.BoolPointerValue(nextItem.Approval.SelfApproval.Fallback)
+									if nextItem.Approval.SelfApproval.FallbackGroupIds != nil {
+										next.Approval.SelfApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem11 := range nextItem.Approval.SelfApproval.FallbackGroupIds {
+											var fallbackGroupIds11 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds11.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem11.AppEntitlementID)
+											fallbackGroupIds11.AppID = types.StringPointerValue(fallbackGroupIdsItem11.AppID)
+
+											next.Approval.SelfApproval.FallbackGroupIds = append(next.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds11)
+										}
+									}
 									if nextItem.Approval.SelfApproval.FallbackUserIds != nil {
 										next.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.SelfApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.SelfApproval.FallbackUserIds {
 											next.Approval.SelfApproval.FallbackUserIds = append(next.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 										}
 									}
+									next.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.SelfApproval.IsGroupFallbackEnabled)
 								}
 								if nextItem.Approval.UserApproval == nil {
 									next.Approval.UserApproval = nil
@@ -1813,6 +1995,12 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 												steps.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
 												steps.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(stepsItem.Action.ActionTargetAutomation.AutomationTemplateID)
 											}
+											if stepsItem.Action.ActionTargetBatonResourceAction == nil {
+												steps.Action.ActionTargetBatonResourceAction = nil
+											} else {
+												steps.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
+												steps.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(stepsItem.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+											}
 										}
 										if stepsItem.Approval == nil {
 											steps.Approval = nil
@@ -1866,13 +2054,13 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 												if stepsItem.Approval.AppGroupApproval.FallbackGroupIds != nil {
 													steps.Approval.AppGroupApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
 
-													for _, fallbackGroupIdsItem2 := range stepsItem.Approval.AppGroupApproval.FallbackGroupIds {
-														var fallbackGroupIds2 tfTypes.AppEntitlementReference
+													for _, fallbackGroupIdsItem12 := range stepsItem.Approval.AppGroupApproval.FallbackGroupIds {
+														var fallbackGroupIds12 tfTypes.AppEntitlementReference
 
-														fallbackGroupIds2.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem2.AppEntitlementID)
-														fallbackGroupIds2.AppID = types.StringPointerValue(fallbackGroupIdsItem2.AppID)
+														fallbackGroupIds12.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem12.AppEntitlementID)
+														fallbackGroupIds12.AppID = types.StringPointerValue(fallbackGroupIdsItem12.AppID)
 
-														steps.Approval.AppGroupApproval.FallbackGroupIds = append(steps.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds2)
+														steps.Approval.AppGroupApproval.FallbackGroupIds = append(steps.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds12)
 													}
 												}
 												if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
@@ -1898,12 +2086,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 												steps.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
 												steps.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
 												steps.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.Fallback)
+												if stepsItem.Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
+													steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+													for _, fallbackGroupIdsItem13 := range stepsItem.Approval.EntitlementOwnerApproval.FallbackGroupIds {
+														var fallbackGroupIds13 tfTypes.AppEntitlementReference
+
+														fallbackGroupIds13.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem13.AppEntitlementID)
+														fallbackGroupIds13.AppID = types.StringPointerValue(fallbackGroupIdsItem13.AppID)
+
+														steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(steps.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds13)
+													}
+												}
 												if stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 													steps.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
 														steps.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 													}
 												}
+												steps.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 												steps.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
 											}
 											if stepsItem.Approval.Escalation == nil {
@@ -1959,12 +2160,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 													}
 												}
 												steps.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.Fallback)
+												if stepsItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
+													steps.Approval.ExpressionApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+													for _, fallbackGroupIdsItem14 := range stepsItem.Approval.ExpressionApproval.FallbackGroupIds {
+														var fallbackGroupIds14 tfTypes.AppEntitlementReference
+
+														fallbackGroupIds14.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem14.AppEntitlementID)
+														fallbackGroupIds14.AppID = types.StringPointerValue(fallbackGroupIdsItem14.AppID)
+
+														steps.Approval.ExpressionApproval.FallbackGroupIds = append(steps.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds14)
+													}
+												}
 												if stepsItem.Approval.ExpressionApproval.FallbackUserIds != nil {
 													steps.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
 														steps.Approval.ExpressionApproval.FallbackUserIds = append(steps.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 													}
 												}
+												steps.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 												steps.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers)
 											}
 											if stepsItem.Approval.ManagerApproval == nil {
@@ -1979,12 +2193,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 													}
 												}
 												steps.Approval.ManagerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.Fallback)
+												if stepsItem.Approval.ManagerApproval.FallbackGroupIds != nil {
+													steps.Approval.ManagerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+													for _, fallbackGroupIdsItem15 := range stepsItem.Approval.ManagerApproval.FallbackGroupIds {
+														var fallbackGroupIds15 tfTypes.AppEntitlementReference
+
+														fallbackGroupIds15.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem15.AppEntitlementID)
+														fallbackGroupIds15.AppID = types.StringPointerValue(fallbackGroupIdsItem15.AppID)
+
+														steps.Approval.ManagerApproval.FallbackGroupIds = append(steps.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds15)
+													}
+												}
 												if stepsItem.Approval.ManagerApproval.FallbackUserIds != nil {
 													steps.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
 														steps.Approval.ManagerApproval.FallbackUserIds = append(steps.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 													}
 												}
+												steps.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
 												steps.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.RequireDistinctApprovers)
 											}
 											steps.Approval.RequireApprovalReason = types.BoolPointerValue(stepsItem.Approval.RequireApprovalReason)
@@ -1997,12 +2224,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 												steps.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
 												steps.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval)
 												steps.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.Fallback)
+												if stepsItem.Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
+													steps.Approval.ResourceOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+													for _, fallbackGroupIdsItem16 := range stepsItem.Approval.ResourceOwnerApproval.FallbackGroupIds {
+														var fallbackGroupIds16 tfTypes.AppEntitlementReference
+
+														fallbackGroupIds16.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem16.AppEntitlementID)
+														fallbackGroupIds16.AppID = types.StringPointerValue(fallbackGroupIdsItem16.AppID)
+
+														steps.Approval.ResourceOwnerApproval.FallbackGroupIds = append(steps.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds16)
+													}
+												}
 												if stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 													steps.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
 														steps.Approval.ResourceOwnerApproval.FallbackUserIds = append(steps.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 													}
 												}
+												steps.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 												steps.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
 											}
 											if stepsItem.Approval.SelfApproval == nil {
@@ -2016,12 +2256,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 													}
 												}
 												steps.Approval.SelfApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.SelfApproval.Fallback)
+												if stepsItem.Approval.SelfApproval.FallbackGroupIds != nil {
+													steps.Approval.SelfApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+													for _, fallbackGroupIdsItem17 := range stepsItem.Approval.SelfApproval.FallbackGroupIds {
+														var fallbackGroupIds17 tfTypes.AppEntitlementReference
+
+														fallbackGroupIds17.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem17.AppEntitlementID)
+														fallbackGroupIds17.AppID = types.StringPointerValue(fallbackGroupIdsItem17.AppID)
+
+														steps.Approval.SelfApproval.FallbackGroupIds = append(steps.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds17)
+													}
+												}
 												if stepsItem.Approval.SelfApproval.FallbackUserIds != nil {
 													steps.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.SelfApproval.FallbackUserIds {
 														steps.Approval.SelfApproval.FallbackUserIds = append(steps.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 													}
 												}
+												steps.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.SelfApproval.IsGroupFallbackEnabled)
 											}
 											if stepsItem.Approval.UserApproval == nil {
 												steps.Approval.UserApproval = nil
@@ -2268,6 +2521,12 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation.AutomationTemplateID)
 								}
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction = nil
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+								}
 							}
 							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeCancelled == nil {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeCancelled = nil
@@ -2300,6 +2559,12 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 							} else {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetAutomationInstance = &tfTypes.ActionTargetAutomationInstance{}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetAutomationInstance.AutomationExecutionID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetAutomationInstance.AutomationExecutionID)
+							}
+							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance == nil {
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance = nil
+							} else {
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance = &tfTypes.ActionTargetBatonResourceActionInstance{}
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID)
 							}
 							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.State != nil {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.State = types.StringValue(string(*resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.State))
@@ -2363,13 +2628,13 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
 
-										for _, fallbackGroupIdsItem3 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds {
-											var fallbackGroupIds3 tfTypes.AppEntitlementReference
+										for _, fallbackGroupIdsItem18 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds {
+											var fallbackGroupIds18 tfTypes.AppEntitlementReference
 
-											fallbackGroupIds3.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem3.AppEntitlementID)
-											fallbackGroupIds3.AppID = types.StringPointerValue(fallbackGroupIdsItem3.AppID)
+											fallbackGroupIds18.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem18.AppEntitlementID)
+											fallbackGroupIds18.AppID = types.StringPointerValue(fallbackGroupIdsItem18.AppID)
 
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds3)
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds18)
 										}
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds != nil {
@@ -2395,12 +2660,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.AllowSelfApproval)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.Fallback)
+									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem19 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds {
+											var fallbackGroupIds19 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds19.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem19.AppEntitlementID)
+											fallbackGroupIds19.AppID = types.StringPointerValue(fallbackGroupIdsItem19.AppID)
+
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds19)
+										}
+									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
 									}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
 								}
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation == nil {
@@ -2456,12 +2734,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 										}
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Fallback)
+									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds != nil {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem20 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds {
+											var fallbackGroupIds20 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds20.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem20.AppEntitlementID)
+											fallbackGroupIds20.AppID = types.StringPointerValue(fallbackGroupIdsItem20.AppID)
+
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds20)
+										}
+									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 										}
 									}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers)
 								}
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval == nil {
@@ -2476,12 +2767,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 										}
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.Fallback)
+									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds != nil {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem21 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds {
+											var fallbackGroupIds21 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds21.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem21.AppEntitlementID)
+											fallbackGroupIds21.AppID = types.StringPointerValue(fallbackGroupIdsItem21.AppID)
+
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds21)
+										}
+									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 										}
 									}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers)
 								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.RequireApprovalReason = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.RequireApprovalReason)
@@ -2494,12 +2798,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.AllowSelfApproval)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.Fallback)
+									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem22 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds {
+											var fallbackGroupIds22 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds22.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem22.AppEntitlementID)
+											fallbackGroupIds22.AppID = types.StringPointerValue(fallbackGroupIdsItem22.AppID)
+
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds22)
+										}
+									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
 									}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
 								}
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval == nil {
@@ -2513,12 +2830,25 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 										}
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.Fallback)
+									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds != nil {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem23 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds {
+											var fallbackGroupIds23 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds23.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem23.AppEntitlementID)
+											fallbackGroupIds23.AppID = types.StringPointerValue(fallbackGroupIdsItem23.AppID)
+
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds23)
+										}
+									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 										}
 									}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled)
 								}
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval == nil {
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval = nil
@@ -2689,6 +3019,17 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 										} else {
 											fieldRelationships2.AtLeastOne = &tfTypes.AtLeastOne{}
 										}
+										if fieldRelationshipsItem2.DependentOn == nil {
+											fieldRelationships2.DependentOn = nil
+										} else {
+											fieldRelationships2.DependentOn = &tfTypes.DependentOn{}
+											if fieldRelationshipsItem2.DependentOn.DependencyFieldNames != nil {
+												fieldRelationships2.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem2.DependentOn.DependencyFieldNames))
+												for _, v := range fieldRelationshipsItem2.DependentOn.DependencyFieldNames {
+													fieldRelationships2.DependentOn.DependencyFieldNames = append(fieldRelationships2.DependentOn.DependencyFieldNames, types.StringValue(v))
+												}
+											}
+										}
 										if fieldRelationshipsItem2.FieldNames != nil {
 											fieldRelationships2.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem2.FieldNames))
 											for _, v := range fieldRelationshipsItem2.FieldNames {
@@ -2812,6 +3153,7 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 												fields2.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
 											}
 										}
+										fields2.Required = types.BoolPointerValue(fieldsItem2.Required)
 										if fieldsItem2.SharedProviderConfig == nil {
 											fields2.SharedProviderConfig = nil
 										} else {
@@ -2846,6 +3188,11 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 												} else {
 													fields2.StringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
 													fields2.StringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem2.StringField.PickerField.AppUserFilter.AppID)
+												}
+												if fieldsItem2.StringField.PickerField.C1UserFilter == nil {
+													fields2.StringField.PickerField.C1UserFilter = nil
+												} else {
+													fields2.StringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
 												}
 											}
 											fields2.StringField.Placeholder = types.StringPointerValue(fieldsItem2.StringField.Placeholder)
@@ -3307,6 +3654,7 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.ConversationID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.ConversationID)
 							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.ExternalURL = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.ExternalURL)
 							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.IntegrationID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.IntegrationID)
+							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.IsExtension = types.BoolPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.IsExtension)
 							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.RequestID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.RequestID)
 						}
 					}

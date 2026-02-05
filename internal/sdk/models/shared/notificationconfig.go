@@ -6,6 +6,8 @@ package shared
 type NotificationConfig struct {
 	// The sendClose field.
 	SendClose *bool `json:"sendClose,omitempty"`
+	// The sendKickoff field.
+	SendKickoff *bool `json:"sendKickoff,omitempty"`
 	// The sendReminders field.
 	SendReminders *bool `json:"sendReminders,omitempty"`
 }
@@ -15,6 +17,13 @@ func (n *NotificationConfig) GetSendClose() *bool {
 		return nil
 	}
 	return n.SendClose
+}
+
+func (n *NotificationConfig) GetSendKickoff() *bool {
+	if n == nil {
+		return nil
+	}
+	return n.SendKickoff
 }
 
 func (n *NotificationConfig) GetSendReminders() *bool {

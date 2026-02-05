@@ -3,11 +3,36 @@
 package shared
 
 // The GrantEntitlements message.
+//
+// This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:
+//   - inclusionList
+//   - inclusionCriteria
+//   - inclusionListCel
+//
+// This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
+//   - exclusionNone
+//   - exclusionList
+//   - exclusionCriteria
+//   - exclusionListCel
 type GrantEntitlements struct {
 	// The appEntitlementRefs field.
 	AppEntitlementRefs []AppEntitlementRef `json:"appEntitlementRefs,omitempty"`
 	// The appEntitlementRefsCel field.
 	AppEntitlementRefsCel *string `json:"appEntitlementRefsCel,omitempty"`
+	// The GrantEntitlementExclusionCriteria message.
+	GrantEntitlementExclusionCriteria *GrantEntitlementExclusionCriteria `json:"exclusionCriteria,omitempty"`
+	// The GrantEntitlementExclusionList message.
+	GrantEntitlementExclusionList *GrantEntitlementExclusionList `json:"exclusionList,omitempty"`
+	// The GrantEntitlementExclusionListCel message.
+	GrantEntitlementExclusionListCel *GrantEntitlementExclusionListCel `json:"exclusionListCel,omitempty"`
+	// The GrantEntitlementExclusionNone message.
+	GrantEntitlementExclusionNone *GrantEntitlementExclusionNone `json:"exclusionNone,omitempty"`
+	// The GrantEntitlementInclusionCriteria message.
+	GrantEntitlementInclusionCriteria *GrantEntitlementInclusionCriteria `json:"inclusionCriteria,omitempty"`
+	// The GrantEntitlementInclusionList message.
+	GrantEntitlementInclusionList *GrantEntitlementInclusionList `json:"inclusionList,omitempty"`
+	// The GrantEntitlementInclusionListCel message.
+	GrantEntitlementInclusionListCel *GrantEntitlementInclusionListCel `json:"inclusionListCel,omitempty"`
 	// If true, the step will use the subject user of the automation as the subject.
 	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 	// The userIdCel field.
@@ -28,6 +53,55 @@ func (g *GrantEntitlements) GetAppEntitlementRefsCel() *string {
 		return nil
 	}
 	return g.AppEntitlementRefsCel
+}
+
+func (g *GrantEntitlements) GetGrantEntitlementExclusionCriteria() *GrantEntitlementExclusionCriteria {
+	if g == nil {
+		return nil
+	}
+	return g.GrantEntitlementExclusionCriteria
+}
+
+func (g *GrantEntitlements) GetGrantEntitlementExclusionList() *GrantEntitlementExclusionList {
+	if g == nil {
+		return nil
+	}
+	return g.GrantEntitlementExclusionList
+}
+
+func (g *GrantEntitlements) GetGrantEntitlementExclusionListCel() *GrantEntitlementExclusionListCel {
+	if g == nil {
+		return nil
+	}
+	return g.GrantEntitlementExclusionListCel
+}
+
+func (g *GrantEntitlements) GetGrantEntitlementExclusionNone() *GrantEntitlementExclusionNone {
+	if g == nil {
+		return nil
+	}
+	return g.GrantEntitlementExclusionNone
+}
+
+func (g *GrantEntitlements) GetGrantEntitlementInclusionCriteria() *GrantEntitlementInclusionCriteria {
+	if g == nil {
+		return nil
+	}
+	return g.GrantEntitlementInclusionCriteria
+}
+
+func (g *GrantEntitlements) GetGrantEntitlementInclusionList() *GrantEntitlementInclusionList {
+	if g == nil {
+		return nil
+	}
+	return g.GrantEntitlementInclusionList
+}
+
+func (g *GrantEntitlements) GetGrantEntitlementInclusionListCel() *GrantEntitlementInclusionListCel {
+	if g == nil {
+		return nil
+	}
+	return g.GrantEntitlementInclusionListCel
 }
 
 func (g *GrantEntitlements) GetUseSubjectUser() *bool {

@@ -76,6 +76,7 @@ Read-Only:
 - `deleted_at` (String)
 - `description` (String) The app's description.
 - `display_name` (String) The app's display name.
+- `enable_connector_sourced_ownership` (Boolean) When enabled, resource ownership is sourced from the connector.
 - `grant_policy_id` (String) The ID of the Grant Policy associated with this App.
 - `id` (String) The ID of the app.
 - `identity_matching` (String) The identityMatching field.

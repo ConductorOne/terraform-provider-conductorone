@@ -79,6 +79,12 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
 								steps.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(stepsItem.Action.ActionTargetAutomation.AutomationTemplateID)
 							}
+							if stepsItem.Action.ActionTargetBatonResourceAction == nil {
+								steps.Action.ActionTargetBatonResourceAction = nil
+							} else {
+								steps.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
+								steps.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(stepsItem.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+							}
 						}
 						if stepsItem.Approval == nil {
 							steps.Approval = nil
@@ -164,12 +170,25 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
 								steps.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
 								steps.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.Fallback)
+								if stepsItem.Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
+									steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+									for _, fallbackGroupIdsItem1 := range stepsItem.Approval.EntitlementOwnerApproval.FallbackGroupIds {
+										var fallbackGroupIds1 tfTypes.AppEntitlementReference
+
+										fallbackGroupIds1.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem1.AppEntitlementID)
+										fallbackGroupIds1.AppID = types.StringPointerValue(fallbackGroupIdsItem1.AppID)
+
+										steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(steps.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds1)
+									}
+								}
 								if stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 									steps.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
 										steps.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
+								steps.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 								steps.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
 							}
 							if stepsItem.Approval.Escalation == nil {
@@ -225,12 +244,25 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									}
 								}
 								steps.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.Fallback)
+								if stepsItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
+									steps.Approval.ExpressionApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+									for _, fallbackGroupIdsItem2 := range stepsItem.Approval.ExpressionApproval.FallbackGroupIds {
+										var fallbackGroupIds2 tfTypes.AppEntitlementReference
+
+										fallbackGroupIds2.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem2.AppEntitlementID)
+										fallbackGroupIds2.AppID = types.StringPointerValue(fallbackGroupIdsItem2.AppID)
+
+										steps.Approval.ExpressionApproval.FallbackGroupIds = append(steps.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds2)
+									}
+								}
 								if stepsItem.Approval.ExpressionApproval.FallbackUserIds != nil {
 									steps.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
 										steps.Approval.ExpressionApproval.FallbackUserIds = append(steps.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
+								steps.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 								steps.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers)
 							}
 							if stepsItem.Approval.ManagerApproval == nil {
@@ -245,12 +277,25 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									}
 								}
 								steps.Approval.ManagerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.Fallback)
+								if stepsItem.Approval.ManagerApproval.FallbackGroupIds != nil {
+									steps.Approval.ManagerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+									for _, fallbackGroupIdsItem3 := range stepsItem.Approval.ManagerApproval.FallbackGroupIds {
+										var fallbackGroupIds3 tfTypes.AppEntitlementReference
+
+										fallbackGroupIds3.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem3.AppEntitlementID)
+										fallbackGroupIds3.AppID = types.StringPointerValue(fallbackGroupIdsItem3.AppID)
+
+										steps.Approval.ManagerApproval.FallbackGroupIds = append(steps.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds3)
+									}
+								}
 								if stepsItem.Approval.ManagerApproval.FallbackUserIds != nil {
 									steps.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
 										steps.Approval.ManagerApproval.FallbackUserIds = append(steps.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
+								steps.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
 								steps.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.RequireDistinctApprovers)
 							}
 							steps.Approval.RequireApprovalReason = types.BoolPointerValue(stepsItem.Approval.RequireApprovalReason)
@@ -263,12 +308,25 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
 								steps.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval)
 								steps.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.Fallback)
+								if stepsItem.Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
+									steps.Approval.ResourceOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+									for _, fallbackGroupIdsItem4 := range stepsItem.Approval.ResourceOwnerApproval.FallbackGroupIds {
+										var fallbackGroupIds4 tfTypes.AppEntitlementReference
+
+										fallbackGroupIds4.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem4.AppEntitlementID)
+										fallbackGroupIds4.AppID = types.StringPointerValue(fallbackGroupIdsItem4.AppID)
+
+										steps.Approval.ResourceOwnerApproval.FallbackGroupIds = append(steps.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds4)
+									}
+								}
 								if stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 									steps.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
 										steps.Approval.ResourceOwnerApproval.FallbackUserIds = append(steps.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
+								steps.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 								steps.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
 							}
 							if stepsItem.Approval.SelfApproval == nil {
@@ -282,12 +340,25 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									}
 								}
 								steps.Approval.SelfApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.SelfApproval.Fallback)
+								if stepsItem.Approval.SelfApproval.FallbackGroupIds != nil {
+									steps.Approval.SelfApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+									for _, fallbackGroupIdsItem5 := range stepsItem.Approval.SelfApproval.FallbackGroupIds {
+										var fallbackGroupIds5 tfTypes.AppEntitlementReference
+
+										fallbackGroupIds5.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem5.AppEntitlementID)
+										fallbackGroupIds5.AppID = types.StringPointerValue(fallbackGroupIdsItem5.AppID)
+
+										steps.Approval.SelfApproval.FallbackGroupIds = append(steps.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds5)
+									}
+								}
 								if stepsItem.Approval.SelfApproval.FallbackUserIds != nil {
 									steps.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.SelfApproval.FallbackUserIds {
 										steps.Approval.SelfApproval.FallbackUserIds = append(steps.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 									}
 								}
+								steps.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.SelfApproval.IsGroupFallbackEnabled)
 							}
 							if stepsItem.Approval.UserApproval == nil {
 								steps.Approval.UserApproval = nil
@@ -628,8 +699,21 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							AutomationTemplateID: automationTemplateID,
 						}
 					}
+					var actionTargetBatonResourceAction *shared.ActionTargetBatonResourceAction
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction != nil {
+						batonResourceActionID := new(string)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.IsNull() {
+							*batonResourceActionID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.ValueString()
+						} else {
+							batonResourceActionID = nil
+						}
+						actionTargetBatonResourceAction = &shared.ActionTargetBatonResourceAction{
+							BatonResourceActionID: batonResourceActionID,
+						}
+					}
 					action = &shared.Action{
-						ActionTargetAutomation: actionTargetAutomation,
+						ActionTargetAutomation:          actionTargetAutomation,
+						ActionTargetBatonResourceAction: actionTargetBatonResourceAction,
 					}
 				}
 				var approval *shared.ApprovalInput
@@ -735,12 +819,40 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							fallback = nil
 						}
+						var fallbackGroupIds []shared.AppEntitlementReference
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
+							fallbackGroupIds = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds {
+								appEntitlementID := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsNull() {
+									*appEntitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.ValueString()
+								} else {
+									appEntitlementID = nil
+								}
+								appID := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsNull() {
+									*appID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.ValueString()
+								} else {
+									appID = nil
+								}
+								fallbackGroupIds = append(fallbackGroupIds, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementID,
+									AppID:            appID,
+								})
+							}
+						}
 						var fallbackUserIds []string
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 							fallbackUserIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds))
 							for fallbackUserIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds {
 								fallbackUserIds = append(fallbackUserIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds[fallbackUserIdsIndex].ValueString())
 							}
+						}
+						isGroupFallbackEnabled := new(bool)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled = nil
 						}
 						requireDistinctApprovers1 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsNull() {
@@ -751,7 +863,9 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						entitlementOwnerApproval = &shared.EntitlementOwnerApproval{
 							AllowSelfApproval:        allowSelfApproval1,
 							Fallback:                 fallback,
+							FallbackGroupIds:         fallbackGroupIds,
 							FallbackUserIds:          fallbackUserIds,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled,
 							RequireDistinctApprovers: requireDistinctApprovers1,
 						}
 					}
@@ -838,12 +952,40 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							fallback1 = nil
 						}
+						var fallbackGroupIds1 []shared.AppEntitlementReference
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds != nil {
+							fallbackGroupIds1 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds {
+								appEntitlementId1 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsNull() {
+									*appEntitlementId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.ValueString()
+								} else {
+									appEntitlementId1 = nil
+								}
+								appId1 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsNull() {
+									*appId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.ValueString()
+								} else {
+									appId1 = nil
+								}
+								fallbackGroupIds1 = append(fallbackGroupIds1, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementId1,
+									AppID:            appId1,
+								})
+							}
+						}
 						var fallbackUserIds1 []string
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds != nil {
 							fallbackUserIds1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds))
 							for fallbackUserIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds {
 								fallbackUserIds1 = append(fallbackUserIds1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds[fallbackUserIdsIndex1].ValueString())
 							}
+						}
+						isGroupFallbackEnabled1 := new(bool)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled1 = nil
 						}
 						requireDistinctApprovers2 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.RequireDistinctApprovers.IsNull() {
@@ -855,7 +997,9 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							AllowSelfApproval:        allowSelfApproval2,
 							Expressions:              expressions,
 							Fallback:                 fallback1,
+							FallbackGroupIds:         fallbackGroupIds1,
 							FallbackUserIds:          fallbackUserIds1,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled1,
 							RequireDistinctApprovers: requireDistinctApprovers2,
 						}
 					}
@@ -873,11 +1017,11 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							appGroupID = nil
 						}
-						appID := new(string)
+						appId2 := new(string)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.IsNull() {
-							*appID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.ValueString()
+							*appId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.ValueString()
 						} else {
-							appID = nil
+							appId2 = nil
 						}
 						fallback2 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.Fallback.IsNull() {
@@ -885,25 +1029,25 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							fallback2 = nil
 						}
-						var fallbackGroupIds []shared.AppEntitlementReference
+						var fallbackGroupIds2 []shared.AppEntitlementReference
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds != nil {
-							fallbackGroupIds = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds {
-								appEntitlementID := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsNull() {
-									*appEntitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.ValueString()
+							fallbackGroupIds2 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds {
+								appEntitlementId2 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsNull() {
+									*appEntitlementId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.ValueString()
 								} else {
-									appEntitlementID = nil
+									appEntitlementId2 = nil
 								}
-								appId1 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsNull() {
-									*appId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.ValueString()
+								appId3 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsNull() {
+									*appId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.ValueString()
 								} else {
-									appId1 = nil
+									appId3 = nil
 								}
-								fallbackGroupIds = append(fallbackGroupIds, shared.AppEntitlementReference{
-									AppEntitlementID: appEntitlementID,
-									AppID:            appId1,
+								fallbackGroupIds2 = append(fallbackGroupIds2, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementId2,
+									AppID:            appId3,
 								})
 							}
 						}
@@ -914,11 +1058,11 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								fallbackUserIds2 = append(fallbackUserIds2, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackUserIds[fallbackUserIdsIndex2].ValueString())
 							}
 						}
-						isGroupFallbackEnabled := new(bool)
+						isGroupFallbackEnabled2 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.ValueBool()
+							*isGroupFallbackEnabled2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.ValueBool()
 						} else {
-							isGroupFallbackEnabled = nil
+							isGroupFallbackEnabled2 = nil
 						}
 						requireDistinctApprovers3 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.RequireDistinctApprovers.IsNull() {
@@ -929,11 +1073,11 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						appGroupApproval = &shared.AppGroupApproval{
 							AllowSelfApproval:        allowSelfApproval3,
 							AppGroupID:               appGroupID,
-							AppID:                    appID,
+							AppID:                    appId2,
 							Fallback:                 fallback2,
-							FallbackGroupIds:         fallbackGroupIds,
+							FallbackGroupIds:         fallbackGroupIds2,
 							FallbackUserIds:          fallbackUserIds2,
-							IsGroupFallbackEnabled:   isGroupFallbackEnabled,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled2,
 							RequireDistinctApprovers: requireDistinctApprovers3,
 						}
 					}
@@ -951,12 +1095,40 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							fallback3 = nil
 						}
+						var fallbackGroupIds3 []shared.AppEntitlementReference
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds != nil {
+							fallbackGroupIds3 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds {
+								appEntitlementId3 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsNull() {
+									*appEntitlementId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.ValueString()
+								} else {
+									appEntitlementId3 = nil
+								}
+								appId4 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsNull() {
+									*appId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.ValueString()
+								} else {
+									appId4 = nil
+								}
+								fallbackGroupIds3 = append(fallbackGroupIds3, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementId3,
+									AppID:            appId4,
+								})
+							}
+						}
 						var fallbackUserIds3 []string
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds != nil {
 							fallbackUserIds3 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds))
 							for fallbackUserIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds {
 								fallbackUserIds3 = append(fallbackUserIds3, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds[fallbackUserIdsIndex3].ValueString())
 							}
+						}
+						isGroupFallbackEnabled3 := new(bool)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled3 = nil
 						}
 						requireDistinctApprovers4 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.RequireDistinctApprovers.IsNull() {
@@ -967,7 +1139,9 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						managerApproval = &shared.ManagerApprovalInput{
 							AllowSelfApproval:        allowSelfApproval4,
 							Fallback:                 fallback3,
+							FallbackGroupIds:         fallbackGroupIds3,
 							FallbackUserIds:          fallbackUserIds3,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled3,
 							RequireDistinctApprovers: requireDistinctApprovers4,
 						}
 					}
@@ -1009,12 +1183,40 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							fallback4 = nil
 						}
+						var fallbackGroupIds4 []shared.AppEntitlementReference
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
+							fallbackGroupIds4 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds {
+								appEntitlementId4 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsNull() {
+									*appEntitlementId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.ValueString()
+								} else {
+									appEntitlementId4 = nil
+								}
+								appId5 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsNull() {
+									*appId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.ValueString()
+								} else {
+									appId5 = nil
+								}
+								fallbackGroupIds4 = append(fallbackGroupIds4, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementId4,
+									AppID:            appId5,
+								})
+							}
+						}
 						var fallbackUserIds4 []string
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 							fallbackUserIds4 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds))
 							for fallbackUserIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds {
 								fallbackUserIds4 = append(fallbackUserIds4, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds[fallbackUserIdsIndex4].ValueString())
 							}
+						}
+						isGroupFallbackEnabled4 := new(bool)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled4 = nil
 						}
 						requireDistinctApprovers5 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsNull() {
@@ -1025,7 +1227,9 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						resourceOwnerApproval = &shared.ResourceOwnerApproval{
 							AllowSelfApproval:        allowSelfApproval5,
 							Fallback:                 fallback4,
+							FallbackGroupIds:         fallbackGroupIds4,
 							FallbackUserIds:          fallbackUserIds4,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled4,
 							RequireDistinctApprovers: requireDistinctApprovers5,
 						}
 					}
@@ -1037,6 +1241,28 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						} else {
 							fallback5 = nil
 						}
+						var fallbackGroupIds5 []shared.AppEntitlementReference
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds != nil {
+							fallbackGroupIds5 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex5 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds {
+								appEntitlementId5 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsNull() {
+									*appEntitlementId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.ValueString()
+								} else {
+									appEntitlementId5 = nil
+								}
+								appId6 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsNull() {
+									*appId6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.ValueString()
+								} else {
+									appId6 = nil
+								}
+								fallbackGroupIds5 = append(fallbackGroupIds5, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementId5,
+									AppID:            appId6,
+								})
+							}
+						}
 						var fallbackUserIds5 []string
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds != nil {
 							fallbackUserIds5 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds))
@@ -1044,9 +1270,17 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								fallbackUserIds5 = append(fallbackUserIds5, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds[fallbackUserIdsIndex5].ValueString())
 							}
 						}
+						isGroupFallbackEnabled5 := new(bool)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled5 = nil
+						}
 						selfApproval = &shared.SelfApprovalInput{
-							Fallback:        fallback5,
-							FallbackUserIds: fallbackUserIds5,
+							Fallback:               fallback5,
+							FallbackGroupIds:       fallbackGroupIds5,
+							FallbackUserIds:        fallbackUserIds5,
+							IsGroupFallbackEnabled: isGroupFallbackEnabled5,
 						}
 					}
 					var userApproval *shared.UserApproval
@@ -1132,11 +1366,11 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							} else {
 								actionName = nil
 							}
-							appId2 := new(string)
+							appId7 := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.IsNull() {
-								*appId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.ValueString()
+								*appId7 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.ValueString()
 							} else {
-								appId2 = nil
+								appId7 = nil
 							}
 							connectorID := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsNull() {
@@ -1152,7 +1386,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 							actionProvision = &shared.ActionProvision{
 								ActionName:  actionName,
-								AppID:       appId2,
+								AppID:       appId7,
 								ConnectorID: connectorID,
 								DisplayName: displayName1,
 							}
@@ -1234,11 +1468,11 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						}
 						var delegatedProvision *shared.DelegatedProvision
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision != nil {
-							appId3 := new(string)
+							appId8 := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-								*appId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+								*appId8 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
 							} else {
-								appId3 = nil
+								appId8 = nil
 							}
 							entitlementID := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
@@ -1247,17 +1481,17 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								entitlementID = nil
 							}
 							delegatedProvision = &shared.DelegatedProvision{
-								AppID:         appId3,
+								AppID:         appId8,
 								EntitlementID: entitlementID,
 							}
 						}
 						var externalTicketProvision *shared.ExternalTicketProvision
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision != nil {
-							appId4 := new(string)
+							appId9 := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
-								*appId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
+								*appId9 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
 							} else {
-								appId4 = nil
+								appId9 = nil
 							}
 							connectorId4 := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
@@ -1278,7 +1512,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								instructions1 = nil
 							}
 							externalTicketProvision = &shared.ExternalTicketProvision{
-								AppID:                             appId4,
+								AppID:                             appId9,
 								ConnectorID:                       connectorId4,
 								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 								Instructions:                      instructions1,
@@ -1337,17 +1571,17 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					}
 					var provisionTarget *shared.ProvisionTarget
 					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget != nil {
-						appEntitlementId1 := new(string)
+						appEntitlementId6 := new(string)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppEntitlementID.IsNull() {
-							*appEntitlementId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppEntitlementID.ValueString()
+							*appEntitlementId6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppEntitlementID.ValueString()
 						} else {
-							appEntitlementId1 = nil
+							appEntitlementId6 = nil
 						}
-						appId5 := new(string)
+						appId10 := new(string)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppID.IsNull() {
-							*appId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppID.ValueString()
+							*appId10 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppID.ValueString()
 						} else {
-							appId5 = nil
+							appId10 = nil
 						}
 						appUserID := new(string)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppUserID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppUserID.IsNull() {
@@ -1362,8 +1596,8 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							grantDuration = nil
 						}
 						provisionTarget = &shared.ProvisionTarget{
-							AppEntitlementID: appEntitlementId1,
-							AppID:            appId5,
+							AppEntitlementID: appEntitlementId6,
+							AppID:            appId10,
 							AppUserID:        appUserID,
 							GrantDuration:    grantDuration,
 						}
@@ -1605,8 +1839,21 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							AutomationTemplateID: automationTemplateID,
 						}
 					}
+					var actionTargetBatonResourceAction *shared.ActionTargetBatonResourceAction
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction != nil {
+						batonResourceActionID := new(string)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.IsNull() {
+							*batonResourceActionID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.ValueString()
+						} else {
+							batonResourceActionID = nil
+						}
+						actionTargetBatonResourceAction = &shared.ActionTargetBatonResourceAction{
+							BatonResourceActionID: batonResourceActionID,
+						}
+					}
 					action = &shared.Action{
-						ActionTargetAutomation: actionTargetAutomation,
+						ActionTargetAutomation:          actionTargetAutomation,
+						ActionTargetBatonResourceAction: actionTargetBatonResourceAction,
 					}
 				}
 				var approval *shared.ApprovalInput
@@ -1712,12 +1959,40 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							fallback = nil
 						}
+						var fallbackGroupIds []shared.AppEntitlementReference
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
+							fallbackGroupIds = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds {
+								appEntitlementID := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsNull() {
+									*appEntitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.ValueString()
+								} else {
+									appEntitlementID = nil
+								}
+								appID := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsNull() {
+									*appID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.ValueString()
+								} else {
+									appID = nil
+								}
+								fallbackGroupIds = append(fallbackGroupIds, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementID,
+									AppID:            appID,
+								})
+							}
+						}
 						var fallbackUserIds []string
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 							fallbackUserIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds))
 							for fallbackUserIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds {
 								fallbackUserIds = append(fallbackUserIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds[fallbackUserIdsIndex].ValueString())
 							}
+						}
+						isGroupFallbackEnabled := new(bool)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled = nil
 						}
 						requireDistinctApprovers1 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsNull() {
@@ -1728,7 +2003,9 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						entitlementOwnerApproval = &shared.EntitlementOwnerApproval{
 							AllowSelfApproval:        allowSelfApproval1,
 							Fallback:                 fallback,
+							FallbackGroupIds:         fallbackGroupIds,
 							FallbackUserIds:          fallbackUserIds,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled,
 							RequireDistinctApprovers: requireDistinctApprovers1,
 						}
 					}
@@ -1815,12 +2092,40 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							fallback1 = nil
 						}
+						var fallbackGroupIds1 []shared.AppEntitlementReference
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds != nil {
+							fallbackGroupIds1 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds {
+								appEntitlementId1 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsNull() {
+									*appEntitlementId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.ValueString()
+								} else {
+									appEntitlementId1 = nil
+								}
+								appId1 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsNull() {
+									*appId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.ValueString()
+								} else {
+									appId1 = nil
+								}
+								fallbackGroupIds1 = append(fallbackGroupIds1, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementId1,
+									AppID:            appId1,
+								})
+							}
+						}
 						var fallbackUserIds1 []string
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds != nil {
 							fallbackUserIds1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds))
 							for fallbackUserIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds {
 								fallbackUserIds1 = append(fallbackUserIds1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds[fallbackUserIdsIndex1].ValueString())
 							}
+						}
+						isGroupFallbackEnabled1 := new(bool)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled1 = nil
 						}
 						requireDistinctApprovers2 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.RequireDistinctApprovers.IsNull() {
@@ -1832,7 +2137,9 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							AllowSelfApproval:        allowSelfApproval2,
 							Expressions:              expressions,
 							Fallback:                 fallback1,
+							FallbackGroupIds:         fallbackGroupIds1,
 							FallbackUserIds:          fallbackUserIds1,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled1,
 							RequireDistinctApprovers: requireDistinctApprovers2,
 						}
 					}
@@ -1850,11 +2157,11 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							appGroupID = nil
 						}
-						appID := new(string)
+						appId2 := new(string)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.IsNull() {
-							*appID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.ValueString()
+							*appId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.ValueString()
 						} else {
-							appID = nil
+							appId2 = nil
 						}
 						fallback2 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.Fallback.IsNull() {
@@ -1862,25 +2169,25 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							fallback2 = nil
 						}
-						var fallbackGroupIds []shared.AppEntitlementReference
+						var fallbackGroupIds2 []shared.AppEntitlementReference
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds != nil {
-							fallbackGroupIds = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds {
-								appEntitlementID := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsNull() {
-									*appEntitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.ValueString()
+							fallbackGroupIds2 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds {
+								appEntitlementId2 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsNull() {
+									*appEntitlementId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.ValueString()
 								} else {
-									appEntitlementID = nil
+									appEntitlementId2 = nil
 								}
-								appId1 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsNull() {
-									*appId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.ValueString()
+								appId3 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsNull() {
+									*appId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.ValueString()
 								} else {
-									appId1 = nil
+									appId3 = nil
 								}
-								fallbackGroupIds = append(fallbackGroupIds, shared.AppEntitlementReference{
-									AppEntitlementID: appEntitlementID,
-									AppID:            appId1,
+								fallbackGroupIds2 = append(fallbackGroupIds2, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementId2,
+									AppID:            appId3,
 								})
 							}
 						}
@@ -1891,11 +2198,11 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								fallbackUserIds2 = append(fallbackUserIds2, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackUserIds[fallbackUserIdsIndex2].ValueString())
 							}
 						}
-						isGroupFallbackEnabled := new(bool)
+						isGroupFallbackEnabled2 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.ValueBool()
+							*isGroupFallbackEnabled2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.ValueBool()
 						} else {
-							isGroupFallbackEnabled = nil
+							isGroupFallbackEnabled2 = nil
 						}
 						requireDistinctApprovers3 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.RequireDistinctApprovers.IsNull() {
@@ -1906,11 +2213,11 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						appGroupApproval = &shared.AppGroupApproval{
 							AllowSelfApproval:        allowSelfApproval3,
 							AppGroupID:               appGroupID,
-							AppID:                    appID,
+							AppID:                    appId2,
 							Fallback:                 fallback2,
-							FallbackGroupIds:         fallbackGroupIds,
+							FallbackGroupIds:         fallbackGroupIds2,
 							FallbackUserIds:          fallbackUserIds2,
-							IsGroupFallbackEnabled:   isGroupFallbackEnabled,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled2,
 							RequireDistinctApprovers: requireDistinctApprovers3,
 						}
 					}
@@ -1928,12 +2235,40 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							fallback3 = nil
 						}
+						var fallbackGroupIds3 []shared.AppEntitlementReference
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds != nil {
+							fallbackGroupIds3 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds {
+								appEntitlementId3 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsNull() {
+									*appEntitlementId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.ValueString()
+								} else {
+									appEntitlementId3 = nil
+								}
+								appId4 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsNull() {
+									*appId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.ValueString()
+								} else {
+									appId4 = nil
+								}
+								fallbackGroupIds3 = append(fallbackGroupIds3, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementId3,
+									AppID:            appId4,
+								})
+							}
+						}
 						var fallbackUserIds3 []string
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds != nil {
 							fallbackUserIds3 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds))
 							for fallbackUserIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds {
 								fallbackUserIds3 = append(fallbackUserIds3, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds[fallbackUserIdsIndex3].ValueString())
 							}
+						}
+						isGroupFallbackEnabled3 := new(bool)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled3 = nil
 						}
 						requireDistinctApprovers4 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.RequireDistinctApprovers.IsNull() {
@@ -1944,7 +2279,9 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						managerApproval = &shared.ManagerApprovalInput{
 							AllowSelfApproval:        allowSelfApproval4,
 							Fallback:                 fallback3,
+							FallbackGroupIds:         fallbackGroupIds3,
 							FallbackUserIds:          fallbackUserIds3,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled3,
 							RequireDistinctApprovers: requireDistinctApprovers4,
 						}
 					}
@@ -1986,12 +2323,40 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							fallback4 = nil
 						}
+						var fallbackGroupIds4 []shared.AppEntitlementReference
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
+							fallbackGroupIds4 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds {
+								appEntitlementId4 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsNull() {
+									*appEntitlementId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.ValueString()
+								} else {
+									appEntitlementId4 = nil
+								}
+								appId5 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsNull() {
+									*appId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.ValueString()
+								} else {
+									appId5 = nil
+								}
+								fallbackGroupIds4 = append(fallbackGroupIds4, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementId4,
+									AppID:            appId5,
+								})
+							}
+						}
 						var fallbackUserIds4 []string
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 							fallbackUserIds4 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds))
 							for fallbackUserIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds {
 								fallbackUserIds4 = append(fallbackUserIds4, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds[fallbackUserIdsIndex4].ValueString())
 							}
+						}
+						isGroupFallbackEnabled4 := new(bool)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled4 = nil
 						}
 						requireDistinctApprovers5 := new(bool)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsNull() {
@@ -2002,7 +2367,9 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						resourceOwnerApproval = &shared.ResourceOwnerApproval{
 							AllowSelfApproval:        allowSelfApproval5,
 							Fallback:                 fallback4,
+							FallbackGroupIds:         fallbackGroupIds4,
 							FallbackUserIds:          fallbackUserIds4,
+							IsGroupFallbackEnabled:   isGroupFallbackEnabled4,
 							RequireDistinctApprovers: requireDistinctApprovers5,
 						}
 					}
@@ -2014,6 +2381,28 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						} else {
 							fallback5 = nil
 						}
+						var fallbackGroupIds5 []shared.AppEntitlementReference
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds != nil {
+							fallbackGroupIds5 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds))
+							for fallbackGroupIdsIndex5 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds {
+								appEntitlementId5 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsNull() {
+									*appEntitlementId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.ValueString()
+								} else {
+									appEntitlementId5 = nil
+								}
+								appId6 := new(string)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsNull() {
+									*appId6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.ValueString()
+								} else {
+									appId6 = nil
+								}
+								fallbackGroupIds5 = append(fallbackGroupIds5, shared.AppEntitlementReference{
+									AppEntitlementID: appEntitlementId5,
+									AppID:            appId6,
+								})
+							}
+						}
 						var fallbackUserIds5 []string
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds != nil {
 							fallbackUserIds5 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds))
@@ -2021,9 +2410,17 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								fallbackUserIds5 = append(fallbackUserIds5, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds[fallbackUserIdsIndex5].ValueString())
 							}
 						}
+						isGroupFallbackEnabled5 := new(bool)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.ValueBool()
+						} else {
+							isGroupFallbackEnabled5 = nil
+						}
 						selfApproval = &shared.SelfApprovalInput{
-							Fallback:        fallback5,
-							FallbackUserIds: fallbackUserIds5,
+							Fallback:               fallback5,
+							FallbackGroupIds:       fallbackGroupIds5,
+							FallbackUserIds:        fallbackUserIds5,
+							IsGroupFallbackEnabled: isGroupFallbackEnabled5,
 						}
 					}
 					var userApproval *shared.UserApproval
@@ -2109,11 +2506,11 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							} else {
 								actionName = nil
 							}
-							appId2 := new(string)
+							appId7 := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.IsNull() {
-								*appId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.ValueString()
+								*appId7 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.ValueString()
 							} else {
-								appId2 = nil
+								appId7 = nil
 							}
 							connectorID := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsNull() {
@@ -2129,7 +2526,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 							actionProvision = &shared.ActionProvision{
 								ActionName:  actionName,
-								AppID:       appId2,
+								AppID:       appId7,
 								ConnectorID: connectorID,
 								DisplayName: displayName1,
 							}
@@ -2211,11 +2608,11 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						}
 						var delegatedProvision *shared.DelegatedProvision
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision != nil {
-							appId3 := new(string)
+							appId8 := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-								*appId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+								*appId8 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
 							} else {
-								appId3 = nil
+								appId8 = nil
 							}
 							entitlementID := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
@@ -2224,17 +2621,17 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								entitlementID = nil
 							}
 							delegatedProvision = &shared.DelegatedProvision{
-								AppID:         appId3,
+								AppID:         appId8,
 								EntitlementID: entitlementID,
 							}
 						}
 						var externalTicketProvision *shared.ExternalTicketProvision
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision != nil {
-							appId4 := new(string)
+							appId9 := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
-								*appId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
+								*appId9 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
 							} else {
-								appId4 = nil
+								appId9 = nil
 							}
 							connectorId4 := new(string)
 							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
@@ -2255,7 +2652,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								instructions1 = nil
 							}
 							externalTicketProvision = &shared.ExternalTicketProvision{
-								AppID:                             appId4,
+								AppID:                             appId9,
 								ConnectorID:                       connectorId4,
 								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 								Instructions:                      instructions1,
@@ -2314,17 +2711,17 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					}
 					var provisionTarget *shared.ProvisionTarget
 					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget != nil {
-						appEntitlementId1 := new(string)
+						appEntitlementId6 := new(string)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppEntitlementID.IsNull() {
-							*appEntitlementId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppEntitlementID.ValueString()
+							*appEntitlementId6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppEntitlementID.ValueString()
 						} else {
-							appEntitlementId1 = nil
+							appEntitlementId6 = nil
 						}
-						appId5 := new(string)
+						appId10 := new(string)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppID.IsNull() {
-							*appId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppID.ValueString()
+							*appId10 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppID.ValueString()
 						} else {
-							appId5 = nil
+							appId10 = nil
 						}
 						appUserID := new(string)
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppUserID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionTarget.AppUserID.IsNull() {
@@ -2339,8 +2736,8 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							grantDuration = nil
 						}
 						provisionTarget = &shared.ProvisionTarget{
-							AppEntitlementID: appEntitlementId1,
-							AppID:            appId5,
+							AppEntitlementID: appEntitlementId6,
+							AppID:            appId10,
 							AppUserID:        appUserID,
 							GrantDuration:    grantDuration,
 						}

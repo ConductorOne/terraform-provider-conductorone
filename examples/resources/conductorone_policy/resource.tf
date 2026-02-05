@@ -12,6 +12,9 @@ resource "conductorone_policy" "my_policy" {
             action_target_automation = {
               automation_template_id = "...my_automation_template_id..."
             }
+            action_target_baton_resource_action = {
+              baton_resource_action_id = "...my_baton_resource_action_id..."
+            }
           }
           approval = {
             agent_approval = {
@@ -55,9 +58,16 @@ resource "conductorone_policy" "my_policy" {
             entitlement_owner_approval = {
               allow_self_approval = false
               fallback            = true
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled  = true
               require_distinct_approvers = false
             }
             escalation = {
@@ -85,17 +95,31 @@ resource "conductorone_policy" "my_policy" {
                 "..."
               ]
               fallback = false
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled  = false
               require_distinct_approvers = true
             }
             manager_approval = {
               allow_self_approval = true
               fallback            = true
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled  = false
               require_distinct_approvers = true
             }
             require_approval_reason      = true
@@ -105,16 +129,30 @@ resource "conductorone_policy" "my_policy" {
             resource_owner_approval = {
               allow_self_approval = true
               fallback            = false
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled  = false
               require_distinct_approvers = true
             }
             self_approval = {
               fallback = false
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
               fallback_user_ids = [
                 "..."
               ]
+              is_group_fallback_enabled = false
             }
             user_approval = {
               allow_self_approval        = false

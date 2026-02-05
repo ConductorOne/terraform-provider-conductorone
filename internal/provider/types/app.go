@@ -16,6 +16,7 @@ type App struct {
 	DeletedAt                           types.String `tfsdk:"deleted_at"`
 	Description                         types.String `tfsdk:"description"`
 	DisplayName                         types.String `tfsdk:"display_name"`
+	EnableConnectorSourcedOwnership     types.Bool   `tfsdk:"enable_connector_sourced_ownership"`
 	GrantPolicyID                       types.String `tfsdk:"grant_policy_id"`
 	ID                                  types.String `tfsdk:"id"`
 	IdentityMatching                    types.String `tfsdk:"identity_matching"`

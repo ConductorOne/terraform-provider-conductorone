@@ -138,6 +138,7 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
 - `compliance_framework_value_ids` (List of String) The IDs of different compliance frameworks associated with this app entitlement ex (SOX, HIPAA, PCI, etc.)
 - `created_at` (String)
 - `default_values_applied` (Boolean) Flag to indicate if app-level access request defaults have been applied to the entitlement
+- `delete` (Boolean) The delete field.
 - `deleted_at` (String)
 - `deprovisioner_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
 
@@ -153,8 +154,10 @@ This message contains a oneof named typ. Only a single field of the following li
 - `description` (String) The description of the app entitlement.
 - `duration_grant` (String)
 - `duration_unset` (Attributes) (see [below for nested schema](#nestedatt--duration_unset))
+- `edit` (Boolean) The edit field.
 - `emergency_grant_enabled` (Boolean) This enables tasks to be created in an emergency and use a selected emergency access policy.
 - `emergency_grant_policy_id` (String) The ID of the policy that will be used for emergency access grant tasks.
+- `extra` (Map of Boolean) The extra field.
 - `grant_count` (String) The amount of grants open for this entitlement
 - `grant_policy_id` (String) The ID of the policy that will be used for grant tickets related to the app entitlement.
 - `id` (String) The unique ID for the App Entitlement.
@@ -175,6 +178,7 @@ This message contains a oneof named typ. Only a single field of the following li
   - unconfigured
   - action (see [below for nested schema](#nestedatt--provision_policy))
 - `purpose` (String) The purpose field.
+- `read` (Boolean) The read field.
 - `request_schema_id` (String) The ID of the request schema associated with this app entitlement.
 - `revoke_policy_id` (String) The ID of the policy that will be used for revoke tickets related to the app entitlement
 - `risk_level_value_id` (String) The riskLevelValueId field.

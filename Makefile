@@ -65,6 +65,25 @@ gen:
 test:
 	go test -v -cover -timeout=120s -parallel=4 ./...
 
+# verify-pagination: Checks that pagination loops use assignment, not declaration.
+#
+# Speakeasy had a bug where pagination loops used variable shadowing:
+#   res, err := res.Next()  // BROKEN - shadows outer res
+# instead of assignment:
+#   res, err = res.Next()   // CORRECT - reuses outer res
+#
+# This check scans data sources for the broken pattern and fails if found.
+.PHONY: verify-pagination
+verify-pagination:
+	@echo "Checking pagination pattern in data sources..."
+	@if grep -r 'res, err := res\.Next()' internal/provider/*_data_source.go 2>/dev/null; then \
+		echo ""; \
+		echo "ERROR: Found broken pagination pattern (declaration instead of assignment)"; \
+		echo "The pagination fix has regressed. See CLAUDE.md for details."; \
+		exit 1; \
+	fi
+	@echo "Pagination pattern OK"
+
 # pre-commit: Validates the codebase before committing changes.
 #
 # This target runs the essential validation checks that should pass before
@@ -84,7 +103,7 @@ test:
 # CONDUCTORONE_CLIENT_ID, CONDUCTORONE_CLIENT_SECRET, and CONDUCTORONE_SERVER_URL
 # environment variables to be configured.
 .PHONY: pre-commit
-pre-commit: build lint test generate
+pre-commit: build lint test generate verify-pagination
 
 .PHONY: testacc
 testacc:

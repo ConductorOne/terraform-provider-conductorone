@@ -39,6 +39,7 @@ type AppDataSourceModel struct {
 	DeletedAt                           types.String        `tfsdk:"deleted_at"`
 	Description                         types.String        `tfsdk:"description"`
 	DisplayName                         types.String        `tfsdk:"display_name"`
+	EnableConnectorSourcedOwnership     types.Bool          `tfsdk:"enable_connector_sourced_ownership"`
 	ExcludeAppIds                       []types.String      `tfsdk:"exclude_app_ids"`
 	GrantPolicyID                       types.String        `tfsdk:"grant_policy_id"`
 	ID                                  types.String        `tfsdk:"id"`
@@ -110,6 +111,10 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Computed:    true,
 				Optional:    true,
 				Description: `Search for apps with a case insensitive match on the display name.`,
+			},
+			"enable_connector_sourced_ownership": schema.BoolAttribute{
+				Computed:    true,
+				Description: `When enabled, resource ownership is sourced from the connector.`,
 			},
 			"exclude_app_ids": schema.ListAttribute{
 				Optional:    true,

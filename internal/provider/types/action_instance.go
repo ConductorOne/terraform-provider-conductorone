@@ -7,11 +7,12 @@ import (
 )
 
 type ActionInstance struct {
-	Action                         *Action                         `tfsdk:"action"`
-	ActionOutcomeCancelled         *ActionOutcomeCancelled         `tfsdk:"action_outcome_cancelled"`
-	ActionOutcomeDenied            *ActionOutcomeDenied            `tfsdk:"action_outcome_denied"`
-	ActionOutcomeError             *ActionOutcomeError             `tfsdk:"action_outcome_error"`
-	ActionOutcomeSuccess           *ActionOutcomeSuccess           `tfsdk:"action_outcome_success"`
-	ActionTargetAutomationInstance *ActionTargetAutomationInstance `tfsdk:"action_target_automation_instance"`
-	State                          types.String                    `tfsdk:"state"`
+	Action                                  *Action                                  `tfsdk:"action"`
+	ActionOutcomeCancelled                  *ActionOutcomeCancelled                  `tfsdk:"action_outcome_cancelled"`
+	ActionOutcomeDenied                     *ActionOutcomeDenied                     `tfsdk:"action_outcome_denied"`
+	ActionOutcomeError                      *ActionOutcomeError                      `tfsdk:"action_outcome_error"`
+	ActionOutcomeSuccess                    *ActionOutcomeSuccess                    `tfsdk:"action_outcome_success"`
+	ActionTargetAutomationInstance          *ActionTargetAutomationInstance          `tfsdk:"action_target_automation_instance"`
+	ActionTargetBatonResourceActionInstance *ActionTargetBatonResourceActionInstance `tfsdk:"action_target_baton_resource_action_instance"`
+	State                                   types.String                             `tfsdk:"state"`
 }

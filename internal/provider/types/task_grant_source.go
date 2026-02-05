@@ -10,5 +10,6 @@ type TaskGrantSource struct {
 	ConversationID types.String `tfsdk:"conversation_id"`
 	ExternalURL    types.String `tfsdk:"external_url"`
 	IntegrationID  types.String `tfsdk:"integration_id"`
+	IsExtension    types.Bool   `tfsdk:"is_extension"`
 	RequestID      types.String `tfsdk:"request_id"`
 }

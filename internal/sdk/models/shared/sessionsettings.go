@@ -5,16 +5,21 @@ package shared
 // The SessionSettings message.
 type SessionSettings struct {
 	// The CIDRRestriction message.
-	CIDRRestriction  *CIDRRestriction `json:"connectorSource,omitempty"`
-	MaxSessionLength *string          `json:"maxSessionLength,omitempty"`
+	CIDRRestriction *CIDRRestriction `json:"connectorSource,omitempty"`
 	// The CIDRRestriction message.
-	CIDRRestriction1 *CIDRRestriction `json:"pccAdminSource,omitempty"`
+	CIDRRestriction1 *CIDRRestriction `json:"externalClientSource,omitempty"`
+	// Enable external client registration (OAuth 2.0 DCR) for MCP clients
+	//  like Claude Desktop, Cursor, and other AI assistants.
+	ExternalClientsEnabled *bool   `json:"externalClientsEnabled,omitempty"`
+	MaxSessionLength       *string `json:"maxSessionLength,omitempty"`
 	// The CIDRRestriction message.
-	CIDRRestriction2 *CIDRRestriction `json:"pccUserSource,omitempty"`
+	CIDRRestriction2 *CIDRRestriction `json:"pccAdminSource,omitempty"`
 	// The CIDRRestriction message.
-	CIDRRestriction3 *CIDRRestriction `json:"ssoAdminSource,omitempty"`
+	CIDRRestriction3 *CIDRRestriction `json:"pccUserSource,omitempty"`
 	// The CIDRRestriction message.
-	CIDRRestriction4 *CIDRRestriction `json:"ssoUserSource,omitempty"`
+	CIDRRestriction4 *CIDRRestriction `json:"ssoAdminSource,omitempty"`
+	// The CIDRRestriction message.
+	CIDRRestriction5 *CIDRRestriction `json:"ssoUserSource,omitempty"`
 }
 
 func (s *SessionSettings) GetCIDRRestriction() *CIDRRestriction {
@@ -24,18 +29,25 @@ func (s *SessionSettings) GetCIDRRestriction() *CIDRRestriction {
 	return s.CIDRRestriction
 }
 
-func (s *SessionSettings) GetMaxSessionLength() *string {
-	if s == nil {
-		return nil
-	}
-	return s.MaxSessionLength
-}
-
 func (s *SessionSettings) GetCIDRRestriction1() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
 	return s.CIDRRestriction1
+}
+
+func (s *SessionSettings) GetExternalClientsEnabled() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.ExternalClientsEnabled
+}
+
+func (s *SessionSettings) GetMaxSessionLength() *string {
+	if s == nil {
+		return nil
+	}
+	return s.MaxSessionLength
 }
 
 func (s *SessionSettings) GetCIDRRestriction2() *CIDRRestriction {
@@ -57,4 +69,11 @@ func (s *SessionSettings) GetCIDRRestriction4() *CIDRRestriction {
 		return nil
 	}
 	return s.CIDRRestriction4
+}
+
+func (s *SessionSettings) GetCIDRRestriction5() *CIDRRestriction {
+	if s == nil {
+		return nil
+	}
+	return s.CIDRRestriction5
 }

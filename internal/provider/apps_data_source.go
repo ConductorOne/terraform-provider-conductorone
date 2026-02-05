@@ -104,6 +104,10 @@ func (r *AppsDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							Computed:    true,
 							Description: `The app's display name.`,
 						},
+						"enable_connector_sourced_ownership": schema.BoolAttribute{
+							Computed:    true,
+							Description: `When enabled, resource ownership is sourced from the connector.`,
+						},
 						"grant_policy_id": schema.StringAttribute{
 							Computed:    true,
 							Description: `The ID of the Grant Policy associated with this App.`,

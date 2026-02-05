@@ -10,6 +10,9 @@ data "conductorone_app_resources" "my_app_resources" {
   exclude_resource_type_trait_ids = [
     "..."
   ]
+  owner_user_ids = [
+    "..."
+  ]
   page_size  = 7
   page_token = "...my_page_token..."
   query      = "...my_query..."

@@ -50,6 +50,7 @@ resource "conductorone_automation" "my_automation" {
           app_id = "...my_app_id..."
           id     = "...my_id..."
         }
+        resource_type_id = "...my_resource_type_id..."
       }
       connector_create_account = {
         connector_ref = {
@@ -181,8 +182,55 @@ resource "conductorone_automation" "my_automation" {
           }
         ]
         app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-        use_subject_user         = true
-        user_id_cel              = "...my_user_id_cel..."
+        grant_entitlement_exclusion_criteria = {
+          excluded_app_ids = [
+            "..."
+          ]
+          excluded_compliance_framework_ids = [
+            "..."
+          ]
+          excluded_risk_level_ids = [
+            "..."
+          ]
+        }
+        grant_entitlement_exclusion_list = {
+          excluded_app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        grant_entitlement_exclusion_list_cel = {
+          excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        }
+        grant_entitlement_exclusion_none = {
+          # ...
+        }
+        grant_entitlement_inclusion_criteria = {
+          app_ids = [
+            "..."
+          ]
+          compliance_framework_ids = [
+            "..."
+          ]
+          risk_level_ids = [
+            "..."
+          ]
+        }
+        grant_entitlement_inclusion_list = {
+          app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        grant_entitlement_inclusion_list_cel = {
+          app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+        }
+        use_subject_user = true
+        user_id_cel      = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
@@ -319,6 +367,7 @@ resource "conductorone_automation" "my_automation" {
           app_id = "...my_app_id..."
           id     = "...my_id..."
         }
+        resource_type_id = "...my_resource_type_id..."
       }
       connector_create_account = {
         connector_ref = {
@@ -450,8 +499,55 @@ resource "conductorone_automation" "my_automation" {
           }
         ]
         app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-        use_subject_user         = true
-        user_id_cel              = "...my_user_id_cel..."
+        grant_entitlement_exclusion_criteria = {
+          excluded_app_ids = [
+            "..."
+          ]
+          excluded_compliance_framework_ids = [
+            "..."
+          ]
+          excluded_risk_level_ids = [
+            "..."
+          ]
+        }
+        grant_entitlement_exclusion_list = {
+          excluded_app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        grant_entitlement_exclusion_list_cel = {
+          excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
+        }
+        grant_entitlement_exclusion_none = {
+          # ...
+        }
+        grant_entitlement_inclusion_criteria = {
+          app_ids = [
+            "..."
+          ]
+          compliance_framework_ids = [
+            "..."
+          ]
+          risk_level_ids = [
+            "..."
+          ]
+        }
+        grant_entitlement_inclusion_list = {
+          app_entitlement_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
+        }
+        grant_entitlement_inclusion_list_cel = {
+          app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+        }
+        use_subject_user = true
+        user_id_cel      = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
@@ -1023,7 +1119,19 @@ This message contains a oneof named exclusion. Only a single field of the follow
   - exclusionListCel (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2))
 - `evaluate_expressions` (Attributes) The EvaluateExpressions message. (see [below for nested schema](#nestedatt--automation_steps--evaluate_expressions))
 - `generate_password` (Attributes) The GeneratePassword message. (see [below for nested schema](#nestedatt--automation_steps--generate_password))
-- `grant_entitlements` (Attributes) The GrantEntitlements message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements))
+- `grant_entitlements` (Attributes) The GrantEntitlements message.
+
+This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:
+  - inclusionList
+  - inclusionCriteria
+  - inclusionListCel
+
+
+This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
+  - exclusionNone
+  - exclusionList
+  - exclusionCriteria
+  - exclusionListCel (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements))
 - `remove_from_delegation` (Attributes) RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
 
 This message contains a oneof named replacement_user. Only a single field of the following list may be set at a time:
@@ -1115,6 +1223,7 @@ Optional:
 - `action_name` (String) The actionName field.
 - `args_template` (Attributes) (see [below for nested schema](#nestedatt--automation_steps--connector_action--args_template))
 - `connector_ref` (Attributes) The ConnectorRef message. (see [below for nested schema](#nestedatt--automation_steps--connector_action--connector_ref))
+- `resource_type_id` (String) The resourceTypeId field.
 
 <a id="nestedatt--automation_steps--connector_action--args_template"></a>
 ### Nested Schema for `automation_steps.connector_action.args_template`
@@ -1363,6 +1472,13 @@ Optional:
 
 - `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--app_entitlement_refs))
 - `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
+- `grant_entitlement_exclusion_criteria` (Attributes) The GrantEntitlementExclusionCriteria message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_criteria))
+- `grant_entitlement_exclusion_list` (Attributes) The GrantEntitlementExclusionList message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_list))
+- `grant_entitlement_exclusion_list_cel` (Attributes) The GrantEntitlementExclusionListCel message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_list_cel))
+- `grant_entitlement_exclusion_none` (Attributes) The GrantEntitlementExclusionNone message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_none))
+- `grant_entitlement_inclusion_criteria` (Attributes) The GrantEntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_inclusion_criteria))
+- `grant_entitlement_inclusion_list` (Attributes) The GrantEntitlementInclusionList message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_inclusion_list))
+- `grant_entitlement_inclusion_list_cel` (Attributes) The GrantEntitlementInclusionListCel message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_inclusion_list_cel))
 - `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
 - `user_id_cel` (String) The userIdCel field.
 - `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--user_ref))
@@ -1374,6 +1490,80 @@ Optional:
 
 - `app_id` (String) The appId field.
 - `id` (String) The id field.
+
+
+<a id="nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_criteria"></a>
+### Nested Schema for `automation_steps.grant_entitlements.grant_entitlement_exclusion_criteria`
+
+Optional:
+
+- `excluded_app_ids` (List of String) The excludedAppIds field.
+- `excluded_compliance_framework_ids` (List of String) The excludedComplianceFrameworkIds field.
+- `excluded_risk_level_ids` (List of String) The excludedRiskLevelIds field.
+
+
+<a id="nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_list"></a>
+### Nested Schema for `automation_steps.grant_entitlements.grant_entitlement_exclusion_list`
+
+Optional:
+
+- `excluded_app_entitlement_refs` (Attributes List) The excludedAppEntitlementRefs field. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_list--excluded_app_entitlement_refs))
+
+<a id="nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_list--excluded_app_entitlement_refs"></a>
+### Nested Schema for `automation_steps.grant_entitlements.grant_entitlement_exclusion_list.excluded_app_entitlement_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+
+<a id="nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_list_cel"></a>
+### Nested Schema for `automation_steps.grant_entitlements.grant_entitlement_exclusion_list_cel`
+
+Optional:
+
+- `excluded_app_entitlement_refs_cel` (String) The excludedAppEntitlementRefsCel field.
+
+
+<a id="nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_none"></a>
+### Nested Schema for `automation_steps.grant_entitlements.grant_entitlement_exclusion_none`
+
+
+<a id="nestedatt--automation_steps--grant_entitlements--grant_entitlement_inclusion_criteria"></a>
+### Nested Schema for `automation_steps.grant_entitlements.grant_entitlement_inclusion_criteria`
+
+Optional:
+
+- `app_ids` (List of String) The appIds field.
+- `compliance_framework_ids` (List of String) The complianceFrameworkIds field.
+- `risk_level_ids` (List of String) The riskLevelIds field.
+
+
+<a id="nestedatt--automation_steps--grant_entitlements--grant_entitlement_inclusion_list"></a>
+### Nested Schema for `automation_steps.grant_entitlements.grant_entitlement_inclusion_list`
+
+Optional:
+
+- `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_inclusion_list--app_entitlement_refs))
+
+<a id="nestedatt--automation_steps--grant_entitlements--grant_entitlement_inclusion_list--app_entitlement_refs"></a>
+### Nested Schema for `automation_steps.grant_entitlements.grant_entitlement_inclusion_list.app_entitlement_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+
+<a id="nestedatt--automation_steps--grant_entitlements--grant_entitlement_inclusion_list_cel"></a>
+### Nested Schema for `automation_steps.grant_entitlements.grant_entitlement_inclusion_list_cel`
+
+Optional:
+
+- `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
 
 
 <a id="nestedatt--automation_steps--grant_entitlements--user_ref"></a>
@@ -1676,7 +1866,19 @@ This message contains a oneof named exclusion. Only a single field of the follow
   - exclusionListCel (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2))
 - `evaluate_expressions` (Attributes) The EvaluateExpressions message. (see [below for nested schema](#nestedatt--draft_automation_steps--evaluate_expressions))
 - `generate_password` (Attributes) The GeneratePassword message. (see [below for nested schema](#nestedatt--draft_automation_steps--generate_password))
-- `grant_entitlements` (Attributes) The GrantEntitlements message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements))
+- `grant_entitlements` (Attributes) The GrantEntitlements message.
+
+This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:
+  - inclusionList
+  - inclusionCriteria
+  - inclusionListCel
+
+
+This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
+  - exclusionNone
+  - exclusionList
+  - exclusionCriteria
+  - exclusionListCel (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements))
 - `remove_from_delegation` (Attributes) RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
 
 This message contains a oneof named replacement_user. Only a single field of the following list may be set at a time:
@@ -1768,6 +1970,7 @@ Optional:
 - `action_name` (String) The actionName field.
 - `args_template` (Attributes) (see [below for nested schema](#nestedatt--draft_automation_steps--connector_action--args_template))
 - `connector_ref` (Attributes) The ConnectorRef message. (see [below for nested schema](#nestedatt--draft_automation_steps--connector_action--connector_ref))
+- `resource_type_id` (String) The resourceTypeId field.
 
 <a id="nestedatt--draft_automation_steps--connector_action--args_template"></a>
 ### Nested Schema for `draft_automation_steps.connector_action.args_template`
@@ -2016,6 +2219,13 @@ Optional:
 
 - `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--app_entitlement_refs))
 - `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
+- `grant_entitlement_exclusion_criteria` (Attributes) The GrantEntitlementExclusionCriteria message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_criteria))
+- `grant_entitlement_exclusion_list` (Attributes) The GrantEntitlementExclusionList message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_list))
+- `grant_entitlement_exclusion_list_cel` (Attributes) The GrantEntitlementExclusionListCel message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_list_cel))
+- `grant_entitlement_exclusion_none` (Attributes) The GrantEntitlementExclusionNone message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_none))
+- `grant_entitlement_inclusion_criteria` (Attributes) The GrantEntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_inclusion_criteria))
+- `grant_entitlement_inclusion_list` (Attributes) The GrantEntitlementInclusionList message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_inclusion_list))
+- `grant_entitlement_inclusion_list_cel` (Attributes) The GrantEntitlementInclusionListCel message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_inclusion_list_cel))
 - `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
 - `user_id_cel` (String) The userIdCel field.
 - `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--user_ref))
@@ -2027,6 +2237,80 @@ Optional:
 
 - `app_id` (String) The appId field.
 - `id` (String) The id field.
+
+
+<a id="nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_criteria"></a>
+### Nested Schema for `draft_automation_steps.grant_entitlements.grant_entitlement_exclusion_criteria`
+
+Optional:
+
+- `excluded_app_ids` (List of String) The excludedAppIds field.
+- `excluded_compliance_framework_ids` (List of String) The excludedComplianceFrameworkIds field.
+- `excluded_risk_level_ids` (List of String) The excludedRiskLevelIds field.
+
+
+<a id="nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_list"></a>
+### Nested Schema for `draft_automation_steps.grant_entitlements.grant_entitlement_exclusion_list`
+
+Optional:
+
+- `excluded_app_entitlement_refs` (Attributes List) The excludedAppEntitlementRefs field. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_list--excluded_app_entitlement_refs))
+
+<a id="nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_list--excluded_app_entitlement_refs"></a>
+### Nested Schema for `draft_automation_steps.grant_entitlements.grant_entitlement_exclusion_list.excluded_app_entitlement_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+
+<a id="nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_list_cel"></a>
+### Nested Schema for `draft_automation_steps.grant_entitlements.grant_entitlement_exclusion_list_cel`
+
+Optional:
+
+- `excluded_app_entitlement_refs_cel` (String) The excludedAppEntitlementRefsCel field.
+
+
+<a id="nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_none"></a>
+### Nested Schema for `draft_automation_steps.grant_entitlements.grant_entitlement_exclusion_none`
+
+
+<a id="nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_inclusion_criteria"></a>
+### Nested Schema for `draft_automation_steps.grant_entitlements.grant_entitlement_inclusion_criteria`
+
+Optional:
+
+- `app_ids` (List of String) The appIds field.
+- `compliance_framework_ids` (List of String) The complianceFrameworkIds field.
+- `risk_level_ids` (List of String) The riskLevelIds field.
+
+
+<a id="nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_inclusion_list"></a>
+### Nested Schema for `draft_automation_steps.grant_entitlements.grant_entitlement_inclusion_list`
+
+Optional:
+
+- `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_inclusion_list--app_entitlement_refs))
+
+<a id="nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_inclusion_list--app_entitlement_refs"></a>
+### Nested Schema for `draft_automation_steps.grant_entitlements.grant_entitlement_inclusion_list.app_entitlement_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+
+<a id="nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_inclusion_list_cel"></a>
+### Nested Schema for `draft_automation_steps.grant_entitlements.grant_entitlement_inclusion_list_cel`
+
+Optional:
+
+- `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
 
 
 <a id="nestedatt--draft_automation_steps--grant_entitlements--user_ref"></a>

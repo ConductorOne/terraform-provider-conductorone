@@ -5,4 +5,5 @@ package types
 type PickerField struct {
 	AppResourceFilter *AppResourceFilter `tfsdk:"app_resource_filter"`
 	AppUserFilter     *AppUserFilter     `tfsdk:"app_user_filter"`
+	C1UserFilter      *C1UserFilter      `tfsdk:"c1_user_filter"`
 }

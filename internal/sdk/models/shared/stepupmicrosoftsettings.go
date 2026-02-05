@@ -2,12 +2,49 @@
 
 package shared
 
-// StepUpMicrosoftSettings represents a Microsoft Entra Provider using Conditional Access Policies to enforce step-up authentication.
+import (
+	"encoding/json"
+	"fmt"
+)
+
+// ValidationMode - Validation approach. See MicrosoftValidationMode for details on each mode.
+type ValidationMode string
+
+const (
+	ValidationModeMicrosoftValidationModeUnspecified ValidationMode = "MICROSOFT_VALIDATION_MODE_UNSPECIFIED"
+	ValidationModeMicrosoftValidationModeAcrs        ValidationMode = "MICROSOFT_VALIDATION_MODE_ACRS"
+	ValidationModeMicrosoftValidationModeOidc        ValidationMode = "MICROSOFT_VALIDATION_MODE_OIDC"
+)
+
+func (e ValidationMode) ToPointer() *ValidationMode {
+	return &e
+}
+func (e *ValidationMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "MICROSOFT_VALIDATION_MODE_UNSPECIFIED":
+		fallthrough
+	case "MICROSOFT_VALIDATION_MODE_ACRS":
+		fallthrough
+	case "MICROSOFT_VALIDATION_MODE_OIDC":
+		*e = ValidationMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ValidationMode: %v", v)
+	}
+}
+
+// StepUpMicrosoftSettings configures a Microsoft Entra step-up provider using Conditional Access.
 type StepUpMicrosoftSettings struct {
-	// The conditionalAccessIds field.
+	// Authentication context IDs (C1-C99). Required for ACRS mode; ignored for OIDC mode.
 	ConditionalAccessIds []string `json:"conditionalAccessIds,omitempty"`
-	// The tenant field.
+	// Microsoft Entra tenant ID (GUID or domain). Used for response validation.
 	Tenant *string `json:"tenant,omitempty"`
+	// Validation approach. See MicrosoftValidationMode for details on each mode.
+	ValidationMode *ValidationMode `json:"validationMode,omitempty"`
 }
 
 func (s *StepUpMicrosoftSettings) GetConditionalAccessIds() []string {
@@ -22,4 +59,11 @@ func (s *StepUpMicrosoftSettings) GetTenant() *string {
 		return nil
 	}
 	return s.Tenant
+}
+
+func (s *StepUpMicrosoftSettings) GetValidationMode() *ValidationMode {
+	if s == nil {
+		return nil
+	}
+	return s.ValidationMode
 }

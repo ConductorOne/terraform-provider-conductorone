@@ -42,12 +42,14 @@ type AppEntitlementDataSourceModel struct {
 	ComplianceFrameworkValueIds    []types.String                       `tfsdk:"compliance_framework_value_ids"`
 	CreatedAt                      types.String                         `tfsdk:"created_at"`
 	DefaultValuesApplied           types.Bool                           `tfsdk:"default_values_applied"`
+	Delete                         types.Bool                           `tfsdk:"delete"`
 	DeletedAt                      types.String                         `tfsdk:"deleted_at"`
 	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy         `tfsdk:"deprovisioner_policy" tfPlanOnly:"true"`
 	Description                    types.String                         `tfsdk:"description"`
 	DisplayName                    types.String                         `tfsdk:"display_name"`
 	DurationGrant                  types.String                         `tfsdk:"duration_grant" tfPlanOnly:"true"`
 	DurationUnset                  *tfTypes.AppEntitlementDurationUnset `tfsdk:"duration_unset" tfPlanOnly:"true"`
+	Edit                           types.Bool                           `tfsdk:"edit"`
 	EmergencyGrantEnabled          types.Bool                           `tfsdk:"emergency_grant_enabled"`
 	EmergencyGrantPolicyID         types.String                         `tfsdk:"emergency_grant_policy_id"`
 	ExcludeAppIds                  []types.String                       `tfsdk:"exclude_app_ids"`
@@ -55,6 +57,7 @@ type AppEntitlementDataSourceModel struct {
 	ExcludedEntitlementRefs        []tfTypes.AppEntitlementRef          `tfsdk:"excluded_entitlement_refs"`
 	ExcludeImmutable               types.Bool                           `tfsdk:"exclude_immutable"`
 	ExcludeResourceTypeIds         []types.String                       `tfsdk:"exclude_resource_type_ids"`
+	Extra                          map[string]types.Bool                `tfsdk:"extra"`
 	GrantCount                     types.String                         `tfsdk:"grant_count"`
 	GrantPolicyID                  types.String                         `tfsdk:"grant_policy_id"`
 	ID                             types.String                         `tfsdk:"id"`
@@ -73,6 +76,7 @@ type AppEntitlementDataSourceModel struct {
 	ProvisionPolicy                *tfTypes.ProvisionPolicy             `tfsdk:"provision_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                         `tfsdk:"purpose"`
 	Query                          types.String                         `tfsdk:"query"`
+	Read                           types.Bool                           `tfsdk:"read"`
 	Refs                           []tfTypes.AppEntitlementRef          `tfsdk:"refs"`
 	RequestSchemaID                types.String                         `tfsdk:"request_schema_id"`
 	ResourceIds                    []types.String                       `tfsdk:"resource_ids"`
@@ -150,6 +154,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"default_values_applied": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
+			},
+			"delete": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The delete field.`,
 			},
 			"deleted_at": schema.StringAttribute{
 				Computed: true,
@@ -347,6 +355,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"duration_unset": schema.SingleNestedAttribute{
 				Computed: true,
 			},
+			"edit": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The edit field.`,
+			},
 			"emergency_grant_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Description: `This enables tasks to be created in an emergency and use a selected emergency access policy.`,
@@ -389,6 +401,11 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 					},
 				},
 				Description: `The excludedEntitlementRefs field.`,
+			},
+			"extra": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.BoolType,
+				Description: `The extra field.`,
 			},
 			"grant_count": schema.StringAttribute{
 				Computed:    true,
@@ -644,6 +661,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"query": schema.StringAttribute{
 				Optional:    true,
 				Description: `Query the app entitlements with a fuzzy search on display name and description.`,
+			},
+			"read": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The read field.`,
 			},
 			"refs": schema.ListNestedAttribute{
 				Optional: true,

@@ -180,6 +180,38 @@ func (e *GrantOutcomes) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// PendingActionFilter - Filter tasks by pending action status. Only applies when exactly one access_review_id is specified.
+//
+//	Requires the REVIEWS_PENDING_ACTIONS feature flag to be enabled.
+type PendingActionFilter string
+
+const (
+	PendingActionFilterPendingActionFilterUnspecified    PendingActionFilter = "PENDING_ACTION_FILTER_UNSPECIFIED"
+	PendingActionFilterPendingActionFilterWithPending    PendingActionFilter = "PENDING_ACTION_FILTER_WITH_PENDING"
+	PendingActionFilterPendingActionFilterWithoutPending PendingActionFilter = "PENDING_ACTION_FILTER_WITHOUT_PENDING"
+)
+
+func (e PendingActionFilter) ToPointer() *PendingActionFilter {
+	return &e
+}
+func (e *PendingActionFilter) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "PENDING_ACTION_FILTER_UNSPECIFIED":
+		fallthrough
+	case "PENDING_ACTION_FILTER_WITH_PENDING":
+		fallthrough
+	case "PENDING_ACTION_FILTER_WITHOUT_PENDING":
+		*e = PendingActionFilter(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for PendingActionFilter: %v", v)
+	}
+}
+
 type RevokeOutcomes string
 
 const (
@@ -404,6 +436,9 @@ type TaskSearchRequest struct {
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
+	// Filter tasks by pending action status. Only applies when exactly one access_review_id is specified.
+	//  Requires the REVIEWS_PENDING_ACTIONS feature flag to be enabled.
+	PendingActionFilter *PendingActionFilter `json:"pendingActionFilter,omitempty"`
 	// Search tasks that were acted on by any of these users.
 	PreviouslyActedOnIds []string `json:"previouslyActedOnIds,omitempty"`
 	// Fuzzy search tasks by display name, description, or ID.
@@ -645,6 +680,13 @@ func (t *TaskSearchRequest) GetPageToken() *string {
 		return nil
 	}
 	return t.PageToken
+}
+
+func (t *TaskSearchRequest) GetPendingActionFilter() *PendingActionFilter {
+	if t == nil {
+		return nil
+	}
+	return t.PendingActionFilter
 }
 
 func (t *TaskSearchRequest) GetPreviouslyActedOnIds() []string {

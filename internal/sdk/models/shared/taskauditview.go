@@ -166,6 +166,9 @@ func (e *Source) UnmarshalJSON(data []byte) error {
 //   - actionInstanceCreated
 //   - actionInstanceSucceeded
 //   - actionInstanceFailed
+//   - createdReplacementExtensionGrantTask
+//   - taskCreatedFrom
+//   - reassignmentFallbackToAdmin
 type TaskAuditView struct {
 	// The TaskAuditAccessRequestOutcome message.
 	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
@@ -212,6 +215,9 @@ type TaskAuditView struct {
 	// The TaskAuditStartedConnectorActions message.
 	TaskAuditStartedConnectorActions *TaskAuditStartedConnectorActions `json:"connectorActionsStart,omitempty"`
 	Created                          *time.Time                        `json:"created,omitempty"`
+	// TaskAuditCreatedReplacementExtensionGrantTask is used when a replacement extension grant task is created
+	//  (e.g. when an extension grant task is cancelled due to app user deletion).
+	TaskAuditCreatedReplacementExtensionGrantTask *TaskAuditCreatedReplacementExtensionGrantTask `json:"createdReplacementExtensionGrantTask,omitempty"`
 	// The currentState field.
 	CurrentState *CurrentState `json:"currentState,omitempty"`
 	// The eventType field.
@@ -250,6 +256,10 @@ type TaskAuditView struct {
 	TaskAuditPolicyProvisionReassigned *TaskAuditPolicyProvisionReassigned `json:"provisionReassigned,omitempty"`
 	// The TaskAuditReassignedToDelegate message.
 	TaskAuditReassignedToDelegate *TaskAuditReassignedToDelegate `json:"reassignedToDelegate,omitempty"`
+	// TaskAuditReassignmentFallbackToAdmin is used when no eligible reviewers are found
+	//  from the policy configuration and the task falls back to system administrators
+	//  without creating a new policy step. This prevents reassignment loops.
+	TaskAuditReassignmentFallbackToAdmin *TaskAuditReassignmentFallbackToAdmin `json:"reassignmentFallbackToAdmin,omitempty"`
 	// The TaskAuditReassignmentListError message.
 	TaskAuditReassignmentListError *TaskAuditReassignmentListError `json:"reassignmentListError,omitempty"`
 	// The TaskAuditRevokeOutcome message.
@@ -266,6 +276,10 @@ type TaskAuditView struct {
 	TaskAuditStepUpApproval *TaskAuditStepUpApproval `json:"stepUpApproval,omitempty"`
 	// The TaskAuditNewTask message.
 	TaskAuditNewTask *TaskAuditNewTask `json:"taskCreated,omitempty"`
+	// TaskAuditNewTaskCreatedFrom is used when a task is created from another task
+	//  (e.g. when a replacement extension grant task is created after the original is cancelled).
+	//  This is set on the NEW task to indicate its origin.
+	TaskAuditNewTaskCreatedFrom *TaskAuditNewTaskCreatedFrom `json:"taskCreatedFrom,omitempty"`
 	// The TaskAuditEscalateToEmergencyAccess message.
 	TaskAuditEscalateToEmergencyAccess *TaskAuditEscalateToEmergencyAccess `json:"taskEscalated,omitempty"`
 	// The TaskAuditRestart message.
@@ -459,6 +473,13 @@ func (t *TaskAuditView) GetCreated() *time.Time {
 	return t.Created
 }
 
+func (t *TaskAuditView) GetTaskAuditCreatedReplacementExtensionGrantTask() *TaskAuditCreatedReplacementExtensionGrantTask {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditCreatedReplacementExtensionGrantTask
+}
+
 func (t *TaskAuditView) GetCurrentState() *CurrentState {
 	if t == nil {
 		return nil
@@ -592,6 +613,13 @@ func (t *TaskAuditView) GetTaskAuditReassignedToDelegate() *TaskAuditReassignedT
 	return t.TaskAuditReassignedToDelegate
 }
 
+func (t *TaskAuditView) GetTaskAuditReassignmentFallbackToAdmin() *TaskAuditReassignmentFallbackToAdmin {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditReassignmentFallbackToAdmin
+}
+
 func (t *TaskAuditView) GetTaskAuditReassignmentListError() *TaskAuditReassignmentListError {
 	if t == nil {
 		return nil
@@ -646,6 +674,13 @@ func (t *TaskAuditView) GetTaskAuditNewTask() *TaskAuditNewTask {
 		return nil
 	}
 	return t.TaskAuditNewTask
+}
+
+func (t *TaskAuditView) GetTaskAuditNewTaskCreatedFrom() *TaskAuditNewTaskCreatedFrom {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditNewTaskCreatedFrom
 }
 
 func (t *TaskAuditView) GetTaskAuditEscalateToEmergencyAccess() *TaskAuditEscalateToEmergencyAccess {

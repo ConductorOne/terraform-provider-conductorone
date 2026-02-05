@@ -297,8 +297,20 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 			}
 		}
 		r.AccessReviewTemplateID = types.StringPointerValue(resp.AccessReviewTemplateID)
+		if resp.AccuracyIssueAction != nil {
+			r.AccuracyIssueAction = types.StringValue(string(*resp.AccuracyIssueAction))
+		} else {
+			r.AccuracyIssueAction = types.StringNull()
+		}
+		r.AutoCloseCampaign = types.BoolPointerValue(resp.AutoCloseCampaign)
+		if resp.AutoCloseDecision != nil {
+			r.AutoCloseDecision = types.StringValue(string(*resp.AutoCloseDecision))
+		} else {
+			r.AutoCloseDecision = types.StringNull()
+		}
 		r.AutoGenerateReport = types.BoolPointerValue(resp.AutoGenerateReport)
 		r.AutoResolve = types.BoolPointerValue(resp.AutoResolve)
+		r.AutoStartCampaign = types.BoolPointerValue(resp.AutoStartCampaign)
 		if resp.BindingObjectSetup == nil {
 			r.BindingObjectSetup = nil
 		} else {
@@ -364,6 +376,7 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 		} else {
 			r.NotificationConfig = &tfTypes.NotificationConfig{}
 			r.NotificationConfig.SendClose = types.BoolPointerValue(resp.NotificationConfig.SendClose)
+			r.NotificationConfig.SendKickoff = types.BoolPointerValue(resp.NotificationConfig.SendKickoff)
 			r.NotificationConfig.SendReminders = types.BoolPointerValue(resp.NotificationConfig.SendReminders)
 		}
 		r.PolicyID = types.StringPointerValue(resp.PolicyID)
@@ -377,6 +390,7 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 			r.ReviewSignatureConfig.StepUpProviderID = types.StringPointerValue(resp.ReviewSignatureConfig.StepUpProviderID)
 			r.ReviewSignatureConfig.TspURL = types.StringPointerValue(resp.ReviewSignatureConfig.TspURL)
 		}
+		r.ScheduledStartDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ScheduledStartDate))
 		if resp.ScopeType != nil {
 			r.ScopeType = types.StringValue(string(*resp.ScopeType))
 		} else {
@@ -437,8 +451,15 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReviewView(ctx cont
 				for key, value := range resp.ActorObjectPermissions.Extra {
 					r.Extra[key] = types.BoolValue(value)
 				}
+			} else {
+				r.Extra = nil
 			}
 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
+		} else {
+			r.Delete = types.BoolNull()
+			r.Edit = types.BoolNull()
+			r.Extra = nil
+			r.Read = types.BoolNull()
 		}
 		r.CreatedByUserPath = types.StringPointerValue(resp.CreatedByUserPath)
 		r.PolicyPath = types.StringPointerValue(resp.PolicyPath)

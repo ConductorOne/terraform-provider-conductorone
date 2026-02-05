@@ -314,6 +314,24 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlementSearchSer
 func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlementView(ctx context.Context, resp *shared.AppEntitlementView) diag.Diagnostics {
 	var diags diag.Diagnostics
 
+	if resp.ActorObjectPermissions != nil {
+		r.Delete = types.BoolPointerValue(resp.ActorObjectPermissions.Delete)
+		r.Edit = types.BoolPointerValue(resp.ActorObjectPermissions.Edit)
+		if len(resp.ActorObjectPermissions.Extra) > 0 {
+			r.Extra = make(map[string]types.Bool, len(resp.ActorObjectPermissions.Extra))
+			for key, value := range resp.ActorObjectPermissions.Extra {
+				r.Extra[key] = types.BoolValue(value)
+			}
+		} else {
+			r.Extra = nil
+		}
+		r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
+	} else {
+		r.Delete = types.BoolNull()
+		r.Edit = types.BoolNull()
+		r.Extra = nil
+		r.Read = types.BoolNull()
+	}
 	diags.Append(r.RefreshFromSharedAppEntitlement(ctx, resp.AppEntitlement)...)
 
 	if diags.HasError() {

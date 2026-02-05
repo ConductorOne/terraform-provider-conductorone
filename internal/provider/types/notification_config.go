@@ -8,5 +8,6 @@ import (
 
 type NotificationConfig struct {
 	SendClose     types.Bool `tfsdk:"send_close"`
+	SendKickoff   types.Bool `tfsdk:"send_kickoff"`
 	SendReminders types.Bool `tfsdk:"send_reminders"`
 }

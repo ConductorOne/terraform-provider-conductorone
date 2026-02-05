@@ -59,7 +59,9 @@ type App struct {
 	Description *string `json:"description,omitempty"`
 	// The app's display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	FieldMask   *string `json:"fieldMask,omitempty"`
+	// When enabled, resource ownership is sourced from the connector.
+	EnableConnectorSourcedOwnership *bool   `json:"enableConnectorSourcedOwnership,omitempty"`
+	FieldMask                       *string `json:"fieldMask,omitempty"`
 	// The ID of the Grant Policy associated with this App.
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// The URL of an icon to display for the app.
@@ -168,6 +170,13 @@ func (a *App) GetDisplayName() *string {
 		return nil
 	}
 	return a.DisplayName
+}
+
+func (a *App) GetEnableConnectorSourcedOwnership() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.EnableConnectorSourcedOwnership
 }
 
 func (a *App) GetFieldMask() *string {
@@ -287,6 +296,8 @@ type AppInput struct {
 	Description *string `json:"description,omitempty"`
 	// The app's display name.
 	DisplayName *string `json:"displayName,omitempty"`
+	// When enabled, resource ownership is sourced from the connector.
+	EnableConnectorSourcedOwnership *bool `json:"enableConnectorSourcedOwnership,omitempty"`
 	// The ID of the Grant Policy associated with this App.
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// The URL of an icon to display for the app.
@@ -338,6 +349,13 @@ func (a *AppInput) GetDisplayName() *string {
 		return nil
 	}
 	return a.DisplayName
+}
+
+func (a *AppInput) GetEnableConnectorSourcedOwnership() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.EnableConnectorSourcedOwnership
 }
 
 func (a *AppInput) GetGrantPolicyID() *string {

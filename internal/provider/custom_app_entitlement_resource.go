@@ -47,15 +47,18 @@ type CustomAppEntitlementResourceModel struct {
 	ComplianceFrameworkValueIds    []types.String                                    `tfsdk:"compliance_framework_value_ids"`
 	CreatedAt                      types.String                                      `tfsdk:"created_at"`
 	DefaultValuesApplied           types.Bool                                        `tfsdk:"default_values_applied"`
+	Delete                         types.Bool                                        `tfsdk:"delete"`
 	DeletedAt                      types.String                                      `tfsdk:"-"`
 	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy                      `tfsdk:"deprovisioner_policy" tfPlanOnly:"true"`
 	Description                    types.String                                      `tfsdk:"description"`
 	DisplayName                    types.String                                      `tfsdk:"display_name"`
 	DurationGrant                  types.String                                      `tfsdk:"duration_grant" tfPlanOnly:"true"`
 	DurationUnset                  *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset" tfPlanOnly:"true"`
+	Edit                           types.Bool                                        `tfsdk:"edit"`
 	EmergencyGrantEnabled          types.Bool                                        `tfsdk:"emergency_grant_enabled"`
 	EmergencyGrantPolicyID         types.String                                      `tfsdk:"emergency_grant_policy_id"`
 	Expanded                       []tfTypes.GetAppEntitlementResponseExpanded       `tfsdk:"expanded"`
+	Extra                          map[string]types.Bool                             `tfsdk:"extra"`
 	GrantCount                     types.String                                      `tfsdk:"grant_count"`
 	GrantPolicyID                  types.String                                      `tfsdk:"grant_policy_id"`
 	ID                             types.String                                      `tfsdk:"id"`
@@ -65,6 +68,7 @@ type CustomAppEntitlementResourceModel struct {
 	OverrideAccessRequestsDefaults types.Bool                                        `tfsdk:"override_access_requests_defaults"`
 	ProvisionPolicy                *tfTypes.ProvisionPolicy                          `tfsdk:"provision_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                                      `tfsdk:"purpose"`
+	Read                           types.Bool                                        `tfsdk:"read"`
 	RequestSchemaID                types.String                                      `tfsdk:"request_schema_id"`
 	RevokePolicyID                 types.String                                      `tfsdk:"revoke_policy_id"`
 	RiskLevelValueID               types.String                                      `tfsdk:"risk_level_value_id"`
@@ -125,6 +129,10 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"default_values_applied": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
+			},
+			"delete": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The delete field.`,
 			},
 			"deprovisioner_policy": schema.SingleNestedAttribute{
 				Computed: true,
@@ -331,6 +339,10 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 					}...),
 				},
 			},
+			"edit": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The edit field.`,
+			},
 			"emergency_grant_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -347,6 +359,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 					Attributes: map[string]schema.Attribute{},
 				},
 				Description: `The expanded field.`,
+			},
+			"extra": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.BoolType,
+				Description: `The extra field.`,
 			},
 			"grant_count": schema.StringAttribute{
 				Computed:    true,
@@ -650,14 +667,19 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"purpose": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION"]`,
+				Description: `The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED",
 						"APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT",
 						"APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION",
+						"APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP",
 					),
 				},
+			},
+			"read": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The read field.`,
 			},
 			"request_schema_id": schema.StringAttribute{
 				Computed:    true,
@@ -966,10 +988,7 @@ func (r *CustomAppEntitlementResource) Delete(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	switch res.StatusCode {
-	case 200, 404:
-		break
-	default:
+	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

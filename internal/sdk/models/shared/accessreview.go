@@ -9,6 +9,69 @@ import (
 	"time"
 )
 
+// AccuracyIssueAction - The accuracyIssueAction field.
+type AccuracyIssueAction string
+
+const (
+	AccuracyIssueActionAccuracyIssueActionUnspecified AccuracyIssueAction = "ACCURACY_ISSUE_ACTION_UNSPECIFIED"
+	AccuracyIssueActionAccuracyIssueActionContinue    AccuracyIssueAction = "ACCURACY_ISSUE_ACTION_CONTINUE"
+	AccuracyIssueActionAccuracyIssueActionWait        AccuracyIssueAction = "ACCURACY_ISSUE_ACTION_WAIT"
+)
+
+func (e AccuracyIssueAction) ToPointer() *AccuracyIssueAction {
+	return &e
+}
+func (e *AccuracyIssueAction) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "ACCURACY_ISSUE_ACTION_UNSPECIFIED":
+		fallthrough
+	case "ACCURACY_ISSUE_ACTION_CONTINUE":
+		fallthrough
+	case "ACCURACY_ISSUE_ACTION_WAIT":
+		*e = AccuracyIssueAction(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AccuracyIssueAction: %v", v)
+	}
+}
+
+// AutoCloseDecision - The autoCloseDecision field.
+type AutoCloseDecision string
+
+const (
+	AutoCloseDecisionCloseDecisionUnspecified AutoCloseDecision = "CLOSE_DECISION_UNSPECIFIED"
+	AutoCloseDecisionCloseDecisionRevoked     AutoCloseDecision = "CLOSE_DECISION_REVOKED"
+	AutoCloseDecisionCloseDecisionSkip        AutoCloseDecision = "CLOSE_DECISION_SKIP"
+	AutoCloseDecisionCloseDecisionNoAction    AutoCloseDecision = "CLOSE_DECISION_NO_ACTION"
+)
+
+func (e AutoCloseDecision) ToPointer() *AutoCloseDecision {
+	return &e
+}
+func (e *AutoCloseDecision) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "CLOSE_DECISION_UNSPECIFIED":
+		fallthrough
+	case "CLOSE_DECISION_REVOKED":
+		fallthrough
+	case "CLOSE_DECISION_SKIP":
+		fallthrough
+	case "CLOSE_DECISION_NO_ACTION":
+		*e = AutoCloseDecision(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AutoCloseDecision: %v", v)
+	}
+}
+
 // DefaultView - the default view that reviewers will see when they complete their access reviews
 type DefaultView string
 
@@ -141,10 +204,19 @@ func (e *State) UnmarshalJSON(data []byte) error {
 type AccessReview struct {
 	// The ID of the template if the campaign was created from one
 	AccessReviewTemplateID *string `json:"accessReviewTemplateId,omitempty"`
+	// The accuracyIssueAction field.
+	AccuracyIssueAction *AccuracyIssueAction `json:"accuracyIssueAction,omitempty"`
+	// Auto-close configuration
+	//  completion_date is used as the scheduled close date
+	AutoCloseCampaign *bool `json:"autoCloseCampaign,omitempty"`
+	// The autoCloseDecision field.
+	AutoCloseDecision *AutoCloseDecision `json:"autoCloseDecision,omitempty"`
 	// The autoGenerateReport field.
 	AutoGenerateReport *bool `json:"autoGenerateReport,omitempty"`
 	// The autoResolve field.
 	AutoResolve *bool `json:"autoResolve,omitempty"`
+	// Auto-start configuration
+	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
 	// The BindingObjectSetup message.
 	BindingObjectSetup       *BindingObjectSetup `json:"bindings,omitempty"`
 	ClosedAt                 *time.Time          `json:"closedAt,omitempty"`
@@ -178,7 +250,8 @@ type AccessReview struct {
 	// The policyId field.
 	PolicyID *string `json:"policyId,omitempty"`
 	// The reviewInstructions field.
-	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	ReviewInstructions *string    `json:"reviewInstructions,omitempty"`
+	ScheduledStartDate *time.Time `json:"scheduledStartDate,omitempty"`
 	// The AccessReviewScope message.
 	AccessReviewScope *AccessReviewScope `json:"scope,omitempty"`
 	// this sets the scope type for the access review
@@ -248,6 +321,27 @@ func (a *AccessReview) GetAccessReviewTemplateID() *string {
 	return a.AccessReviewTemplateID
 }
 
+func (a *AccessReview) GetAccuracyIssueAction() *AccuracyIssueAction {
+	if a == nil {
+		return nil
+	}
+	return a.AccuracyIssueAction
+}
+
+func (a *AccessReview) GetAutoCloseCampaign() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCloseCampaign
+}
+
+func (a *AccessReview) GetAutoCloseDecision() *AutoCloseDecision {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCloseDecision
+}
+
 func (a *AccessReview) GetAutoGenerateReport() *bool {
 	if a == nil {
 		return nil
@@ -260,6 +354,13 @@ func (a *AccessReview) GetAutoResolve() *bool {
 		return nil
 	}
 	return a.AutoResolve
+}
+
+func (a *AccessReview) GetAutoStartCampaign() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AutoStartCampaign
 }
 
 func (a *AccessReview) GetBindingObjectSetup() *BindingObjectSetup {
@@ -395,6 +496,13 @@ func (a *AccessReview) GetReviewInstructions() *string {
 	return a.ReviewInstructions
 }
 
+func (a *AccessReview) GetScheduledStartDate() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.ScheduledStartDate
+}
+
 func (a *AccessReview) GetAccessReviewScope() *AccessReviewScope {
 	if a == nil {
 		return nil
@@ -474,10 +582,19 @@ func (a *AccessReview) GetUsePolicyOverride() *bool {
 type AccessReviewInput struct {
 	// The ID of the template if the campaign was created from one
 	AccessReviewTemplateID *string `json:"accessReviewTemplateId,omitempty"`
+	// The accuracyIssueAction field.
+	AccuracyIssueAction *AccuracyIssueAction `json:"accuracyIssueAction,omitempty"`
+	// Auto-close configuration
+	//  completion_date is used as the scheduled close date
+	AutoCloseCampaign *bool `json:"autoCloseCampaign,omitempty"`
+	// The autoCloseDecision field.
+	AutoCloseDecision *AutoCloseDecision `json:"autoCloseDecision,omitempty"`
 	// The autoGenerateReport field.
 	AutoGenerateReport *bool `json:"autoGenerateReport,omitempty"`
 	// The autoResolve field.
 	AutoResolve *bool `json:"autoResolve,omitempty"`
+	// Auto-start configuration
+	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
 	// The BindingObjectSetup message.
 	BindingObjectSetup       *BindingObjectSetup `json:"bindings,omitempty"`
 	ClosedAt                 *time.Time          `json:"closedAt,omitempty"`
@@ -510,7 +627,8 @@ type AccessReviewInput struct {
 	// The policyId field.
 	PolicyID *string `json:"policyId,omitempty"`
 	// The reviewInstructions field.
-	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	ReviewInstructions *string    `json:"reviewInstructions,omitempty"`
+	ScheduledStartDate *time.Time `json:"scheduledStartDate,omitempty"`
 	// The AccessReviewScope message.
 	AccessReviewScope *AccessReviewScope `json:"scope,omitempty"`
 	// this sets the scope type for the access review
@@ -579,6 +697,27 @@ func (a *AccessReviewInput) GetAccessReviewTemplateID() *string {
 	return a.AccessReviewTemplateID
 }
 
+func (a *AccessReviewInput) GetAccuracyIssueAction() *AccuracyIssueAction {
+	if a == nil {
+		return nil
+	}
+	return a.AccuracyIssueAction
+}
+
+func (a *AccessReviewInput) GetAutoCloseCampaign() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCloseCampaign
+}
+
+func (a *AccessReviewInput) GetAutoCloseDecision() *AutoCloseDecision {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCloseDecision
+}
+
 func (a *AccessReviewInput) GetAutoGenerateReport() *bool {
 	if a == nil {
 		return nil
@@ -591,6 +730,13 @@ func (a *AccessReviewInput) GetAutoResolve() *bool {
 		return nil
 	}
 	return a.AutoResolve
+}
+
+func (a *AccessReviewInput) GetAutoStartCampaign() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AutoStartCampaign
 }
 
 func (a *AccessReviewInput) GetBindingObjectSetup() *BindingObjectSetup {
@@ -717,6 +863,13 @@ func (a *AccessReviewInput) GetReviewInstructions() *string {
 		return nil
 	}
 	return a.ReviewInstructions
+}
+
+func (a *AccessReviewInput) GetScheduledStartDate() *time.Time {
+	if a == nil {
+		return nil
+	}
+	return a.ScheduledStartDate
 }
 
 func (a *AccessReviewInput) GetAccessReviewScope() *AccessReviewScope {

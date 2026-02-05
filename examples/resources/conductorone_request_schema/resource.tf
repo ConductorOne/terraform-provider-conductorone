@@ -58,6 +58,7 @@ resource "conductorone_request_schema" "my_request_schema" {
           # ...
         }
       }
+      required = false
       shared_provider_config = {
         default_value_cel        = "...my_default_value_cel..."
         input_transformation_cel = "...my_input_transformation_cel..."
@@ -75,6 +76,9 @@ resource "conductorone_request_schema" "my_request_schema" {
           }
           app_user_filter = {
             app_id = "...my_app_id..."
+          }
+          c1_user_filter = {
+            # ...
           }
         }
         placeholder = "...my_placeholder..."

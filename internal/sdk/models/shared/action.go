@@ -6,9 +6,12 @@ package shared
 //
 // This message contains a oneof named target. Only a single field of the following list may be set at a time:
 //   - automation
+//   - batonResourceAction
 type Action struct {
-	// The ActionTargetAutomation message.
+	// ActionTargetAutomation targets automation templates for policy actions.
 	ActionTargetAutomation *ActionTargetAutomation `json:"automation,omitempty"`
+	// ActionTargetResource targets resource actions for policy actions.
+	ActionTargetBatonResourceAction *ActionTargetBatonResourceAction `json:"batonResourceAction,omitempty"`
 }
 
 func (a *Action) GetActionTargetAutomation() *ActionTargetAutomation {
@@ -16,4 +19,11 @@ func (a *Action) GetActionTargetAutomation() *ActionTargetAutomation {
 		return nil
 	}
 	return a.ActionTargetAutomation
+}
+
+func (a *Action) GetActionTargetBatonResourceAction() *ActionTargetBatonResourceAction {
+	if a == nil {
+		return nil
+	}
+	return a.ActionTargetBatonResourceAction
 }

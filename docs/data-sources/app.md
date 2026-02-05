@@ -64,6 +64,7 @@ data "conductorone_app" "my_app" {
 - `default_request_catalog_id` (String) The ID for the default request catalog for this app.
 - `deleted_at` (String)
 - `description` (String) The app's description.
+- `enable_connector_sourced_ownership` (Boolean) When enabled, resource ownership is sourced from the connector.
 - `grant_policy_id` (String) The ID of the Grant Policy associated with this App.
 - `id` (String) The ID of the app.
 - `identity_matching` (String) The identityMatching field.

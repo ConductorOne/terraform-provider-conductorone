@@ -134,6 +134,7 @@ const (
 	OriginTaskOriginProfileMembership           Origin = "TASK_ORIGIN_PROFILE_MEMBERSHIP"
 	OriginTaskOriginAutomation                  Origin = "TASK_ORIGIN_AUTOMATION"
 	OriginTaskOriginAccessReview                Origin = "TASK_ORIGIN_ACCESS_REVIEW"
+	OriginTaskOriginCascadeDelete               Origin = "TASK_ORIGIN_CASCADE_DELETE"
 )
 
 func (e Origin) ToPointer() *Origin {
@@ -170,6 +171,8 @@ func (e *Origin) UnmarshalJSON(data []byte) error {
 	case "TASK_ORIGIN_AUTOMATION":
 		fallthrough
 	case "TASK_ORIGIN_ACCESS_REVIEW":
+		fallthrough
+	case "TASK_ORIGIN_CASCADE_DELETE":
 		*e = Origin(v)
 		return nil
 	default:

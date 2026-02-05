@@ -37,6 +37,9 @@ data "conductorone_app_resources" "my_app_resources" {
   exclude_resource_type_trait_ids = [
     "..."
   ]
+  owner_user_ids = [
+    "..."
+  ]
   page_size  = 7
   page_token = "...my_page_token..."
   query      = "...my_query..."
@@ -69,6 +72,7 @@ data "conductorone_app_resources" "my_app_resources" {
 - `exclude_deleted_resource_bindings` (Boolean) The excludeDeletedResourceBindings field.
 - `exclude_resource_ids` (List of String) The excludeResourceIds field.
 - `exclude_resource_type_trait_ids` (List of String) The excludeResourceTypeTraitIds field.
+- `owner_user_ids` (List of String) The ownerUserIds field.
 - `page_size` (Number) The pageSize field.
 - `page_token` (String) The pageToken field.
 - `query` (String) The query field.
@@ -102,16 +106,30 @@ Optional:
 
 Read-Only:
 
+- `actor_object_permissions` (Attributes) The ActorObjectPermissions message. (see [below for nested schema](#nestedatt--list--actor_object_permissions))
 - `app_resource` (Attributes) The app resource message is a single resource that can have entitlements.
 
 This message contains a oneof named metadata. Only a single field of the following list may be set at a time:
   - secretTrait (see [below for nested schema](#nestedatt--list--app_resource))
+
+<a id="nestedatt--list--actor_object_permissions"></a>
+### Nested Schema for `list.actor_object_permissions`
+
+Read-Only:
+
+- `delete` (Boolean) The delete field.
+- `edit` (Boolean) The edit field.
+- `extra` (Map of Boolean) The extra field.
+- `read` (Boolean) The read field.
+
 
 <a id="nestedatt--list--app_resource"></a>
 ### Nested Schema for `list.app_resource`
 
 Read-Only:
 
+- `access_config_id` (String) The access config ID for this resource. May be empty.
+ Must be one of the builtin access config IDs or empty.
 - `app_id` (String) The app that this resource belongs to.
 - `app_resource_type_id` (String) The resource type that this resource is.
 - `created_at` (String)
@@ -123,8 +141,13 @@ Read-Only:
 - `match_baton_id` (String) The matchBatonId field.
 - `parent_app_resource_id` (String) The parent resource id, if this resource is a child of another resource.
 - `parent_app_resource_type_id` (String) The parent resource type id, if this resource is a child of another resource.
+- `profile` (Attributes) (see [below for nested schema](#nestedatt--list--app_resource--profile))
 - `secret_trait` (Attributes) The SecretTrait message. (see [below for nested schema](#nestedatt--list--app_resource--secret_trait))
 - `updated_at` (String)
+
+<a id="nestedatt--list--app_resource--profile"></a>
+### Nested Schema for `list.app_resource.profile`
+
 
 <a id="nestedatt--list--app_resource--secret_trait"></a>
 ### Nested Schema for `list.app_resource.secret_trait`

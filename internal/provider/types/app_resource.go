@@ -7,17 +7,19 @@ import (
 )
 
 type AppResource struct {
-	AppID                   types.String `tfsdk:"app_id"`
-	AppResourceTypeID       types.String `tfsdk:"app_resource_type_id"`
-	CreatedAt               types.String `tfsdk:"created_at"`
-	DeletedAt               types.String `tfsdk:"deleted_at"`
-	Description             types.String `tfsdk:"description"`
-	DisplayName             types.String `tfsdk:"display_name"`
-	GrantCount              types.String `tfsdk:"grant_count"`
-	ID                      types.String `tfsdk:"id"`
-	MatchBatonID            types.String `tfsdk:"match_baton_id"`
-	ParentAppResourceID     types.String `tfsdk:"parent_app_resource_id"`
-	ParentAppResourceTypeID types.String `tfsdk:"parent_app_resource_type_id"`
-	SecretTrait             *SecretTrait `tfsdk:"secret_trait"`
-	UpdatedAt               types.String `tfsdk:"updated_at"`
+	AccessConfigID          types.String        `tfsdk:"access_config_id"`
+	AppID                   types.String        `tfsdk:"app_id"`
+	AppResourceTypeID       types.String        `tfsdk:"app_resource_type_id"`
+	CreatedAt               types.String        `tfsdk:"created_at"`
+	DeletedAt               types.String        `tfsdk:"deleted_at"`
+	Description             types.String        `tfsdk:"description"`
+	DisplayName             types.String        `tfsdk:"display_name"`
+	GrantCount              types.String        `tfsdk:"grant_count"`
+	ID                      types.String        `tfsdk:"id"`
+	MatchBatonID            types.String        `tfsdk:"match_baton_id"`
+	ParentAppResourceID     types.String        `tfsdk:"parent_app_resource_id"`
+	ParentAppResourceTypeID types.String        `tfsdk:"parent_app_resource_type_id"`
+	Profile                 *AppResourceProfile `tfsdk:"profile"`
+	SecretTrait             *SecretTrait        `tfsdk:"secret_trait"`
+	UpdatedAt               types.String        `tfsdk:"updated_at"`
 }

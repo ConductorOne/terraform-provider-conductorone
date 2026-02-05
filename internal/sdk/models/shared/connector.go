@@ -48,9 +48,11 @@ type Connector struct {
 	// The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-	Config    *Config    `json:"config,omitempty"`
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	Config *Config `json:"config,omitempty"`
+	// The ConnectorSyncCronSchedule message.
+	ConnectorSyncCronSchedule *ConnectorSyncCronSchedule `json:"connectorSyncCronSchedule,omitempty"`
+	CreatedAt                 *time.Time                 `json:"createdAt,omitempty"`
+	DeletedAt                 *time.Time                 `json:"deletedAt,omitempty"`
 	// The description of the connector.
 	Description *string `json:"description,omitempty"`
 	// The disableCheckBadSync field.
@@ -118,6 +120,13 @@ func (c *Connector) GetConfig() *Config {
 		return nil
 	}
 	return c.Config
+}
+
+func (c *Connector) GetConnectorSyncCronSchedule() *ConnectorSyncCronSchedule {
+	if c == nil {
+		return nil
+	}
+	return c.ConnectorSyncCronSchedule
 }
 
 func (c *Connector) GetCreatedAt() *time.Time {
@@ -249,6 +258,8 @@ type ConnectorInput struct {
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 	Config *Config `json:"config,omitempty"`
+	// The ConnectorSyncCronSchedule message.
+	ConnectorSyncCronSchedule *ConnectorSyncCronSchedule `json:"connectorSyncCronSchedule,omitempty"`
 	// The description of the connector.
 	Description *string `json:"description,omitempty"`
 	// The disableCheckBadSync field.
@@ -301,6 +312,13 @@ func (c *ConnectorInput) GetConfig() *Config {
 		return nil
 	}
 	return c.Config
+}
+
+func (c *ConnectorInput) GetConnectorSyncCronSchedule() *ConnectorSyncCronSchedule {
+	if c == nil {
+		return nil
+	}
+	return c.ConnectorSyncCronSchedule
 }
 
 func (c *ConnectorInput) GetDescription() *string {

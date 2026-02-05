@@ -24,6 +24,7 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.EnableConnectorSourcedOwnership = types.BoolPointerValue(resp.EnableConnectorSourcedOwnership)
 		r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
 		r.ID = types.StringPointerValue(resp.ID)
 		if resp.IdentityMatching != nil {
@@ -178,6 +179,12 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 	} else {
 		displayName = nil
 	}
+	enableConnectorSourcedOwnership := new(bool)
+	if !r.EnableConnectorSourcedOwnership.IsUnknown() && !r.EnableConnectorSourcedOwnership.IsNull() {
+		*enableConnectorSourcedOwnership = r.EnableConnectorSourcedOwnership.ValueBool()
+	} else {
+		enableConnectorSourcedOwnership = nil
+	}
 	grantPolicyID := new(string)
 	if !r.GrantPolicyID.IsUnknown() && !r.GrantPolicyID.IsNull() {
 		*grantPolicyID = r.GrantPolicyID.ValueString()
@@ -226,6 +233,7 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 		DefaultRequestCatalogID:             defaultRequestCatalogID,
 		Description:                         description,
 		DisplayName:                         displayName,
+		EnableConnectorSourcedOwnership:     enableConnectorSourcedOwnership,
 		GrantPolicyID:                       grantPolicyID,
 		IdentityMatching:                    identityMatching,
 		Instructions:                        instructions,
