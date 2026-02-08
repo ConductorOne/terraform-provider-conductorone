@@ -9827,6 +9827,40 @@ components:
             title: Function Invocation
             type: object
             x-speakeasy-name-override: FunctionInvocation
+        c1.api.functions.v1.FunctionsInvocationSearchRequestInput:
+            description: |-
+                FunctionsInvocationSearchRequest is the request for searching function invocations.
+                 Results are returned in descending order by created_at (newest first).
+            properties:
+                pageSize:
+                    description: The number of results to return per page.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pagination token for fetching the next page.
+                    readOnly: false
+                    type: string
+            title: Functions Invocation Search Request
+            type: object
+            x-speakeasy-name-override: FunctionsInvocationSearchRequest
+        c1.api.functions.v1.FunctionsInvocationSearchResponse:
+            description: FunctionsInvocationSearchResponse is the response for searching function invocations.
+            properties:
+                list:
+                    description: The list of function invocations, ordered by created_at descending.
+                    items:
+                        $ref: '#/components/schemas/c1.api.functions.v1.FunctionInvocation'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The pagination token for fetching the next page.
+                    readOnly: false
+                    type: string
+            title: Functions Invocation Search Response
+            type: object
+            x-speakeasy-name-override: FunctionsInvocationSearchResponse
         c1.api.functions.v1.FunctionsInvocationServiceGetResponse:
             description: The FunctionsInvocationServiceGetResponse message.
             properties:
@@ -13056,6 +13090,20 @@ components:
                     description: The description field.
                     readOnly: false
                     type: string
+                fieldGroups:
+                    description: The fieldGroups field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.form.v1.FieldGroup'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                fieldRelationships:
+                    description: The fieldRelationships field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.form.v1.FieldRelationship'
+                    nullable: true
+                    readOnly: false
+                    type: array
                 fields:
                     description: The fields field.
                     items:
@@ -13063,6 +13111,15 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                justificationVisibility:
+                    description: The justificationVisibility field.
+                    enum:
+                        - JUSTIFICATION_VISIBILITY_UNSPECIFIED
+                        - JUSTIFICATION_VISIBILITY_SHOW
+                        - JUSTIFICATION_VISIBILITY_HIDE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 name:
                     description: The name field.
                     readOnly: false
@@ -14075,6 +14132,671 @@ components:
             title: Facets
             type: object
             x-speakeasy-name-override: Facets
+        c1.api.secrets.v1.PaperSecret:
+            description: |-
+                PaperSecret is the API view of a secret (combines Vault + PaperVault fields).
+                 The vault_id is the primary identifier (Vault.id).
+            properties:
+                allowedEmails:
+                    description: The allowedEmails field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                allowedUserIds:
+                    description: Access control
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                contentDeleted:
+                    description: The contentDeleted field.
+                    readOnly: false
+                    type: boolean
+                contentExpiresAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                contentReady:
+                    description: Whether content has been set (text uploaded or file uploaded)
+                    readOnly: false
+                    type: boolean
+                contentType:
+                    description: The contentType field.
+                    readOnly: false
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                creatorUserId:
+                    description: Creator
+                    readOnly: false
+                    type: string
+                currentViews:
+                    description: The currentViews field.
+                    format: uint32
+                    readOnly: false
+                    type: integer
+                deletedAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                displayName:
+                    description: From Vault
+                    readOnly: false
+                    type: string
+                fileSize:
+                    description: File metadata
+                    format: int64
+                    readOnly: false
+                    type: string
+                filename:
+                    description: 'For FILE secrets: original filename (sanitized)'
+                    readOnly: false
+                    type: string
+                inputFormat:
+                    description: The inputFormat field.
+                    enum:
+                        - SECRET_INPUT_FORMAT_UNSPECIFIED
+                        - SECRET_INPUT_FORMAT_PLAINTEXT
+                        - SECRET_INPUT_FORMAT_JSON
+                        - SECRET_INPUT_FORMAT_YAML
+                        - SECRET_INPUT_FORMAT_KEY_VALUE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                maxViews:
+                    description: View tracking
+                    format: uint32
+                    readOnly: false
+                    type: integer
+                secretType:
+                    description: The secretType field.
+                    enum:
+                        - SECRET_TYPE_UNSPECIFIED
+                        - SECRET_TYPE_TEXT
+                        - SECRET_TYPE_FILE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                shareCode:
+                    description: Human-friendly share code (XXXX-XXXX-XXXX) for shareable URLs
+                    readOnly: false
+                    type: string
+                sharingMode:
+                    description: From PaperVault
+                    enum:
+                        - PAPER_VAULT_SHARING_MODE_UNSPECIFIED
+                        - PAPER_VAULT_SHARING_MODE_INTERNAL
+                        - PAPER_VAULT_SHARING_MODE_EXTERNAL
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                status:
+                    description: Computed status
+                    enum:
+                        - SECRET_STATUS_UNSPECIFIED
+                        - SECRET_STATUS_ACTIVE
+                        - SECRET_STATUS_EXPIRED
+                        - SECRET_STATUS_BURNED
+                        - SECRET_STATUS_REVOKED
+                        - SECRET_STATUS_DATA_DELETED
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                updatedAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                vaultId:
+                    description: Vault.id - primary identifier for the secret
+                    readOnly: false
+                    type: string
+            title: Paper Secret
+            type: object
+            x-speakeasy-name-override: PaperSecret
+        c1.api.secrets.v1.PaperSecretAdminServiceGetResponse:
+            description: The PaperSecretAdminServiceGetResponse message.
+            properties:
+                secret:
+                    $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecret'
+                shareUrl:
+                    description: The shareUrl field.
+                    readOnly: false
+                    type: string
+            title: Paper Secret Admin Service Get Response
+            type: object
+            x-speakeasy-name-override: PaperSecretAdminServiceGetResponse
+        c1.api.secrets.v1.PaperSecretAdminServiceRevokeRequestInput:
+            description: The PaperSecretAdminServiceRevokeRequest message.
+            title: Paper Secret Admin Service Revoke Request
+            type: object
+            x-speakeasy-name-override: PaperSecretAdminServiceRevokeRequest
+        c1.api.secrets.v1.PaperSecretAdminServiceRevokeResponse:
+            description: The PaperSecretAdminServiceRevokeResponse message.
+            properties:
+                secret:
+                    $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecret'
+            title: Paper Secret Admin Service Revoke Response
+            type: object
+            x-speakeasy-name-override: PaperSecretAdminServiceRevokeResponse
+        c1.api.secrets.v1.PaperSecretAdminServiceSearchAuditEventsRequest:
+            description: The PaperSecretAdminServiceSearchAuditEventsRequest message.
+            properties:
+                actorEmail:
+                    description: Filter by external email (partial match via full-text search)
+                    readOnly: false
+                    type: string
+                actorUserId:
+                    description: Filter by C1 user ID (internal users)
+                    readOnly: false
+                    type: string
+                clientIp:
+                    description: Filter by client IP (exact match)
+                    readOnly: false
+                    type: string
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                vaultId:
+                    description: Filter by specific vault
+                    readOnly: false
+                    type: string
+            title: Paper Secret Admin Service Search Audit Events Request
+            type: object
+            x-speakeasy-name-override: PaperSecretAdminServiceSearchAuditEventsRequest
+        c1.api.secrets.v1.PaperSecretAdminServiceSearchAuditEventsResponse:
+            description: The PaperSecretAdminServiceSearchAuditEventsResponse message.
+            properties:
+                list:
+                    description: |-
+                        List contains OCSF events directly as JSON structs.
+                         Follows the same pattern as SystemLogServiceListEventsResponse.
+                    items:
+                        additionalProperties: true
+                        readOnly: false
+                        type: object
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Paper Secret Admin Service Search Audit Events Response
+            type: object
+            x-speakeasy-name-override: PaperSecretAdminServiceSearchAuditEventsResponse
+        c1.api.secrets.v1.PaperSecretAdminServiceSearchRequest:
+            description: Admin search request - can filter by any user's secrets.
+            properties:
+                createdAfter:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                createdBefore:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                creatorUserIds:
+                    description: Filter by creator user ID (admin can see all users' secrets)
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                includeDeleted:
+                    description: Include deleted secrets
+                    readOnly: false
+                    type: boolean
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                query:
+                    description: Fuzzy search by display name
+                    readOnly: false
+                    type: string
+                secretType:
+                    description: Filter by secret type (optional)
+                    enum:
+                        - SECRET_TYPE_UNSPECIFIED
+                        - SECRET_TYPE_TEXT
+                        - SECRET_TYPE_FILE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                sharingMode:
+                    description: Filter by sharing mode (optional)
+                    enum:
+                        - PAPER_VAULT_SHARING_MODE_UNSPECIFIED
+                        - PAPER_VAULT_SHARING_MODE_INTERNAL
+                        - PAPER_VAULT_SHARING_MODE_EXTERNAL
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                sortBy:
+                    description: Sort order
+                    enum:
+                        - SEARCH_SORT_BY_UNSPECIFIED
+                        - SEARCH_SORT_BY_CREATED_DESC
+                        - SEARCH_SORT_BY_CREATED_ASC
+                        - SEARCH_SORT_BY_EXPIRES_ASC
+                        - SEARCH_SORT_BY_NAME_ASC
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                statuses:
+                    description: Filter by status (optional)
+                    items:
+                        enum:
+                            - SECRET_STATUS_UNSPECIFIED
+                            - SECRET_STATUS_ACTIVE
+                            - SECRET_STATUS_EXPIRED
+                            - SECRET_STATUS_BURNED
+                            - SECRET_STATUS_REVOKED
+                            - SECRET_STATUS_DATA_DELETED
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Paper Secret Admin Service Search Request
+            type: object
+            x-speakeasy-name-override: PaperSecretAdminServiceSearchRequest
+        c1.api.secrets.v1.PaperSecretAdminServiceSearchResponse:
+            description: The PaperSecretAdminServiceSearchResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecret'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Paper Secret Admin Service Search Response
+            type: object
+            x-speakeasy-name-override: PaperSecretAdminServiceSearchResponse
+        c1.api.secrets.v1.PaperSecretServiceCreateExternalRequest:
+            description: The PaperSecretServiceCreateExternalRequest message.
+            properties:
+                allowedEmails:
+                    description: External email addresses allowed to view this secret (1 to 64)
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                contentType:
+                    description: The contentType field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: Optional cleartext label for creator's "My Secrets" view
+                    readOnly: false
+                    type: string
+                expiresIn:
+                    format: duration
+                    readOnly: false
+                    type: string
+                fileSize:
+                    description: 'For FILE secrets: file metadata (required when secret_type = FILE)'
+                    format: int64
+                    readOnly: false
+                    type: string
+                filename:
+                    description: 'For FILE secrets: original filename (sanitized server-side)'
+                    readOnly: false
+                    type: string
+                inputFormat:
+                    description: 'For TEXT secrets: input format hint (optional)'
+                    enum:
+                        - SECRET_INPUT_FORMAT_UNSPECIFIED
+                        - SECRET_INPUT_FORMAT_PLAINTEXT
+                        - SECRET_INPUT_FORMAT_JSON
+                        - SECRET_INPUT_FORMAT_YAML
+                        - SECRET_INPUT_FORMAT_KEY_VALUE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                maxViews:
+                    description: Maximum number of views (0 = unlimited)
+                    format: uint32
+                    readOnly: false
+                    type: integer
+                secretType:
+                    description: 'Secret type: TEXT or FILE'
+                    enum:
+                        - SECRET_TYPE_UNSPECIFIED
+                        - SECRET_TYPE_TEXT
+                        - SECRET_TYPE_FILE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Paper Secret Service Create External Request
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceCreateExternalRequest
+        c1.api.secrets.v1.PaperSecretServiceCreateInternalRequest:
+            description: The PaperSecretServiceCreateInternalRequest message.
+            properties:
+                allowedUserIds:
+                    description: C1 User IDs allowed to view this secret (1 to 128)
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                contentType:
+                    description: The contentType field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: Optional cleartext label for creator's "My Secrets" view
+                    readOnly: false
+                    type: string
+                expiresIn:
+                    format: duration
+                    readOnly: false
+                    type: string
+                fileSize:
+                    description: 'For FILE secrets: file metadata (required when secret_type = FILE)'
+                    format: int64
+                    readOnly: false
+                    type: string
+                filename:
+                    description: 'For FILE secrets: original filename (sanitized server-side)'
+                    readOnly: false
+                    type: string
+                inputFormat:
+                    description: 'For TEXT secrets: input format hint (optional)'
+                    enum:
+                        - SECRET_INPUT_FORMAT_UNSPECIFIED
+                        - SECRET_INPUT_FORMAT_PLAINTEXT
+                        - SECRET_INPUT_FORMAT_JSON
+                        - SECRET_INPUT_FORMAT_YAML
+                        - SECRET_INPUT_FORMAT_KEY_VALUE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                maxViews:
+                    description: Maximum number of views (0 = unlimited)
+                    format: uint32
+                    readOnly: false
+                    type: integer
+                secretType:
+                    description: 'Secret type: TEXT or FILE'
+                    enum:
+                        - SECRET_TYPE_UNSPECIFIED
+                        - SECRET_TYPE_TEXT
+                        - SECRET_TYPE_FILE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Paper Secret Service Create Internal Request
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceCreateInternalRequest
+        c1.api.secrets.v1.PaperSecretServiceCreateResponse:
+            description: The PaperSecretServiceCreateResponse message.
+            properties:
+                ageRecipient:
+                    description: |-
+                        Age recipient (age1...) for client-side encryption
+                         Client encrypts content to this key before sending
+                    readOnly: false
+                    type: string
+                secret:
+                    $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecret'
+                shareUrl:
+                    description: URL to share with recipients
+                    readOnly: false
+                    type: string
+                uploadUrl:
+                    description: |-
+                        For FILE secrets: upload URL for encrypted file
+                         Client POSTs encrypted file to this URL
+                    readOnly: false
+                    type: string
+                vaultId:
+                    description: Vault ID - primary identifier for this secret
+                    readOnly: false
+                    type: string
+            title: Paper Secret Service Create Response
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceCreateResponse
+        c1.api.secrets.v1.PaperSecretServiceGetContentRequestInput:
+            description: The PaperSecretServiceGetContentRequest message.
+            properties:
+                readerRecipient:
+                    description: |-
+                        Client's ephemeral Age recipient (age1...) for re-encryption
+                         Server re-encrypts the content to this recipient
+                    readOnly: false
+                    type: string
+            title: Paper Secret Service Get Content Request
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceGetContentRequest
+        c1.api.secrets.v1.PaperSecretServiceGetContentResponse:
+            description: |
+                The PaperSecretServiceGetContentResponse message.
+
+                This message contains a oneof named content. Only a single field of the following list may be set at a time:
+                  - encryptedContent
+                  - downloadUrl
+            properties:
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                creatorUserId:
+                    description: The creatorUserId field.
+                    readOnly: false
+                    type: string
+                downloadUrl:
+                    description: |-
+                        For file secrets: presigned S3 download URL (5 minute expiry)
+                         File is still E2E encrypted - client must decrypt after download
+                        This field is part of the `content` oneof.
+                        See the documentation for `c1.api.secrets.v1.PaperSecretServiceGetContentResponse` for more details.
+                    nullable: true
+                    readOnly: false
+                    type: string
+                encryptedContent:
+                    description: |-
+                        For text secrets: Age-encrypted content (encrypted to reader's recipient)
+                        This field is part of the `content` oneof.
+                        See the documentation for `c1.api.secrets.v1.PaperSecretServiceGetContentResponse` for more details.
+                    format: base64
+                    nullable: true
+                    readOnly: false
+                    type: string
+                filename:
+                    description: Original filename (file secrets only)
+                    readOnly: false
+                    type: string
+                inputFormat:
+                    description: Input format hint for rendering (text secrets only)
+                    enum:
+                        - SECRET_INPUT_FORMAT_UNSPECIFIED
+                        - SECRET_INPUT_FORMAT_PLAINTEXT
+                        - SECRET_INPUT_FORMAT_JSON
+                        - SECRET_INPUT_FORMAT_YAML
+                        - SECRET_INPUT_FORMAT_KEY_VALUE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                secretType:
+                    description: Secret metadata
+                    enum:
+                        - SECRET_TYPE_UNSPECIFIED
+                        - SECRET_TYPE_TEXT
+                        - SECRET_TYPE_FILE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                viewsRemaining:
+                    description: Views remaining after this view (-1 = unlimited)
+                    format: int32
+                    readOnly: false
+                    type: integer
+            title: Paper Secret Service Get Content Response
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceGetContentResponse
+        c1.api.secrets.v1.PaperSecretServiceGetResponse:
+            description: The PaperSecretServiceGetResponse message.
+            properties:
+                secret:
+                    $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecret'
+                shareUrl:
+                    description: The shareUrl field.
+                    readOnly: false
+                    type: string
+            title: Paper Secret Service Get Response
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceGetResponse
+        c1.api.secrets.v1.PaperSecretServiceRevokeRequestInput:
+            description: The PaperSecretServiceRevokeRequest message.
+            title: Paper Secret Service Revoke Request
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceRevokeRequest
+        c1.api.secrets.v1.PaperSecretServiceRevokeResponse:
+            description: The PaperSecretServiceRevokeResponse message.
+            properties:
+                secret:
+                    $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecret'
+            title: Paper Secret Service Revoke Response
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceRevokeResponse
+        c1.api.secrets.v1.PaperSecretServiceSearchMySecretsRequest:
+            description: |-
+                SearchMySecrets request - for end users viewing their own secrets.
+                 Automatically scoped to current user.
+            properties:
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                query:
+                    description: Fuzzy search by display name
+                    readOnly: false
+                    type: string
+                secretType:
+                    description: Filter by secret type (optional)
+                    enum:
+                        - SECRET_TYPE_UNSPECIFIED
+                        - SECRET_TYPE_TEXT
+                        - SECRET_TYPE_FILE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                sharingMode:
+                    description: Filter by sharing mode (optional)
+                    enum:
+                        - PAPER_VAULT_SHARING_MODE_UNSPECIFIED
+                        - PAPER_VAULT_SHARING_MODE_INTERNAL
+                        - PAPER_VAULT_SHARING_MODE_EXTERNAL
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                sortBy:
+                    description: Sort order
+                    enum:
+                        - SEARCH_SORT_BY_UNSPECIFIED
+                        - SEARCH_SORT_BY_CREATED_DESC
+                        - SEARCH_SORT_BY_CREATED_ASC
+                        - SEARCH_SORT_BY_EXPIRES_ASC
+                        - SEARCH_SORT_BY_NAME_ASC
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                statuses:
+                    description: Filter by status (optional)
+                    items:
+                        enum:
+                            - SECRET_STATUS_UNSPECIFIED
+                            - SECRET_STATUS_ACTIVE
+                            - SECRET_STATUS_EXPIRED
+                            - SECRET_STATUS_BURNED
+                            - SECRET_STATUS_REVOKED
+                            - SECRET_STATUS_DATA_DELETED
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Paper Secret Service Search My Secrets Request
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceSearchMySecretsRequest
+        c1.api.secrets.v1.PaperSecretServiceSearchResponse:
+            description: Search response for user's own secrets
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecret'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Paper Secret Service Search Response
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceSearchResponse
+        c1.api.secrets.v1.PaperSecretServiceSetTextContentRequestInput:
+            description: The PaperSecretServiceSetTextContentRequest message.
+            properties:
+                encryptedContent:
+                    description: |-
+                        E2E encrypted content (encrypted to age_recipient from CreateResponse)
+                         Max 64KB - for larger content, use a file secret
+                    format: base64
+                    readOnly: false
+                    type: string
+                inputFormat:
+                    description: Input format hint (for viewer rendering)
+                    enum:
+                        - SECRET_INPUT_FORMAT_UNSPECIFIED
+                        - SECRET_INPUT_FORMAT_PLAINTEXT
+                        - SECRET_INPUT_FORMAT_JSON
+                        - SECRET_INPUT_FORMAT_YAML
+                        - SECRET_INPUT_FORMAT_KEY_VALUE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Paper Secret Service Set Text Content Request
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceSetTextContentRequest
+        c1.api.secrets.v1.PaperSecretServiceSetTextContentResponse:
+            description: The PaperSecretServiceSetTextContentResponse message.
+            properties:
+                secret:
+                    $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecret'
+            title: Paper Secret Service Set Text Content Response
+            type: object
+            x-speakeasy-name-override: PaperSecretServiceSetTextContentResponse
         c1.api.settings.v1.AWSExternalID:
             description: The AWSExternalID message.
             properties:
@@ -14086,6 +14808,26 @@ components:
             type: object
             x-speakeasy-entity: AWS_EXTERNAL_ID
             x-speakeasy-name-override: AWSExternalID
+        c1.api.settings.v1.AccessProvisionedPreference:
+            description: The AccessProvisionedPreference message.
+            properties:
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+            title: Access Provisioned Preference
+            type: object
+            x-speakeasy-name-override: AccessProvisionedPreference
+        c1.api.settings.v1.ApprovalNeededPreference:
+            description: The ApprovalNeededPreference message.
+            properties:
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+            title: Approval Needed Preference
+            type: object
+            x-speakeasy-name-override: ApprovalNeededPreference
         c1.api.settings.v1.CIDRRestriction:
             description: The CIDRRestriction message.
             properties:
@@ -14103,6 +14845,121 @@ components:
             title: Cidr Restriction
             type: object
             x-speakeasy-name-override: CIDRRestriction
+        c1.api.settings.v1.ChannelSettings:
+            description: The ChannelSettings message.
+            properties:
+                email:
+                    $ref: '#/components/schemas/c1.api.settings.v1.EmailChannelSettings'
+                slack:
+                    $ref: '#/components/schemas/c1.api.settings.v1.SlackChannelSettings'
+                teams:
+                    $ref: '#/components/schemas/c1.api.settings.v1.MSTeamsChannelSettings'
+            title: Channel Settings
+            type: object
+            x-speakeasy-name-override: ChannelSettings
+        c1.api.settings.v1.CommentOnRequestPreference:
+            description: The CommentOnRequestPreference message.
+            properties:
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+            title: Comment On Request Preference
+            type: object
+            x-speakeasy-name-override: CommentOnRequestPreference
+        c1.api.settings.v1.CompletionPreference:
+            description: The CompletionPreference message.
+            properties:
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+            title: Completion Preference
+            type: object
+            x-speakeasy-name-override: CompletionPreference
+        c1.api.settings.v1.ConnectorIssuesPreference:
+            description: The ConnectorIssuesPreference message.
+            properties:
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+            title: Connector Issues Preference
+            type: object
+            x-speakeasy-name-override: ConnectorIssuesPreference
+        c1.api.settings.v1.DigestPreference:
+            description: The DigestPreference message.
+            properties:
+                dayOfWeek:
+                    description: The dayOfWeek field.
+                    enum:
+                        - WEEKDAY_UNSPECIFIED
+                        - WEEKDAY_MONDAY
+                        - WEEKDAY_TUESDAY
+                        - WEEKDAY_WEDNESDAY
+                        - WEEKDAY_THURSDAY
+                        - WEEKDAY_FRIDAY
+                        - WEEKDAY_SATURDAY
+                        - WEEKDAY_SUNDAY
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+                frequency:
+                    description: The frequency field.
+                    enum:
+                        - DIGEST_FREQUENCY_UNSPECIFIED
+                        - DIGEST_FREQUENCY_DAILY
+                        - DIGEST_FREQUENCY_WEEKLY
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Digest Preference
+            type: object
+            x-speakeasy-name-override: DigestPreference
+        c1.api.settings.v1.EmailChannelSettings:
+            description: The EmailChannelSettings message.
+            properties:
+                accessProvisioned:
+                    $ref: '#/components/schemas/c1.api.settings.v1.AccessProvisionedPreference'
+                approvalNeeded:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ApprovalNeededPreference'
+                commentOnRequest:
+                    $ref: '#/components/schemas/c1.api.settings.v1.CommentOnRequestPreference'
+                completion:
+                    $ref: '#/components/schemas/c1.api.settings.v1.CompletionPreference'
+                connectorIssues:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ConnectorIssuesPreference'
+                digest:
+                    $ref: '#/components/schemas/c1.api.settings.v1.DigestPreference'
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+                expiringAccess:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ExpiringAccessPreference'
+                provisioningRequest:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ProvisioningRequestPreference'
+                reviews:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ReviewsPreference'
+                taskReminders:
+                    $ref: '#/components/schemas/c1.api.settings.v1.TaskRemindersPreference'
+            title: Email Channel Settings
+            type: object
+            x-speakeasy-name-override: EmailChannelSettings
+        c1.api.settings.v1.ExpiringAccessPreference:
+            description: The ExpiringAccessPreference message.
+            properties:
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+            title: Expiring Access Preference
+            type: object
+            x-speakeasy-name-override: ExpiringAccessPreference
         c1.api.settings.v1.GetAWSExternalIDResponse:
             description: The GetAWSExternalIDResponse message.
             properties:
@@ -14111,6 +14968,14 @@ components:
             title: Get Aws External Id Response
             type: object
             x-speakeasy-name-override: GetAWSExternalIDResponse
+        c1.api.settings.v1.GetOrgNotificationSettingsResponse:
+            description: The GetOrgNotificationSettingsResponse message.
+            properties:
+                orgNotificationSettings:
+                    $ref: '#/components/schemas/c1.api.settings.v1.OrgNotificationSettings'
+            title: Get Org Notification Settings Response
+            type: object
+            x-speakeasy-name-override: GetOrgNotificationSettingsResponse
         c1.api.settings.v1.GetSessionSettingsResponse:
             description: The GetSessionSettingsResponse message.
             properties:
@@ -14119,6 +14984,14 @@ components:
             title: Get Session Settings Response
             type: object
             x-speakeasy-name-override: GetSessionSettingsResponse
+        c1.api.settings.v1.GetUserNotificationSettingsResponse:
+            description: The GetUserNotificationSettingsResponse message.
+            properties:
+                userNotificationSettings:
+                    $ref: '#/components/schemas/c1.api.settings.v1.UserNotificationSettings'
+            title: Get User Notification Settings Response
+            type: object
+            x-speakeasy-name-override: GetUserNotificationSettingsResponse
         c1.api.settings.v1.ListOrgDomainsResponse:
             description: The ListOrgDomainsResponse message.
             properties:
@@ -14136,6 +15009,40 @@ components:
             title: List Org Domains Response
             type: object
             x-speakeasy-name-override: ListOrgDomainsResponse
+        c1.api.settings.v1.MSTeamsChannelSettings:
+            description: The MSTeamsChannelSettings message.
+            properties:
+                accessProvisioned:
+                    $ref: '#/components/schemas/c1.api.settings.v1.AccessProvisionedPreference'
+                approvalNeeded:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ApprovalNeededPreference'
+                commentOnRequest:
+                    $ref: '#/components/schemas/c1.api.settings.v1.CommentOnRequestPreference'
+                completion:
+                    $ref: '#/components/schemas/c1.api.settings.v1.CompletionPreference'
+                connectorIssues:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ConnectorIssuesPreference'
+                digest:
+                    $ref: '#/components/schemas/c1.api.settings.v1.DigestPreference'
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+                expiringAccess:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ExpiringAccessPreference'
+                isConfigured:
+                    description: The isConfigured field.
+                    readOnly: false
+                    type: boolean
+                provisioningRequest:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ProvisioningRequestPreference'
+                reviews:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ReviewsPreference'
+                taskReminders:
+                    $ref: '#/components/schemas/c1.api.settings.v1.TaskRemindersPreference'
+            title: Ms Teams Channel Settings
+            type: object
+            x-speakeasy-name-override: MSTeamsChannelSettings
         c1.api.settings.v1.OrgDomain:
             description: The OrgDomain message.
             properties:
@@ -14162,6 +15069,34 @@ components:
             title: Org Domain
             type: object
             x-speakeasy-name-override: OrgDomain
+        c1.api.settings.v1.OrgNotificationSettings:
+            description: The OrgNotificationSettings message.
+            properties:
+                channelSettings:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ChannelSettings'
+            title: Org Notification Settings
+            type: object
+            x-speakeasy-name-override: OrgNotificationSettings
+        c1.api.settings.v1.ProvisioningRequestPreference:
+            description: The ProvisioningRequestPreference message.
+            properties:
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+            title: Provisioning Request Preference
+            type: object
+            x-speakeasy-name-override: ProvisioningRequestPreference
+        c1.api.settings.v1.ReviewsPreference:
+            description: The ReviewsPreference message.
+            properties:
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+            title: Reviews Preference
+            type: object
+            x-speakeasy-name-override: ReviewsPreference
         c1.api.settings.v1.SessionSettings:
             description: The SessionSettings message.
             properties:
@@ -14190,6 +15125,50 @@ components:
             title: Session Settings
             type: object
             x-speakeasy-name-override: SessionSettings
+        c1.api.settings.v1.SlackChannelSettings:
+            description: The SlackChannelSettings message.
+            properties:
+                accessProvisioned:
+                    $ref: '#/components/schemas/c1.api.settings.v1.AccessProvisionedPreference'
+                approvalNeeded:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ApprovalNeededPreference'
+                commentOnRequest:
+                    $ref: '#/components/schemas/c1.api.settings.v1.CommentOnRequestPreference'
+                completion:
+                    $ref: '#/components/schemas/c1.api.settings.v1.CompletionPreference'
+                connectorIssues:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ConnectorIssuesPreference'
+                digest:
+                    $ref: '#/components/schemas/c1.api.settings.v1.DigestPreference'
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+                expiringAccess:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ExpiringAccessPreference'
+                isConfigured:
+                    description: The isConfigured field.
+                    readOnly: false
+                    type: boolean
+                provisioningRequest:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ProvisioningRequestPreference'
+                reviews:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ReviewsPreference'
+                taskReminders:
+                    $ref: '#/components/schemas/c1.api.settings.v1.TaskRemindersPreference'
+            title: Slack Channel Settings
+            type: object
+            x-speakeasy-name-override: SlackChannelSettings
+        c1.api.settings.v1.TaskRemindersPreference:
+            description: The TaskRemindersPreference message.
+            properties:
+                enabled:
+                    description: The enabled field.
+                    readOnly: false
+                    type: boolean
+            title: Task Reminders Preference
+            type: object
+            x-speakeasy-name-override: TaskRemindersPreference
         c1.api.settings.v1.TestSourceIPRequest:
             description: The TestSourceIPRequest message.
             properties:
@@ -14249,6 +15228,22 @@ components:
             title: Update Org Domain Response
             type: object
             x-speakeasy-name-override: UpdateOrgDomainResponse
+        c1.api.settings.v1.UpdateOrgNotificationSettingsRequest:
+            description: The UpdateOrgNotificationSettingsRequest message.
+            properties:
+                channelSettings:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ChannelSettings'
+            title: Update Org Notification Settings Request
+            type: object
+            x-speakeasy-name-override: UpdateOrgNotificationSettingsRequest
+        c1.api.settings.v1.UpdateOrgNotificationSettingsResponse:
+            description: The UpdateOrgNotificationSettingsResponse message.
+            properties:
+                orgNotificationSettings:
+                    $ref: '#/components/schemas/c1.api.settings.v1.OrgNotificationSettings'
+            title: Update Org Notification Settings Response
+            type: object
+            x-speakeasy-name-override: UpdateOrgNotificationSettingsResponse
         c1.api.settings.v1.UpdateSessionSettingsRequest:
             description: The UpdateSessionSettingsRequest message.
             properties:
@@ -14269,6 +15264,30 @@ components:
             title: Update Session Settings Response
             type: object
             x-speakeasy-name-override: UpdateSessionSettingsResponse
+        c1.api.settings.v1.UpdateUserNotificationSettingsRequest:
+            description: The UpdateUserNotificationSettingsRequest message.
+            properties:
+                channelSettings:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ChannelSettings'
+            title: Update User Notification Settings Request
+            type: object
+            x-speakeasy-name-override: UpdateUserNotificationSettingsRequest
+        c1.api.settings.v1.UpdateUserNotificationSettingsResponse:
+            description: The UpdateUserNotificationSettingsResponse message.
+            properties:
+                userNotificationSettings:
+                    $ref: '#/components/schemas/c1.api.settings.v1.UserNotificationSettings'
+            title: Update User Notification Settings Response
+            type: object
+            x-speakeasy-name-override: UpdateUserNotificationSettingsResponse
+        c1.api.settings.v1.UserNotificationSettings:
+            description: The UserNotificationSettings message.
+            properties:
+                channelSettings:
+                    $ref: '#/components/schemas/c1.api.settings.v1.ChannelSettings'
+            title: User Notification Settings
+            type: object
+            x-speakeasy-name-override: UserNotificationSettings
         c1.api.stepup.v1.CreateStepUpProviderRequest:
             description: |
                 The CreateStepUpProviderRequest message.
@@ -17311,6 +18330,13 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                excludeApplicationIds:
+                    description: Search tasks that do NOT have any of these apps as targets.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
                 excludeIds:
                     description: Exclude Specific TaskIDs from this serach result.
                     items:
@@ -18340,6 +19366,16 @@ components:
                     nullable: true
                     readOnly: true
                     type: array
+                origin:
+                    description: The origin of the user, describing who owns the user's lifecycle.
+                    enum:
+                        - USER_ORIGIN_UNSPECIFIED
+                        - USER_ORIGIN_DIRECTORY
+                        - USER_ORIGIN_LOCAL
+                        - USER_ORIGIN_SYSTEM
+                    readOnly: true
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 profile:
                     additionalProperties: true
                     readOnly: true
@@ -20970,8 +22006,6 @@ paths:
             summary: Set Campaign Scope By Resource Type
             tags:
                 - Access Review
-            x-speakeasy-entity-operation:
-                terraform-resource: Access Review Setup#update
             x-speakeasy-group: AccessReviewSetupEntitlement
             x-speakeasy-name-override: SetCampaignScopeByResourceType
             x-stability-level: draft
@@ -21148,8 +22182,6 @@ paths:
             summary: Set Scope By Resource Type
             tags:
                 - Access Review Templates
-            x-speakeasy-entity-operation:
-                terraform-resource: Access Review Template Setup#update
             x-speakeasy-group: AccessReviewTemplateSetupEntitlement
             x-speakeasy-name-override: SetScopeByResourceType
             x-stability-level: draft
@@ -25035,48 +26067,6 @@ paths:
                 - Automations
             x-speakeasy-group: AutomationExecutionActions
             x-speakeasy-name-override: TerminateAutomation
-    /api/v1/automation_executions/search:
-        post:
-            description: Invokes the c1.api.automations.v1.AutomationExecutionSearchService.SearchAutomationExecutions method.
-            operationId: c1.api.automations.v1.AutomationExecutionSearchService.SearchAutomationExecutions
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationExecutionsRequest'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationExecutionsResponse'
-                    description: Successful response
-            summary: Search Automation Executions
-            tags:
-                - Automations
-            x-speakeasy-group: AutomationExecutionSearch
-            x-speakeasy-name-override: SearchAutomationExecutions
-    /api/v1/automation_versions/search:
-        post:
-            description: Invokes the c1.api.automations.v1.AutomationSearchService.SearchAutomationTemplateVersions method.
-            operationId: c1.api.automations.v1.AutomationSearchService.SearchAutomationTemplateVersions
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationTemplateVersionsRequest'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationTemplateVersionsResponse'
-                    description: Successful response
-            summary: Search Automation Template Versions
-            tags:
-                - Automations
-            x-speakeasy-group: AutomationSearch
-            x-speakeasy-name-override: SearchAutomationTemplateVersions
     /api/v1/automations:
         get:
             description: Invokes the c1.api.automations.v1.AutomationService.ListAutomations method.
@@ -25231,27 +26221,6 @@ paths:
                 - Automations
             x-speakeasy-group: Automation
             x-speakeasy-name-override: ExecuteAutomation
-    /api/v1/automations/search:
-        post:
-            description: Invokes the c1.api.automations.v1.AutomationSearchService.SearchAutomations method.
-            operationId: c1.api.automations.v1.AutomationSearchService.SearchAutomations
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationsRequest'
-            responses:
-                "200":
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationsResponse'
-                    description: Successful response
-            summary: Search Automations
-            tags:
-                - Automations
-            x-speakeasy-group: AutomationSearch
-            x-speakeasy-name-override: SearchAutomations
     /api/v1/catalogs:
         get:
             description: Get a list of request catalogs.
@@ -26239,6 +27208,36 @@ paths:
             x-speakeasy-group: FunctionsInvocation
             x-speakeasy-name-override: Get
             x-stability-level: draft
+    /api/v1/functions/{function_id}/invocations/search:
+        post:
+            description: Search searches for function invocations with filtering and ordering support
+            operationId: c1.api.functions.v1.FunctionsInvocationSearchService.Search
+            parameters:
+                - in: path
+                  name: function_id
+                  required: true
+                  schema:
+                    description: The function ID to search invocations for.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.functions.v1.FunctionsInvocationSearchRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.functions.v1.FunctionsInvocationSearchResponse'
+                    description: FunctionsInvocationSearchResponse is the response for searching function invocations.
+            summary: Search
+            tags:
+                - Function Invocation
+            x-speakeasy-group: FunctionsInvocationSearch
+            x-speakeasy-name-override: Search
+            x-stability-level: draft
     /api/v1/functions/{function_id}/invoke:
         post:
             description: Invokes the c1.api.functions.v1.FunctionsService.Invoke method.
@@ -27185,6 +28184,69 @@ paths:
                 - Attribute
             x-speakeasy-group: AttributeSearch
             x-speakeasy-name-override: SearchAttributeValues
+    /api/v1/search/automation_executions:
+        post:
+            description: Invokes the c1.api.automations.v1.AutomationExecutionSearchService.SearchAutomationExecutions method.
+            operationId: c1.api.automations.v1.AutomationExecutionSearchService.SearchAutomationExecutions
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationExecutionsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationExecutionsResponse'
+                    description: Successful response
+            summary: Search Automation Executions
+            tags:
+                - Automations
+            x-speakeasy-group: AutomationExecutionSearch
+            x-speakeasy-name-override: SearchAutomationExecutions
+    /api/v1/search/automation_versions:
+        post:
+            description: Invokes the c1.api.automations.v1.AutomationSearchService.SearchAutomationTemplateVersions method.
+            operationId: c1.api.automations.v1.AutomationSearchService.SearchAutomationTemplateVersions
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationTemplateVersionsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationTemplateVersionsResponse'
+                    description: Successful response
+            summary: Search Automation Template Versions
+            tags:
+                - Automations
+            x-speakeasy-group: AutomationSearch
+            x-speakeasy-name-override: SearchAutomationTemplateVersions
+    /api/v1/search/automations:
+        post:
+            description: Invokes the c1.api.automations.v1.AutomationSearchService.SearchAutomations method.
+            operationId: c1.api.automations.v1.AutomationSearchService.SearchAutomations
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.automations.v1.SearchAutomationsResponse'
+                    description: Successful response
+            summary: Search Automations
+            tags:
+                - Automations
+            x-speakeasy-group: AutomationSearch
+            x-speakeasy-name-override: SearchAutomations
     /api/v1/search/entitlements:
         post:
             description: Search app entitlements based on filters specified in the request body.
@@ -27383,6 +28445,78 @@ paths:
                 - Request Catalog
             x-speakeasy-group: RequestCatalogSearch
             x-speakeasy-name-override: SearchEntitlements
+    /api/v1/search/secrets/mine:
+        post:
+            description: |-
+                SearchMySecrets returns secrets created by the current user.
+                 Automatically scoped to current user - no user_id filter parameter.
+            operationId: c1.api.secrets.v1.PaperSecretService.SearchMySecrets
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceSearchMySecretsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceSearchResponse'
+                    description: Search response for user's own secrets
+            summary: Search My Secrets
+            tags:
+                - Secrets
+            x-speakeasy-group: PaperSecret
+            x-speakeasy-name-override: SearchMySecrets
+            x-stability-level: draft
+    /api/v1/search/secrets_admin:
+        post:
+            description: |-
+                Search returns secrets across the tenant.
+                 Can filter by creator, sharing mode, status, time range, etc.
+            operationId: c1.api.secrets.v1.PaperSecretAdminService.Search
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretAdminServiceSearchRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretAdminServiceSearchResponse'
+                    description: Successful response
+            summary: Search
+            tags:
+                - Secrets Admin
+            x-speakeasy-group: PaperSecretAdmin
+            x-speakeasy-name-override: Search
+            x-stability-level: draft
+    /api/v1/search/secrets_admin/audit_events:
+        post:
+            description: |-
+                SearchAuditEvents returns audit events for paper secrets.
+                 Can filter by vault_id, actor (user ID or email), client IP.
+            operationId: c1.api.secrets.v1.PaperSecretAdminService.SearchAuditEvents
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretAdminServiceSearchAuditEventsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretAdminServiceSearchAuditEventsResponse'
+                    description: Successful response
+            summary: Search Audit Events
+            tags:
+                - Secrets Admin
+            x-speakeasy-group: PaperSecretAdmin
+            x-speakeasy-name-override: SearchAuditEvents
+            x-stability-level: draft
     /api/v1/search/step-up/providers:
         post:
             description: Search allows searching for step-up providers with various filters
@@ -27535,6 +28669,252 @@ paths:
                 outputs:
                     nextCursor: $.nextPageToken
                 type: cursor
+    /api/v1/secrets/{vault_id}:
+        delete:
+            description: Revoke soft-deletes a secret (sets Vault.deleted_at, deletes content).
+            operationId: c1.api.secrets.v1.PaperSecretService.Revoke
+            parameters:
+                - in: path
+                  name: vault_id
+                  required: true
+                  schema:
+                    description: The vaultId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceRevokeRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceRevokeResponse'
+                    description: Successful response
+            summary: Revoke
+            tags:
+                - Secrets
+            x-speakeasy-group: PaperSecret
+            x-speakeasy-name-override: Revoke
+            x-stability-level: draft
+        get:
+            description: |-
+                Get retrieves a secret's metadata by vault ID.
+                 Creator can always get their own secrets. Admins can get any secret.
+            operationId: c1.api.secrets.v1.PaperSecretService.Get
+            parameters:
+                - in: path
+                  name: vault_id
+                  required: true
+                  schema:
+                    description: The vaultId field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceGetResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Secrets
+            x-speakeasy-group: PaperSecret
+            x-speakeasy-name-override: Get
+            x-stability-level: draft
+    /api/v1/secrets/{vault_id}/content:
+        post:
+            description: |-
+                SetTextContent sets the encrypted content for a text secret.
+                 Client encrypts content using age_recipient from CreateResponse.
+            operationId: c1.api.secrets.v1.PaperSecretService.SetTextContent
+            parameters:
+                - in: path
+                  name: vault_id
+                  required: true
+                  schema:
+                    description: The vaultId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceSetTextContentRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceSetTextContentResponse'
+                    description: Successful response
+            summary: Set Text Content
+            tags:
+                - Secrets
+            x-speakeasy-group: PaperSecret
+            x-speakeasy-name-override: SetTextContent
+            x-stability-level: draft
+    /api/v1/secrets/{vault_id}/view:
+        post:
+            description: |-
+                GetContent retrieves the encrypted secret content for an authorized recipient.
+                 Caller must be in the secret's allowed_user_ids list (for INTERNAL secrets).
+                 Returns content re-encrypted to caller's ephemeral public key.
+            operationId: c1.api.secrets.v1.PaperSecretService.GetContent
+            parameters:
+                - in: path
+                  name: vault_id
+                  required: true
+                  schema:
+                    description: The vaultId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceGetContentRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceGetContentResponse'
+                    description: Successful response
+            summary: Get Content
+            tags:
+                - Secrets
+            x-speakeasy-group: PaperSecret
+            x-speakeasy-name-override: GetContent
+            x-stability-level: draft
+    /api/v1/secrets/code/{share_code}:
+        get:
+            description: |-
+                GetByShareCode retrieves a secret by its human-friendly share code.
+                 Share codes are in XXXX-XXXX-XXXX format and are used in share URLs.
+            operationId: c1.api.secrets.v1.PaperSecretService.GetByShareCode
+            parameters:
+                - in: path
+                  name: share_code
+                  required: true
+                  schema:
+                    description: 'Human-friendly share code (format: XXXX-XXXX-XXXX, case-insensitive)'
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceGetResponse'
+                    description: Successful response
+            summary: Get By Share Code
+            tags:
+                - Secrets
+            x-speakeasy-group: PaperSecret
+            x-speakeasy-name-override: GetByShareCode
+            x-stability-level: draft
+    /api/v1/secrets/external:
+        post:
+            description: CreateExternal creates a secret vault for external email recipients.
+            operationId: c1.api.secrets.v1.PaperSecretService.CreateExternal
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceCreateExternalRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceCreateResponse'
+                    description: Successful response
+            summary: Create External
+            tags:
+                - Secrets
+            x-speakeasy-group: PaperSecret
+            x-speakeasy-name-override: CreateExternal
+            x-stability-level: draft
+    /api/v1/secrets/internal:
+        post:
+            description: CreateInternal creates a secret vault for internal C1 users.
+            operationId: c1.api.secrets.v1.PaperSecretService.CreateInternal
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceCreateInternalRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretServiceCreateResponse'
+                    description: Successful response
+            summary: Create Internal
+            tags:
+                - Secrets
+            x-speakeasy-group: PaperSecret
+            x-speakeasy-name-override: CreateInternal
+            x-stability-level: draft
+    /api/v1/secrets_admin/{vault_id}:
+        delete:
+            description: Revoke allows admin to revoke any secret (not just their own).
+            operationId: c1.api.secrets.v1.PaperSecretAdminService.Revoke
+            parameters:
+                - in: path
+                  name: vault_id
+                  required: true
+                  schema:
+                    description: The vaultId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretAdminServiceRevokeRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretAdminServiceRevokeResponse'
+                    description: Successful response
+            summary: Revoke
+            tags:
+                - Secrets Admin
+            x-speakeasy-group: PaperSecretAdmin
+            x-speakeasy-name-override: Revoke
+            x-stability-level: draft
+        get:
+            description: Get retrieves any secret's metadata by vault ID (admin override).
+            operationId: c1.api.secrets.v1.PaperSecretAdminService.Get
+            parameters:
+                - in: path
+                  name: vault_id
+                  required: true
+                  schema:
+                    description: The vaultId field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.secrets.v1.PaperSecretAdminServiceGetResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Secrets Admin
+            x-speakeasy-group: PaperSecretAdmin
+            x-speakeasy-name-override: Get
+            x-stability-level: draft
     /api/v1/settings/aws-external-id:
         get:
             description: Invokes the c1.api.settings.v1.AWSExternalIDSettings.Get method.
@@ -27608,6 +28988,78 @@ paths:
             x-speakeasy-entity-operation:
                 terraform-resource: OrgDomains#update
             x-speakeasy-group: OrgDomain
+            x-speakeasy-name-override: Update
+    /api/v1/settings/notifications/org:
+        get:
+            description: Invokes the c1.api.settings.v1.OrgNotificationSettingsService.Get method.
+            operationId: c1.api.settings.v1.OrgNotificationSettingsService.Get
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.settings.v1.GetOrgNotificationSettingsResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Org Notification Settings
+            x-speakeasy-group: OrgNotificationSettings
+            x-speakeasy-name-override: Get
+        post:
+            description: Invokes the c1.api.settings.v1.OrgNotificationSettingsService.Update method.
+            operationId: c1.api.settings.v1.OrgNotificationSettingsService.Update
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.settings.v1.UpdateOrgNotificationSettingsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.settings.v1.UpdateOrgNotificationSettingsResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - Org Notification Settings
+            x-speakeasy-group: OrgNotificationSettings
+            x-speakeasy-name-override: Update
+    /api/v1/settings/notifications/user:
+        get:
+            description: Invokes the c1.api.settings.v1.UserNotificationSettingsService.Get method.
+            operationId: c1.api.settings.v1.UserNotificationSettingsService.Get
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.settings.v1.GetUserNotificationSettingsResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - User Notification Settings
+            x-speakeasy-group: UserNotificationSettings
+            x-speakeasy-name-override: Get
+        post:
+            description: Invokes the c1.api.settings.v1.UserNotificationSettingsService.Update method.
+            operationId: c1.api.settings.v1.UserNotificationSettingsService.Update
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.settings.v1.UpdateUserNotificationSettingsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.settings.v1.UpdateUserNotificationSettingsResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - User Notification Settings
+            x-speakeasy-group: UserNotificationSettings
             x-speakeasy-name-override: Update
     /api/v1/settings/session:
         get:

@@ -181,6 +181,11 @@ func (r *AppEntitlementOwnersDataSourceModel) RefreshFromSharedListAppEntitlemen
 						list.ManagerSources = append(list.ManagerSources, managerSources)
 					}
 				}
+				if listItem.Origin != nil {
+					list.Origin = types.StringValue(string(*listItem.Origin))
+				} else {
+					list.Origin = types.StringNull()
+				}
 				if listItem.Profile == nil {
 					list.Profile = nil
 				} else {

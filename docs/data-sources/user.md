@@ -106,6 +106,7 @@ data "conductorone_user" "my_user" {
 - `manager_sources` (Attributes List) A list of objects mapped based on managerId attribute mappings configured in the system. (see [below for nested schema](#nestedatt--manager_sources))
 - `managers_path` (String) JSONPATH expression indicating the location of the user objects that managed the current user in the expanded array.
 - `next_page_token` (String) The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
+- `origin` (String) The origin of the user, describing who owns the user's lifecycle.
 - `profile` (Attributes) (see [below for nested schema](#nestedatt--profile))
 - `roles_path` (String) JSONPATH expression indicating the location of the roles of the current user in the expanded array.
 - `status` (String) The status of the user in the system.

@@ -126,6 +126,7 @@ Read-Only:
 - `job_title_sources` (Attributes List) A list of objects mapped based on jobTitle attribute mappings configured in the system. (see [below for nested schema](#nestedatt--list--user--job_title_sources))
 - `manager_ids` (List of String) A list of ids of the user's managers.
 - `manager_sources` (Attributes List) A list of objects mapped based on managerId attribute mappings configured in the system. (see [below for nested schema](#nestedatt--list--user--manager_sources))
+- `origin` (String) The origin of the user, describing who owns the user's lifecycle.
 - `profile` (Attributes) (see [below for nested schema](#nestedatt--list--user--profile))
 - `role_ids` (List of String) A list of unique identifiers that maps to ConductorOne's user roles let you assign users permissions tailored to the work they do in the software.
 - `status` (String) The status of the user in the system.

@@ -62,6 +62,7 @@ type UserDataSourceModel struct {
 	ManagerSources          []tfTypes.UserAttributeMappingSource  `tfsdk:"manager_sources"`
 	ManagersPath            types.String                          `tfsdk:"managers_path"`
 	NextPageToken           types.String                          `tfsdk:"next_page_token"`
+	Origin                  types.String                          `tfsdk:"origin"`
 	PageSize                types.Int32                           `tfsdk:"page_size"`
 	PageToken               types.String                          `tfsdk:"page_token"`
 	Profile                 *tfTypes.Profile                      `tfsdk:"profile"`
@@ -424,6 +425,10 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
 				Description: `The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
+			},
+			"origin": schema.StringAttribute{
+				Computed:    true,
+				Description: `The origin of the user, describing who owns the user's lifecycle.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,
