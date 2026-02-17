@@ -4,9 +4,9 @@ import (
 	"context"
 	"crypto/tls"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/logging"
@@ -18,6 +18,19 @@ import (
 
 const c1TenantDomain = ".conductor.one"
 const ClientIdGolangSDK = "2RCzHlak5q7CY14SdBc8HoZEJRf"
+
+// Environment variable names for ConductorOne authentication.
+const (
+	EnvAccessToken  = "CONDUCTORONE_ACCESS_TOKEN"
+	EnvOIDCToken    = "CONDUCTORONE_OIDC_TOKEN"
+	EnvClientID     = "CONDUCTORONE_CLIENT_ID"
+	EnvClientSecret = "CONDUCTORONE_CLIENT_SECRET"
+	EnvTenantDomain = "CONDUCTORONE_TENANT_DOMAIN"
+	EnvServerURL    = "CONDUCTORONE_SERVER_URL"
+
+	// HCP Terraform auto-detection
+	EnvTFCWorkloadIdentityToken = "TFC_WORKLOAD_IDENTITY_TOKEN"
+)
 
 func WithTenant(input string) (SDKOption, error) {
 	resp, err := NormalizeTenant(input)
@@ -73,14 +86,17 @@ type ClientConfig struct {
 }
 
 func (c *ClientConfig) UseWithServer() bool {
-	return c.serverURL != ""
+	return c.ServerURL() != ""
 }
 
 func (c *ClientConfig) UseWithTenant() bool {
-	return c.tenant != ""
+	return c.Tenant() != ""
 }
 
 func (c *ClientConfig) SetTenant(tenant string) error {
+	if c == nil {
+		return errors.New("client config is nil, cannot set tenant")
+	}
 	if c.UseWithServer() {
 		return errors.New("cannot set tenant, tenant and serverURL are mutually exclusive")
 	}
@@ -89,6 +105,9 @@ func (c *ClientConfig) SetTenant(tenant string) error {
 }
 
 func (c *ClientConfig) SetServerURL(serverURL string) error {
+	if c == nil {
+		return errors.New("client config is nil, cannot set serverURL")
+	}
 	if c.UseWithTenant() {
 		return errors.New("cannot set serverURL, tenant and serverURL are mutually exclusive")
 	}
@@ -97,11 +116,17 @@ func (c *ClientConfig) SetServerURL(serverURL string) error {
 }
 
 func (c *ClientConfig) Tenant() string {
+	if c == nil {
+		return ""
+	}
 	return c.tenant
 }
 
 // ServerURL returns the server URL.
 func (c *ClientConfig) ServerURL() string {
+	if c == nil {
+		return ""
+	}
 	return c.serverURL
 }
 
@@ -131,13 +156,16 @@ type CustomOptions struct {
 	userAgent string
 }
 
+// NewWithCredentials creates a ConductoroneAPI client using explicit client credentials
+// (Ed25519 JWT bearer assertion). This function does NOT read environment variables;
+// auth priority is handled by the provider's Configure() method.
 func NewWithCredentials(ctx context.Context, cred *ClientCredentials, opts ...CustomSDKOption) (*ConductoroneAPI, error) {
-	var err error
 	options := &CustomOptions{}
 	for _, opt := range opts {
 		opt(options)
 	}
-	if options.ClientConfig == nil || options.GetServerURL() == "" {
+
+	if options.GetServerURL() == "" {
 		resp, err := ParseClientID(cred.ClientID)
 		if err != nil {
 			return nil, err
@@ -145,17 +173,58 @@ func NewWithCredentials(ctx context.Context, cred *ClientCredentials, opts ...Cu
 		options.ClientConfig = resp
 	}
 
-	var tokenSource oauth2.TokenSource
-	accessTokenEnvVar := os.Getenv("CONDUCTORONE_ACCESS_TOKEN")
-	if accessTokenEnvVar != "" {
-		tokenSource = NewStaticTokenSource(ctx, accessTokenEnvVar)
-	} else {
-		tokenSource, err = NewTokenSource(ctx, cred.ClientID, cred.ClientSecret, options.GetServerURL())
+	tokenSource, err := NewTokenSource(ctx, cred.ClientID, cred.ClientSecret, options.GetServerURL())
+	if err != nil {
+		return nil, err
+	}
+
+	return newWithTokenSource(ctx, tokenSource, options)
+}
+
+// NewWithAccessToken creates a ConductoroneAPI client using a pre-exchanged bearer token.
+func NewWithAccessToken(ctx context.Context, accessToken, clientID string, opts ...CustomSDKOption) (*ConductoroneAPI, error) {
+	options := &CustomOptions{}
+	for _, opt := range opts {
+		opt(options)
+	}
+
+	if options.GetServerURL() == "" && clientID != "" {
+		resp, err := ParseClientID(clientID)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse client_id for server URL: %w", err)
+		}
+		options.ClientConfig = resp
+	}
+
+	return newWithTokenSource(ctx, oauth2.StaticTokenSource(&oauth2.Token{
+		AccessToken: accessToken,
+	}), options)
+}
+
+// NewWithOIDCToken creates a ConductoroneAPI client that exchanges an external OIDC token
+// for a ConductorOne access token via RFC 8693 token exchange.
+func NewWithOIDCToken(ctx context.Context, oidcToken, clientID string, opts ...CustomSDKOption) (*ConductoroneAPI, error) {
+	options := &CustomOptions{}
+	for _, opt := range opts {
+		opt(options)
+	}
+	if options.ClientConfig == nil || options.GetServerURL() == "" {
+		resp, err := ParseClientID(clientID)
 		if err != nil {
 			return nil, err
 		}
+		options.ClientConfig = resp
 	}
 
+	tokenSource, err := NewTokenExchangeSource(ctx, oidcToken, clientID, options.GetServerURL())
+	if err != nil {
+		return nil, err
+	}
+
+	return newWithTokenSource(ctx, tokenSource, options)
+}
+
+func newWithTokenSource(ctx context.Context, tokenSource oauth2.TokenSource, options *CustomOptions) (*ConductoroneAPI, error) {
 	if options.userAgent == "" {
 		options.userAgent = "conductorone-sdk-go"
 	}

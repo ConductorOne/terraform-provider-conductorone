@@ -3,7 +3,7 @@ module github.com/conductorone/terraform-provider-conductorone
 go 1.24.0
 
 require (
-	github.com/go-jose/go-jose/v3 v3.0.4
+	github.com/go-jose/go-jose/v4 v4.1.1
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/hashicorp/go-uuid v1.0.3
@@ -22,7 +22,6 @@ require (
 	golang.org/x/net v0.48.0
 	golang.org/x/oauth2 v0.30.0
 	google.golang.org/grpc v1.75.1
-	gopkg.in/square/go-jose.v2 v2.6.0
 )
 
 require (
@@ -40,7 +39,6 @@ require (
 	github.com/cloudflare/circl v1.6.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/fatih/color v1.16.0 // indirect
-	github.com/go-jose/go-jose/v4 v4.1.1 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/hashicorp/cli v1.1.7 // indirect
