@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/ed25519"
 	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"net"
 	"net/http"
@@ -12,14 +13,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-jose/go-jose/v3"
+	"github.com/go-jose/go-jose/v4"
+	"github.com/go-jose/go-jose/v4/jwt"
 	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap/ctxzap"
 	"github.com/pquerna/xjwt"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"gopkg.in/square/go-jose.v2/json"
-	"gopkg.in/square/go-jose.v2/jwt"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/uhttp"
 )
@@ -185,10 +185,4 @@ func NewTokenSource(ctx context.Context, clientID string, clientSecret string, t
 		tokenHost:    strings.TrimPrefix(tokenHost, "https://"),
 		httpClient:   httpClient,
 	}), nil
-}
-
-func NewStaticTokenSource(ctx context.Context, token string) oauth2.TokenSource {
-	return oauth2.StaticTokenSource(&oauth2.Token{
-		AccessToken: token,
-	})
 }

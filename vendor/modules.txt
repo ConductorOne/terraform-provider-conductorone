@@ -73,16 +73,12 @@ github.com/davecgh/go-spew/spew
 # github.com/fatih/color v1.16.0
 ## explicit; go 1.17
 github.com/fatih/color
-# github.com/go-jose/go-jose/v3 v3.0.4
-## explicit; go 1.12
-github.com/go-jose/go-jose/v3
-github.com/go-jose/go-jose/v3/cipher
-github.com/go-jose/go-jose/v3/json
 # github.com/go-jose/go-jose/v4 v4.1.1
 ## explicit; go 1.23.0
 github.com/go-jose/go-jose/v4
 github.com/go-jose/go-jose/v4/cipher
 github.com/go-jose/go-jose/v4/json
+github.com/go-jose/go-jose/v4/jwt
 # github.com/golang/protobuf v1.5.4
 ## explicit; go 1.17
 github.com/golang/protobuf/proto
@@ -438,7 +434,6 @@ golang.org/x/crypto/blowfish
 golang.org/x/crypto/cast5
 golang.org/x/crypto/cryptobyte
 golang.org/x/crypto/cryptobyte/asn1
-golang.org/x/crypto/ed25519
 golang.org/x/crypto/hkdf
 golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/scrypt
@@ -632,12 +627,6 @@ google.golang.org/protobuf/types/known/anypb
 google.golang.org/protobuf/types/known/durationpb
 google.golang.org/protobuf/types/known/emptypb
 google.golang.org/protobuf/types/known/timestamppb
-# gopkg.in/square/go-jose.v2 v2.6.0
-## explicit
-gopkg.in/square/go-jose.v2
-gopkg.in/square/go-jose.v2/cipher
-gopkg.in/square/go-jose.v2/json
-gopkg.in/square/go-jose.v2/jwt
 # gopkg.in/yaml.v2 v2.3.0
 ## explicit
 gopkg.in/yaml.v2
