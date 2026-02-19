@@ -95,8 +95,6 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceView(ctx context.
 				for key, value := range resp.ActorObjectPermissions.Extra {
 					r.Extra[key] = types.BoolValue(value)
 				}
-			} else {
-				r.Extra = nil
 			}
 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
 		} else {
@@ -126,12 +124,6 @@ func (r *AppResourceResourceModel) RefreshFromSharedCreateManuallyManagedAppReso
 			return diags
 		}
 
-		// CreateManuallyManagedAppResourceResponse returns AppResource, not AppResourceView,
-		// so ActorObjectPermissions fields are not available. Set them to null explicitly.
-		r.Delete = types.BoolNull()
-		r.Edit = types.BoolNull()
-		r.Extra = nil
-		r.Read = types.BoolNull()
 	}
 
 	return diags

@@ -24,77 +24,16 @@ TF_REATTACH_PROVIDERS=... terraform apply
 <!-- Start Authentication [security] -->
 ## Authentication
 
-The provider supports three authentication methods, evaluated in this order:
+This provider supports authentication configuration via provider configuration.
 
-### 1. Static Access Token (highest priority)
+Available configuration:
 
-Set `CONDUCTORONE_ACCESS_TOKEN` as an environment variable. This is typically set by the
-[conductorone/oidc-token-action](https://github.com/conductorone/oidc-token-action) in GitHub Actions.
-
-```yaml
-# GitHub Actions example
-steps:
-  - uses: conductorone/oidc-token-action@v1
-    with:
-      audience: acme.conductorone.com
-      client_id: clever-fox@acme.conductorone.com/wfe
-  - run: terraform apply  # CONDUCTORONE_ACCESS_TOKEN is set automatically
-```
-
-### 2. OIDC Token / Workload Federation
-
-Exchange an external OIDC token for a ConductorOne access token. This is the recommended
-method for HCP Terraform and other CI/CD environments.
-
-```hcl
-provider "conductorone" {
-  oidc_token = var.tfc_conductorone_token  # or auto-detected from env
-  client_id  = "clever-fox@acme.conductorone.com/wfe"
-}
-```
-
-The `oidc_token` value is resolved from (in order):
-1. The `oidc_token` provider attribute
-2. `CONDUCTORONE_OIDC_TOKEN` environment variable
-3. `TFC_WORKLOAD_IDENTITY_TOKEN` environment variable (HCP Terraform auto-detection)
-
-#### HCP Terraform Setup
-
-1. Set workspace environment variable: `TFC_WORKLOAD_IDENTITY_AUDIENCE = acme.conductorone.com`
-2. HCP Terraform auto-generates `TFC_WORKLOAD_IDENTITY_TOKEN`
-3. Configure the provider with just `client_id`:
-
-```hcl
-provider "conductorone" {
-  client_id = "clever-fox@acme.conductorone.com/wfe"
-  # oidc_token auto-detected from TFC_WORKLOAD_IDENTITY_TOKEN
-}
-```
-
-### 3. Client Credentials (Ed25519)
-
-Traditional authentication with a client ID and secret:
-
-```hcl
-provider "conductorone" {
-  client_id     = "client-id@tenant.conductorone.com/app"
-  client_secret = "v1:base64-encoded-jwk..."
-}
-```
-
-Or via environment variables: `CONDUCTORONE_CLIENT_ID` and `CONDUCTORONE_CLIENT_SECRET`.
-
-### Environment Variables
-
-| Variable | Description |
+| Provider Attribute | Description |
 |---|---|
-| `CONDUCTORONE_ACCESS_TOKEN` | Pre-exchanged bearer token (highest priority) |
-| `CONDUCTORONE_OIDC_TOKEN` | Raw OIDC JWT for token exchange |
-| `TFC_WORKLOAD_IDENTITY_TOKEN` | HCP Terraform workload identity token (auto-detected) |
-| `CONDUCTORONE_CLIENT_ID` | Client ID for Ed25519 or workload federation auth |
-| `CONDUCTORONE_CLIENT_SECRET` | Ed25519 private key in `v1:base64-jwk` format |
-| `CONDUCTORONE_TENANT_DOMAIN` | Tenant domain override |
-| `CONDUCTORONE_SERVER_URL` | Full server URL override |
+| `bearer_auth` | HTTP Bearer. |
+| `oauth` | This API uses OAuth2 with the Client Credential flow.
+Client Credentials must be sent in the BODY, not the headers.
+For an example of how to implement this, refer to the [c1TokenSource.Token()](https://github.com/ConductorOne/conductorone-sdk-go/blob/3375fe7c0126d17e7ec4e711693dee7b791023aa/token_source.go#L101-L187) function.. |
 <!-- End Authentication [security] -->
 
 <!-- Start Available Resources and Data Sources [operations] -->
@@ -258,7 +197,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.7.10"
+      version = "1.7.11"
     }
   }
 }
