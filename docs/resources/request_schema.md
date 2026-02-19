@@ -17,6 +17,38 @@ When creating a policy you must provide a name and at least one field.
 ```terraform
 resource "conductorone_request_schema" "my_request_schema" {
   description = "...my_description..."
+  field_groups = [
+    {
+      default      = false
+      display_name = "...my_display_name..."
+      fields = [
+        "..."
+      ]
+      help_text = "...my_help_text..."
+      name      = "...my_name..."
+    }
+  ]
+  field_relationships = [
+    {
+      at_least_one = {
+        # ...
+      }
+      dependent_on = {
+        dependency_field_names = [
+          "..."
+        ]
+      }
+      field_names = [
+        "..."
+      ]
+      mutually_exclusive = {
+        # ...
+      }
+      required_together = {
+        # ...
+      }
+    }
+  ]
   fields = [
     {
       admin_provider_config = {
@@ -150,7 +182,8 @@ resource "conductorone_request_schema" "my_request_schema" {
       }
     }
   ]
-  name = "...my_name..."
+  justification_visibility = "JUSTIFICATION_VISIBILITY_HIDE"
+  name                     = "...my_name..."
 }
 ```
 

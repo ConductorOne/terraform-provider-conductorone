@@ -50,7 +50,7 @@ func (s *AutomationSearch) SearchAutomationTemplateVersions(ctx context.Context,
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := url.JoinPath(baseURL, "/api/v1/automation_versions/search")
+	opURL, err := url.JoinPath(baseURL, "/api/v1/search/automation_versions")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -187,7 +187,7 @@ func (s *AutomationSearch) SearchAutomations(ctx context.Context, request *share
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := url.JoinPath(baseURL, "/api/v1/automations/search")
+	opURL, err := url.JoinPath(baseURL, "/api/v1/search/automations")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

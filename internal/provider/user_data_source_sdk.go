@@ -221,6 +221,11 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.ManagerSources = append(r.ManagerSources, managerSources)
 			}
 		}
+		if resp.Origin != nil {
+			r.Origin = types.StringValue(string(*resp.Origin))
+		} else {
+			r.Origin = types.StringNull()
+		}
 		if resp.Profile == nil {
 			r.Profile = nil
 		} else {

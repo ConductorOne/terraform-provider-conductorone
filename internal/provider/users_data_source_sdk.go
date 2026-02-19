@@ -216,6 +216,11 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 							list.User.ManagerSources = append(list.User.ManagerSources, managerSources)
 						}
 					}
+					if listItem.User.Origin != nil {
+						list.User.Origin = types.StringValue(string(*listItem.User.Origin))
+					} else {
+						list.User.Origin = types.StringNull()
+					}
 					if listItem.User.Profile == nil {
 						list.User.Profile = nil
 					} else {

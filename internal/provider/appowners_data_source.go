@@ -340,6 +340,10 @@ func (r *AppOwnersDataSource) Schema(ctx context.Context, req datasource.SchemaR
 							},
 							Description: `A list of objects mapped based on managerId attribute mappings configured in the system.`,
 						},
+						"origin": schema.StringAttribute{
+							Computed:    true,
+							Description: `The origin of the user, describing who owns the user's lifecycle.`,
+						},
 						"profile": schema.SingleNestedAttribute{
 							Computed: true,
 						},
