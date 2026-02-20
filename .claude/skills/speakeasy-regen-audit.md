@@ -175,7 +175,17 @@ if resp.ActorObjectPermissions != nil {
 
 **Fix:** Add the `else` branch with explicit null assignments for every nullable nested struct access.
 
-**Test:** Create or read a resource where the API returns `actor_object_permissions: null`. Verify terraform state has explicit null values (not "unknown"). The acceptance tests should catch this if the test tenant has resources without permissions set.
+**Variant: Create response paths.** Some `Refresh` methods handle create responses (e.g., `RefreshFromSharedCreateManuallyManagedAppResourceResponse`) where the response type (`AppResource`) doesn't have `ActorObjectPermissions` at all — only the view type (`AppResourceView`) does. These methods need explicit null assignments for `delete`/`edit`/`extra`/`read` after the inner `RefreshFromShared*` call, because the fields will never be set by the response. Without this, terraform apply fails with "unknown value" errors.
+
+**Detection for variant:**
+```
+# Find Refresh methods that call RefreshFromSharedAppResource (not AppResourceView)
+# and verify they set BoolNull() for ActorObjectPermissions fields
+grep -A20 'RefreshFromSharedCreate' internal/provider/app_resource_resource_sdk.go | grep -c 'BoolNull'
+# Should be >= 4 (delete, edit, read + nil Extra)
+```
+
+**Test:** Create or read a resource where the API returns `actor_object_permissions: null`. Verify terraform state has explicit null values (not "unknown"). The acceptance tests catch this — `TestAccAppEntitlementAutomationResource` and `TestAccAppResourceDataSource` fail with "Provider returned invalid result object after apply" when null assignments are missing.
 
 ---
 
