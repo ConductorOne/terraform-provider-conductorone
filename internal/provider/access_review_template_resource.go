@@ -80,32 +80,39 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"access_review_inclusion_scope": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"app_user_statuses": schema.ListAttribute{
 						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The appUserStatuses field.`,
 					},
 					"app_user_types": schema.ListAttribute{
 						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The appUserTypes field.`,
 					},
 					"manager_ids": schema.ListAttribute{
 						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The managerIds field.`,
 					},
 					"multi_user_profile_attributes": schema.MapNestedAttribute{
 						Computed: true,
+						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
 								"values": schema.ListNestedAttribute{
 									Computed: true,
+									Optional: true,
 									NestedObject: schema.NestedAttributeObject{
 										Attributes: map[string]schema.Attribute{
 											"value": schema.StringAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `The value field.`,
 											},
 										},
@@ -118,15 +125,18 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 					},
 					"no_account_owners": schema.BoolAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The noAccountOwners field.`,
 					},
 					"user_ids": schema.ListAttribute{
 						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The userIds field.`,
 					},
 					"user_statuses": schema.ListAttribute{
 						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The userStatuses field.`,
 					},
@@ -465,23 +475,28 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"accuracy_issue_action": schema.StringAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The accuracyIssueAction field.`,
 			},
 			"auto_close_campaign": schema.BoolAttribute{
 				Computed: true,
+				Optional: true,
 				MarkdownDescription: `Auto-close configuration` + "\n" +
 					` start date and access_review_duration will be used to calculate the scheduled close date`,
 			},
 			"auto_close_decision": schema.StringAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The autoCloseDecision field.`,
 			},
 			"auto_generate_report": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `auto generate report when campaign is closed`,
 			},
 			"auto_start_campaign": schema.BoolAttribute{
 				Computed: true,
+				Optional: true,
 				MarkdownDescription: `Auto-start configuration` + "\n" +
 					` next_scheduled_campaign_at will be used as the scheduled start date`,
 			},
@@ -490,6 +505,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"default_view": schema.StringAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The defaultView field.`,
 			},
 			"description": schema.StringAttribute{
@@ -504,6 +520,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"exempt_certified_access_conflicts": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The exemptCertifiedAccessConflicts field.`,
 			},
 			"id": schema.StringAttribute{
@@ -512,6 +529,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"is_campaign_schedule_enabled": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The isCampaignScheduleEnabled field.`,
 			},
 			"next_scheduled_campaign_at": schema.StringAttribute{
@@ -541,6 +559,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"occurrences": schema.Int32Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The occurrences field.`,
 			},
 			"owner_ids": schema.ListAttribute{
@@ -558,26 +577,32 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"recurrence_rule": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"end_date": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
 					},
 					"frequency": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The frequency field.`,
 					},
 					"interval": schema.Int32Attribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The interval field.`,
 					},
 					"occurrences": schema.Int32Attribute{
 						Computed: true,
+						Optional: true,
 						MarkdownDescription: `The occurrences field.` + "\n" +
 							`This field is part of the ` + "`" + `end_condition` + "`" + ` oneof.` + "\n" +
 							`See the documentation for ` + "`" + `c1.api.accessreview.v1.RecurrenceRule` + "`" + ` for more details.`,
 					},
 					"start_date": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
 					},
 				},
 				MarkdownDescription: `The RecurrenceRule message.` + "\n" +
@@ -588,25 +613,31 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"review_instructions": schema.StringAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The reviewInstructions field.`,
 			},
 			"review_signature_config": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"meaning_of_signature": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The meaningOfSignature field.`,
 					},
 					"require_signature": schema.BoolAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The requireSignature field.`,
 					},
 					"step_up_provider_id": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The stepUpProviderId field.`,
 					},
 					"tsp_url": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The tspUrl field.`,
 					},
 				},
@@ -626,13 +657,16 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"slack_channel": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"description": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The description field.`,
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The name field.`,
 					},
 				},
@@ -643,6 +677,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"use_policy_override": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The usePolicyOverride field.`,
 			},
 		},
