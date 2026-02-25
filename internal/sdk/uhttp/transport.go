@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+	"strconv"
 	"net/http"
 	"net/http/httputil"
 	"strings"
@@ -34,6 +35,11 @@ func NewTransport(ctx context.Context, options ...Option) (*Transport, error) {
 	return t, nil
 }
 
+const (
+	defaultMaxRetries = 5
+	maxRetryWait      = 30 * time.Second
+)
+
 type Transport struct {
 	userAgent       string
 	tokenSource     oauth2.TokenSource
@@ -44,6 +50,7 @@ type Transport struct {
 	nextCycle       time.Time
 	mtx             sync.RWMutex
 	debug           bool
+	maxRetries      int
 }
 
 func newTransport() *Transport {
@@ -51,6 +58,7 @@ func newTransport() *Transport {
 		tlsClientConfig: &tls.Config{
 			MinVersion: tls.VersionTLS12,
 		},
+		maxRetries: defaultMaxRetries,
 	}
 }
 
@@ -144,6 +152,80 @@ func (uts *tokenSourceTripper) RoundTrip(req *http.Request) (*http.Response, err
 	return uts.next.RoundTrip(req)
 }
 
+// retryTripper retries requests that receive HTTP 429 (Too Many Requests).
+// It respects the Retry-After header if present, falling back to exponential
+// backoff. Context cancellation is honored during the wait.
+type retryTripper struct {
+	next       http.RoundTripper
+	maxRetries int
+}
+
+func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	for attempt := 0; ; attempt++ {
+		// Re-create the request body for retries.
+		if attempt > 0 && req.GetBody != nil {
+			body, err := req.GetBody()
+			if err != nil {
+				return nil, err
+			}
+			req.Body = body
+		}
+
+		resp, err := rt.next.RoundTrip(req)
+		if err != nil {
+			return nil, err
+		}
+
+		if resp.StatusCode != http.StatusTooManyRequests || attempt >= rt.maxRetries {
+			return resp, nil
+		}
+
+		wait := retryAfterDuration(resp)
+		if wait <= 0 {
+			// Exponential backoff: 1s, 2s, 4s, 8s, 16s, capped at 30s.
+			wait = time.Second << uint(attempt)
+			if wait > maxRetryWait {
+				wait = maxRetryWait
+			}
+		}
+
+		resp.Body.Close()
+
+		select {
+		case <-req.Context().Done():
+			return nil, req.Context().Err()
+		case <-time.After(wait):
+		}
+	}
+}
+
+// retryAfterDuration parses the Retry-After header from an HTTP response.
+// Returns 0 if the header is missing or unparseable.
+func retryAfterDuration(resp *http.Response) time.Duration {
+	val := resp.Header.Get("Retry-After")
+	if val == "" {
+		return 0
+	}
+
+	// Try as seconds first.
+	if seconds, err := strconv.ParseInt(val, 10, 64); err == nil {
+		if seconds > 0 {
+			return time.Duration(seconds) * time.Second
+		}
+		return 0
+	}
+
+	// Try as HTTP-date (RFC 1123).
+	if t, err := time.Parse(time.RFC1123, val); err == nil {
+		delta := time.Until(t)
+		if delta > 0 {
+			return delta
+		}
+	}
+
+	return 0
+}
+
 func (t *Transport) make(ctx context.Context) (http.RoundTripper, error) {
 	// based on http.DefaultTransport
 	baseTransport := &http.Transport{
@@ -165,6 +247,7 @@ func (t *Transport) make(ctx context.Context) (http.RoundTripper, error) {
 		return nil, err
 	}
 	var rv http.RoundTripper = baseTransport
+	rv = &retryTripper{next: rv, maxRetries: t.maxRetries}
 	t.userAgent = fmt.Sprintf("%s cone", t.userAgent)
 	rv = &debugTripper{next: rv, debug: t.debug}
 	rv = &userAgentTripper{next: rv, userAgent: t.userAgent}
