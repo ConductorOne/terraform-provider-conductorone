@@ -5,8 +5,8 @@ management:
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.658.1
   generationVersion: 2.755.6
-  releaseVersion: 1.7.10
-  configChecksum: 104a880683175e28a0644e14b52246e8
+  releaseVersion: 1.7.11
+  configChecksum: 144bceab88435d28243669981768d267
 features:
   terraform:
     additionalDependencies: 0.1.0

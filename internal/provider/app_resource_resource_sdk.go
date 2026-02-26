@@ -95,8 +95,6 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceView(ctx context.
 				for key, value := range resp.ActorObjectPermissions.Extra {
 					r.Extra[key] = types.BoolValue(value)
 				}
-			} else {
-				r.Extra = nil
 			}
 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
 		} else {
