@@ -153,7 +153,7 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 						if listItem.AppEntitlement.DeprovisionerPolicy.MultiStep == nil {
 							list.AppEntitlement.DeprovisionerPolicy.MultiStep = jsontypes.NewNormalizedNull()
 						} else {
-							multiStepResult, _ := json.Marshal(listItem.AppEntitlement.DeprovisionerPolicy.MultiStep)
+							multiStepResult, _ := typeconvert.MarshalJSONStripNulls(listItem.AppEntitlement.DeprovisionerPolicy.MultiStep)
 							list.AppEntitlement.DeprovisionerPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
 						}
 						if listItem.AppEntitlement.DeprovisionerPolicy.UnconfiguredProvision == nil {
@@ -279,7 +279,7 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 						if listItem.AppEntitlement.ProvisionPolicy.MultiStep == nil {
 							list.AppEntitlement.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
 						} else {
-							multiStepResult1, _ := json.Marshal(listItem.AppEntitlement.ProvisionPolicy.MultiStep)
+							multiStepResult1, _ := typeconvert.MarshalJSONStripNulls(listItem.AppEntitlement.ProvisionPolicy.MultiStep)
 							list.AppEntitlement.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
 						}
 						if listItem.AppEntitlement.ProvisionPolicy.UnconfiguredProvision == nil {

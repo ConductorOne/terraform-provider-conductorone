@@ -1356,7 +1356,7 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.MultiStep == nil {
 											history.ProvisionInstance.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
 										} else {
-											multiStepResult, _ := json.Marshal(historyItem.ProvisionInstance.Provision.ProvisionPolicy.MultiStep)
+											multiStepResult, _ := typeconvert.MarshalJSONStripNulls(historyItem.ProvisionInstance.Provision.ProvisionPolicy.MultiStep)
 											history.ProvisionInstance.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
 										}
 										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
@@ -1896,7 +1896,7 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									if nextItem.Provision.ProvisionPolicy.MultiStep == nil {
 										next.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
 									} else {
-										multiStepResult1, _ := json.Marshal(nextItem.Provision.ProvisionPolicy.MultiStep)
+										multiStepResult1, _ := typeconvert.MarshalJSONStripNulls(nextItem.Provision.ProvisionPolicy.MultiStep)
 										next.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
 									}
 									if nextItem.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
@@ -2397,7 +2397,7 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 												if stepsItem.Provision.ProvisionPolicy.MultiStep == nil {
 													steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
 												} else {
-													multiStepResult2, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.MultiStep)
+													multiStepResult2, _ := typeconvert.MarshalJSONStripNulls(stepsItem.Provision.ProvisionPolicy.MultiStep)
 													steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult2))
 												}
 												if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
@@ -3459,7 +3459,7 @@ func (r *TaskRevokeResourceModel) RefreshFromSharedTaskServiceCreateRevokeRespon
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.MultiStep == nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
 									} else {
-										multiStepResult3, _ := json.Marshal(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.MultiStep)
+										multiStepResult3, _ := typeconvert.MarshalJSONStripNulls(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.MultiStep)
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult3))
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
