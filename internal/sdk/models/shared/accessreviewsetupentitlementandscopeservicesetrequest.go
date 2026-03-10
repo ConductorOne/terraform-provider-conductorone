@@ -39,6 +39,10 @@ type AccessReviewSetupEntitlementAndScopeServiceSetRequest struct {
 	//   - allAccessConflicts
 	//   - specificAccessConflicts
 	//
+	//
+	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
+	//   - resourceSelection
+	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
 }
 

@@ -7,8 +7,10 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -31,7 +33,9 @@ type UserDataSource struct {
 type UserDataSourceModel struct {
 	CreatedAt               types.String                          `tfsdk:"created_at"`
 	DelegatedUserID         types.String                          `tfsdk:"delegated_user_id"`
+	DelegatedUserIds        []types.String                        `tfsdk:"delegated_user_ids"`
 	DelegatedUserPath       types.String                          `tfsdk:"delegated_user_path"`
+	DelegateStatus          types.String                          `tfsdk:"delegate_status"`
 	DeletedAt               types.String                          `tfsdk:"deleted_at"`
 	Department              types.String                          `tfsdk:"department"`
 	Departments             []types.String                        `tfsdk:"departments"`
@@ -51,10 +55,12 @@ type UserDataSourceModel struct {
 	EmploymentType          types.String                          `tfsdk:"employment_type"`
 	EmploymentTypeSources   []tfTypes.UserAttributeMappingSource  `tfsdk:"employment_type_sources"`
 	ExcludeIds              []types.String                        `tfsdk:"exclude_ids"`
+	ExcludeOrigins          []types.String                        `tfsdk:"exclude_origins"`
 	ExcludeTypes            []types.String                        `tfsdk:"exclude_types"`
 	Expanded                []tfTypes.SearchUsersResponseExpanded `tfsdk:"expanded"`
 	ID                      types.String                          `tfsdk:"id"`
 	Ids                     []types.String                        `tfsdk:"ids"`
+	IsDelegate              types.Bool                            `tfsdk:"is_delegate"`
 	JobTitle                types.String                          `tfsdk:"job_title"`
 	JobTitles               []types.String                        `tfsdk:"job_titles"`
 	JobTitleSources         []tfTypes.UserAttributeMappingSource  `tfsdk:"job_title_sources"`
@@ -62,6 +68,8 @@ type UserDataSourceModel struct {
 	ManagerSources          []tfTypes.UserAttributeMappingSource  `tfsdk:"manager_sources"`
 	ManagersPath            types.String                          `tfsdk:"managers_path"`
 	NextPageToken           types.String                          `tfsdk:"next_page_token"`
+	Origin                  types.String                          `tfsdk:"origin"`
+	Origins                 []types.String                        `tfsdk:"origins"`
 	PageSize                types.Int32                           `tfsdk:"page_size"`
 	PageToken               types.String                          `tfsdk:"page_token"`
 	Profile                 *tfTypes.Profile                      `tfsdk:"profile"`
@@ -92,9 +100,25 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},
+			"delegate_status": schema.StringAttribute{
+				Optional:    true,
+				Description: `Filter for users based on their delegate status. must be one of ["DELEGATE_STATUS_UNSPECIFIED", "DELEGATE_STATUS_HAS_DELEGATE", "DELEGATE_STATUS_NO_DELEGATE"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"DELEGATE_STATUS_UNSPECIFIED",
+						"DELEGATE_STATUS_HAS_DELEGATE",
+						"DELEGATE_STATUS_NO_DELEGATE",
+					),
+				},
+			},
 			"delegated_user_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The id of the user to whom tasks will be automatically reassigned to.`,
+			},
+			"delegated_user_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Filter for users that have any of the delegated user IDs on this list.`,
 			},
 			"delegated_user_path": schema.StringAttribute{
 				Computed:    true,
@@ -325,6 +349,11 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				ElementType: types.StringType,
 				Description: `An array of users IDs to exclude from the results.`,
 			},
+			"exclude_origins": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Filter to exclude users with these origins.`,
+			},
 			"exclude_types": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
@@ -345,6 +374,10 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Deprecated. Use refs array instead.`,
+			},
+			"is_delegate": schema.BoolAttribute{
+				Optional:    true,
+				Description: `Filter for users who are delegates of at least one other user.`,
 			},
 			"job_title": schema.StringAttribute{
 				Computed:    true,
@@ -424,6 +457,15 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
 				Description: `The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
+			},
+			"origin": schema.StringAttribute{
+				Computed:    true,
+				Description: `The origin of the user, describing who owns the user's lifecycle.`,
+			},
+			"origins": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Filter to include only users with these origins.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,

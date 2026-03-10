@@ -23,6 +23,7 @@ func (r *WebhooksDataSourceModel) RefreshFromSharedWebhooksSearchResponse(ctx co
 			for _, listItem := range resp.List {
 				var list tfTypes.Webhook1
 
+				list.CallbackTimeout = types.StringPointerValue(listItem.CallbackTimeout)
 				list.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.CreatedAt))
 				list.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.DeletedAt))
 				list.Description = types.StringPointerValue(listItem.Description)

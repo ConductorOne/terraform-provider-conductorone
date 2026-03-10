@@ -241,8 +241,22 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 						Description: `The AllUsersScope message.`,
 					},
 					"app_selection_criteria_scope": schema.SingleNestedAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"compliance_framework_attribute_value_ids": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The complianceFrameworkAttributeValueIds field.`,
+							},
+							"risk_level_attribute_value_ids": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The riskLevelAttributeValueIds field.`,
+							},
+						},
 						Description: `The AppSelectionCriteriaScope message.`,
 					},
 					"application_access_scope": schema.SingleNestedAttribute{
@@ -380,6 +394,11 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 							`  - daysSinceReviewed` + "\n" +
 							`  - grantsAddedBetween`,
 					},
+					"resource_selection_scope": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The ResourceSelectionScope message.`,
+					},
 					"resource_type_selection_scope": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -508,7 +527,11 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					`` + "\n" +
 					`This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:` + "\n" +
 					`  - allAccessConflicts` + "\n" +
-					`  - specificAccessConflicts`,
+					`  - specificAccessConflicts` + "\n" +
+					`` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - resourceSelection`,
 			},
 			"access_review_template_id": schema.StringAttribute{
 				Computed:    true,
@@ -750,12 +773,13 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			"scope_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The scopeType field. must be one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"]`,
+				Description: `The scopeType field. must be one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED",
 						"ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS",
 						"ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS",
+						"ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE",
 					),
 				},
 			},

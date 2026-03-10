@@ -39,6 +39,23 @@ func (r *DirectoryResourceModel) RefreshFromSharedDirectoryServiceCreateResponse
 					r.DirectoryView.Directory.DirectoryAccountFilterCel = &tfTypes.DirectoryAccountFilterCel{}
 					r.DirectoryView.Directory.DirectoryAccountFilterCel.Expression = types.StringPointerValue(resp.DirectoryView.Directory.DirectoryAccountFilterCel.Expression)
 				}
+				if resp.DirectoryView.Directory.DirectoryMergeConfig == nil {
+					r.DirectoryView.Directory.DirectoryMergeConfig = nil
+				} else {
+					r.DirectoryView.Directory.DirectoryMergeConfig = &tfTypes.DirectoryMergeConfig{}
+					if resp.DirectoryView.Directory.DirectoryMergeConfig.MatchCases != nil {
+						r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = []tfTypes.DirectoryMergeMatchCase{}
+
+						for _, matchCasesItem := range resp.DirectoryView.Directory.DirectoryMergeConfig.MatchCases {
+							var matchCases tfTypes.DirectoryMergeMatchCase
+
+							matchCases.AppUserKeyCel = types.StringPointerValue(matchCasesItem.AppUserKeyCel)
+							matchCases.UserKeyCel = types.StringPointerValue(matchCasesItem.UserKeyCel)
+
+							r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = append(r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases, matchCases)
+						}
+					}
+				}
 				r.DirectoryView.Directory.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DirectoryView.Directory.UpdatedAt))
 			}
 		}
@@ -76,6 +93,23 @@ func (r *DirectoryResourceModel) RefreshFromSharedDirectoryServiceGetResponse(ct
 					r.DirectoryView.Directory.DirectoryAccountFilterCel = &tfTypes.DirectoryAccountFilterCel{}
 					r.DirectoryView.Directory.DirectoryAccountFilterCel.Expression = types.StringPointerValue(resp.DirectoryView.Directory.DirectoryAccountFilterCel.Expression)
 				}
+				if resp.DirectoryView.Directory.DirectoryMergeConfig == nil {
+					r.DirectoryView.Directory.DirectoryMergeConfig = nil
+				} else {
+					r.DirectoryView.Directory.DirectoryMergeConfig = &tfTypes.DirectoryMergeConfig{}
+					if resp.DirectoryView.Directory.DirectoryMergeConfig.MatchCases != nil {
+						r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = []tfTypes.DirectoryMergeMatchCase{}
+
+						for _, matchCasesItem := range resp.DirectoryView.Directory.DirectoryMergeConfig.MatchCases {
+							var matchCases tfTypes.DirectoryMergeMatchCase
+
+							matchCases.AppUserKeyCel = types.StringPointerValue(matchCasesItem.AppUserKeyCel)
+							matchCases.UserKeyCel = types.StringPointerValue(matchCasesItem.UserKeyCel)
+
+							r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = append(r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases, matchCases)
+						}
+					}
+				}
 				r.DirectoryView.Directory.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DirectoryView.Directory.UpdatedAt))
 			}
 		}
@@ -112,6 +146,23 @@ func (r *DirectoryResourceModel) RefreshFromSharedDirectoryServiceUpdateResponse
 				} else {
 					r.DirectoryView.Directory.DirectoryAccountFilterCel = &tfTypes.DirectoryAccountFilterCel{}
 					r.DirectoryView.Directory.DirectoryAccountFilterCel.Expression = types.StringPointerValue(resp.DirectoryView.Directory.DirectoryAccountFilterCel.Expression)
+				}
+				if resp.DirectoryView.Directory.DirectoryMergeConfig == nil {
+					r.DirectoryView.Directory.DirectoryMergeConfig = nil
+				} else {
+					r.DirectoryView.Directory.DirectoryMergeConfig = &tfTypes.DirectoryMergeConfig{}
+					if resp.DirectoryView.Directory.DirectoryMergeConfig.MatchCases != nil {
+						r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = []tfTypes.DirectoryMergeMatchCase{}
+
+						for _, matchCasesItem := range resp.DirectoryView.Directory.DirectoryMergeConfig.MatchCases {
+							var matchCases tfTypes.DirectoryMergeMatchCase
+
+							matchCases.AppUserKeyCel = types.StringPointerValue(matchCasesItem.AppUserKeyCel)
+							matchCases.UserKeyCel = types.StringPointerValue(matchCasesItem.UserKeyCel)
+
+							r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = append(r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases, matchCases)
+						}
+					}
 				}
 				r.DirectoryView.Directory.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DirectoryView.Directory.UpdatedAt))
 			}
@@ -182,10 +233,39 @@ func (r *DirectoryResourceModel) ToSharedDirectoryServiceCreateRequest(ctx conte
 			Expression: expression,
 		}
 	}
+	var directoryMergeConfig *shared.DirectoryMergeConfig
+	if r.DirectoryMergeConfig != nil {
+		var matchCases []shared.DirectoryMergeMatchCase
+		if r.DirectoryMergeConfig.MatchCases != nil {
+			matchCases = make([]shared.DirectoryMergeMatchCase, 0, len(r.DirectoryMergeConfig.MatchCases))
+			for matchCasesIndex := range r.DirectoryMergeConfig.MatchCases {
+				appUserKeyCel := new(string)
+				if !r.DirectoryMergeConfig.MatchCases[matchCasesIndex].AppUserKeyCel.IsUnknown() && !r.DirectoryMergeConfig.MatchCases[matchCasesIndex].AppUserKeyCel.IsNull() {
+					*appUserKeyCel = r.DirectoryMergeConfig.MatchCases[matchCasesIndex].AppUserKeyCel.ValueString()
+				} else {
+					appUserKeyCel = nil
+				}
+				userKeyCel := new(string)
+				if !r.DirectoryMergeConfig.MatchCases[matchCasesIndex].UserKeyCel.IsUnknown() && !r.DirectoryMergeConfig.MatchCases[matchCasesIndex].UserKeyCel.IsNull() {
+					*userKeyCel = r.DirectoryMergeConfig.MatchCases[matchCasesIndex].UserKeyCel.ValueString()
+				} else {
+					userKeyCel = nil
+				}
+				matchCases = append(matchCases, shared.DirectoryMergeMatchCase{
+					AppUserKeyCel: appUserKeyCel,
+					UserKeyCel:    userKeyCel,
+				})
+			}
+		}
+		directoryMergeConfig = &shared.DirectoryMergeConfig{
+			MatchCases: matchCases,
+		}
+	}
 	out := shared.DirectoryServiceCreateRequest{
 		DirectoryAccountFilterAll: directoryAccountFilterAll,
 		AppID:                     appID,
 		DirectoryAccountFilterCel: directoryAccountFilterCel,
+		DirectoryMergeConfig:      directoryMergeConfig,
 	}
 
 	return &out, diags
@@ -210,9 +290,38 @@ func (r *DirectoryResourceModel) ToSharedDirectoryServiceUpdateRequest(ctx conte
 			Expression: expression,
 		}
 	}
+	var directoryMergeConfig *shared.DirectoryMergeConfig
+	if r.DirectoryMergeConfig != nil {
+		var matchCases []shared.DirectoryMergeMatchCase
+		if r.DirectoryMergeConfig.MatchCases != nil {
+			matchCases = make([]shared.DirectoryMergeMatchCase, 0, len(r.DirectoryMergeConfig.MatchCases))
+			for matchCasesIndex := range r.DirectoryMergeConfig.MatchCases {
+				appUserKeyCel := new(string)
+				if !r.DirectoryMergeConfig.MatchCases[matchCasesIndex].AppUserKeyCel.IsUnknown() && !r.DirectoryMergeConfig.MatchCases[matchCasesIndex].AppUserKeyCel.IsNull() {
+					*appUserKeyCel = r.DirectoryMergeConfig.MatchCases[matchCasesIndex].AppUserKeyCel.ValueString()
+				} else {
+					appUserKeyCel = nil
+				}
+				userKeyCel := new(string)
+				if !r.DirectoryMergeConfig.MatchCases[matchCasesIndex].UserKeyCel.IsUnknown() && !r.DirectoryMergeConfig.MatchCases[matchCasesIndex].UserKeyCel.IsNull() {
+					*userKeyCel = r.DirectoryMergeConfig.MatchCases[matchCasesIndex].UserKeyCel.ValueString()
+				} else {
+					userKeyCel = nil
+				}
+				matchCases = append(matchCases, shared.DirectoryMergeMatchCase{
+					AppUserKeyCel: appUserKeyCel,
+					UserKeyCel:    userKeyCel,
+				})
+			}
+		}
+		directoryMergeConfig = &shared.DirectoryMergeConfig{
+			MatchCases: matchCases,
+		}
+	}
 	out := shared.DirectoryServiceUpdateRequest{
 		DirectoryAccountFilterAll: directoryAccountFilterAll,
 		DirectoryAccountFilterCel: directoryAccountFilterCel,
+		DirectoryMergeConfig:      directoryMergeConfig,
 	}
 
 	return &out, diags

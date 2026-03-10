@@ -28,6 +28,9 @@ package shared
 // This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
 //   - allAccessConflicts
 //   - specificAccessConflicts
+//
+// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
+//   - resourceSelection
 type AccessReviewScopeV2 struct {
 	// The CelExpressionScope message.
 	CelExpressionScope *CelExpressionScope `json:"accountCelExpression,omitempty"`
@@ -55,6 +58,8 @@ type AccessReviewScopeV2 struct {
 	//   - grantsAddedBetween
 	//
 	GrantsByCriteriaScope *GrantsByCriteriaScope `json:"grantsByCriteria,omitempty"`
+	// The ResourceSelectionScope message.
+	ResourceSelectionScope *ResourceSelectionScope `json:"resourceSelection,omitempty"`
 	// The ResourceTypeSelectionScope message.
 	ResourceTypeSelectionScope *ResourceTypeSelectionScope `json:"resourceTypeSelections,omitempty"`
 	// The SelectedUsersScope message.
@@ -135,6 +140,13 @@ func (a *AccessReviewScopeV2) GetGrantsByCriteriaScope() *GrantsByCriteriaScope 
 		return nil
 	}
 	return a.GrantsByCriteriaScope
+}
+
+func (a *AccessReviewScopeV2) GetResourceSelectionScope() *ResourceSelectionScope {
+	if a == nil {
+		return nil
+	}
+	return a.ResourceSelectionScope
 }
 
 func (a *AccessReviewScopeV2) GetResourceTypeSelectionScope() *ResourceTypeSelectionScope {

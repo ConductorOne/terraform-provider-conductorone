@@ -24,7 +24,12 @@ resource "conductorone_access_review_template" "my_access_review_template" {
       # ...
     }
     app_selection_criteria_scope = {
-      # ...
+      compliance_framework_attribute_value_ids = [
+        "..."
+      ]
+      risk_level_attribute_value_ids = [
+        "..."
+      ]
     }
     application_access_scope = {
       # ...
@@ -54,6 +59,9 @@ resource "conductorone_access_review_template" "my_access_review_template" {
       }
       source_filter = "GRANT_SOURCE_FILTER_INHERITED"
       type_filter   = "GRANT_FILTER_TYPE_PERMANENT"
+    }
+    resource_selection_scope = {
+      # ...
     }
     resource_type_selection_scope = {
       # ...
@@ -93,8 +101,16 @@ resource "conductorone_access_review_template" "my_access_review_template" {
       ]
     }
   }
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
+  accuracy_issue_action             = "ACCURACY_ISSUE_ACTION_WAIT"
+  auto_close_campaign               = false
+  auto_close_decision               = "CLOSE_DECISION_NO_ACTION"
+  auto_generate_report              = false
+  auto_start_campaign               = true
+  default_view                      = "ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED"
+  description                       = "...my_description..."
+  display_name                      = "...my_display_name..."
+  exempt_certified_access_conflicts = true
+  is_campaign_schedule_enabled      = false
   notification_config = {
     send_close     = true
     send_kickoff   = false
@@ -103,6 +119,21 @@ resource "conductorone_access_review_template" "my_access_review_template" {
   owner_ids = [
     "..."
   ]
-  policy_id  = "...my_policy_id..."
-  scope_type = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
+  policy_id = "...my_policy_id..."
+  recurrence_rule = {
+    end_date    = "2022-07-11T08:35:49.034Z"
+    frequency   = "FREQUENCY_UNSPECIFIED"
+    interval    = 10
+    occurrences = 3
+    start_date  = "2022-06-20T11:29:45.535Z"
+  }
+  review_instructions = "...my_review_instructions..."
+  review_signature_config = {
+    meaning_of_signature = "...my_meaning_of_signature..."
+    require_signature    = true
+    step_up_provider_id  = "...my_step_up_provider_id..."
+    tsp_url              = "...my_tsp_url..."
+  }
+  scope_type          = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
+  use_policy_override = true
 }

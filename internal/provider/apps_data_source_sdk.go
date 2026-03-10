@@ -25,6 +25,25 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 
 				list.AppAccountID = types.StringPointerValue(listItem.AppAccountID)
 				list.AppAccountName = types.StringPointerValue(listItem.AppAccountName)
+				if listItem.AppUserMapper == nil {
+					list.AppUserMapper = nil
+				} else {
+					list.AppUserMapper = &tfTypes.AppUserMapper{}
+					if listItem.AppUserMapper.MappingCases != nil {
+						if list.AppUserMapper.MappingCases == nil {
+							list.AppUserMapper.MappingCases = []tfTypes.AppUserMapperMatchCase{}
+						}
+
+						for _, mappingCasesItem := range listItem.AppUserMapper.MappingCases {
+							var mappingCases tfTypes.AppUserMapperMatchCase
+
+							mappingCases.AppUserKeyCel = types.StringPointerValue(mappingCasesItem.AppUserKeyCel)
+							mappingCases.UserKeyCel = types.StringPointerValue(mappingCasesItem.UserKeyCel)
+
+							list.AppUserMapper.MappingCases = append(list.AppUserMapper.MappingCases, mappingCases)
+						}
+					}
+				}
 				list.CertifyPolicyID = types.StringPointerValue(listItem.CertifyPolicyID)
 				list.ConnectorVersion = types.Int64PointerValue(listItem.ConnectorVersion)
 				list.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.CreatedAt))

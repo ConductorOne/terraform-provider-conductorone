@@ -129,6 +129,18 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 				r.AccessReviewScopeV2.AppSelectionCriteriaScope = nil
 			} else {
 				r.AccessReviewScopeV2.AppSelectionCriteriaScope = &tfTypes.AppSelectionCriteriaScope{}
+				if resp.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds != nil {
+					r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds))
+					for _, v := range resp.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds {
+						r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = append(r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds, types.StringValue(v))
+					}
+				}
+				if resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds != nil {
+					r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds))
+					for _, v := range resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds {
+						r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = append(r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds, types.StringValue(v))
+					}
+				}
 			}
 			if resp.AccessReviewScopeV2.CelExpressionScope == nil {
 				r.AccessReviewScopeV2.CelExpressionScope = nil
@@ -188,6 +200,11 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 				} else {
 					r.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter = types.StringNull()
 				}
+			}
+			if resp.AccessReviewScopeV2.ResourceSelectionScope == nil {
+				r.AccessReviewScopeV2.ResourceSelectionScope = nil
+			} else {
+				r.AccessReviewScopeV2.ResourceSelectionScope = &tfTypes.ResourceSelectionScope{}
 			}
 			if resp.AccessReviewScopeV2.ResourceTypeSelectionScope == nil {
 				r.AccessReviewScopeV2.ResourceTypeSelectionScope = nil
@@ -754,7 +771,24 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		}
 		var appSelectionCriteriaScope *shared.AppSelectionCriteriaScope
 		if r.AccessReviewScopeV2.AppSelectionCriteriaScope != nil {
-			appSelectionCriteriaScope = &shared.AppSelectionCriteriaScope{}
+			var complianceFrameworkAttributeValueIds []string
+			if r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds != nil {
+				complianceFrameworkAttributeValueIds = make([]string, 0, len(r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds))
+				for complianceFrameworkAttributeValueIdsIndex := range r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds {
+					complianceFrameworkAttributeValueIds = append(complianceFrameworkAttributeValueIds, r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds[complianceFrameworkAttributeValueIdsIndex].ValueString())
+				}
+			}
+			var riskLevelAttributeValueIds []string
+			if r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds != nil {
+				riskLevelAttributeValueIds = make([]string, 0, len(r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds))
+				for riskLevelAttributeValueIdsIndex := range r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds {
+					riskLevelAttributeValueIds = append(riskLevelAttributeValueIds, r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds[riskLevelAttributeValueIdsIndex].ValueString())
+				}
+			}
+			appSelectionCriteriaScope = &shared.AppSelectionCriteriaScope{
+				ComplianceFrameworkAttributeValueIds: complianceFrameworkAttributeValueIds,
+				RiskLevelAttributeValueIds:           riskLevelAttributeValueIds,
+			}
 		}
 		var celExpressionScope1 *shared.CelExpressionScope
 		if r.AccessReviewScopeV2.CelExpressionScope1 != nil {
@@ -856,6 +890,10 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 				SourceFilter:             sourceFilter,
 				TypeFilter:               typeFilter,
 			}
+		}
+		var resourceSelectionScope *shared.ResourceSelectionScope
+		if r.AccessReviewScopeV2.ResourceSelectionScope != nil {
+			resourceSelectionScope = &shared.ResourceSelectionScope{}
 		}
 		var resourceTypeSelectionScope *shared.ResourceTypeSelectionScope
 		if r.AccessReviewScopeV2.ResourceTypeSelectionScope != nil {
@@ -960,6 +998,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 			AppSelectionCriteriaScope:    appSelectionCriteriaScope,
 			CelExpressionScope1:          celExpressionScope1,
 			GrantsByCriteriaScope:        grantsByCriteriaScope,
+			ResourceSelectionScope:       resourceSelectionScope,
 			ResourceTypeSelectionScope:   resourceTypeSelectionScope,
 			SelectedUsersScope:           selectedUsersScope,
 			SpecificAccessConflictsScope: specificAccessConflictsScope,
@@ -1070,6 +1109,42 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 	} else {
 		accessReviewDuration = nil
 	}
+	accuracyIssueAction := new(shared.AccessReviewTemplateServiceCreateRequestAccuracyIssueAction)
+	if !r.AccuracyIssueAction.IsUnknown() && !r.AccuracyIssueAction.IsNull() {
+		*accuracyIssueAction = shared.AccessReviewTemplateServiceCreateRequestAccuracyIssueAction(r.AccuracyIssueAction.ValueString())
+	} else {
+		accuracyIssueAction = nil
+	}
+	autoCloseCampaign := new(bool)
+	if !r.AutoCloseCampaign.IsUnknown() && !r.AutoCloseCampaign.IsNull() {
+		*autoCloseCampaign = r.AutoCloseCampaign.ValueBool()
+	} else {
+		autoCloseCampaign = nil
+	}
+	autoCloseDecision := new(shared.AccessReviewTemplateServiceCreateRequestAutoCloseDecision)
+	if !r.AutoCloseDecision.IsUnknown() && !r.AutoCloseDecision.IsNull() {
+		*autoCloseDecision = shared.AccessReviewTemplateServiceCreateRequestAutoCloseDecision(r.AutoCloseDecision.ValueString())
+	} else {
+		autoCloseDecision = nil
+	}
+	autoGenerateReport := new(bool)
+	if !r.AutoGenerateReport.IsUnknown() && !r.AutoGenerateReport.IsNull() {
+		*autoGenerateReport = r.AutoGenerateReport.ValueBool()
+	} else {
+		autoGenerateReport = nil
+	}
+	autoStartCampaign := new(bool)
+	if !r.AutoStartCampaign.IsUnknown() && !r.AutoStartCampaign.IsNull() {
+		*autoStartCampaign = r.AutoStartCampaign.ValueBool()
+	} else {
+		autoStartCampaign = nil
+	}
+	defaultView := new(shared.AccessReviewTemplateServiceCreateRequestDefaultView)
+	if !r.DefaultView.IsUnknown() && !r.DefaultView.IsNull() {
+		*defaultView = shared.AccessReviewTemplateServiceCreateRequestDefaultView(r.DefaultView.ValueString())
+	} else {
+		defaultView = nil
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -1081,6 +1156,18 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		*displayName = r.DisplayName.ValueString()
 	} else {
 		displayName = nil
+	}
+	exemptCertifiedAccessConflicts := new(bool)
+	if !r.ExemptCertifiedAccessConflicts.IsUnknown() && !r.ExemptCertifiedAccessConflicts.IsNull() {
+		*exemptCertifiedAccessConflicts = r.ExemptCertifiedAccessConflicts.ValueBool()
+	} else {
+		exemptCertifiedAccessConflicts = nil
+	}
+	isCampaignScheduleEnabled := new(bool)
+	if !r.IsCampaignScheduleEnabled.IsUnknown() && !r.IsCampaignScheduleEnabled.IsNull() {
+		*isCampaignScheduleEnabled = r.IsCampaignScheduleEnabled.ValueBool()
+	} else {
+		isCampaignScheduleEnabled = nil
 	}
 	var notificationConfig *shared.NotificationConfig
 	if r.NotificationConfig != nil {
@@ -1120,6 +1207,52 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		*policyID = r.PolicyID.ValueString()
 	} else {
 		policyID = nil
+	}
+	var recurrenceRule *shared.RecurrenceRule
+	if r.RecurrenceRule != nil {
+		endDate := new(time.Time)
+		if !r.RecurrenceRule.EndDate.IsUnknown() && !r.RecurrenceRule.EndDate.IsNull() {
+			*endDate, _ = time.Parse(time.RFC3339Nano, r.RecurrenceRule.EndDate.ValueString())
+		} else {
+			endDate = nil
+		}
+		frequency := new(shared.Frequency)
+		if !r.RecurrenceRule.Frequency.IsUnknown() && !r.RecurrenceRule.Frequency.IsNull() {
+			*frequency = shared.Frequency(r.RecurrenceRule.Frequency.ValueString())
+		} else {
+			frequency = nil
+		}
+		interval := new(int)
+		if !r.RecurrenceRule.Interval.IsUnknown() && !r.RecurrenceRule.Interval.IsNull() {
+			*interval = int(r.RecurrenceRule.Interval.ValueInt32())
+		} else {
+			interval = nil
+		}
+		occurrences := new(int)
+		if !r.RecurrenceRule.Occurrences.IsUnknown() && !r.RecurrenceRule.Occurrences.IsNull() {
+			*occurrences = int(r.RecurrenceRule.Occurrences.ValueInt32())
+		} else {
+			occurrences = nil
+		}
+		startDate := new(time.Time)
+		if !r.RecurrenceRule.StartDate.IsUnknown() && !r.RecurrenceRule.StartDate.IsNull() {
+			*startDate, _ = time.Parse(time.RFC3339Nano, r.RecurrenceRule.StartDate.ValueString())
+		} else {
+			startDate = nil
+		}
+		recurrenceRule = &shared.RecurrenceRule{
+			EndDate:     endDate,
+			Frequency:   frequency,
+			Interval:    interval,
+			Occurrences: occurrences,
+			StartDate:   startDate,
+		}
+	}
+	reviewInstructions := new(string)
+	if !r.ReviewInstructions.IsUnknown() && !r.ReviewInstructions.IsNull() {
+		*reviewInstructions = r.ReviewInstructions.ValueString()
+	} else {
+		reviewInstructions = nil
 	}
 	var accessReviewScopeV2 *shared.AccessReviewScopeV2
 	if r.AccessReviewScopeV2 != nil {
@@ -1192,7 +1325,24 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		}
 		var appSelectionCriteriaScope *shared.AppSelectionCriteriaScope
 		if r.AccessReviewScopeV2.AppSelectionCriteriaScope != nil {
-			appSelectionCriteriaScope = &shared.AppSelectionCriteriaScope{}
+			var complianceFrameworkAttributeValueIds []string
+			if r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds != nil {
+				complianceFrameworkAttributeValueIds = make([]string, 0, len(r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds))
+				for complianceFrameworkAttributeValueIdsIndex := range r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds {
+					complianceFrameworkAttributeValueIds = append(complianceFrameworkAttributeValueIds, r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds[complianceFrameworkAttributeValueIdsIndex].ValueString())
+				}
+			}
+			var riskLevelAttributeValueIds []string
+			if r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds != nil {
+				riskLevelAttributeValueIds = make([]string, 0, len(r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds))
+				for riskLevelAttributeValueIdsIndex := range r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds {
+					riskLevelAttributeValueIds = append(riskLevelAttributeValueIds, r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds[riskLevelAttributeValueIdsIndex].ValueString())
+				}
+			}
+			appSelectionCriteriaScope = &shared.AppSelectionCriteriaScope{
+				ComplianceFrameworkAttributeValueIds: complianceFrameworkAttributeValueIds,
+				RiskLevelAttributeValueIds:           riskLevelAttributeValueIds,
+			}
 		}
 		var celExpressionScope1 *shared.CelExpressionScope
 		if r.AccessReviewScopeV2.CelExpressionScope1 != nil {
@@ -1256,21 +1406,21 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 			}
 			var grantsAddedBetween *shared.GrantsAddedBetween
 			if r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween != nil {
-				endDate := new(time.Time)
+				endDate1 := new(time.Time)
 				if !r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.EndDate.IsUnknown() && !r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.EndDate.IsNull() {
-					*endDate, _ = time.Parse(time.RFC3339Nano, r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.EndDate.ValueString())
+					*endDate1, _ = time.Parse(time.RFC3339Nano, r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.EndDate.ValueString())
 				} else {
-					endDate = nil
+					endDate1 = nil
 				}
-				startDate := new(time.Time)
+				startDate1 := new(time.Time)
 				if !r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.StartDate.IsUnknown() && !r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.StartDate.IsNull() {
-					*startDate, _ = time.Parse(time.RFC3339Nano, r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.StartDate.ValueString())
+					*startDate1, _ = time.Parse(time.RFC3339Nano, r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.StartDate.ValueString())
 				} else {
-					startDate = nil
+					startDate1 = nil
 				}
 				grantsAddedBetween = &shared.GrantsAddedBetween{
-					EndDate:   endDate,
-					StartDate: startDate,
+					EndDate:   endDate1,
+					StartDate: startDate1,
 				}
 			}
 			sourceFilter := new(shared.SourceFilter)
@@ -1294,6 +1444,10 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 				SourceFilter:             sourceFilter,
 				TypeFilter:               typeFilter,
 			}
+		}
+		var resourceSelectionScope *shared.ResourceSelectionScope
+		if r.AccessReviewScopeV2.ResourceSelectionScope != nil {
+			resourceSelectionScope = &shared.ResourceSelectionScope{}
 		}
 		var resourceTypeSelectionScope *shared.ResourceTypeSelectionScope
 		if r.AccessReviewScopeV2.ResourceTypeSelectionScope != nil {
@@ -1398,6 +1552,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 			AppSelectionCriteriaScope:    appSelectionCriteriaScope,
 			CelExpressionScope1:          celExpressionScope1,
 			GrantsByCriteriaScope:        grantsByCriteriaScope,
+			ResourceSelectionScope:       resourceSelectionScope,
 			ResourceTypeSelectionScope:   resourceTypeSelectionScope,
 			SelectedUsersScope:           selectedUsersScope,
 			SpecificAccessConflictsScope: specificAccessConflictsScope,
@@ -1411,15 +1566,66 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 	} else {
 		scopeType = nil
 	}
+	var reviewSignatureConfig *shared.ReviewSignatureConfig
+	if r.ReviewSignatureConfig != nil {
+		meaningOfSignature := new(string)
+		if !r.ReviewSignatureConfig.MeaningOfSignature.IsUnknown() && !r.ReviewSignatureConfig.MeaningOfSignature.IsNull() {
+			*meaningOfSignature = r.ReviewSignatureConfig.MeaningOfSignature.ValueString()
+		} else {
+			meaningOfSignature = nil
+		}
+		requireSignature := new(bool)
+		if !r.ReviewSignatureConfig.RequireSignature.IsUnknown() && !r.ReviewSignatureConfig.RequireSignature.IsNull() {
+			*requireSignature = r.ReviewSignatureConfig.RequireSignature.ValueBool()
+		} else {
+			requireSignature = nil
+		}
+		stepUpProviderID := new(string)
+		if !r.ReviewSignatureConfig.StepUpProviderID.IsUnknown() && !r.ReviewSignatureConfig.StepUpProviderID.IsNull() {
+			*stepUpProviderID = r.ReviewSignatureConfig.StepUpProviderID.ValueString()
+		} else {
+			stepUpProviderID = nil
+		}
+		tspURL := new(string)
+		if !r.ReviewSignatureConfig.TspURL.IsUnknown() && !r.ReviewSignatureConfig.TspURL.IsNull() {
+			*tspURL = r.ReviewSignatureConfig.TspURL.ValueString()
+		} else {
+			tspURL = nil
+		}
+		reviewSignatureConfig = &shared.ReviewSignatureConfig{
+			MeaningOfSignature: meaningOfSignature,
+			RequireSignature:   requireSignature,
+			StepUpProviderID:   stepUpProviderID,
+			TspURL:             tspURL,
+		}
+	}
+	usePolicyOverride := new(bool)
+	if !r.UsePolicyOverride.IsUnknown() && !r.UsePolicyOverride.IsNull() {
+		*usePolicyOverride = r.UsePolicyOverride.ValueBool()
+	} else {
+		usePolicyOverride = nil
+	}
 	out := shared.AccessReviewTemplateServiceCreateRequest{
-		AccessReviewDuration: accessReviewDuration,
-		Description:          description,
-		DisplayName:          displayName,
-		NotificationConfig:   notificationConfig,
-		OwnerIds:             ownerIds,
-		PolicyID:             policyID,
-		AccessReviewScopeV2:  accessReviewScopeV2,
-		ScopeType:            scopeType,
+		AccessReviewDuration:           accessReviewDuration,
+		AccuracyIssueAction:            accuracyIssueAction,
+		AutoCloseCampaign:              autoCloseCampaign,
+		AutoCloseDecision:              autoCloseDecision,
+		AutoGenerateReport:             autoGenerateReport,
+		AutoStartCampaign:              autoStartCampaign,
+		DefaultView:                    defaultView,
+		Description:                    description,
+		DisplayName:                    displayName,
+		ExemptCertifiedAccessConflicts: exemptCertifiedAccessConflicts,
+		IsCampaignScheduleEnabled:      isCampaignScheduleEnabled,
+		NotificationConfig:             notificationConfig,
+		OwnerIds:                       ownerIds,
+		PolicyID:                       policyID,
+		RecurrenceRule:                 recurrenceRule,
+		ReviewInstructions:             reviewInstructions,
+		AccessReviewScopeV2:            accessReviewScopeV2,
+		ScopeType:                      scopeType,
+		ReviewSignatureConfig:          reviewSignatureConfig,
+		UsePolicyOverride:              usePolicyOverride,
 	}
 
 	return &out, diags

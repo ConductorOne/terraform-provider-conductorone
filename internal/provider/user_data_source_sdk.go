@@ -221,6 +221,11 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 				r.ManagerSources = append(r.ManagerSources, managerSources)
 			}
 		}
+		if resp.Origin != nil {
+			r.Origin = types.StringValue(string(*resp.Origin))
+		} else {
+			r.Origin = types.StringNull()
+		}
 		if resp.Profile == nil {
 			r.Profile = nil
 		} else {
@@ -295,6 +300,19 @@ func (r *UserDataSourceModel) RefreshFromSharedUserView(ctx context.Context, res
 func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*shared.SearchUsersRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	delegateStatus := new(shared.DelegateStatus)
+	if !r.DelegateStatus.IsUnknown() && !r.DelegateStatus.IsNull() {
+		*delegateStatus = shared.DelegateStatus(r.DelegateStatus.ValueString())
+	} else {
+		delegateStatus = nil
+	}
+	var delegatedUserIds []string
+	if r.DelegatedUserIds != nil {
+		delegatedUserIds = make([]string, 0, len(r.DelegatedUserIds))
+		for delegatedUserIdsIndex := range r.DelegatedUserIds {
+			delegatedUserIds = append(delegatedUserIds, r.DelegatedUserIds[delegatedUserIdsIndex].ValueString())
+		}
+	}
 	var departments []string
 	if r.Departments != nil {
 		departments = make([]string, 0, len(r.Departments))
@@ -315,6 +333,13 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 			excludeIds = append(excludeIds, r.ExcludeIds[excludeIdsIndex].ValueString())
 		}
 	}
+	var excludeOrigins []shared.ExcludeOrigins
+	if r.ExcludeOrigins != nil {
+		excludeOrigins = make([]shared.ExcludeOrigins, 0, len(r.ExcludeOrigins))
+		for _, excludeOriginsItem := range r.ExcludeOrigins {
+			excludeOrigins = append(excludeOrigins, shared.ExcludeOrigins(excludeOriginsItem.ValueString()))
+		}
+	}
 	var excludeTypes []shared.ExcludeTypes
 	if r.ExcludeTypes != nil {
 		excludeTypes = make([]shared.ExcludeTypes, 0, len(r.ExcludeTypes))
@@ -329,6 +354,12 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 			ids = append(ids, r.Ids[idsIndex].ValueString())
 		}
 	}
+	isDelegate := new(bool)
+	if !r.IsDelegate.IsUnknown() && !r.IsDelegate.IsNull() {
+		*isDelegate = r.IsDelegate.ValueBool()
+	} else {
+		isDelegate = nil
+	}
 	var jobTitles []string
 	if r.JobTitles != nil {
 		jobTitles = make([]string, 0, len(r.JobTitles))
@@ -341,6 +372,13 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 		managerIds = make([]string, 0, len(r.ManagerIds))
 		for managerIdsIndex := range r.ManagerIds {
 			managerIds = append(managerIds, r.ManagerIds[managerIdsIndex].ValueString())
+		}
+	}
+	var origins []shared.Origins
+	if r.Origins != nil {
+		origins = make([]shared.Origins, 0, len(r.Origins))
+		for _, originsItem := range r.Origins {
+			origins = append(origins, shared.Origins(originsItem.ValueString()))
 		}
 	}
 	pageSize := new(int)
@@ -385,18 +423,23 @@ func (r *UserDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (*
 		}
 	}
 	out := shared.SearchUsersRequest{
-		Departments:  departments,
-		Email:        email,
-		ExcludeIds:   excludeIds,
-		ExcludeTypes: excludeTypes,
-		Ids:          ids,
-		JobTitles:    jobTitles,
-		ManagerIds:   managerIds,
-		PageSize:     pageSize,
-		Query:        query,
-		Refs:         refs,
-		RoleIds:      roleIds,
-		UserStatuses: userStatuses,
+		DelegateStatus:   delegateStatus,
+		DelegatedUserIds: delegatedUserIds,
+		Departments:      departments,
+		Email:            email,
+		ExcludeIds:       excludeIds,
+		ExcludeOrigins:   excludeOrigins,
+		ExcludeTypes:     excludeTypes,
+		Ids:              ids,
+		IsDelegate:       isDelegate,
+		JobTitles:        jobTitles,
+		ManagerIds:       managerIds,
+		Origins:          origins,
+		PageSize:         pageSize,
+		Query:            query,
+		Refs:             refs,
+		RoleIds:          roleIds,
+		UserStatuses:     userStatuses,
 	}
 
 	return &out, diags

@@ -77,9 +77,31 @@ actions:
   - target: $["components"]["schemas"]["c1.api.policy.v1.Approval"]
     update:
       x-speakeasy-terraform-plan-only: true
-  - target: $["components"]["schemas"]["c1.api.policy.v1.ProvisionPolicy"]
+  # ProvisionPolicy: keep Computed: true on the parent union so API-returned
+  # defaults (unconfigured_provision) don't cause perpetual diffs. Instead,
+  # disable computed on each individual union member below.
+  # See: Slack #ext-speakeasy-c1 thread 2025-12-04 (ticket #9094)
+  # - target: $["components"]["schemas"]["c1.api.policy.v1.ProvisionPolicy"]
+  #   update:
+  #     x-speakeasy-terraform-plan-only: true
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ActionProvision"]
     update:
-      x-speakeasy-terraform-plan-only: true
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ConnectorProvision"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.DelegatedProvision"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ExternalTicketProvision"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ManualProvision"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.WebhookProvision"]
+    update:
+      x-speakeasy-param-computed: false
   - target: $["components"]["schemas"]["c1.api.app.v1.App"]["properties"]["appOwners"]
     update:
       x-speakeasy-terraform-ignore: true

@@ -38,7 +38,12 @@ resource "conductorone_access_review" "my_access_review" {
       # ...
     }
     app_selection_criteria_scope = {
-      # ...
+      compliance_framework_attribute_value_ids = [
+        "..."
+      ]
+      risk_level_attribute_value_ids = [
+        "..."
+      ]
     }
     application_access_scope = {
       # ...
@@ -68,6 +73,9 @@ resource "conductorone_access_review" "my_access_review" {
       }
       source_filter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
       type_filter   = "GRANT_FILTER_TYPE_PERMANENT"
+    }
+    resource_selection_scope = {
+      # ...
     }
     resource_type_selection_scope = {
       # ...
@@ -158,7 +166,11 @@ This message contains a oneof named grants_scope. Only a single field of the fol
 
 This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
   - allAccessConflicts
-  - specificAccessConflicts (see [below for nested schema](#nestedatt--access_review_scope_v2))
+  - specificAccessConflicts
+
+
+This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
+  - resourceSelection (see [below for nested schema](#nestedatt--access_review_scope_v2))
 - `completion_date` (String)
 - `description` (String) The description field.
 - `display_name` (String) The displayName field.
@@ -166,7 +178,7 @@ This message contains a oneof named access_conflicts_scope. Only a single field 
 - `notification_config` (Attributes) The NotificationConfig message. (see [below for nested schema](#nestedatt--notification_config))
 - `owner_ids` (List of String) The ownerIds field. Requires replacement if changed.
 - `policy_id` (String) The policyId field.
-- `scope_type` (String) The scopeType field. must be one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"]
+- `scope_type` (String) The scopeType field. must be one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"]
 
 ### Read-Only
 
@@ -230,6 +242,7 @@ This message contains a oneof named criteria_filter. Only a single field of the 
   - daysSinceAdded
   - daysSinceReviewed
   - grantsAddedBetween (see [below for nested schema](#nestedatt--access_review_scope_v2--grants_by_criteria_scope))
+- `resource_selection_scope` (Attributes) The ResourceSelectionScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--resource_selection_scope))
 - `resource_type_selection_scope` (Attributes) The ResourceTypeSelectionScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--resource_type_selection_scope))
 - `selected_users_scope` (Attributes) The SelectedUsersScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--selected_users_scope))
 - `specific_access_conflicts_scope` (Attributes) The SpecificAccessConflictsScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--specific_access_conflicts_scope))
@@ -265,6 +278,11 @@ Optional:
 
 <a id="nestedatt--access_review_scope_v2--app_selection_criteria_scope"></a>
 ### Nested Schema for `access_review_scope_v2.app_selection_criteria_scope`
+
+Optional:
+
+- `compliance_framework_attribute_value_ids` (List of String) The complianceFrameworkAttributeValueIds field.
+- `risk_level_attribute_value_ids` (List of String) The riskLevelAttributeValueIds field.
 
 
 <a id="nestedatt--access_review_scope_v2--application_access_scope"></a>
@@ -322,6 +340,10 @@ Optional:
 - `end_date` (String)
 - `start_date` (String)
 
+
+
+<a id="nestedatt--access_review_scope_v2--resource_selection_scope"></a>
+### Nested Schema for `access_review_scope_v2.resource_selection_scope`
 
 
 <a id="nestedatt--access_review_scope_v2--resource_type_selection_scope"></a>

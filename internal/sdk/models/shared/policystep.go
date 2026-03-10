@@ -21,7 +21,7 @@ type PolicyStep struct {
 	//   - automation
 	//   - batonResourceAction
 	//
-	Action *Action `json:"action,omitempty"`
+	Action *Action1 `json:"action,omitempty"`
 	// The Approval message.
 	//
 	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -60,7 +60,7 @@ func (p *PolicyStep) GetAccept() *Accept {
 	return p.Accept
 }
 
-func (p *PolicyStep) GetAction() *Action {
+func (p *PolicyStep) GetAction() *Action1 {
 	if p == nil {
 		return nil
 	}

@@ -16,6 +16,7 @@ const (
 	IdentityMatchingAppUserIdentityMatchingUnspecified IdentityMatching = "APP_USER_IDENTITY_MATCHING_UNSPECIFIED"
 	IdentityMatchingAppUserIdentityMatchingStrict      IdentityMatching = "APP_USER_IDENTITY_MATCHING_STRICT"
 	IdentityMatchingAppUserIdentityMatchingDisplayName IdentityMatching = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
+	IdentityMatchingAppUserIdentityMatchingCustom      IdentityMatching = "APP_USER_IDENTITY_MATCHING_CUSTOM"
 )
 
 func (e IdentityMatching) ToPointer() *IdentityMatching {
@@ -32,6 +33,8 @@ func (e *IdentityMatching) UnmarshalJSON(data []byte) error {
 	case "APP_USER_IDENTITY_MATCHING_STRICT":
 		fallthrough
 	case "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME":
+		fallthrough
+	case "APP_USER_IDENTITY_MATCHING_CUSTOM":
 		*e = IdentityMatching(v)
 		return nil
 	default:
@@ -47,6 +50,8 @@ type App struct {
 	AppAccountName *string `json:"appAccountName,omitempty"`
 	// The owners of the app.
 	AppOwners []User `json:"appOwners,omitempty"`
+	// AppUserMapper configures custom account mapping for uplift.
+	AppUserMapper *AppUserMapper `json:"appUserMapper,omitempty"`
 	// The ID of the Certify Policy associated with this App.
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
 	// The connectorVersion field.
@@ -121,6 +126,13 @@ func (a *App) GetAppOwners() []User {
 		return nil
 	}
 	return a.AppOwners
+}
+
+func (a *App) GetAppUserMapper() *AppUserMapper {
+	if a == nil {
+		return nil
+	}
+	return a.AppUserMapper
 }
 
 func (a *App) GetCertifyPolicyID() *string {
@@ -286,6 +298,8 @@ func (a *App) GetUserCount() *string {
 
 // AppInput - The App object provides all of the details for an app, as well as some configuration.
 type AppInput struct {
+	// AppUserMapper configures custom account mapping for uplift.
+	AppUserMapper *AppUserMapper `json:"appUserMapper,omitempty"`
 	// The ID of the Certify Policy associated with this App.
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
 	// The connectorVersion field.
@@ -314,6 +328,13 @@ type AppInput struct {
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
 	// The strictAccessEntitlementProvisioning field.
 	StrictAccessEntitlementProvisioning *bool `json:"strictAccessEntitlementProvisioning,omitempty"`
+}
+
+func (a *AppInput) GetAppUserMapper() *AppUserMapper {
+	if a == nil {
+		return nil
+	}
+	return a.AppUserMapper
 }
 
 func (a *AppInput) GetCertifyPolicyID() *string {

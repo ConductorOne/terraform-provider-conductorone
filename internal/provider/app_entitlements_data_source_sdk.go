@@ -141,6 +141,105 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 						} else {
 							list.AppEntitlement.DeprovisionerPolicy.ManualProvision = &tfTypes.ManualProvision{}
 							list.AppEntitlement.DeprovisionerPolicy.ManualProvision.Instructions = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.Instructions)
+							if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment == nil {
+								list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment = nil
+							} else {
+								list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}
+								if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner == nil {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = nil
+								} else {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = &tfTypes.AppOwnerProvisioner{}
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment)
+									if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds != nil {
+										if list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds == nil {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds))
+										}
+										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
+										}
+									}
+								}
+								if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = nil
+								} else {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = &tfTypes.EntitlementOwnerProvisioner{}
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment)
+									if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds != nil {
+										if list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds == nil {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds))
+										}
+										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
+										}
+									}
+								}
+								if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = nil
+								} else {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = &tfTypes.ExpressionProvisioner{}
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment)
+									if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions != nil {
+										if list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions == nil {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions))
+										}
+										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
+										}
+									}
+									if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
+										if list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds == nil {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
+										}
+										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
+										}
+									}
+								}
+								if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = nil
+								} else {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = &tfTypes.GroupProvisioner{}
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment)
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID)
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID)
+									if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds != nil {
+										if list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds == nil {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds))
+										}
+										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
+										}
+									}
+								}
+								if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = nil
+								} else {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = &tfTypes.ManagerProvisioner{}
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment)
+									if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds != nil {
+										if list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds == nil {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds))
+										}
+										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
+										}
+									}
+								}
+								if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = nil
+								} else {
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = &tfTypes.UserProvisioner{}
+									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment)
+									if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds != nil {
+										if list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds == nil {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds))
+										}
+										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
+											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
+										}
+									}
+								}
+							}
 							if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds != nil {
 								if list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds == nil {
 									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds))
@@ -267,6 +366,105 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 						} else {
 							list.AppEntitlement.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
 							list.AppEntitlement.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.Instructions)
+							if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment == nil {
+								list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment = nil
+							} else {
+								list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}
+								if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner == nil {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = nil
+								} else {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = &tfTypes.AppOwnerProvisioner{}
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment)
+									if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds != nil {
+										if list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds == nil {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds))
+										}
+										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
+										}
+									}
+								}
+								if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = nil
+								} else {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = &tfTypes.EntitlementOwnerProvisioner{}
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment)
+									if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds != nil {
+										if list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds == nil {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds))
+										}
+										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
+										}
+									}
+								}
+								if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = nil
+								} else {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = &tfTypes.ExpressionProvisioner{}
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment)
+									if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions != nil {
+										if list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions == nil {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions))
+										}
+										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
+										}
+									}
+									if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
+										if list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds == nil {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
+										}
+										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
+										}
+									}
+								}
+								if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = nil
+								} else {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = &tfTypes.GroupProvisioner{}
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment)
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID)
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID)
+									if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds != nil {
+										if list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds == nil {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds))
+										}
+										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
+										}
+									}
+								}
+								if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = nil
+								} else {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = &tfTypes.ManagerProvisioner{}
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment)
+									if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds != nil {
+										if list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds == nil {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds))
+										}
+										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
+										}
+									}
+								}
+								if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = nil
+								} else {
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = &tfTypes.UserProvisioner{}
+									list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = types.BoolPointerValue(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment)
+									if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds != nil {
+										if list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds == nil {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds))
+										}
+										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
+											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
+										}
+									}
+								}
+							}
 							if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds != nil {
 								if list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds == nil {
 									list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(listItem.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds))

@@ -14,6 +14,7 @@ const (
 	CreateAppRequestIdentityMatchingAppUserIdentityMatchingUnspecified CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_UNSPECIFIED"
 	CreateAppRequestIdentityMatchingAppUserIdentityMatchingStrict      CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_STRICT"
 	CreateAppRequestIdentityMatchingAppUserIdentityMatchingDisplayName CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
+	CreateAppRequestIdentityMatchingAppUserIdentityMatchingCustom      CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_CUSTOM"
 )
 
 func (e CreateAppRequestIdentityMatching) ToPointer() *CreateAppRequestIdentityMatching {
@@ -30,6 +31,8 @@ func (e *CreateAppRequestIdentityMatching) UnmarshalJSON(data []byte) error {
 	case "APP_USER_IDENTITY_MATCHING_STRICT":
 		fallthrough
 	case "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME":
+		fallthrough
+	case "APP_USER_IDENTITY_MATCHING_CUSTOM":
 		*e = CreateAppRequestIdentityMatching(v)
 		return nil
 	default:

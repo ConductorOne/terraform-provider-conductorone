@@ -4,7 +4,6 @@ package types
 
 type GrantTriggerFilter struct {
 	AccountFilter                *AccountFilter                `tfsdk:"account_filter"`
-	EntitlementFilter            *EntitlementFilter            `tfsdk:"entitlement_filter"`
 	EntitlementInclusionAll      *EntitlementInclusionAll      `tfsdk:"entitlement_inclusion_all"`
 	EntitlementInclusionCriteria *EntitlementInclusionCriteria `tfsdk:"entitlement_inclusion_criteria"`
 	EntitlementInclusionList     *EntitlementInclusionList     `tfsdk:"entitlement_inclusion_list"`

@@ -68,6 +68,9 @@ func (e *WellKnownClients) UnmarshalJSON(data []byte) error {
 
 // The ExternalClientSearchServiceSearchRequest message.
 type ExternalClientSearchServiceSearchRequest struct {
+	// Exact-match filter on client_id values (e.g., CIMD URLs).
+	//  Returns only grants whose client_id matches one of these values.
+	ClientIDUrls []string `json:"clientIdUrls,omitempty"`
 	// The pageSize field.
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
@@ -78,6 +81,13 @@ type ExternalClientSearchServiceSearchRequest struct {
 	Users []UserRef `json:"users,omitempty"`
 	// Filter by well-known client type (e.g., CLAUDE_CODE, CURSOR, etc.)
 	WellKnownClients []WellKnownClients `json:"wellKnownClients,omitempty"`
+}
+
+func (e *ExternalClientSearchServiceSearchRequest) GetClientIDUrls() []string {
+	if e == nil {
+		return nil
+	}
+	return e.ClientIDUrls
 }
 
 func (e *ExternalClientSearchServiceSearchRequest) GetPageSize() *int {

@@ -192,7 +192,19 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 											Description: `The AllUsersScope message.`,
 										},
 										"app_selection_criteria_scope": schema.SingleNestedAttribute{
-											Computed:    true,
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"compliance_framework_attribute_value_ids": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													Description: `The complianceFrameworkAttributeValueIds field.`,
+												},
+												"risk_level_attribute_value_ids": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													Description: `The riskLevelAttributeValueIds field.`,
+												},
+											},
 											Description: `The AppSelectionCriteriaScope message.`,
 										},
 										"application_access_scope": schema.SingleNestedAttribute{
@@ -282,6 +294,10 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 												`  - daysSinceAdded` + "\n" +
 												`  - daysSinceReviewed` + "\n" +
 												`  - grantsAddedBetween`,
+										},
+										"resource_selection_scope": schema.SingleNestedAttribute{
+											Computed:    true,
+											Description: `The ResourceSelectionScope message.`,
 										},
 										"resource_type_selection_scope": schema.SingleNestedAttribute{
 											Computed:    true,
@@ -388,7 +404,11 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 										`` + "\n" +
 										`This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:` + "\n" +
 										`  - allAccessConflicts` + "\n" +
-										`  - specificAccessConflicts`,
+										`  - specificAccessConflicts` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - resourceSelection`,
 								},
 								"access_review_template_id": schema.StringAttribute{
 									Computed:    true,

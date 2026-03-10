@@ -69,6 +69,7 @@ Read-Only:
 
 - `app_account_id` (String) The ID of the Account named by AccountName.
 - `app_account_name` (String) The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
+- `app_user_mapper` (Attributes) AppUserMapper configures custom account mapping for uplift. (see [below for nested schema](#nestedatt--list--app_user_mapper))
 - `certify_policy_id` (String) The ID of the Certify Policy associated with this App.
 - `connector_version` (Number) The connectorVersion field.
 - `created_at` (String)
@@ -89,3 +90,18 @@ Read-Only:
 - `strict_access_entitlement_provisioning` (Boolean) The strictAccessEntitlementProvisioning field.
 - `updated_at` (String)
 - `user_count` (String) The number of users with grants to this app.
+
+<a id="nestedatt--list--app_user_mapper"></a>
+### Nested Schema for `list.app_user_mapper`
+
+Read-Only:
+
+- `mapping_cases` (Attributes List) Ordered list of match cases. Each case defines a pair of CEL key extractors. (see [below for nested schema](#nestedatt--list--app_user_mapper--mapping_cases))
+
+<a id="nestedatt--list--app_user_mapper--mapping_cases"></a>
+### Nested Schema for `list.app_user_mapper.mapping_cases`
+
+Read-Only:
+
+- `app_user_key_cel` (String) CEL expression evaluated against an AppUser to produce match key(s).
+- `user_key_cel` (String) CEL expression evaluated against a User to produce match key(s).

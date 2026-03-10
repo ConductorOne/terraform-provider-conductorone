@@ -2,8 +2,50 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+// ClientIDMetadataDocumentPolicy - Policy for metadata document client_id URLs.
+type ClientIDMetadataDocumentPolicy string
+
+const (
+	ClientIDMetadataDocumentPolicyClientIDMetadataDocumentPolicyUnspecified   ClientIDMetadataDocumentPolicy = "CLIENT_ID_METADATA_DOCUMENT_POLICY_UNSPECIFIED"
+	ClientIDMetadataDocumentPolicyClientIDMetadataDocumentPolicyAllowAll      ClientIDMetadataDocumentPolicy = "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOW_ALL"
+	ClientIDMetadataDocumentPolicyClientIDMetadataDocumentPolicyRequestable   ClientIDMetadataDocumentPolicy = "CLIENT_ID_METADATA_DOCUMENT_POLICY_REQUESTABLE"
+	ClientIDMetadataDocumentPolicyClientIDMetadataDocumentPolicyAllowlistOnly ClientIDMetadataDocumentPolicy = "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOWLIST_ONLY"
+)
+
+func (e ClientIDMetadataDocumentPolicy) ToPointer() *ClientIDMetadataDocumentPolicy {
+	return &e
+}
+func (e *ClientIDMetadataDocumentPolicy) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_UNSPECIFIED":
+		fallthrough
+	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOW_ALL":
+		fallthrough
+	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_REQUESTABLE":
+		fallthrough
+	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOWLIST_ONLY":
+		*e = ClientIDMetadataDocumentPolicy(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ClientIDMetadataDocumentPolicy: %v", v)
+	}
+}
+
 // The SessionSettings message.
 type SessionSettings struct {
+	// Policy ID for REQUESTABLE mode approval routing.
+	ClientIDApprovalRequestPolicyID *string `json:"clientIdApprovalRequestPolicyId,omitempty"`
+	// Policy for metadata document client_id URLs.
+	ClientIDMetadataDocumentPolicy *ClientIDMetadataDocumentPolicy `json:"clientIdMetadataDocumentPolicy,omitempty"`
 	// The CIDRRestriction message.
 	CIDRRestriction *CIDRRestriction `json:"connectorSource,omitempty"`
 	// The CIDRRestriction message.
@@ -20,6 +62,20 @@ type SessionSettings struct {
 	CIDRRestriction4 *CIDRRestriction `json:"ssoAdminSource,omitempty"`
 	// The CIDRRestriction message.
 	CIDRRestriction5 *CIDRRestriction `json:"ssoUserSource,omitempty"`
+}
+
+func (s *SessionSettings) GetClientIDApprovalRequestPolicyID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ClientIDApprovalRequestPolicyID
+}
+
+func (s *SessionSettings) GetClientIDMetadataDocumentPolicy() *ClientIDMetadataDocumentPolicy {
+	if s == nil {
+		return nil
+	}
+	return s.ClientIDMetadataDocumentPolicy
 }
 
 func (s *SessionSettings) GetCIDRRestriction() *CIDRRestriction {

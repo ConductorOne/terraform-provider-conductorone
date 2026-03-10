@@ -23,7 +23,12 @@ resource "conductorone_access_review" "my_access_review" {
       # ...
     }
     app_selection_criteria_scope = {
-      # ...
+      compliance_framework_attribute_value_ids = [
+        "..."
+      ]
+      risk_level_attribute_value_ids = [
+        "..."
+      ]
     }
     application_access_scope = {
       # ...
@@ -53,6 +58,9 @@ resource "conductorone_access_review" "my_access_review" {
       }
       source_filter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
       type_filter   = "GRANT_FILTER_TYPE_PERMANENT"
+    }
+    resource_selection_scope = {
+      # ...
     }
     resource_type_selection_scope = {
       # ...

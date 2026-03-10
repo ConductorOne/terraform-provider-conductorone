@@ -175,13 +175,6 @@ resource "conductorone_automation" "my_automation" {
         # ...
       }
       grant_entitlements = {
-        app_entitlement_refs = [
-          {
-            app_id = "...my_app_id..."
-            id     = "...my_id..."
-          }
-        ]
-        app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         grant_entitlement_exclusion_criteria = {
           excluded_app_ids = [
             "..."
@@ -492,13 +485,6 @@ resource "conductorone_automation" "my_automation" {
         # ...
       }
       grant_entitlements = {
-        app_entitlement_refs = [
-          {
-            app_id = "...my_app_id..."
-            id     = "...my_id..."
-          }
-        ]
-        app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         grant_entitlement_exclusion_criteria = {
           excluded_app_ids = [
             "..."
@@ -674,21 +660,10 @@ resource "conductorone_automation" "my_automation" {
         app_id_cel = "...my_app_id_cel..."
         condition  = "...my_condition..."
       }
-      form_trigger = "{ \"see\": \"documentation\" }"
       grant_deleted_trigger = {
         grant_trigger_filter = {
           account_filter = {
             account_type = "APP_USER_TYPE_UNSPECIFIED"
-          }
-          entitlement_filter = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-            app_id                   = "...my_app_id..."
           }
           entitlement_inclusion_all = {
             # ...
@@ -730,16 +705,6 @@ resource "conductorone_automation" "my_automation" {
           account_filter = {
             account_type = "APP_USER_TYPE_UNSPECIFIED"
           }
-          entitlement_filter = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-            app_id                   = "...my_app_id..."
-          }
           entitlement_inclusion_all = {
             # ...
           }
@@ -774,9 +739,6 @@ resource "conductorone_automation" "my_automation" {
             grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
           }
         }
-      }
-      manual_automation_trigger = {
-        # ...
       }
       schedule_trigger = {
         advanced         = false
@@ -866,21 +828,10 @@ resource "conductorone_automation" "my_automation" {
         app_id_cel = "...my_app_id_cel..."
         condition  = "...my_condition..."
       }
-      form_trigger = "{ \"see\": \"documentation\" }"
       grant_deleted_trigger = {
         grant_trigger_filter = {
           account_filter = {
             account_type = "APP_USER_TYPE_SERVICE_ACCOUNT"
-          }
-          entitlement_filter = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-            app_id                   = "...my_app_id..."
           }
           entitlement_inclusion_all = {
             # ...
@@ -922,16 +873,6 @@ resource "conductorone_automation" "my_automation" {
           account_filter = {
             account_type = "APP_USER_TYPE_UNSPECIFIED"
           }
-          entitlement_filter = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-            app_id                   = "...my_app_id..."
-          }
           entitlement_inclusion_all = {
             # ...
           }
@@ -966,9 +907,6 @@ resource "conductorone_automation" "my_automation" {
             grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
           }
         }
-      }
-      manual_automation_trigger = {
-        # ...
       }
       schedule_trigger = {
         advanced         = false
@@ -1470,8 +1408,6 @@ Optional:
 
 Optional:
 
-- `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--app_entitlement_refs))
-- `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
 - `grant_entitlement_exclusion_criteria` (Attributes) The GrantEntitlementExclusionCriteria message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_criteria))
 - `grant_entitlement_exclusion_list` (Attributes) The GrantEntitlementExclusionList message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_list))
 - `grant_entitlement_exclusion_list_cel` (Attributes) The GrantEntitlementExclusionListCel message. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_list_cel))
@@ -1482,15 +1418,6 @@ Optional:
 - `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
 - `user_id_cel` (String) The userIdCel field.
 - `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--automation_steps--grant_entitlements--user_ref))
-
-<a id="nestedatt--automation_steps--grant_entitlements--app_entitlement_refs"></a>
-### Nested Schema for `automation_steps.grant_entitlements.app_entitlement_refs`
-
-Optional:
-
-- `app_id` (String) The appId field.
-- `id` (String) The id field.
-
 
 <a id="nestedatt--automation_steps--grant_entitlements--grant_entitlement_exclusion_criteria"></a>
 ### Nested Schema for `automation_steps.grant_entitlements.grant_entitlement_exclusion_criteria`
@@ -2217,8 +2144,6 @@ Optional:
 
 Optional:
 
-- `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--app_entitlement_refs))
-- `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
 - `grant_entitlement_exclusion_criteria` (Attributes) The GrantEntitlementExclusionCriteria message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_criteria))
 - `grant_entitlement_exclusion_list` (Attributes) The GrantEntitlementExclusionList message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_list))
 - `grant_entitlement_exclusion_list_cel` (Attributes) The GrantEntitlementExclusionListCel message. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_list_cel))
@@ -2229,15 +2154,6 @@ Optional:
 - `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
 - `user_id_cel` (String) The userIdCel field.
 - `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--draft_automation_steps--grant_entitlements--user_ref))
-
-<a id="nestedatt--draft_automation_steps--grant_entitlements--app_entitlement_refs"></a>
-### Nested Schema for `draft_automation_steps.grant_entitlements.app_entitlement_refs`
-
-Optional:
-
-- `app_id` (String) The appId field.
-- `id` (String) The id field.
-
 
 <a id="nestedatt--draft_automation_steps--grant_entitlements--grant_entitlement_exclusion_criteria"></a>
 ### Nested Schema for `draft_automation_steps.grant_entitlements.grant_entitlement_exclusion_criteria`
@@ -2589,10 +2505,8 @@ This message contains a oneof named app_identifier. Only a single field of the f
 This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
   - appId
   - appIdCel (see [below for nested schema](#nestedatt--draft_triggers--app_user_updated_trigger))
-- `form_trigger` (String) The FormTrigger message. Parsed as JSON.
 - `grant_deleted_trigger` (Attributes) The GrantDeletedTrigger message. (see [below for nested schema](#nestedatt--draft_triggers--grant_deleted_trigger))
 - `grant_found_trigger` (Attributes) The GrantFoundTrigger message. (see [below for nested schema](#nestedatt--draft_triggers--grant_found_trigger))
-- `manual_automation_trigger` (Attributes) The ManualAutomationTrigger message. (see [below for nested schema](#nestedatt--draft_triggers--manual_automation_trigger))
 - `schedule_trigger` (Attributes) The ScheduleTrigger message. (see [below for nested schema](#nestedatt--draft_triggers--schedule_trigger))
 - `schedule_trigger_app_user` (Attributes) The ScheduleTriggerAppUser message. (see [below for nested schema](#nestedatt--draft_triggers--schedule_trigger_app_user))
 - `usage_based_revocation_trigger` (Attributes) The UsageBasedRevocationTrigger message.
@@ -2682,7 +2596,6 @@ This message contains a oneof named entitlement_inclusion. Only a single field o
 Optional:
 
 - `account_filter` (Attributes) The AccountFilter message. (see [below for nested schema](#nestedatt--draft_triggers--grant_deleted_trigger--grant_trigger_filter--account_filter))
-- `entitlement_filter` (Attributes) The EntitlementFilter message. (see [below for nested schema](#nestedatt--draft_triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_filter))
 - `entitlement_inclusion_all` (Attributes) The EntitlementInclusionAll message. (see [below for nested schema](#nestedatt--draft_triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_inclusion_all))
 - `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--draft_triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_inclusion_criteria))
 - `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--draft_triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_inclusion_list))
@@ -2695,25 +2608,6 @@ Optional:
 Optional:
 
 - `account_type` (String) The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
-
-
-<a id="nestedatt--draft_triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_filter"></a>
-### Nested Schema for `draft_triggers.grant_deleted_trigger.grant_trigger_filter.entitlement_filter`
-
-Optional:
-
-- `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--draft_triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_filter--app_entitlement_refs))
-- `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
-- `app_id` (String) The appId field.
-
-<a id="nestedatt--draft_triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_filter--app_entitlement_refs"></a>
-### Nested Schema for `draft_triggers.grant_deleted_trigger.grant_trigger_filter.entitlement_filter.app_entitlement_refs`
-
-Optional:
-
-- `app_id` (String) The appId field.
-- `id` (String) The id field.
-
 
 
 <a id="nestedatt--draft_triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_inclusion_all"></a>
@@ -2787,7 +2681,6 @@ This message contains a oneof named entitlement_inclusion. Only a single field o
 Optional:
 
 - `account_filter` (Attributes) The AccountFilter message. (see [below for nested schema](#nestedatt--draft_triggers--grant_found_trigger--grant_trigger_filter--account_filter))
-- `entitlement_filter` (Attributes) The EntitlementFilter message. (see [below for nested schema](#nestedatt--draft_triggers--grant_found_trigger--grant_trigger_filter--entitlement_filter))
 - `entitlement_inclusion_all` (Attributes) The EntitlementInclusionAll message. (see [below for nested schema](#nestedatt--draft_triggers--grant_found_trigger--grant_trigger_filter--entitlement_inclusion_all))
 - `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--draft_triggers--grant_found_trigger--grant_trigger_filter--entitlement_inclusion_criteria))
 - `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--draft_triggers--grant_found_trigger--grant_trigger_filter--entitlement_inclusion_list))
@@ -2800,25 +2693,6 @@ Optional:
 Optional:
 
 - `account_type` (String) The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
-
-
-<a id="nestedatt--draft_triggers--grant_found_trigger--grant_trigger_filter--entitlement_filter"></a>
-### Nested Schema for `draft_triggers.grant_found_trigger.grant_trigger_filter.entitlement_filter`
-
-Optional:
-
-- `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--draft_triggers--grant_found_trigger--grant_trigger_filter--entitlement_filter--app_entitlement_refs))
-- `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
-- `app_id` (String) The appId field.
-
-<a id="nestedatt--draft_triggers--grant_found_trigger--grant_trigger_filter--entitlement_filter--app_entitlement_refs"></a>
-### Nested Schema for `draft_triggers.grant_found_trigger.grant_trigger_filter.entitlement_filter.app_entitlement_refs`
-
-Optional:
-
-- `app_id` (String) The appId field.
-- `id` (String) The id field.
-
 
 
 <a id="nestedatt--draft_triggers--grant_found_trigger--grant_trigger_filter--entitlement_inclusion_all"></a>
@@ -2871,10 +2745,6 @@ Optional:
 - `grant_source_filter` (String) The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
 
 
-
-
-<a id="nestedatt--draft_triggers--manual_automation_trigger"></a>
-### Nested Schema for `draft_triggers.manual_automation_trigger`
 
 
 <a id="nestedatt--draft_triggers--schedule_trigger"></a>
@@ -3016,10 +2886,8 @@ This message contains a oneof named app_identifier. Only a single field of the f
 This message contains a oneof named app_identifier. Only a single field of the following list may be set at a time:
   - appId
   - appIdCel (see [below for nested schema](#nestedatt--triggers--app_user_updated_trigger))
-- `form_trigger` (String) The FormTrigger message. Parsed as JSON.
 - `grant_deleted_trigger` (Attributes) The GrantDeletedTrigger message. (see [below for nested schema](#nestedatt--triggers--grant_deleted_trigger))
 - `grant_found_trigger` (Attributes) The GrantFoundTrigger message. (see [below for nested schema](#nestedatt--triggers--grant_found_trigger))
-- `manual_automation_trigger` (Attributes) The ManualAutomationTrigger message. (see [below for nested schema](#nestedatt--triggers--manual_automation_trigger))
 - `schedule_trigger` (Attributes) The ScheduleTrigger message. (see [below for nested schema](#nestedatt--triggers--schedule_trigger))
 - `schedule_trigger_app_user` (Attributes) The ScheduleTriggerAppUser message. (see [below for nested schema](#nestedatt--triggers--schedule_trigger_app_user))
 - `usage_based_revocation_trigger` (Attributes) The UsageBasedRevocationTrigger message.
@@ -3109,7 +2977,6 @@ This message contains a oneof named entitlement_inclusion. Only a single field o
 Optional:
 
 - `account_filter` (Attributes) The AccountFilter message. (see [below for nested schema](#nestedatt--triggers--grant_deleted_trigger--grant_trigger_filter--account_filter))
-- `entitlement_filter` (Attributes) The EntitlementFilter message. (see [below for nested schema](#nestedatt--triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_filter))
 - `entitlement_inclusion_all` (Attributes) The EntitlementInclusionAll message. (see [below for nested schema](#nestedatt--triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_inclusion_all))
 - `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_inclusion_criteria))
 - `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_inclusion_list))
@@ -3122,25 +2989,6 @@ Optional:
 Optional:
 
 - `account_type` (String) The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
-
-
-<a id="nestedatt--triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_filter"></a>
-### Nested Schema for `triggers.grant_deleted_trigger.grant_trigger_filter.entitlement_filter`
-
-Optional:
-
-- `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_filter--app_entitlement_refs))
-- `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
-- `app_id` (String) The appId field.
-
-<a id="nestedatt--triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_filter--app_entitlement_refs"></a>
-### Nested Schema for `triggers.grant_deleted_trigger.grant_trigger_filter.entitlement_filter.app_entitlement_refs`
-
-Optional:
-
-- `app_id` (String) The appId field.
-- `id` (String) The id field.
-
 
 
 <a id="nestedatt--triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_inclusion_all"></a>
@@ -3214,7 +3062,6 @@ This message contains a oneof named entitlement_inclusion. Only a single field o
 Optional:
 
 - `account_filter` (Attributes) The AccountFilter message. (see [below for nested schema](#nestedatt--triggers--grant_found_trigger--grant_trigger_filter--account_filter))
-- `entitlement_filter` (Attributes) The EntitlementFilter message. (see [below for nested schema](#nestedatt--triggers--grant_found_trigger--grant_trigger_filter--entitlement_filter))
 - `entitlement_inclusion_all` (Attributes) The EntitlementInclusionAll message. (see [below for nested schema](#nestedatt--triggers--grant_found_trigger--grant_trigger_filter--entitlement_inclusion_all))
 - `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--triggers--grant_found_trigger--grant_trigger_filter--entitlement_inclusion_criteria))
 - `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--triggers--grant_found_trigger--grant_trigger_filter--entitlement_inclusion_list))
@@ -3227,25 +3074,6 @@ Optional:
 Optional:
 
 - `account_type` (String) The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
-
-
-<a id="nestedatt--triggers--grant_found_trigger--grant_trigger_filter--entitlement_filter"></a>
-### Nested Schema for `triggers.grant_found_trigger.grant_trigger_filter.entitlement_filter`
-
-Optional:
-
-- `app_entitlement_refs` (Attributes List) The appEntitlementRefs field. (see [below for nested schema](#nestedatt--triggers--grant_found_trigger--grant_trigger_filter--entitlement_filter--app_entitlement_refs))
-- `app_entitlement_refs_cel` (String) The appEntitlementRefsCel field.
-- `app_id` (String) The appId field.
-
-<a id="nestedatt--triggers--grant_found_trigger--grant_trigger_filter--entitlement_filter--app_entitlement_refs"></a>
-### Nested Schema for `triggers.grant_found_trigger.grant_trigger_filter.entitlement_filter.app_entitlement_refs`
-
-Optional:
-
-- `app_id` (String) The appId field.
-- `id` (String) The id field.
-
 
 
 <a id="nestedatt--triggers--grant_found_trigger--grant_trigger_filter--entitlement_inclusion_all"></a>
@@ -3298,10 +3126,6 @@ Optional:
 - `grant_source_filter` (String) The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
 
 
-
-
-<a id="nestedatt--triggers--manual_automation_trigger"></a>
-### Nested Schema for `triggers.manual_automation_trigger`
 
 
 <a id="nestedatt--triggers--schedule_trigger"></a>

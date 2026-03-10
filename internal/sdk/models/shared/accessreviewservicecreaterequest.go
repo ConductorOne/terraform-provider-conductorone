@@ -16,6 +16,7 @@ const (
 	ScopeTypeAccessReviewScopeTypeUnspecified       ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
 	ScopeTypeAccessReviewScopeTypeByEntitlements    ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS"
 	ScopeTypeAccessReviewScopeTypeByAccessConflicts ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
+	ScopeTypeAccessReviewScopeTypeByResource        ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 )
 
 func (e ScopeType) ToPointer() *ScopeType {
@@ -32,6 +33,8 @@ func (e *ScopeType) UnmarshalJSON(data []byte) error {
 	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS":
 		fallthrough
 	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS":
+		fallthrough
+	case "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
 		*e = ScopeType(v)
 		return nil
 	default:
@@ -86,6 +89,10 @@ type AccessReviewServiceCreateRequest struct {
 	// This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
 	//   - allAccessConflicts
 	//   - specificAccessConflicts
+	//
+	//
+	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
+	//   - resourceSelection
 	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
 }

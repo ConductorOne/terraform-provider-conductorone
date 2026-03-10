@@ -112,6 +112,7 @@ const (
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeUnspecified       AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByEntitlements    AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS"
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByAccessConflicts AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
+	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByResource        AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 )
 
 func (e AccessReviewTemplateScopeType) ToPointer() *AccessReviewTemplateScopeType {
@@ -128,6 +129,8 @@ func (e *AccessReviewTemplateScopeType) UnmarshalJSON(data []byte) error {
 	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS":
 		fallthrough
 	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS":
+		fallthrough
+	case "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
 		*e = AccessReviewTemplateScopeType(v)
 		return nil
 	default:
@@ -215,6 +218,10 @@ type AccessReviewTemplate struct {
 	// This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
 	//   - allAccessConflicts
 	//   - specificAccessConflicts
+	//
+	//
+	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
+	//   - resourceSelection
 	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scope,omitempty"`
 	// The scopeType field.
@@ -506,6 +513,10 @@ type AccessReviewTemplateInput struct {
 	// This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
 	//   - allAccessConflicts
 	//   - specificAccessConflicts
+	//
+	//
+	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
+	//   - resourceSelection
 	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scope,omitempty"`
 	// The scopeType field.

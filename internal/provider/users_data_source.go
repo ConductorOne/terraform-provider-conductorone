@@ -7,8 +7,10 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -29,22 +31,27 @@ type UsersDataSource struct {
 
 // UsersDataSourceModel describes the data model.
 type UsersDataSourceModel struct {
-	Departments   []types.String                        `tfsdk:"departments"`
-	Email         types.String                          `tfsdk:"email"`
-	ExcludeIds    []types.String                        `tfsdk:"exclude_ids"`
-	ExcludeTypes  []types.String                        `tfsdk:"exclude_types"`
-	Expanded      []tfTypes.SearchUsersResponseExpanded `tfsdk:"expanded"`
-	Ids           []types.String                        `tfsdk:"ids"`
-	JobTitles     []types.String                        `tfsdk:"job_titles"`
-	List          []tfTypes.UserView                    `tfsdk:"list"`
-	ManagerIds    []types.String                        `tfsdk:"manager_ids"`
-	NextPageToken types.String                          `tfsdk:"next_page_token"`
-	PageSize      types.Int32                           `tfsdk:"page_size"`
-	PageToken     types.String                          `tfsdk:"page_token"`
-	Query         types.String                          `tfsdk:"query"`
-	Refs          []tfTypes.UserRef                     `tfsdk:"refs"`
-	RoleIds       []types.String                        `tfsdk:"role_ids"`
-	UserStatuses  []types.String                        `tfsdk:"user_statuses"`
+	DelegatedUserIds []types.String                        `tfsdk:"delegated_user_ids"`
+	DelegateStatus   types.String                          `tfsdk:"delegate_status"`
+	Departments      []types.String                        `tfsdk:"departments"`
+	Email            types.String                          `tfsdk:"email"`
+	ExcludeIds       []types.String                        `tfsdk:"exclude_ids"`
+	ExcludeOrigins   []types.String                        `tfsdk:"exclude_origins"`
+	ExcludeTypes     []types.String                        `tfsdk:"exclude_types"`
+	Expanded         []tfTypes.SearchUsersResponseExpanded `tfsdk:"expanded"`
+	Ids              []types.String                        `tfsdk:"ids"`
+	IsDelegate       types.Bool                            `tfsdk:"is_delegate"`
+	JobTitles        []types.String                        `tfsdk:"job_titles"`
+	List             []tfTypes.UserView                    `tfsdk:"list"`
+	ManagerIds       []types.String                        `tfsdk:"manager_ids"`
+	NextPageToken    types.String                          `tfsdk:"next_page_token"`
+	Origins          []types.String                        `tfsdk:"origins"`
+	PageSize         types.Int32                           `tfsdk:"page_size"`
+	PageToken        types.String                          `tfsdk:"page_token"`
+	Query            types.String                          `tfsdk:"query"`
+	Refs             []tfTypes.UserRef                     `tfsdk:"refs"`
+	RoleIds          []types.String                        `tfsdk:"role_ids"`
+	UserStatuses     []types.String                        `tfsdk:"user_statuses"`
 }
 
 // Metadata returns the data source type name.
@@ -58,6 +65,22 @@ func (r *UsersDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 		MarkdownDescription: "Users DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"delegate_status": schema.StringAttribute{
+				Optional:    true,
+				Description: `Filter for users based on their delegate status. must be one of ["DELEGATE_STATUS_UNSPECIFIED", "DELEGATE_STATUS_HAS_DELEGATE", "DELEGATE_STATUS_NO_DELEGATE"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"DELEGATE_STATUS_UNSPECIFIED",
+						"DELEGATE_STATUS_HAS_DELEGATE",
+						"DELEGATE_STATUS_NO_DELEGATE",
+					),
+				},
+			},
+			"delegated_user_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Filter for users that have any of the delegated user IDs on this list.`,
+			},
 			"departments": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
@@ -71,6 +94,11 @@ func (r *UsersDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An array of users IDs to exclude from the results.`,
+			},
+			"exclude_origins": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Filter to exclude users with these origins.`,
 			},
 			"exclude_types": schema.ListAttribute{
 				Optional:    true,
@@ -88,6 +116,10 @@ func (r *UsersDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Deprecated. Use refs array instead.`,
+			},
+			"is_delegate": schema.BoolAttribute{
+				Optional:    true,
+				Description: `Filter for users who are delegates of at least one other user.`,
 			},
 			"job_titles": schema.ListAttribute{
 				Optional:    true,
@@ -403,6 +435,10 @@ func (r *UsersDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 									},
 									Description: `A list of objects mapped based on managerId attribute mappings configured in the system.`,
 								},
+								"origin": schema.StringAttribute{
+									Computed:    true,
+									Description: `The origin of the user, describing who owns the user's lifecycle.`,
+								},
 								"profile": schema.SingleNestedAttribute{
 									Computed: true,
 								},
@@ -474,6 +510,11 @@ func (r *UsersDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
 				Description: `The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.`,
+			},
+			"origins": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Filter to include only users with these origins.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,

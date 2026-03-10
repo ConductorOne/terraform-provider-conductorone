@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -17,6 +18,23 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 	if resp != nil {
 		r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
 		r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
+		if resp.AppUserMapper == nil {
+			r.AppUserMapper = nil
+		} else {
+			r.AppUserMapper = &tfTypes.AppUserMapper{}
+			if resp.AppUserMapper.MappingCases != nil {
+				r.AppUserMapper.MappingCases = []tfTypes.AppUserMapperMatchCase{}
+
+				for _, mappingCasesItem := range resp.AppUserMapper.MappingCases {
+					var mappingCases tfTypes.AppUserMapperMatchCase
+
+					mappingCases.AppUserKeyCel = types.StringPointerValue(mappingCasesItem.AppUserKeyCel)
+					mappingCases.UserKeyCel = types.StringPointerValue(mappingCasesItem.UserKeyCel)
+
+					r.AppUserMapper.MappingCases = append(r.AppUserMapper.MappingCases, mappingCases)
+				}
+			}
+		}
 		r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
 		r.ConnectorVersion = types.Int64PointerValue(resp.ConnectorVersion)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
@@ -149,6 +167,34 @@ func (r *AppResourceModel) ToOperationsC1APIAppV1AppsUpdateRequest(ctx context.C
 func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	var appUserMapper *shared.AppUserMapper
+	if r.AppUserMapper != nil {
+		var mappingCases []shared.AppUserMapperMatchCase
+		if r.AppUserMapper.MappingCases != nil {
+			mappingCases = make([]shared.AppUserMapperMatchCase, 0, len(r.AppUserMapper.MappingCases))
+			for mappingCasesIndex := range r.AppUserMapper.MappingCases {
+				appUserKeyCel := new(string)
+				if !r.AppUserMapper.MappingCases[mappingCasesIndex].AppUserKeyCel.IsUnknown() && !r.AppUserMapper.MappingCases[mappingCasesIndex].AppUserKeyCel.IsNull() {
+					*appUserKeyCel = r.AppUserMapper.MappingCases[mappingCasesIndex].AppUserKeyCel.ValueString()
+				} else {
+					appUserKeyCel = nil
+				}
+				userKeyCel := new(string)
+				if !r.AppUserMapper.MappingCases[mappingCasesIndex].UserKeyCel.IsUnknown() && !r.AppUserMapper.MappingCases[mappingCasesIndex].UserKeyCel.IsNull() {
+					*userKeyCel = r.AppUserMapper.MappingCases[mappingCasesIndex].UserKeyCel.ValueString()
+				} else {
+					userKeyCel = nil
+				}
+				mappingCases = append(mappingCases, shared.AppUserMapperMatchCase{
+					AppUserKeyCel: appUserKeyCel,
+					UserKeyCel:    userKeyCel,
+				})
+			}
+		}
+		appUserMapper = &shared.AppUserMapper{
+			MappingCases: mappingCases,
+		}
+	}
 	certifyPolicyID := new(string)
 	if !r.CertifyPolicyID.IsUnknown() && !r.CertifyPolicyID.IsNull() {
 		*certifyPolicyID = r.CertifyPolicyID.ValueString()
@@ -228,6 +274,7 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 		strictAccessEntitlementProvisioning = nil
 	}
 	out := shared.AppInput{
+		AppUserMapper:                       appUserMapper,
 		CertifyPolicyID:                     certifyPolicyID,
 		ConnectorVersion:                    connectorVersion,
 		DefaultRequestCatalogID:             defaultRequestCatalogID,

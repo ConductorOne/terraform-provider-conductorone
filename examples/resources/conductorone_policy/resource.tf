@@ -208,6 +208,49 @@ resource "conductorone_policy" "my_policy" {
               }
               manual_provision = {
                 instructions = "...my_instructions..."
+                provisioner_assignment = {
+                  app_owner_provisioner = {
+                    allow_reassignment = false
+                    fallback_user_ids = [
+                      "..."
+                    ]
+                  }
+                  entitlement_owner_provisioner = {
+                    allow_reassignment = false
+                    fallback_user_ids = [
+                      "..."
+                    ]
+                  }
+                  expression_provisioner = {
+                    allow_reassignment = false
+                    expressions = [
+                      "..."
+                    ]
+                    fallback_user_ids = [
+                      "..."
+                    ]
+                  }
+                  group_provisioner = {
+                    allow_reassignment = true
+                    app_group_id       = "...my_app_group_id..."
+                    app_id             = "...my_app_id..."
+                    fallback_user_ids = [
+                      "..."
+                    ]
+                  }
+                  manager_provisioner = {
+                    allow_reassignment = true
+                    fallback_user_ids = [
+                      "..."
+                    ]
+                  }
+                  user_provisioner = {
+                    allow_reassignment = true
+                    user_ids = [
+                      "..."
+                    ]
+                  }
+                }
                 user_ids = [
                   "..."
                 ]
