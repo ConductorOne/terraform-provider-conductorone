@@ -163,12 +163,17 @@ type retryTripper struct {
 func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	for attempt := 0; ; attempt++ {
 		// Re-create the request body for retries.
-		if attempt > 0 && req.GetBody != nil {
-			body, err := req.GetBody()
-			if err != nil {
-				return nil, err
+		if attempt > 0 {
+			if req.Body != nil && req.GetBody == nil {
+				return nil, fmt.Errorf("cannot retry request: body is not replayable")
 			}
-			req.Body = body
+			if req.GetBody != nil {
+				body, err := req.GetBody()
+				if err != nil {
+					return nil, err
+				}
+				req.Body = body
+			}
 		}
 
 		resp, err := rt.next.RoundTrip(req)
