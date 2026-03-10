@@ -7,8 +7,6 @@ import (
 )
 
 type GrantEntitlements struct {
-	AppEntitlementRefs                []AppEntitlementRef                `tfsdk:"app_entitlement_refs"`
-	AppEntitlementRefsCel             types.String                       `tfsdk:"app_entitlement_refs_cel"`
 	GrantEntitlementExclusionCriteria *GrantEntitlementExclusionCriteria `tfsdk:"grant_entitlement_exclusion_criteria"`
 	GrantEntitlementExclusionList     *GrantEntitlementExclusionList     `tfsdk:"grant_entitlement_exclusion_list"`
 	GrantEntitlementExclusionListCel  *GrantEntitlementExclusionListCel  `tfsdk:"grant_entitlement_exclusion_list_cel"`

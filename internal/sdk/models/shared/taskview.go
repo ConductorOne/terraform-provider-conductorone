@@ -12,6 +12,8 @@ type TaskView struct {
 	AppUserLastUsagePath *string `json:"appUserLastUsagePath,omitempty"`
 	// JSONPATH expression indicating the location of the AppUser object in the expanded array
 	AppUserPath *string `json:"appUserPath,omitempty"`
+	// JSONPATH expression indicating the location of the ApproverUsers objects in the expanded array. These are the users who have approved or denied this task.
+	ApproversPath *string `json:"approversPath,omitempty"`
 	// JSONPATH expression indicating the location of the object of the User that created the ticket in the expanded array
 	CreatedByUserPath *string `json:"createdByUserPath,omitempty"`
 	// JSONPATH expression indicating the location of the Entitlements objects in the expanded array
@@ -54,6 +56,13 @@ func (t *TaskView) GetAppUserPath() *string {
 		return nil
 	}
 	return t.AppUserPath
+}
+
+func (t *TaskView) GetApproversPath() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ApproversPath
 }
 
 func (t *TaskView) GetCreatedByUserPath() *string {

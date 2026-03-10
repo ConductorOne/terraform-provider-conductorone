@@ -10,7 +10,6 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_int64validators "github.com/conductorone/terraform-provider-conductorone/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -644,33 +643,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"app_entitlement_refs": schema.ListNestedAttribute{
-									Computed: true,
-									Optional: true,
-									NestedObject: schema.NestedAttributeObject{
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
-										},
-										Attributes: map[string]schema.Attribute{
-											"app_id": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The appId field.`,
-											},
-											"id": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The id field.`,
-											},
-										},
-									},
-									Description: `The appEntitlementRefs field.`,
-								},
-								"app_entitlement_refs_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The appEntitlementRefsCel field.`,
-								},
 								"grant_entitlement_exclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
@@ -1893,33 +1865,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"app_entitlement_refs": schema.ListNestedAttribute{
-									Computed: true,
-									Optional: true,
-									NestedObject: schema.NestedAttributeObject{
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
-										},
-										Attributes: map[string]schema.Attribute{
-											"app_id": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The appId field.`,
-											},
-											"id": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The id field.`,
-											},
-										},
-									},
-									Description: `The appEntitlementRefs field.`,
-								},
-								"app_entitlement_refs_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The appEntitlementRefsCel field.`,
-								},
 								"grant_entitlement_exclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
@@ -2666,12 +2611,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"form_trigger": schema.StringAttribute{
-							CustomType:  jsontypes.NormalizedType{},
-							Computed:    true,
-							Optional:    true,
-							Description: `The FormTrigger message. Parsed as JSON.`,
-						},
 						"grant_deleted_trigger": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -2699,45 +2638,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												},
 											},
 											Description: `The AccountFilter message.`,
-										},
-										"entitlement_filter": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"app_entitlement_refs": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"app_id": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The appId field.`,
-															},
-															"id": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The id field.`,
-															},
-														},
-													},
-													Description: `The appEntitlementRefs field.`,
-												},
-												"app_entitlement_refs_cel": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appEntitlementRefsCel field.`,
-												},
-												"app_id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appId field.`,
-												},
-											},
-											Description: `The EntitlementFilter message.`,
 										},
 										"entitlement_inclusion_all": schema.SingleNestedAttribute{
 											Computed:    true,
@@ -2900,45 +2800,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The AccountFilter message.`,
 										},
-										"entitlement_filter": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"app_entitlement_refs": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"app_id": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The appId field.`,
-															},
-															"id": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The id field.`,
-															},
-														},
-													},
-													Description: `The appEntitlementRefs field.`,
-												},
-												"app_entitlement_refs_cel": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appEntitlementRefsCel field.`,
-												},
-												"app_id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appId field.`,
-												},
-											},
-											Description: `The EntitlementFilter message.`,
-										},
 										"entitlement_inclusion_all": schema.SingleNestedAttribute{
 											Computed:    true,
 											Optional:    true,
@@ -3071,11 +2932,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								},
 							},
 							Description: `The GrantFoundTrigger message.`,
-						},
-						"manual_automation_trigger": schema.SingleNestedAttribute{
-							Computed:    true,
-							Optional:    true,
-							Description: `The ManualAutomationTrigger message.`,
 						},
 						"schedule_trigger": schema.SingleNestedAttribute{
 							Computed: true,
@@ -3463,12 +3319,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"form_trigger": schema.StringAttribute{
-							CustomType:  jsontypes.NormalizedType{},
-							Computed:    true,
-							Optional:    true,
-							Description: `The FormTrigger message. Parsed as JSON.`,
-						},
 						"grant_deleted_trigger": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -3496,45 +3346,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												},
 											},
 											Description: `The AccountFilter message.`,
-										},
-										"entitlement_filter": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"app_entitlement_refs": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"app_id": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The appId field.`,
-															},
-															"id": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The id field.`,
-															},
-														},
-													},
-													Description: `The appEntitlementRefs field.`,
-												},
-												"app_entitlement_refs_cel": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appEntitlementRefsCel field.`,
-												},
-												"app_id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appId field.`,
-												},
-											},
-											Description: `The EntitlementFilter message.`,
 										},
 										"entitlement_inclusion_all": schema.SingleNestedAttribute{
 											Computed:    true,
@@ -3697,45 +3508,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The AccountFilter message.`,
 										},
-										"entitlement_filter": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"app_entitlement_refs": schema.ListNestedAttribute{
-													Computed: true,
-													Optional: true,
-													NestedObject: schema.NestedAttributeObject{
-														Validators: []validator.Object{
-															speakeasy_objectvalidators.NotNull(),
-														},
-														Attributes: map[string]schema.Attribute{
-															"app_id": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The appId field.`,
-															},
-															"id": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `The id field.`,
-															},
-														},
-													},
-													Description: `The appEntitlementRefs field.`,
-												},
-												"app_entitlement_refs_cel": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appEntitlementRefsCel field.`,
-												},
-												"app_id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appId field.`,
-												},
-											},
-											Description: `The EntitlementFilter message.`,
-										},
 										"entitlement_inclusion_all": schema.SingleNestedAttribute{
 											Computed:    true,
 											Optional:    true,
@@ -3868,11 +3640,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								},
 							},
 							Description: `The GrantFoundTrigger message.`,
-						},
-						"manual_automation_trigger": schema.SingleNestedAttribute{
-							Computed:    true,
-							Optional:    true,
-							Description: `The ManualAutomationTrigger message.`,
 						},
 						"schedule_trigger": schema.SingleNestedAttribute{
 							Computed: true,

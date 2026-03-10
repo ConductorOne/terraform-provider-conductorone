@@ -33,6 +33,7 @@ type DirectoryResourceModel struct {
 	AppID                     types.String                                  `tfsdk:"app_id"`
 	DirectoryAccountFilterAll *tfTypes.DirectoryAccountFilterAll            `tfsdk:"directory_account_filter_all"`
 	DirectoryAccountFilterCel *tfTypes.DirectoryAccountFilterCel            `tfsdk:"directory_account_filter_cel"`
+	DirectoryMergeConfig      *tfTypes.DirectoryMergeConfig                 `tfsdk:"directory_merge_config"`
 	DirectoryView             *tfTypes.DirectoryView                        `tfsdk:"directory_view"`
 	Expanded                  []tfTypes.DirectoryServiceGetResponseExpanded `tfsdk:"expanded"`
 }
@@ -62,6 +63,28 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
 					},
 				},
 				Description: `The DirectoryAccountFilterCel message.`,
+			},
+			"directory_merge_config": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"match_cases": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"app_user_key_cel": schema.StringAttribute{
+									Optional:    true,
+									Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
+								},
+								"user_key_cel": schema.StringAttribute{
+									Optional:    true,
+									Description: `CEL expression evaluated against a User to produce match key(s).`,
+								},
+							},
+						},
+						Description: `Ordered list of match cases evaluated in sequence. First match wins.`,
+					},
+				},
+				Description: `DirectoryMergeConfig configures how AppUsers from this directory are matched to C1 Users.`,
 			},
 			"directory_view": schema.SingleNestedAttribute{
 				Computed: true,
@@ -93,6 +116,28 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
 									},
 								},
 								Description: `The DirectoryAccountFilterCel message.`,
+							},
+							"directory_merge_config": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"match_cases": schema.ListNestedAttribute{
+										Computed: true,
+										NestedObject: schema.NestedAttributeObject{
+											Attributes: map[string]schema.Attribute{
+												"app_user_key_cel": schema.StringAttribute{
+													Computed:    true,
+													Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
+												},
+												"user_key_cel": schema.StringAttribute{
+													Computed:    true,
+													Description: `CEL expression evaluated against a User to produce match key(s).`,
+												},
+											},
+										},
+										Description: `Ordered list of match cases evaluated in sequence. First match wins.`,
+									},
+								},
+								Description: `DirectoryMergeConfig configures how AppUsers from this directory are matched to C1 Users.`,
 							},
 							"updated_at": schema.StringAttribute{
 								Computed: true,

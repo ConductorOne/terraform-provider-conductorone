@@ -135,29 +135,29 @@ func (e *AccessReviewScopeType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// State - The state field.
-type State string
+// AccessReviewState - The state field.
+type AccessReviewState string
 
 const (
-	StateAccessReviewStateUnspecified                   State = "ACCESS_REVIEW_STATE_UNSPECIFIED"
-	StateAccessReviewStateOpen                          State = "ACCESS_REVIEW_STATE_OPEN"
-	StateAccessReviewStateClosed                        State = "ACCESS_REVIEW_STATE_CLOSED"
-	StateAccessReviewStatePending                       State = "ACCESS_REVIEW_STATE_PENDING"
-	StateAccessReviewStateReview                        State = "ACCESS_REVIEW_STATE_REVIEW"
-	StateAccessReviewStatePreparing                     State = "ACCESS_REVIEW_STATE_PREPARING"
-	StateAccessReviewStateStarting                      State = "ACCESS_REVIEW_STATE_STARTING"
-	StateAccessReviewStateDraft                         State = "ACCESS_REVIEW_STATE_DRAFT"
-	StateAccessReviewStateDeleting                      State = "ACCESS_REVIEW_STATE_DELETING"
-	StateAccessReviewStateDeleted                       State = "ACCESS_REVIEW_STATE_DELETED"
-	StateAccessReviewStateResettingPolicies             State = "ACCESS_REVIEW_STATE_RESETTING_POLICIES"
-	StateAccessReviewStateCopyingSetupEntitlements      State = "ACCESS_REVIEW_STATE_COPYING_SETUP_ENTITLEMENTS"
-	StateAccessReviewStateCopyingResourceTypeSelections State = "ACCESS_REVIEW_STATE_COPYING_RESOURCE_TYPE_SELECTIONS"
+	AccessReviewStateAccessReviewStateUnspecified                   AccessReviewState = "ACCESS_REVIEW_STATE_UNSPECIFIED"
+	AccessReviewStateAccessReviewStateOpen                          AccessReviewState = "ACCESS_REVIEW_STATE_OPEN"
+	AccessReviewStateAccessReviewStateClosed                        AccessReviewState = "ACCESS_REVIEW_STATE_CLOSED"
+	AccessReviewStateAccessReviewStatePending                       AccessReviewState = "ACCESS_REVIEW_STATE_PENDING"
+	AccessReviewStateAccessReviewStateReview                        AccessReviewState = "ACCESS_REVIEW_STATE_REVIEW"
+	AccessReviewStateAccessReviewStatePreparing                     AccessReviewState = "ACCESS_REVIEW_STATE_PREPARING"
+	AccessReviewStateAccessReviewStateStarting                      AccessReviewState = "ACCESS_REVIEW_STATE_STARTING"
+	AccessReviewStateAccessReviewStateDraft                         AccessReviewState = "ACCESS_REVIEW_STATE_DRAFT"
+	AccessReviewStateAccessReviewStateDeleting                      AccessReviewState = "ACCESS_REVIEW_STATE_DELETING"
+	AccessReviewStateAccessReviewStateDeleted                       AccessReviewState = "ACCESS_REVIEW_STATE_DELETED"
+	AccessReviewStateAccessReviewStateResettingPolicies             AccessReviewState = "ACCESS_REVIEW_STATE_RESETTING_POLICIES"
+	AccessReviewStateAccessReviewStateCopyingSetupEntitlements      AccessReviewState = "ACCESS_REVIEW_STATE_COPYING_SETUP_ENTITLEMENTS"
+	AccessReviewStateAccessReviewStateCopyingResourceTypeSelections AccessReviewState = "ACCESS_REVIEW_STATE_COPYING_RESOURCE_TYPE_SELECTIONS"
 )
 
-func (e State) ToPointer() *State {
+func (e AccessReviewState) ToPointer() *AccessReviewState {
 	return &e
 }
-func (e *State) UnmarshalJSON(data []byte) error {
+func (e *AccessReviewState) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -188,10 +188,10 @@ func (e *State) UnmarshalJSON(data []byte) error {
 	case "ACCESS_REVIEW_STATE_COPYING_SETUP_ENTITLEMENTS":
 		fallthrough
 	case "ACCESS_REVIEW_STATE_COPYING_RESOURCE_TYPE_SELECTIONS":
-		*e = State(v)
+		*e = AccessReviewState(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for State: %v", v)
+		return fmt.Errorf("invalid value for AccessReviewState: %v", v)
 	}
 }
 
@@ -296,8 +296,8 @@ type AccessReview struct {
 	SingleAppSetup *SingleAppSetup `json:"singleApp,omitempty"`
 	StartedAt      *time.Time      `json:"startedAt,omitempty"`
 	// The state field.
-	State     *State     `json:"state,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	State     *AccessReviewState `json:"state,omitempty"`
+	UpdatedAt *time.Time         `json:"updatedAt,omitempty"`
 	// Determines the policy applied to the campaign. Default is false, using the campaign policy.
 	//  If true, the order of precedence is entitlement → app → campaign policy.
 	UsePolicyOverride *bool `json:"usePolicyOverride,omitempty"`
@@ -552,7 +552,7 @@ func (a *AccessReview) GetStartedAt() *time.Time {
 	return a.StartedAt
 }
 
-func (a *AccessReview) GetState() *State {
+func (a *AccessReview) GetState() *AccessReviewState {
 	if a == nil {
 		return nil
 	}
@@ -673,7 +673,7 @@ type AccessReviewInput struct {
 	SingleAppSetup *SingleAppSetup `json:"singleApp,omitempty"`
 	StartedAt      *time.Time      `json:"startedAt,omitempty"`
 	// The state field.
-	State *State `json:"state,omitempty"`
+	State *AccessReviewState `json:"state,omitempty"`
 	// Determines the policy applied to the campaign. Default is false, using the campaign policy.
 	//  If true, the order of precedence is entitlement → app → campaign policy.
 	UsePolicyOverride *bool `json:"usePolicyOverride,omitempty"`
@@ -921,7 +921,7 @@ func (a *AccessReviewInput) GetStartedAt() *time.Time {
 	return a.StartedAt
 }
 
-func (a *AccessReviewInput) GetState() *State {
+func (a *AccessReviewInput) GetState() *AccessReviewState {
 	if a == nil {
 		return nil
 	}

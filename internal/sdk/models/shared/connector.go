@@ -49,6 +49,8 @@ type Connector struct {
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
 	Config *Config `json:"config,omitempty"`
+	// The connectorApiVersion field.
+	ConnectorAPIVersion *int64 `json:"connectorApiVersion,omitempty"`
 	// The ConnectorSyncCronSchedule message.
 	ConnectorSyncCronSchedule *ConnectorSyncCronSchedule `json:"connectorSyncCronSchedule,omitempty"`
 	CreatedAt                 *time.Time                 `json:"createdAt,omitempty"`
@@ -120,6 +122,13 @@ func (c *Connector) GetConfig() *Config {
 		return nil
 	}
 	return c.Config
+}
+
+func (c *Connector) GetConnectorAPIVersion() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.ConnectorAPIVersion
 }
 
 func (c *Connector) GetConnectorSyncCronSchedule() *ConnectorSyncCronSchedule {

@@ -162,6 +162,18 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 				r.AccessReviewScopeV2.AppSelectionCriteriaScope = nil
 			} else {
 				r.AccessReviewScopeV2.AppSelectionCriteriaScope = &tfTypes.AppSelectionCriteriaScope{}
+				if resp.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds != nil {
+					r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds))
+					for _, v := range resp.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds {
+						r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = append(r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds, types.StringValue(v))
+					}
+				}
+				if resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds != nil {
+					r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds))
+					for _, v := range resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds {
+						r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = append(r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds, types.StringValue(v))
+					}
+				}
 			}
 			if resp.AccessReviewScopeV2.CelExpressionScope == nil {
 				r.AccessReviewScopeV2.CelExpressionScope = nil
@@ -486,6 +498,8 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReviewView(ctx contex
 				for key, value := range resp.ActorObjectPermissions.Extra {
 					r.Extra[key] = types.BoolValue(value)
 				}
+			} else {
+				r.Extra = nil
 			}
 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
 		} else {
@@ -971,7 +985,24 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 		}
 		var appSelectionCriteriaScope *shared.AppSelectionCriteriaScope
 		if r.AccessReviewScopeV2.AppSelectionCriteriaScope != nil {
-			appSelectionCriteriaScope = &shared.AppSelectionCriteriaScope{}
+			var complianceFrameworkAttributeValueIds []string
+			if r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds != nil {
+				complianceFrameworkAttributeValueIds = make([]string, 0, len(r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds))
+				for complianceFrameworkAttributeValueIdsIndex := range r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds {
+					complianceFrameworkAttributeValueIds = append(complianceFrameworkAttributeValueIds, r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds[complianceFrameworkAttributeValueIdsIndex].ValueString())
+				}
+			}
+			var riskLevelAttributeValueIds []string
+			if r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds != nil {
+				riskLevelAttributeValueIds = make([]string, 0, len(r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds))
+				for riskLevelAttributeValueIdsIndex := range r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds {
+					riskLevelAttributeValueIds = append(riskLevelAttributeValueIds, r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds[riskLevelAttributeValueIdsIndex].ValueString())
+				}
+			}
+			appSelectionCriteriaScope = &shared.AppSelectionCriteriaScope{
+				ComplianceFrameworkAttributeValueIds: complianceFrameworkAttributeValueIds,
+				RiskLevelAttributeValueIds:           riskLevelAttributeValueIds,
+			}
 		}
 		var celExpressionScope1 *shared.CelExpressionScope
 		if r.AccessReviewScopeV2.CelExpressionScope1 != nil {
@@ -1241,9 +1272,9 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 	} else {
 		startedAt = nil
 	}
-	state := new(shared.State)
+	state := new(shared.AccessReviewState)
 	if !r.State.IsUnknown() && !r.State.IsNull() {
-		*state = shared.State(r.State.ValueString())
+		*state = shared.AccessReviewState(r.State.ValueString())
 	} else {
 		state = nil
 	}
@@ -1437,7 +1468,24 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 		}
 		var appSelectionCriteriaScope *shared.AppSelectionCriteriaScope
 		if r.AccessReviewScopeV2.AppSelectionCriteriaScope != nil {
-			appSelectionCriteriaScope = &shared.AppSelectionCriteriaScope{}
+			var complianceFrameworkAttributeValueIds []string
+			if r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds != nil {
+				complianceFrameworkAttributeValueIds = make([]string, 0, len(r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds))
+				for complianceFrameworkAttributeValueIdsIndex := range r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds {
+					complianceFrameworkAttributeValueIds = append(complianceFrameworkAttributeValueIds, r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds[complianceFrameworkAttributeValueIdsIndex].ValueString())
+				}
+			}
+			var riskLevelAttributeValueIds []string
+			if r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds != nil {
+				riskLevelAttributeValueIds = make([]string, 0, len(r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds))
+				for riskLevelAttributeValueIdsIndex := range r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds {
+					riskLevelAttributeValueIds = append(riskLevelAttributeValueIds, r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds[riskLevelAttributeValueIdsIndex].ValueString())
+				}
+			}
+			appSelectionCriteriaScope = &shared.AppSelectionCriteriaScope{
+				ComplianceFrameworkAttributeValueIds: complianceFrameworkAttributeValueIds,
+				RiskLevelAttributeValueIds:           riskLevelAttributeValueIds,
+			}
 		}
 		var celExpressionScope1 *shared.CelExpressionScope
 		if r.AccessReviewScopeV2.CelExpressionScope1 != nil {

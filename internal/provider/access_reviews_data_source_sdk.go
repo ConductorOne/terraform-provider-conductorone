@@ -173,6 +173,18 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 							list.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope = nil
 						} else {
 							list.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope = &tfTypes.AppSelectionCriteriaScope{}
+							if listItem.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds != nil {
+								list.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = make([]types.String, 0, len(listItem.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds))
+								for _, v := range listItem.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds {
+									list.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = append(list.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds, types.StringValue(v))
+								}
+							}
+							if listItem.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds != nil {
+								list.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = make([]types.String, 0, len(listItem.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds))
+								for _, v := range listItem.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds {
+									list.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = append(list.AccessReview.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds, types.StringValue(v))
+								}
+							}
 						}
 						if listItem.AccessReview.AccessReviewScopeV2.CelExpressionScope == nil {
 							list.AccessReview.AccessReviewScopeV2.CelExpressionScope = nil

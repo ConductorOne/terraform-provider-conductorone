@@ -194,8 +194,22 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 						Description: `The AllUsersScope message.`,
 					},
 					"app_selection_criteria_scope": schema.SingleNestedAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"compliance_framework_attribute_value_ids": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The complianceFrameworkAttributeValueIds field.`,
+							},
+							"risk_level_attribute_value_ids": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The riskLevelAttributeValueIds field.`,
+							},
+						},
 						Description: `The AppSelectionCriteriaScope message.`,
 					},
 					"application_access_scope": schema.SingleNestedAttribute{
@@ -465,32 +479,59 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"accuracy_issue_action": schema.StringAttribute{
 				Computed:    true,
-				Description: `The accuracyIssueAction field.`,
+				Optional:    true,
+				Description: `The accuracyIssueAction field. must be one of ["ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"ACCURACY_ISSUE_ACTION_UNSPECIFIED",
+						"ACCURACY_ISSUE_ACTION_CONTINUE",
+						"ACCURACY_ISSUE_ACTION_WAIT",
+					),
+				},
 			},
 			"auto_close_campaign": schema.BoolAttribute{
-				Computed: true,
-				MarkdownDescription: `Auto-close configuration` + "\n" +
-					` start date and access_review_duration will be used to calculate the scheduled close date`,
+				Computed:    true,
+				Optional:    true,
+				Description: `The autoCloseCampaign field.`,
 			},
 			"auto_close_decision": schema.StringAttribute{
 				Computed:    true,
-				Description: `The autoCloseDecision field.`,
+				Optional:    true,
+				Description: `The autoCloseDecision field. must be one of ["CLOSE_DECISION_UNSPECIFIED", "CLOSE_DECISION_REVOKED", "CLOSE_DECISION_SKIP", "CLOSE_DECISION_NO_ACTION"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"CLOSE_DECISION_UNSPECIFIED",
+						"CLOSE_DECISION_REVOKED",
+						"CLOSE_DECISION_SKIP",
+						"CLOSE_DECISION_NO_ACTION",
+					),
+				},
 			},
 			"auto_generate_report": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `auto generate report when campaign is closed`,
 			},
 			"auto_start_campaign": schema.BoolAttribute{
-				Computed: true,
-				MarkdownDescription: `Auto-start configuration` + "\n" +
-					` next_scheduled_campaign_at will be used as the scheduled start date`,
+				Computed:    true,
+				Optional:    true,
+				Description: `The autoStartCampaign field.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},
 			"default_view": schema.StringAttribute{
 				Computed:    true,
-				Description: `The defaultView field.`,
+				Optional:    true,
+				Description: `The defaultView field. must be one of ["ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED",
+						"ACCESS_REVIEW_VIEW_TYPE_BY_APP",
+						"ACCESS_REVIEW_VIEW_TYPE_BY_USER",
+						"ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED",
+					),
+				},
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -504,6 +545,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"exempt_certified_access_conflicts": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The exemptCertifiedAccessConflicts field.`,
 			},
 			"id": schema.StringAttribute{
@@ -512,6 +554,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"is_campaign_schedule_enabled": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The isCampaignScheduleEnabled field.`,
 			},
 			"next_scheduled_campaign_at": schema.StringAttribute{
@@ -558,26 +601,48 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"recurrence_rule": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"end_date": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
 					},
 					"frequency": schema.StringAttribute{
 						Computed:    true,
-						Description: `The frequency field.`,
+						Optional:    true,
+						Description: `The frequency field. must be one of ["FREQUENCY_UNSPECIFIED", "FREQUENCY_NONE", "FREQUENCY_DAILY", "FREQUENCY_WEEKLY", "FREQUENCY_MONTHLY", "FREQUENCY_YEARLY"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"FREQUENCY_UNSPECIFIED",
+								"FREQUENCY_NONE",
+								"FREQUENCY_DAILY",
+								"FREQUENCY_WEEKLY",
+								"FREQUENCY_MONTHLY",
+								"FREQUENCY_YEARLY",
+							),
+						},
 					},
 					"interval": schema.Int32Attribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The interval field.`,
 					},
 					"occurrences": schema.Int32Attribute{
 						Computed: true,
+						Optional: true,
 						MarkdownDescription: `The occurrences field.` + "\n" +
 							`This field is part of the ` + "`" + `end_condition` + "`" + ` oneof.` + "\n" +
 							`See the documentation for ` + "`" + `c1.api.accessreview.v1.RecurrenceRule` + "`" + ` for more details.`,
 					},
 					"start_date": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
 					},
 				},
 				MarkdownDescription: `The RecurrenceRule message.` + "\n" +
@@ -588,25 +653,31 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"review_instructions": schema.StringAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The reviewInstructions field.`,
 			},
 			"review_signature_config": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"meaning_of_signature": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The meaningOfSignature field.`,
 					},
 					"require_signature": schema.BoolAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The requireSignature field.`,
 					},
 					"step_up_provider_id": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The stepUpProviderId field.`,
 					},
 					"tsp_url": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The tspUrl field.`,
 					},
 				},
@@ -643,6 +714,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"use_policy_override": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The usePolicyOverride field.`,
 			},
 		},

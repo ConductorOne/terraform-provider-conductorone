@@ -7,7 +7,7 @@ import (
 )
 
 type ActionInstance struct {
-	Action                                  *Action                                  `tfsdk:"action"`
+	Action                                  *Action1                                 `tfsdk:"action"`
 	ActionOutcomeCancelled                  *ActionOutcomeCancelled                  `tfsdk:"action_outcome_cancelled"`
 	ActionOutcomeDenied                     *ActionOutcomeDenied                     `tfsdk:"action_outcome_denied"`
 	ActionOutcomeError                      *ActionOutcomeError                      `tfsdk:"action_outcome_error"`

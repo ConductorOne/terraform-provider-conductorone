@@ -4,6 +4,7 @@ package shared
 
 // WebhookInput - The Webhook message.
 type WebhookInput struct {
+	CallbackTimeout *string `json:"callbackTimeout,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
@@ -12,6 +13,13 @@ type WebhookInput struct {
 	ID *string `json:"id,omitempty"`
 	// The url field.
 	URL *string `json:"url,omitempty"`
+}
+
+func (w *WebhookInput) GetCallbackTimeout() *string {
+	if w == nil {
+		return nil
+	}
+	return w.CallbackTimeout
 }
 
 func (w *WebhookInput) GetDescription() *string {

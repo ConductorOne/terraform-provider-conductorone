@@ -29,13 +29,14 @@ type WebhookResource struct {
 
 // WebhookResourceModel describes the resource data model.
 type WebhookResourceModel struct {
-	CreatedAt   types.String `tfsdk:"created_at"`
-	DeletedAt   types.String `tfsdk:"-"`
-	Description types.String `tfsdk:"description"`
-	DisplayName types.String `tfsdk:"display_name"`
-	ID          types.String `tfsdk:"id"`
-	UpdatedAt   types.String `tfsdk:"updated_at"`
-	URL         types.String `tfsdk:"url"`
+	CallbackTimeout types.String `tfsdk:"callback_timeout"`
+	CreatedAt       types.String `tfsdk:"created_at"`
+	DeletedAt       types.String `tfsdk:"-"`
+	Description     types.String `tfsdk:"description"`
+	DisplayName     types.String `tfsdk:"display_name"`
+	ID              types.String `tfsdk:"id"`
+	UpdatedAt       types.String `tfsdk:"updated_at"`
+	URL             types.String `tfsdk:"url"`
 }
 
 func (r *WebhookResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -46,6 +47,10 @@ func (r *WebhookResource) Schema(ctx context.Context, req resource.SchemaRequest
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Webhook Resource",
 		Attributes: map[string]schema.Attribute{
+			"callback_timeout": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},

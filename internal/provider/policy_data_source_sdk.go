@@ -42,7 +42,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 					if stepsItem.Action == nil {
 						steps.Action = nil
 					} else {
-						steps.Action = &tfTypes.Action{}
+						steps.Action = &tfTypes.Action1{}
 						if stepsItem.Action.ActionTargetAutomation == nil {
 							steps.Action.ActionTargetAutomation = nil
 						} else {
@@ -485,6 +485,105 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								steps.Provision.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
 								steps.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions)
+								if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment == nil {
+									steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = nil
+								} else {
+									steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}
+									if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner == nil {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = nil
+									} else {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = &tfTypes.AppOwnerProvisioner{}
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment)
+										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds != nil {
+											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds == nil {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds))
+											}
+											for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
+											}
+										}
+									}
+									if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = nil
+									} else {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = &tfTypes.EntitlementOwnerProvisioner{}
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment)
+										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds != nil {
+											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds == nil {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds))
+											}
+											for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
+											}
+										}
+									}
+									if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = nil
+									} else {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = &tfTypes.ExpressionProvisioner{}
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment)
+										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions != nil {
+											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions == nil {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions))
+											}
+											for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
+											}
+										}
+										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
+											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds == nil {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
+											}
+											for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
+											}
+										}
+									}
+									if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = nil
+									} else {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = &tfTypes.GroupProvisioner{}
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment)
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID)
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID)
+										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds != nil {
+											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds == nil {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds))
+											}
+											for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
+											}
+										}
+									}
+									if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = nil
+									} else {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = &tfTypes.ManagerProvisioner{}
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment)
+										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds != nil {
+											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds == nil {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds))
+											}
+											for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
+											}
+										}
+									}
+									if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = nil
+									} else {
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = &tfTypes.UserProvisioner{}
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment)
+										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds != nil {
+											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds == nil {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds))
+											}
+											for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
+											}
+										}
+									}
+								}
 								if stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds != nil {
 									if steps.Provision.ProvisionPolicy.ManualProvision.UserIds == nil {
 										steps.Provision.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds))

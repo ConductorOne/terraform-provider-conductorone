@@ -2,5 +2,11 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type AppSelectionCriteriaScope struct {
+	ComplianceFrameworkAttributeValueIds []types.String `tfsdk:"compliance_framework_attribute_value_ids"`
+	RiskLevelAttributeValueIds           []types.String `tfsdk:"risk_level_attribute_value_ids"`
 }

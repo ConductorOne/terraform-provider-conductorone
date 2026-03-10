@@ -30,6 +30,7 @@ type User struct {
 	JobTitleSources         []UserAttributeMappingSource `tfsdk:"job_title_sources"`
 	ManagerIds              []types.String               `tfsdk:"manager_ids"`
 	ManagerSources          []UserAttributeMappingSource `tfsdk:"manager_sources"`
+	Origin                  types.String                 `tfsdk:"origin"`
 	Profile                 *Profile                     `tfsdk:"profile"`
 	RoleIds                 []types.String               `tfsdk:"role_ids"`
 	Status                  types.String                 `tfsdk:"status"`

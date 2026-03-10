@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -15,6 +16,25 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 
 	r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
 	r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
+	if resp.AppUserMapper == nil {
+		r.AppUserMapper = nil
+	} else {
+		r.AppUserMapper = &tfTypes.AppUserMapper{}
+		if resp.AppUserMapper.MappingCases != nil {
+			if r.AppUserMapper.MappingCases == nil {
+				r.AppUserMapper.MappingCases = []tfTypes.AppUserMapperMatchCase{}
+			}
+
+			for _, mappingCasesItem := range resp.AppUserMapper.MappingCases {
+				var mappingCases tfTypes.AppUserMapperMatchCase
+
+				mappingCases.AppUserKeyCel = types.StringPointerValue(mappingCasesItem.AppUserKeyCel)
+				mappingCases.UserKeyCel = types.StringPointerValue(mappingCasesItem.UserKeyCel)
+
+				r.AppUserMapper.MappingCases = append(r.AppUserMapper.MappingCases, mappingCases)
+			}
+		}
+	}
 	r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
 	r.ConnectorVersion = types.Int64PointerValue(resp.ConnectorVersion)
 	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))

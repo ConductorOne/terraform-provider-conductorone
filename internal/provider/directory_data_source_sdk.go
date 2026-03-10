@@ -43,6 +43,23 @@ func (r *DirectoryDataSourceModel) RefreshFromSharedDirectoryServiceListResponse
 						list.Directory.DirectoryAccountFilterCel = &tfTypes.DirectoryAccountFilterCel{}
 						list.Directory.DirectoryAccountFilterCel.Expression = types.StringPointerValue(listItem.Directory.DirectoryAccountFilterCel.Expression)
 					}
+					if listItem.Directory.DirectoryMergeConfig == nil {
+						list.Directory.DirectoryMergeConfig = nil
+					} else {
+						list.Directory.DirectoryMergeConfig = &tfTypes.DirectoryMergeConfig{}
+						if listItem.Directory.DirectoryMergeConfig.MatchCases != nil {
+							list.Directory.DirectoryMergeConfig.MatchCases = []tfTypes.DirectoryMergeMatchCase{}
+
+							for _, matchCasesItem := range listItem.Directory.DirectoryMergeConfig.MatchCases {
+								var matchCases tfTypes.DirectoryMergeMatchCase
+
+								matchCases.AppUserKeyCel = types.StringPointerValue(matchCasesItem.AppUserKeyCel)
+								matchCases.UserKeyCel = types.StringPointerValue(matchCasesItem.UserKeyCel)
+
+								list.Directory.DirectoryMergeConfig.MatchCases = append(list.Directory.DirectoryMergeConfig.MatchCases, matchCases)
+							}
+						}
+					}
 					list.Directory.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.Directory.UpdatedAt))
 				}
 

@@ -15,10 +15,6 @@ package shared
 //   - exclusionCriteria
 //   - exclusionListCel
 type GrantEntitlements struct {
-	// The appEntitlementRefs field.
-	AppEntitlementRefs []AppEntitlementRef `json:"appEntitlementRefs,omitempty"`
-	// The appEntitlementRefsCel field.
-	AppEntitlementRefsCel *string `json:"appEntitlementRefsCel,omitempty"`
 	// The GrantEntitlementExclusionCriteria message.
 	GrantEntitlementExclusionCriteria *GrantEntitlementExclusionCriteria `json:"exclusionCriteria,omitempty"`
 	// The GrantEntitlementExclusionList message.
@@ -39,20 +35,6 @@ type GrantEntitlements struct {
 	UserIDCel *string `json:"userIdCel,omitempty"`
 	// A reference to a user.
 	UserRef *UserRef `json:"userRef,omitempty"`
-}
-
-func (g *GrantEntitlements) GetAppEntitlementRefs() []AppEntitlementRef {
-	if g == nil {
-		return nil
-	}
-	return g.AppEntitlementRefs
-}
-
-func (g *GrantEntitlements) GetAppEntitlementRefsCel() *string {
-	if g == nil {
-		return nil
-	}
-	return g.AppEntitlementRefsCel
 }
 
 func (g *GrantEntitlements) GetGrantEntitlementExclusionCriteria() *GrantEntitlementExclusionCriteria {

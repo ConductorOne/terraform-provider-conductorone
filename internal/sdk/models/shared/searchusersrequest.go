@@ -7,6 +7,68 @@ import (
 	"fmt"
 )
 
+// DelegateStatus - Filter for users based on their delegate status.
+type DelegateStatus string
+
+const (
+	DelegateStatusDelegateStatusUnspecified DelegateStatus = "DELEGATE_STATUS_UNSPECIFIED"
+	DelegateStatusDelegateStatusHasDelegate DelegateStatus = "DELEGATE_STATUS_HAS_DELEGATE"
+	DelegateStatusDelegateStatusNoDelegate  DelegateStatus = "DELEGATE_STATUS_NO_DELEGATE"
+)
+
+func (e DelegateStatus) ToPointer() *DelegateStatus {
+	return &e
+}
+func (e *DelegateStatus) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "DELEGATE_STATUS_UNSPECIFIED":
+		fallthrough
+	case "DELEGATE_STATUS_HAS_DELEGATE":
+		fallthrough
+	case "DELEGATE_STATUS_NO_DELEGATE":
+		*e = DelegateStatus(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for DelegateStatus: %v", v)
+	}
+}
+
+type ExcludeOrigins string
+
+const (
+	ExcludeOriginsUserOriginUnspecified ExcludeOrigins = "USER_ORIGIN_UNSPECIFIED"
+	ExcludeOriginsUserOriginDirectory   ExcludeOrigins = "USER_ORIGIN_DIRECTORY"
+	ExcludeOriginsUserOriginLocal       ExcludeOrigins = "USER_ORIGIN_LOCAL"
+	ExcludeOriginsUserOriginSystem      ExcludeOrigins = "USER_ORIGIN_SYSTEM"
+)
+
+func (e ExcludeOrigins) ToPointer() *ExcludeOrigins {
+	return &e
+}
+func (e *ExcludeOrigins) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "USER_ORIGIN_UNSPECIFIED":
+		fallthrough
+	case "USER_ORIGIN_DIRECTORY":
+		fallthrough
+	case "USER_ORIGIN_LOCAL":
+		fallthrough
+	case "USER_ORIGIN_SYSTEM":
+		*e = ExcludeOrigins(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ExcludeOrigins: %v", v)
+	}
+}
+
 type ExcludeTypes string
 
 const (
@@ -39,6 +101,38 @@ func (e *ExcludeTypes) UnmarshalJSON(data []byte) error {
 		return nil
 	default:
 		return fmt.Errorf("invalid value for ExcludeTypes: %v", v)
+	}
+}
+
+type Origins string
+
+const (
+	OriginsUserOriginUnspecified Origins = "USER_ORIGIN_UNSPECIFIED"
+	OriginsUserOriginDirectory   Origins = "USER_ORIGIN_DIRECTORY"
+	OriginsUserOriginLocal       Origins = "USER_ORIGIN_LOCAL"
+	OriginsUserOriginSystem      Origins = "USER_ORIGIN_SYSTEM"
+)
+
+func (e Origins) ToPointer() *Origins {
+	return &e
+}
+func (e *Origins) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "USER_ORIGIN_UNSPECIFIED":
+		fallthrough
+	case "USER_ORIGIN_DIRECTORY":
+		fallthrough
+	case "USER_ORIGIN_LOCAL":
+		fallthrough
+	case "USER_ORIGIN_SYSTEM":
+		*e = Origins(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Origins: %v", v)
 	}
 }
 
@@ -76,20 +170,30 @@ func (e *SearchUsersRequestUserStatuses) UnmarshalJSON(data []byte) error {
 
 // SearchUsersRequest - Search for users based on some filters.
 type SearchUsersRequest struct {
+	// Filter for users based on their delegate status.
+	DelegateStatus *DelegateStatus `json:"delegateStatus,omitempty"`
+	// Filter for users that have any of the delegated user IDs on this list.
+	DelegatedUserIds []string `json:"delegatedUserIds,omitempty"`
 	// Search for users that have any of the departments on this list.
 	Departments []string `json:"departments,omitempty"`
 	// Search for users based on their email (exact match).
 	Email *string `json:"email,omitempty"`
 	// An array of users IDs to exclude from the results.
 	ExcludeIds []string `json:"excludeIds,omitempty"`
+	// Filter to exclude users with these origins.
+	ExcludeOrigins []ExcludeOrigins `json:"excludeOrigins,omitempty"`
 	// An array of types to exclude from the results.
 	ExcludeTypes []ExcludeTypes `json:"excludeTypes,omitempty"`
 	// Deprecated. Use refs array instead.
 	Ids []string `json:"ids,omitempty"`
+	// Filter for users who are delegates of at least one other user.
+	IsDelegate *bool `json:"isDelegate,omitempty"`
 	// Search for users that have any of the job titles on this list.
 	JobTitles []string `json:"jobTitles,omitempty"`
 	// Search for users that have any of the manager IDs on this list.
 	ManagerIds []string `json:"managerIds,omitempty"`
+	// Filter to include only users with these origins.
+	Origins []Origins `json:"origins,omitempty"`
 	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
@@ -102,6 +206,20 @@ type SearchUsersRequest struct {
 	RoleIds []string `json:"roleIds,omitempty"`
 	// Search for users that have any of the statuses on this list. This can only be ENABLED, DISABLED, and DELETED
 	UserStatuses []SearchUsersRequestUserStatuses `json:"userStatuses,omitempty"`
+}
+
+func (s *SearchUsersRequest) GetDelegateStatus() *DelegateStatus {
+	if s == nil {
+		return nil
+	}
+	return s.DelegateStatus
+}
+
+func (s *SearchUsersRequest) GetDelegatedUserIds() []string {
+	if s == nil {
+		return nil
+	}
+	return s.DelegatedUserIds
 }
 
 func (s *SearchUsersRequest) GetDepartments() []string {
@@ -125,6 +243,13 @@ func (s *SearchUsersRequest) GetExcludeIds() []string {
 	return s.ExcludeIds
 }
 
+func (s *SearchUsersRequest) GetExcludeOrigins() []ExcludeOrigins {
+	if s == nil {
+		return nil
+	}
+	return s.ExcludeOrigins
+}
+
 func (s *SearchUsersRequest) GetExcludeTypes() []ExcludeTypes {
 	if s == nil {
 		return nil
@@ -139,6 +264,13 @@ func (s *SearchUsersRequest) GetIds() []string {
 	return s.Ids
 }
 
+func (s *SearchUsersRequest) GetIsDelegate() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.IsDelegate
+}
+
 func (s *SearchUsersRequest) GetJobTitles() []string {
 	if s == nil {
 		return nil
@@ -151,6 +283,13 @@ func (s *SearchUsersRequest) GetManagerIds() []string {
 		return nil
 	}
 	return s.ManagerIds
+}
+
+func (s *SearchUsersRequest) GetOrigins() []Origins {
+	if s == nil {
+		return nil
+	}
+	return s.Origins
 }
 
 func (s *SearchUsersRequest) GetPageSize() *int {

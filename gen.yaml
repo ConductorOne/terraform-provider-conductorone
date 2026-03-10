@@ -32,7 +32,7 @@ generation:
     skipResponseBodyAssertions: false
   persistentEdits: {}
 terraform:
-  version: 1.7.11
+  version: 1.7.12
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []

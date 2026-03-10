@@ -9,6 +9,7 @@ import (
 type TaskView struct {
 	AccessReviewPath     types.String `tfsdk:"access_review_path"`
 	AppPath              types.String `tfsdk:"app_path"`
+	ApproversPath        types.String `tfsdk:"approvers_path"`
 	AppUserLastUsagePath types.String `tfsdk:"app_user_last_usage_path"`
 	AppUserPath          types.String `tfsdk:"app_user_path"`
 	CreatedByUserPath    types.String `tfsdk:"created_by_user_path"`

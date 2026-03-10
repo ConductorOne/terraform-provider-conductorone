@@ -5,7 +5,6 @@ package shared
 // AutomationTrigger - Automation Triggers
 //
 // This message contains a oneof named kind. Only a single field of the following list may be set at a time:
-//   - manual
 //   - userProfileChange
 //   - appUserCreated
 //   - appUserUpdated
@@ -15,7 +14,6 @@ package shared
 //   - grantDeleted
 //   - webhook
 //   - schedule
-//   - form
 //   - scheduleAppUser
 //   - accessConflict
 type AutomationTrigger struct {
@@ -40,14 +38,10 @@ type AutomationTrigger struct {
 	//   - appIdCel
 	//
 	AppUserUpdatedTrigger *AppUserUpdatedTrigger `json:"appUserUpdated,omitempty"`
-	// The FormTrigger message.
-	FormTrigger any `json:"form,omitempty"`
 	// The GrantDeletedTrigger message.
 	GrantDeletedTrigger *GrantDeletedTrigger `json:"grantDeleted,omitempty"`
 	// The GrantFoundTrigger message.
 	GrantFoundTrigger *GrantFoundTrigger `json:"grantFound,omitempty"`
-	// The ManualAutomationTrigger message.
-	ManualAutomationTrigger *ManualAutomationTrigger `json:"manual,omitempty"`
 	// The ScheduleTrigger message.
 	ScheduleTrigger *ScheduleTrigger `json:"schedule,omitempty"`
 	// The ScheduleTriggerAppUser message.
@@ -93,13 +87,6 @@ func (a *AutomationTrigger) GetAppUserUpdatedTrigger() *AppUserUpdatedTrigger {
 	return a.AppUserUpdatedTrigger
 }
 
-func (a *AutomationTrigger) GetFormTrigger() any {
-	if a == nil {
-		return nil
-	}
-	return a.FormTrigger
-}
-
 func (a *AutomationTrigger) GetGrantDeletedTrigger() *GrantDeletedTrigger {
 	if a == nil {
 		return nil
@@ -112,13 +99,6 @@ func (a *AutomationTrigger) GetGrantFoundTrigger() *GrantFoundTrigger {
 		return nil
 	}
 	return a.GrantFoundTrigger
-}
-
-func (a *AutomationTrigger) GetManualAutomationTrigger() *ManualAutomationTrigger {
-	if a == nil {
-		return nil
-	}
-	return a.ManualAutomationTrigger
 }
 
 func (a *AutomationTrigger) GetScheduleTrigger() *ScheduleTrigger {

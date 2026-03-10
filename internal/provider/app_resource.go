@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -31,28 +32,29 @@ type AppResource struct {
 
 // AppResourceModel describes the resource data model.
 type AppResourceModel struct {
-	AppAccountID                        types.String `tfsdk:"app_account_id"`
-	AppAccountName                      types.String `tfsdk:"app_account_name"`
-	CertifyPolicyID                     types.String `tfsdk:"certify_policy_id"`
-	ConnectorVersion                    types.Int64  `tfsdk:"connector_version"`
-	CreatedAt                           types.String `tfsdk:"created_at"`
-	DefaultRequestCatalogID             types.String `tfsdk:"default_request_catalog_id"`
-	DeletedAt                           types.String `tfsdk:"-"`
-	Description                         types.String `tfsdk:"description"`
-	DisplayName                         types.String `tfsdk:"display_name"`
-	EnableConnectorSourcedOwnership     types.Bool   `tfsdk:"enable_connector_sourced_ownership"`
-	GrantPolicyID                       types.String `tfsdk:"grant_policy_id"`
-	ID                                  types.String `tfsdk:"id"`
-	IdentityMatching                    types.String `tfsdk:"identity_matching"`
-	Instructions                        types.String `tfsdk:"instructions"`
-	IsDirectory                         types.Bool   `tfsdk:"is_directory"`
-	IsManuallyManaged                   types.Bool   `tfsdk:"is_manually_managed"`
-	MonthlyCostUsd                      types.Int32  `tfsdk:"monthly_cost_usd"`
-	ParentAppID                         types.String `tfsdk:"parent_app_id"`
-	RevokePolicyID                      types.String `tfsdk:"revoke_policy_id"`
-	StrictAccessEntitlementProvisioning types.Bool   `tfsdk:"strict_access_entitlement_provisioning"`
-	UpdatedAt                           types.String `tfsdk:"updated_at"`
-	UserCount                           types.String `tfsdk:"user_count"`
+	AppAccountID                        types.String           `tfsdk:"app_account_id"`
+	AppAccountName                      types.String           `tfsdk:"app_account_name"`
+	AppUserMapper                       *tfTypes.AppUserMapper `tfsdk:"app_user_mapper"`
+	CertifyPolicyID                     types.String           `tfsdk:"certify_policy_id"`
+	ConnectorVersion                    types.Int64            `tfsdk:"connector_version"`
+	CreatedAt                           types.String           `tfsdk:"created_at"`
+	DefaultRequestCatalogID             types.String           `tfsdk:"default_request_catalog_id"`
+	DeletedAt                           types.String           `tfsdk:"-"`
+	Description                         types.String           `tfsdk:"description"`
+	DisplayName                         types.String           `tfsdk:"display_name"`
+	EnableConnectorSourcedOwnership     types.Bool             `tfsdk:"enable_connector_sourced_ownership"`
+	GrantPolicyID                       types.String           `tfsdk:"grant_policy_id"`
+	ID                                  types.String           `tfsdk:"id"`
+	IdentityMatching                    types.String           `tfsdk:"identity_matching"`
+	Instructions                        types.String           `tfsdk:"instructions"`
+	IsDirectory                         types.Bool             `tfsdk:"is_directory"`
+	IsManuallyManaged                   types.Bool             `tfsdk:"is_manually_managed"`
+	MonthlyCostUsd                      types.Int32            `tfsdk:"monthly_cost_usd"`
+	ParentAppID                         types.String           `tfsdk:"parent_app_id"`
+	RevokePolicyID                      types.String           `tfsdk:"revoke_policy_id"`
+	StrictAccessEntitlementProvisioning types.Bool             `tfsdk:"strict_access_entitlement_provisioning"`
+	UpdatedAt                           types.String           `tfsdk:"updated_at"`
+	UserCount                           types.String           `tfsdk:"user_count"`
 }
 
 func (r *AppResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -70,6 +72,28 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"app_account_name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.`,
+			},
+			"app_user_mapper": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"mapping_cases": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"app_user_key_cel": schema.StringAttribute{
+									Computed:    true,
+									Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
+								},
+								"user_key_cel": schema.StringAttribute{
+									Computed:    true,
+									Description: `CEL expression evaluated against a User to produce match key(s).`,
+								},
+							},
+						},
+						Description: `Ordered list of match cases. Each case defines a pair of CEL key extractors.`,
+					},
+				},
+				Description: `AppUserMapper configures custom account mapping for uplift.`,
 			},
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
@@ -112,12 +136,13 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"identity_matching": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"]`,
+				Description: `Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"APP_USER_IDENTITY_MATCHING_UNSPECIFIED",
 						"APP_USER_IDENTITY_MATCHING_STRICT",
 						"APP_USER_IDENTITY_MATCHING_DISPLAY_NAME",
+						"APP_USER_IDENTITY_MATCHING_CUSTOM",
 					),
 				},
 			},

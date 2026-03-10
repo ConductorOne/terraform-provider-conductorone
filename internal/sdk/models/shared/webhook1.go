@@ -9,8 +9,9 @@ import (
 
 // Webhook1 - The Webhook message.
 type Webhook1 struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	CallbackTimeout *string    `json:"callbackTimeout,omitempty"`
+	CreatedAt       *time.Time `json:"createdAt,omitempty"`
+	DeletedAt       *time.Time `json:"deletedAt,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
@@ -31,6 +32,13 @@ func (w *Webhook1) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (w *Webhook1) GetCallbackTimeout() *string {
+	if w == nil {
+		return nil
+	}
+	return w.CallbackTimeout
 }
 
 func (w *Webhook1) GetCreatedAt() *time.Time {

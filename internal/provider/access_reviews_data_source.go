@@ -192,7 +192,19 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 											Description: `The AllUsersScope message.`,
 										},
 										"app_selection_criteria_scope": schema.SingleNestedAttribute{
-											Computed:    true,
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"compliance_framework_attribute_value_ids": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													Description: `The complianceFrameworkAttributeValueIds field.`,
+												},
+												"risk_level_attribute_value_ids": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													Description: `The riskLevelAttributeValueIds field.`,
+												},
+											},
 											Description: `The AppSelectionCriteriaScope message.`,
 										},
 										"application_access_scope": schema.SingleNestedAttribute{

@@ -21,7 +21,9 @@ type Directory struct {
 	DirectoryAccountFilterCel *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
 	CreatedAt                 *time.Time                 `json:"createdAt,omitempty"`
 	DeletedAt                 *time.Time                 `json:"deletedAt,omitempty"`
-	UpdatedAt                 *time.Time                 `json:"updatedAt,omitempty"`
+	// DirectoryMergeConfig configures how AppUsers from this directory are matched to C1 Users.
+	DirectoryMergeConfig *DirectoryMergeConfig `json:"mergeConfig,omitempty"`
+	UpdatedAt            *time.Time            `json:"updatedAt,omitempty"`
 }
 
 func (d Directory) MarshalJSON() ([]byte, error) {
@@ -68,6 +70,13 @@ func (d *Directory) GetDeletedAt() *time.Time {
 		return nil
 	}
 	return d.DeletedAt
+}
+
+func (d *Directory) GetDirectoryMergeConfig() *DirectoryMergeConfig {
+	if d == nil {
+		return nil
+	}
+	return d.DirectoryMergeConfig
 }
 
 func (d *Directory) GetUpdatedAt() *time.Time {

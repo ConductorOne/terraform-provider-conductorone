@@ -11,6 +11,8 @@ type TaskAuditNewTaskCreatedFrom struct {
 	OriginalTaskID *string `json:"originalTaskId,omitempty"`
 	// The originalTaskNumericId field.
 	OriginalTaskNumericID *string `json:"originalTaskNumericId,omitempty"`
+	// The task type of the original task (e.g. "grant", "revoke", "certify").
+	OriginalTaskType *string `json:"originalTaskType,omitempty"`
 }
 
 func (t *TaskAuditNewTaskCreatedFrom) GetOriginalTaskID() *string {
@@ -25,4 +27,11 @@ func (t *TaskAuditNewTaskCreatedFrom) GetOriginalTaskNumericID() *string {
 		return nil
 	}
 	return t.OriginalTaskNumericID
+}
+
+func (t *TaskAuditNewTaskCreatedFrom) GetOriginalTaskType() *string {
+	if t == nil {
+		return nil
+	}
+	return t.OriginalTaskType
 }
