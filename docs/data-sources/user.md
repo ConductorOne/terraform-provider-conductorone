@@ -23,6 +23,10 @@ This data source enables you to retrieve ConductorOne users using the following 
 
 ```terraform
 data "conductorone_user" "my_user" {
+  delegate_status = "DELEGATE_STATUS_UNSPECIFIED"
+  delegated_user_ids = [
+    "..."
+  ]
   departments = [
     "..."
   ]
@@ -30,17 +34,24 @@ data "conductorone_user" "my_user" {
   exclude_ids = [
     "..."
   ]
+  exclude_origins = [
+    "USER_ORIGIN_SYSTEM"
+  ]
   exclude_types = [
     "USER_TYPE_HUMAN"
   ]
   ids = [
     "..."
   ]
+  is_delegate = false
   job_titles = [
     "..."
   ]
   manager_ids = [
     "..."
+  ]
+  origins = [
+    "USER_ORIGIN_LOCAL"
   ]
   page_size  = 10
   page_token = "...my_page_token..."
@@ -64,13 +75,18 @@ data "conductorone_user" "my_user" {
 
 ### Optional
 
+- `delegate_status` (String) Filter for users based on their delegate status. must be one of ["DELEGATE_STATUS_UNSPECIFIED", "DELEGATE_STATUS_HAS_DELEGATE", "DELEGATE_STATUS_NO_DELEGATE"]
+- `delegated_user_ids` (List of String) Filter for users that have any of the delegated user IDs on this list.
 - `departments` (List of String) Search for users that have any of the departments on this list.
 - `email` (String) Search for users based on their email (exact match).
 - `exclude_ids` (List of String) An array of users IDs to exclude from the results.
+- `exclude_origins` (List of String) Filter to exclude users with these origins.
 - `exclude_types` (List of String) An array of types to exclude from the results.
 - `ids` (List of String) Deprecated. Use refs array instead.
+- `is_delegate` (Boolean) Filter for users who are delegates of at least one other user.
 - `job_titles` (List of String) Search for users that have any of the job titles on this list.
 - `manager_ids` (List of String) Search for users that have any of the manager IDs on this list.
+- `origins` (List of String) Filter to include only users with these origins.
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 - `page_token` (String) The pageToken field.
 - `query` (String) Query the apps with a fuzzy search on display name and emails.
@@ -106,6 +122,7 @@ data "conductorone_user" "my_user" {
 - `manager_sources` (Attributes List) A list of objects mapped based on managerId attribute mappings configured in the system. (see [below for nested schema](#nestedatt--manager_sources))
 - `managers_path` (String) JSONPATH expression indicating the location of the user objects that managed the current user in the expanded array.
 - `next_page_token` (String) The nextPageToken is shown for the next page if the number of results is larger than the max page size. The server returns one page of results and the nextPageToken until all results are retreived. To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
+- `origin` (String) The origin of the user, describing who owns the user's lifecycle.
 - `profile` (Attributes) (see [below for nested schema](#nestedatt--profile))
 - `roles_path` (String) JSONPATH expression indicating the location of the roles of the current user in the expanded array.
 - `status` (String) The status of the user in the system.

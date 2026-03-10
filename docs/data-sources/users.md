@@ -14,6 +14,10 @@ Users DataSource
 
 ```terraform
 data "conductorone_users" "my_users" {
+  delegate_status = "DELEGATE_STATUS_NO_DELEGATE"
+  delegated_user_ids = [
+    "..."
+  ]
   departments = [
     "..."
   ]
@@ -21,17 +25,24 @@ data "conductorone_users" "my_users" {
   exclude_ids = [
     "..."
   ]
+  exclude_origins = [
+    "USER_ORIGIN_LOCAL"
+  ]
   exclude_types = [
     "USER_TYPE_SYSTEM"
   ]
   ids = [
     "..."
   ]
+  is_delegate = false
   job_titles = [
     "..."
   ]
   manager_ids = [
     "..."
+  ]
+  origins = [
+    "USER_ORIGIN_LOCAL"
   ]
   page_size  = 5
   page_token = "...my_page_token..."
@@ -55,13 +66,18 @@ data "conductorone_users" "my_users" {
 
 ### Optional
 
+- `delegate_status` (String) Filter for users based on their delegate status. must be one of ["DELEGATE_STATUS_UNSPECIFIED", "DELEGATE_STATUS_HAS_DELEGATE", "DELEGATE_STATUS_NO_DELEGATE"]
+- `delegated_user_ids` (List of String) Filter for users that have any of the delegated user IDs on this list.
 - `departments` (List of String) Search for users that have any of the departments on this list.
 - `email` (String) Search for users based on their email (exact match).
 - `exclude_ids` (List of String) An array of users IDs to exclude from the results.
+- `exclude_origins` (List of String) Filter to exclude users with these origins.
 - `exclude_types` (List of String) An array of types to exclude from the results.
 - `ids` (List of String) Deprecated. Use refs array instead.
+- `is_delegate` (Boolean) Filter for users who are delegates of at least one other user.
 - `job_titles` (List of String) Search for users that have any of the job titles on this list.
 - `manager_ids` (List of String) Search for users that have any of the manager IDs on this list.
+- `origins` (List of String) Filter to include only users with these origins.
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 - `page_token` (String) The pageToken field.
 - `query` (String) Query the apps with a fuzzy search on display name and emails.
@@ -126,6 +142,7 @@ Read-Only:
 - `job_title_sources` (Attributes List) A list of objects mapped based on jobTitle attribute mappings configured in the system. (see [below for nested schema](#nestedatt--list--user--job_title_sources))
 - `manager_ids` (List of String) A list of ids of the user's managers.
 - `manager_sources` (Attributes List) A list of objects mapped based on managerId attribute mappings configured in the system. (see [below for nested schema](#nestedatt--list--user--manager_sources))
+- `origin` (String) The origin of the user, describing who owns the user's lifecycle.
 - `profile` (Attributes) (see [below for nested schema](#nestedatt--list--user--profile))
 - `role_ids` (List of String) A list of unique identifiers that maps to ConductorOne's user roles let you assign users permissions tailored to the work they do in the software.
 - `status` (String) The status of the user in the system.

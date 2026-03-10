@@ -58,6 +58,7 @@ data "conductorone_app" "my_app" {
 
 - `app_account_id` (String) The ID of the Account named by AccountName.
 - `app_account_name` (String) The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
+- `app_user_mapper` (Attributes) AppUserMapper configures custom account mapping for uplift. (see [below for nested schema](#nestedatt--app_user_mapper))
 - `certify_policy_id` (String) The ID of the Certify Policy associated with this App.
 - `connector_version` (Number) The connectorVersion field.
 - `created_at` (String)
@@ -87,3 +88,19 @@ data "conductorone_app" "my_app" {
 Optional:
 
 - `id` (String) The id field.
+
+
+<a id="nestedatt--app_user_mapper"></a>
+### Nested Schema for `app_user_mapper`
+
+Read-Only:
+
+- `mapping_cases` (Attributes List) Ordered list of match cases. Each case defines a pair of CEL key extractors. (see [below for nested schema](#nestedatt--app_user_mapper--mapping_cases))
+
+<a id="nestedatt--app_user_mapper--mapping_cases"></a>
+### Nested Schema for `app_user_mapper.mapping_cases`
+
+Read-Only:
+
+- `app_user_key_cel` (String) CEL expression evaluated against an AppUser to produce match key(s).
+- `user_key_cel` (String) CEL expression evaluated against a User to produce match key(s).

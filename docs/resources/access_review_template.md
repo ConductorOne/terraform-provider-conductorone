@@ -39,7 +39,12 @@ resource "conductorone_access_review_template" "my_access_review_template" {
       # ...
     }
     app_selection_criteria_scope = {
-      # ...
+      compliance_framework_attribute_value_ids = [
+        "..."
+      ]
+      risk_level_attribute_value_ids = [
+        "..."
+      ]
     }
     application_access_scope = {
       # ...
@@ -69,6 +74,9 @@ resource "conductorone_access_review_template" "my_access_review_template" {
       }
       source_filter = "GRANT_SOURCE_FILTER_INHERITED"
       type_filter   = "GRANT_FILTER_TYPE_PERMANENT"
+    }
+    resource_selection_scope = {
+      # ...
     }
     resource_type_selection_scope = {
       # ...
@@ -108,8 +116,16 @@ resource "conductorone_access_review_template" "my_access_review_template" {
       ]
     }
   }
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
+  accuracy_issue_action             = "ACCURACY_ISSUE_ACTION_WAIT"
+  auto_close_campaign               = false
+  auto_close_decision               = "CLOSE_DECISION_NO_ACTION"
+  auto_generate_report              = false
+  auto_start_campaign               = true
+  default_view                      = "ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED"
+  description                       = "...my_description..."
+  display_name                      = "...my_display_name..."
+  exempt_certified_access_conflicts = true
+  is_campaign_schedule_enabled      = false
   notification_config = {
     send_close     = true
     send_kickoff   = false
@@ -118,8 +134,23 @@ resource "conductorone_access_review_template" "my_access_review_template" {
   owner_ids = [
     "..."
   ]
-  policy_id  = "...my_policy_id..."
-  scope_type = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
+  policy_id = "...my_policy_id..."
+  recurrence_rule = {
+    end_date    = "2022-07-11T08:35:49.034Z"
+    frequency   = "FREQUENCY_UNSPECIFIED"
+    interval    = 10
+    occurrences = 3
+    start_date  = "2022-06-20T11:29:45.535Z"
+  }
+  review_instructions = "...my_review_instructions..."
+  review_signature_config = {
+    meaning_of_signature = "...my_meaning_of_signature..."
+    require_signature    = true
+    step_up_provider_id  = "...my_step_up_provider_id..."
+    tsp_url              = "...my_tsp_url..."
+  }
+  scope_type          = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
+  use_policy_override = true
 }
 ```
 
@@ -158,31 +189,24 @@ This message contains a oneof named grants_scope. Only a single field of the fol
 
 This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
   - allAccessConflicts
-  - specificAccessConflicts (see [below for nested schema](#nestedatt--access_review_scope_v2))
+  - specificAccessConflicts
+
+
+This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
+  - resourceSelection (see [below for nested schema](#nestedatt--access_review_scope_v2))
+- `accuracy_issue_action` (String) The accuracyIssueAction field. must be one of ["ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT"]
+- `auto_close_campaign` (Boolean) The autoCloseCampaign field.
+- `auto_close_decision` (String) The autoCloseDecision field. must be one of ["CLOSE_DECISION_UNSPECIFIED", "CLOSE_DECISION_REVOKED", "CLOSE_DECISION_SKIP", "CLOSE_DECISION_NO_ACTION"]
+- `auto_generate_report` (Boolean) auto generate report when campaign is closed
+- `auto_start_campaign` (Boolean) The autoStartCampaign field.
+- `default_view` (String) The defaultView field. must be one of ["ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED"]
 - `description` (String) The description field.
 - `display_name` (String) The displayName field.
+- `exempt_certified_access_conflicts` (Boolean) The exemptCertifiedAccessConflicts field.
+- `is_campaign_schedule_enabled` (Boolean) The isCampaignScheduleEnabled field.
 - `notification_config` (Attributes) The NotificationConfig message. (see [below for nested schema](#nestedatt--notification_config))
 - `owner_ids` (List of String) The ownerIds field. Requires replacement if changed.
 - `policy_id` (String) The policyId field.
-- `scope_type` (String) The scopeType field. must be one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"]
-
-### Read-Only
-
-- `access_review_inclusion_scope` (Attributes) The AccessReviewInclusionScope message. (see [below for nested schema](#nestedatt--access_review_inclusion_scope))
-- `accuracy_issue_action` (String) The accuracyIssueAction field.
-- `auto_close_campaign` (Boolean) Auto-close configuration
- start date and access_review_duration will be used to calculate the scheduled close date
-- `auto_close_decision` (String) The autoCloseDecision field.
-- `auto_generate_report` (Boolean) auto generate report when campaign is closed
-- `auto_start_campaign` (Boolean) Auto-start configuration
- next_scheduled_campaign_at will be used as the scheduled start date
-- `created_at` (String)
-- `default_view` (String) The defaultView field.
-- `exempt_certified_access_conflicts` (Boolean) The exemptCertifiedAccessConflicts field.
-- `id` (String) The id field.
-- `is_campaign_schedule_enabled` (Boolean) The isCampaignScheduleEnabled field.
-- `next_scheduled_campaign_at` (String)
-- `occurrences` (Number) The occurrences field.
 - `recurrence_rule` (Attributes) The RecurrenceRule message.
 
 This message contains a oneof named end_condition. Only a single field of the following list may be set at a time:
@@ -190,9 +214,18 @@ This message contains a oneof named end_condition. Only a single field of the fo
   - occurrences (see [below for nested schema](#nestedatt--recurrence_rule))
 - `review_instructions` (String) The reviewInstructions field.
 - `review_signature_config` (Attributes) Signature configuration for access review submissions (see [below for nested schema](#nestedatt--review_signature_config))
+- `scope_type` (String) The scopeType field. must be one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"]
+- `use_policy_override` (Boolean) The usePolicyOverride field.
+
+### Read-Only
+
+- `access_review_inclusion_scope` (Attributes) The AccessReviewInclusionScope message. (see [below for nested schema](#nestedatt--access_review_inclusion_scope))
+- `created_at` (String)
+- `id` (String) The id field.
+- `next_scheduled_campaign_at` (String)
+- `occurrences` (Number) The occurrences field.
 - `slack_channel` (Attributes) The SlackChannel message. (see [below for nested schema](#nestedatt--slack_channel))
 - `updated_at` (String)
-- `use_policy_override` (Boolean) The usePolicyOverride field.
 
 <a id="nestedatt--access_review_scope_v2"></a>
 ### Nested Schema for `access_review_scope_v2`
@@ -214,6 +247,7 @@ This message contains a oneof named criteria_filter. Only a single field of the 
   - daysSinceAdded
   - daysSinceReviewed
   - grantsAddedBetween (see [below for nested schema](#nestedatt--access_review_scope_v2--grants_by_criteria_scope))
+- `resource_selection_scope` (Attributes) The ResourceSelectionScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--resource_selection_scope))
 - `resource_type_selection_scope` (Attributes) The ResourceTypeSelectionScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--resource_type_selection_scope))
 - `selected_users_scope` (Attributes) The SelectedUsersScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--selected_users_scope))
 - `specific_access_conflicts_scope` (Attributes) The SpecificAccessConflictsScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--specific_access_conflicts_scope))
@@ -249,6 +283,11 @@ Optional:
 
 <a id="nestedatt--access_review_scope_v2--app_selection_criteria_scope"></a>
 ### Nested Schema for `access_review_scope_v2.app_selection_criteria_scope`
+
+Optional:
+
+- `compliance_framework_attribute_value_ids` (List of String) The complianceFrameworkAttributeValueIds field.
+- `risk_level_attribute_value_ids` (List of String) The riskLevelAttributeValueIds field.
 
 
 <a id="nestedatt--access_review_scope_v2--application_access_scope"></a>
@@ -306,6 +345,10 @@ Optional:
 - `end_date` (String)
 - `start_date` (String)
 
+
+
+<a id="nestedatt--access_review_scope_v2--resource_selection_scope"></a>
+### Nested Schema for `access_review_scope_v2.resource_selection_scope`
 
 
 <a id="nestedatt--access_review_scope_v2--resource_type_selection_scope"></a>
@@ -375,6 +418,31 @@ Optional:
 - `send_reminders` (Boolean) The sendReminders field.
 
 
+<a id="nestedatt--recurrence_rule"></a>
+### Nested Schema for `recurrence_rule`
+
+Optional:
+
+- `end_date` (String)
+- `frequency` (String) The frequency field. must be one of ["FREQUENCY_UNSPECIFIED", "FREQUENCY_NONE", "FREQUENCY_DAILY", "FREQUENCY_WEEKLY", "FREQUENCY_MONTHLY", "FREQUENCY_YEARLY"]
+- `interval` (Number) The interval field.
+- `occurrences` (Number) The occurrences field.
+This field is part of the `end_condition` oneof.
+See the documentation for `c1.api.accessreview.v1.RecurrenceRule` for more details.
+- `start_date` (String)
+
+
+<a id="nestedatt--review_signature_config"></a>
+### Nested Schema for `review_signature_config`
+
+Optional:
+
+- `meaning_of_signature` (String) The meaningOfSignature field.
+- `require_signature` (Boolean) The requireSignature field.
+- `step_up_provider_id` (String) The stepUpProviderId field.
+- `tsp_url` (String) The tspUrl field.
+
+
 <a id="nestedatt--access_review_inclusion_scope"></a>
 ### Nested Schema for `access_review_inclusion_scope`
 
@@ -403,31 +471,6 @@ Read-Only:
 - `value` (String) The value field.
 
 
-
-
-<a id="nestedatt--recurrence_rule"></a>
-### Nested Schema for `recurrence_rule`
-
-Read-Only:
-
-- `end_date` (String)
-- `frequency` (String) The frequency field.
-- `interval` (Number) The interval field.
-- `occurrences` (Number) The occurrences field.
-This field is part of the `end_condition` oneof.
-See the documentation for `c1.api.accessreview.v1.RecurrenceRule` for more details.
-- `start_date` (String)
-
-
-<a id="nestedatt--review_signature_config"></a>
-### Nested Schema for `review_signature_config`
-
-Read-Only:
-
-- `meaning_of_signature` (String) The meaningOfSignature field.
-- `require_signature` (Boolean) The requireSignature field.
-- `step_up_provider_id` (String) The stepUpProviderId field.
-- `tsp_url` (String) The tspUrl field.
 
 
 <a id="nestedatt--slack_channel"></a>

@@ -16,9 +16,10 @@ When creating a webhook you must provide a display name, and a URL. Optionally y
 
 ```terraform
 resource "conductorone_webhook" "my_webhook" {
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
-  url          = "...my_url..."
+  callback_timeout = "...my_callback_timeout..."
+  description      = "...my_description..."
+  display_name     = "...my_display_name..."
+  url              = "...my_url..."
 }
 ```
 
@@ -32,6 +33,7 @@ resource "conductorone_webhook" "my_webhook" {
 
 ### Optional
 
+- `callback_timeout` (String)
 - `description` (String) The description field.
 
 ### Read-Only
