@@ -91,6 +91,28 @@ func (r *DirectoriesDataSource) Schema(ctx context.Context, req datasource.Schem
 									},
 									Description: `The DirectoryAccountFilterCel message.`,
 								},
+								"directory_merge_config": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"match_cases": schema.ListNestedAttribute{
+											Computed: true,
+											NestedObject: schema.NestedAttributeObject{
+												Attributes: map[string]schema.Attribute{
+													"app_user_key_cel": schema.StringAttribute{
+														Computed:    true,
+														Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
+													},
+													"user_key_cel": schema.StringAttribute{
+														Computed:    true,
+														Description: `CEL expression evaluated against a User to produce match key(s).`,
+													},
+												},
+											},
+											Description: `Ordered list of match cases evaluated in sequence. First match wins.`,
+										},
+									},
+									Description: `DirectoryMergeConfig configures how AppUsers from this directory are matched to C1 Users.`,
+								},
 								"updated_at": schema.StringAttribute{
 									Computed: true,
 								},

@@ -2,18 +2,18 @@
 
 package shared
 
-type List struct {
+type SystemLogServiceListEventsResponseList struct {
 }
 
 // The SystemLogServiceListEventsResponse message.
 type SystemLogServiceListEventsResponse struct {
 	// List contains an array of JSON OCSF events.
-	List []List `json:"list,omitempty"`
+	List []SystemLogServiceListEventsResponseList `json:"list,omitempty"`
 	// The nextPageToken field.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (s *SystemLogServiceListEventsResponse) GetList() []List {
+func (s *SystemLogServiceListEventsResponse) GetList() []SystemLogServiceListEventsResponseList {
 	if s == nil {
 		return nil
 	}

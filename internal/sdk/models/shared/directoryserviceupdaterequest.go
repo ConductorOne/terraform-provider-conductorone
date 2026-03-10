@@ -12,6 +12,8 @@ type DirectoryServiceUpdateRequest struct {
 	DirectoryAccountFilterAll *DirectoryAccountFilterAll `json:"all,omitempty"`
 	// The DirectoryAccountFilterCel message.
 	DirectoryAccountFilterCel *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
+	// DirectoryMergeConfig configures how AppUsers from this directory are matched to C1 Users.
+	DirectoryMergeConfig *DirectoryMergeConfig `json:"mergeConfig,omitempty"`
 }
 
 func (d *DirectoryServiceUpdateRequest) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
@@ -26,4 +28,11 @@ func (d *DirectoryServiceUpdateRequest) GetDirectoryAccountFilterCel() *Director
 		return nil
 	}
 	return d.DirectoryAccountFilterCel
+}
+
+func (d *DirectoryServiceUpdateRequest) GetDirectoryMergeConfig() *DirectoryMergeConfig {
+	if d == nil {
+		return nil
+	}
+	return d.DirectoryMergeConfig
 }

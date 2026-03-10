@@ -4,12 +4,20 @@ package shared
 
 // The WebhooksServiceCreateRequest message.
 type WebhooksServiceCreateRequest struct {
+	CallbackTimeout *string `json:"callbackTimeout,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName string `json:"displayName"`
 	// The url field.
 	URL string `json:"url"`
+}
+
+func (w *WebhooksServiceCreateRequest) GetCallbackTimeout() *string {
+	if w == nil {
+		return nil
+	}
+	return w.CallbackTimeout
 }
 
 func (w *WebhooksServiceCreateRequest) GetDescription() *string {

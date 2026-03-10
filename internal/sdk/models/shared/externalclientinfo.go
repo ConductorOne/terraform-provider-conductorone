@@ -9,6 +9,36 @@ import (
 	"time"
 )
 
+// ClientIDType - How the client_id was established.
+type ClientIDType string
+
+const (
+	ClientIDTypeClientIDTypeUnspecified ClientIDType = "CLIENT_ID_TYPE_UNSPECIFIED"
+	ClientIDTypeClientIDTypeDcr         ClientIDType = "CLIENT_ID_TYPE_DCR"
+	ClientIDTypeClientIDTypeMetadataURL ClientIDType = "CLIENT_ID_TYPE_METADATA_URL"
+)
+
+func (e ClientIDType) ToPointer() *ClientIDType {
+	return &e
+}
+func (e *ClientIDType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "CLIENT_ID_TYPE_UNSPECIFIED":
+		fallthrough
+	case "CLIENT_ID_TYPE_DCR":
+		fallthrough
+	case "CLIENT_ID_TYPE_METADATA_URL":
+		*e = ClientIDType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ClientIDType: %v", v)
+	}
+}
+
 // WellKnownClient - The wellKnownClient field.
 type WellKnownClient string
 
@@ -75,6 +105,8 @@ func (e *WellKnownClient) UnmarshalJSON(data []byte) error {
 type ExternalClientInfo struct {
 	// OAuth2 client ID - canonical identifier for this connection (globally unique per DCR)
 	ClientID *string `json:"clientId,omitempty"`
+	// How the client_id was established.
+	ClientIDType *ClientIDType `json:"clientIdType,omitempty"`
 	// Original client name from DCR registration
 	ClientName *string    `json:"clientName,omitempty"`
 	CreatedAt  *time.Time `json:"createdAt,omitempty"`
@@ -85,6 +117,9 @@ type ExternalClientInfo struct {
 	RoleIds []string `json:"roleIds,omitempty"`
 	// The user who approved this external client (always populated)
 	UserID *string `json:"userId,omitempty"`
+	// Verified domain from the client_id URL (e.g., "cursor.com").
+	//  Empty for DCR clients.
+	VerifiedDomain *string `json:"verifiedDomain,omitempty"`
 	// The wellKnownClient field.
 	WellKnownClient *WellKnownClient `json:"wellKnownClient,omitempty"`
 }
@@ -105,6 +140,13 @@ func (e *ExternalClientInfo) GetClientID() *string {
 		return nil
 	}
 	return e.ClientID
+}
+
+func (e *ExternalClientInfo) GetClientIDType() *ClientIDType {
+	if e == nil {
+		return nil
+	}
+	return e.ClientIDType
 }
 
 func (e *ExternalClientInfo) GetClientName() *string {
@@ -147,6 +189,13 @@ func (e *ExternalClientInfo) GetUserID() *string {
 		return nil
 	}
 	return e.UserID
+}
+
+func (e *ExternalClientInfo) GetVerifiedDomain() *string {
+	if e == nil {
+		return nil
+	}
+	return e.VerifiedDomain
 }
 
 func (e *ExternalClientInfo) GetWellKnownClient() *WellKnownClient {

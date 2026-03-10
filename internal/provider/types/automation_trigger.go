@@ -2,18 +2,12 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-)
-
 type AutomationTrigger struct {
 	AccessConflictTrigger       *AccessConflictTrigger       `tfsdk:"access_conflict_trigger"`
 	AppUserCreatedTrigger       *AppUserCreatedTrigger       `tfsdk:"app_user_created_trigger"`
 	AppUserUpdatedTrigger       *AppUserUpdatedTrigger       `tfsdk:"app_user_updated_trigger"`
-	FormTrigger                 jsontypes.Normalized         `tfsdk:"form_trigger"`
 	GrantDeletedTrigger         *GrantDeletedTrigger         `tfsdk:"grant_deleted_trigger"`
 	GrantFoundTrigger           *GrantFoundTrigger           `tfsdk:"grant_found_trigger"`
-	ManualAutomationTrigger     *ManualAutomationTrigger     `tfsdk:"manual_automation_trigger"`
 	ScheduleTrigger             *ScheduleTrigger             `tfsdk:"schedule_trigger"`
 	ScheduleTriggerAppUser      *ScheduleTriggerAppUser      `tfsdk:"schedule_trigger_app_user"`
 	UsageBasedRevocationTrigger *UsageBasedRevocationTrigger `tfsdk:"usage_based_revocation_trigger"`

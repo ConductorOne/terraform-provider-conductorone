@@ -86,6 +86,10 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 						Computed:    true,
 						Description: `JSONPATH expression indicating the location of the AppUser object in the expanded array`,
 					},
+					"approvers_path": schema.StringAttribute{
+						Computed:    true,
+						Description: `JSONPATH expression indicating the location of the ApproverUsers objects in the expanded array. These are the users who have approved or denied this task.`,
+					},
 					"created_by_user_path": schema.StringAttribute{
 						Computed:    true,
 						Description: `JSONPATH expression indicating the location of the object of the User that created the ticket in the expanded array`,
@@ -124,6 +128,11 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 									Attributes: map[string]schema.Attribute{},
 								},
 								Description: `An array of ` + "`" + `google.protobuf.Any` + "`" + ` annotations with various base64-encoded data.`,
+							},
+							"approver_ids": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+								Description: `An array of IDs belonging to Identity Users that have approved or denied any step in this task.`,
 							},
 							"comment_count": schema.Int32Attribute{
 								Computed:    true,
@@ -2497,10 +2506,128 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																					Computed:    true,
 																					Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 																				},
+																				"provisioner_assignment": schema.SingleNestedAttribute{
+																					Computed: true,
+																					Attributes: map[string]schema.Attribute{
+																						"app_owner_provisioner": schema.SingleNestedAttribute{
+																							Computed: true,
+																							Attributes: map[string]schema.Attribute{
+																								"allow_reassignment": schema.BoolAttribute{
+																									Computed:    true,
+																									Description: `Whether the provisioner can reassign the task.`,
+																								},
+																								"fallback_user_ids": schema.ListAttribute{
+																									Computed:    true,
+																									ElementType: types.StringType,
+																									Description: `Fallback user IDs if no app owners are found.`,
+																								},
+																							},
+																							Description: `AppOwnerProvisioner resolves to app owners.`,
+																						},
+																						"entitlement_owner_provisioner": schema.SingleNestedAttribute{
+																							Computed: true,
+																							Attributes: map[string]schema.Attribute{
+																								"allow_reassignment": schema.BoolAttribute{
+																									Computed:    true,
+																									Description: `Whether the provisioner can reassign the task.`,
+																								},
+																								"fallback_user_ids": schema.ListAttribute{
+																									Computed:    true,
+																									ElementType: types.StringType,
+																									Description: `Fallback user IDs if no entitlement owners are found.`,
+																								},
+																							},
+																							Description: `EntitlementOwnerProvisioner resolves to entitlement owners.`,
+																						},
+																						"expression_provisioner": schema.SingleNestedAttribute{
+																							Computed: true,
+																							Attributes: map[string]schema.Attribute{
+																								"allow_reassignment": schema.BoolAttribute{
+																									Computed:    true,
+																									Description: `Whether the provisioner can reassign the task.`,
+																								},
+																								"expressions": schema.ListAttribute{
+																									Computed:    true,
+																									ElementType: types.StringType,
+																									Description: `The CEL expressions to evaluate.`,
+																								},
+																								"fallback_user_ids": schema.ListAttribute{
+																									Computed:    true,
+																									ElementType: types.StringType,
+																									Description: `Fallback user IDs if expression evaluation yields no users.`,
+																								},
+																							},
+																							Description: `ExpressionProvisioner evaluates CEL expressions to determine provisioners.`,
+																						},
+																						"group_provisioner": schema.SingleNestedAttribute{
+																							Computed: true,
+																							Attributes: map[string]schema.Attribute{
+																								"allow_reassignment": schema.BoolAttribute{
+																									Computed:    true,
+																									Description: `Whether the provisioner can reassign the task.`,
+																								},
+																								"app_group_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The app group ID (entitlement ID).`,
+																								},
+																								"app_id": schema.StringAttribute{
+																									Computed:    true,
+																									Description: `The app ID containing the group.`,
+																								},
+																								"fallback_user_ids": schema.ListAttribute{
+																									Computed:    true,
+																									ElementType: types.StringType,
+																									Description: `Fallback user IDs if no group members are found.`,
+																								},
+																							},
+																							Description: `GroupProvisioner resolves to members of a specific group.`,
+																						},
+																						"manager_provisioner": schema.SingleNestedAttribute{
+																							Computed: true,
+																							Attributes: map[string]schema.Attribute{
+																								"allow_reassignment": schema.BoolAttribute{
+																									Computed:    true,
+																									Description: `Whether the provisioner can reassign the task.`,
+																								},
+																								"fallback_user_ids": schema.ListAttribute{
+																									Computed:    true,
+																									ElementType: types.StringType,
+																									Description: `Fallback user IDs if no manager is found.`,
+																								},
+																							},
+																							Description: `ManagerProvisioner resolves to the user's manager.`,
+																						},
+																						"user_provisioner": schema.SingleNestedAttribute{
+																							Computed: true,
+																							Attributes: map[string]schema.Attribute{
+																								"allow_reassignment": schema.BoolAttribute{
+																									Computed:    true,
+																									Description: `Whether the provisioner can reassign the task.`,
+																								},
+																								"user_ids": schema.ListAttribute{
+																									Computed:    true,
+																									ElementType: types.StringType,
+																									Description: `The user IDs to assign as provisioners.`,
+																								},
+																							},
+																							Description: `UserProvisioner assigns specific users as provisioners.`,
+																						},
+																					},
+																					MarkdownDescription: `ProvisionerAssignment defines how a provisioner is dynamically assigned.` + "\n" +
+																						`` + "\n" +
+																						`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+																						`  - users` + "\n" +
+																						`  - appOwners` + "\n" +
+																						`  - group` + "\n" +
+																						`  - manager` + "\n" +
+																						`  - expression` + "\n" +
+																						`  - entitlementOwners`,
+																				},
 																				"user_ids": schema.ListAttribute{
 																					Computed:    true,
 																					ElementType: types.StringType,
-																					Description: `An array of users that are required to provision during this step.`,
+																					MarkdownDescription: `An array of users that are required to provision during this step.` + "\n" +
+																						` Deprecated: Use assignee field instead for dynamic provisioner assignment.`,
 																				},
 																			},
 																			Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
@@ -3397,10 +3524,128 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																			Computed:    true,
 																			Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 																		},
+																		"provisioner_assignment": schema.SingleNestedAttribute{
+																			Computed: true,
+																			Attributes: map[string]schema.Attribute{
+																				"app_owner_provisioner": schema.SingleNestedAttribute{
+																					Computed: true,
+																					Attributes: map[string]schema.Attribute{
+																						"allow_reassignment": schema.BoolAttribute{
+																							Computed:    true,
+																							Description: `Whether the provisioner can reassign the task.`,
+																						},
+																						"fallback_user_ids": schema.ListAttribute{
+																							Computed:    true,
+																							ElementType: types.StringType,
+																							Description: `Fallback user IDs if no app owners are found.`,
+																						},
+																					},
+																					Description: `AppOwnerProvisioner resolves to app owners.`,
+																				},
+																				"entitlement_owner_provisioner": schema.SingleNestedAttribute{
+																					Computed: true,
+																					Attributes: map[string]schema.Attribute{
+																						"allow_reassignment": schema.BoolAttribute{
+																							Computed:    true,
+																							Description: `Whether the provisioner can reassign the task.`,
+																						},
+																						"fallback_user_ids": schema.ListAttribute{
+																							Computed:    true,
+																							ElementType: types.StringType,
+																							Description: `Fallback user IDs if no entitlement owners are found.`,
+																						},
+																					},
+																					Description: `EntitlementOwnerProvisioner resolves to entitlement owners.`,
+																				},
+																				"expression_provisioner": schema.SingleNestedAttribute{
+																					Computed: true,
+																					Attributes: map[string]schema.Attribute{
+																						"allow_reassignment": schema.BoolAttribute{
+																							Computed:    true,
+																							Description: `Whether the provisioner can reassign the task.`,
+																						},
+																						"expressions": schema.ListAttribute{
+																							Computed:    true,
+																							ElementType: types.StringType,
+																							Description: `The CEL expressions to evaluate.`,
+																						},
+																						"fallback_user_ids": schema.ListAttribute{
+																							Computed:    true,
+																							ElementType: types.StringType,
+																							Description: `Fallback user IDs if expression evaluation yields no users.`,
+																						},
+																					},
+																					Description: `ExpressionProvisioner evaluates CEL expressions to determine provisioners.`,
+																				},
+																				"group_provisioner": schema.SingleNestedAttribute{
+																					Computed: true,
+																					Attributes: map[string]schema.Attribute{
+																						"allow_reassignment": schema.BoolAttribute{
+																							Computed:    true,
+																							Description: `Whether the provisioner can reassign the task.`,
+																						},
+																						"app_group_id": schema.StringAttribute{
+																							Computed:    true,
+																							Description: `The app group ID (entitlement ID).`,
+																						},
+																						"app_id": schema.StringAttribute{
+																							Computed:    true,
+																							Description: `The app ID containing the group.`,
+																						},
+																						"fallback_user_ids": schema.ListAttribute{
+																							Computed:    true,
+																							ElementType: types.StringType,
+																							Description: `Fallback user IDs if no group members are found.`,
+																						},
+																					},
+																					Description: `GroupProvisioner resolves to members of a specific group.`,
+																				},
+																				"manager_provisioner": schema.SingleNestedAttribute{
+																					Computed: true,
+																					Attributes: map[string]schema.Attribute{
+																						"allow_reassignment": schema.BoolAttribute{
+																							Computed:    true,
+																							Description: `Whether the provisioner can reassign the task.`,
+																						},
+																						"fallback_user_ids": schema.ListAttribute{
+																							Computed:    true,
+																							ElementType: types.StringType,
+																							Description: `Fallback user IDs if no manager is found.`,
+																						},
+																					},
+																					Description: `ManagerProvisioner resolves to the user's manager.`,
+																				},
+																				"user_provisioner": schema.SingleNestedAttribute{
+																					Computed: true,
+																					Attributes: map[string]schema.Attribute{
+																						"allow_reassignment": schema.BoolAttribute{
+																							Computed:    true,
+																							Description: `Whether the provisioner can reassign the task.`,
+																						},
+																						"user_ids": schema.ListAttribute{
+																							Computed:    true,
+																							ElementType: types.StringType,
+																							Description: `The user IDs to assign as provisioners.`,
+																						},
+																					},
+																					Description: `UserProvisioner assigns specific users as provisioners.`,
+																				},
+																			},
+																			MarkdownDescription: `ProvisionerAssignment defines how a provisioner is dynamically assigned.` + "\n" +
+																				`` + "\n" +
+																				`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+																				`  - users` + "\n" +
+																				`  - appOwners` + "\n" +
+																				`  - group` + "\n" +
+																				`  - manager` + "\n" +
+																				`  - expression` + "\n" +
+																				`  - entitlementOwners`,
+																		},
 																		"user_ids": schema.ListAttribute{
 																			Computed:    true,
 																			ElementType: types.StringType,
-																			Description: `An array of users that are required to provision during this step.`,
+																			MarkdownDescription: `An array of users that are required to provision during this step.` + "\n" +
+																				` Deprecated: Use assignee field instead for dynamic provisioner assignment.`,
 																		},
 																	},
 																	Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
@@ -4212,10 +4457,128 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																								Computed:    true,
 																								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 																							},
+																							"provisioner_assignment": schema.SingleNestedAttribute{
+																								Computed: true,
+																								Attributes: map[string]schema.Attribute{
+																									"app_owner_provisioner": schema.SingleNestedAttribute{
+																										Computed: true,
+																										Attributes: map[string]schema.Attribute{
+																											"allow_reassignment": schema.BoolAttribute{
+																												Computed:    true,
+																												Description: `Whether the provisioner can reassign the task.`,
+																											},
+																											"fallback_user_ids": schema.ListAttribute{
+																												Computed:    true,
+																												ElementType: types.StringType,
+																												Description: `Fallback user IDs if no app owners are found.`,
+																											},
+																										},
+																										Description: `AppOwnerProvisioner resolves to app owners.`,
+																									},
+																									"entitlement_owner_provisioner": schema.SingleNestedAttribute{
+																										Computed: true,
+																										Attributes: map[string]schema.Attribute{
+																											"allow_reassignment": schema.BoolAttribute{
+																												Computed:    true,
+																												Description: `Whether the provisioner can reassign the task.`,
+																											},
+																											"fallback_user_ids": schema.ListAttribute{
+																												Computed:    true,
+																												ElementType: types.StringType,
+																												Description: `Fallback user IDs if no entitlement owners are found.`,
+																											},
+																										},
+																										Description: `EntitlementOwnerProvisioner resolves to entitlement owners.`,
+																									},
+																									"expression_provisioner": schema.SingleNestedAttribute{
+																										Computed: true,
+																										Attributes: map[string]schema.Attribute{
+																											"allow_reassignment": schema.BoolAttribute{
+																												Computed:    true,
+																												Description: `Whether the provisioner can reassign the task.`,
+																											},
+																											"expressions": schema.ListAttribute{
+																												Computed:    true,
+																												ElementType: types.StringType,
+																												Description: `The CEL expressions to evaluate.`,
+																											},
+																											"fallback_user_ids": schema.ListAttribute{
+																												Computed:    true,
+																												ElementType: types.StringType,
+																												Description: `Fallback user IDs if expression evaluation yields no users.`,
+																											},
+																										},
+																										Description: `ExpressionProvisioner evaluates CEL expressions to determine provisioners.`,
+																									},
+																									"group_provisioner": schema.SingleNestedAttribute{
+																										Computed: true,
+																										Attributes: map[string]schema.Attribute{
+																											"allow_reassignment": schema.BoolAttribute{
+																												Computed:    true,
+																												Description: `Whether the provisioner can reassign the task.`,
+																											},
+																											"app_group_id": schema.StringAttribute{
+																												Computed:    true,
+																												Description: `The app group ID (entitlement ID).`,
+																											},
+																											"app_id": schema.StringAttribute{
+																												Computed:    true,
+																												Description: `The app ID containing the group.`,
+																											},
+																											"fallback_user_ids": schema.ListAttribute{
+																												Computed:    true,
+																												ElementType: types.StringType,
+																												Description: `Fallback user IDs if no group members are found.`,
+																											},
+																										},
+																										Description: `GroupProvisioner resolves to members of a specific group.`,
+																									},
+																									"manager_provisioner": schema.SingleNestedAttribute{
+																										Computed: true,
+																										Attributes: map[string]schema.Attribute{
+																											"allow_reassignment": schema.BoolAttribute{
+																												Computed:    true,
+																												Description: `Whether the provisioner can reassign the task.`,
+																											},
+																											"fallback_user_ids": schema.ListAttribute{
+																												Computed:    true,
+																												ElementType: types.StringType,
+																												Description: `Fallback user IDs if no manager is found.`,
+																											},
+																										},
+																										Description: `ManagerProvisioner resolves to the user's manager.`,
+																									},
+																									"user_provisioner": schema.SingleNestedAttribute{
+																										Computed: true,
+																										Attributes: map[string]schema.Attribute{
+																											"allow_reassignment": schema.BoolAttribute{
+																												Computed:    true,
+																												Description: `Whether the provisioner can reassign the task.`,
+																											},
+																											"user_ids": schema.ListAttribute{
+																												Computed:    true,
+																												ElementType: types.StringType,
+																												Description: `The user IDs to assign as provisioners.`,
+																											},
+																										},
+																										Description: `UserProvisioner assigns specific users as provisioners.`,
+																									},
+																								},
+																								MarkdownDescription: `ProvisionerAssignment defines how a provisioner is dynamically assigned.` + "\n" +
+																									`` + "\n" +
+																									`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+																									`  - users` + "\n" +
+																									`  - appOwners` + "\n" +
+																									`  - group` + "\n" +
+																									`  - manager` + "\n" +
+																									`  - expression` + "\n" +
+																									`  - entitlementOwners`,
+																							},
 																							"user_ids": schema.ListAttribute{
 																								Computed:    true,
 																								ElementType: types.StringType,
-																								Description: `An array of users that are required to provision during this step.`,
+																								MarkdownDescription: `An array of users that are required to provision during this step.` + "\n" +
+																									` Deprecated: Use assignee field instead for dynamic provisioner assignment.`,
 																							},
 																						},
 																						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
@@ -6107,10 +6470,128 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																				Computed:    true,
 																				Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 																			},
+																			"provisioner_assignment": schema.SingleNestedAttribute{
+																				Computed: true,
+																				Attributes: map[string]schema.Attribute{
+																					"app_owner_provisioner": schema.SingleNestedAttribute{
+																						Computed: true,
+																						Attributes: map[string]schema.Attribute{
+																							"allow_reassignment": schema.BoolAttribute{
+																								Computed:    true,
+																								Description: `Whether the provisioner can reassign the task.`,
+																							},
+																							"fallback_user_ids": schema.ListAttribute{
+																								Computed:    true,
+																								ElementType: types.StringType,
+																								Description: `Fallback user IDs if no app owners are found.`,
+																							},
+																						},
+																						Description: `AppOwnerProvisioner resolves to app owners.`,
+																					},
+																					"entitlement_owner_provisioner": schema.SingleNestedAttribute{
+																						Computed: true,
+																						Attributes: map[string]schema.Attribute{
+																							"allow_reassignment": schema.BoolAttribute{
+																								Computed:    true,
+																								Description: `Whether the provisioner can reassign the task.`,
+																							},
+																							"fallback_user_ids": schema.ListAttribute{
+																								Computed:    true,
+																								ElementType: types.StringType,
+																								Description: `Fallback user IDs if no entitlement owners are found.`,
+																							},
+																						},
+																						Description: `EntitlementOwnerProvisioner resolves to entitlement owners.`,
+																					},
+																					"expression_provisioner": schema.SingleNestedAttribute{
+																						Computed: true,
+																						Attributes: map[string]schema.Attribute{
+																							"allow_reassignment": schema.BoolAttribute{
+																								Computed:    true,
+																								Description: `Whether the provisioner can reassign the task.`,
+																							},
+																							"expressions": schema.ListAttribute{
+																								Computed:    true,
+																								ElementType: types.StringType,
+																								Description: `The CEL expressions to evaluate.`,
+																							},
+																							"fallback_user_ids": schema.ListAttribute{
+																								Computed:    true,
+																								ElementType: types.StringType,
+																								Description: `Fallback user IDs if expression evaluation yields no users.`,
+																							},
+																						},
+																						Description: `ExpressionProvisioner evaluates CEL expressions to determine provisioners.`,
+																					},
+																					"group_provisioner": schema.SingleNestedAttribute{
+																						Computed: true,
+																						Attributes: map[string]schema.Attribute{
+																							"allow_reassignment": schema.BoolAttribute{
+																								Computed:    true,
+																								Description: `Whether the provisioner can reassign the task.`,
+																							},
+																							"app_group_id": schema.StringAttribute{
+																								Computed:    true,
+																								Description: `The app group ID (entitlement ID).`,
+																							},
+																							"app_id": schema.StringAttribute{
+																								Computed:    true,
+																								Description: `The app ID containing the group.`,
+																							},
+																							"fallback_user_ids": schema.ListAttribute{
+																								Computed:    true,
+																								ElementType: types.StringType,
+																								Description: `Fallback user IDs if no group members are found.`,
+																							},
+																						},
+																						Description: `GroupProvisioner resolves to members of a specific group.`,
+																					},
+																					"manager_provisioner": schema.SingleNestedAttribute{
+																						Computed: true,
+																						Attributes: map[string]schema.Attribute{
+																							"allow_reassignment": schema.BoolAttribute{
+																								Computed:    true,
+																								Description: `Whether the provisioner can reassign the task.`,
+																							},
+																							"fallback_user_ids": schema.ListAttribute{
+																								Computed:    true,
+																								ElementType: types.StringType,
+																								Description: `Fallback user IDs if no manager is found.`,
+																							},
+																						},
+																						Description: `ManagerProvisioner resolves to the user's manager.`,
+																					},
+																					"user_provisioner": schema.SingleNestedAttribute{
+																						Computed: true,
+																						Attributes: map[string]schema.Attribute{
+																							"allow_reassignment": schema.BoolAttribute{
+																								Computed:    true,
+																								Description: `Whether the provisioner can reassign the task.`,
+																							},
+																							"user_ids": schema.ListAttribute{
+																								Computed:    true,
+																								ElementType: types.StringType,
+																								Description: `The user IDs to assign as provisioners.`,
+																							},
+																						},
+																						Description: `UserProvisioner assigns specific users as provisioners.`,
+																					},
+																				},
+																				MarkdownDescription: `ProvisionerAssignment defines how a provisioner is dynamically assigned.` + "\n" +
+																					`` + "\n" +
+																					`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+																					`  - users` + "\n" +
+																					`  - appOwners` + "\n" +
+																					`  - group` + "\n" +
+																					`  - manager` + "\n" +
+																					`  - expression` + "\n" +
+																					`  - entitlementOwners`,
+																			},
 																			"user_ids": schema.ListAttribute{
 																				Computed:    true,
 																				ElementType: types.StringType,
-																				Description: `An array of users that are required to provision during this step.`,
+																				MarkdownDescription: `An array of users that are required to provision during this step.` + "\n" +
+																					` Deprecated: Use assignee field instead for dynamic provisioner assignment.`,
 																			},
 																		},
 																		Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
@@ -6373,6 +6854,29 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 							"recommendation": schema.StringAttribute{
 								Computed:    true,
 								Description: `The recommendation field.`,
+							},
+							"revocation_targets": schema.ListNestedAttribute{
+								Computed: true,
+								NestedObject: schema.NestedAttributeObject{
+									Attributes: map[string]schema.Attribute{
+										"app_entitlement_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"app_id": schema.StringAttribute{
+													Computed:    true,
+													Description: `The appId field.`,
+												},
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Description: `The id field.`,
+												},
+											},
+											Description: `The AppEntitlementRef message.`,
+										},
+									},
+								},
+								MarkdownDescription: `Ancestor entitlements that will also be revoked when this revoke task is approved.` + "\n" +
+									` Populated at ticket creation time for inherited grant revocations.`,
 							},
 							"state": schema.StringAttribute{
 								Computed:    true,

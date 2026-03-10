@@ -160,13 +160,6 @@ resource "conductorone_automation" "my_automation" {
         # ...
       }
       grant_entitlements = {
-        app_entitlement_refs = [
-          {
-            app_id = "...my_app_id..."
-            id     = "...my_id..."
-          }
-        ]
-        app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         grant_entitlement_exclusion_criteria = {
           excluded_app_ids = [
             "..."
@@ -477,13 +470,6 @@ resource "conductorone_automation" "my_automation" {
         # ...
       }
       grant_entitlements = {
-        app_entitlement_refs = [
-          {
-            app_id = "...my_app_id..."
-            id     = "...my_id..."
-          }
-        ]
-        app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         grant_entitlement_exclusion_criteria = {
           excluded_app_ids = [
             "..."
@@ -659,21 +645,10 @@ resource "conductorone_automation" "my_automation" {
         app_id_cel = "...my_app_id_cel..."
         condition  = "...my_condition..."
       }
-      form_trigger = "{ \"see\": \"documentation\" }"
       grant_deleted_trigger = {
         grant_trigger_filter = {
           account_filter = {
             account_type = "APP_USER_TYPE_UNSPECIFIED"
-          }
-          entitlement_filter = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-            app_id                   = "...my_app_id..."
           }
           entitlement_inclusion_all = {
             # ...
@@ -715,16 +690,6 @@ resource "conductorone_automation" "my_automation" {
           account_filter = {
             account_type = "APP_USER_TYPE_UNSPECIFIED"
           }
-          entitlement_filter = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-            app_id                   = "...my_app_id..."
-          }
           entitlement_inclusion_all = {
             # ...
           }
@@ -759,9 +724,6 @@ resource "conductorone_automation" "my_automation" {
             grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
           }
         }
-      }
-      manual_automation_trigger = {
-        # ...
       }
       schedule_trigger = {
         advanced         = false
@@ -851,21 +813,10 @@ resource "conductorone_automation" "my_automation" {
         app_id_cel = "...my_app_id_cel..."
         condition  = "...my_condition..."
       }
-      form_trigger = "{ \"see\": \"documentation\" }"
       grant_deleted_trigger = {
         grant_trigger_filter = {
           account_filter = {
             account_type = "APP_USER_TYPE_SERVICE_ACCOUNT"
-          }
-          entitlement_filter = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-            app_id                   = "...my_app_id..."
           }
           entitlement_inclusion_all = {
             # ...
@@ -907,16 +858,6 @@ resource "conductorone_automation" "my_automation" {
           account_filter = {
             account_type = "APP_USER_TYPE_UNSPECIFIED"
           }
-          entitlement_filter = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-            app_id                   = "...my_app_id..."
-          }
           entitlement_inclusion_all = {
             # ...
           }
@@ -951,9 +892,6 @@ resource "conductorone_automation" "my_automation" {
             grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
           }
         }
-      }
-      manual_automation_trigger = {
-        # ...
       }
       schedule_trigger = {
         advanced         = false

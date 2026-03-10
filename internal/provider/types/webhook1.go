@@ -7,11 +7,12 @@ import (
 )
 
 type Webhook1 struct {
-	CreatedAt   types.String `tfsdk:"created_at"`
-	DeletedAt   types.String `tfsdk:"deleted_at"`
-	Description types.String `tfsdk:"description"`
-	DisplayName types.String `tfsdk:"display_name"`
-	ID          types.String `tfsdk:"id"`
-	UpdatedAt   types.String `tfsdk:"updated_at"`
-	URL         types.String `tfsdk:"url"`
+	CallbackTimeout types.String `tfsdk:"callback_timeout"`
+	CreatedAt       types.String `tfsdk:"created_at"`
+	DeletedAt       types.String `tfsdk:"deleted_at"`
+	Description     types.String `tfsdk:"description"`
+	DisplayName     types.String `tfsdk:"display_name"`
+	ID              types.String `tfsdk:"id"`
+	UpdatedAt       types.String `tfsdk:"updated_at"`
+	URL             types.String `tfsdk:"url"`
 }

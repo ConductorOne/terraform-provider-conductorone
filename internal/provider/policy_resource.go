@@ -861,7 +861,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"action_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"action_name": schema.StringAttribute{
@@ -888,7 +887,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
 													},
 													"connector_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"account_provision": schema.SingleNestedAttribute{
@@ -979,7 +977,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														},
 													},
 													"delegated_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"app_id": schema.StringAttribute{
@@ -1005,7 +1002,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														},
 													},
 													"external_ticket_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"app_id": schema.StringAttribute{
@@ -1041,7 +1037,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														},
 													},
 													"manual_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"instructions": schema.StringAttribute{
@@ -1049,11 +1044,151 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 																Optional:    true,
 																Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 															},
+															"provisioner_assignment": schema.SingleNestedAttribute{
+																Computed: true,
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"app_owner_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"fallback_user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `Fallback user IDs if no app owners are found.`,
+																			},
+																		},
+																		Description: `AppOwnerProvisioner resolves to app owners.`,
+																	},
+																	"entitlement_owner_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"fallback_user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `Fallback user IDs if no entitlement owners are found.`,
+																			},
+																		},
+																		Description: `EntitlementOwnerProvisioner resolves to entitlement owners.`,
+																	},
+																	"expression_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"expressions": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `The CEL expressions to evaluate.`,
+																			},
+																			"fallback_user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `Fallback user IDs if expression evaluation yields no users.`,
+																			},
+																		},
+																		Description: `ExpressionProvisioner evaluates CEL expressions to determine provisioners.`,
+																	},
+																	"group_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"app_group_id": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `The app group ID (entitlement ID).`,
+																			},
+																			"app_id": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `The app ID containing the group.`,
+																			},
+																			"fallback_user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `Fallback user IDs if no group members are found.`,
+																			},
+																		},
+																		Description: `GroupProvisioner resolves to members of a specific group.`,
+																	},
+																	"manager_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"fallback_user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `Fallback user IDs if no manager is found.`,
+																			},
+																		},
+																		Description: `ManagerProvisioner resolves to the user's manager.`,
+																	},
+																	"user_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `The user IDs to assign as provisioners.`,
+																			},
+																		},
+																		Description: `UserProvisioner assigns specific users as provisioners.`,
+																	},
+																},
+																MarkdownDescription: `ProvisionerAssignment defines how a provisioner is dynamically assigned.` + "\n" +
+																	`` + "\n" +
+																	`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+																	`  - users` + "\n" +
+																	`  - appOwners` + "\n" +
+																	`  - group` + "\n" +
+																	`  - manager` + "\n" +
+																	`  - expression` + "\n" +
+																	`  - entitlementOwners`,
+															},
 															"user_ids": schema.ListAttribute{
 																Computed:    true,
 																Optional:    true,
 																ElementType: types.StringType,
-																Description: `An array of users that are required to provision during this step.`,
+																MarkdownDescription: `An array of users that are required to provision during this step.` + "\n" +
+																	` Deprecated: Use assignee field instead for dynamic provisioner assignment.`,
 															},
 														},
 														Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
@@ -1088,7 +1223,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Description: `The UnconfiguredProvision message.`,
 													},
 													"webhook_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"webhook_id": schema.StringAttribute{

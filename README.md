@@ -42,7 +42,9 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 ### Resources
 
 * [conductorone_access_review](docs/resources/access_review.md)
+* [conductorone_access_review_setup](docs/resources/access_review_setup.md)
 * [conductorone_access_review_template](docs/resources/access_review_template.md)
+* [conductorone_access_review_template_setup](docs/resources/access_review_template_setup.md)
 * [conductorone_access_conflict](docs/resources/access_conflict.md)
 * [conductorone_access_profile](docs/resources/access_profile.md)
 * [conductorone_access_profile_requestable_entries](docs/resources/access_profile_requestable_entries.md)
@@ -77,7 +79,9 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 ### Data Sources
 
 * [conductorone_access_review](docs/data-sources/access_review.md)
+* [conductorone_access_review_setup](docs/data-sources/access_review_setup.md)
 * [conductorone_access_review_template](docs/data-sources/access_review_template.md)
+* [conductorone_access_review_template_setup](docs/data-sources/access_review_template_setup.md)
 * [conductorone_access_reviews](docs/data-sources/access_reviews.md)
 * [conductorone_access_profile](docs/data-sources/access_profile.md)
 * [conductorone_access_profile_requestable_entry](docs/data-sources/access_profile_requestable_entry.md)
@@ -197,7 +201,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.7.11"
+      version = "1.7.15"
     }
   }
 }

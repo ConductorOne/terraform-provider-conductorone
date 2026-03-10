@@ -9,19 +9,19 @@ import (
 	"time"
 )
 
-// JustificationVisibility - The justificationVisibility field.
-type JustificationVisibility string
+// RequestSchemaJustificationVisibility - The justificationVisibility field.
+type RequestSchemaJustificationVisibility string
 
 const (
-	JustificationVisibilityJustificationVisibilityUnspecified JustificationVisibility = "JUSTIFICATION_VISIBILITY_UNSPECIFIED"
-	JustificationVisibilityJustificationVisibilityShow        JustificationVisibility = "JUSTIFICATION_VISIBILITY_SHOW"
-	JustificationVisibilityJustificationVisibilityHide        JustificationVisibility = "JUSTIFICATION_VISIBILITY_HIDE"
+	RequestSchemaJustificationVisibilityJustificationVisibilityUnspecified RequestSchemaJustificationVisibility = "JUSTIFICATION_VISIBILITY_UNSPECIFIED"
+	RequestSchemaJustificationVisibilityJustificationVisibilityShow        RequestSchemaJustificationVisibility = "JUSTIFICATION_VISIBILITY_SHOW"
+	RequestSchemaJustificationVisibilityJustificationVisibilityHide        RequestSchemaJustificationVisibility = "JUSTIFICATION_VISIBILITY_HIDE"
 )
 
-func (e JustificationVisibility) ToPointer() *JustificationVisibility {
+func (e RequestSchemaJustificationVisibility) ToPointer() *RequestSchemaJustificationVisibility {
 	return &e
 }
-func (e *JustificationVisibility) UnmarshalJSON(data []byte) error {
+func (e *RequestSchemaJustificationVisibility) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -32,10 +32,10 @@ func (e *JustificationVisibility) UnmarshalJSON(data []byte) error {
 	case "JUSTIFICATION_VISIBILITY_SHOW":
 		fallthrough
 	case "JUSTIFICATION_VISIBILITY_HIDE":
-		*e = JustificationVisibility(v)
+		*e = RequestSchemaJustificationVisibility(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for JustificationVisibility: %v", v)
+		return fmt.Errorf("invalid value for RequestSchemaJustificationVisibility: %v", v)
 	}
 }
 
@@ -48,7 +48,7 @@ type RequestSchema struct {
 	// The id field.
 	ID *string `json:"id,omitempty"`
 	// The justificationVisibility field.
-	JustificationVisibility *JustificationVisibility `json:"justificationVisibility,omitempty"`
+	JustificationVisibility *RequestSchemaJustificationVisibility `json:"justificationVisibility,omitempty"`
 }
 
 func (r RequestSchema) MarshalJSON() ([]byte, error) {
@@ -90,7 +90,7 @@ func (r *RequestSchema) GetID() *string {
 	return r.ID
 }
 
-func (r *RequestSchema) GetJustificationVisibility() *JustificationVisibility {
+func (r *RequestSchema) GetJustificationVisibility() *RequestSchemaJustificationVisibility {
 	if r == nil {
 		return nil
 	}

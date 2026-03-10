@@ -33,7 +33,7 @@ func newSystemLog(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, h
 // ListEvents - List Events
 // ListEvents pulls Events from the ConductorOne system.
 //
-//	This endpoint should be used to synchorize the
+//	This endpoint should be used to synchronize the
 //	system log events to external systems.
 func (s *SystemLog) ListEvents(ctx context.Context, request *shared.SystemLogServiceListEventsRequest, opts ...operations.Option) (*operations.C1APISystemlogV1SystemLogServiceListEventsResponse, error) {
 	o := operations.Options{}

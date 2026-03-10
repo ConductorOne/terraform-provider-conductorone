@@ -12,5 +12,6 @@ type Directory struct {
 	DeletedAt                 types.String               `tfsdk:"deleted_at"`
 	DirectoryAccountFilterAll *DirectoryAccountFilterAll `tfsdk:"directory_account_filter_all"`
 	DirectoryAccountFilterCel *DirectoryAccountFilterCel `tfsdk:"directory_account_filter_cel"`
+	DirectoryMergeConfig      *DirectoryMergeConfig      `tfsdk:"directory_merge_config"`
 	UpdatedAt                 types.String               `tfsdk:"updated_at"`
 }

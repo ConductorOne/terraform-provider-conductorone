@@ -12,8 +12,6 @@ package shared
 type GrantTriggerFilter struct {
 	// The AccountFilter message.
 	AccountFilter *AccountFilter `json:"accountFilter,omitempty"`
-	// The EntitlementFilter message.
-	EntitlementFilter *EntitlementFilter `json:"entitlementFilter,omitempty"`
 	// The GrantFilter message.
 	GrantFilter *GrantFilter `json:"grantFilter,omitempty"`
 	// The EntitlementInclusionAll message.
@@ -31,13 +29,6 @@ func (g *GrantTriggerFilter) GetAccountFilter() *AccountFilter {
 		return nil
 	}
 	return g.AccountFilter
-}
-
-func (g *GrantTriggerFilter) GetEntitlementFilter() *EntitlementFilter {
-	if g == nil {
-		return nil
-	}
-	return g.EntitlementFilter
 }
 
 func (g *GrantTriggerFilter) GetGrantFilter() *GrantFilter {

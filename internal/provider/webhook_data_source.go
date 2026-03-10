@@ -29,18 +29,19 @@ type WebhookDataSource struct {
 
 // WebhookDataSourceModel describes the data model.
 type WebhookDataSourceModel struct {
-	CreatedAt     types.String         `tfsdk:"created_at"`
-	DeletedAt     types.String         `tfsdk:"deleted_at"`
-	Description   types.String         `tfsdk:"description"`
-	DisplayName   types.String         `tfsdk:"display_name"`
-	ID            types.String         `tfsdk:"id"`
-	NextPageToken types.String         `tfsdk:"next_page_token"`
-	PageSize      types.Int32          `tfsdk:"page_size"`
-	PageToken     types.String         `tfsdk:"page_token"`
-	Query         types.String         `tfsdk:"query"`
-	Refs          []tfTypes.WebhookRef `tfsdk:"refs"`
-	UpdatedAt     types.String         `tfsdk:"updated_at"`
-	URL           types.String         `tfsdk:"url"`
+	CallbackTimeout types.String         `tfsdk:"callback_timeout"`
+	CreatedAt       types.String         `tfsdk:"created_at"`
+	DeletedAt       types.String         `tfsdk:"deleted_at"`
+	Description     types.String         `tfsdk:"description"`
+	DisplayName     types.String         `tfsdk:"display_name"`
+	ID              types.String         `tfsdk:"id"`
+	NextPageToken   types.String         `tfsdk:"next_page_token"`
+	PageSize        types.Int32          `tfsdk:"page_size"`
+	PageToken       types.String         `tfsdk:"page_token"`
+	Query           types.String         `tfsdk:"query"`
+	Refs            []tfTypes.WebhookRef `tfsdk:"refs"`
+	UpdatedAt       types.String         `tfsdk:"updated_at"`
+	URL             types.String         `tfsdk:"url"`
 }
 
 // Metadata returns the data source type name.
@@ -54,6 +55,9 @@ func (r *WebhookDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 		MarkdownDescription: "Webhook DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"callback_timeout": schema.StringAttribute{
+				Computed: true,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},

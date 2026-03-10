@@ -117,30 +117,30 @@ type Annotations struct {
 type Data struct {
 }
 
-// Origin - The origin field.
-type Origin string
+// TaskOrigin - The origin field.
+type TaskOrigin string
 
 const (
-	OriginTaskOriginUnspecified                 Origin = "TASK_ORIGIN_UNSPECIFIED"
-	OriginTaskOriginProfileMembershipAutomation Origin = "TASK_ORIGIN_PROFILE_MEMBERSHIP_AUTOMATION"
-	OriginTaskOriginSlack                       Origin = "TASK_ORIGIN_SLACK"
-	OriginTaskOriginAPI                         Origin = "TASK_ORIGIN_API"
-	OriginTaskOriginJira                        Origin = "TASK_ORIGIN_JIRA"
-	OriginTaskOriginCopilot                     Origin = "TASK_ORIGIN_COPILOT"
-	OriginTaskOriginWebapp                      Origin = "TASK_ORIGIN_WEBAPP"
-	OriginTaskOriginTimeRevoke                  Origin = "TASK_ORIGIN_TIME_REVOKE"
-	OriginTaskOriginNonUsageRevoke              Origin = "TASK_ORIGIN_NON_USAGE_REVOKE"
-	OriginTaskOriginProfileMembershipManual     Origin = "TASK_ORIGIN_PROFILE_MEMBERSHIP_MANUAL"
-	OriginTaskOriginProfileMembership           Origin = "TASK_ORIGIN_PROFILE_MEMBERSHIP"
-	OriginTaskOriginAutomation                  Origin = "TASK_ORIGIN_AUTOMATION"
-	OriginTaskOriginAccessReview                Origin = "TASK_ORIGIN_ACCESS_REVIEW"
-	OriginTaskOriginCascadeDelete               Origin = "TASK_ORIGIN_CASCADE_DELETE"
+	TaskOriginTaskOriginUnspecified                 TaskOrigin = "TASK_ORIGIN_UNSPECIFIED"
+	TaskOriginTaskOriginProfileMembershipAutomation TaskOrigin = "TASK_ORIGIN_PROFILE_MEMBERSHIP_AUTOMATION"
+	TaskOriginTaskOriginSlack                       TaskOrigin = "TASK_ORIGIN_SLACK"
+	TaskOriginTaskOriginAPI                         TaskOrigin = "TASK_ORIGIN_API"
+	TaskOriginTaskOriginJira                        TaskOrigin = "TASK_ORIGIN_JIRA"
+	TaskOriginTaskOriginCopilot                     TaskOrigin = "TASK_ORIGIN_COPILOT"
+	TaskOriginTaskOriginWebapp                      TaskOrigin = "TASK_ORIGIN_WEBAPP"
+	TaskOriginTaskOriginTimeRevoke                  TaskOrigin = "TASK_ORIGIN_TIME_REVOKE"
+	TaskOriginTaskOriginNonUsageRevoke              TaskOrigin = "TASK_ORIGIN_NON_USAGE_REVOKE"
+	TaskOriginTaskOriginProfileMembershipManual     TaskOrigin = "TASK_ORIGIN_PROFILE_MEMBERSHIP_MANUAL"
+	TaskOriginTaskOriginProfileMembership           TaskOrigin = "TASK_ORIGIN_PROFILE_MEMBERSHIP"
+	TaskOriginTaskOriginAutomation                  TaskOrigin = "TASK_ORIGIN_AUTOMATION"
+	TaskOriginTaskOriginAccessReview                TaskOrigin = "TASK_ORIGIN_ACCESS_REVIEW"
+	TaskOriginTaskOriginCascadeDelete               TaskOrigin = "TASK_ORIGIN_CASCADE_DELETE"
 )
 
-func (e Origin) ToPointer() *Origin {
+func (e TaskOrigin) ToPointer() *TaskOrigin {
 	return &e
 }
-func (e *Origin) UnmarshalJSON(data []byte) error {
+func (e *TaskOrigin) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -173,10 +173,10 @@ func (e *Origin) UnmarshalJSON(data []byte) error {
 	case "TASK_ORIGIN_ACCESS_REVIEW":
 		fallthrough
 	case "TASK_ORIGIN_CASCADE_DELETE":
-		*e = Origin(v)
+		*e = TaskOrigin(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Origin: %v", v)
+		return fmt.Errorf("invalid value for TaskOrigin: %v", v)
 	}
 }
 
@@ -284,6 +284,8 @@ type Task struct {
 	AnalysisID *string `json:"analysisId,omitempty"`
 	// An array of `google.protobuf.Any` annotations with various base64-encoded data.
 	Annotations []Annotations `json:"annotations,omitempty"`
+	// An array of IDs belonging to Identity Users that have approved or denied any step in this task.
+	ApproverIds []string `json:"approverIds,omitempty"`
 	// The count of comments.
 	CommentCount *int       `json:"commentCount,omitempty"`
 	CreatedAt    *time.Time `json:"createdAt,omitempty"`
@@ -308,7 +310,7 @@ type Task struct {
 	// A human-usable numeric ID of a task which can be included in place of the fully qualified task id in path parmeters (but not search queries).
 	NumericID *string `json:"numericId,omitempty"`
 	// The origin field.
-	Origin *Origin `json:"origin,omitempty"`
+	Origin *TaskOrigin `json:"origin,omitempty"`
 	// A policy instance is an object that contains a reference to the policy it was created from, the currently executing step, the next steps, and the history of previously completed steps.
 	PolicyInstance *PolicyInstance `json:"policy,omitempty"`
 	// The policy generation id refers to the current policy's generation ID. This is changed when the policy is changed on a task.
@@ -317,6 +319,9 @@ type Task struct {
 	Processing *Processing `json:"processing,omitempty"`
 	// The recommendation field.
 	Recommendation *Recommendation `json:"recommendation,omitempty"`
+	// Ancestor entitlements that will also be revoked when this revoke task is approved.
+	//  Populated at ticket creation time for inherited grant revocations.
+	RevocationTargets []TaskRevocationTarget `json:"revocationTargets,omitempty"`
 	// The current state of the task as defined by the `state_enum`
 	State *TaskState `json:"state,omitempty"`
 	// An array of IDs belonging to Identity Users that are allowed to review this step in a task.
@@ -366,6 +371,13 @@ func (t *Task) GetAnnotations() []Annotations {
 		return nil
 	}
 	return t.Annotations
+}
+
+func (t *Task) GetApproverIds() []string {
+	if t == nil {
+		return nil
+	}
+	return t.ApproverIds
 }
 
 func (t *Task) GetCommentCount() *int {
@@ -459,7 +471,7 @@ func (t *Task) GetNumericID() *string {
 	return t.NumericID
 }
 
-func (t *Task) GetOrigin() *Origin {
+func (t *Task) GetOrigin() *TaskOrigin {
 	if t == nil {
 		return nil
 	}
@@ -492,6 +504,13 @@ func (t *Task) GetRecommendation() *Recommendation {
 		return nil
 	}
 	return t.Recommendation
+}
+
+func (t *Task) GetRevocationTargets() []TaskRevocationTarget {
+	if t == nil {
+		return nil
+	}
+	return t.RevocationTargets
 }
 
 func (t *Task) GetState() *TaskState {
