@@ -22,7 +22,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.7.4"
+      version = "1.7.15"
     }
   }
 }
@@ -37,10 +37,11 @@ provider "conductorone" {
 
 ### Optional
 
-- `client_id` (String) ClientId for Auth
-- `client_secret` (String) ClientSecret for Auth
-- `server_url` (String) Server URL (defaults to https://{tenantDomain}.conductor.one)
-- `tenant_domain` (String) Tenant Domain (derived from client_id if not provided)
+- `client_id` (String) Client ID for authentication. Required for OIDC and credential-based auth. Can also be set via `CONDUCTORONE_CLIENT_ID` env var.
+- `client_secret` (String, Sensitive) Client secret for credential-based authentication (Ed25519 JWT assertion). Can also be set via `CONDUCTORONE_CLIENT_SECRET` env var.
+- `oidc_token` (String, Sensitive) OIDC token for workload federation authentication (RFC 8693 token exchange). Auto-detected from `CONDUCTORONE_OIDC_TOKEN` or `TFC_WORKLOAD_IDENTITY_TOKEN` environment variables.
+- `server_url` (String) Server URL (defaults to `https://{tenant_domain}.conductor.one`). Can also be set via `CONDUCTORONE_SERVER_URL` env var.
+- `tenant_domain` (String) Tenant domain (derived from `client_id` if not provided). Can also be set via `CONDUCTORONE_TENANT_DOMAIN` env var.
 
 ## Limitations
 

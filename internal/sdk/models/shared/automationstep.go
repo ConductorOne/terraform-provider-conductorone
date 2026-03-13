@@ -78,6 +78,19 @@ type AutomationStep struct {
 	// The GeneratePassword message.
 	GeneratePassword *GeneratePassword `json:"generatePassword,omitempty"`
 	// The GrantEntitlements message.
+	//
+	// This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:
+	//   - inclusionList
+	//   - inclusionCriteria
+	//   - inclusionListCel
+	//
+	//
+	// This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
+	//   - exclusionNone
+	//   - exclusionList
+	//   - exclusionCriteria
+	//   - exclusionListCel
+	//
 	GrantEntitlements *GrantEntitlements `json:"grantEntitlements,omitempty"`
 	// RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
 	//

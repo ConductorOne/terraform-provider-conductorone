@@ -19,12 +19,6 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
-		if len(resp.EncryptedValues) > 0 {
-			r.EncryptedValues = make(map[string]types.String, len(resp.EncryptedValues))
-			for key, value := range resp.EncryptedValues {
-				r.EncryptedValues[key] = types.StringValue(value)
-			}
-		}
 		if resp.FunctionType != nil {
 			r.FunctionType = types.StringValue(string(*resp.FunctionType))
 		} else {
@@ -40,6 +34,18 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 			}
 		}
 		r.PublishedCommitID = types.StringPointerValue(resp.PublishedCommitID)
+		if resp.ScopedRoleIds != nil {
+			r.ScopedRoleIds = make([]types.String, 0, len(resp.ScopedRoleIds))
+			for _, v := range resp.ScopedRoleIds {
+				r.ScopedRoleIds = append(r.ScopedRoleIds, types.StringValue(v))
+			}
+		}
+		if len(resp.Secret) > 0 {
+			r.Secret = make(map[string]types.String, len(resp.Secret))
+			for key, value := range resp.Secret {
+				r.Secret[key] = types.StringValue(value)
+			}
+		}
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 
@@ -144,13 +150,6 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 	} else {
 		displayName = nil
 	}
-	encryptedValues := make(map[string]string)
-	for encryptedValuesKey, encryptedValuesValue := range r.EncryptedValues {
-		var encryptedValuesInst string
-		encryptedValuesInst = encryptedValuesValue.ValueString()
-
-		encryptedValues[encryptedValuesKey] = encryptedValuesInst
-	}
 	functionType := new(shared.FunctionType)
 	if !r.FunctionType.IsUnknown() && !r.FunctionType.IsNull() {
 		*functionType = shared.FunctionType(r.FunctionType.ValueString())
@@ -178,8 +177,8 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 	var outboundNetworkAllowlist []string
 	if r.OutboundNetworkAllowlist != nil {
 		outboundNetworkAllowlist = make([]string, 0, len(r.OutboundNetworkAllowlist))
-		for _, outboundNetworkAllowlistItem := range r.OutboundNetworkAllowlist {
-			outboundNetworkAllowlist = append(outboundNetworkAllowlist, outboundNetworkAllowlistItem.ValueString())
+		for outboundNetworkAllowlistIndex := range r.OutboundNetworkAllowlist {
+			outboundNetworkAllowlist = append(outboundNetworkAllowlist, r.OutboundNetworkAllowlist[outboundNetworkAllowlistIndex].ValueString())
 		}
 	}
 	publishedCommitID := new(string)
@@ -188,16 +187,31 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 	} else {
 		publishedCommitID = nil
 	}
+	var scopedRoleIds []string
+	if r.ScopedRoleIds != nil {
+		scopedRoleIds = make([]string, 0, len(r.ScopedRoleIds))
+		for scopedRoleIdsIndex := range r.ScopedRoleIds {
+			scopedRoleIds = append(scopedRoleIds, r.ScopedRoleIds[scopedRoleIdsIndex].ValueString())
+		}
+	}
+	secret := make(map[string]string)
+	for secretKey := range r.Secret {
+		var secretInst string
+		secretInst = r.Secret[secretKey].ValueString()
+
+		secret[secretKey] = secretInst
+	}
 	out := shared.FunctionInput{
 		Description:              description,
 		DisplayName:              displayName,
-		EncryptedValues:          encryptedValues,
 		FunctionType:             functionType,
 		Head:                     head,
 		ID:                       id,
 		IsDraft:                  isDraft,
 		OutboundNetworkAllowlist: outboundNetworkAllowlist,
 		PublishedCommitID:        publishedCommitID,
+		ScopedRoleIds:            scopedRoleIds,
+		Secret:                   secret,
 	}
 
 	return &out, diags
@@ -231,9 +245,9 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceCreateFunctionRequest(ct
 		functionType = nil
 	}
 	initialContent := make(map[string]string)
-	for initialContentKey, initialContentValue := range r.InitialContent {
+	for initialContentKey := range r.InitialContent {
 		var initialContentInst string
-		initialContentInst = initialContentValue.ValueString()
+		initialContentInst = r.InitialContent[initialContentKey].ValueString()
 
 		initialContent[initialContentKey] = initialContentInst
 	}

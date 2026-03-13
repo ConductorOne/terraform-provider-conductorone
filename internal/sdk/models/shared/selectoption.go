@@ -4,10 +4,19 @@ package shared
 
 // The SelectOption message.
 type SelectOption struct {
+	// Used for type BUTTONS
+	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The value field.
 	Value *string `json:"value,omitempty"`
+}
+
+func (s *SelectOption) GetDescription() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Description
 }
 
 func (s *SelectOption) GetDisplayName() *string {

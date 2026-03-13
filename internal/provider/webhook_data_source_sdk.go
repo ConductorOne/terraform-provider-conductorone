@@ -13,6 +13,7 @@ import (
 func (r *WebhookDataSourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {
 	var diags diag.Diagnostics
 
+	r.CallbackTimeout = types.StringPointerValue(resp.CallbackTimeout)
 	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 	r.Description = types.StringPointerValue(resp.Description)
@@ -63,10 +64,10 @@ func (r *WebhookDataSourceModel) ToSharedWebhooksSearchRequest(ctx context.Conte
 	var refs []shared.WebhookRef
 	if r.Refs != nil {
 		refs = make([]shared.WebhookRef, 0, len(r.Refs))
-		for _, refsItem := range r.Refs {
+		for refsIndex := range r.Refs {
 			id := new(string)
-			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-				*id = refsItem.ID.ValueString()
+			if !r.Refs[refsIndex].ID.IsUnknown() && !r.Refs[refsIndex].ID.IsNull() {
+				*id = r.Refs[refsIndex].ID.ValueString()
 			} else {
 				id = nil
 			}

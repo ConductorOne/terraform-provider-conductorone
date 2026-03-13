@@ -12,8 +12,12 @@ type AccessReview struct {
 	AccessReviewScope              *AccessReviewScope          `tfsdk:"access_review_scope"`
 	AccessReviewScopeV2            *AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
 	AccessReviewTemplateID         types.String                `tfsdk:"access_review_template_id"`
+	AccuracyIssueAction            types.String                `tfsdk:"accuracy_issue_action"`
+	AutoCloseCampaign              types.Bool                  `tfsdk:"auto_close_campaign"`
+	AutoCloseDecision              types.String                `tfsdk:"auto_close_decision"`
 	AutoGenerateReport             types.Bool                  `tfsdk:"auto_generate_report"`
 	AutoResolve                    types.Bool                  `tfsdk:"auto_resolve"`
+	AutoStartCampaign              types.Bool                  `tfsdk:"auto_start_campaign"`
 	BindingObjectSetup             *BindingObjectSetup         `tfsdk:"binding_object_setup"`
 	ClosedAt                       types.String                `tfsdk:"closed_at"`
 	CompletionDate                 types.String                `tfsdk:"completion_date"`
@@ -32,6 +36,7 @@ type AccessReview struct {
 	PolicyID                       types.String                `tfsdk:"policy_id"`
 	ReviewInstructions             types.String                `tfsdk:"review_instructions"`
 	ReviewSignatureConfig          *ReviewSignatureConfig      `tfsdk:"review_signature_config"`
+	ScheduledStartDate             types.String                `tfsdk:"scheduled_start_date"`
 	ScopeType                      types.String                `tfsdk:"scope_type"`
 	ScopingVersion                 types.String                `tfsdk:"scoping_version"`
 	SingleAppSetup                 *SingleAppSetup             `tfsdk:"single_app_setup"`

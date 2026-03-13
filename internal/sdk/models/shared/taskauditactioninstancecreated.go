@@ -8,6 +8,7 @@ type TaskAuditActionInstanceCreated struct {
 	//
 	// This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:
 	//   - automation
+	//   - batonResourceActionInstance
 	//
 	//
 	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:

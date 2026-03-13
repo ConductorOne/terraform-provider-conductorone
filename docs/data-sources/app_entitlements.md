@@ -165,11 +165,23 @@ Optional:
 
 Read-Only:
 
+- `actor_object_permissions` (Attributes) The ActorObjectPermissions message. (see [below for nested schema](#nestedatt--list--actor_object_permissions))
 - `app_entitlement` (Attributes) The app entitlement represents one permission in a downstream App (SAAS) that can be granted. For example, GitHub Read vs GitHub Write.
 
 This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
   - durationUnset
   - durationGrant (see [below for nested schema](#nestedatt--list--app_entitlement))
+
+<a id="nestedatt--list--actor_object_permissions"></a>
+### Nested Schema for `list.actor_object_permissions`
+
+Read-Only:
+
+- `delete` (Boolean) The delete field.
+- `edit` (Boolean) The edit field.
+- `extra` (Map of Boolean) The extra field.
+- `read` (Boolean) The read field.
+
 
 <a id="nestedatt--list--app_entitlement"></a>
 ### Nested Schema for `list.app_entitlement`
@@ -277,15 +289,11 @@ This message contains a oneof named storage_type. Only a single field of the fol
 
 Read-Only:
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--list--app_entitlement--deprovisioner_policy--connector_provision--account_provision--config))
+- `config` (String) Parsed as JSON.
 - `connector_id` (String) The connectorId field.
 - `do_not_save` (Attributes) The DoNotSave message. (see [below for nested schema](#nestedatt--list--app_entitlement--deprovisioner_policy--connector_provision--account_provision--do_not_save))
 - `save_to_vault` (Attributes) The SaveToVault message. (see [below for nested schema](#nestedatt--list--app_entitlement--deprovisioner_policy--connector_provision--account_provision--save_to_vault))
 - `schema_id` (String) The schemaId field.
-
-<a id="nestedatt--list--app_entitlement--deprovisioner_policy--connector_provision--account_provision--config"></a>
-### Nested Schema for `list.app_entitlement.deprovisioner_policy.connector_provision.account_provision.config`
-
 
 <a id="nestedatt--list--app_entitlement--deprovisioner_policy--connector_provision--account_provision--do_not_save"></a>
 ### Nested Schema for `list.app_entitlement.deprovisioner_policy.connector_provision.account_provision.do_not_save`
@@ -344,7 +352,87 @@ Read-Only:
 Read-Only:
 
 - `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
+- `provisioner_assignment` (Attributes) ProvisionerAssignment defines how a provisioner is dynamically assigned.
+
+This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+  - users
+  - appOwners
+  - group
+  - manager
+  - expression
+  - entitlementOwners (see [below for nested schema](#nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment))
 - `user_ids` (List of String) An array of users that are required to provision during this step.
+ Deprecated: Use assignee field instead for dynamic provisioner assignment.
+
+<a id="nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment"></a>
+### Nested Schema for `list.app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment`
+
+Read-Only:
+
+- `app_owner_provisioner` (Attributes) AppOwnerProvisioner resolves to app owners. (see [below for nested schema](#nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--app_owner_provisioner))
+- `entitlement_owner_provisioner` (Attributes) EntitlementOwnerProvisioner resolves to entitlement owners. (see [below for nested schema](#nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--entitlement_owner_provisioner))
+- `expression_provisioner` (Attributes) ExpressionProvisioner evaluates CEL expressions to determine provisioners. (see [below for nested schema](#nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--expression_provisioner))
+- `group_provisioner` (Attributes) GroupProvisioner resolves to members of a specific group. (see [below for nested schema](#nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--group_provisioner))
+- `manager_provisioner` (Attributes) ManagerProvisioner resolves to the user's manager. (see [below for nested schema](#nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--manager_provisioner))
+- `user_provisioner` (Attributes) UserProvisioner assigns specific users as provisioners. (see [below for nested schema](#nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--user_provisioner))
+
+<a id="nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--app_owner_provisioner"></a>
+### Nested Schema for `list.app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.app_owner_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `fallback_user_ids` (List of String) Fallback user IDs if no app owners are found.
+
+
+<a id="nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--entitlement_owner_provisioner"></a>
+### Nested Schema for `list.app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.entitlement_owner_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `fallback_user_ids` (List of String) Fallback user IDs if no entitlement owners are found.
+
+
+<a id="nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--expression_provisioner"></a>
+### Nested Schema for `list.app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.expression_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `expressions` (List of String) The CEL expressions to evaluate.
+- `fallback_user_ids` (List of String) Fallback user IDs if expression evaluation yields no users.
+
+
+<a id="nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--group_provisioner"></a>
+### Nested Schema for `list.app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.group_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `app_group_id` (String) The app group ID (entitlement ID).
+- `app_id` (String) The app ID containing the group.
+- `fallback_user_ids` (List of String) Fallback user IDs if no group members are found.
+
+
+<a id="nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--manager_provisioner"></a>
+### Nested Schema for `list.app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.manager_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `fallback_user_ids` (List of String) Fallback user IDs if no manager is found.
+
+
+<a id="nestedatt--list--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--user_provisioner"></a>
+### Nested Schema for `list.app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.user_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `user_ids` (List of String) The user IDs to assign as provisioners.
+
+
 
 
 <a id="nestedatt--list--app_entitlement--deprovisioner_policy--unconfigured_provision"></a>
@@ -412,15 +500,11 @@ This message contains a oneof named storage_type. Only a single field of the fol
 
 Read-Only:
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--list--app_entitlement--provision_policy--connector_provision--account_provision--config))
+- `config` (String) Parsed as JSON.
 - `connector_id` (String) The connectorId field.
 - `do_not_save` (Attributes) The DoNotSave message. (see [below for nested schema](#nestedatt--list--app_entitlement--provision_policy--connector_provision--account_provision--do_not_save))
 - `save_to_vault` (Attributes) The SaveToVault message. (see [below for nested schema](#nestedatt--list--app_entitlement--provision_policy--connector_provision--account_provision--save_to_vault))
 - `schema_id` (String) The schemaId field.
-
-<a id="nestedatt--list--app_entitlement--provision_policy--connector_provision--account_provision--config"></a>
-### Nested Schema for `list.app_entitlement.provision_policy.connector_provision.account_provision.config`
-
 
 <a id="nestedatt--list--app_entitlement--provision_policy--connector_provision--account_provision--do_not_save"></a>
 ### Nested Schema for `list.app_entitlement.provision_policy.connector_provision.account_provision.do_not_save`
@@ -479,7 +563,87 @@ Read-Only:
 Read-Only:
 
 - `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
+- `provisioner_assignment` (Attributes) ProvisionerAssignment defines how a provisioner is dynamically assigned.
+
+This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+  - users
+  - appOwners
+  - group
+  - manager
+  - expression
+  - entitlementOwners (see [below for nested schema](#nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment))
 - `user_ids` (List of String) An array of users that are required to provision during this step.
+ Deprecated: Use assignee field instead for dynamic provisioner assignment.
+
+<a id="nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment"></a>
+### Nested Schema for `list.app_entitlement.provision_policy.manual_provision.provisioner_assignment`
+
+Read-Only:
+
+- `app_owner_provisioner` (Attributes) AppOwnerProvisioner resolves to app owners. (see [below for nested schema](#nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--app_owner_provisioner))
+- `entitlement_owner_provisioner` (Attributes) EntitlementOwnerProvisioner resolves to entitlement owners. (see [below for nested schema](#nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--entitlement_owner_provisioner))
+- `expression_provisioner` (Attributes) ExpressionProvisioner evaluates CEL expressions to determine provisioners. (see [below for nested schema](#nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--expression_provisioner))
+- `group_provisioner` (Attributes) GroupProvisioner resolves to members of a specific group. (see [below for nested schema](#nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--group_provisioner))
+- `manager_provisioner` (Attributes) ManagerProvisioner resolves to the user's manager. (see [below for nested schema](#nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--manager_provisioner))
+- `user_provisioner` (Attributes) UserProvisioner assigns specific users as provisioners. (see [below for nested schema](#nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--user_provisioner))
+
+<a id="nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--app_owner_provisioner"></a>
+### Nested Schema for `list.app_entitlement.provision_policy.manual_provision.provisioner_assignment.app_owner_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `fallback_user_ids` (List of String) Fallback user IDs if no app owners are found.
+
+
+<a id="nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--entitlement_owner_provisioner"></a>
+### Nested Schema for `list.app_entitlement.provision_policy.manual_provision.provisioner_assignment.entitlement_owner_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `fallback_user_ids` (List of String) Fallback user IDs if no entitlement owners are found.
+
+
+<a id="nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--expression_provisioner"></a>
+### Nested Schema for `list.app_entitlement.provision_policy.manual_provision.provisioner_assignment.expression_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `expressions` (List of String) The CEL expressions to evaluate.
+- `fallback_user_ids` (List of String) Fallback user IDs if expression evaluation yields no users.
+
+
+<a id="nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--group_provisioner"></a>
+### Nested Schema for `list.app_entitlement.provision_policy.manual_provision.provisioner_assignment.group_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `app_group_id` (String) The app group ID (entitlement ID).
+- `app_id` (String) The app ID containing the group.
+- `fallback_user_ids` (List of String) Fallback user IDs if no group members are found.
+
+
+<a id="nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--manager_provisioner"></a>
+### Nested Schema for `list.app_entitlement.provision_policy.manual_provision.provisioner_assignment.manager_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `fallback_user_ids` (List of String) Fallback user IDs if no manager is found.
+
+
+<a id="nestedatt--list--app_entitlement--provision_policy--manual_provision--provisioner_assignment--user_provisioner"></a>
+### Nested Schema for `list.app_entitlement.provision_policy.manual_provision.provisioner_assignment.user_provisioner`
+
+Read-Only:
+
+- `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
+- `user_ids` (List of String) The user IDs to assign as provisioners.
+
+
 
 
 <a id="nestedatt--list--app_entitlement--provision_policy--unconfigured_provision"></a>

@@ -25,6 +25,25 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 
 				list.AppAccountID = types.StringPointerValue(listItem.AppAccountID)
 				list.AppAccountName = types.StringPointerValue(listItem.AppAccountName)
+				if listItem.AppUserMapper == nil {
+					list.AppUserMapper = nil
+				} else {
+					list.AppUserMapper = &tfTypes.AppUserMapper{}
+					if listItem.AppUserMapper.MappingCases != nil {
+						if list.AppUserMapper.MappingCases == nil {
+							list.AppUserMapper.MappingCases = []tfTypes.AppUserMapperMatchCase{}
+						}
+
+						for _, mappingCasesItem := range listItem.AppUserMapper.MappingCases {
+							var mappingCases tfTypes.AppUserMapperMatchCase
+
+							mappingCases.AppUserKeyCel = types.StringPointerValue(mappingCasesItem.AppUserKeyCel)
+							mappingCases.UserKeyCel = types.StringPointerValue(mappingCasesItem.UserKeyCel)
+
+							list.AppUserMapper.MappingCases = append(list.AppUserMapper.MappingCases, mappingCases)
+						}
+					}
+				}
 				list.CertifyPolicyID = types.StringPointerValue(listItem.CertifyPolicyID)
 				list.ConnectorVersion = types.Int64PointerValue(listItem.ConnectorVersion)
 				list.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.CreatedAt))
@@ -32,6 +51,7 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 				list.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.DeletedAt))
 				list.Description = types.StringPointerValue(listItem.Description)
 				list.DisplayName = types.StringPointerValue(listItem.DisplayName)
+				list.EnableConnectorSourcedOwnership = types.BoolPointerValue(listItem.EnableConnectorSourcedOwnership)
 				list.GrantPolicyID = types.StringPointerValue(listItem.GrantPolicyID)
 				list.ID = types.StringPointerValue(listItem.ID)
 				if listItem.IdentityMatching != nil {
@@ -64,8 +84,8 @@ func (r *AppsDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*s
 	var appIds []string
 	if r.AppIds != nil {
 		appIds = make([]string, 0, len(r.AppIds))
-		for _, appIdsItem := range r.AppIds {
-			appIds = append(appIds, appIdsItem.ValueString())
+		for appIdsIndex := range r.AppIds {
+			appIds = append(appIds, r.AppIds[appIdsIndex].ValueString())
 		}
 	}
 	displayName := new(string)
@@ -77,8 +97,8 @@ func (r *AppsDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*s
 	var excludeAppIds []string
 	if r.ExcludeAppIds != nil {
 		excludeAppIds = make([]string, 0, len(r.ExcludeAppIds))
-		for _, excludeAppIdsItem := range r.ExcludeAppIds {
-			excludeAppIds = append(excludeAppIds, excludeAppIdsItem.ValueString())
+		for excludeAppIdsIndex := range r.ExcludeAppIds {
+			excludeAppIds = append(excludeAppIds, r.ExcludeAppIds[excludeAppIdsIndex].ValueString())
 		}
 	}
 	onlyDirectories := new(bool)
@@ -96,10 +116,10 @@ func (r *AppsDataSourceModel) ToSharedSearchAppsRequest(ctx context.Context) (*s
 	var policyRefs []shared.PolicyRef
 	if r.PolicyRefs != nil {
 		policyRefs = make([]shared.PolicyRef, 0, len(r.PolicyRefs))
-		for _, policyRefsItem := range r.PolicyRefs {
+		for policyRefsIndex := range r.PolicyRefs {
 			id := new(string)
-			if !policyRefsItem.ID.IsUnknown() && !policyRefsItem.ID.IsNull() {
-				*id = policyRefsItem.ID.ValueString()
+			if !r.PolicyRefs[policyRefsIndex].ID.IsUnknown() && !r.PolicyRefs[policyRefsIndex].ID.IsNull() {
+				*id = r.PolicyRefs[policyRefsIndex].ID.ValueString()
 			} else {
 				id = nil
 			}

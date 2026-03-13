@@ -27,9 +27,7 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
     }
     connector_provision = {
       account_provision = {
-        config = {
-          # ...
-        }
+        config       = "{ \"see\": \"documentation\" }"
         connector_id = "...my_connector_id..."
         do_not_save = {
           # ...
@@ -60,6 +58,49 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
     }
     manual_provision = {
       instructions = "...my_instructions..."
+      provisioner_assignment = {
+        app_owner_provisioner = {
+          allow_reassignment = true
+          fallback_user_ids = [
+            "..."
+          ]
+        }
+        entitlement_owner_provisioner = {
+          allow_reassignment = true
+          fallback_user_ids = [
+            "..."
+          ]
+        }
+        expression_provisioner = {
+          allow_reassignment = true
+          expressions = [
+            "..."
+          ]
+          fallback_user_ids = [
+            "..."
+          ]
+        }
+        group_provisioner = {
+          allow_reassignment = true
+          app_group_id       = "...my_app_group_id..."
+          app_id             = "...my_app_id..."
+          fallback_user_ids = [
+            "..."
+          ]
+        }
+        manager_provisioner = {
+          allow_reassignment = false
+          fallback_user_ids = [
+            "..."
+          ]
+        }
+        user_provisioner = {
+          allow_reassignment = true
+          user_ids = [
+            "..."
+          ]
+        }
+      }
       user_ids = [
         "..."
       ]

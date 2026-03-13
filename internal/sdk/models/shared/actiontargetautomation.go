@@ -2,7 +2,7 @@
 
 package shared
 
-// The ActionTargetAutomation message.
+// ActionTargetAutomation targets automation templates for policy actions.
 type ActionTargetAutomation struct {
 	// The automationTemplateId field.
 	AutomationTemplateID *string `json:"automationTemplateId,omitempty"`

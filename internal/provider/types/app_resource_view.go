@@ -3,5 +3,6 @@
 package types
 
 type AppResourceView struct {
-	AppResource *AppResource `tfsdk:"app_resource"`
+	ActorObjectPermissions *ActorObjectPermissions `tfsdk:"actor_object_permissions"`
+	AppResource            *AppResource            `tfsdk:"app_resource"`
 }

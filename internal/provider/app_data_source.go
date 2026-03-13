@@ -29,35 +29,37 @@ type AppDataSource struct {
 
 // AppDataSourceModel describes the data model.
 type AppDataSourceModel struct {
-	AppAccountID                        types.String        `tfsdk:"app_account_id"`
-	AppAccountName                      types.String        `tfsdk:"app_account_name"`
-	AppIds                              []types.String      `tfsdk:"app_ids"`
-	CertifyPolicyID                     types.String        `tfsdk:"certify_policy_id"`
-	ConnectorVersion                    types.Int64         `tfsdk:"connector_version"`
-	CreatedAt                           types.String        `tfsdk:"created_at"`
-	DefaultRequestCatalogID             types.String        `tfsdk:"default_request_catalog_id"`
-	DeletedAt                           types.String        `tfsdk:"deleted_at"`
-	Description                         types.String        `tfsdk:"description"`
-	DisplayName                         types.String        `tfsdk:"display_name"`
-	ExcludeAppIds                       []types.String      `tfsdk:"exclude_app_ids"`
-	GrantPolicyID                       types.String        `tfsdk:"grant_policy_id"`
-	ID                                  types.String        `tfsdk:"id"`
-	IdentityMatching                    types.String        `tfsdk:"identity_matching"`
-	Instructions                        types.String        `tfsdk:"instructions"`
-	IsDirectory                         types.Bool          `tfsdk:"is_directory"`
-	IsManuallyManaged                   types.Bool          `tfsdk:"is_manually_managed"`
-	MonthlyCostUsd                      types.Int32         `tfsdk:"monthly_cost_usd"`
-	NextPageToken                       types.String        `tfsdk:"next_page_token"`
-	OnlyDirectories                     types.Bool          `tfsdk:"only_directories"`
-	PageSize                            types.Int32         `tfsdk:"page_size"`
-	PageToken                           types.String        `tfsdk:"page_token"`
-	ParentAppID                         types.String        `tfsdk:"parent_app_id"`
-	PolicyRefs                          []tfTypes.PolicyRef `tfsdk:"policy_refs"`
-	Query                               types.String        `tfsdk:"query"`
-	RevokePolicyID                      types.String        `tfsdk:"revoke_policy_id"`
-	StrictAccessEntitlementProvisioning types.Bool          `tfsdk:"strict_access_entitlement_provisioning"`
-	UpdatedAt                           types.String        `tfsdk:"updated_at"`
-	UserCount                           types.String        `tfsdk:"user_count"`
+	AppAccountID                        types.String           `tfsdk:"app_account_id"`
+	AppAccountName                      types.String           `tfsdk:"app_account_name"`
+	AppIds                              []types.String         `tfsdk:"app_ids"`
+	AppUserMapper                       *tfTypes.AppUserMapper `tfsdk:"app_user_mapper"`
+	CertifyPolicyID                     types.String           `tfsdk:"certify_policy_id"`
+	ConnectorVersion                    types.Int64            `tfsdk:"connector_version"`
+	CreatedAt                           types.String           `tfsdk:"created_at"`
+	DefaultRequestCatalogID             types.String           `tfsdk:"default_request_catalog_id"`
+	DeletedAt                           types.String           `tfsdk:"deleted_at"`
+	Description                         types.String           `tfsdk:"description"`
+	DisplayName                         types.String           `tfsdk:"display_name"`
+	EnableConnectorSourcedOwnership     types.Bool             `tfsdk:"enable_connector_sourced_ownership"`
+	ExcludeAppIds                       []types.String         `tfsdk:"exclude_app_ids"`
+	GrantPolicyID                       types.String           `tfsdk:"grant_policy_id"`
+	ID                                  types.String           `tfsdk:"id"`
+	IdentityMatching                    types.String           `tfsdk:"identity_matching"`
+	Instructions                        types.String           `tfsdk:"instructions"`
+	IsDirectory                         types.Bool             `tfsdk:"is_directory"`
+	IsManuallyManaged                   types.Bool             `tfsdk:"is_manually_managed"`
+	MonthlyCostUsd                      types.Int32            `tfsdk:"monthly_cost_usd"`
+	NextPageToken                       types.String           `tfsdk:"next_page_token"`
+	OnlyDirectories                     types.Bool             `tfsdk:"only_directories"`
+	PageSize                            types.Int32            `tfsdk:"page_size"`
+	PageToken                           types.String           `tfsdk:"page_token"`
+	ParentAppID                         types.String           `tfsdk:"parent_app_id"`
+	PolicyRefs                          []tfTypes.PolicyRef    `tfsdk:"policy_refs"`
+	Query                               types.String           `tfsdk:"query"`
+	RevokePolicyID                      types.String           `tfsdk:"revoke_policy_id"`
+	StrictAccessEntitlementProvisioning types.Bool             `tfsdk:"strict_access_entitlement_provisioning"`
+	UpdatedAt                           types.String           `tfsdk:"updated_at"`
+	UserCount                           types.String           `tfsdk:"user_count"`
 }
 
 // Metadata returns the data source type name.
@@ -83,6 +85,28 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A list of app IDs to restrict the search to.`,
+			},
+			"app_user_mapper": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"mapping_cases": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"app_user_key_cel": schema.StringAttribute{
+									Computed:    true,
+									Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
+								},
+								"user_key_cel": schema.StringAttribute{
+									Computed:    true,
+									Description: `CEL expression evaluated against a User to produce match key(s).`,
+								},
+							},
+						},
+						Description: `Ordered list of match cases. Each case defines a pair of CEL key extractors.`,
+					},
+				},
+				Description: `AppUserMapper configures custom account mapping for uplift.`,
 			},
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
@@ -110,6 +134,10 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Computed:    true,
 				Optional:    true,
 				Description: `Search for apps with a case insensitive match on the display name.`,
+			},
+			"enable_connector_sourced_ownership": schema.BoolAttribute{
+				Computed:    true,
+				Description: `When enabled, resource ownership is sourced from the connector.`,
 			},
 			"exclude_app_ids": schema.ListAttribute{
 				Optional:    true,

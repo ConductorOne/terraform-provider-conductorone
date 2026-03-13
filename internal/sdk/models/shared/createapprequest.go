@@ -14,6 +14,7 @@ const (
 	CreateAppRequestIdentityMatchingAppUserIdentityMatchingUnspecified CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_UNSPECIFIED"
 	CreateAppRequestIdentityMatchingAppUserIdentityMatchingStrict      CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_STRICT"
 	CreateAppRequestIdentityMatchingAppUserIdentityMatchingDisplayName CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
+	CreateAppRequestIdentityMatchingAppUserIdentityMatchingCustom      CreateAppRequestIdentityMatching = "APP_USER_IDENTITY_MATCHING_CUSTOM"
 )
 
 func (e CreateAppRequestIdentityMatching) ToPointer() *CreateAppRequestIdentityMatching {
@@ -30,6 +31,8 @@ func (e *CreateAppRequestIdentityMatching) UnmarshalJSON(data []byte) error {
 	case "APP_USER_IDENTITY_MATCHING_STRICT":
 		fallthrough
 	case "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME":
+		fallthrough
+	case "APP_USER_IDENTITY_MATCHING_CUSTOM":
 		*e = CreateAppRequestIdentityMatching(v)
 		return nil
 	default:
@@ -49,6 +52,8 @@ type CreateAppRequest struct {
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// Define the app user identity matching strategy for this app.
 	IdentityMatching *CreateAppRequestIdentityMatching `json:"identityMatching,omitempty"`
+	// Instructions shown to users in the access request form when requesting access for this app.
+	Instructions *string `json:"instructions,omitempty"`
 	// Creates the app with this monthly cost per seat.
 	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
 	// Creates the app with this array of owners.
@@ -92,6 +97,13 @@ func (c *CreateAppRequest) GetIdentityMatching() *CreateAppRequestIdentityMatchi
 		return nil
 	}
 	return c.IdentityMatching
+}
+
+func (c *CreateAppRequest) GetInstructions() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Instructions
 }
 
 func (c *CreateAppRequest) GetMonthlyCostUsd() *int {

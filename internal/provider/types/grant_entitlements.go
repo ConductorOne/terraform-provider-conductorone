@@ -7,9 +7,14 @@ import (
 )
 
 type GrantEntitlements struct {
-	AppEntitlementRefs    []AppEntitlementRef `tfsdk:"app_entitlement_refs"`
-	AppEntitlementRefsCel types.String        `tfsdk:"app_entitlement_refs_cel"`
-	UserIDCel             types.String        `tfsdk:"user_id_cel"`
-	UserRef               *UserRef            `tfsdk:"user_ref"`
-	UseSubjectUser        types.Bool          `tfsdk:"use_subject_user"`
+	GrantEntitlementExclusionCriteria *GrantEntitlementExclusionCriteria `tfsdk:"grant_entitlement_exclusion_criteria"`
+	GrantEntitlementExclusionList     *GrantEntitlementExclusionList     `tfsdk:"grant_entitlement_exclusion_list"`
+	GrantEntitlementExclusionListCel  *GrantEntitlementExclusionListCel  `tfsdk:"grant_entitlement_exclusion_list_cel"`
+	GrantEntitlementExclusionNone     *GrantEntitlementExclusionNone     `tfsdk:"grant_entitlement_exclusion_none"`
+	GrantEntitlementInclusionCriteria *GrantEntitlementInclusionCriteria `tfsdk:"grant_entitlement_inclusion_criteria"`
+	GrantEntitlementInclusionList     *GrantEntitlementInclusionList     `tfsdk:"grant_entitlement_inclusion_list"`
+	GrantEntitlementInclusionListCel  *GrantEntitlementInclusionListCel  `tfsdk:"grant_entitlement_inclusion_list_cel"`
+	UserIDCel                         types.String                       `tfsdk:"user_id_cel"`
+	UserRef                           *UserRef                           `tfsdk:"user_ref"`
+	UseSubjectUser                    types.Bool                         `tfsdk:"use_subject_user"`
 }

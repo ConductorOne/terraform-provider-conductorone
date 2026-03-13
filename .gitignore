@@ -4,3 +4,6 @@
 .DS_Store
 .idea/
 /examples/terraform config/
+.speakeasy/temp/
+/*.md
+.claude

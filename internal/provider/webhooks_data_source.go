@@ -52,6 +52,9 @@ func (r *WebhooksDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						"callback_timeout": schema.StringAttribute{
+							Computed: true,
+						},
 						"created_at": schema.StringAttribute{
 							Computed: true,
 						},

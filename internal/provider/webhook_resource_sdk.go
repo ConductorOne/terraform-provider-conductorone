@@ -15,6 +15,7 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhook1(ctx context.Context, re
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.CallbackTimeout = types.StringPointerValue(resp.CallbackTimeout)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
@@ -130,6 +131,12 @@ func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceUpdateR
 func (r *WebhookResourceModel) ToSharedWebhookInput(ctx context.Context) (*shared.WebhookInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	callbackTimeout := new(string)
+	if !r.CallbackTimeout.IsUnknown() && !r.CallbackTimeout.IsNull() {
+		*callbackTimeout = r.CallbackTimeout.ValueString()
+	} else {
+		callbackTimeout = nil
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -155,10 +162,11 @@ func (r *WebhookResourceModel) ToSharedWebhookInput(ctx context.Context) (*share
 		url = nil
 	}
 	out := shared.WebhookInput{
-		Description: description,
-		DisplayName: displayName,
-		ID:          id,
-		URL:         url,
+		CallbackTimeout: callbackTimeout,
+		Description:     description,
+		DisplayName:     displayName,
+		ID:              id,
+		URL:             url,
 	}
 
 	return &out, diags
@@ -167,6 +175,12 @@ func (r *WebhookResourceModel) ToSharedWebhookInput(ctx context.Context) (*share
 func (r *WebhookResourceModel) ToSharedWebhooksServiceCreateRequest(ctx context.Context) (*shared.WebhooksServiceCreateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	callbackTimeout := new(string)
+	if !r.CallbackTimeout.IsUnknown() && !r.CallbackTimeout.IsNull() {
+		*callbackTimeout = r.CallbackTimeout.ValueString()
+	} else {
+		callbackTimeout = nil
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -180,9 +194,10 @@ func (r *WebhookResourceModel) ToSharedWebhooksServiceCreateRequest(ctx context.
 	url = r.URL.ValueString()
 
 	out := shared.WebhooksServiceCreateRequest{
-		Description: description,
-		DisplayName: displayName,
-		URL:         url,
+		CallbackTimeout: callbackTimeout,
+		Description:     description,
+		DisplayName:     displayName,
+		URL:             url,
 	}
 
 	return &out, diags

@@ -4,12 +4,22 @@ package shared
 
 // The ListAppResourceOwnersResponse message contains a list of results and a nextPageToken if applicable
 type ListAppResourceOwnersResponse struct {
+	// User IDs of owners that are immutable and cannot be removed by the user.
+	//  These owners are managed by the system (e.g., connector-sourced) and will be updated automatically.
+	ImmutableUserIds []string `json:"immutableUserIds,omitempty"`
 	// The list of results containing up to X results, where X is the page size defined in the request.
 	List []User `json:"list,omitempty"`
 	// The nextPageToken is shown for the next page if the number of results is larger than the max page size.
 	//  The server returns one page of results and the nextPageToken until all results are retreived.
 	//  To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
+}
+
+func (l *ListAppResourceOwnersResponse) GetImmutableUserIds() []string {
+	if l == nil {
+		return nil
+	}
+	return l.ImmutableUserIds
 }
 
 func (l *ListAppResourceOwnersResponse) GetList() []User {

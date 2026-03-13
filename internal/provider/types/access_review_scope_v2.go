@@ -13,6 +13,7 @@ type AccessReviewScopeV2 struct {
 	CelExpressionScope           *CelExpressionScope           `tfsdk:"cel_expression_scope"`
 	CelExpressionScope1          *CelExpressionScope           `tfsdk:"cel_expression_scope1"`
 	GrantsByCriteriaScope        *GrantsByCriteriaScope        `tfsdk:"grants_by_criteria_scope"`
+	ResourceSelectionScope       *ResourceSelectionScope       `tfsdk:"resource_selection_scope"`
 	ResourceTypeSelectionScope   *ResourceTypeSelectionScope   `tfsdk:"resource_type_selection_scope"`
 	SelectedUsersScope           *SelectedUsersScope           `tfsdk:"selected_users_scope"`
 	SpecificAccessConflictsScope *SpecificAccessConflictsScope `tfsdk:"specific_access_conflicts_scope"`

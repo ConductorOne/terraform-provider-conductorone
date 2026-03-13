@@ -50,7 +50,7 @@ func (s *AutomationExecutionSearch) SearchAutomationExecutions(ctx context.Conte
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := url.JoinPath(baseURL, "/api/v1/automation_executions/search")
+	opURL, err := url.JoinPath(baseURL, "/api/v1/search/automation_executions")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

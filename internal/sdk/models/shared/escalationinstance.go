@@ -12,9 +12,13 @@ import (
 // This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:
 //   - replacePolicy
 //   - reassignToApprovers
+//   - cancelTicket
+//   - skipStep
 type EscalationInstance struct {
 	// The alreadyEscalated field.
 	AlreadyEscalated *bool `json:"alreadyEscalated,omitempty"`
+	// The CancelTicket message.
+	CancelTicket *CancelTicket `json:"cancelTicket,omitempty"`
 	// The escalationComment field.
 	EscalationComment *string    `json:"escalationComment,omitempty"`
 	ExpiresAt         *time.Time `json:"expiresAt,omitempty"`
@@ -22,6 +26,8 @@ type EscalationInstance struct {
 	ReassignToApprovers *ReassignToApprovers `json:"reassignToApprovers,omitempty"`
 	// The ReplacePolicy message.
 	ReplacePolicy *ReplacePolicy `json:"replacePolicy,omitempty"`
+	// The SkipStep message.
+	SkipStep *SkipStep `json:"skipStep,omitempty"`
 }
 
 func (e EscalationInstance) MarshalJSON() ([]byte, error) {
@@ -40,6 +46,13 @@ func (e *EscalationInstance) GetAlreadyEscalated() *bool {
 		return nil
 	}
 	return e.AlreadyEscalated
+}
+
+func (e *EscalationInstance) GetCancelTicket() *CancelTicket {
+	if e == nil {
+		return nil
+	}
+	return e.CancelTicket
 }
 
 func (e *EscalationInstance) GetEscalationComment() *string {
@@ -68,4 +81,11 @@ func (e *EscalationInstance) GetReplacePolicy() *ReplacePolicy {
 		return nil
 	}
 	return e.ReplacePolicy
+}
+
+func (e *EscalationInstance) GetSkipStep() *SkipStep {
+	if e == nil {
+		return nil
+	}
+	return e.SkipStep
 }

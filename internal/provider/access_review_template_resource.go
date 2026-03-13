@@ -7,6 +7,8 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -34,31 +36,34 @@ type AccessReviewTemplateResource struct {
 
 // AccessReviewTemplateResourceModel describes the resource data model.
 type AccessReviewTemplateResourceModel struct {
-	AccessReviewDuration                     types.String                                      `tfsdk:"access_review_duration"`
-	AccessReviewInclusionScope               *tfTypes.AccessReviewInclusionScope               `tfsdk:"access_review_inclusion_scope"`
-	AccessReviewScopeV2                      *tfTypes.AccessReviewScopeV2                      `tfsdk:"access_review_scope_v2"`
-	AccessReviewTemplateServiceDeleteRequest *tfTypes.AccessReviewTemplateServiceDeleteRequest `tfsdk:"access_review_template_service_delete_request"`
-	AutoGenerateReport                       types.Bool                                        `tfsdk:"auto_generate_report"`
-	CreatedAt                                types.String                                      `tfsdk:"created_at"`
-	DefaultView                              types.String                                      `tfsdk:"default_view"`
-	DeletedAt                                types.String                                      `tfsdk:"-"`
-	Description                              types.String                                      `tfsdk:"description"`
-	DisplayName                              types.String                                      `tfsdk:"display_name"`
-	ExemptCertifiedAccessConflicts           types.Bool                                        `tfsdk:"exempt_certified_access_conflicts"`
-	ID                                       types.String                                      `tfsdk:"id"`
-	IsCampaignScheduleEnabled                types.Bool                                        `tfsdk:"is_campaign_schedule_enabled"`
-	NextScheduledCampaignAt                  types.String                                      `tfsdk:"next_scheduled_campaign_at"`
-	NotificationConfig                       *tfTypes.NotificationConfig                       `tfsdk:"notification_config"`
-	Occurrences                              types.Int32                                       `tfsdk:"occurrences"`
-	OwnerIds                                 []types.String                                    `tfsdk:"owner_ids"`
-	PolicyID                                 types.String                                      `tfsdk:"policy_id"`
-	RecurrenceRule                           *tfTypes.RecurrenceRule                           `tfsdk:"recurrence_rule"`
-	ReviewInstructions                       types.String                                      `tfsdk:"review_instructions"`
-	ReviewSignatureConfig                    *tfTypes.ReviewSignatureConfig                    `tfsdk:"review_signature_config"`
-	ScopeType                                types.String                                      `tfsdk:"scope_type"`
-	SlackChannel                             *tfTypes.SlackChannel                             `tfsdk:"slack_channel"`
-	UpdatedAt                                types.String                                      `tfsdk:"updated_at"`
-	UsePolicyOverride                        types.Bool                                        `tfsdk:"use_policy_override"`
+	AccessReviewDuration           types.String                        `tfsdk:"access_review_duration"`
+	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
+	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
+	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
+	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
+	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
+	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
+	AutoStartCampaign              types.Bool                          `tfsdk:"auto_start_campaign"`
+	CreatedAt                      types.String                        `tfsdk:"created_at"`
+	DefaultView                    types.String                        `tfsdk:"default_view"`
+	DeletedAt                      types.String                        `tfsdk:"-"`
+	Description                    types.String                        `tfsdk:"description"`
+	DisplayName                    types.String                        `tfsdk:"display_name"`
+	ExemptCertifiedAccessConflicts types.Bool                          `tfsdk:"exempt_certified_access_conflicts"`
+	ID                             types.String                        `tfsdk:"id"`
+	IsCampaignScheduleEnabled      types.Bool                          `tfsdk:"is_campaign_schedule_enabled"`
+	NextScheduledCampaignAt        types.String                        `tfsdk:"next_scheduled_campaign_at"`
+	NotificationConfig             *tfTypes.NotificationConfig         `tfsdk:"notification_config"`
+	Occurrences                    types.Int32                         `tfsdk:"occurrences"`
+	OwnerIds                       []types.String                      `tfsdk:"owner_ids"`
+	PolicyID                       types.String                        `tfsdk:"policy_id"`
+	RecurrenceRule                 *tfTypes.RecurrenceRule             `tfsdk:"recurrence_rule"`
+	ReviewInstructions             types.String                        `tfsdk:"review_instructions"`
+	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig      `tfsdk:"review_signature_config"`
+	ScopeType                      types.String                        `tfsdk:"scope_type"`
+	SlackChannel                   *tfTypes.SlackChannel               `tfsdk:"slack_channel"`
+	UpdatedAt                      types.String                        `tfsdk:"updated_at"`
+	UsePolicyOverride              types.Bool                          `tfsdk:"use_policy_override"`
 }
 
 func (r *AccessReviewTemplateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -130,26 +135,39 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"access_review_scope_v2": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"account_criteria_scope": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"account_domain": schema.StringAttribute{
 								Computed:    true,
-								Description: `The accountDomain field.`,
+								Optional:    true,
+								Description: `The accountDomain field. must be one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"APP_USER_DOMAIN_UNSPECIFIED",
+										"APP_USER_DOMAIN_EXTERNAL",
+										"APP_USER_DOMAIN_TRUSTED",
+									),
+								},
 							},
 							"account_types": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The accountTypes field.`,
 							},
 							"app_user_statuses": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The appUserStatuses field.`,
 							},
 							"no_account_owner": schema.BoolAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The noAccountOwner field.`,
 							},
 						},
@@ -157,33 +175,55 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 					},
 					"all_access_conflicts_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The AllAccessConflictsScope message.`,
 					},
 					"all_accounts_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The AllAccountsScope message.`,
 					},
 					"all_grants_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The AllGrantsScope message.`,
 					},
 					"all_users_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The AllUsersScope message.`,
 					},
 					"app_selection_criteria_scope": schema.SingleNestedAttribute{
-						Computed:    true,
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"compliance_framework_attribute_value_ids": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The complianceFrameworkAttributeValueIds field.`,
+							},
+							"risk_level_attribute_value_ids": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The riskLevelAttributeValueIds field.`,
+							},
+						},
 						Description: `The AppSelectionCriteriaScope message.`,
 					},
 					"application_access_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The ApplicationAccessScope message.`,
 					},
 					"cel_expression_scope": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"expression": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The expression field.`,
 							},
 						},
@@ -191,9 +231,11 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 					},
 					"cel_expression_scope1": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"expression": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The expression field.`,
 							},
 						},
@@ -201,50 +243,101 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 					},
 					"grants_by_criteria_scope": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"days_since_added": schema.StringAttribute{
 								Computed: true,
+								Optional: true,
 							},
 							"days_since_last_used": schema.StringAttribute{
 								Computed: true,
+								Optional: true,
 							},
 							"days_since_reviewed": schema.StringAttribute{
 								Computed: true,
+								Optional: true,
 							},
 							"grant_access_profile_filter": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"excluded_access_profile_ids": schema.ListAttribute{
 										Computed:    true,
+										Optional:    true,
 										ElementType: types.StringType,
-										Description: `List of access profiles to exclude if type is EXCLUDE_SPECIFIC`,
+										MarkdownDescription: `Access profile IDs to EXCLUDE from the campaign` + "\n" +
+											` Used when filter_type = EXCLUDE_SPECIFIC` + "\n" +
+											` Max 32 profile IDs`,
 									},
 									"filter_type": schema.StringAttribute{
 										Computed:    true,
-										Description: `The filterType field.`,
+										Optional:    true,
+										Description: `The filterType field. must be one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]`,
+										Validators: []validator.String{
+											stringvalidator.OneOf(
+												"ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED",
+												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL",
+												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL",
+												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC",
+												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC",
+											),
+										},
+									},
+									"included_access_profile_ids": schema.ListAttribute{
+										Computed:    true,
+										Optional:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `Access profile IDs to INCLUDE in the campaign` + "\n" +
+											` Used when filter_type = INCLUDE_SPECIFIC` + "\n" +
+											` Max 32 profile IDs`,
 									},
 								},
 								Description: `The GrantAccessProfileFilter message.`,
 							},
 							"grants_added_between": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"end_date": schema.StringAttribute{
 										Computed: true,
+										Optional: true,
+										Validators: []validator.String{
+											validators.IsRFC3339(),
+										},
 									},
 									"start_date": schema.StringAttribute{
 										Computed: true,
+										Optional: true,
+										Validators: []validator.String{
+											validators.IsRFC3339(),
+										},
 									},
 								},
 								Description: `The GrantsAddedBetween message.`,
 							},
 							"source_filter": schema.StringAttribute{
 								Computed:    true,
-								Description: `The sourceFilter field.`,
+								Optional:    true,
+								Description: `The sourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"GRANT_SOURCE_FILTER_UNSPECIFIED",
+										"GRANT_SOURCE_FILTER_DIRECT",
+										"GRANT_SOURCE_FILTER_INHERITED",
+									),
+								},
 							},
 							"type_filter": schema.StringAttribute{
 								Computed:    true,
-								Description: `The typeFilter field.`,
+								Optional:    true,
+								Description: `The typeFilter field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"GRANT_FILTER_TYPE_UNSPECIFIED",
+										"GRANT_FILTER_TYPE_PERMANENT",
+										"GRANT_FILTER_TYPE_TEMPORARY",
+									),
+								},
 							},
 						},
 						MarkdownDescription: `The GrantsByCriteriaScope message.` + "\n" +
@@ -254,15 +347,23 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 							`  - daysSinceReviewed` + "\n" +
 							`  - grantsAddedBetween`,
 					},
+					"resource_selection_scope": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The ResourceSelectionScope message.`,
+					},
 					"resource_type_selection_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The ResourceTypeSelectionScope message.`,
 					},
 					"selected_users_scope": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"user_ids": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The userIds field.`,
 							},
@@ -271,25 +372,34 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 					},
 					"specific_access_conflicts_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The SpecificAccessConflictsScope message.`,
 					},
 					"specific_resources_scope": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The SpecificResourcesScope message.`,
 					},
 					"user_criteria_scope": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"group_app_entitlements_ref": schema.ListNestedAttribute{
 								Computed: true,
+								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
 									Attributes: map[string]schema.Attribute{
 										"app_id": schema.StringAttribute{
 											Computed:    true,
+											Optional:    true,
 											Description: `The appId field.`,
 										},
 										"id": schema.StringAttribute{
 											Computed:    true,
+											Optional:    true,
 											Description: `The id field.`,
 										},
 									},
@@ -298,19 +408,29 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 							},
 							"manager_user_ids": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The managerUserIds field.`,
 							},
 							"multi_user_profile_attributes": schema.MapNestedAttribute{
 								Computed: true,
+								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
 									Attributes: map[string]schema.Attribute{
 										"values": schema.ListNestedAttribute{
 											Computed: true,
+											Optional: true,
 											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
 												Attributes: map[string]schema.Attribute{
 													"value": schema.StringAttribute{
 														Computed:    true,
+														Optional:    true,
 														Description: `The value field.`,
 													},
 												},
@@ -323,6 +443,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 							},
 							"user_status": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The userStatus field.`,
 							},
@@ -359,22 +480,67 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 					`` + "\n" +
 					`This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:` + "\n" +
 					`  - allAccessConflicts` + "\n" +
-					`  - specificAccessConflicts`,
+					`  - specificAccessConflicts` + "\n" +
+					`` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - resourceSelection`,
 			},
-			"access_review_template_service_delete_request": schema.SingleNestedAttribute{
+			"accuracy_issue_action": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `The AccessReviewTemplateServiceDeleteRequest message.`,
+				Description: `The accuracyIssueAction field. must be one of ["ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"ACCURACY_ISSUE_ACTION_UNSPECIFIED",
+						"ACCURACY_ISSUE_ACTION_CONTINUE",
+						"ACCURACY_ISSUE_ACTION_WAIT",
+					),
+				},
+			},
+			"auto_close_campaign": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The autoCloseCampaign field.`,
+			},
+			"auto_close_decision": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The autoCloseDecision field. must be one of ["CLOSE_DECISION_UNSPECIFIED", "CLOSE_DECISION_REVOKED", "CLOSE_DECISION_SKIP", "CLOSE_DECISION_NO_ACTION"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"CLOSE_DECISION_UNSPECIFIED",
+						"CLOSE_DECISION_REVOKED",
+						"CLOSE_DECISION_SKIP",
+						"CLOSE_DECISION_NO_ACTION",
+					),
+				},
 			},
 			"auto_generate_report": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `auto generate report when campaign is closed`,
+			},
+			"auto_start_campaign": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The autoStartCampaign field.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},
 			"default_view": schema.StringAttribute{
 				Computed:    true,
-				Description: `The defaultView field.`,
+				Optional:    true,
+				Description: `The defaultView field. must be one of ["ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED",
+						"ACCESS_REVIEW_VIEW_TYPE_BY_APP",
+						"ACCESS_REVIEW_VIEW_TYPE_BY_USER",
+						"ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED",
+					),
+				},
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -388,6 +554,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"exempt_certified_access_conflicts": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The exemptCertifiedAccessConflicts field.`,
 			},
 			"id": schema.StringAttribute{
@@ -396,6 +563,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"is_campaign_schedule_enabled": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The isCampaignScheduleEnabled field.`,
 			},
 			"next_scheduled_campaign_at": schema.StringAttribute{
@@ -409,6 +577,11 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 						Computed:    true,
 						Optional:    true,
 						Description: `The sendClose field.`,
+					},
+					"send_kickoff": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The sendKickoff field.`,
 					},
 					"send_reminders": schema.BoolAttribute{
 						Computed:    true,
@@ -437,26 +610,48 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"recurrence_rule": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"end_date": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
 					},
 					"frequency": schema.StringAttribute{
 						Computed:    true,
-						Description: `The frequency field.`,
+						Optional:    true,
+						Description: `The frequency field. must be one of ["FREQUENCY_UNSPECIFIED", "FREQUENCY_NONE", "FREQUENCY_DAILY", "FREQUENCY_WEEKLY", "FREQUENCY_MONTHLY", "FREQUENCY_YEARLY"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"FREQUENCY_UNSPECIFIED",
+								"FREQUENCY_NONE",
+								"FREQUENCY_DAILY",
+								"FREQUENCY_WEEKLY",
+								"FREQUENCY_MONTHLY",
+								"FREQUENCY_YEARLY",
+							),
+						},
 					},
 					"interval": schema.Int32Attribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The interval field.`,
 					},
 					"occurrences": schema.Int32Attribute{
 						Computed: true,
+						Optional: true,
 						MarkdownDescription: `The occurrences field.` + "\n" +
 							`This field is part of the ` + "`" + `end_condition` + "`" + ` oneof.` + "\n" +
 							`See the documentation for ` + "`" + `c1.api.accessreview.v1.RecurrenceRule` + "`" + ` for more details.`,
 					},
 					"start_date": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
 					},
 				},
 				MarkdownDescription: `The RecurrenceRule message.` + "\n" +
@@ -467,25 +662,31 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"review_instructions": schema.StringAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The reviewInstructions field.`,
 			},
 			"review_signature_config": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"meaning_of_signature": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The meaningOfSignature field.`,
 					},
 					"require_signature": schema.BoolAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The requireSignature field.`,
 					},
 					"step_up_provider_id": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The stepUpProviderId field.`,
 					},
 					"tsp_url": schema.StringAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The tspUrl field.`,
 					},
 				},
@@ -494,12 +695,13 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			"scope_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The scopeType field. must be one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"]`,
+				Description: `The scopeType field. must be one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED",
 						"ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS",
 						"ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS",
+						"ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE",
 					),
 				},
 			},
@@ -522,6 +724,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"use_policy_override": schema.BoolAttribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `The usePolicyOverride field.`,
 			},
 		},

@@ -4,4 +4,22 @@ package shared
 
 // The AppSelectionCriteriaScope message.
 type AppSelectionCriteriaScope struct {
+	// The complianceFrameworkAttributeValueIds field.
+	ComplianceFrameworkAttributeValueIds []string `json:"complianceFrameworkAttributeValueIds,omitempty"`
+	// The riskLevelAttributeValueIds field.
+	RiskLevelAttributeValueIds []string `json:"riskLevelAttributeValueIds,omitempty"`
+}
+
+func (a *AppSelectionCriteriaScope) GetComplianceFrameworkAttributeValueIds() []string {
+	if a == nil {
+		return nil
+	}
+	return a.ComplianceFrameworkAttributeValueIds
+}
+
+func (a *AppSelectionCriteriaScope) GetRiskLevelAttributeValueIds() []string {
+	if a == nil {
+		return nil
+	}
+	return a.RiskLevelAttributeValueIds
 }

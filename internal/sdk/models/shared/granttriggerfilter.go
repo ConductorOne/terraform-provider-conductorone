@@ -3,13 +3,25 @@
 package shared
 
 // The GrantTriggerFilter message.
+//
+// This message contains a oneof named entitlement_inclusion. Only a single field of the following list may be set at a time:
+//   - inclusionList
+//   - inclusionAll
+//   - inclusionCriteria
+//   - inclusionListCel
 type GrantTriggerFilter struct {
 	// The AccountFilter message.
 	AccountFilter *AccountFilter `json:"accountFilter,omitempty"`
-	// The EntitlementFilter message.
-	EntitlementFilter *EntitlementFilter `json:"entitlementFilter,omitempty"`
 	// The GrantFilter message.
 	GrantFilter *GrantFilter `json:"grantFilter,omitempty"`
+	// The EntitlementInclusionAll message.
+	EntitlementInclusionAll *EntitlementInclusionAll `json:"inclusionAll,omitempty"`
+	// The EntitlementInclusionCriteria message.
+	EntitlementInclusionCriteria *EntitlementInclusionCriteria `json:"inclusionCriteria,omitempty"`
+	// The EntitlementInclusionList message.
+	EntitlementInclusionList *EntitlementInclusionList `json:"inclusionList,omitempty"`
+	// The EntitlementInclusionListCel message.
+	EntitlementInclusionListCel *EntitlementInclusionListCel `json:"inclusionListCel,omitempty"`
 }
 
 func (g *GrantTriggerFilter) GetAccountFilter() *AccountFilter {
@@ -19,16 +31,37 @@ func (g *GrantTriggerFilter) GetAccountFilter() *AccountFilter {
 	return g.AccountFilter
 }
 
-func (g *GrantTriggerFilter) GetEntitlementFilter() *EntitlementFilter {
-	if g == nil {
-		return nil
-	}
-	return g.EntitlementFilter
-}
-
 func (g *GrantTriggerFilter) GetGrantFilter() *GrantFilter {
 	if g == nil {
 		return nil
 	}
 	return g.GrantFilter
+}
+
+func (g *GrantTriggerFilter) GetEntitlementInclusionAll() *EntitlementInclusionAll {
+	if g == nil {
+		return nil
+	}
+	return g.EntitlementInclusionAll
+}
+
+func (g *GrantTriggerFilter) GetEntitlementInclusionCriteria() *EntitlementInclusionCriteria {
+	if g == nil {
+		return nil
+	}
+	return g.EntitlementInclusionCriteria
+}
+
+func (g *GrantTriggerFilter) GetEntitlementInclusionList() *EntitlementInclusionList {
+	if g == nil {
+		return nil
+	}
+	return g.EntitlementInclusionList
+}
+
+func (g *GrantTriggerFilter) GetEntitlementInclusionListCel() *EntitlementInclusionListCel {
+	if g == nil {
+		return nil
+	}
+	return g.EntitlementInclusionListCel
 }

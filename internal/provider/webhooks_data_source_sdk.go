@@ -23,6 +23,7 @@ func (r *WebhooksDataSourceModel) RefreshFromSharedWebhooksSearchResponse(ctx co
 			for _, listItem := range resp.List {
 				var list tfTypes.Webhook1
 
+				list.CallbackTimeout = types.StringPointerValue(listItem.CallbackTimeout)
 				list.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.CreatedAt))
 				list.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.DeletedAt))
 				list.Description = types.StringPointerValue(listItem.Description)
@@ -58,10 +59,10 @@ func (r *WebhooksDataSourceModel) ToSharedWebhooksSearchRequest(ctx context.Cont
 	var refs []shared.WebhookRef
 	if r.Refs != nil {
 		refs = make([]shared.WebhookRef, 0, len(r.Refs))
-		for _, refsItem := range r.Refs {
+		for refsIndex := range r.Refs {
 			id := new(string)
-			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-				*id = refsItem.ID.ValueString()
+			if !r.Refs[refsIndex].ID.IsUnknown() && !r.Refs[refsIndex].ID.IsNull() {
+				*id = r.Refs[refsIndex].ID.ValueString()
 			} else {
 				id = nil
 			}

@@ -7,6 +7,9 @@ package shared
 // This message contains a oneof named metadata. Only a single field of the following list may be set at a time:
 //   - secretTrait
 type AppResourceInput struct {
+	// The access config ID for this resource. May be empty.
+	//  Must be one of the builtin access config IDs or empty.
+	AccessConfigID *string `json:"accessConfigId,omitempty"`
 	// The app that this resource belongs to.
 	AppID *string `json:"appId,omitempty"`
 	// The resource type that this resource is.
@@ -29,6 +32,13 @@ type AppResourceInput struct {
 	ParentAppResourceTypeID *string `json:"parentAppResourceTypeId,omitempty"`
 	// The SecretTrait message.
 	SecretTrait *SecretTrait `json:"secretTrait,omitempty"`
+}
+
+func (a *AppResourceInput) GetAccessConfigID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AccessConfigID
 }
 
 func (a *AppResourceInput) GetAppID() *string {

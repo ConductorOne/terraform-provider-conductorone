@@ -17,6 +17,8 @@ generation:
     requestResponseComponentNamesFeb2024: true
     securityFeb2025: false
     sharedErrorComponentsApr2025: false
+    nameOverrideFeb2026: false
+    sharedNestedComponentsJan2026: false
   auth:
     oAuth2ClientCredentialsEnabled: false
     oAuth2PasswordEnabled: false
@@ -30,11 +32,16 @@ generation:
     generateTests: true
     generateNewTests: false
     skipResponseBodyAssertions: false
+  persistentEdits: {}
+  versioningStrategy: automatic
 terraform:
-  version: 1.7.4
+  version: 1.7.15
+  additionalActions: []
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []
+  additionalFunctions: []
+  additionalListResources: []
   additionalProviderAttributes:
     httpHeaders: ""
   additionalResources:
@@ -44,6 +51,7 @@ terraform:
   allowUnknownFieldsInWeakUnions: false
   author: conductorone
   baseErrorName: ConductoroneAPIError
+  debugLogging: {}
   defaultErrorName: SDKError
   enableCustomCodeRegions: false
   enableOperationSecurity: false
@@ -52,5 +60,9 @@ terraform:
   environmentVariables: []
   excludeEmptyObjectSchemas: false
   includeEmptyObjects: false
+  inferUnionDiscriminators: false
   packageName: conductorone
+  respectRequiredFields: false
+  respectTitlesForPrimitiveUnionMembers: false
   unionDeserializationStrategy: populated-fields
+  unionStrategy: populated-fields

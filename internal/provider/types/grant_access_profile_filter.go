@@ -9,4 +9,5 @@ import (
 type GrantAccessProfileFilter struct {
 	ExcludedAccessProfileIds []types.String `tfsdk:"excluded_access_profile_ids"`
 	FilterType               types.String   `tfsdk:"filter_type"`
+	IncludedAccessProfileIds []types.String `tfsdk:"included_access_profile_ids"`
 }

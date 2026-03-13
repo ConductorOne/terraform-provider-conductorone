@@ -10,7 +10,6 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_int64validators "github.com/conductorone/terraform-provider-conductorone/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -184,6 +183,11 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The ConnectorRef message.`,
+								},
+								"resource_type_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The resourceTypeId field.`,
 								},
 							},
 							MarkdownDescription: `The ConnectorAction message.` + "\n" +
@@ -639,32 +643,142 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"app_entitlement_refs": schema.ListNestedAttribute{
+								"grant_entitlement_exclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
-									NestedObject: schema.NestedAttributeObject{
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									Attributes: map[string]schema.Attribute{
+										"excluded_app_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedAppIds field.`,
 										},
-										Attributes: map[string]schema.Attribute{
-											"app_id": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The appId field.`,
-											},
-											"id": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The id field.`,
-											},
+										"excluded_compliance_framework_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedComplianceFrameworkIds field.`,
+										},
+										"excluded_risk_level_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedRiskLevelIds field.`,
 										},
 									},
-									Description: `The appEntitlementRefs field.`,
+									Description: `The GrantEntitlementExclusionCriteria message.`,
 								},
-								"app_entitlement_refs_cel": schema.StringAttribute{
+								"grant_entitlement_exclusion_list": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"excluded_app_entitlement_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											Description: `The excludedAppEntitlementRefs field.`,
+										},
+									},
+									Description: `The GrantEntitlementExclusionList message.`,
+								},
+								"grant_entitlement_exclusion_list_cel": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"excluded_app_entitlement_refs_cel": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The excludedAppEntitlementRefsCel field.`,
+										},
+									},
+									Description: `The GrantEntitlementExclusionListCel message.`,
+								},
+								"grant_entitlement_exclusion_none": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The appEntitlementRefsCel field.`,
+									Description: `The GrantEntitlementExclusionNone message.`,
+								},
+								"grant_entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The appIds field.`,
+										},
+										"compliance_framework_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The complianceFrameworkIds field.`,
+										},
+										"risk_level_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The riskLevelIds field.`,
+										},
+									},
+									Description: `The GrantEntitlementInclusionCriteria message.`,
+								},
+								"grant_entitlement_inclusion_list": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_entitlement_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											Description: `The appEntitlementRefs field.`,
+										},
+									},
+									Description: `The GrantEntitlementInclusionList message.`,
+								},
+								"grant_entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_entitlement_refs_cel": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The appEntitlementRefsCel field.`,
+										},
+									},
+									Description: `The GrantEntitlementInclusionListCel message.`,
 								},
 								"use_subject_user": schema.BoolAttribute{
 									Computed:    true,
@@ -689,7 +803,19 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Description: `A reference to a user.`,
 								},
 							},
-							Description: `The GrantEntitlements message.`,
+							MarkdownDescription: `The GrantEntitlements message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - inclusionList` + "\n" +
+								`  - inclusionCriteria` + "\n" +
+								`  - inclusionListCel` + "\n" +
+								`` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - exclusionNone` + "\n" +
+								`  - exclusionList` + "\n" +
+								`  - exclusionCriteria` + "\n" +
+								`  - exclusionListCel`,
 						},
 						"remove_from_delegation": schema.SingleNestedAttribute{
 							Computed: true,
@@ -1280,6 +1406,11 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The ConnectorRef message.`,
 								},
+								"resource_type_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The resourceTypeId field.`,
+								},
 							},
 							MarkdownDescription: `The ConnectorAction message.` + "\n" +
 								`` + "\n" +
@@ -1734,32 +1865,142 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"app_entitlement_refs": schema.ListNestedAttribute{
+								"grant_entitlement_exclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
-									NestedObject: schema.NestedAttributeObject{
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+									Attributes: map[string]schema.Attribute{
+										"excluded_app_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedAppIds field.`,
 										},
-										Attributes: map[string]schema.Attribute{
-											"app_id": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The appId field.`,
-											},
-											"id": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The id field.`,
-											},
+										"excluded_compliance_framework_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedComplianceFrameworkIds field.`,
+										},
+										"excluded_risk_level_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The excludedRiskLevelIds field.`,
 										},
 									},
-									Description: `The appEntitlementRefs field.`,
+									Description: `The GrantEntitlementExclusionCriteria message.`,
 								},
-								"app_entitlement_refs_cel": schema.StringAttribute{
+								"grant_entitlement_exclusion_list": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"excluded_app_entitlement_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											Description: `The excludedAppEntitlementRefs field.`,
+										},
+									},
+									Description: `The GrantEntitlementExclusionList message.`,
+								},
+								"grant_entitlement_exclusion_list_cel": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"excluded_app_entitlement_refs_cel": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The excludedAppEntitlementRefsCel field.`,
+										},
+									},
+									Description: `The GrantEntitlementExclusionListCel message.`,
+								},
+								"grant_entitlement_exclusion_none": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The appEntitlementRefsCel field.`,
+									Description: `The GrantEntitlementExclusionNone message.`,
+								},
+								"grant_entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The appIds field.`,
+										},
+										"compliance_framework_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The complianceFrameworkIds field.`,
+										},
+										"risk_level_ids": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `The riskLevelIds field.`,
+										},
+									},
+									Description: `The GrantEntitlementInclusionCriteria message.`,
+								},
+								"grant_entitlement_inclusion_list": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_entitlement_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											Description: `The appEntitlementRefs field.`,
+										},
+									},
+									Description: `The GrantEntitlementInclusionList message.`,
+								},
+								"grant_entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_entitlement_refs_cel": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The appEntitlementRefsCel field.`,
+										},
+									},
+									Description: `The GrantEntitlementInclusionListCel message.`,
 								},
 								"use_subject_user": schema.BoolAttribute{
 									Computed:    true,
@@ -1784,7 +2025,19 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Description: `A reference to a user.`,
 								},
 							},
-							Description: `The GrantEntitlements message.`,
+							MarkdownDescription: `The GrantEntitlements message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - inclusionList` + "\n" +
+								`  - inclusionCriteria` + "\n" +
+								`  - inclusionListCel` + "\n" +
+								`` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - exclusionNone` + "\n" +
+								`  - exclusionList` + "\n" +
+								`  - exclusionCriteria` + "\n" +
+								`  - exclusionListCel`,
 						},
 						"remove_from_delegation": schema.SingleNestedAttribute{
 							Computed: true,
@@ -2358,12 +2611,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"form_trigger": schema.StringAttribute{
-							CustomType:  jsontypes.NormalizedType{},
-							Computed:    true,
-							Optional:    true,
-							Description: `The FormTrigger message. Parsed as JSON.`,
-						},
 						"grant_deleted_trigger": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -2392,7 +2639,43 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The AccountFilter message.`,
 										},
-										"entitlement_filter": schema.SingleNestedAttribute{
+										"entitlement_inclusion_all": schema.SingleNestedAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The EntitlementInclusionAll message.`,
+										},
+										"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"app_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The appIds field.`,
+												},
+												"compliance_framework_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The complianceFrameworkIds field.`,
+												},
+												"resource_type_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The resourceTypeIds field.`,
+												},
+												"risk_level_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The riskLevelIds field.`,
+												},
+											},
+											Description: `The EntitlementInclusionCriteria message.`,
+										},
+										"entitlement_inclusion_list": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -2418,18 +2701,20 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 													},
 													Description: `The appEntitlementRefs field.`,
 												},
+											},
+											Description: `The EntitlementInclusionList message.`,
+										},
+										"entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
 												"app_entitlement_refs_cel": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
 													Description: `The appEntitlementRefsCel field.`,
 												},
-												"app_id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appId field.`,
-												},
 											},
-											Description: `The EntitlementFilter message.`,
+											Description: `The EntitlementInclusionListCel message.`,
 										},
 										"grant_filter": schema.SingleNestedAttribute{
 											Computed: true,
@@ -2476,7 +2761,13 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											Description: `The GrantFilter message.`,
 										},
 									},
-									Description: `The GrantTriggerFilter message.`,
+									MarkdownDescription: `The GrantTriggerFilter message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named entitlement_inclusion. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - inclusionList` + "\n" +
+										`  - inclusionAll` + "\n" +
+										`  - inclusionCriteria` + "\n" +
+										`  - inclusionListCel`,
 								},
 							},
 							Description: `The GrantDeletedTrigger message.`,
@@ -2509,7 +2800,43 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The AccountFilter message.`,
 										},
-										"entitlement_filter": schema.SingleNestedAttribute{
+										"entitlement_inclusion_all": schema.SingleNestedAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The EntitlementInclusionAll message.`,
+										},
+										"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"app_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The appIds field.`,
+												},
+												"compliance_framework_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The complianceFrameworkIds field.`,
+												},
+												"resource_type_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The resourceTypeIds field.`,
+												},
+												"risk_level_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The riskLevelIds field.`,
+												},
+											},
+											Description: `The EntitlementInclusionCriteria message.`,
+										},
+										"entitlement_inclusion_list": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -2535,18 +2862,20 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 													},
 													Description: `The appEntitlementRefs field.`,
 												},
+											},
+											Description: `The EntitlementInclusionList message.`,
+										},
+										"entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
 												"app_entitlement_refs_cel": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
 													Description: `The appEntitlementRefsCel field.`,
 												},
-												"app_id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appId field.`,
-												},
 											},
-											Description: `The EntitlementFilter message.`,
+											Description: `The EntitlementInclusionListCel message.`,
 										},
 										"grant_filter": schema.SingleNestedAttribute{
 											Computed: true,
@@ -2593,15 +2922,16 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											Description: `The GrantFilter message.`,
 										},
 									},
-									Description: `The GrantTriggerFilter message.`,
+									MarkdownDescription: `The GrantTriggerFilter message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named entitlement_inclusion. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - inclusionList` + "\n" +
+										`  - inclusionAll` + "\n" +
+										`  - inclusionCriteria` + "\n" +
+										`  - inclusionListCel`,
 								},
 							},
 							Description: `The GrantFoundTrigger message.`,
-						},
-						"manual_automation_trigger": schema.SingleNestedAttribute{
-							Computed:    true,
-							Optional:    true,
-							Description: `The ManualAutomationTrigger message.`,
 						},
 						"schedule_trigger": schema.SingleNestedAttribute{
 							Computed: true,
@@ -2989,12 +3319,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"form_trigger": schema.StringAttribute{
-							CustomType:  jsontypes.NormalizedType{},
-							Computed:    true,
-							Optional:    true,
-							Description: `The FormTrigger message. Parsed as JSON.`,
-						},
 						"grant_deleted_trigger": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -3023,7 +3347,43 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The AccountFilter message.`,
 										},
-										"entitlement_filter": schema.SingleNestedAttribute{
+										"entitlement_inclusion_all": schema.SingleNestedAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The EntitlementInclusionAll message.`,
+										},
+										"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"app_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The appIds field.`,
+												},
+												"compliance_framework_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The complianceFrameworkIds field.`,
+												},
+												"resource_type_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The resourceTypeIds field.`,
+												},
+												"risk_level_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The riskLevelIds field.`,
+												},
+											},
+											Description: `The EntitlementInclusionCriteria message.`,
+										},
+										"entitlement_inclusion_list": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3049,18 +3409,20 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 													},
 													Description: `The appEntitlementRefs field.`,
 												},
+											},
+											Description: `The EntitlementInclusionList message.`,
+										},
+										"entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
 												"app_entitlement_refs_cel": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
 													Description: `The appEntitlementRefsCel field.`,
 												},
-												"app_id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appId field.`,
-												},
 											},
-											Description: `The EntitlementFilter message.`,
+											Description: `The EntitlementInclusionListCel message.`,
 										},
 										"grant_filter": schema.SingleNestedAttribute{
 											Computed: true,
@@ -3107,7 +3469,13 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											Description: `The GrantFilter message.`,
 										},
 									},
-									Description: `The GrantTriggerFilter message.`,
+									MarkdownDescription: `The GrantTriggerFilter message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named entitlement_inclusion. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - inclusionList` + "\n" +
+										`  - inclusionAll` + "\n" +
+										`  - inclusionCriteria` + "\n" +
+										`  - inclusionListCel`,
 								},
 							},
 							Description: `The GrantDeletedTrigger message.`,
@@ -3140,7 +3508,43 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The AccountFilter message.`,
 										},
-										"entitlement_filter": schema.SingleNestedAttribute{
+										"entitlement_inclusion_all": schema.SingleNestedAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The EntitlementInclusionAll message.`,
+										},
+										"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"app_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The appIds field.`,
+												},
+												"compliance_framework_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The complianceFrameworkIds field.`,
+												},
+												"resource_type_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The resourceTypeIds field.`,
+												},
+												"risk_level_ids": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													Description: `The riskLevelIds field.`,
+												},
+											},
+											Description: `The EntitlementInclusionCriteria message.`,
+										},
+										"entitlement_inclusion_list": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3166,18 +3570,20 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 													},
 													Description: `The appEntitlementRefs field.`,
 												},
+											},
+											Description: `The EntitlementInclusionList message.`,
+										},
+										"entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
 												"app_entitlement_refs_cel": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
 													Description: `The appEntitlementRefsCel field.`,
 												},
-												"app_id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The appId field.`,
-												},
 											},
-											Description: `The EntitlementFilter message.`,
+											Description: `The EntitlementInclusionListCel message.`,
 										},
 										"grant_filter": schema.SingleNestedAttribute{
 											Computed: true,
@@ -3224,15 +3630,16 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											Description: `The GrantFilter message.`,
 										},
 									},
-									Description: `The GrantTriggerFilter message.`,
+									MarkdownDescription: `The GrantTriggerFilter message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named entitlement_inclusion. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - inclusionList` + "\n" +
+										`  - inclusionAll` + "\n" +
+										`  - inclusionCriteria` + "\n" +
+										`  - inclusionListCel`,
 								},
 							},
 							Description: `The GrantFoundTrigger message.`,
-						},
-						"manual_automation_trigger": schema.SingleNestedAttribute{
-							Computed:    true,
-							Optional:    true,
-							Description: `The ManualAutomationTrigger message.`,
 						},
 						"schedule_trigger": schema.SingleNestedAttribute{
 							Computed: true,

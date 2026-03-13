@@ -20,7 +20,7 @@ func TestAccWebhookDataSource(t *testing.T) {
 				}
 				`,
 			},
-			// Test fetching the webhook by display name
+			// Test fetching the webhook by ID
 			{
 				Config: providerConfig + `
 				resource "conductorone_webhook" "test" {
@@ -29,15 +29,17 @@ func TestAccWebhookDataSource(t *testing.T) {
 					url = "https://example.com/webhook"
 				}
 
-				data "conductorone_webhook" "by_name" {
-					query = conductorone_webhook.test.display_name
+				data "conductorone_webhook" "by_id" {
+					refs = [{
+						id = conductorone_webhook.test.id
+					}]
 				}
 				`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.conductorone_webhook.by_name", "display_name", "test-webhook-data-source"),
-					resource.TestCheckResourceAttr("data.conductorone_webhook.by_name", "description", "test webhook for data source"),
-					resource.TestCheckResourceAttr("data.conductorone_webhook.by_name", "url", "https://example.com/webhook"),
-					resource.TestCheckResourceAttrSet("data.conductorone_webhook.by_name", "id"),
+					resource.TestCheckResourceAttr("data.conductorone_webhook.by_id", "display_name", "test-webhook-data-source"),
+					resource.TestCheckResourceAttr("data.conductorone_webhook.by_id", "description", "test webhook for data source"),
+					resource.TestCheckResourceAttr("data.conductorone_webhook.by_id", "url", "https://example.com/webhook"),
+					resource.TestCheckResourceAttrSet("data.conductorone_webhook.by_id", "id"),
 				),
 			},
 		},

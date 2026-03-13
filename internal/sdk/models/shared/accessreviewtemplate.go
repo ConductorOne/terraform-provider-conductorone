@@ -9,6 +9,69 @@ import (
 	"time"
 )
 
+// AccessReviewTemplateAccuracyIssueAction - The accuracyIssueAction field.
+type AccessReviewTemplateAccuracyIssueAction string
+
+const (
+	AccessReviewTemplateAccuracyIssueActionAccuracyIssueActionUnspecified AccessReviewTemplateAccuracyIssueAction = "ACCURACY_ISSUE_ACTION_UNSPECIFIED"
+	AccessReviewTemplateAccuracyIssueActionAccuracyIssueActionContinue    AccessReviewTemplateAccuracyIssueAction = "ACCURACY_ISSUE_ACTION_CONTINUE"
+	AccessReviewTemplateAccuracyIssueActionAccuracyIssueActionWait        AccessReviewTemplateAccuracyIssueAction = "ACCURACY_ISSUE_ACTION_WAIT"
+)
+
+func (e AccessReviewTemplateAccuracyIssueAction) ToPointer() *AccessReviewTemplateAccuracyIssueAction {
+	return &e
+}
+func (e *AccessReviewTemplateAccuracyIssueAction) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "ACCURACY_ISSUE_ACTION_UNSPECIFIED":
+		fallthrough
+	case "ACCURACY_ISSUE_ACTION_CONTINUE":
+		fallthrough
+	case "ACCURACY_ISSUE_ACTION_WAIT":
+		*e = AccessReviewTemplateAccuracyIssueAction(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AccessReviewTemplateAccuracyIssueAction: %v", v)
+	}
+}
+
+// AccessReviewTemplateAutoCloseDecision - The autoCloseDecision field.
+type AccessReviewTemplateAutoCloseDecision string
+
+const (
+	AccessReviewTemplateAutoCloseDecisionCloseDecisionUnspecified AccessReviewTemplateAutoCloseDecision = "CLOSE_DECISION_UNSPECIFIED"
+	AccessReviewTemplateAutoCloseDecisionCloseDecisionRevoked     AccessReviewTemplateAutoCloseDecision = "CLOSE_DECISION_REVOKED"
+	AccessReviewTemplateAutoCloseDecisionCloseDecisionSkip        AccessReviewTemplateAutoCloseDecision = "CLOSE_DECISION_SKIP"
+	AccessReviewTemplateAutoCloseDecisionCloseDecisionNoAction    AccessReviewTemplateAutoCloseDecision = "CLOSE_DECISION_NO_ACTION"
+)
+
+func (e AccessReviewTemplateAutoCloseDecision) ToPointer() *AccessReviewTemplateAutoCloseDecision {
+	return &e
+}
+func (e *AccessReviewTemplateAutoCloseDecision) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "CLOSE_DECISION_UNSPECIFIED":
+		fallthrough
+	case "CLOSE_DECISION_REVOKED":
+		fallthrough
+	case "CLOSE_DECISION_SKIP":
+		fallthrough
+	case "CLOSE_DECISION_NO_ACTION":
+		*e = AccessReviewTemplateAutoCloseDecision(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AccessReviewTemplateAutoCloseDecision: %v", v)
+	}
+}
+
 // AccessReviewTemplateDefaultView - The defaultView field.
 type AccessReviewTemplateDefaultView string
 
@@ -49,6 +112,7 @@ const (
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeUnspecified       AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByEntitlements    AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS"
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByAccessConflicts AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
+	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByResource        AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 )
 
 func (e AccessReviewTemplateScopeType) ToPointer() *AccessReviewTemplateScopeType {
@@ -65,6 +129,8 @@ func (e *AccessReviewTemplateScopeType) UnmarshalJSON(data []byte) error {
 	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS":
 		fallthrough
 	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS":
+		fallthrough
+	case "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
 		*e = AccessReviewTemplateScopeType(v)
 		return nil
 	default:
@@ -78,9 +144,19 @@ func (e *AccessReviewTemplateScopeType) UnmarshalJSON(data []byte) error {
 //   - slackChannel
 type AccessReviewTemplate struct {
 	AccessReviewDuration *string `json:"accessReviewDuration,omitempty"`
+	// The accuracyIssueAction field.
+	AccuracyIssueAction *AccessReviewTemplateAccuracyIssueAction `json:"accuracyIssueAction,omitempty"`
+	// Auto-close configuration
+	//  start date and access_review_duration will be used to calculate the scheduled close date
+	AutoCloseCampaign *bool `json:"autoCloseCampaign,omitempty"`
+	// The autoCloseDecision field.
+	AutoCloseDecision *AccessReviewTemplateAutoCloseDecision `json:"autoCloseDecision,omitempty"`
 	// auto generate report when campaign is closed
-	AutoGenerateReport *bool      `json:"autoGenerateReport,omitempty"`
-	CreatedAt          *time.Time `json:"createdAt,omitempty"`
+	AutoGenerateReport *bool `json:"autoGenerateReport,omitempty"`
+	// Auto-start configuration
+	//  next_scheduled_campaign_at will be used as the scheduled start date
+	AutoStartCampaign *bool      `json:"autoStartCampaign,omitempty"`
+	CreatedAt         *time.Time `json:"createdAt,omitempty"`
 	// The defaultView field.
 	DefaultView *AccessReviewTemplateDefaultView `json:"defaultView,omitempty"`
 	DeletedAt   *time.Time                       `json:"deletedAt,omitempty"`
@@ -143,6 +219,10 @@ type AccessReviewTemplate struct {
 	//   - allAccessConflicts
 	//   - specificAccessConflicts
 	//
+	//
+	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
+	//   - resourceSelection
+	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scope,omitempty"`
 	// The scopeType field.
 	ScopeType *AccessReviewTemplateScopeType `json:"scopeType,omitempty"`
@@ -173,11 +253,39 @@ func (a *AccessReviewTemplate) GetAccessReviewDuration() *string {
 	return a.AccessReviewDuration
 }
 
+func (a *AccessReviewTemplate) GetAccuracyIssueAction() *AccessReviewTemplateAccuracyIssueAction {
+	if a == nil {
+		return nil
+	}
+	return a.AccuracyIssueAction
+}
+
+func (a *AccessReviewTemplate) GetAutoCloseCampaign() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCloseCampaign
+}
+
+func (a *AccessReviewTemplate) GetAutoCloseDecision() *AccessReviewTemplateAutoCloseDecision {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCloseDecision
+}
+
 func (a *AccessReviewTemplate) GetAutoGenerateReport() *bool {
 	if a == nil {
 		return nil
 	}
 	return a.AutoGenerateReport
+}
+
+func (a *AccessReviewTemplate) GetAutoStartCampaign() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AutoStartCampaign
 }
 
 func (a *AccessReviewTemplate) GetCreatedAt() *time.Time {
@@ -333,8 +441,18 @@ func (a *AccessReviewTemplate) GetUsePolicyOverride() *bool {
 //   - slackChannel
 type AccessReviewTemplateInput struct {
 	AccessReviewDuration *string `json:"accessReviewDuration,omitempty"`
+	// The accuracyIssueAction field.
+	AccuracyIssueAction *AccessReviewTemplateAccuracyIssueAction `json:"accuracyIssueAction,omitempty"`
+	// Auto-close configuration
+	//  start date and access_review_duration will be used to calculate the scheduled close date
+	AutoCloseCampaign *bool `json:"autoCloseCampaign,omitempty"`
+	// The autoCloseDecision field.
+	AutoCloseDecision *AccessReviewTemplateAutoCloseDecision `json:"autoCloseDecision,omitempty"`
 	// auto generate report when campaign is closed
 	AutoGenerateReport *bool `json:"autoGenerateReport,omitempty"`
+	// Auto-start configuration
+	//  next_scheduled_campaign_at will be used as the scheduled start date
+	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
 	// The defaultView field.
 	DefaultView *AccessReviewTemplateDefaultView `json:"defaultView,omitempty"`
 	// The description field.
@@ -396,6 +514,10 @@ type AccessReviewTemplateInput struct {
 	//   - allAccessConflicts
 	//   - specificAccessConflicts
 	//
+	//
+	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
+	//   - resourceSelection
+	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scope,omitempty"`
 	// The scopeType field.
 	ScopeType *AccessReviewTemplateScopeType `json:"scopeType,omitempty"`
@@ -425,11 +547,39 @@ func (a *AccessReviewTemplateInput) GetAccessReviewDuration() *string {
 	return a.AccessReviewDuration
 }
 
+func (a *AccessReviewTemplateInput) GetAccuracyIssueAction() *AccessReviewTemplateAccuracyIssueAction {
+	if a == nil {
+		return nil
+	}
+	return a.AccuracyIssueAction
+}
+
+func (a *AccessReviewTemplateInput) GetAutoCloseCampaign() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCloseCampaign
+}
+
+func (a *AccessReviewTemplateInput) GetAutoCloseDecision() *AccessReviewTemplateAutoCloseDecision {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCloseDecision
+}
+
 func (a *AccessReviewTemplateInput) GetAutoGenerateReport() *bool {
 	if a == nil {
 		return nil
 	}
 	return a.AutoGenerateReport
+}
+
+func (a *AccessReviewTemplateInput) GetAutoStartCampaign() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AutoStartCampaign
 }
 
 func (a *AccessReviewTemplateInput) GetDefaultView() *AccessReviewTemplateDefaultView {

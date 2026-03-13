@@ -10,6 +10,8 @@ type AppResourceView struct {
 	//   - secretTrait
 	//
 	AppResource *AppResource `json:"appResource,omitempty"`
+	// The ActorObjectPermissions message.
+	ActorObjectPermissions *ActorObjectPermissions `json:"objectPermissions,omitempty"`
 }
 
 func (a *AppResourceView) GetAppResource() *AppResource {
@@ -17,4 +19,11 @@ func (a *AppResourceView) GetAppResource() *AppResource {
 		return nil
 	}
 	return a.AppResource
+}
+
+func (a *AppResourceView) GetActorObjectPermissions() *ActorObjectPermissions {
+	if a == nil {
+		return nil
+	}
+	return a.ActorObjectPermissions
 }

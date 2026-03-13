@@ -25,10 +25,25 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 			for _, listItem := range resp.List {
 				var list tfTypes.AppResourceView
 
+				if listItem.ActorObjectPermissions == nil {
+					list.ActorObjectPermissions = nil
+				} else {
+					list.ActorObjectPermissions = &tfTypes.ActorObjectPermissions{}
+					list.ActorObjectPermissions.Delete = types.BoolPointerValue(listItem.ActorObjectPermissions.Delete)
+					list.ActorObjectPermissions.Edit = types.BoolPointerValue(listItem.ActorObjectPermissions.Edit)
+					if len(listItem.ActorObjectPermissions.Extra) > 0 {
+						list.ActorObjectPermissions.Extra = make(map[string]types.Bool, len(listItem.ActorObjectPermissions.Extra))
+						for key, value := range listItem.ActorObjectPermissions.Extra {
+							list.ActorObjectPermissions.Extra[key] = types.BoolValue(value)
+						}
+					}
+					list.ActorObjectPermissions.Read = types.BoolPointerValue(listItem.ActorObjectPermissions.Read)
+				}
 				if listItem.AppResource == nil {
 					list.AppResource = nil
 				} else {
 					list.AppResource = &tfTypes.AppResource{}
+					list.AppResource.AccessConfigID = types.StringPointerValue(listItem.AppResource.AccessConfigID)
 					list.AppResource.AppID = types.StringPointerValue(listItem.AppResource.AppID)
 					list.AppResource.AppResourceTypeID = types.StringPointerValue(listItem.AppResource.AppResourceTypeID)
 					list.AppResource.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.CreatedAt))
@@ -40,6 +55,11 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 					list.AppResource.MatchBatonID = types.StringPointerValue(listItem.AppResource.MatchBatonID)
 					list.AppResource.ParentAppResourceID = types.StringPointerValue(listItem.AppResource.ParentAppResourceID)
 					list.AppResource.ParentAppResourceTypeID = types.StringPointerValue(listItem.AppResource.ParentAppResourceTypeID)
+					if listItem.AppResource.Profile == nil {
+						list.AppResource.Profile = nil
+					} else {
+						list.AppResource.Profile = &tfTypes.AppResourceProfile{}
+					}
 					if listItem.AppResource.SecretTrait == nil {
 						list.AppResource.SecretTrait = nil
 					} else {
@@ -73,8 +93,8 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 	var appUserIds []string
 	if r.AppUserIds != nil {
 		appUserIds = make([]string, 0, len(r.AppUserIds))
-		for _, appUserIdsItem := range r.AppUserIds {
-			appUserIds = append(appUserIds, appUserIdsItem.ValueString())
+		for appUserIdsIndex := range r.AppUserIds {
+			appUserIds = append(appUserIds, r.AppUserIds[appUserIdsIndex].ValueString())
 		}
 	}
 	excludeDeletedResourceBindings := new(bool)
@@ -86,15 +106,22 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 	var excludeResourceIds []string
 	if r.ExcludeResourceIds != nil {
 		excludeResourceIds = make([]string, 0, len(r.ExcludeResourceIds))
-		for _, excludeResourceIdsItem := range r.ExcludeResourceIds {
-			excludeResourceIds = append(excludeResourceIds, excludeResourceIdsItem.ValueString())
+		for excludeResourceIdsIndex := range r.ExcludeResourceIds {
+			excludeResourceIds = append(excludeResourceIds, r.ExcludeResourceIds[excludeResourceIdsIndex].ValueString())
 		}
 	}
 	var excludeResourceTypeTraitIds []string
 	if r.ExcludeResourceTypeTraitIds != nil {
 		excludeResourceTypeTraitIds = make([]string, 0, len(r.ExcludeResourceTypeTraitIds))
-		for _, excludeResourceTypeTraitIdsItem := range r.ExcludeResourceTypeTraitIds {
-			excludeResourceTypeTraitIds = append(excludeResourceTypeTraitIds, excludeResourceTypeTraitIdsItem.ValueString())
+		for excludeResourceTypeTraitIdsIndex := range r.ExcludeResourceTypeTraitIds {
+			excludeResourceTypeTraitIds = append(excludeResourceTypeTraitIds, r.ExcludeResourceTypeTraitIds[excludeResourceTypeTraitIdsIndex].ValueString())
+		}
+	}
+	var ownerUserIds []string
+	if r.OwnerUserIds != nil {
+		ownerUserIds = make([]string, 0, len(r.OwnerUserIds))
+		for ownerUserIdsIndex := range r.OwnerUserIds {
+			ownerUserIds = append(ownerUserIds, r.OwnerUserIds[ownerUserIdsIndex].ValueString())
 		}
 	}
 	pageSize := new(int)
@@ -112,22 +139,22 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 	var refs []shared.AppResourceRef
 	if r.Refs != nil {
 		refs = make([]shared.AppResourceRef, 0, len(r.Refs))
-		for _, refsItem := range r.Refs {
+		for refsIndex := range r.Refs {
 			appId1 := new(string)
-			if !refsItem.AppID.IsUnknown() && !refsItem.AppID.IsNull() {
-				*appId1 = refsItem.AppID.ValueString()
+			if !r.Refs[refsIndex].AppID.IsUnknown() && !r.Refs[refsIndex].AppID.IsNull() {
+				*appId1 = r.Refs[refsIndex].AppID.ValueString()
 			} else {
 				appId1 = nil
 			}
 			appResourceTypeID := new(string)
-			if !refsItem.AppResourceTypeID.IsUnknown() && !refsItem.AppResourceTypeID.IsNull() {
-				*appResourceTypeID = refsItem.AppResourceTypeID.ValueString()
+			if !r.Refs[refsIndex].AppResourceTypeID.IsUnknown() && !r.Refs[refsIndex].AppResourceTypeID.IsNull() {
+				*appResourceTypeID = r.Refs[refsIndex].AppResourceTypeID.ValueString()
 			} else {
 				appResourceTypeID = nil
 			}
 			id := new(string)
-			if !refsItem.ID.IsUnknown() && !refsItem.ID.IsNull() {
-				*id = refsItem.ID.ValueString()
+			if !r.Refs[refsIndex].ID.IsUnknown() && !r.Refs[refsIndex].ID.IsNull() {
+				*id = r.Refs[refsIndex].ID.ValueString()
 			} else {
 				id = nil
 			}
@@ -141,22 +168,22 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 	var resourceIds []string
 	if r.ResourceIds != nil {
 		resourceIds = make([]string, 0, len(r.ResourceIds))
-		for _, resourceIdsItem := range r.ResourceIds {
-			resourceIds = append(resourceIds, resourceIdsItem.ValueString())
+		for resourceIdsIndex := range r.ResourceIds {
+			resourceIds = append(resourceIds, r.ResourceIds[resourceIdsIndex].ValueString())
 		}
 	}
 	var resourceTypeIds []string
 	if r.ResourceTypeIds != nil {
 		resourceTypeIds = make([]string, 0, len(r.ResourceTypeIds))
-		for _, resourceTypeIdsItem := range r.ResourceTypeIds {
-			resourceTypeIds = append(resourceTypeIds, resourceTypeIdsItem.ValueString())
+		for resourceTypeIdsIndex := range r.ResourceTypeIds {
+			resourceTypeIds = append(resourceTypeIds, r.ResourceTypeIds[resourceTypeIdsIndex].ValueString())
 		}
 	}
 	var resourceTypeTraitIds []string
 	if r.ResourceTypeTraitIds != nil {
 		resourceTypeTraitIds = make([]string, 0, len(r.ResourceTypeTraitIds))
-		for _, resourceTypeTraitIdsItem := range r.ResourceTypeTraitIds {
-			resourceTypeTraitIds = append(resourceTypeTraitIds, resourceTypeTraitIdsItem.ValueString())
+		for resourceTypeTraitIdsIndex := range r.ResourceTypeTraitIds {
+			resourceTypeTraitIds = append(resourceTypeTraitIds, r.ResourceTypeTraitIds[resourceTypeTraitIdsIndex].ValueString())
 		}
 	}
 	out := shared.SearchAppResourcesRequest{
@@ -165,6 +192,7 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 		ExcludeDeletedResourceBindings: excludeDeletedResourceBindings,
 		ExcludeResourceIds:             excludeResourceIds,
 		ExcludeResourceTypeTraitIds:    excludeResourceTypeTraitIds,
+		OwnerUserIds:                   ownerUserIds,
 		PageSize:                       pageSize,
 		Query:                          query,
 		Refs:                           refs,

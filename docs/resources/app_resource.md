@@ -40,17 +40,28 @@ resource "conductorone_app_resource" "my_app_resource" {
 
 ### Read-Only
 
+- `access_config_id` (String) The access config ID for this resource. May be empty.
+ Must be one of the builtin access config IDs or empty.
 - `created_at` (String)
+- `delete` (Boolean) The delete field.
+- `edit` (Boolean) The edit field.
 - `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
+- `extra` (Map of Boolean) The extra field.
 - `grant_count` (String) The number of grants to this resource.
 - `id` (String) The id of the resource.
 - `parent_app_resource_id` (String) The parent resource id, if this resource is a child of another resource.
 - `parent_app_resource_type_id` (String) The parent resource type id, if this resource is a child of another resource.
+- `profile` (Attributes) (see [below for nested schema](#nestedatt--profile))
+- `read` (Boolean) The read field.
 - `secret_trait` (Attributes) The SecretTrait message. (see [below for nested schema](#nestedatt--secret_trait))
 - `updated_at` (String)
 
 <a id="nestedatt--expanded"></a>
 ### Nested Schema for `expanded`
+
+
+<a id="nestedatt--profile"></a>
+### Nested Schema for `profile`
 
 
 <a id="nestedatt--secret_trait"></a>

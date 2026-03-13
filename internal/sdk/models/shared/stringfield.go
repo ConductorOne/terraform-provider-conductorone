@@ -8,6 +8,7 @@ package shared
 //   - textField
 //   - passwordField
 //   - selectField
+//   - pickerField
 //
 // This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
 //   - rules
@@ -16,6 +17,14 @@ type StringField struct {
 	DefaultValue *string `json:"defaultValue,omitempty"`
 	// The PasswordField message.
 	PasswordField *PasswordField `json:"passwordField,omitempty"`
+	// The PickerField message.
+	//
+	// This message contains a oneof named type. Only a single field of the following list may be set at a time:
+	//   - appUserPicker
+	//   - resourcePicker
+	//   - c1UserPicker
+	//
+	PickerField *PickerField `json:"pickerField,omitempty"`
 	// The placeholder field.
 	Placeholder *string `json:"placeholder,omitempty"`
 	// StringRules describe the constraints applied to `string` values
@@ -51,6 +60,13 @@ func (s *StringField) GetPasswordField() *PasswordField {
 		return nil
 	}
 	return s.PasswordField
+}
+
+func (s *StringField) GetPickerField() *PickerField {
+	if s == nil {
+		return nil
+	}
+	return s.PickerField
 }
 
 func (s *StringField) GetPlaceholder() *string {

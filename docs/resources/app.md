@@ -22,7 +22,8 @@ resource "conductorone_app" "my_app" {
   description                            = "...my_description..."
   display_name                           = "...my_display_name..."
   grant_policy_id                        = "...my_grant_policy_id..."
-  identity_matching                      = "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"
+  identity_matching                      = "APP_USER_IDENTITY_MATCHING_CUSTOM"
+  instructions                           = "...my_instructions..."
   monthly_cost_usd                       = 1
   revoke_policy_id                       = "...my_revoke_policy_id..."
   strict_access_entitlement_provisioning = true
@@ -41,7 +42,8 @@ resource "conductorone_app" "my_app" {
 - `certify_policy_id` (String) Creates the app with this certify policy.
 - `description` (String) Creates the app with this description.
 - `grant_policy_id` (String) Creates the app with this grant policy.
-- `identity_matching` (String) Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME"]
+- `identity_matching` (String) Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM"]
+- `instructions` (String) Instructions shown to users in the access request form when requesting access for this app.
 - `monthly_cost_usd` (Number) Creates the app with this monthly cost per seat.
 - `revoke_policy_id` (String) Creates the app with this revoke policy.
 - `strict_access_entitlement_provisioning` (Boolean) This flag enforces a provisioning mode where the access entitlement is always included in the provisioning flow, if the app user doesn't exist
@@ -50,13 +52,29 @@ resource "conductorone_app" "my_app" {
 
 - `app_account_id` (String) The ID of the Account named by AccountName.
 - `app_account_name` (String) The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
+- `app_user_mapper` (Attributes) AppUserMapper configures custom account mapping for uplift. (see [below for nested schema](#nestedatt--app_user_mapper))
 - `connector_version` (Number) The connectorVersion field.
 - `created_at` (String)
 - `default_request_catalog_id` (String) The ID for the default request catalog for this app.
+- `enable_connector_sourced_ownership` (Boolean) When enabled, resource ownership is sourced from the connector.
 - `id` (String) The ID of the app.
-- `instructions` (String) If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
 - `is_directory` (Boolean) Specifies if the app is a directory.
 - `is_manually_managed` (Boolean) The isManuallyManaged field.
 - `parent_app_id` (String) The ID of the app that created this app, if any.
 - `updated_at` (String)
 - `user_count` (String) The number of users with grants to this app.
+
+<a id="nestedatt--app_user_mapper"></a>
+### Nested Schema for `app_user_mapper`
+
+Read-Only:
+
+- `mapping_cases` (Attributes List) Ordered list of match cases. Each case defines a pair of CEL key extractors. (see [below for nested schema](#nestedatt--app_user_mapper--mapping_cases))
+
+<a id="nestedatt--app_user_mapper--mapping_cases"></a>
+### Nested Schema for `app_user_mapper.mapping_cases`
+
+Read-Only:
+
+- `app_user_key_cel` (String) CEL expression evaluated against an AppUser to produce match key(s).
+- `user_key_cel` (String) CEL expression evaluated against a User to produce match key(s).

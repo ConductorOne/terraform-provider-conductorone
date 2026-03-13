@@ -192,7 +192,19 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 											Description: `The AllUsersScope message.`,
 										},
 										"app_selection_criteria_scope": schema.SingleNestedAttribute{
-											Computed:    true,
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"compliance_framework_attribute_value_ids": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													Description: `The complianceFrameworkAttributeValueIds field.`,
+												},
+												"risk_level_attribute_value_ids": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													Description: `The riskLevelAttributeValueIds field.`,
+												},
+											},
 											Description: `The AppSelectionCriteriaScope message.`,
 										},
 										"application_access_scope": schema.SingleNestedAttribute{
@@ -237,11 +249,20 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 														"excluded_access_profile_ids": schema.ListAttribute{
 															Computed:    true,
 															ElementType: types.StringType,
-															Description: `List of access profiles to exclude if type is EXCLUDE_SPECIFIC`,
+															MarkdownDescription: `Access profile IDs to EXCLUDE from the campaign` + "\n" +
+																` Used when filter_type = EXCLUDE_SPECIFIC` + "\n" +
+																` Max 32 profile IDs`,
 														},
 														"filter_type": schema.StringAttribute{
 															Computed:    true,
 															Description: `The filterType field.`,
+														},
+														"included_access_profile_ids": schema.ListAttribute{
+															Computed:    true,
+															ElementType: types.StringType,
+															MarkdownDescription: `Access profile IDs to INCLUDE in the campaign` + "\n" +
+																` Used when filter_type = INCLUDE_SPECIFIC` + "\n" +
+																` Max 32 profile IDs`,
 														},
 													},
 													Description: `The GrantAccessProfileFilter message.`,
@@ -273,6 +294,10 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 												`  - daysSinceAdded` + "\n" +
 												`  - daysSinceReviewed` + "\n" +
 												`  - grantsAddedBetween`,
+										},
+										"resource_selection_scope": schema.SingleNestedAttribute{
+											Computed:    true,
+											Description: `The ResourceSelectionScope message.`,
 										},
 										"resource_type_selection_scope": schema.SingleNestedAttribute{
 											Computed:    true,
@@ -379,11 +404,28 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 										`` + "\n" +
 										`This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:` + "\n" +
 										`  - allAccessConflicts` + "\n" +
-										`  - specificAccessConflicts`,
+										`  - specificAccessConflicts` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - resourceSelection`,
 								},
 								"access_review_template_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The ID of the template if the campaign was created from one`,
+								},
+								"accuracy_issue_action": schema.StringAttribute{
+									Computed:    true,
+									Description: `The accuracyIssueAction field.`,
+								},
+								"auto_close_campaign": schema.BoolAttribute{
+									Computed: true,
+									MarkdownDescription: `Auto-close configuration` + "\n" +
+										` completion_date is used as the scheduled close date`,
+								},
+								"auto_close_decision": schema.StringAttribute{
+									Computed:    true,
+									Description: `The autoCloseDecision field.`,
 								},
 								"auto_generate_report": schema.BoolAttribute{
 									Computed:    true,
@@ -392,6 +434,10 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 								"auto_resolve": schema.BoolAttribute{
 									Computed:    true,
 									Description: `The autoResolve field.`,
+								},
+								"auto_start_campaign": schema.BoolAttribute{
+									Computed:    true,
+									Description: `Auto-start configuration`,
 								},
 								"binding_object_setup": schema.SingleNestedAttribute{
 									Computed:    true,
@@ -499,6 +545,10 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 											Computed:    true,
 											Description: `The sendClose field.`,
 										},
+										"send_kickoff": schema.BoolAttribute{
+											Computed:    true,
+											Description: `The sendKickoff field.`,
+										},
 										"send_reminders": schema.BoolAttribute{
 											Computed:    true,
 											Description: `The sendReminders field.`,
@@ -535,6 +585,9 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 										},
 									},
 									Description: `Signature configuration for access review submissions`,
+								},
+								"scheduled_start_date": schema.StringAttribute{
+									Computed: true,
 								},
 								"scope_type": schema.StringAttribute{
 									Computed:    true,

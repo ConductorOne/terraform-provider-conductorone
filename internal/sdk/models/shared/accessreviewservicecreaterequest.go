@@ -16,6 +16,7 @@ const (
 	ScopeTypeAccessReviewScopeTypeUnspecified       ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
 	ScopeTypeAccessReviewScopeTypeByEntitlements    ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS"
 	ScopeTypeAccessReviewScopeTypeByAccessConflicts ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
+	ScopeTypeAccessReviewScopeTypeByResource        ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 )
 
 func (e ScopeType) ToPointer() *ScopeType {
@@ -32,6 +33,8 @@ func (e *ScopeType) UnmarshalJSON(data []byte) error {
 	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS":
 		fallthrough
 	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS":
+		fallthrough
+	case "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
 		*e = ScopeType(v)
 		return nil
 	default:
@@ -48,8 +51,6 @@ type AccessReviewServiceCreateRequest struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// The duplicateFrom field.
 	DuplicateFrom *string `json:"duplicateFrom,omitempty"`
-	// The AccessReviewExpandMask message.
-	AccessReviewExpandMask *AccessReviewExpandMask `json:"expandMask,omitempty"`
 	// The NotificationConfig message.
 	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The ownerIds field.
@@ -58,6 +59,42 @@ type AccessReviewServiceCreateRequest struct {
 	PolicyID *string `json:"policyId,omitempty"`
 	// The scopeType field.
 	ScopeType *ScopeType `json:"scopeType,omitempty"`
+	// The AccessReviewScopeV2 message.
+	//
+	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
+	//   - appAccess
+	//   - specificResources
+	//   - appSelectionCriteria
+	//   - resourceTypeSelections
+	//
+	//
+	// This message contains a oneof named users_scope. Only a single field of the following list may be set at a time:
+	//   - allUsers
+	//   - selectedUsers
+	//   - userCriteria
+	//   - celExpression
+	//
+	//
+	// This message contains a oneof named accounts_scope. Only a single field of the following list may be set at a time:
+	//   - allAccounts
+	//   - accountCriteria
+	//   - accountCelExpression
+	//
+	//
+	// This message contains a oneof named grants_scope. Only a single field of the following list may be set at a time:
+	//   - allGrants
+	//   - grantsByCriteria
+	//
+	//
+	// This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
+	//   - allAccessConflicts
+	//   - specificAccessConflicts
+	//
+	//
+	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
+	//   - resourceSelection
+	//
+	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
 }
 
 func (a AccessReviewServiceCreateRequest) MarshalJSON() ([]byte, error) {
@@ -99,13 +136,6 @@ func (a *AccessReviewServiceCreateRequest) GetDuplicateFrom() *string {
 	return a.DuplicateFrom
 }
 
-func (a *AccessReviewServiceCreateRequest) GetAccessReviewExpandMask() *AccessReviewExpandMask {
-	if a == nil {
-		return nil
-	}
-	return a.AccessReviewExpandMask
-}
-
 func (a *AccessReviewServiceCreateRequest) GetNotificationConfig() *NotificationConfig {
 	if a == nil {
 		return nil
@@ -132,4 +162,11 @@ func (a *AccessReviewServiceCreateRequest) GetScopeType() *ScopeType {
 		return nil
 	}
 	return a.ScopeType
+}
+
+func (a *AccessReviewServiceCreateRequest) GetAccessReviewScopeV2() *AccessReviewScopeV2 {
+	if a == nil {
+		return nil
+	}
+	return a.AccessReviewScopeV2
 }

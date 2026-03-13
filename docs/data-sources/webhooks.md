@@ -53,6 +53,7 @@ Optional:
 
 Read-Only:
 
+- `callback_timeout` (String)
 - `created_at` (String)
 - `deleted_at` (String)
 - `description` (String) The description field.

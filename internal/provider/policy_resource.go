@@ -123,13 +123,26 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Description: `The automationTemplateId field.`,
 													},
 												},
-												Description: `The ActionTargetAutomation message.`,
+												Description: `ActionTargetAutomation targets automation templates for policy actions.`,
+											},
+											"action_target_baton_resource_action": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"baton_resource_action_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The batonResourceActionId field.`,
+													},
+												},
+												Description: `ActionTargetResource targets resource actions for policy actions.`,
 											},
 										},
 										MarkdownDescription: `The Action message.` + "\n" +
 											`` + "\n" +
 											`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
-											`  - automation`,
+											`  - automation` + "\n" +
+											`  - batonResourceAction`,
 									},
 									"approval": schema.SingleNestedAttribute{
 										Computed: true,
@@ -330,11 +343,38 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Optional:    true,
 														Description: `Configuration to allow a fallback if the entitlement owner cannot be identified.`,
 													},
+													"fallback_group_ids": schema.ListNestedAttribute{
+														Computed: true,
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"app_entitlement_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the Entitlement.`,
+																},
+																"app_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the App this entitlement belongs to.`,
+																},
+															},
+														},
+														Description: `Configuration to specify which groups to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+													},
 													"fallback_user_ids": schema.ListAttribute{
 														Computed:    true,
 														Optional:    true,
 														ElementType: types.StringType,
 														Description: `Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.`,
+													},
+													"is_group_fallback_enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Configuration to enable fallback for group fallback.`,
 													},
 													"require_distinct_approvers": schema.BoolAttribute{
 														Computed:    true,
@@ -360,6 +400,11 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
+													"cancel_ticket": schema.SingleNestedAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The CancelTicket message.`,
+													},
 													"escalation_comment": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
@@ -395,12 +440,19 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														},
 														Description: `The ReplacePolicy message.`,
 													},
+													"skip_step": schema.SingleNestedAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The SkipStep message.`,
+													},
 												},
 												MarkdownDescription: `The Escalation message.` + "\n" +
 													`` + "\n" +
 													`This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:` + "\n" +
 													`  - replacePolicy` + "\n" +
-													`  - reassignToApprovers`,
+													`  - reassignToApprovers` + "\n" +
+													`  - cancelTicket` + "\n" +
+													`  - skipStep`,
 											},
 											"escalation_enabled": schema.BoolAttribute{
 												Computed:    true,
@@ -432,11 +484,38 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Optional:    true,
 														Description: `Configuration to allow a fallback if the expression does not return a valid list of users.`,
 													},
+													"fallback_group_ids": schema.ListNestedAttribute{
+														Computed: true,
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"app_entitlement_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the Entitlement.`,
+																},
+																"app_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the App this entitlement belongs to.`,
+																},
+															},
+														},
+														Description: `Configuration to specify which groups to fallback to if fallback is enabled and the expression does not return a valid list of users.`,
+													},
 													"fallback_user_ids": schema.ListAttribute{
 														Computed:    true,
 														Optional:    true,
 														ElementType: types.StringType,
 														Description: `Configuration to specific which users to fallback to if and the expression does not return a valid list of users.`,
+													},
+													"is_group_fallback_enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Configuration to enable fallback for group fallback.`,
 													},
 													"require_distinct_approvers": schema.BoolAttribute{
 														Computed:    true,
@@ -477,11 +556,38 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Optional:    true,
 														Description: `Configuration to allow a fallback if no manager is found.`,
 													},
+													"fallback_group_ids": schema.ListNestedAttribute{
+														Computed: true,
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"app_entitlement_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the Entitlement.`,
+																},
+																"app_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the App this entitlement belongs to.`,
+																},
+															},
+														},
+														Description: `Configuration to specify which groups to fallback to if fallback is enabled and no manager is found.`,
+													},
 													"fallback_user_ids": schema.ListAttribute{
 														Computed:    true,
 														Optional:    true,
 														ElementType: types.StringType,
 														Description: `Configuration to specific which users to fallback to if fallback is enabled and no manager is found.`,
+													},
+													"is_group_fallback_enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Configuration to enable fallback for group fallback.`,
 													},
 													"require_distinct_approvers": schema.BoolAttribute{
 														Computed:    true,
@@ -538,11 +644,38 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Optional:    true,
 														Description: `Configuration to allow a fallback if the resource owner cannot be identified.`,
 													},
+													"fallback_group_ids": schema.ListNestedAttribute{
+														Computed: true,
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"app_entitlement_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the Entitlement.`,
+																},
+																"app_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the App this entitlement belongs to.`,
+																},
+															},
+														},
+														Description: `Configuration to specify which groups to fallback to if fallback is enabled and the resource owner cannot be identified.`,
+													},
 													"fallback_user_ids": schema.ListAttribute{
 														Computed:    true,
 														Optional:    true,
 														ElementType: types.StringType,
 														Description: `Configuration to specific which users to fallback to if fallback is enabled and the resource owner cannot be identified.`,
+													},
+													"is_group_fallback_enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Configuration to enable fallback for group fallback.`,
 													},
 													"require_distinct_approvers": schema.BoolAttribute{
 														Computed:    true,
@@ -578,11 +711,38 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Optional:    true,
 														Description: `Configuration to allow a fallback if the identity user of the target app user cannot be determined.`,
 													},
+													"fallback_group_ids": schema.ListNestedAttribute{
+														Computed: true,
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"app_entitlement_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the Entitlement.`,
+																},
+																"app_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the App this entitlement belongs to.`,
+																},
+															},
+														},
+														Description: `Configuration to specify which groups to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.`,
+													},
 													"fallback_user_ids": schema.ListAttribute{
 														Computed:    true,
 														Optional:    true,
 														ElementType: types.StringType,
 														Description: `Configuration to specific which users to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.`,
+													},
+													"is_group_fallback_enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Configuration to enable fallback for group fallback.`,
 													},
 												},
 												Description: `The self approval object describes the configuration of a policy step that needs to be approved by the target of the request.`,
@@ -701,7 +861,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"action_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"action_name": schema.StringAttribute{
@@ -728,16 +887,17 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
 													},
 													"connector_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"account_provision": schema.SingleNestedAttribute{
 																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
-																	"config": schema.SingleNestedAttribute{
-																		Computed: true,
-																		Optional: true,
+																	"config": schema.StringAttribute{
+																		CustomType:  jsontypes.NormalizedType{},
+																		Computed:    true,
+																		Optional:    true,
+																		Description: `Parsed as JSON.`,
 																	},
 																	"connector_id": schema.StringAttribute{
 																		Computed:    true,
@@ -817,7 +977,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														},
 													},
 													"delegated_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"app_id": schema.StringAttribute{
@@ -843,7 +1002,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														},
 													},
 													"external_ticket_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"app_id": schema.StringAttribute{
@@ -879,7 +1037,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														},
 													},
 													"manual_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"instructions": schema.StringAttribute{
@@ -887,11 +1044,151 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 																Optional:    true,
 																Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 															},
+															"provisioner_assignment": schema.SingleNestedAttribute{
+																Computed: true,
+																Optional: true,
+																Attributes: map[string]schema.Attribute{
+																	"app_owner_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"fallback_user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `Fallback user IDs if no app owners are found.`,
+																			},
+																		},
+																		Description: `AppOwnerProvisioner resolves to app owners.`,
+																	},
+																	"entitlement_owner_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"fallback_user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `Fallback user IDs if no entitlement owners are found.`,
+																			},
+																		},
+																		Description: `EntitlementOwnerProvisioner resolves to entitlement owners.`,
+																	},
+																	"expression_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"expressions": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `The CEL expressions to evaluate.`,
+																			},
+																			"fallback_user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `Fallback user IDs if expression evaluation yields no users.`,
+																			},
+																		},
+																		Description: `ExpressionProvisioner evaluates CEL expressions to determine provisioners.`,
+																	},
+																	"group_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"app_group_id": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `The app group ID (entitlement ID).`,
+																			},
+																			"app_id": schema.StringAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `The app ID containing the group.`,
+																			},
+																			"fallback_user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `Fallback user IDs if no group members are found.`,
+																			},
+																		},
+																		Description: `GroupProvisioner resolves to members of a specific group.`,
+																	},
+																	"manager_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"fallback_user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `Fallback user IDs if no manager is found.`,
+																			},
+																		},
+																		Description: `ManagerProvisioner resolves to the user's manager.`,
+																	},
+																	"user_provisioner": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Optional: true,
+																		Attributes: map[string]schema.Attribute{
+																			"allow_reassignment": schema.BoolAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				Description: `Whether the provisioner can reassign the task.`,
+																			},
+																			"user_ids": schema.ListAttribute{
+																				Computed:    true,
+																				Optional:    true,
+																				ElementType: types.StringType,
+																				Description: `The user IDs to assign as provisioners.`,
+																			},
+																		},
+																		Description: `UserProvisioner assigns specific users as provisioners.`,
+																	},
+																},
+																MarkdownDescription: `ProvisionerAssignment defines how a provisioner is dynamically assigned.` + "\n" +
+																	`` + "\n" +
+																	`This message contains a oneof named typ. Only a single field of the following list may be set at a time:` + "\n" +
+																	`  - users` + "\n" +
+																	`  - appOwners` + "\n" +
+																	`  - group` + "\n" +
+																	`  - manager` + "\n" +
+																	`  - expression` + "\n" +
+																	`  - entitlementOwners`,
+															},
 															"user_ids": schema.ListAttribute{
 																Computed:    true,
 																Optional:    true,
 																ElementType: types.StringType,
-																Description: `An array of users that are required to provision during this step.`,
+																MarkdownDescription: `An array of users that are required to provision during this step.` + "\n" +
+																	` Deprecated: Use assignee field instead for dynamic provisioner assignment.`,
 															},
 														},
 														Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
@@ -926,7 +1223,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Description: `The UnconfiguredProvision message.`,
 													},
 													"webhook_provision": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"webhook_id": schema.StringAttribute{

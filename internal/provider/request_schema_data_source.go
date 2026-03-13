@@ -98,6 +98,18 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 							Computed:    true,
 							Description: `The AtLeastOne message.`,
 						},
+						"dependent_on": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"dependency_field_names": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `The fields that must be present for the primary field_names to be valid`,
+								},
+							},
+							MarkdownDescription: `DependentOn means the fields in field_names are only valid if all fields` + "\n" +
+								` in dependency_field_names are also present`,
+						},
 						"field_names": schema.ListAttribute{
 							Computed:    true,
 							ElementType: types.StringType,
@@ -119,6 +131,20 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						"admin_provider_config": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"default_value_cel": schema.StringAttribute{
+									Computed:    true,
+									Description: `The defaultValueCel field.`,
+								},
+								"show_to_user": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The showToUser field.`,
+								},
+							},
+							Description: `The AdminProviderConfig message.`,
+						},
 						"bool_field": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
@@ -140,11 +166,16 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 									Computed:    true,
 									Description: `The defaultValue field.`,
 								},
+								"toggle_field": schema.SingleNestedAttribute{
+									Computed:    true,
+									Description: `The ToggleField message.`,
+								},
 							},
 							MarkdownDescription: `The BoolField message.` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - checkboxField` + "\n" +
+								`  - toggleField` + "\n" +
 								`` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
@@ -297,6 +328,28 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - oauth2FieldView`,
 						},
+						"required": schema.BoolAttribute{
+							Computed:    true,
+							Description: `The required field.`,
+						},
+						"shared_provider_config": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"default_value_cel": schema.StringAttribute{
+									Computed:    true,
+									Description: `The defaultValueCel field.`,
+								},
+								"input_transformation_cel": schema.StringAttribute{
+									Computed:    true,
+									Description: `The inputTransformationCel field.`,
+								},
+								"lock_default_values": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The lockDefaultValues field.`,
+								},
+							},
+							Description: `The SharedProviderConfig message.`,
+						},
 						"string_field": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
@@ -307,6 +360,46 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 								"password_field": schema.SingleNestedAttribute{
 									Computed:    true,
 									Description: `The PasswordField message.`,
+								},
+								"picker_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"app_resource_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"app_id": schema.StringAttribute{
+													Computed:    true,
+													Description: `The appId field.`,
+												},
+												"resource_type_id": schema.StringAttribute{
+													Computed:    true,
+													Description: `The resourceTypeId field.`,
+												},
+											},
+											Description: `The AppResourceFilter message.`,
+										},
+										"app_user_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"app_id": schema.StringAttribute{
+													Computed:    true,
+													Description: `The appId field.`,
+												},
+											},
+											Description: `The AppUserFilter message.`,
+										},
+										"c1_user_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
+												` This is distinct from AppUserFilter which selects accounts within a connected app.`,
+										},
+									},
+									MarkdownDescription: `The PickerField message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named type. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - appUserPicker` + "\n" +
+										`  - resourcePicker` + "\n" +
+										`  - c1UserPicker`,
 								},
 								"placeholder": schema.StringAttribute{
 									Computed:    true,
@@ -319,6 +412,10 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 											Computed: true,
 											NestedObject: schema.NestedAttributeObject{
 												Attributes: map[string]schema.Attribute{
+													"description": schema.StringAttribute{
+														Computed:    true,
+														Description: `Used for type BUTTONS`,
+													},
 													"display_name": schema.StringAttribute{
 														Computed:    true,
 														Description: `The displayName field.`,
@@ -330,6 +427,10 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 												},
 											},
 											Description: `The options field.`,
+										},
+										"type": schema.StringAttribute{
+											Computed:    true,
+											Description: `The type field.`,
 										},
 									},
 									Description: `The SelectField message.`,
@@ -527,10 +628,21 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 								`  - textField` + "\n" +
 								`  - passwordField` + "\n" +
 								`  - selectField` + "\n" +
+								`  - pickerField` + "\n" +
 								`` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - rules`,
+						},
+						"user_provider_config": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"input_transformation_cel": schema.StringAttribute{
+									Computed:    true,
+									Description: `The inputTransformationCel field.`,
+								},
+							},
+							Description: `The UserProviderConfig message.`,
 						},
 					},
 				},

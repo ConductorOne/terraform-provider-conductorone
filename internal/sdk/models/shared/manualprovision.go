@@ -4,10 +4,29 @@ package shared
 
 // ManualProvision - Manual provisioning indicates that a human must intervene for the provisioning of this step.
 type ManualProvision struct {
+	// ProvisionerAssignment defines how a provisioner is dynamically assigned.
+	//
+	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+	//   - users
+	//   - appOwners
+	//   - group
+	//   - manager
+	//   - expression
+	//   - entitlementOwners
+	//
+	ProvisionerAssignment *ProvisionerAssignment `json:"assignee,omitempty"`
 	// This field indicates a text body of instructions for the provisioner to indicate.
 	Instructions *string `json:"instructions,omitempty"`
 	// An array of users that are required to provision during this step.
+	//  Deprecated: Use assignee field instead for dynamic provisioner assignment.
 	UserIds []string `json:"userIds,omitempty"`
+}
+
+func (m *ManualProvision) GetProvisionerAssignment() *ProvisionerAssignment {
+	if m == nil {
+		return nil
+	}
+	return m.ProvisionerAssignment
 }
 
 func (m *ManualProvision) GetInstructions() *string {

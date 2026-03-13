@@ -37,6 +37,7 @@ type AppResourcesDataSourceModel struct {
 	Expanded                       []tfTypes.SearchAppResourcesResponseExpanded `tfsdk:"expanded"`
 	List                           []tfTypes.AppResourceView                    `tfsdk:"list"`
 	NextPageToken                  types.String                                 `tfsdk:"next_page_token"`
+	OwnerUserIds                   []types.String                               `tfsdk:"owner_user_ids"`
 	PageSize                       types.Int32                                  `tfsdk:"page_size"`
 	PageToken                      types.String                                 `tfsdk:"page_token"`
 	Query                          types.String                                 `tfsdk:"query"`
@@ -91,9 +92,37 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						"actor_object_permissions": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"delete": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The delete field.`,
+								},
+								"edit": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The edit field.`,
+								},
+								"extra": schema.MapAttribute{
+									Computed:    true,
+									ElementType: types.BoolType,
+									Description: `The extra field.`,
+								},
+								"read": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The read field.`,
+								},
+							},
+							Description: `The ActorObjectPermissions message.`,
+						},
 						"app_resource": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
+								"access_config_id": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `The access config ID for this resource. May be empty.` + "\n" +
+										` Must be one of the builtin access config IDs or empty.`,
+								},
 								"app_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The app that this resource belongs to.`,
@@ -136,6 +165,9 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 									Computed:    true,
 									Description: `The parent resource type id, if this resource is a child of another resource.`,
 								},
+								"profile": schema.SingleNestedAttribute{
+									Computed: true,
+								},
 								"secret_trait": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
@@ -171,6 +203,11 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
 				Description: `The nextPageToken field.`,
+			},
+			"owner_user_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `The ownerUserIds field.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,

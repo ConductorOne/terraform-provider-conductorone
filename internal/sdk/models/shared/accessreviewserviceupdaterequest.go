@@ -12,9 +12,7 @@ type AccessReviewServiceUpdateRequest struct {
 	//   - bindings
 	//
 	AccessReview *AccessReviewInput `json:"accessReview,omitempty"`
-	// The AccessReviewExpandMask message.
-	AccessReviewExpandMask *AccessReviewExpandMask `json:"expandMask,omitempty"`
-	UpdateMask             *string                 `json:"updateMask,omitempty"`
+	UpdateMask   *string            `json:"updateMask,omitempty"`
 }
 
 func (a *AccessReviewServiceUpdateRequest) GetAccessReview() *AccessReviewInput {
@@ -22,13 +20,6 @@ func (a *AccessReviewServiceUpdateRequest) GetAccessReview() *AccessReviewInput 
 		return nil
 	}
 	return a.AccessReview
-}
-
-func (a *AccessReviewServiceUpdateRequest) GetAccessReviewExpandMask() *AccessReviewExpandMask {
-	if a == nil {
-		return nil
-	}
-	return a.AccessReviewExpandMask
 }
 
 func (a *AccessReviewServiceUpdateRequest) GetUpdateMask() *string {

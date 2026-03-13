@@ -7,11 +7,17 @@ import (
 	"time"
 )
 
+type AppResourceProfile struct {
+}
+
 // AppResource - The app resource message is a single resource that can have entitlements.
 //
 // This message contains a oneof named metadata. Only a single field of the following list may be set at a time:
 //   - secretTrait
 type AppResource struct {
+	// The access config ID for this resource. May be empty.
+	//  Must be one of the builtin access config IDs or empty.
+	AccessConfigID *string `json:"accessConfigId,omitempty"`
 	// The app that this resource belongs to.
 	AppID *string `json:"appId,omitempty"`
 	// The resource type that this resource is.
@@ -33,7 +39,8 @@ type AppResource struct {
 	// The parent resource id, if this resource is a child of another resource.
 	ParentAppResourceID *string `json:"parentAppResourceId,omitempty"`
 	// The parent resource type id, if this resource is a child of another resource.
-	ParentAppResourceTypeID *string `json:"parentAppResourceTypeId,omitempty"`
+	ParentAppResourceTypeID *string             `json:"parentAppResourceTypeId,omitempty"`
+	Profile                 *AppResourceProfile `json:"profile,omitempty"`
 	// The SecretTrait message.
 	SecretTrait *SecretTrait `json:"secretTrait,omitempty"`
 	UpdatedAt   *time.Time   `json:"updatedAt,omitempty"`
@@ -48,6 +55,13 @@ func (a *AppResource) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AppResource) GetAccessConfigID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AccessConfigID
 }
 
 func (a *AppResource) GetAppID() *string {
@@ -132,6 +146,13 @@ func (a *AppResource) GetParentAppResourceTypeID() *string {
 		return nil
 	}
 	return a.ParentAppResourceTypeID
+}
+
+func (a *AppResource) GetProfile() *AppResourceProfile {
+	if a == nil {
+		return nil
+	}
+	return a.Profile
 }
 
 func (a *AppResource) GetSecretTrait() *SecretTrait {

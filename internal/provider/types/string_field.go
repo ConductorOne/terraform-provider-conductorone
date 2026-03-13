@@ -9,6 +9,7 @@ import (
 type StringField struct {
 	DefaultValue  types.String   `tfsdk:"default_value"`
 	PasswordField *PasswordField `tfsdk:"password_field"`
+	PickerField   *PickerField   `tfsdk:"picker_field"`
 	Placeholder   types.String   `tfsdk:"placeholder"`
 	SelectField   *SelectField   `tfsdk:"select_field"`
 	StringRules   *StringRules   `tfsdk:"string_rules"`

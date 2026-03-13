@@ -32,7 +32,11 @@ type AccessReviewTemplateDataSourceModel struct {
 	AccessReviewDuration           types.String                        `tfsdk:"access_review_duration"`
 	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
 	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
+	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
+	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
+	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
 	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
+	AutoStartCampaign              types.Bool                          `tfsdk:"auto_start_campaign"`
 	CreatedAt                      types.String                        `tfsdk:"created_at"`
 	DefaultView                    types.String                        `tfsdk:"default_view"`
 	DeletedAt                      types.String                        `tfsdk:"deleted_at"`
@@ -167,7 +171,19 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 						Description: `The AllUsersScope message.`,
 					},
 					"app_selection_criteria_scope": schema.SingleNestedAttribute{
-						Computed:    true,
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"compliance_framework_attribute_value_ids": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+								Description: `The complianceFrameworkAttributeValueIds field.`,
+							},
+							"risk_level_attribute_value_ids": schema.ListAttribute{
+								Computed:    true,
+								ElementType: types.StringType,
+								Description: `The riskLevelAttributeValueIds field.`,
+							},
+						},
 						Description: `The AppSelectionCriteriaScope message.`,
 					},
 					"application_access_scope": schema.SingleNestedAttribute{
@@ -212,11 +228,20 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 									"excluded_access_profile_ids": schema.ListAttribute{
 										Computed:    true,
 										ElementType: types.StringType,
-										Description: `List of access profiles to exclude if type is EXCLUDE_SPECIFIC`,
+										MarkdownDescription: `Access profile IDs to EXCLUDE from the campaign` + "\n" +
+											` Used when filter_type = EXCLUDE_SPECIFIC` + "\n" +
+											` Max 32 profile IDs`,
 									},
 									"filter_type": schema.StringAttribute{
 										Computed:    true,
 										Description: `The filterType field.`,
+									},
+									"included_access_profile_ids": schema.ListAttribute{
+										Computed:    true,
+										ElementType: types.StringType,
+										MarkdownDescription: `Access profile IDs to INCLUDE in the campaign` + "\n" +
+											` Used when filter_type = INCLUDE_SPECIFIC` + "\n" +
+											` Max 32 profile IDs`,
 									},
 								},
 								Description: `The GrantAccessProfileFilter message.`,
@@ -248,6 +273,10 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 							`  - daysSinceAdded` + "\n" +
 							`  - daysSinceReviewed` + "\n" +
 							`  - grantsAddedBetween`,
+					},
+					"resource_selection_scope": schema.SingleNestedAttribute{
+						Computed:    true,
+						Description: `The ResourceSelectionScope message.`,
 					},
 					"resource_type_selection_scope": schema.SingleNestedAttribute{
 						Computed:    true,
@@ -354,11 +383,33 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 					`` + "\n" +
 					`This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:` + "\n" +
 					`  - allAccessConflicts` + "\n" +
-					`  - specificAccessConflicts`,
+					`  - specificAccessConflicts` + "\n" +
+					`` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - resourceSelection`,
+			},
+			"accuracy_issue_action": schema.StringAttribute{
+				Computed:    true,
+				Description: `The accuracyIssueAction field.`,
+			},
+			"auto_close_campaign": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `Auto-close configuration` + "\n" +
+					` start date and access_review_duration will be used to calculate the scheduled close date`,
+			},
+			"auto_close_decision": schema.StringAttribute{
+				Computed:    true,
+				Description: `The autoCloseDecision field.`,
 			},
 			"auto_generate_report": schema.BoolAttribute{
 				Computed:    true,
 				Description: `auto generate report when campaign is closed`,
+			},
+			"auto_start_campaign": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `Auto-start configuration` + "\n" +
+					` next_scheduled_campaign_at will be used as the scheduled start date`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -398,6 +449,10 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 					"send_close": schema.BoolAttribute{
 						Computed:    true,
 						Description: `The sendClose field.`,
+					},
+					"send_kickoff": schema.BoolAttribute{
+						Computed:    true,
+						Description: `The sendKickoff field.`,
 					},
 					"send_reminders": schema.BoolAttribute{
 						Computed:    true,

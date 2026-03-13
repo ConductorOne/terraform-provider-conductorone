@@ -78,6 +78,28 @@ func (r *AppsDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							Computed:    true,
 							Description: `The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.`,
 						},
+						"app_user_mapper": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"mapping_cases": schema.ListNestedAttribute{
+									Computed: true,
+									NestedObject: schema.NestedAttributeObject{
+										Attributes: map[string]schema.Attribute{
+											"app_user_key_cel": schema.StringAttribute{
+												Computed:    true,
+												Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
+											},
+											"user_key_cel": schema.StringAttribute{
+												Computed:    true,
+												Description: `CEL expression evaluated against a User to produce match key(s).`,
+											},
+										},
+									},
+									Description: `Ordered list of match cases. Each case defines a pair of CEL key extractors.`,
+								},
+							},
+							Description: `AppUserMapper configures custom account mapping for uplift.`,
+						},
 						"certify_policy_id": schema.StringAttribute{
 							Computed:    true,
 							Description: `The ID of the Certify Policy associated with this App.`,
@@ -103,6 +125,10 @@ func (r *AppsDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						"display_name": schema.StringAttribute{
 							Computed:    true,
 							Description: `The app's display name.`,
+						},
+						"enable_connector_sourced_ownership": schema.BoolAttribute{
+							Computed:    true,
+							Description: `When enabled, resource ownership is sourced from the connector.`,
 						},
 						"grant_policy_id": schema.StringAttribute{
 							Computed:    true,

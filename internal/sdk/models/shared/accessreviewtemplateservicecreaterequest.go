@@ -7,6 +7,102 @@ import (
 	"fmt"
 )
 
+// AccessReviewTemplateServiceCreateRequestAccuracyIssueAction - The accuracyIssueAction field.
+type AccessReviewTemplateServiceCreateRequestAccuracyIssueAction string
+
+const (
+	AccessReviewTemplateServiceCreateRequestAccuracyIssueActionAccuracyIssueActionUnspecified AccessReviewTemplateServiceCreateRequestAccuracyIssueAction = "ACCURACY_ISSUE_ACTION_UNSPECIFIED"
+	AccessReviewTemplateServiceCreateRequestAccuracyIssueActionAccuracyIssueActionContinue    AccessReviewTemplateServiceCreateRequestAccuracyIssueAction = "ACCURACY_ISSUE_ACTION_CONTINUE"
+	AccessReviewTemplateServiceCreateRequestAccuracyIssueActionAccuracyIssueActionWait        AccessReviewTemplateServiceCreateRequestAccuracyIssueAction = "ACCURACY_ISSUE_ACTION_WAIT"
+)
+
+func (e AccessReviewTemplateServiceCreateRequestAccuracyIssueAction) ToPointer() *AccessReviewTemplateServiceCreateRequestAccuracyIssueAction {
+	return &e
+}
+func (e *AccessReviewTemplateServiceCreateRequestAccuracyIssueAction) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "ACCURACY_ISSUE_ACTION_UNSPECIFIED":
+		fallthrough
+	case "ACCURACY_ISSUE_ACTION_CONTINUE":
+		fallthrough
+	case "ACCURACY_ISSUE_ACTION_WAIT":
+		*e = AccessReviewTemplateServiceCreateRequestAccuracyIssueAction(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AccessReviewTemplateServiceCreateRequestAccuracyIssueAction: %v", v)
+	}
+}
+
+// AccessReviewTemplateServiceCreateRequestAutoCloseDecision - The autoCloseDecision field.
+type AccessReviewTemplateServiceCreateRequestAutoCloseDecision string
+
+const (
+	AccessReviewTemplateServiceCreateRequestAutoCloseDecisionCloseDecisionUnspecified AccessReviewTemplateServiceCreateRequestAutoCloseDecision = "CLOSE_DECISION_UNSPECIFIED"
+	AccessReviewTemplateServiceCreateRequestAutoCloseDecisionCloseDecisionRevoked     AccessReviewTemplateServiceCreateRequestAutoCloseDecision = "CLOSE_DECISION_REVOKED"
+	AccessReviewTemplateServiceCreateRequestAutoCloseDecisionCloseDecisionSkip        AccessReviewTemplateServiceCreateRequestAutoCloseDecision = "CLOSE_DECISION_SKIP"
+	AccessReviewTemplateServiceCreateRequestAutoCloseDecisionCloseDecisionNoAction    AccessReviewTemplateServiceCreateRequestAutoCloseDecision = "CLOSE_DECISION_NO_ACTION"
+)
+
+func (e AccessReviewTemplateServiceCreateRequestAutoCloseDecision) ToPointer() *AccessReviewTemplateServiceCreateRequestAutoCloseDecision {
+	return &e
+}
+func (e *AccessReviewTemplateServiceCreateRequestAutoCloseDecision) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "CLOSE_DECISION_UNSPECIFIED":
+		fallthrough
+	case "CLOSE_DECISION_REVOKED":
+		fallthrough
+	case "CLOSE_DECISION_SKIP":
+		fallthrough
+	case "CLOSE_DECISION_NO_ACTION":
+		*e = AccessReviewTemplateServiceCreateRequestAutoCloseDecision(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AccessReviewTemplateServiceCreateRequestAutoCloseDecision: %v", v)
+	}
+}
+
+// AccessReviewTemplateServiceCreateRequestDefaultView - The defaultView field.
+type AccessReviewTemplateServiceCreateRequestDefaultView string
+
+const (
+	AccessReviewTemplateServiceCreateRequestDefaultViewAccessReviewViewTypeUnspecified  AccessReviewTemplateServiceCreateRequestDefaultView = "ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED"
+	AccessReviewTemplateServiceCreateRequestDefaultViewAccessReviewViewTypeByApp        AccessReviewTemplateServiceCreateRequestDefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_APP"
+	AccessReviewTemplateServiceCreateRequestDefaultViewAccessReviewViewTypeByUser       AccessReviewTemplateServiceCreateRequestDefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_USER"
+	AccessReviewTemplateServiceCreateRequestDefaultViewAccessReviewViewTypeUnstructured AccessReviewTemplateServiceCreateRequestDefaultView = "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED"
+)
+
+func (e AccessReviewTemplateServiceCreateRequestDefaultView) ToPointer() *AccessReviewTemplateServiceCreateRequestDefaultView {
+	return &e
+}
+func (e *AccessReviewTemplateServiceCreateRequestDefaultView) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED":
+		fallthrough
+	case "ACCESS_REVIEW_VIEW_TYPE_BY_APP":
+		fallthrough
+	case "ACCESS_REVIEW_VIEW_TYPE_BY_USER":
+		fallthrough
+	case "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED":
+		*e = AccessReviewTemplateServiceCreateRequestDefaultView(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AccessReviewTemplateServiceCreateRequestDefaultView: %v", v)
+	}
+}
+
 // AccessReviewTemplateServiceCreateRequestScopeType - The scopeType field.
 type AccessReviewTemplateServiceCreateRequestScopeType string
 
@@ -14,6 +110,7 @@ const (
 	AccessReviewTemplateServiceCreateRequestScopeTypeAccessReviewScopeTypeUnspecified       AccessReviewTemplateServiceCreateRequestScopeType = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
 	AccessReviewTemplateServiceCreateRequestScopeTypeAccessReviewScopeTypeByEntitlements    AccessReviewTemplateServiceCreateRequestScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS"
 	AccessReviewTemplateServiceCreateRequestScopeTypeAccessReviewScopeTypeByAccessConflicts AccessReviewTemplateServiceCreateRequestScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
+	AccessReviewTemplateServiceCreateRequestScopeTypeAccessReviewScopeTypeByResource        AccessReviewTemplateServiceCreateRequestScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 )
 
 func (e AccessReviewTemplateServiceCreateRequestScopeType) ToPointer() *AccessReviewTemplateServiceCreateRequestScopeType {
@@ -30,6 +127,8 @@ func (e *AccessReviewTemplateServiceCreateRequestScopeType) UnmarshalJSON(data [
 	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS":
 		fallthrough
 	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS":
+		fallthrough
+	case "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
 		*e = AccessReviewTemplateServiceCreateRequestScopeType(v)
 		return nil
 	default:
@@ -40,18 +139,83 @@ func (e *AccessReviewTemplateServiceCreateRequestScopeType) UnmarshalJSON(data [
 // The AccessReviewTemplateServiceCreateRequest message.
 type AccessReviewTemplateServiceCreateRequest struct {
 	AccessReviewDuration *string `json:"accessReviewDuration,omitempty"`
+	// The accuracyIssueAction field.
+	AccuracyIssueAction *AccessReviewTemplateServiceCreateRequestAccuracyIssueAction `json:"accuracyIssueAction,omitempty"`
+	// The autoCloseCampaign field.
+	AutoCloseCampaign *bool `json:"autoCloseCampaign,omitempty"`
+	// The autoCloseDecision field.
+	AutoCloseDecision *AccessReviewTemplateServiceCreateRequestAutoCloseDecision `json:"autoCloseDecision,omitempty"`
+	// auto generate report when campaign is closed
+	AutoGenerateReport *bool `json:"autoGenerateReport,omitempty"`
+	// The autoStartCampaign field.
+	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
+	// The defaultView field.
+	DefaultView *AccessReviewTemplateServiceCreateRequestDefaultView `json:"defaultView,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The exemptCertifiedAccessConflicts field.
+	ExemptCertifiedAccessConflicts *bool `json:"exemptCertifiedAccessConflicts,omitempty"`
+	// The isCampaignScheduleEnabled field.
+	IsCampaignScheduleEnabled *bool `json:"isCampaignScheduleEnabled,omitempty"`
 	// The NotificationConfig message.
 	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The ownerIds field.
 	OwnerIds []string `json:"ownerIds,omitempty"`
 	// The policyId field.
 	PolicyID *string `json:"policyId,omitempty"`
+	// The RecurrenceRule message.
+	//
+	// This message contains a oneof named end_condition. Only a single field of the following list may be set at a time:
+	//   - endDate
+	//   - occurrences
+	//
+	RecurrenceRule *RecurrenceRule `json:"recurrenceRule,omitempty"`
+	// The reviewInstructions field.
+	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	// The AccessReviewScopeV2 message.
+	//
+	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
+	//   - appAccess
+	//   - specificResources
+	//   - appSelectionCriteria
+	//   - resourceTypeSelections
+	//
+	//
+	// This message contains a oneof named users_scope. Only a single field of the following list may be set at a time:
+	//   - allUsers
+	//   - selectedUsers
+	//   - userCriteria
+	//   - celExpression
+	//
+	//
+	// This message contains a oneof named accounts_scope. Only a single field of the following list may be set at a time:
+	//   - allAccounts
+	//   - accountCriteria
+	//   - accountCelExpression
+	//
+	//
+	// This message contains a oneof named grants_scope. Only a single field of the following list may be set at a time:
+	//   - allGrants
+	//   - grantsByCriteria
+	//
+	//
+	// This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
+	//   - allAccessConflicts
+	//   - specificAccessConflicts
+	//
+	//
+	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
+	//   - resourceSelection
+	//
+	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scope,omitempty"`
 	// The scopeType field.
 	ScopeType *AccessReviewTemplateServiceCreateRequestScopeType `json:"scopeType,omitempty"`
+	// Signature configuration for access review submissions
+	ReviewSignatureConfig *ReviewSignatureConfig `json:"signatureConfig,omitempty"`
+	// The usePolicyOverride field.
+	UsePolicyOverride *bool `json:"usePolicyOverride,omitempty"`
 }
 
 func (a *AccessReviewTemplateServiceCreateRequest) GetAccessReviewDuration() *string {
@@ -59,6 +223,48 @@ func (a *AccessReviewTemplateServiceCreateRequest) GetAccessReviewDuration() *st
 		return nil
 	}
 	return a.AccessReviewDuration
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetAccuracyIssueAction() *AccessReviewTemplateServiceCreateRequestAccuracyIssueAction {
+	if a == nil {
+		return nil
+	}
+	return a.AccuracyIssueAction
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetAutoCloseCampaign() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCloseCampaign
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetAutoCloseDecision() *AccessReviewTemplateServiceCreateRequestAutoCloseDecision {
+	if a == nil {
+		return nil
+	}
+	return a.AutoCloseDecision
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetAutoGenerateReport() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AutoGenerateReport
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetAutoStartCampaign() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AutoStartCampaign
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetDefaultView() *AccessReviewTemplateServiceCreateRequestDefaultView {
+	if a == nil {
+		return nil
+	}
+	return a.DefaultView
 }
 
 func (a *AccessReviewTemplateServiceCreateRequest) GetDescription() *string {
@@ -73,6 +279,20 @@ func (a *AccessReviewTemplateServiceCreateRequest) GetDisplayName() *string {
 		return nil
 	}
 	return a.DisplayName
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetExemptCertifiedAccessConflicts() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ExemptCertifiedAccessConflicts
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetIsCampaignScheduleEnabled() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.IsCampaignScheduleEnabled
 }
 
 func (a *AccessReviewTemplateServiceCreateRequest) GetNotificationConfig() *NotificationConfig {
@@ -96,9 +316,44 @@ func (a *AccessReviewTemplateServiceCreateRequest) GetPolicyID() *string {
 	return a.PolicyID
 }
 
+func (a *AccessReviewTemplateServiceCreateRequest) GetRecurrenceRule() *RecurrenceRule {
+	if a == nil {
+		return nil
+	}
+	return a.RecurrenceRule
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetReviewInstructions() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ReviewInstructions
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetAccessReviewScopeV2() *AccessReviewScopeV2 {
+	if a == nil {
+		return nil
+	}
+	return a.AccessReviewScopeV2
+}
+
 func (a *AccessReviewTemplateServiceCreateRequest) GetScopeType() *AccessReviewTemplateServiceCreateRequestScopeType {
 	if a == nil {
 		return nil
 	}
 	return a.ScopeType
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetReviewSignatureConfig() *ReviewSignatureConfig {
+	if a == nil {
+		return nil
+	}
+	return a.ReviewSignatureConfig
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetUsePolicyOverride() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.UsePolicyOverride
 }

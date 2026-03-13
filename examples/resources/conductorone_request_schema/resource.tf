@@ -1,7 +1,43 @@
 resource "conductorone_request_schema" "my_request_schema" {
   description = "...my_description..."
+  field_groups = [
+    {
+      default      = false
+      display_name = "...my_display_name..."
+      fields = [
+        "..."
+      ]
+      help_text = "...my_help_text..."
+      name      = "...my_name..."
+    }
+  ]
+  field_relationships = [
+    {
+      at_least_one = {
+        # ...
+      }
+      dependent_on = {
+        dependency_field_names = [
+          "..."
+        ]
+      }
+      field_names = [
+        "..."
+      ]
+      mutually_exclusive = {
+        # ...
+      }
+      required_together = {
+        # ...
+      }
+    }
+  ]
   fields = [
     {
+      admin_provider_config = {
+        default_value_cel = "...my_default_value_cel..."
+        show_to_user      = false
+      }
       bool_field = {
         bool_rules = {
           const = false
@@ -10,6 +46,9 @@ resource "conductorone_request_schema" "my_request_schema" {
           # ...
         }
         default_value = true
+        toggle_field = {
+          # ...
+        }
       }
       description  = "...my_description..."
       display_name = "...my_display_name..."
@@ -51,19 +90,39 @@ resource "conductorone_request_schema" "my_request_schema" {
           # ...
         }
       }
+      required = false
+      shared_provider_config = {
+        default_value_cel        = "...my_default_value_cel..."
+        input_transformation_cel = "...my_input_transformation_cel..."
+        lock_default_values      = false
+      }
       string_field = {
         default_value = "...my_default_value..."
         password_field = {
           # ...
         }
+        picker_field = {
+          app_resource_filter = {
+            app_id           = "...my_app_id..."
+            resource_type_id = "...my_resource_type_id..."
+          }
+          app_user_filter = {
+            app_id = "...my_app_id..."
+          }
+          c1_user_filter = {
+            # ...
+          }
+        }
         placeholder = "...my_placeholder..."
         select_field = {
           options = [
             {
+              description  = "...my_description..."
               display_name = "...my_display_name..."
               value        = "...my_value..."
             }
           ]
+          type = "SELECT_TYPE_RADIO"
         }
         string_rules = {
           address      = false
@@ -101,7 +160,11 @@ resource "conductorone_request_schema" "my_request_schema" {
           multiline = false
         }
       }
+      user_provider_config = {
+        input_transformation_cel = "...my_input_transformation_cel..."
+      }
     }
   ]
-  name = "...my_name..."
+  justification_visibility = "JUSTIFICATION_VISIBILITY_HIDE"
+  name                     = "...my_name..."
 }
