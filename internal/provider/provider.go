@@ -174,6 +174,10 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewAccessProfileRequestableEntriesResource,
 		NewAccessProfileRequestableEntryResource,
 		NewAccessProfileVisibilityBindingsResource,
+		NewAccessReviewResource,
+		NewAccessReviewSetupResource,
+		NewAccessReviewTemplateResource,
+		NewAccessReviewTemplateSetupResource,
 		NewAppResource,
 		NewAppEntitlementResource,
 		NewAppEntitlementProxyBindingResource,
@@ -196,8 +200,6 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewRequestSchemaResource,
 		NewVaultResource,
 		NewAppEntitlementMonitorBindingResource,
-		NewAccessReviewResource,
-		NewAccessReviewTemplateResource,
 	}
 
 	resources = append(resources, getIntegrationResources()...)
@@ -207,6 +209,8 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 
 func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
+		NewAccessReviewSetupDataSource,
+		NewAccessReviewTemplateSetupDataSource,
 		NewAccessProfileDataSource,
 		NewAppDataSource,
 		NewAppEntitlementProxyBindingDataSource,
