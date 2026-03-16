@@ -157,7 +157,7 @@ resource "conductorone_automation" "my_automation" {
         ]
       }
       generate_password = {
-        # ...
+        password_policy_id = "...my_password_policy_id..."
       }
       grant_entitlements = {
         grant_entitlement_exclusion_criteria = {
@@ -251,6 +251,14 @@ resource "conductorone_automation" "my_automation" {
         body             = "...my_body..."
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
+      }
+      set_credential = {
+        account_id_cel = "...my_account_id_cel..."
+        connector_ref = {
+          app_id = "...my_app_id..."
+          id     = "...my_id..."
+        }
+        password_cel = "...my_password_cel..."
       }
       skip_if_true_cel  = "...my_skip_if_true_cel..."
       step_display_name = "...my_step_display_name..."
@@ -467,7 +475,7 @@ resource "conductorone_automation" "my_automation" {
         ]
       }
       generate_password = {
-        # ...
+        password_policy_id = "...my_password_policy_id..."
       }
       grant_entitlements = {
         grant_entitlement_exclusion_criteria = {
@@ -561,6 +569,14 @@ resource "conductorone_automation" "my_automation" {
         body             = "...my_body..."
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
+      }
+      set_credential = {
+        account_id_cel = "...my_account_id_cel..."
+        connector_ref = {
+          app_id = "...my_app_id..."
+          id     = "...my_id..."
+        }
+        password_cel = "...my_password_cel..."
       }
       skip_if_true_cel  = "...my_skip_if_true_cel..."
       step_display_name = "...my_step_display_name..."

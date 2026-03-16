@@ -2,7 +2,7 @@
 
 package shared
 
-// SliderComponent for numeric range selection.
+// SliderComponent is an interactive numeric range input (e.g. for forms).
 type SliderComponent struct {
 	// DynamicString can be a literal value, a JSON pointer path, or a function call.
 	//

@@ -352,9 +352,6 @@ func (r *AccessReviewSetupDataSource) Schema(ctx context.Context, req datasource
 									Computed:    true,
 									Description: `The customPolicyId field.`,
 								},
-								"deleted_at": schema.StringAttribute{
-									Computed: true,
-								},
 								"policy_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The policyId field.`,
