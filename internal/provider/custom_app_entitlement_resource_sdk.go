@@ -207,7 +207,7 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 			if resp.DeprovisionerPolicy.MultiStep == nil {
 				r.DeprovisionerPolicy.MultiStep = jsontypes.NewNormalizedNull()
 			} else {
-				multiStepResult, _ := json.Marshal(resp.DeprovisionerPolicy.MultiStep)
+				multiStepResult, _ := typeconvert.MarshalJSONStripNulls(resp.DeprovisionerPolicy.MultiStep)
 				r.DeprovisionerPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
 			}
 			if resp.DeprovisionerPolicy.UnconfiguredProvision == nil {
@@ -414,7 +414,7 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 			if resp.ProvisionPolicy.MultiStep == nil {
 				r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
 			} else {
-				multiStepResult1, _ := json.Marshal(resp.ProvisionPolicy.MultiStep)
+				multiStepResult1, _ := typeconvert.MarshalJSONStripNulls(resp.ProvisionPolicy.MultiStep)
 				r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
 			}
 			if resp.ProvisionPolicy.UnconfiguredProvision == nil {
