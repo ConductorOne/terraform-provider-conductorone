@@ -635,8 +635,15 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Description: `The EvaluateExpressions message.`,
 						},
 						"generate_password": schema.SingleNestedAttribute{
-							Computed:    true,
-							Optional:    true,
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"password_policy_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The ID of the password policy to use for generating the password.`,
+								},
+							},
 							Description: `The GeneratePassword message.`,
 						},
 						"grant_entitlements": schema.SingleNestedAttribute{
@@ -988,6 +995,44 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`This message contains a oneof named channel. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - channelName` + "\n" +
 								`  - channelNameCel`,
+						},
+						"set_credential": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"account_id_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The accountIdCel field.`,
+								},
+								"connector_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The appId field.`,
+										},
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The id field.`,
+										},
+									},
+									Description: `The ConnectorRef message.`,
+								},
+								"password_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The passwordCel field.`,
+								},
+							},
+							MarkdownDescription: `SetCredential submits a RotateCredentials baton task to the target connector,` + "\n" +
+								` re-encrypting the given password CEL expression with the connector's public JWK.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - connectorRef`,
 						},
 						"skip_if_true_cel": schema.StringAttribute{
 							Computed:    true,
@@ -1857,8 +1902,15 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Description: `The EvaluateExpressions message.`,
 						},
 						"generate_password": schema.SingleNestedAttribute{
-							Computed:    true,
-							Optional:    true,
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"password_policy_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The ID of the password policy to use for generating the password.`,
+								},
+							},
 							Description: `The GeneratePassword message.`,
 						},
 						"grant_entitlements": schema.SingleNestedAttribute{
@@ -2210,6 +2262,44 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`This message contains a oneof named channel. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - channelName` + "\n" +
 								`  - channelNameCel`,
+						},
+						"set_credential": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"account_id_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The accountIdCel field.`,
+								},
+								"connector_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The appId field.`,
+										},
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The id field.`,
+										},
+									},
+									Description: `The ConnectorRef message.`,
+								},
+								"password_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The passwordCel field.`,
+								},
+							},
+							MarkdownDescription: `SetCredential submits a RotateCredentials baton task to the target connector,` + "\n" +
+								` re-encrypting the given password CEL expression with the connector's public JWK.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - connectorRef`,
 						},
 						"skip_if_true_cel": schema.StringAttribute{
 							Computed:    true,

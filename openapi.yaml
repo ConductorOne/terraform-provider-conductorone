@@ -12,6 +12,7 @@ components:
                   - choicePicker
                   - dateTimeInput
                   - slider
+                  - progressBar
                   - button
                   - row
                   - column
@@ -45,6 +46,8 @@ components:
                     description: The id field.
                     readOnly: false
                     type: string
+                progressBar:
+                    $ref: '#/components/schemas/c1.api.a2ui.v1.ProgressBarComponent'
                 row:
                     $ref: '#/components/schemas/c1.api.a2ui.v1.RowComponent'
                 slider:
@@ -635,6 +638,23 @@ components:
             title: Or Check
             type: object
             x-speakeasy-name-override: OrCheck
+        c1.api.a2ui.v1.ProgressBarComponent:
+            description: ProgressBarComponent shows a read-only progress bar (label, value %, min/max).
+            nullable: true
+            properties:
+                label:
+                    $ref: '#/components/schemas/c1.api.a2ui.v1.DynamicString'
+                max:
+                    $ref: '#/components/schemas/c1.api.a2ui.v1.DynamicNumber'
+                min:
+                    $ref: '#/components/schemas/c1.api.a2ui.v1.DynamicNumber'
+                step:
+                    $ref: '#/components/schemas/c1.api.a2ui.v1.DynamicNumber'
+                value:
+                    $ref: '#/components/schemas/c1.api.a2ui.v1.DynamicNumber'
+            title: Progress Bar Component
+            type: object
+            x-speakeasy-name-override: ProgressBarComponent
         c1.api.a2ui.v1.RowComponent:
             description: RowComponent arranges children horizontally.
             nullable: true
@@ -672,7 +692,7 @@ components:
             type: object
             x-speakeasy-name-override: ServerEvent
         c1.api.a2ui.v1.SliderComponent:
-            description: SliderComponent for numeric range selection.
+            description: SliderComponent is an interactive numeric range input (e.g. for forms).
             nullable: true
             properties:
                 label:
@@ -7894,6 +7914,7 @@ components:
                   - accountLifecycleAction
                   - generatePassword
                   - evaluateExpressions
+                  - setCredential
             properties:
                 accountLifecycleAction:
                     $ref: '#/components/schemas/c1.api.automations.v1.AccountLifecycleAction'
@@ -7923,6 +7944,8 @@ components:
                     $ref: '#/components/schemas/c1.api.automations.v1.SendEmail'
                 sendSlackMessage:
                     $ref: '#/components/schemas/c1.api.automations.v1.SendSlackMessage'
+                setCredential:
+                    $ref: '#/components/schemas/c1.api.automations.v1.SetCredential'
                 skipIfTrueCel:
                     description: The skipIfTrueCel field.
                     readOnly: false
@@ -8556,6 +8579,11 @@ components:
         c1.api.automations.v1.GeneratePassword:
             description: The GeneratePassword message.
             nullable: true
+            properties:
+                passwordPolicyId:
+                    description: The ID of the password policy to use for generating the password.
+                    readOnly: false
+                    type: string
             title: Generate Password
             type: object
             x-speakeasy-name-override: GeneratePassword
@@ -9308,6 +9336,28 @@ components:
             title: Send Slack Message
             type: object
             x-speakeasy-name-override: SendSlackMessage
+        c1.api.automations.v1.SetCredential:
+            description: |
+                SetCredential submits a RotateCredentials baton task to the target connector,
+                 re-encrypting the given password CEL expression with the connector's public JWK.
+
+                This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:
+                  - connectorRef
+            nullable: true
+            properties:
+                accountIdCel:
+                    description: The accountIdCel field.
+                    readOnly: false
+                    type: string
+                connectorRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.ConnectorRef'
+                passwordCel:
+                    description: The passwordCel field.
+                    readOnly: false
+                    type: string
+            title: Set Credential
+            type: object
+            x-speakeasy-name-override: SetCredential
         c1.api.automations.v1.TaskAction:
             description: |
                 The TaskAction message.
@@ -15153,6 +15203,438 @@ components:
             title: Set Bundle Automation Request
             type: object
             x-speakeasy-name-override: SetBundleAutomationRequest
+        c1.api.role_mining_management.v1.CohortHintInput:
+            description: The CohortHintInput message.
+            properties:
+                attribute:
+                    description: The attribute field.
+                    readOnly: false
+                    type: string
+                priority:
+                    description: The priority field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                values:
+                    description: The values field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Cohort Hint Input
+            type: object
+            x-speakeasy-name-override: CohortHintInput
+        c1.api.role_mining_management.v1.CohortHintView:
+            description: The CohortHintView message.
+            properties:
+                attribute:
+                    description: The attribute field.
+                    readOnly: false
+                    type: string
+                priority:
+                    description: The priority field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                values:
+                    description: The values field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Cohort Hint View
+            type: object
+            x-speakeasy-name-override: CohortHintView
+        c1.api.role_mining_management.v1.GetLatestRunResponse:
+            description: The GetLatestRunResponse message.
+            properties:
+                run:
+                    $ref: '#/components/schemas/c1.api.role_mining_management.v1.RoleMiningManagementRun'
+            title: Get Latest Run Response
+            type: object
+            x-speakeasy-name-override: GetLatestRunResponse
+        c1.api.role_mining_management.v1.GetRoleMiningConfigResponse:
+            description: The GetRoleMiningConfigResponse message.
+            properties:
+                config:
+                    $ref: '#/components/schemas/c1.api.role_mining_management.v1.RoleMiningManagementConfig'
+            title: Get Role Mining Config Response
+            type: object
+            x-speakeasy-name-override: GetRoleMiningConfigResponse
+        c1.api.role_mining_management.v1.GetSuggestionResponse:
+            description: The GetSuggestionResponse message.
+            properties:
+                suggestion:
+                    $ref: '#/components/schemas/c1.api.role_mining_management.v1.RoleMiningManagementSuggestion'
+            title: Get Suggestion Response
+            type: object
+            x-speakeasy-name-override: GetSuggestionResponse
+        c1.api.role_mining_management.v1.ListRunsResponse:
+            description: The ListRunsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.role_mining_management.v1.RoleMiningManagementRun'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: List Runs Response
+            type: object
+            x-speakeasy-name-override: ListRunsResponse
+        c1.api.role_mining_management.v1.ListSuggestionsResponse:
+            description: The ListSuggestionsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.role_mining_management.v1.RoleMiningManagementSuggestion'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: List Suggestions Response
+            type: object
+            x-speakeasy-name-override: ListSuggestionsResponse
+        c1.api.role_mining_management.v1.RoleMiningManagementConfig:
+            description: The RoleMiningManagementConfig message.
+            properties:
+                cohortHints:
+                    description: The cohortHints field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.role_mining_management.v1.CohortHintView'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                maxSuggestions:
+                    description: The maxSuggestions field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                minCohortSize:
+                    description: The minCohortSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+            title: Role Mining Management Config
+            type: object
+            x-speakeasy-name-override: RoleMiningManagementConfig
+        c1.api.role_mining_management.v1.RoleMiningManagementRun:
+            description: The RoleMiningManagementRun message.
+            properties:
+                cohortsAnalyzed:
+                    description: The cohortsAnalyzed field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                completedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                errorMessage:
+                    description: The errorMessage field.
+                    readOnly: false
+                    type: string
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+                status:
+                    description: The status field.
+                    enum:
+                        - RUN_STATUS_UNSPECIFIED
+                        - RUN_STATUS_RUNNING
+                        - RUN_STATUS_COMPLETED
+                        - RUN_STATUS_FAILED
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                suggestionsGenerated:
+                    description: The suggestionsGenerated field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                totalUsers:
+                    description: The totalUsers field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                triggerDetail:
+                    description: The triggerDetail field.
+                    readOnly: false
+                    type: string
+                triggerType:
+                    description: The triggerType field.
+                    enum:
+                        - TRIGGER_TYPE_UNSPECIFIED
+                        - TRIGGER_TYPE_MANUAL
+                        - TRIGGER_TYPE_UPLIFT_COMPLETION
+                        - TRIGGER_TYPE_SCHEDULED
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                updatedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+            title: Role Mining Management Run
+            type: object
+            x-speakeasy-name-override: RoleMiningManagementRun
+        c1.api.role_mining_management.v1.RoleMiningManagementSuggestion:
+            description: The RoleMiningManagementSuggestion message.
+            properties:
+                avgCoverage:
+                    description: The avgCoverage field.
+                    readOnly: false
+                    type: number
+                cohortFilters:
+                    description: The cohortFilters field.
+                    items:
+                        $ref: '#/components/schemas/c1.mcp.role_mining.v1.ProfileFilter'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                cohortSize:
+                    description: The cohortSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                confidence:
+                    description: The confidence field.
+                    readOnly: false
+                    type: number
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                createdCatalogId:
+                    description: The createdCatalogId field.
+                    readOnly: false
+                    type: string
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                dimensionCount:
+                    description: The dimensionCount field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                entitlements:
+                    description: The entitlements field.
+                    items:
+                        $ref: '#/components/schemas/c1.mcp.role_mining.v1.CohortEntitlement'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                existingProfileMatches:
+                    description: The existingProfileMatches field.
+                    items:
+                        $ref: '#/components/schemas/c1.mcp.role_mining.v1.AccessProfileMatch'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+                insights:
+                    description: The insights field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                lastGeneratedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                runId:
+                    description: The runId field.
+                    readOnly: false
+                    type: string
+                suggestedName:
+                    description: The suggestedName field.
+                    readOnly: false
+                    type: string
+                suggestionState:
+                    description: The suggestionState field.
+                    enum:
+                        - SUGGESTION_STATE_UNSPECIFIED
+                        - SUGGESTION_STATE_NEW
+                        - SUGGESTION_STATE_DISMISSED
+                        - SUGGESTION_STATE_ACCEPTED
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                updatedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                usersWithAll:
+                    description: The usersWithAll field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+            title: Role Mining Management Suggestion
+            type: object
+            x-speakeasy-name-override: RoleMiningManagementSuggestion
+        c1.api.role_mining_management.v1.RoleMiningSearchSuggestionsRequest:
+            description: The RoleMiningSearchSuggestionsRequest message.
+            properties:
+                cohortTypes:
+                    description: Filter by cohort type (e.g. "department", "job_title", "manager").
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                matchTypes:
+                    description: Filter by match type against existing access profiles.
+                    items:
+                        enum:
+                            - ACCESS_PROFILE_MATCH_TYPE_UNSPECIFIED
+                            - ACCESS_PROFILE_MATCH_TYPE_EXACT
+                            - ACCESS_PROFILE_MATCH_TYPE_SUPERSET
+                            - ACCESS_PROFILE_MATCH_TYPE_PARTIAL
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                query:
+                    description: Text search — matches against suggested_name, description, and cohort filter values.
+                    readOnly: false
+                    type: string
+                states:
+                    description: Filter by suggestion state.
+                    items:
+                        enum:
+                            - SUGGESTION_STATE_UNSPECIFIED
+                            - SUGGESTION_STATE_NEW
+                            - SUGGESTION_STATE_DISMISSED
+                            - SUGGESTION_STATE_ACCEPTED
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Role Mining Search Suggestions Request
+            type: object
+            x-speakeasy-name-override: RoleMiningSearchSuggestionsRequest
+        c1.api.role_mining_management.v1.RoleMiningSearchSuggestionsResponse:
+            description: The RoleMiningSearchSuggestionsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.role_mining_management.v1.RoleMiningManagementSuggestion'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Role Mining Search Suggestions Response
+            type: object
+            x-speakeasy-name-override: RoleMiningSearchSuggestionsResponse
+        c1.api.role_mining_management.v1.TriggerAnalysisRequest:
+            description: The TriggerAnalysisRequest message.
+            title: Trigger Analysis Request
+            type: object
+            x-speakeasy-name-override: TriggerAnalysisRequest
+        c1.api.role_mining_management.v1.TriggerAnalysisResponse:
+            description: The TriggerAnalysisResponse message.
+            properties:
+                runId:
+                    description: The runId field.
+                    readOnly: false
+                    type: string
+            title: Trigger Analysis Response
+            type: object
+            x-speakeasy-name-override: TriggerAnalysisResponse
+        c1.api.role_mining_management.v1.UpdateRoleMiningConfigRequest:
+            description: The UpdateRoleMiningConfigRequest message.
+            properties:
+                cohortHints:
+                    description: The cohortHints field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.role_mining_management.v1.CohortHintInput'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                maxSuggestions:
+                    description: The maxSuggestions field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                minCohortSize:
+                    description: The minCohortSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+            title: Update Role Mining Config Request
+            type: object
+            x-speakeasy-name-override: UpdateRoleMiningConfigRequest
+        c1.api.role_mining_management.v1.UpdateRoleMiningConfigResponse:
+            description: The UpdateRoleMiningConfigResponse message.
+            properties:
+                config:
+                    $ref: '#/components/schemas/c1.api.role_mining_management.v1.RoleMiningManagementConfig'
+            title: Update Role Mining Config Response
+            type: object
+            x-speakeasy-name-override: UpdateRoleMiningConfigResponse
+        c1.api.role_mining_management.v1.UpdateSuggestionStateRequestInput:
+            description: The UpdateSuggestionStateRequest message.
+            properties:
+                createdCatalogId:
+                    description: The createdCatalogId field.
+                    readOnly: false
+                    type: string
+                state:
+                    description: The state field.
+                    enum:
+                        - SUGGESTION_STATE_UNSPECIFIED
+                        - SUGGESTION_STATE_NEW
+                        - SUGGESTION_STATE_DISMISSED
+                        - SUGGESTION_STATE_ACCEPTED
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Update Suggestion State Request
+            type: object
+            x-speakeasy-name-override: UpdateSuggestionStateRequest
+        c1.api.role_mining_management.v1.UpdateSuggestionStateResponse:
+            description: The UpdateSuggestionStateResponse message.
+            properties:
+                suggestion:
+                    $ref: '#/components/schemas/c1.api.role_mining_management.v1.RoleMiningManagementSuggestion'
+            title: Update Suggestion State Response
+            type: object
+            x-speakeasy-name-override: UpdateSuggestionStateResponse
         c1.api.search.v1.FacetCategory:
             description: |
                 The FacetCategory indicates a grouping of facets by type. For example, facets "OnePassword" and "Okta" would group under an "Apps" category.
@@ -22088,6 +22570,99 @@ components:
             title: Workload Federation Trust
             type: object
             x-speakeasy-name-override: WorkloadFederationTrust
+        c1.mcp.role_mining.v1.AccessProfileMatch:
+            description: The AccessProfileMatch message.
+            properties:
+                catalogDisplayName:
+                    description: The catalogDisplayName field.
+                    readOnly: false
+                    type: string
+                catalogId:
+                    description: The catalogId field.
+                    readOnly: false
+                    type: string
+                matchType:
+                    description: The matchType field.
+                    enum:
+                        - ACCESS_PROFILE_MATCH_TYPE_UNSPECIFIED
+                        - ACCESS_PROFILE_MATCH_TYPE_EXACT
+                        - ACCESS_PROFILE_MATCH_TYPE_SUPERSET
+                        - ACCESS_PROFILE_MATCH_TYPE_PARTIAL
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                missingEntitlements:
+                    description: The missingEntitlements field.
+                    items:
+                        $ref: '#/components/schemas/c1.mcp.role_mining.v1.CohortEntitlement'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                overlapRatio:
+                    description: The overlapRatio field.
+                    readOnly: false
+                    type: number
+            title: Access Profile Match
+            type: object
+            x-speakeasy-name-override: AccessProfileMatch
+        c1.mcp.role_mining.v1.CohortEntitlement:
+            description: The CohortEntitlement message.
+            properties:
+                appDisplayName:
+                    description: The appDisplayName field.
+                    readOnly: false
+                    type: string
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                appResourceDisplayName:
+                    description: The appResourceDisplayName field.
+                    readOnly: false
+                    type: string
+                appResourceTypeDisplayName:
+                    description: The appResourceTypeDisplayName field.
+                    readOnly: false
+                    type: string
+                coverage:
+                    description: The coverage field.
+                    readOnly: false
+                    type: number
+                entitlementDisplayName:
+                    description: The entitlementDisplayName field.
+                    readOnly: false
+                    type: string
+                entitlementId:
+                    description: The entitlementId field.
+                    readOnly: false
+                    type: string
+                grantedCount:
+                    description: The grantedCount field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+            title: Cohort Entitlement
+            type: object
+            x-speakeasy-name-override: CohortEntitlement
+        c1.mcp.role_mining.v1.ProfileFilter:
+            description: |-
+                ProfileFilter defines a filter on a user profile attribute.
+                 Use GetOrgOverview to discover available attribute keys and their values.
+            properties:
+                attribute:
+                    description: The attribute field.
+                    readOnly: false
+                    type: string
+                values:
+                    description: The values field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Profile Filter
+            type: object
+            x-speakeasy-name-override: ProfileFilter
         c1.webhooks.v1.Body:
             description: The Body message.
             properties:
@@ -30466,6 +31041,164 @@ paths:
                 terraform-resource: Request_Schema#update
             x-speakeasy-group: RequestSchema
             x-speakeasy-name-override: Update
+    /api/v1/role-mining/config:
+        get:
+            description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.GetRoleMiningConfig method.
+            operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.GetRoleMiningConfig
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.role_mining_management.v1.GetRoleMiningConfigResponse'
+                    description: Successful response
+            summary: Get Role Mining Config
+            tags:
+                - Role Mining
+            x-speakeasy-group: RoleMiningManagement
+            x-speakeasy-name-override: GetRoleMiningConfig
+        post:
+            description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.UpdateRoleMiningConfig method.
+            operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.UpdateRoleMiningConfig
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.role_mining_management.v1.UpdateRoleMiningConfigRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.role_mining_management.v1.UpdateRoleMiningConfigResponse'
+                    description: Successful response
+            summary: Update Role Mining Config
+            tags:
+                - Role Mining
+            x-speakeasy-group: RoleMiningManagement
+            x-speakeasy-name-override: UpdateRoleMiningConfig
+    /api/v1/role-mining/runs:
+        get:
+            description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.ListRuns method.
+            operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.ListRuns
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.role_mining_management.v1.ListRunsResponse'
+                    description: Successful response
+            summary: List Runs
+            tags:
+                - Role Mining
+            x-speakeasy-group: RoleMiningManagement
+            x-speakeasy-name-override: ListRuns
+    /api/v1/role-mining/runs/latest:
+        get:
+            description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.GetLatestRun method.
+            operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.GetLatestRun
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.role_mining_management.v1.GetLatestRunResponse'
+                    description: Successful response
+            summary: Get Latest Run
+            tags:
+                - Role Mining
+            x-speakeasy-group: RoleMiningManagement
+            x-speakeasy-name-override: GetLatestRun
+    /api/v1/role-mining/suggestions:
+        get:
+            description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.ListSuggestions method.
+            operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.ListSuggestions
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.role_mining_management.v1.ListSuggestionsResponse'
+                    description: Successful response
+            summary: List Suggestions
+            tags:
+                - Role Mining
+            x-speakeasy-group: RoleMiningManagement
+            x-speakeasy-name-override: ListSuggestions
+    /api/v1/role-mining/suggestions/{id}:
+        get:
+            description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.GetSuggestion method.
+            operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.GetSuggestion
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.role_mining_management.v1.GetSuggestionResponse'
+                    description: Successful response
+            summary: Get Suggestion
+            tags:
+                - Role Mining
+            x-speakeasy-group: RoleMiningManagement
+            x-speakeasy-name-override: GetSuggestion
+    /api/v1/role-mining/suggestions/{id}/state:
+        post:
+            description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.UpdateSuggestionState method.
+            operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.UpdateSuggestionState
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.role_mining_management.v1.UpdateSuggestionStateRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.role_mining_management.v1.UpdateSuggestionStateResponse'
+                    description: Successful response
+            summary: Update Suggestion State
+            tags:
+                - Role Mining
+            x-speakeasy-group: RoleMiningManagement
+            x-speakeasy-name-override: UpdateSuggestionState
+    /api/v1/role-mining/trigger:
+        post:
+            description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.TriggerAnalysis method.
+            operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.TriggerAnalysis
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.role_mining_management.v1.TriggerAnalysisRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.role_mining_management.v1.TriggerAnalysisResponse'
+                    description: Successful response
+            summary: Trigger Analysis
+            tags:
+                - Role Mining
+            x-speakeasy-group: RoleMiningManagement
+            x-speakeasy-name-override: TriggerAnalysis
     /api/v1/search/app_resource_types:
         post:
             description: Search app resources based on filters specified in the request body.
@@ -30925,6 +31658,27 @@ paths:
                 - Request Catalog
             x-speakeasy-group: RequestCatalogSearch
             x-speakeasy-name-override: SearchEntitlements
+    /api/v1/search/role-mining/suggestions:
+        post:
+            description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementSearchService.Search method.
+            operationId: c1.api.role_mining_management.v1.RoleMiningManagementSearchService.Search
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.role_mining_management.v1.RoleMiningSearchSuggestionsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.role_mining_management.v1.RoleMiningSearchSuggestionsResponse'
+                    description: Successful response
+            summary: Search
+            tags:
+                - Role Mining
+            x-speakeasy-group: RoleMiningManagementSearch
+            x-speakeasy-name-override: Search
     /api/v1/search/secrets-admin:
         post:
             description: |-

@@ -91,6 +91,7 @@ type ConductoroneAPI struct {
 	AccountProvisionPolicyTest           *AccountProvisionPolicyTest
 	PolicyValidate                       *PolicyValidate
 	RequestSchema                        *RequestSchema
+	RoleMiningManagement                 *RoleMiningManagement
 	AppResourceSearch                    *AppResourceSearch
 	AppSearch                            *AppSearch
 	AttributeSearch                      *AttributeSearch
@@ -101,6 +102,7 @@ type ConductoroneAPI struct {
 	PersonalClientSearch                 *PersonalClientSearch
 	PolicySearch                         *PolicySearch
 	RequestCatalogSearch                 *RequestCatalogSearch
+	RoleMiningManagementSearch           *RoleMiningManagementSearch
 	PaperSecretAdmin                     *PaperSecretAdmin
 	PaperSecret                          *PaperSecret
 	StepUpProvider                       *StepUpProvider
@@ -212,9 +214,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.7.15",
+		SDKVersion: "1.7.16",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.7.15 2.755.6 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.7.16 2.755.6 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{
@@ -280,6 +282,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.AccountProvisionPolicyTest = newAccountProvisionPolicyTest(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PolicyValidate = newPolicyValidate(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.RequestSchema = newRequestSchema(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.RoleMiningManagement = newRoleMiningManagement(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppResourceSearch = newAppResourceSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppSearch = newAppSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AttributeSearch = newAttributeSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -290,6 +293,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.PersonalClientSearch = newPersonalClientSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PolicySearch = newPolicySearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.RequestCatalogSearch = newRequestCatalogSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.RoleMiningManagementSearch = newRoleMiningManagementSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PaperSecretAdmin = newPaperSecretAdmin(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PaperSecret = newPaperSecret(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.StepUpProvider = newStepUpProvider(sdk, sdk.sdkConfiguration, sdk.hooks)

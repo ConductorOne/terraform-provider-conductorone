@@ -271,7 +271,6 @@ Read-Only:
 - `app_resource_type_id` (String) The appResourceTypeId field.
 - `created_at` (String)
 - `custom_policy_id` (String) The customPolicyId field.
-- `deleted_at` (String)
 - `policy_id` (String) The policyId field.
 - `tenant_id` (String) The tenantId field.
 - `updated_at` (String)

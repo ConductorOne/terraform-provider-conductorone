@@ -14,7 +14,6 @@ type AccessReviewTemplateSetupEntitlement struct {
 	AppResourceTypeID      types.String `tfsdk:"app_resource_type_id"`
 	CreatedAt              types.String `tfsdk:"created_at"`
 	CustomPolicyID         types.String `tfsdk:"custom_policy_id"`
-	DeletedAt              types.String `tfsdk:"deleted_at"`
 	PolicyID               types.String `tfsdk:"policy_id"`
 	TenantID               types.String `tfsdk:"tenant_id"`
 	UpdatedAt              types.String `tfsdk:"updated_at"`

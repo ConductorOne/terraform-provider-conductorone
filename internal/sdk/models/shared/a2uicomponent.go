@@ -13,6 +13,7 @@ package shared
 //   - choicePicker
 //   - dateTimeInput
 //   - slider
+//   - progressBar
 //   - button
 //   - row
 //   - column
@@ -44,9 +45,11 @@ type A2UIComponent struct {
 	DividerComponent *DividerComponent `json:"divider,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
+	// ProgressBarComponent shows a read-only progress bar (label, value %, min/max).
+	ProgressBarComponent *ProgressBarComponent `json:"progressBar,omitempty"`
 	// RowComponent arranges children horizontally.
 	RowComponent *RowComponent `json:"row,omitempty"`
-	// SliderComponent for numeric range selection.
+	// SliderComponent is an interactive numeric range input (e.g. for forms).
 	SliderComponent *SliderComponent `json:"slider,omitempty"`
 	// TextComponent displays text content.
 	TextComponent *TextComponent `json:"text,omitempty"`
@@ -131,6 +134,13 @@ func (a *A2UIComponent) GetID() *string {
 		return nil
 	}
 	return a.ID
+}
+
+func (a *A2UIComponent) GetProgressBarComponent() *ProgressBarComponent {
+	if a == nil {
+		return nil
+	}
+	return a.ProgressBarComponent
 }
 
 func (a *A2UIComponent) GetRowComponent() *RowComponent {

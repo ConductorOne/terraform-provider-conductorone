@@ -21,6 +21,7 @@ type AutomationStep struct {
 	RunAutomation                 *RunAutomation                 `tfsdk:"run_automation"`
 	SendEmail                     *SendEmail                     `tfsdk:"send_email"`
 	SendSlackMessage              *SendSlackMessage              `tfsdk:"send_slack_message"`
+	SetCredential                 *SetCredential                 `tfsdk:"set_credential"`
 	SkipIfTrueCel                 types.String                   `tfsdk:"skip_if_true_cel"`
 	StepDisplayName               types.String                   `tfsdk:"step_display_name"`
 	StepName                      types.String                   `tfsdk:"step_name"`

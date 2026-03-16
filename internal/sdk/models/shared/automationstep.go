@@ -24,6 +24,7 @@ package shared
 //   - accountLifecycleAction
 //   - generatePassword
 //   - evaluateExpressions
+//   - setCredential
 type AutomationStep struct {
 	// The AccountLifecycleAction message.
 	//
@@ -115,6 +116,13 @@ type AutomationStep struct {
 	//   - channelNameCel
 	//
 	SendSlackMessage *SendSlackMessage `json:"sendSlackMessage,omitempty"`
+	// SetCredential submits a RotateCredentials baton task to the target connector,
+	//  re-encrypting the given password CEL expression with the connector's public JWK.
+	//
+	// This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:
+	//   - connectorRef
+	//
+	SetCredential *SetCredential `json:"setCredential,omitempty"`
 	// The skipIfTrueCel field.
 	SkipIfTrueCel *string `json:"skipIfTrueCel,omitempty"`
 	// The stepDisplayName field.
@@ -249,6 +257,13 @@ func (a *AutomationStep) GetSendSlackMessage() *SendSlackMessage {
 		return nil
 	}
 	return a.SendSlackMessage
+}
+
+func (a *AutomationStep) GetSetCredential() *SetCredential {
+	if a == nil {
+		return nil
+	}
+	return a.SetCredential
 }
 
 func (a *AutomationStep) GetSkipIfTrueCel() *string {

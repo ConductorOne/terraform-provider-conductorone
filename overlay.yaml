@@ -665,5 +665,17 @@ actions:
     remove: true
   - target: $["paths"]["/api/v1/access_review_template/{access_review_template_id}/scope_by_resource_type"]["post"]["x-speakeasy-entity-operation"]
     remove: true
+  # Workaround for Speakeasy soft-delete bug: the blanket $..deletedAt rule applies
+  # x-speakeasy-soft-delete-property which correctly strips deleted_at from the
+  # resource schema but leaves it in the Go struct for nested types (not entity roots).
+  # This causes a struct/schema mismatch crash at runtime. Ignoring the field on these
+  # specific nested types removes it from both struct and schema.
+  # See PR description for full analysis.
+  - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewSetupEntitlement"]["properties"]["deletedAt"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlement"]["properties"]["deletedAt"]
+    update:
+      x-speakeasy-terraform-ignore: true
       
   
