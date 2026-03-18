@@ -4,4 +4,13 @@ package shared
 
 // The GeneratePassword message.
 type GeneratePassword struct {
+	// The ID of the password policy to use for generating the password.
+	PasswordPolicyID *string `json:"passwordPolicyId,omitempty"`
+}
+
+func (g *GeneratePassword) GetPasswordPolicyID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.PasswordPolicyID
 }

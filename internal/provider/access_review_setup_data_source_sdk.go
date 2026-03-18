@@ -243,7 +243,6 @@ func (r *AccessReviewSetupDataSourceModel) RefreshFromSharedAccessReviewSetupEnt
 					list.AccessReviewSetupEntitlement.AppResourceTypeID = types.StringPointerValue(listItem.AccessReviewSetupEntitlement.AppResourceTypeID)
 					list.AccessReviewSetupEntitlement.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AccessReviewSetupEntitlement.CreatedAt))
 					list.AccessReviewSetupEntitlement.CustomPolicyID = types.StringPointerValue(listItem.AccessReviewSetupEntitlement.CustomPolicyID)
-					list.AccessReviewSetupEntitlement.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AccessReviewSetupEntitlement.DeletedAt))
 					list.AccessReviewSetupEntitlement.PolicyID = types.StringPointerValue(listItem.AccessReviewSetupEntitlement.PolicyID)
 					list.AccessReviewSetupEntitlement.TenantID = types.StringPointerValue(listItem.AccessReviewSetupEntitlement.TenantID)
 					list.AccessReviewSetupEntitlement.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AccessReviewSetupEntitlement.UpdatedAt))

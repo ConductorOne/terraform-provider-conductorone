@@ -2,5 +2,10 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type GeneratePassword struct {
+	PasswordPolicyID types.String `tfsdk:"password_policy_id"`
 }

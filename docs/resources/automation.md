@@ -172,7 +172,7 @@ resource "conductorone_automation" "my_automation" {
         ]
       }
       generate_password = {
-        # ...
+        password_policy_id = "...my_password_policy_id..."
       }
       grant_entitlements = {
         grant_entitlement_exclusion_criteria = {
@@ -266,6 +266,14 @@ resource "conductorone_automation" "my_automation" {
         body             = "...my_body..."
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
+      }
+      set_credential = {
+        account_id_cel = "...my_account_id_cel..."
+        connector_ref = {
+          app_id = "...my_app_id..."
+          id     = "...my_id..."
+        }
+        password_cel = "...my_password_cel..."
       }
       skip_if_true_cel  = "...my_skip_if_true_cel..."
       step_display_name = "...my_step_display_name..."
@@ -482,7 +490,7 @@ resource "conductorone_automation" "my_automation" {
         ]
       }
       generate_password = {
-        # ...
+        password_policy_id = "...my_password_policy_id..."
       }
       grant_entitlements = {
         grant_entitlement_exclusion_criteria = {
@@ -576,6 +584,14 @@ resource "conductorone_automation" "my_automation" {
         body             = "...my_body..."
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
+      }
+      set_credential = {
+        account_id_cel = "...my_account_id_cel..."
+        connector_ref = {
+          app_id = "...my_app_id..."
+          id     = "...my_id..."
+        }
+        password_cel = "...my_password_cel..."
       }
       skip_if_true_cel  = "...my_skip_if_true_cel..."
       step_display_name = "...my_step_display_name..."
@@ -1086,6 +1102,11 @@ This message contains a oneof named automation_template. Only a single field of 
 This message contains a oneof named channel. Only a single field of the following list may be set at a time:
   - channelName
   - channelNameCel (see [below for nested schema](#nestedatt--automation_steps--send_slack_message))
+- `set_credential` (Attributes) SetCredential submits a RotateCredentials baton task to the target connector,
+ re-encrypting the given password CEL expression with the connector's public JWK.
+
+This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:
+  - connectorRef (see [below for nested schema](#nestedatt--automation_steps--set_credential))
 - `skip_if_true_cel` (String) The skipIfTrueCel field.
 - `step_display_name` (String) The stepDisplayName field.
 - `step_name` (String) The stepName field.
@@ -1402,6 +1423,10 @@ Optional:
 <a id="nestedatt--automation_steps--generate_password"></a>
 ### Nested Schema for `automation_steps.generate_password`
 
+Optional:
+
+- `password_policy_id` (String) The ID of the password policy to use for generating the password.
+
 
 <a id="nestedatt--automation_steps--grant_entitlements"></a>
 ### Nested Schema for `automation_steps.grant_entitlements`
@@ -1597,6 +1622,25 @@ See the documentation for `c1.api.automations.v1.SendSlackMessage` for more deta
 - `channel_name_cel` (String) The channelNameCel field.
 This field is part of the `channel` oneof.
 See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
+
+
+<a id="nestedatt--automation_steps--set_credential"></a>
+### Nested Schema for `automation_steps.set_credential`
+
+Optional:
+
+- `account_id_cel` (String) The accountIdCel field.
+- `connector_ref` (Attributes) The ConnectorRef message. (see [below for nested schema](#nestedatt--automation_steps--set_credential--connector_ref))
+- `password_cel` (String) The passwordCel field.
+
+<a id="nestedatt--automation_steps--set_credential--connector_ref"></a>
+### Nested Schema for `automation_steps.set_credential.connector_ref`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 
 <a id="nestedatt--automation_steps--task_action"></a>
@@ -1822,6 +1866,11 @@ This message contains a oneof named automation_template. Only a single field of 
 This message contains a oneof named channel. Only a single field of the following list may be set at a time:
   - channelName
   - channelNameCel (see [below for nested schema](#nestedatt--draft_automation_steps--send_slack_message))
+- `set_credential` (Attributes) SetCredential submits a RotateCredentials baton task to the target connector,
+ re-encrypting the given password CEL expression with the connector's public JWK.
+
+This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:
+  - connectorRef (see [below for nested schema](#nestedatt--draft_automation_steps--set_credential))
 - `skip_if_true_cel` (String) The skipIfTrueCel field.
 - `step_display_name` (String) The stepDisplayName field.
 - `step_name` (String) The stepName field.
@@ -2138,6 +2187,10 @@ Optional:
 <a id="nestedatt--draft_automation_steps--generate_password"></a>
 ### Nested Schema for `draft_automation_steps.generate_password`
 
+Optional:
+
+- `password_policy_id` (String) The ID of the password policy to use for generating the password.
+
 
 <a id="nestedatt--draft_automation_steps--grant_entitlements"></a>
 ### Nested Schema for `draft_automation_steps.grant_entitlements`
@@ -2333,6 +2386,25 @@ See the documentation for `c1.api.automations.v1.SendSlackMessage` for more deta
 - `channel_name_cel` (String) The channelNameCel field.
 This field is part of the `channel` oneof.
 See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
+
+
+<a id="nestedatt--draft_automation_steps--set_credential"></a>
+### Nested Schema for `draft_automation_steps.set_credential`
+
+Optional:
+
+- `account_id_cel` (String) The accountIdCel field.
+- `connector_ref` (Attributes) The ConnectorRef message. (see [below for nested schema](#nestedatt--draft_automation_steps--set_credential--connector_ref))
+- `password_cel` (String) The passwordCel field.
+
+<a id="nestedatt--draft_automation_steps--set_credential--connector_ref"></a>
+### Nested Schema for `draft_automation_steps.set_credential.connector_ref`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 
 <a id="nestedatt--draft_automation_steps--task_action"></a>
