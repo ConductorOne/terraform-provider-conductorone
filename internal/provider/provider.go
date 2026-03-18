@@ -195,6 +195,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewBundleAutomationResource,
 		NewAccessConflictResource,
 		NewAutomationResource,
+		NewFunctionResource,
 		NewAppResourceOwnerResource,
 		NewRequestSchemaEntitlementBindingResource,
 		NewRequestSchemaResource,

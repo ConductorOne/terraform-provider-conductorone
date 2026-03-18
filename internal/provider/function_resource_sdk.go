@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"encoding/base64"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
@@ -66,7 +67,9 @@ func (r *FunctionResourceModel) RefreshFromSharedFunctionsServiceCreateFunctionR
 			r.Author = types.StringPointerValue(resp.FunctionCommit.Author)
 			r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.FunctionCommit.CreatedAt))
 			r.FunctionID = types.StringPointerValue(resp.FunctionCommit.FunctionID)
-			r.ID = types.StringPointerValue(resp.FunctionCommit.ID)
+			// r.ID is intentionally NOT set from FunctionCommit.ID (that is the commit's own ID,
+			// not the function's persistent ID). r.ID is already correctly set by RefreshFromSharedFunction
+			// above from resp.Function.ID. Overwriting it with the commit ID causes GetFunction to 404.
 			r.Message = types.StringPointerValue(resp.FunctionCommit.Message)
 		}
 	}
@@ -194,13 +197,6 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 			scopedRoleIds = append(scopedRoleIds, r.ScopedRoleIds[scopedRoleIdsIndex].ValueString())
 		}
 	}
-	secret := make(map[string]string)
-	for secretKey := range r.Secret {
-		var secretInst string
-		secretInst = r.Secret[secretKey].ValueString()
-
-		secret[secretKey] = secretInst
-	}
 	out := shared.FunctionInput{
 		Description:              description,
 		DisplayName:              displayName,
@@ -211,7 +207,8 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 		OutboundNetworkAllowlist: outboundNetworkAllowlist,
 		PublishedCommitID:        publishedCommitID,
 		ScopedRoleIds:            scopedRoleIds,
-		Secret:                   secret,
+		// Secret/encryptedValues is intentionally omitted: the API returns HTTP 500
+		// "field encrypted_values cannot be updated" if this field is present in an update request.
 	}
 
 	return &out, diags
@@ -244,12 +241,13 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceCreateFunctionRequest(ct
 	} else {
 		functionType = nil
 	}
+	// The API expects initial_content values as base64-encoded bytes.
+	// Base64-encode here so callers can supply plain source files via file().
 	initialContent := make(map[string]string)
 	for initialContentKey := range r.InitialContent {
-		var initialContentInst string
-		initialContentInst = r.InitialContent[initialContentKey].ValueString()
-
-		initialContent[initialContentKey] = initialContentInst
+		initialContent[initialContentKey] = base64.StdEncoding.EncodeToString(
+			[]byte(r.InitialContent[initialContentKey].ValueString()),
+		)
 	}
 	out := shared.FunctionsServiceCreateFunctionRequest{
 		CommitMessage:  commitMessage,
@@ -280,8 +278,13 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceUpdateFunctionRequest(ct
 		return nil, diags
 	}
 
+	// Only include updatable fields in the mask. Omitting updateMask causes the
+	// server to attempt a full update, which returns HTTP 500 because
+	// encryptedValues (secret) cannot be updated via this API.
+	updateMask := "displayName,description,functionType,scopedRoleIds,outboundNetworkAllowlist"
 	out := shared.FunctionsServiceUpdateFunctionRequest{
-		Function: function,
+		Function:   function,
+		UpdateMask: &updateMask,
 	}
 
 	return &out, diags

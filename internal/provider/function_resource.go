@@ -7,6 +7,7 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -133,8 +134,9 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 			},
 			"outbound_network_allowlist": schema.ListAttribute{
 				Computed:    true,
+				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The outboundNetworkAllowlist field.`,
+				Description: `The outboundNetworkAllowlist field. List of host:port entries allowed for outbound network calls from this function (e.g. "api.example.com:443").`,
 			},
 			"published_commit_id": schema.StringAttribute{
 				Computed:    true,
@@ -142,6 +144,7 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 			},
 			"scoped_role_ids": schema.ListAttribute{
 				Computed:    true,
+				Optional:    true,
 				ElementType: types.StringType,
 				MarkdownDescription: `Scoped role IDs define the permissions granted to this function when calling` + "\n" +
 					` ConductorOne APIs. These are role IDs (not service roles) that get resolved` + "\n" +
@@ -237,6 +240,46 @@ func (r *FunctionResource) Create(ctx context.Context, req resource.CreateReques
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	// Publish the function: CreateFunction leaves it in draft state with no
+	// visible code. A second UpdateFunction call with isDraft=false and
+	// publishedCommitId makes the code visible in the UI.
+	// Per API docs: Function.Head is nil in the CreateFunction response;
+	// the commit SHA lives in FunctionsServiceCreateFunctionResponse.FunctionCommit.ID.
+	if res.FunctionsServiceCreateFunctionResponse != nil &&
+		res.FunctionsServiceCreateFunctionResponse.FunctionCommit != nil &&
+		res.FunctionsServiceCreateFunctionResponse.FunctionCommit.ID != nil {
+		commitID := *res.FunctionsServiceCreateFunctionResponse.FunctionCommit.ID
+		functionID := data.ID.ValueString()
+		isDraftFalse := false
+		displayName := data.DisplayName.ValueString()
+		publishMask := "isDraft,publishedCommitId"
+		pubRes, pubErr := r.client.Functions.UpdateFunction(ctx, &shared.FunctionsServiceUpdateFunctionRequest{
+			Function: &shared.FunctionInput{
+				ID:                &functionID,
+				DisplayName:       &displayName,
+				IsDraft:           &isDraftFalse,
+				PublishedCommitID: &commitID,
+			},
+			UpdateMask: &publishMask,
+		})
+		if pubErr != nil {
+			resp.Diagnostics.AddError("failure to publish function", pubErr.Error())
+			if pubRes != nil && pubRes.RawResponse != nil {
+				resp.Diagnostics.AddError("unexpected http request/response", debugResponse(pubRes.RawResponse))
+			}
+			return
+		}
+		if pubRes == nil || pubRes.StatusCode != 200 {
+			code := 0
+			if pubRes != nil {
+				code = pubRes.StatusCode
+			}
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API when publishing function. Got an unexpected response code %v", code), "")
+			return
+		}
+	}
+
 	request1, request1Diags := data.ToOperationsC1APIFunctionsV1FunctionsServiceGetFunctionRequest(ctx)
 	resp.Diagnostics.Append(request1Diags...)
 
