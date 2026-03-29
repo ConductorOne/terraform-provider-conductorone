@@ -566,7 +566,7 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								if stepsItem.Provision.ProvisionPolicy.MultiStep == nil {
 									steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
 								} else {
-									multiStepResult, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.MultiStep)
+									multiStepResult, _ := typeconvert.MarshalJSONStripNulls(stepsItem.Provision.ProvisionPolicy.MultiStep)
 									steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
 								}
 								if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
