@@ -200,6 +200,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewRequestSchemaResource,
 		NewVaultResource,
 		NewAppEntitlementMonitorBindingResource,
+		NewRequestCatalogResource,
 	}
 
 	resources = append(resources, getIntegrationResources()...)
@@ -233,6 +234,7 @@ func (p *ConductoroneProvider) DataSources(ctx context.Context) []func() datasou
 		NewPoliciesDataSource,
 		NewRiskLevelsDataSource,
 		NewUsersDataSource,
+		NewRequestCatalogDataSource,
 		NewRequestCatalogsDataSource,
 		NewComplianceFrameworksDataSource,
 		NewWebhooksDataSource,
