@@ -39,7 +39,7 @@ provider "conductorone" {
 
 - `client_id` (String) Client ID for authentication. Required for OIDC and credential-based auth. Can also be set via `CONDUCTORONE_CLIENT_ID` env var.
 - `client_secret` (String, Sensitive) Client secret for credential-based authentication (Ed25519 JWT assertion). Can also be set via `CONDUCTORONE_CLIENT_SECRET` env var.
-- `oidc_token` (String, Sensitive) OIDC token for workload federation authentication (RFC 8693 token exchange). Auto-detected from `CONDUCTORONE_OIDC_TOKEN` or `TFC_WORKLOAD_IDENTITY_TOKEN` environment variables.
+- `oidc_token` (String, Sensitive) OIDC token for workload federation authentication (RFC 8693 token exchange). Auto-detected from `CONDUCTORONE_OIDC_TOKEN`, `TFC_WORKLOAD_IDENTITY_TOKEN_CONDUCTORONE`, `TFC_WORKLOAD_IDENTITY_TOKEN_C1`, or `TFC_WORKLOAD_IDENTITY_TOKEN` environment variables.
 - `server_url` (String) Server URL (defaults to `https://{tenant_domain}.conductor.one`). Can also be set via `CONDUCTORONE_SERVER_URL` env var.
 - `tenant_domain` (String) Tenant domain (derived from `client_id` if not provided). Can also be set via `CONDUCTORONE_TENANT_DOMAIN` env var.
 
