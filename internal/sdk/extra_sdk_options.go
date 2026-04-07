@@ -28,8 +28,10 @@ const (
 	EnvTenantDomain = "CONDUCTORONE_TENANT_DOMAIN"
 	EnvServerURL    = "CONDUCTORONE_SERVER_URL"
 
-	// HCP Terraform auto-detection
-	EnvTFCWorkloadIdentityToken = "TFC_WORKLOAD_IDENTITY_TOKEN"
+	// HCP Terraform auto-detection (tagged variants checked first, then generic fallback)
+	EnvTFCWorkloadIdentityTokenConductorOne = "TFC_WORKLOAD_IDENTITY_TOKEN_CONDUCTORONE"
+	EnvTFCWorkloadIdentityTokenC1           = "TFC_WORKLOAD_IDENTITY_TOKEN_C1"
+	EnvTFCWorkloadIdentityToken             = "TFC_WORKLOAD_IDENTITY_TOKEN"
 )
 
 func WithTenant(input string) (SDKOption, error) {
