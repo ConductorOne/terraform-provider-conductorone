@@ -61,10 +61,7 @@ func (r *AccessConflictResourceModel) ToOperationsC1APIAccessconflictV1AccessCon
 	var id string
 	id = r.ID.ValueString()
 
-	var conflictMonitorDeleteRequest *shared.ConflictMonitorDeleteRequest
-	if r.ConflictMonitorDeleteRequest != nil {
-		conflictMonitorDeleteRequest = &shared.ConflictMonitorDeleteRequest{}
-	}
+	conflictMonitorDeleteRequest := &shared.ConflictMonitorDeleteRequest{}
 	out := operations.C1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest{
 		ID:                           id,
 		ConflictMonitorDeleteRequest: conflictMonitorDeleteRequest,

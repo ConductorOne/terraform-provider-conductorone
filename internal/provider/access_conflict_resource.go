@@ -30,8 +30,7 @@ type AccessConflictResource struct {
 
 // AccessConflictResourceModel describes the resource data model.
 type AccessConflictResourceModel struct {
-	ConflictMonitorDeleteRequest *tfTypes.ConflictMonitorDeleteRequest `tfsdk:"conflict_monitor_delete_request"`
-	CreatedAt                    types.String                          `tfsdk:"created_at"`
+	CreatedAt types.String `tfsdk:"created_at"`
 	DeletedAt                    types.String                          `tfsdk:"-"`
 	Description                  types.String                          `tfsdk:"description"`
 	DisplayName                  types.String                          `tfsdk:"display_name"`
@@ -51,10 +50,6 @@ func (r *AccessConflictResource) Schema(ctx context.Context, req resource.Schema
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AccessConflict Resource",
 		Attributes: map[string]schema.Attribute{
-			"conflict_monitor_delete_request": schema.SingleNestedAttribute{
-				Optional:    true,
-				Description: `The ConflictMonitorDeleteRequest message.`,
-			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},

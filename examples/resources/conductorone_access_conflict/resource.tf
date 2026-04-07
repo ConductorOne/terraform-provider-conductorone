@@ -1,7 +1,4 @@
 resource "conductorone_access_conflict" "my_access_conflict" {
-  conflict_monitor_delete_request = {
-    # ...
-  }
   description  = "...my_description..."
   display_name = "...my_display_name..."
   notification_config = {

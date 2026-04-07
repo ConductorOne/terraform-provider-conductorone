@@ -16,9 +16,6 @@ When creating a `access_conflict` resource you must provide a `display_name`.
 
 ```terraform
 resource "conductorone_access_conflict" "my_access_conflict" {
-  conflict_monitor_delete_request = {
-    # ...
-  }
   description  = "...my_description..."
   display_name = "...my_display_name..."
   notification_config = {
@@ -46,7 +43,6 @@ resource "conductorone_access_conflict" "my_access_conflict" {
 
 ### Optional
 
-- `conflict_monitor_delete_request` (Attributes) The ConflictMonitorDeleteRequest message. (see [below for nested schema](#nestedatt--conflict_monitor_delete_request))
 - `description` (String) The description field.
 - `notification_config` (Attributes) The NotificationConfig message. (see [below for nested schema](#nestedatt--notification_config))
 
@@ -58,10 +54,6 @@ resource "conductorone_access_conflict" "my_access_conflict" {
 - `entitlement_set_b_id` (String) The entitlementSetBId field.
 - `id` (String) The id field.
 - `updated_at` (String)
-
-<a id="nestedatt--conflict_monitor_delete_request"></a>
-### Nested Schema for `conflict_monitor_delete_request`
-
 
 <a id="nestedatt--notification_config"></a>
 ### Nested Schema for `notification_config`

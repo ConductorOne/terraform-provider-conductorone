@@ -677,5 +677,8 @@ actions:
   - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlement"]["properties"]["deletedAt"]
     update:
       x-speakeasy-terraform-ignore: true
-      
+  - target: $["components"]["schemas"]["c1.api.accessconflict.v1.ConflictMonitorDeleteRequestInput"]
+    update:
+      x-speakeasy-terraform-ignore: true
+
   
