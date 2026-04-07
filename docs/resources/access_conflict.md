@@ -29,9 +29,6 @@ resource "conductorone_access_conflict" "my_access_conflict" {
       enabled      = false
     }
   }
-  conflict_monitor_delete_request = {
-    # ...
-  }
   description  = "...my_description..."
   display_name = "...my_display_name..."
 }
@@ -47,7 +44,6 @@ resource "conductorone_access_conflict" "my_access_conflict" {
 ### Optional
 
 - `access_conflict_notification_config` (Attributes) The NotificationConfig message. (see [below for nested schema](#nestedatt--access_conflict_notification_config))
-- `conflict_monitor_delete_request` (Attributes) The request message for deleting a conflict monitor. (see [below for nested schema](#nestedatt--conflict_monitor_delete_request))
 - `description` (String) An optional description explaining the purpose of this Separation of Duty rule.
 
 ### Read-Only
@@ -84,8 +80,3 @@ Optional:
 - `channel_id` (String) The channelId field.
 - `channel_name` (String) The channelName field.
 - `enabled` (Boolean) The enabled field.
-
-
-
-<a id="nestedatt--conflict_monitor_delete_request"></a>
-### Nested Schema for `conflict_monitor_delete_request`
