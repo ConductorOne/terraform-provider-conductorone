@@ -1004,6 +1004,63 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Optional:    true,
 							Description: `The stepName field.`,
 						},
+						"store_credential": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"app_id_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The appIdCel field.`,
+								},
+								"auth_type": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The authType field.`,
+								},
+								"credential_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The credentialCel field.`,
+								},
+								"expiry": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The expiry field.`,
+								},
+								"label_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The labelCel field.`,
+								},
+								"max_views": schema.Int64Attribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The maxViews field.`,
+								},
+								"recipient_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The recipientCel field.`,
+								},
+								"recipient_email_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The recipientEmailCel field.`,
+								},
+								"ttl": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The ttl field.`,
+								},
+								"vault_type": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The vaultType field.`,
+								},
+							},
+							Description: `The StoreCredential message.`,
+						},
 						"task_action": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -2225,6 +2282,63 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed:    true,
 							Optional:    true,
 							Description: `The stepName field.`,
+						},
+						"store_credential": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"app_id_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The appIdCel field.`,
+								},
+								"auth_type": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The authType field.`,
+								},
+								"credential_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The credentialCel field.`,
+								},
+								"expiry": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The expiry field.`,
+								},
+								"label_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The labelCel field.`,
+								},
+								"max_views": schema.Int64Attribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The maxViews field.`,
+								},
+								"recipient_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The recipientCel field.`,
+								},
+								"recipient_email_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The recipientEmailCel field.`,
+								},
+								"ttl": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The ttl field.`,
+								},
+								"vault_type": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The vaultType field.`,
+								},
+							},
+							Description: `The StoreCredential message.`,
 						},
 						"task_action": schema.SingleNestedAttribute{
 							Computed: true,

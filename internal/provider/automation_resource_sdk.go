@@ -322,6 +322,25 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				} else {
 					automationSteps.GeneratePassword = &tfTypes.GeneratePassword{}
 				}
+				if automationStepsItem.StoreCredential == nil {
+					automationSteps.StoreCredential = nil
+				} else {
+					automationSteps.StoreCredential = &tfTypes.StoreCredential{}
+					automationSteps.StoreCredential.AppIDCel = types.StringPointerValue(automationStepsItem.StoreCredential.AppIDCel)
+					automationSteps.StoreCredential.AuthType = types.StringPointerValue(automationStepsItem.StoreCredential.AuthType)
+					automationSteps.StoreCredential.CredentialCel = types.StringPointerValue(automationStepsItem.StoreCredential.CredentialCel)
+					automationSteps.StoreCredential.Expiry = types.StringPointerValue(automationStepsItem.StoreCredential.Expiry)
+					automationSteps.StoreCredential.LabelCel = types.StringPointerValue(automationStepsItem.StoreCredential.LabelCel)
+					if automationStepsItem.StoreCredential.MaxViews != nil {
+						automationSteps.StoreCredential.MaxViews = types.Int64Value(*automationStepsItem.StoreCredential.MaxViews)
+					} else {
+						automationSteps.StoreCredential.MaxViews = types.Int64Null()
+					}
+					automationSteps.StoreCredential.RecipientCel = types.StringPointerValue(automationStepsItem.StoreCredential.RecipientCel)
+					automationSteps.StoreCredential.RecipientEmailCel = types.StringPointerValue(automationStepsItem.StoreCredential.RecipientEmailCel)
+					automationSteps.StoreCredential.Ttl = types.StringPointerValue(automationStepsItem.StoreCredential.Ttl)
+					automationSteps.StoreCredential.VaultType = types.StringPointerValue(automationStepsItem.StoreCredential.VaultType)
+				}
 				if automationStepsItem.GrantEntitlements == nil {
 					automationSteps.GrantEntitlements = nil
 				} else {
@@ -923,6 +942,25 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					draftAutomationSteps.GeneratePassword = nil
 				} else {
 					draftAutomationSteps.GeneratePassword = &tfTypes.GeneratePassword{}
+				}
+				if draftAutomationStepsItem.StoreCredential == nil {
+					draftAutomationSteps.StoreCredential = nil
+				} else {
+					draftAutomationSteps.StoreCredential = &tfTypes.StoreCredential{}
+					draftAutomationSteps.StoreCredential.AppIDCel = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.AppIDCel)
+					draftAutomationSteps.StoreCredential.AuthType = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.AuthType)
+					draftAutomationSteps.StoreCredential.CredentialCel = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.CredentialCel)
+					draftAutomationSteps.StoreCredential.Expiry = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.Expiry)
+					draftAutomationSteps.StoreCredential.LabelCel = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.LabelCel)
+					if draftAutomationStepsItem.StoreCredential.MaxViews != nil {
+						draftAutomationSteps.StoreCredential.MaxViews = types.Int64Value(*draftAutomationStepsItem.StoreCredential.MaxViews)
+					} else {
+						draftAutomationSteps.StoreCredential.MaxViews = types.Int64Null()
+					}
+					draftAutomationSteps.StoreCredential.RecipientCel = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.RecipientCel)
+					draftAutomationSteps.StoreCredential.RecipientEmailCel = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.RecipientEmailCel)
+					draftAutomationSteps.StoreCredential.Ttl = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.Ttl)
+					draftAutomationSteps.StoreCredential.VaultType = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.VaultType)
 				}
 				if draftAutomationStepsItem.GrantEntitlements == nil {
 					draftAutomationSteps.GrantEntitlements = nil
@@ -3002,6 +3040,81 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			} else {
 				stepName = nil
 			}
+			var storeCredential *shared.StoreCredential
+			if r.AutomationSteps[automationStepsIndex].StoreCredential != nil {
+				appIDCelSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.IsNull() {
+					*appIDCelSC = r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.ValueString()
+				} else {
+					appIDCelSC = nil
+				}
+				authTypeSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.IsNull() {
+					*authTypeSC = r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.ValueString()
+				} else {
+					authTypeSC = nil
+				}
+				credentialCelSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.IsNull() {
+					*credentialCelSC = r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.ValueString()
+				} else {
+					credentialCelSC = nil
+				}
+				expirySC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.IsNull() {
+					*expirySC = r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.ValueString()
+				} else {
+					expirySC = nil
+				}
+				labelCelSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.IsNull() {
+					*labelCelSC = r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.ValueString()
+				} else {
+					labelCelSC = nil
+				}
+				maxViewsSC := new(int64)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.IsNull() {
+					*maxViewsSC = r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.ValueInt64()
+				} else {
+					maxViewsSC = nil
+				}
+				recipientCelSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.IsNull() {
+					*recipientCelSC = r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.ValueString()
+				} else {
+					recipientCelSC = nil
+				}
+				recipientEmailCelSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.IsNull() {
+					*recipientEmailCelSC = r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.ValueString()
+				} else {
+					recipientEmailCelSC = nil
+				}
+				ttlSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.Ttl.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.Ttl.IsNull() {
+					*ttlSC = r.AutomationSteps[automationStepsIndex].StoreCredential.Ttl.ValueString()
+				} else {
+					ttlSC = nil
+				}
+				vaultTypeSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.IsNull() {
+					*vaultTypeSC = r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.ValueString()
+				} else {
+					vaultTypeSC = nil
+				}
+				storeCredential = &shared.StoreCredential{
+					AppIDCel:          appIDCelSC,
+					AuthType:          authTypeSC,
+					CredentialCel:     credentialCelSC,
+					Expiry:            expirySC,
+					LabelCel:          labelCelSC,
+					MaxViews:          maxViewsSC,
+					RecipientCel:      recipientCelSC,
+					RecipientEmailCel: recipientEmailCelSC,
+					Ttl:               ttlSC,
+					VaultType:         vaultTypeSC,
+				}
+			}
 			var taskAction *shared.TaskAction
 			if r.AutomationSteps[automationStepsIndex].TaskAction != nil {
 				var closeAction *shared.CloseAction
@@ -3258,6 +3371,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				SkipIfTrueCel:                 skipIfTrueCel,
 				StepDisplayName:               stepDisplayName,
 				StepName:                      stepName,
+				StoreCredential:               storeCredential,
 				TaskAction:                    taskAction,
 				UnenrollFromAllAccessProfiles: unenrollFromAllAccessProfiles,
 				UpdateUser:                    updateUser,
@@ -4253,6 +4367,81 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			} else {
 				stepName1 = nil
 			}
+			var storeCredential1 *shared.StoreCredential
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential != nil {
+				appIDCelSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.IsNull() {
+					*appIDCelSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.ValueString()
+				} else {
+					appIDCelSC1 = nil
+				}
+				authTypeSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.IsNull() {
+					*authTypeSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.ValueString()
+				} else {
+					authTypeSC1 = nil
+				}
+				credentialCelSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.IsNull() {
+					*credentialCelSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.ValueString()
+				} else {
+					credentialCelSC1 = nil
+				}
+				expirySC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.IsNull() {
+					*expirySC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.ValueString()
+				} else {
+					expirySC1 = nil
+				}
+				labelCelSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.IsNull() {
+					*labelCelSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.ValueString()
+				} else {
+					labelCelSC1 = nil
+				}
+				maxViewsSC1 := new(int64)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.IsNull() {
+					*maxViewsSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.ValueInt64()
+				} else {
+					maxViewsSC1 = nil
+				}
+				recipientCelSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.IsNull() {
+					*recipientCelSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.ValueString()
+				} else {
+					recipientCelSC1 = nil
+				}
+				recipientEmailCelSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.IsNull() {
+					*recipientEmailCelSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.ValueString()
+				} else {
+					recipientEmailCelSC1 = nil
+				}
+				ttlSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Ttl.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Ttl.IsNull() {
+					*ttlSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Ttl.ValueString()
+				} else {
+					ttlSC1 = nil
+				}
+				vaultTypeSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.IsNull() {
+					*vaultTypeSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.ValueString()
+				} else {
+					vaultTypeSC1 = nil
+				}
+				storeCredential1 = &shared.StoreCredential{
+					AppIDCel:          appIDCelSC1,
+					AuthType:          authTypeSC1,
+					CredentialCel:     credentialCelSC1,
+					Expiry:            expirySC1,
+					LabelCel:          labelCelSC1,
+					MaxViews:          maxViewsSC1,
+					RecipientCel:      recipientCelSC1,
+					RecipientEmailCel: recipientEmailCelSC1,
+					Ttl:               ttlSC1,
+					VaultType:         vaultTypeSC1,
+				}
+			}
 			var taskAction1 *shared.TaskAction
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction != nil {
 				var closeAction1 *shared.CloseAction
@@ -4509,6 +4698,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				SkipIfTrueCel:                 skipIfTrueCel1,
 				StepDisplayName:               stepDisplayName1,
 				StepName:                      stepName1,
+				StoreCredential:               storeCredential1,
 				TaskAction:                    taskAction1,
 				UnenrollFromAllAccessProfiles: unenrollFromAllAccessProfiles1,
 				UpdateUser:                    updateUser1,
@@ -6799,6 +6989,81 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 			} else {
 				stepName = nil
 			}
+			var storeCredential *shared.StoreCredential
+			if r.AutomationSteps[automationStepsIndex].StoreCredential != nil {
+				appIDCelSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.IsNull() {
+					*appIDCelSC = r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.ValueString()
+				} else {
+					appIDCelSC = nil
+				}
+				authTypeSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.IsNull() {
+					*authTypeSC = r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.ValueString()
+				} else {
+					authTypeSC = nil
+				}
+				credentialCelSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.IsNull() {
+					*credentialCelSC = r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.ValueString()
+				} else {
+					credentialCelSC = nil
+				}
+				expirySC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.IsNull() {
+					*expirySC = r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.ValueString()
+				} else {
+					expirySC = nil
+				}
+				labelCelSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.IsNull() {
+					*labelCelSC = r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.ValueString()
+				} else {
+					labelCelSC = nil
+				}
+				maxViewsSC := new(int64)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.IsNull() {
+					*maxViewsSC = r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.ValueInt64()
+				} else {
+					maxViewsSC = nil
+				}
+				recipientCelSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.IsNull() {
+					*recipientCelSC = r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.ValueString()
+				} else {
+					recipientCelSC = nil
+				}
+				recipientEmailCelSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.IsNull() {
+					*recipientEmailCelSC = r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.ValueString()
+				} else {
+					recipientEmailCelSC = nil
+				}
+				ttlSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.Ttl.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.Ttl.IsNull() {
+					*ttlSC = r.AutomationSteps[automationStepsIndex].StoreCredential.Ttl.ValueString()
+				} else {
+					ttlSC = nil
+				}
+				vaultTypeSC := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.IsNull() {
+					*vaultTypeSC = r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.ValueString()
+				} else {
+					vaultTypeSC = nil
+				}
+				storeCredential = &shared.StoreCredential{
+					AppIDCel:          appIDCelSC,
+					AuthType:          authTypeSC,
+					CredentialCel:     credentialCelSC,
+					Expiry:            expirySC,
+					LabelCel:          labelCelSC,
+					MaxViews:          maxViewsSC,
+					RecipientCel:      recipientCelSC,
+					RecipientEmailCel: recipientEmailCelSC,
+					Ttl:               ttlSC,
+					VaultType:         vaultTypeSC,
+				}
+			}
 			var taskAction *shared.TaskAction
 			if r.AutomationSteps[automationStepsIndex].TaskAction != nil {
 				var closeAction *shared.CloseAction
@@ -7055,6 +7320,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				SkipIfTrueCel:                 skipIfTrueCel,
 				StepDisplayName:               stepDisplayName,
 				StepName:                      stepName,
+				StoreCredential:               storeCredential,
 				TaskAction:                    taskAction,
 				UnenrollFromAllAccessProfiles: unenrollFromAllAccessProfiles,
 				UpdateUser:                    updateUser,
@@ -8034,6 +8300,81 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 			} else {
 				stepName1 = nil
 			}
+			var storeCredential1 *shared.StoreCredential
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential != nil {
+				appIDCelSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.IsNull() {
+					*appIDCelSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.ValueString()
+				} else {
+					appIDCelSC1 = nil
+				}
+				authTypeSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.IsNull() {
+					*authTypeSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.ValueString()
+				} else {
+					authTypeSC1 = nil
+				}
+				credentialCelSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.IsNull() {
+					*credentialCelSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.ValueString()
+				} else {
+					credentialCelSC1 = nil
+				}
+				expirySC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.IsNull() {
+					*expirySC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.ValueString()
+				} else {
+					expirySC1 = nil
+				}
+				labelCelSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.IsNull() {
+					*labelCelSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.ValueString()
+				} else {
+					labelCelSC1 = nil
+				}
+				maxViewsSC1 := new(int64)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.IsNull() {
+					*maxViewsSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.ValueInt64()
+				} else {
+					maxViewsSC1 = nil
+				}
+				recipientCelSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.IsNull() {
+					*recipientCelSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.ValueString()
+				} else {
+					recipientCelSC1 = nil
+				}
+				recipientEmailCelSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.IsNull() {
+					*recipientEmailCelSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.ValueString()
+				} else {
+					recipientEmailCelSC1 = nil
+				}
+				ttlSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Ttl.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Ttl.IsNull() {
+					*ttlSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Ttl.ValueString()
+				} else {
+					ttlSC1 = nil
+				}
+				vaultTypeSC1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.IsNull() {
+					*vaultTypeSC1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.ValueString()
+				} else {
+					vaultTypeSC1 = nil
+				}
+				storeCredential1 = &shared.StoreCredential{
+					AppIDCel:          appIDCelSC1,
+					AuthType:          authTypeSC1,
+					CredentialCel:     credentialCelSC1,
+					Expiry:            expirySC1,
+					LabelCel:          labelCelSC1,
+					MaxViews:          maxViewsSC1,
+					RecipientCel:      recipientCelSC1,
+					RecipientEmailCel: recipientEmailCelSC1,
+					Ttl:               ttlSC1,
+					VaultType:         vaultTypeSC1,
+				}
+			}
 			var taskAction1 *shared.TaskAction
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction != nil {
 				var closeAction1 *shared.CloseAction
@@ -8290,6 +8631,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				SkipIfTrueCel:                 skipIfTrueCel1,
 				StepDisplayName:               stepDisplayName1,
 				StepName:                      stepName1,
+				StoreCredential:               storeCredential1,
 				TaskAction:                    taskAction1,
 				UnenrollFromAllAccessProfiles: unenrollFromAllAccessProfiles1,
 				UpdateUser:                    updateUser1,

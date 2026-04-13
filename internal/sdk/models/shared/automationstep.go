@@ -121,6 +121,8 @@ type AutomationStep struct {
 	StepDisplayName *string `json:"stepDisplayName,omitempty"`
 	// The stepName field.
 	StepName *string `json:"stepName,omitempty"`
+	// The StoreCredential message.
+	StoreCredential *StoreCredential `json:"storeCredential,omitempty"`
 	// The TaskAction message.
 	//
 	// This message contains a oneof named action. Only a single field of the following list may be set at a time:
@@ -298,6 +300,13 @@ func (a *AutomationStep) GetWaitForDuration() *WaitForDuration {
 		return nil
 	}
 	return a.WaitForDuration
+}
+
+func (a *AutomationStep) GetStoreCredential() *StoreCredential {
+	if a == nil {
+		return nil
+	}
+	return a.StoreCredential
 }
 
 func (a *AutomationStep) GetWebhook() *Webhook {
